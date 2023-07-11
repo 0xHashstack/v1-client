@@ -347,16 +347,59 @@ const BorrowModal = ({
     fetchParsedUSDValueBorrow();
   }, [inputBorrowAmount, currentBorrowCoin]);
 
+  // useEffect(() => {
+  //   fetchParsedUSDValueCollateral();
+  // }, [collateralAmount, currentCollateralCoin]);
+
+  // const fetchParsedUSDValueBorrow = async () => {
+  //   try {
+  //     const parsedBorrowAmount = await getUSDValue(
+  //       currentBorrowCoin,
+  //       inputBorrowAmount
+  //     );
+  //     console.log("got parsed usdt borrow", parsedBorrowAmount);
+  //     setInputBorrowAmountUSD(parsedBorrowAmount);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const fetchParsedUSDValueCollateral = async () => {
+  //   try {
+  //     const parsedCollateralAmount = await getUSDValue(
+  //       currentCollateralCoin,
+  //       collateralAmount
+  //     );
+  //     console.log("got parsed usdt collateral", parsedCollateralAmount);
+  //     setInputCollateralAmountUSD(parsedCollateralAmount);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   useEffect(() => {
     fetchParsedUSDValueCollateral();
   }, [collateralAmount, currentCollateralCoin]);
 
+  // useEffect(() => {
+  //   console.log("borrow got oracle", oraclePrices);
+  // }, [oraclePrices]);
+
   const fetchParsedUSDValueBorrow = async () => {
     try {
-      const parsedBorrowAmount = await getUSDValue(
-        currentBorrowCoin,
-        inputBorrowAmount
-      );
+      if (!oraclePrices || oraclePrices?.length === 0) {
+        console.log("got parsed zero borrow");
+        setInputBorrowAmountUSD(0);
+        return;
+      }
+
+      const parsedBorrowAmount =
+        oraclePrices.find((curr: any) => curr.name === currentBorrowCoin)
+          ?.price * inputBorrowAmount;
+      // const parsedBorrowAmount = await getUSDValue(
+      //   currentBorrowCoin,
+      //   inputBorrowAmount
+      // );
       console.log("got parsed usdt borrow", parsedBorrowAmount);
       setInputBorrowAmountUSD(parsedBorrowAmount);
     } catch (error) {
@@ -366,12 +409,27 @@ const BorrowModal = ({
 
   const fetchParsedUSDValueCollateral = async () => {
     try {
-      const parsedCollateralAmount = await getUSDValue(
-        currentCollateralCoin,
-        collateralAmount
+      if (!oraclePrices || oraclePrices?.length === 0) {
+        setInputCollateralAmountUSD(0);
+        console.log("got parsed zero collateral");
+
+        return;
+      }
+
+      const parsedBorrowAmount =
+        oraclePrices.find((curr: any) => curr.name === currentCollateralCoin)
+          ?.price * collateralAmount;
+      // const parsedBorrowAmount = await getUSDValue(
+      //   currentBorrowCoin,
+      //   inputBorrowAmount
+      // );
+      console.log(
+        "got parsed usdt collateral",
+        parsedBorrowAmount,
+        " max should be",
+        5 * parsedBorrowAmount
       );
-      console.log("got parsed usdt collateral", parsedCollateralAmount);
-      setInputCollateralAmountUSD(parsedCollateralAmount);
+      setInputCollateralAmountUSD(parsedBorrowAmount);
     } catch (error) {
       console.log(error);
     }
@@ -1840,13 +1898,16 @@ const BorrowModal = ({
                         <Text>
                           {/* 5.56% */}
                           {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                          {inputBorrowAmountUSD * borrowAPRs[currentBorrowAPR] -
-                            (inputCollateralAmountUSD *
-                              protocolStats?.find(
-                                (stat: any) =>
-                                  stat?.token === currentCollateralCoin
-                              )?.supplyRate) /
-                              inputBorrowAmountUSD}
+                          {numberFormatter(
+                            inputBorrowAmountUSD *
+                              borrowAPRs[currentBorrowAPR] -
+                              (inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentCollateralCoin
+                                )?.supplyRate) /
+                                inputBorrowAmountUSD
+                          )}
                           {/* {
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentCollateralCoin

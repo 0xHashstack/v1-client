@@ -98,7 +98,7 @@ const useDataLoader = () => {
   const userLoansCount = useSelector(selectUserLoansCount);
   const oraclePricesCount = useSelector(selectOraclePricesCount);
   const userInfoCount = useSelector(selectUserInfoCount);
-  const aprsAndHealthCount = useSelector(selectAprsAndHealthCount);
+  // const aprsAndHealthCount = useSelector(selectAprsAndHealthCount);
   const hourlyDataCount = useSelector(selectHourlyDataCount);
   const transactionRefresh = useSelector(selectTransactionRefresh);
   const oraclePrices = useSelector(selectOraclePrices);
@@ -129,56 +129,55 @@ const useDataLoader = () => {
           `${metrics_api}/api/metrics/tvl/daily/DAI`
         );
         console.log(response, "response data");
-        if(!response){
+        if (!response) {
           return;
         }
         // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
-        if(response?.data){
-          const amounts:any=[];  
-          const borrowAmounts:any=[];
-          const dates:any=[];
-          const supplyRates:any=[];
-          const borrowRates:any=[];
-          const tvlAmounts:any=[];
-          const supplyCounts:any=[];
-          const borrowCounts:any=[];
-              for(var i=0;i<response?.data?.length;i++){
-                  amounts?.push(response?.data[i].supplyAmount)
-                  borrowAmounts?.push(response?.data[i].borrowAmount);
-                  tvlAmounts?.push(response?.data[i].tvlAmount)
-                  // const dateObj = new Date(response?.data[i].Datetime)
-                  dates?.push(response?.data[i].Datetime);
-                  supplyRates?.push(response?.data[i].supplyRate)
-                  borrowRates?.push(response?.data[i].borrowRate)
-                  supplyCounts?.push(response?.data[i].supplyCount)
-                  borrowCounts?.push(response?.data[i].borrowCount);
-
-              }
-              // console.log(dates,"Dates")
-              const data={
-                dates:dates,
-                supplyAmounts:amounts,
-                borrowAmounts:borrowAmounts,
-                tvlAmounts:tvlAmounts,
-                supplyRates:supplyRates,
-                borrowRates:borrowRates,
-                supplyCounts:supplyCounts,
-                borrowCounts:borrowCounts,
-            }
-                // console.log(btcData,"Data gone")
-                dispatch(setHourlyBTCData(data))
-                dispatch(setHourlyDataCount(""))
-              console.log(response?.data,"Data response")
-              console.log(btcData,"data in BTC");
-        }  
-      }catch(err){
-        console.log(err,"err in hourly data")
+        if (response?.data) {
+          const amounts: any = [];
+          const borrowAmounts: any = [];
+          const dates: any = [];
+          const supplyRates: any = [];
+          const borrowRates: any = [];
+          const tvlAmounts: any = [];
+          const supplyCounts: any = [];
+          const borrowCounts: any = [];
+          for (var i = 0; i < response?.data?.length; i++) {
+            amounts?.push(response?.data[i].supplyAmount);
+            borrowAmounts?.push(response?.data[i].borrowAmount);
+            tvlAmounts?.push(response?.data[i].tvlAmount);
+            // const dateObj = new Date(response?.data[i].Datetime)
+            dates?.push(response?.data[i].Datetime);
+            supplyRates?.push(response?.data[i].supplyRate);
+            borrowRates?.push(response?.data[i].borrowRate);
+            supplyCounts?.push(response?.data[i].supplyCount);
+            borrowCounts?.push(response?.data[i].borrowCount);
+          }
+          // console.log(dates,"Dates")
+          const data = {
+            dates: dates,
+            supplyAmounts: amounts,
+            borrowAmounts: borrowAmounts,
+            tvlAmounts: tvlAmounts,
+            supplyRates: supplyRates,
+            borrowRates: borrowRates,
+            supplyCounts: supplyCounts,
+            borrowCounts: borrowCounts,
+          };
+          // console.log(btcData,"Data gone")
+          dispatch(setHourlyBTCData(data));
+          dispatch(setHourlyDataCount(""));
+          console.log(response?.data, "Data response");
+          console.log(btcData, "data in BTC");
+        }
+      } catch (err) {
+        console.log(err, "err in hourly data");
       }
     };
     if (hourlyDataCount < transactionRefresh) {
       fetchHourlyBTCData();
     }
-  },[transactionRefresh])
+  }, [transactionRefresh]);
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {
@@ -329,50 +328,50 @@ const useDataLoader = () => {
     }
   }, [userLoans, transactionRefresh]);
 
-  useEffect(() => {
-    const fetchAprsAndHealth = async () => {
-      try {
-        if (
-          dataOraclePrices &&
-          userLoans?.length > 0 &&
-          userLoansCount == transactionRefresh &&
-          protocolStatsCount == transactionRefresh &&
-          aprsAndHealthCount < transactionRefresh
-        ) {
-          for (var i = 0; i < userLoans?.length; i++) {
-            const avg = await effectivAPRLoan(
-              userLoans[i],
-              protocolStats,
-              dataOraclePrices
-            );
-            const healthFactor = await getExistingLoanHealth(
-              userLoans[i]?.loanId
-            );
+  // useEffect(() => {
+  //   const fetchAprsAndHealth = async () => {
+  //     try {
+  //       if (
+  //         dataOraclePrices &&
+  //         userLoans?.length > 0 &&
+  //         userLoansCount == transactionRefresh &&
+  //         protocolStatsCount == transactionRefresh &&
+  //         aprsAndHealthCount < transactionRefresh
+  //       ) {
+  //         for (var i = 0; i < userLoans?.length; i++) {
+  //           const avg = await effectivAPRLoan(
+  //             userLoans[i],
+  //             protocolStats,
+  //             dataOraclePrices
+  //           );
+  //           const healthFactor = await getExistingLoanHealth(
+  //             userLoans[i]?.loanId
+  //           );
 
-            const data = {
-              loanId: userLoans[i]?.loanId,
-              avg: avg,
-              loanHealth: healthFactor,
-            };
-            // console.log(data,"data in aprs")
-            // avgs.push(data)
-            avgsData?.push(data);
-            // avgs.push()
-          }
-          //cc
-          // console.log(avgsData,"avgs in Data")
-          setAvgs(avgsData);
-          dispatch(setAprAndHealthFactor(avgsData));
-          dispatch(setAprsAndHealthCount(""));
-        }
-      } catch (err) {
-        console.log(err, "err in aprs and health factor");
-      }
-    };
-    if (aprsAndHealthCount < transactionRefresh) {
-      fetchAprsAndHealth();
-    }
-  }, [dataOraclePrices, userLoans, protocolStats, transactionRefresh]);
+  //           const data = {
+  //             loanId: userLoans[i]?.loanId,
+  //             avg: avg,
+  //             loanHealth: healthFactor,
+  //           };
+  //           // console.log(data,"data in aprs")
+  //           // avgs.push(data)
+  //           avgsData?.push(data);
+  //           // avgs.push()
+  //         }
+  //         //cc
+  //         // console.log(avgsData,"avgs in Data")
+  //         setAvgs(avgsData);
+  //         dispatch(setAprAndHealthFactor(avgsData));
+  //         dispatch(setAprsAndHealthCount(""));
+  //       }
+  //     } catch (err) {
+  //       console.log(err, "err in aprs and health factor");
+  //     }
+  //   };
+  //   if (aprsAndHealthCount < transactionRefresh) {
+  //     fetchAprsAndHealth();
+  //   }
+  // }, [dataOraclePrices, userLoans, protocolStats, transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -505,7 +504,7 @@ const useDataLoader = () => {
       userLoansCount,
       oraclePricesCount,
       userInfoCount,
-      aprsAndHealthCount,
+      // aprsAndHealthCount,
       effectiveAprCount,
       healthFactorCount,
       hourlyDataCount
@@ -518,7 +517,7 @@ const useDataLoader = () => {
     userLoansCount,
     oraclePricesCount,
     userInfoCount,
-    aprsAndHealthCount,
+    // aprsAndHealthCount
     effectiveAprCount,
     healthFactorCount,
     hourlyDataCount,
