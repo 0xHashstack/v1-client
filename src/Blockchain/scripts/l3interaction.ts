@@ -142,7 +142,7 @@ export async function getJediEstimatedLpAmountOut(
       // [loanId, tokenAAddress, tokenBAddress],
       [
         tokenAddressMap[loanMarket],
-        [Number(currentAmount), 0],
+        [currentAmount, 0],
         tokenAddressMap[tokenA],
         tokenAddressMap[tokenB],
       ],
