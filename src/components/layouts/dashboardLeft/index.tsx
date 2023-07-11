@@ -345,7 +345,7 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      coinPrices[idx]?.price
+                      numberFormatter(coinPrices[idx]?.price)
                     )}
                     {/* 0000.00 */}
                   </Box>
@@ -408,7 +408,7 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      supplyAPRs[idx] + "%"
+                      numberFormatter(supplyAPRs[idx]) + "%"
                     )}
                   </Box>
                 </Td>

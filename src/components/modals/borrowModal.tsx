@@ -1898,16 +1898,13 @@ const BorrowModal = ({
                         <Text>
                           {/* 5.56% */}
                           {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                          {numberFormatter(
-                            inputBorrowAmountUSD *
-                              borrowAPRs[currentBorrowAPR] -
-                              (inputCollateralAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentCollateralCoin
-                                )?.supplyRate) /
-                                inputBorrowAmountUSD
-                          )}
+                          {inputBorrowAmountUSD * borrowAPRs[currentBorrowAPR] -
+                            (inputCollateralAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) =>
+                                  stat?.token === currentCollateralCoin
+                              )?.supplyRate) /
+                              inputBorrowAmountUSD}
                           {/* {
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentCollateralCoin
