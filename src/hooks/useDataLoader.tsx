@@ -77,6 +77,7 @@ import React, { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
+import { metrics_api } from "@/utils/keys/metricsApi";
 const useDataLoader = () => {
   const { address } = useAccount();
   const protocolReserves = useSelector(selectProtocolReserves);
@@ -98,34 +99,36 @@ const useDataLoader = () => {
   const oraclePricesCount = useSelector(selectOraclePricesCount);
   const userInfoCount = useSelector(selectUserInfoCount);
   const aprsAndHealthCount = useSelector(selectAprsAndHealthCount);
-  const hourlyDataCount=useSelector(selectHourlyDataCount);
+  const hourlyDataCount = useSelector(selectHourlyDataCount);
   const transactionRefresh = useSelector(selectTransactionRefresh);
   const oraclePrices = useSelector(selectOraclePrices);
   const effectiveApr = useSelector(selectEffectiveApr);
   const effectiveAprCount = useSelector(selectAprCount);
   const healthFactor = useSelector(selectHealthFactor);
   const healthFactorCount = useSelector(selectHealthFactorCount);
-  const hourlyBTCData=useSelector(selectHourlyBTCData);
+  const hourlyBTCData = useSelector(selectHourlyBTCData);
 
   const dispatch = useDispatch();
   const Data: any = [];
   const [avgs, setAvgs] = useState<any>([]);
-  const [btcData,setBtcData]=useState<any>();
+  const [btcData, setBtcData] = useState<any>();
   const avgsData: any = [];
-  console.log("address",address);
+  console.log("address", address);
   // useEffect(() => {
   //   console.log("switched to market");
   // }, []);
-  useEffect(()=>{
-    const fetchHourlyBTCData=async()=>{
-      try{
+  useEffect(() => {
+    const fetchHourlyBTCData = async () => {
+      try {
         // console.log("HIII")
         // if(hourlyBTCData!=null){
         //   return;
         // }
 
-        const response = await axios.get('http://18.143.34.55:3010/api/metrics/tvl/daily/DAI'); 
-        console.log(response,"response data")
+        const response = await axios.get(
+          `${metrics_api}/api/metrics/tvl/daily/DAI`
+        );
+        console.log(response, "response data");
         if(!response){
           return;
         }
@@ -171,8 +174,8 @@ const useDataLoader = () => {
       }catch(err){
         console.log(err,"err in hourly data")
       }
-    }
-    if(hourlyDataCount<transactionRefresh){
+    };
+    if (hourlyDataCount < transactionRefresh) {
       fetchHourlyBTCData();
     }
   },[transactionRefresh])
@@ -282,6 +285,7 @@ const useDataLoader = () => {
           dispatch(setEffectiveAPR(avgs));
           dispatch(setAprCount(""));
         });
+        // console.log("promises",promises)
       };
       if (
         dataOraclePrices &&
@@ -459,7 +463,7 @@ const useDataLoader = () => {
             protocolStats
           );
           const dataTotalBorrow = dataBorrow?.totalBorrow;
-          console.log(dataBorrow,"data data borrow")
+          console.log(dataBorrow, "data data borrow");
           dispatch(setYourBorrow(dataTotalBorrow));
           console.log(dataDeposit, "data deposit pagecard");
           const data = getTotalSupply(dataDeposit, dataOraclePrices);
@@ -482,7 +486,7 @@ const useDataLoader = () => {
         fetchUserSupply();
       }
     } catch (err) {
-      console.log(err,"error in user info");
+      console.log(err, "error in user info");
     }
   }, [
     dataDeposit,
@@ -517,7 +521,7 @@ const useDataLoader = () => {
     aprsAndHealthCount,
     effectiveAprCount,
     healthFactorCount,
-    hourlyDataCount
+    hourlyDataCount,
   ]);
 };
 

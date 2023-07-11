@@ -433,9 +433,10 @@ const TradeModal = ({
     setLoanAmount(0);
     setCurrentDapp("Select a dapp");
     setCurrentPool("Select a pool");
-    setCurrentCollateralCoin(coin.name);
-    setCollateralMarket(coin.name);
-    setCurrentBorrowCoin(coin.name);
+    setCurrentCollateralCoin(coin?.name);
+    setCollateralMarket(coin?.name);
+    setCurrentBorrowCoin(coin?.name);
+    setLoanMarket(coin?.name);
     setCurrentPoolCoin("Select a pool");
     setRadioValue("1");
     setHealthFactor(undefined);
@@ -1614,7 +1615,7 @@ const TradeModal = ({
                           className="dropdown-container"
                           boxShadow="dark-lg"
                         >
-                          {coins.map((coin: string, index: number) => {
+                          {coins.map((coin: NativeToken, index: number) => {
                             return (
                               <Box
                                 key={index}
@@ -1629,6 +1630,7 @@ const TradeModal = ({
                                   setCurrentAvailableReserves(
                                     protocolStats?.[index]?.availableReserves
                                   );
+                                  setLoanMarket(coin);
                                   // setMarket(coin);
                                   // setMarket(coin);
                                 }}

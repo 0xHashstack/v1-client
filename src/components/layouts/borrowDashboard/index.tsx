@@ -33,8 +33,13 @@ import {
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import { getJediEstimatedLiqALiqBfromLp } from "@/Blockchain/scripts/l3interaction";
-import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import {
+  getTokenFromAddress,
+  tokenAddressMap,
+} from "@/Blockchain/utils/addressServices";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { BNtoNum } from "@/Blockchain/utils/utils";
+import { processAddress } from "@/Blockchain/stark-constants";
 
 export interface ICoin {
   name: string;
@@ -242,20 +247,27 @@ const BorrowDashboard = ({
     for (let i = 0; i < Borrows?.length; i++) {
       if (Borrows[i].spendType === "LIQUIDITY") {
         const data = await getJediEstimatedLiqALiqBfromLp(
-          parseInt(Borrows[i].currentLoanAmount),
-          Borrows[i].currentLoanMarketAddress
+          parseInt(Borrows[i]?.currentLoanAmount),
+          Borrows[i]?.currentLoanMarketAddress
         );
         console.log(
+          getTokenFromAddress(processAddress(data?.tokenAAddress)),
           "all split amount - ",
-          Borrows[i].currentLoanAmount,
-          "market - ",
-          Borrows[i].currentLoanMarketAddress,
+          // parseInt(Borrows[i]?.currentLoanAmount),
+          Borrows[i]?.currentLoanMarketAddress,
+
           " res -",
           data
         );
 
         if (data) {
-          temp.push(data);
+          temp.push({
+            ...data,
+            tokenA: getTokenFromAddress(processAddress(data?.tokenAAddress))
+              ?.name,
+            tokenB: getTokenFromAddress(processAddress(data?.tokenBAddress))
+              ?.name,
+          });
         } else {
           temp.push("empty");
         }
@@ -748,32 +760,35 @@ const BorrowDashboard = ({
                               // bgColor={"blue"}
                             >
                               {borrow.spendType == "LIQUIDITY" ? (
-                                <>
-                                  <Box
-                                    display="flex"
-                                    gap={0.5}
-                                    minWidth={"16px"}
-                                  >
-                                    <Image
-                                      src={`/${borrow.underlyingMarket}.svg`}
-                                      alt="Picture of the author"
-                                      width="16"
-                                      height="16"
-                                    />
-                                  </Box>
-                                  <Box
-                                    display="flex"
-                                    gap={0.5}
-                                    minWidth={"16px"}
-                                  >
-                                    <Image
-                                      src={`/${borrow.underlyingMarket}.svg`}
-                                      alt="Picture of the author"
-                                      width="16"
-                                      height="16"
-                                    />
-                                  </Box>
-                                </>
+                                allSplit?.[idx]?.tokenA &&
+                                allSplit?.[idx]?.tokenB && (
+                                  <>
+                                    <Box
+                                      display="flex"
+                                      gap={0.5}
+                                      minWidth={"16px"}
+                                    >
+                                      <Image
+                                        src={`/${allSplit?.[idx]?.tokenA}.svg`}
+                                        alt="Picture of the author"
+                                        width="16"
+                                        height="16"
+                                      />
+                                    </Box>
+                                    <Box
+                                      display="flex"
+                                      gap={0.5}
+                                      minWidth={"16px"}
+                                    >
+                                      <Image
+                                        src={`/${allSplit?.[idx]?.tokenB}.svg`}
+                                        alt="Picture of the author"
+                                        width="16"
+                                        height="16"
+                                      />
+                                    </Box>
+                                  </>
+                                )
                               ) : (
                                 <Box
                                   display="flex"
@@ -820,8 +835,8 @@ const BorrowDashboard = ({
                               {borrow.spendType !== "LIQUIDITY" ||
                               allSplit.length === 0 ||
                               allSplit[idx] === "empty"
-                                ? "1.234/2.23"
-                                : numberFormatter(allSplit[idx]?.amountA) +
+                                ? "-"
+                                : numberFormatter(allSplit?.[idx]?.amountA) +
                                   "/" +
                                   numberFormatter(allSplit[idx]?.amountB)}
                             </Text>

@@ -73,7 +73,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //     router.events.off("routeChangeComplete", handleRouteChangeComplete);
   //   };
   // }, [handleRouteChange, router.events]);
-// connect(connectors[0])
+  // connect(connectors[0])
   // console.log(connectors)
 
   // useEffect(() => {
@@ -100,9 +100,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         disconnect();
         connect(connectors[1]);
       } else {
-        disconnect();
-        connect(connectors[0]);
-        localStorage.setItem("lastUsedConnector", "braavos");
+        // disconnect();
+        // connect(connectors[0]);
+        // localStorage.setItem("lastUsedConnector", "braavos");
       }
     }
   }, [account]);

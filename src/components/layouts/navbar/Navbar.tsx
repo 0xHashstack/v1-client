@@ -672,13 +672,12 @@ const Navbar = ({ validRTokens }: any) => {
                       borderRadius="6px"
                       border="1px solid #2B2F35"
                       onClick={() => {
+                        localStorage.setItem("lastUsedConnector", "");
+                        router.push("./");
                         disconnect();
                         dispatch(resetState(null));
                         dispatch(setAccountReset(null));
-                        localStorage.setItem("lastUsedConnector", "");
                         // localStorage.setItem("account", "");
-
-                        router.push("./");
                       }}
                     >
                       Disconnect

@@ -6,14 +6,19 @@ import { AccountInterface, ProviderInterface } from "starknet";
 import { useAccount, useBlockNumber } from "@starknet-react/core";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setBlock,selectBlock,setCurrentNetwork,selectCurrentNetwork } from "@/store/slices/readDataSlice";
+import {
+  setBlock,
+  selectBlock,
+  setCurrentNetwork,
+  selectCurrentNetwork,
+} from "@/store/slices/readDataSlice";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
   };
 }
 const Footer = () => {
-  const { account,connector } = useAccount();
+  const { account, connector } = useAccount();
   const { data: block } = useBlockNumber({
     refetchInterval: 10000,
   });
@@ -23,8 +28,7 @@ const Footer = () => {
   //   const walletConnected=localStorage.getItem('lastUsedConnector');
   //   setwalletConnected(walletConnected);
   // },[account])
-  
-  
+
   const currentBlock = useSelector(selectBlock);
   const currentChainId = useSelector(selectCurrentNetwork);
   const dispatch = useDispatch();
@@ -36,16 +40,20 @@ const Footer = () => {
   // console.log(extendedAccount?.provider?.chainId,"footer")
   // console.log(walletConnected);
   useEffect(() => {
-    if(connector?.options?.id == "braavos"){
+    if (connector?.options?.id == "braavos") {
       if (account && account?.chainId && account?.chainId != currentChainId) {
         dispatch(setCurrentNetwork(account?.chainId));
       }
-    }else if(connector?.options?.id == "argentX"){
-      if(extendedAccount && extendedAccount?.provider?.chainId && extendedAccount.provider?.chainId!=currentChainId){
+    } else if (connector?.options?.id == "argentX") {
+      if (
+        extendedAccount &&
+        extendedAccount?.provider?.chainId &&
+        extendedAccount.provider?.chainId != currentChainId
+      ) {
         dispatch(setCurrentNetwork(extendedAccount?.provider?.chainId));
       }
     }
-  }, [account?.chainId,extendedAccount?.provider?.chainId]);
+  }, [account?.chainId, extendedAccount?.provider?.chainId]);
   return (
     <HStack
       zIndex="14"
@@ -147,16 +155,21 @@ const Footer = () => {
         </HStack>
       </HStack>
       <HStack>
-        <HStack borderX="1px solid #2B2F35" h="100%" p="8px 2rem">
+        <HStack
+          borderX="1px solid #2B2F35"
+          h="100%"
+          p="8px 2rem"
+          cursor="pointer"
+        >
           <Text color="#BDBFC1" fontSize="12px">
             Announcement
           </Text>
         </HStack>
-        <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
+        {/* <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Text color="#BDBFC1" fontSize="12px">
             Dummy copy
           </Text>
-        </HStack>
+        </HStack> */}
       </HStack>
     </HStack>
   );

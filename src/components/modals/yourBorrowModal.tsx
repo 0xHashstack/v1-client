@@ -1811,7 +1811,7 @@ const YourBorrowModal = ({
             mt="1.5rem"
             mb="1.5rem"
           >
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+            {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
                   color="#6A737D"
@@ -1858,7 +1858,7 @@ const YourBorrowModal = ({
                   <Text>1.23</Text>
                 </Box>
               </Box>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -2407,7 +2407,7 @@ const YourBorrowModal = ({
         collateralBalance.substring(spaceIndex + 1),
         inputCollateralAmount
       );
-      console.log(data,"data in your borrow for est")
+      console.log(data, "data in your borrow for est");
       // console.log(data, "data in your borrow");
       setEstrTokensMinted(data);
     };

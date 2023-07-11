@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { Button, Card, Text, Box, Portal } from "@chakra-ui/react";
+import { Button, Card, Text, Box, Portal, Skeleton } from "@chakra-ui/react";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import PageCard from "@/components/layouts/pageCard";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
@@ -54,6 +54,7 @@ export default function Home() {
   const [lastusedConnector, setLastusedConnector] = useState("");
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const [isWaitListed, setIsWaitListed] = useState(true);
+  const [availableDataLoading, setAvailableDataLoading] = useState(true);
   const router = useRouter();
   const waitlistHref = "/v1/waitlist";
   const marketHref2 = "/v1/market";
@@ -67,7 +68,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const interval = setInterval(refresh, 1000);
+    const interval = setInterval(refresh, 200);
     return () => clearInterval(interval);
   }, [refresh]);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -75,6 +76,14 @@ export default function Home() {
     { name: "Starknet", status: "enable" },
     { name: "Ethereum (Coming soon)", status: "disable" },
   ];
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setAvailableDataLoading(false);
+    }, 600);
+
+    return () => clearTimeout(timeout);
+  }, []);
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -112,10 +121,20 @@ export default function Home() {
     if (walletConnected == "braavos") {
       disconnect();
       connect(connectors[0]);
+      if (!isWaitListed) {
+        router.replace(waitlistHref);
+      } else {
+        router.replace(marketHref2);
+      }
       // dispatch(setTransactionRefresh("reset"));
     } else if (walletConnected == "argentX") {
       disconnect();
       connect(connectors[1]);
+      if (!isWaitListed) {
+        router.replace(waitlistHref);
+      } else {
+        router.replace(marketHref2);
+      }
       // dispatch(setTransactionRefresh("reset"));
     }
     if (!hasVisited) {
@@ -139,11 +158,7 @@ export default function Home() {
         "Wallet address": address,
         "Wallet Connected": walletConnected,
       });
-      if (!isWaitListed) {
-        router.replace(waitlistHref);
-      } else {
-        router.replace(marketHref2);
-      }
+
       // if (!isWhiteListed) {
       //   router.replace(whitelistHref);
       // } else if (isWaitListed) {
@@ -155,7 +170,6 @@ export default function Home() {
     }
     // console.log("account home", address, status);
   }, [status, isConnected]);
-  useTransactionRefresh();
   return (
     <Box
       display="flex"
@@ -231,11 +245,23 @@ export default function Home() {
                 localStorage.setItem("lastUsedConnector", "braavos");
               }}
             >
-              <Text ml="1rem" color="white">
-                {available?.[0]?.options?.id == "braavos"
-                  ? "Braavos Wallet"
-                  : "Download Braavos Wallet"}
-              </Text>
+              <Box ml="1rem" color="white">
+                {availableDataLoading ? (
+                  <Skeleton
+                    width="6rem"
+                    height="1.4rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                  />
+                ) : available?.[0]?.options?.id == "braavos" ||
+                  available?.[1]?.options?.id == "braavos" ? (
+                  // || availableDataLoading
+                  "Braavos Wallet"
+                ) : (
+                  "Download Braavos Wallet"
+                )}
+              </Box>
               <Box p="1" mr="16px">
                 <BravosIcon />
               </Box>
@@ -257,11 +283,23 @@ export default function Home() {
                 //   connect(connectors[0])
                 // }
               >
-                <Text ml="1rem" color="white">
-                  {available[0]?.options?.id == "braavos"
-                    ? "Braavos Wallet"
-                    : "Download Braavos Wallet"}
-                </Text>
+                <Box ml="1rem" color="white">
+                  {availableDataLoading ? (
+                    <Skeleton
+                      width="6rem"
+                      height="1.4rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  ) : available[0]?.options?.id == "braavos" ||
+                    available[1]?.options?.id == "braavos" ? (
+                    // || availableDataLoading
+                    "Braavos Wallet"
+                  ) : (
+                    "Download Braavos Wallet"
+                  )}
+                </Box>
                 <Box p="1" mr="16px">
                   <BravosIcon />
                 </Box>
@@ -288,20 +326,33 @@ export default function Home() {
                 localStorage.setItem("lastUsedConnector", "argentX");
               }}
             >
-              <Text ml="1rem" color="white">
-                {available[1]?.options.id == "argentX" ||
-                available[0]?.options.id == "argentX"
-                  ? "Argent X Wallet"
-                  : "Download Argent X Wallet"}
-              </Text>
+              <Box ml="1rem" color="white">
+                {availableDataLoading ? (
+                  <Skeleton
+                    width="6rem"
+                    height="1.4rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                  />
+                ) : available[1]?.options.id == "argentX" ||
+                  available[0]?.options.id == "argentX" ? (
+                  // || availableDataLoading
+                  "Argent X Wallet"
+                ) : (
+                  "Download Argent X Wallet"
+                )}
+              </Box>
               <Box p="1" mr="16px">
-                <Image
-                  src="/ArgentXlogo.svg"
-                  alt="Picture of the author"
-                  width="15"
-                  height="15"
-                  style={{ cursor: "pointer" }}
-                />
+                {availableDataLoading && (
+                  <Image
+                    src="/ArgentXlogo.svg"
+                    alt="Picture of the author"
+                    width="15"
+                    height="15"
+                    style={{ cursor: "pointer" }}
+                  />
+                )}
               </Box>
             </Box>
           ) : (
@@ -319,12 +370,23 @@ export default function Home() {
                 cursor="pointer"
                 // onClick={() => connect(connectors[1])}
               >
-                <Text ml="1rem" color="white">
-                  {available[1]?.options.id == "argentX" ||
-                  available[0]?.options.id == "argentX"
-                    ? "Argent X Wallet"
-                    : "Download Argent X Wallet"}
-                </Text>
+                <Box ml="1rem" color="white">
+                  {availableDataLoading ? (
+                    <Skeleton
+                      width="6rem"
+                      height="1.4rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  ) : available[1]?.options.id == "argentX" ||
+                    available[0]?.options.id == "argentX" ? (
+                    // || availableDataLoading
+                    "Argent X Wallet"
+                  ) : (
+                    "Download Argent X Wallet"
+                  )}
+                </Box>
                 <Box p="1" mr="16px">
                   <Image
                     src="/ArgentXlogo.svg"

@@ -42,25 +42,45 @@ const Stats = ({
             <Text color="#6e7681" fontSize={14}>
               {header[idx]}
             </Text>
-            <Box color="#E6EDF3" fontSize="20px" >
-            {!value && (value !== null) ? (
-  <Skeleton
-    width="6rem"
-    height="1.9rem"
-    startColor="#101216"
-    endColor="#2B2F35"
-    borderRadius="6px"
-  />
-) : header[idx] === "Net APR" || header[idx] === "Avg. asset utilization" ? (
-  <Text color="#e6edf3" fontSize="20px">
-    {value !== null ? `${value} %` : "-"}
-  </Text>
-) : (
-  <Text color="#e6edf3" fontSize="20px">
-    {value !== null ? numberFormatter(value) : "-"}
-  </Text>
-)}
-
+            <Box color="#E6EDF3" fontSize="20px">
+              {!value && value !== null ? (
+                <Skeleton
+                  width="6rem"
+                  height="1.9rem"
+                  startColor="#101216"
+                  endColor="#2B2F35"
+                  borderRadius="6px"
+                />
+              ) : header[idx] == "Net APR" ||
+                header[idx] == "Avg. asset utillization" ? (
+                <Box color="#e6edf3" fontSize="20px">
+                  {value !== null ? (
+                    `${value}%`
+                  ) : (
+                    <Skeleton
+                      width="6rem"
+                      height="1.9rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  )}
+                </Box>
+              ) : (
+                <Box color="#e6edf3" fontSize="20px">
+                  {value !== null ? (
+                    numberFormatter(value)
+                  ) : (
+                    <Skeleton
+                      width="6rem"
+                      height="1.9rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  )}
+                </Box>
+              )}
             </Box>
           </VStack>
         );
