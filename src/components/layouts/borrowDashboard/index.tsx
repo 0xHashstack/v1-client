@@ -832,13 +832,16 @@ const BorrowDashboard = ({
                               </Box> */}
                             </Box>
                             <Text fontSize="14px" fontWeight="400">
-                              {borrow.spendType !== "LIQUIDITY" ||
-                              allSplit.length === 0 ||
-                              allSplit[idx] === "empty"
-                                ? "-"
-                                : numberFormatter(allSplit?.[idx]?.amountA) +
-                                  "/" +
-                                  numberFormatter(allSplit[idx]?.amountB)}
+                              {borrow.spendType == "LIQUIDITY"
+                                ? allSplit.length === 0 ||
+                                  allSplit[idx] === "empty"
+                                  ? "-"
+                                  : numberFormatter(allSplit?.[idx]?.amountA) +
+                                    "/" +
+                                    numberFormatter(allSplit[idx]?.amountB)
+                                : numberFormatter(
+                                    borrow?.currentLoanAmountParsed
+                                  )}
                             </Text>
                           </HStack>
                         </Box>

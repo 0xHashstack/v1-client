@@ -98,7 +98,7 @@ const useDataLoader = () => {
   const userLoansCount = useSelector(selectUserLoansCount);
   const oraclePricesCount = useSelector(selectOraclePricesCount);
   const userInfoCount = useSelector(selectUserInfoCount);
-  const aprsAndHealthCount = useSelector(selectAprsAndHealthCount);
+  // const aprsAndHealthCount = useSelector(selectAprsAndHealthCount);
   const hourlyDataCount = useSelector(selectHourlyDataCount);
   const transactionRefresh = useSelector(selectTransactionRefresh);
   const oraclePrices = useSelector(selectOraclePrices);
@@ -169,7 +169,6 @@ const useDataLoader = () => {
           dispatch(setHourlyDataCount(""));
           console.log(response?.data, "Data response");
           console.log(btcData, "data in BTC");
-          console.log(data, "data in response");
         }
       } catch (err) {
         console.log(err, "err in hourly data");
@@ -329,50 +328,50 @@ const useDataLoader = () => {
     }
   }, [userLoans, transactionRefresh]);
 
-  useEffect(() => {
-    const fetchAprsAndHealth = async () => {
-      try {
-        if (
-          dataOraclePrices &&
-          userLoans?.length > 0 &&
-          userLoansCount == transactionRefresh &&
-          protocolStatsCount == transactionRefresh &&
-          aprsAndHealthCount < transactionRefresh
-        ) {
-          for (var i = 0; i < userLoans?.length; i++) {
-            const avg = await effectivAPRLoan(
-              userLoans[i],
-              protocolStats,
-              dataOraclePrices
-            );
-            const healthFactor = await getExistingLoanHealth(
-              userLoans[i]?.loanId
-            );
+  // useEffect(() => {
+  //   const fetchAprsAndHealth = async () => {
+  //     try {
+  //       if (
+  //         dataOraclePrices &&
+  //         userLoans?.length > 0 &&
+  //         userLoansCount == transactionRefresh &&
+  //         protocolStatsCount == transactionRefresh &&
+  //         aprsAndHealthCount < transactionRefresh
+  //       ) {
+  //         for (var i = 0; i < userLoans?.length; i++) {
+  //           const avg = await effectivAPRLoan(
+  //             userLoans[i],
+  //             protocolStats,
+  //             dataOraclePrices
+  //           );
+  //           const healthFactor = await getExistingLoanHealth(
+  //             userLoans[i]?.loanId
+  //           );
 
-            const data = {
-              loanId: userLoans[i]?.loanId,
-              avg: avg,
-              loanHealth: healthFactor,
-            };
-            // console.log(data,"data in aprs")
-            // avgs.push(data)
-            avgsData?.push(data);
-            // avgs.push()
-          }
-          //cc
-          // console.log(avgsData,"avgs in Data")
-          setAvgs(avgsData);
-          dispatch(setAprAndHealthFactor(avgsData));
-          dispatch(setAprsAndHealthCount(""));
-        }
-      } catch (err) {
-        console.log(err, "err in aprs and health factor");
-      }
-    };
-    if (aprsAndHealthCount < transactionRefresh) {
-      fetchAprsAndHealth();
-    }
-  }, [dataOraclePrices, userLoans, protocolStats, transactionRefresh]);
+  //           const data = {
+  //             loanId: userLoans[i]?.loanId,
+  //             avg: avg,
+  //             loanHealth: healthFactor,
+  //           };
+  //           // console.log(data,"data in aprs")
+  //           // avgs.push(data)
+  //           avgsData?.push(data);
+  //           // avgs.push()
+  //         }
+  //         //cc
+  //         // console.log(avgsData,"avgs in Data")
+  //         setAvgs(avgsData);
+  //         dispatch(setAprAndHealthFactor(avgsData));
+  //         dispatch(setAprsAndHealthCount(""));
+  //       }
+  //     } catch (err) {
+  //       console.log(err, "err in aprs and health factor");
+  //     }
+  //   };
+  //   if (aprsAndHealthCount < transactionRefresh) {
+  //     fetchAprsAndHealth();
+  //   }
+  // }, [dataOraclePrices, userLoans, protocolStats, transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -505,7 +504,7 @@ const useDataLoader = () => {
       userLoansCount,
       oraclePricesCount,
       userInfoCount,
-      aprsAndHealthCount,
+      // aprsAndHealthCount,
       effectiveAprCount,
       healthFactorCount,
       hourlyDataCount
@@ -518,7 +517,7 @@ const useDataLoader = () => {
     userLoansCount,
     oraclePricesCount,
     userInfoCount,
-    aprsAndHealthCount,
+    // aprsAndHealthCount
     effectiveAprCount,
     healthFactorCount,
     hourlyDataCount,
