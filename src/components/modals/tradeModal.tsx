@@ -468,6 +468,7 @@ const TradeModal = ({
   useEffect(() => {
     setinputBorrowAmount(0);
     setLoanAmount(0);
+    // setLoanAmount(0);
     setsliderValue2(0);
     // setHealthFactor(undefined)
   }, [currentBorrowCoin]);

@@ -562,6 +562,7 @@ const StakeUnstakeModal = ({
 
   const router = useRouter();
   const { pathname } = router;
+  const [estrTokens, setEstrTokens] = useState<any>(0)
 
   // useEffect(() => {
   //   console.log("protocolStats", protocolStats);
@@ -569,10 +570,11 @@ const StakeUnstakeModal = ({
   useEffect(()=>{
     const fetchestrTokens=async()=>{
       const data=await getEstrTokens("rUSDT",287780.0);
+      setEstrTokens(data);
       console.log(data,"stake");
     }
     fetchestrTokens();
-  },[])
+  },[rTokenToWithdraw])
 
   return (
     <Box>
@@ -2009,7 +2011,7 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">$10.91</Text>
+                          <Text color="#6E7681">${estrTokens}</Text>
                         </Text>
                         <Text
                           color="#8B949E"

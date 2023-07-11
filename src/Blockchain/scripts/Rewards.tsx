@@ -98,7 +98,7 @@ export async function getEstrTokens(rToken: any, amount: any) {
             // tokenDecimalsMap[rToken]
         );
         console.log(data, "call in stake");
-        return 24;
+        return data;
     } catch (err) {
         console.log(err, "err in est rtokens staking")
     }

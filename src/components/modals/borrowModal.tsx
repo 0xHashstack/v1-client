@@ -647,8 +647,8 @@ const BorrowModal = ({
     setCollateralAmount(0);
   }, [currentCollateralCoin]);
   useEffect(() => {
-    setRTokenAmount(0);
-    setCollateralAmount(0);
+    setAmount(0);
+    setsliderValue2(0);
   }, [currentBorrowCoin]);
   // console.log(currentCollateralCoin,"collateral coin")
   // useEffect(() => {
