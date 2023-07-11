@@ -101,7 +101,11 @@ import {
   getLoanHealth_RTokenCollateral,
 } from "@/Blockchain/scripts/LoanHealth";
 import Image from "next/image";
-import { getUSDValue } from "@/Blockchain/scripts/l3interaction";
+import {
+  getJediEstimateLiquiditySplit,
+  getJediEstimatedLpAmountOut,
+  getUSDValue,
+} from "@/Blockchain/scripts/l3interaction";
 const TradeModal = ({
   buttonText,
   coin,
@@ -692,42 +696,6 @@ const TradeModal = ({
     }
   };
 
-  // const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState(null);
-  // const [currentSplit, setCurrentSplit] = useState(null);
-
-  // useEffect(() => {
-  //   // if (!currentBorrowId1 || currentBorrowId1 == "") {
-  //   //   return;
-  //   // }
-  //   console.log(
-  //     "toMarketSplitConsole",
-  //     currentBorrowId.slice(5),
-  //     toMarketLiqA,
-  //     toMarketLiqA
-  //     // borrow
-  //   );
-  //   setCurrentLPTokenAmount(null);
-  //   setCurrentSplit(null);
-  //   fetchLiquiditySplit();
-  // }, [toMarketLiqA, currentBorrowId, toMarketLiqA]);
-
-  // const fetchLiquiditySplit = async () => {
-  //   const lp_tokon: any = await getJediEstimatedLpAmountOut(
-  //     currentBorrowId.slice(5),
-  //     toMarketA,
-  //     toMarketB
-  //   );
-  //   console.log("toMarketSplitLP", lp_tokon);
-  //   setCurrentLPTokenAmount(lp_tokon);
-  //   const split: any = await getJediEstimateLiquiditySplit(
-  //     currentBorrowId.slice(5),
-  //     toMarketA,
-  //     toMarketB
-  //   );
-  //   console.log("toMarketSplit", split);
-  //   setCurrentSplit(split);
-  // };
-
   const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0);
   const [inputCollateralAmountUSD, setInputCollateralAmountUSD] =
     useState<any>(0);
@@ -764,6 +732,91 @@ const TradeModal = ({
       console.log(error);
     }
   };
+
+  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
+    Number | undefined | null
+  >();
+  const [currentSplit, setCurrentSplit] = useState<
+    Number[] | undefined | null
+  >();
+
+  useEffect(() => {
+    console.log(
+      "toMarketSplitConsole",
+      currentBorrowCoin,
+      inputBorrowAmount,
+      toMarketLiqA,
+      toMarketLiqB
+      // borrow
+    );
+    setCurrentSplit(null);
+    fetchLiquiditySplit();
+  }, [inputBorrowAmount, currentBorrowCoin, toMarketLiqA, toMarketLiqB]);
+
+  useEffect(() => {
+    setCurrentLPTokenAmount(null);
+    fetchLPAmount();
+  }, [inputBorrowAmount, currentBorrowCoin, toMarketLiqA, toMarketLiqB]);
+
+  const fetchLiquiditySplit = async () => {
+    if (
+      currentDapp === "Select a dapp" ||
+      !toMarketLiqA ||
+      !toMarketLiqB ||
+      !currentBorrowCoin ||
+      currentPool === "Select a pool"
+    )
+      return;
+
+    const split = await getJediEstimateLiquiditySplit(
+      currentBorrowCoin,
+      inputBorrowAmount,
+      toMarketLiqA,
+      toMarketLiqB
+      // "USDT",
+      // 99,
+      // "ETH",
+      // "USDT"
+    );
+    console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
+    setCurrentSplit(split);
+  };
+
+  const fetchLPAmount = async () => {
+    if (
+      currentDapp === "Select a dapp" ||
+      !toMarketLiqA ||
+      !toMarketLiqB ||
+      !currentBorrowCoin ||
+      currentPool === "Select a pool"
+    )
+      return;
+    const lp_tokon = await getJediEstimatedLpAmountOut(
+      currentBorrowCoin,
+      inputBorrowAmount,
+      toMarketLiqA,
+      toMarketLiqB
+      // "USDT",
+      // "99",
+      // "ETH",
+      // "USDT"
+    );
+    console.log("toMarketSplitLP", lp_tokon);
+    setCurrentLPTokenAmount(lp_tokon);
+  };
+
+  // useEffect(() => {
+  //   const fetchEstrTokens = async () => {
+  //     const data = await getrTokensMinted(
+  //       collateralBalance.substring(spaceIndex + 1),
+  //       inputCollateralAmount
+  //     );
+  //     console.log(data, "data in your borrow for est");
+  //     // console.log(data, "data in your borrow");
+  //     setEstrTokensMinted(data);
+  //   };
+  //   fetchEstrTokens();
+  // }, [collateralBalance, inputCollateralAmount]);
 
   return (
     <Box>
@@ -2315,8 +2368,27 @@ const TradeModal = ({
                           </Box>
                         </Tooltip>
                       </Box>
-                      <Text color="#6E7681" fontSize="xs">
-                        $ 10.91
+                      <Text
+                        color="#6A737D"
+                        fontSize="12px"
+                        fontWeight="400"
+                        fontStyle="normal"
+                      >
+                        {currentLPTokenAmount == undefined ||
+                        currentLPTokenAmount === null ? (
+                          <Box pt="2px">
+                            <Skeleton
+                              width="2.3rem"
+                              height=".85rem"
+                              startColor="#2B2F35"
+                              endColor="#101216"
+                              borderRadius="6px"
+                            />
+                          </Box>
+                        ) : (
+                          "$" + currentLPTokenAmount
+                        )}
+                        {/* $ 10.91 */}
                       </Text>
                     </Box>
                   )}
@@ -2369,7 +2441,17 @@ const TradeModal = ({
                               height="12"
                             />
                           </Box>
-                          <Text>1.23</Text>
+                          <Text>
+                            {currentSplit?.[0]?.toString() || (
+                              <Skeleton
+                                width="2.3rem"
+                                height=".85rem"
+                                startColor="#2B2F35"
+                                endColor="#101216"
+                                borderRadius="6px"
+                              />
+                            )}
+                          </Text>
                         </Box>
                         <Box display="flex" gap="2px">
                           <Box mt="2px">
@@ -2381,7 +2463,17 @@ const TradeModal = ({
                               height="12"
                             />
                           </Box>
-                          <Text>1.23</Text>
+                          <Text>
+                            {currentSplit?.[1].toString() || (
+                              <Skeleton
+                                width="2.3rem"
+                                height=".85rem"
+                                startColor="#2B2F35"
+                                endColor="#101216"
+                                borderRadius="6px"
+                              />
+                            )}
+                          </Text>
                         </Box>
                       </Box>
                     </Box>

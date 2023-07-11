@@ -156,6 +156,9 @@ const SpendTable = () => {
   if (userLoans) {
     upper_bound = Math.min(userLoans?.length - 1, upper_bound);
   }
+
+  const [currentLoanAmount, setCurrentLoanAmount] = useState("");
+  const [currentLoanMarket, setCurrentLoanMarket] = useState("");
   // console.log("userLoans ", userLoans);
   useEffect(() => {
     if (userLoans) {
@@ -445,6 +448,8 @@ const SpendTable = () => {
                           setCurrentId("ID - " + borrow.loanId);
                           setCurrentMarketCoin(borrow.currentLoanMarket);
                           dispatch(setSpendBorrowSelectedDapp("trade"));
+                          setCurrentLoanAmount(borrow?.currentLoanAmount);
+                          setCurrentLoanMarket(borrow?.currentLoanMarket);
                         }}
                       >
                         <Td borderLeftRadius="6px" pl="3rem">
@@ -787,6 +792,8 @@ const SpendTable = () => {
                   BorrowBalance={borrowAmount}
                   currentSwap={currentSwap}
                   setCurrentSwap={setCurrentSwap}
+                  currentLoanAmount={currentLoanAmount}
+                  currentLoanMarket={currentLoanMarket}
                   borrowAPRs={borrowAPRs}
                 />
               </Box>

@@ -9,6 +9,7 @@ import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
 import UtilisationRateChart from "../charts/utilisationRateChart";
 import TotalUtilisationRateByMarketChart from "../charts/totalUtilisationRateByMarketChart";
 import ExchangeRatesChart from "../charts/exchangeRatesChart";
+import APRByMarketChart from "../charts/aprByMarket";
 const MarketInformation = ({ currentMarketCoin }: any) => {
   const series1: any = [
     [
@@ -75,81 +76,7 @@ const MarketInformation = ({ currentMarketCoin }: any) => {
         <TotalUtilisationRateByMarketChart />
       </Box>
       <Box display="flex" gap="30px">
-        <Box display="flex" flexDirection="column" gap="8px" width="100%">
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            height="72px"
-            border="1px solid #2B2F35"
-            color="#E6EDF3"
-            // padding="24px 24px 16px"
-            px="24px"
-            fontSize="20px"
-            fontStyle="normal"
-            fontWeight="600"
-            lineHeight="30px"
-            borderRadius="6px"
-          >
-            <Box
-              w="100%"
-              display="flex"
-              gap="2"
-              justifyContent="space-between"
-              my="auto"
-            >
-              <Box mt="auto">APR by market:</Box>
-              <Box display="flex" gap="2">
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={aprByMarket === 0 ? "none" : "1px solid #2B2F35"}
-                  variant={aprByMarket === 0 ? "solid" : "outline"}
-                  onClick={() => {
-                    setAPRByMarket(0);
-                  }}
-                >
-                  1D
-                </Button>
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={aprByMarket === 1 ? "none" : "1px solid #2B2F35"}
-                  variant={aprByMarket === 1 ? "solid" : "outline"}
-                  onClick={() => {
-                    setAPRByMarket(1);
-                  }}
-                >
-                  1M
-                </Button>
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={aprByMarket === 2 ? "none" : "1px solid #2B2F35"}
-                  variant={aprByMarket === 2 ? "solid" : "outline"}
-                  onClick={() => {
-                    setAPRByMarket(2);
-                  }}
-                >
-                  3M
-                </Button>
-
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={aprByMarket === 3 ? "none" : "1px solid #2B2F35"}
-                  variant={aprByMarket === 3 ? "solid" : "outline"}
-                  onClick={() => {
-                    setAPRByMarket(3);
-                  }}
-                >
-                  ALL
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-          <SupplyAPRLiquidityProvider />
-        </Box>
+        <APRByMarketChart />
         <ExchangeRatesChart />
       </Box>
     </Box>

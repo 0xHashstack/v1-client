@@ -70,7 +70,10 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
 
   return (
     <Box display="flex" flexDir="column" gap="64px">
-      <SupplyChart />
+      <Box display="flex" gap="30px" w="full">
+        <SupplyChart />
+        <SupplyAprChart />
+      </Box>
       <Box display="flex" gap="30px">
         <LiquidityProviderChart />
       </Box>

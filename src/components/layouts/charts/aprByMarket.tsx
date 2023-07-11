@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import AssetUtilizationChart from "./AssetUtilization";
-import { Box, Button } from "@chakra-ui/react";
-import ApexCharts from "react-apexcharts";
-
-const ExchangeRatesChart = () => {
-  const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
-    useState(0);
+import dynamic from "next/dynamic";
+import { Box, Button, Text } from "@chakra-ui/react";
+import SmallBlueDot from "@/assets/icons/smallBlueDot";
+import SmallGreenDot from "@/assets/icons/smallGreenDot";
+import { ApexOptions } from "apexcharts";
+const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+const APRByMarketChart = ({ color, curveColor, series }: any) => {
+  const [aprByMarket, setAPRByMarket] = useState(0);
   const [chartData, setChartData] = useState([
     {
       name: "Series 1",
@@ -18,14 +19,14 @@ const ExchangeRatesChart = () => {
     const fetchData = async () => {
       // Simulating API call or data update
       const { newData, newCategories } = await fetchDataBasedOnOption(
-        liquidityProviderChartPeriod
+        aprByMarket
       );
       setChartData(newData);
       setXAxisCategories(newCategories);
     };
 
     fetchData();
-  }, [liquidityProviderChartPeriod]);
+  }, [aprByMarket]);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -34,7 +35,7 @@ const ExchangeRatesChart = () => {
     let newData: any = [];
     let newCategories: any = [];
 
-    switch (liquidityProviderChartPeriod) {
+    switch (aprByMarket) {
       case 0:
         newData = [
           {
@@ -163,27 +164,61 @@ const ExchangeRatesChart = () => {
 
     return { newData, newCategories };
   };
-
   const splineChartData = {
-    series: chartData,
+    series: series
+      ? series
+      : [
+          {
+            name: "Series 1",
+            data: [
+              30000, 40000, 35000, 50000, 49000, 60000, 70000, 91000, 12500,
+              98000, 110000, 90000,
+            ],
+            fill: {
+              colors: ["#01b6dd"], // Specify the fill color for the area under the line
+              // Set the opacity of the fill color (optional)
+              opacity: 1,
+            },
+            dataPoints: {
+              hidden: true, // Hide the data points in the area
+            },
+          },
+          {
+            name: "Series 2",
+            data: [
+              0, 90000, 27000, 30000, 33000, 47000, 54000, 83000, 80000, 100000,
+              115000, 110000,
+            ],
+            fill: {
+              colors: ["#01b6dd"], // Specify the fill color for the area under the line
+              // Set the opacity of the fill color (optional)
+              opacity: 1,
+            },
+            dataPoints: {
+              hidden: true, // Hide the data points in the area
+            },
+          },
+        ],
     options: {
       chart: {
+        // offsetX: 50,
         toolbar: {
           show: false,
         },
       },
-      dataLabels: {
-        position: "bottom",
+      tooltip: {
         enabled: true,
-        style: {
-          colors: ["#000000"],
-        },
-        formatter: function (val: any) {
-          return val / 1000 + "k"; // Display the data value as the label
-        },
       },
-
+      dataLabels: {
+        enabled: false,
+      },
       xaxis: {
+        tooltip: {
+          enabled: false, // Disable the x-axis tooltip
+        },
+        axisTicks: {
+          show: false, // Hide the small spikes at x-axis labels
+        },
         labels: {
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -191,53 +226,136 @@ const ExchangeRatesChart = () => {
             fontWeight: "400",
           },
         },
-        axisTicks: {
-          show: false,
-        },
         axisBorder: {
-          color: "grey",
+          color: "#6E7681", // Set the color of the x-axis lines
         },
-        categories: xAxisCategories,
+
+        categories: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ],
       },
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value / 1000 + "k";
+            return value / 1000 + "k"; // Divide by 1000 and append 'k' for thousands
           },
+          min: 0,
           style: {
             colors: "#6E7681", // Set the color of the labels
             fontSize: "12px",
             fontWeight: "400",
           },
         },
-        min: 0,
+        borderColor: "#6E7681",
       },
-      plotOptions: {
-        bar: {
-          opacity: 1, // Set the opacity to 1 for fully opaque bars
-          columnWidth: "70%", // Adjust the column width for better spacing between bars
-          colors: {
-            backgroundBarOpacity: 1, // Set the opacity of the background bar
-          },
-        },
-      },
-      colors: ["#2BA26F"],
-      grid: {
-        borderColor: "#2B2F35",
-        padding: {
-          bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
-        },
-      },
+
       annotations: {
         xaxis: [
           {
-            x: 0,
-            strokeDashArray: 0,
-            borderColor: "grey",
-            borderWidth: 1,
+            x: "Jan", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "Feb", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "Mar", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "Apr", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "May", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "Jun", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "Jul", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "Aug", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "Sep", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "Oct", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "Nov", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
+          },
+          {
+            x: "Dec", // Specify the x-axis value where the line should appear
+            strokeDashArray: 0, // Set the length of the dash for the line
+            borderColor: "#2B2F35", // Set the color of the line
+            borderWidth: 1, // Set the width of the line
           },
         ],
       },
+
+      stroke: {
+        curve: "smooth",
+        colors: ["#0FCA7A", "#00C7F2"],
+        opacity: 1,
+      },
+      grid: {
+        borderColor: "#2B2F35",
+      },
+      legend: {
+        show: false, // Hide the series buttons when only one series is present
+      },
+      colors: ["#0ebc71", "#04aacf"],
+    },
+  };
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    stroke: {
+      ...splineChartData.options.stroke,
+      curve: "smooth",
     },
   };
 
@@ -265,83 +383,52 @@ const ExchangeRatesChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Exchange rates:</Box>
+          <Box mt="auto">APR by market:</Box>
           <Box display="flex" gap="2">
             <Button
               color="#2B2F35"
               size="sm"
-              border={
-                liquidityProviderChartPeriod === 0
-                  ? "none"
-                  : "1px solid #2B2F35"
-              }
-              variant={liquidityProviderChartPeriod === 0 ? "solid" : "outline"}
+              border={aprByMarket === 0 ? "none" : "1px solid #2B2F35"}
+              variant={aprByMarket === 0 ? "solid" : "outline"}
               onClick={() => {
-                setLiquidityProviderChartPeriod(0);
+                setAPRByMarket(0);
               }}
             >
-              BTC
+              1D
             </Button>
             <Button
               color="#2B2F35"
               size="sm"
-              border={
-                liquidityProviderChartPeriod === 1
-                  ? "none"
-                  : "1px solid #2B2F35"
-              }
-              variant={liquidityProviderChartPeriod === 1 ? "solid" : "outline"}
+              border={aprByMarket === 1 ? "none" : "1px solid #2B2F35"}
+              variant={aprByMarket === 1 ? "solid" : "outline"}
               onClick={() => {
-                setLiquidityProviderChartPeriod(1);
+                setAPRByMarket(1);
               }}
             >
-              ETH
+              1M
             </Button>
             <Button
               color="#2B2F35"
               size="sm"
-              border={
-                liquidityProviderChartPeriod === 2
-                  ? "none"
-                  : "1px solid #2B2F35"
-              }
-              variant={liquidityProviderChartPeriod === 2 ? "solid" : "outline"}
+              border={aprByMarket === 2 ? "none" : "1px solid #2B2F35"}
+              variant={aprByMarket === 2 ? "solid" : "outline"}
               onClick={() => {
-                setLiquidityProviderChartPeriod(2);
+                setAPRByMarket(2);
               }}
             >
-              DAI
+              3M
             </Button>
 
             <Button
               color="#2B2F35"
               size="sm"
-              border={
-                liquidityProviderChartPeriod === 3
-                  ? "none"
-                  : "1px solid #2B2F35"
-              }
-              variant={liquidityProviderChartPeriod === 3 ? "solid" : "outline"}
+              border={aprByMarket === 3 ? "none" : "1px solid #2B2F35"}
+              variant={aprByMarket === 3 ? "solid" : "outline"}
               onClick={() => {
-                setLiquidityProviderChartPeriod(3);
+                setAPRByMarket(3);
               }}
             >
-              USDC
-            </Button>
-            <Button
-              color="#2B2F35"
-              size="sm"
-              border={
-                liquidityProviderChartPeriod === 4
-                  ? "none"
-                  : "1px solid #2B2F35"
-              }
-              variant={liquidityProviderChartPeriod === 4 ? "solid" : "outline"}
-              onClick={() => {
-                setLiquidityProviderChartPeriod(4);
-              }}
-            >
-              USDT
+              ALL
             </Button>
           </Box>
         </Box>
@@ -352,9 +439,9 @@ const ExchangeRatesChart = () => {
         padding="16px 24px 40px"
       >
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
-          type="bar"
+          type="area"
           height={350}
         />
       </Box>
@@ -362,4 +449,4 @@ const ExchangeRatesChart = () => {
   );
 };
 
-export default ExchangeRatesChart;
+export default APRByMarketChart;
