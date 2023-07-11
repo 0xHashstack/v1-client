@@ -82,6 +82,7 @@ import { BNtoNum } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
+import numberFormatter from "@/utils/functions/numberFormatter";
 // import userTokensMinted from "@/Blockchain/scripts/Rewards";
 // import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
 
@@ -500,7 +501,6 @@ const StakeUnstakeModal = ({
   };
 
   const rcoins: RToken[] = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
-  const walletBalance = useSelector(selectWalletBalance);
   const coinObj: any = coins.find((obj) => coin.name in obj);
   const rcoinValue = coinObj ? coinObj[coin.name] : "rUSDT";
   const [isSupplied, setIsSupplied] = useState(false);
@@ -513,11 +513,24 @@ const StakeUnstakeModal = ({
     !nav ? rcoinValue : "rUSDT"
   );
   const userDeposit=useSelector(selectUserDeposits)
+  const [rtokenWalletBalance, setrTokenWalletBalance] = useState<any>(
+    userDeposit?.find(
+      (item: any) => item.rToken == currentSelectedUnstakeCoin
+    )?.rTokenFreeParsed
+
+  )
   const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<any>(
     userDeposit?.find(
       (item: any) => item.rToken == currentSelectedUnstakeCoin
     )?.rTokenStakedParsed
   )
+  useEffect(()=>{
+    setrTokenWalletBalance(
+      userDeposit?.find(
+        (item: any) => item.rToken == currentSelectedStakeCoin
+      )?.rTokenFreeParsed
+    )
+  },[currentSelectedStakeCoin])
   useEffect(()=>{
     setUnstakeWalletBalance(
       userDeposit?.find(
@@ -911,7 +924,9 @@ const StakeUnstakeModal = ({
                                       >
                                         rToken Balance:{" "}
                                         {validRTokens && validRTokens.length > 0
-                                          ? getBalance(coin).toFixed(2)
+                                          ?       userDeposit?.find(
+                                            (item: any) => item.rToken == coin
+                                          )?.rTokenFreeParsed
                                           : "loading..."}
                                       </Box>
                                     </Box>
@@ -1016,10 +1031,10 @@ const StakeUnstakeModal = ({
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
                               setRTokenAmount(
-                                getBalance(currentSelectedStakeCoin).toFixed(2)
+                                rtokenWalletBalance
                               );
                               setInputStakeAmount(
-                                getBalance(currentSelectedStakeCoin).toFixed(2)
+                                rtokenWalletBalance
                               );
                               setSliderValue(100);
                             }}
@@ -1048,7 +1063,7 @@ const StakeUnstakeModal = ({
                               </Text>
                               <Text ml="0.3rem">
                                 {rTokenAmount >
-                                getBalance(currentSelectedStakeCoin).toFixed(2)
+                                rtokenWalletBalance
                                   ? "Amount exceeds balance"
                                   : "Invalid Input"}{" "}
                               </Text>
@@ -1059,7 +1074,7 @@ const StakeUnstakeModal = ({
                               justifyContent="flex-end"
                             >
                               rToken Balance:{" "}
-                              {getBalance(currentSelectedStakeCoin).toFixed(2)}
+                              {numberFormatter(rtokenWalletBalance)}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedStakeCoin}`}
                               </Text>
@@ -1077,7 +1092,7 @@ const StakeUnstakeModal = ({
                             fontFamily="Inter"
                           >
                             rToken Balance:{" "}
-                            {getBalance(currentSelectedStakeCoin).toFixed(2)}
+                            {numberFormatter(rtokenWalletBalance)}
                             {/* {walletBalance} */}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedStakeCoin}`}
@@ -1093,11 +1108,16 @@ const StakeUnstakeModal = ({
                               setSliderValue(val);
                               var ans =
                                 (val / 100) *
-                                getBalance(currentSelectedStakeCoin);
-                              ans = Math.round(ans * 100) / 100;
-                              // dispatch(setInputSupplyAmount(ans))
-                              setRTokenAmount(ans);
-                              setInputStakeAmount(ans);
+                                rtokenWalletBalance;
+                              if(val==100){
+                                setRTokenAmount(rtokenWalletBalance);
+                                setInputStakeAmount(rtokenWalletBalance);
+                              }else{
+                                ans = Math.round(ans * 100) / 100;
+                                // dispatch(setInputSupplyAmount(ans))
+                                setRTokenAmount(ans);
+                                setInputStakeAmount(ans);
+                              }
                             }}
                             isDisabled={transactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
@@ -1409,7 +1429,7 @@ const StakeUnstakeModal = ({
                       </Text> */}
                       {rTokenAmount > 0 &&
                       rTokenAmount <=
-                        getBalance(currentSelectedStakeCoin).toFixed(2) ? (
+                        rtokenWalletBalance ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (

@@ -14,6 +14,11 @@ const initialState = {
   hourlyUSDTData:null,
   hourlyUSDCData:null,
   hourlyDAIData:null,
+  dailyBTCData:null,
+  dailyETHData:null,
+  dailyUSDTData:null,
+  dailyUSDCData:null,
+  dailyDAIData:null,
 
 
   protocolReserves: {
@@ -119,7 +124,22 @@ export const readDataSlice = createSlice({
       state.hourlyUSDCData=action.payload;
     },
     setHourlyDAIData(state,action){
-      state.hourlyDAIData=action.payload
+      state.hourlyDAIData=action.payload;
+    },
+    setDailyBTCData(state,action){
+      state.dailyBTCData=action.payload;
+    },
+    setDailyETHData(state,action){
+      state.dailyETHData=action.payload;
+    },
+    setDailyUSDTData(state,action){
+      state.dailyUSDTData=action.payload;
+    },
+    setDailyUSDCData(state,action){
+      state.dailyUSDCData=action.payload;
+    },
+    setDailyDAIData(state,action){
+      state.dailyDAIData=action.payload;
     },
     resetState(state, action) {
       return { ...initialState };
@@ -172,6 +192,11 @@ export const {
   resetState,
   setEffectiveAPR,
   setHealthFactor,
+  setDailyBTCData,
+  setDailyETHData,
+  setDailyUSDCData,
+  setDailyUSDTData,
+  setDailyDAIData
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -209,4 +234,9 @@ export const selectHourlyETHData=(state)=>state.read_data.hourlyETHData;
 export const selectHourlyUSDTData=(state)=>state.read_data.hourlyUSDTData;
 export const selectHourlyUSDCData=(state)=>state.read_data.hourlyUSDCData;
 export const selectHourlyDAIData=(state)=>state.read_data.hourlyDAIData;
+export const selectDailyBTCData=(state)=>state.read_data.dailyBTCData;
+export const selectDailyETHData=(state)=>state.read_data.dailyETHData;
+export const selectDailyUSDTData=(state)=>state.read_data.dailyUSDTData;
+export const selectDailyUSDCData=(state)=>state.read_data.dailyUSDCData;
+export const selectDailyDAIData=(state)=>state.read_data.dailyDAIData;
 export default readDataSlice.reducer;
