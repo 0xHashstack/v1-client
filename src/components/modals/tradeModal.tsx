@@ -172,7 +172,7 @@ const TradeModal = ({
   const dispatch = useDispatch();
   const [inputAmount, setinputAmount] = useState(0);
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
-  const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
+  const [inputBorrowAmount, setinputBorrowAmount] = useState<any>(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [transactionStarted, setTransactionStarted] = useState(false);
 

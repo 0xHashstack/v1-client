@@ -201,7 +201,7 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
         },
       },
       xaxis: {
-        type: "datetime", // Set x-axis type to datetime
+        type: "datetime" as const, // Set x-axis type to datetime
         labels: {
           style: {
             colors: "#6E7681",

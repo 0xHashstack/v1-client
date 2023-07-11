@@ -7,7 +7,7 @@ import BorrowAprChart from "../charts/BorrowApr";
 import RiskPremiumChart from "../charts/RiskPremium";
 import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
 import { useSelector } from "react-redux";
-import { selectProtocolReserves } from "@/store/slices/readDataSlice";
+import { selectHourlyBTCData, selectProtocolReserves } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
@@ -24,6 +24,7 @@ const TotalValueLockedMetrics = () => {
     },
   ]);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
+  const btcData=useSelector(selectHourlyBTCData);
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -47,13 +48,18 @@ const TotalValueLockedMetrics = () => {
 
     switch (aprByMarket) {
       case 0:
-        newData = [
+        btcData?.tvlAmounts ? newData = [
           {
-            name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            name: "Total Value Locked",
+            data: btcData?.tvlAmounts,
           },
+        ]:newData=[
+          {
+            name:"Series 1",
+            data:[30000, 40000, 35000, 50000, 49000, 60000, 80000],
+          }
         ];
-        newCategories = [
+        btcData?.dates ? newCategories = btcData?.dates:newCategories=[
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
           new Date("2023-07-03").getTime(),
@@ -68,9 +74,9 @@ const TotalValueLockedMetrics = () => {
           {
             name: "Series 1",
             data: [
-              40000, 38000, 42000, 39000, 44000, 41000, 43000, 39000, 44000,
+              40000, 0, 42000, 39000, 44000, 41000, 43000, 39000, 44000,
               41000, 43000, 39000, 44000, 41000, 43000, 39000, 44000, 41000,
-              43000,
+              43000,44400,
             ],
           },
         ];
@@ -190,6 +196,7 @@ const TotalValueLockedMetrics = () => {
         enabled: false,
       },
       xaxis: {
+        type:"datetime" as const,
         tooltip: {
           enabled: false, // Disable the x-axis tooltip
         },
@@ -212,7 +219,7 @@ const TotalValueLockedMetrics = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value / 1000 + "k"; // Divide by 1000 and append 'k' for thousands
+            return numberFormatter(value); // Divide by 1000 and append 'k' for thousands
           },
           min: 0,
           style: {
@@ -227,76 +234,10 @@ const TotalValueLockedMetrics = () => {
       annotations: {
         xaxis: [
           {
-            x: "Jan", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Feb", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Mar", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Apr", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "May", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Jun", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Jul", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Aug", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Sep", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Oct", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Nov", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Dec", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
+            x: 0,
+            strokeDashArray: 0,
+            borderColor: "grey",
+            borderWidth: 1,
           },
         ],
       },
