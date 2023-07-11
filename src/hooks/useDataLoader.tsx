@@ -129,56 +129,56 @@ const useDataLoader = () => {
           `${metrics_api}/api/metrics/tvl/daily/DAI`
         );
         console.log(response, "response data");
-        if(!response){
+        if (!response) {
           return;
         }
         // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
-        if(response?.data){
-          const amounts:any=[];  
-          const borrowAmounts:any=[];
-          const dates:any=[];
-          const supplyRates:any=[];
-          const borrowRates:any=[];
-          const tvlAmounts:any=[];
-          const supplyCounts:any=[];
-          const borrowCounts:any=[];
-              for(var i=0;i<response?.data?.length;i++){
-                  amounts?.push(response?.data[i].supplyAmount)
-                  borrowAmounts?.push(response?.data[i].borrowAmount);
-                  tvlAmounts?.push(response?.data[i].tvlAmount)
-                  // const dateObj = new Date(response?.data[i].Datetime)
-                  dates?.push(response?.data[i].Datetime);
-                  supplyRates?.push(response?.data[i].supplyRate)
-                  borrowRates?.push(response?.data[i].borrowRate)
-                  supplyCounts?.push(response?.data[i].supplyCount)
-                  borrowCounts?.push(response?.data[i].borrowCount);
-
-              }
-              // console.log(dates,"Dates")
-              const data={
-                dates:dates,
-                supplyAmounts:amounts,
-                borrowAmounts:borrowAmounts,
-                tvlAmounts:tvlAmounts,
-                supplyRates:supplyRates,
-                borrowRates:borrowRates,
-                supplyCounts:supplyCounts,
-                borrowCounts:borrowCounts,
-            }
-                // console.log(btcData,"Data gone")
-                dispatch(setHourlyBTCData(data))
-                dispatch(setHourlyDataCount(""))
-              console.log(response?.data,"Data response")
-              console.log(btcData,"data in BTC");
-        }  
-      }catch(err){
-        console.log(err,"err in hourly data")
+        if (response?.data) {
+          const amounts: any = [];
+          const borrowAmounts: any = [];
+          const dates: any = [];
+          const supplyRates: any = [];
+          const borrowRates: any = [];
+          const tvlAmounts: any = [];
+          const supplyCounts: any = [];
+          const borrowCounts: any = [];
+          for (var i = 0; i < response?.data?.length; i++) {
+            amounts?.push(response?.data[i].supplyAmount);
+            borrowAmounts?.push(response?.data[i].borrowAmount);
+            tvlAmounts?.push(response?.data[i].tvlAmount);
+            // const dateObj = new Date(response?.data[i].Datetime)
+            dates?.push(response?.data[i].Datetime);
+            supplyRates?.push(response?.data[i].supplyRate);
+            borrowRates?.push(response?.data[i].borrowRate);
+            supplyCounts?.push(response?.data[i].supplyCount);
+            borrowCounts?.push(response?.data[i].borrowCount);
+          }
+          // console.log(dates,"Dates")
+          const data = {
+            dates: dates,
+            supplyAmounts: amounts,
+            borrowAmounts: borrowAmounts,
+            tvlAmounts: tvlAmounts,
+            supplyRates: supplyRates,
+            borrowRates: borrowRates,
+            supplyCounts: supplyCounts,
+            borrowCounts: borrowCounts,
+          };
+          // console.log(btcData,"Data gone")
+          dispatch(setHourlyBTCData(data));
+          dispatch(setHourlyDataCount(""));
+          console.log(response?.data, "Data response");
+          console.log(btcData, "data in BTC");
+          console.log(data, "data in response");
+        }
+      } catch (err) {
+        console.log(err, "err in hourly data");
       }
     };
     if (hourlyDataCount < transactionRefresh) {
       fetchHourlyBTCData();
     }
-  },[transactionRefresh])
+  }, [transactionRefresh]);
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {

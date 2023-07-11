@@ -1184,7 +1184,9 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {numberFormatter(currentSplit?.[0]?.toString()) || (
+                        {currentSplit?.[0].toString() ? (
+                          numberFormatter(currentSplit?.[0].toString())
+                        ) : (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1206,7 +1208,9 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {numberFormatter(currentSplit?.[1].toString()) || (
+                        {currentSplit?.[1].toString() ? (
+                          numberFormatter(currentSplit?.[1].toString())
+                        ) : (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -3669,7 +3673,7 @@ const YourBorrowModal = ({
                                 Clicked: true,
                               }
                             );
-                            if(transactionStarted==false){                              
+                            if (transactionStarted == false) {
                               dispatch(
                                 setTransactionStartedAndModalClosed(false)
                               );
