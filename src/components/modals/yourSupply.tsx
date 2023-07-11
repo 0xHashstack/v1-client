@@ -894,14 +894,14 @@ const YourSupplyModal = ({
                                         fontWeight="thin"
                                       >
                                         Wallet Balance:{" "}
-                                        {Number(
+                                        {numberFormatter(Number(
                                           BNtoNum(
                                             uint256.uint256ToBN(
                                               walletBalances[coin.substring(1)]
                                                 ?.dataBalanceOf?.balance
                                             ),
                                             tokenDecimalsMap[coin.substring(1)]
-                                          )
+                                          ))
                                         )}
                                       </Box>
                                     </Box>
@@ -1039,7 +1039,7 @@ const YourSupplyModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              Wallet Balance: {walletBalance}
+                              Wallet Balance: {numberFormatter(walletBalance)}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedSupplyCoin}`}
                               </Text>
@@ -1056,7 +1056,7 @@ const YourSupplyModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Wallet Balance: {walletBalance}
+                            Wallet Balance: {numberFormatter(walletBalance)}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedSupplyCoin}`}
                             </Text>
@@ -1070,11 +1070,15 @@ const YourSupplyModal = ({
                             onChange={(val) => {
                               setSliderValue(val);
                               var ans = (val / 100) * walletBalance;
-                              ans = Math.round(ans * 100) / 100;
-                              // dispatch(setInputSupplyAmount(ans))
-                              setinputSupplyAmount(ans);
-                              setDepositAmount(ans);
-                              setinputSupplyAmount(ans);
+                              if(val==100){
+                                setinputSupplyAmount(walletBalance);
+                                setDepositAmount(walletBalance);
+                              }else{
+                                ans = Math.round(ans * 100) / 100;
+                                // dispatch(setInputSupplyAmount(ans))
+                                setinputSupplyAmount(ans);
+                                setDepositAmount(ans);
+                              }
                             }}
                             isDisabled={transactionStarted == true}
                             _disabled={{ cursor: "pointer" }}

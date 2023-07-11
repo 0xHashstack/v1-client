@@ -832,7 +832,7 @@ const BorrowModal = ({
                                   >
                                     rToken Balance:{" "}
                                     {validRTokens && validRTokens.length > 0
-                                      ? amount
+                                      ? numberFormatter(amount)
                                       : "loading..."}
                                   </Box>
                                 </Box>
