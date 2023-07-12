@@ -161,7 +161,7 @@ export const userAccountSlice = createSlice({
       state.activeTransactions = action.payload;
     },
     setProtocolReservesCount(state, action) {
-      state.protocolReservesCount = state.transactionRefresh;
+      state.protocolReservesCount = action.payload;
       // const count = state.protocolReservesCount + 1;
       // return {
       //   ...state,
@@ -169,45 +169,45 @@ export const userAccountSlice = createSlice({
       // };
     },
     setProtocolStatsCount(state, action) {
-      state.protocolStatsCount = state.transactionRefresh;
+      state.protocolStatsCount = action.payload;
       // const count = state.protocolStatsCount + 1;
       // return { ...state, protocolStatsCount: count };
     },
     setOraclePricesCount(state, action) {
-      state.oraclePricesCount = state.transactionRefresh;
+      state.oraclePricesCount = action.payload;
       // const count = state.oraclePricesCount + 1;
       // return { ...state, oraclePricesCount: count };
     },
     setUserInfoCount(state, action) {
-      state.userInfoCount = state.transactionRefresh;
+      state.userInfoCount = action.payload;
       // const count = state.userInfoCount + 1;
       // return { ...state, userInfoCount: count };
     },
     setUserDepositsCount(state, action) {
-      state.userDepositsCount = state.transactionRefresh;
+      state.userDepositsCount = action.payload;
       // const count = state.userDepositsCount + 1;
       // return { ...state, userDepositsCount: count };
     },
     setUserLoansCount(state, action) {
-      state.userLoansCount = state.transactionRefresh;
+      state.userLoansCount = action.payload;
       // const count = state.userLoansCount + 1;
       // return { ...state, userLoansCount: count };
     },
     setAprsAndHealthCount(state, action) {
-      state.aprAndHealthFactorCount = state.transactionRefresh;
+      state.aprAndHealthFactorCount = action.payload;
     },
     setHourlyDataCount(state, action) {
-      state.hourlyDataCount = state.transactionRefresh;
+      state.hourlyDataCount = action.payload;
     },
     setAccountReset(state, action) {
       return { ...initialState };
     },
 
     setAprCount(state, action) {
-      state.aprCount = state.transactionRefresh;
+      state.aprCount = action.payload;
     },
     setHealthFactorCount(state, action) {
-      state.healthFactorCount = state.transactionRefresh;
+      state.healthFactorCount = action.payload;
     },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;

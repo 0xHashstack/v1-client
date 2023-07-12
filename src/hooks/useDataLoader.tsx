@@ -117,6 +117,9 @@ const useDataLoader = () => {
   // useEffect(() => {
   //   console.log("switched to market");
   // }, []);
+  const getTransactionCount = () => {
+    return transactionRefresh;
+  };
   useEffect(() => {
     const fetchHourlyBTCData = async () => {
       try {
@@ -166,7 +169,8 @@ const useDataLoader = () => {
           };
           // console.log(btcData,"Data gone")
           dispatch(setHourlyBTCData(data));
-          dispatch(setHourlyDataCount(""));
+          const count = getTransactionCount();
+          dispatch(setHourlyDataCount(count));
           console.log(response?.data, "Data response");
           console.log(btcData, "data in BTC");
         }
@@ -187,16 +191,16 @@ const useDataLoader = () => {
           return;
         }
         dispatch(setOraclePrices(data));
-        dispatch(setOraclePricesCount(""));
+        dispatch(setOraclePricesCount(0));
         console.log("oracle prices - transactionRefresh done ", data);
       };
-      if (oraclePricesCount < transactionRefresh) {
+      if (oraclePricesCount < 0) {
         fetchOraclePrices();
       }
     } catch (err) {
       console.log("oracle prices - transactionRefresh error ", err);
     }
-  }, [address,transactionRefresh]);
+  }, [address, transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -211,7 +215,8 @@ const useDataLoader = () => {
         //   })
         // );
         dispatch(setProtocolReserves(reserves));
-        dispatch(setProtocolReservesCount(""));
+        const count = getTransactionCount();
+        dispatch(setProtocolReservesCount(count));
         console.log("protocol reserves - transactionRefresh done", reserves);
       };
       if (protocolReservesCount < transactionRefresh) {
@@ -220,7 +225,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("error fetching protocol reserves ", err);
     }
-  }, [address,transactionRefresh]);
+  }, [address, transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -233,7 +238,8 @@ const useDataLoader = () => {
         }
         // console.log(dataStats,"data market in pagecard")
         dispatch(setProtocolStats(dataStats));
-        dispatch(setProtocolStatsCount(""));
+        const count = getTransactionCount();
+        dispatch(setProtocolStatsCount(count));
       };
       if (protocolStatsCount < transactionRefresh) {
         fetchProtocolStats();
@@ -241,7 +247,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("protocol stats - transactionRefresh error ", err);
     }
-  }, [address,transactionRefresh]);
+  }, [address, transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -259,7 +265,8 @@ const useDataLoader = () => {
         // console.log(data.length,"data length")
         if (data) {
           dispatch(setUserDeposits(data));
-          dispatch(setUserDepositsCount(""));
+          const count = getTransactionCount();
+          dispatch(setUserDepositsCount(count));
         }
       };
       if (userDepositsCount < transactionRefresh) {
@@ -282,7 +289,8 @@ const useDataLoader = () => {
             return { avg: avg, loanId: userLoans[idx]?.loanId };
           });
           dispatch(setEffectiveAPR(avgs));
-          dispatch(setAprCount(""));
+          const count = getTransactionCount();
+          dispatch(setAprCount(count));
         });
         // console.log("promises",promises)
       };
@@ -313,7 +321,8 @@ const useDataLoader = () => {
           });
           console.log("fetchHealthFactor - transactionRefresh done", avgs);
           dispatch(setHealthFactor(avgs));
-          dispatch(setHealthFactorCount(""));
+          const count = getTransactionCount();
+          dispatch(setHealthFactorCount(count));
         });
       };
       if (
@@ -376,7 +385,11 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchUserLoans = async () => {
-        console.log("user loans called - transactionRefresh");
+        console.log(
+          "user loans called - transactionRefresh",
+          userLoansCount,
+          transactionRefresh
+        );
         if (!address) {
           return;
         }
@@ -403,7 +416,9 @@ const useDataLoader = () => {
             )
           );
         }
-        dispatch(setUserLoansCount(""));
+        const count = getTransactionCount();
+        console.log("getTransactionCount", count);
+        dispatch(setUserLoansCount(count));
       };
       if (userLoansCount < transactionRefresh) {
         fetchUserLoans();
@@ -427,6 +442,15 @@ const useDataLoader = () => {
         console.log(userLoans, "userLoans is here");
         console.log(protocolStats, "protocolStats is here");
         console.log(aprsAndHealth, "aprs and health is here");
+        console.log(
+          "transaction refresh counts",
+          userDepositsCount,
+          protocolStatsCount,
+          userLoansCount,
+          dataOraclePrices,
+          userInfoCount,
+          transactionRefresh
+        );
         if (
           userDepositsCount == transactionRefresh &&
           protocolStatsCount == transactionRefresh &&
@@ -484,7 +508,8 @@ const useDataLoader = () => {
           );
           console.log(dataNetWorth, "networth");
           dispatch(setNetWorth(dataNetWorth));
-          dispatch(setUserInfoCount(""));
+          const count = getTransactionCount();
+          dispatch(setUserInfoCount(count));
         }
       };
 
@@ -502,6 +527,58 @@ const useDataLoader = () => {
     userLoans,
     transactionRefresh,
   ]);
+  // useEffect(() => {
+  //   try {
+  //     const fetchUserSupply = async () => {
+  //       // console.log(getUserDeposits(address),"deposits in pagecard")
+
+  //       // const dataMarket=await getProtocolStats();
+  //       // const dataOraclePrices=await getOraclePrices();
+  //       // console.log(dataMarket,"data market page")
+  //       console.log("user info called - transactionRefresh");
+  //       console.log(dataDeposit, "dataDeposit is here");
+  //       console.log(dataOraclePrices, "dataOraclePrices is here");
+  //       console.log(userLoans, "userLoans is here");
+  //       console.log(protocolStats, "protocolStats is here");
+  //       console.log(aprsAndHealth, "aprs and health is here");
+  //       if (
+  //         userDepositsCount == transactionRefresh &&
+  //         protocolStatsCount == transactionRefresh &&
+  //         userLoansCount == transactionRefresh &&
+  //         dataOraclePrices &&
+  //         userInfoCount < transactionRefresh
+  //       ) {
+  //         console.log("user info called inside - transactionRefresh");
+  //         const dataNetApr = await getNetApr(
+  //           dataDeposit,
+  //           userLoans,
+  //           dataOraclePrices,
+  //           protocolStats
+  //         );
+  //         console.log("netApr", dataNetApr);
+  //         //@ts-ignore
+  //         if (isNaN(dataNetApr)) {
+  //           dispatch(setNetAPR(0));
+  //         } else {
+  //           dispatch(setNetAPR(dataNetApr));
+  //         }
+  //       }
+  //     };
+
+  //     console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+  //     if (userInfoCount < transactionRefresh) {
+  //       fetchUserSupply();
+  //     }
+  //   } catch (err) {
+  //     console.log(err, "error in user info");
+  //   }
+  // }, [
+  //   dataDeposit,
+  //   protocolStats,
+  //   dataOraclePrices,
+  //   userLoans,
+  //   transactionRefresh,
+  // ]);
   useEffect(() => {
     console.log(
       "transaction refresh counts - ",
