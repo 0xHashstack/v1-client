@@ -348,43 +348,9 @@ const BorrowModal = ({
     fetchParsedUSDValueBorrow();
   }, [inputBorrowAmount, currentBorrowCoin]);
 
-  // useEffect(() => {
-  //   fetchParsedUSDValueCollateral();
-  // }, [collateralAmount, currentCollateralCoin]);
-
-  // const fetchParsedUSDValueBorrow = async () => {
-  //   try {
-  //     const parsedBorrowAmount = await getUSDValue(
-  //       currentBorrowCoin,
-  //       inputBorrowAmount
-  //     );
-  //     console.log("got parsed usdt borrow", parsedBorrowAmount);
-  //     setInputBorrowAmountUSD(parsedBorrowAmount);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const fetchParsedUSDValueCollateral = async () => {
-  //   try {
-  //     const parsedCollateralAmount = await getUSDValue(
-  //       currentCollateralCoin,
-  //       collateralAmount
-  //     );
-  //     console.log("got parsed usdt collateral", parsedCollateralAmount);
-  //     setInputCollateralAmountUSD(parsedCollateralAmount);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   useEffect(() => {
     fetchParsedUSDValueCollateral();
   }, [collateralAmount, currentCollateralCoin, rToken, rTokenAmount]);
-
-  // useEffect(() => {
-  //   console.log("borrow got oracle", oraclePrices);
-  // }, [oraclePrices]);
 
   const fetchParsedUSDValueBorrow = async () => {
     try {
