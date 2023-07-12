@@ -3715,6 +3715,8 @@ const YourBorrowModal = ({
                                 key={"error2"}
                               />,
                             ]}
+                            _disabled={{ bgColor: "white", color: "black" }}
+                            isDisabled={transactionStarted == true}
                             currentTransactionStatus={currentTransactionStatus}
                             setCurrentTransactionStatus={
                               setCurrentTransactionStatus
@@ -3748,10 +3750,10 @@ const YourBorrowModal = ({
                             mixpanel.track("Repay Borrow Button Clicked", {
                               Clicked: true,
                             });
-                            dispatch(
-                              setTransactionStartedAndModalClosed(false)
-                            );
                             if (transactionStarted == false) {
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              );
                               handleRepayBorrow();
                             }
                           }}
