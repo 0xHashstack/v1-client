@@ -1887,7 +1887,7 @@ const TradeModal = ({
                       </Button>
                     </Box>
                     {inputBorrowAmount > currentAvailableReserves ||
-                    inputBorrowAmount < 0 ||
+                    (inputBorrowAmount > 0 && inputCollateralAmountUSD && inputBorrowAmountUSD>5*inputCollateralAmountUSD) ||
                     isNaN(inputBorrowAmount) ? (
                       <Text
                         display="flex"
@@ -1906,7 +1906,7 @@ const TradeModal = ({
                           <Text ml="0.3rem">
                             {inputBorrowAmount > currentAvailableReserves
                               ? "Amount exceeds balance"
-                              : "Invalid Input"}
+                              : inputBorrowAmountUSD>5*inputCollateralAmountUSD ? "Not Permissible CDR": "Invalid Input"}
                           </Text>
                         </Text>
                         <Text
@@ -2848,7 +2848,7 @@ const TradeModal = ({
                 </Box>
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
                 (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
-                inputBorrowAmount > 0 &&
+                inputBorrowAmount > 0 && inputBorrowAmountUSD<=5* inputCollateralAmountUSD &&
                 currentDapp != "Select a dapp" &&
                 (currentPool != "Select a pool" ||
                   currentPoolCoin != "Select a pool") ? (
