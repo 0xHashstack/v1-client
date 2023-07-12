@@ -744,7 +744,11 @@ const BorrowModal = ({
   return (
     <Box>
       <Button {...restProps} onClick={onOpen}>
-        {buttonText}
+        {buttonText !== "Click here to borrow" ? (
+          buttonText
+        ) : (
+          <Text fontSize="sm">Click here to borrow</Text>
+        )}
       </Button>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
 
@@ -1584,8 +1588,8 @@ const BorrowModal = ({
                   </Button>
                 </Box>
                 {amount > currentAvailableReserves ||
-                (amount > 0) &&
-                  (inputCollateralAmountUSD &&
+                (amount > 0 &&
+                  inputCollateralAmountUSD &&
                   inputBorrowAmountUSD > 5 * inputCollateralAmountUSD) ? (
                   <Box
                     display="flex"
@@ -1670,10 +1674,10 @@ const BorrowModal = ({
                     onChange={(val) => {
                       setsliderValue2(val);
                       var ans = (val / 100) * currentAvailableReserves;
-                      if(val==100){
+                      if (val == 100) {
                         setAmount(currentAvailableReserves);
                         setinputBorrowAmount(currentAvailableReserves);
-                      }else{
+                      } else {
                         ans = Math.round(ans * 100) / 100;
                         dispatch(setInputBorrowModalBorrowAmount(ans));
                         setAmount(ans);
@@ -2085,7 +2089,8 @@ const BorrowModal = ({
 
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
-            amount > 0 && inputBorrowAmountUSD<=5*inputCollateralAmountUSD ? (
+            amount > 0 &&
+            inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (
               // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
               // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&
               // inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (

@@ -698,7 +698,11 @@ const SupplyModal = ({
         }}
         {...restProps}
       >
-        {buttonText}
+        {buttonText !== "Click here to supply" ? (
+          buttonText
+        ) : (
+          <Text fontSize="sm">Click here to supply</Text>
+        )}
       </Button>
       <Portal>
         <Modal

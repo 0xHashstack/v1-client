@@ -35,6 +35,8 @@ import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
 import { token } from "@project-serum/anchor/dist/cjs/utils";
 import { isTemplateExpression } from "typescript";
+import TableClose from "../table/tableIcons/close";
+import TableInfoIcon from "../table/tableIcons/infoIcon";
 
 export interface ICoin {
   name: string;
@@ -113,6 +115,7 @@ const SupplyDashboard = ({
   // rowItems: any;
 }) => {
   const { address } = useAccount();
+  const [showEmptyNotification, setShowEmptyNotification] = useState(true);
 
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("BTC");
@@ -777,7 +780,54 @@ const SupplyDashboard = ({
     </Box>
   ) : (
     <>
-      <Box
+      {showEmptyNotification && (
+        <Box display="flex" justifyContent="left" w="94%" pb="2">
+          <Box
+            display="flex"
+            bg="#DDF4FF"
+            fontSize="14px"
+            p="4"
+            fontStyle="normal"
+            fontWeight="400"
+            borderRadius="6px"
+            // textAlign="center"
+          >
+            <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
+              <TableInfoIcon />
+            </Box>
+            Your do not have active supply.
+            <Box
+              // ml="1"
+              as="span"
+              textDecoration="underline"
+              color="#0C6AD9"
+              cursor="pointer"
+            >
+              <SupplyModal
+                buttonText="Click here to supply"
+                variant="link"
+                fontSize="16px"
+                fontWeight="400"
+                display="inline"
+                color="#0969DA"
+                cursor="pointer"
+                ml="0.3rem"
+                lineHeight="24px"
+                backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
+              />
+            </Box>
+            <Box
+              py="1"
+              pl="4"
+              cursor="pointer"
+              onClick={() => setShowEmptyNotification(!showEmptyNotification)}
+            >
+              <TableClose />
+            </Box>
+          </Box>
+        </Box>
+      )}
+      {/* <Box
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -790,19 +840,8 @@ const SupplyDashboard = ({
         gap="6px"
       >
         <Text color="#FFFFFF">You do not have active supply</Text>
-        <SupplyModal
-          buttonText="Click here to supply"
-          variant="link"
-          fontSize="16px"
-          fontWeight="400"
-          display="inline"
-          color="#0969DA"
-          cursor="pointer"
-          ml="0.4rem"
-          lineHeight="24px"
-          backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
-        />
-      </Box>
+        
+      </Box> */}
     </>
   );
 };
