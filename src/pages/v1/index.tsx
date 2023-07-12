@@ -344,15 +344,13 @@ export default function Home() {
                 )}
               </Box>
               <Box p="1" mr="16px">
-                {availableDataLoading && (
-                  <Image
-                    src="/ArgentXlogo.svg"
-                    alt="Picture of the author"
-                    width="15"
-                    height="15"
-                    style={{ cursor: "pointer" }}
-                  />
-                )}
+                <Image
+                  src="/ArgentXlogo.svg"
+                  alt="Picture of the author"
+                  width="15"
+                  height="15"
+                  style={{ cursor: "pointer" }}
+                />
               </Box>
             </Box>
           ) : (

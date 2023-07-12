@@ -251,6 +251,7 @@ const BorrowDashboard = ({
       if (Borrows[i].spendType === "LIQUIDITY") {
         const data = await getJediEstimatedLiqALiqBfromLp(
           parseInt(Borrows[i]?.currentLoanAmount),
+          Borrows[i]?.loanId,
           Borrows[i]?.currentLoanMarketAddress
         );
         console.log(
@@ -258,6 +259,7 @@ const BorrowDashboard = ({
           "all split amount - ",
           // parseInt(Borrows[i]?.currentLoanAmount),
           Borrows[i]?.currentLoanMarketAddress,
+          Borrows[i]?.loanId,
 
           " res -",
           data
@@ -270,6 +272,7 @@ const BorrowDashboard = ({
               ?.name,
             tokenB: getTokenFromAddress(processAddress(data?.tokenBAddress))
               ?.name,
+            loanId: Borrows[i]?.loanId,
           });
         } else {
           temp.push("empty");
@@ -767,9 +770,10 @@ const BorrowDashboard = ({
                               // gap={0.5}
                               // bgColor={"blue"}
                             >
+                              {/* <Text>{idx}</Text> */}
                               {borrow.spendType == "LIQUIDITY" ? (
-                                allSplit?.[idx]?.tokenA &&
-                                allSplit?.[idx]?.tokenB && (
+                                allSplit?.[lower_bound + idx]?.tokenA &&
+                                allSplit?.[lower_bound + idx]?.tokenB && (
                                   <>
                                     <Box
                                       display="flex"
@@ -777,7 +781,9 @@ const BorrowDashboard = ({
                                       minWidth={"16px"}
                                     >
                                       <Image
-                                        src={`/${allSplit?.[idx]?.tokenA}.svg`}
+                                        src={`/${
+                                          allSplit?.[lower_bound + idx]?.tokenA
+                                        }.svg`}
                                         alt="Picture of the author"
                                         width="16"
                                         height="16"
@@ -789,7 +795,9 @@ const BorrowDashboard = ({
                                       minWidth={"16px"}
                                     >
                                       <Image
-                                        src={`/${allSplit?.[idx]?.tokenB}.svg`}
+                                        src={`/${
+                                          allSplit?.[lower_bound + idx]?.tokenB
+                                        }.svg`}
                                         alt="Picture of the author"
                                         width="16"
                                         height="16"
@@ -842,11 +850,15 @@ const BorrowDashboard = ({
                             <Text fontSize="14px" fontWeight="400">
                               {borrow.spendType == "LIQUIDITY"
                                 ? allSplit.length === 0 ||
-                                  allSplit[idx] === "empty"
+                                  allSplit[lower_bound + idx] === "empty"
                                   ? "-"
-                                  : numberFormatter(allSplit?.[idx]?.amountA) +
+                                  : numberFormatter(
+                                      allSplit?.[lower_bound + idx]?.amountA
+                                    ) +
                                     "/" +
-                                    numberFormatter(allSplit[idx]?.amountB)
+                                    numberFormatter(
+                                      allSplit[lower_bound + idx]?.amountB
+                                    )
                                 : numberFormatter(
                                     borrow?.currentLoanAmountParsed
                                   )}
