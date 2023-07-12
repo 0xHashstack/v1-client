@@ -24,7 +24,7 @@ export async function getrTokensMinted(rToken: any, amount: any) {
         // console.log("Called")
         // console.log(supplyContract,"suppply contract")
         const parsedAmount = etherToWeiBN(amount, rToken).toString();
-        console.log(parsedAmount, "parsed amount");
+        // console.log(parsedAmount, "parsed amount");
         const res = await supplyContract.call(
             "preview_deposit",
             [[parsedAmount, 0]],
@@ -37,12 +37,12 @@ export async function getrTokensMinted(rToken: any, amount: any) {
             uint256.uint256ToBN(res?.shares).toString(),
             tokenDecimalsMap[rToken]
         );
-        console.log(
-            parseAmount(
-                uint256.uint256ToBN(res?.shares).toString(),
-                tokenDecimalsMap[rToken]
-            )
-        );
+        // console.log(
+        //     parseAmount(
+        //         uint256.uint256ToBN(res?.shares).toString(),
+        //         tokenDecimalsMap[rToken]
+        //     )
+        // );
         return data.toFixed(2);
     } catch (err) {
         console.log(err);
@@ -65,7 +65,7 @@ export async function getSupplyunlocked(rToken: any, amount: any) {
                 blockIdentifier: "pending",
             }
         );
-        console.log(res, "data in est supply");
+        // console.log(res, "data in est supply");
         const data = parseAmount(
             uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),
             tokenDecimalsMap[rToken]
@@ -86,10 +86,10 @@ export async function getEstrTokens(rToken: any, amount: any) {
             provider
         )
         // const parsedAmount=etherToWeiBN(amount,rToken).toString();
-        console.log(amount,"stake amount")
-        console.log(stakingContract, "staking contract")
+        // console.log(amount,"stake amount")
+        // console.log(stakingContract, "staking contract")
         const parsedAmount = etherToWeiBN(amount, rToken).toString();
-        console.log(parsedAmount,"amount in staking")
+        // console.log(parsedAmount,"amount in staking")
         const res = await stakingContract.call("preview_redeem", [tokenAddressMap[rToken], [parsedAmount, 0]], {
             blockIdentifier: "pending",
         });
@@ -97,7 +97,7 @@ export async function getEstrTokens(rToken: any, amount: any) {
             uint256.uint256ToBN(res?.rToken_amount_to_withdraw).toString(),
             tokenDecimalsMap[rToken]
         );
-        console.log(data, "call in stake");
+        // console.log(data, "call in stake");
         return data;
     } catch (err) {
         console.log(err, "err in est rtokens staking")

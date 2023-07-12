@@ -93,7 +93,7 @@ const YourSupply = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalSupply ? `$ ${numberFormatter(totalSupply)}` : "-"}
+                {totalSupply ? `$ ${numberFormatter(totalSupply)}` : "NA"}
               </Text>
             )}
           </VStack>
@@ -111,7 +111,7 @@ const YourSupply = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {netAPR ? `${netAPR} %` : "-"}
+                {netAPR && !Number.isNaN(netAPR) ? `${netAPR} %` : "NA"}
               </Text>
             )}
           </VStack>
