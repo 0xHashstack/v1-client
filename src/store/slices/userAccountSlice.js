@@ -31,7 +31,7 @@ const initialState = {
 
   toastTransactionStarted: false,
   transactionStarted: false,
-  transactionStartedAndModalClosed:false,
+  transactionStartedAndModalClosed: false,
   refreshHooks: false,
 
   protocolReserves: {
@@ -49,7 +49,13 @@ const initialState = {
   userLoansCount: -1,
   oraclePricesCount: -1,
   userInfoCount: -1,
-  aprAndHealthFactorCount:-1,
+  aprAndHealthFactorCount: -1,
+  aprCount: -1,
+  healthFactorCount: -1,
+  hourlyDataCount: -1,
+  netAprCount: -1,
+  avgBorrowAprCount: -1,
+  avgSupplyAprCount: -1,
 
   // walletBalance: {
   //   BTC: 0,
@@ -151,14 +157,14 @@ export const userAccountSlice = createSlice({
     setRefreshHooks(state, action) {
       state.refreshHooks = action.payload;
     },
-    setTransactionStartedAndModalClosed(state,action){
-      state.transactionStartedAndModalClosed=action.payload;
+    setTransactionStartedAndModalClosed(state, action) {
+      state.transactionStartedAndModalClosed = action.payload;
     },
     setActiveTransactions(state, action) {
       state.activeTransactions = action.payload;
     },
     setProtocolReservesCount(state, action) {
-      state.protocolReservesCount = state.transactionRefresh;
+      state.protocolReservesCount = action.payload;
       // const count = state.protocolReservesCount + 1;
       // return {
       //   ...state,
@@ -166,37 +172,55 @@ export const userAccountSlice = createSlice({
       // };
     },
     setProtocolStatsCount(state, action) {
-      state.protocolStatsCount = state.transactionRefresh;
+      state.protocolStatsCount = action.payload;
       // const count = state.protocolStatsCount + 1;
       // return { ...state, protocolStatsCount: count };
     },
     setOraclePricesCount(state, action) {
-      state.oraclePricesCount = state.transactionRefresh;
+      state.oraclePricesCount = action.payload;
       // const count = state.oraclePricesCount + 1;
       // return { ...state, oraclePricesCount: count };
     },
     setUserInfoCount(state, action) {
-      state.userInfoCount = state.transactionRefresh;
+      state.userInfoCount = action.payload;
       // const count = state.userInfoCount + 1;
       // return { ...state, userInfoCount: count };
     },
     setUserDepositsCount(state, action) {
-      state.userDepositsCount = state.transactionRefresh;
+      state.userDepositsCount = action.payload;
       // const count = state.userDepositsCount + 1;
       // return { ...state, userDepositsCount: count };
     },
     setUserLoansCount(state, action) {
-      state.userLoansCount = state.transactionRefresh;
+      state.userLoansCount = action.payload;
       // const count = state.userLoansCount + 1;
       // return { ...state, userLoansCount: count };
     },
-    setAprsAndHealthCount(state,action){
-      state.aprAndHealthFactorCount=state.transactionRefresh;
+    setAprsAndHealthCount(state, action) {
+      state.aprAndHealthFactorCount = action.payload;
     },
-    setAccountReset(state,action){
-      return {...initialState};
+    setHourlyDataCount(state, action) {
+      state.hourlyDataCount = action.payload;
+    },
+    setAccountReset(state, action) {
+      return { ...initialState };
     },
 
+    setAprCount(state, action) {
+      state.aprCount = action.payload;
+    },
+    setHealthFactorCount(state, action) {
+      state.healthFactorCount = action.payload;
+    },
+    setNetAprCount(state, action) {
+      state.netAprCount = action.payload;
+    },
+    setAvgBorrowAprCount(state, action) {
+      state.avgBorrowAprCount = action.payload;
+    },
+    setAvgSupplyAprCount(state, action) {
+      state.avgSupplyAprCount = action.payload;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -236,9 +260,15 @@ export const {
   setProtocolStatsCount,
   setProtocolReservesCount,
   setAprsAndHealthCount,
+  setHourlyDataCount,
   setUserUnspentLoans,
   setTransactionStartedAndModalClosed,
-  setAccountReset
+  setAccountReset,
+  setAprCount,
+  setHealthFactorCount,
+  setNetAprCount,
+  setAvgBorrowAprCount,
+  setAvgSupplyAprCount,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -265,7 +295,7 @@ export const selectTransactionStatus = (state) =>
 //   state.user_account.currentTransactionStatus;
 export const selectAssetWalletBalance = (state) =>
   state.user_account.assetWalletBalance;
-export const selectTransactionStartedAndModalClosed=(state)=>
+export const selectTransactionStartedAndModalClosed = (state) =>
   state.user_account.transactionStartedAndModalClosed;
 export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;
@@ -304,8 +334,19 @@ export const selectUserLoansCount = (state) =>
 export const selectOraclePricesCount = (state) =>
   state.user_account.oraclePricesCount;
 export const selectUserInfoCount = (state) => state.user_account.userInfoCount;
-export const selectAprsAndHealthCount=(state)=>state.user_account.aprAndHealthFactorCount;
+export const selectAprsAndHealthCount = (state) =>
+  state.user_account.aprAndHealthFactorCount;
+export const selectHourlyDataCount = (state) =>
+  state.user_account.hourlyDataCount;
 export const selectUserUnspentLoans = (state) =>
   state.user_account.userUnspentLoans;
+export const selectAprCount = (state) => state.user_account.aprCount;
+export const selectHealthFactorCount = (state) =>
+  state.user_account.healthFactorCount;
+export const selectNetAprCount = (state) => state.user_account.netAprCount;
+export const selectAvgBorrowAprCount = (state) =>
+  state.user_account.avgBorrowAprCount;
+export const selectAvgSupplyAprCount = (state) =>
+  state.user_account.avgSupplyAprCount;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

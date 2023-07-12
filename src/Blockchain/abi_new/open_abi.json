@@ -1,0 +1,109 @@
+[
+    {
+        "members": [
+            {
+                "name": "module_address",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "action",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "selector",
+                "offset": 2,
+                "type": "felt"
+            }
+        ],
+        "name": "ModuleFunctionAction",
+        "size": 3,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "previousOwner",
+                "type": "felt"
+            },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "actions_len",
+                "type": "felt"
+            },
+            {
+                "name": "actions",
+                "type": "ModuleFunctionAction*"
+            },
+            {
+                "name": "address",
+                "type": "felt"
+            },
+            {
+                "name": "calldata_len",
+                "type": "felt"
+            },
+            {
+                "name": "calldata",
+                "type": "felt*"
+            }
+        ],
+        "keys": [],
+        "name": "ModuleFunctionChange",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "owner",
+                "type": "felt"
+            },
+            {
+                "name": "module_registry_address",
+                "type": "felt"
+            }
+        ],
+        "name": "constructor",
+        "outputs": [],
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "name": "selector",
+                "type": "felt"
+            },
+            {
+                "name": "calldata_size",
+                "type": "felt"
+            },
+            {
+                "name": "calldata",
+                "type": "felt*"
+            }
+        ],
+        "name": "__default__",
+        "outputs": [
+            {
+                "name": "retdata_size",
+                "type": "felt"
+            },
+            {
+                "name": "retdata",
+                "type": "felt*"
+            }
+        ],
+        "type": "function"
+    }
+]

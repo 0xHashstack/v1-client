@@ -1,75 +1,109 @@
-import { Contract,number,uint256 } from "starknet";
-import stakingAbi from "../abis/staking_abi.json"
-import supplyABI from "../abis/supply_abi.json"
-import { diamondAddress, getProvider, metricsContractAddress } from "../stark-constants";
+import { Contract, number, uint256 } from "starknet";
+// import stakingAbi from "../abis/staking_abi.json"
+// import supplyABI from "../abis/supply_abi.json"
+import stakingAbi from "../abi_new/staking_abi.json";
+import supplyABI from "../abi_new/supply_abi.json";
+import {
+    diamondAddress,
+    getProvider,
+    metricsContractAddress,
+} from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount } from "../utils/utils";
 // import { useContractWrite } from "@starknet-react/core";
 import { useState } from "react";
 import { RToken } from "../interfaces/interfaces";
-export async function getrTokensMinted(rToken:any,amount:any){
-    try{
+export async function getrTokensMinted(rToken: any, amount: any) {
+    try {
         const provider = getProvider();
-        const supplyContract=new Contract(
+        const supplyContract = new Contract(
             supplyABI,
             tokenAddressMap[rToken],
             provider
+        );
+        // console.log("Called")
+        // console.log(supplyContract,"suppply contract")
+        const parsedAmount = etherToWeiBN(amount, rToken).toString();
+        // console.log(parsedAmount, "parsed amount");
+        const res = await supplyContract.call(
+            "preview_deposit",
+            [[parsedAmount, 0]],
+            {
+                blockIdentifier: "pending",
+            }
+        );
+        // console.log(res, "data in rewards");
+        const data = parseAmount(
+            uint256.uint256ToBN(res?.shares).toString(),
+            tokenDecimalsMap[rToken]
+        );
+        // console.log(
+        //     parseAmount(
+        //         uint256.uint256ToBN(res?.shares).toString(),
+        //         tokenDecimalsMap[rToken]
+        //     )
+        // );
+        return data.toFixed(2);
+    } catch (err) {
+        console.log(err);
+        console.log("err in rewards");
+    }
+}
+export async function getSupplyunlocked(rToken: any, amount: any) {
+    try {
+        const provider = getProvider();
+        const supplyContract = new Contract(
+            supplyABI,
+            tokenAddressMap[rToken],
+            provider
+        );
+        const parsedAmount = etherToWeiBN(amount, rToken).toString();
+        const res = await supplyContract.call(
+            "preview_redeem",
+            [[parsedAmount, 0]],
+            {
+                blockIdentifier: "pending",
+            }
+        );
+        // console.log(res, "data in est supply");
+        const data = parseAmount(
+            uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),
+            tokenDecimalsMap[rToken]
+        );
+        // console.log(parseAmount(uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),8),"parsed")
+        return data.toFixed(2);
+    } catch (err) {
+        console.log(err, "err in getSupplyUnlocked");
+    }
+}
+
+export async function getEstrTokens(rToken: any, amount: any) {
+    try {
+        const provider = getProvider();
+        const stakingContract = new Contract(
+            stakingAbi,
+            "0x386d428081fcae8d28cfdc1ff913fd6cd5da3c93d54060fb20687e8791c12e0",
+            provider
         )
-        const parsedAmount=etherToWeiBN(amount,rToken).toString();
-        console.log( parsedAmount,"parsed amount")
-        const res = await supplyContract.call("preview_deposit",[[parsedAmount,0]],{
+        // const parsedAmount=etherToWeiBN(amount,rToken).toString();
+        // console.log(amount,"stake amount")
+        // console.log(stakingContract, "staking contract")
+        const parsedAmount = etherToWeiBN(amount, rToken).toString();
+        // console.log(parsedAmount,"amount in staking")
+        const res = await stakingContract.call("preview_redeem", [tokenAddressMap[rToken], [parsedAmount, 0]], {
             blockIdentifier: "pending",
         });
-        console.log(res?.shares,"data in rewards")
-        const data=parseAmount(uint256.uint256ToBN(res?.shares).toString(),tokenDecimalsMap[rToken])
-        console.log(parseAmount(uint256.uint256ToBN(res?.shares).toString(),tokenDecimalsMap[rToken]))
-        return data.toFixed(2);
-
-    }catch(err){
-        console.log(err);
-        console.log("err in rewards")
+        const data = parseAmount(
+            uint256.uint256ToBN(res?.rToken_amount_to_withdraw).toString(),
+            tokenDecimalsMap[rToken]
+        );
+        // console.log(data, "call in stake");
+        return data;
+    } catch (err) {
+        console.log(err, "err in est rtokens staking")
     }
+
 }
-export async function getSupplyunlocked(rToken:any,amount:any){
-        try{
-            const provider = getProvider();
-            const supplyContract=new Contract(
-                supplyABI,
-                tokenAddressMap[rToken],
-                provider
-            ) 
-            const parsedAmount=etherToWeiBN(amount,rToken).toString();
-            const res = await supplyContract.call("preview_redeem",[[parsedAmount,0]],{
-                blockIdentifier: "pending",
-            });
-            console.log(res,"data in est supply")
-            const data=parseAmount(uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),tokenDecimalsMap[rToken]);
-            // console.log(parseAmount(uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),8),"parsed")
-            return data.toFixed(2);
-    }catch(err){
-        console.log(err,"err in getSupplyUnlocked");
-
-    }
-}
-
-// export async function getEstrTokens(rToken:any,amount:any){
-//     try{
-//         // const provider = getProvider();
-//         // const stakingContract=new Contract(
-//         //     stakingAbi,
-//         //     "0x73e84ffcc178373b80cf2109d0e9beb93da9710d32a93a45eeeada957c133bd",
-//         //     provider
-//         // ) 
-//         // const parsedAmount=etherToWeiBN(amount,rToken).toString();
-//         // console.log(stakingContract,"staking contract")
-//         // const res = await stakingContract.call("preview_redeem",[tokenAddressMap[rToken],[parsedAmount,0]],{
-//         //     blockIdentifier: "pending",
-//         // });
-       
-//         // console.log(res);
-//         // return 24;
-
-// }
 
 // const userTokensMinted=()=>{
 //     const [rToken1, setRToken1] = useState<RToken>("rUSDT");

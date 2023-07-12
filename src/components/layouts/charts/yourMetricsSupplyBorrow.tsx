@@ -1,9 +1,5 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import AssetUtilizationChart from "../charts/AssetUtilization";
-import AssetUtilizationRateChart from "../charts/AssetUtilizationRate";
-import SupplyAprChart from "../charts/SupplyApr";
-import BorrowAprChart from "../charts/BorrowApr";
 import YourMetricsSupply from "./YourMetricsSupply";
 import YourMetricsBorrow from "./YourMetricsBorrow";
 const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
@@ -138,6 +134,10 @@ const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
           color={"#61a6a5"}
           series={series1[currentMarketCoin]}
         />
+        {/* <TrialChart
+                  color={"#61a6a5"}
+                  series={series1[currentMarketCoin]}
+        /> */}
       </Box>
       <Box display="flex" flexDirection="column" gap="8px" width="100%">
         <Box

@@ -16,6 +16,7 @@ import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -38,6 +39,7 @@ const DashboardRight = ({
   borrowAPRs,
   supplyAPRs,
   validRTokens,
+  protocolStats,
 }: {
   width: string;
   oraclePrices: any;
@@ -46,6 +48,7 @@ const DashboardRight = ({
   borrowAPRs: any;
   validRTokens: any;
   supplyAPRs: any;
+  protocolStats: any;
   // gap: string;
   // columnItems: Array<Array<string>>;
   // rowItems: any;
@@ -62,11 +65,11 @@ const DashboardRight = ({
   const coinPrices = Coins.map((coin) => {
     const matchingCoin = oraclePrices?.find(
       (c: { name: string }) =>
-        c?.name?.toLowerCase() === coin.name.toLowerCase()
+        c?.name?.toLowerCase() === coin?.name.toLowerCase()
     );
     if (matchingCoin) {
-      const formattedPrice = matchingCoin.price.toFixed(3); // Format price to 3 decimal places
-      return { name: coin.name, price: formattedPrice };
+      const formattedPrice = matchingCoin?.price.toFixed(3); // Format price to 3 decimal places
+      return { name: coin?.name, price: formattedPrice };
     }
     return null;
   });
@@ -138,7 +141,7 @@ const DashboardRight = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {Coins.map((coin, idx) => (
+          {Coins?.map((coin, idx) => (
             <>
               <Tr
                 key={idx}
@@ -160,13 +163,13 @@ const DashboardRight = ({
                   <HStack gap={1.5}>
                     <Box height="32px" width="32px">
                       <Image
-                        src={`/${coin.name}.svg`}
+                        src={`/${coin?.name}.svg`}
                         alt="Picture of the author"
                         width="32"
                         height="32"
                       />
                     </Box>
-                    <Text fontSize="14px">{coin.name}</Text>
+                    <Text fontSize="14px">{coin?.name}</Text>
                   </HStack>
                 </Td>
                 <Td
@@ -196,7 +199,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      coinPrices[idx]?.price
+                      numberFormatter(coinPrices[idx]?.price)
                     )}
                   </Box>
                 </Td>
@@ -258,7 +261,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      utilization[idx] + "%"
+                      numberFormatterPercentage(utilization[idx]) + "%"
                     )}
                   </Box>
                 </Td>
@@ -289,7 +292,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      borrowAPRs[idx] + "%"
+                      numberFormatterPercentage(borrowAPRs[idx]) + "%"
                     )}
                   </Box>
                 </Td>
@@ -316,7 +319,7 @@ const DashboardRight = ({
                     onClick={() => {
                       setCurrentBorrowAPR(idx);
                       setCurrentSupplyAPR(idx);
-                      setCurrentBorrowMarketCoin(coin.name);
+                      setCurrentBorrowMarketCoin(coin?.name);
                     }}
                     // bgColor={"blue"}
                   >
@@ -336,6 +339,7 @@ const DashboardRight = ({
                       currentBorrowAPR={currentBorrowAPR}
                       validRTokens={validRTokens}
                       currentBorrowMarketCoin={currentBorrowMarketCoin}
+                      protocolStats={protocolStats}
                     />
                   </Box>
                 </Td>

@@ -62,10 +62,10 @@ const MarketDashboard = () => {
       const rTokens: any = [];
       if (reserves) {
         reserves.map((reserve: any) => {
-          if (reserve.rTokenAmountParsed > 0) {
+          if (reserve.rTokenFreeParsed > 0) {
             rTokens.push({
               rToken: reserve.rToken,
-              rTokenAmount: reserve.rTokenAmountParsed,
+              rTokenAmount: reserve.rTokenFreeParsed,
             });
           }
         });
@@ -102,6 +102,7 @@ const MarketDashboard = () => {
   //     console.error("Error fetching Oracle prices:", error);
   //   }
   // };
+  const [protocolStats, setProtocolStats]: any = useState([]);
 
   const stats = useSelector(selectProtocolStats);
   useEffect(() => {
@@ -115,6 +116,13 @@ const MarketDashboard = () => {
     try {
       console.log("fetchprotocolstats", stats); //23014
       // const temp: any = ;
+      setProtocolStats([
+        stats?.[2],
+        stats?.[3],
+        stats?.[0],
+        stats?.[1],
+        stats?.[4],
+      ]);
       setTotalSupplies([
         stats?.[2].totalSupply,
         stats?.[3].totalSupply,
@@ -198,6 +206,7 @@ const MarketDashboard = () => {
         utilization={utilization}
         supplyAPRs={supplyAPRs}
         validRTokens={validRTokens}
+        protocolStats={protocolStats}
 
         // gap={"14.2"}
         // columnItems={dashboardItems2}

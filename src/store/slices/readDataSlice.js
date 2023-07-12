@@ -6,7 +6,20 @@ const initialState = {
   protocolStats: null,
   oraclePrices: null,
   userLoans: null,
-  aprAndHealthFactor:null,
+  aprAndHealthFactor: null,
+  hourlyBTCData:{
+    
+  },
+  hourlyETHData:null,
+  hourlyUSDTData:null,
+  hourlyUSDCData:null,
+  hourlyDAIData:null,
+  dailyBTCData:null,
+  dailyETHData:null,
+  dailyUSDTData:null,
+  dailyUSDCData:null,
+  dailyDAIData:null,
+
 
   protocolReserves: {
     totalReserves: null,
@@ -29,6 +42,8 @@ const initialState = {
   userInfoCount: -1,
   block: null,
   currentNetwork: null,
+  effectiveAPR: null,
+  healthFactor: null,
 };
 
 export const readDataSlice = createSlice({
@@ -50,8 +65,8 @@ export const readDataSlice = createSlice({
     setProtocolReserves(state, action) {
       return { ...state, protocolReserves: action.payload };
     },
-    setAprAndHealthFactor(state,action){
-        state.aprAndHealthFactor=action.payload;
+    setAprAndHealthFactor(state, action) {
+      state.aprAndHealthFactor = action.payload;
     },
     setNetWorth(state, action) {
       state.netWorth = action.payload;
@@ -69,7 +84,7 @@ export const readDataSlice = createSlice({
       state.activeTransactions = action.payload;
     },
     setTransactionRefresh(state, action) {
-      const count = state.transactionRefresh;
+      const count = action.payload == "reset" ? -1 : state.transactionRefresh;
       state.transactionRefresh = count + 1;
     },
     setProtocolReservesCount(state, action) {
@@ -96,8 +111,44 @@ export const readDataSlice = createSlice({
     setCurrentNetwork(state, action) {
       state.currentNetwork = action.payload;
     },
+    setHourlyBTCData(state,action){
+      state.hourlyBTCData=action.payload;
+    },
+    setHourlyETHData(state,action){
+      state.hourlyETHData=action.payload;
+    },
+    setHourlyUSDTData(state,action){
+      state.hourlyUSDTData=action.payload;
+    },
+    setHourlyUSDCData(state,action){
+      state.hourlyUSDCData=action.payload;
+    },
+    setHourlyDAIData(state,action){
+      state.hourlyDAIData=action.payload;
+    },
+    setDailyBTCData(state,action){
+      state.dailyBTCData=action.payload;
+    },
+    setDailyETHData(state,action){
+      state.dailyETHData=action.payload;
+    },
+    setDailyUSDTData(state,action){
+      state.dailyUSDTData=action.payload;
+    },
+    setDailyUSDCData(state,action){
+      state.dailyUSDCData=action.payload;
+    },
+    setDailyDAIData(state,action){
+      state.dailyDAIData=action.payload;
+    },
     resetState(state, action) {
       return { ...initialState };
+    },
+    setEffectiveAPR(state, action) {
+      state.effectiveAPR = action.payload;
+    },
+    setHealthFactor(state, action) {
+      state.healthFactor = action.payload;
     },
 
     extraReducers: {
@@ -133,14 +184,27 @@ export const {
   setUserLoansCount,
   setBlock,
   setCurrentNetwork,
-  resetState
+  setHourlyBTCData,
+  setHourlyDAIData,
+  setHourlyETHData,
+  setHourlyUSDCData,
+  setHourlyUSDTData,
+  resetState,
+  setEffectiveAPR,
+  setHealthFactor,
+  setDailyBTCData,
+  setDailyETHData,
+  setDailyUSDCData,
+  setDailyUSDTData,
+  setDailyDAIData
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
 export const selectProtocolStats = (state) => state.read_data.protocolStats;
 export const selectOraclePrices = (state) => state.read_data.oraclePrices;
 export const selectUserLoans = (state) => state.read_data.userLoans;
-export const selectAprAndHealthFactor=(state)=>state.read_data.aprAndHealthFactor;
+export const selectAprAndHealthFactor = (state) =>
+  state.read_data.aprAndHealthFactor;
 export const selectProtocolReserves = (state) =>
   state.read_data.protocolReserves;
 export const selectYourSupply = (state) => state.read_data.yourSupply;
@@ -163,5 +227,16 @@ export const selectOraclePricesCount = (state) =>
 export const selectUserInfoCount = (state) => state.read_data.userInfoCount;
 export const selectBlock = (state) => state.read_data.block;
 export const selectCurrentNetwork = (state) => state.read_data.currentNetwork;
-
+export const selectEffectiveApr = (state) => state.read_data.effectiveAPR;
+export const selectHealthFactor = (state) => state.read_data.healthFactor;
+export const selectHourlyBTCData=(state)=>state.read_data.hourlyBTCData;
+export const selectHourlyETHData=(state)=>state.read_data.hourlyETHData;
+export const selectHourlyUSDTData=(state)=>state.read_data.hourlyUSDTData;
+export const selectHourlyUSDCData=(state)=>state.read_data.hourlyUSDCData;
+export const selectHourlyDAIData=(state)=>state.read_data.hourlyDAIData;
+export const selectDailyBTCData=(state)=>state.read_data.dailyBTCData;
+export const selectDailyETHData=(state)=>state.read_data.dailyETHData;
+export const selectDailyUSDTData=(state)=>state.read_data.dailyUSDTData;
+export const selectDailyUSDCData=(state)=>state.read_data.dailyUSDCData;
+export const selectDailyDAIData=(state)=>state.read_data.dailyDAIData;
 export default readDataSlice.reducer;

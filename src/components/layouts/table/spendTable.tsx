@@ -17,6 +17,7 @@ import {
   Td,
   useTimeout,
   Spinner,
+  Skeleton,
 } from "@chakra-ui/react";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import TableUsdtLogo from "./usdtLogo";
@@ -38,6 +39,8 @@ import {
   selectProtocolStats,
   selectOraclePrices,
   selectAprAndHealthFactor,
+  selectEffectiveApr,
+  selectHealthFactor,
 } from "@/store/slices/readDataSlice";
 import HazardIcon from "@/assets/icons/hazardIcon";
 import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
@@ -59,6 +62,7 @@ import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import AlertTrade from "@/assets/icons/alertTrade";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -80,6 +84,7 @@ const SpendTable = () => {
   ];
   const { account, address, isConnected } = useAccount();
   const userLoans = useSelector(selectUserUnspentLoans);
+  // const userLoans = null;
   // const [userLoans, setUserLoans] = useState<any>(null);
   // let userLoansRedux = useSelector(selectUserLoans);
   // useEffect(() => {
@@ -153,6 +158,9 @@ const SpendTable = () => {
   if (userLoans) {
     upper_bound = Math.min(userLoans?.length - 1, upper_bound);
   }
+
+  const [currentLoanAmount, setCurrentLoanAmount] = useState("");
+  const [currentLoanMarket, setCurrentLoanMarket] = useState("");
   // console.log("userLoans ", userLoans);
   useEffect(() => {
     if (userLoans) {
@@ -188,8 +196,13 @@ const SpendTable = () => {
   // const avgsData: any = [];
   const oraclePrices = useSelector(selectOraclePrices);
   const reduxProtocolStats = useSelector(selectProtocolStats);
-  const avgs = useSelector(selectAprAndHealthFactor);
-
+  // const avgs = useSelector(selectAprAndHealthFactor);
+  const avgs = useSelector(selectEffectiveApr);
+  const avgsLoneHealth = useSelector(selectHealthFactor);
+  const [ltv, setLtv] = useState<any>([]);
+  useEffect(() => {
+    console.log("avgsLoneHealth", avgsLoneHealth);
+  }, [avgsLoneHealth]);
   // useEffect(() => {
   //   const fetchAprs = async () => {
   //     if (avgs?.length == 0) {
@@ -245,6 +258,35 @@ const SpendTable = () => {
   };
 
   useEffect(() => {
+    if (userLoans && oraclePrices) {
+      const ltv_ratio = [];
+      for (const loan of userLoans) {
+        const loan_ltv1 =
+          loan?.currentLoanAmountParsed *
+          oraclePrices?.find((val: any) => val?.name == loan?.underlyingMarket)
+            ?.price;
+        const loan_ltv2 =
+          loan?.collateralAmountParsed *
+          oraclePrices?.find(
+            (val: any) =>
+              val?.name ==
+              (loan?.collateralMarket[0] == "r"
+                ? loan?.collateralMarket.slice(1)
+                : loan?.collateralMarket)
+          )?.price;
+        ltv_ratio.push([
+          loan?.loanId,
+          // loan_ltv1,
+          // loan_ltv2,
+          loan_ltv1 / loan_ltv2,
+        ]);
+      }
+      setLtv(ltv_ratio);
+      console.log("spendtable ltv ", ltv);
+    }
+  }, [userLoans, oraclePrices]);
+
+  useEffect(() => {
     setCurrentBorrow(-1);
     setSelectedDapp("");
     setTabIndex(0);
@@ -268,6 +310,7 @@ const SpendTable = () => {
       setLoading(false);
     }
   }, [userLoans]);
+  const dummy_data = [1, 2, 3];
   return (
     <>
       {showWarning && (
@@ -310,7 +353,7 @@ const SpendTable = () => {
           </Box>
         </Box>
       )}
-      {loading && userLoans?.length > 0 ? (
+      {loading ? (
         <Box
           border="1px"
           borderColor="#2B2F35"
@@ -388,7 +431,7 @@ const SpendTable = () => {
             <Tbody bg="inherit" position="relative">
               {userLoans
                 .slice(lower_bound, upper_bound + 1)
-                .map((borrow: any) => {
+                .map((borrow: any, index: number) => {
                   return (
                     <>
                       <Tr
@@ -412,6 +455,8 @@ const SpendTable = () => {
                           setCurrentId("ID - " + borrow.loanId);
                           setCurrentMarketCoin(borrow.currentLoanMarket);
                           dispatch(setSpendBorrowSelectedDapp("trade"));
+                          setCurrentLoanAmount(borrow?.currentLoanAmount);
+                          setCurrentLoanMarket(borrow?.currentLoanMarket);
                         }}
                       >
                         <Td borderLeftRadius="6px" pl="3rem">
@@ -507,7 +552,13 @@ const SpendTable = () => {
                               lineHeight="22px"
                               color="#E6EDF3"
                             >
-                              3.63
+                              {oraclePrices
+                                ? ltv
+                                    ?.find(
+                                      (val: any) => val?.[0] == borrow?.loanId
+                                    )?.[1]
+                                    ?.toFixed(5)
+                                : "-"}
                             </Text>
                           </Box>
                         </Td>
@@ -529,10 +580,10 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="right"
                             >
-                              {avgs?.find(
+                              {avgsLoneHealth?.find(
                                 (item: any) => item.loanId == borrow?.loanId
                               )?.loanHealth
-                                ? avgs?.find(
+                                ? avgsLoneHealth?.find(
                                     (item: any) => item.loanId == borrow?.loanId
                                   )?.loanHealth
                                 : "2.5"}
@@ -748,6 +799,8 @@ const SpendTable = () => {
                   BorrowBalance={borrowAmount}
                   currentSwap={currentSwap}
                   setCurrentSwap={setCurrentSwap}
+                  currentLoanAmount={currentLoanAmount}
+                  currentLoanMarket={currentLoanMarket}
                   borrowAPRs={borrowAPRs}
                 />
               </Box>

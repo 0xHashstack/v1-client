@@ -67,7 +67,19 @@ import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import { Coins } from "../dashboardLeft";
 import mixpanel from "mixpanel-browser";
 import useDataLoader from "@/hooks/useDataLoader";
-import { resetState, setAprAndHealthFactor, setNetAPR, setNetWorth, setOraclePrices, setProtocolStats, setTransactionRefresh, setUserDeposits, setUserLoans, setYourBorrow, setYourSupply } from "@/store/slices/readDataSlice";
+import {
+  resetState,
+  setAprAndHealthFactor,
+  setNetAPR,
+  setNetWorth,
+  setOraclePrices,
+  setProtocolStats,
+  setTransactionRefresh,
+  setUserDeposits,
+  setUserLoans,
+  setYourBorrow,
+  setYourSupply,
+} from "@/store/slices/readDataSlice";
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -107,7 +119,11 @@ const Navbar = ({ validRTokens }: any) => {
 
   const router = useRouter();
   const { pathname } = router;
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
 
@@ -150,31 +166,22 @@ const Navbar = ({ validRTokens }: any) => {
   });
 
   const switchWallet = () => {
-    const walletConnected = localStorage.getItem("lastUsedConnector");
+    // const walletConnected = localStorage.getItem("lastUsedConnector");
     // console.log(connector);
     if (connector?.options?.id == "braavos") {
+      localStorage.setItem("lastUsedConnector", "argentX");
       connect(connectors[1]);
+      router.push("/v1/market");
+      dispatch(resetState(null));
+      dispatch(setAccountReset(null));
     } else {
+      localStorage.setItem("lastUsedConnector", "braavos");
       connect(connectors[0]);
+      router.push("/v1/market");
+      dispatch(resetState(null));
+      dispatch(setAccountReset(null));
     }
   };
-
-  const resetStates=()=>{
-    dispatch(setNavDropdown(""));
-    dispatch(setTransactionRefresh(""));
-    dispatch(setUserDeposits(null));
-    dispatch(setProtocolStats(null));
-    dispatch(setAprAndHealthFactor(null));
-    dispatch(setUserLoans(null));
-    dispatch(setOraclePrices(null));
-    dispatch(setProtocolStats(null));
-    dispatch(setNetAPR(null));
-    dispatch(setNetWorth(null));
-    dispatch(setYourBorrow(null));
-    dispatch(setYourSupply(null));
-    dispatch(setAvgBorrowAPR(null));
-    dispatch(setAvgSupplyAPR(null));
-  }
 
   return (
     <HStack
@@ -326,10 +333,10 @@ const Navbar = ({ validRTokens }: any) => {
           }}
           onMouseEnter={() => setStakeHover(true)}
           onMouseLeave={() => setStakeHover(false)}
-          onClick={()=>{
-            mixpanel.track('Stake Button Clicked Navbar',{
-              "Clicked":true,
-            })
+          onClick={() => {
+            mixpanel.track("Stake Button Clicked Navbar", {
+              Clicked: true,
+            });
           }}
         >
           {/* <Box
@@ -665,13 +672,12 @@ const Navbar = ({ validRTokens }: any) => {
                       borderRadius="6px"
                       border="1px solid #2B2F35"
                       onClick={() => {
+                        localStorage.setItem("lastUsedConnector", "");
+                        router.push("./");
                         disconnect();
                         dispatch(resetState(null));
                         dispatch(setAccountReset(null));
-                        localStorage.setItem("lastUsedConnector", "");
                         // localStorage.setItem("account", "");
-
-                        router.push("./");
                       }}
                     >
                       Disconnect
@@ -684,8 +690,6 @@ const Navbar = ({ validRTokens }: any) => {
                       border="1px solid #2B2F35"
                       onClick={() => {
                         dispatch(setNavDropdown(""));
-                        dispatch(resetState(null));
-                        dispatch(setAccountReset(null));
                         switchWallet();
                         // disconnect();
                         // router.push("./");
@@ -704,8 +708,8 @@ const Navbar = ({ validRTokens }: any) => {
                     border="1px solid #2B2F35"
                     onClick={() => {
                       // alert("hey");
-                      const walletConnected =
-                        localStorage.getItem("lastUsedConnector");
+                      // const walletConnected =
+                      //   localStorage.getItem("lastUsedConnector");
                       if (connector?.options?.id == "braavos") {
                         disconnect();
                         connect(connectors[1]);

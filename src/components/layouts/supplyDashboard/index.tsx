@@ -35,6 +35,9 @@ import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
 import { token } from "@project-serum/anchor/dist/cjs/utils";
 import { isTemplateExpression } from "typescript";
+import TableClose from "../table/tableIcons/close";
+import TableInfoIcon from "../table/tableIcons/infoIcon";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 
 export interface ICoin {
   name: string;
@@ -113,6 +116,7 @@ const SupplyDashboard = ({
   // rowItems: any;
 }) => {
   const { address } = useAccount();
+  const [showEmptyNotification, setShowEmptyNotification] = useState(true);
 
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("BTC");
@@ -175,6 +179,7 @@ const SupplyDashboard = ({
               supply[i],
               reduxProtocolStats
             );
+            console.log(avg, "avg in supply dash");
             const data = {
               token: supply[i].token,
               avg: avg?.toFixed(2),
@@ -193,7 +198,7 @@ const SupplyDashboard = ({
       }
     };
     getSupply();
-  }, [userDeposits]);
+  }, [userDeposits, reduxProtocolStats]);
   // useEffect(()=>{
   //   const fetchEffectiveApr=async()=>{
   //     try{
@@ -389,7 +394,8 @@ const SupplyDashboard = ({
                   <Tr
                     key={idx}
                     width={"100%"}
-                    height={"5.2rem"}
+                    // height={"5.2rem"}
+                    height={"6rem"}
                     // bgColor="blue"
                     // borderBottom="1px solid #2b2f35"
                     position="relative"
@@ -474,10 +480,12 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          protocolStats.find((stat: any) => {
-                            if (stat?.token === supply?.rToken?.slice(1))
-                              return stat.supplyRate;
-                          })?.exchangeRateRtokenToUnderlying + " %"
+                          Number(
+                            protocolStats.find((stat: any) => {
+                              if (stat?.token === supply?.rToken?.slice(1))
+                                return stat.supplyRate;
+                            })?.exchangeRateRtokenToUnderlying
+                          )?.toFixed(3) + " %"
                         )}
                       </Text>
                     </Td>
@@ -508,10 +516,12 @@ const SupplyDashboard = ({
                           />
                         ) : (
                           // protocolStats[idx]?.supplyRate + "%"
-                          protocolStats.find((stat: any) => {
-                            if (stat?.token === supply?.rToken?.slice(1))
-                              return stat.supplyRate;
-                          })?.supplyRate + " %"
+                          Number(
+                            protocolStats.find((stat: any) => {
+                              if (stat?.token === supply?.rToken?.slice(1))
+                                return stat.supplyRate;
+                            })?.supplyRate
+                          )?.toFixed(3) + " %"
                         )}
                       </Box>
                     </Td>
@@ -534,11 +544,18 @@ const SupplyDashboard = ({
                         {/* {checkGap(idx1, idx2)} */}
                         {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
                         {/* {avgs[2]} */}
-                        {
+                        {/* { avgs.length>0? <Skeleton
+                            width="4rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />: */}
+                        {Number(
                           avgs?.find((item: any) => item.token == supply?.token)
                             ?.avg
-                        }{" "}
-                        %{/* {supply?.token} */}
+                        )}{" "}
+                        {avgs ?"%":""}{/* {supply?.token} */}
                       </Text>
                     </Td>
                     <Td
@@ -546,7 +563,7 @@ const SupplyDashboard = ({
                       maxWidth={"3rem"}
                       fontSize={"14px"}
                       fontWeight={400}
-                      overflow={"hidden"}
+                      // overflow={"hidden"}
                       textAlign={"center"}
                     >
                       <Box
@@ -764,7 +781,55 @@ const SupplyDashboard = ({
     </Box>
   ) : (
     <>
-      <Box
+      {showEmptyNotification && (
+        <Box display="flex" justifyContent="left" w="94%" pb="2">
+          <Box
+            display="flex"
+            bg="#DDF4FF"
+            fontSize="14px"
+            p="4"
+            fontStyle="normal"
+            fontWeight="400"
+            borderRadius="6px"
+            // textAlign="center"
+          >
+            <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
+              <TableInfoIcon />
+            </Box>
+            Your do not have active supply.
+            <Box
+              // ml="1"
+              mr="1"
+              as="span"
+              textDecoration="underline"
+              color="#0C6AD9"
+              cursor="pointer"
+            >
+              <SupplyModal
+                buttonText="Click here to supply"
+                variant="link"
+                fontSize="16px"
+                fontWeight="400"
+                display="inline"
+                color="#0969DA"
+                cursor="pointer"
+                ml="0.3rem"
+                lineHeight="24px"
+                backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
+              />
+            </Box>
+            {/* <Box
+              py="1"
+              pl="4"
+              cursor="pointer"
+              onClick={() => setShowEmptyNotification(!showEmptyNotification)}
+            >
+              <TableClose />
+            </Box> */}
+          </Box>
+        </Box>
+      )}
+      {/* <Box
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -776,22 +841,9 @@ const SupplyDashboard = ({
         borderRadius="8px"
         gap="6px"
       >
-        <Text color="#FFFFFF">Your Ethereum Wallet is empty</Text>
-        <SupplyModal
-          buttonText="Supply"
-          height={"2rem"}
-          fontSize={"14px"}
-          fontWeight="500"
-          lineHeight="20px"
-          padding="6px 12px"
-          border="1px solid rgba(27, 31, 36, 0.15)"
-          bgColor="#2DA44E"
-          _hover={{ bg: "#2DA44E", color: "white" }}
-          borderRadius={"6px"}
-          color="#fff"
-          backGroundOverLay="rgba(244, 242, 255, 0.5)"
-        />
-      </Box>
+        <Text color="#FFFFFF">You do not have active supply</Text>
+        
+      </Box> */}
     </>
   );
 };

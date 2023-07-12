@@ -94,6 +94,7 @@ import mixpanel from "mixpanel-browser";
 import { getSupplyunlocked } from "@/Blockchain/scripts/Rewards";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -153,7 +154,7 @@ const YourSupplyModal = ({
       : 0
   );
   // console.log(currentSelectedWithdrawlCoin)
-  const [withdrawWalletBalance, setWithdrawWalletBalance] = useState(
+  const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
     userDeposit?.find(
       (item: any) => item.rToken == currentSelectedWithdrawlCoin
     )?.rTokenFreeParsed
@@ -830,7 +831,7 @@ const YourSupplyModal = ({
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {coins.map((coin: string, index: number) => {
+                              {coins?.map((coin: string, index: number) => {
                                 return (
                                   <Box
                                     key={index}
@@ -893,13 +894,18 @@ const YourSupplyModal = ({
                                         fontWeight="thin"
                                       >
                                         Wallet Balance:{" "}
-                                        {Number(
-                                          BNtoNum(
-                                            uint256.uint256ToBN(
-                                              walletBalances[coin.substring(1)]
-                                                ?.dataBalanceOf?.balance
-                                            ),
-                                            tokenDecimalsMap[coin.substring(1)]
+                                        {numberFormatter(
+                                          Number(
+                                            BNtoNum(
+                                              uint256.uint256ToBN(
+                                                walletBalances[
+                                                  coin.substring(1)
+                                                ]?.dataBalanceOf?.balance
+                                              ),
+                                              tokenDecimalsMap[
+                                                coin.substring(1)
+                                              ]
+                                            )
                                           )
                                         )}
                                       </Box>
@@ -1038,7 +1044,7 @@ const YourSupplyModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              Wallet Balance: {walletBalance}
+                              Wallet Balance: {numberFormatter(walletBalance)}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedSupplyCoin}`}
                               </Text>
@@ -1055,7 +1061,7 @@ const YourSupplyModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Wallet Balance: {walletBalance}
+                            Wallet Balance: {numberFormatter(walletBalance)}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedSupplyCoin}`}
                             </Text>
@@ -1069,11 +1075,15 @@ const YourSupplyModal = ({
                             onChange={(val) => {
                               setSliderValue(val);
                               var ans = (val / 100) * walletBalance;
-                              ans = Math.round(ans * 100) / 100;
-                              // dispatch(setInputSupplyAmount(ans))
-                              setinputSupplyAmount(ans);
-                              setDepositAmount(ans);
-                              setinputSupplyAmount(ans);
+                              if (val == 100) {
+                                setinputSupplyAmount(walletBalance);
+                                setDepositAmount(walletBalance);
+                              } else {
+                                ans = Math.round(ans * 100) / 100;
+                                // dispatch(setInputSupplyAmount(ans))
+                                setinputSupplyAmount(ans);
+                                setDepositAmount(ans);
+                              }
                             }}
                             isDisabled={transactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
@@ -1205,7 +1215,7 @@ const YourSupplyModal = ({
                         mt="1rem"
                         p="1rem"
                         border="1px solid #2B2F35"
-                        mb="0.5rem"
+                        mb="1rem"
                       >
                         <Text
                           display="flex"
@@ -1529,7 +1539,7 @@ const YourSupplyModal = ({
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {coins.map((coin: string, index: number) => {
+                              {coins?.map((coin: string, index: number) => {
                                 return (
                                   <Box
                                     key={index}
@@ -1631,14 +1641,16 @@ const YourSupplyModal = ({
                           width="100%"
                           color="white"
                           border={`${
-                            inputWithdrawlAmount > walletBalance
+                            inputWithdrawlAmount >
+                            withdrawWalletBalance?.toFixed(2)
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount < 0
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount < 0
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount > 0 &&
-                                inputWithdrawlAmount <= walletBalance
+                                inputWithdrawlAmount <=
+                                  withdrawWalletBalance?.toFixed(2)
                               ? "1px solid #1A7F37"
                               : "1px solid #2B2F35 "
                           }`}
@@ -1665,7 +1677,8 @@ const YourSupplyModal = ({
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
                               color={`${
-                                inputWithdrawlAmount > walletBalance
+                                inputWithdrawlAmount >
+                                withdrawWalletBalance?.toFixed(2)
                                   ? "#CF222E"
                                   : inputWithdrawlAmount < 0
                                   ? "#CF222E"
@@ -1692,7 +1705,7 @@ const YourSupplyModal = ({
                             color="#0969DA"
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
-                              setinputWithdrawlAmount(walletBalance);
+                              setinputWithdrawlAmount(withdrawWalletBalance);
                               setSliderValue2(100);
                             }}
                             isDisabled={withdrawTransactionStarted == true}
@@ -1718,7 +1731,7 @@ const YourSupplyModal = ({
                                 <SmallErrorIcon />{" "}
                               </Text>
                               <Text ml="0.3rem">
-                                {inputWithdrawlAmount > walletBalance
+                                {inputWithdrawlAmount > withdrawWalletBalance
                                   ? "Amount exceeds ballance"
                                   : "Invalid Input"}
                               </Text>
@@ -1758,7 +1771,7 @@ const YourSupplyModal = ({
                             value={sliderValue2}
                             onChange={(val) => {
                               setSliderValue2(val);
-                              var ans = (val / 100) * walletBalance;
+                              var ans = (val / 100) * withdrawWalletBalance;
                               ans = Math.round(ans * 100) / 100;
                               // dispatch(setInputSupplyAmount(ans))
                               setinputWithdrawlAmount(ans);
@@ -2117,20 +2130,20 @@ const YourSupplyModal = ({
                               <Text key={0} display="flex">
                                 Fetching the exchange between{" "}
                                 <Text ml="0.4rem" mr="0.1rem">
-                                  <BTCLogo height={"16px"} width={"16px"} />
+                                  {getCoin(currentSelectedWithdrawlCoin)}
                                 </Text>{" "}
-                                rbtc &
+                                {currentSelectedWithdrawlCoin} &
                                 <Text key={1} ml="0.3rem" mr="0.1rem">
-                                  <BTCLogo height={"16px"} width={"16px"} />
+                                  {getCoin(currentSelectedWithdrawlCoin)}
                                 </Text>
-                                BTC
+                                {currentSelectedWithdrawlCoin.slice(1)}
                               </Text>,
                               <Text key={2} display="flex">
-                                Burning 12345
+                                Burning {inputWithdrawlAmount}
                                 <Text ml="0.5rem" mr="0.1rem">
-                                  <BTCLogo height={"16px"} width={"16px"} />
+                                  {getCoin(currentSelectedWithdrawlCoin)}
                                 </Text>{" "}
-                                rBTC
+                                {currentSelectedWithdrawlCoin}
                               </Text>,
                               "Processing Withdrawl",
                               // <ErrorButton errorText="Transaction failed" />,

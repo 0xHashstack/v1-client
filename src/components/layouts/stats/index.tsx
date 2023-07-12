@@ -6,10 +6,12 @@ const Stats = ({
   header,
   onclick,
   statsData,
+  arrowHide,
 }: {
   header: string[];
   statsData: Object;
   onclick: () => void;
+  arrowHide: boolean;
 }) => {
   const gap: number = 100 / (header.length + 1);
   return (
@@ -42,8 +44,8 @@ const Stats = ({
             <Text color="#6e7681" fontSize={14}>
               {header[idx]}
             </Text>
-            <Box color="#E6EDF3" fontSize="20px" >
-              {!value && (value!=null) ? (
+            <Box color="#E6EDF3" fontSize="20px">
+              {value == null ? (
                 <Skeleton
                   width="6rem"
                   height="1.9rem"
@@ -53,11 +55,41 @@ const Stats = ({
                 />
               ) : header[idx] == "Net APR" ||
                 header[idx] == "Avg. asset utillization" ? (
-                  <Text color="#e6edf3" fontSize="20px">
-                    {value !== null ? `${value} %` : "-"}
-                  </Text>
+                <Box color="#e6edf3" fontSize="20px">
+                  {value !== null ? (
+                    value ? (
+                      `${value}%`
+                    ) : (
+                      "NA"
+                    )
+                  ) : (
+                    <Skeleton
+                      width="6rem"
+                      height="1.9rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  )}
+                </Box>
               ) : (
-                (value !== null ? numberFormatter(value) : "-")
+                <Box color="#e6edf3" fontSize="20px">
+                  {value !== null ? (
+                    value ? (
+                      "$" + numberFormatter(value)
+                    ) : (
+                      "NA"
+                    )
+                  ) : (
+                    <Skeleton
+                      width="6rem"
+                      height="1.9rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  )}
+                </Box>
               )}
             </Box>
           </VStack>
@@ -65,7 +97,7 @@ const Stats = ({
       })}
       <Box
         // w={`${gap / 2}%`}
-        display="flex"
+        display={arrowHide ? "none" : "flex"}
         justifyContent="flex-end"
         paddingRight={2}
         onClick={onclick}

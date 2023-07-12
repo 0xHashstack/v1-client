@@ -6,6 +6,8 @@ import SupplyAprChart from "../charts/SupplyApr";
 import BorrowAprChart from "../charts/BorrowApr";
 // import { Button } from "reactstrap";
 import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
+import TotalAccountsChart from "../charts/totalAccountsChart";
+import TotalTransactionChart from "../charts/totalTransaction";
 const TotalCommunityActivity = ({ currentMarketCoin }: any) => {
   const series1: any = [
     [
@@ -66,167 +68,8 @@ const TotalCommunityActivity = ({ currentMarketCoin }: any) => {
   return (
     <Box display="flex" flexDir="column" gap="64px">
       <Box display="flex" gap="30px">
-        <Box display="flex" flexDirection="column" gap="8px" width="100%">
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            height="72px"
-            border="1px solid #2B2F35"
-            color="#E6EDF3"
-            // padding="24px 24px 16px"
-            px="24px"
-            fontSize="20px"
-            fontStyle="normal"
-            fontWeight="600"
-            lineHeight="30px"
-            borderRadius="6px"
-          >
-            <Box
-              w="100%"
-              display="flex"
-              gap="2"
-              justifyContent="space-between"
-              my="auto"
-            >
-              <Box mt="auto">Total Accounts:</Box>
-              <Box display="flex" gap="2">
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={totalAccounts === 0 ? "none" : "1px solid #2B2F35"}
-                  variant={totalAccounts === 0 ? "solid" : "outline"}
-                  onClick={() => {
-                    setTotalAccounts(0);
-                  }}
-                >
-                  1D
-                </Button>
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={totalAccounts === 1 ? "none" : "1px solid #2B2F35"}
-                  variant={totalAccounts === 1 ? "solid" : "outline"}
-                  onClick={() => {
-                    setTotalAccounts(1);
-                  }}
-                >
-                  1M
-                </Button>
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={totalAccounts === 2 ? "none" : "1px solid #2B2F35"}
-                  variant={totalAccounts === 2 ? "solid" : "outline"}
-                  onClick={() => {
-                    setTotalAccounts(2);
-                  }}
-                >
-                  3M
-                </Button>
-
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={totalAccounts === 3 ? "none" : "1px solid #2B2F35"}
-                  variant={totalAccounts === 3 ? "solid" : "outline"}
-                  onClick={() => {
-                    setTotalAccounts(3);
-                  }}
-                >
-                  ALL
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-          <AssetUtilizationChart
-            color={"#846ED4"}
-            series={series1[totalAccounts]}
-          />
-        </Box>
-        <Box display="flex" flexDirection="column" gap="8px" width="100%">
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            height="72px"
-            border="1px solid #2B2F35"
-            color="#E6EDF3"
-            // padding="24px 24px 16px"
-            px="24px"
-            fontSize="20px"
-            fontStyle="normal"
-            fontWeight="600"
-            lineHeight="30px"
-            borderRadius="6px"
-          >
-            <Box
-              w="100%"
-              display="flex"
-              gap="2"
-              justifyContent="space-between"
-              my="auto"
-            >
-              <Box mt="auto">Total Transaction:</Box>
-              <Box display="flex" gap="2">
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    totalTransactions === 0 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={totalTransactions === 0 ? "solid" : "outline"}
-                  onClick={() => {
-                    setTotalTransactions(0);
-                  }}
-                >
-                  1D
-                </Button>
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    totalTransactions === 1 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={totalTransactions === 1 ? "solid" : "outline"}
-                  onClick={() => {
-                    setTotalTransactions(1);
-                  }}
-                >
-                  1M
-                </Button>
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    totalTransactions === 2 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={totalTransactions === 2 ? "solid" : "outline"}
-                  onClick={() => {
-                    setTotalTransactions(2);
-                  }}
-                >
-                  3M
-                </Button>
-
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    totalTransactions === 3 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={totalTransactions === 3 ? "solid" : "outline"}
-                  onClick={() => {
-                    setTotalTransactions(3);
-                  }}
-                >
-                  ALL
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-          <SupplyAPRLiquidityProvider />
-        </Box>
+        <TotalAccountsChart />
+        <TotalTransactionChart />
       </Box>
     </Box>
   );

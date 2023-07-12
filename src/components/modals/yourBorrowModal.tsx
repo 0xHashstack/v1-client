@@ -70,8 +70,11 @@ import {
 } from "@/store/slices/userAccountSlice";
 import {
   selectAprAndHealthFactor,
+  selectEffectiveApr,
+  selectHealthFactor,
   selectOraclePrices,
   selectProtocolStats,
+  selectUserDeposits,
   selectUserLoans,
 } from "@/store/slices/readDataSlice";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -90,8 +93,8 @@ import {
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
 import { BNtoNum } from "@/Blockchain/utils/utils";
-import { uint256 } from "starknet";
-import { useWaitForTransaction } from "@starknet-react/core";
+import { Account, uint256 } from "starknet";
+import { useAccount, useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import useRevertInteractWithL3 from "@/Blockchain/hooks/Writes/useRevertInteractWithL3";
@@ -114,6 +117,7 @@ import mixpanel from "mixpanel-browser";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
 import { getrTokensMinted } from "@/Blockchain/scripts/Rewards";
 import { NativeToken } from "@/Blockchain/interfaces/interfaces";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -129,6 +133,8 @@ const YourBorrowModal = ({
   setCurrentBorrowMarketCoin2,
   collateralBalance,
   setCollateralBalance,
+  currentLoanAmount,
+  currentLoanMarket,
   borrowIds,
   buttonText,
   BorrowBalance,
@@ -171,8 +177,11 @@ const YourBorrowModal = ({
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
-  const avgs = useSelector(selectAprAndHealthFactor);
+  // const avgs = useSelector(selectAprAndHealthFactor);
+  const avgs = useSelector(selectEffectiveApr);
+  const avgsLoneHealth = useSelector(selectHealthFactor);
   const avgsData: any = [];
+  const { address } = useAccount();
   // useEffect(() => {
   //   const fetchAprs = async () => {
   //     if (avgs?.length == 0) {
@@ -326,13 +335,10 @@ const YourBorrowModal = ({
       setDepositTransHash(revert?.transaction_hash);
       if (revert?.transaction_hash) {
         console.log("toast here");
-        const toastid = toast.info(
-          `Please wait your transaction is running in background`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-          }
-        );
+        const toastid = toast.info(`Transaction pending`, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+        });
         setToastId(toastid);
         if (!activeTransactions) {
           activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
@@ -420,7 +426,7 @@ const YourBorrowModal = ({
           )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [
     walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
       ?.statusBalanceOf,
@@ -453,7 +459,7 @@ const YourBorrowModal = ({
           )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [
     walletBalances[collateralAsset]?.statusBalanceOf,
     collateralAsset,
@@ -529,7 +535,22 @@ const YourBorrowModal = ({
       case "dETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
         break;
-      case "dDAI":
+      case "rDAI":
+        return <DAILogo height={"16px"} width={"16px"} />;
+        break;
+      case "rBTC":
+        return <BTCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "rUSDC":
+        return <USDCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "rUSDT":
+        return <USDTLogo height={"16px"} width={"16px"} />;
+        break;
+      case "rETH":
+        return <ETHLogo height={"16px"} width={"16px"} />;
+        break;
+      case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
       case "Jediswap":
@@ -571,6 +592,8 @@ const YourBorrowModal = ({
   const [radioValue, setRadioValue] = useState("1");
   const [liquiditySplitCoin1, setLiquiditySplitCoin1] = useState("ETH");
   const [liquiditySplitCoin2, setLiquiditySplitCoin2] = useState("USDT");
+
+  const userDeposit = useSelector(selectUserDeposits);
 
   // const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
   //   useState(currentMarket);
@@ -653,6 +676,7 @@ const YourBorrowModal = ({
   //     }
   //   },
   // });
+
   mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
     debug: true,
     track_pageview: true,
@@ -667,13 +691,10 @@ const YourBorrowModal = ({
       setDepositTransHash(zeroRepay?.transaction_hash);
       if (zeroRepay?.transaction_hash) {
         console.log("toast here");
-        const toastid = toast.info(
-          `Please wait your transaction is running in background `,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-          }
-        );
+        const toastid = toast.info(`Transaction pending `, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+        });
         setToastId(toastid);
         if (!activeTransactions) {
           activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
@@ -732,13 +753,10 @@ const YourBorrowModal = ({
         setDepositTransHash(trade?.transaction_hash);
         if (trade?.transaction_hash) {
           console.log("toast here");
-          const toastid = toast.info(
-            `Please wait your transaction is running in background`,
-            {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: false,
-            }
-          );
+          const toastid = toast.info(`Transaction pending`, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          });
           setToastId(toastid);
           if (!activeTransactions) {
             activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
@@ -774,13 +792,10 @@ const YourBorrowModal = ({
         setDepositTransHash(tradeMySwap?.transaction_hash);
         if (tradeMySwap?.transaction_hash) {
           console.log("toast here");
-          const toastid = toast.info(
-            `Please wait your transaction is running in background`,
-            {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: false,
-            }
-          );
+          const toastid = toast.info(`Transaction pending`, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          });
           setToastId(toastid);
           if (!activeTransactions) {
             activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
@@ -840,13 +855,10 @@ const YourBorrowModal = ({
         setDepositTransHash(liquidity?.transaction_hash);
         if (liquidity?.transaction_hash) {
           console.log("toast here");
-          const toastid = toast.info(
-            `Please wait your transaction is running in background`,
-            {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: false,
-            }
-          );
+          const toastid = toast.info(`Transaction pending`, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          });
           setToastId(toastid);
           if (!activeTransactions) {
             activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
@@ -884,13 +896,10 @@ const YourBorrowModal = ({
         setDepositTransHash(mySwapLiquidity?.transaction_hash);
         if (mySwapLiquidity?.transaction_hash) {
           console.log("toast here");
-          const toastid = toast.info(
-            `Please wait your transaction is running in background`,
-            {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: false,
-            }
-          );
+          const toastid = toast.info(`Transaction pending`, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          });
           setToastId(toastid);
           if (!activeTransactions) {
             activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
@@ -941,7 +950,6 @@ const YourBorrowModal = ({
       });
     }
   };
-
   const handleAddCollateral = async () => {
     try {
       if (currentTokenSelected == "rToken") {
@@ -951,13 +959,10 @@ const YourBorrowModal = ({
           setDepositTransHash(addCollateral?.transaction_hash);
           if (addCollateral?.transaction_hash) {
             console.log("toast here");
-            const toastid = toast.info(
-              `Please wait your transaction is running in background`,
-              {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: false,
-              }
-            );
+            const toastid = toast.info(`Transaction pending`, {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            });
             setToastId(toastid);
             if (!activeTransactions) {
               activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
@@ -999,13 +1004,10 @@ const YourBorrowModal = ({
             setDepositTransHash(addCollateral?.transaction_hash);
             if (addCollateral?.transaction_hash) {
               console.log("toast here");
-              const toastid = toast.info(
-                `Please wait your transaction is running in background`,
-                {
-                  position: toast.POSITION.BOTTOM_RIGHT,
-                  autoClose: false,
-                }
-              );
+              const toastid = toast.info(`Transaction pending`, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: false,
+              });
               setToastId(toastid);
               if (!activeTransactions) {
                 activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
@@ -1123,7 +1125,7 @@ const YourBorrowModal = ({
                       />
                     </Box>
                   ) : (
-                    "$" + currentLPTokenAmount
+                    "$" + numberFormatter(currentLPTokenAmount)
                   )}
                   {/* $ 10.91 */}
                 </Text>
@@ -1177,7 +1179,9 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {currentSplit?.[0]?.toString() || (
+                        {currentSplit?.[0].toString() ? (
+                          numberFormatter(currentSplit?.[0].toString())
+                        ) : (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1199,7 +1203,9 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {currentSplit?.[1].toString() || (
+                        {currentSplit?.[1].toString() ? (
+                          numberFormatter(currentSplit?.[1].toString())
+                        ) : (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1414,14 +1420,14 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {avgs?.find(
+                {avgsLoneHealth?.find(
                   (item: any) =>
                     item.loanId ==
                     currentBorrowId1
                       .slice(currentBorrowId1.indexOf("-") + 1)
                       .trim()
                 )?.loanHealth
-                  ? avgs?.find(
+                  ? avgsLoneHealth?.find(
                       (item: any) =>
                         item.loanId ==
                         currentBorrowId1
@@ -1516,7 +1522,7 @@ const YourBorrowModal = ({
                 1.23
               </Text>
             </Box> */}
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#8B949E"
@@ -1550,7 +1556,7 @@ const YourBorrowModal = ({
               >
                 5.56%
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
@@ -1715,7 +1721,7 @@ const YourBorrowModal = ({
                 1.23
               </Text>
             </Box> */}
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#8B949E" fontSize="xs">
                   Est collateral value:{" "}
@@ -1739,7 +1745,7 @@ const YourBorrowModal = ({
               <Text color="#8B949E" fontSize="xs">
                 5.56%
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#8B949E" fontSize="xs">
@@ -1804,7 +1810,7 @@ const YourBorrowModal = ({
             mt="1.5rem"
             mb="1.5rem"
           >
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+            {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
                   color="#6A737D"
@@ -1851,7 +1857,7 @@ const YourBorrowModal = ({
                   <Text>1.23</Text>
                 </Box>
               </Box>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -2006,7 +2012,7 @@ const YourBorrowModal = ({
                 1.23
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#8B949E"
@@ -2040,7 +2046,7 @@ const YourBorrowModal = ({
               >
                 5.56%
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
@@ -2317,6 +2323,10 @@ const YourBorrowModal = ({
   }, [currentPoolCoin]);
 
   useEffect(() => {
+    setinputCollateralAmount(0);
+  }, [currentTokenSelected]);
+
+  useEffect(() => {
     console.log("spendType", spendType);
   }, [spendType]);
 
@@ -2328,21 +2338,21 @@ const YourBorrowModal = ({
   >();
 
   useEffect(() => {
-    // if (!currentBorrowId1 || currentBorrowId1 == "") {
-    //   return;
-    // }
-    // console.log(
-    //   "toMarketSplitConsole",
-    //   currentBorrowId1.slice(5),
-    //   toMarketA,
-    //   toMarketB
-    //   // borrow
-    // );
-    // setCurrentLPTokenAmount(null);
-    // setCurrentSplit(null);
-    setCurrentLPTokenAmount(null);
+    console.log(
+      "toMarketSplitConsole",
+      currentLoanMarket,
+      currentLoanAmount,
+      toMarketA,
+      toMarketB
+      // borrow
+    );
     setCurrentSplit(null);
     fetchLiquiditySplit();
+  }, [toMarketA, currentBorrowId1, toMarketB]);
+
+  useEffect(() => {
+    setCurrentLPTokenAmount(null);
+    fetchLPAmount();
   }, [toMarketA, currentBorrowId1, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
@@ -2355,8 +2365,34 @@ const YourBorrowModal = ({
       currentPool === "Select a pool"
     )
       return;
+
+    const split = await getJediEstimateLiquiditySplit(
+      currentLoanMarket,
+      currentLoanAmount,
+      toMarketA,
+      toMarketB
+      // "USDT",
+      // 99,
+      // "ETH",
+      // "USDT"
+    );
+    console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
+    setCurrentSplit(split);
+  };
+
+  const fetchLPAmount = async () => {
+    if (
+      spendType !== "UNSPENT" ||
+      !toMarketA ||
+      !toMarketB ||
+      !currentBorrowId1 ||
+      !currentBorrowId2 ||
+      currentPool === "Select a pool"
+    )
+      return;
     const lp_tokon = await getJediEstimatedLpAmountOut(
-      currentBorrowId1.slice(5),
+      currentLoanMarket,
+      currentLoanAmount,
       toMarketA,
       toMarketB
       // "USDT",
@@ -2366,24 +2402,15 @@ const YourBorrowModal = ({
     );
     console.log("toMarketSplitLP", lp_tokon);
     setCurrentLPTokenAmount(lp_tokon);
-    const split = await getJediEstimateLiquiditySplit(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-      // "USDT",
-      // 99,
-      // "ETH",
-      // "USDT"
-    );
-    console.log("toMarketSplit", split);
-    setCurrentSplit(split);
   };
+
   useEffect(() => {
     const fetchEstrTokens = async () => {
       const data = await getrTokensMinted(
         collateralBalance.substring(spaceIndex + 1),
         inputCollateralAmount
       );
+      console.log(data, "data in your borrow for est");
       // console.log(data, "data in your borrow");
       setEstrTokensMinted(data);
     };
@@ -3562,7 +3589,7 @@ const YourBorrowModal = ({
                                 className="dropdown-container"
                                 boxShadow="dark-lg"
                               >
-                                {coins.map((coin: string, index: number) => {
+                                {coins?.map((coin: string, index: number) => {
                                   return (
                                     <Box
                                       key={index}
@@ -3639,19 +3666,22 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            console.log("user address ", address);
                             mixpanel.track(
                               "Spend Borrow Button Clicked Your Borrow",
                               {
                                 Clicked: true,
                               }
                             );
-                            dispatch(
-                              setTransactionStartedAndModalClosed(false)
-                            );
-                            if (radioValue == "2") {
-                              hanldeTrade();
-                            } else {
-                              hanldeLiquidation();
+                            if (transactionStarted == false) {
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              );
+                              if (radioValue == "2") {
+                                hanldeTrade();
+                              } else {
+                                hanldeLiquidation();
+                              }
                             }
                           }}
                         >
@@ -3685,6 +3715,8 @@ const YourBorrowModal = ({
                                 key={"error2"}
                               />,
                             ]}
+                            _disabled={{ bgColor: "white", color: "black" }}
+                            isDisabled={transactionStarted == true}
                             currentTransactionStatus={currentTransactionStatus}
                             setCurrentTransactionStatus={
                               setCurrentTransactionStatus
@@ -3718,10 +3750,10 @@ const YourBorrowModal = ({
                             mixpanel.track("Repay Borrow Button Clicked", {
                               Clicked: true,
                             });
-                            dispatch(
-                              setTransactionStartedAndModalClosed(false)
-                            );
                             if (transactionStarted == false) {
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              );
                               handleRepayBorrow();
                             }
                           }}
@@ -4201,7 +4233,7 @@ const YourBorrowModal = ({
                             fontStyle="normal"
                             fontWeight="400"
                           >
-                            Token Type
+                            Select Token
                           </Text>
                           <Tooltip
                             hasArrow
@@ -4241,9 +4273,21 @@ const YourBorrowModal = ({
                           }}
                         >
                           <Box display="flex" gap="1">
-                            <Text color="white">{currentTokenSelected}</Text>
+                            <Box p="1">
+                              {currentTokenSelected == "rToken"
+                                ? getCoin(
+                                    collateralBalance.substring(spaceIndex + 1)
+                                  )
+                                : getCoin(
+                                    collateralBalance.substring(spaceIndex + 2)
+                                  )}
+                            </Box>
+                            <Text color="white" mt="0.5">
+                              {currentTokenSelected == "rToken"
+                                ? collateralBalance.substring(spaceIndex + 1)
+                                : collateralBalance.substring(spaceIndex + 2)}
+                            </Text>
                           </Box>
-
                           <Box pt="1" className="navbar-button">
                             {activeModal ? <ArrowUp /> : <DropdownUp />}
                           </Box>
@@ -4289,6 +4333,7 @@ const YourBorrowModal = ({
                                             : "5"
                                         }`}
                                         gap="1"
+                                        justifyContent="space-between"
                                         bg={`${
                                           coin === currentTokenSelected
                                             ? "#0C6AD9"
@@ -4296,7 +4341,48 @@ const YourBorrowModal = ({
                                         }`}
                                         borderRadius="md"
                                       >
-                                        <Text color="white">{coin}</Text>
+                                        <Box display="flex">
+                                          <Box p="1">
+                                            {coin == "rToken"
+                                              ? getCoin(
+                                                  collateralBalance.substring(
+                                                    spaceIndex + 1
+                                                  )
+                                                )
+                                              : getCoin(
+                                                  collateralBalance.substring(
+                                                    spaceIndex + 2
+                                                  )
+                                                )}
+                                          </Box>
+                                          <Text color="white">
+                                            {coin == "rToken"
+                                              ? collateralBalance.substring(
+                                                  spaceIndex + 1
+                                                )
+                                              : collateralBalance.substring(
+                                                  spaceIndex + 2
+                                                )}
+                                          </Text>
+                                        </Box>
+
+                                        <Box
+                                          fontSize="9px"
+                                          color="white"
+                                          mt="6px"
+                                          fontWeight="thin"
+                                        >
+                                          Wallet Balance:{" "}
+                                          {coin == "Native Token"
+                                            ? walletBalance2
+                                            : userDeposit?.find(
+                                                (item: any) =>
+                                                  item.rToken ==
+                                                  collateralBalance.substring(
+                                                    spaceIndex + 1
+                                                  )
+                                              )?.rTokenFreeParsed}
+                                        </Box>
                                       </Box>
                                     </Box>
                                   );
@@ -4476,7 +4562,13 @@ const YourBorrowModal = ({
                               <SmallErrorIcon />{" "}
                             </Text>
                             <Text ml="0.3rem">
-                              {inputCollateralAmount > walletBalance2
+                              {inputCollateralAmount > walletBalance2 ||
+                              inputCollateralAmount >
+                                userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed
                                 ? "Amount exceeds balance"
                                 : "Invalid Input"}{" "}
                             </Text>
@@ -4486,9 +4578,18 @@ const YourBorrowModal = ({
                             display="flex"
                             justifyContent="flex-end"
                           >
-                            Wallet Balance: {walletBalance2}
+                            Wallet Balance:{" "}
+                            {currentTokenSelected == "Native Token"
+                              ? { walletBalance2 }
+                              : userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed}
                             <Text color="#6E7781" ml="0.2rem">
-                              {` ${collateralAsset}`}
+                              {currentTokenSelected == "Native Token"
+                                ? collateralAsset
+                                : `r${collateralAsset}`}
                             </Text>
                           </Text>
                         </Text>
@@ -4502,9 +4603,18 @@ const YourBorrowModal = ({
                           fontStyle="normal"
                           fontFamily="Inter"
                         >
-                          Wallet Balance: {walletBalance2}
+                          Wallet Balance:{" "}
+                          {currentTokenSelected == "Native Token"
+                            ? walletBalance2
+                            : userDeposit?.find(
+                                (item: any) =>
+                                  item.rToken ==
+                                  collateralBalance.substring(spaceIndex + 1)
+                              )?.rTokenFreeParsed}
                           <Text color="#6E7781" ml="0.2rem">
-                            {` ${collateralAsset}`}
+                            {currentTokenSelected == "Native Token"
+                              ? collateralAsset
+                              : `r${collateralAsset}`}
                           </Text>
                         </Text>
                       )}
@@ -4515,12 +4625,68 @@ const YourBorrowModal = ({
                           value={sliderValue2}
                           onChange={(val) => {
                             setSliderValue2(val);
-                            var ans = (val / 100) * walletBalance2;
-                            ans = Math.round(ans * 100) / 100;
-                            // dispatch(setInputSupplyAmount(ans))
-                            setinputCollateralAmount(ans);
-                            setCollateralAmount(ans);
-                            setRTokenAmount(ans);
+                            if (currentTokenSelected == "Native Token") {
+                              var ans = (val / 100) * walletBalance2;
+                              if (val == 100) {
+                                setinputCollateralAmount(walletBalance2);
+                                setCollateralAmount(walletBalance2);
+                                setRTokenAmount(walletBalance2);
+                              } else {
+                                ans = Math.round(ans * 100) / 100;
+                                // dispatch(setInputSupplyAmount(ans))
+                                setinputCollateralAmount(ans);
+                                setCollateralAmount(ans);
+                                setRTokenAmount(ans);
+                              }
+                            } else {
+                              var ans =
+                                (val / 100) *
+                                userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed;
+                              if (val == 100) {
+                                setinputCollateralAmount(
+                                  userDeposit?.find(
+                                    (item: any) =>
+                                      item.rToken ==
+                                      collateralBalance.substring(
+                                        spaceIndex + 1
+                                      )
+                                  )?.rTokenFreeParsed
+                                );
+                                setCollateralAmount(
+                                  userDeposit?.find(
+                                    (item: any) =>
+                                      item.rToken ==
+                                      collateralBalance.substring(
+                                        spaceIndex + 1
+                                      )
+                                  )?.rTokenFreeParsed
+                                );
+                                setRTokenAmount(
+                                  userDeposit?.find(
+                                    (item: any) =>
+                                      item.rToken ==
+                                      collateralBalance.substring(
+                                        spaceIndex + 1
+                                      )
+                                  )?.rTokenFreeParsed
+                                );
+                              } else {
+                                ans = Math.round(ans * 100) / 100;
+                                // dispatch(setInputSupplyAmount(ans))
+                                setinputCollateralAmount(ans);
+                                setCollateralAmount(ans);
+                                setRTokenAmount(ans);
+                              }
+                            }
+                            // ans = Math.round(ans * 100) / 100;
+                            // // dispatch(setInputSupplyAmount(ans))
+                            // setinputCollateralAmount(ans);
+                            // setCollateralAmount(ans);
+                            // setRTokenAmount(ans);
                           }}
                           isDisabled={collateralTransactionStarted == true}
                           _disabled={{ cursor: "pointer" }}
@@ -4937,14 +5103,14 @@ const YourBorrowModal = ({
                         </Text>
                         <Text color="#6E7681">
                           {" "}
-                          {avgs?.find(
+                          {avgsLoneHealth?.find(
                             (item: any) =>
                               item.loanId ==
                               currentBorrowId2
                                 .slice(currentBorrowId2.indexOf("-") + 1)
                                 .trim()
                           )?.loanHealth
-                            ? avgs?.find(
+                            ? avgsLoneHealth?.find(
                                 (item: any) =>
                                   item.loanId ==
                                   currentBorrowId2
@@ -4957,7 +5123,14 @@ const YourBorrowModal = ({
                       </Text>
                     </Card>
                     {inputCollateralAmount > 0 &&
-                    inputCollateralAmount <= walletBalance2 ? (
+                    (currentTokenSelected == "Native Token"
+                      ? inputCollateralAmount <= walletBalance2
+                      : inputCollateralAmount <=
+                        userDeposit?.find(
+                          (item: any) =>
+                            item.rToken ==
+                            collateralBalance.substring(spaceIndex + 1)
+                        )?.rTokenFreeParsed) ? (
                       <Box
                         onClick={() => {
                           setCollateralTransactionStarted(true);

@@ -91,6 +91,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 // import { useFetchToastStatus } from "../layouts/toasts";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
+import numberFormatter from "@/utils/functions/numberFormatter";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -98,6 +99,7 @@ const SupplyModal = ({
   backGroundOverLay,
   currentSupplyAPR,
   supplyAPRs,
+
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -128,11 +130,11 @@ const SupplyModal = ({
     statusDeposit,
   } = useDeposit();
   useEffect(() => {
-    setAsset(coin ? coin.name : "BTC");
+    setAsset(coin ? coin?.name : "BTC");
   }, [coin]);
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
-    coin ? coin.name : "BTC"
+    coin ? coin?.name : "BTC"
   );
   // console.log("wallet balance",typeof Number(walletBalance))
   // console.log("deposit amount", typeof depositAmount);
@@ -149,19 +151,19 @@ const SupplyModal = ({
     DAI: any;
   }
   const walletBalances: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
   };
 
   const assetBalance: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
   };
   // console.log(walletBalances,"wallet balances in supply modal")
 
@@ -180,16 +182,20 @@ const SupplyModal = ({
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY|| "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
   // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? Number(
           BNtoNum(
             uint256.uint256ToBN(
-              walletBalances[coin.name]?.dataBalanceOf?.balance
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
             ),
-            tokenDecimalsMap[coin.name]
+            tokenDecimalsMap[coin?.name]
           )
         )
       : 0
@@ -200,14 +206,14 @@ const SupplyModal = ({
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
-                walletBalances[coin.name]?.dataBalanceOf?.balance
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
-              tokenDecimalsMap[coin.name]
+              tokenDecimalsMap[coin?.name]
             )
           )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   // useEffect(()=>{
 
@@ -420,9 +426,9 @@ const SupplyModal = ({
   const handleTransaction = async () => {
     try {
       if (ischecked) {
-        mixpanel.track('Action Selected',{
-          "Action":"Deposit and Stake"
-        })
+        mixpanel.track("Action Selected", {
+          Action: "Deposit and Stake",
+        });
         const depositStake = await writeAsyncDepositStake();
         if (depositStake?.transaction_hash) {
           console.log("trans transaction hash created");
@@ -457,19 +463,19 @@ const SupplyModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        mixpanel.track('Supply Market Status',{
-          "Status":"Success Deposit and Stake",
-          "Token":currentSelectedCoin,
-          "TokenAmount":inputAmount
-        })
+        mixpanel.track("Supply Market Status", {
+          Status: "Success Deposit and Stake",
+          Token: currentSelectedCoin,
+          TokenAmount: inputAmount,
+        });
         setDepositTransHash(depositStake?.transaction_hash);
         dispatch(setTransactionStatus("success"));
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
       } else {
-        mixpanel.track('Action Selected',{
-          "Action":"Deposit"
-        })
+        mixpanel.track("Action Selected", {
+          Action: "Deposit",
+        });
         const deposit = await writeAsyncDeposit();
         if (deposit?.transaction_hash) {
           console.log(
@@ -509,11 +515,11 @@ const SupplyModal = ({
         }
         // const deposit = await writeAsyncDepositStake();
         console.log("Supply Modal - deposit ", deposit);
-        mixpanel.track('Supply Market Status',{
-          "Status":"Success",
-          "Token":currentSelectedCoin,
-          "TokenAmount":inputAmount
-        })
+        mixpanel.track("Supply Market Status", {
+          Status: "Success",
+          Token: currentSelectedCoin,
+          TokenAmount: inputAmount,
+        });
         setDepositTransHash(deposit?.transaction_hash);
         // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
         // }
@@ -523,10 +529,10 @@ const SupplyModal = ({
       }
     } catch (err: any) {
       // setTransactionFailed(true);
-      mixpanel.track('Supply Market Status',{
-        'Status':"Failure"
-    })
-    
+      mixpanel.track("Supply Market Status", {
+        Status: "Failure",
+      });
+
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
@@ -650,15 +656,15 @@ const SupplyModal = ({
     setDepositAmount(0);
     setSliderValue(0);
     setToastDisplayed(false);
-    setAsset(coin ? coin.name : "BTC");
-    setCurrentSelectedCoin(coin ? coin.name : "BTC");
+    setAsset(coin ? coin?.name : "BTC");
+    setCurrentSelectedCoin(coin ? coin?.name : "BTC");
     setIsChecked(true);
     setwalletBalance(
-      walletBalances[coin.name]?.statusBalanceOf === "success"
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
-                walletBalances[coin.name]?.dataBalanceOf?.balance
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
               tokenDecimalsMap[coin?.name]
             )
@@ -692,15 +698,19 @@ const SupplyModal = ({
         }}
         {...restProps}
       >
-        {buttonText}
+        {buttonText !== "Click here to supply" ? (
+          buttonText
+        ) : (
+          <Text fontSize="sm">Click here to supply</Text>
+        )}
       </Button>
       <Portal>
         <Modal
           isOpen={isOpen}
           onClose={() => {
             onClose();
-            if(transactionStarted){
-              dispatch(setTransactionStartedAndModalClosed(true))
+            if (transactionStarted) {
+              dispatch(setTransactionStartedAndModalClosed(true));
             }
             resetStates();
             // if (transactionStarted) dispatch(setToastTransactionStarted(true));
@@ -743,41 +753,6 @@ const SupplyModal = ({
                 border="1px solid #2B2F35"
                 mt="-1.5"
               >
-                {walletBalance === 0 && (
-                  <Box
-                    // display="flex"
-                    // justifyContent="left"
-                    w="100%"
-                    pb="4"
-                  >
-                    <Box
-                      display="flex"
-                      bg="#FFF8C5"
-                      color="black"
-                      fontSize="xs"
-                      p="4"
-                      fontStyle="normal"
-                      fontWeight="500"
-                      borderRadius="6px"
-                      // textAlign="center"
-                    >
-                      <Box pr="3" my="auto" cursor="pointer">
-                        <WarningIcon />
-                      </Box>
-                      Selected market does not have balance in your wallet.
-                      Please add the balance in the current market or select the
-                      valid market from the dropdown below
-                      {/* <Box
-                                py="1"
-                                pl="4"
-                                cursor="pointer"
-                                // onClick={handleClick}
-                              >
-                                <TableClose />
-                              </Box> */}
-                    </Box>
-                  </Box>
-                )}
                 <Text color="#8B949E" display="flex" alignItems="center">
                   <Text
                     mr="0.3rem"
@@ -841,7 +816,7 @@ const SupplyModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin: NativeToken, index: number) => {
+                      {coins?.map((coin: NativeToken, index: number) => {
                         return (
                           <Box
                             key={index}
@@ -852,16 +827,8 @@ const SupplyModal = ({
                             gap="1"
                             pr="2"
                             display={
-                              Number(
-                                BNtoNum(
-                                  uint256.uint256ToBN(
-                                    assetBalance[coin]?.dataBalanceOf?.balance
-                                  ),
-                                  tokenDecimalsMap[coin]
-                                )
-                              ) === 0
-                                ? "none"
-                                : "flex"
+                              assetBalance[coin]?.dataBalanceOf?.balance &&
+                              "flex"
                             }
                             onClick={() => {
                               setCurrentSelectedCoin(coin);
@@ -918,12 +885,15 @@ const SupplyModal = ({
                                 fontWeight="thin"
                               >
                                 Wallet Balance:{" "}
-                                {Number(
-                                  BNtoNum(
-                                    uint256.uint256ToBN(
-                                      assetBalance[coin]?.dataBalanceOf?.balance
-                                    ),
-                                    tokenDecimalsMap[coin]
+                                {numberFormatter(
+                                  Number(
+                                    BNtoNum(
+                                      uint256.uint256ToBN(
+                                        assetBalance[coin]?.dataBalanceOf
+                                          ?.balance
+                                      ),
+                                      tokenDecimalsMap[coin]
+                                    )
                                   )
                                 )}
                               </Box>
@@ -1071,8 +1041,8 @@ const SupplyModal = ({
                     >
                       Wallet Balance:{" "}
                       {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
-                        ? walletBalance.toFixed(2)
-                        : walletBalance}
+                        ? numberFormatter(walletBalance)
+                        : numberFormatter(walletBalance)}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentSelectedCoin}`}
                       </Text>
@@ -1091,8 +1061,8 @@ const SupplyModal = ({
                   >
                     Wallet Balance:{" "}
                     {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
-                      ? walletBalance.toFixed(2)
-                      : walletBalance}
+                      ? numberFormatter(walletBalance)
+                      : numberFormatter(walletBalance)}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentSelectedCoin}`}
                     </Text>
@@ -1117,12 +1087,12 @@ const SupplyModal = ({
                       setSliderValue(val);
                       var ans = (val / 100) * walletBalance;
                       // console.log(ans);
-                      if(val==100){
-                        setDepositAmount(walletBalance)
-                        setinputAmount(walletBalance)
-                      }else{
+                      if (val == 100) {
+                        setDepositAmount(walletBalance);
+                        setinputAmount(walletBalance);
+                      } else {
                         ans = Math.round(ans * 100) / 100;
-                        
+
                         // console.log(ans)
                         // dispatch(setInputSupplyAmount(ans));
                         setDepositAmount(ans);
@@ -1409,10 +1379,10 @@ const SupplyModal = ({
                       setTransactionStarted(true);
                       if (transactionStarted === false) {
                         handleTransaction();
-                        dispatch(setTransactionStartedAndModalClosed(false))
-                        mixpanel.track('Supply Market Clicked Button',{
-                          'Supply Clicked':true
-                        })
+                        dispatch(setTransactionStartedAndModalClosed(false));
+                        mixpanel.track("Supply Market Clicked Button", {
+                          "Supply Clicked": true,
+                        });
                       }
                       // handleTransaction();
                       // dataDeposit();
