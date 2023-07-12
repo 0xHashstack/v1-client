@@ -1001,6 +1001,7 @@ const BorrowDashboard = ({
             Your do not have active borrow.
             <Box
               // ml="1"
+              mr="1"
               as="span"
               textDecoration="underline"
               color="#0C6AD9"
@@ -1019,14 +1020,14 @@ const BorrowDashboard = ({
                 backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
               />
             </Box>
-            <Box
+            {/* <Box
               py="1"
               pl="4"
               cursor="pointer"
               onClick={() => setShowEmptyNotification(!showEmptyNotification)}
             >
               <TableClose />
-            </Box>
+            </Box> */}
           </Box>
         </Box>
       )}
