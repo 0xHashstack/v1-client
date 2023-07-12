@@ -92,8 +92,8 @@ import {
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
 import { BNtoNum } from "@/Blockchain/utils/utils";
-import { uint256 } from "starknet";
-import { useWaitForTransaction } from "@starknet-react/core";
+import { Account, uint256 } from "starknet";
+import { useAccount, useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import useRevertInteractWithL3 from "@/Blockchain/hooks/Writes/useRevertInteractWithL3";
@@ -180,6 +180,7 @@ const YourBorrowModal = ({
   const avgs = useSelector(selectEffectiveApr);
   const avgsLoneHealth = useSelector(selectHealthFactor);
   const avgsData: any = [];
+  const { address } = useAccount();
   // useEffect(() => {
   //   const fetchAprs = async () => {
   //     if (avgs?.length == 0) {
@@ -3667,6 +3668,7 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            console.log("user address ", address);
                             mixpanel.track(
                               "Spend Borrow Button Clicked Your Borrow",
                               {

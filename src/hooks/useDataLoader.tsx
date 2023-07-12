@@ -442,6 +442,7 @@ const useDataLoader = () => {
             protocolStats
           );
           console.log("netApr", dataNetApr);
+          //@ts-ignore
           if (isNaN(dataNetApr)) {
             dispatch(setNetAPR(0));
           } else {
