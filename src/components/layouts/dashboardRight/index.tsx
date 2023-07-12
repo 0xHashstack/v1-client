@@ -16,6 +16,7 @@ import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -260,7 +261,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      numberFormatter(utilization[idx]) + "%"
+                      numberFormatterPercentage(utilization[idx]) + "%"
                     )}
                   </Box>
                 </Td>
@@ -291,7 +292,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      numberFormatter(borrowAPRs[idx]) + "%"
+                      numberFormatterPercentage(borrowAPRs[idx]) + "%"
                     )}
                   </Box>
                 </Td>

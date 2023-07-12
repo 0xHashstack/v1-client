@@ -727,19 +727,19 @@ const useDataLoader = () => {
   useEffect(() => {
     console.log(
       "transaction refresh counts - ",
-      "transactionRefresh = " + transactionRefresh,
-      "protocolStatsCount = " + protocolStatsCount,
-      "protocolReservesCount = " + protocolReservesCount,
-      "userDepositsCount = " + userDepositsCount,
-      "userLoansCount = " + userLoansCount,
-      "oraclePricesCount = " + oraclePricesCount,
-      "userInfoCount = " + userInfoCount,
-      // aprsAndHealthCount,
-      "effectiveAprCount = " + effectiveAprCount,
-      "healthFactorCount = " + healthFactorCount,
-      "hourlyDataCount = " + hourlyDataCount,
-      "netAprCount = " + netAprCount,
-      "avgBorrowAPRCount = " + avgBorrowAPRCount
+      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount",
+      transactionRefresh,
+      protocolStatsCount,
+      protocolReservesCount,
+      userDepositsCount,
+      userLoansCount,
+      oraclePricesCount,
+      userInfoCount,
+      effectiveAprCount,
+      healthFactorCount,
+      hourlyDataCount,
+      netAprCount,
+      avgBorrowAPRCount
     );
   }, [
     transactionRefresh,

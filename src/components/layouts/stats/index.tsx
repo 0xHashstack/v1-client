@@ -6,10 +6,12 @@ const Stats = ({
   header,
   onclick,
   statsData,
+  arrowHide,
 }: {
   header: string[];
   statsData: Object;
   onclick: () => void;
+  arrowHide: boolean;
 }) => {
   const gap: number = 100 / (header.length + 1);
   return (
@@ -95,7 +97,7 @@ const Stats = ({
       })}
       <Box
         // w={`${gap / 2}%`}
-        display="flex"
+        display={arrowHide ? "none" : "flex"}
         justifyContent="flex-end"
         paddingRight={2}
         onClick={onclick}

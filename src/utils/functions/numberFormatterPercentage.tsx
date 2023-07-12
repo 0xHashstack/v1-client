@@ -32,7 +32,15 @@ const numberFormatterPercentage = (input: any) => {
   //   5 - (Math.log10(96.95) + 1),
   //   Math.floor(Math.max(5 - Math.max(1, Math.log10(96.95) + 1), 0))
   // );
-  var formattedNumber = number?.toFixed(6);
+  var formattedNumber =
+    magnitude < 1
+      ? number?.toFixed(
+          Math.max(5 - Math.floor(Math.max(2, Math.log10(number) + 1)), 0)
+        )
+      : // .replace(/\.?0+$/, "") // Remove trailing zeros and decimal point if unnecessary
+        number?.toFixed(
+          Math.max(4 - Math.floor(Math.max(2, Math.log10(number) + 1)), 0)
+        );
   // .replace(/\.?0+$/, ""); // Remove trailing zeros and decimal point if unnecessary
 
   return formattedNumber + suffixes[magnitude];
