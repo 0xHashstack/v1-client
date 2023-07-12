@@ -553,6 +553,9 @@ const StakeUnstakeModal = ({
     setUnstakeRToken(coin ? rcoinValue : "rBTC");
     setTransactionStarted(false);
     setUnstakeTransactionStarted(false);
+    setUnstakeWalletBalance(      userDeposit?.find(
+      (item: any) => item.rToken == currentSelectedUnstakeCoin
+    )?.rTokenStakedParsed)
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
     setCurrentTransactionStatus("");

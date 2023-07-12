@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
-import ApexCharts from "react-apexcharts";
-
+import dynamic from 'next/dynamic';
+const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const UtilisationRateChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
     useState(0);

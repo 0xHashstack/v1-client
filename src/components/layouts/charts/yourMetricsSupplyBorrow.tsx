@@ -1,12 +1,7 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import AssetUtilizationChart from "../charts/AssetUtilization";
-import AssetUtilizationRateChart from "../charts/AssetUtilizationRate";
-import SupplyAprChart from "../charts/SupplyApr";
-import BorrowAprChart from "../charts/BorrowApr";
 import YourMetricsSupply from "./YourMetricsSupply";
 import YourMetricsBorrow from "./YourMetricsBorrow";
-import TrialChart from "./TrialChart";
 const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
   const series1: any = {
     BTC: [

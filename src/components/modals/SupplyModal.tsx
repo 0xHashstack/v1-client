@@ -748,41 +748,6 @@ const SupplyModal = ({
                 border="1px solid #2B2F35"
                 mt="-1.5"
               >
-                {walletBalance === 0 && (
-                  <Box
-                    // display="flex"
-                    // justifyContent="left"
-                    w="100%"
-                    pb="4"
-                  >
-                    <Box
-                      display="flex"
-                      bg="#FFF8C5"
-                      color="black"
-                      fontSize="xs"
-                      p="4"
-                      fontStyle="normal"
-                      fontWeight="500"
-                      borderRadius="6px"
-                      // textAlign="center"
-                    >
-                      <Box pr="3" my="auto" cursor="pointer">
-                        <WarningIcon />
-                      </Box>
-                      Selected market does not have balance in your wallet.
-                      Please add the balance in the current market or select the
-                      valid market from the dropdown below
-                      {/* <Box
-                                py="1"
-                                pl="4"
-                                cursor="pointer"
-                                // onClick={handleClick}
-                              >
-                                <TableClose />
-                              </Box> */}
-                    </Box>
-                  </Box>
-                )}
                 <Text color="#8B949E" display="flex" alignItems="center">
                   <Text
                     mr="0.3rem"

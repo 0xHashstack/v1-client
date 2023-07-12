@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
-import ApexCharts from "react-apexcharts";
 import { useSelector } from "react-redux";
 import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
-
+import dynamic from 'next/dynamic';
+const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const BorrowChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
     useState(0);

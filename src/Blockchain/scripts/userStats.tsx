@@ -138,7 +138,7 @@ export async function getNetApr(
   let totalSupply = 0,
     netSupplyInterest = 0;
   for (let deposit of deposits) {
-    const oraclePrice = oraclePrices.find(
+    const oraclePrice = oraclePrices?.find(
       (oraclePrice) => oraclePrice.address === deposit.tokenAddress
     );
     let market_info = marketInfos.find(

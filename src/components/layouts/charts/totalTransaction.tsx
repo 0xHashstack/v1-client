@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import { Box, Button, Text } from "@chakra-ui/react";
 import SmallBlueDot from "@/assets/icons/smallBlueDot";
 import SmallGreenDot from "@/assets/icons/smallGreenDot";
 import { ApexOptions } from "apexcharts";
+import dynamic from 'next/dynamic';
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const TotalTransactionChart = ({ color, curveColor, series }: any) => {
   const [aprByMarket, setAPRByMarket] = useState(0);
