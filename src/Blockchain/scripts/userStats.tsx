@@ -17,7 +17,7 @@ import {
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import { OraclePrice, getOraclePrices } from "./getOraclePrices";
 
-// function parseUserStats( 
+// function parseUserStats(
 //   userStatsData: any,
 // ): IUserStats {
 //   let userStats: IUserStats = {
@@ -139,10 +139,10 @@ export async function getNetApr(
     netSupplyInterest = 0;
   for (let deposit of deposits) {
     const oraclePrice = oraclePrices?.find(
-      (oraclePrice) => oraclePrice.address === deposit.tokenAddress
+      (oraclePrice) => oraclePrice?.address === deposit?.tokenAddress
     );
     let market_info = marketInfos.find(
-      (market_info) => market_info.tokenAddress === deposit.tokenAddress
+      (market_info) => market_info?.tokenAddress === deposit?.tokenAddress
     );
     if (oraclePrice && market_info) {
       let depositAmountUsd =

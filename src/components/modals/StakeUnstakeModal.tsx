@@ -64,7 +64,10 @@ import {
   setTransactionStartedAndModalClosed,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
-import { selectProtocolStats, selectUserDeposits } from "@/store/slices/readDataSlice";
+import {
+  selectProtocolStats,
+  selectUserDeposits,
+} from "@/store/slices/readDataSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
@@ -452,10 +455,9 @@ const StakeUnstakeModal = ({
     }
   };
   const handleUnstakeChange = (newValue: any) => {
-    var percentage =
-      (newValue * 100) / unstakeWalletBalance;
+    var percentage = (newValue * 100) / unstakeWalletBalance;
     percentage = Math.max(0, percentage);
-    if(unstakeWalletBalance==0){
+    if (unstakeWalletBalance == 0) {
       setSliderValue2(0);
       setInputUnstakeAmount(0);
       setRTokenToWithdraw(0);
@@ -501,8 +503,9 @@ const StakeUnstakeModal = ({
   };
 
   const rcoins: RToken[] = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
-  const coinObj: any = coins.find((obj) => coin.name in obj);
-  const rcoinValue = coinObj ? coinObj[coin.name] : "rUSDT";
+  const walletBalance = useSelector(selectWalletBalance);
+  const coinObj: any = coins.find((obj) => coin?.name in obj);
+  const rcoinValue = coinObj ? coinObj[coin?.name] : "rUSDT";
   const [isSupplied, setIsSupplied] = useState(false);
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("BTC");
@@ -536,8 +539,8 @@ const StakeUnstakeModal = ({
       userDeposit?.find(
         (item: any) => item.rToken == currentSelectedUnstakeCoin
       )?.rTokenStakedParsed
-    )
-  },[currentSelectedUnstakeCoin])
+    );
+  }, [currentSelectedUnstakeCoin]);
   const [buttonId, setButtonId] = useState(0);
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const resetStates = () => {
@@ -597,19 +600,22 @@ const StakeUnstakeModal = ({
 
   const router = useRouter();
   const { pathname } = router;
-  const [estrTokens, setEstrTokens] = useState<any>(0)
+  const [estrTokens, setEstrTokens] = useState<any>(0);
 
   // useEffect(() => {
   //   console.log("protocolStats", protocolStats);
   // }, [protocolStats]);
-  useEffect(()=>{
-    const fetchestrTokens=async()=>{
-      const data=await getEstrTokens(currentSelectedUnstakeCoin,rTokenToWithdraw);
+  useEffect(() => {
+    const fetchestrTokens = async () => {
+      const data = await getEstrTokens(
+        currentSelectedUnstakeCoin,
+        rTokenToWithdraw
+      );
       setEstrTokens(data);
-      console.log(data,"stake");
-    }
+      console.log(data, "stake");
+    };
     fetchestrTokens();
-  },[rTokenToWithdraw])
+  }, [rTokenToWithdraw]);
 
   return (
     <Box>
@@ -1695,10 +1701,9 @@ const StakeUnstakeModal = ({
                                       >
                                         staking Balance:{" "}
                                         {validRTokens && validRTokens.length > 0
-                                          ?       userDeposit?.find(
-                                            (item: any) => item.rToken == coin
-                                          )?.rTokenStakedParsed
-
+                                          ? userDeposit?.find(
+                                              (item: any) => item.rToken == coin
+                                            )?.rTokenStakedParsed
                                           : "loading..."}
                                       </Box>
                                     </Box>
@@ -1743,14 +1748,12 @@ const StakeUnstakeModal = ({
                           border={`${
                             !isValid(currentSelectedUnstakeCoin)
                               ? "1px solid #2B2F35"
-                              : rTokenToWithdraw >
-                                unstakeWalletBalance
+                              : rTokenToWithdraw > unstakeWalletBalance
                               ? "1px solid #CF222E"
                               : rTokenToWithdraw < 0
                               ? "1px solid #CF222E"
                               : rTokenToWithdraw > 0 &&
-                                rTokenToWithdraw <=
-                                  unstakeWalletBalance
+                                rTokenToWithdraw <= unstakeWalletBalance
                               ? "1px solid #1A7F37"
                               : "1px solid #2B2F35 "
                           }`}
@@ -1785,8 +1788,7 @@ const StakeUnstakeModal = ({
                               color={`${
                                 !isValid(currentSelectedUnstakeCoin)
                                   ? "#1A7F37"
-                                  : rTokenToWithdraw >
-                                    unstakeWalletBalance
+                                  : rTokenToWithdraw > unstakeWalletBalance
                                   ? "#CF222E"
                                   : rTokenToWithdraw < 0
                                   ? "#CF222E"
@@ -1816,8 +1818,7 @@ const StakeUnstakeModal = ({
                               if (!coinsSupplied[currentSelectedUnstakeCoin]) {
                                 return;
                               }
-                              setRTokenToWithdraw(unstakeWalletBalance
-                              );
+                              setRTokenToWithdraw(unstakeWalletBalance);
                               setSliderValue2(100);
                             }}
                             isDisabled={unstakeTransactionStarted == true}
@@ -1826,8 +1827,7 @@ const StakeUnstakeModal = ({
                             MAX
                           </Button>
                         </Box>
-                        {(rTokenToWithdraw >
-                          unstakeWalletBalance ||
+                        {(rTokenToWithdraw > unstakeWalletBalance ||
                           rTokenToWithdraw < 0) &&
                         coinsSupplied[currentSelectedUnstakeCoin] ? (
                           <Text
@@ -1845,8 +1845,7 @@ const StakeUnstakeModal = ({
                                 <SmallErrorIcon />{" "}
                               </Text>
                               <Text ml="0.3rem">
-                                {rTokenToWithdraw >
-                                unstakeWalletBalance
+                                {rTokenToWithdraw > unstakeWalletBalance
                                   ? "Amount exceeds balance"
                                   : "Invalid Input"}{" "}
                               </Text>
@@ -1856,8 +1855,7 @@ const StakeUnstakeModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              Staking Balance:{" "}
-                              {unstakeWalletBalance}
+                              Staking Balance: {unstakeWalletBalance}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedUnstakeCoin}`}
                               </Text>
@@ -1874,8 +1872,7 @@ const StakeUnstakeModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Staking Balance:{" "}
-                            {unstakeWalletBalance}
+                            Staking Balance: {unstakeWalletBalance}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedUnstakeCoin}`}
                             </Text>
@@ -1895,9 +1892,7 @@ const StakeUnstakeModal = ({
                                 return;
                               }
                               setSliderValue2(val);
-                              var ans =
-                                (val / 100) *
-                               unstakeWalletBalance;
+                              var ans = (val / 100) * unstakeWalletBalance;
                               ans = Math.round(ans * 100) / 100;
                               // dispatch(setInputSupplyAmount(ans))
                               setRTokenToWithdraw(ans);
@@ -2041,8 +2036,11 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          {unstakeWalletBalance ? <Text color="#6E7681">{estrTokens}</Text>: <Text color="#6E7681">0</Text>}
-                         
+                          {unstakeWalletBalance ? (
+                            <Text color="#6E7681">{estrTokens}</Text>
+                          ) : (
+                            <Text color="#6E7681">0</Text>
+                          )}
                         </Text>
                         <Text
                           color="#8B949E"
@@ -2117,8 +2115,7 @@ const StakeUnstakeModal = ({
                         </Text>
                       </Card>
                       {rTokenToWithdraw > 0 &&
-                      rTokenToWithdraw <=
-                        unstakeWalletBalance &&
+                      rTokenToWithdraw <= unstakeWalletBalance &&
                       coinsSupplied[currentSelectedUnstakeCoin] ? (
                         <Box
                           onClick={() => {

@@ -99,6 +99,7 @@ const SupplyModal = ({
   backGroundOverLay,
   currentSupplyAPR,
   supplyAPRs,
+
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -129,11 +130,11 @@ const SupplyModal = ({
     statusDeposit,
   } = useDeposit();
   useEffect(() => {
-    setAsset(coin ? coin.name : "BTC");
+    setAsset(coin ? coin?.name : "BTC");
   }, [coin]);
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
-    coin ? coin.name : "BTC"
+    coin ? coin?.name : "BTC"
   );
   // console.log("wallet balance",typeof Number(walletBalance))
   // console.log("deposit amount", typeof depositAmount);
@@ -150,19 +151,19 @@ const SupplyModal = ({
     DAI: any;
   }
   const walletBalances: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
   };
 
   const assetBalance: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
   };
   // console.log(walletBalances,"wallet balances in supply modal")
 
@@ -192,9 +193,9 @@ const SupplyModal = ({
       ? Number(
           BNtoNum(
             uint256.uint256ToBN(
-              walletBalances[coin.name]?.dataBalanceOf?.balance
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
             ),
-            tokenDecimalsMap[coin.name]
+            tokenDecimalsMap[coin?.name]
           )
         )
       : 0
@@ -205,14 +206,14 @@ const SupplyModal = ({
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
-                walletBalances[coin.name]?.dataBalanceOf?.balance
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
-              tokenDecimalsMap[coin.name]
+              tokenDecimalsMap[coin?.name]
             )
           )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   // useEffect(()=>{
 
@@ -655,15 +656,15 @@ const SupplyModal = ({
     setDepositAmount(0);
     setSliderValue(0);
     setToastDisplayed(false);
-    setAsset(coin ? coin.name : "BTC");
-    setCurrentSelectedCoin(coin ? coin.name : "BTC");
+    setAsset(coin ? coin?.name : "BTC");
+    setCurrentSelectedCoin(coin ? coin?.name : "BTC");
     setIsChecked(true);
     setwalletBalance(
-      walletBalances[coin.name]?.statusBalanceOf === "success"
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
-                walletBalances[coin.name]?.dataBalanceOf?.balance
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
               tokenDecimalsMap[coin?.name]
             )
@@ -822,16 +823,19 @@ const SupplyModal = ({
                             gap="1"
                             pr="2"
                             display={
-                              Number(
-                                BNtoNum(
-                                  uint256.uint256ToBN(
-                                    assetBalance[coin]?.dataBalanceOf?.balance
-                                  ),
-                                  tokenDecimalsMap[coin]
-                                )
-                              ) === 0
-                                ? "none"
-                                : "flex"
+                              assetBalance[coin]?.dataBalanceOf?.balance
+                                ? Number(
+                                    BNtoNum(
+                                      uint256.uint256ToBN(
+                                        assetBalance[coin]?.dataBalanceOf
+                                          ?.balance
+                                      ),
+                                      tokenDecimalsMap[coin]
+                                    )
+                                  ) === 0
+                                  ? "none"
+                                  : "flex"
+                                : "none"
                             }
                             onClick={() => {
                               setCurrentSelectedCoin(coin);
@@ -888,13 +892,16 @@ const SupplyModal = ({
                                 fontWeight="thin"
                               >
                                 Wallet Balance:{" "}
-                                {numberFormatter(Number(
-                                  BNtoNum(
-                                    uint256.uint256ToBN(
-                                      assetBalance[coin]?.dataBalanceOf?.balance
-                                    ),
-                                    tokenDecimalsMap[coin]
-                                  ))
+                                {numberFormatter(
+                                  Number(
+                                    BNtoNum(
+                                      uint256.uint256ToBN(
+                                        assetBalance[coin]?.dataBalanceOf
+                                          ?.balance
+                                      ),
+                                      tokenDecimalsMap[coin]
+                                    )
+                                  )
                                 )}
                               </Box>
                             </Box>

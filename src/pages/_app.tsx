@@ -50,12 +50,14 @@ export default function App({ Component, pageProps }: AppProps) {
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
   const [feedback, setFeedback] = useState(false);
-  loadSpace(spaceApiKey).then((api) => {
-    if (!feedback) {
-      api.init();
-      setFeedback(true);
-    }
-  });
+  loadSpace(spaceApiKey)
+    .then((api) => {
+      if (!feedback) {
+        api.init();
+        setFeedback(true);
+      }
+    })
+    .catch((err) => console.log(err));
 
   return (
     <>

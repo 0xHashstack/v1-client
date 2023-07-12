@@ -171,11 +171,11 @@ const SupplyDashboard = ({
         setSupplies(temp);
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
-            const avg =await  effectiveAprDeposit(
+            const avg = await effectiveAprDeposit(
               supply[i],
               reduxProtocolStats
             );
-            console.log(avg,"avg in supply dash")
+            console.log(avg, "avg in supply dash");
             const data = {
               token: supply[i].token,
               avg: avg?.toFixed(2),
@@ -194,7 +194,7 @@ const SupplyDashboard = ({
       }
     };
     getSupply();
-  }, [userDeposits,reduxProtocolStats]);
+  }, [userDeposits, reduxProtocolStats]);
   // useEffect(()=>{
   //   const fetchEffectiveApr=async()=>{
   //     try{
@@ -390,7 +390,8 @@ const SupplyDashboard = ({
                   <Tr
                     key={idx}
                     width={"100%"}
-                    height={"5.2rem"}
+                    // height={"5.2rem"}
+                    height={"6rem"}
                     // bgColor="blue"
                     // borderBottom="1px solid #2b2f35"
                     position="relative"
@@ -475,10 +476,12 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          protocolStats.find((stat: any) => {
-                            if (stat?.token === supply?.rToken?.slice(1))
-                              return stat.supplyRate;
-                          })?.exchangeRateRtokenToUnderlying + " %"
+                          numberFormatter(
+                            protocolStats.find((stat: any) => {
+                              if (stat?.token === supply?.rToken?.slice(1))
+                                return stat.supplyRate;
+                            })?.exchangeRateRtokenToUnderlying
+                          ) + " %"
                         )}
                       </Text>
                     </Td>
@@ -509,10 +512,12 @@ const SupplyDashboard = ({
                           />
                         ) : (
                           // protocolStats[idx]?.supplyRate + "%"
-                          protocolStats.find((stat: any) => {
-                            if (stat?.token === supply?.rToken?.slice(1))
-                              return stat.supplyRate;
-                          })?.supplyRate + " %"
+                          numberFormatter(
+                            protocolStats.find((stat: any) => {
+                              if (stat?.token === supply?.rToken?.slice(1))
+                                return stat.supplyRate;
+                            })?.supplyRate
+                          ) + " %"
                         )}
                       </Box>
                     </Td>
@@ -542,10 +547,11 @@ const SupplyDashboard = ({
                             endColor="#2B2F35"
                             borderRadius="6px"
                           />: */}
-                          {avgs?.find((item: any) => item.token == supply?.token)
+                        {numberFormatter(
+                          avgs?.find((item: any) => item.token == supply?.token)
                             ?.avg
-                        }{" "}%
-                  {/* {supply?.token} */}
+                        )}{" "}
+                        %{/* {supply?.token} */}
                       </Text>
                     </Td>
                     <Td
@@ -553,7 +559,7 @@ const SupplyDashboard = ({
                       maxWidth={"3rem"}
                       fontSize={"14px"}
                       fontWeight={400}
-                      overflow={"hidden"}
+                      // overflow={"hidden"}
                       textAlign={"center"}
                     >
                       <Box
@@ -783,20 +789,18 @@ const SupplyDashboard = ({
         borderRadius="8px"
         gap="6px"
       >
-        <Text color="#FFFFFF">Your Ethereum Wallet is empty</Text>
+        <Text color="#FFFFFF">You do not have active supply</Text>
         <SupplyModal
-          buttonText="Supply"
-          height={"2rem"}
-          fontSize={"14px"}
-          fontWeight="500"
-          lineHeight="20px"
-          padding="6px 12px"
-          border="1px solid rgba(27, 31, 36, 0.15)"
-          bgColor="#2DA44E"
-          _hover={{ bg: "#2DA44E", color: "white" }}
-          borderRadius={"6px"}
-          color="#fff"
-          backGroundOverLay="rgba(244, 242, 255, 0.5)"
+          buttonText="Click here to supply"
+          variant="link"
+          fontSize="16px"
+          fontWeight="400"
+          display="inline"
+          color="#0969DA"
+          cursor="pointer"
+          ml="0.4rem"
+          lineHeight="24px"
+          backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
         />
       </Box>
     </>

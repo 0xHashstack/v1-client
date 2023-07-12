@@ -43,7 +43,7 @@ const Stats = ({
               {header[idx]}
             </Text>
             <Box color="#E6EDF3" fontSize="20px">
-              {!value && value !== null ? (
+              {value == null ? (
                 <Skeleton
                   width="6rem"
                   height="1.9rem"
@@ -55,7 +55,11 @@ const Stats = ({
                 header[idx] == "Avg. asset utillization" ? (
                 <Box color="#e6edf3" fontSize="20px">
                   {value !== null ? (
-                    `${value}%`
+                    value ? (
+                      `${value}%`
+                    ) : (
+                      "NA"
+                    )
                   ) : (
                     <Skeleton
                       width="6rem"
@@ -69,7 +73,11 @@ const Stats = ({
               ) : (
                 <Box color="#e6edf3" fontSize="20px">
                   {value !== null ? (
-                    numberFormatter(value)
+                    value ? (
+                      "$" + numberFormatter(value)
+                    ) : (
+                      "NA"
+                    )
                   ) : (
                     <Skeleton
                       width="6rem"

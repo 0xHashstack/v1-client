@@ -66,11 +66,11 @@ const DashboardLeft = ({
   const coinPrices = Coins.map((coin) => {
     const matchingCoin = oraclePrices?.find(
       (c: { name: string }) =>
-        c?.name?.toLowerCase() === coin.name.toLowerCase()
+        c?.name?.toLowerCase() === coin?.name.toLowerCase()
     );
     if (matchingCoin) {
-      const formattedPrice = matchingCoin.price.toFixed(3); // Format price to 3 decimal places
-      return { name: coin.name, price: formattedPrice };
+      const formattedPrice = matchingCoin?.price.toFixed(3); // Format price to 3 decimal places
+      return { name: coin?.name, price: formattedPrice };
     }
     return null;
   });
@@ -267,8 +267,8 @@ const DashboardLeft = ({
                   >
                     <Box height="2rem" width="2rem">
                       <Image
-                        src={`/${coin.name}.svg`}
-                        alt={`Picture of the coin that I want to access ${coin.name}`}
+                        src={`/${coin?.name}.svg`}
+                        alt={`Picture of the coin that I want to access ${coin?.name}`}
                         width="32"
                         height="32"
                       />
@@ -283,9 +283,9 @@ const DashboardLeft = ({
                       pt="3px"
                     >
                       <Text fontSize="14px" fontWeight="400">
-                        {coin.name}
+                        {coin?.name}
                       </Text>
-                      {!assetBalance[coin.name]?.dataBalanceOf ? (
+                      {!assetBalance[coin?.name]?.dataBalanceOf ? (
                         // <Skeleton
                         //   width="3rem"
                         //   height="0.8rem"
@@ -305,10 +305,10 @@ const DashboardLeft = ({
                               // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
                               BNtoNum(
                                 uint256.uint256ToBN(
-                                  assetBalance[coin.name]?.dataBalanceOf
+                                  assetBalance[coin?.name]?.dataBalanceOf
                                     ?.balance
                                 ),
-                                tokenDecimalsMap[coin.name]
+                                tokenDecimalsMap[coin?.name]
                               )
                             )
                           )}
@@ -345,7 +345,7 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      coinPrices[idx]?.price
+                      numberFormatter(coinPrices[idx]?.price)
                     )}
                     {/* 0000.00 */}
                   </Box>
@@ -408,7 +408,7 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      supplyAPRs[idx] + "%"
+                      numberFormatter(supplyAPRs[idx]) + "%"
                     )}
                   </Box>
                 </Td>
@@ -449,7 +449,7 @@ const DashboardLeft = ({
                       coin={coin}
                       supplyAPRs={supplyAPRs}
                       currentSupplyAPR={currentSupplyAPR}
-                      // walletBalance={assetBalance[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(assetBalance[coin.name]?.dataBalanceOf?.balance))) : 0}
+                      // walletBalance={assetBalance[coin?.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(assetBalance[coin?.name]?.dataBalanceOf?.balance))) : 0}
                     />
                   </Box>
                 </Td>

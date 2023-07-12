@@ -431,6 +431,7 @@ const useDataLoader = () => {
           userDepositsCount == transactionRefresh &&
           protocolStatsCount == transactionRefresh &&
           userLoansCount == transactionRefresh &&
+          dataOraclePrices &&
           userInfoCount < transactionRefresh
         ) {
           console.log("user info called inside - transactionRefresh");
@@ -440,7 +441,12 @@ const useDataLoader = () => {
             dataOraclePrices,
             protocolStats
           );
-          dispatch(setNetAPR(dataNetApr));
+          console.log("netApr", dataNetApr);
+          if (isNaN(dataNetApr)) {
+            dispatch(setNetAPR(0));
+          } else {
+            dispatch(setNetAPR(dataNetApr));
+          }
           const avgSupplyApr = await effectiveAprDeposit(
             dataDeposit[0],
             protocolStats
@@ -453,8 +459,8 @@ const useDataLoader = () => {
           );
           console.log(avgBorrowApr, "data avg borrow apr pagecard");
 
-          // dispatch(setAvgBorrowAPR(avgBorrowApr));
-          // dispatch(setAvgSupplyAPR(avgSupplyApr));
+          dispatch(setAvgBorrowAPR(avgBorrowApr));
+          dispatch(setAvgSupplyAPR(avgSupplyApr));
 
           const dataBorrow = await getTotalBorrow(
             userLoans,
@@ -466,7 +472,7 @@ const useDataLoader = () => {
           dispatch(setYourBorrow(dataTotalBorrow));
           console.log(dataDeposit, "data deposit pagecard");
           const data = getTotalSupply(dataDeposit, dataOraclePrices);
-          if (data) {
+          if (data != null) {
             dispatch(setYourSupply(data));
           }
           console.log(data, "total supply pagecard");
@@ -475,6 +481,7 @@ const useDataLoader = () => {
             dataTotalBorrow,
             dataBorrow?.totalCurrentAmount
           );
+          console.log(dataNetWorth, "networth");
           dispatch(setNetWorth(dataNetWorth));
           dispatch(setUserInfoCount(""));
         }
