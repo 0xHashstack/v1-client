@@ -41,29 +41,56 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
 
     switch (aprByMarket) {
       case 0:
-        newData = [
+        btcData?.aprs ? newData = [
           {
-            name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            name: "wBTC",
+            data: btcData?.aprs,
           },
           {
-            name: "Series 2",
+            name: "wETH",
             data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
           },
           {
-            name: "Series 3",
+            name: "USDT",
             data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
           },
           {
-            name: "Series 4",
+            name: "USDC",
+            data: btcData?.aprs,
+          },
+          {
+            name: "DAI",
+            data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
+          },
+        ]:newData = [
+          {
+            name: "wBTC",
+            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+          },
+          {
+            name: "WETH",
+            data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
+          },
+          {
+            name: "USDT",
+            data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
+          },
+          {
+            name: "USDC",
             data: [40000, 50000, 45000, 60000, 59000, 70000, 90000],
           },
           {
-            name: "Series 5",
+            name: "DAI",
             data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
           },
         ];
-        newCategories = btcData?.dates;
+        btcData?.dates ? newCategories = btcData?.dates:newCategories=[
+          new Date("2023-06-01").getTime(),
+          new Date("2023-06-02").getTime(),
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-04").getTime(),
+          new Date("2023-06-05").getTime(),
+        ];
         break;
       case 1:
         newData = [
@@ -282,7 +309,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
 
       stroke: {
         curve: "smooth",
-        colors: ["#0FCA7A", "#00C7F2"],
+        colors: ["#804D0F", "#3B48A8"],
         opacity: 1,
       },
       grid: {
@@ -291,7 +318,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       legend: {
         show: false, // Hide the series buttons when only one series is present
       },
-      colors: ["#0ebc71", "#04aacf"],
+      // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
+        colors: ["#804D0F", "#3B48A8"],
     },
   };
   const options: ApexOptions = {
@@ -300,6 +328,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       ...splineChartData.options.stroke,
       curve: "smooth",
     },
+      // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
   };
 
   return (

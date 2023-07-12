@@ -170,7 +170,7 @@ const ExchangeRatesChart = () => {
         position: "bottom",
         enabled: true,
         style: {
-          colors: ["#000000"],
+          colors: ["#fff"],
         },
         formatter: function (val: any) {
           return numberFormatter(val); // Display the data value as the label
