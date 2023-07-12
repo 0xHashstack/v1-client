@@ -81,6 +81,7 @@ import UsdtToDai from "@/assets/icons/pools/usdtToDai";
 import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import Image from "next/image";
 import mixpanel from "mixpanel-browser";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -1060,7 +1061,7 @@ const LiquidityProvisionModal = ({
                           />
                         </Box>
                       ) : (
-                        "$" + currentLPTokenAmount
+                        "$" + numberFormatter(currentLPTokenAmount)
                       )}
                       {/* $ 10.91 */}
                     </Text>
@@ -1116,7 +1117,9 @@ const LiquidityProvisionModal = ({
                           />
                         </Box>
                         <Text>
-                          {currentSplit?.[0]?.toString() || (
+                          {currentSplit?.[0].toString() ? (
+                            numberFormatter(currentSplit?.[0].toString())
+                          ) : (
                             <Skeleton
                               width="2.3rem"
                               height=".85rem"
@@ -1138,7 +1141,9 @@ const LiquidityProvisionModal = ({
                           />
                         </Box>
                         <Text>
-                          {currentSplit?.[1]?.toString() || (
+                          {currentSplit?.[1].toString() ? (
+                            numberFormatter(currentSplit?.[1].toString())
+                          ) : (
                             <Skeleton
                               width="2.3rem"
                               height=".85rem"
