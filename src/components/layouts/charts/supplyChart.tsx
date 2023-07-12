@@ -12,7 +12,7 @@ const SupplyChart = () => {
     useState(0);
   const [chartData, setChartData] = useState([
     {
-      name: "Series 1",
+      name: "Supply",
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
@@ -45,13 +45,13 @@ const SupplyChart = () => {
         btcData?.supplyAmounts
           ? (newData = [
               {
-                name: "Series 1",
+                name: "Supply",
                 data: btcData?.supplyAmounts,
               },
             ])
           : (newData = [
               {
-                name: "Series 1",
+                name: "Supply",
                 data: [20000, 40000, 38000, 42000, 39000, 44000],
               },
             ]);
@@ -68,7 +68,7 @@ const SupplyChart = () => {
       case 1:
         newData = [
           {
-            name: "Series 1",
+            name: "Supply",
             data: [
               40000, 10000, 42000, 39000, 44000, 41000, 43000, 
             ],
@@ -88,7 +88,7 @@ const SupplyChart = () => {
         //y data axis
         newData = [
           {
-            name: "Series 1",
+            name: "Supply",
             data: [50000, 49000, 52000, 48000, 51000,  48000, 50000, 48000, 51000, 48000],
           },
         ];
@@ -109,7 +109,7 @@ const SupplyChart = () => {
       case 3:
         newData = [
           {
-            name: "Series 1",
+            name: "Supply",
             data: [
               60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000,
               60000, 62000, 70000,

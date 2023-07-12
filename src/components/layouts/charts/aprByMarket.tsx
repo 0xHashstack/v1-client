@@ -15,8 +15,26 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       name: "Series 1",
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
+    {
+      name: "Series 2",
+      data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
+    },
+    {
+      name: "Series 3",
+      data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
+    },
+    {
+      name: "Series 4",
+      data: [40000, 50000, 45000, 60000, 59000, 70000, 90000],
+    },
+    {
+      name: "Series 5",
+      data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
+    },
   ]);
+  
   const btcData=useSelector(selectHourlyBTCData);
+  const splineColor=["#804D0F", "#3B48A8","#136B51","#1A2683","#996B22"]
   console.log(btcData,"btc")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
@@ -249,7 +267,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
     return { newData, newCategories };
   };
   const splineChartData = {
-    series: chartData,
+    series:  chartData,
     options: {
       chart: {
         // offsetX: 50,
@@ -300,7 +318,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
 
       stroke: {
         curve: "smooth",
-        colors: ["#804D0F", "#3B48A8"],
+        color: splineColor,
         opacity: 1,
       },
       grid: {
@@ -310,7 +328,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         show: false, // Hide the series buttons when only one series is present
       },
       // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
-        colors: ["#804D0F", "#3B48A8"],
+        color: splineColor,
     },
   };
   const options: ApexOptions = {
@@ -319,6 +337,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       ...splineChartData.options.stroke,
       curve: "smooth",
     },
+    colors: splineColor
       // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
   };
 
