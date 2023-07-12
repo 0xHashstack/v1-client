@@ -1214,7 +1214,7 @@ const TradeModal = ({
                               marginLeft: "5px",
                             }}
                           />
-                          {coins.map((coin: NativeToken, index: number) => {
+                          {coins?.map((coin: NativeToken, index: number) => {
                             return (
                               <Box
                                 key={index}
@@ -1687,7 +1687,7 @@ const TradeModal = ({
                           className="dropdown-container"
                           boxShadow="dark-lg"
                         >
-                          {coins.map((coin: NativeToken, index: number) => {
+                          {coins?.map((coin: NativeToken, index: number) => {
                             return (
                               <Box
                                 key={index}
@@ -2372,7 +2372,7 @@ const TradeModal = ({
                           className="dropdown-container"
                           boxShadow="dark-lg"
                         >
-                          {coins.map((coin: NativeToken, index: number) => {
+                          {coins?.map((coin: NativeToken, index: number) => {
                             return (
                               <Box
                                 key={index}
