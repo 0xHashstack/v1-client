@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
-import { Box, Button } from "@chakra-ui/react";
-import dynamic from 'next/dynamic';
-import { useSelector } from "react-redux";
-import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
-import numberFormatter from "@/utils/functions/numberFormatter";
+import { Box, Button, Text } from "@chakra-ui/react";
+import dynamic from "next/dynamic";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const TotalUtilisationRateByMarketChart = () => {
@@ -15,8 +12,12 @@ const TotalUtilisationRateByMarketChart = () => {
       name: "Series 1",
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
+    {
+      name: "Series 2",
+      data: [35000, 50000, 49000, 60000, 80000, 30000, 40000],
+    },
   ]);
-  const btcData=useSelector(selectHourlyBTCData)
+  const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -41,19 +42,13 @@ const TotalUtilisationRateByMarketChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.utilRates ? newData = [
-          {
-            name: "Series 1",
-            data: btcData?.utilRates,
-          },
-        ]:newData=[
+        newData = [
           {
             name: "Series 1",
             data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
           },
         ];
-        btcData?.dates ? newCategories = btcData?.dates
-        :newCategories = [
+        newCategories = [
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
           new Date("2023-07-03").getTime(),
@@ -61,61 +56,49 @@ const TotalUtilisationRateByMarketChart = () => {
           new Date("2023-07-05").getTime(),
           new Date("2023-07-06").getTime(),
           new Date("2023-07-07").getTime(),
-        ] ;
-        break;
-      case 1:
-        newData = [
-          {
-            name: "Series 1",
-            data: [
-              40000, 38000, 42000, 39000, 44000, 41000, 43000, 39000, 44000,
-              41000, 43000, 39000, 44000, 41000, 43000, 39000, 44000, 41000,
-              43000,
-            ],
-          },
-        ];
-        newCategories = [
-          new Date("2023-06-01").getTime(),
-          new Date("2023-06-02").getTime(),
-          new Date("2023-06-03").getTime(),
-          new Date("2023-06-04").getTime(),
-          new Date("2023-06-05").getTime(),
-          new Date("2023-06-06").getTime(),
-          new Date("2023-06-07").getTime(),
-          new Date("2023-06-08").getTime(),
-          new Date("2023-06-09").getTime(),
-          new Date("2023-06-10").getTime(),
-          new Date("2023-06-11").getTime(),
-          new Date("2023-06-12").getTime(),
-          new Date("2023-06-13").getTime(),
-          new Date("2023-06-14").getTime(),
-          new Date("2023-06-15").getTime(),
-          new Date("2023-06-16").getTime(),
-          new Date("2023-06-17").getTime(),
-          new Date("2023-06-18").getTime(),
-          new Date("2023-06-19").getTime(),
-          new Date("2023-06-20").getTime(),
         ];
         break;
-      case 2:
-        //y data axis
-        newData = [
-          {
-            name: "Series 1",
-            data: [50000, 49000, 52000, 48000, 51000, 48000, 50000],
-          },
+        case 1:
+          newData = [
+            {
+              name: "Series 1",
+              data: [
+                40000, 10000, 42000, 39000, 44000, 41000, 43000, 
+              ],
+            },
+          ];
+          newCategories = [
+            new Date("2023-07-01").getTime(),
+            new Date("2023-07-02").getTime(),
+            new Date("2023-07-03").getTime(),
+            new Date("2023-07-04").getTime(),
+            new Date("2023-07-05").getTime(),
+            new Date("2023-07-06").getTime(),
+            new Date("2023-07-07").getTime(),
+          ];
+          break;
+        case 2:
+          //y data axis
+          newData = [
+            {
+              name: "Series 1",
+              data: [50000, 49000, 52000, 48000, 51000,  48000, 50000, 48000, 51000, 48000],
+            },
+          ];
+          //x axis data
+          newCategories = [
+            new Date("2023-06-03").getTime(),
+            new Date("2023-06-06").getTime(),
+            new Date("2023-06-09").getTime(),
+            new Date("2023-06-12").getTime(),
+            new Date("2023-06-15").getTime(),
+            new Date("2023-06-18").getTime(),
+            new Date("2023-06-21").getTime(),
+            new Date("2023-06-24").getTime(),
+            new Date("2023-06-27").getTime(),
+            new Date("2023-06-30").getTime(),
         ];
-        //x axis data
-        newCategories = [
-          new Date("2023-01-01").getTime(),
-          new Date("2023-02-01").getTime(),
-          new Date("2023-03-01").getTime(),
-          new Date("2023-04-01").getTime(),
-          new Date("2023-05-01").getTime(),
-          new Date("2023-06-01").getTime(),
-          new Date("2023-07-01").getTime(),
-        ];
-        break;
+          break;
       case 3:
         newData = [
           {
@@ -160,10 +143,10 @@ const TotalUtilisationRateByMarketChart = () => {
       dataLabels: {
         enabled: false,
         style: {
-          colors: ["#000000"],
+          colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return numberFormatter(val); // Display the data value as the label
+          return val / 1000 + "k"; // Display the data value as the label
         },
         position: "top",
       },
@@ -191,7 +174,7 @@ const TotalUtilisationRateByMarketChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return value / 1000 + "k";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -325,6 +308,113 @@ const TotalUtilisationRateByMarketChart = () => {
         borderRadius="6px"
         padding="16px 24px 40px"
       >
+        <Box display="flex" gap="4">
+          <Box
+            display="flex"
+            gap="1"
+            bg={currentSelectedCoin === 0 ? "#2c2f34" : "inherit"}
+            borderRadius="md"
+            p="2"
+            onClick={() => setCurrentSelectedCoin(0)}
+            cursor="pointer"
+          >
+            <Box p="1">
+              <Box
+                height="10px"
+                width="10px"
+                bgColor="#136B51"
+                borderRadius="100%"
+              ></Box>
+            </Box>
+            <Text color="white" fontSize="xs">
+              USDT
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            gap="1"
+            bg={currentSelectedCoin === 1 ? "#2c2f34" : "inherit"}
+            borderRadius="md"
+            p="2"
+            onClick={() => setCurrentSelectedCoin(1)}
+            cursor="pointer"
+          >
+            <Box p="1">
+              <Box
+                height="10px"
+                width="10px"
+                bgColor="#804D0F"
+                borderRadius="100%"
+              ></Box>
+            </Box>
+            <Text color="white" fontSize="xs">
+              BTC
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            gap="1"
+            bg={currentSelectedCoin === 2 ? "#2c2f34" : "inherit"}
+            borderRadius="md"
+            p="2"
+            onClick={() => setCurrentSelectedCoin(2)}
+            cursor="pointer"
+          >
+            <Box p="1">
+              <Box
+                height="10px"
+                width="10px"
+                bgColor="#1A2683"
+                borderRadius="100%"
+              ></Box>
+            </Box>
+            <Text color="white" fontSize="xs">
+              USDC
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            gap="1"
+            bg={currentSelectedCoin === 3 ? "#2c2f34" : "inherit"}
+            borderRadius="md"
+            p="2"
+            onClick={() => setCurrentSelectedCoin(3)}
+            cursor="pointer"
+          >
+            <Box p="1">
+              <Box
+                height="10px"
+                width="10px"
+                bgColor="#3B48A8"
+                borderRadius="100%"
+              ></Box>
+            </Box>
+            <Text color="white" fontSize="xs">
+              ETH
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            gap="1"
+            bg={currentSelectedCoin === 4 ? "#2c2f34" : "inherit"}
+            borderRadius="md"
+            p="2"
+            onClick={() => setCurrentSelectedCoin(4)}
+            cursor="pointer"
+          >
+            <Box p="1">
+              <Box
+                height="10px"
+                width="10px"
+                bgColor="#996B22"
+                borderRadius="100%"
+              ></Box>
+            </Box>
+            <Text color="white" fontSize="xs">
+              DAI
+            </Text>
+          </Box>
+        </Box>
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}

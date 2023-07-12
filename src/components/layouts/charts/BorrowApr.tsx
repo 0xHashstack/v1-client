@@ -11,7 +11,7 @@ const BorrowAPRChart = () => {
     useState(0);
   const [chartData, setChartData] = useState([
     {
-      name: "Series 1",
+      name: "Borrow APY",
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
@@ -43,13 +43,13 @@ const BorrowAPRChart = () => {
         btcData?.borrowRates
           ? (newData = [
               {
-                name: "Series 1",
+                name: "Borrow APY",
                 data: btcData?.borrowRates,
               },
             ])
           : (newData = [
               {
-                name: "Series 1",
+                name: "Borrow APY",
                 data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
               },
             ]);
@@ -65,45 +65,51 @@ const BorrowAPRChart = () => {
               new Date("2023-07-07").getTime(),
             ]);
         break;
-      case 1:
-        newData = [
-          {
-            name: "Series 1",
-            data: [
-              40000, 38000, 42000, 39000, 44000, 41000, 43000, 39000, 44000,
-              41000, 43000, 39000, 44000, 41000, 43000, 39000, 44000, 41000,
-              43000,
-            ],
-          },
+        case 1:
+          newData = [
+            {
+              name: "Borrow APY",
+              data: [
+                40000, 10000, 42000, 39000, 44000, 41000, 43000, 
+              ],
+            },
+          ];
+          newCategories = [
+            new Date("2023-07-01").getTime(),
+            new Date("2023-07-02").getTime(),
+            new Date("2023-07-03").getTime(),
+            new Date("2023-07-04").getTime(),
+            new Date("2023-07-05").getTime(),
+            new Date("2023-07-06").getTime(),
+            new Date("2023-07-07").getTime(),
+          ];
+          break;
+        case 2:
+          //y data axis
+          newData = [
+            {
+              name: "Borrow APY",
+              data: [50000, 49000, 52000, 48000, 51000,  48000, 50000, 48000, 51000, 48000],
+            },
+          ];
+          //x axis data
+          newCategories = [
+            new Date("2023-06-03").getTime(),
+            new Date("2023-06-06").getTime(),
+            new Date("2023-06-09").getTime(),
+            new Date("2023-06-12").getTime(),
+            new Date("2023-06-15").getTime(),
+            new Date("2023-06-18").getTime(),
+            new Date("2023-06-21").getTime(),
+            new Date("2023-06-24").getTime(),
+            new Date("2023-06-27").getTime(),
+            new Date("2023-06-30").getTime(),
         ];
-        newCategories = [
-          new Date("2023-06-01").getTime(),
-          new Date("2023-06-02").getTime(),
-          new Date("2023-06-03").getTime(),
-          new Date("2023-06-04").getTime(),
-          new Date("2023-06-05").getTime(),
-          new Date("2023-06-06").getTime(),
-          new Date("2023-06-07").getTime(),
-          new Date("2023-06-08").getTime(),
-          new Date("2023-06-09").getTime(),
-          new Date("2023-06-10").getTime(),
-          new Date("2023-06-11").getTime(),
-          new Date("2023-06-12").getTime(),
-          new Date("2023-06-13").getTime(),
-          new Date("2023-06-14").getTime(),
-          new Date("2023-06-15").getTime(),
-          new Date("2023-06-16").getTime(),
-          new Date("2023-06-17").getTime(),
-          new Date("2023-06-18").getTime(),
-          new Date("2023-06-19").getTime(),
-          new Date("2023-06-20").getTime(),
-        ];
-        break;
-      case 2:
+          break;
         //y data axis
         newData = [
           {
-            name: "Series 1",
+            name: "Borrow APY",
             data: [50000, 49000, 52000, 48000, 51000, 48000, 50000],
           },
         ];
@@ -121,7 +127,7 @@ const BorrowAPRChart = () => {
       case 3:
         newData = [
           {
-            name: "Series 1",
+            name: "Borrow APY",
             data: [
               60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000,
               60000, 62000, 70000,

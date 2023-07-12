@@ -43,12 +43,12 @@ const ExchangeRatesChart = () => {
       case 0:
         btcData?.exchangeRates ? newData = [
           {
-            name: "Series 1",
+            name: "BTC",
             data: btcData?.exchangeRates,
           },
         ]:newData = [
           {
-            name: "Series 1",
+            name: "BTC",
             data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
           },
         ]
@@ -67,12 +67,12 @@ const ExchangeRatesChart = () => {
       case 1:
         btcData?.exchangeRates ? newData = [
           {
-            name: "Series 1",
+            name: "ETH",
             data: btcData?.exchangeRates,
           },
         ]:newData = [
           {
-            name: "Series 1",
+            name: "ETH",
             data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
           },
         ]
@@ -92,7 +92,7 @@ const ExchangeRatesChart = () => {
         //y data axis
         newData = [
           {
-            name: "Series 1",
+            name: "DAI",
             data: [30000, 40000, 35000, 50000, 49000, 60000, 80000, 50000, 49000, 60000, 80000,50000],
           },
         ]
@@ -111,12 +111,12 @@ const ExchangeRatesChart = () => {
       case 3:
         btcData?.exchangeRates ? newData = [
           {
-            name: "Series 1",
+            name: "USDC",
             data: btcData?.exchangeRates,
           },
         ]:newData = [
           {
-            name: "Series 1",
+            name: "USDC",
             data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
           },
         ]
@@ -135,7 +135,7 @@ const ExchangeRatesChart = () => {
       case 4:
         newData = [
           {
-            name: "Series 1",
+            name: "USDT",
             data: [30000, 40000, 35000, 50000, 49000, 60000, 80000, 50000, 49000, 60000, 80000,50000],
           },
         ]
@@ -170,7 +170,7 @@ const ExchangeRatesChart = () => {
         position: "bottom",
         enabled: true,
         style: {
-          colors: ["#000000"],
+          colors: ["#fff"],
         },
         formatter: function (val: any) {
           return numberFormatter(val); // Display the data value as the label

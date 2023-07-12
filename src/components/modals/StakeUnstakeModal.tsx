@@ -424,7 +424,7 @@ const StakeUnstakeModal = ({
       dispatch(setTransactionStatus("success"));
       // console.log("Status transaction", deposit);
       console.log(isSuccessDeposit, "success ?");
-    }catch(err){
+    }catch(err:any){
       mixpanel.track("Stake Market Status", {
         Status: "Failure",
       });

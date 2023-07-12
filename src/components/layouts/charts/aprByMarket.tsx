@@ -15,8 +15,27 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       name: "Series 1",
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
+    {
+      name: "Series 2",
+      data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
+    },
+    {
+      name: "Series 3",
+      data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
+    },
+    {
+      name: "Series 4",
+      data: [40000, 50000, 45000, 60000, 59000, 70000, 90000],
+    },
+    {
+      name: "Series 5",
+      data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
+    },
   ]);
+  
   const btcData=useSelector(selectHourlyBTCData);
+  const splineColor=["#804D0F", "#3B48A8","#136B51","#1A2683","#996B22"]
+  console.log(btcData,"btc")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -41,29 +60,56 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
 
     switch (aprByMarket) {
       case 0:
-        newData = [
+        btcData?.aprs ? newData = [
           {
-            name: "Series 1",
+            name: "wBTC",
+            data: btcData?.aprs,
+          },
+          {
+            name: "wETH",
+            data: [200, 300, 250, 400, 390, 500, 700, 250, 400, 390, 500, 700],
+          },
+          {
+            name: "USDT",
+            data: [350, 450, 400, 550, 540, 650, 850, 250, 400, 390, 500, 700],
+          },
+          {
+            name: "USDC",
+            data: btcData?.aprs,
+          },
+          {
+            name: "DAI",
+            data: [250, 350, 300, 450, 440, 550, 750, 250, 400, 390, 500, 700],
+          },
+        ]:newData = [
+          {
+            name: "wBTC",
             data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
           },
           {
-            name: "Series 2",
+            name: "WETH",
             data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
           },
           {
-            name: "Series 3",
+            name: "USDT",
             data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
           },
           {
-            name: "Series 4",
+            name: "USDC",
             data: [40000, 50000, 45000, 60000, 59000, 70000, 90000],
           },
           {
-            name: "Series 5",
+            name: "DAI",
             data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
           },
         ];
-        newCategories = btcData?.dates;
+        btcData?.dates ? newCategories = btcData?.dates:newCategories=[
+          new Date("2023-06-01").getTime(),
+          new Date("2023-06-02").getTime(),
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-04").getTime(),
+          new Date("2023-06-05").getTime(),
+        ];
         break;
       case 1:
         newData = [
@@ -89,26 +135,13 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           },
         ];
         newCategories = [
-          new Date("2023-06-01").getTime(),
-          new Date("2023-06-02").getTime(),
-          new Date("2023-06-03").getTime(),
-          new Date("2023-06-04").getTime(),
-          new Date("2023-06-05").getTime(),
-          new Date("2023-06-06").getTime(),
-          new Date("2023-06-07").getTime(),
-          new Date("2023-06-08").getTime(),
-          new Date("2023-06-09").getTime(),
-          new Date("2023-06-10").getTime(),
-          new Date("2023-06-11").getTime(),
-          new Date("2023-06-12").getTime(),
-          new Date("2023-06-13").getTime(),
-          new Date("2023-06-14").getTime(),
-          new Date("2023-06-15").getTime(),
-          new Date("2023-06-16").getTime(),
-          new Date("2023-06-17").getTime(),
-          new Date("2023-06-18").getTime(),
-          new Date("2023-06-19").getTime(),
-          new Date("2023-06-20").getTime(),
+          new Date("2023-07-01").getTime(),
+          new Date("2023-07-02").getTime(),
+          new Date("2023-07-03").getTime(),
+          new Date("2023-07-04").getTime(),
+          new Date("2023-07-05").getTime(),
+          new Date("2023-07-06").getTime(),
+          new Date("2023-07-07").getTime(),
         ];
         break;
       case 2:
@@ -116,57 +149,60 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000, 50000, 49000, 60000, 80000],
           },
           {
             name: "Series 2",
-            data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
+            data: [20000, 30000, 25000, 40000, 39000, 50000, 70000, 50000, 49000, 60000, 80000],
           },
           {
             name: "Series 3",
-            data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
+            data: [35000, 45000, 40000, 55000, 54000, 65000, 85000, 50000, 49000, 60000, 80000],
           },
           {
             name: "Series 4",
-            data: [40000, 50000, 45000, 60000, 59000, 70000, 90000],
+            data: [40000, 50000, 45000, 60000, 59000, 70000, 90000, 50000, 49000, 60000, 80000],
           },
           {
             name: "Series 5",
-            data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
+            data: [25000, 35000, 30000, 45000, 44000, 55000, 75000, 50000, 49000, 60000, 80000],
           },
         ];
         //x axis data
         newCategories = [
-          new Date("2023-01-01").getTime(),
-          new Date("2023-02-01").getTime(),
-          new Date("2023-03-01").getTime(),
-          new Date("2023-04-01").getTime(),
-          new Date("2023-05-01").getTime(),
-          new Date("2023-06-01").getTime(),
-          new Date("2023-07-01").getTime(),
-        ];
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-06").getTime(),
+          new Date("2023-06-09").getTime(),
+          new Date("2023-06-12").getTime(),
+          new Date("2023-06-15").getTime(),
+          new Date("2023-06-18").getTime(),
+          new Date("2023-06-21").getTime(),
+          new Date("2023-06-24").getTime(),
+          new Date("2023-06-27").getTime(),
+          new Date("2023-06-30").getTime(),
+      ];
         break;
       case 3:
         newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000, 50000, 49000, 60000, 80000,40000],
           },
           {
             name: "Series 2",
-            data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
+            data: [20000, 30000, 25000, 40000, 39000, 50000, 70000, 50000, 49000, 60000, 80000,20000],
           },
           {
             name: "Series 3",
-            data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
+            data: [35000, 45000, 40000, 55000, 54000, 65000, 85000, 50000, 49000, 60000, 80000,50000],
           },
           {
             name: "Series 4",
-            data: [40000, 50000, 45000, 60000, 59000, 70000, 90000],
+            data: [40000, 50000, 45000, 60000, 59000, 70000, 90000, 50000, 49000, 60000, 80000,60000],
           },
           {
             name: "Series 5",
-            data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
+            data: [25000, 35000, 30000, 45000, 44000, 55000, 75000, 50000, 49000, 60000, 80000,53000],
           },
         ];
 
@@ -231,7 +267,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
     return { newData, newCategories };
   };
   const splineChartData = {
-    series: chartData,
+    series:  chartData,
     options: {
       chart: {
         // offsetX: 50,
@@ -282,7 +318,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
 
       stroke: {
         curve: "smooth",
-        colors: ["#0FCA7A", "#00C7F2"],
+        color: splineColor,
         opacity: 1,
       },
       grid: {
@@ -291,7 +327,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       legend: {
         show: false, // Hide the series buttons when only one series is present
       },
-      colors: ["#0ebc71", "#04aacf"],
+      // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
+        color: splineColor,
     },
   };
   const options: ApexOptions = {
@@ -300,6 +337,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       ...splineChartData.options.stroke,
       curve: "smooth",
     },
+    colors: splineColor
+      // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
   };
 
   return (
