@@ -259,10 +259,6 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
 
   const options: ApexOptions = {
     ...splineChartData.options,
-    stroke: {
-      ...splineChartData.options.stroke,
-      curve: "smooth",
-    },
   };
 
   return (
