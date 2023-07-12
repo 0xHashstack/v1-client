@@ -64,11 +64,11 @@ const DashboardRight = ({
   const coinPrices = Coins.map((coin) => {
     const matchingCoin = oraclePrices?.find(
       (c: { name: string }) =>
-        c?.name?.toLowerCase() === coin.name.toLowerCase()
+        c?.name?.toLowerCase() === coin?.name.toLowerCase()
     );
     if (matchingCoin) {
-      const formattedPrice = matchingCoin.price.toFixed(3); // Format price to 3 decimal places
-      return { name: coin.name, price: formattedPrice };
+      const formattedPrice = matchingCoin?.price.toFixed(3); // Format price to 3 decimal places
+      return { name: coin?.name, price: formattedPrice };
     }
     return null;
   });
@@ -162,13 +162,13 @@ const DashboardRight = ({
                   <HStack gap={1.5}>
                     <Box height="32px" width="32px">
                       <Image
-                        src={`/${coin.name}.svg`}
+                        src={`/${coin?.name}.svg`}
                         alt="Picture of the author"
                         width="32"
                         height="32"
                       />
                     </Box>
-                    <Text fontSize="14px">{coin.name}</Text>
+                    <Text fontSize="14px">{coin?.name}</Text>
                   </HStack>
                 </Td>
                 <Td
@@ -318,7 +318,7 @@ const DashboardRight = ({
                     onClick={() => {
                       setCurrentBorrowAPR(idx);
                       setCurrentSupplyAPR(idx);
-                      setCurrentBorrowMarketCoin(coin.name);
+                      setCurrentBorrowMarketCoin(coin?.name);
                     }}
                     // bgColor={"blue"}
                   >

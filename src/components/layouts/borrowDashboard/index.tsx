@@ -468,7 +468,7 @@ const BorrowDashboard = ({
           {Borrows?.slice(lower_bound, upper_bound + 1).map(
             (borrow: any, idx: any) => {
               // console.log("faisal coin check", coin);
-              // borrowIDCoinMap.push([coin.id, coin.name]);
+              // borrowIDCoinMap.push([coin.id, coin?.name]);
               return (
                 <>
                   <Tr

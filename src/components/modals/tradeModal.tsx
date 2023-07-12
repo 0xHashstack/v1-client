@@ -200,7 +200,7 @@ const TradeModal = ({
     rDAI: useBalanceOf(tokenAddressMap["rDAI"] || ""),
   };
   const [walletBalance, setwalletBalance] = useState<any>(
-    walletBalances[coin.name]?.statusBalanceOf === "success"
+    walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? Number(
           BNtoNum(
             uint256.uint256ToBN(
@@ -224,7 +224,7 @@ const TradeModal = ({
           )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   const dapps = [
     { name: "Jediswap", status: "enable" },
@@ -369,12 +369,12 @@ const TradeModal = ({
     persistence: "localStorage",
   });
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
-    coin ? coin.name : "BTC"
+    coin ? coin?.name : "BTC"
   );
 
   // const coinAlign = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
-    coin ? coin.name : "BTC"
+    coin ? coin?.name : "BTC"
   );
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const stats = useSelector(selectProtocolStats);
@@ -444,11 +444,11 @@ const TradeModal = ({
     // setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     setwalletBalance(
-      walletBalances[coin.name]?.statusBalanceOf === "success"
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
-                walletBalances[coin.name]?.dataBalanceOf?.balance
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
               tokenDecimalsMap[coin?.name]
             )
@@ -999,7 +999,7 @@ const TradeModal = ({
                                               walletBalances[coin]
                                                 ?.dataBalanceOf?.balance
                                             ),
-                                            tokenDecimalsMap[coin.name]
+                                            tokenDecimalsMap[coin?.name]
                                           )
                                         )
                                       : 0
