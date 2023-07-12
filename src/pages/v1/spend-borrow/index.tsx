@@ -66,7 +66,6 @@ const SpendBorrow = () => {
             ) : (
               <Text color="#e6edf3" fontSize="20px">
                 {totalBorrow ? `$ ${numberFormatter(totalBorrow)}` : "NA"}
-                {totalBorrow ? `$ ${numberFormatter(totalBorrow)}` : "NA"}
               </Text>
             )}
             {/* <Text color="#e6edf3" fontSize="20px">
