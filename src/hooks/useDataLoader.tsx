@@ -153,10 +153,10 @@ const useDataLoader = () => {
           const tvlAmounts: any = [];
           const supplyCounts: any = [];
           const borrowCounts: any = [];
-          const utilRates:any=[];
-          const exchangeRates:any=[];
-          const totalTransactions:any=[];
-          const totalAccounts:any=[];
+          const utilRates: any = [];
+          const exchangeRates: any = [];
+          const totalTransactions: any = [];
+          const totalAccounts: any = [];
           for (var i = 0; i < 12; i++) {
             amounts?.push(response?.data[i].supplyAmount);
             borrowAmounts?.push(response?.data[i].borrowAmount);
@@ -171,8 +171,6 @@ const useDataLoader = () => {
             exchangeRates?.push(response?.data[i].exchangeRate);
             totalTransactions?.push(response?.data[i].totalTransactions);
             totalAccounts?.push(response?.data[i].totalAccounts);
-
-
           }
           // console.log(dates,"Dates")
           const data = {
@@ -184,10 +182,10 @@ const useDataLoader = () => {
             borrowRates: borrowRates,
             supplyCounts: supplyCounts,
             borrowCounts: borrowCounts,
-            utilRates:utilRates,
-            exchangeRates:exchangeRates,
-            totalTransactions:totalTransactions,
-            totalAccounts:totalAccounts
+            utilRates: utilRates,
+            exchangeRates: exchangeRates,
+            totalTransactions: totalTransactions,
+            totalAccounts: totalAccounts,
           };
           // console.log(btcData,"Data gone")
           dispatch(setHourlyBTCData(data));
@@ -721,19 +719,19 @@ const useDataLoader = () => {
   useEffect(() => {
     console.log(
       "transaction refresh counts - ",
-      "transactionRefresh = " + transactionRefresh,
-      "protocolStatsCount = " + protocolStatsCount,
-      "protocolReservesCount = " + protocolReservesCount,
-      "userDepositsCount = " + userDepositsCount,
-      "userLoansCount = " + userLoansCount,
-      "oraclePricesCount = " + oraclePricesCount,
-      "userInfoCount = " + userInfoCount,
-      // aprsAndHealthCount,
-      "effectiveAprCount = " + effectiveAprCount,
-      "healthFactorCount = " + healthFactorCount,
-      "hourlyDataCount = " + hourlyDataCount,
-      "netAprCount = " + netAprCount,
-      "avgBorrowAPRCount = " + avgBorrowAPRCount
+      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount",
+      transactionRefresh,
+      protocolStatsCount,
+      protocolReservesCount,
+      userDepositsCount,
+      userLoansCount,
+      oraclePricesCount,
+      userInfoCount,
+      effectiveAprCount,
+      healthFactorCount,
+      hourlyDataCount,
+      netAprCount,
+      avgBorrowAPRCount
     );
   }, [
     transactionRefresh,
