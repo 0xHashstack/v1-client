@@ -13,8 +13,8 @@ import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount, useConnectors } from "@starknet-react/core";
-import { selectYourBorrow,selectNetAPR } from "@/store/slices/readDataSlice";
-import { setUserLoans,selectUserLoans } from "@/store/slices/readDataSlice";
+import { selectYourBorrow, selectNetAPR } from "@/store/slices/readDataSlice";
+import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { Skeleton } from "@chakra-ui/react";
@@ -120,7 +120,7 @@ const YourBorrow = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Total Borrow
             </Text>
-            {!totalBorrow &&(totalBorrow!=null) ? (
+            {totalBorrow == null ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -130,7 +130,7 @@ const YourBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalBorrow? `$ ${numberFormatter(totalBorrow)}`:"-"}
+                {totalBorrow ? `$ ${numberFormatter(totalBorrow)}` : "-"}
               </Text>
             )}
           </VStack>
@@ -138,7 +138,7 @@ const YourBorrow = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Net APR
             </Text>
-            {!netAPR &&(netAPR!=null) ? (
+            {netAPR == null ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -148,7 +148,7 @@ const YourBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {netAPR ? `${netAPR} %`:"-"}
+                {netAPR ? `${netAPR} %` : "-"}
               </Text>
             )}
           </VStack>

@@ -171,15 +171,15 @@ const Navbar = ({ validRTokens }: any) => {
     if (connector?.options?.id == "braavos") {
       localStorage.setItem("lastUsedConnector", "argentX");
       connect(connectors[1]);
+      router.push("/v1/market");
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
-      router.push("/v1/market");
     } else {
       localStorage.setItem("lastUsedConnector", "braavos");
       connect(connectors[0]);
+      router.push("/v1/market");
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
-      router.push("/v1/market");
     }
   };
 

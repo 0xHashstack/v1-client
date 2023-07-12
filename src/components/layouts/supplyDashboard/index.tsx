@@ -789,20 +789,18 @@ const SupplyDashboard = ({
         borderRadius="8px"
         gap="6px"
       >
-        <Text color="#FFFFFF">Your Ethereum Wallet is empty</Text>
+        <Text color="#FFFFFF">You do not have active supply</Text>
         <SupplyModal
-          buttonText="Supply"
-          height={"2rem"}
-          fontSize={"14px"}
-          fontWeight="500"
-          lineHeight="20px"
-          padding="6px 12px"
-          border="1px solid rgba(27, 31, 36, 0.15)"
-          bgColor="#2DA44E"
-          _hover={{ bg: "#2DA44E", color: "white" }}
-          borderRadius={"6px"}
-          color="#fff"
-          backGroundOverLay="rgba(244, 242, 255, 0.5)"
+          buttonText="Click here to supply"
+          variant="link"
+          fontSize="16px"
+          fontWeight="400"
+          display="inline"
+          color="#0969DA"
+          cursor="pointer"
+          ml="0.4rem"
+          lineHeight="24px"
+          backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
         />
       </Box>
     </>
