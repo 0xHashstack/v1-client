@@ -1149,7 +1149,7 @@ const YourBorrowModal = ({
                       />
                     </Box>
                   ) : (
-                    numberFormatter(currentLPTokenAmount)
+                    "$" + numberFormatter(currentLPTokenAmount)
                   )}
                   {/* $ 10.91 */}
                 </Text>
@@ -4298,7 +4298,6 @@ const YourBorrowModal = ({
                             <Box p="1">{ currentTokenSelected=="rToken" ?getCoin(collateralBalance.substring(spaceIndex + 1)):getCoin(collateralBalance.substring(spaceIndex + 2))}</Box>
                             <Text color="white" mt="0.5">{currentTokenSelected=="rToken" ? collateralBalance.substring(spaceIndex + 1):collateralBalance.substring(spaceIndex + 2)}</Text>
                           </Box>
-
                           <Box pt="1" className="navbar-button">
                             {activeModal ? <ArrowUp /> : <DropdownUp />}
                           </Box>
@@ -4344,6 +4343,7 @@ const YourBorrowModal = ({
                                             : "5"
                                         }`}
                                         gap="1"
+                                        justifyContent="space-between"
                                         bg={`${
                                           coin === currentTokenSelected
                                             ? "#0C6AD9"
@@ -4351,8 +4351,23 @@ const YourBorrowModal = ({
                                         }`}
                                         borderRadius="md"
                                       >
+                                        <Box display="flex">
+
                                         <Box  p="1">{ coin=="rToken" ?getCoin(collateralBalance.substring(spaceIndex + 1)):getCoin(collateralBalance.substring(spaceIndex + 2))}</Box>
-                            <Text color="white">{coin=="rToken" ? collateralBalance.substring(spaceIndex + 1):collateralBalance.substring(spaceIndex + 2)}</Text>
+                                          <Text color="white">{coin=="rToken" ? collateralBalance.substring(spaceIndex + 1):collateralBalance.substring(spaceIndex + 2)}</Text>
+                                        </Box>
+
+                                      <Box
+                                fontSize="9px"
+                                color="white"
+                                mt="6px"
+                                fontWeight="thin"
+                              >
+                                Wallet Balance:{" "}
+                                {coin=="Native Token" ? walletBalance2:userDeposit?.find(
+        (item: any) => item.rToken == collateralBalance.substring(spaceIndex + 1)
+      )?.rTokenFreeParsed }
+                              </Box>
                                       </Box>
                                     </Box>
                                   );

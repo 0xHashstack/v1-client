@@ -40,6 +40,8 @@ import {
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { processAddress } from "@/Blockchain/stark-constants";
+import TableInfoIcon from "../table/tableIcons/infoIcon";
+import TableClose from "../table/tableIcons/close";
 
 export interface ICoin {
   name: string;
@@ -184,6 +186,7 @@ const BorrowDashboard = ({
   const [allSplit, setAllSplit] = useState<any>([]);
   const [currentSplitIndex, setCurrentSplitIndex] = useState(0);
   // const avgs = useSelector(selectAprAndHealthFactor);
+  const [showEmptyNotification, setShowEmptyNotification] = useState(true);
   const avgs = useSelector(selectEffectiveApr);
   const avgsData: any = [];
   useEffect(() => {
@@ -980,7 +983,55 @@ const BorrowDashboard = ({
     </TableContainer>
   ) : (
     <>
-      <Box
+      {showEmptyNotification && (
+        <Box display="flex" justifyContent="left" w="94%" pb="2">
+          <Box
+            display="flex"
+            bg="#DDF4FF"
+            fontSize="14px"
+            p="4"
+            fontStyle="normal"
+            fontWeight="400"
+            borderRadius="6px"
+            // textAlign="center"
+          >
+            <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
+              <TableInfoIcon />
+            </Box>
+            Your do not have active borrow.
+            <Box
+              // ml="1"
+              mr="1"
+              as="span"
+              textDecoration="underline"
+              color="#0C6AD9"
+              cursor="pointer"
+            >
+              <BorrowModal
+                buttonText="Click here to borrow"
+                variant="link"
+                fontSize="16px"
+                fontWeight="400"
+                display="inline"
+                color="#0969DA"
+                cursor="pointer"
+                ml="0.3rem"
+                lineHeight="24px"
+                backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
+              />
+            </Box>
+            {/* <Box
+              py="1"
+              pl="4"
+              cursor="pointer"
+              onClick={() => setShowEmptyNotification(!showEmptyNotification)}
+            >
+              <TableClose />
+            </Box> */}
+          </Box>
+        </Box>
+      )}
+      {/* <Box
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -1004,7 +1055,7 @@ const BorrowDashboard = ({
           lineHeight="24px"
           coin={"BTC"}
         />
-      </Box>
+      </Box> */}
     </>
   );
 };

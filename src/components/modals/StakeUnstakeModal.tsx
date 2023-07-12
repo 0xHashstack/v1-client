@@ -83,6 +83,11 @@ import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { uint256 } from "starknet";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { tokenDecimalsMap } from "@/Blockchain/utils/addressServices";
+import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 // import userTokensMinted from "@/Blockchain/scripts/Rewards";
 // import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
 
@@ -142,7 +147,25 @@ const StakeUnstakeModal = ({
   //   isSuccessStakeRequest1,
   //   statusStakeRequest1,
   // }=userTokensMinted();
+  const {
+    depositAmount,
+    setDepositAmount,
+    asset,
+    setAsset,
+    dataDeposit,
+    errorDeposit,
+    resetDeposit,
+    // depositTransHash,
+    // setDepositTransHash,
+    writeAsyncDeposit,
+    writeAsyncDepositStake,
 
+    isErrorDeposit,
+    isIdleDeposit,
+    isLoadingDeposit,
+    isSuccessDeposit,
+    statusDeposit,
+  } = useDeposit();
   const {
     unstakeRToken,
     setUnstakeRToken,
@@ -220,13 +243,14 @@ const StakeUnstakeModal = ({
         break;
     }
   };
-
+  console.log(validRTokens,"valid")
   const getBalance = (coin: string) => {
     const amount = validRTokens?.find(({ rToken, rTokenAmount }: any) => {
       if (rToken == coin) return rTokenAmount;
     });
     return amount ? amount.rTokenAmount : 0;
   };
+  // console.log(getBalance,"bal")
   const [depositTransHash, setDepositTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
@@ -352,6 +376,75 @@ const StakeUnstakeModal = ({
       });
     }
   };
+  const hanldeStakeAndSupplyTransaction=async()=>{
+    try{
+      mixpanel.track("Action Selected", {
+        Action: "Deposit and Stake",
+      });
+      const depositStake = await writeAsyncDepositStake();
+      if (depositStake?.transaction_hash) {
+        console.log("trans transaction hash created");
+        console.log("toast here");
+        const toastid = toast.info(
+          // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+          `Transaction pending`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: depositStake?.transaction_hash.toString(),
+          message: `Successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`,
+          // message: `Transaction successful`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+  
+        dispatch(setActiveTransactions(activeTransactions));
+      }
+      mixpanel.track("Supply Market Status", {
+        Status: "Success Deposit and Stake",
+        Token: currentSelectedStakeCoin,
+        TokenAmount: inputStakeAmount,
+      });
+      setDepositTransHash(depositStake?.transaction_hash);
+      dispatch(setTransactionStatus("success"));
+      // console.log("Status transaction", deposit);
+      console.log(isSuccessDeposit, "success ?");
+    }catch(err){
+      mixpanel.track("Stake Market Status", {
+        Status: "Failure",
+      });
+
+      dispatch(setTransactionStatus("failed"));
+      const toastContent = (
+        <div>
+          Transaction failed{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      });
+      console.log("stake and supply", err);
+    }
+    }
 
   // const hanldest=async()=>{
   //   try{
@@ -432,12 +525,17 @@ const StakeUnstakeModal = ({
 
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
-    var percentage = (newValue * 100) / getBalance(currentSelectedStakeCoin);
+    if(rtokenWalletBalance!=0){
+      var percentage = (newValue * 100) / getBalance(currentSelectedStakeCoin);
+    }else{
+      var percentage = (newValue * 100) / walletBalance;
+    }
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
       setRTokenAmount(Number(newValue));
       setInputStakeAmount(newValue);
+      setDepositAmount(newValue)
       // dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -446,6 +544,7 @@ const StakeUnstakeModal = ({
         setSliderValue(percentage);
         setRTokenAmount(Number(newValue));
         setInputStakeAmount(newValue);
+        setDepositAmount(newValue)
       }
       // console.log(typeof rTokenAmount)
       // dispatch(setInputSupplyAmount(newValue));
@@ -484,6 +583,27 @@ const StakeUnstakeModal = ({
     { ETH: "rETH" },
     { DAI: "rDAI" },
   ];
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+  const walletBalances: assetB | any = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
+  };
+  const assetBalance: assetB | any = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
+  };
 
   const coinsSupplied: any = {
     rBTC: false,
@@ -513,12 +633,41 @@ const StakeUnstakeModal = ({
     !nav ? rcoinValue : "rUSDT"
   );
   const userDeposit=useSelector(selectUserDeposits)
+  // console.log(coin,"coin stake")
+  const [walletBalance, setWalletBalance] = useState<any>(
+    walletBalances[coin?.name]?.statusBalanceOf === "success"
+      ? Number(
+          BNtoNum(
+            uint256.uint256ToBN(
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[coin?.name]
+          )
+        )
+      : 0
+  )
+
+  useEffect(()=>{
+    setWalletBalance(
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
+              ),
+              tokenDecimalsMap[coin?.name]
+            )
+          )
+        : 0
+    );
+  },[walletBalances[coin?.name]?.statusBalanceOf,coin])
   const [rtokenWalletBalance, setrTokenWalletBalance] = useState<any>(
     userDeposit?.find(
       (item: any) => item.rToken == currentSelectedUnstakeCoin
     )?.rTokenFreeParsed
 
   )
+  // console.log(rtokenWalletBalance,"rtoken wallet ")
   const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<any>(
     userDeposit?.find(
       (item: any) => item.rToken == currentSelectedUnstakeCoin
@@ -548,6 +697,7 @@ const StakeUnstakeModal = ({
     setEstrTokens(0);
     setToastDisplayed(false);
     setCurrentSelectedStakeCoin(coin ? rcoinValue : "rBTC");
+    setAsset(coin? rcoinValue.slice(1):"BTC")
     setRToken("rBTC");
     setcurrentSelectedUnstakeCoin(coin ? rcoinValue : "rBTC");
     setUnstakeRToken(coin ? rcoinValue : "rBTC");
@@ -556,6 +706,18 @@ const StakeUnstakeModal = ({
     setUnstakeWalletBalance(      userDeposit?.find(
         (item: any) => item.rToken == currentSelectedUnstakeCoin
       )?.rTokenStakedParsed)
+      setWalletBalance(
+        walletBalances[coin?.name]?.statusBalanceOf === "success"
+          ? Number(
+              BNtoNum(
+                uint256.uint256ToBN(
+                  walletBalances[coin?.name]?.dataBalanceOf?.balance
+                ),
+                tokenDecimalsMap[coin?.name]
+              )
+            )
+          : 0
+      );
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
     setCurrentTransactionStatus("");
@@ -884,7 +1046,20 @@ const StakeUnstakeModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setCurrentSelectedStakeCoin(coin);
-                                      setRToken(coin);
+                                      setRToken(coin.slice(1));
+                                      setAsset(coin)
+                                      setWalletBalance(
+                                        walletBalances[coin?.slice(1)]?.statusBalanceOf === "success"
+                                          ? Number(
+                                              BNtoNum(
+                                                uint256.uint256ToBN(
+                                                  walletBalances[coin?.slice(1)]?.dataBalanceOf?.balance
+                                                ),
+                                                tokenDecimalsMap[coin?.slice(1)]
+                                              )
+                                            )
+                                          : 0
+                                      );
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
@@ -972,16 +1147,16 @@ const StakeUnstakeModal = ({
                           width="100%"
                           color="white"
                           border={`${
-                            rTokenAmount >
-                            getBalance(currentSelectedStakeCoin).toFixed(2)
+                            ( rtokenWalletBalance!=0 && rTokenAmount >
+                              getBalance(currentSelectedStakeCoin).toFixed(2) || (rtokenWalletBalance==0 && rTokenAmount>walletBalance))
                               ? "1px solid #CF222E"
                               : rTokenAmount < 0
                               ? "1px solid #CF222E"
                               : rTokenAmount > 0 &&
-                                rTokenAmount <=
+                                ( (rTokenAmount <=
                                   getBalance(currentSelectedStakeCoin).toFixed(
                                     2
-                                  )
+                                  ) || rTokenAmount<=walletBalance)) 
                               ? "1px solid #1A7F37"
                               : "1px solid #2B2F35 "
                           }`}
@@ -1005,8 +1180,8 @@ const StakeUnstakeModal = ({
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
                               color={`${
-                                rTokenAmount >
-                                getBalance(currentSelectedStakeCoin).toFixed(2)
+                               ( rtokenWalletBalance!=0 && rTokenAmount >
+                                getBalance(currentSelectedStakeCoin).toFixed(2) || (rtokenWalletBalance==0 && rTokenAmount>walletBalance))
                                   ? "#CF222E"
                                   : rTokenAmount < 0
                                   ? "#CF222E"
@@ -1033,22 +1208,36 @@ const StakeUnstakeModal = ({
                             color="#0969DA"
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
-                              setRTokenAmount(
-                                rtokenWalletBalance
-                              );
-                              setInputStakeAmount(
-                                rtokenWalletBalance
-                              );
-                              setSliderValue(100);
-                            }}
+                              if(rtokenWalletBalance!=0){
+                                setRTokenAmount(
+                                  rtokenWalletBalance
+                                );
+                                setInputStakeAmount(
+                                  rtokenWalletBalance
+                                );
+                                setDepositAmount(rtokenWalletBalance);
+                                setSliderValue(100);
+                              }else{
+                                setRTokenAmount(
+                                  walletBalance
+                                );
+                                setInputStakeAmount(
+                                  walletBalance
+                                );
+                                setDepositAmount(walletBalance)
+                                setSliderValue(100);
+                              }
+                            
+                            }
+                              }
                             isDisabled={transactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
                           >
                             MAX
                           </Button>
                         </Box>
-                        {rTokenAmount >
-                          getBalance(currentSelectedStakeCoin).toFixed(2) ||
+                        {(rtokenWalletBalance!=0 && rTokenAmount >
+                          getBalance(currentSelectedStakeCoin).toFixed(2)) || (rtokenWalletBalance==0 && rTokenAmount>walletBalance) ||
                         rTokenAmount < 0 ? (
                           <Text
                             display="flex"
@@ -1066,7 +1255,7 @@ const StakeUnstakeModal = ({
                               </Text>
                               <Text ml="0.3rem">
                                 {rTokenAmount >
-                                rtokenWalletBalance
+                                rtokenWalletBalance || (rtokenWalletBalance==0 && rTokenAmount>walletBalance)
                                   ? "Amount exceeds balance"
                                   : "Invalid Input"}{" "}
                               </Text>
@@ -1076,8 +1265,8 @@ const StakeUnstakeModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              rToken Balance:{" "}
-                              {numberFormatter(rtokenWalletBalance)}
+                               {rtokenWalletBalance==0 ? "Wallet Balance:":`rToken Balance:`} 
+                              {rtokenWalletBalance==0 ?  numberFormatter(walletBalance):numberFormatter(rtokenWalletBalance)}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedStakeCoin}`}
                               </Text>
@@ -1094,11 +1283,11 @@ const StakeUnstakeModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            rToken Balance:{" "}
-                            {numberFormatter(rtokenWalletBalance)}
+                            {rtokenWalletBalance==0 ? "Wallet Balance: ":`rToken Balance:`} 
+                            {rtokenWalletBalance==0 ?  numberFormatter(walletBalance):numberFormatter(rtokenWalletBalance)}
                             {/* {walletBalance} */}
                             <Text color="#6E7781" ml="0.2rem">
-                              {` ${currentSelectedStakeCoin}`}
+                              {rtokenWalletBalance==0 ?currentSelectedStakeCoin.slice(1) :currentSelectedStakeCoin}
                             </Text>
                           </Text>
                         )}
@@ -1109,17 +1298,31 @@ const StakeUnstakeModal = ({
                             value={sliderValue}
                             onChange={(val) => {
                               setSliderValue(val);
-                              var ans =
+                              if(rtokenWalletBalance==0){
+                                var ans =
+                                  (val / 100) *
+                                  walletBalance;
+                              }else{
+                                var ans =
                                 (val / 100) *
                                 rtokenWalletBalance;
+                              }
                               if(val==100){
-                                setRTokenAmount(rtokenWalletBalance);
-                                setInputStakeAmount(rtokenWalletBalance);
+                                if(rtokenWalletBalance==0){
+                                    setRTokenAmount(walletBalance);
+                                    setInputStakeAmount(walletBalance);
+                                    setDepositAmount(walletBalance)
+                                }else{
+                                  setRTokenAmount(rtokenWalletBalance);
+                                  setInputStakeAmount(rtokenWalletBalance);
+                                  setDepositAmount(rtokenWalletBalance);
+                                }
                               }else{
                                 ans = Math.round(ans * 100) / 100;
                                 // dispatch(setInputSupplyAmount(ans))
                                 setRTokenAmount(ans);
                                 setInputStakeAmount(ans);
+                                setDepositAmount(ans)
                               }
                             }}
                             isDisabled={transactionStarted == true}
@@ -1217,7 +1420,7 @@ const StakeUnstakeModal = ({
                           </Slider>
                         </Box>
                       </Card>
-                      {!isValid(currentSelectedStakeCoin) && (
+                      {/* {!isValid(currentSelectedStakeCoin) && (
                         // <Checkbox
                         //   color="#0969DA"
                         //   w="100%"
@@ -1258,7 +1461,7 @@ const StakeUnstakeModal = ({
                             woudn&apos;t stake rTokens
                           </Text>
                         </Box>
-                      )}
+                      )} */}
                       <Card
                         bg="#101216"
                         mt="1rem"
@@ -1430,9 +1633,9 @@ const StakeUnstakeModal = ({
                           />
                         </Text>
                       </Text> */}
-                      {rTokenAmount > 0 &&
+                      { isValid(currentSelectedStakeCoin) ? rTokenAmount > 0 &&
                       rTokenAmount <=
-                        rtokenWalletBalance ? (
+                        rtokenWalletBalance  ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (
@@ -1515,13 +1718,99 @@ const StakeUnstakeModal = ({
                           border="1px solid #2B2F35"
                           _hover={{ bg: "#101216" }}
                         >
+                              Stake
+
+                        </Button>
+                      ):rTokenAmount > 0 &&
+                      rTokenAmount <=
+                        walletBalance  ? (
+                        buttonId == 1 ? (
+                          <SuccessButton successText="Stake success" />
+                        ) : buttonId == 2 ? (
+                          <ErrorButton errorText="Copy error!" />
+                        ) : (
+                          <Box
+                            onClick={() => {
+                              if (transactionStarted == false) {
+                                mixpanel.track(
+                                  "Stake Button Clicked Market page",
+                                  {
+                                    "Stake Clicked": true,
+                                  }
+                                );
+                                dispatch(
+                                  setTransactionStartedAndModalClosed(false)
+                                );
+                                hanldeStakeAndSupplyTransaction();
+                              }
+                              setTransactionStarted(true);
+                            }}
+                          >
+                            <AnimatedButton
+                              bgColor="#101216"
+                              // bgColor="red"
+                              // p={0}
+                              color="#8B949E"
+                              size="sm"
+                              width="100%"
+                              mt="1.5rem"
+                              mb="1.5rem"
+                              border="1px solid #8B949E"
+                              labelSuccessArray={[
+                                "Processing",
+                                "Checking for sufficient rtoken balance.",
+                                "Transferring rTokens to the supply vault",
+                                "Updating the supply records.",
+                                // <ErrorButton errorText="Transaction failed" />,
+                                // <ErrorButton errorText="Copy error!" />,
+                                <SuccessButton
+                                  key={"successButton"}
+                                  successText={"Stake successful."}
+                                />,
+                              ]}
+                              _disabled={{ bgColor: "white", color: "black" }}
+                              isDisabled={transactionStarted == true}
+                              labelErrorArray={[
+                                <ErrorButton
+                                  errorText="Transaction failed"
+                                  key={"error1"}
+                                />,
+                                <ErrorButton
+                                  errorText="Copy error!"
+                                  key={"error2"}
+                                />,
+                              ]}
+                              currentTransactionStatus={
+                                currentTransactionStatus
+                              }
+                              setCurrentTransactionStatus={
+                                setCurrentTransactionStatus
+                              }
+                            >
+                              Stake and Supply
+                            </AnimatedButton>
+                          </Box>
+                        )
+                      ) : (
+                        <Button
+                          bg="#101216"
+                          color="#6E7681"
+                          size="sm"
+                          width="100%"
+                          mt="1.5rem"
+                          mb="1.5rem"
+                          border="1px solid #2B2F35"
+                          _hover={{ bg: "#101216" }}
+                        >
                           {`${
                             !isValid(currentSelectedStakeCoin)
                               ? "Stake and Supply"
                               : "Stake"
                           }`}
                         </Button>
-                      )}
+                      )
+                      
+                      }
                     </TabPanel>
                     <TabPanel p="0" m="0">
                       <Card

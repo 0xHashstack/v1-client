@@ -4,6 +4,9 @@ import SmallBlueDot from "@/assets/icons/smallBlueDot";
 import SmallGreenDot from "@/assets/icons/smallGreenDot";
 import { ApexOptions } from "apexcharts";
 import dynamic from 'next/dynamic';
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const TotalTransactionChart = ({ color, curveColor, series }: any) => {
   const [aprByMarket, setAPRByMarket] = useState(0);
@@ -13,6 +16,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
+  const btcData=useSelector(selectHourlyBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -37,13 +41,19 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
 
     switch (aprByMarket) {
       case 0:
-        newData = [
+        btcData?.totalTransactions ? newData = [
+          {
+            name: "Series 1",
+            data: btcData?.totalTransactions,
+          },
+        ]:newData=[
           {
             name: "Series 1",
             data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
           },
         ];
-        newCategories = [
+        btcData?.dates ?
+        newCategories = btcData?.dates:newCategories=[
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
           new Date("2023-07-03").getTime(),
@@ -165,192 +175,82 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
     return { newData, newCategories };
   };
   const splineChartData = {
-    series: series
-      ? series
-      : [
-          {
-            name: "Series 1",
-            data: [
-              30000, 40000, 35000, 50000, 49000, 60000, 70000, 91000, 12500,
-              98000, 110000, 90000,
-            ],
-            fill: {
-              colors: ["#01b6dd"], // Specify the fill color for the area under the line
-              // Set the opacity of the fill color (optional)
-              opacity: 1,
-            },
-            dataPoints: {
-              hidden: true, // Hide the data points in the area
-            },
-          },
-          {
-            name: "Series 2",
-            data: [
-              0, 90000, 27000, 30000, 33000, 47000, 54000, 83000, 80000, 100000,
-              115000, 110000,
-            ],
-            fill: {
-              colors: ["#01b6dd"], // Specify the fill color for the area under the line
-              // Set the opacity of the fill color (optional)
-              opacity: 1,
-            },
-            dataPoints: {
-              hidden: true, // Hide the data points in the area
-            },
-          },
-        ],
+    series: chartData,
     options: {
       chart: {
-        // offsetX: 50,
         toolbar: {
           show: false,
         },
       },
-      tooltip: {
-        enabled: true,
-      },
       dataLabels: {
+        position: "bottom",
         enabled: false,
+        style: {
+          colors: ["#000000"],
+        },
+        formatter: function (val: any) {
+          return numberFormatter(val); // Display the data value as the label
+        },
       },
       xaxis: {
-        tooltip: {
-          enabled: false, // Disable the x-axis tooltip
-        },
-        axisTicks: {
-          show: false, // Hide the small spikes at x-axis labels
-        },
+        type: "datetime" as const, // Set x-axis type to datetime
         labels: {
           style: {
-            colors: "#6E7681", // Set the color of the labels
+            colors: "#6E7681",
             fontSize: "12px",
             fontWeight: "400",
           },
         },
-        axisBorder: {
-          color: "#6E7681", // Set the color of the x-axis lines
+        axisTicks: {
+          show: false,
         },
-
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
+        axisBorder: {
+          color: "grey",
+        },
+        categories: xAxisCategories,
       },
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value / 1000 + "k"; // Divide by 1000 and append 'k' for thousands
+            return numberFormatter(value);
           },
-          min: 0,
           style: {
-            colors: "#6E7681", // Set the color of the labels
+            colors: "#6E7681",
             fontSize: "12px",
             fontWeight: "400",
           },
         },
-        borderColor: "#6E7681",
+        min: 0,
       },
-
+      plotOptions: {
+        bar: {
+          opacity: 1,
+          columnWidth: "70%",
+          colors: {
+            backgroundBarOpacity: 1,
+          },
+        },
+      },
+      colors: ["#0ebc71", "#04aacf"],
+      grid: {
+        borderColor: "#2B2F35",
+        padding: {
+          bottom: 10,
+        },
+      },
       annotations: {
         xaxis: [
           {
-            x: "Jan", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Feb", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Mar", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Apr", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "May", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Jun", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Jul", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Aug", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Sep", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Oct", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Nov", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
-          },
-          {
-            x: "Dec", // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: "#2B2F35", // Set the color of the line
-            borderWidth: 1, // Set the width of the line
+            x: 0,
+            strokeDashArray: 0,
+            borderColor: "grey",
+            borderWidth: 1,
           },
         ],
       },
-
-      stroke: {
-        curve: "smooth",
-        colors: ["#0FCA7A", "#00C7F2"],
-        opacity: 1,
-      },
-      grid: {
-        borderColor: "#2B2F35",
-      },
-      legend: {
-        show: false, // Hide the series buttons when only one series is present
-      },
-      colors: ["#0ebc71", "#04aacf"],
     },
   };
+
   const options: ApexOptions = {
     ...splineChartData.options,
     stroke: {
