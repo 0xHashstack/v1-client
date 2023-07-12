@@ -232,7 +232,7 @@ const SwapModal = ({
   const avgsLoneHealth = useSelector(selectHealthFactor);
   const handleSwap = async () => {
     try {
-      if(currentSwap=="Jediswap"){
+      if (currentSwap == "Jediswap") {
         const swap = await writeAsyncJediSwap_swap();
         console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
@@ -271,11 +271,11 @@ const SwapModal = ({
             "Borrow ID": currentBorrowId,
             "Borrow Market": currentBorrowMarketCoin,
           });
-  
+
           dispatch(setActiveTransactions(activeTransactions));
         }
         dispatch(setTransactionStatus("success"));
-      }else if(currentSwap=="Myswap"){
+      } else if (currentSwap == "Myswap") {
         const swap = await writeAsyncmySwap_swap();
         console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
@@ -314,7 +314,7 @@ const SwapModal = ({
             "Borrow ID": currentBorrowId,
             "Borrow Market": currentBorrowMarketCoin,
           });
-  
+
           dispatch(setActiveTransactions(activeTransactions));
         }
         dispatch(setTransactionStatus("success"));
@@ -566,7 +566,7 @@ const SwapModal = ({
                     className="dropdown-container"
                     boxShadow="dark-lg"
                   >
-                    {coins.map((coin: string, index: number) => {
+                    {coins?.map((coin: string, index: number) => {
                       return (
                         <Box
                           key={index}
@@ -844,7 +844,7 @@ const SwapModal = ({
                   </Text>
                 </Box>
               </Box>
-              <Box display="flex" justifyContent="space-between" mb="0.3rem">
+              {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Box display="flex" gap="3px">
                     <Text
@@ -891,7 +891,7 @@ const SwapModal = ({
                 >
                   0.1%
                 </Text>
-              </Box>
+              </Box> */}
               {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text

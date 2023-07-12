@@ -141,7 +141,7 @@ const DashboardRight = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {Coins.map((coin, idx) => (
+          {Coins?.map((coin, idx) => (
             <>
               <Tr
                 key={idx}

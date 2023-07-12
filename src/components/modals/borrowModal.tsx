@@ -1392,7 +1392,7 @@ const BorrowModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin: string, index: number) => {
+                      {coins?.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}

@@ -831,7 +831,7 @@ const YourSupplyModal = ({
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {coins.map((coin: string, index: number) => {
+                              {coins?.map((coin: string, index: number) => {
                                 return (
                                   <Box
                                     key={index}
@@ -894,14 +894,19 @@ const YourSupplyModal = ({
                                         fontWeight="thin"
                                       >
                                         Wallet Balance:{" "}
-                                        {numberFormatter(Number(
-                                          BNtoNum(
-                                            uint256.uint256ToBN(
-                                              walletBalances[coin.substring(1)]
-                                                ?.dataBalanceOf?.balance
-                                            ),
-                                            tokenDecimalsMap[coin.substring(1)]
-                                          ))
+                                        {numberFormatter(
+                                          Number(
+                                            BNtoNum(
+                                              uint256.uint256ToBN(
+                                                walletBalances[
+                                                  coin.substring(1)
+                                                ]?.dataBalanceOf?.balance
+                                              ),
+                                              tokenDecimalsMap[
+                                                coin.substring(1)
+                                              ]
+                                            )
+                                          )
                                         )}
                                       </Box>
                                     </Box>
@@ -1070,10 +1075,10 @@ const YourSupplyModal = ({
                             onChange={(val) => {
                               setSliderValue(val);
                               var ans = (val / 100) * walletBalance;
-                              if(val==100){
+                              if (val == 100) {
                                 setinputSupplyAmount(walletBalance);
                                 setDepositAmount(walletBalance);
-                              }else{
+                              } else {
                                 ans = Math.round(ans * 100) / 100;
                                 // dispatch(setInputSupplyAmount(ans))
                                 setinputSupplyAmount(ans);
@@ -1534,7 +1539,7 @@ const YourSupplyModal = ({
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {coins.map((coin: string, index: number) => {
+                              {coins?.map((coin: string, index: number) => {
                                 return (
                                   <Box
                                     key={index}
@@ -1636,15 +1641,17 @@ const YourSupplyModal = ({
                           width="100%"
                           color="white"
                           border={`${
-                            inputWithdrawlAmount > withdrawWalletBalance?.toFixed(2)
+                            inputWithdrawlAmount >
+                            withdrawWalletBalance?.toFixed(2)
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount < 0
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount < 0
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount > 0 &&
-                                inputWithdrawlAmount <= withdrawWalletBalance?.toFixed(2)
-                            ? "1px solid #1A7F37"
+                                inputWithdrawlAmount <=
+                                  withdrawWalletBalance?.toFixed(2)
+                              ? "1px solid #1A7F37"
                               : "1px solid #2B2F35 "
                           }`}
                           borderRadius="6px"
@@ -1670,7 +1677,8 @@ const YourSupplyModal = ({
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
                               color={`${
-                                inputWithdrawlAmount >  withdrawWalletBalance?.toFixed(2)
+                                inputWithdrawlAmount >
+                                withdrawWalletBalance?.toFixed(2)
                                   ? "#CF222E"
                                   : inputWithdrawlAmount < 0
                                   ? "#CF222E"
