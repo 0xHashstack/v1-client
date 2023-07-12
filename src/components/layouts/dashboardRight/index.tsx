@@ -291,7 +291,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      borrowAPRs[idx] + "%"
+                      numberFormatter(borrowAPRs[idx]) + "%"
                     )}
                   </Box>
                 </Td>

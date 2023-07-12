@@ -11,7 +11,7 @@ const numberFormatter = (input: any) => {
     "M",
     "B",
     "T",
-    "Qa",
+    "Qa", 
     "Qi",
     "Sx",
     "Sp",
@@ -27,7 +27,20 @@ const numberFormatter = (input: any) => {
   }
 
   // Format the number with the appropriate magnitude and suffix
-  var formattedNumber = number.toFixed(2).replace(/\.?0+$/, ""); // Remove trailing zeros and decimal point if unnecessary
+  console.log(
+    "decimals ",
+    5 - (Math.log10(96.95) + 1),
+    Math.floor(Math.max(5 - Math.max(1, Math.log10(96.95) + 1), 0))
+  );
+  var formattedNumber =
+    magnitude < 1
+      ? number?.toFixed(
+          Math.max(5 - Math.floor(Math.max(1, Math.log10(number) + 1)), 0)
+        )
+      : number?.toFixed(
+          Math.max(4 - Math.floor(Math.max(1, Math.log10(number) + 1)), 0)
+        );
+  // .replace(/\.?0+$/, ""); // Remove trailing zeros and decimal point if unnecessary
 
   return formattedNumber + suffixes[magnitude];
 };

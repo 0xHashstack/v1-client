@@ -192,6 +192,7 @@ const BorrowModal = ({
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [showToast, setShowToast] = useState("true");
   const [toastId, setToastId] = useState<any>();
+  const [effectiveApr, setEffectiveApr] = useState(null);
   // const recieptData = useWaitForTransaction({
   //   hash: borrowTransHash,
   //   watch: true,
@@ -609,6 +610,17 @@ const BorrowModal = ({
       if (rToken == coin) return rTokenAmount;
     });
     return amount ? amount.rTokenAmount : 0;
+  };
+
+  const fetchEffectiveApr = async () => {
+    return (
+      inputBorrowAmountUSD * borrowAPRs[currentBorrowAPR] -
+      (inputCollateralAmountUSD *
+        protocolStats?.find(
+          (stat: any) => stat?.token === currentCollateralCoin
+        )?.supplyRate) /
+        inputBorrowAmountUSD
+    );
   };
 
   // const {  market,
@@ -1943,21 +1955,22 @@ const BorrowModal = ({
                         <Text>
                           {/* 5.56% */}
                           {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                          {inputBorrowAmountUSD *
-                            protocolStats?.find(
-                              (stat: any) => stat?.token === currentBorrowCoin
-                            )?.borrowRate -
-                            (inputCollateralAmountUSD *
-                              protocolStats?.find(
-                                (stat: any) =>
-                                  stat?.token === currentCollateralCoin
-                              )?.supplyRate) /
-                              inputBorrowAmountUSD}
+                          {}
                           {/* {
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentCollateralCoin
                           )?.supplyRate
                         } */}
+                          {Number(
+                            inputBorrowAmountUSD *
+                              borrowAPRs[currentBorrowAPR] -
+                              (inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentCollateralCoin
+                                )?.supplyRate) /
+                                inputBorrowAmountUSD
+                          ).toFixed(2)}
                         </Text>
                       )
                     ) : // protocolStats.length === 0 ||

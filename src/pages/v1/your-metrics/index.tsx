@@ -74,6 +74,10 @@ const YourMetrics = () => {
       fetchProtocolStats();
     } catch (err: any) {}
   }, [protocolStatsRedux]);
+  useEffect(() => {
+    console.log("avgBorrowApr ", avgBorrowApr);
+  }, [avgBorrowApr]);
+
   return (
     <PageCard pt="8rem">
       {/* {!metricsCancel && ( */}
@@ -210,7 +214,7 @@ const YourMetrics = () => {
                     />
                   ) : (
                     <Text color="#e6edf3" fontSize="20px">
-                      {avgBorrowApr?.toFixed(2)}%
+                      {numberFormatter(avgBorrowApr)}%
                     </Text>
                   )}
                 </VStack>

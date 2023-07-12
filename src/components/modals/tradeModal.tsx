@@ -1124,7 +1124,7 @@ const TradeModal = ({
                                         rToken Balance:{" "}
                                         {validRTokens && validRTokens.length > 0
                                           ? amount.toFixed(2)
-                                          : "loading..."}
+                                          : " -"}
                                       </Box>
                                     </Box>
                                   </Box>
