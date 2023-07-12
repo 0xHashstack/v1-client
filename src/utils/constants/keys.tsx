@@ -1,2 +1,2 @@
-const spaceApiKey = "9141e37f-6b35-4f05-90a1-54cd356f3e36";
+const spaceApiKey = "44a78698-8155-49ed-b8b6-3529675d784f";
 export default spaceApiKey;

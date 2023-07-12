@@ -43,6 +43,7 @@ import useDataLoader from "@/hooks/useDataLoader";
 import { getSupplyunlocked, getrTokensMinted } from "@/Blockchain/scripts/Rewards";
 import { uint256 } from "starknet";
 import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
+import { setOraclePrices } from "@/store/slices/readDataSlice";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
@@ -117,7 +118,6 @@ export default function Market() {
     </PageCard>
   );
 }
-
 // Code for fetching data
 
 // useEffect(() => {

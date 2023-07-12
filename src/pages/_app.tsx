@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "../store/store";
 import Head from "next/head";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { loadSpace } from "@usersnap/browser";
 
 import {
   StarknetConfig,
@@ -40,12 +41,23 @@ const theme = extendTheme({
 });
 import { UserbackProvider } from "@userback/react";
 import Layout from "@/components/layouts/toasts";
+import spaceApiKey from "@/utils/constants/keys";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
   const connectors = [
     new InjectedConnector({ options: { id: "braavos" } }),
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
+  const [feedback, setFeedback] = useState(false);
+  loadSpace(spaceApiKey)
+    .then((api) => {
+      if (!feedback) {
+        api.init();
+        setFeedback(true);
+      }
+    })
+    .catch((err) => console.log(err));
 
   return (
     <>
@@ -53,24 +65,24 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta httpEquiv="Cache-Control" content="no-cache, must-revalidate" />
         <meta httpEquiv="Pragma" content="no-cache" />
         <meta httpEquiv="Expires" content="0" />
-        <title>HashStack | Under-collateralised loans | Defi</title>
+        <title>Hashstack | Under-collateralised loans | Defi</title>
         <meta
           name="description"
           content="Hashstack provides a permissionless zk-native money market protocol enabling secure under-collateralised loans to the crypto retail. Built on Starknet L2 [announcement], Hashstack leverages the capability of zero-knowledge proofs to provide a cost & capital-efficient lending solution."
         />
         <link rel="shortcut icon" href="/favicon-32x32.png" />
       </Head>
-      <UserbackProvider token="40819|82170|7psZPgjKcXKcsTMMf4vd5lRh9">
-        <ChakraProvider theme={theme}>
-          <StarknetProvider autoConnect={true} connectors={connectors}>
-            <Provider store={store}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </Provider>
-          </StarknetProvider>
-        </ChakraProvider>
-      </UserbackProvider>
+      {/* <UserbackProvider token="40956|82606|h64VyoLnOnFyGHlNFmApltBdf"> */}
+      <ChakraProvider theme={theme}>
+        <StarknetProvider autoConnect={true} connectors={connectors}>
+          <Provider store={store}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </Provider>
+        </StarknetProvider>
+      </ChakraProvider>
+      {/* </UserbackProvider> */}
     </>
   );
 }

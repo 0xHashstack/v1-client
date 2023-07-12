@@ -15,9 +15,9 @@ import {
 } from "@/Blockchain/utils/addressServices";
 import { ILoan, Token } from "@/Blockchain/interfaces/interfaces";
 import mixpanel from "mixpanel-browser";
-import { setTransactionStatus } from "@/store/slices/userAccountSlice";
+import { selectActiveTransactions, setActiveTransactions, setTransactionStatus } from "@/store/slices/userAccountSlice";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Text } from "@chakra-ui/react";
 const useRepay = (loanParam: any) => {
@@ -116,7 +116,9 @@ const useRepay = (loanParam: any) => {
       },
     ],
   });
-
+  const [toastId, setToastId] = useState<any>();
+  let activeTransactions = useSelector(selectActiveTransactions);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const handleRepayBorrow = async () => {
     if (!repayAmount && loan?.loanId! && !diamondAddress) {
       return;
@@ -128,17 +130,42 @@ const useRepay = (loanParam: any) => {
     try {
       const val = await writeAsyncRepay();
       setTransRepayHash(val?.transaction_hash);
-      mixpanel.track('Repay Borrow Status',{
-        "Status":"Success",
-        "Loan ID":loan?.loanId,
-        "Repay Amount":repayAmount
-      })
-      const toastParamValue = {
-        success: true,
-        heading: "Success",
-        desc: "Copy the Transaction Hash",
-        textToCopy: val.transaction_hash,
-      };
+      if(val?.transaction_hash){
+        const toastid = toast.info(
+          `Transaction pending `,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: val?.transaction_hash.toString(),
+          message: `You have successfully repaid`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+        mixpanel.track("Zero Repay Status", {
+          Status: "Success",
+          "Loan ID": loan?.loanId,
+
+        });
+
+        dispatch(setActiveTransactions(activeTransactions));
+        dispatch(setTransactionStatus("success"));
+      }
+
     } catch (err:any) {
       console.log(err, "err repay");
       dispatch(setTransactionStatus("failed"));

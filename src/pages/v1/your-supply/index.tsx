@@ -12,10 +12,8 @@ import { Coins } from "@/utils/constants/coin";
 import YourSupplyModal from "@/components/modals/yourSupply";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
 import { useAccount, useConnectors } from "@starknet-react/core";
-import {
-  setSpendBorrowSelectedDapp,
-} from "@/store/slices/userAccountSlice";
-import { selectYourSupply,selectNetAPR } from "@/store/slices/readDataSlice";
+import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
+import { selectYourSupply, selectNetAPR } from "@/store/slices/readDataSlice";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import { useSelector } from "react-redux";
@@ -85,7 +83,7 @@ const YourSupply = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Total Supply
             </Text>
-            {!totalSupply &&(totalSupply!=null) ? (
+            {totalSupply == null ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -95,7 +93,7 @@ const YourSupply = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalSupply? `$ ${numberFormatter(totalSupply)}`:"-"}
+                {totalSupply ? `$ ${numberFormatter(totalSupply)}` : "NA"}
               </Text>
             )}
           </VStack>
@@ -103,7 +101,7 @@ const YourSupply = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Net APR
             </Text>
-            {!netAPR &&(netAPR!=null) ? (
+            {netAPR == null ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -113,7 +111,7 @@ const YourSupply = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {netAPR ? `${netAPR} %`:"-"}
+                {netAPR && !Number.isNaN(netAPR) ? `${netAPR} %` : "NA"}
               </Text>
             )}
           </VStack>

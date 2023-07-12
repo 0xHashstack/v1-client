@@ -7,7 +7,13 @@ import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { IProtocolReserves } from "@/Blockchain/interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
 import { useSelector } from "react-redux";
-import { selectProtocolReserves,selectNetAPR, selectNetWorth,selectYourSupply,selectYourBorrow } from "@/store/slices/readDataSlice";
+import {
+  selectProtocolReserves,
+  selectNetAPR,
+  selectNetWorth,
+  selectYourSupply,
+  selectYourBorrow,
+} from "@/store/slices/readDataSlice";
 const StatsBoard = () => {
   const { address } = useAccount();
   const router = useRouter();
@@ -20,21 +26,19 @@ const StatsBoard = () => {
   //   avgAssetUtilisation: null, // weighted avg of all the utilisations of markets
   // });
   const protocolReserves = useSelector(selectProtocolReserves);
-  const netWorth=useSelector(selectNetWorth) ;
-  const yourSupply=useSelector(selectYourSupply) ;
-  const yourBorrow= useSelector(selectYourBorrow) ;
-  const netAPR= useSelector(selectNetAPR) ;
+  const netWorth = useSelector(selectNetWorth);
+  const yourSupply = useSelector(selectYourSupply);
+  const yourBorrow = useSelector(selectYourBorrow);
+  const netAPR = useSelector(selectNetAPR);
   // const netWorth= datanetWorth? datanetWorth:"-";
   // console.log(netWorth,"net worth")
-  
+
   // const [userStats, setUserStats] = useState({
   //   netWorth: netWorth,// current values of loans - total borrow + total supply
   //   yourSupply: yourSupply, // usd terms
   //   yourBorrow: yourBorrow, // usd terms
   //   netSupplyAPR: netSupplyAPR, // usd terms
   // });
-
-  
 
   // useEffect(() => {
   //   try {
@@ -94,12 +98,11 @@ const StatsBoard = () => {
       >
         <Stats
           header={["Your networth", "Your Supply", "Your borrow", "Net APR"]}
-          statsData={[
-            netWorth,yourSupply,yourBorrow,netAPR
-          ]}
+          statsData={[netWorth, yourSupply, yourBorrow, netAPR]}
           onclick={() => {
             handleRouteChange("/v1/your-metrics");
           }}
+          arrowHide={true}
         />
         <Stats
           header={[
@@ -111,6 +114,7 @@ const StatsBoard = () => {
           onclick={() => {
             handleRouteChange("/v1/protocol-metrics");
           }}
+          arrowHide={false}
         />
       </HStack>
     </Flex>

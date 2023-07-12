@@ -14,7 +14,7 @@ import { useConnectors } from "@starknet-react/core";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@chakra-ui/react";
-import { selectYourBorrow,selectNetAPR } from "@/store/slices/readDataSlice";
+import { selectYourBorrow, selectNetAPR } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
@@ -24,7 +24,8 @@ const SpendBorrow = () => {
   useDataLoader();
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
-  console.log(netAPR,"netapr in spend borrow")
+  console.log(totalBorrow, "total borrow spend borrow");
+  console.log(netAPR, "netapr in spend borrow");
   return (
     <PageCard pt="6.5rem">
       <HStack
@@ -52,9 +53,9 @@ const SpendBorrow = () => {
             gap={"3px"}
           >
             <Text color="#6e7681" fontSize="14px" alignItems="center">
-              Total Borrow asset
+              Total Borrow
             </Text>
-            {!totalBorrow &&(totalBorrow!=null) ? (
+            {totalBorrow == null ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -64,7 +65,7 @@ const SpendBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalBorrow? `$ ${numberFormatter(totalBorrow)}`:"-"}
+                {totalBorrow ? `$ ${numberFormatter(totalBorrow)}` : "NA"}
               </Text>
             )}
             {/* <Text color="#e6edf3" fontSize="20px">
@@ -75,7 +76,7 @@ const SpendBorrow = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Net APR
             </Text>
-            {!netAPR &&(netAPR!=null) ? (
+            {netAPR == null ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -85,7 +86,7 @@ const SpendBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {netAPR ? `${netAPR} %` :"-"}
+                {netAPR && !Number.isNaN(netAPR) ? `${netAPR} %` : "NA"}
               </Text>
             )}
           </VStack>

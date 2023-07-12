@@ -43,7 +43,12 @@ import {
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
 } from "@/store/slices/userAccountSlice";
-import { selectAprAndHealthFactor, selectUserLoans } from "@/store/slices/readDataSlice";
+import {
+  selectAprAndHealthFactor,
+  selectEffectiveApr,
+  selectHealthFactor,
+  selectUserLoans,
+} from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
@@ -222,51 +227,98 @@ const SwapModal = ({
     track_pageview: true,
     persistence: "localStorage",
   });
-  const avgs=useSelector(selectAprAndHealthFactor)
+  // const avgs=useSelector(selectAprAndHealthFactor)
+  const avgs = useSelector(selectEffectiveApr);
+  const avgsLoneHealth = useSelector(selectHealthFactor);
   const handleSwap = async () => {
     try {
-      const swap = await writeAsyncJediSwap_swap();
-      console.log(swap);
-      setDepositTransHash(swap?.transaction_hash);
-      if (swap?.transaction_hash) {
-        console.log("toast here");
-        const toastid = toast.info(
-          // `Please wait, your transaction is running in background`,
-          `Transaction pending`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
+      if (currentSwap == "Jediswap") {
+        const swap = await writeAsyncJediSwap_swap();
+        console.log(swap);
+        setDepositTransHash(swap?.transaction_hash);
+        if (swap?.transaction_hash) {
+          console.log("toast here");
+          const toastid = toast.info(
+            // `Please wait, your transaction is running in background`,
+            `Transaction pending`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
-        );
-        setToastId(toastid);
-        if (!activeTransactions) {
-          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
-        } else if (
-          Object.isFrozen(activeTransactions) ||
-          Object.isSealed(activeTransactions)
-        ) {
-          // Check if activeTransactions is frozen or sealed
-          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
-        }
-        const trans_data = {
-          transaction_hash: swap?.transaction_hash.toString(),
-          // message: `You have successfully swaped for Loan ID : ${swapLoanId}`,
-          message: `Transaction successful`,
-          toastId: toastid,
-          setCurrentTransactionStatus: setCurrentTransactionStatus,
-        };
-        // addTransaction({ hash: deposit?.transaction_hash });
-        activeTransactions?.push(trans_data);
-        mixpanel.track("Swap Spend Borrow Status", {
-          Status: "Success",
-          "Market Selected": currentSelectedCoin,
-          "Borrow ID": currentBorrowId,
-          "Borrow Market": currentBorrowMarketCoin,
-        });
+          const trans_data = {
+            transaction_hash: swap?.transaction_hash.toString(),
+            // message: `You have successfully swaped for Loan ID : ${swapLoanId}`,
+            message: `Transaction successful`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+          mixpanel.track("Swap Spend Borrow Status", {
+            Status: "Success",
+            "Market Selected": currentSelectedCoin,
+            "Borrow ID": currentBorrowId,
+            "Borrow Market": currentBorrowMarketCoin,
+          });
 
-        dispatch(setActiveTransactions(activeTransactions));
+          dispatch(setActiveTransactions(activeTransactions));
+        }
+        dispatch(setTransactionStatus("success"));
+      } else if (currentSwap == "Myswap") {
+        const swap = await writeAsyncmySwap_swap();
+        console.log(swap);
+        setDepositTransHash(swap?.transaction_hash);
+        if (swap?.transaction_hash) {
+          console.log("toast here");
+          const toastid = toast.info(
+            // `Please wait, your transaction is running in background`,
+            `Transaction pending`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: swap?.transaction_hash.toString(),
+            // message: `You have successfully swaped for Loan ID : ${swapLoanId}`,
+            message: `Transaction successful`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+          mixpanel.track("Swap Spend Borrow Status", {
+            Status: "Success",
+            "Market Selected": currentSelectedCoin,
+            "Borrow ID": currentBorrowId,
+            "Borrow Market": currentBorrowMarketCoin,
+          });
+
+          dispatch(setActiveTransactions(activeTransactions));
+        }
+        dispatch(setTransactionStatus("success"));
       }
-      dispatch(setTransactionStatus("success"));
     } catch (err: any) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
@@ -417,8 +469,8 @@ const SwapModal = ({
         isOpen={isOpen}
         onClose={() => {
           onClose();
-          if(transactionStarted){
-            dispatch(setTransactionStartedAndModalClosed(true))
+          if (transactionStarted) {
+            dispatch(setTransactionStartedAndModalClosed(true));
           }
           resetStates();
         }}
@@ -514,7 +566,7 @@ const SwapModal = ({
                     className="dropdown-container"
                     boxShadow="dark-lg"
                   >
-                    {coins.map((coin: string, index: number) => {
+                    {coins?.map((coin: string, index: number) => {
                       return (
                         <Box
                           key={index}
@@ -792,7 +844,7 @@ const SwapModal = ({
                   </Text>
                 </Box>
               </Box>
-              <Box display="flex" justifyContent="space-between" mb="0.3rem">
+              {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Box display="flex" gap="3px">
                     <Text
@@ -839,7 +891,7 @@ const SwapModal = ({
                 >
                   0.1%
                 </Text>
-              </Box>
+              </Box> */}
               {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
@@ -1040,14 +1092,22 @@ const SwapModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                                            {avgs?.find(
-                            (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                          )?.avg
-                            ? avgs?.find(
-                                (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                              )?.avg
-                            : "3.2"}
-                          %
+                  {avgs?.find(
+                    (item: any) =>
+                      item.loanId ==
+                      currentBorrowId
+                        .slice(currentBorrowId?.indexOf("-") + 1)
+                        ?.trim()
+                  )?.avg
+                    ? avgs?.find(
+                        (item: any) =>
+                          item.loanId ==
+                          currentBorrowId
+                            .slice(currentBorrowId?.indexOf("-") + 1)
+                            ?.trim()
+                      )?.avg
+                    : "3.2"}
+                  %
                 </Text>
               </Box>
               <Box display="flex" justifyContent="space-between">
@@ -1082,14 +1142,22 @@ const SwapModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                                                                {avgs?.find(
-                            (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                          )?.avg
-                            ? avgs?.find(
-                                (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                              )?.loanHealth
-                            : "2.5"}
-                          %
+                  {avgsLoneHealth?.find(
+                    (item: any) =>
+                      item.loanId ==
+                      currentBorrowId
+                        .slice(currentBorrowId?.indexOf("-") + 1)
+                        ?.trim()
+                  )?.loanHealth
+                    ? avgsLoneHealth?.find(
+                        (item: any) =>
+                          item.loanId ==
+                          currentBorrowId
+                            .slice(currentBorrowId?.indexOf("-") + 1)
+                            ?.trim()
+                      )?.loanHealth
+                    : "2.5"}
+                  %
                 </Text>
               </Box>
             </Box>

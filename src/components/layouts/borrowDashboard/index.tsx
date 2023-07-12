@@ -25,6 +25,7 @@ import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { useSelector } from "react-redux";
 import {
   selectAprAndHealthFactor,
+  selectEffectiveApr,
   selectOraclePrices,
   selectProtocolStats,
   selectUserLoans,
@@ -32,6 +33,15 @@ import {
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import { getJediEstimatedLiqALiqBfromLp } from "@/Blockchain/scripts/l3interaction";
+import {
+  getTokenFromAddress,
+  tokenAddressMap,
+} from "@/Blockchain/utils/addressServices";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import { BNtoNum } from "@/Blockchain/utils/utils";
+import { processAddress } from "@/Blockchain/stark-constants";
+import TableInfoIcon from "../table/tableIcons/infoIcon";
+import TableClose from "../table/tableIcons/close";
 
 export interface ICoin {
   name: string;
@@ -143,7 +153,6 @@ const BorrowDashboard = ({
   currentPagination,
   Coins,
   columnItems,
-  Borrows,
 }: // userLoans,
 {
   width: string;
@@ -157,6 +166,7 @@ const BorrowDashboard = ({
   // rowItems: any;
 }) => {
   // console.log(Borrows, "Borrow loans in borrow dashboard");
+  const Borrows = useSelector(selectUserLoans);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Borrows ? Borrows.length - 1 : 0, upper_bound);
@@ -171,7 +181,13 @@ const BorrowDashboard = ({
     useState("BTC");
   const [collateralBalance, setCollateralBalance] = useState("123 eth");
   const [currentSpendStatus, setCurrentSpendStatus] = useState("");
-  const avgs = useSelector(selectAprAndHealthFactor);
+  const [currentLoanAmount, setCurrentLoanAmount] = useState("");
+  const [currentLoanMarket, setCurrentLoanMarket] = useState("");
+  const [allSplit, setAllSplit] = useState<any>([]);
+  const [currentSplitIndex, setCurrentSplitIndex] = useState(0);
+  // const avgs = useSelector(selectAprAndHealthFactor);
+  const [showEmptyNotification, setShowEmptyNotification] = useState(true);
+  const avgs = useSelector(selectEffectiveApr);
   const avgsData: any = [];
   useEffect(() => {
     let temp1: any = [];
@@ -196,9 +212,9 @@ const BorrowDashboard = ({
   }, [Borrows]);
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
-  const userLoans = useSelector(selectUserLoans);
-  const reduxProtocolStats = useSelector(selectProtocolStats);
-  const oraclePrices = useSelector(selectOraclePrices);
+
+  // const reduxProtocolStats = useSelector(selectProtocolStats);
+  // const oraclePrices = useSelector(selectOraclePrices);
 
   // useEffect(() => {
   //   const fetchAprs = async () => {
@@ -229,24 +245,67 @@ const BorrowDashboard = ({
   //   console.log("running");
   // }, [oraclePrices, reduxProtocolStats, userLoans]);
 
-  const getSplit = async (liquidity: any, pairAddress: any) => {
-    const currentSplit = await getJediEstimatedLiqALiqBfromLp(
-      liquidity,
-      pairAddress
-    );
-    console.log("liquidity split - ", currentSplit);
-    return "Pending";
+  const getSplit = async () => {
+    let temp: any = [];
+    for (let i = 0; i < Borrows?.length; i++) {
+      if (Borrows[i].spendType === "LIQUIDITY") {
+        const data = await getJediEstimatedLiqALiqBfromLp(
+          parseInt(Borrows[i]?.currentLoanAmount),
+          Borrows[i]?.loanId,
+          Borrows[i]?.currentLoanMarketAddress,
+          Borrows[i]?.loanMarket
+        );
+        console.log(
+          getTokenFromAddress(processAddress(data?.tokenAAddress)),
+          "all split amount - ",
+          // parseInt(Borrows[i]?.currentLoanAmount),
+          Borrows[i]?.currentLoanMarketAddress,
+          Borrows[i]?.loanId,
+
+          " res -",
+          data
+        );
+
+        if (data) {
+          temp.push({
+            ...data,
+            tokenA: getTokenFromAddress(processAddress(data?.tokenAAddress))
+              ?.name,
+            tokenB: getTokenFromAddress(processAddress(data?.tokenBAddress))
+              ?.name,
+            loanId: Borrows[i]?.loanId,
+          });
+        } else {
+          temp.push("empty");
+        }
+      } else {
+        temp.push("empty");
+      }
+    }
+    console.log("all splits", temp);
+    setAllSplit(temp);
+    // const currentSplit = await getJediEstimatedLiqALiqBfromLp(
+    //   liquidity,
+    //   pairAddress
+    // );
+    // console.log("liquidity split - ", currentSplit);
+    // return "Pending";
   };
 
-  useEffect(() => {
-    getSplit(
-      ["468857759897", "0"],
-      "0x62b1cd273ce4c7967988776fad2a7bbcb21e2b544a111cb48487315810f7f51"
-    );
-  }, []);
+  // useEffect(() => {
+  //   getSplit(
+  //     468857759897,
+  //     "0x62b1cd273ce4c7967988776fad2a7bbcb21e2b544a111cb48487315810f7f51"
+  //   );
+  // }, []);
 
   useEffect(() => {
-    if (Borrows) {
+    getSplit();
+  }, [Borrows]);
+
+  useEffect(() => {
+    console.log("Borrows here - ", Borrows);
+    if (Borrows || Borrows?.length > 0) {
       setLoading(false);
     }
   }, [Borrows]);
@@ -258,6 +317,16 @@ const BorrowDashboard = ({
   useEffect(() => {
     fetchProtocolStats();
   }, [stats]);
+
+  // useEffect(() => {
+  //   try {
+  //     const fetchJediEstimatedLiqALiqBfromLp = async () => {
+  //       const data = await getJediEstimatedLiqALiqBfromLp(0.95946, "USDC");
+  //       console.log("fetchJediEstimatedLiqALiqBfromLp ", data);
+  //     };
+  //     fetchJediEstimatedLiqALiqBfromLp();
+  //   } catch (err) {}
+  // }, []);
 
   const fetchProtocolStats = async () => {
     try {
@@ -298,7 +367,7 @@ const BorrowDashboard = ({
   };
 
   // console.log("Borrows", loading, Borrows);
-  return loading && userLoans?.length > 0 ? (
+  return loading ? (
     <>
       <Box
         display="flex"
@@ -380,13 +449,13 @@ const BorrowDashboard = ({
                   height={"2rem"}
                   fontSize="12px"
                   textAlign={
-                    idx1 == 0
+                    idx1 == 0 || idx1 == 1
                       ? "left"
-                      : idx1 == columnItems.length - 1
+                      : idx1 == columnItems?.length - 1
                       ? "right"
                       : "center"
                   }
-                  pl={idx1 == 0 ? 2 : 0}
+                  pl={idx1 == 0 ? 2 : idx1 == 1 ? "24%  " : 0}
                   pr={idx1 == columnItems.length - 1 ? 5 : 0}
                   color={"#BDBFC1"}
                 >
@@ -406,7 +475,7 @@ const BorrowDashboard = ({
           {Borrows?.slice(lower_bound, upper_bound + 1).map(
             (borrow: any, idx: any) => {
               // console.log("faisal coin check", coin);
-              // borrowIDCoinMap.push([coin.id, coin.name]);
+              // borrowIDCoinMap.push([coin.id, coin?.name]);
               return (
                 <>
                   <Tr
@@ -439,9 +508,9 @@ const BorrowDashboard = ({
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         {`Borrow ID${
-                          borrow.loanId < 10
-                            ? "0" + borrow.loanId
-                            : borrow.loanId
+                          borrow?.loanId < 10
+                            ? "0" + borrow?.loanId
+                            : borrow?.loanId
                         }`}{" "}
                       </Text>
                     </Td>
@@ -456,6 +525,7 @@ const BorrowDashboard = ({
                     >
                       <Box
                         width="100%"
+                        pl="20%"
                         height="100%"
                         display="flex"
                         alignItems="center"
@@ -469,19 +539,21 @@ const BorrowDashboard = ({
                           width="100%"
                           display="flex"
                           justifyContent="center"
-                          alignItems="center"
+                          alignItems="flex-start"
                           height="2.5rem"
                           // bgColor="red"
+                          // p={2}
                         >
                           <HStack
                             height="2rem"
                             width="2rem"
                             alignItems="center"
                             justifyContent="center"
+                            pl={4}
                           >
                             <Image
                               // src={`./BTC.svg`}
-                              src={`/${borrow.loanMarket.slice(1)}.svg`}
+                              src={`/${borrow?.loanMarket.slice(1)}.svg`}
                               alt="Picture of the author"
                               width="32"
                               height="32"
@@ -491,7 +563,7 @@ const BorrowDashboard = ({
                               fontWeight="400"
                               color="#E6EDF3"
                             >
-                              {borrow.loanMarket}
+                              {borrow?.loanMarket}
                             </Text>
                           </HStack>
                           <HStack>
@@ -502,7 +574,7 @@ const BorrowDashboard = ({
                               width="4.6rem"
                             >
                               <Text textAlign="left">
-                                {borrow.loanAmountParsed}
+                                {numberFormatter(borrow?.loanAmountParsed)}
                                 {/* 0.04534 */}
                               </Text>
                             </Text>
@@ -539,7 +611,9 @@ const BorrowDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          getBorrowAPR(borrow.loanMarket.slice(1)) + "%"
+                          numberFormatter(
+                            getBorrowAPR(borrow?.loanMarket.slice(1))
+                          ) + "%"
                         )}
                       </Text>
                     </Td>
@@ -583,7 +657,7 @@ const BorrowDashboard = ({
                         // gap="3px"
                         width="100%"
                         display="flex"
-                        justifyContent="center"
+                        // justifyContent="flex-start"
                         alignItems="center"
                         height="2.5rem"
                         // bgColor="red"
@@ -595,13 +669,13 @@ const BorrowDashboard = ({
                           justifyContent="center"
                         >
                           <Image
-                            src={`/${borrow.collateralMarket.slice(1)}.svg`}
+                            src={`/${borrow?.collateralMarket.slice(1)}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
                           />
                           <Text fontSize="14px" fontWeight="400">
-                            {borrow.collateralMarket}
+                            {borrow?.collateralMarket}
                           </Text>
                         </HStack>
                         <Text
@@ -610,8 +684,8 @@ const BorrowDashboard = ({
                           color="#F7BB5B"
                           width="4.6rem"
                         >
-                          <Text textAlign="left">
-                            {borrow.collateralAmountParsed}
+                          <Text>
+                            {numberFormatter(borrow?.collateralAmountParsed)}
                             {/* 10,000 */}
                           </Text>
                         </Text>
@@ -697,7 +771,57 @@ const BorrowDashboard = ({
                               // gap={0.5}
                               // bgColor={"blue"}
                             >
-                              <Box
+                              {/* <Text>{idx}</Text> */}
+                              {borrow.spendType == "LIQUIDITY" ? (
+                                allSplit?.[lower_bound + idx]?.tokenA &&
+                                allSplit?.[lower_bound + idx]?.tokenB && (
+                                  <>
+                                    <Box
+                                      display="flex"
+                                      gap={0.5}
+                                      minWidth={"16px"}
+                                    >
+                                      <Image
+                                        src={`/${
+                                          allSplit?.[lower_bound + idx]?.tokenA
+                                        }.svg`}
+                                        alt="Picture of the author"
+                                        width="16"
+                                        height="16"
+                                      />
+                                    </Box>
+                                    <Box
+                                      display="flex"
+                                      gap={0.5}
+                                      minWidth={"16px"}
+                                    >
+                                      <Image
+                                        src={`/${
+                                          allSplit?.[lower_bound + idx]?.tokenB
+                                        }.svg`}
+                                        alt="Picture of the author"
+                                        width="16"
+                                        height="16"
+                                      />
+                                    </Box>
+                                  </>
+                                )
+                              ) : (
+                                <Box
+                                  display="flex"
+                                  gap={0.5}
+                                  minWidth={"16px"}
+                                  // bgColor={"blue"}
+                                >
+                                  <Image
+                                    src={`/${borrow.currentLoanMarket}.svg`}
+                                    alt="Picture of the author"
+                                    width="16"
+                                    height="16"
+                                  />
+                                </Box>
+                              )}
+                              {/* <Box
                                 display="flex"
                                 gap={0.5}
                                 minWidth={"16px"}
@@ -717,17 +841,28 @@ const BorrowDashboard = ({
                                 // bgColor={"blue"}
                               >
                                 <Image
-                                  src={`/${borrow.underlyingMarket}.svg`}
+                                  src={`/${borrow.currentLoanMarket}.svg`}
                                   alt="Picture of the author"
                                   width="16"
                                   height="16"
                                 />
-                              </Box>
+                              </Box> */}
                             </Box>
                             <Text fontSize="14px" fontWeight="400">
-                              {borrow.spendType !== "LIQUIDITY"
-                                ? "1.234/2.23"
-                                : "1.234/2.23"}
+                              {borrow.spendType == "LIQUIDITY"
+                                ? allSplit.length === 0 ||
+                                  allSplit[lower_bound + idx] === "empty"
+                                  ? "-"
+                                  : numberFormatter(
+                                      allSplit?.[lower_bound + idx]?.amountA
+                                    ) +
+                                    "/" +
+                                    numberFormatter(
+                                      allSplit[lower_bound + idx]?.amountB
+                                    )
+                                : numberFormatter(
+                                    borrow?.currentLoanAmountParsed
+                                  )}
                             </Text>
                           </HStack>
                         </Box>
@@ -747,6 +882,7 @@ const BorrowDashboard = ({
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        // pl="45%"
                         fontWeight="400"
                         // bgColor={"blue"}
                       >
@@ -783,6 +919,8 @@ const BorrowDashboard = ({
                               borrow.collateralMarket
                           );
                           setCurrentSpendStatus(borrow.spendType);
+                          setCurrentLoanAmount(borrow?.currentLoanAmount);
+                          setCurrentLoanMarket(borrow?.currentLoanMarket);
                         }}
                         // bgColor={"blue"}
                       >
@@ -802,6 +940,10 @@ const BorrowDashboard = ({
                           setCurrentBorrowMarketCoin2={
                             setCurrentBorrowMarketCoin2
                           }
+                          currentLoanAmount={currentLoanAmount}
+                          setCurrentLoanAmount={setCurrentLoanAmount}
+                          currentLoanMarket={currentLoanMarket}
+                          setCurrentLoanMarket={setCurrentLoanMarket}
                           collateralBalance={collateralBalance}
                           setCollateralBalance={setCollateralBalance}
                           loan={borrow}
@@ -854,7 +996,55 @@ const BorrowDashboard = ({
     </TableContainer>
   ) : (
     <>
-      <Box
+      {showEmptyNotification && (
+        <Box display="flex" justifyContent="left" w="94%" pb="2">
+          <Box
+            display="flex"
+            bg="#DDF4FF"
+            fontSize="14px"
+            p="4"
+            fontStyle="normal"
+            fontWeight="400"
+            borderRadius="6px"
+            // textAlign="center"
+          >
+            <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
+              <TableInfoIcon />
+            </Box>
+            Your do not have active borrow.
+            <Box
+              // ml="1"
+              mr="1"
+              as="span"
+              textDecoration="underline"
+              color="#0C6AD9"
+              cursor="pointer"
+            >
+              <BorrowModal
+                buttonText="Click here to borrow"
+                variant="link"
+                fontSize="16px"
+                fontWeight="400"
+                display="inline"
+                color="#0969DA"
+                cursor="pointer"
+                ml="0.3rem"
+                lineHeight="24px"
+                backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
+              />
+            </Box>
+            {/* <Box
+              py="1"
+              pl="4"
+              cursor="pointer"
+              onClick={() => setShowEmptyNotification(!showEmptyNotification)}
+            >
+              <TableClose />
+            </Box> */}
+          </Box>
+        </Box>
+      )}
+      {/* <Box
         display="flex"
         flexDirection="column"
         justifyContent="center"
@@ -878,7 +1068,7 @@ const BorrowDashboard = ({
           lineHeight="24px"
           coin={"BTC"}
         />
-      </Box>
+      </Box> */}
     </>
   );
 };

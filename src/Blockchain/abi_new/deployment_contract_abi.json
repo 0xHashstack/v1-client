@@ -1,0 +1,646 @@
+[
+    {
+        "members": [
+            {
+                "name": "module_address",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "action",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "selector",
+                "offset": 2,
+                "type": "felt"
+            }
+        ],
+        "name": "ModuleFunctionAction",
+        "size": 3,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "diamond_address",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "l3_diamond_address",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "deployedAddresses",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "erc20_address",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "rtoken_address",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "dtoken_address",
+                "offset": 2,
+                "type": "felt"
+            }
+        ],
+        "name": "tokenAddresses",
+        "size": 3,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "insurance",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "tier1_capital",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "treasury",
+                "offset": 2,
+                "type": "felt"
+            },
+            {
+                "name": "collector",
+                "offset": 3,
+                "type": "felt"
+            }
+        ],
+        "name": "fundManagementList",
+        "size": 4,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "factory",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "router",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "jediMockDetails",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "actions_len",
+                "type": "felt"
+            },
+            {
+                "name": "actions",
+                "type": "ModuleFunctionAction*"
+            },
+            {
+                "name": "address",
+                "type": "felt"
+            },
+            {
+                "name": "calldata_len",
+                "type": "felt"
+            },
+            {
+                "name": "calldata",
+                "type": "felt*"
+            }
+        ],
+        "keys": [],
+        "name": "ModuleFunctionChange",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "get_list_addresses",
+        "outputs": [
+            {
+                "name": "list",
+                "type": "deployedAddresses"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_last_updated_token_addresses",
+        "outputs": [
+            {
+                "name": "list",
+                "type": "tokenAddresses"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_fund_management_contracts",
+        "outputs": [
+            {
+                "name": "list",
+                "type": "fundManagementList"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_my_swap_address",
+        "outputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_salt",
+        "outputs": [
+            {
+                "name": "value",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "diamond_contract_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "constructor_calldata_len",
+                "type": "felt"
+            },
+            {
+                "name": "constructor_calldata",
+                "type": "felt*"
+            }
+        ],
+        "name": "deploy_diamond_contract",
+        "outputs": [
+            {
+                "name": "contract_address",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "diamond_address",
+                "type": "felt"
+            },
+            {
+                "name": "actions_len",
+                "type": "felt"
+            },
+            {
+                "name": "actions",
+                "type": "ModuleFunctionAction*"
+            },
+            {
+                "name": "address",
+                "type": "felt"
+            },
+            {
+                "name": "calldata_len",
+                "type": "felt"
+            },
+            {
+                "name": "calldata",
+                "type": "felt*"
+            }
+        ],
+        "name": "change_facets",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "diamond_address",
+                "type": "felt"
+            },
+            {
+                "name": "erc20_proxy_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "dtoken_proxy_hash",
+                "type": "felt"
+            },
+            {
+                "name": "dtoken_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "rtoken_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "constructor_calldata_erc20_len",
+                "type": "felt"
+            },
+            {
+                "name": "constructor_calldata_erc20",
+                "type": "felt*"
+            },
+            {
+                "name": "constructor_calldata_rtoken_len",
+                "type": "felt"
+            },
+            {
+                "name": "constructor_calldata_rtoken",
+                "type": "felt*"
+            },
+            {
+                "name": "constructor_calldata_dtoken_len",
+                "type": "felt"
+            },
+            {
+                "name": "constructor_calldata_dtoken",
+                "type": "felt*"
+            }
+        ],
+        "name": "deploy_erc20_dtoken_rtoken",
+        "outputs": [
+            {
+                "name": "erc20_address",
+                "type": "felt"
+            },
+            {
+                "name": "rtoken_address",
+                "type": "felt"
+            },
+            {
+                "name": "dtoken_address",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "tier1_capital_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "insurance_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "treasury_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "collector_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "diamond_address",
+                "type": "felt"
+            }
+        ],
+        "name": "deploy_fund_management_contracts",
+        "outputs": [
+            {
+                "name": "tier1_capital_address",
+                "type": "felt"
+            },
+            {
+                "name": "insurance_address",
+                "type": "felt"
+            },
+            {
+                "name": "treasury_address",
+                "type": "felt"
+            },
+            {
+                "name": "collector_address",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "diamond_address",
+                "type": "felt"
+            },
+            {
+                "name": "access_control_contract",
+                "type": "felt"
+            },
+            {
+                "name": "tokens_len",
+                "type": "felt"
+            },
+            {
+                "name": "tokens",
+                "type": "felt*"
+            }
+        ],
+        "name": "set_all_comptroller_settings",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "diamond_address",
+                "type": "felt"
+            },
+            {
+                "name": "tokens_len",
+                "type": "felt"
+            },
+            {
+                "name": "tokens",
+                "type": "felt*"
+            }
+        ],
+        "name": "set_dial_params_tokens",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "diamond_address",
+                "type": "felt"
+            },
+            {
+                "name": "tokens_len",
+                "type": "felt"
+            },
+            {
+                "name": "tokens",
+                "type": "felt*"
+            },
+            {
+                "name": "empiric_keys_len",
+                "type": "felt"
+            },
+            {
+                "name": "empiric_keys",
+                "type": "felt*"
+            },
+            {
+                "name": "rtokens_len",
+                "type": "felt"
+            },
+            {
+                "name": "rtokens",
+                "type": "felt*"
+            },
+            {
+                "name": "dtokens_len",
+                "type": "felt"
+            },
+            {
+                "name": "dtokens",
+                "type": "felt*"
+            }
+        ],
+        "name": "set_asset_metadata_and_vaults",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "diamond_address",
+                "type": "felt"
+            },
+            {
+                "name": "empiric_proxy",
+                "type": "felt"
+            },
+            {
+                "name": "staking_contract_address",
+                "type": "felt"
+            },
+            {
+                "name": "collector_address",
+                "type": "felt"
+            },
+            {
+                "name": "tokens_len",
+                "type": "felt"
+            },
+            {
+                "name": "tokens",
+                "type": "felt*"
+            },
+            {
+                "name": "empiric_keys_len",
+                "type": "felt"
+            },
+            {
+                "name": "empiric_keys",
+                "type": "felt*"
+            },
+            {
+                "name": "rtokens_len",
+                "type": "felt"
+            },
+            {
+                "name": "rtokens",
+                "type": "felt*"
+            },
+            {
+                "name": "dtokens_len",
+                "type": "felt"
+            },
+            {
+                "name": "dtokens",
+                "type": "felt*"
+            },
+            {
+                "name": "l3_diamond_address",
+                "type": "felt"
+            },
+            {
+                "name": "liquidation_base_market",
+                "type": "felt"
+            },
+            {
+                "name": "jedi_swap_router",
+                "type": "felt"
+            },
+            {
+                "name": "my_swap_router",
+                "type": "felt"
+            }
+        ],
+        "name": "set_governor_parameters",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "diamond_address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_my_swap_dapp_settings",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_jedi_details",
+        "outputs": [
+            {
+                "name": "list",
+                "type": "jediMockDetails"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "diamond_address",
+                "type": "felt"
+            },
+            {
+                "name": "jedi_pair_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "jedi_factory_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "jedi_router_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "empiric_proxy_address",
+                "type": "felt"
+            }
+        ],
+        "name": "deploy_jedi_mocks_related_settings",
+        "outputs": [
+            {
+                "name": "jedi_factory_address",
+                "type": "felt"
+            },
+            {
+                "name": "jedi_router_address",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "my_swap_class_hash",
+                "type": "felt"
+            }
+        ],
+        "name": "deploy_my_swap_mock",
+        "outputs": [
+            {
+                "name": "my_swap_address",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "l3_diamond_class_hash",
+                "type": "felt"
+            },
+            {
+                "name": "module_registry_class_hash",
+                "type": "felt"
+            }
+        ],
+        "name": "deploy_l3_diamond",
+        "outputs": [
+            {
+                "name": "contract_address",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "open_diamond_address",
+                "type": "felt"
+            },
+            {
+                "name": "jedi_swap_router",
+                "type": "felt"
+            },
+            {
+                "name": "my_swap_router",
+                "type": "felt"
+            },
+            {
+                "name": "l3_diamond_address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_l3_comptroller",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "diamond_address",
+                "type": "felt"
+            },
+            {
+                "name": "new_owner",
+                "type": "felt"
+            }
+        ],
+        "name": "initiate_transfer_ownership",
+        "outputs": [],
+        "type": "function"
+    }
+]

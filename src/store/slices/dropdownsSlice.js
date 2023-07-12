@@ -56,7 +56,7 @@ export const dropdownSlice = createSlice({
     setNavDropdown(state, action) {
       const dropdownName = action.payload;
       const dropdowns = { ...state.navDropdowns };
-      Object.keys(dropdowns).forEach((key) => {
+      Object.keys(dropdowns)?.forEach((key) => {
         if (key == dropdownName) {
           dropdowns[key] = !dropdowns[key];
         } else {
@@ -70,7 +70,7 @@ export const dropdownSlice = createSlice({
     setModalDropdown(state, action) {
       const dropdownName = action.payload;
       const dropdowns = { ...state.modalDropdowns };
-      Object.keys(dropdowns).forEach((key) => {
+      Object.keys(dropdowns)?.forEach((key) => {
         if (key === dropdownName) {
           dropdowns[key] = !dropdowns[key];
         } else {
@@ -84,7 +84,7 @@ export const dropdownSlice = createSlice({
     setMetricsDropdown(state, action) {
       const dropdownName = action.payload;
       const dropdowns = { ...state.metricsDropdowns };
-      Object.keys(dropdowns).forEach((key) => {
+      Object.keys(dropdowns)?.forEach((key) => {
         if (key == dropdownName) {
           dropdowns[key] = !dropdowns[key];
         } else {

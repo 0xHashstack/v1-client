@@ -1,9 +1,9 @@
-import DeployDetailsProd from "../../contract_addresses.json";
-import ERC20Abi from "./abis/erc20_abi.json";
+// import DeployDetailsProd from "../../contract_addresses.json";
+import DeployDetailsProd from "../../contract_addresses_new.json";
+// import ERC20Abi from "./abis/erc20_abi.json";
+import ERC20Abi from "./abi_new/erc20_abi.json";
 import { Provider, number } from "starknet";
-import {
-  UseWaitForTransactionResult,
-} from "@starknet-react/core";
+import { UseWaitForTransactionResult } from "@starknet-react/core";
 
 export function processAddress(address: string) {
   return number.toHex(number.toBN(number.toFelt(address)));
@@ -59,17 +59,17 @@ export const getProvider = () => {
         baseUrl: "https://alpha4.starknet.io",
         feederGatewayUrl: "feeder_gateway",
         gatewayUrl: "gateway",
-        blockIdentifier: "pending"
+        blockIdentifier: "pending",
       },
     });
     return provider;
-  } else if(contractsEnv == DeployDetailsProd.goerli_2){
+  } else if (contractsEnv == DeployDetailsProd.goerli_2) {
     const provider = new Provider({
       sequencer: {
         baseUrl: "https://alpha4-2.starknet.io",
         feederGatewayUrl: "feeder_gateway",
         gatewayUrl: "gateway",
-        blockIdentifier: "pending"
+        blockIdentifier: "pending",
       },
     });
     return provider;
@@ -79,12 +79,12 @@ export const getProvider = () => {
         baseUrl: "https://alpha-mainnet.starknet.io",
         feederGatewayUrl: "feeder_gateway",
         gatewayUrl: "gateway",
-        blockIdentifier: "pending"
+        blockIdentifier: "pending",
       },
     });
     return provider;
   }
-}
+};
 
 export function isTransactionLoading(receipt: UseWaitForTransactionResult) {
   // if(receipt.loading)
@@ -92,11 +92,12 @@ export function isTransactionLoading(receipt: UseWaitForTransactionResult) {
   if (receipt.data?.status == "RECEIVED") return true;
 }
 
-export function handleTransactionToast(receipt: UseWaitForTransactionResult) { }
+export function handleTransactionToast(receipt: UseWaitForTransactionResult) {}
 
 export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
 
-export const metricsContractAddress: string = contractsEnv.METRICS_CONTRACT_ADDRESS;
+export const metricsContractAddress: string =
+  contractsEnv.METRICS_CONTRACT_ADDRESS;
 
 export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 
