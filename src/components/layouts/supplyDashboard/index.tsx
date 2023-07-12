@@ -554,7 +554,7 @@ const SupplyDashboard = ({
                           avgs?.find((item: any) => item.token == supply?.token)
                             ?.avg
                         )}{" "}
-                        %{/* {supply?.token} */}
+                        {avgs ?"%":""}{/* {supply?.token} */}
                       </Text>
                     </Td>
                     <Td

@@ -458,7 +458,7 @@ const StakeUnstakeModal = ({
   // useEffect(()=>{
   //   hanldest();
   // },[])
-
+// console.log(rTokenAmount,"rtoken amount")
   const hanldeUnstakeTransaction = async () => {
     try {
       const unstake = await writeAsyncWithdrawStake();
@@ -485,7 +485,7 @@ const StakeUnstakeModal = ({
         }
         const trans_data = {
           transaction_hash: unstake?.transaction_hash.toString(),
-          message: `Successfully unstaked : ${inputUnstakeAmount} ${currentSelectedUnstakeCoin}`,
+          message: `Successfully unstaked : ${rTokenToWithdraw} ${currentSelectedUnstakeCoin}`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
@@ -495,7 +495,7 @@ const StakeUnstakeModal = ({
         mixpanel.track("Unstake Modal Market Page Status", {
           Status: "Success",
           Token: currentSelectedUnstakeCoin,
-          TokenAmount: inputUnstakeAmount,
+          TokenAmount: rTokenAmount,
         });
 
         dispatch(setActiveTransactions(activeTransactions));

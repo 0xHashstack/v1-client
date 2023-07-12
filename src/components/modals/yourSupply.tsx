@@ -2122,20 +2122,20 @@ const YourSupplyModal = ({
                               <Text key={0} display="flex">
                                 Fetching the exchange between{" "}
                                 <Text ml="0.4rem" mr="0.1rem">
-                                  <BTCLogo height={"16px"} width={"16px"} />
+                                  {getCoin(currentSelectedWithdrawlCoin)}
                                 </Text>{" "}
-                                rbtc &
+                                {currentSelectedWithdrawlCoin} &
                                 <Text key={1} ml="0.3rem" mr="0.1rem">
-                                  <BTCLogo height={"16px"} width={"16px"} />
+                                  {getCoin(currentSelectedWithdrawlCoin)}
                                 </Text>
-                                BTC
+                                {currentSelectedWithdrawlCoin.slice(1)}
                               </Text>,
                               <Text key={2} display="flex">
-                                Burning 12345
+                                Burning {inputWithdrawlAmount}
                                 <Text ml="0.5rem" mr="0.1rem">
-                                  <BTCLogo height={"16px"} width={"16px"} />
+                                  {getCoin(currentSelectedWithdrawlCoin)}
                                 </Text>{" "}
-                                rBTC
+                                {currentSelectedWithdrawlCoin}
                               </Text>,
                               "Processing Withdrawl",
                               // <ErrorButton errorText="Transaction failed" />,
