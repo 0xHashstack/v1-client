@@ -134,7 +134,7 @@ const useDataLoader = () => {
         const responseApr=await axios.get(
           `${metrics_api}/api/metrics/apm_market/daily/DAI`
         )
-        console.log(response, "response data");
+        // console.log(response, "response data");
         if (!response) {
           return;
         }
@@ -184,7 +184,8 @@ const useDataLoader = () => {
             utilRates:utilRates,
             exchangeRates:exchangeRates,
             totalTransactions:totalTransactions,
-            totalAccounts:totalAccounts
+            totalAccounts:totalAccounts,
+            aprs:aprs
           };
           // console.log(btcData,"Data gone")
           dispatch(setHourlyBTCData(data));

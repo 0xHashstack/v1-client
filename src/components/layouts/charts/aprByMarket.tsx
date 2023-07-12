@@ -17,6 +17,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
     },
   ]);
   const btcData=useSelector(selectHourlyBTCData);
+  console.log(btcData,"btc")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -48,11 +49,11 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           },
           {
             name: "wETH",
-            data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
+            data: [200, 300, 250, 400, 390, 500, 700, 250, 400, 390, 500, 700],
           },
           {
             name: "USDT",
-            data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
+            data: [350, 450, 400, 550, 540, 650, 850, 250, 400, 390, 500, 700],
           },
           {
             name: "USDC",
@@ -60,7 +61,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           },
           {
             name: "DAI",
-            data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
+            data: [250, 350, 300, 450, 440, 550, 750, 250, 400, 390, 500, 700],
           },
         ]:newData = [
           {
@@ -116,26 +117,13 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           },
         ];
         newCategories = [
-          new Date("2023-06-01").getTime(),
-          new Date("2023-06-02").getTime(),
-          new Date("2023-06-03").getTime(),
-          new Date("2023-06-04").getTime(),
-          new Date("2023-06-05").getTime(),
-          new Date("2023-06-06").getTime(),
-          new Date("2023-06-07").getTime(),
-          new Date("2023-06-08").getTime(),
-          new Date("2023-06-09").getTime(),
-          new Date("2023-06-10").getTime(),
-          new Date("2023-06-11").getTime(),
-          new Date("2023-06-12").getTime(),
-          new Date("2023-06-13").getTime(),
-          new Date("2023-06-14").getTime(),
-          new Date("2023-06-15").getTime(),
-          new Date("2023-06-16").getTime(),
-          new Date("2023-06-17").getTime(),
-          new Date("2023-06-18").getTime(),
-          new Date("2023-06-19").getTime(),
-          new Date("2023-06-20").getTime(),
+          new Date("2023-07-01").getTime(),
+          new Date("2023-07-02").getTime(),
+          new Date("2023-07-03").getTime(),
+          new Date("2023-07-04").getTime(),
+          new Date("2023-07-05").getTime(),
+          new Date("2023-07-06").getTime(),
+          new Date("2023-07-07").getTime(),
         ];
         break;
       case 2:
@@ -143,57 +131,60 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000, 50000, 49000, 60000, 80000],
           },
           {
             name: "Series 2",
-            data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
+            data: [20000, 30000, 25000, 40000, 39000, 50000, 70000, 50000, 49000, 60000, 80000],
           },
           {
             name: "Series 3",
-            data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
+            data: [35000, 45000, 40000, 55000, 54000, 65000, 85000, 50000, 49000, 60000, 80000],
           },
           {
             name: "Series 4",
-            data: [40000, 50000, 45000, 60000, 59000, 70000, 90000],
+            data: [40000, 50000, 45000, 60000, 59000, 70000, 90000, 50000, 49000, 60000, 80000],
           },
           {
             name: "Series 5",
-            data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
+            data: [25000, 35000, 30000, 45000, 44000, 55000, 75000, 50000, 49000, 60000, 80000],
           },
         ];
         //x axis data
         newCategories = [
-          new Date("2023-01-01").getTime(),
-          new Date("2023-02-01").getTime(),
-          new Date("2023-03-01").getTime(),
-          new Date("2023-04-01").getTime(),
-          new Date("2023-05-01").getTime(),
-          new Date("2023-06-01").getTime(),
-          new Date("2023-07-01").getTime(),
-        ];
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-06").getTime(),
+          new Date("2023-06-09").getTime(),
+          new Date("2023-06-12").getTime(),
+          new Date("2023-06-15").getTime(),
+          new Date("2023-06-18").getTime(),
+          new Date("2023-06-21").getTime(),
+          new Date("2023-06-24").getTime(),
+          new Date("2023-06-27").getTime(),
+          new Date("2023-06-30").getTime(),
+      ];
         break;
       case 3:
         newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000, 50000, 49000, 60000, 80000,40000],
           },
           {
             name: "Series 2",
-            data: [20000, 30000, 25000, 40000, 39000, 50000, 70000],
+            data: [20000, 30000, 25000, 40000, 39000, 50000, 70000, 50000, 49000, 60000, 80000,20000],
           },
           {
             name: "Series 3",
-            data: [35000, 45000, 40000, 55000, 54000, 65000, 85000],
+            data: [35000, 45000, 40000, 55000, 54000, 65000, 85000, 50000, 49000, 60000, 80000,50000],
           },
           {
             name: "Series 4",
-            data: [40000, 50000, 45000, 60000, 59000, 70000, 90000],
+            data: [40000, 50000, 45000, 60000, 59000, 70000, 90000, 50000, 49000, 60000, 80000,60000],
           },
           {
             name: "Series 5",
-            data: [25000, 35000, 30000, 45000, 44000, 55000, 75000],
+            data: [25000, 35000, 30000, 45000, 44000, 55000, 75000, 50000, 49000, 60000, 80000,53000],
           },
         ];
 
