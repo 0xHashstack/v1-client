@@ -816,7 +816,7 @@ const SupplyModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin: NativeToken, index: number) => {
+                      {coins?.map((coin: NativeToken, index: number) => {
                         return (
                           <Box
                             key={index}
