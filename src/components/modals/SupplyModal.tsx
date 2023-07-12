@@ -130,11 +130,11 @@ const SupplyModal = ({
     statusDeposit,
   } = useDeposit();
   useEffect(() => {
-    setAsset(coin ? coin.name : "BTC");
+    setAsset(coin ? coin?.name : "BTC");
   }, [coin]);
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
-    coin ? coin.name : "BTC"
+    coin ? coin?.name : "BTC"
   );
   // console.log("wallet balance",typeof Number(walletBalance))
   // console.log("deposit amount", typeof depositAmount);
@@ -213,7 +213,7 @@ const SupplyModal = ({
           )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   // useEffect(()=>{
 

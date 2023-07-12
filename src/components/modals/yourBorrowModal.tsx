@@ -427,7 +427,7 @@ const YourBorrowModal = ({
           )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [
     walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
       ?.statusBalanceOf,
@@ -460,7 +460,7 @@ const YourBorrowModal = ({
           )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [
     walletBalances[collateralAsset]?.statusBalanceOf,
     collateralAsset,

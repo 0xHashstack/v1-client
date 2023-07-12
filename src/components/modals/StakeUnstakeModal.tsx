@@ -503,8 +503,8 @@ const StakeUnstakeModal = ({
 
   const rcoins: RToken[] = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
   const walletBalance = useSelector(selectWalletBalance);
-  const coinObj: any = coins.find((obj) => coin.name in obj);
-  const rcoinValue = coinObj ? coinObj[coin.name] : "rUSDT";
+  const coinObj: any = coins.find((obj) => coin?.name in obj);
+  const rcoinValue = coinObj ? coinObj[coin?.name] : "rUSDT";
   const [isSupplied, setIsSupplied] = useState(false);
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("BTC");

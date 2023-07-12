@@ -132,14 +132,14 @@ const BorrowModal = ({
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
-                walletBalances[coin.name]?.dataBalanceOf?.balance
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
-              tokenDecimalsMap[coin.name]
+              tokenDecimalsMap[coin?.name]
             )
           )
         : 24
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [coin, walletBalances[coin?.name]?.statusBalanceOf]);
   const {
     market,
@@ -181,9 +181,9 @@ const BorrowModal = ({
   } = useLoanRequest();
 
   useEffect(() => {
-    setMarket(coin ? coin.name : "BTC");
-    setRToken(coin ? coin.name : "rBTC");
-    setCollateralMarket(coin ? coin.name : "BTC");
+    setMarket(coin ? coin?.name : "BTC");
+    setRToken(coin ? coin?.name : "rBTC");
+    setCollateralMarket(coin ? coin?.name : "BTC");
   }, [coin]);
 
   const [borrowTransHash, setBorrowTransHash] = useState("");
@@ -255,10 +255,10 @@ const BorrowModal = ({
   let activeTransactions = useSelector(selectActiveTransactions);
   const coinAlign = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
-    coin ? coin.name : "BTC"
+    coin ? coin?.name : "BTC"
   );
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
-    coin ? coin.name : "BTC"
+    coin ? coin?.name : "BTC"
   );
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const protocolStatsRedux = useSelector(selectProtocolStats);

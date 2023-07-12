@@ -431,6 +431,7 @@ const useDataLoader = () => {
           userDepositsCount == transactionRefresh &&
           protocolStatsCount == transactionRefresh &&
           userLoansCount == transactionRefresh &&
+          dataOraclePrices &&
           userInfoCount < transactionRefresh
         ) {
           console.log("user info called inside - transactionRefresh");
