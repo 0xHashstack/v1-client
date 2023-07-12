@@ -53,6 +53,9 @@ const initialState = {
   aprCount: -1,
   healthFactorCount: -1,
   hourlyDataCount: -1,
+  netAprCount: -1,
+  avgBorrowAprCount: -1,
+  avgSupplyAprCount: -1,
 
   // walletBalance: {
   //   BTC: 0,
@@ -209,6 +212,15 @@ export const userAccountSlice = createSlice({
     setHealthFactorCount(state, action) {
       state.healthFactorCount = action.payload;
     },
+    setNetAprCount(state, action) {
+      state.netAprCount = action.payload;
+    },
+    setAvgBorrowAprCount(state, action) {
+      state.avgBorrowAprCount = action.payload;
+    },
+    setAvgSupplyAprCount(state, action) {
+      state.avgSupplyAprCount = action.payload;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -254,6 +266,9 @@ export const {
   setAccountReset,
   setAprCount,
   setHealthFactorCount,
+  setNetAprCount,
+  setAvgBorrowAprCount,
+  setAvgSupplyAprCount,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -328,5 +343,10 @@ export const selectUserUnspentLoans = (state) =>
 export const selectAprCount = (state) => state.user_account.aprCount;
 export const selectHealthFactorCount = (state) =>
   state.user_account.healthFactorCount;
+export const selectNetAprCount = (state) => state.user_account.netAprCount;
+export const selectAvgBorrowAprCount = (state) =>
+  state.user_account.avgBorrowAprCount;
+export const selectAvgSupplyAprCount = (state) =>
+  state.user_account.avgSupplyAprCount;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;
