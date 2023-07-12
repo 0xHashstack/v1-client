@@ -62,10 +62,10 @@ const MarketDashboard = () => {
       const rTokens: any = [];
       if (reserves) {
         reserves.map((reserve: any) => {
-          if (reserve.rTokenAmountParsed > 0) {
+          if (reserve.rTokenFreeParsed > 0) {
             rTokens.push({
               rToken: reserve.rToken,
-              rTokenAmount: reserve.rTokenAmountParsed,
+              rTokenAmount: reserve.rTokenFreeParsed,
             });
           }
         });

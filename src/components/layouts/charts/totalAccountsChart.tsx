@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import dynamic from 'next/dynamic';
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const TotalAccountsChart = () => {
@@ -13,6 +16,7 @@ const TotalAccountsChart = () => {
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
+  const btcData=useSelector(selectHourlyBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -37,13 +41,19 @@ const TotalAccountsChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        newData = [
+        btcData?.totalAccounts ? newData = [
+          {
+            name: "Series 1",
+            data: btcData?.totalAccounts,
+          },
+        ]:newData = [
           {
             name: "Series 1",
             data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
           },
         ];
-        newCategories = [
+        btcData?.dates ?
+        newCategories = btcData?.dates:newCategories=[
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
           new Date("2023-07-03").getTime(),
@@ -154,7 +164,7 @@ const TotalAccountsChart = () => {
           colors: ["#000000"],
         },
         formatter: function (val: any) {
-          return val / 1000 + "k"; // Display the data value as the label
+          return numberFormatter(val); // Display the data value as the label
         },
       },
 
@@ -178,7 +188,7 @@ const TotalAccountsChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value / 1000 + "k";
+            return numberFormatter(value);
           },
           style: {
             colors: "#6E7681", // Set the color of the labels

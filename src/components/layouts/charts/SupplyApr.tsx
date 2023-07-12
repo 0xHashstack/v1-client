@@ -220,6 +220,7 @@ const SupplyChartChart = () => {
           bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
         },
       },
+      curve:"smooth",
       annotations: {
         xaxis: [
           {
