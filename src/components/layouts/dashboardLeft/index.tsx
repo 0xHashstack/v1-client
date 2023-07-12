@@ -32,6 +32,7 @@ import {
 } from "@/Blockchain/utils/addressServices";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "@starknet-react/core";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -408,7 +409,7 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      numberFormatter(supplyAPRs[idx]) + "%"
+                      numberFormatterPercentage(supplyAPRs[idx]) + "%"
                     )}
                   </Box>
                 </Td>
