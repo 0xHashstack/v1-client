@@ -30,7 +30,7 @@ const SupplyChartChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
-  const btcData=useSelector(selectHourlyBTCData);
+  const btcData = useSelector(selectHourlyBTCData);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -41,28 +41,30 @@ const SupplyChartChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.supplyRates ? newData = [
-          {
-            name: "Series 1",
-            data: btcData?.supplyRates,
-          },
-        ]:newData=[
-          {
-            name:"Series 1",
-            data :[30000, 40000, 35000, 50000, 49000, 60000, 80000],
-          }
-        ];
-        btcData?.dates ? newCategories = 
-          btcData?.dates
-        :newCategories=[
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        btcData?.supplyRates
+          ? (newData = [
+              {
+                name: "Series 1",
+                data: btcData?.supplyRates,
+              },
+            ])
+          : (newData = [
+              {
+                name: "Series 1",
+                data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+              },
+            ]);
+        btcData?.dates
+          ? (newCategories = btcData?.dates)
+          : (newCategories = [
+              new Date("2023-07-01").getTime(),
+              new Date("2023-07-02").getTime(),
+              new Date("2023-07-03").getTime(),
+              new Date("2023-07-04").getTime(),
+              new Date("2023-07-05").getTime(),
+              new Date("2023-07-06").getTime(),
+              new Date("2023-07-07").getTime(),
+            ]);
         break;
       case 1:
         newData = [
@@ -285,7 +287,7 @@ const SupplyChartChart = () => {
                 setLiquidityProviderChartPeriod(1);
               }}
             >
-              1M
+              1W
             </Button>
             <Button
               color="#2B2F35"
@@ -300,7 +302,7 @@ const SupplyChartChart = () => {
                 setLiquidityProviderChartPeriod(2);
               }}
             >
-              3M
+              1M
             </Button>
 
             <Button

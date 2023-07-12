@@ -14,7 +14,7 @@ const LiquidityProviderChart = () => {
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
-  const btcData=useSelector(selectHourlyBTCData);
+  const btcData = useSelector(selectHourlyBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -39,25 +39,28 @@ const LiquidityProviderChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.supplyCounts ?   newData = [
-          {
-            name: "Series 1",
-            data: btcData?.supplyCounts,
-          },
-        ]:newData=[
-          {
-            name:"Series 1",
-            data:[20000,40000, 38000, 42000, 39000, 44000]
-          }
-        ];
-        btcData?.dates ? 
-        newCategories = btcData?.dates : newCategories=[
-          new Date("2023-06-01").getTime(),
-          new Date("2023-06-02").getTime(),
-          new Date("2023-06-03").getTime(),
-          new Date("2023-06-04").getTime(),
-          new Date("2023-06-05").getTime()
-        ];
+        btcData?.supplyCounts
+          ? (newData = [
+              {
+                name: "Series 1",
+                data: btcData?.supplyCounts,
+              },
+            ])
+          : (newData = [
+              {
+                name: "Series 1",
+                data: [20000, 40000, 38000, 42000, 39000, 44000],
+              },
+            ]);
+        btcData?.dates
+          ? (newCategories = btcData?.dates)
+          : (newCategories = [
+              new Date("2023-06-01").getTime(),
+              new Date("2023-06-02").getTime(),
+              new Date("2023-06-03").getTime(),
+              new Date("2023-06-04").getTime(),
+              new Date("2023-06-05").getTime(),
+            ]);
         break;
       case 1:
         newData = [
@@ -165,7 +168,7 @@ const LiquidityProviderChart = () => {
       },
 
       xaxis: {
-        type:"datetime" as const,
+        type: "datetime" as const,
         labels: {
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -277,7 +280,7 @@ const LiquidityProviderChart = () => {
                 setLiquidityProviderChartPeriod(1);
               }}
             >
-              1M
+              1W
             </Button>
             <Button
               color="#2B2F35"
@@ -292,7 +295,7 @@ const LiquidityProviderChart = () => {
                 setLiquidityProviderChartPeriod(2);
               }}
             >
-              3M
+              1M
             </Button>
 
             <Button
