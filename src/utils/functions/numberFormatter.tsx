@@ -11,7 +11,7 @@ const numberFormatter = (input: any) => {
     "M",
     "B",
     "T",
-    "Qa", 
+    "Qa",
     "Qi",
     "Sx",
     "Sp",
@@ -37,7 +37,8 @@ const numberFormatter = (input: any) => {
       ? number?.toFixed(
           Math.max(5 - Math.floor(Math.max(1, Math.log10(number) + 1)), 0)
         )
-      : number?.toFixed(
+      : // .replace(/\.?0+$/, "") // Remove trailing zeros and decimal point if unnecessary
+        number?.toFixed(
           Math.max(4 - Math.floor(Math.max(1, Math.log10(number) + 1)), 0)
         );
   // .replace(/\.?0+$/, ""); // Remove trailing zeros and decimal point if unnecessary
