@@ -165,6 +165,7 @@ export async function getJediEstimatedLpAmountOut(
 // liquidity is the currentAmount, pairAddress is the currentMarketAddress
 export async function getJediEstimatedLiqALiqBfromLp(
   liquidity: number,
+  loanId: any = 0,
   pairAddress: Token
 ) {
   // currentMarketAmount, currentMarketAddress
@@ -176,6 +177,7 @@ export async function getJediEstimatedLiqALiqBfromLp(
 
   try {
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
+    console.log("l3 here ", loanId, [[liquidity, 0], pairAddress]);
     const res = await l3Contract.call(
       "get_jedi_estimated_liqA_liqB_from_lp",
       // [liquidity, pairAddress],
@@ -185,7 +187,7 @@ export async function getJediEstimatedLiqALiqBfromLp(
       }
     );
     console.log("res jedi", res);
-
+    console.log(res, "l3 here ", [[liquidity, 0], pairAddress]);
     return {
       amountA: parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
       tokenAAddress: res?.token0,
