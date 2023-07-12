@@ -402,6 +402,22 @@ const BorrowModal = ({
       // );
       console.log("got parsed usdt borrow", parsedBorrowAmount);
       setInputBorrowAmountUSD(parsedBorrowAmount);
+      console.log(
+        "effective apr values : ",
+        "loan_usd_value",
+        parsedBorrowAmount,
+        "loan_apr",
+        protocolStats?.find((stat: any) => stat?.token === currentBorrowCoin)
+          ?.borrowRate,
+        "collateral_usd_value",
+        inputCollateralAmountUSD,
+        "collateral_apr",
+        protocolStats?.find(
+          (stat: any) => stat?.token === currentCollateralCoin
+        )?.supplyRate,
+        "loan_usd_value",
+        parsedBorrowAmount
+      );
     } catch (error) {
       console.log(error);
     }
@@ -1911,7 +1927,6 @@ const BorrowModal = ({
                     color="#6A737D"
                   >
                     {tokenTypeSelected === "Native" ? (
-                      // protocolStats.length === 0 ||
                       inputBorrowAmount === 0 ||
                       collateralAmount === 0 ||
                       !borrowAPRs[currentBorrowAPR] ? (
