@@ -16,7 +16,7 @@ const BorrowChart = () => {
     },
   ]);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
-  const btcData=useSelector(selectHourlyBTCData)
+  const btcData = useSelector(selectHourlyBTCData);
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -40,24 +40,28 @@ const BorrowChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.borrowAmounts ? newData = [
-          {
-            name: "Series 1",
-            data: btcData?.borrowAmounts,
-          },
-        ]:newData=[
-          {
-            name:"Series 1",
-            data:[20000,40000, 38000, 42000, 39000, 44000]
-          }
-        ];
-        btcData?.dates ? newCategories = btcData?.dates:newCategories=[
-          new Date("2023-06-01").getTime(),
-          new Date("2023-06-02").getTime(),
-          new Date("2023-06-03").getTime(),
-          new Date("2023-06-04").getTime(),
-          new Date("2023-06-05").getTime()
-        ];
+        btcData?.borrowAmounts
+          ? (newData = [
+              {
+                name: "Series 1",
+                data: btcData?.borrowAmounts,
+              },
+            ])
+          : (newData = [
+              {
+                name: "Series 1",
+                data: [20000, 40000, 38000, 42000, 39000, 44000],
+              },
+            ]);
+        btcData?.dates
+          ? (newCategories = btcData?.dates)
+          : (newCategories = [
+              new Date("2023-06-01").getTime(),
+              new Date("2023-06-02").getTime(),
+              new Date("2023-06-03").getTime(),
+              new Date("2023-06-04").getTime(),
+              new Date("2023-06-05").getTime(),
+            ]);
         break;
       case 1:
         newData = [
@@ -277,7 +281,7 @@ const BorrowChart = () => {
                 setLiquidityProviderChartPeriod(1);
               }}
             >
-              1M
+              1W
             </Button>
             <Button
               color="#2B2F35"
@@ -292,7 +296,7 @@ const BorrowChart = () => {
                 setLiquidityProviderChartPeriod(2);
               }}
             >
-              3M
+              1M
             </Button>
 
             <Button

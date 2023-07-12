@@ -29,8 +29,8 @@ const SupplyChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
-  const btcData=useSelector(selectHourlyBTCData)
-  console.log(btcData?.supplyAmounts,"data protocol")
+  const btcData = useSelector(selectHourlyBTCData);
+  console.log(btcData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -41,25 +41,28 @@ const SupplyChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.supplyAmounts ? newData = [
-          {
-            name: "Series 1",
-            data: btcData?.supplyAmounts,
-          },
-        ]:newData=[
-          {
-            name:"Series 1",
-            data:[20000,40000, 38000, 42000, 39000, 44000]
-          }
-        ];
-        btcData?.dates ?
-        newCategories = btcData?.dates : newCategories=[
-          new Date("2023-06-01").getTime(),
-          new Date("2023-06-02").getTime(),
-          new Date("2023-06-03").getTime(),
-          new Date("2023-06-04").getTime(),
-          new Date("2023-06-05").getTime()
-        ];
+        btcData?.supplyAmounts
+          ? (newData = [
+              {
+                name: "Series 1",
+                data: btcData?.supplyAmounts,
+              },
+            ])
+          : (newData = [
+              {
+                name: "Series 1",
+                data: [20000, 40000, 38000, 42000, 39000, 44000],
+              },
+            ]);
+        btcData?.dates
+          ? (newCategories = btcData?.dates)
+          : (newCategories = [
+              new Date("2023-06-01").getTime(),
+              new Date("2023-06-02").getTime(),
+              new Date("2023-06-03").getTime(),
+              new Date("2023-06-04").getTime(),
+              new Date("2023-06-05").getTime(),
+            ]);
         break;
       case 1:
         newData = [
@@ -184,10 +187,9 @@ const SupplyChart = () => {
       },
       yaxis: {
         labels: {
-          formatter:
-          function (value: any) {
-                return numberFormatter(value);
-              },
+          formatter: function (value: any) {
+            return numberFormatter(value);
+          },
           style: {
             colors: "#6E7681",
             fontSize: "12px",
@@ -279,7 +281,7 @@ const SupplyChart = () => {
                 setLiquidityProviderChartPeriod(1);
               }}
             >
-              1M
+              1W
             </Button>
             <Button
               color="#2B2F35"
@@ -294,7 +296,7 @@ const SupplyChart = () => {
                 setLiquidityProviderChartPeriod(2);
               }}
             >
-              3M
+              1M
             </Button>
 
             <Button
