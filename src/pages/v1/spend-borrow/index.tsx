@@ -65,7 +65,7 @@ const SpendBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalBorrow ? `$ ${numberFormatter(totalBorrow)}` : "-"}
+                {totalBorrow ? `$ ${numberFormatter(totalBorrow)}` : "NA"}
               </Text>
             )}
             {/* <Text color="#e6edf3" fontSize="20px">
@@ -86,7 +86,7 @@ const SpendBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {netAPR ? `${netAPR} %` : "-"}
+                {netAPR ? `${netAPR} %` : "NA"}
               </Text>
             )}
           </VStack>

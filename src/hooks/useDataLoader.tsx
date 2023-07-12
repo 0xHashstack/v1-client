@@ -177,7 +177,7 @@ const useDataLoader = () => {
     if (hourlyDataCount < transactionRefresh) {
       fetchHourlyBTCData();
     }
-  }, [transactionRefresh]);
+  }, [address, transactionRefresh]);
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {
@@ -196,7 +196,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("oracle prices - transactionRefresh error ", err);
     }
-  }, [transactionRefresh]);
+  }, [address,transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -220,7 +220,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("error fetching protocol reserves ", err);
     }
-  }, [transactionRefresh]);
+  }, [address,transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -241,7 +241,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("protocol stats - transactionRefresh error ", err);
     }
-  }, [transactionRefresh]);
+  }, [address,transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -442,6 +442,7 @@ const useDataLoader = () => {
             protocolStats
           );
           console.log("netApr", dataNetApr);
+          //@ts-ignore
           if (isNaN(dataNetApr)) {
             dispatch(setNetAPR(0));
           } else {
