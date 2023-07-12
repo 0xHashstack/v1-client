@@ -37,6 +37,7 @@ import { token } from "@project-serum/anchor/dist/cjs/utils";
 import { isTemplateExpression } from "typescript";
 import TableClose from "../table/tableIcons/close";
 import TableInfoIcon from "../table/tableIcons/infoIcon";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 
 export interface ICoin {
   name: string;
@@ -479,12 +480,12 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          numberFormatter(
+                          Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
                                 return stat.supplyRate;
                             })?.exchangeRateRtokenToUnderlying
-                          ) + " %"
+                          )?.toFixed(3) + " %"
                         )}
                       </Text>
                     </Td>
@@ -515,12 +516,12 @@ const SupplyDashboard = ({
                           />
                         ) : (
                           // protocolStats[idx]?.supplyRate + "%"
-                          numberFormatter(
+                          Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
                                 return stat.supplyRate;
                             })?.supplyRate
-                          ) + " %"
+                          )?.toFixed(3) + " %"
                         )}
                       </Box>
                     </Td>
@@ -550,7 +551,7 @@ const SupplyDashboard = ({
                             endColor="#2B2F35"
                             borderRadius="6px"
                           />: */}
-                        {numberFormatter(
+                        {Number(
                           avgs?.find((item: any) => item.token == supply?.token)
                             ?.avg
                         )}{" "}

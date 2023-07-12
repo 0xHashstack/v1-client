@@ -10,6 +10,7 @@ import {
   getProvider,
   getTokenFromAddress,
   l3DiamondAddress,
+  processAddress,
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount, weiToEtherNumber } from "../utils/utils";
@@ -166,7 +167,8 @@ export async function getJediEstimatedLpAmountOut(
 export async function getJediEstimatedLiqALiqBfromLp(
   liquidity: number,
   loanId: any = 0,
-  pairAddress: Token
+  pairAddress: Token,
+  loanMarket: string
 ) {
   // currentMarketAmount, currentMarketAddress
   const provider = getProvider();
@@ -187,13 +189,29 @@ export async function getJediEstimatedLiqALiqBfromLp(
       }
     );
     console.log("res jedi", res);
-    console.log(res, "l3 here ", [[liquidity, 0], pairAddress]);
+    // console.log(
+    //   loanId,
+    //   "l3 here ",
+    //   tokenDecimalsMap[getTokenFromAddress(processAddress(res?.token0))?.name],
+    //   tokenDecimalsMap[getTokenFromAddress(processAddress(res?.token1))?.name]
+    // );
+    if (!res) {
+      return {};
+    }
+    const tokenA = getTokenFromAddress(processAddress(res?.token0))?.name;
+    const tokenB = getTokenFromAddress(processAddress(res?.token1))?.name;
     return {
-      amountA: parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
+      amountA: parseAmount(
+        uint256.uint256ToBN(res?.amountA).toString(),
+        tokenDecimalsMap[tokenA ? tokenA : "USDT"]
+      ),
       tokenAAddress: res?.token0,
       tokenA: getTokenFromAddress(res?.token0)?.name as NativeToken,
 
-      amountB: parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8),
+      amountB: parseAmount(
+        uint256.uint256ToBN(res?.amountB).toString(),
+        tokenDecimalsMap[tokenB ? tokenB : "USDT"]
+      ),
       tokenBAddress: res?.token1,
       tokenB: getTokenFromAddress(res?.token1)?.name as NativeToken,
     };

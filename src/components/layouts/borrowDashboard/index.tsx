@@ -252,7 +252,8 @@ const BorrowDashboard = ({
         const data = await getJediEstimatedLiqALiqBfromLp(
           parseInt(Borrows[i]?.currentLoanAmount),
           Borrows[i]?.loanId,
-          Borrows[i]?.currentLoanMarketAddress
+          Borrows[i]?.currentLoanMarketAddress,
+          Borrows[i]?.loanMarket
         );
         console.log(
           getTokenFromAddress(processAddress(data?.tokenAAddress)),
