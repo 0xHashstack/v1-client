@@ -823,19 +823,8 @@ const SupplyModal = ({
                             gap="1"
                             pr="2"
                             display={
-                              assetBalance[coin]?.dataBalanceOf?.balance
-                                ? Number(
-                                    BNtoNum(
-                                      uint256.uint256ToBN(
-                                        assetBalance[coin]?.dataBalanceOf
-                                          ?.balance
-                                      ),
-                                      tokenDecimalsMap[coin]
-                                    )
-                                  ) === 0
-                                  ? "none"
-                                  : "flex"
-                                : "none"
+                              assetBalance[coin]?.dataBalanceOf?.balance &&
+                              "flex"
                             }
                             onClick={() => {
                               setCurrentSelectedCoin(coin);
