@@ -273,7 +273,7 @@ const TotalUtilisationRateByMarketChart = () => {
                 setLiquidityProviderChartPeriod(1);
               }}
             >
-              1M
+              1W
             </Button>
             <Button
               color="#2B2F35"
@@ -288,7 +288,7 @@ const TotalUtilisationRateByMarketChart = () => {
                 setLiquidityProviderChartPeriod(2);
               }}
             >
-              3M
+              1M
             </Button>
 
             <Button

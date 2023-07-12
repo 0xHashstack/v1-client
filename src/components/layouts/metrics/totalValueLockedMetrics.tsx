@@ -7,7 +7,10 @@ import BorrowAprChart from "../charts/BorrowApr";
 import RiskPremiumChart from "../charts/RiskPremium";
 import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData, selectProtocolReserves } from "@/store/slices/readDataSlice";
+import {
+  selectHourlyBTCData,
+  selectProtocolReserves,
+} from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
@@ -24,7 +27,7 @@ const TotalValueLockedMetrics = () => {
     },
   ]);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
-  const btcData=useSelector(selectHourlyBTCData);
+  const btcData = useSelector(selectHourlyBTCData);
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -48,35 +51,39 @@ const TotalValueLockedMetrics = () => {
 
     switch (aprByMarket) {
       case 0:
-        btcData?.tvlAmounts ? newData = [
-          {
-            name: "Total Value Locked",
-            data: btcData?.tvlAmounts,
-          },
-        ]:newData=[
-          {
-            name:"Series 1",
-            data:[30000, 40000, 35000, 50000, 49000, 60000, 80000],
-          }
-        ];
-        btcData?.dates ? newCategories = btcData?.dates:newCategories=[
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        btcData?.tvlAmounts
+          ? (newData = [
+              {
+                name: "Total Value Locked",
+                data: btcData?.tvlAmounts,
+              },
+            ])
+          : (newData = [
+              {
+                name: "Series 1",
+                data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+              },
+            ]);
+        btcData?.dates
+          ? (newCategories = btcData?.dates)
+          : (newCategories = [
+              new Date("2023-07-01").getTime(),
+              new Date("2023-07-02").getTime(),
+              new Date("2023-07-03").getTime(),
+              new Date("2023-07-04").getTime(),
+              new Date("2023-07-05").getTime(),
+              new Date("2023-07-06").getTime(),
+              new Date("2023-07-07").getTime(),
+            ]);
         break;
       case 1:
         newData = [
           {
             name: "Series 1",
             data: [
-              40000, 0, 42000, 39000, 44000, 41000, 43000, 39000, 44000,
-              41000, 43000, 39000, 44000, 41000, 43000, 39000, 44000, 41000,
-              43000,44400,
+              40000, 0, 42000, 39000, 44000, 41000, 43000, 39000, 44000, 41000,
+              43000, 39000, 44000, 41000, 43000, 39000, 44000, 41000, 43000,
+              44400,
             ],
           },
         ];
@@ -196,7 +203,7 @@ const TotalValueLockedMetrics = () => {
         enabled: false,
       },
       xaxis: {
-        type:"datetime" as const,
+        type: "datetime" as const,
         tooltip: {
           enabled: false, // Disable the x-axis tooltip
         },
@@ -324,7 +331,7 @@ const TotalValueLockedMetrics = () => {
                   setAPRByMarket(1);
                 }}
               >
-                1M
+                1W
               </Button>
               <Button
                 color="#2B2F35"
@@ -335,7 +342,7 @@ const TotalValueLockedMetrics = () => {
                   setAPRByMarket(2);
                 }}
               >
-                3M
+                1M
               </Button>
 
               <Button

@@ -967,7 +967,7 @@ const BorrowModal = ({
                           marginLeft: "5px",
                         }}
                       />
-                      {coins.map((coin: NativeToken, index: number) => {
+                      {coins?.map((coin: NativeToken, index: number) => {
                         return (
                           <Box
                             key={index}
