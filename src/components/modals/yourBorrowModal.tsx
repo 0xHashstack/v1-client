@@ -707,7 +707,7 @@ const YourBorrowModal = ({
         }
         const trans_data = {
           transaction_hash: zeroRepay?.transaction_hash.toString(),
-          message: `You have successfully repaid`,
+          message: `Successfully repaid`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
@@ -769,7 +769,7 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: trade?.transaction_hash.toString(),
-            message: `You have successfully traded for loan ID : ${swapLoanId}`,
+            message: `Successfully traded for loan ID : ${swapLoanId}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -808,7 +808,7 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: tradeMySwap?.transaction_hash.toString(),
-            message: `You have successfully traded for loan ID : ${swapLoanId}`,
+            message: `Successfully traded for loan ID : ${swapLoanId}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -871,7 +871,8 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: liquidity?.transaction_hash.toString(),
-            message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            // message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            message: `Successfully added Liquidity`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -912,7 +913,8 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: mySwapLiquidity?.transaction_hash.toString(),
-            message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            // message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            message: `Successfully added Liquidity`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -975,7 +977,8 @@ const YourBorrowModal = ({
             }
             const trans_data = {
               transaction_hash: addCollateral?.transaction_hash.toString(),
-              message: `You have successfully added collateral in Loan ID ${loanId} : ${rTokenAmount} r${rToken} `,
+              // message: `You have successfully added collateral in Loan ID ${loanId} : ${rTokenAmount} ${rToken} `,
+              message: `Successfully added collateral`,
               toastId: toastid,
               setCurrentTransactionStatus: setCurrentTransactionStatus,
             };
@@ -1020,7 +1023,8 @@ const YourBorrowModal = ({
               }
               const trans_data = {
                 transaction_hash: addCollateral?.transaction_hash.toString(),
-                message: `You have successfully added collateral in Loan ID ${loanId} : ${collateralAmount} r${collateralAsset} `,
+                // message: `You have successfully added collateral in Loan ID ${loanId} : ${collateralAmount} r${collateralAsset} `,
+                message: `Successfully added collateral`,
                 toastId: toastid,
                 setCurrentTransactionStatus: setCurrentTransactionStatus,
               };
@@ -1125,7 +1129,7 @@ const YourBorrowModal = ({
                       />
                     </Box>
                   ) : (
-                    "$" + numberFormatter(currentLPTokenAmount)
+                    numberFormatter(currentLPTokenAmount)
                   )}
                   {/* $ 10.91 */}
                 </Text>
@@ -2205,9 +2209,26 @@ const YourBorrowModal = ({
       // dispatch((newValue));
     }
   };
+  console.log(typeof walletBalance2,"balance borrow")
 
   const handleCollateralChange = (newValue: any) => {
-    var percentage = (newValue * 100) / walletBalance2;
+    if (newValue > 9_000_000_000) return;
+
+    if (currentTokenSelected === "rToken") {
+      var percentage =
+        (newValue * 100) /
+        userDeposit?.find(
+          (item: any) =>
+            item.rToken == collateralBalance.substring(spaceIndex + 1)
+        )?.rTokenFreeParsed;
+    } else {
+      if(newValue>walletBalance2){
+        var percentage=100;
+      }else{
+        var percentage = (newValue * 100) / walletBalance2;
+
+      }
+    }
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue2(100);
@@ -2324,6 +2345,7 @@ const YourBorrowModal = ({
 
   useEffect(() => {
     setinputCollateralAmount(0);
+    setSliderValue2(0);
   }, [currentTokenSelected]);
 
   useEffect(() => {
@@ -3772,7 +3794,7 @@ const YourBorrowModal = ({
                               "transferring the repay amount to the borrow vault.",
                               "Burning the rTokens.",
                               "Covering the debt to the debt market.",
-                              "Minting rTokens.",
+                              "Unlocking rTokens.",
                               "Transferring rtokens to the user account.",
                               // <ErrorButton errorText="Transaction failed" />,
                               // <ErrorButton errorText="Copy error!" />,
@@ -3845,15 +3867,12 @@ const YourBorrowModal = ({
                           // _active={{color:"black",bg:"white"}}
                           labelSuccessArray={[
                             "Performing prechecks.",
-                            "Processing self liquidation.",
-                            "Borrow closed successfully.",
-                            "Determine rToken balance.",
-                            "Transferring rtokens to your account.",
+                            "Processing borrow.",
                             // <ErrorButton errorText="Transaction failed" />,
                             // <ErrorButton errorText="Copy error!" />,
                             <SuccessButton
                               key={"successButton"}
-                              successText={"Self liqudidation successfull."}
+                              successText={"Convert to borrow successfull."}
                             />,
                           ]}
                           labelErrorArray={[
@@ -3907,15 +3926,13 @@ const YourBorrowModal = ({
                             // _active={{color:"black",bg:"white"}}
                             labelSuccessArray={[
                               "Performing prechecks.",
-                              "Processing self liquidation.",
-                              "Borrow closed successfully.",
-                              "Determine rToken balance.",
+                              "Processing zero repay.",
                               "Transferring rtokens to your account.",
                               // <ErrorButton errorText="Transaction failed" />,
                               // <ErrorButton errorText="Copy error!" />,
                               <SuccessButton
                                 key={"successButton"}
-                                successText={"Self liqudidation successfull."}
+                                successText={"Zero repay successfull."}
                               />,
                             ]}
                             labelErrorArray={[
@@ -4476,13 +4493,27 @@ const YourBorrowModal = ({
                         width="100%"
                         color="white"
                         border={`${
-                          inputCollateralAmount > walletBalance2
+                          inputCollateralAmount >
+                          (currentTokenSelected == "Native Token"
+                            ? walletBalance2
+                            : userDeposit?.find(
+                                (item: any) =>
+                                  item.rToken ==
+                                  collateralBalance.substring(spaceIndex + 1)
+                              )?.rTokenFreeParsed)
                             ? "1px solid #CF222E"
                             : inputCollateralAmount < 0
                             ? "1px solid #CF222E"
                             : inputCollateralAmount > 0 &&
                               inputAmount <= walletBalance2
                             ? "1px solid #1A7F37"
+                            : inputCollateralAmount >
+                              userDeposit?.find(
+                                (item: any) =>
+                                  item.rToken ==
+                                  collateralBalance.substring(spaceIndex + 1)
+                              )?.rTokenFreeParsed
+                            ? "1px solid #CF22E"
                             : "1px solid #2B2F35 "
                         }`}
                         borderRadius="6px"
@@ -4494,7 +4525,14 @@ const YourBorrowModal = ({
                           border="0px"
                           min={0}
                           color={`${
-                            inputCollateralAmount > walletBalance2
+                            inputCollateralAmount >
+                            (currentTokenSelected == "Native Token"
+                              ? walletBalance2
+                              : userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed)
                               ? "#CF222E"
                               : inputCollateralAmount < 0
                               ? "#CF222E"
@@ -4535,10 +4573,35 @@ const YourBorrowModal = ({
                           color="#0969DA"
                           _hover={{ bg: "#101216" }}
                           onClick={() => {
-                            setinputCollateralAmount(walletBalance2);
-                            setCollateralAmount(walletBalance2);
-                            setRTokenAmount(walletBalance2);
-                            setSliderValue2(100);
+                            if (currentTokenSelected === "rToken") {
+                              setinputCollateralAmount(
+                                userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed
+                              );
+                              setCollateralAmount(
+                                userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed
+                              );
+                              setRTokenAmount(
+                                userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed
+                              );
+                              setSliderValue2(100);
+                            } else {
+                              setinputCollateralAmount(walletBalance2);
+                              setCollateralAmount(walletBalance2);
+                              setRTokenAmount(walletBalance2);
+                              setSliderValue2(100);
+                            }
                           }}
                           isDisabled={collateralTransactionStarted == true}
                           _disabled={{ cursor: "pointer" }}
@@ -4546,23 +4609,41 @@ const YourBorrowModal = ({
                           MAX
                         </Button>
                       </Box>
-                      {inputCollateralAmount > walletBalance2 ||
+                      {inputCollateralAmount >
+                        (currentTokenSelected == "Native Token"
+                          ? walletBalance2
+                          : userDeposit?.find(
+                              (item: any) =>
+                                item.rToken ==
+                                collateralBalance.substring(spaceIndex + 1)
+                            )?.rTokenFreeParsed) ||
                       inputCollateralAmount < 0 ? (
                         <Text
                           display="flex"
                           justifyContent="space-between"
                           color="#E6EDF3"
+                          mt="0.4rem"
                           fontSize="12px"
                           fontWeight="500"
                           fontStyle="normal"
                           fontFamily="Inter"
+                          whiteSpace="nowrap"
                         >
                           <Text color="#CF222E" display="flex">
                             <Text mt="0.2rem">
                               <SmallErrorIcon />{" "}
                             </Text>
                             <Text ml="0.3rem">
-                              {inputCollateralAmount > walletBalance2 ||
+                              {inputCollateralAmount >
+                                (currentTokenSelected == "Native Token"
+                                  ? walletBalance2
+                                  : userDeposit?.find(
+                                      (item: any) =>
+                                        item.rToken ==
+                                        collateralBalance.substring(
+                                          spaceIndex + 1
+                                        )
+                                    )?.rTokenFreeParsed) ||
                               inputCollateralAmount >
                                 userDeposit?.find(
                                   (item: any) =>
@@ -4580,7 +4661,7 @@ const YourBorrowModal = ({
                           >
                             Wallet Balance:{" "}
                             {currentTokenSelected == "Native Token"
-                              ? { walletBalance2 }
+                              ? walletBalance2
                               : userDeposit?.find(
                                   (item: any) =>
                                     item.rToken ==
@@ -4626,6 +4707,7 @@ const YourBorrowModal = ({
                           onChange={(val) => {
                             setSliderValue2(val);
                             if (currentTokenSelected == "Native Token") {
+                              
                               var ans = (val / 100) * walletBalance2;
                               if (val == 100) {
                                 setinputCollateralAmount(walletBalance2);

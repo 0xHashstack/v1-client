@@ -246,7 +246,7 @@ const StakeUnstakeModal = ({
         break;
     }
   };
-  console.log(validRTokens, "valid");
+  // console.log(validRTokens, "valid");
   const getBalance = (coin: string) => {
     const amount = validRTokens?.find(({ rToken, rTokenAmount }: any) => {
       if (rToken == coin) return rTokenAmount;
@@ -461,7 +461,7 @@ const StakeUnstakeModal = ({
   // useEffect(()=>{
   //   hanldest();
   // },[])
-// console.log(rTokenAmount,"rtoken amount")
+  // console.log(rTokenAmount,"rtoken amount")
   const hanldeUnstakeTransaction = async () => {
     try {
       const unstake = await writeAsyncWithdrawStake();
@@ -554,6 +554,8 @@ const StakeUnstakeModal = ({
     }
   };
   const handleUnstakeChange = (newValue: any) => {
+    if (newValue > 9_000_000_000) return;
+
     var percentage = (newValue * 100) / unstakeWalletBalance;
     percentage = Math.max(0, percentage);
     if (unstakeWalletBalance == 0) {
@@ -677,7 +679,7 @@ const StakeUnstakeModal = ({
       userDeposit?.find((item: any) => item.rToken == currentSelectedStakeCoin)
         ?.rTokenFreeParsed
     );
-  }, [currentSelectedStakeCoin]);
+  }, [currentSelectedStakeCoin, userDeposit]);
   useEffect(() => {
     setUnstakeWalletBalance(
       userDeposit?.find(
@@ -926,40 +928,38 @@ const StakeUnstakeModal = ({
                         border="1px solid #2B2F35"
                         mt="1.5rem"
                       >
-                        {!isValid(currentSelectedStakeCoin) && (
-                          <Box
-                            // display="flex"
-                            // justifyContent="left"
-                            w="100%"
-                            pb="4"
-                          >
-                            <Box
-                              display="flex"
-                              bg="#FFF8C5"
-                              color="black"
-                              fontSize="xs"
-                              p="4"
-                              fontStyle="normal"
-                              fontWeight="500"
-                              borderRadius="6px"
-                              // textAlign="center"
-                            >
-                              <Box pr="3" my="auto" cursor="pointer">
-                                <WarningIcon />
-                              </Box>
-                              Selected market is not supplied. to stake in the
-                              below selected market supply the asset below
-                              {/* <Box
-                                py="1"
-                                pl="4"
-                                cursor="pointer"
-                                // onClick={handleClick}
-                              >
-                                <TableClose />
-                              </Box> */}
-                            </Box>
-                          </Box>
-                        )}
+                        {/* {!isValid(currentSelectedStakeCoin) && (
+                          // <Box
+                          //   // display="flex"
+                          //   // justifyContent="left"
+                          //   w="100%"
+                          //   pb="4"
+                          // >
+                          //   <Box
+                          //     display="flex"
+                          //     bg="#FFF8C5"
+                          //     color="black"
+                          //     fontSize="xs"
+                          //     p="4"
+                          //     fontStyle="normal"
+                          //     fontWeight="500"
+                          //     borderRadius="6px"
+                          //     // textAlign="center"
+                          //   >
+                          //     <Box pr="3" my="auto" cursor="pointer">
+                          //       <WarningIcon />
+                          //     </Box>
+                          //     Selected market is not supplied. to stake in the
+                          //     below selected market supply the asset below
+                          //     {/* <Box
+                          //       py="1"
+                          //       pl="4"
+                          //       cursor="pointer"
+                          //       // onClick={handleClick}
+                          //     >
+                          //       <TableClose />
+                          //     </Box> */}
+
                         <Text
                           color="#8B949E"
                           display="flex"
@@ -1106,7 +1106,10 @@ const StakeUnstakeModal = ({
                                         fontWeight="thin"
                                       >
                                         rToken Balance:{" "}
-                                        {validRTokens && validRTokens.length > 0
+                                        {validRTokens &&
+                                        validRTokens.length > 0 &&
+                                        userDeposit &&
+                                        userDeposit.length > 0
                                           ? userDeposit?.find(
                                               (item: any) => item.rToken == coin
                                             )?.rTokenFreeParsed
@@ -1276,11 +1279,13 @@ const StakeUnstakeModal = ({
                               justifyContent="flex-end"
                             >
                               {rtokenWalletBalance == 0
-                                ? "Wallet Balance:"
-                                : `rToken Balance:`}
+                                ? "Wallet Balance: "
+                                : `rToken Balance: `}
                               {rtokenWalletBalance == 0
                                 ? numberFormatter(walletBalance)
-                                : numberFormatter(rtokenWalletBalance)}
+                                : rtokenWalletBalance !== undefined
+                                ? numberFormatter(rtokenWalletBalance)
+                                : "loading"}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedStakeCoin}`}
                               </Text>
@@ -1299,10 +1304,12 @@ const StakeUnstakeModal = ({
                           >
                             {rtokenWalletBalance == 0
                               ? "Wallet Balance: "
-                              : `rToken Balance:`}
+                              : `rToken Balance: `}
                             {rtokenWalletBalance == 0
                               ? numberFormatter(walletBalance)
-                              : numberFormatter(rtokenWalletBalance)}
+                              : rtokenWalletBalance !== undefined
+                              ? numberFormatter(rtokenWalletBalance)
+                              : "loading"}
                             {/* {walletBalance} */}
                             <Text color="#6E7781" ml="0.2rem">
                               {rtokenWalletBalance == 0
@@ -1994,7 +2001,7 @@ const StakeUnstakeModal = ({
                                         mt="6px"
                                         fontWeight="thin"
                                       >
-                                        staking Balance:{" "}
+                                        Staking shares:{" "}
                                         {validRTokens && validRTokens.length > 0
                                           ? userDeposit?.find(
                                               (item: any) => item.rToken == coin
@@ -2150,7 +2157,7 @@ const StakeUnstakeModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              Staking Balance: {unstakeWalletBalance}
+                              Staking Shares: {unstakeWalletBalance}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedUnstakeCoin}`}
                               </Text>
@@ -2167,7 +2174,7 @@ const StakeUnstakeModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Staking Balance: {unstakeWalletBalance}
+                            Staking Shares: {unstakeWalletBalance}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedUnstakeCoin}`}
                             </Text>

@@ -100,19 +100,19 @@ function parseLoansData(loansData: any, collateralsData: any): ILoan[] {
     };
     loans.push(JSON.parse(JSON.stringify(loan)));
   }
-  console.log("loans parsed", loans);
+  // console.log("loans parsed", loans);
   return loans;
 }
 
 export async function getUserLoans(account: string) {
   const provider = getProvider();
   try {
-    console.log("loans params", diamondAddress, account);
+    // console.log("loans params", diamondAddress, account);
     const routerContract = new Contract(routerAbi, diamondAddress, provider);
     const res = await routerContract.call("get_user_loans", [account], {
       blockIdentifier: "pending",
     });
-    console.log(res, "loans called");
+    // console.log(res, "loans called");
     return parseLoansData(res?.loans, res?.collaterals);
   } catch (error) {
     console.log(error);

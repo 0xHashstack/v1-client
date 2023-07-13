@@ -170,12 +170,14 @@ const Navbar = ({ validRTokens }: any) => {
     // console.log(connector);
     if (connector?.options?.id == "braavos") {
       localStorage.setItem("lastUsedConnector", "argentX");
+      localStorage.setItem("connected", "argentX");
       connect(connectors[1]);
       router.push("/v1/market");
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
     } else {
       localStorage.setItem("lastUsedConnector", "braavos");
+      localStorage.setItem("connected", "braavos");
       connect(connectors[0]);
       router.push("/v1/market");
       dispatch(resetState(null));
@@ -673,6 +675,8 @@ const Navbar = ({ validRTokens }: any) => {
                       border="1px solid #2B2F35"
                       onClick={() => {
                         localStorage.setItem("lastUsedConnector", "");
+                        localStorage.setItem("connected", "");
+                        dispatch(setNavDropdown(""));
                         router.push("./");
                         disconnect();
                         dispatch(resetState(null));

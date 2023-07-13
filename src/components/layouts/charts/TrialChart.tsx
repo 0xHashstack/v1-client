@@ -17,7 +17,7 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
   const [supplyAmountData, setSupplyAmountData] = useState<any>([]);
   const [dates, setDates] = useState<any>([]);
   const btcData = useSelector(selectHourlyBTCData);
-  console.log(btcData);
+  // console.log(btcData);
 
   useEffect(() => {
     // Fetch data based on selected option
@@ -59,9 +59,9 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
   //     }
   //     fetchMetricsData();
   //   },[])
-  console.log(dates, "dates");
-  console.log(supplyAmountData, "amounts");
-  console.log(btcData, "btc data");
+  // console.log(dates, "dates");
+  // console.log(supplyAmountData, "amounts");
+  // console.log(btcData, "btc data");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: string) => {

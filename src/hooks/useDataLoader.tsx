@@ -139,9 +139,9 @@ const useDataLoader = () => {
         const response = await axios.get(
           `${metrics_api}/api/metrics/tvl/daily/DAI`
         );
-        const responseApr=await axios.get(
+        const responseApr = await axios.get(
           `${metrics_api}/api/metrics/apm_market/daily/DAI`
-        )
+        );
         // console.log(response, "response data");
         if (!response) {
           return;
@@ -161,6 +161,7 @@ const useDataLoader = () => {
           const totalTransactions:any=[];
           const totalAccounts:any=[];
           const aprs:any=[];
+          const apys:any=[];
           for (var i = 0; i < 12; i++) {
             amounts?.push(response?.data[i].supplyAmount);
             borrowAmounts?.push(response?.data[i].borrowAmount);
@@ -176,6 +177,7 @@ const useDataLoader = () => {
             totalTransactions?.push(response?.data[i].totalTransactions);
             totalAccounts?.push(response?.data[i].totalAccounts);
             aprs?.push(responseApr?.data[i].APR);
+            apys?.push(responseApr?.data[i].APY);
 
 
           }
@@ -193,7 +195,8 @@ const useDataLoader = () => {
             exchangeRates:exchangeRates,
             totalTransactions:totalTransactions,
             totalAccounts:totalAccounts,
-            aprs:aprs
+            aprs:aprs,
+            apys:apys
           };
           // console.log(btcData,"Data gone")
           dispatch(setHourlyBTCData(data));

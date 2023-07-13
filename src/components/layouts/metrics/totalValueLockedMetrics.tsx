@@ -14,6 +14,7 @@ import {
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
+import UtilisationRateChart from "../charts/utilisationRateChart";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const TotalValueLockedMetrics = () => {
@@ -80,9 +81,7 @@ const TotalValueLockedMetrics = () => {
         newData = [
           {
             name: "Series 1",
-            data: [
-              40000, 0, 42000, 39000, 44000, 41000, 43000, 
-            ],
+            data: [40000, 0, 42000, 39000, 44000, 41000, 43000],
           },
         ];
         newCategories = [
@@ -100,41 +99,46 @@ const TotalValueLockedMetrics = () => {
         newData = [
           {
             name: "Series 1",
-            data: [50000, 49000, 52000, 48000, 51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000, 51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000, 51000, 48000,30000],
+            data: [
+              50000, 49000, 52000, 48000, 51000, 48000, 50000, 52000, 48000,
+              51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000,
+              51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000,
+              51000, 48000, 30000,
+            ],
           },
         ];
         //x axis data
-          newCategories = [
-            new Date("2023-06-01").getTime(),
-            new Date("2023-06-02").getTime(),
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-04").getTime(),
-            new Date("2023-06-05").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-07").getTime(),
-            new Date("2023-06-08").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-10").getTime(),
-            new Date("2023-06-11").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-13").getTime(),
-            new Date("2023-06-14").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-16").getTime(),
-            new Date("2023-06-17").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-19").getTime(),
-            new Date("2023-06-20").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-22").getTime(),
-            new Date("2023-06-23").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-25").getTime(),
-            new Date("2023-06-26").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-28").getTime(),
-            new Date("2023-06-29").getTime(),
-            new Date("2023-06-30").getTime(),
+        newCategories = [
+          new Date("2023-06-01").getTime(),
+          new Date("2023-06-02").getTime(),
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-04").getTime(),
+          new Date("2023-06-05").getTime(),
+          new Date("2023-06-06").getTime(),
+          new Date("2023-06-07").getTime(),
+          new Date("2023-06-08").getTime(),
+          new Date("2023-06-09").getTime(),
+          new Date("2023-06-10").getTime(),
+          new Date("2023-06-11").getTime(),
+          new Date("2023-06-12").getTime(),
+          new Date("2023-06-13").getTime(),
+          new Date("2023-06-14").getTime(),
+          new Date("2023-06-15").getTime(),
+          new Date("2023-06-16").getTime(),
+          new Date("2023-06-17").getTime(),
+          new Date("2023-06-18").getTime(),
+          new Date("2023-06-19").getTime(),
+          new Date("2023-06-20").getTime(),
+          new Date("2023-06-21").getTime(),
+          new Date("2023-06-22").getTime(),
+          new Date("2023-06-23").getTime(),
+          new Date("2023-06-24").getTime(),
+          new Date("2023-06-25").getTime(),
+          new Date("2023-06-26").getTime(),
+          new Date("2023-06-27").getTime(),
+          new Date("2023-06-28").getTime(),
+          new Date("2023-06-29").getTime(),
+          new Date("2023-06-30").getTime(),
         ];
         break;
       case 3:
@@ -259,7 +263,7 @@ const TotalValueLockedMetrics = () => {
 
       stroke: {
         curve: "smooth",
-        colors: ["#00C7F2"],
+        colors: ["#2BA26F"],
         opacity: 1,
       },
       grid: {
@@ -268,7 +272,7 @@ const TotalValueLockedMetrics = () => {
       legend: {
         show: false, // Hide the series buttons when only one series is present
       },
-      colors: ["#04aacf"],
+      colors: ["#2BA26F"],
     },
   };
   const options: ApexOptions = {
@@ -280,8 +284,8 @@ const TotalValueLockedMetrics = () => {
   };
 
   return (
-    <Box display="flex" gap="30px">
-      <Box display="flex" flexDirection="column" gap="8px" width="100%">
+    <Box display="flex" gap="30px" w="full">
+      <Box display="flex" flexDirection="column" gap="8px" width="50%">
         <Box
           display="flex"
           flexDirection="column"
@@ -313,9 +317,21 @@ const TotalValueLockedMetrics = () => {
                 borderRadius="6px"
               />
             ) : (
-              <Box mt="auto">
+              <Box mt="auto" display="flex">
                 Total Value Locked: $
-                {numberFormatter(protocolReserves?.totalReserves)}
+                {protocolReserves?.totalReserves ? (
+                  numberFormatter(protocolReserves?.totalReserves)
+                ) : (
+                  <Skeleton
+                    width="6rem"
+                    height="1.4rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                    my={1}
+                    mx={2}
+                  />
+                )}
               </Box>
             )}
             <Box display="flex" gap="2">
@@ -367,17 +383,6 @@ const TotalValueLockedMetrics = () => {
             </Box>
           </Box>
         </Box>
-        <Box
-          px="24px"
-          py="16px"
-          fontSize="20px"
-          border="1px solid #2B2F35"
-          fontStyle="normal"
-          fontWeight="600"
-          lineHeight="30px"
-          borderRadius="6px"
-        >
-          <Box display="flex" flexDirection="column" gap="8px" width="100%">
             <Box
               border="1px solid #2B2F35"
               borderRadius="6px"
@@ -389,10 +394,9 @@ const TotalValueLockedMetrics = () => {
                 type="area"
                 height={350}
               />
-            </Box>
-          </Box>
         </Box>
       </Box>
+      <UtilisationRateChart/>
     </Box>
   );
 };
