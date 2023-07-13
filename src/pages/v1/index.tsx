@@ -55,6 +55,7 @@ export default function Home() {
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const [isWaitListed, setIsWaitListed] = useState(true);
   const [availableDataLoading, setAvailableDataLoading] = useState(true);
+
   const router = useRouter();
   const waitlistHref = "/v1/waitlist";
   const marketHref2 = "/v1/market";

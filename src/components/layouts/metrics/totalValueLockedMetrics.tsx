@@ -80,9 +80,7 @@ const TotalValueLockedMetrics = () => {
         newData = [
           {
             name: "Series 1",
-            data: [
-              40000, 0, 42000, 39000, 44000, 41000, 43000, 
-            ],
+            data: [40000, 0, 42000, 39000, 44000, 41000, 43000],
           },
         ];
         newCategories = [
@@ -100,41 +98,46 @@ const TotalValueLockedMetrics = () => {
         newData = [
           {
             name: "Series 1",
-            data: [50000, 49000, 52000, 48000, 51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000, 51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000, 51000, 48000,30000],
+            data: [
+              50000, 49000, 52000, 48000, 51000, 48000, 50000, 52000, 48000,
+              51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000,
+              51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000,
+              51000, 48000, 30000,
+            ],
           },
         ];
         //x axis data
-          newCategories = [
-            new Date("2023-06-01").getTime(),
-            new Date("2023-06-02").getTime(),
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-04").getTime(),
-            new Date("2023-06-05").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-07").getTime(),
-            new Date("2023-06-08").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-10").getTime(),
-            new Date("2023-06-11").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-13").getTime(),
-            new Date("2023-06-14").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-16").getTime(),
-            new Date("2023-06-17").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-19").getTime(),
-            new Date("2023-06-20").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-22").getTime(),
-            new Date("2023-06-23").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-25").getTime(),
-            new Date("2023-06-26").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-28").getTime(),
-            new Date("2023-06-29").getTime(),
-            new Date("2023-06-30").getTime(),
+        newCategories = [
+          new Date("2023-06-01").getTime(),
+          new Date("2023-06-02").getTime(),
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-04").getTime(),
+          new Date("2023-06-05").getTime(),
+          new Date("2023-06-06").getTime(),
+          new Date("2023-06-07").getTime(),
+          new Date("2023-06-08").getTime(),
+          new Date("2023-06-09").getTime(),
+          new Date("2023-06-10").getTime(),
+          new Date("2023-06-11").getTime(),
+          new Date("2023-06-12").getTime(),
+          new Date("2023-06-13").getTime(),
+          new Date("2023-06-14").getTime(),
+          new Date("2023-06-15").getTime(),
+          new Date("2023-06-16").getTime(),
+          new Date("2023-06-17").getTime(),
+          new Date("2023-06-18").getTime(),
+          new Date("2023-06-19").getTime(),
+          new Date("2023-06-20").getTime(),
+          new Date("2023-06-21").getTime(),
+          new Date("2023-06-22").getTime(),
+          new Date("2023-06-23").getTime(),
+          new Date("2023-06-24").getTime(),
+          new Date("2023-06-25").getTime(),
+          new Date("2023-06-26").getTime(),
+          new Date("2023-06-27").getTime(),
+          new Date("2023-06-28").getTime(),
+          new Date("2023-06-29").getTime(),
+          new Date("2023-06-30").getTime(),
         ];
         break;
       case 3:
@@ -313,9 +316,21 @@ const TotalValueLockedMetrics = () => {
                 borderRadius="6px"
               />
             ) : (
-              <Box mt="auto">
+              <Box mt="auto" display="flex">
                 Total Value Locked: $
-                {numberFormatter(protocolReserves?.totalReserves)}
+                {protocolReserves?.totalReserves ? (
+                  numberFormatter(protocolReserves?.totalReserves)
+                ) : (
+                  <Skeleton
+                    width="6rem"
+                    height="1.4rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                    my={1}
+                    mx={2}
+                  />
+                )}
               </Box>
             )}
             <Box display="flex" gap="2">
