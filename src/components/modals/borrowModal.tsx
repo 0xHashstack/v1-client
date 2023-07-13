@@ -290,7 +290,7 @@ const BorrowModal = ({
   useEffect(() => {
     try {
       fetchProtocolStats();
-      console.log("protocolStats", protocolStats);
+      // console.log("protocolStats", protocolStats);
     } catch (err: any) {
       console.log("borrow modal : error fetching protocolStats");
     }
