@@ -158,7 +158,7 @@ const DashboardLeft = ({
   };
 
   useEffect(() => {
-    console.log("supply apr", currentSupplyAPR);
+    // console.log("supply apr", currentSupplyAPR);
   }, [supplyAPRs, currentSupplyAPR]);
 
   // useEffect(() => {

@@ -1641,16 +1641,14 @@ const YourSupplyModal = ({
                           width="100%"
                           color="white"
                           border={`${
-                            inputWithdrawlAmount >
-                            withdrawWalletBalance?.toFixed(2)
+                            inputWithdrawlAmount > withdrawWalletBalance
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount < 0
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount < 0
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount > 0 &&
-                                inputWithdrawlAmount <=
-                                  withdrawWalletBalance?.toFixed(2)
+                                inputWithdrawlAmount <= withdrawWalletBalance
                               ? "1px solid #1A7F37"
                               : "1px solid #2B2F35 "
                           }`}
@@ -1677,8 +1675,7 @@ const YourSupplyModal = ({
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
                               color={`${
-                                inputWithdrawlAmount >
-                                withdrawWalletBalance?.toFixed(2)
+                                inputWithdrawlAmount > withdrawWalletBalance
                                   ? "#CF222E"
                                   : inputWithdrawlAmount < 0
                                   ? "#CF222E"

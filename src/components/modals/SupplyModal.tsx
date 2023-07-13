@@ -156,7 +156,7 @@ const SupplyModal = ({
     // setCurrentSupplyAPR(
     //   coinIndex.map(({ curr }: any) => curr?.token === currentSelectedCoin)?.idx
     // );
-    console.log("currentSupplyAPR", currentSupplyAPR);
+    // console.log("currentSupplyAPR", currentSupplyAPR);
   }, [currentSupplyAPR]);
 
   interface assetB {
