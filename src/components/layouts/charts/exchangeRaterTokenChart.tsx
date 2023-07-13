@@ -739,7 +739,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           className="navbar"
           cursor="pointer"
           onClick={() => {
-            handleDropdownClick("supplyModalDropdown");
+            handleDropdownClick("coinSelectedExchangeRateRToken");
             // if (transactionStarted) {
             //   return;
             // } else {
@@ -754,7 +754,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           <Box pt="1" className="navbar-button">
             {activeModal ? <ArrowUp /> : <DropdownUp />}
           </Box>
-          {modalDropdowns.supplyModalDropdown && (
+          {modalDropdowns.coinSelectedExchangeRateRToken && (
             <Box
               w="full"
               left="0"

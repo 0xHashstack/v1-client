@@ -89,13 +89,11 @@ const BorrowChart = () => {
             ]);
         btcData?.dates
           ? (newCategories = btcData?.dates)
-          : (newCategories = [
-              new Date("2023-06-01").getTime(),
-              new Date("2023-06-02").getTime(),
-              new Date("2023-06-03").getTime(),
-              new Date("2023-06-04").getTime(),
-              new Date("2023-06-05").getTime(),
-            ]);
+          : (          newCategories = [
+            1689152545000, 1689156145000, 1689159745000, 1689163345000,
+            1689166945000, 1689170545000, 1689174145000, 1689177745000,
+            1689181345000, 1689184945000, 1689188545000, 1689192145000,
+          ]);
         break;
         case 1:
           newData = [

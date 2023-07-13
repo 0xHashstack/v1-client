@@ -49,19 +49,15 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
         ]:newData=[
           {
             name: "Total transactions",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000, 40000, 35000, 50000, 49000, 60000, 80000],
           },
         ];
         btcData?.dates ?
-        newCategories = btcData?.dates:newCategories=[
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        newCategories = btcData?.dates:(newCategories = [
+          1689152545000, 1689156145000, 1689159745000, 1689163345000,
+          1689166945000, 1689170545000, 1689174145000, 1689177745000,
+          1689181345000, 1689184945000, 1689188545000, 1689192145000,
+        ]);
         break;
         case 1:
           newData = [
