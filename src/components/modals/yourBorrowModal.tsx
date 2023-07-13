@@ -707,7 +707,7 @@ const YourBorrowModal = ({
         }
         const trans_data = {
           transaction_hash: zeroRepay?.transaction_hash.toString(),
-          message: `You have successfully repaid`,
+          message: `Successfully repaid`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
@@ -769,7 +769,7 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: trade?.transaction_hash.toString(),
-            message: `You have successfully traded for loan ID : ${swapLoanId}`,
+            message: `Successfully traded for loan ID : ${swapLoanId}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -808,7 +808,7 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: tradeMySwap?.transaction_hash.toString(),
-            message: `You have successfully traded for loan ID : ${swapLoanId}`,
+            message: `Successfully traded for loan ID : ${swapLoanId}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -871,7 +871,8 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: liquidity?.transaction_hash.toString(),
-            message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            // message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            message: `Successfully added Liquidity`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -912,7 +913,8 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: mySwapLiquidity?.transaction_hash.toString(),
-            message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            // message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            message: `Successfully added Liquidity`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -975,7 +977,8 @@ const YourBorrowModal = ({
             }
             const trans_data = {
               transaction_hash: addCollateral?.transaction_hash.toString(),
-              message: `You have successfully added collateral in Loan ID ${loanId} : ${rTokenAmount} r${rToken} `,
+              // message: `You have successfully added collateral in Loan ID ${loanId} : ${rTokenAmount} ${rToken} `,
+              message: `Successfully added collateral`,
               toastId: toastid,
               setCurrentTransactionStatus: setCurrentTransactionStatus,
             };
@@ -1020,7 +1023,8 @@ const YourBorrowModal = ({
               }
               const trans_data = {
                 transaction_hash: addCollateral?.transaction_hash.toString(),
-                message: `You have successfully added collateral in Loan ID ${loanId} : ${collateralAmount} r${collateralAsset} `,
+                // message: `You have successfully added collateral in Loan ID ${loanId} : ${collateralAmount} r${collateralAsset} `,
+                message: `Successfully added collateral`,
                 toastId: toastid,
                 setCurrentTransactionStatus: setCurrentTransactionStatus,
               };
