@@ -1841,7 +1841,7 @@ const StakeUnstakeModal = ({
                         border="1px solid #2B2F35"
                         mt="1.5rem"
                       >
-                        {isValid(currentSelectedUnstakeCoin) && (
+                        {!isValid(currentSelectedUnstakeCoin) && (
                           <Box
                             // display="flex"
                             // justifyContent="left"
