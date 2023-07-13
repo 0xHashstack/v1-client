@@ -887,12 +887,12 @@ const BorrowModal = ({
                                   setRToken(coin);
                                   setTokenTypeSelected("rToken");
                                   setwalletBalance(amount);
-                                  setCurrentBorrowAPR(
-                                    coinIndex.find(
-                                      (curr: any) =>
-                                        curr?.token === coin.slice(1)
-                                    )?.idx
-                                  );
+                                  // setCurrentBorrowAPR(
+                                  //   coinIndex.find(
+                                  //     (curr: any) =>
+                                  //       curr?.token === coin.slice(1)
+                                  //   )?.idx
+                                  // );
                                   // dispatch(setCoinSelectedSupplyModal(coin))
                                 }}
                               >
@@ -966,11 +966,11 @@ const BorrowModal = ({
                               setCurrentCollateralCoin(coin);
                               setCollateralMarket(coin);
                               setTokenTypeSelected("Native");
-                              setCurrentBorrowAPR(
-                                coinIndex.find(
-                                  (curr: any) => curr?.token === coin
-                                )?.idx
-                              );
+                              // setCurrentBorrowAPR(
+                              //   coinIndex.find(
+                              //     (curr: any) => curr?.token === coin
+                              //   )?.idx
+                              // );
                               // setRToken(coin);
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
@@ -1429,6 +1429,11 @@ const BorrowModal = ({
                               );
                               // setMarket(coin);
                               setMarket(coin);
+                              setCurrentBorrowAPR(
+                                coinIndex.find(
+                                  (curr: any) => curr?.token === coin
+                                )?.idx
+                              );
                             }}
                           >
                             {coin === currentBorrowCoin && (
