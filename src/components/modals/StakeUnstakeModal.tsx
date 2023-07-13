@@ -554,6 +554,8 @@ const StakeUnstakeModal = ({
     }
   };
   const handleUnstakeChange = (newValue: any) => {
+    if (newValue > 9_000_000_000) return;
+
     var percentage = (newValue * 100) / unstakeWalletBalance;
     percentage = Math.max(0, percentage);
     if (unstakeWalletBalance == 0) {
