@@ -75,13 +75,13 @@ export async function getJediEstimateLiquiditySplit(
   tokenA: string,
   tokenB: string
 ) {
-  // console.log(
-  //   "getJediEstimateLiquiditySplit",
-  //   loanMarket,
-  //   currentAmount,
-  //   tokenA,
-  //   tokenB
-  // );
+  console.log(
+    "getJediEstimateLiquiditySplit",
+    loanMarket,
+    currentAmount,
+    tokenA,
+    tokenB
+  );
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();
@@ -92,7 +92,7 @@ export async function getJediEstimateLiquiditySplit(
       // [loanId, tokenAAddress, tokenBAddress],
       [
         tokenAddressMap[loanMarket],
-        [Number(currentAmount), 0],
+        [currentAmount, 0],
         tokenAddressMap[tokenA],
         tokenAddressMap[tokenB],
       ],
@@ -126,13 +126,13 @@ export async function getJediEstimatedLpAmountOut(
   tokenA: string,
   tokenB: string
 ) {
-  // console.log(
-  //   "getJediEstimatedLpAmountOut",
-  //   loanMarket,
-  //   currentAmount,
-  //   tokenA,
-  //   tokenB
-  // );
+  console.log(
+    "getJediEstimatedLpAmountOut",
+    loanMarket,
+    currentAmount,
+    tokenA,
+    tokenB
+  );
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();

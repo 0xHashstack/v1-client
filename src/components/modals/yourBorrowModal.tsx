@@ -2209,7 +2209,7 @@ const YourBorrowModal = ({
       // dispatch((newValue));
     }
   };
-  console.log(typeof walletBalance2,"balance borrow")
+  console.log(typeof walletBalance2, "balance borrow");
 
   const handleCollateralChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
@@ -2222,11 +2222,10 @@ const YourBorrowModal = ({
             item.rToken == collateralBalance.substring(spaceIndex + 1)
         )?.rTokenFreeParsed;
     } else {
-      if(newValue>walletBalance2){
-        var percentage=100;
-      }else{
+      if (newValue > walletBalance2) {
+        var percentage = 100;
+      } else {
         var percentage = (newValue * 100) / walletBalance2;
-
       }
     }
     percentage = Math.max(0, percentage);
@@ -2519,8 +2518,8 @@ const YourBorrowModal = ({
                 </TabList>
               </Tabs>
             </Box>
-            <Text fontSize="18px" color="black">
-              this is just to make it align and Lorem ipsum,
+            <Text fontSize="18px" color="black" mb="1.5rem">
+              {/* this is just to make it align and Lorem ipsum, */}
             </Text>
           </ModalHeader>
           {/* <ModalHeader padding="0"></ModalHeader> */}
@@ -4707,7 +4706,6 @@ const YourBorrowModal = ({
                           onChange={(val) => {
                             setSliderValue2(val);
                             if (currentTokenSelected == "Native Token") {
-                              
                               var ans = (val / 100) * walletBalance2;
                               if (val == 100) {
                                 setinputCollateralAmount(walletBalance2);
