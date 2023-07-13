@@ -148,7 +148,7 @@ const YourBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {netAPR && !Number.isNaN(netAPR) ? `${netAPR} %` : "NA"}
+                {netAPR && !Number.isNaN(netAPR) ? `${netAPR}%` : "NA"}
               </Text>
             )}
           </VStack>
