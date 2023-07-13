@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
 import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const TotalUtilisationRateByMarketChart = () => {
@@ -21,6 +22,7 @@ const TotalUtilisationRateByMarketChart = () => {
     },
   ]);
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
+  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"]
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -296,6 +298,9 @@ const TotalUtilisationRateByMarketChart = () => {
           bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
         },
       },
+      fill:{
+        type: 'solid',
+      },
       annotations: {
         xaxis: [
           {
@@ -308,7 +313,15 @@ const TotalUtilisationRateByMarketChart = () => {
       },
     },
   };
-
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    // stroke: {
+    //   ...splineChartData.options.stroke,
+    //   curve: "smooth",
+    // },
+    colors: splineColor
+    // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
+  };
   return (
     <Box display="flex" flexDirection="column" gap="8px" width="100%">
       <Box
@@ -405,7 +418,7 @@ const TotalUtilisationRateByMarketChart = () => {
         padding="16px 24px 40px"
       >
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
           type="area"
           height={350}

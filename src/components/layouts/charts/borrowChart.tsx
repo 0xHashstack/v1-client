@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dynamic from 'next/dynamic';
+import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const BorrowChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -31,7 +32,7 @@ const BorrowChart = () => {
     fetchData();
   }, [liquidityProviderChartPeriod]);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
-
+  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"]
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option
     // Replace this with your actual implementation
@@ -308,6 +309,9 @@ const BorrowChart = () => {
           bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
         },
       },
+      fill:{
+        type: 'solid',
+      },
       annotations: {
         xaxis: [
           {
@@ -320,7 +324,15 @@ const BorrowChart = () => {
       },
     },
   };
-
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    // stroke: {
+    //   ...splineChartData.options.stroke,
+    //   curve: "smooth",
+    // },
+    colors: splineColor
+    // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
+  };
   return (
     <Box display="flex" flexDirection="column" gap="8px" width="50%">
       <Box
@@ -417,7 +429,7 @@ const BorrowChart = () => {
         padding="16px 24px 40px"
       >
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
           type="area"
           height={350}
