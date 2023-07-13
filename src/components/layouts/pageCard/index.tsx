@@ -88,18 +88,33 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   }, []);
   useEffect(() => {
     const walletConnected = localStorage.getItem("lastUsedConnector");
+    const connected = localStorage.getItem("connected");
     if (walletConnected == "") {
       router.push("/");
     }
     if (!account) {
       if (walletConnected == "braavos") {
+        localStorage.setItem("connected", "braavos");
         console.log("change", account);
         disconnect();
         connect(connectors[0]);
       } else if (walletConnected == "argentX") {
+        localStorage.setItem("connected", "braavos");
         disconnect();
         connect(connectors[1]);
       } else {
+        if (connected == "braavos") {
+          localStorage.setItem("lastUsedConnector", "braavos");
+          console.log("change", account);
+          disconnect();
+          connect(connectors[0]);
+        } else if (connected == "argentX") {
+          localStorage.setItem("lastUsedConnector", "argentX");
+          disconnect();
+          connect(connectors[1]);
+        } else {
+          router.push("/v1");
+        }
         // disconnect();
         // connect(connectors[0]);
         // localStorage.setItem("lastUsedConnector", "braavos");

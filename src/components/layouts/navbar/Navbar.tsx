@@ -673,6 +673,8 @@ const Navbar = ({ validRTokens }: any) => {
                       border="1px solid #2B2F35"
                       onClick={() => {
                         localStorage.setItem("lastUsedConnector", "");
+                        localStorage.setItem("connected", "");
+                        dispatch(setNavDropdown(""));
                         router.push("./");
                         disconnect();
                         dispatch(resetState(null));
