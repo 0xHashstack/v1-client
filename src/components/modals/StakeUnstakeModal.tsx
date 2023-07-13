@@ -246,7 +246,7 @@ const StakeUnstakeModal = ({
         break;
     }
   };
-  console.log(validRTokens, "valid");
+  // console.log(validRTokens, "valid");
   const getBalance = (coin: string) => {
     const amount = validRTokens?.find(({ rToken, rTokenAmount }: any) => {
       if (rToken == coin) return rTokenAmount;
@@ -461,7 +461,7 @@ const StakeUnstakeModal = ({
   // useEffect(()=>{
   //   hanldest();
   // },[])
-// console.log(rTokenAmount,"rtoken amount")
+  // console.log(rTokenAmount,"rtoken amount")
   const hanldeUnstakeTransaction = async () => {
     try {
       const unstake = await writeAsyncWithdrawStake();

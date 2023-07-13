@@ -119,6 +119,7 @@ export default function Home() {
     // const storedAccount = localStorage.getItem("account");
     const hasVisited = localStorage.getItem("visited");
     const walletConnected = localStorage.getItem("lastUsedConnector");
+    localStorage.setItem("connected", "");
     if (walletConnected == "braavos") {
       disconnect();
       connect(connectors[0]);
@@ -137,6 +138,9 @@ export default function Home() {
         router.replace(marketHref2);
       }
       // dispatch(setTransactionRefresh("reset"));
+    }
+    if (walletConnected) {
+      localStorage.setItem("connected", walletConnected);
     }
     if (!hasVisited) {
       // Set a local storage item to indicate the user has visited
@@ -241,9 +245,12 @@ export default function Home() {
               cursor="pointer"
               // onClick={() => router.push("/market")}
               onClick={() => {
+                localStorage.setItem("lastUsedConnector", "braavos");
+                localStorage.setItem("connected", "braavos");
+                disconnect();
                 connect(connectors[0]);
                 dispatch(setTransactionRefresh("reset"));
-                localStorage.setItem("lastUsedConnector", "braavos");
+                router.push("/v1/market");
               }}
             >
               <Box ml="1rem" color="white">
@@ -322,9 +329,12 @@ export default function Home() {
               justifyContent="space-between"
               cursor="pointer"
               onClick={() => {
+                localStorage.setItem("lastUsedConnector", "argentX");
+                localStorage.setItem("connected", "argentX");
+                disconnect();
                 connect(connectors[1]);
                 dispatch(setTransactionRefresh("reset"));
-                localStorage.setItem("lastUsedConnector", "argentX");
+                router.push("/v1/market");
               }}
             >
               <Box ml="1rem" color="white">

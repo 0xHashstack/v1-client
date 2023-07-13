@@ -2150,7 +2150,7 @@ const YourSupplyModal = ({
                               // <ErrorButton errorText="Copy error!" />,
                               <SuccessButton
                                 key={"successButton"}
-                                successText={"Withdrawl Success"}
+                                successText={"Withdrawl Successful"}
                               />,
                             ]}
                             labelErrorArray={[

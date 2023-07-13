@@ -3845,15 +3845,12 @@ const YourBorrowModal = ({
                           // _active={{color:"black",bg:"white"}}
                           labelSuccessArray={[
                             "Performing prechecks.",
-                            "Processing self liquidation.",
-                            "Borrow closed successfully.",
-                            "Determine rToken balance.",
-                            "Transferring rtokens to your account.",
+                            "Processing borrow.",
                             // <ErrorButton errorText="Transaction failed" />,
                             // <ErrorButton errorText="Copy error!" />,
                             <SuccessButton
                               key={"successButton"}
-                              successText={"Self liqudidation successfull."}
+                              successText={"Convert to borrow successfull."}
                             />,
                           ]}
                           labelErrorArray={[
@@ -3907,15 +3904,13 @@ const YourBorrowModal = ({
                             // _active={{color:"black",bg:"white"}}
                             labelSuccessArray={[
                               "Performing prechecks.",
-                              "Processing self liquidation.",
-                              "Borrow closed successfully.",
-                              "Determine rToken balance.",
+                              "Processing zero repay.",
                               "Transferring rtokens to your account.",
                               // <ErrorButton errorText="Transaction failed" />,
                               // <ErrorButton errorText="Copy error!" />,
                               <SuccessButton
                                 key={"successButton"}
-                                successText={"Self liqudidation successfull."}
+                                successText={"Zero repay successfull."}
                               />,
                             ]}
                             labelErrorArray={[
