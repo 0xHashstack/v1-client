@@ -225,7 +225,10 @@ const SupplyDashboard = ({
   //   }
   // },[userDeposits])
   const [protocolStats, setProtocolStats]: any = useState([]);
+  const [supplyAPRs, setSupplyAPRs]: any = useState([]);
   const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>();
+  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<Number>(2);
+
   useEffect(() => {
     const getMarketData = async () => {
       try {
@@ -244,6 +247,13 @@ const SupplyDashboard = ({
           stats?.[0],
           stats?.[1],
           stats?.[4],
+        ]);
+        setSupplyAPRs([
+          stats?.[2].supplyRate,
+          stats?.[3].supplyRate,
+          stats?.[0].supplyRate,
+          stats?.[1].supplyRate,
+          stats?.[4].supplyRate,
         ]);
       } catch (error) {
         console.log("error on getting protocol stats");
@@ -555,7 +565,8 @@ const SupplyDashboard = ({
                           avgs?.find((item: any) => item.token == supply?.token)
                             ?.avg
                         )}{" "}
-                        {avgs ?"%":""}{/* {supply?.token} */}
+                        {avgs ? "%" : ""}
+                        {/* {supply?.token} */}
                       </Text>
                     </Td>
                     <Td
@@ -816,6 +827,9 @@ const SupplyDashboard = ({
                 ml="0.3rem"
                 lineHeight="24px"
                 backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
+                supplyAPRs={supplyAPRs}
+                currentSupplyAPR={currentSupplyAPR}
+                setCurrentSupplyAPR={setCurrentSupplyAPR}
               />
             </Box>
             {/* <Box
