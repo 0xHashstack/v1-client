@@ -1241,7 +1241,7 @@ const SupplyModal = ({
                   lineHeight="20px"
                 >
                   Ticking would stake the received rTokens. unchecking
-                  woudn&apos;t stake rTokens
+                  wouldn&apos;t stake rTokens
                 </Text>
               </Box>
 

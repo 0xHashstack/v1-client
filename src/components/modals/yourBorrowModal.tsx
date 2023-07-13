@@ -3772,7 +3772,7 @@ const YourBorrowModal = ({
                               "transferring the repay amount to the borrow vault.",
                               "Burning the rTokens.",
                               "Covering the debt to the debt market.",
-                              "Minting rTokens.",
+                              "Unlocking rTokens.",
                               "Transferring rtokens to the user account.",
                               // <ErrorButton errorText="Transaction failed" />,
                               // <ErrorButton errorText="Copy error!" />,
@@ -3853,7 +3853,7 @@ const YourBorrowModal = ({
                             // <ErrorButton errorText="Copy error!" />,
                             <SuccessButton
                               key={"successButton"}
-                              successText={"Self liqudidation successfull."}
+                              successText={"Self liquidation successfull."}
                             />,
                           ]}
                           labelErrorArray={[

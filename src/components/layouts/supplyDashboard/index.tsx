@@ -457,8 +457,8 @@ const SupplyDashboard = ({
                           >
                             {numberFormatter(
                               supply?.rTokenAmountParsed +
-                                supply?.rTokenStakedParsed +
-                                supply?.rTokenLockedParsed
+                                supply?.rTokenStakedParsed
+                              // supply?.rTokenLockedParsed
                             )}
                           </Text>
                         </VStack>
@@ -495,7 +495,7 @@ const SupplyDashboard = ({
                               if (stat?.token === supply?.rToken?.slice(1))
                                 return stat.supplyRate;
                             })?.exchangeRateRtokenToUnderlying
-                          )?.toFixed(3) + " %"
+                          )?.toFixed(3)
                         )}
                       </Text>
                     </Td>
