@@ -10,6 +10,14 @@ import YourMetricsSupply from "../charts/YourMetricsSupply";
 import SupplyChart from "../charts/supplyChart";
 import LiquidityProvider from "../charts/liquidityProviderChart";
 import LiquidityProviderChart from "../charts/liquidityProviderChart";
+import TotalAccountsChart from "../charts/totalAccountsChart";
+import BorrowChart from "../charts/borrowChart";
+import BorrowerChart from "../charts/borrowerChart";
+import TotalUtilisationRateByMarketChart from "../charts/totalUtilisationRateByMarketChart";
+import APRByMarketChart from "../charts/aprByMarket";
+import TotalTransactionChart from "../charts/totalTransaction";
+import ExchangeRaterToken from "../charts/exchangeRaterTokenChart";
+import ExchangeRatedToken from "../charts/exchangeRatedTokenChart";
 const SupplyMetrics = ({ currentMarketCoin }: any) => {
   const series1: any = [
     [
@@ -71,19 +79,60 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
   return (
     <Box display="flex" flexDir="column" gap="64px">
       <Box display="flex" gap="30px" w="full">
-        <SupplyChart />
         <SupplyAprChart />
+        <BorrowAprChart/>
       </Box>
       <Box display="flex" gap="30px">
-        <LiquidityProviderChart />
+        <TotalAccountsChart/>
       </Box>
-      <Box display="flex" gap="30px">
+      <Box color="White">
+        Supply
+      </Box>
+      <Box display="flex" gap="30px" w="full">
+        <SupplyChart/>
+        <LiquidityProvider/>
         {/* <Box display="flex" flexDirection="column" gap="8px" width="50%">
           <YourMetricsSupply
             color={"#846ED4"}
             // series={series2[liquidityProviderChartPeriod]}
           />
         </Box> */}
+      </Box>
+      <Box color="White">
+        Borrow
+      </Box>
+      <Box display="flex" gap="30px" w="full">
+        <BorrowChart/>
+        <BorrowerChart/>
+        {/* <Box display="flex" flexDirection="column" gap="8px" width="50%">
+          <YourMetricsSupply
+            color={"#846ED4"}
+            // series={series2[liquidityProviderChartPeriod]}
+          />
+        </Box> */}
+      </Box>
+      <Box display="flex" gap="30px" w="full">
+        <TotalUtilisationRateByMarketChart/>
+        <APRByMarketChart/>
+        {/* <Box display="flex" flexDirection="column" gap="8px" width="50%">
+          <YourMetricsSupply
+            color={"#846ED4"}
+            // series={series2[liquidityProviderChartPeriod]}
+          />
+        </Box> */}
+      </Box>
+      <Box display="flex" gap="30px" w="full">
+        <ExchangeRaterToken/>
+        <ExchangeRatedToken/>
+        {/* <Box display="flex" flexDirection="column" gap="8px" width="50%">
+          <YourMetricsSupply
+            color={"#846ED4"}
+            // series={series2[liquidityProviderChartPeriod]}
+          />
+        </Box> */}
+      </Box>
+      <Box display="flex" gap="30px">
+        <TotalTransactionChart/>
       </Box>
     </Box>
   );

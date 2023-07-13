@@ -11,7 +11,7 @@ const UtilisationRateChart = () => {
     useState(0);
   const [chartData, setChartData] = useState([
     {
-      name: "Series 1",
+      name: "Utlization Rate",
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
@@ -43,12 +43,12 @@ const UtilisationRateChart = () => {
       case 0:
         btcData?.utilRates ? newData = [
           {
-            name: "Series 1",
+            name: "Utlization Rate",
             data: btcData?.utilRates,
           },
         ]:newData = [
           {
-            name: "Series 1",
+            name: "Utlization Rate",
             data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
           },
         ];
@@ -67,7 +67,7 @@ const UtilisationRateChart = () => {
         case 1:
           newData = [
             {
-              name: "Series 1",
+              name: "Utlization Rate",
               data: [
                 40000, 10000, 42000, 39000, 44000, 41000, 43000, 
               ],
@@ -87,7 +87,7 @@ const UtilisationRateChart = () => {
           //y data axis
           newData = [
             {
-              name: "Series 1",
+              name: "Utlization Rate",
               data: [50000, 49000, 52000, 48000, 51000,  48000, 50000, 48000, 51000, 48000],
             },
           ];
@@ -108,7 +108,7 @@ const UtilisationRateChart = () => {
       case 3:
         newData = [
           {
-            name: "Series 1",
+            name: "Utlization Rate",
             data: [
               60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000,
               60000, 62000, 70000,
@@ -148,7 +148,7 @@ const UtilisationRateChart = () => {
       },
       dataLabels: {
         position: "bottom",
-        enabled: true,
+        enabled: false,
         style: {
           colors: ["#fff"],
         },
@@ -196,7 +196,7 @@ const UtilisationRateChart = () => {
           },
         },
       },
-      colors: ["#846ED4"],
+      colors: ["#04aacf"],
       grid: {
         borderColor: "#2B2F35",
         padding: {
@@ -217,7 +217,7 @@ const UtilisationRateChart = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" gap="8px" width="100%">
+    <Box display="flex" flexDirection="column" gap="8px" width="50%">
       <Box
         display="flex"
         flexDirection="column"
@@ -314,7 +314,7 @@ const UtilisationRateChart = () => {
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}
-          type="bar"
+          type="area"
           height={350}
         />
       </Box>

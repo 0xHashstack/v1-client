@@ -14,6 +14,7 @@ import {
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
+import UtilisationRateChart from "../charts/utilisationRateChart";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const TotalValueLockedMetrics = () => {
@@ -262,7 +263,7 @@ const TotalValueLockedMetrics = () => {
 
       stroke: {
         curve: "smooth",
-        colors: ["#00C7F2"],
+        colors: ["#2BA26F"],
         opacity: 1,
       },
       grid: {
@@ -271,7 +272,7 @@ const TotalValueLockedMetrics = () => {
       legend: {
         show: false, // Hide the series buttons when only one series is present
       },
-      colors: ["#04aacf"],
+      colors: ["#2BA26F"],
     },
   };
   const options: ApexOptions = {
@@ -283,8 +284,8 @@ const TotalValueLockedMetrics = () => {
   };
 
   return (
-    <Box display="flex" gap="30px">
-      <Box display="flex" flexDirection="column" gap="8px" width="100%">
+    <Box display="flex" gap="30px" w="full">
+      <Box display="flex" flexDirection="column" gap="8px" width="50%">
         <Box
           display="flex"
           flexDirection="column"
@@ -382,17 +383,6 @@ const TotalValueLockedMetrics = () => {
             </Box>
           </Box>
         </Box>
-        <Box
-          px="24px"
-          py="16px"
-          fontSize="20px"
-          border="1px solid #2B2F35"
-          fontStyle="normal"
-          fontWeight="600"
-          lineHeight="30px"
-          borderRadius="6px"
-        >
-          <Box display="flex" flexDirection="column" gap="8px" width="100%">
             <Box
               border="1px solid #2B2F35"
               borderRadius="6px"
@@ -404,10 +394,9 @@ const TotalValueLockedMetrics = () => {
                 type="area"
                 height={350}
               />
-            </Box>
-          </Box>
         </Box>
       </Box>
+      <UtilisationRateChart/>
     </Box>
   );
 };

@@ -218,7 +218,7 @@ const BorrowAPRChart = () => {
           },
         },
       },
-      colors: ["#2BA26F"],
+      colors: ["#04aacf"],
       grid: {
         borderColor: "#2B2F35",
         padding: {

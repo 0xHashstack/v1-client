@@ -2209,8 +2209,10 @@ const YourBorrowModal = ({
       // dispatch((newValue));
     }
   };
+  console.log(typeof walletBalance2,"balance borrow")
 
   const handleCollateralChange = (newValue: any) => {
+     if (newValue > 9_000_000_000) return;
     if (currentTokenSelected === "rToken") {
       var percentage =
         (newValue * 100) /
@@ -2219,7 +2221,12 @@ const YourBorrowModal = ({
             item.rToken == collateralBalance.substring(spaceIndex + 1)
         )?.rTokenFreeParsed;
     } else {
-      var percentage = (newValue * 100) / walletBalance2;
+      if(newValue>walletBalance2){
+        var percentage=100;
+      }else{
+        var percentage = (newValue * 100) / walletBalance2;
+
+      }
     }
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -4683,6 +4690,7 @@ const YourBorrowModal = ({
                           onChange={(val) => {
                             setSliderValue2(val);
                             if (currentTokenSelected == "Native Token") {
+                              
                               var ans = (val / 100) * walletBalance2;
                               if (val == 100) {
                                 setinputCollateralAmount(walletBalance2);
