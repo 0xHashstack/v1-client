@@ -46,6 +46,9 @@ const initialState = {
   },
   metricsDropdowns: {
     yourMetricsMarketDropdown: false,
+    coinSelectedExchangeRateRToken: false,
+    coinSelectedExchangeRateDToken: false,
+    coinSelectedAPRByMarket: false,
   },
 };
 

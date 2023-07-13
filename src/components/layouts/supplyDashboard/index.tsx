@@ -537,7 +537,7 @@ const SupplyDashboard = ({
                               if (stat?.token === supply?.rToken?.slice(1))
                                 return stat.supplyRate;
                             })?.supplyRate
-                          )?.toFixed(3) + " %"
+                          )?.toFixed(3) + "%"
                         )}
                       </Box>
                     </Td>
@@ -569,7 +569,7 @@ const SupplyDashboard = ({
                           />: */}
                         {avgs && avgs?.length > 0 ? (
                           avgs?.find((item: any) => item.token == supply?.token)
-                            ?.avg
+                            ?.avg + "%"
                         ) : (
                           <Skeleton
                             width="4rem"

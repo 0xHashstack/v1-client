@@ -1740,7 +1740,8 @@ const YourSupplyModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              Wallet Balance: {withdrawWalletBalance}
+                              Wallet Balance:{" "}
+                              {numberFormatter(withdrawWalletBalance)}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedWithdrawlCoin}`}
                               </Text>
@@ -1757,7 +1758,8 @@ const YourSupplyModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Wallet Balance: {withdrawWalletBalance}
+                            Wallet Balance:{" "}
+                            {numberFormatter(withdrawWalletBalance)}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedWithdrawlCoin}`}
                             </Text>
