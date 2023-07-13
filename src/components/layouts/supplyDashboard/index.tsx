@@ -141,6 +141,9 @@ const SupplyDashboard = ({
   const avgsData: any = [];
   useEffect(() => {
     const getSupply = async () => {
+      if (!userDeposits || !reduxProtocolStats) {
+        return;
+      }
       console.log("all deposits calling started");
       try {
         const supply = userDeposits;
@@ -565,7 +568,7 @@ const SupplyDashboard = ({
                           />: */}
                         {avgs && avgs?.length > 0 ? (
                           avgs?.find((item: any) => item.token == supply?.token)
-                            ?.avg + "%"
+                            ?.avg
                         ) : (
                           <Skeleton
                             width="4rem"

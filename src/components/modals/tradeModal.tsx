@@ -843,7 +843,10 @@ const TradeModal = ({
 
     const split = await getJediEstimateLiquiditySplit(
       currentBorrowCoin,
-      inputBorrowAmount,
+      (
+        Math.floor(Number(inputBorrowAmount)) *
+        Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
+      )?.toString(),
       toMarketLiqA,
       toMarketLiqB
       // "USDT",
@@ -861,12 +864,16 @@ const TradeModal = ({
       !toMarketLiqA ||
       !toMarketLiqB ||
       !currentBorrowCoin ||
+      !inputBorrowAmount ||
       currentPool === "Select a pool"
     )
       return;
     const lp_tokon = await getJediEstimatedLpAmountOut(
       currentBorrowCoin,
-      inputBorrowAmount,
+      (
+        Math.floor(Number(inputBorrowAmount)) *
+        Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
+      )?.toString(),
       toMarketLiqA,
       toMarketLiqB
       // "USDT",
@@ -2474,7 +2481,7 @@ const TradeModal = ({
                             />
                           </Box>
                         ) : (
-                          "$" + currentLPTokenAmount
+                          "" + currentLPTokenAmount
                         )}
                         {/* $ 10.91 */}
                       </Text>

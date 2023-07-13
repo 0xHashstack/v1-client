@@ -170,12 +170,14 @@ const Navbar = ({ validRTokens }: any) => {
     // console.log(connector);
     if (connector?.options?.id == "braavos") {
       localStorage.setItem("lastUsedConnector", "argentX");
+      localStorage.setItem("connected", "argentX");
       connect(connectors[1]);
       router.push("/v1/market");
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
     } else {
       localStorage.setItem("lastUsedConnector", "braavos");
+      localStorage.setItem("connected", "braavos");
       connect(connectors[0]);
       router.push("/v1/market");
       dispatch(resetState(null));

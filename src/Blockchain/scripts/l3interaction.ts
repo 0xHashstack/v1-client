@@ -50,7 +50,7 @@ export async function getUSDValue(market: string, amount: number) {
     console.log(
       "estimated usd value: ",
       parseAmount(
-        uint256.uint256ToBN(res?.usd_value).toString(),
+        uint256.uint256ToBN(res?.usd_value).toString(), 
         res?.decimals?.words[0] + tokenDecimalsMap[market]
       )
     );
@@ -106,9 +106,9 @@ export async function getJediEstimateLiquiditySplit(
       " is: ",
       res,
       " for tokenA: ",
-      getTokenFromAddress(tokenA),
+      getTokenFromAddress(tokenAAddress),
       " and tokenB: ",
-      getTokenFromAddress(tokenB)
+      getTokenFromAddress(tokenBAddress)
     );
     return [
       parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
