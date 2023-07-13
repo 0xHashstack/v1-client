@@ -2207,7 +2207,16 @@ const YourBorrowModal = ({
   };
 
   const handleCollateralChange = (newValue: any) => {
-    var percentage = (newValue * 100) / walletBalance2;
+    if (currentTokenSelected === "rToken") {
+      var percentage =
+        (newValue * 100) /
+        userDeposit?.find(
+          (item: any) =>
+            item.rToken == collateralBalance.substring(spaceIndex + 1)
+        )?.rTokenFreeParsed;
+    } else {
+      var percentage = (newValue * 100) / walletBalance2;
+    }
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue2(100);
@@ -4535,10 +4544,35 @@ const YourBorrowModal = ({
                           color="#0969DA"
                           _hover={{ bg: "#101216" }}
                           onClick={() => {
-                            setinputCollateralAmount(walletBalance2);
-                            setCollateralAmount(walletBalance2);
-                            setRTokenAmount(walletBalance2);
-                            setSliderValue2(100);
+                            if (currentTokenSelected === "rToken") {
+                              setinputCollateralAmount(
+                                userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed
+                              );
+                              setCollateralAmount(
+                                userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed
+                              );
+                              setRTokenAmount(
+                                userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed
+                              );
+                              setSliderValue2(100);
+                            } else {
+                              setinputCollateralAmount(walletBalance2);
+                              setCollateralAmount(walletBalance2);
+                              setRTokenAmount(walletBalance2);
+                              setSliderValue2(100);
+                            }
                           }}
                           isDisabled={collateralTransactionStarted == true}
                           _disabled={{ cursor: "pointer" }}
