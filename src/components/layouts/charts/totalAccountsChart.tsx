@@ -149,13 +149,17 @@ const TotalAccountsChart = () => {
       },
       dataLabels: {
         position: "bottom",
-        enabled: true,
+        enabled: false,
         style: {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
           return numberFormatter(val); // Display the data value as the label
         },
+      },
+      markers: {
+        size: 2,
+        colors: ["#fff"],
       },
 
       xaxis: {
@@ -315,7 +319,7 @@ const TotalAccountsChart = () => {
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}
-          type="bar"
+          type="line"
           height={350}
         />
       </Box>

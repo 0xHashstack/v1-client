@@ -149,7 +149,7 @@ const SupplyChart = () => {
       },
       dataLabels: {
         position: "bottom",
-        enabled: true,
+        enabled: false,
         style: {
           colors: ["#fff"],
         },
@@ -314,7 +314,7 @@ const SupplyChart = () => {
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}
-          type="bar"
+          type="area"
           height={350}
         />
       </Box>

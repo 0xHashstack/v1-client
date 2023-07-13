@@ -26,7 +26,7 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
       axisBorder: {
         color: "grey",
       },
-      categories: categories ? categories : [1, 2, 3, 4, 5, 6, 7],
+      categories: categories ? categories : ["BTC","ETH","USDT","USDC","DAI"],
     },
     plotOptions: {
       bar: {
@@ -84,24 +84,9 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
   const chartSeries = [
     {
       name: "wBTC",
-      data: [44000, 55000, 41000, 17000, 15000, 17000, 15000],
+      data: [44000, 55000, 41000, 17000, 15000],
     },
-    {
-      name: "wETH",
-      data: [13000, 23000, 20000, 17000, 15000, 17000, 15000],
-    },
-    {
-      name: "USDC",
-      data: [10001, 17000, 15000, 17000, 15000, 17000, 15000],
-    },
-    {
-      name: "USDT",
-      data: [21000, 7000, 25000, 17000, 15000, 17000, 15000],
-    },
-    {
-      name: "DAI",
-      data: [21000, 30000, 25000, 17000, 15000, 17000, 15000],
-    },
+
   ];
 
   return (

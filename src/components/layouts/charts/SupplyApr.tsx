@@ -246,7 +246,7 @@ const SupplyChartChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Supply APR:</Box>
+          <Box mt="auto">Average Supply APR:</Box>
           <Box display="flex" gap="2">
             <Button
               color="#2B2F35"
