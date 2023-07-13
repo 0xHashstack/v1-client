@@ -27,6 +27,7 @@ import MarketInformation from "@/components/layouts/metrics/marketInformation";
 import TotalCommunityActivity from "@/components/layouts/metrics/totalCommunityActivity";
 import { selectProtocolReserves } from "@/store/slices/readDataSlice";
 import useDataLoader from "@/hooks/useDataLoader";
+import UtilisationRateChart from "@/components/layouts/charts/utilisationRateChart";
 const ProtocolMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -82,13 +83,16 @@ const ProtocolMetrics = () => {
               </Box>
             </Link>
           </HStack>
-          <Box mb="4rem">
-            <TotalValueLockedMetrics />
+          <Box display="flex" flexDir="column" gap="64px">
+            <Box display="flex" gap="30px" w="full" mb="4rem">
+              <TotalValueLockedMetrics />
+            </Box>
+            {/* <UtilisationRateChart/> */}
           </Box>
           <SupplyMetrics/>
-          <BorrowMetrics/>
-          <MarketInformation/>
-          <TotalCommunityActivity/>
+          {/* <BorrowMetrics/> */}
+          {/* <MarketInformation/>
+          <TotalCommunityActivity/> */}
         </Box>
       </Box>
     </PageCard>

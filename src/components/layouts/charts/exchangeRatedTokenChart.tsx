@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { selectHourlyBTCData, selectHourlyDAIData, selectHourlyETHData, selectHourlyUSDCData, selectHourlyUSDTData } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
-const APRByMarketChart = ({ color, curveColor, series }: any) => {
+const  ExchangeRaterToken= ({ color, curveColor, series }: any) => {
   const [aprByMarket, setAPRByMarket] = useState(0);
   const [chartData, setChartData] = useState([
     {
@@ -50,7 +50,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   // },[])
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"]
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
-  // console.log(btcData, "btc")
+//   console.log(btcData, "btc")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -80,13 +80,10 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         if (currentSelectedCoin == 0) {
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [300, 400, 350,500,490,500,370, 350, 500, 490,200,150],
             },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 400,390,300, 400,250,280,300,400,500],
-            },
+
           ];
           newCategories = [
             1689152545000,
@@ -106,22 +103,16 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         } else if (currentSelectedCoin == 1) {
           btcData?.aprs && btcData?.apys ? newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: btcData?.aprs,
             },
-            {
-              name: "Borrow Apr",
-              data: btcData?.apys,
-            },
+
           ] :           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [300, 400, 350,500,490,500,370, 350, 500, 490,200,150],
             },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 400,390,300, 400,250,280,300,400,500],
-            },
+
           ];
           btcData?.dates ? newCategories = btcData?.dates :           newCategories = [
             1689152545000,
@@ -141,13 +132,10 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==2){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [300, 400, 350,500,490,500,370, 350, 500, 490,200,150],
             },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 400,390,300, 400,250,280,300,400,500],
-            },
+
           ];
           newCategories = [
             1689152545000,
@@ -167,22 +155,16 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==3){
           btcData?.aprs && btcData?.apys ? newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: btcData?.aprs,
             },
-            {
-              name: "Borrow Apr",
-              data: btcData?.apys,
-            },
+
           ] :           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [300, 400, 350,500,490,500,370, 350, 500, 490,200,150],
             },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 400,390,300, 400,250,280,300,400,500],
-            },
+
           ];
           btcData?.dates ? newCategories = btcData?.dates :           newCategories = [
             1689152545000,
@@ -202,12 +184,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else{
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [300, 400, 350,500,490,500,370, 350, 500, 490,200,150],
-            },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 400,390,300, 400,250,280,300,400,500],
             },
           ];
           newCategories = [
@@ -233,13 +211,10 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         if(currentSelectedCoin==0){
           newData = [
             {
-              name: "Supply APR",
+              name: "Exchange Rate",
               data: [300, 400, 350, 500, 490, 600, 800],
             },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 400, 390, 500, 700],
-            },
+
           ];
           newCategories = [
             new Date("2023-07-01").getTime(),
@@ -254,12 +229,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==1){
           newData = [
             {
-              name: "Supply APR",
+              name: "Exchange Rate",
               data: [200, 300, 250, 400, 390, 500, 700],
-            },
-            {
-              name: "Borrow Apr",
-              data: [300, 400, 350, 500, 490, 600, 800],
             },
           ];
           newCategories = [
@@ -275,12 +246,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==2){
           newData = [
             {
-              name: "Supply APR",
+              name: "Exchange Rate",
               data: [100, 200, 250, 400, 390, 500, 700],
-            },
-            {
-              name: "Borrow Apr",
-              data: [700, 400, 250, 600, 490, 400, 800],
             },
           ];
           newCategories = [
@@ -296,12 +263,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==3){
           newData = [
             {
-              name: "Supply APR",
+              name: "Exchange Rate",
               data: [200, 300, 250, 400, 390, 500, 700],
-            },
-            {
-              name: "Borrow Apr",
-              data: [300, 400, 350, 500, 490, 600, 800],
             },
           ];
           newCategories = [
@@ -317,12 +280,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==4){
           newData = [
             {
-              name: "Supply APR",
+              name: "Exchange Rate",
               data: [100, 400, 250, 300, 390, 500, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [300, 400, 350, 300, 490, 500, 800],
             },
           ];
           newCategories = [
@@ -342,12 +301,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         if(currentSelectedCoin==0){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [300, 400, 350, 500, 490, 600, 800, 500, 490, 600, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 400, 390, 500, 700, 500, 490, 600, 800],
             },
           ];
           //x axis data
@@ -367,12 +322,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==1){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [100, 400, 350, 200, 490, 300, 800, 500, 290, 500, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [100, 300, 250, 200, 390, 400, 700, 500, 490, 700, 800],
             },
           ];
           //x axis data
@@ -392,12 +343,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==2){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [200, 400, 350, 200, 490, 300, 800, 500, 290, 200, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 100, 390, 800, 700, 500, 490, 700, 200],
             },
           ];
           //x axis data
@@ -417,12 +364,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==3){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [100, 400, 350, 200, 490, 300, 800, 500, 290, 500, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [100, 300, 250, 200, 390, 400, 700, 500, 490, 700, 800],
             },
           ];
           //x axis data
@@ -442,12 +385,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==4){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [200, 400, 350, 200, 490, 300, 800, 500, 290, 200, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 100, 390, 800, 700, 500, 490, 700, 200],
             },
           ];
           //x axis data
@@ -470,12 +409,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         if(currentSelectedCoin==0){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [300, 400, 350, 500, 490, 600, 800, 500, 490, 600, 800, 400],
-            },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 400, 390, 500, 700, 500, 490, 600, 800, 200],
             },
           ];
   
@@ -497,12 +432,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==1){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [200, 400, 350, 300, 490, 600, 800, 100, 490, 600, 200, 400],
-            },
-            {
-              name: "Borrow Apr",
-              data: [100, 300, 250, 400, 290, 500, 700, 500, 190, 600, 100, 200],
             },
           ];
   
@@ -525,14 +456,10 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         else if(currentSelectedCoin==2){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [100, 300, 250, 400, 290, 500, 700, 500, 190, 600, 100, 200],
             },
-            {
-              name: "Borrow Apr",
-              
-              data: [200, 400, 350, 300, 490, 600, 800, 100, 490, 600, 200, 400],
-            },
+
           ];
   
           newCategories = [
@@ -554,12 +481,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         else if(currentSelectedCoin==3){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [200, 400, 350, 300, 490, 600, 800, 100, 490, 600, 200, 400],
-            },
-            {
-              name: "Borrow Apr",
-              data: [100, 300, 250, 400, 290, 500, 700, 500, 190, 600, 100, 200],
             },
           ];
   
@@ -581,12 +504,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         }else if(currentSelectedCoin==4){
           newData = [
             {
-              name: "Supply Apr",
+              name: "Exchange Rate",
               data: [100, 400, 350, 200, 490, 600, 100, 500, 490, 600, 800, 400],
-            },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 100, 390, 500, 100, 500, 490, 600, 800, 200],
             },
           ];
   
@@ -615,29 +534,29 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
     series: chartData,
     options: {
       chart: {
-        // offsetX: 50,
         toolbar: {
           show: false,
         },
       },
-      tooltip: {
-        enabled: true,
-      },
       dataLabels: {
-        position: "bottom",
         enabled: false,
         style: {
-          colors: ["#fff"],
+          colors: ["#000000"],
         },
         formatter: function (val: any) {
           return numberFormatter(val); // Display the data value as the label
         },
+        position: "top",
+      },
+      markers: {
+        size: 2,
+        colors: ["#fff"],
       },
       xaxis: {
-        type: "datetime" as const,
+        type: "datetime" as const, // Set x-axis type to datetime
         labels: {
           style: {
-            colors: "#6E7681", // Set the color of the labels
+            colors: "#6E7681",
             fontSize: "12px",
             fontWeight: "400",
           },
@@ -663,30 +582,43 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         },
         min: 0,
       },
-      stroke: {
-        curve: "smooth",
-        color: splineColor,
-        opacity: 1,
+      plotOptions: {
+        bar: {
+          opacity: 1, // Set the opacity to 1 for fully opaque bars
+          columnWidth: "70%", // Adjust the column width for better spacing between bars
+          colors: {
+            backgroundBarOpacity: 1, // Set the opacity of the background bar
+          },
+        },
       },
+      colors: ["#04aacf"],
       grid: {
         borderColor: "#2B2F35",
+        padding: {
+          bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
+        },
       },
-      legend: {
-        show: true, // Hide the series buttons when only one series is present
+      curve:"smooth",
+      annotations: {
+        xaxis: [
+          {
+            x: 0,
+            strokeDashArray: 0,
+            borderColor: "grey",
+            borderWidth: 1,
+          },
+        ],
       },
-      // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
-      color: splineColor,
     },
   };
-  const options: ApexOptions = {
-    ...splineChartData.options,
-    stroke: {
-      ...splineChartData.options.stroke,
-      curve: "smooth",
-    },
-    colors: splineColor
-    // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
-  };
+//   const options: ApexOptions = {
+//     ...splineChartData.options,
+//     stroke: {
+//       ...splineChartData.options.stroke,
+//     },
+//     colors: ["#2BA26F"],
+//     // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
+//   };
 
   return (
     <Box display="flex" flexDirection="column" gap="8px" width="100%">
@@ -712,7 +644,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">APR by market:</Box>
+          <Box mt="auto">Exchange rate: dToken</Box>
           <Box display="flex" gap="2">
             <Button
               color="#2B2F35"
@@ -768,7 +700,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         padding="16px 24px 40px"
       >
         <ApexCharts
-          options={options}
+          options={splineChartData.options}
           series={splineChartData.series}
           type="line"
           height={350}
@@ -885,4 +817,4 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   );
 };
 
-export default APRByMarketChart;
+export default ExchangeRaterToken;

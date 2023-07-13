@@ -56,7 +56,7 @@ function parseDeposits(deposits: any): IDeposit[] {
     };
     parsedDeposits.push(JSON.parse(JSON.stringify(deposit)));
   }
-  console.log("supplies parsed: ", parsedDeposits);
+  // console.log("supplies parsed: ", parsedDeposits);
   return parsedDeposits;
 }
 
@@ -68,17 +68,17 @@ export async function getUserDeposits(account: string) {
     provider
   );
   if (!account) return;
-  console.log(
-    "supplies callling with:",
-    account,
-    "on address: ",
-    metricsContract
-  );
+  // console.log(
+  //   "supplies callling with:",
+  //   account,
+  //   "on address: ",
+  //   metricsContract
+  // );
   try {
     const res = await metricsContract.call("get_user_deposits", [account], {
       blockIdentifier: "pending",
     });
-    console.log("supplies res: ", res);
+    // console.log("supplies res: ", res);
     return parseDeposits(res?.deposits);
   } catch (error) {
     console.error("supplies fails: ", error);

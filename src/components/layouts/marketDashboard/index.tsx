@@ -57,7 +57,7 @@ const MarketDashboard = () => {
       if (!account || userDeposits?.length <= 0) return;
       // const reserves = await getUserDeposits(address as string);
       const reserves = userDeposits;
-      console.log("got reservers", reserves);
+      // console.log("got reservers", reserves);
 
       const rTokens: any = [];
       if (reserves) {
@@ -114,7 +114,7 @@ const MarketDashboard = () => {
   }, [stats]);
   const fetchProtocolStats = async () => {
     try {
-      console.log("fetchprotocolstats", stats); //23014
+      // console.log("fetchprotocolstats", stats); //23014
       // const temp: any = ;
       setProtocolStats([
         stats?.[2],
@@ -176,7 +176,7 @@ const MarketDashboard = () => {
         stats?.[4].utilisationPerMarket,
       ]);
     } catch (error) {
-      console.log("error on getting protocol stats");
+      // console.log("error on getting protocol stats");
     }
   };
 

@@ -51,7 +51,7 @@ export async function getOraclePrices(): Promise<OraclePrice[]> {
     }
     return prices;
   } catch (e) {
-    console.log("getOraclePrices failed: ", e);
+    // console.log("getOraclePrices failed: ", e);
     return prices;
   }
 }
