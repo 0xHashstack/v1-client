@@ -99,7 +99,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         disconnect();
         connect(connectors[0]);
       } else if (walletConnected == "argentX") {
-        localStorage.setItem("connected", "braavos");
+        localStorage.setItem("connected", "argentX");
         disconnect();
         connect(connectors[1]);
       } else {

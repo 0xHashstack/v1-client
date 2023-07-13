@@ -141,6 +141,10 @@ const SupplyDashboard = ({
   const avgsData: any = [];
   useEffect(() => {
     const getSupply = async () => {
+      if (!userDeposits || !reduxProtocolStats) {
+        return;
+      }
+      // console.log("all deposits calling started");
       // console.log("all deposits calling started");
       try {
         const supply = userDeposits;
@@ -533,7 +537,7 @@ const SupplyDashboard = ({
                               if (stat?.token === supply?.rToken?.slice(1))
                                 return stat.supplyRate;
                             })?.supplyRate
-                          )?.toFixed(3) + " %"
+                          )?.toFixed(3) + "%"
                         )}
                       </Box>
                     </Td>

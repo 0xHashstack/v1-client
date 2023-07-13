@@ -844,7 +844,10 @@ const TradeModal = ({
 
     const split = await getJediEstimateLiquiditySplit(
       currentBorrowCoin,
-      inputBorrowAmount,
+      (
+        Math.floor(Number(inputBorrowAmount)) *
+        Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
+      )?.toString(),
       toMarketLiqA,
       toMarketLiqB
       // "USDT",
@@ -862,12 +865,16 @@ const TradeModal = ({
       !toMarketLiqA ||
       !toMarketLiqB ||
       !currentBorrowCoin ||
+      !inputBorrowAmount ||
       currentPool === "Select a pool"
     )
       return;
     const lp_tokon = await getJediEstimatedLpAmountOut(
       currentBorrowCoin,
-      inputBorrowAmount,
+      (
+        Math.floor(Number(inputBorrowAmount)) *
+        Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
+      )?.toString(),
       toMarketLiqA,
       toMarketLiqB
       // "USDT",
@@ -948,9 +955,7 @@ const TradeModal = ({
             my="auto"
             pos="relative"
           >
-            {/* <Text color="black">
-              Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet
-            </Text> */}
+            <Text color="black" mb="1.5rem"></Text>
             <Text pos="absolute" top="8" left="8">
               Trade
             </Text>
@@ -1418,7 +1423,7 @@ const TradeModal = ({
                             <SmallErrorIcon />{" "}
                           </Text>
                           <Text ml="0.3rem">
-                            {inputCollateralAmount > walletBalance 
+                            {inputCollateralAmount > walletBalance
                               ? "Amount exceeds balance"
                               : "Invalid Input"}
                           </Text>
@@ -1793,7 +1798,8 @@ const TradeModal = ({
                         inputCollateralAmountUSD &&
                         inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
                           ? "1px solid #CF222E"
-                          : inputBorrowAmount < 0 || inputBorrowAmount> currentAvailableReserves
+                          : inputBorrowAmount < 0 ||
+                            inputBorrowAmount > currentAvailableReserves
                           ? "1px solid #CF222E"
                           : isNaN(inputBorrowAmount)
                           ? "1px solid #CF222E"
@@ -1828,7 +1834,8 @@ const TradeModal = ({
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
                               ? "#CF222E"
-                              : inputBorrowAmount < 0 || inputBorrowAmount> currentAvailableReserves
+                              : inputBorrowAmount < 0 ||
+                                inputBorrowAmount > currentAvailableReserves
                               ? "#CF222E"
                               : inputBorrowAmount == 0
                               ? "white"
@@ -1888,18 +1895,20 @@ const TradeModal = ({
                       </Button>
                     </Box>
                     {inputBorrowAmount > currentAvailableReserves ||
-                    (inputBorrowAmount > 0 && inputCollateralAmountUSD && inputBorrowAmountUSD>5*inputCollateralAmountUSD) ||
+                    (inputBorrowAmount > 0 &&
+                      inputCollateralAmountUSD &&
+                      inputBorrowAmountUSD > 5 * inputCollateralAmountUSD) ||
                     isNaN(inputBorrowAmount) ? (
                       <Text
-                      display="flex"
-                      justifyContent="space-between"
-                      color="#E6EDF3"
-                      mt="0.4rem"
-                      fontSize="12px"
-                      fontWeight="500"
-                      fontStyle="normal"
-                      fontFamily="Inter"
-                      whiteSpace="nowrap"
+                        display="flex"
+                        justifyContent="space-between"
+                        color="#E6EDF3"
+                        mt="0.4rem"
+                        fontSize="12px"
+                        fontWeight="500"
+                        fontStyle="normal"
+                        fontFamily="Inter"
+                        whiteSpace="nowrap"
                       >
                         <Text color="#CF222E" display="flex">
                           <Text mt="0.2rem">
@@ -1908,7 +1917,10 @@ const TradeModal = ({
                           <Text ml="0.3rem">
                             {inputBorrowAmount > currentAvailableReserves
                               ? "Amount exceeds balance"
-                              : inputBorrowAmountUSD>5*inputCollateralAmountUSD ? "Not Permissible CDR": "Invalid Input"}
+                              : inputBorrowAmountUSD >
+                                5 * inputCollateralAmountUSD
+                              ? "Not Permissible CDR"
+                              : "Invalid Input"}
                           </Text>
                         </Text>
                         <Text
@@ -2471,7 +2483,7 @@ const TradeModal = ({
                             />
                           </Box>
                         ) : (
-                          "$" + currentLPTokenAmount
+                          "" + currentLPTokenAmount
                         )}
                         {/* $ 10.91 */}
                       </Text>
@@ -2849,9 +2861,10 @@ const TradeModal = ({
                   )}
                 </Box>
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
-                (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) && 
-                inputBorrowAmount<currentAvailableReserves &&
-                inputBorrowAmount > 0 && inputBorrowAmountUSD<=5* inputCollateralAmountUSD &&
+                (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
+                inputBorrowAmount < currentAvailableReserves &&
+                inputBorrowAmount > 0 &&
+                inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD &&
                 currentDapp != "Select a dapp" &&
                 (currentPool != "Select a pool" ||
                   currentPoolCoin != "Select a pool") ? (
