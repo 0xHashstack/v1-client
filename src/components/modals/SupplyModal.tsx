@@ -972,6 +972,7 @@ const SupplyModal = ({
                   <NumberInput
                     border="0px"
                     min={0}
+                    
                     keepWithinRange={true}
                     onChange={handleChange}
                     value={
