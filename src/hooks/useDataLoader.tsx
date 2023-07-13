@@ -139,9 +139,9 @@ const useDataLoader = () => {
         const response = await axios.get(
           `${metrics_api}/api/metrics/tvl/daily/DAI`
         );
-        const responseApr=await axios.get(
+        const responseApr = await axios.get(
           `${metrics_api}/api/metrics/apm_market/daily/DAI`
-        )
+        );
         // console.log(response, "response data");
         if (!response) {
           return;
@@ -156,11 +156,11 @@ const useDataLoader = () => {
           const tvlAmounts: any = [];
           const supplyCounts: any = [];
           const borrowCounts: any = [];
-          const utilRates:any=[];
-          const exchangeRates:any=[];
-          const totalTransactions:any=[];
-          const totalAccounts:any=[];
-          const aprs:any=[];
+          const utilRates: any = [];
+          const exchangeRates: any = [];
+          const totalTransactions: any = [];
+          const totalAccounts: any = [];
+          const aprs: any = [];
           for (var i = 0; i < 12; i++) {
             amounts?.push(response?.data[i].supplyAmount);
             borrowAmounts?.push(response?.data[i].borrowAmount);
@@ -176,8 +176,6 @@ const useDataLoader = () => {
             totalTransactions?.push(response?.data[i].totalTransactions);
             totalAccounts?.push(response?.data[i].totalAccounts);
             aprs?.push(responseApr?.data[i].APR);
-
-
           }
           // console.log(dates,"Dates")
           const data = {
@@ -189,11 +187,11 @@ const useDataLoader = () => {
             borrowRates: borrowRates,
             supplyCounts: supplyCounts,
             borrowCounts: borrowCounts,
-            utilRates:utilRates,
-            exchangeRates:exchangeRates,
-            totalTransactions:totalTransactions,
-            totalAccounts:totalAccounts,
-            aprs:aprs
+            utilRates: utilRates,
+            exchangeRates: exchangeRates,
+            totalTransactions: totalTransactions,
+            totalAccounts: totalAccounts,
+            aprs: aprs,
           };
           // console.log(btcData,"Data gone")
           dispatch(setHourlyBTCData(data));

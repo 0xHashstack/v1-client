@@ -561,11 +561,18 @@ const SupplyDashboard = ({
                             endColor="#2B2F35"
                             borderRadius="6px"
                           />: */}
-                        {Number(
+                        {avgs && avgs?.length > 0 ? (
                           avgs?.find((item: any) => item.token == supply?.token)
-                            ?.avg
-                        )}{" "}
-                        {avgs ? "%" : ""}
+                            ?.avg + "%"
+                        ) : (
+                          <Skeleton
+                            width="4rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />
+                        )}
                         {/* {supply?.token} */}
                       </Text>
                     </Td>
