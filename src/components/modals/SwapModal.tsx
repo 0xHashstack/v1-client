@@ -1186,10 +1186,7 @@ const SwapModal = ({
                   border="1px solid #8B949E"
                   labelSuccessArray={[
                     "Processing",
-                    "Transferring collateral to supply vault.",
-                    "Minting & transferring rTokens to the user account.",
-                    "Locking rTokens.",
-                    "Updating collateral records",
+                    "Updating loan records",
                     <SuccessButton
                       key={"successButton"}
                       successText={"Swap successful."}
