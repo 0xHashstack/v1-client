@@ -12,6 +12,9 @@ const initialState = {
   coinSelectedSupplyModal: "BTC",
   collateralCoinSelectedBorrowModal: "BTC",
   borrowCoinSelectedBorrowModal: "BTC",
+  coinSelectedExchangeRateDToken: "BTC",
+  coinSelectedExchangeRateRToken: "BTC",
+  coinSelectedAPRByMarket: "BTC",
   spendBorrowselectedDapp: "",
   walletBalance: 90,
   inputYourBorrowModalRepayAmount: 0,
@@ -120,6 +123,15 @@ export const userAccountSlice = createSlice({
     },
     setCoinSelectedSupplyModal(state, action) {
       state.coinSelectedSupplyModal = action.payload;
+    },
+    setCoinSelectedExchangeRateDToken(state, action) {
+      state.coinSelectedExchangeRateDToken = action.payload;
+    },
+    setCoinSelectedExchangeRateRToken(state, action) {
+      state.coinSelectedExchangeRateRToken = action.payload;
+    },
+    setCoinSelectedAPRByMarket(state, action) {
+      state.coinSelectedAPRByMarket = action.payload;
     },
     setInputBorrowModalCollateralAmount(state, action) {
       state.inputBorrowModalCollateralAmount = action.payload;
@@ -279,6 +291,9 @@ export const { setInputBorrowModalBorrowAmount } = userAccountSlice.actions;
 export const { setInputTradeModalCollateralAmount } = userAccountSlice.actions;
 export const { setInputTradeModalBorrowAmount } = userAccountSlice.actions;
 export const { setCoinSelectedSupplyModal } = userAccountSlice.actions;
+export const { setCoinSelectedExchangeRateDToken } = userAccountSlice.actions;
+export const { setCoinSelectedExchangeRateRToken } = userAccountSlice.actions;
+export const { setCoinSelectedAPRByMarket } = userAccountSlice.actions;
 export const { setCollateralCoinSelectedBorrowModal } =
   userAccountSlice.actions;
 export const { setBorrowCoinSelectedBorrowModal } = userAccountSlice.actions;
@@ -301,6 +316,8 @@ export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;
 export const selectCoinSelectedSupplyModal = (state) =>
   state.user_account.coinSelectedSupplyModal;
+export const selectCoinSelectedExchangeRateDToken = (state) =>
+  state.user_account.coinSelectedExchangeRateDToken;
 export const selectCollateralCoinSelectedBorrowModal = (state) =>
   state.user_account.collateralCoinSelectedBorrowModal;
 export const selectBorrowCoinSelectedBorrowModal = (state) =>
