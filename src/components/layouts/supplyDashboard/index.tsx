@@ -447,8 +447,7 @@ const SupplyDashboard = ({
                           >
                             {numberFormatter(
                               supply?.rTokenAmountParsed +
-                                supply?.rTokenStakedParsed +
-                                supply?.rTokenLockedParsed
+                                supply?.rTokenStakedParsed 
                             )}
                           </Text>
                         </VStack>
