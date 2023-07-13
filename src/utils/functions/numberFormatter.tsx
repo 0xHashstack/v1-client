@@ -1,4 +1,5 @@
 const numberFormatter = (input: any) => {
+  if (input === null) return "";
   var number = parseFloat(input);
 
   if (isNaN(number)) {
