@@ -1425,7 +1425,7 @@ const TradeModal = ({
                             <SmallErrorIcon />{" "}
                           </Text>
                           <Text ml="0.3rem">
-                            {inputCollateralAmount > walletBalance 
+                            {inputCollateralAmount > walletBalance
                               ? "Amount exceeds balance"
                               : "Invalid Input"}
                           </Text>
@@ -1800,7 +1800,8 @@ const TradeModal = ({
                         inputCollateralAmountUSD &&
                         inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
                           ? "1px solid #CF222E"
-                          : inputBorrowAmount < 0 || inputBorrowAmount> currentAvailableReserves
+                          : inputBorrowAmount < 0 ||
+                            inputBorrowAmount > currentAvailableReserves
                           ? "1px solid #CF222E"
                           : isNaN(inputBorrowAmount)
                           ? "1px solid #CF222E"
@@ -1835,7 +1836,8 @@ const TradeModal = ({
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
                               ? "#CF222E"
-                              : inputBorrowAmount < 0 || inputBorrowAmount> currentAvailableReserves
+                              : inputBorrowAmount < 0 ||
+                                inputBorrowAmount > currentAvailableReserves
                               ? "#CF222E"
                               : inputBorrowAmount == 0
                               ? "white"
@@ -1900,15 +1902,15 @@ const TradeModal = ({
                       inputBorrowAmountUSD > 5 * inputCollateralAmountUSD) ||
                     isNaN(inputBorrowAmount) ? (
                       <Text
-                      display="flex"
-                      justifyContent="space-between"
-                      color="#E6EDF3"
-                      mt="0.4rem"
-                      fontSize="12px"
-                      fontWeight="500"
-                      fontStyle="normal"
-                      fontFamily="Inter"
-                      whiteSpace="nowrap"
+                        display="flex"
+                        justifyContent="space-between"
+                        color="#E6EDF3"
+                        mt="0.4rem"
+                        fontSize="12px"
+                        fontWeight="500"
+                        fontStyle="normal"
+                        fontFamily="Inter"
+                        whiteSpace="nowrap"
                       >
                         <Text color="#CF222E" display="flex">
                           <Text mt="0.2rem">
@@ -2861,9 +2863,10 @@ const TradeModal = ({
                   )}
                 </Box>
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
-                (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) && 
-                inputBorrowAmount<currentAvailableReserves &&
-                inputBorrowAmount > 0 && inputBorrowAmountUSD<=5* inputCollateralAmountUSD &&
+                (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
+                inputBorrowAmount < currentAvailableReserves &&
+                inputBorrowAmount > 0 &&
+                inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD &&
                 currentDapp != "Select a dapp" &&
                 (currentPool != "Select a pool" ||
                   currentPoolCoin != "Select a pool") ? (
