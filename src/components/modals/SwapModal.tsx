@@ -1192,7 +1192,7 @@ const SwapModal = ({
                     "Updating collateral records",
                     <SuccessButton
                       key={"successButton"}
-                      successText={"Add collateral successful."}
+                      successText={"Swap successful."}
                     />,
                   ]}
                   labelErrorArray={[

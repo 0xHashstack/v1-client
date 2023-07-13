@@ -88,6 +88,7 @@ const BorrowModal = ({
   coin,
   borrowAPRs,
   currentBorrowAPR,
+  setCurrentBorrowAPR,
   supplyAPRs,
   currentSupplyAPR,
   validRTokens,
@@ -185,6 +186,14 @@ const BorrowModal = ({
     setRToken(coin ? coin?.name : "rBTC");
     setCollateralMarket(coin ? coin?.name : "BTC");
   }, [coin]);
+
+  const coinIndex: any = [
+    { token: "USDT", idx: 0 },
+    { token: "USDC", idx: 1 },
+    { token: "BTC", idx: 2 },
+    { token: "ETH", idx: 3 },
+    { token: "DAI", idx: 4 },
+  ];
 
   const [borrowTransHash, setBorrowTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
@@ -878,6 +887,12 @@ const BorrowModal = ({
                                   setRToken(coin);
                                   setTokenTypeSelected("rToken");
                                   setwalletBalance(amount);
+                                  // setCurrentBorrowAPR(
+                                  //   coinIndex.find(
+                                  //     (curr: any) =>
+                                  //       curr?.token === coin.slice(1)
+                                  //   )?.idx
+                                  // );
                                   // dispatch(setCoinSelectedSupplyModal(coin))
                                 }}
                               >
@@ -951,6 +966,11 @@ const BorrowModal = ({
                               setCurrentCollateralCoin(coin);
                               setCollateralMarket(coin);
                               setTokenTypeSelected("Native");
+                              // setCurrentBorrowAPR(
+                              //   coinIndex.find(
+                              //     (curr: any) => curr?.token === coin
+                              //   )?.idx
+                              // );
                               // setRToken(coin);
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
@@ -1409,6 +1429,11 @@ const BorrowModal = ({
                               );
                               // setMarket(coin);
                               setMarket(coin);
+                              setCurrentBorrowAPR(
+                                coinIndex.find(
+                                  (curr: any) => curr?.token === coin
+                                )?.idx
+                              );
                             }}
                           >
                             {coin === currentBorrowCoin && (

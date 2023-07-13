@@ -1206,7 +1206,7 @@ const YourSupplyModal = ({
                           lineHeight="20px"
                         >
                           Ticking would stake the received rTokens. unchecking
-                          woudn&apos;t stake rTokens
+                          wouldn&apos;t stake rTokens
                         </Text>
                       </Box>
 
@@ -2145,12 +2145,12 @@ const YourSupplyModal = ({
                                 </Text>{" "}
                                 {currentSelectedWithdrawlCoin}
                               </Text>,
-                              "Processing Withdrawl",
+                              "Processing Withdrawal",
                               // <ErrorButton errorText="Transaction failed" />,
                               // <ErrorButton errorText="Copy error!" />,
                               <SuccessButton
                                 key={"successButton"}
-                                successText={"Withdrawl Successful"}
+                                successText={"Withdrawal Succesful"}
                               />,
                             ]}
                             labelErrorArray={[

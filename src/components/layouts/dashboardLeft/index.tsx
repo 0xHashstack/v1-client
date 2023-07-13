@@ -450,6 +450,7 @@ const DashboardLeft = ({
                       coin={coin}
                       supplyAPRs={supplyAPRs}
                       currentSupplyAPR={currentSupplyAPR}
+                      setCurrentSupplyAPR={setCurrentSupplyAPR}
                       // walletBalance={assetBalance[coin?.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(assetBalance[coin?.name]?.dataBalanceOf?.balance))) : 0}
                     />
                   </Box>

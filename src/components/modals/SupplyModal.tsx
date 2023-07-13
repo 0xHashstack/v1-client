@@ -98,6 +98,7 @@ const SupplyModal = ({
   coin,
   backGroundOverLay,
   currentSupplyAPR,
+  setCurrentSupplyAPR,
   supplyAPRs,
 
   ...restProps
@@ -142,6 +143,21 @@ const SupplyModal = ({
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
   const [stakeCheck, setStakeCheck] = useState(true);
+
+  const coinIndex: any = [
+    { token: "USDT", idx: 0 },
+    { token: "USDC", idx: 1 },
+    { token: "BTC", idx: 2 },
+    { token: "ETH", idx: 3 },
+    { token: "DAI", idx: 4 },
+  ];
+
+  useEffect(() => {
+    // setCurrentSupplyAPR(
+    //   coinIndex.map(({ curr }: any) => curr?.token === currentSelectedCoin)?.idx
+    // );
+    console.log("currentSupplyAPR", currentSupplyAPR);
+  }, [currentSupplyAPR]);
 
   interface assetB {
     USDT: any;
@@ -833,6 +849,11 @@ const SupplyModal = ({
                             onClick={() => {
                               setCurrentSelectedCoin(coin);
                               setAsset(coin);
+                              setCurrentSupplyAPR(
+                                coinIndex.find(
+                                  (curr: any) => curr?.token === coin
+                                )?.idx
+                              );
                               // console.log(coin,"coin in supply modal")
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
@@ -1220,7 +1241,7 @@ const SupplyModal = ({
                   lineHeight="20px"
                 >
                   Ticking would stake the received rTokens. unchecking
-                  woudn&apos;t stake rTokens
+                  wouldn&apos;t stake rTokens
                 </Text>
               </Box>
 
