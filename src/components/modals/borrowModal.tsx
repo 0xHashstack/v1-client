@@ -88,6 +88,7 @@ const BorrowModal = ({
   coin,
   borrowAPRs,
   currentBorrowAPR,
+  setCurrentBorrowAPR,
   supplyAPRs,
   currentSupplyAPR,
   validRTokens,
@@ -186,6 +187,14 @@ const BorrowModal = ({
     setCollateralMarket(coin ? coin?.name : "BTC");
   }, [coin]);
 
+  const coinIndex: any = [
+    { token: "USDT", idx: 0 },
+    { token: "USDC", idx: 1 },
+    { token: "BTC", idx: 2 },
+    { token: "ETH", idx: 3 },
+    { token: "DAI", idx: 4 },
+  ];
+
   const [borrowTransHash, setBorrowTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
@@ -281,7 +290,7 @@ const BorrowModal = ({
   useEffect(() => {
     try {
       fetchProtocolStats();
-      console.log("protocolStats", protocolStats);
+      // console.log("protocolStats", protocolStats);
     } catch (err: any) {
       console.log("borrow modal : error fetching protocolStats");
     }
@@ -675,6 +684,7 @@ const BorrowModal = ({
   };
 
   const handleBorrowChange = (newValue: any) => {
+    if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / currentAvailableReserves;
     percentage = Math.max(0, percentage);
     // console.log(percentage,"percent")
@@ -721,6 +731,7 @@ const BorrowModal = ({
     setBorrowTransHash("");
     setInputCollateralAmountUSD(0);
     setInputBorrowAmountUSD(0);
+    setinputBorrowAmount(0);
     // setDepositTransHash("")
   };
   useEffect(() => {
@@ -878,6 +889,12 @@ const BorrowModal = ({
                                   setRToken(coin);
                                   setTokenTypeSelected("rToken");
                                   setwalletBalance(amount);
+                                  // setCurrentBorrowAPR(
+                                  //   coinIndex.find(
+                                  //     (curr: any) =>
+                                  //       curr?.token === coin.slice(1)
+                                  //   )?.idx
+                                  // );
                                   // dispatch(setCoinSelectedSupplyModal(coin))
                                 }}
                               >
@@ -951,6 +968,11 @@ const BorrowModal = ({
                               setCurrentCollateralCoin(coin);
                               setCollateralMarket(coin);
                               setTokenTypeSelected("Native");
+                              // setCurrentBorrowAPR(
+                              //   coinIndex.find(
+                              //     (curr: any) => curr?.token === coin
+                              //   )?.idx
+                              // );
                               // setRToken(coin);
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
@@ -1409,6 +1431,11 @@ const BorrowModal = ({
                               );
                               // setMarket(coin);
                               setMarket(coin);
+                              setCurrentBorrowAPR(
+                                coinIndex.find(
+                                  (curr: any) => curr?.token === coin
+                                )?.idx
+                              );
                             }}
                           >
                             {coin === currentBorrowCoin && (
@@ -1495,7 +1522,7 @@ const BorrowModal = ({
                     inputCollateralAmountUSD &&
                     inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
                       ? "1px solid #CF222E"
-                      : inputBorrowAmountUSD < 0
+                      : inputBorrowAmountUSD < 0 || inputBorrowAmount>currentAvailableReserves
                       ? "1px solid #CF222E"
                       : isNaN(amount)
                       ? "1px solid #CF222E"
@@ -1527,7 +1554,7 @@ const BorrowModal = ({
                           ? "#CF222E"
                           : isNaN(amount)
                           ? "#CF222E"
-                          : inputBorrowAmountUSD < 0
+                          : inputBorrowAmount < 0 || inputBorrowAmount>currentAvailableReserves
                           ? "#CF222E"
                           : inputBorrowAmountUSD == 0
                           ? "white"
@@ -2090,6 +2117,7 @@ const BorrowModal = ({
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 &&
+            inputBorrowAmount<currentAvailableReserves &&
             inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (
               // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
               // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&

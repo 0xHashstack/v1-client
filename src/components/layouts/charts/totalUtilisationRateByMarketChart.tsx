@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const TotalUtilisationRateByMarketChart = () => {
@@ -32,6 +35,7 @@ const TotalUtilisationRateByMarketChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
+  const btcData=useSelector(selectHourlyBTCData);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -42,28 +46,75 @@ const TotalUtilisationRateByMarketChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        newData = [
-          {
-            name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
-          },
-        ];
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        btcData?.utilRates
+          ? (newData = [
+              {
+                name:"BTC",
+                data: btcData?.utilRates,
+              },
+              {
+                name: "ETH",
+                data: [200, 4000000000, 20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000],
+              },
+              {
+                name: "USDT",
+                data: [300, 4000000000, 30000000000, 3000000000,40000000000, 2000000000, 10000000000, 3000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000],
+              },
+              {
+                name: "USDC",
+                data: [400, 2000000000, 10000000000, 3000000000,10000000000, 2000000000,20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000],
+              },
+              {
+                name: "DAI",
+                data: [100, 4000000000, 10000000000, 1000000000,20000000000, 1000000000,15000000000, 3000000000,40000000000, 2000000000, 10000000000, 3000000000],
+              },
+            ])
+          : (newData = [
+              {
+                name: "Supply",
+                data: [20000, 40000, 38000, 42000, 39000, 44000],
+              },
+            ]);
+        btcData?.dates
+          ? (newCategories = btcData?.dates)
+          : (newCategories = [
+              new Date("2023-06-01").getTime(),
+              new Date("2023-06-02").getTime(),
+              new Date("2023-06-03").getTime(),
+              new Date("2023-06-04").getTime(),
+              new Date("2023-06-05").getTime(),
+            ]);
         break;
         case 1:
           newData = [
             {
-              name: "Series 1",
+              name: "BTC",
               data: [
-                40000, 10000, 42000, 39000, 44000, 41000, 43000, 
+                10000000000, 4000000000, 10000000000, 1000000000,20000000000,  10000000000, 4000000000
+              ],
+            },
+            {
+              name: "ETH",
+              data: [
+                30000000000, 1000000000, 20000000000, 4000000000,10000000000,  10000000000, 1000000000
+              ],
+            },
+            {
+              name: "USDT",
+              data: [
+                40000000000, 4000000000, 10000000000, 2000000000,11000000000,  50000000000, 1300000000
+              ],
+            },
+            {
+              name: "USDC",
+              data: [
+                50000000000, 2000000000, 12000000000, 2300000000,21000000000,  11000000000, 430000000
+              ],
+            },
+            {
+              name: "DAI",
+              data: [
+                17000000000, 4100000000, 12000000000, 1400000000,23000000000,  10000000000, 4000000000
               ],
             },
           ];
@@ -81,8 +132,34 @@ const TotalUtilisationRateByMarketChart = () => {
           //y data axis
           newData = [
             {
-              name: "Series 1",
-              data: [50000, 49000, 52000, 48000, 51000,  48000, 50000, 48000, 51000, 48000],
+              name: "BTC",
+              data: [
+                10000000000, 4000000000, 10000000000, 1000000000,20000000000,  10000000000, 4000000000,11000000000,  50000000000, 1300000000
+              ],
+            },
+            {
+              name: "ETH",
+              data: [
+                30000000000, 1000000000, 20000000000, 4000000000,10000000000,  10000000000, 1000000000,10000000000, 4000000000, 10000000000,
+              ],
+            },
+            {
+              name: "USDT",
+              data: [
+                40000000000, 4000000000, 10000000000, 2000000000,11000000000,  50000000000, 1300000000,  10000000000, 4000000000, 11000000000, 430000000,
+              ],
+            },
+            {
+              name: "USDC",
+              data: [
+                50000000000, 2000000000, 12000000000, 2300000000,21000000000,  11000000000, 430000000,  10000000000, 4000000000, 1300000000
+              ],
+            },
+            {
+              name: "DAI",
+              data: [
+                17000000000, 4100000000, 12000000000, 1400000000,23000000000,  10000000000, 4000000000, 11000000000, 430000000,10000000000, 4000000000
+              ],
             },
           ];
           //x axis data
@@ -102,10 +179,33 @@ const TotalUtilisationRateByMarketChart = () => {
       case 3:
         newData = [
           {
-            name: "Series 1",
+            name: "BTC",
             data: [
-              60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000,
-              60000, 62000, 70000,
+              10000000000, 4000000000, 10000000000, 1000000000,20000000000,  10000000000, 4000000000,11000000000,  50000000000, 1300000000, 4000000000,430000000
+            ],
+          },
+          {
+            name: "ETH",
+            data: [
+              30000000000, 1000000000, 20000000000, 4000000000,10000000000,  10000000000, 1000000000,10000000000, 4000000000, 10000000000,430000000,20000000000
+            ],
+          },
+          {
+            name: "USDT",
+            data: [
+              40000000000, 4000000000, 10000000000, 2000000000,11000000000,  50000000000, 1300000000,  10000000000, 4000000000, 11000000000, 430000000, 10000000000, 11000000000
+            ],
+          },
+          {
+            name: "USDC",
+            data: [
+              50000000000, 2000000000, 12000000000, 2300000000,21000000000,  11000000000, 430000000,  10000000000, 4000000000, 1300000000,10000000000, 11000000000
+            ],
+          },
+          {
+            name: "DAI",
+            data: [
+              17000000000, 4100000000, 12000000000, 1400000000,23000000000,  10000000000, 4000000000, 11000000000, 430000000,10000000000, 4000000000, 1300000000
             ],
           },
         ];
@@ -150,10 +250,6 @@ const TotalUtilisationRateByMarketChart = () => {
         },
         position: "top",
       },
-      markers: {
-        size: 2,
-        colors: ["#fff"],
-      },
       xaxis: {
         type: "datetime" as const,
         labels: {
@@ -174,7 +270,7 @@ const TotalUtilisationRateByMarketChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value / 1000 + "k";
+            return numberFormatter(value);
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -193,7 +289,7 @@ const TotalUtilisationRateByMarketChart = () => {
           },
         },
       },
-      colors: ["#2BA26F"],
+      // colors: ["#2BA26F"],
       grid: {
         borderColor: "#2B2F35",
         padding: {
@@ -237,7 +333,7 @@ const TotalUtilisationRateByMarketChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Total utilisation rate by market:</Box>
+          <Box mt="auto">Total utilisation by market:</Box>
           <Box display="flex" gap="2">
             <Button
               color="#2B2F35"
@@ -308,117 +404,10 @@ const TotalUtilisationRateByMarketChart = () => {
         borderRadius="6px"
         padding="16px 24px 40px"
       >
-        <Box display="flex" gap="4">
-          <Box
-            display="flex"
-            gap="1"
-            bg={currentSelectedCoin === 0 ? "#2c2f34" : "inherit"}
-            borderRadius="md"
-            p="2"
-            onClick={() => setCurrentSelectedCoin(0)}
-            cursor="pointer"
-          >
-            <Box p="1">
-              <Box
-                height="10px"
-                width="10px"
-                bgColor="#136B51"
-                borderRadius="100%"
-              ></Box>
-            </Box>
-            <Text color="white" fontSize="xs">
-              USDT
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            gap="1"
-            bg={currentSelectedCoin === 1 ? "#2c2f34" : "inherit"}
-            borderRadius="md"
-            p="2"
-            onClick={() => setCurrentSelectedCoin(1)}
-            cursor="pointer"
-          >
-            <Box p="1">
-              <Box
-                height="10px"
-                width="10px"
-                bgColor="#804D0F"
-                borderRadius="100%"
-              ></Box>
-            </Box>
-            <Text color="white" fontSize="xs">
-              BTC
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            gap="1"
-            bg={currentSelectedCoin === 2 ? "#2c2f34" : "inherit"}
-            borderRadius="md"
-            p="2"
-            onClick={() => setCurrentSelectedCoin(2)}
-            cursor="pointer"
-          >
-            <Box p="1">
-              <Box
-                height="10px"
-                width="10px"
-                bgColor="#1A2683"
-                borderRadius="100%"
-              ></Box>
-            </Box>
-            <Text color="white" fontSize="xs">
-              USDC
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            gap="1"
-            bg={currentSelectedCoin === 3 ? "#2c2f34" : "inherit"}
-            borderRadius="md"
-            p="2"
-            onClick={() => setCurrentSelectedCoin(3)}
-            cursor="pointer"
-          >
-            <Box p="1">
-              <Box
-                height="10px"
-                width="10px"
-                bgColor="#3B48A8"
-                borderRadius="100%"
-              ></Box>
-            </Box>
-            <Text color="white" fontSize="xs">
-              ETH
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            gap="1"
-            bg={currentSelectedCoin === 4 ? "#2c2f34" : "inherit"}
-            borderRadius="md"
-            p="2"
-            onClick={() => setCurrentSelectedCoin(4)}
-            cursor="pointer"
-          >
-            <Box p="1">
-              <Box
-                height="10px"
-                width="10px"
-                bgColor="#996B22"
-                borderRadius="100%"
-              ></Box>
-            </Box>
-            <Text color="white" fontSize="xs">
-              DAI
-            </Text>
-          </Box>
-        </Box>
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}
-          type="line"
+          type="area"
           height={350}
         />
       </Box>

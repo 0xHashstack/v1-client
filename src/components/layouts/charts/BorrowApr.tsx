@@ -218,7 +218,7 @@ const BorrowAPRChart = () => {
           },
         },
       },
-      colors: ["#2BA26F"],
+      colors: ["#04aacf"],
       grid: {
         borderColor: "#2B2F35",
         padding: {
@@ -262,7 +262,7 @@ const BorrowAPRChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Borrow APR:</Box>
+          <Box mt="auto">Average Borrow APR:</Box>
           <Box display="flex" gap="2">
             <Button
               color="#2B2F35"

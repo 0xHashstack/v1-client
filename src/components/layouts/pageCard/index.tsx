@@ -88,18 +88,33 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   }, []);
   useEffect(() => {
     const walletConnected = localStorage.getItem("lastUsedConnector");
+    const connected = localStorage.getItem("connected");
     if (walletConnected == "") {
       router.push("/");
     }
     if (!account) {
       if (walletConnected == "braavos") {
+        localStorage.setItem("connected", "braavos");
         console.log("change", account);
         disconnect();
         connect(connectors[0]);
       } else if (walletConnected == "argentX") {
+        localStorage.setItem("connected", "argentX");
         disconnect();
         connect(connectors[1]);
       } else {
+        if (connected == "braavos") {
+          localStorage.setItem("lastUsedConnector", "braavos");
+          console.log("change", account);
+          disconnect();
+          connect(connectors[0]);
+        } else if (connected == "argentX") {
+          localStorage.setItem("lastUsedConnector", "argentX");
+          disconnect();
+          connect(connectors[1]);
+        } else {
+          router.push("/v1");
+        }
         // disconnect();
         // connect(connectors[0]);
         // localStorage.setItem("lastUsedConnector", "braavos");
@@ -221,7 +236,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
       const reserves = userDepositsRedux;
       // setDataDeposit(reserves);
-      console.log("got reservers page card", reserves);
+      // console.log("got reservers page card", reserves);
       const rTokens: any = [];
       if (reserves) {
         reserves.map((reserve: any) => {
@@ -233,11 +248,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           }
         });
       }
-      console.log("rtokens", rTokens);
+      // console.log("rtokens", rTokens);
       if (rTokens.length === 0) return;
       setValidRTokens(rTokens);
-      console.log("valid rtoken", validRTokens);
-      console.log("market page -user supply", reserves);
+      // console.log("valid rtoken", validRTokens);
+      // console.log("market page -user supply", reserves);
     } catch (err) {
       console.log("Error fetching protocol reserves", err);
     }

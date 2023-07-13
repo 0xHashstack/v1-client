@@ -3,7 +3,7 @@ import { useContractWrite } from "@starknet-react/core";
 import { useState } from "react";
 
 const useRevertInteractWithL3 = () => {
-  const [revertLoanId, setRevertLoanId] = useState<string>("");
+  const [ revertLoanId, setRevertLoanId] = useState<string>("");
 
   const {
     data: dataRevertInteractWithL3,

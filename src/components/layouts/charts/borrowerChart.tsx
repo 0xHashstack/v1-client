@@ -105,23 +105,7 @@ const BorrowerChart = () => {
         ];
           break;
         //y data axis
-        newData = [
-          {
-            name: "Borrower",
-            data: [50000, 49000, 52000, 48000, 51000, 48000, 50000],
-          },
-        ];
         //x axis data
-        newCategories = [
-          new Date("2023-01-01").getTime(),
-          new Date("2023-02-01").getTime(),
-          new Date("2023-03-01").getTime(),
-          new Date("2023-04-01").getTime(),
-          new Date("2023-05-01").getTime(),
-          new Date("2023-06-01").getTime(),
-          new Date("2023-07-01").getTime(),
-        ];
-        break;
       case 3:
         newData = [
           {
@@ -163,9 +147,13 @@ const BorrowerChart = () => {
           show: false,
         },
       },
+      markers: {
+        size: 2,
+        colors: ["#fff"],
+      },
       dataLabels: {
         position: "bottom",
-        enabled: true,
+        enabled: false,
         style: {
           colors: ["#fff"],
         },
@@ -331,7 +319,7 @@ const BorrowerChart = () => {
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}
-          type="bar"
+          type="line"
           height={350}
         />
       </Box>
