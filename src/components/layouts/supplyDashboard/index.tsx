@@ -141,14 +141,14 @@ const SupplyDashboard = ({
   const avgsData: any = [];
   useEffect(() => {
     const getSupply = async () => {
-      console.log("all deposits calling started");
+      // console.log("all deposits calling started");
       try {
         const supply = userDeposits;
-        console.log("users deposits - ", userDeposits);
+        // console.log("users deposits - ", userDeposits);
 
         // const supply = await getUserDeposits(address);
 
-        console.log("supply in supply dash: ", supply);
+        // console.log("supply in supply dash: ", supply);
         if (!supply) return;
         let temp: any = [];
         let indexes: any = [2, 3, 0, 1, 4];
@@ -181,7 +181,7 @@ const SupplyDashboard = ({
               supply[i],
               reduxProtocolStats
             );
-            console.log(avg, "avg in supply dash");
+            // console.log(avg, "avg in supply dash");
             const data = {
               token: supply[i].token,
               avg: avg?.toFixed(2),
@@ -192,7 +192,7 @@ const SupplyDashboard = ({
           }
           setAvgs(avgsData);
         }
-        console.log(avgs, "avgs in supply");
+        // console.log(avgs, "avgs in supply");
 
         // dispatch(setUserDeposits(supply));
       } catch (err) {

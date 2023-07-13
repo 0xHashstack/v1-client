@@ -27,8 +27,8 @@ type LiquiditySplit = {
 };
 
 export async function getUSDValue(market: string, amount: number) {
-  console.log("amount = ", amount * Math.pow(10, tokenDecimalsMap[market]));
-  console.log("get_asset_usd_value", market, amount);
+  // console.log("amount = ", amount * Math.pow(10, tokenDecimalsMap[market]));
+  // console.log("get_asset_usd_value", market, amount);
   // amount = parseFloat(amount);
   const provider = getProvider();
   try {
@@ -43,17 +43,17 @@ export async function getUSDValue(market: string, amount: number) {
         blockIdentifier: "pending",
       }
     );
-    console.log("tokendecimal", tokenDecimalsMap[market]);
-    // console.log("res", res?.decimals?.words[0]);
-    console.log("res", uint256.uint256ToBN(res?.usd_value).toString());
+    // console.log("tokendecimal", tokenDecimalsMap[market]);
+    // // console.log("res", res?.decimals?.words[0]);
+    // console.log("res", uint256.uint256ToBN(res?.usd_value).toString());
 
-    console.log(
-      "estimated usd value: ",
-      parseAmount(
-        uint256.uint256ToBN(res?.usd_value).toString(),
-        res?.decimals?.words[0] + tokenDecimalsMap[market]
-      )
-    );
+    // console.log(
+    //   "estimated usd value: ",
+    //   parseAmount(
+    //     uint256.uint256ToBN(res?.usd_value).toString(),
+    //     res?.decimals?.words[0] + tokenDecimalsMap[market]
+    //   )
+    // );
     return parseAmount(
       uint256.uint256ToBN(res?.usd_value).toString(),
       res?.decimals?.words[0]
@@ -75,13 +75,13 @@ export async function getJediEstimateLiquiditySplit(
   tokenA: string,
   tokenB: string
 ) {
-  console.log(
-    "getJediEstimateLiquiditySplit",
-    loanMarket,
-    currentAmount,
-    tokenA,
-    tokenB
-  );
+  // console.log(
+  //   "getJediEstimateLiquiditySplit",
+  //   loanMarket,
+  //   currentAmount,
+  //   tokenA,
+  //   tokenB
+  // );
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();
@@ -100,16 +100,16 @@ export async function getJediEstimateLiquiditySplit(
         blockIdentifier: "pending",
       }
     );
-    console.log(
-      "estimated liquidity split for loanId: ",
+    // console.log(
+    //   "estimated liquidity split for loanId: ",
 
-      " is: ",
-      res,
-      " for tokenA: ",
-      getTokenFromAddress(tokenA),
-      " and tokenB: ",
-      getTokenFromAddress(tokenB)
-    );
+    //   " is: ",
+    //   res,
+    //   " for tokenA: ",
+    //   getTokenFromAddress(tokenA),
+    //   " and tokenB: ",
+    //   getTokenFromAddress(tokenB)
+    // );
     return [
       parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
       parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8),
@@ -126,13 +126,13 @@ export async function getJediEstimatedLpAmountOut(
   tokenA: string,
   tokenB: string
 ) {
-  console.log(
-    "getJediEstimatedLpAmountOut",
-    loanMarket,
-    currentAmount,
-    tokenA,
-    tokenB
-  );
+  // console.log(
+  //   "getJediEstimatedLpAmountOut",
+  //   loanMarket,
+  //   currentAmount,
+  //   tokenA,
+  //   tokenB
+  // );
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();
@@ -151,11 +151,11 @@ export async function getJediEstimatedLpAmountOut(
         blockIdentifier: "pending",
       }
     );
-    console.log(
-      "estimated lp amount out for loanId: ",
-      " is: ",
-      parseAmount(uint256.uint256ToBN(res?.lp_amount_out))
-    );
+    // console.log(
+    //   "estimated lp amount out for loanId: ",
+    //   " is: ",
+    //   parseAmount(uint256.uint256ToBN(res?.lp_amount_out))
+    // );
     return parseAmount(uint256.uint256ToBN(res?.lp_amount_out), 18);
   } catch (error) {
     console.log("error in getJediEstimatedLpAmountOut: ", error);
@@ -172,14 +172,14 @@ export async function getJediEstimatedLiqALiqBfromLp(
 ) {
   // currentMarketAmount, currentMarketAddress
   const provider = getProvider();
-  console.log("get_jedi_estimated_liqA_liqB_from_lp", [
-    [liquidity, 0],
-    pairAddress,
-  ]);
+  // console.log("get_jedi_estimated_liqA_liqB_from_lp", [
+  //   [liquidity, 0],
+  //   pairAddress,
+  // ]);
 
   try {
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
-    console.log("l3 here ", loanId, [[liquidity, 0], pairAddress]);
+    // console.log("l3 here ", loanId, [[liquidity, 0], pairAddress]);
     const res = await l3Contract.call(
       "get_jedi_estimated_liqA_liqB_from_lp",
       // [liquidity, pairAddress],
@@ -188,7 +188,7 @@ export async function getJediEstimatedLiqALiqBfromLp(
         blockIdentifier: "pending",
       }
     );
-    console.log("res jedi", res);
+    // console.log("res jedi", res);
     // console.log(
     //   loanId,
     //   "l3 here ",
@@ -227,7 +227,7 @@ export async function getSupportedPoolsJediSwap() {
     const res = await l3Contract.call("get_supported_pools_jedi_swap", [], {
       blockIdentifier: "pending",
     });
-    console.log("supported pools for Jediswap: ", res);
+    // console.log("supported pools for Jediswap: ", res);
   } catch (error) {
     console.log("error in getSupportedPoolsJediSwap: ", error);
   }
@@ -240,7 +240,7 @@ export async function getSupportedPoolsMyswap() {
     const res = await l3Contract.call("get_supported_pools_myswap", [], {
       blockIdentifier: "pending",
     });
-    console.log("supported pools for Myswap is: ", res);
+    // console.log("supported pools for Myswap is: ", res);
   } catch (error) {
     console.log("error in getSupportedPoolsMyswap: ", error);
   }

@@ -236,7 +236,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
       const reserves = userDepositsRedux;
       // setDataDeposit(reserves);
-      console.log("got reservers page card", reserves);
+      // console.log("got reservers page card", reserves);
       const rTokens: any = [];
       if (reserves) {
         reserves.map((reserve: any) => {
@@ -248,11 +248,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           }
         });
       }
-      console.log("rtokens", rTokens);
+      // console.log("rtokens", rTokens);
       if (rTokens.length === 0) return;
       setValidRTokens(rTokens);
-      console.log("valid rtoken", validRTokens);
-      console.log("market page -user supply", reserves);
+      // console.log("valid rtoken", validRTokens);
+      // console.log("market page -user supply", reserves);
     } catch (err) {
       console.log("Error fetching protocol reserves", err);
     }

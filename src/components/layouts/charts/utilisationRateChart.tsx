@@ -37,7 +37,7 @@ const UtilisationRateChart = () => {
     // Replace this with your actual implementation
     let newData: any = [];
     let newCategories: any = [];
-    console.log(btcData,"util rates")
+    // console.log(btcData,"util rates")
 
     switch (liquidityProviderChartPeriod) {
       case 0:
