@@ -173,6 +173,8 @@ const SupplyDashboard = ({
         //     temp.push(currSupply);
         // });
         setSupplies(temp);
+        // console.log(supplies,"supply dash");
+        // console.log(reduxProtocolStats,"supply stats")
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
             const avg = await effectiveAprDeposit(
@@ -550,10 +552,10 @@ const SupplyDashboard = ({
                             endColor="#2B2F35"
                             borderRadius="6px"
                           />: */}
-                        {Number(
+                        {
                           avgs?.find((item: any) => item.token == supply?.token)
                             ?.avg
-                        )}{" "}
+                        }{" "}
                         {avgs ?"%":""}{/* {supply?.token} */}
                       </Text>
                     </Td>
