@@ -2337,6 +2337,7 @@ const YourBorrowModal = ({
 
   useEffect(() => {
     setinputCollateralAmount(0);
+    setSliderValue2(0);
   }, [currentTokenSelected]);
 
   useEffect(() => {
@@ -4484,13 +4485,22 @@ const YourBorrowModal = ({
                         width="100%"
                         color="white"
                         border={`${
-                          inputCollateralAmount > walletBalance2
+                          inputCollateralAmount >(currentTokenSelected=="Native Token" ? walletBalance2 : userDeposit?.find(
+                            (item: any) =>
+                              item.rToken ==
+                              collateralBalance.substring(spaceIndex + 1)
+                          )?.rTokenFreeParsed)
                             ? "1px solid #CF222E"
                             : inputCollateralAmount < 0
                             ? "1px solid #CF222E"
                             : inputCollateralAmount > 0 &&
                               inputAmount <= walletBalance2
-                            ? "1px solid #1A7F37"
+                            ? "1px solid #1A7F37" :
+                            inputCollateralAmount> userDeposit?.find(
+                              (item: any) =>
+                                item.rToken ==
+                                collateralBalance.substring(spaceIndex + 1)
+                            )?.rTokenFreeParsed ?"1px solid #CF22E"
                             : "1px solid #2B2F35 "
                         }`}
                         borderRadius="6px"
@@ -4502,7 +4512,11 @@ const YourBorrowModal = ({
                           border="0px"
                           min={0}
                           color={`${
-                            inputCollateralAmount > walletBalance2
+                            inputCollateralAmount >(currentTokenSelected=="Native Token" ? walletBalance2 : userDeposit?.find(
+                              (item: any) =>
+                                item.rToken ==
+                                collateralBalance.substring(spaceIndex + 1)
+                            )?.rTokenFreeParsed)
                               ? "#CF222E"
                               : inputCollateralAmount < 0
                               ? "#CF222E"
@@ -4579,23 +4593,33 @@ const YourBorrowModal = ({
                           MAX
                         </Button>
                       </Box>
-                      {inputCollateralAmount > walletBalance2 ||
+                      { inputCollateralAmount >(currentTokenSelected=="Native Token" ? walletBalance2 : userDeposit?.find(
+                            (item: any) =>
+                              item.rToken ==
+                              collateralBalance.substring(spaceIndex + 1)
+                          )?.rTokenFreeParsed) ||
                       inputCollateralAmount < 0 ? (
                         <Text
-                          display="flex"
-                          justifyContent="space-between"
-                          color="#E6EDF3"
-                          fontSize="12px"
-                          fontWeight="500"
-                          fontStyle="normal"
-                          fontFamily="Inter"
+                        display="flex"
+                        justifyContent="space-between"
+                        color="#E6EDF3"
+                        mt="0.4rem"
+                        fontSize="12px"
+                        fontWeight="500"
+                        fontStyle="normal"
+                        fontFamily="Inter"
+                        whiteSpace="nowrap"
                         >
                           <Text color="#CF222E" display="flex">
                             <Text mt="0.2rem">
                               <SmallErrorIcon />{" "}
                             </Text>
                             <Text ml="0.3rem">
-                              {inputCollateralAmount > walletBalance2 ||
+                              { inputCollateralAmount >(currentTokenSelected=="Native Token" ? walletBalance2 : userDeposit?.find(
+                            (item: any) =>
+                              item.rToken ==
+                              collateralBalance.substring(spaceIndex + 1)
+                          )?.rTokenFreeParsed) ||
                               inputCollateralAmount >
                                 userDeposit?.find(
                                   (item: any) =>
