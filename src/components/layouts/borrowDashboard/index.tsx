@@ -328,6 +328,7 @@ const BorrowDashboard = ({
   //   } catch (err) {}
   // }, []);
 
+  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<Number>(2);
   const fetchProtocolStats = async () => {
     try {
       console.log("fetchprotocolstats", stats); //23014
@@ -1031,6 +1032,9 @@ const BorrowDashboard = ({
                 ml="0.3rem"
                 lineHeight="24px"
                 backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
+                borrowAPRs={borrowAPRs}
+                currentBorrowAPR={currentBorrowAPR}
+                setCurrentBorrowAPR={setCurrentBorrowAPR}
               />
             </Box>
             {/* <Box

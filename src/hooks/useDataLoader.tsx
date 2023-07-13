@@ -139,9 +139,9 @@ const useDataLoader = () => {
         const response = await axios.get(
           `${metrics_api}/api/metrics/tvl/daily/DAI`
         );
-        const responseApr=await axios.get(
+        const responseApr = await axios.get(
           `${metrics_api}/api/metrics/apm_market/daily/DAI`
-        )
+        );
         // console.log(response, "response data");
         if (!response) {
           return;

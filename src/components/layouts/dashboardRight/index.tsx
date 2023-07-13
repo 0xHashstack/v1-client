@@ -337,6 +337,7 @@ const DashboardRight = ({
                       coin={coin}
                       borrowAPRs={borrowAPRs}
                       currentBorrowAPR={currentBorrowAPR}
+                      setCurrentBorrowAPR={setCurrentBorrowAPR}
                       validRTokens={validRTokens}
                       currentBorrowMarketCoin={currentBorrowMarketCoin}
                       protocolStats={protocolStats}

@@ -227,7 +227,10 @@ const SupplyDashboard = ({
   //   }
   // },[userDeposits])
   const [protocolStats, setProtocolStats]: any = useState([]);
+  const [supplyAPRs, setSupplyAPRs]: any = useState([]);
   const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>();
+  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<Number>(2);
+
   useEffect(() => {
     const getMarketData = async () => {
       try {
@@ -246,6 +249,13 @@ const SupplyDashboard = ({
           stats?.[0],
           stats?.[1],
           stats?.[4],
+        ]);
+        setSupplyAPRs([
+          stats?.[2].supplyRate,
+          stats?.[3].supplyRate,
+          stats?.[0].supplyRate,
+          stats?.[1].supplyRate,
+          stats?.[4].supplyRate,
         ]);
       } catch (error) {
         console.log("error on getting protocol stats");
@@ -449,7 +459,8 @@ const SupplyDashboard = ({
                           >
                             {numberFormatter(
                               supply?.rTokenAmountParsed +
-                                supply?.rTokenStakedParsed 
+                                supply?.rTokenStakedParsed
+                              // supply?.rTokenLockedParsed
                             )}
                           </Text>
                         </VStack>
@@ -486,7 +497,7 @@ const SupplyDashboard = ({
                               if (stat?.token === supply?.rToken?.slice(1))
                                 return stat.supplyRate;
                             })?.exchangeRateRtokenToUnderlying
-                          )?.toFixed(3) + " %"
+                          )?.toFixed(3)
                         )}
                       </Text>
                     </Td>
@@ -552,11 +563,19 @@ const SupplyDashboard = ({
                             endColor="#2B2F35"
                             borderRadius="6px"
                           />: */}
-                        {
+                        {avgs && avgs?.length > 0 ? (
                           avgs?.find((item: any) => item.token == supply?.token)
-                            ?.avg
-                        }{" "}
-                        {avgs ?"%":""}{/* {supply?.token} */}
+                            ?.avg + "%"
+                        ) : (
+                          <Skeleton
+                            width="4rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />
+                        )}
+                        {/* {supply?.token} */}
                       </Text>
                     </Td>
                     <Td
@@ -817,6 +836,9 @@ const SupplyDashboard = ({
                 ml="0.3rem"
                 lineHeight="24px"
                 backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
+                supplyAPRs={supplyAPRs}
+                currentSupplyAPR={currentSupplyAPR}
+                setCurrentSupplyAPR={setCurrentSupplyAPR}
               />
             </Box>
             {/* <Box
