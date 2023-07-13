@@ -94,7 +94,7 @@ export async function getProtocolStats() {
     for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
       const token = contractsEnv.TOKENS[i];
 
-      console.log("get_protocol_stat for token: ", token.name);
+      // console.log("get_protocol_stat for token: ", token.name);
       const res = await metricsContract.call(
         "get_protocol_stat",
         [token.address],
@@ -102,11 +102,11 @@ export async function getProtocolStats() {
           blockIdentifier: "pending",
         }
       );
-      console.log(
-        "get_protocol_stat finished for token: ",
-        token.name,
-        res?.market_info
-      );
+      // console.log(
+      //   "get_protocol_stat finished for token: ",
+      //   token.name,
+      //   res?.market_info
+      // );
       const market_info = parseProtocolStat(res?.market_info);
       marketStats.push(market_info);
     }

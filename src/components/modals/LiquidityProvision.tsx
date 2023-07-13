@@ -1061,7 +1061,7 @@ const LiquidityProvisionModal = ({
                           />
                         </Box>
                       ) : (
-                        "$" + numberFormatter(currentLPTokenAmount)
+                        numberFormatter(currentLPTokenAmount)
                       )}
                       {/* $ 10.91 */}
                     </Text>

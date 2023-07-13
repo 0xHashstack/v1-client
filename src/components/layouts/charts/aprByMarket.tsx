@@ -63,7 +63,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   // },[])
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
-  console.log(btcData, "btc");
+  // console.log(btcData, "btc")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -685,7 +685,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         borderColor: "#2B2F35",
       },
       legend: {
-        show: false, // Hide the series buttons when only one series is present
+        show: true, // Hide the series buttons when only one series is present
       },
       // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
       color: splineColor,

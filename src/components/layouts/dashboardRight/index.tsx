@@ -80,7 +80,7 @@ const DashboardRight = ({
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
 
   useEffect(() => {
-    console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
+    // console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
   }, [currentBorrowMarketCoin]);
 
   return (

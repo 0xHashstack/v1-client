@@ -928,40 +928,38 @@ const StakeUnstakeModal = ({
                         border="1px solid #2B2F35"
                         mt="1.5rem"
                       >
-                        {!isValid(currentSelectedStakeCoin) && (
-                          <Box
-                            // display="flex"
-                            // justifyContent="left"
-                            w="100%"
-                            pb="4"
-                          >
-                            <Box
-                              display="flex"
-                              bg="#FFF8C5"
-                              color="black"
-                              fontSize="xs"
-                              p="4"
-                              fontStyle="normal"
-                              fontWeight="500"
-                              borderRadius="6px"
-                              // textAlign="center"
-                            >
-                              <Box pr="3" my="auto" cursor="pointer">
-                                <WarningIcon />
-                              </Box>
-                              Selected market is not supplied. to stake in the
-                              below selected market supply the asset below
-                              {/* <Box
-                                py="1"
-                                pl="4"
-                                cursor="pointer"
-                                // onClick={handleClick}
-                              >
-                                <TableClose />
-                              </Box> */}
-                            </Box>
-                          </Box>
-                        )}
+                        {/* {!isValid(currentSelectedStakeCoin) && (
+                          // <Box
+                          //   // display="flex"
+                          //   // justifyContent="left"
+                          //   w="100%"
+                          //   pb="4"
+                          // >
+                          //   <Box
+                          //     display="flex"
+                          //     bg="#FFF8C5"
+                          //     color="black"
+                          //     fontSize="xs"
+                          //     p="4"
+                          //     fontStyle="normal"
+                          //     fontWeight="500"
+                          //     borderRadius="6px"
+                          //     // textAlign="center"
+                          //   >
+                          //     <Box pr="3" my="auto" cursor="pointer">
+                          //       <WarningIcon />
+                          //     </Box>
+                          //     Selected market is not supplied. to stake in the
+                          //     below selected market supply the asset below
+                          //     {/* <Box
+                          //       py="1"
+                          //       pl="4"
+                          //       cursor="pointer"
+                          //       // onClick={handleClick}
+                          //     >
+                          //       <TableClose />
+                          //     </Box> */}
+
                         <Text
                           color="#8B949E"
                           display="flex"

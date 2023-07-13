@@ -255,16 +255,16 @@ const BorrowDashboard = ({
           Borrows[i]?.currentLoanMarketAddress,
           Borrows[i]?.loanMarket
         );
-        console.log(
-          getTokenFromAddress(processAddress(data?.tokenAAddress)),
-          "all split amount - ",
-          // parseInt(Borrows[i]?.currentLoanAmount),
-          Borrows[i]?.currentLoanMarketAddress,
-          Borrows[i]?.loanId,
+        // console.log(
+        //   getTokenFromAddress(processAddress(data?.tokenAAddress)),
+        //   "all split amount - ",
+        //   // parseInt(Borrows[i]?.currentLoanAmount),
+        //   Borrows[i]?.currentLoanMarketAddress,
+        //   Borrows[i]?.loanId,
 
-          " res -",
-          data
-        );
+        //   " res -",
+        //   data
+        // );
 
         if (data) {
           temp.push({
@@ -282,7 +282,7 @@ const BorrowDashboard = ({
         temp.push("empty");
       }
     }
-    console.log("all splits", temp);
+    // console.log("all splits", temp);
     setAllSplit(temp);
     // const currentSplit = await getJediEstimatedLiqALiqBfromLp(
     //   liquidity,
@@ -304,7 +304,7 @@ const BorrowDashboard = ({
   }, [Borrows]);
 
   useEffect(() => {
-    console.log("Borrows here - ", Borrows);
+    // console.log("Borrows here - ", Borrows);
     if (Borrows || Borrows?.length > 0) {
       setLoading(false);
     }
@@ -331,7 +331,7 @@ const BorrowDashboard = ({
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<Number>(2);
   const fetchProtocolStats = async () => {
     try {
-      console.log("fetchprotocolstats", stats); //23014
+      // console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
         stats?.[2].borrowRate,
         stats?.[3].borrowRate,

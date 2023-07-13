@@ -684,6 +684,7 @@ const BorrowModal = ({
   };
 
   const handleBorrowChange = (newValue: any) => {
+    if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / currentAvailableReserves;
     percentage = Math.max(0, percentage);
     // console.log(percentage,"percent")
@@ -730,6 +731,7 @@ const BorrowModal = ({
     setBorrowTransHash("");
     setInputCollateralAmountUSD(0);
     setInputBorrowAmountUSD(0);
+    setinputBorrowAmount(0);
     // setDepositTransHash("")
   };
   useEffect(() => {
@@ -1520,7 +1522,7 @@ const BorrowModal = ({
                     inputCollateralAmountUSD &&
                     inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
                       ? "1px solid #CF222E"
-                      : inputBorrowAmountUSD < 0
+                      : inputBorrowAmountUSD < 0 || inputBorrowAmount>currentAvailableReserves
                       ? "1px solid #CF222E"
                       : isNaN(amount)
                       ? "1px solid #CF222E"
@@ -1552,7 +1554,7 @@ const BorrowModal = ({
                           ? "#CF222E"
                           : isNaN(amount)
                           ? "#CF222E"
-                          : inputBorrowAmountUSD < 0
+                          : inputBorrowAmount < 0 || inputBorrowAmount>currentAvailableReserves
                           ? "#CF222E"
                           : inputBorrowAmountUSD == 0
                           ? "white"
@@ -2115,6 +2117,7 @@ const BorrowModal = ({
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 &&
+            inputBorrowAmount<currentAvailableReserves &&
             inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (
               // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
               // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&
