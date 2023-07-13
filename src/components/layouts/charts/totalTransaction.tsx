@@ -198,6 +198,10 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
           return numberFormatter(val); // Display the data value as the label
         },
       },
+      markers: {
+        size: 2,
+        colors: ["#fff"],
+      },
       xaxis: {
         type: "datetime" as const, // Set x-axis type to datetime
         labels: {
@@ -343,7 +347,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
         <ApexCharts
           options={options}
           series={splineChartData.series}
-          type="area"
+          type="line"
           height={350}
         />
       </Box>

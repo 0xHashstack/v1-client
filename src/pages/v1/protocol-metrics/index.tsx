@@ -85,13 +85,10 @@ const ProtocolMetrics = () => {
           <Box mb="4rem">
             <TotalValueLockedMetrics />
           </Box>
-          <MetricsTabs
-            currentMetric={currentMetric}
-            setCurrentMetric={setCurrentMetric}
-          />
-          <Box mb="4rem" width="100%">
-            {getMetric()}
-          </Box>
+          <SupplyMetrics/>
+          <BorrowMetrics/>
+          <MarketInformation/>
+          <TotalCommunityActivity/>
         </Box>
       </Box>
     </PageCard>
