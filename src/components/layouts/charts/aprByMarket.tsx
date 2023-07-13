@@ -672,7 +672,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         borderColor: "#2B2F35",
       },
       legend: {
-        show: false, // Hide the series buttons when only one series is present
+        show: true, // Hide the series buttons when only one series is present
       },
       // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
       color: splineColor,
