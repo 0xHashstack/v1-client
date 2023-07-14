@@ -93,6 +93,8 @@ const LiquidityProvisionModal = ({
   setCurrentSwap,
   currentLoanAmount,
   currentLoanMarket,
+  setCurrentLoanAmount,
+  setCurrentLoanMarket,
   borrowAPRs,
 }: any) => {
   // console.log("liquidity found map: ", borrowIDCoinMap);
@@ -149,6 +151,9 @@ const LiquidityProvisionModal = ({
   // const avgs=useSelector(selectAprAndHealthFactor)
   const avgs = useSelector(selectHealthFactor);
 
+  useEffect(() => {
+    console.log("liquidity user loans", userLoans);
+  }, [userLoans]);
   // console.log(userLoans)
   // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
   useEffect(() => {
@@ -162,7 +167,30 @@ const LiquidityProvisionModal = ({
   }, [currentId]);
   useEffect(() => {
     setLiquidityLoanId(
-      currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+      currentBorrowId?.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+    );
+    setCurrentPool("Select a pool");
+    setCurrentLoanAmount(
+      userLoans?.find(
+        (loan: any) =>
+          loan?.loanId ==
+          currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+      )?.currentLoanAmount
+    );
+    setCurrentLoanMarket(
+      userLoans?.find(
+        (loan: any) =>
+          loan?.loanId ==
+          currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+      )?.currentLoanMarket
+    );
+    console.log(
+      "loanAmount",
+      currentLoanAmount,
+      ", loanMarket",
+      currentLoanMarket,
+      " currentBorrowId",
+      currentBorrowId
     );
   }, [currentBorrowId]);
   useEffect(() => {
@@ -357,7 +385,7 @@ const LiquidityProvisionModal = ({
         console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
         dispatch(setTransactionStatus("success"));
-      } else if (currentSwap == "Myswap") {
+      } else if (currentSwap == "MySwap") {
         const liquidity = await writeAsyncmySwap_addLiquidity();
         if (liquidity?.transaction_hash) {
           console.log("toast here");
@@ -497,6 +525,10 @@ const LiquidityProvisionModal = ({
   const [currentSplit, setCurrentSplit] = useState<
     Number[] | undefined | null
   >();
+
+  useEffect(() => {
+    console.log("liquidity borrow coin", currentBorrowMarketCoin);
+  }, [currentBorrowMarketCoin]);
 
   useEffect(() => {
     console.log(
@@ -1261,7 +1293,8 @@ const LiquidityProvisionModal = ({
                   >
                     {!borrowAPRs ||
                     borrowAPRs.length === 0 ||
-                    !getBorrowAPR(currentBorrowMarketCoin) ? (
+                    (!getBorrowAPR(currentBorrowMarketCoin) &&
+                      !getBorrowAPR(currentBorrowMarketCoin.slice(1))) ? (
                       <Box pt="2px">
                         <Skeleton
                           width="2.3rem"
@@ -1271,8 +1304,10 @@ const LiquidityProvisionModal = ({
                           borderRadius="6px"
                         />
                       </Box>
+                    ) : getBorrowAPR(currentBorrowMarketCoin) ? (
+                      getBorrowAPR(currentBorrowMarketCoin)
                     ) : (
-                      getBorrowAPR(currentBorrowMarketCoin) + "%"
+                      getBorrowAPR(currentBorrowMarketCoin.slice(1)) + "%"
                     )}
                     {/* 5.56% */}
                   </Text>

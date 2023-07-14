@@ -57,6 +57,7 @@ const YourSupply = () => {
   // }, []);
   const totalSupply = useSelector(selectYourSupply);
   const netAPR = useSelector(selectNetAPR);
+
   return (
     <PageCard pt="6.5rem">
       <HStack
