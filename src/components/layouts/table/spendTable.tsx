@@ -186,6 +186,12 @@ const SpendTable = () => {
       setBorrowIDCoinMap(temp1);
       setBorrowIds(temp2);
       setCoins(temp3);
+      if (
+        userLoans?.length <= (currentPagination - 1) * 3 &&
+        currentPagination > 1
+      ) {
+        setCurrentPagination(currentPagination - 1);
+      }
       // console.log("faisal coin mapping", borrowIDCoinMap);
     }
   }, [userLoans]);
