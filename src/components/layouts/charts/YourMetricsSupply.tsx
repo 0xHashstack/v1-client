@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   const [supplyData, setSupplyData] = useState(null);
@@ -114,12 +115,11 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
         },
       ],
     },
-    colors:splineColor
   };
 
   const chartSeries = [
     {
-      name: "wBTC",
+      name: "Supply",
       data: supplyData ? supplyData : [44000, 55000, 41000, 17000, 15000],
     },
   ];
