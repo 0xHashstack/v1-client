@@ -507,7 +507,7 @@ const SwapModal = ({
                   hasArrow
                   placement="right"
                   boxShadow="dark-lg"
-                  label="Select supply market"
+                  label="select market refers to the crypto currency tokens selected to swap on the protocol"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -620,7 +620,7 @@ const SwapModal = ({
                   hasArrow
                   placement="right"
                   boxShadow="dark-lg"
-                  label="Borrow ID"
+                  label="Borrow ID refers to unique identification number assigned to a specific loan within the protocol"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -745,7 +745,7 @@ const SwapModal = ({
                   hasArrow
                   placement="right"
                   boxShadow="dark-lg"
-                  label="Borrow market"
+                  label="Borrowed amount refers to the unit of crypto coins you had borrowed from the protocol"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -812,7 +812,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Daap"
+                    label="Refers to the app where loan should be spent."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -954,7 +954,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Fees"
+                    label="refer to the charges or costs incurred when completing a transactions"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -989,7 +989,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Estimated gas fees for transaction"
+                    label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1024,7 +1024,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Borrow apr"
+                    label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1074,7 +1074,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Effective apr"
+                    label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1124,7 +1124,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Health factor"
+                    label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}

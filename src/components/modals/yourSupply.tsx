@@ -774,7 +774,7 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Select market"
+                            label="supply market refers to the cryptocurrency tokens selected to deposit on the Hashstack protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -935,7 +935,7 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Enter amount"
+                            label="Amount refers to the unit of crypto coins you are willing to supply"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -1240,7 +1240,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Fees"
+                              label="refer to the charges or costs incurred when completing a transactions"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1275,7 +1275,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimated gas fees for transaction"
+                              label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1309,7 +1309,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Supply apr"
+                              label="Supply APR (Annual Percentage Rate) refers to the annualized interest rate earned on supplied funds."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1482,7 +1482,7 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Supply market"
+                            label="supply market refers to the crypto currency tokens selected to withdraw from the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -1627,7 +1627,7 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Enter withdraw amount"
+                            label="Withdraw Amount refers to the unit of crypto coins you are willing to withdraw"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -1901,7 +1901,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimated supply unlocked"
+                              label="estimate of the amount of your deposit that will become unlocked and available for withdrawal"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -2046,7 +2046,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Fees"
+                              label="refer to the charges or costs incurred when completing a transactions"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -2082,7 +2082,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimated gas fees for transaction"
+                              label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
