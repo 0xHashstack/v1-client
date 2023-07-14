@@ -1053,7 +1053,9 @@ const StakeUnstakeModal = ({
                                     onClick={() => {
                                       setCurrentSelectedStakeCoin(coin);
                                       setRToken(coin.slice(1));
-                                      setAsset(coin);
+                                      setAsset(
+                                        coin[0] == "r" ? coin?.slice(1) : coin
+                                      );
                                       setWalletBalance(
                                         walletBalances[coin?.slice(1)]
                                           ?.statusBalanceOf === "success"
