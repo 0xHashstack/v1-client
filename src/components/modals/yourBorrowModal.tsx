@@ -1099,7 +1099,7 @@ const YourBorrowModal = ({
                     hasArrow
                     placement="right-start"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Estimated LP tokens recieved"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1152,7 +1152,7 @@ const YourBorrowModal = ({
                       hasArrow
                       placement="right-start"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Liquidity split for selected pools"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1237,7 +1237,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Fees"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1272,7 +1272,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Borrow apr"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1321,7 +1321,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Estimated gas fees for transaction"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1356,7 +1356,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Effective apr"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1406,7 +1406,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Health factor"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1470,7 +1470,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Current borrow market"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1575,7 +1575,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Fees"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1610,7 +1610,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Estimated gas fees for transaction"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1654,7 +1654,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Dapp"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1684,7 +1684,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Borrow amount"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1759,7 +1759,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Fees"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1784,7 +1784,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Estimated gas fees for transactions"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1876,7 +1876,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Fees"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1911,7 +1911,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Estimated gas fees for transaction"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1960,7 +1960,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Borrowed market"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1995,7 +1995,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="rTokens unlocked"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -2065,7 +2065,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Fees"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -2100,7 +2100,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Estimated gas fees for transaction"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -2591,7 +2591,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Action"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -2715,7 +2715,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Enter Borrow ID"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -2866,7 +2866,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="aBorrow market"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -2987,7 +2987,7 @@ const YourBorrowModal = ({
                                 hasArrow
                                 placement="right-start"
                                 boxShadow="dark-lg"
-                                label="all the assets to the market"
+                                label="Repay amount"
                                 bg="#24292F"
                                 fontSize={"smaller"}
                                 fontWeight={"thin"}
@@ -3261,7 +3261,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Purpose"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -3339,7 +3339,7 @@ const YourBorrowModal = ({
                               hasArrow
                               placement="right-start"
                               boxShadow="dark-lg"
-                              label="all the assets to the market"
+                              label="Dapp"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -3471,7 +3471,7 @@ const YourBorrowModal = ({
                               hasArrow
                               placement="right-start"
                               boxShadow="dark-lg"
-                              label="all the assets to the market"
+                              label="Select pool"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -4002,7 +4002,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Borrow ID"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -4128,7 +4128,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Select borrow market"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -4255,7 +4255,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Select token"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -4476,7 +4476,7 @@ const YourBorrowModal = ({
                           hasArrow
                           placement="bottom-start"
                           boxShadow="dark-lg"
-                          label="all the assets to the market"
+                          label="Collateral amount"
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
@@ -4890,7 +4890,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label=" Actual debt:               12345&#10;accured intrest:        12345"
+                            label=" Borrow amount"
                             bg="#24292F"
                             fontSize="12px"
                             fontWeight="500"
@@ -4995,7 +4995,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Fees"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -5030,7 +5030,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Borrow apr"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -5082,7 +5082,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Estimated gas fees for transaction"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -5117,7 +5117,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Effective apr"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -5169,7 +5169,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Health factor"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}

@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
 import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const TotalUtilisationRateByMarketChart = () => {
@@ -21,6 +22,7 @@ const TotalUtilisationRateByMarketChart = () => {
     },
   ]);
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
+  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"]
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -54,36 +56,50 @@ const TotalUtilisationRateByMarketChart = () => {
               },
               {
                 name: "ETH",
-                data: [200, 4000000000, 20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000],
+                data: [200, 400, 2000, 400,2000, 400,2000, 400,2000, 400,2000, 400],
               },
               {
                 name: "USDT",
-                data: [300, 4000000000, 30000000000, 3000000000,40000000000, 2000000000, 10000000000, 3000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000],
+                data: [300, 400, 3000, 300,4000, 200, 1000, 300, 400,2000, 400,200],
               },
               {
                 name: "USDC",
-                data: [400, 2000000000, 10000000000, 3000000000,10000000000, 2000000000,20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000],
+                data: [400, 200, 1000, 300,1000, 200,2000, 400,2000, 400,200, 400],
               },
               {
                 name: "DAI",
-                data: [100, 4000000000, 10000000000, 1000000000,20000000000, 1000000000,15000000000, 3000000000,40000000000, 2000000000, 10000000000, 3000000000],
+                data: [100, 400, 1000, 100,2000, 100,1500, 300,4000, 200, 1000, 300],
               },
             ])
           : (newData = [
               {
-                name: "Supply",
-                data: [20000, 40000, 38000, 42000, 39000, 44000],
+                name: "BTC",
+                data: [200, 400, 2000, 400,2000, 400,2000, 400,2000, 400,2000, 400],
+              },
+              {
+                name: "ETH",
+                data: [200, 400, 2000, 400,2000, 400,2000, 400,2000, 400,2000, 400],
+              },
+              {
+                name: "USDT",
+                data: [300, 400, 3000, 300,4000, 200, 1000, 300, 400,2000, 400,200],
+              },
+              {
+                name: "USDC",
+                data: [400, 200, 1000, 300,1000, 200,2000, 400,2000, 400,200, 400],
+              },
+              {
+                name: "DAI",
+                data: [100, 400, 1000, 100,2000, 100,1500, 300,4000, 200, 1000, 300],
               },
             ]);
         btcData?.dates
           ? (newCategories = btcData?.dates)
-          : (newCategories = [
-              new Date("2023-06-01").getTime(),
-              new Date("2023-06-02").getTime(),
-              new Date("2023-06-03").getTime(),
-              new Date("2023-06-04").getTime(),
-              new Date("2023-06-05").getTime(),
-            ]);
+          : (newCategories=[
+            1689152545000, 1689156145000, 1689159745000, 1689163345000,
+            1689166945000, 1689170545000, 1689174145000, 1689177745000,
+            1689181345000, 1689184945000, 1689188545000, 1689192145000,
+          ]);
         break;
         case 1:
           newData = [
@@ -296,6 +312,9 @@ const TotalUtilisationRateByMarketChart = () => {
           bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
         },
       },
+      fill:{
+        type: 'solid',
+      },
       annotations: {
         xaxis: [
           {
@@ -308,7 +327,15 @@ const TotalUtilisationRateByMarketChart = () => {
       },
     },
   };
-
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    // stroke: {
+    //   ...splineChartData.options.stroke,
+    //   curve: "smooth",
+    // },
+    colors: splineColor
+    // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
+  };
   return (
     <Box display="flex" flexDirection="column" gap="8px" width="100%">
       <Box
@@ -403,12 +430,13 @@ const TotalUtilisationRateByMarketChart = () => {
         border="1px solid #2B2F35"
         borderRadius="6px"
         padding="16px 24px 40px"
+        height="486px"
       >
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
           type="area"
-          height={350}
+          height={400}
         />
       </Box>
     </Box>

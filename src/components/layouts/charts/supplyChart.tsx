@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dynamic from "next/dynamic";
+import { ApexOptions } from "apexcharts";
 
 const SupplyChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -31,6 +32,7 @@ const SupplyChart = () => {
     fetchData();
   }, [liquidityProviderChartPeriod]);
   const btcData = useSelector(selectHourlyBTCData);
+  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"]
   console.log(btcData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
@@ -66,20 +68,35 @@ const SupplyChart = () => {
               },
             ])
           : (newData = [
-              {
-                name: "Supply",
-                data: [20000, 40000, 38000, 42000, 39000, 44000],
-              },
+            {
+              name: "BTC",
+              data: [10000000000, 4000000000, 10000000000, 1000000000,20000000000, 1000000000,15000000000, 3000000000,40000000000, 2000000000, 10000000000, 3000000000],
+            },
+            {
+              
+              name: "ETH",
+              data: [20000000000, 4000000000, 20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000],
+            },
+            {
+              name: "USDT",
+              data: [30000000000, 4000000000, 30000000000, 3000000000,40000000000, 2000000000, 10000000000, 3000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000],
+            },
+            {
+              name: "USDC",
+              data: [40000000000, 2000000000, 10000000000, 3000000000,10000000000, 2000000000,20000000000, 4000000000,20000000000, 4000000000,20000000000, 4000000000],
+            },
+            {
+              name: "DAI",
+              data: [10000000000, 4000000000, 10000000000, 1000000000,20000000000, 1000000000,15000000000, 3000000000,40000000000, 2000000000, 10000000000, 3000000000],
+            },
             ]);
         btcData?.dates
           ? (newCategories = btcData?.dates)
-          : (newCategories = [
-              new Date("2023-06-01").getTime(),
-              new Date("2023-06-02").getTime(),
-              new Date("2023-06-03").getTime(),
-              new Date("2023-06-04").getTime(),
-              new Date("2023-06-05").getTime(),
-            ]);
+          : (          newCategories = [
+            1689152545000, 1689156145000, 1689159745000, 1689163345000,
+            1689166945000, 1689170545000, 1689174145000, 1689177745000,
+            1689181345000, 1689184945000, 1689188545000, 1689192145000,
+          ]);
         break;
         case 1:
           newData = [
@@ -229,7 +246,10 @@ const SupplyChart = () => {
   };
 
   const splineChartData = {
-    series: chartData,
+    series: chartData.map((data) => ({
+      ...data,
+      fillOpacity: 1, // Set fillOpacity to 1 for each series data
+    })),
     options: {
       chart: {
         toolbar: {
@@ -246,6 +266,7 @@ const SupplyChart = () => {
           return numberFormatter(val); // Display the data value as the label
         },
       },
+      
       xaxis: {
         type: "datetime" as const, // Set x-axis type to datetime
         labels: {
@@ -276,6 +297,11 @@ const SupplyChart = () => {
         },
         min: 0,
       },
+      // stroke: {
+      //   curve: "smooth",
+      //   color: splineColor,
+      //   opacity: 1,
+      // },
       plotOptions: {
         bar: {
           opacity: 1,
@@ -285,7 +311,12 @@ const SupplyChart = () => {
           },
         },
       },
-color: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
+      fill:{
+        type: 'solid',
+      },
+// color: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
+color:splineColor,
+
       grid: {
         borderColor: "#2B2F35",
         padding: {
@@ -303,6 +334,15 @@ color: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
         ],
       },
     },
+  };
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    // stroke: {
+    //   ...splineChartData.options.stroke,
+    //   curve: "smooth",
+    // },
+    colors: splineColor
+    // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
   };
 
   return (
@@ -401,7 +441,7 @@ color: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
         padding="16px 24px 40px"
       >
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
           type="area"
           height={350}

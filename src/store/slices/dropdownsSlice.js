@@ -43,12 +43,15 @@ const initialState = {
     transferDepositProtocolDropdown: false,
     transferDepostMarketDropdown: false,
     yourBorrowTokenDropdown: false,
+    coinSelectedExchangeRateDToken: false,
+    coinSelectedAPRByMarket: false,
+    coinSelectedExchangeRateRToken: false,
   },
   metricsDropdowns: {
     yourMetricsMarketDropdown: false,
-    coinSelectedExchangeRateRToken: false,
-    coinSelectedExchangeRateDToken: false,
-    coinSelectedAPRByMarket: false,
+
+    
+
   },
 };
 
@@ -94,7 +97,7 @@ export const dropdownSlice = createSlice({
           dropdowns[key] = false;
         }
       });
-      // state.currentDropdown = dropdownName;
+      state.currentDropdown = dropdownName;
       // alert(dropdownName);
       state.metricsDropdowns = dropdowns;
     },

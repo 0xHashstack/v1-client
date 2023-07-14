@@ -5,6 +5,8 @@ import dynamic from 'next/dynamic';
 import { useSelector } from "react-redux";
 import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { number } from "starknet";
+import { kMaxLength } from "buffer";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const UtilisationRateChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -49,19 +51,15 @@ const UtilisationRateChart = () => {
         ]:newData = [
           {
             name: "Utlization Rate",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: [300, 400, 350, 500, 490, 600, 800, 400, 350, 500, 490, 600, 800],
           },
         ];
         btcData?.dates ?
         newCategories = btcData?.dates
         :newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
+          1689152545000, 1689156145000, 1689159745000, 1689163345000,
+          1689166945000, 1689170545000, 1689174145000, 1689177745000,
+          1689181345000, 1689184945000, 1689188545000, 1689192145000,
         ];
         break;
         case 1:
@@ -69,7 +67,7 @@ const UtilisationRateChart = () => {
             {
               name: "Utlization Rate",
               data: [
-                40000, 10000, 42000, 39000, 44000, 41000, 43000, 
+                400, 100, 420, 390, 440, 410, 430, 
               ],
             },
           ];
@@ -88,7 +86,7 @@ const UtilisationRateChart = () => {
           newData = [
             {
               name: "Utlization Rate",
-              data: [50000, 49000, 52000, 48000, 51000,  48000, 50000, 48000, 51000, 48000],
+              data: [500, 490, 520, 480, 510,  480, 500, 480, 510, 480],
             },
           ];
           //x axis data
@@ -110,8 +108,8 @@ const UtilisationRateChart = () => {
           {
             name: "Utlization Rate",
             data: [
-              60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000,
-              60000, 62000, 70000,
+              600, 580, 620, 590, 630, 600, 620, 590, 630,
+              600, 620, 700,
             ],
           },
         ];
@@ -153,7 +151,7 @@ const UtilisationRateChart = () => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return numberFormatter(val); // Display the data value as the label
+          return (val/10)?.toFixed(1)+ '%'; // Display the data value as the label
         },
       },
 
@@ -177,7 +175,7 @@ const UtilisationRateChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return (value/10)?.toFixed(1)+ '%';
           },
           style: {
             colors: "#6E7681", // Set the color of the labels

@@ -85,7 +85,7 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
       <Box display="flex" gap="30px">
         <TotalAccountsChart/>
       </Box>
-      <Box color="White">
+      <Box color="White" fontSize="28px" fontWeight="600">
         Supply
       </Box>
       <Box display="flex" gap="30px" w="full">
@@ -98,7 +98,7 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
           />
         </Box> */}
       </Box>
-      <Box color="White">
+      <Box  color="White" fontSize="28px" fontWeight="600">
         Borrow
       </Box>
       <Box display="flex" gap="30px" w="full">
