@@ -1,14 +1,26 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
+  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"]
   const chartOptions = {
     chart: {
       stacked: true,
       toolbar: {
         show: false,
       },
+    },
+    dataLabels: {
+      enabled: false,
+      style: {
+        colors: ["#000000"],
+      },
+      formatter: function (value: any) {
+        return numberFormatter(value);
+      },
+      position: "top",
     },
     xaxis: {
         labels: {
@@ -28,12 +40,12 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
     },
     plotOptions: {
       bar: {
-        opacity: 1, // Set the opacity to 1 for fully opaque bars
-        columnWidth: "70%", // Adjust the column width for better spacing between bars
+        columnWidth: "40%",
+        horizontal: false, // Set horizontal to false for vertical bars
+        opacity: 1,
         colors: {
-          backgroundBarOpacity: 1, // Set the opacity of the background bar
+          backgroundBarOpacity: 1,
         },
-        horizontal: false,
       },
     },
     // colors:[""],
@@ -42,7 +54,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
         formatter: formatter
           ? formatter
           : function (value: any) {
-              return (value / 1000).toFixed(1) + "k";
+              return numberFormatter(value);
             },
         style: {
           colors: "#6E7681", // Set the color of the labels
@@ -60,13 +72,11 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
     },
     fill: {
       opacity: 1,
+      // colors: ['#F44336', '#E91E63', '#9C27B0']
     },
     legend: {
       position: "top" as const,
       horizontalAlign: "left" as const,
-    },
-    dataLabels: {
-      enabled: false,
     },
     annotations: {
       xaxis: [
@@ -78,15 +88,37 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
         },
       ],
     },
+    colors:splineColor
   };
 
   const chartSeries = [
     {
-      name: 'wBTC',
-      data: [44000, 55000, 41000, 17000, 15000],
+      name: 'BTC',
+      data: [44000],
+      color: '#804D0F',
     },
-
+    {
+      name: 'ETH',
+      data: [55000],
+      color: '#3B48A8',
+    },
+    {
+      name: 'USDT',
+      data: [41000],
+      color: '#136B51',
+    },
+    {
+      name: 'USDC',
+      data: [17000],
+      color: '#1A2683',
+    },
+    {
+      name: 'DAI',
+      data: [15000],
+      color: '#996B22',
+    },
   ];
+  
 
   return (
     <Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px">
