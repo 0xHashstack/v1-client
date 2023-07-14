@@ -896,20 +896,23 @@ const YourSupplyModal = ({
                                         fontWeight="thin"
                                       >
                                         Wallet Balance:{" "}
-                                        {numberFormatter(
-                                          Number(
-                                            BNtoNum(
-                                              uint256.uint256ToBN(
-                                                walletBalances[
-                                                  coin.substring(1)
-                                                ]?.dataBalanceOf?.balance
-                                              ),
-                                              tokenDecimalsMap[
-                                                coin.substring(1)
-                                              ]
+                                        {walletBalances[coin.substring(1)]
+                                          ?.dataBalanceOf?.balance
+                                          ? numberFormatter(
+                                              Number(
+                                                BNtoNum(
+                                                  uint256.uint256ToBN(
+                                                    walletBalances[
+                                                      coin.substring(1)
+                                                    ]?.dataBalanceOf?.balance
+                                                  ),
+                                                  tokenDecimalsMap[
+                                                    coin.substring(1)
+                                                  ]
+                                                )
+                                              )
                                             )
-                                          )
-                                        )}
+                                          : "-"}
                                       </Box>
                                     </Box>
                                   </Box>
