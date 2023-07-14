@@ -249,6 +249,7 @@ const YourBorrowModal = ({
   const {
     repayAmount,
     setRepayAmount,
+    setLoan,
     // handleApprove,
     writeAsyncRepay,
     transRepayHash,
@@ -558,6 +559,14 @@ const YourBorrowModal = ({
     setLiquidityLoanId(
       currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
+    const result = userLoans.find(
+      (item: any) =>
+        item?.loanId ==
+        currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+    );
+    setLoan(
+      result
+    )
   }, [currentBorrowId1]);
   // console.log(userLoans);
 

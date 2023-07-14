@@ -124,6 +124,8 @@ const useRepay = (loanParam: any) => {
   return {
     repayAmount,
     setRepayAmount,
+    loan,
+    setLoan,
     // handleApprove,
     writeAsyncRepay,
     transRepayHash,
