@@ -164,6 +164,7 @@ const LiquidityProvisionModal = ({
     setLiquidityLoanId(
       currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
     );
+    setCurrentPool('Select a pool')
   }, [currentBorrowId]);
   useEffect(() => {
     setToMarketA(currentPool?.split("/")[0]);

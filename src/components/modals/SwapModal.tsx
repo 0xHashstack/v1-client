@@ -370,6 +370,7 @@ const SwapModal = ({
     setSwapLoanId(
       currentBorrowId?.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
     );
+    setCurrentSelectedCoin('Select a market')
   }, [currentBorrowId]);
   // console.log(onOpen)
   useEffect(() => {
