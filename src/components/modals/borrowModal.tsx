@@ -1027,15 +1027,7 @@ const BorrowModal = ({
                               >
                                 Wallet Balance:{" "}
                                 {numberFormatter(
-                                  Number(
-                                    BNtoNum(
-                                      uint256.uint256ToBN(
-                                        walletBalances[coin]?.dataBalanceOf
-                                          ?.balance
-                                      ),
-                                      tokenDecimalsMap[coin]
-                                    )
-                                  )
+                                  walletBalance
                                 )}
                               </Box>
                             </Box>
