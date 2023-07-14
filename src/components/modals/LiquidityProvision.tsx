@@ -499,6 +499,10 @@ const LiquidityProvisionModal = ({
   >();
 
   useEffect(() => {
+    console.log("liquidity borrow coin", currentBorrowMarketCoin);
+  }, [currentBorrowMarketCoin]);
+
+  useEffect(() => {
     console.log(
       "toMarketSplitConsole",
       currentLoanMarket,
@@ -1261,7 +1265,8 @@ const LiquidityProvisionModal = ({
                   >
                     {!borrowAPRs ||
                     borrowAPRs.length === 0 ||
-                    !getBorrowAPR(currentBorrowMarketCoin) ? (
+                    (!getBorrowAPR(currentBorrowMarketCoin) &&
+                      !getBorrowAPR(currentBorrowMarketCoin.slice(1))) ? (
                       <Box pt="2px">
                         <Skeleton
                           width="2.3rem"
@@ -1271,8 +1276,10 @@ const LiquidityProvisionModal = ({
                           borderRadius="6px"
                         />
                       </Box>
+                    ) : getBorrowAPR(currentBorrowMarketCoin) ? (
+                      getBorrowAPR(currentBorrowMarketCoin)
                     ) : (
-                      getBorrowAPR(currentBorrowMarketCoin) + "%"
+                      getBorrowAPR(currentBorrowMarketCoin.slice(1)) + "%"
                     )}
                     {/* 5.56% */}
                   </Text>
