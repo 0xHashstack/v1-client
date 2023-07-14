@@ -175,7 +175,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Select supply market"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -279,7 +279,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Enter amount"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -500,7 +500,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Fees"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -543,7 +543,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Estimated gas fees for transaction"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -584,7 +584,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Supply apr"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}

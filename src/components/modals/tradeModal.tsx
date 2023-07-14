@@ -1002,7 +1002,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="Select collateral market"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1314,7 +1314,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="Enter collateral amount"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1587,7 +1587,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="Enter borrow market"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1779,7 +1779,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="Enter borrow amount"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2132,7 +2132,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="Select dapp from below dropdown"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2265,7 +2265,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="select pool from below"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2453,7 +2453,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="all the assets to the market"
+                          label="Estimated LP tokens recieved"
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
@@ -2508,7 +2508,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="all the assets to the market"
+                          label="Liquidity split for selected pools"
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
@@ -2599,7 +2599,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="all the assets to the market"
+                          label="estimated"
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
@@ -2630,7 +2630,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="Fees"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2656,7 +2656,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="Estimated gas fees for transaction"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2681,7 +2681,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="Borrow apr"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2738,7 +2738,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="all the assets to the market"
+                          label="Effective apr"
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
@@ -2840,7 +2840,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="all the assets to the market"
+                          label="Health factor"
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
