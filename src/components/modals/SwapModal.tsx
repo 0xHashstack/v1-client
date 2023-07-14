@@ -275,7 +275,7 @@ const SwapModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         dispatch(setTransactionStatus("success"));
-      } else if (currentSwap == "Myswap") {
+      } else if (currentSwap == "MySwap") {
         const swap = await writeAsyncmySwap_swap();
         console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
@@ -437,7 +437,7 @@ const SwapModal = ({
             }
           }}
         >
-          <Box onClick={() => setCurrentSwap("Myswap")}>
+          <Box onClick={() => setCurrentSwap("MySwap")}>
             {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
           </Box>
         </Box>

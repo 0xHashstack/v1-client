@@ -357,7 +357,7 @@ const LiquidityProvisionModal = ({
         console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
         dispatch(setTransactionStatus("success"));
-      } else if (currentSwap == "Myswap") {
+      } else if (currentSwap == "MySwap") {
         const liquidity = await writeAsyncmySwap_addLiquidity();
         if (liquidity?.transaction_hash) {
           console.log("toast here");
