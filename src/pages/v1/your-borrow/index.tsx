@@ -39,6 +39,16 @@ const YourBorrow = () => {
   const { account, address } = useAccount();
   useDataLoader();
   const UserLoans = useSelector(selectUserLoans);
+  useEffect(() => {
+    if (UserLoans) {
+      if (UserLoans?.length <= (currentPagination - 1) * 6) {
+        console.log("pagination here", Pagination, UserLoans);
+        if (currentPagination > 1) {
+          setCurrentPagination(currentPagination - 1);
+        }
+      }
+    }
+  }, [UserLoans]);
 
   // useEffect(() => {
   //   const loan = async () => {

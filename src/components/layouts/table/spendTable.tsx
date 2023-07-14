@@ -442,7 +442,7 @@ const SpendTable = () => {
                         }}
                         position="relative"
                         height="4rem"
-                        key={borrow.idx}
+                        key={lower_bound + borrow.idx}
                         cursor="pointer"
                         bgColor={
                           currentBorrow == borrow.loanId ? "#2B2F35" : "none "

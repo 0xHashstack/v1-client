@@ -487,7 +487,7 @@ const BorrowDashboard = ({
               return (
                 <>
                   <Tr
-                    key={borrow.idx}
+                    key={lower_bound + borrow.idx}
                     width={"100%"}
                     // height={"5rem"}
                     // bgColor="green"
