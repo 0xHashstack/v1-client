@@ -801,6 +801,9 @@ const SpendTable = () => {
                   setCurrentSwap={setCurrentSwap}
                   currentLoanAmount={currentLoanAmount}
                   currentLoanMarket={currentLoanMarket}
+                  setCurrentLoanAmount={setCurrentLoanAmount}
+                  setCurrentLoanMarket={setCurrentLoanMarket}
+                  userLoans={userLoans}
                   borrowAPRs={borrowAPRs}
                 />
               </Box>

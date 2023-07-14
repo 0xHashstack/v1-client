@@ -94,6 +94,7 @@ const LiquidityProvisionModal = ({
   currentLoanAmount,
   currentLoanMarket,
   borrowAPRs,
+  userLoans,
 }: any) => {
   // console.log("liquidity found map: ", borrowIDCoinMap);
   // console.log("liquidity found borrow ids: ", borrowIds);
