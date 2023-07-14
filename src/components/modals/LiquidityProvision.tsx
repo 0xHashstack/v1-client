@@ -93,6 +93,8 @@ const LiquidityProvisionModal = ({
   setCurrentSwap,
   currentLoanAmount,
   currentLoanMarket,
+  setCurrentLoanAmount,
+  setCurrentLoanMarket,
   borrowAPRs,
 }: any) => {
   // console.log("liquidity found map: ", borrowIDCoinMap);
@@ -149,6 +151,9 @@ const LiquidityProvisionModal = ({
   // const avgs=useSelector(selectAprAndHealthFactor)
   const avgs = useSelector(selectHealthFactor);
 
+  useEffect(() => {
+    console.log("liquidity user loans", userLoans);
+  }, [userLoans]);
   // console.log(userLoans)
   // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
   useEffect(() => {
@@ -164,7 +169,29 @@ const LiquidityProvisionModal = ({
     setLiquidityLoanId(
       currentBorrowId?.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
     );
-    setCurrentPool('Select a pool')
+    setCurrentPool("Select a pool");
+    setCurrentLoanAmount(
+      userLoans?.find(
+        (loan: any) =>
+          loan?.loanId ==
+          currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+      )?.currentLoanAmount
+    );
+    setCurrentLoanMarket(
+      userLoans?.find(
+        (loan: any) =>
+          loan?.loanId ==
+          currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+      )?.currentLoanMarket
+    );
+    console.log(
+      "loanAmount",
+      currentLoanAmount,
+      ", loanMarket",
+      currentLoanMarket,
+      " currentBorrowId",
+      currentBorrowId
+    );
   }, [currentBorrowId]);
   useEffect(() => {
     setToMarketA(currentPool?.split("/")[0]);
