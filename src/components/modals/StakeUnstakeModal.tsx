@@ -681,6 +681,9 @@ const StakeUnstakeModal = ({
     );
   }, [currentSelectedStakeCoin, userDeposit]);
   useEffect(() => {
+    console.log("stake userDeposit", userDeposit);
+  }, [userDeposit]);
+  useEffect(() => {
     setUnstakeWalletBalance(
       userDeposit?.find(
         (item: any) => item.rToken == currentSelectedUnstakeCoin
@@ -1050,7 +1053,9 @@ const StakeUnstakeModal = ({
                                     onClick={() => {
                                       setCurrentSelectedStakeCoin(coin);
                                       setRToken(coin.slice(1));
-                                      setAsset(coin);
+                                      setAsset(
+                                        coin[0] == "r" ? coin?.slice(1) : coin
+                                      );
                                       setWalletBalance(
                                         walletBalances[coin?.slice(1)]
                                           ?.statusBalanceOf === "success"
@@ -1106,10 +1111,7 @@ const StakeUnstakeModal = ({
                                         fontWeight="thin"
                                       >
                                         rToken Balance:{" "}
-                                        {validRTokens &&
-                                        validRTokens.length > 0 &&
-                                        userDeposit &&
-                                        userDeposit.length > 0
+                                        {userDeposit && userDeposit.length > 0
                                           ? userDeposit?.find(
                                               (item: any) => item.rToken == coin
                                             )?.rTokenFreeParsed
@@ -2002,7 +2004,7 @@ const StakeUnstakeModal = ({
                                         fontWeight="thin"
                                       >
                                         Staking shares:{" "}
-                                        {validRTokens && validRTokens.length > 0
+                                        {userDeposit && userDeposit.length > 0
                                           ? userDeposit?.find(
                                               (item: any) => item.rToken == coin
                                             )?.rTokenStakedParsed
