@@ -906,17 +906,19 @@ const SupplyModal = ({
                                 fontWeight="thin"
                               >
                                 Wallet Balance:{" "}
-                                {numberFormatter(
-                                  Number(
-                                    BNtoNum(
-                                      uint256.uint256ToBN(
-                                        assetBalance[coin]?.dataBalanceOf
-                                          ?.balance
-                                      ),
-                                      tokenDecimalsMap[coin]
+                                {assetBalance[coin]?.dataBalanceOf?.balance
+                                  ? numberFormatter(
+                                      Number(
+                                        BNtoNum(
+                                          uint256.uint256ToBN(
+                                            assetBalance[coin]?.dataBalanceOf
+                                              ?.balance
+                                          ),
+                                          tokenDecimalsMap[coin]
+                                        )
+                                      )
                                     )
-                                  )
-                                )}
+                                  : "-"}
                               </Box>
                             </Box>
                           </Box>
