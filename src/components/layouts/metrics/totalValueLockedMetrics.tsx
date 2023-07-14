@@ -23,7 +23,7 @@ const TotalValueLockedMetrics = () => {
   const [aprByMarket, setAPRByMarket] = useState(0);
   const [chartData, setChartData] = useState([
     {
-      name: "Series 1",
+      name: "Total Value Locked",
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
@@ -61,26 +61,22 @@ const TotalValueLockedMetrics = () => {
             ])
           : (newData = [
               {
-                name: "Series 1",
-                data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+                name: "Total Value Locked",
+                data: [30000, 40000, 35000, 50000, 49000, 60000, 80000, 35000, 50000, 49000, 60000, 80000],
               },
             ]);
         btcData?.dates
           ? (newCategories = btcData?.dates)
-          : (newCategories = [
-              new Date("2023-07-01").getTime(),
-              new Date("2023-07-02").getTime(),
-              new Date("2023-07-03").getTime(),
-              new Date("2023-07-04").getTime(),
-              new Date("2023-07-05").getTime(),
-              new Date("2023-07-06").getTime(),
-              new Date("2023-07-07").getTime(),
-            ]);
+          : (          newCategories = [
+            1689152545000, 1689156145000, 1689159745000, 1689163345000,
+            1689166945000, 1689170545000, 1689174145000, 1689177745000,
+            1689181345000, 1689184945000, 1689188545000, 1689192145000,
+          ]);
         break;
       case 1:
         newData = [
           {
-            name: "Series 1",
+            name: "Total Value Locked",
             data: [40000, 0, 42000, 39000, 44000, 41000, 43000],
           },
         ];
@@ -98,7 +94,7 @@ const TotalValueLockedMetrics = () => {
         //y data axis
         newData = [
           {
-            name: "Series 1",
+            name: "Total Value Locked",
             data: [
               50000, 49000, 52000, 48000, 51000, 48000, 50000, 52000, 48000,
               51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000,
@@ -144,7 +140,7 @@ const TotalValueLockedMetrics = () => {
       case 3:
         newData = [
           {
-            name: "Series 1",
+            name: "Total Value Locked",
             data: [
               60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000,
               60000, 62000, 70000,
@@ -170,7 +166,7 @@ const TotalValueLockedMetrics = () => {
       case 4:
         newData = [
           {
-            name: "Series 1",
+            name: "Total Value Locked",
             data: [
               60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000,
               60000, 62000, 70000,

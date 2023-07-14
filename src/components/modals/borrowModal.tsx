@@ -814,7 +814,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Select collateral market"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1055,7 +1055,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Enter collateral amount"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1362,7 +1362,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Select borrow market"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1503,7 +1503,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Enter borrow amount"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1522,7 +1522,8 @@ const BorrowModal = ({
                     inputCollateralAmountUSD &&
                     inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
                       ? "1px solid #CF222E"
-                      : inputBorrowAmountUSD < 0 || inputBorrowAmount>currentAvailableReserves
+                      : inputBorrowAmountUSD < 0 ||
+                        inputBorrowAmount > currentAvailableReserves
                       ? "1px solid #CF222E"
                       : isNaN(amount)
                       ? "1px solid #CF222E"
@@ -1554,7 +1555,8 @@ const BorrowModal = ({
                           ? "#CF222E"
                           : isNaN(amount)
                           ? "#CF222E"
-                          : inputBorrowAmount < 0 || inputBorrowAmount>currentAvailableReserves
+                          : inputBorrowAmount < 0 ||
+                            inputBorrowAmount > currentAvailableReserves
                           ? "#CF222E"
                           : inputBorrowAmountUSD == 0
                           ? "white"
@@ -1832,7 +1834,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Estimated gas fees for transaction"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1874,7 +1876,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Borrow rate"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1934,7 +1936,7 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Effective apr"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -2046,7 +2048,7 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Health factor"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -2117,7 +2119,7 @@ const BorrowModal = ({
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 &&
-            inputBorrowAmount<currentAvailableReserves &&
+            inputBorrowAmount < currentAvailableReserves &&
             inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (
               // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
               // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&

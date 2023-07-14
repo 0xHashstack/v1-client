@@ -14,7 +14,9 @@ import {
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import {
+  selectMetricsDropdowns,
   selectModalDropDowns,
+  setMetricsDropdown,
   setModalDropdown,
 } from "@/store/slices/dropdownsSlice";
 import mixpanel from "mixpanel-browser";
@@ -835,7 +837,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           className="navbar"
           cursor="pointer"
           onClick={() => {
-            handleDropdownClick("supplyModalDropdown");
+            handleDropdownClick("coinSelectedAPRByMarket");
             // if (transactionStarted) {
             //   return;
             // } else {
@@ -850,7 +852,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           <Box pt="1" className="navbar-button">
             {activeModal ? <ArrowUp /> : <DropdownUp />}
           </Box>
-          {modalDropdowns.supplyModalDropdown && (
+          {modalDropdowns.coinSelectedAPRByMarket && (
             <Box
               w="full"
               left="0"

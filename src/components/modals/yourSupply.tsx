@@ -774,7 +774,7 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Select market"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -935,7 +935,7 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Enter amount"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -1240,7 +1240,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="all the assets to the market"
+                              label="Fees"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1275,7 +1275,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="all the assets to the market"
+                              label="Estimated gas fees for transaction"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1309,7 +1309,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="all the assets to the market"
+                              label="Supply apr"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1482,7 +1482,7 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Supply market"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -1627,7 +1627,7 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="all the assets to the market"
+                            label="Enter withdraw amount"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -1901,7 +1901,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="all the assets to the market"
+                              label="Estimated supply unlocked"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -2046,7 +2046,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="all the assets to the market"
+                              label="Fees"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -2082,7 +2082,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="all the assets to the market"
+                              label="Estimated gas fees for transaction"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}

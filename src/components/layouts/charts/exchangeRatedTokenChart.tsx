@@ -15,6 +15,7 @@ import {
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 import {
+    selectMetricsDropdowns,
   selectModalDropDowns,
   setModalDropdown,
 } from "@/store/slices/dropdownsSlice";
@@ -845,7 +846,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           className="navbar"
           cursor="pointer"
           onClick={() => {
-            handleDropdownClick("supplyModalDropdown");
+            handleDropdownClick("coinSelectedExchangeRateDToken");
             // if (transactionStarted) {
             //   return;
             // } else {
@@ -860,7 +861,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           <Box pt="1" className="navbar-button">
             {activeModal ? <ArrowUp /> : <DropdownUp />}
           </Box>
-          {modalDropdowns.supplyModalDropdown && (
+          {modalDropdowns.coinSelectedExchangeRateDToken && (
             <Box
               w="full"
               left="0"

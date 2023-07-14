@@ -507,7 +507,7 @@ const SwapModal = ({
                   hasArrow
                   placement="right"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Select supply market"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -620,7 +620,7 @@ const SwapModal = ({
                   hasArrow
                   placement="right"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Borrow ID"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -745,7 +745,7 @@ const SwapModal = ({
                   hasArrow
                   placement="right"
                   boxShadow="dark-lg"
-                  label="all the assets to the market"
+                  label="Borrow market"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -812,7 +812,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Daap"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -954,7 +954,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Fees"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -989,7 +989,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Estimated gas fees for transaction"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1024,7 +1024,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Borrow apr"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1074,7 +1074,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Effective apr"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1124,7 +1124,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Health factor"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}

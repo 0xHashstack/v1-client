@@ -250,7 +250,6 @@ export default function Home() {
                 disconnect();
                 connect(connectors[0]);
                 dispatch(setTransactionRefresh("reset"));
-                router.push("/v1/market");
               }}
             >
               <Box ml="1rem" color="white">
@@ -334,7 +333,6 @@ export default function Home() {
                 disconnect();
                 connect(connectors[1]);
                 dispatch(setTransactionRefresh("reset"));
-                router.push("/v1/market");
               }}
             >
               <Box ml="1rem" color="white">

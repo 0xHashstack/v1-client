@@ -658,7 +658,7 @@ const LiquidityProvisionModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Select Liquidity Pool from below dropdown"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -773,7 +773,7 @@ const LiquidityProvisionModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Borrow ID of selected loan"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -898,7 +898,7 @@ const LiquidityProvisionModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="all the assets to the market"
+                    label="Borrow market"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -978,7 +978,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Dapp"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1031,7 +1031,7 @@ const LiquidityProvisionModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="Estimated LP tokens received"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1086,7 +1086,7 @@ const LiquidityProvisionModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="all the assets to the market"
+                        label="Liquidity split"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1171,7 +1171,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Transaction fees"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1206,7 +1206,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Estimated gas fees for transaction"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1241,7 +1241,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Borrow rate"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1291,7 +1291,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Effective APR"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1341,7 +1341,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="all the assets to the market"
+                      label="Health factor"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
