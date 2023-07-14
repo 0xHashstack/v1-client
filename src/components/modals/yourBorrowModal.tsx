@@ -235,7 +235,7 @@ const YourBorrowModal = ({
     statusAddCollateral,
 
     dataAddCollateralRToken,
-    errorAddCollateralRToken,
+    errorAddCollateralRToken, 
     resetAddCollateralRToken,
     writeAddCollateralRToken,
     writeAsyncAddCollateralRToken,

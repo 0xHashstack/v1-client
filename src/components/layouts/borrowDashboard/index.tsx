@@ -213,9 +213,9 @@ const BorrowDashboard = ({
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
-    if (Borrows && upper_bound > lower_bound && currentPagination > 1) {
-      setCurrentPagination(currentPagination - 1);
-    }
+    // if (Borrows && upper_bound > lower_bound && currentPagination > 1) {
+    //   setCurrentPagination(currentPagination - 1);
+    // }
   }, [Borrows]);
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
