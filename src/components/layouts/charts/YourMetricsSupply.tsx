@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
+import { useSelector } from "react-redux";
+import { selectUserDeposits } from "@/store/slices/readDataSlice";
+import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
+  const [supplyData, setSupplyData] = useState(null);
+  const userDeposits = useSelector(selectUserDeposits);
+  useEffect(() => {
+    try {
+      const fetchSupplyData = async () => {
+        const data = userDeposits?.map((deposit: IDeposit, idx: number) => {
+          return (
+            deposit?.rTokenFreeParsed +
+            deposit?.rTokenLockedParsed +
+            deposit?.rTokenStakedParsed
+          );
+        });
+        if (data && data?.length > 0) {
+          setSupplyData(data);
+        }
+        console.log("supplyData", data);
+      };
+      if (userDeposits && userDeposits?.length > 0) {
+        fetchSupplyData();
+      }
+    } catch (err) {
+      console.log("your metrics supply err ", err);
+    }
+  }, [userDeposits]);
+
   const chartOptions = {
     chart: {
       stacked: true,
@@ -82,10 +110,9 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
 
   const chartSeries = [
     {
-      name: 'wBTC',
-      data: [44000, 55000, 41000, 17000, 15000],
+      name: "wBTC",
+      data: supplyData ? supplyData : [44000, 55000, 41000, 17000, 15000],
     },
-
   ];
 
   return (
