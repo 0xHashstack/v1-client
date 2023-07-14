@@ -616,195 +616,196 @@ const SpendTable = () => {
           </Table>
         </TableContainer>
       ) : (
-        <>
-        </>
+        <></>
       )}
-    {userLoans?.length>0 &&
-    <>
-      <Box
-        paddingY="1rem"
-        width="95%"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Pagination
-          currentPagination={currentPagination}
-          setCurrentPagination={(x: any) => setCurrentPagination(x)}
-          max={userLoans?.length}
-          rows={3}
-        />
-      </Box>
-      <Box
-        display="flex"
-        justifyContent="left"
-        w="94%"
-        height="16rem"
-
-        // bgColor="pink"
-      >
-        <Tabs
-          variant="unstyled"
-          defaultIndex={selectedIndex}
-          pt="2rem"
-          display="flex"
-          flexDirection="column"
-          width="45%"
-          gap="2rem"
-          index={tabIndex}
-          onChange={(index) => setTabIndex(index)}
-        >
-          <TabList
-            // borderRadius="26px"
-            color={selectedDapp == "" ? "#2B2F35" : "white"}
-            h="2rem"
-            width="100%"
+      {userLoans?.length > 0 && (
+        <>
+          <Box
+            paddingY="1rem"
+            width="95%"
             display="flex"
-            // bgColor="red"
+            justifyContent="space-between"
+            alignItems="center"
           >
-            <Tab
-              // padding="6px 16px"
-              //   color="#6E7681"
-              fontSize="14px"
-              fontStyle="normal"
-              border="1px"
-              borderColor="#2B2F35"
-              lineHeight="20px"
-              // borderLeftRadius="md"
-              fontWeight="500"
-              borderLeftRadius="6px"
-              _selected={{
-                // color: "white",
-                bg: selectedDapp != "" ? "#0969DA" : "none",
-                // border: "none",
-              }}
-              _disabled={{
-                background: "#101216",
-              }}
-              isDisabled={selectedDapp == ""}
-            >
-              Liquidity provision
-            </Tab>
-            <Tab
-              // padding="6px 16px"
-              //   color="#6E7681"
-              fontSize="14px"
-              fontStyle="normal"
-              border="1px"
-              borderColor="#2B2F35"
-              lineHeight="20px"
-              // borderLeftRadius="md"
-              fontWeight="500"
-              borderRadius="0px"
-              _selected={{
-                // color: "white",
-                bg: selectedDapp != "" ? "#0969DA" : "none",
-                // border: "none",
-              }}
-              _disabled={{
-                background: "#101216",
-              }}
-              isDisabled={selectedDapp == ""}
-              // isDisabled={selectedDapp == ""}
-            >
-              swap
-            </Tab>
-            <Tab
-              // padding="0px 16px"
-              //   color="#6E7681"
-              fontSize="14px"
-              fontStyle="normal"
-              border="1px"
-              borderColor="#2B2F35"
-              lineHeight="20px"
-              fontWeight="500"
-              // borderRadius="0px"
-              _selected={{
-                // color: "white",
-                bg: selectedDapp != "" ? "#0969DA" : "none",
-                // border: "none",
-              }}
-              _disabled={{
-                background: "#101216",
-              }}
-              onClick={() => setTradeNote(true)}
-              isDisabled={selectedDapp == ""}
-            >
-              stake
-            </Tab>
+            <Pagination
+              currentPagination={currentPagination}
+              setCurrentPagination={(x: any) => setCurrentPagination(x)}
+              max={userLoans?.length}
+              rows={3}
+            />
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="left"
+            w="94%"
+            height="16rem"
 
-            <Tab
-              // padding="6px 16px"
-              //   color="#6E7681"
-              fontSize="14px"
-              fontStyle="normal"
-              border="1px"
-              borderColor="#2B2F35"
-              lineHeight="20px"
-              // borderLeftRadius="md"
-              fontWeight="500"
-              borderRadius="0px"
-              borderRightRadius="6px"
-              _selected={{
-                // color: "white",
-                bg: selectedDapp != "" ? "#0969DA" : "none",
-                // border: "none",
-              }}
-              _disabled={{
-                background: "#101216",
-              }}
-              onClick={() => setTradeNote(true)}
-              isDisabled={selectedDapp == ""}
+            // bgColor="pink"
+          >
+            <Tabs
+              variant="unstyled"
+              defaultIndex={selectedIndex}
+              pt="2rem"
+              display="flex"
+              flexDirection="column"
+              width="45%"
+              gap="2rem"
+              index={tabIndex}
+              onChange={(index) => setTabIndex(index)}
             >
-              Trade
-            </Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel p={0}>
-              <Box display="flex" flexDirection="column">
-                <Text
-                  color={selectedDapp != "" ? "white" : "#2B2F35"}
-                  fontSize="sm"
+              <TabList
+                // borderRadius="26px"
+                color={selectedDapp == "" ? "#2B2F35" : "white"}
+                h="2rem"
+                width="100%"
+                display="flex"
+                // bgColor="red"
+              >
+                <Tab
+                  // padding="6px 16px"
+                  //   color="#6E7681"
+                  fontSize="14px"
+                  fontStyle="normal"
+                  border="1px"
+                  borderColor="#2B2F35"
+                  lineHeight="20px"
+                  // borderLeftRadius="md"
+                  fontWeight="500"
+                  borderLeftRadius="6px"
+                  _selected={{
+                    // color: "white",
+                    bg: selectedDapp != "" ? "#0969DA" : "none",
+                    // border: "none",
+                  }}
+                  _disabled={{
+                    background: "#101216",
+                  }}
+                  isDisabled={selectedDapp == ""}
                 >
-                  Select a Dapp to begin with the spend
-                </Text>
-                <LiquidityProvisionModal
-                  borrowIDCoinMap={borrowIDCoinMap}
-                  coins={coins}
-                  borrowIds={borrowIds}
-                  currentId={currentId}
-                  currentMarketCoin={currentMarketCoin}
-                  BorrowBalance={borrowAmount}
-                  currentSwap={currentSwap}
-                  setCurrentSwap={setCurrentSwap}
-                  currentLoanAmount={currentLoanAmount}
-                  currentLoanMarket={currentLoanMarket}
-                  borrowAPRs={borrowAPRs}
-                />
-              </Box>
-            </TabPanel>
-            <TabPanel padding="0">
-              <Box>
-                <Text
-                  color={selectedDapp != "" ? "white" : "#2B2F35"}
-                  fontSize="sm"
+                  Liquidity provision
+                </Tab>
+                <Tab
+                  // padding="6px 16px"
+                  //   color="#6E7681"
+                  fontSize="14px"
+                  fontStyle="normal"
+                  border="1px"
+                  borderColor="#2B2F35"
+                  lineHeight="20px"
+                  // borderLeftRadius="md"
+                  fontWeight="500"
+                  borderRadius="0px"
+                  _selected={{
+                    // color: "white",
+                    bg: selectedDapp != "" ? "#0969DA" : "none",
+                    // border: "none",
+                  }}
+                  _disabled={{
+                    background: "#101216",
+                  }}
+                  isDisabled={selectedDapp == ""}
+                  // isDisabled={selectedDapp == ""}
                 >
-                  Select a Dapp to begin with the spend
-                </Text>
-                <SwapModal
-                  borrowIDCoinMap={borrowIDCoinMap}
-                  coins={coins}
-                  borrowIds={borrowIds}
-                  currentId={currentId}
-                  currentMarketCoin={currentMarketCoin}
-                  BorrowBalance={borrowAmount}
-                  currentSwap={currentSwap}
-                  setCurrentSwap={setCurrentSwap}
-                  borrowAPRs={borrowAPRs}
-                />
-              </Box>
-            </TabPanel>
-            {/* <TabPanel p={0}>
+                  swap
+                </Tab>
+                <Tab
+                  // padding="0px 16px"
+                  //   color="#6E7681"
+                  fontSize="14px"
+                  fontStyle="normal"
+                  border="1px"
+                  borderColor="#2B2F35"
+                  lineHeight="20px"
+                  fontWeight="500"
+                  // borderRadius="0px"
+                  _selected={{
+                    // color: "white",
+                    bg: selectedDapp != "" ? "#0969DA" : "none",
+                    // border: "none",
+                  }}
+                  _disabled={{
+                    background: "#101216",
+                  }}
+                  onClick={() => setTradeNote(true)}
+                  isDisabled={selectedDapp == ""}
+                >
+                  stake
+                </Tab>
+
+                <Tab
+                  // padding="6px 16px"
+                  //   color="#6E7681"
+                  fontSize="14px"
+                  fontStyle="normal"
+                  border="1px"
+                  borderColor="#2B2F35"
+                  lineHeight="20px"
+                  // borderLeftRadius="md"
+                  fontWeight="500"
+                  borderRadius="0px"
+                  borderRightRadius="6px"
+                  _selected={{
+                    // color: "white",
+                    bg: selectedDapp != "" ? "#0969DA" : "none",
+                    // border: "none",
+                  }}
+                  _disabled={{
+                    background: "#101216",
+                  }}
+                  onClick={() => setTradeNote(true)}
+                  isDisabled={selectedDapp == ""}
+                >
+                  Trade
+                </Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel p={0}>
+                  <Box display="flex" flexDirection="column">
+                    <Text
+                      color={selectedDapp != "" ? "white" : "#2B2F35"}
+                      fontSize="sm"
+                    >
+                      Select a Dapp to begin with the spend
+                    </Text>
+                    <LiquidityProvisionModal
+                      borrowIDCoinMap={borrowIDCoinMap}
+                      coins={coins}
+                      borrowIds={borrowIds}
+                      currentId={currentId}
+                      currentMarketCoin={currentMarketCoin}
+                      BorrowBalance={borrowAmount}
+                      currentSwap={currentSwap}
+                      setCurrentSwap={setCurrentSwap}
+                      currentLoanAmount={currentLoanAmount}
+                      currentLoanMarket={currentLoanMarket}
+                      setCurrentLoanAmount={setCurrentLoanAmount}
+                      setCurrentLoanMarket={setCurrentLoanMarket}
+                      borrowAPRs={borrowAPRs}
+                    />
+                  </Box>
+                </TabPanel>
+                <TabPanel padding="0">
+                  <Box>
+                    <Text
+                      color={selectedDapp != "" ? "white" : "#2B2F35"}
+                      fontSize="sm"
+                    >
+                      Select a Dapp to begin with the spend
+                    </Text>
+                    <SwapModal
+                      borrowIDCoinMap={borrowIDCoinMap}
+                      coins={coins}
+                      borrowIds={borrowIds}
+                      currentId={currentId}
+                      currentMarketCoin={currentMarketCoin}
+                      BorrowBalance={borrowAmount}
+                      currentSwap={currentSwap}
+                      setCurrentSwap={setCurrentSwap}
+                      borrowAPRs={borrowAPRs}
+                    />
+                  </Box>
+                </TabPanel>
+                {/* <TabPanel p={0}>
               <Box>
                 <Text
                   color={selectedDapp != "" ? "white" : "#2B2F35"}
@@ -830,53 +831,53 @@ const SpendTable = () => {
               </Box>
             </TabPanel> */}
 
-            <TabPanel p={0}>
-              <Box
-                display={tradeNote ? "flex" : "none"}
-                bg="#DDF4FF"
-                fontSize="14px"
-                p="8px"
-                fontStyle="normal"
-                fontWeight="400"
-                borderRadius="6px"
-                justifyContent="center"
-                alignItems="flex-start"
-                bgColor="#fff8c5"
-                // textAlign="center"
-                // bgColor="red"
-              >
-                <Box
-                  cursor="pointer"
-                  // bgColor="blue"
-                  display="flex"
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                  pt="2px"
-                  pr="4px"
-                >
-                  <AlertTrade />
-                </Box>
-                <Box p="6px 2px" display="flex">
-                  <Text fontSize="sm">
-                    We are evaluating few promising DEXes to integrate. Please
-                    check back at a late time.
-                  </Text>
+                <TabPanel p={0}>
                   <Box
-                    pt="3px"
-                    pl="4px"
-                    pr="3px"
-                    cursor="pointer"
-                    // bgColor="pink"
-                    onClick={() => setTradeNote(false)}
+                    display={tradeNote ? "flex" : "none"}
+                    bg="#DDF4FF"
+                    fontSize="14px"
+                    p="8px"
+                    fontStyle="normal"
+                    fontWeight="400"
+                    borderRadius="6px"
+                    justifyContent="center"
+                    alignItems="flex-start"
+                    bgColor="#fff8c5"
+                    // textAlign="center"
+                    // bgColor="red"
                   >
-                    <TableClose />
+                    <Box
+                      cursor="pointer"
+                      // bgColor="blue"
+                      display="flex"
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                      pt="2px"
+                      pr="4px"
+                    >
+                      <AlertTrade />
+                    </Box>
+                    <Box p="6px 2px" display="flex">
+                      <Text fontSize="sm">
+                        We are evaluating few promising DEXes to integrate.
+                        Please check back at a late time.
+                      </Text>
+                      <Box
+                        pt="3px"
+                        pl="4px"
+                        pr="3px"
+                        cursor="pointer"
+                        // bgColor="pink"
+                        onClick={() => setTradeNote(false)}
+                      >
+                        <TableClose />
+                      </Box>
+                    </Box>
                   </Box>
-                </Box>
-              </Box>
-            </TabPanel>
+                </TabPanel>
 
-            <TabPanel p={0}>
-              {/* <Box
+                <TabPanel p={0}>
+                  {/* <Box
                 display={tradeNote ? "flex" : "none"}
                 bg="#DDF4FF"
                 fontSize="14px"
@@ -918,65 +919,65 @@ const SpendTable = () => {
                   </Box>
                 </Box>
               </Box> */}
-              <Box
-                display={tradeNote ? "flex" : "none"}
-                bg="#DDF4FF"
-                fontSize="14px"
-                p="8px"
-                fontStyle="normal"
-                fontWeight="400"
-                borderRadius="6px"
-                justifyContent="center"
-                alignItems="flex-start"
-                bgColor="#fff8c5"
-                // textAlign="center"
-                // bgColor="red"
-              >
-                <Box
-                  cursor="pointer"
-                  // bgColor="blue"
-                  display="flex"
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                  pt="2px"
-                  pr="4px"
-                >
-                  <AlertTrade />
-                </Box>
-                <Box p="6px 2px" display="flex">
-                  <Text fontSize="sm">
-                    We are evaluating few promising DEXes to integrate. Please
-                    check back at a late time.
-                  </Text>
                   <Box
-                    pt="3px"
-                    pl="4px"
-                    pr="3px"
-                    cursor="pointer"
-                    // bgColor="pink"
-                    onClick={() => setTradeNote(false)}
+                    display={tradeNote ? "flex" : "none"}
+                    bg="#DDF4FF"
+                    fontSize="14px"
+                    p="8px"
+                    fontStyle="normal"
+                    fontWeight="400"
+                    borderRadius="6px"
+                    justifyContent="center"
+                    alignItems="flex-start"
+                    bgColor="#fff8c5"
+                    // textAlign="center"
+                    // bgColor="red"
                   >
-                    <TableClose />
+                    <Box
+                      cursor="pointer"
+                      // bgColor="blue"
+                      display="flex"
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                      pt="2px"
+                      pr="4px"
+                    >
+                      <AlertTrade />
+                    </Box>
+                    <Box p="6px 2px" display="flex">
+                      <Text fontSize="sm">
+                        We are evaluating few promising DEXes to integrate.
+                        Please check back at a late time.
+                      </Text>
+                      <Box
+                        pt="3px"
+                        pl="4px"
+                        pr="3px"
+                        cursor="pointer"
+                        // bgColor="pink"
+                        onClick={() => setTradeNote(false)}
+                      >
+                        <TableClose />
+                      </Box>
+                    </Box>
                   </Box>
-                </Box>
-              </Box>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-        <Box
-          // mt="1rem"
-          // height="100%"
-          // bgColor={"blue"}
-          width="95%"
-          display="flex"
-          justifyContent="flex-end"
-          alignItems="flex-end"
-        >
-          {/* <LatestSyncedBlock width="16rem" height="100%" block={83207} /> */}
-        </Box>
-      </Box>
-    </>
-    }
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+            <Box
+              // mt="1rem"
+              // height="100%"
+              // bgColor={"blue"}
+              width="95%"
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="flex-end"
+            >
+              {/* <LatestSyncedBlock width="16rem" height="100%" block={83207} /> */}
+            </Box>
+          </Box>
+        </>
+      )}
     </>
   );
 };
