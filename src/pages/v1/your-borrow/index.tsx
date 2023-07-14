@@ -42,7 +42,7 @@ const YourBorrow = () => {
   useEffect(() => {
     if (UserLoans) {
       if (UserLoans?.length <= (currentPagination - 1) * 6) {
-        console.log("pagination here", Pagination, UserLoans);
+        console.log("pagination", Pagination, UserLoans);
         if (currentPagination > 1) {
           setCurrentPagination(currentPagination - 1);
         }
