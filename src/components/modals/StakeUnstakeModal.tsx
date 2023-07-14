@@ -103,6 +103,7 @@ const StakeUnstakeModal = ({
   validRTokens,
   ...restProps
 }: any) => {
+  console.log("coin - ", coin);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -307,6 +308,11 @@ const StakeUnstakeModal = ({
   //     }
   //   },
   // });
+  useEffect(() => {
+    if (coin) {
+      setAsset(coin ? coin?.name : "BTC");
+    }
+  }, [coin]);
   const handleStakeTransaction = async () => {
     try {
       // console.log("staking", rToken, rTokenAmount);
