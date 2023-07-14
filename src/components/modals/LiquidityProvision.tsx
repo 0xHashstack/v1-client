@@ -583,7 +583,7 @@ const LiquidityProvisionModal = ({
             }
           }}
         >
-          <Box onClick={() => setCurrentSwap("Myswap")}>
+          <Box onClick={() => setCurrentSwap("MySwap")}>
             {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
           </Box>
         </Box>
@@ -658,7 +658,7 @@ const LiquidityProvisionModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Select Liquidity Pool from below dropdown"
+                    label="indicates the option to choose a specific liquidity pool within the protocol. Liquidity pools are pools of funds used for various purposes such as trading, providing liquidity, or accessing specific DeFi services."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -773,7 +773,7 @@ const LiquidityProvisionModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Borrow ID of selected loan"
+                    label="Borrow ID refers to unique identification number assigned to a specific loan within the protocol"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -898,7 +898,7 @@ const LiquidityProvisionModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Borrow market"
+                    label="Borrowed amount refers to the unit of crypto coins you had borrowed from the protocol"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -978,7 +978,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Dapp"
+                      label="Refers to the app where loan should be spent."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1031,7 +1031,7 @@ const LiquidityProvisionModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Estimated LP tokens received"
+                        label="Estimated LP Tokens Received: This tool tip provides an estimate of the number of LP (Liquidity Provider) tokens you will receive when you provide liquidity to a pool."
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1086,7 +1086,7 @@ const LiquidityProvisionModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Liquidity split"
+                        label="refers to the fee charged for adjusting the allocation or distribution of liquidity across different assets within the protocol."
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1171,7 +1171,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Transaction fees"
+                      label="refer to the charges or costs incurred when completing a transactions"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1206,7 +1206,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Estimated gas fees for transaction"
+                      label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1241,7 +1241,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Borrow rate"
+                      label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1291,7 +1291,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Effective APR"
+                      label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1341,7 +1341,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Health factor"
+                      label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}

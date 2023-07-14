@@ -81,7 +81,13 @@ export async function getTotalBorrow(
     if (oraclePrice && exchangeRate) {
       let loanAmoungUnderlying = loan.loanAmountParsed * exchangeRate;
       totalBorrow += loanAmoungUnderlying * oraclePrice.price;
-
+      console.log(
+        "total borrow loan ID ",
+        loan?.loanId,
+        " is ",
+        loanAmoungUnderlying * oraclePrice.price,
+        totalBorrow
+      );
       if (loan.loanState === "ACTIVE") {
         totalCurrentAmount += loan.currentLoanAmountParsed * oraclePrice.price;
       } else if (loan.loanState === "SPENT") {

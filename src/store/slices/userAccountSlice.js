@@ -311,7 +311,7 @@ export const selectTransactionStatus = (state) =>
 export const selectAssetWalletBalance = (state) =>
   state.user_account.assetWalletBalance;
 export const selectTransactionStartedAndModalClosed = (state) =>
-  state.user_account.transactionStartedAndModalClosed;
+  state.user_account?.transactionStartedAndModalClosed;
 export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;
 export const selectCoinSelectedSupplyModal = (state) =>

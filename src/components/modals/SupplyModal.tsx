@@ -782,7 +782,7 @@ const SupplyModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Supply market"
+                    label="Supply market refers to the crypto currency tokens selected to deposit on the Hashstack protocol"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -906,17 +906,19 @@ const SupplyModal = ({
                                 fontWeight="thin"
                               >
                                 Wallet Balance:{" "}
-                                {numberFormatter(
-                                  Number(
-                                    BNtoNum(
-                                      uint256.uint256ToBN(
-                                        assetBalance[coin]?.dataBalanceOf
-                                          ?.balance
-                                      ),
-                                      tokenDecimalsMap[coin]
+                                {assetBalance[coin]?.dataBalanceOf?.balance
+                                  ? numberFormatter(
+                                      Number(
+                                        BNtoNum(
+                                          uint256.uint256ToBN(
+                                            assetBalance[coin]?.dataBalanceOf
+                                              ?.balance
+                                          ),
+                                          tokenDecimalsMap[coin]
+                                        )
+                                      )
                                     )
-                                  )
-                                )}
+                                  : "-"}
                               </Box>
                             </Box>
                           </Box>
@@ -938,7 +940,7 @@ const SupplyModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Enter amount"
+                    label="Amount refers to the unit oc coins you are willing to supply"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1267,7 +1269,7 @@ const SupplyModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Fees"
+                      label="refer to the charges or costs incurred when completing a transactions"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1310,7 +1312,7 @@ const SupplyModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Estimated gas fees for transaction"
+                      label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1351,7 +1353,7 @@ const SupplyModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Supply apr"
+                      label="Supply APR (Annual Percentage Rate) refers to the annualized interest rate earned on supplied funds."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}

@@ -742,6 +742,7 @@ const BorrowModal = ({
   useEffect(() => {
     setAmount(0);
     setsliderValue2(0);
+    setinputBorrowAmount(0);
   }, [currentBorrowCoin]);
   // console.log(currentCollateralCoin,"collateral coin")
   // useEffect(() => {
@@ -814,7 +815,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Select collateral market"
+                    label="Collateral market refers to the cryptocurrency that you keep as security agains the borrowed amount you take from Hashstack"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1027,15 +1028,7 @@ const BorrowModal = ({
                               >
                                 Wallet Balance:{" "}
                                 {numberFormatter(
-                                  Number(
-                                    BNtoNum(
-                                      uint256.uint256ToBN(
-                                        walletBalances[coin]?.dataBalanceOf
-                                          ?.balance
-                                      ),
-                                      tokenDecimalsMap[coin]
-                                    )
-                                  )
+                                  walletBalance
                                 )}
                               </Box>
                             </Box>
@@ -1055,7 +1048,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Enter collateral amount"
+                    label="Collateral amount refers to the unit of crypto coins you are willing to keep as security against the borrowed amount"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1362,7 +1355,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Select borrow market"
+                    label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1503,7 +1496,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Enter borrow amount"
+                    label="Borrow amount refers to the unit of crypto coins you are willing to borrow from the protocol"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1834,7 +1827,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Estimated gas fees for transaction"
+                    label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1876,7 +1869,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Borrow rate"
+                    label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1936,7 +1929,7 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Effective apr"
+                      label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -2048,7 +2041,7 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Health factor"
+                      label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
