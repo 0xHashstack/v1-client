@@ -615,7 +615,7 @@ const YourBorrowModal = ({
       case "dETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
         break;
-      case "rDAI":
+      case "dDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
       case "rBTC":

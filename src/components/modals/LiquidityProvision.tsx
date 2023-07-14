@@ -583,7 +583,7 @@ const LiquidityProvisionModal = ({
             }
           }}
         >
-          <Box onClick={() => setCurrentSwap("Myswap")}>
+          <Box onClick={() => setCurrentSwap("MySwap")}>
             {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
           </Box>
         </Box>
