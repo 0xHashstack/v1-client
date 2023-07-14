@@ -103,7 +103,7 @@ const StakeUnstakeModal = ({
   validRTokens,
   ...restProps
 }: any) => {
-  console.log("coin - ", coin);
+  // console.log("coin - ", coin);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
