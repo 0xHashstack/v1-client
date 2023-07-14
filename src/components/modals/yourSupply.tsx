@@ -326,7 +326,7 @@ const YourSupplyModal = ({
   const handleWithdrawlChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
 
-    var percentage = (newValue * 100) / walletBalance;
+    var percentage = (newValue * 100) / withdrawWalletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue2(100);
@@ -1716,7 +1716,7 @@ const YourSupplyModal = ({
                             MAX
                           </Button>
                         </Box>
-                        {inputWithdrawlAmount > walletBalance ||
+                        {inputWithdrawlAmount > withdrawWalletBalance ||
                         inputWithdrawlAmount < 0 ? (
                           <Text
                             display="flex"
@@ -2101,7 +2101,7 @@ const YourSupplyModal = ({
                         </Text>
                       </Card>
                       {inputWithdrawlAmount > 0 &&
-                      inputWithdrawlAmount <= walletBalance ? (
+                      inputWithdrawlAmount <= withdrawWalletBalance ? (
                         <Box
                           onClick={() => {
                             setWithdrawTransactionStarted(true);
