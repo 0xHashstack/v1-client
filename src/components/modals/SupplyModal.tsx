@@ -782,7 +782,7 @@ const SupplyModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="supply market refers to the crypto currency tokens selected to deposit on the Hashstack protocol"
+                    label="Supply market refers to the crypto currency tokens selected to deposit on the Hashstack protocol"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
