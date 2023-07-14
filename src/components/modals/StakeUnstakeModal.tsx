@@ -982,7 +982,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Select stake market"
+                            label="Select market refers to the crypto currency tokens selected to stake on the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -1139,7 +1139,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Enter stake amount"
+                            label="refers to the unit of crypto coins you are willing to stake on the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -1512,7 +1512,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="staking rewards"
+                              label="refers to the rewards earned by users who participate in staking activities within the protocol"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1575,7 +1575,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimated gas fees for transaction"
+                              label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1609,7 +1609,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Fees"
+                              label="refer to the charges or costs incurred when completing a transactions"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1891,7 +1891,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Select unstake market"
+                            label="Select market refers to the crypto currency tokens selected to Unstake on the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -2032,7 +2032,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Enter amount"
+                            label="refers to the unit of crypto coins you are willing to unstake from the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -2326,7 +2326,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimated rtokens"
+                              label="estimation of the number of tokens you may receive after unstaking."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -2365,7 +2365,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimated gas fees for transaction"
+                              label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -2399,7 +2399,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Fees"
+                              label="refer to the charges or costs incurred when completing a transactions"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
