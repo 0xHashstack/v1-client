@@ -1291,15 +1291,18 @@ const TradeModal = ({
                                     fontWeight="thin"
                                   >
                                     Wallet Balance:{" "}
-                                    {Number(
-                                      BNtoNum(
-                                        uint256.uint256ToBN(
-                                          walletBalances[coin]?.dataBalanceOf
-                                            ?.balance
-                                        ),
-                                        tokenDecimalsMap[coin]
-                                      )
-                                    ).toFixed(2)}
+                                    {walletBalances[coin]?.dataBalanceOf
+                                      ?.balance
+                                      ? Number(
+                                          BNtoNum(
+                                            uint256.uint256ToBN(
+                                              walletBalances[coin]
+                                                ?.dataBalanceOf?.balance
+                                            ),
+                                            tokenDecimalsMap[coin]
+                                          )
+                                        ).toFixed(2)
+                                      : "-"}
                                   </Box>
                                 </Box>
                               </Box>
