@@ -3461,7 +3461,7 @@ const YourBorrowModal = ({
                                 ""
                               )}
 
-                              <Text mt="0.10rem">{currentDapp}</Text>
+                              <Text mt="0.10rem" color="white">{currentDapp}</Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (
@@ -3523,7 +3523,7 @@ const YourBorrowModal = ({
                                         borderRadius="md"
                                       >
                                         <Box p="1">{getCoin(dapp.name)}</Box>
-                                        <Text pt="1">{dapp.name}</Text>
+                                        <Text pt="1" color="white">{dapp.name}</Text>
                                       </Box>
                                       {dapp.status === "disable" && (
                                         <Text
