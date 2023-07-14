@@ -17,6 +17,7 @@ import { Skeleton } from "@chakra-ui/react";
 import { selectYourBorrow, selectNetAPR } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
+import { selectUserUnspentLoans } from "@/store/slices/userAccountSlice";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
 const SpendBorrow = () => {
   const { available, disconnect, connect, connectors, refresh } =
@@ -24,6 +25,7 @@ const SpendBorrow = () => {
   useDataLoader();
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
+  const userLoans=useSelector(selectUserUnspentLoans);
   console.log(totalBorrow, "total borrow spend borrow");
   console.log(netAPR, "netapr in spend borrow");
   return (

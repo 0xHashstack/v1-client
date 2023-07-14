@@ -611,38 +611,10 @@ const SpendTable = () => {
         </TableContainer>
       ) : (
         <>
-          <Box
-            border="1px"
-            borderColor="#2B2F35"
-            // py="6"
-            color="white"
-            borderRadius="md"
-            w="94%"
-            // px="3"
-            p="2rem 1rem 24px"
-            h="283px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flexDirection="column"
-            gap="4px"
-          >
-            <Text color="#FFFFFF">You do not have outstanding borrows</Text>
-            <BorrowModal
-              buttonText="Borrow assets"
-              variant="link"
-              fontSize="16px"
-              fontWeight="400"
-              display="inline"
-              color="#0969DA"
-              cursor="pointer"
-              ml="0.4rem"
-              lineHeight="24px"
-            />
-          </Box>
         </>
       )}
-
+    {userLoans?.length>0 &&
+    <>
       <Box
         paddingY="1rem"
         width="95%"
@@ -997,6 +969,8 @@ const SpendTable = () => {
           {/* <LatestSyncedBlock width="16rem" height="100%" block={83207} /> */}
         </Box>
       </Box>
+    </>
+    }
     </>
   );
 };
