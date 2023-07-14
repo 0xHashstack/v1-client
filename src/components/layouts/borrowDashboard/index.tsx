@@ -42,6 +42,7 @@ import { BNtoNum } from "@/Blockchain/utils/utils";
 import { processAddress } from "@/Blockchain/stark-constants";
 import TableInfoIcon from "../table/tableIcons/infoIcon";
 import TableClose from "../table/tableIcons/close";
+import { setCurrentPage } from "@/store/slices/userAccountSlice";
 
 export interface ICoin {
   name: string;
@@ -151,12 +152,14 @@ export interface ICoin {
 const BorrowDashboard = ({
   width,
   currentPagination,
+  setCurrentPagination,
   Coins,
   columnItems,
 }: // userLoans,
 {
   width: string;
   currentPagination: any;
+  setCurrentPagination: any;
   Coins: any;
   columnItems: any;
   Borrows: ILoan[];
@@ -170,6 +173,7 @@ const BorrowDashboard = ({
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Borrows ? Borrows.length - 1 : 0, upper_bound);
+
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
   const [borrowIds, setBorrowIds] = useState([]);
   const [borrowAmount, setBorrowAmount] = useState<number>(0);
@@ -209,6 +213,9 @@ const BorrowDashboard = ({
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
+    if (Borrows && upper_bound > lower_bound && currentPagination > 1) {
+      setCurrentPagination(currentPagination - 1);
+    }
   }, [Borrows]);
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);

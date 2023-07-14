@@ -158,6 +158,7 @@ const YourBorrow = () => {
       <BorrowDashboard
         width={"95%"}
         currentPagination={currentPagination}
+        setCurrentPagination={setCurrentPagination}
         Coins={Coins}
         columnItems={columnItems}
         Borrows={UserLoans}
