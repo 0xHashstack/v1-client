@@ -15,7 +15,11 @@ import {
 } from "@/Blockchain/utils/addressServices";
 import { ILoan, Token } from "@/Blockchain/interfaces/interfaces";
 import mixpanel from "mixpanel-browser";
-import { selectActiveTransactions, setActiveTransactions, setTransactionStatus } from "@/store/slices/userAccountSlice";
+import {
+  selectActiveTransactions,
+  setActiveTransactions,
+  setTransactionStatus,
+} from "@/store/slices/userAccountSlice";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -24,12 +28,16 @@ const useRepay = (loanParam: any) => {
   const [repayAmount, setRepayAmount] = useState<number>(0);
   const [loan, setLoan] = useState<ILoan>(loanParam);
   const [allowanceVal, setAllowance] = useState(0);
-  // console.log(repayAmount, "loan here", loanParam);
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY|| "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  console.log(repayAmount, "loan param", loanParam);
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
 
   const [transApprove, setTransApprove] = useState("");
   const [transRepayHash, setTransRepayHash] = useState("");
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const [transSelfLiquidateHash, setIsSelfLiquidateHash] = useState("");
 
   // const repayTransactionReceipt = useWaitForTransaction({
@@ -120,7 +128,6 @@ const useRepay = (loanParam: any) => {
   let activeTransactions = useSelector(selectActiveTransactions);
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
-
   return {
     repayAmount,
     setRepayAmount,
@@ -143,4 +150,3 @@ const useRepay = (loanParam: any) => {
 };
 
 export default useRepay;
-

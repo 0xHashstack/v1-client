@@ -264,6 +264,9 @@ const YourBorrowModal = ({
     // selfLiquidateTransactionReceipt,
     setIsSelfLiquidateHash,
   } = useRepay(loan);
+  useEffect(() => {
+    console.log("current loan", loan);
+  }, [loan]);
 
   const {
     swapLoanId,
@@ -335,14 +338,11 @@ const YourBorrowModal = ({
     try {
       const val = await writeAsyncRepay();
       setTransRepayHash(val?.transaction_hash);
-      if(val?.transaction_hash){
-        const toastid = toast.info(
-          `Transaction pending `,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-          }
-        );
+      if (val?.transaction_hash) {
+        const toastid = toast.info(`Transaction pending `, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+        });
         setToastId(toastid);
         if (!activeTransactions) {
           activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
@@ -364,14 +364,12 @@ const YourBorrowModal = ({
         mixpanel.track("Zero Repay Status", {
           Status: "Success",
           "Loan ID": loan?.loanId,
-
         });
 
         dispatch(setActiveTransactions(activeTransactions));
         dispatch(setTransactionStatus("success"));
       }
-
-    } catch (err:any) {
+    } catch (err: any) {
       console.log(err, "err repay");
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
@@ -386,9 +384,9 @@ const YourBorrowModal = ({
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
       });
-      mixpanel.track('Repay Borrow Status',{
-        "Status":"Failure"
-      })
+      mixpanel.track("Repay Borrow Status", {
+        Status: "Failure",
+      });
       // const toastParamValue = {
       //   success: false,
       //   heading: "Repay Transaction Failed",
@@ -4497,11 +4495,11 @@ const YourBorrowModal = ({
                           label="Hashstack self liquidates your collateral
                             & debt positions to repay the borrow.
                             The balance will be updated into rTokens"
-                            bg="#24292F"
-                            fontSize={"smaller"}
-                            fontWeight={"thin"}
-                            borderRadius={"lg"}
-                            padding={"2"}
+                          bg="#24292F"
+                          fontSize={"smaller"}
+                          fontWeight={"thin"}
+                          borderRadius={"lg"}
+                          padding={"2"}
                         >
                           <Box>
                             <InfoIcon />
