@@ -119,80 +119,7 @@ const useRepay = (loanParam: any) => {
   const [toastId, setToastId] = useState<any>();
   let activeTransactions = useSelector(selectActiveTransactions);
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
-  const handleRepayBorrow = async () => {
-    if (!repayAmount && loan?.loanId! && !diamondAddress) {
-      return;
-    }
-    // if (!repayAmount || repayAmount < 0) {
-    if (!repayAmount || repayAmount < 0) {
-      return;
-    }
-    try {
-      const val = await writeAsyncRepay();
-      setTransRepayHash(val?.transaction_hash);
-      if(val?.transaction_hash){
-        const toastid = toast.info(
-          `Transaction pending `,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-          }
-        );
-        setToastId(toastid);
-        if (!activeTransactions) {
-          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
-        } else if (
-          Object.isFrozen(activeTransactions) ||
-          Object.isSealed(activeTransactions)
-        ) {
-          // Check if activeTransactions is frozen or sealed
-          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
-        }
-        const trans_data = {
-          transaction_hash: val?.transaction_hash.toString(),
-          message: `You have successfully repaid`,
-          toastId: toastid,
-          setCurrentTransactionStatus: setCurrentTransactionStatus,
-        };
-        // addTransaction({ hash: deposit?.transaction_hash });
-        activeTransactions?.push(trans_data);
-        mixpanel.track("Zero Repay Status", {
-          Status: "Success",
-          "Loan ID": loan?.loanId,
 
-        });
-
-        dispatch(setActiveTransactions(activeTransactions));
-        dispatch(setTransactionStatus("success"));
-      }
-
-    } catch (err:any) {
-      console.log(err, "err repay");
-      dispatch(setTransactionStatus("failed"));
-      const toastContent = (
-        <div>
-          Transaction failed{" "}
-          <CopyToClipboard text={err}>
-            <Text as="u">copy error!</Text>
-          </CopyToClipboard>
-        </div>
-      );
-      toast.error(toastContent, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: false,
-      });
-      mixpanel.track('Repay Borrow Status',{
-        "Status":"Failure"
-      })
-      // const toastParamValue = {
-      //   success: false,
-      //   heading: "Repay Transaction Failed",
-      //   desc: "Copy the error",
-      //   textToCopy: err,
-      // };
-      return;
-    }
-  };
 
   return {
     repayAmount,
@@ -204,7 +131,7 @@ const useRepay = (loanParam: any) => {
     // repayTransactionReceipt,
     isLoadingRepay,
     errorRepay,
-    handleRepayBorrow,
+    // handleRepayBorrow,
 
     //SelfLiquidate - Repay with 0 amount
     writeAsyncSelfLiquidate,

@@ -79,6 +79,7 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
         },
       ],
     },
+    colors: ["#2BA26F"],
   };
 
   const chartSeries = [
