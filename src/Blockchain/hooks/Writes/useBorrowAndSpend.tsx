@@ -115,7 +115,7 @@ const useBorrowAndSpend = () => {
           "0",
 
           recipient,
-          ...generateCalldata(), 
+          ...generateCalldata(),
         ],
       },
     ],
