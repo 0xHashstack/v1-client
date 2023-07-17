@@ -59,6 +59,7 @@ const AnimatedButton: React.FC<Props> = ({
       setProgressBarWidth("0%");
     }
   },[modalClosed])
+  console.log(modalClosed,"close");
   useEffect(() => {
     // console.log(transactionStatus);
     // if(modalClosed==true){
@@ -130,13 +131,11 @@ const AnimatedButton: React.FC<Props> = ({
     if (transactionStatus == "success" || transactionStatus == "failed" && !modalClosed) {
       setIsAnimationStarted(true);
     }
-  }, [transactionStatus,modalClosed]);
+  }, [transactionStatus]);
 
   useEffect(() => {
     let interval: any;
-    // if(modalClosed==true){
-    //   setCurrentStringIndex(-1);
-    // }
+    
     if (isAnimationStarted && transactionStatus == "success" && !modalClosed) {
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
@@ -190,12 +189,12 @@ const AnimatedButton: React.FC<Props> = ({
       _active={{ border: isAnimationStarted ? "" : "3px solid grey" }}
       {...rest}
       border={
-        isAnimationStarted && transactionStatus == "failed"
+        isAnimationStarted &&!modalClosed && transactionStatus == "failed"
           ? "1px solid #9A131D"
           : "1px solid #8B949E"
       }
-      bgColor={isAnimationStarted ? "#eeeff2" : bgColor}
-      color={isAnimationStarted ? "#010409" : "#6A737D"}
+      bgColor={isAnimationStarted &&!modalClosed ? "#eeeff2" : bgColor}
+      color={isAnimationStarted &&!modalClosed ? "#010409" : "#6A737D"}
       _hover={{ color: "#010409", bgColor: "#eeeff2" }}
     >
       <Box
@@ -251,7 +250,7 @@ const AnimatedButton: React.FC<Props> = ({
             >
               {currentStringIndex === -1
                 ? children
-                : transactionStatus === "success"
+                : transactionStatus === "success" 
                 ? currentTransactionStatus === ""
                   ? labelSuccessArray[currentStringIndex]
                   : currentTransactionStatus === "success"
