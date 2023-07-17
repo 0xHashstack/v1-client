@@ -256,3 +256,8 @@ export async function effectiveAprDeposit(
     return (rTokenInterest + stakingInterest) / rTokenTotal;
   }
 }
+
+//!Data Oracle 
+
+
+//!Data Deposit

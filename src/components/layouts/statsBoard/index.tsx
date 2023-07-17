@@ -30,6 +30,7 @@ const StatsBoard = () => {
   const yourSupply = useSelector(selectYourSupply);
   const yourBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
+  console.log(yourBorrow)
   // const netWorth= datanetWorth? datanetWorth:"-";
   // console.log(netWorth,"net worth")
 
