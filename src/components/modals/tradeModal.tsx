@@ -466,10 +466,10 @@ const TradeModal = ({
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
-  useEffect(()=>{
-    setCurrentPool('Select a pool')
-    setCurrentPoolCoin('Select a pool')
-  },[radioValue])
+  useEffect(() => {
+    setCurrentPool("Select a pool");
+    setCurrentPoolCoin("Select a pool");
+  }, [radioValue]);
 
   useEffect(() => {
     setinputBorrowAmount(0);
@@ -2244,7 +2244,9 @@ const TradeModal = ({
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(dapp.name)}</Box>
-                                  <Text pt="1">{dapp.name}</Text>
+                                  <Text pt="1" color="white">
+                                    {dapp.name}
+                                  </Text>
                                 </Box>
                                 {dapp.status === "disable" && (
                                   <Text
