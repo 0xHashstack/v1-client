@@ -43,6 +43,7 @@ import { processAddress } from "@/Blockchain/stark-constants";
 import TableInfoIcon from "../table/tableIcons/infoIcon";
 import TableClose from "../table/tableIcons/close";
 import { setCurrentPage } from "@/store/slices/userAccountSlice";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 
 export interface ICoin {
   name: string;
@@ -427,7 +428,7 @@ const BorrowDashboard = ({
       height={"37rem"}
       padding={"1rem 2rem 0rem"}
       overflowX="hidden"
-      mt={"3rem"}
+      // mt={"3rem"}
     >
       <Table
         variant="unstyled"
@@ -619,7 +620,7 @@ const BorrowDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          numberFormatter(
+                          numberFormatterPercentage(
                             getBorrowAPR(borrow?.loanMarket.slice(1))
                           ) + "%"
                         )}
@@ -645,12 +646,21 @@ const BorrowDashboard = ({
                         {/* {checkGap(idx1, idx2)} */}
                         {avgs?.find(
                           (item: any) => item.loanId == borrow?.loanId
-                        )?.avg
-                          ? avgs?.find(
+                        )?.avg ? (
+                          Number(
+                            avgs?.find(
                               (item: any) => item.loanId == borrow?.loanId
                             )?.avg
-                          : "3.2"}
-                        %
+                          )?.toFixed(3) + "%"
+                        ) : (
+                          <Skeleton
+                            width="6rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />
+                        )}
                       </Text>
                     </Td>
                     <Td

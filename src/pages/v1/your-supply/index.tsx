@@ -94,7 +94,7 @@ const YourSupply = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalSupply ? `$ ${numberFormatter(totalSupply)}` : "NA"}
+                {totalSupply ? `$${numberFormatter(totalSupply)}` : "NA"}
               </Text>
             )}
           </VStack>
