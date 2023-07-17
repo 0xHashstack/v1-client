@@ -427,7 +427,7 @@ const BorrowDashboard = ({
       height={"37rem"}
       padding={"1rem 2rem 0rem"}
       overflowX="hidden"
-      mt={"3rem"}
+      // mt={"3rem"}
     >
       <Table
         variant="unstyled"
