@@ -106,6 +106,7 @@ import {
   getJediEstimatedLpAmountOut,
   getUSDValue,
 } from "@/Blockchain/scripts/l3interaction";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const TradeModal = ({
   buttonText,
   coin,
@@ -1440,7 +1441,7 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Wallet Balance: {walletBalance}
+                          Wallet Balance: {numberFormatter(walletBalance)}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
@@ -1457,7 +1458,7 @@ const TradeModal = ({
                         fontStyle="normal"
                         fontFamily="Inter"
                       >
-                        Wallet Balance: {walletBalance}
+                        Wallet Balance: {numberFormatter(walletBalance)}
                         <Text color="#6E7781" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>
@@ -1470,12 +1471,18 @@ const TradeModal = ({
                         value={sliderValue}
                         onChange={(val) => {
                           setSliderValue(val);
-                          var ans = (val / 100) * walletBalance;
-                          ans = Math.round(ans * 100) / 100;
-                          dispatch(setInputTradeModalCollateralAmount(ans));
-                          setinputCollateralAmount(ans);
-                          setCollateralAmount(ans);
-                          setRTokenAmount(ans);
+                          if(val==100){
+                            setinputCollateralAmount(walletBalance);
+                            setCollateralAmount(walletBalance);
+                            setRTokenAmount(walletBalance);
+                          }else{
+                            var ans = (val / 100) * walletBalance;
+                            ans = Math.round(ans * 100) / 100;
+                            dispatch(setInputTradeModalCollateralAmount(ans));
+                            setinputCollateralAmount(ans);
+                            setCollateralAmount(ans);
+                            setRTokenAmount(ans);
+                          }
                         }}
                         isDisabled={transactionStarted == true}
                         _disabled={{ cursor: "pointer" }}
@@ -1936,7 +1943,7 @@ const TradeModal = ({
                           justifyContent="flex-end"
                         >
                           Available Reserves:{" "}
-                          {currentAvailableReserves.toFixed(2)}
+                          {numberFormatter(currentAvailableReserves)}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentBorrowCoin}`}
                           </Text>
@@ -1954,9 +1961,7 @@ const TradeModal = ({
                         fontFamily="Inter"
                       >
                         Available reserves:{" "}
-                        {protocolStats?.find(
-                          (stat: any) => stat?.token == currentBorrowCoin
-                        )?.availableReserves || (
+                        { currentAvailableReserves ? numberFormatter(currentAvailableReserves) : (
                           <Skeleton
                             width="4rem"
                             height=".85rem"
@@ -1978,11 +1983,16 @@ const TradeModal = ({
                         value={sliderValue2}
                         onChange={(val) => {
                           setsliderValue2(val);
-                          var ans = (val / 100) * currentAvailableReserves;
-                          ans = Math.round(ans * 100) / 100;
-                          dispatch(setInputTradeModalBorrowAmount(ans));
-                          setinputBorrowAmount(ans);
-                          setLoanAmount(ans);
+                          if(val==100){
+                            setinputBorrowAmount(currentAvailableReserves);
+                            setLoanAmount(currentAvailableReserves);
+                          }else{
+                            var ans = (val / 100) * currentAvailableReserves;
+                            ans = Math.round(ans * 100) / 100;
+                            dispatch(setInputTradeModalBorrowAmount(ans));
+                            setinputBorrowAmount(ans);
+                            setLoanAmount(ans);
+                          }
                         }}
                         isDisabled={
                           transactionStarted == true ||
@@ -2871,7 +2881,7 @@ const TradeModal = ({
                 </Box>
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
                 (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
-                inputBorrowAmount < currentAvailableReserves &&
+                inputBorrowAmount <= currentAvailableReserves &&
                 inputBorrowAmount > 0 &&
                 inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD &&
                 currentDapp != "Select a dapp" &&

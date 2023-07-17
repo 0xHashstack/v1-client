@@ -1775,10 +1775,14 @@ const YourSupplyModal = ({
                             value={sliderValue2}
                             onChange={(val) => {
                               setSliderValue2(val);
-                              var ans = (val / 100) * withdrawWalletBalance;
-                              ans = Math.round(ans * 100) / 100;
-                              // dispatch(setInputSupplyAmount(ans))
-                              setinputWithdrawlAmount(ans);
+                              if(val==100){
+                                setinputWithdrawlAmount(withdrawWalletBalance);
+                              }else{
+                                var ans = (val / 100) * withdrawWalletBalance;
+                                ans = Math.round(ans * 100) / 100;
+                                // dispatch(setInputSupplyAmount(ans))
+                                setinputWithdrawlAmount(ans);
+                              }
                             }}
                             focusThumbOnChange={false}
                             isDisabled={withdrawTransactionStarted == true}
