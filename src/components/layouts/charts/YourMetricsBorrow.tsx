@@ -81,13 +81,32 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
     },
     colors: ["#2BA26F"],
   };
-
   const chartSeries = [
     {
-      name: "wBTC",
-      data: [44000, 55000, 41000, 17000, 15000],
+      name: 'BTC',
+      data:  [44000, 0, 0, 0, 0],
+      color: '#804D0F',
     },
-
+    {
+      name: 'ETH',
+      data: [0, 55000, 0, 0, 0],
+      color: '#3B48A8',
+    },
+    {
+      name: 'USDT',
+      data: [0, 0, 41000, 0, 0],
+      color: '#136B51',
+    },
+    {
+      name: 'USDC',
+      data: [0, 0, 0, 17000, 0],
+      color: '#1A2683',
+    },
+    {
+      name: 'DAI',
+      data: [0, 0, 0, 0, 15000],
+      color: '#996B22',
+    },
   ];
 
   return (
