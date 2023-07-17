@@ -53,9 +53,17 @@ const AnimatedButton: React.FC<Props> = ({
   const modalClosed=useSelector(selectTransactionStartedAndModalClosed)
   // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
   // console.log(transactionStatus,"transaction from button");
-
+  useEffect(()=>{
+    if(modalClosed==true){
+      setCurrentStringIndex(-1);
+      setProgressBarWidth("0%");
+    }
+  },[modalClosed])
   useEffect(() => {
-    console.log(transactionStatus);
+    // console.log(transactionStatus);
+    // if(modalClosed==true){
+    //   setProgressBarWidth("0%");
+    // }
     if (isAnimationStarted && transactionStatus == "success" && !modalClosed) {
       setProgressBarWidth(
         `${((currentStringIndex + 1) / labelSuccessArray.length) * 100 + 2}%`
@@ -71,7 +79,7 @@ const AnimatedButton: React.FC<Props> = ({
       }, 500);
 
       return () => clearInterval(interval);
-    } else if (isAnimationStarted && transactionStatus == "failed") {
+    } else if (isAnimationStarted && transactionStatus == "failed" && !modalClosed) {
       setProgressBarWidth(`${100}%`);
 
       // setProgressBarWidth(
@@ -85,7 +93,7 @@ const AnimatedButton: React.FC<Props> = ({
 
       // return () => clearInterval(interval);
     }
-  }, [currentStringIndex]);
+  }, [currentStringIndex,modalClosed]);
 
   useEffect(() => {
     if (isAnimationStarted && transactionStatus == "success" && !modalClosed) {
@@ -122,10 +130,13 @@ const AnimatedButton: React.FC<Props> = ({
     if (transactionStatus == "success" || transactionStatus == "failed" && !modalClosed) {
       setIsAnimationStarted(true);
     }
-  }, [transactionStatus]);
+  }, [transactionStatus,modalClosed]);
 
   useEffect(() => {
     let interval: any;
+    // if(modalClosed==true){
+    //   setCurrentStringIndex(-1);
+    // }
     if (isAnimationStarted && transactionStatus == "success" && !modalClosed) {
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {

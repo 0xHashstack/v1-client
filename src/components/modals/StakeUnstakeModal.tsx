@@ -1682,6 +1682,7 @@ const StakeUnstakeModal = ({
                           ) : (
                             <Box
                               onClick={() => {
+                                setTransactionStarted(true);
                                 if (transactionStarted == false) {
                                   mixpanel.track(
                                     "Stake Button Clicked Market page",
@@ -1694,7 +1695,7 @@ const StakeUnstakeModal = ({
                                   );
                                   handleStakeTransaction();
                                 }
-                                setTransactionStarted(true);
+                               
                               }}
                             >
                               <AnimatedButton
@@ -1768,6 +1769,7 @@ const StakeUnstakeModal = ({
                         ) : (
                           <Box
                             onClick={() => {
+                              setTransactionStarted(true);
                               if (transactionStarted == false) {
                                 mixpanel.track(
                                   "Stake Button Clicked Market page",
@@ -1780,7 +1782,7 @@ const StakeUnstakeModal = ({
                                 );
                                 hanldeStakeAndSupplyTransaction();
                               }
-                              setTransactionStarted(true);
+                             
                             }}
                           >
                             <AnimatedButton
@@ -2440,6 +2442,7 @@ const StakeUnstakeModal = ({
                       rTokenToWithdraw <= unstakeWalletBalance  ? (
                         <Box
                           onClick={() => {
+                            setUnstakeTransactionStarted(true);
                             if (unstakeTransactionStarted == false) {
                               mixpanel.track(
                                 "Unstake Button Clicked Market page",
@@ -2452,7 +2455,7 @@ const StakeUnstakeModal = ({
                               );
                               hanldeUnstakeTransaction();
                             }
-                            setUnstakeTransactionStarted(true);
+                            
                           }}
                         >
                           <AnimatedButton
