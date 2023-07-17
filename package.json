@@ -8,7 +8,8 @@
     "start": "next start",
     "export": "next export",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@babel/preset-react": "^7.22.3",
@@ -52,6 +53,7 @@
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/mixpanel-browser": "^2.47.0",
-    "@types/react-copy-to-clipboard": "^5.0.4"
+    "@types/react-copy-to-clipboard": "^5.0.4",
+    "husky": "^8.0.0"
   }
 }
