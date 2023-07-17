@@ -39,6 +39,9 @@ const theme = extendTheme({
     body: "Inter, sans-serif",
   },
 });
+const lightTheme = extendTheme({
+  // Add your light theme styles here
+});
 import { UserbackProvider } from "@userback/react";
 import Layout from "@/components/layouts/toasts";
 import spaceApiKey from "@/utils/constants/keys";
