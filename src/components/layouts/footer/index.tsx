@@ -154,7 +154,7 @@ const Footer = () => {
           </Box>
         </HStack>
       </HStack>
-      <HStack>
+      {/* <HStack>
         <HStack
           borderX="1px solid #2B2F35"
           h="100%"
@@ -165,12 +165,12 @@ const Footer = () => {
             Announcement
           </Text>
         </HStack>
-        {/* <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
+        <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Text color="#BDBFC1" fontSize="12px">
             Dummy copy
           </Text>
-        </HStack> */}
-      </HStack>
+        </HStack>
+      </HStack> */}
     </HStack>
   );
 };
