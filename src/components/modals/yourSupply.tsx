@@ -1775,9 +1775,9 @@ const YourSupplyModal = ({
                             value={sliderValue2}
                             onChange={(val) => {
                               setSliderValue2(val);
-                              if(val==100){
+                              if (val == 100) {
                                 setinputWithdrawlAmount(withdrawWalletBalance);
-                              }else{
+                              } else {
                                 var ans = (val / 100) * withdrawWalletBalance;
                                 ans = Math.round(ans * 100) / 100;
                                 // dispatch(setInputSupplyAmount(ans))

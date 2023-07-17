@@ -3,7 +3,7 @@ import React from 'react'
 const AaveLogo = () => {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_1361_337824)">
+<g clipPath="url(#clip0_1361_337824)">
 <mask id="mask0_1361_337824"  maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
 <path d="M16 0H0V16H16V0Z" fill="white"/>
 </mask>

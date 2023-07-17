@@ -10,7 +10,7 @@ import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
-  const [supplyData, setSupplyData] = useState(null);
+  const [supplyData, setSupplyData] = useState<any>(null);
   const userDeposits = useSelector(selectUserDeposits);
   const oraclePrices = useSelector(selectOraclePrices);
 
@@ -21,7 +21,8 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
           const price = oraclePrices?.find(
             (oraclePrice: any) => oraclePrice?.name == deposit?.token
           )?.price;
-          const token_amount = deposit?.underlyingAssetAmountParsed;
+          const token_amount =
+            deposit?.rTokenAmountParsed + deposit?.rTokenStakedParsed;
           if (price && token_amount) {
             return price * token_amount;
           }
@@ -47,6 +48,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
 
   const chartOptions = {
     chart: {
+      id: 'column-chart',
       stacked: true,
       toolbar: {
         show: false,
@@ -132,13 +134,40 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
     },
   };
 
+  // const chartSeries = [
+  //   {
+  //     name: "Supply",
+  //     data: supplyData ? supplyData : [44000, 55000, 41000, 17000, 15000],
+  //   },
+  // ];
   const chartSeries = [
     {
-      name: "Supply",
-      data: supplyData ? supplyData : [44000, 55000, 41000, 17000, 15000],
+      name: 'BTC',
+      data: supplyData ? [supplyData[0],0,0,0,0]: [44000, 0, 0, 0, 0],
+      color: '#804D0F',
+    },
+    {
+      name: 'ETH',
+      data: supplyData ? [0,supplyData[1],0,0,0]: [0, 55000, 0, 0, 0],
+      color: '#3B48A8',
+    },
+    {
+      name: 'USDT',
+      data: supplyData ? [0,0,supplyData[2],0,0]:  [0, 0, 41000, 0, 0],
+      color: '#136B51',
+    },
+    {
+      name: 'USDC',
+      data: supplyData ? [0,0,0,supplyData[3],0]:  [0, 0, 0, 17000, 0],
+      color: '#1A2683',
+    },
+    {
+      name: 'DAI',
+      data: supplyData ? [0,0,0,0,supplyData[4]]:  [0, 0, 0, 0, 15000],
+      color: '#996B22',
     },
   ];
-
+  
   return (
     <Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px">
       <ApexCharts

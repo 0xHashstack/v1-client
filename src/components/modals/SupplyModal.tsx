@@ -724,9 +724,7 @@ const SupplyModal = ({
         <Modal
           isOpen={isOpen}
           onClose={() => {
-            if (transactionStarted) {
               dispatch(setTransactionStartedAndModalClosed(true));
-            }
             resetStates();
             onClose();
             // if (transactionStarted) dispatch(setToastTransactionStarted(true));
