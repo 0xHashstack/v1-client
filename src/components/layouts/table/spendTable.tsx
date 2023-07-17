@@ -33,7 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectUserUnspentLoans,
   setCurrentPage,
-} from "@/store/slices/userAccountSlice";
+} from "../../../store/slices/userAccountSlice";
 import {
   selectUserLoans,
   selectProtocolStats,

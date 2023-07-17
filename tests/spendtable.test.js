@@ -1,11 +1,11 @@
-// import { render, screen, fireEvent } from "@testing-library/react";
-// import SpendTable from "../src/components/layouts/table/spendTable";
+import { render, screen, fireEvent } from "@testing-library/react";
+import SpendTable from "../src/components/layouts/table/spendTable";
 
-// describe("SpendTable component", () => {
-//   beforeEach(() => {
-//     render(<SpendTable />);
-//   });
-
+describe("SpendTable component", () => {
+  beforeEach(() => {
+    render(<SpendTable />);
+  });
+})
 //   test("displays warning box by default", () => {
 //     const warningBox = screen.getByText(/Only unspent loans are displayed/i);
 //     expect(warningBox).toBeInTheDocument();
