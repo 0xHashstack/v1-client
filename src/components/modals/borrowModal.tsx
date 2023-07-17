@@ -584,7 +584,7 @@ const BorrowModal = ({
     const amount = validRTokens.find(({ rToken, rTokenAmount }: any) => {
       if (rToken == coin) return rTokenAmount;
     });
-    return amount ? amount.rTokenAmount : 0;
+    return amount ? numberFormatter(amount.rTokenAmount) : 0;
   };
 
   const fetchEffectiveApr = async () => {
@@ -1027,9 +1027,18 @@ const BorrowModal = ({
                                 fontWeight="thin"
                               >
                                 Wallet Balance:{" "}
-                                {numberFormatter(
-                                  walletBalance
-                                )}
+                                {walletBalances[coin]?.dataBalanceOf
+                                      ?.balance
+                                      ? Number(
+                                          BNtoNum(
+                                            uint256.uint256ToBN(
+                                              walletBalances[coin]
+                                                ?.dataBalanceOf?.balance
+                                            ),
+                                            tokenDecimalsMap[coin]
+                                          )
+                                        ).toFixed(2)
+                                      : "-"}
                               </Box>
                             </Box>
                           </Box>
@@ -1201,13 +1210,18 @@ const BorrowModal = ({
                     value={sliderValue}
                     onChange={(val) => {
                       setSliderValue(val);
-                      var ans = (val * walletBalance) / 100;
-                      ans = Math.round(ans * 100) / 100;
-                      dispatch(setInputBorrowModalCollateralAmount(ans));
-                      // setRTokenAmount(ans);
-                      // setAmount(ans);
-                      setCollateralAmount(ans);
-                      setRTokenAmount(ans);
+                      if(val==100){
+                        setCollateralAmount(walletBalance);
+                        setRTokenAmount(walletBalance);
+                      }else{
+                        var ans = (val * walletBalance) / 100;
+                        ans = Math.round(ans * 100) / 100;
+                        dispatch(setInputBorrowModalCollateralAmount(ans));
+                        // setRTokenAmount(ans);
+                        // setAmount(ans);
+                        setCollateralAmount(ans);
+                        setRTokenAmount(ans);
+                      }
                     }}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}

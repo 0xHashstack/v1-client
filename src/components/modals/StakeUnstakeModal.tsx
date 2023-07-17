@@ -562,25 +562,33 @@ const StakeUnstakeModal = ({
   const handleUnstakeChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
 
+    
+
     var percentage = (newValue * 100) / unstakeWalletBalance;
-    percentage = Math.max(0, percentage);
-    if (unstakeWalletBalance == 0) {
-      setSliderValue2(0);
-      setInputUnstakeAmount(0);
-      setRTokenToWithdraw(0);
-    }
-    if (percentage > 100) {
+    if(percentage==100){
       setSliderValue2(100);
-      setRTokenToWithdraw(newValue);
-      // dispatch(setInputSupplyAmount(newValue));
-    } else {
-      percentage = Math.round(percentage);
-      if (isNaN(percentage)) {
-      } else {
-        setSliderValue2(percentage);
-        setRTokenToWithdraw(Number(newValue));
+      setInputUnstakeAmount(unstakeWalletBalance);
+      setRTokenToWithdraw(unstakeWalletBalance);
+    }else{
+      percentage = Math.max(0, percentage);
+      if (unstakeWalletBalance == 0) {
+        setSliderValue2(0);
+        setInputUnstakeAmount(0);
+        setRTokenToWithdraw(0);
       }
-      // dispatch(setInputSupplyAmount(newValue));
+      if (percentage > 100) {
+        setSliderValue2(100);
+        setRTokenToWithdraw(newValue);
+        // dispatch(setInputSupplyAmount(newValue));
+      } else {
+        percentage = Math.round(percentage);
+        if (isNaN(percentage)) {
+        } else {
+          setSliderValue2(percentage);
+          setRTokenToWithdraw(Number(newValue));
+        }
+        // dispatch(setInputSupplyAmount(newValue));
+      }
     }
   };
   const handleDropdownClick = (dropdownName: any) => {
@@ -2202,10 +2210,14 @@ const StakeUnstakeModal = ({
                                 return;
                               }
                               setSliderValue2(val);
-                              var ans = (val / 100) * unstakeWalletBalance;
-                              ans = Math.round(ans * 100) / 100;
-                              // dispatch(setInputSupplyAmount(ans))
-                              setRTokenToWithdraw(ans);
+                              if(val==100){
+                                setRTokenToWithdraw(unstakeWalletBalance)
+                              }else{
+                                var ans = (val / 100) * unstakeWalletBalance;
+                                ans = Math.round(ans * 100) / 100;
+                                // dispatch(setInputSupplyAmount(ans))
+                                setRTokenToWithdraw(ans);
+                              }
                             }}
                             isDisabled={unstakeTransactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
@@ -2425,8 +2437,7 @@ const StakeUnstakeModal = ({
                         </Text>
                       </Card>
                       {rTokenToWithdraw > 0 &&
-                      rTokenToWithdraw <= unstakeWalletBalance &&
-                      coinsSupplied[currentSelectedUnstakeCoin] ? (
+                      rTokenToWithdraw <= unstakeWalletBalance  ? (
                         <Box
                           onClick={() => {
                             if (unstakeTransactionStarted == false) {

@@ -724,11 +724,11 @@ const SupplyModal = ({
         <Modal
           isOpen={isOpen}
           onClose={() => {
-            onClose();
             if (transactionStarted) {
               dispatch(setTransactionStartedAndModalClosed(true));
             }
             resetStates();
+            onClose();
             // if (transactionStarted) dispatch(setToastTransactionStarted(true));
             // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
@@ -1401,8 +1401,8 @@ const SupplyModal = ({
                       // dispatch(setTransactionStarted(""));
                       setTransactionStarted(true);
                       if (transactionStarted === false) {
-                        handleTransaction();
                         dispatch(setTransactionStartedAndModalClosed(false));
+                        handleTransaction();
                         mixpanel.track("Supply Market Clicked Button", {
                           "Supply Clicked": true,
                         });
