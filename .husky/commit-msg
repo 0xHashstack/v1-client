@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+message="$1"
+
+# labels -  BUG_FIX, REFACTORING, ENHANCEMENT, HOT_FIX, SYNC_FIX
+# status -  IN_PROGRESS, DONE, COMPLETED, REVERTED
+# label msg [status]
+commit_message=$(cat "$message")
+
+commit_message_pattern="^(BUG_FIX|REFACTORING|ENHANCEMENT|HOT_FIX|SYNC_FIX)\s.*\s\[(IN_PROGRESS|DONE|COMPLETED|REVERTED)\]$"
+
+if ! echo "$commit_message" | grep -iqE "$commit_message_pattern";
+then
+    echo "commit message in wrong format 🚨"
+    echo "---------------------------------"
+    echo "Correct Format : label msg [status]"
+    echo "Labels : BUG_FIX, REFACTORING, ENHANCEMENT, HOT_FIX, SYNC_FIX"
+    echo "Status : IN_PROGRESS, DONE, COMPLETED, REVERTED"
+    echo ""
+    echo "Eg : BUG_FIX Added new deposit event [DONE]"
+    exit 1
+fi
