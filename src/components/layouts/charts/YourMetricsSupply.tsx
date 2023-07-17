@@ -10,7 +10,7 @@ import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
-  const [supplyData, setSupplyData] = useState(null);
+  const [supplyData, setSupplyData] = useState<any>(null);
   const userDeposits = useSelector(selectUserDeposits);
   const oraclePrices = useSelector(selectOraclePrices);
 
@@ -21,7 +21,8 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
           const price = oraclePrices?.find(
             (oraclePrice: any) => oraclePrice?.name == deposit?.token
           )?.price;
-          const token_amount = deposit?.underlyingAssetAmountParsed;
+          const token_amount =
+            deposit?.rTokenAmountParsed + deposit?.rTokenStakedParsed;
           if (price && token_amount) {
             return price * token_amount;
           }

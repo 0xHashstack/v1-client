@@ -83,6 +83,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
+import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 const useDataLoader = () => {
   const { address } = useAccount();
   const protocolReserves = useSelector(selectProtocolReserves);
@@ -156,12 +158,12 @@ const useDataLoader = () => {
           const tvlAmounts: any = [];
           const supplyCounts: any = [];
           const borrowCounts: any = [];
-          const utilRates:any=[];
-          const exchangeRates:any=[];
-          const totalTransactions:any=[];
-          const totalAccounts:any=[];
-          const aprs:any=[];
-          const apys:any=[];
+          const utilRates: any = [];
+          const exchangeRates: any = [];
+          const totalTransactions: any = [];
+          const totalAccounts: any = [];
+          const aprs: any = [];
+          const apys: any = [];
           for (var i = 0; i < 12; i++) {
             amounts?.push(response?.data[i].supplyAmount);
             borrowAmounts?.push(response?.data[i].borrowAmount);
@@ -178,8 +180,6 @@ const useDataLoader = () => {
             totalAccounts?.push(response?.data[i].totalAccounts);
             aprs?.push(responseApr?.data[i].APR);
             apys?.push(responseApr?.data[i].APY);
-
-
           }
           // console.log(dates,"Dates")
           const data = {
@@ -191,12 +191,12 @@ const useDataLoader = () => {
             borrowRates: borrowRates,
             supplyCounts: supplyCounts,
             borrowCounts: borrowCounts,
-            utilRates:utilRates,
-            exchangeRates:exchangeRates,
-            totalTransactions:totalTransactions,
-            totalAccounts:totalAccounts,
-            aprs:aprs,
-            apys:apys
+            utilRates: utilRates,
+            exchangeRates: exchangeRates,
+            totalTransactions: totalTransactions,
+            totalAccounts: totalAccounts,
+            aprs: aprs,
+            apys: apys,
           };
           // console.log(btcData,"Data gone")
           dispatch(setHourlyBTCData(data));
@@ -559,6 +559,16 @@ const useDataLoader = () => {
     userLoans,
     transactionRefresh,
   ]);
+  // useEffect(() => {
+  //   const fetchMinimumDepositAmount = async () => {
+  //     const data = await getMinimumDepositAmount(
+  //       tokenAddressMap["rBTC"],
+  //       "BTC"
+  //     );
+  //     console.log("fetchMinimumDepositAmount ", data);
+  //   };
+  //   fetchMinimumDepositAmount();
+  // }, []);
 
   useEffect(() => {
     try {
