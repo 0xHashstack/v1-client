@@ -39,9 +39,9 @@ const useTransactionHandler = () => {
   // console.log("trans toastHash", toastHash);
   // console.log("transaction results - ", results);
   useEffect(() => {
-    // console.log("transaction active transactions ", activeTransactions);
-    // console.log("transaction transactions ", transactions);
-    // console.log("transaction results ", results);
+    console.log("transaction active transactions ", activeTransactions);
+    console.log("transaction transactions ", transactions);
+    console.log("transaction results ", results);
     let transactionData = results?.filter(
       (transaction: UseTransactionResult, idx) => {
         transaction.refetch();

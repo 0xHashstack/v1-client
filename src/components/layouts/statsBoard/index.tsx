@@ -102,7 +102,7 @@ const StatsBoard = () => {
           onclick={() => {
             handleRouteChange("/v1/your-metrics");
           }}
-          arrowHide={false}
+          arrowHide={true}
         />
         <Stats
           header={[
