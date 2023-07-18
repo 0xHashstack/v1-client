@@ -4,7 +4,7 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { selectHourlyBTCData, selectHourlyDAIData, selectHourlyETHData, selectHourlyUSDCData, selectHourlyUSDTData } from "@/store/slices/readDataSlice";
 import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -38,6 +38,10 @@ const TotalUtilisationRateByMarketChart = () => {
     fetchData();
   }, [liquidityProviderChartPeriod]);
   const btcData = useSelector(selectHourlyBTCData);
+  const ethData=useSelector(selectHourlyETHData);
+  const usdtData=useSelector(selectHourlyUSDTData);
+  const usdcData=useSelector(selectHourlyUSDCData);
+  const daiData=useSelector(selectHourlyDAIData);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -48,7 +52,7 @@ const TotalUtilisationRateByMarketChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.utilRates
+        btcData?.utilRates && ethData?.utilRates && usdtData?.utilRates && usdcData?.utilRates && daiData?.utilRates
           ? (newData = [
               {
                 name: "BTC",
@@ -56,31 +60,19 @@ const TotalUtilisationRateByMarketChart = () => {
               },
               {
                 name: "ETH",
-                data: [
-                  200, 400, 2000, 400, 2000, 400, 2000, 400, 2000, 400, 2000,
-                  400,
-                ],
+                data: ethData?.utilRates,
               },
               {
                 name: "USDT",
-                data: [
-                  300, 400, 3000, 300, 4000, 200, 1000, 300, 400, 2000, 400,
-                  200,
-                ],
+                data: usdtData?.utilRates,
               },
               {
                 name: "USDC",
-                data: [
-                  400, 200, 1000, 300, 1000, 200, 2000, 400, 2000, 400, 200,
-                  400,
-                ],
+                data: usdcData?.utilRates
               },
               {
                 name: "DAI",
-                data: [
-                  100, 400, 1000, 100, 2000, 100, 1500, 300, 4000, 200, 1000,
-                  300,
-                ],
+                data: daiData?.utilRates
               },
             ])
           : (newData = [
