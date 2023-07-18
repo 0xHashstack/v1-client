@@ -165,7 +165,7 @@ const useDataLoader = () => {
           const totalAccounts: any = [];
           const aprs: any = [];
           const apys: any = [];
-          for (var i = 0; i < 12; i++) {
+          for (var i = 0; i < response?.data.length; i++) {
             amounts?.push(response?.data[i].supplyAmount);
             borrowAmounts?.push(response?.data[i].borrowAmount);
             tvlAmounts?.push(response?.data[i].tvlAmount);
