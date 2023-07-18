@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Box } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
@@ -23,11 +23,17 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
     USDC: 0,
     DAI: 0,
   };
-  let totalBorrow = { BTC: 0, ETH: 0, USDT: 0, USDC: 0, DAI: 0 };
+  const [totalBorrow, setTotalBorrow] = useState<any>({
+    BTC: 0,
+    ETH: 0,
+    USDT: 0,
+    USDC: 0,
+    DAI: 0,
+  });
   useEffect(() => {
     try {
       const fetchBorrowData = async () => {
-        totalBorrow = { BTC: 0, ETH: 0, USDT: 0, USDC: 0, DAI: 0 };
+        const borrow = { BTC: 0, ETH: 0, USDT: 0, USDC: 0, DAI: 0 };
         for (let loan of userLoans) {
           if (
             loan?.loanState === "REPAID" ||
@@ -47,18 +53,19 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
           if (oraclePrice && exchangeRate) {
             let loanAmoungUnderlying = loan?.loanAmountParsed * exchangeRate;
             if (loan?.underlyingMarket == "BTC") {
-              totalBorrow.BTC += loanAmoungUnderlying * oraclePrice.price;
+              borrow.BTC += loanAmoungUnderlying * oraclePrice.price;
             } else if (loan?.underlyingMarket == "USDT") {
-              totalBorrow.USDT += loanAmoungUnderlying * oraclePrice.price;
+              borrow.USDT += loanAmoungUnderlying * oraclePrice.price;
             } else if (loan?.underlyingMarket == "USDC") {
-              totalBorrow.USDC += loanAmoungUnderlying * oraclePrice.price;
+              borrow.USDC += loanAmoungUnderlying * oraclePrice.price;
             } else if (loan?.underlyingMarket == "ETH") {
-              totalBorrow.ETH += loanAmoungUnderlying * oraclePrice.price;
+              borrow.ETH += loanAmoungUnderlying * oraclePrice.price;
             } else if (loan?.underlyingMarket == "DAI") {
-              totalBorrow.DAI += loanAmoungUnderlying * oraclePrice.price;
+              borrow.DAI += loanAmoungUnderlying * oraclePrice.price;
             }
           }
         }
+        setTotalBorrow(borrow);
         console.log("totalBorrow ", totalBorrow);
       };
       if (userLoans && protocolStats && oraclePrices) {
