@@ -15,7 +15,7 @@ import {
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 import {
-    selectMetricsDropdowns,
+  selectMetricsDropdowns,
   selectModalDropDowns,
   setModalDropdown,
 } from "@/store/slices/dropdownsSlice";
@@ -690,6 +690,12 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(1);
               }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
+              }}
             >
               1W
             </Button>
@@ -700,6 +706,12 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               variant={aprByMarket === 2 ? "solid" : "outline"}
               onClick={() => {
                 setAPRByMarket(2);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
               }}
             >
               1M
@@ -712,6 +724,12 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               variant={aprByMarket === 3 ? "solid" : "outline"}
               onClick={() => {
                 setAPRByMarket(3);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
               }}
             >
               ALL
