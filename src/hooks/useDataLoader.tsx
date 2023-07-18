@@ -245,15 +245,15 @@ const useDataLoader = () => {
               };
               // console.log(data,"data in data loader")
               // console.log(btcData,"Data gone")
-              if(i==0){
+              if(j==0){
                 dispatch(setHourlyDAIData(data))
-              }else if(i==1){
+              }else if(j==1){
                 dispatch(setHourlyBTCData(data));
-              }else if(i==2){
+              }else if(j==2){
                 dispatch(setHourlyUSDTData(data));
-              }else if(i==3){
+              }else if(j==3){
                 dispatch(setHourlyUSDCData(data))
-              }else if(i==4){
+              }else if(j==4){
                 dispatch(setHourlyETHData(data));
               }
             }

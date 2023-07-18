@@ -37,7 +37,7 @@ const SupplyChart = () => {
   const usdcData=useSelector(selectHourlyUSDCData);
   const daiData=useSelector(selectHourlyDAIData);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"]
-  console.log(btcData?.supplyAmounts, "data protocol");
+  console.log(usdtData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
