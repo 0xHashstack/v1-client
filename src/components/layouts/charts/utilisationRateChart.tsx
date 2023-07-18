@@ -43,11 +43,11 @@ const UtilisationRateChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.utilRates
+        btcData?.totalUrm
           ? (newData = [
               {
                 name: "Utlization Rate",
-                data: btcData?.utilRates,
+                data: btcData?.totalUrm,
               },
             ])
           : (newData = [
@@ -151,7 +151,7 @@ const UtilisationRateChart = () => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return (val / 100)?.toFixed(1) + ""; // Display the data value as the label
+          return (val / 100)?.toFixed(1) + "%"; // Display the data value as the label
         },
       },
 
@@ -175,7 +175,7 @@ const UtilisationRateChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return (value / 100)?.toFixed(1) + "";
+            return (value / 100)?.toFixed(1) + "%";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
