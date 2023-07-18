@@ -1,4 +1,4 @@
-import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import { IDeposit, ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
@@ -27,6 +27,8 @@ import {
   selectUserDepositsCount,
   selectUserInfoCount,
   selectUserLoansCount,
+  selectYourMetricsBorrowCount,
+  selectYourMetricsSupplyCount,
   selectprotocolReservesCount,
   setAprCount,
   setAprsAndHealthCount,
@@ -43,6 +45,8 @@ import {
   setUserInfoCount,
   setUserLoansCount,
   setUserUnspentLoans,
+  setYourMetricsBorrowCount,
+  setYourMetricsSupplyCount,
 } from "@/store/slices/userAccountSlice";
 import {
   setOraclePrices,
@@ -62,6 +66,8 @@ import {
   setHourlyUSDTData,
   setHourlyUSDCData,
   setHourlyETHData,
+  setYourMetricsSupply,
+  setYourMetricsBorrow,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -88,7 +94,10 @@ import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
 import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
-import { tokenAddressMap, tokenDecimalsMap } from "@/Blockchain/utils/addressServices";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
 import OffchainAPI from "@/services/offchainapi.service";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
 const useDataLoader = () => {
@@ -123,6 +132,8 @@ const useDataLoader = () => {
   const netAprCount = useSelector(selectNetAprCount);
   const avgSupplyAprCount = useSelector(selectAvgSupplyAprCount);
   const avgBorrowAPRCount = useSelector(selectAvgBorrowAprCount);
+  const yourMetricsBorrowCount = useSelector(selectYourMetricsBorrowCount);
+  const yourMetricsSupplyCount = useSelector(selectYourMetricsSupplyCount);
 
   const dispatch = useDispatch();
   const Data: any = [];
@@ -182,7 +193,7 @@ const useDataLoader = () => {
         ];
         Promise.allSettled([...promises]).then((val) => {
           console.log("backend data ", promises);
-          for(var j=0;j<5;j++){
+          for (var j = 0; j < 5; j++) {
             // console.log(j,"for loop")
             const response = promises[j];
             const responseApr = promises[j+5]
@@ -192,7 +203,7 @@ const useDataLoader = () => {
             //   return;
             // }
             // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
-            if (response &&responseApr) {
+            if (response && responseApr) {
               const amounts: any = [];
               const borrowAmounts: any = [];
               const dates: any = [];
@@ -258,23 +269,21 @@ const useDataLoader = () => {
               };
               // console.log(data,"data in data loader")
               // console.log(btcData,"Data gone")
-              if(j==0){
-                dispatch(setHourlyDAIData(data))
-              }else if(j==1){
+              if (j == 0) {
+                dispatch(setHourlyDAIData(data));
+              } else if (j == 1) {
                 dispatch(setHourlyBTCData(data));
-              }else if(j==2){
+              } else if (j == 2) {
                 dispatch(setHourlyUSDTData(data));
-              }else if(j==3){
-                dispatch(setHourlyUSDCData(data))
-              }else if(j==4){
+              } else if (j == 3) {
+                dispatch(setHourlyUSDCData(data));
+              } else if (j == 4) {
                 dispatch(setHourlyETHData(data));
               }
             }
-            
           }
           const count = getTransactionCount();
           dispatch(setHourlyDataCount(count));
-
         });
         // const count = getTransactionCount();
         // dispatch(setHourlyDataCount(count));
@@ -546,6 +555,7 @@ const useDataLoader = () => {
       console.log(err, "error in your supply count");
     }
   }, [dataDeposit, dataOraclePrices]);
+
   useEffect(() => {
     try {
       const fetchUserSupply = async () => {
@@ -756,6 +766,97 @@ const useDataLoader = () => {
       console.log(err, "error in user info");
     }
   }, [protocolStats, transactionRefresh]);
+
+  useEffect(() => {
+    try {
+      const fetchSupplyData = async () => {
+        const data = dataDeposit?.map((deposit: IDeposit, idx: number) => {
+          const price = oraclePrices?.find(
+            (oraclePrice: any) => oraclePrice?.name == deposit?.token
+          )?.price;
+          const token_amount =
+            deposit?.rTokenAmountParsed + deposit?.rTokenStakedParsed;
+          if (price && token_amount) {
+            return price * token_amount;
+          }
+          return 0;
+        });
+        if (data && data?.length > 0) {
+          dispatch(setYourMetricsSupply(data));
+          const count = getTransactionCount();
+          dispatch(setYourMetricsSupplyCount(count));
+        }
+        console.log("supplyData", data);
+      };
+      if (
+        dataDeposit &&
+        dataDeposit?.length > 0 &&
+        oraclePrices &&
+        oraclePrices?.length > 0 &&
+        yourMetricsSupplyCount < transactionRefresh
+      ) {
+        fetchSupplyData();
+      }
+    } catch (err) {
+      console.log("your metrics supply err ", err);
+    }
+  }, [dataDeposit, oraclePrices, transactionRefresh, address]);
+
+  useEffect(() => {
+    try {
+      const fetchBorrowData = async () => {
+        const borrow = { BTC: 0, ETH: 0, USDT: 0, USDC: 0, DAI: 0 };
+        for (let loan of userLoans) {
+          if (
+            loan?.loanState === "REPAID" ||
+            loan?.loanState === "LIQUIDATED" ||
+            loan?.loanState === null
+          )
+            continue;
+
+          const oraclePrice = oraclePrices.find(
+            (oraclePrice: any) =>
+              oraclePrice.address === loan?.underlyingMarketAddress
+          );
+          let exchangeRate = protocolStats.find(
+            (marketInfo: any) =>
+              marketInfo.tokenAddress === loan?.underlyingMarketAddress
+          )?.exchangeRateDTokenToUnderlying;
+          if (oraclePrice && exchangeRate) {
+            let loanAmoungUnderlying = loan?.loanAmountParsed * exchangeRate;
+            if (loan?.underlyingMarket == "BTC") {
+              borrow.BTC += loanAmoungUnderlying * oraclePrice.price;
+            } else if (loan?.underlyingMarket == "USDT") {
+              borrow.USDT += loanAmoungUnderlying * oraclePrice.price;
+            } else if (loan?.underlyingMarket == "USDC") {
+              borrow.USDC += loanAmoungUnderlying * oraclePrice.price;
+            } else if (loan?.underlyingMarket == "ETH") {
+              borrow.ETH += loanAmoungUnderlying * oraclePrice.price;
+            } else if (loan?.underlyingMarket == "DAI") {
+              borrow.DAI += loanAmoungUnderlying * oraclePrice.price;
+            }
+          }
+        }
+        if (borrow) {
+          dispatch(setYourMetricsBorrow(borrow));
+          const count = getTransactionCount();
+          dispatch(setYourMetricsBorrowCount(count));
+        }
+        console.log("totalBorrow ", borrow);
+      };
+      if (
+        userLoans &&
+        protocolStats &&
+        oraclePrices &&
+        yourMetricsBorrowCount < transactionRefresh
+      ) {
+        fetchBorrowData();
+      }
+    } catch (err) {
+      console.log("err fetchBorrowData ", err);
+    }
+  }, [userLoans, protocolStats, oraclePrices, transactionRefresh, address]);
+
   // useEffect(() => {
   //   try {
   //     const fetchNetApr = async () => {
@@ -813,7 +914,7 @@ const useDataLoader = () => {
   useEffect(() => {
     console.log(
       "transaction refresh counts - ",
-      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount",
+      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount,yourMetricsSupplyCount,yourMetricsBorrowCount ",
       transactionRefresh,
       protocolStatsCount,
       protocolReservesCount,
@@ -825,7 +926,9 @@ const useDataLoader = () => {
       healthFactorCount,
       hourlyDataCount,
       netAprCount,
-      avgBorrowAPRCount
+      avgBorrowAPRCount,
+      yourMetricsSupplyCount,
+      yourMetricsBorrowCount
     );
   }, [
     transactionRefresh,
@@ -841,6 +944,8 @@ const useDataLoader = () => {
     hourlyDataCount,
     netAprCount,
     avgBorrowAPRCount,
+    yourMetricsSupplyCount,
+    yourMetricsBorrowCount,
   ]);
 };
 

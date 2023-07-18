@@ -295,9 +295,9 @@ const BorrowModal = ({
       console.log("borrow modal : error fetching protocolStats");
     }
   }, [protocolStatsRedux]);
-  useEffect(() => {
-    console.log("currentAvailableReserve", currentAvailableReserves);
-  }, [currentAvailableReserves]);
+  // useEffect(() => {
+  //   console.log("currentAvailableReserve", currentAvailableReserves);
+  // }, [currentAvailableReserves]);
   const oraclePrices = useSelector(selectOraclePrices);
   const marketInfo = useSelector(selectProtocolStats);
   const [healthFactor, setHealthFactor] = useState<number>();
@@ -376,24 +376,24 @@ const BorrowModal = ({
       //   currentBorrowCoin,
       //   inputBorrowAmount
       // );
-      console.log("got parsed usdt borrow", parsedBorrowAmount);
+      // console.log("got parsed usdt borrow", parsedBorrowAmount);
       setInputBorrowAmountUSD(parsedBorrowAmount);
-      console.log(
-        "effective apr values : ",
-        "loan_usd_value",
-        parsedBorrowAmount,
-        "loan_apr",
-        protocolStats?.find((stat: any) => stat?.token === currentBorrowCoin)
-          ?.borrowRate,
-        "collateral_usd_value",
-        inputCollateralAmountUSD,
-        "collateral_apr",
-        protocolStats?.find(
-          (stat: any) => stat?.token === currentCollateralCoin
-        )?.supplyRate,
-        "loan_usd_value",
-        parsedBorrowAmount
-      );
+      // console.log(
+      //   "effective apr values : ",
+      //   "loan_usd_value",
+      //   parsedBorrowAmount,
+      //   "loan_apr",
+      //   protocolStats?.find((stat: any) => stat?.token === currentBorrowCoin)
+      //     ?.borrowRate,
+      //   "collateral_usd_value",
+      //   inputCollateralAmountUSD,
+      //   "collateral_apr",
+      //   protocolStats?.find(
+      //     (stat: any) => stat?.token === currentCollateralCoin
+      //   )?.supplyRate,
+      //   "loan_usd_value",
+      //   parsedBorrowAmount
+      // );
     } catch (error) {
       console.log(error);
     }
@@ -1027,18 +1027,17 @@ const BorrowModal = ({
                                 fontWeight="thin"
                               >
                                 Wallet Balance:{" "}
-                                {walletBalances[coin]?.dataBalanceOf
-                                      ?.balance
-                                      ? Number(
-                                          BNtoNum(
-                                            uint256.uint256ToBN(
-                                              walletBalances[coin]
-                                                ?.dataBalanceOf?.balance
-                                            ),
-                                            tokenDecimalsMap[coin]
-                                          )
-                                        ).toFixed(2)
-                                      : "-"}
+                                {walletBalances[coin]?.dataBalanceOf?.balance
+                                  ? Number(
+                                      BNtoNum(
+                                        uint256.uint256ToBN(
+                                          walletBalances[coin]?.dataBalanceOf
+                                            ?.balance
+                                        ),
+                                        tokenDecimalsMap[coin]
+                                      )
+                                    ).toFixed(2)
+                                  : "-"}
                               </Box>
                             </Box>
                           </Box>
@@ -1210,10 +1209,10 @@ const BorrowModal = ({
                     value={sliderValue}
                     onChange={(val) => {
                       setSliderValue(val);
-                      if(val==100){
+                      if (val == 100) {
                         setCollateralAmount(walletBalance);
                         setRTokenAmount(walletBalance);
-                      }else{
+                      } else {
                         var ans = (val * walletBalance) / 100;
                         ans = Math.round(ans * 100) / 100;
                         dispatch(setInputBorrowModalCollateralAmount(ans));

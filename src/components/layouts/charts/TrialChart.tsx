@@ -12,7 +12,7 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
   const [selectedOption, setSelectedOption] = useState<any>("1week");
   const [chartData, setChartData] = useState(series);
   const [xAxisCategories, setXAxisCategories] = useState([
-    new Date().getTime()
+    new Date().getTime(),
   ]);
   const [supplyAmountData, setSupplyAmountData] = useState<any>([]);
   const [dates, setDates] = useState<any>([]);
@@ -59,9 +59,9 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
   //     }
   //     fetchMetricsData();
   //   },[])
-  console.log(dates, "dates");
-  console.log(supplyAmountData, "amounts");
-  console.log(btcData, "btc data");
+  // console.log(dates, "dates");
+  // console.log(supplyAmountData, "amounts");
+  // console.log(btcData, "btc data");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: string) => {
