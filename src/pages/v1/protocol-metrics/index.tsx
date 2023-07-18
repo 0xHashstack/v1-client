@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PageCard from "@/components/layouts/pageCard";
-import { Box, HStack, Text, Tooltip, VStack } from "@chakra-ui/react";
+import { Box, HStack, Spinner, Text, Tooltip, VStack } from "@chakra-ui/react";
 import CancelIcon from "@/assets/icons/cancelIcon";
 import SliderTooltip from "@/components/uiElements/sliders/sliderTooltip";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -25,7 +25,14 @@ import MarketMetrics from "@/components/layouts/metrics/borrowMetrics";
 import BorrowMetrics from "@/components/layouts/metrics/borrowMetrics";
 import MarketInformation from "@/components/layouts/metrics/marketInformation";
 import TotalCommunityActivity from "@/components/layouts/metrics/totalCommunityActivity";
-import { selectHourlyBTCData, selectHourlyDAIData, selectHourlyETHData, selectHourlyUSDCData, selectHourlyUSDTData, selectProtocolReserves } from "@/store/slices/readDataSlice";
+import {
+  selectHourlyBTCData,
+  selectHourlyDAIData,
+  selectHourlyETHData,
+  selectHourlyUSDCData,
+  selectHourlyUSDTData,
+  selectProtocolReserves,
+} from "@/store/slices/readDataSlice";
 import useDataLoader from "@/hooks/useDataLoader";
 import UtilisationRateChart from "@/components/layouts/charts/utilisationRateChart";
 import Image from "next/image";
@@ -63,17 +70,17 @@ const ProtocolMetrics = () => {
       return <TotalCommunityActivity />;
   };
   const protocolReserves = useSelector(selectProtocolReserves);
-  const btcData=useSelector(selectHourlyBTCData);
-  const ethData=useSelector(selectHourlyETHData);
-  const usdtData=useSelector(selectHourlyUSDTData);
-  const usdcData=useSelector(selectHourlyUSDCData);
-  const daiData=useSelector(selectHourlyDAIData);
-  const [loading, setLoading] = useState(true)
-  useEffect(()=>{
-    if(btcData && ethData &&usdcData && usdtData && daiData){
+  const btcData = useSelector(selectHourlyBTCData);
+  const ethData = useSelector(selectHourlyETHData);
+  const usdtData = useSelector(selectHourlyUSDTData);
+  const usdcData = useSelector(selectHourlyUSDCData);
+  const daiData = useSelector(selectHourlyDAIData);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (btcData && ethData && usdcData && usdtData && daiData) {
       setLoading(false);
     }
-  },[btcData,ethData,usdcData,usdtData,daiData])
+  }, [btcData, ethData, usdcData, usdtData, daiData]);
 
   return (
     <PageCard pt="8rem">
@@ -85,78 +92,96 @@ const ProtocolMetrics = () => {
         borderRadius="5px"
         border="1px solid #2b2f35"
       >
-        <Box width="100%">
-          <HStack
-            justifyContent="flex-start"
-            mb="4rem"
-            alignItems="center"
-            gap={4}
-          >
-            <Link href={"/v1/market"}>
-              <Box
-                marginRight={1.5}
-                display="flex"
-                bg="transparent"
-                fontStyle="normal"
-                fontWeight="400"
-                fontSize="14px"
-                lineHeight="20px"
-                alignItems="center"
-                letterSpacing="-0.15px"
-                // padding="1.125rem 0.4rem"
-                margin="2px"
-                color="#6e7681"
-                // borderBottom={
-                //   pathname === `/${option.path}` ? "2px solid #F9826C" : ""
-                // }
-                borderRadius="0px"
-                _hover={{ bg: "transparent", color: "#E6EDF3" }}
-                gap={2}
-              >
-                <Image
-                  src={"/arrowNavLeft.svg"}
-                  alt="Arrow Navigation Left"
-                  width="6"
-                  height="6"
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  // _hover={{ bg: "transparent", color: "#E6EDF3" }}
-                />
-                back
-              </Box>
-            </Link>
-            <Text
-              color="#FFF"
-              fontSize="14px"
-              // bgColor="blue"
+        {!loading ? (
+          <Box width="100%">
+            <HStack
+              justifyContent="flex-start"
+              mb="4rem"
               alignItems="center"
-              textAlign="center"
-              mt={0.5}
-              py="6px"
-              px="6px"
-              fontWeight="600"
-              borderBottom="2px solid #F9826C"
+              gap={4}
             >
-              Protocol metrics
-            </Text>
-            {/* <Link href={"/v1/market"}>
+              <Link href={"/v1/market"}>
+                <Box
+                  marginRight={1.5}
+                  display="flex"
+                  bg="transparent"
+                  fontStyle="normal"
+                  fontWeight="400"
+                  fontSize="14px"
+                  lineHeight="20px"
+                  alignItems="center"
+                  letterSpacing="-0.15px"
+                  // padding="1.125rem 0.4rem"
+                  margin="2px"
+                  color="#6e7681"
+                  // borderBottom={
+                  //   pathname === `/${option.path}` ? "2px solid #F9826C" : ""
+                  // }
+                  borderRadius="0px"
+                  _hover={{ bg: "transparent", color: "#E6EDF3" }}
+                  gap={2}
+                >
+                  <Image
+                    src={"/arrowNavLeft.svg"}
+                    alt="Arrow Navigation Left"
+                    width="6"
+                    height="6"
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    // _hover={{ bg: "transparent", color: "#E6EDF3" }}
+                  />
+                  back
+                </Box>
+              </Link>
+              <Text
+                color="#FFF"
+                fontSize="14px"
+                // bgColor="blue"
+                alignItems="center"
+                textAlign="center"
+                mt={0.5}
+                py="6px"
+                px="6px"
+                fontWeight="600"
+                borderBottom="2px solid #F9826C"
+              >
+                Protocol metrics
+              </Text>
+              {/* <Link href={"/v1/market"}>
               <Box cursor="pointer">
                 <CancelIcon />
               </Box>
             </Link> */}
-          </HStack>
-          <Box display="flex" flexDir="column" gap="64px">
-            <Box display="flex" gap="30px" w="full" mb="4rem">
-              <TotalValueLockedMetrics />
+            </HStack>
+            <Box display="flex" flexDir="column" gap="64px">
+              <Box display="flex" gap="30px" w="full" mb="4rem">
+                <TotalValueLockedMetrics />
+              </Box>
+              {/* <UtilisationRateChart/> */}
             </Box>
-            {/* <UtilisationRateChart/> */}
-          </Box>
-          <SupplyMetrics />
-          {/* <BorrowMetrics/> */}
-          {/* <MarketInformation/>
+            <SupplyMetrics />
+            {/* <BorrowMetrics/> */}
+            {/* <MarketInformation/>
           <TotalCommunityActivity/> */}
-        </Box>
+          </Box>
+        ) : (
+          <Box
+            width="100%"
+            height="68vh"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="#010409"
+              size="xl"
+            />
+          </Box>
+        )}
       </Box>
     </PageCard>
   );
