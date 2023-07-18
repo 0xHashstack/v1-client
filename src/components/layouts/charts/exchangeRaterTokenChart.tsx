@@ -106,11 +106,11 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           ];
           return { newData, newCategories };
         } else if (currentSelectedCoin == 1) {
-          btcData?.aprs && btcData?.apys
+          btcData?.rTokenExchangeRates 
             ? (newData = [
                 {
                   name: "Exchange Rate",
-                  data: btcData?.aprs,
+                  data: btcData?.rTokenExchangeRates,
                 },
               ])
             : (newData = [
