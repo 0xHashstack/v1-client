@@ -260,7 +260,7 @@ const DashboardLeft = ({
                   padding={0}
                 >
                   <HStack
-                    gap="3px"
+                    gap="10px"
                     display="flex"
                     justifyContent="flex-start"
                     alignItems="center"
