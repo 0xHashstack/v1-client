@@ -38,7 +38,7 @@ describe("Get l3 interaction function values", () => {
 
     const currentLoanMarketAddress =
       "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e";
-    const loanMarket = "dUSDT";
+    const loanMarket = "USDT";
 
     const liquiditySplit = await getJediEstimatedLiqALiqBfromLp(
       currentLoanAmount,
