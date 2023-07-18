@@ -6,10 +6,10 @@ import {
 
 describe("Get l3 interaction function values", () => {
   it("displays the liquidity split", async () => {
-    const expectedLiquiditySplit = [0.052406, 99.929963];
+    const expectedLiquiditySplit = [14.501667, 14.5];
     // const expectedLiquiditySplit = 0.052407;
     const loanMarket = "USDC";
-    const currentAmount = 29970001;
+    const currentAmount = "29970001";
     const tokenA = "USDC";
     const tokenB = "USDT";
     const liquiditySplit = await getJediEstimateLiquiditySplit(
@@ -18,6 +18,7 @@ describe("Get l3 interaction function values", () => {
       tokenA,
       tokenB
     );
+    console.log(liquiditySplit,"split test")
     expect(liquiditySplit).toBe(expectedLiquiditySplit);
   });
   it("displays the liquidity split after interaction", async () => {

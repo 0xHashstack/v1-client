@@ -15,6 +15,8 @@ import { etherToWeiBN, parseAmount } from "../utils/utils";
 import { useState } from "react";
 import { RToken } from "../interfaces/interfaces";
 export async function getrTokensMinted(rToken: any, amount: any) {
+  console.log("getRtokensminted", rToken, amount);
+
   try {
     const provider = getProvider();
     const supplyContract = new Contract(
@@ -44,7 +46,9 @@ export async function getrTokensMinted(rToken: any, amount: any) {
     //         tokenDecimalsMap[rToken]
     //     )
     // );
-    return data.toFixed(2);
+    const ans = data.toFixed(2);
+    console.log("getRtokensmintedAns", ans);
+    return ans;
   } catch (err) {
     console.log(err);
     console.log("err in rewards");

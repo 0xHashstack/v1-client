@@ -31,12 +31,6 @@ const initialState = {
   transactionRefresh: 0,
   avgSupplyAPR: null,
   avgBorrowAPR: null,
-  protocolStatsCount: -1,
-  protocolReservesCount: -1,
-  userDepositsCount: -1,
-  userLoansCount: -1,
-  oraclePricesCount: -1,
-  userInfoCount: -1,
   block: null,
   currentNetwork: null,
   effectiveAPR: null,
@@ -85,24 +79,6 @@ export const readDataSlice = createSlice({
     setTransactionRefresh(state, action) {
       const count = action.payload == "reset" ? -1 : state.transactionRefresh;
       state.transactionRefresh = count + 1;
-    },
-    setProtocolReservesCount(state, action) {
-      state.protocolReservesCount = state.transactionRefresh;
-    },
-    setProtocolStatsCount(state, action) {
-      state.protocolStatsCount = state.transactionRefresh;
-    },
-    setOraclePricesCount(state, action) {
-      state.oraclePricesCount = state.transactionRefresh;
-    },
-    setUserInfoCount(state, action) {
-      state.userInfoCount = state.transactionRefresh;
-    },
-    setUserDepositsCount(state, action) {
-      state.userDepositsCount = state.transactionRefresh;
-    },
-    setUserLoansCount(state, action) {
-      state.userLoansCount = state.transactionRefresh;
     },
     setBlock(state, action) {
       state.block = action.payload;
@@ -181,12 +157,6 @@ export const {
   setNetAPR,
   setActiveTransactions,
   setTransactionRefresh,
-  setProtocolReservesCount,
-  setProtocolStatsCount,
-  setOraclePricesCount,
-  setUserInfoCount,
-  setUserDepositsCount,
-  setUserLoansCount,
   setBlock,
   setCurrentNetwork,
   setHourlyBTCData,
@@ -222,20 +192,6 @@ export const selectActiveTransactions = (state) =>
   state.read_data.activeTransactions;
 export const selectTransactionRefresh = (state) =>
   state.read_data.transactionRefresh;
-export const selectUserDepositsCount = (state) =>
-  state.read_data.userDepositsCount;
-export const selectProtocolReservesCount = (state) =>
-  state.read_data.protocolReservesCount;
-export const selectProtocolStatsCount = (state) =>
-  state.read_data.protocolStatsCount;
-export const selectUserLoansCount = (state) => state.read_data.userLoansCount;
-export const selectOraclePricesCount = (state) =>
-  state.read_data.oraclePricesCount;
-export const selectUserInfoCount = (state) => state.read_data.userInfoCount;
-export const selectYourMetricsSupply = (state) =>
-  state.read_data.yourMetricsSupply;
-export const selectYourMetricsBorrow = (state) =>
-  state.read_data.yourMetricsBorrow;
 export const selectBlock = (state) => state.read_data.block;
 export const selectCurrentNetwork = (state) => state.read_data.currentNetwork;
 export const selectEffectiveApr = (state) => state.read_data.effectiveAPR;
@@ -250,4 +206,8 @@ export const selectDailyETHData = (state) => state.read_data.dailyETHData;
 export const selectDailyUSDTData = (state) => state.read_data.dailyUSDTData;
 export const selectDailyUSDCData = (state) => state.read_data.dailyUSDCData;
 export const selectDailyDAIData = (state) => state.read_data.dailyDAIData;
+export const selectYourMetricsSupply = (state) =>
+  state.read_data.yourMetricsSupply;
+export const selectYourMetricsBorrow = (state) =>
+  state.read_data.yourMetricsBorrow;
 export default readDataSlice.reducer;
