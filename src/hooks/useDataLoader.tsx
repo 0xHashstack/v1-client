@@ -167,16 +167,18 @@ const useDataLoader = () => {
           await OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDT`),
           await OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDC`),
           await OffchainAPI.httpGet(`/api/metrics/tvl/daily/ETH`),
-          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/DUAI`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/DAI`),
           await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/BTC`),
           await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDT`),
           await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDC`),
           await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/ETH`),
+          await OffchainAPI.httpGet(`/api/metrics/urm_platform/daily`),
         ];
-        Promise.allSettled(promises).then((val) => {
+        Promise.allSettled([...promises]).then((val) => {
           console.log("backend data ", promises);
         });
-
+        // const count = getTransactionCount();
+        // dispatch(setHourlyDataCount(count));
         const response = await axios.get(
           `${metrics_api}/api/metrics/tvl/daily/BTC`
         );
@@ -199,7 +201,7 @@ const useDataLoader = () => {
           const borrowCounts: any = [];
           const utilRates: any = [];
           const rTokenExchangeRates: any = [];
-          const dTokenExchangeRates:any=[];
+          const dTokenExchangeRates: any = [];
           const totalTransactions: any = [];
           const totalAccounts: any = [];
           const aprs: any = [];
@@ -216,7 +218,7 @@ const useDataLoader = () => {
             borrowCounts?.push(response?.data[i].borrowCount);
             utilRates?.push(response?.data[i].utilRate);
             rTokenExchangeRates?.push(response?.data[i].rTokenExchangeRate);
-            dTokenExchangeRates?.push(response?.data[i].dTokenExchangeRate)
+            dTokenExchangeRates?.push(response?.data[i].dTokenExchangeRate);
             totalTransactions?.push(response?.data[i].totalTransactions);
             totalAccounts?.push(response?.data[i].totalAccounts);
             aprs?.push(responseApr?.data[i].APR);
@@ -234,7 +236,7 @@ const useDataLoader = () => {
             borrowCounts: borrowCounts,
             utilRates: utilRates,
             rTokenExchangeRates: rTokenExchangeRates,
-            dTokenExchangeRates:dTokenExchangeRates,
+            dTokenExchangeRates: dTokenExchangeRates,
             totalTransactions: totalTransactions,
             totalAccounts: totalAccounts,
             aprs: aprs,
@@ -254,7 +256,7 @@ const useDataLoader = () => {
     if (hourlyDataCount < transactionRefresh) {
       fetchHourlyBTCData();
     }
-  }, [address, transactionRefresh]);
+  }, []);
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {
