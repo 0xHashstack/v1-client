@@ -44,6 +44,7 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  forceHTTP: true,
   // basePath: '/v1',
 };
 
