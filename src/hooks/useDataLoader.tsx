@@ -196,8 +196,8 @@ const useDataLoader = () => {
           for (var j = 0; j < 5; j++) {
             // console.log(j,"for loop")
             const response = promises[j];
-            const responseApr = promises[j+5]
-            const responseTotal=promises[10]
+            const responseApr = promises[j + 5];
+            const responseTotal = promises[10];
             // console.log(response, "response data");
             // if (!response) {
             //   return;
@@ -219,14 +219,19 @@ const useDataLoader = () => {
               const totalAccounts: any = [];
               const aprs: any = [];
               const apys: any = [];
-              const totalUrm:any=[];
+              const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
                 // console.log(i,"inside loop")
-                const token=response?.[i].tokenName;
-                const supplyAmount:number=Number(response?.[i].supplyAmount)/Math.pow(10,tokenDecimalsMap[token])
-                const borrowAmount:number=Number(response?.[i].borrowAmount)/Math.pow(10,tokenDecimalsMap[token])
-                const tvlAmount:number=Number(response?.[i].tvlAmount)/Math.pow(10,8);
-                console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
+                const token = response?.[i].tokenName;
+                const supplyAmount: number =
+                  Number(response?.[i].supplyAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
+                const borrowAmount: number =
+                  Number(response?.[i].borrowAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
+                const tvlAmount: number =
+                  Number(response?.[i].tvlAmount) / Math.pow(10, 8);
+                // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
                 // console.log(response?.[i].tokenName)
                 // const supplyAmount1=etherToWeiBN(amount,token)
                 // console.log(supplyAmount1,"aamount")
@@ -246,7 +251,7 @@ const useDataLoader = () => {
                 totalAccounts?.push(response?.[i].totalAccounts);
                 aprs?.push(responseApr?.[i].APR);
                 apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(responseTotal?.[i].totalPlatformURM)
+                totalUrm?.push(responseTotal?.[i].totalPlatformURM);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -265,7 +270,7 @@ const useDataLoader = () => {
                 totalAccounts: totalAccounts,
                 aprs: aprs,
                 apys: apys,
-                totalUrm:totalUrm,
+                totalUrm: totalUrm,
               };
               // console.log(data,"data in data loader")
               // console.log(btcData,"Data gone")
