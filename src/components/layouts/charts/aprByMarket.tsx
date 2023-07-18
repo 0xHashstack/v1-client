@@ -685,7 +685,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return numberFormatter(val); // Display the data value as the label
+          return (val / 100)?.toFixed(1) + "%"; // Display the data value as the label
         },
       },
       xaxis: {
@@ -708,7 +708,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return (value / 100)?.toFixed(1) + "%";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
