@@ -133,6 +133,9 @@ export async function getJediEstimatedLpAmountOut(
     tokenA,
     tokenB
   );
+  if (!currentAmount) {
+    return 0;
+  }
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();
