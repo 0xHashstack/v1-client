@@ -87,6 +87,7 @@ export async function getJediEstimateLiquiditySplit(
   const provider = getProvider();
   try {
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
+
     const res = await l3Contract.call(
       "get_jedi_estimate_liquidity_split",
       // [loanId, tokenAAddress, tokenBAddress],
@@ -100,19 +101,18 @@ export async function getJediEstimateLiquiditySplit(
         blockIdentifier: "pending",
       }
     );
-    // console.log(
-    //   "estimated liquidity split for loanId: ",
+    console.log(
+      "estimated liquidity split for loanId: ",
 
-    //   " is: ",
-    //   res,
-    //   " for tokenA: ",
-    //   getTokenFromAddress(tokenAAddress),
-    //   " and tokenB: ",
-    //   getTokenFromAddress(tokenBAddress)
-    // );
+      " is: ",
+      res,
+    );
+    const split1=parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8);
+    const split2=parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8)
+    // console.log(split1,split2,"split amounts")
     return [
-      parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
-      parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8),
+      split1,
+      split2
     ];
   } catch (error) {
     console.log("error in getJediEstimateLiquiditySplit: ", error);
