@@ -40,6 +40,8 @@ const initialState = {
   userLoansCount: -1,
   oraclePricesCount: -1,
   userInfoCount: -1,
+  yourMetricsSupplyCount: -1,
+  yourMetricsBorrowCount: -1,
   block: null,
   currentNetwork: null,
   effectiveAPR: null,
@@ -104,6 +106,12 @@ export const readDataSlice = createSlice({
     },
     setUserLoansCount(state, action) {
       state.userLoansCount = state.transactionRefresh;
+    },
+    setYourMetricsSupplyCount(state,action){
+      state.yourMetricsSupplyCount=state.transactionRefresh;
+    },
+    setYourMetricsBorrowCount(state,action){
+      state.yourMetricsBorrowCount=state.transactionRefresh;
     },
     setBlock(state, action) {
       state.block = action.payload;
@@ -182,6 +190,8 @@ export const {
   setUserInfoCount,
   setUserDepositsCount,
   setUserLoansCount,
+  setYourMetricsSupplyCount,
+  setYourMetricsBorrowCount,
   setBlock,
   setCurrentNetwork,
   setHourlyBTCData,
@@ -225,6 +235,8 @@ export const selectUserLoansCount = (state) => state.read_data.userLoansCount;
 export const selectOraclePricesCount = (state) =>
   state.read_data.oraclePricesCount;
 export const selectUserInfoCount = (state) => state.read_data.userInfoCount;
+export const selectYourMetricsSupplyCount=(state)=>state.read_data.yourMetricsSupplyCount;
+export const selectYourMetricsBorrowCount=(state)=>state.read_data.yourMetricsBorrowCount;
 export const selectBlock = (state) => state.read_data.block;
 export const selectCurrentNetwork = (state) => state.read_data.currentNetwork;
 export const selectEffectiveApr = (state) => state.read_data.effectiveAPR;

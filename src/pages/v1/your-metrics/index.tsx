@@ -32,6 +32,7 @@ import {
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
+import Image from "next/image";
 const YourMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -93,15 +94,65 @@ const YourMetrics = () => {
           // bgColor="blue"
           width="100%"
         >
-          <HStack justifyContent="space-between" mb="4rem">
-            <Text color="#E6EDF3" fontSize="28px">
+          <HStack
+            justifyContent="flex-start"
+            mb="4rem"
+            alignItems="center"
+            gap={4}
+          >
+            <Link href={"/v1/market"}>
+              <Box
+                marginRight={1.5}
+                display="flex"
+                bg="transparent"
+                fontStyle="normal"
+                fontWeight="400"
+                fontSize="14px"
+                lineHeight="20px"
+                alignItems="center"
+                letterSpacing="-0.15px"
+                // padding="1.125rem 0.4rem"
+                margin="2px"
+                color="#6e7681"
+                // borderBottom={
+                //   pathname === `/${option.path}` ? "2px solid #F9826C" : ""
+                // }
+                borderRadius="0px"
+                _hover={{ bg: "transparent", color: "#E6EDF3" }}
+                gap={2}
+              >
+                <Image
+                  src={"/arrowNavLeft.svg"}
+                  alt="Arrow Navigation Left"
+                  width="6"
+                  height="6"
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  // _hover={{ bg: "transparent", color: "#E6EDF3" }}
+                />
+                back
+              </Box>
+            </Link>
+            <Text
+              color="#FFF"
+              fontSize="14px"
+              // bgColor="blue"
+              alignItems="center"
+              textAlign="center"
+              mt={0.5}
+              py="6px"
+              px="6px"
+              fontWeight="600"
+              borderBottom="2px solid #F9826C"
+            >
               Your metrics
             </Text>
-            <Link href={"/v1/market"}>
+            {/* <Link href={"/v1/market"}>
               <Box cursor="pointer">
                 <CancelIcon />
               </Box>
-            </Link>
+            </Link> */}
           </HStack>
           <Box
             // bgColor="cyan"

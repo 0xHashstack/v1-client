@@ -874,10 +874,11 @@ const TradeModal = ({
       currentPool === "Select a pool"
     )
       return;
+    // console.log("inputBorrowAmount", Number(inputBorrowAmount));
     const lp_tokon = await getJediEstimatedLpAmountOut(
       currentBorrowCoin,
       (
-        Math.floor(Number(inputBorrowAmount)) *
+        Number(inputBorrowAmount) *
         Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
       )?.toString(),
       toMarketLiqA,
@@ -1471,11 +1472,11 @@ const TradeModal = ({
                         value={sliderValue}
                         onChange={(val) => {
                           setSliderValue(val);
-                          if(val==100){
+                          if (val == 100) {
                             setinputCollateralAmount(walletBalance);
                             setCollateralAmount(walletBalance);
                             setRTokenAmount(walletBalance);
-                          }else{
+                          } else {
                             var ans = (val / 100) * walletBalance;
                             ans = Math.round(ans * 100) / 100;
                             dispatch(setInputTradeModalCollateralAmount(ans));
@@ -1961,7 +1962,9 @@ const TradeModal = ({
                         fontFamily="Inter"
                       >
                         Available reserves:{" "}
-                        { currentAvailableReserves ? numberFormatter(currentAvailableReserves) : (
+                        {currentAvailableReserves ? (
+                          numberFormatter(currentAvailableReserves)
+                        ) : (
                           <Skeleton
                             width="4rem"
                             height=".85rem"
@@ -1983,10 +1986,10 @@ const TradeModal = ({
                         value={sliderValue2}
                         onChange={(val) => {
                           setsliderValue2(val);
-                          if(val==100){
+                          if (val == 100) {
                             setinputBorrowAmount(currentAvailableReserves);
                             setLoanAmount(currentAvailableReserves);
-                          }else{
+                          } else {
                             var ans = (val / 100) * currentAvailableReserves;
                             ans = Math.round(ans * 100) / 100;
                             dispatch(setInputTradeModalBorrowAmount(ans));

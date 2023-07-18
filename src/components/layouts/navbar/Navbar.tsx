@@ -209,7 +209,11 @@ const Navbar = ({ validRTokens }: any) => {
         gap={"4px"}
         marginLeft="2rem"
       >
-        <Link href={router.pathname != "/waitlist" ? "/market" : "/waitlist"}>
+        <Link
+          href={
+            router.pathname != "/v1/waitlist" ? "/v1/market" : "/v1/waitlist"
+          }
+        >
           <Box
             height="100%"
             display="flex"

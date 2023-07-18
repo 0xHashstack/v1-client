@@ -114,14 +114,14 @@ export async function getL3USDTValue(
   loanId: number,
   loanMarketAddress: string
 ) {
-  // console.log("calling getL3USDTValue with: ", loanId, loanMarketAddress);
+  console.log("calling getL3USDTValue with: ", loanId, loanMarketAddress);
 
   const provider = getProvider();
   const borrowToken = new Contract(borrowTokenAbi, loanMarketAddress, provider);
   const res = await borrowToken.call("get_l3_usdt_value", [loanId], {
     blockIdentifier: "pending",
   });
-  // console.log("l3 usdt value: ", res, res?.value);
+  console.log("l3 usdt value: ", res, res?.value);
   let usdValue = parseAmount(uint256.uint256ToBN(res?.value).toString(), 6);
   return usdValue;
 }
@@ -131,7 +131,16 @@ export async function getNetworth(
   totalBorrow: number,
   totalCurrentAmount: number
 ) {
+  console.log(
+    "getNetworth calling",
+    totalSupply,
+    totalBorrow,
+    totalCurrentAmount
+  );
+
   const netWorth = totalSupply + totalCurrentAmount - totalBorrow;
+  console.log("total networth", netWorth);
+
   return netWorth;
 }
 
@@ -256,3 +265,7 @@ export async function effectiveAprDeposit(
     return (rTokenInterest + stakingInterest) / rTokenTotal;
   }
 }
+
+//!Data Oracle
+
+//!Data Deposit

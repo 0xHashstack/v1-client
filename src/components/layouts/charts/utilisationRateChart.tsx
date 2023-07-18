@@ -151,7 +151,7 @@ const UtilisationRateChart = () => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return (val / 10)?.toFixed(1) + ""; // Display the data value as the label
+          return (val / 100)?.toFixed(1) + ""; // Display the data value as the label
         },
       },
 
@@ -175,7 +175,7 @@ const UtilisationRateChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return (value / 10)?.toFixed(1) + "";
+            return (value / 100)?.toFixed(1) + "";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -267,6 +267,16 @@ const UtilisationRateChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
+              }}
             >
               1W
             </Button>
@@ -281,6 +291,16 @@ const UtilisationRateChart = () => {
               variant={liquidityProviderChartPeriod === 2 ? "solid" : "outline"}
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
               }}
             >
               1M
@@ -297,6 +317,16 @@ const UtilisationRateChart = () => {
               variant={liquidityProviderChartPeriod === 3 ? "solid" : "outline"}
               onClick={() => {
                 setLiquidityProviderChartPeriod(3);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
               }}
             >
               ALL

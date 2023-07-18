@@ -4,7 +4,7 @@ import { Box, Button } from "@chakra-ui/react";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
 import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const BorrowAPRChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -50,68 +50,66 @@ const BorrowAPRChart = () => {
           : (newData = [
               {
                 name: "Borrow APY",
-                data: [300, 400, 350, 500, 490, 600, 800, 400, 350, 500, 490, 600, 800],
+                data: [
+                  300, 400, 350, 500, 490, 600, 800, 400, 350, 500, 490, 600,
+                  800,
+                ],
               },
             ]);
         btcData?.dates
           ? (newCategories = btcData?.dates)
           : (newCategories = [
-            1689152545000, 1689156145000, 1689159745000, 1689163345000,
-            1689166945000, 1689170545000, 1689174145000, 1689177745000,
-            1689181345000, 1689184945000, 1689188545000, 1689192145000,
-          ]);
+              1689152545000, 1689156145000, 1689159745000, 1689163345000,
+              1689166945000, 1689170545000, 1689174145000, 1689177745000,
+              1689181345000, 1689184945000, 1689188545000, 1689192145000,
+            ]);
         break;
-        case 1:
-          newData = [
-            {
-              name: "Borrow APY",
-              data: [
-                400, 100, 420, 390, 440, 410, 430, 
-              ],
-            },
-          ];
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
-          break;
-        case 2:
-          //y data axis
-          newData = [
-            {
-              name: "Borrow APY",
-              data: [500, 490, 520, 480, 510,  480, 500, 480, 510, 480],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
+      case 1:
+        newData = [
+          {
+            name: "Borrow APY",
+            data: [400, 100, 420, 390, 440, 410, 430],
+          },
         ];
-          break;
+        newCategories = [
+          new Date("2023-07-01").getTime(),
+          new Date("2023-07-02").getTime(),
+          new Date("2023-07-03").getTime(),
+          new Date("2023-07-04").getTime(),
+          new Date("2023-07-05").getTime(),
+          new Date("2023-07-06").getTime(),
+          new Date("2023-07-07").getTime(),
+        ];
+        break;
+      case 2:
         //y data axis
+        newData = [
+          {
+            name: "Borrow APY",
+            data: [500, 490, 520, 480, 510, 480, 500, 480, 510, 480],
+          },
+        ];
+        //x axis data
+        newCategories = [
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-06").getTime(),
+          new Date("2023-06-09").getTime(),
+          new Date("2023-06-12").getTime(),
+          new Date("2023-06-15").getTime(),
+          new Date("2023-06-18").getTime(),
+          new Date("2023-06-21").getTime(),
+          new Date("2023-06-24").getTime(),
+          new Date("2023-06-27").getTime(),
+          new Date("2023-06-30").getTime(),
+        ];
+        break;
+      //y data axis
 
       case 3:
         newData = [
           {
             name: "Borrow APY",
-            data: [
-              600, 580, 620, 590, 630, 600, 620, 590, 630,
-              600, 620, 700,
-            ],
+            data: [600, 580, 620, 590, 630, 600, 620, 590, 630, 600, 620, 700],
           },
         ];
 
@@ -151,7 +149,7 @@ const BorrowAPRChart = () => {
           colors: ["#000000"],
         },
         formatter: function (value: any) {
-          return (value/10)?.toFixed(1)+ '%';
+          return (value / 100)?.toFixed(1) + "%";
         },
         position: "top",
       },
@@ -179,7 +177,7 @@ const BorrowAPRChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return (value/10)?.toFixed(1)+ '%';
+            return (value / 100)?.toFixed(1) + "%";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -271,6 +269,16 @@ const BorrowAPRChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
+              }}
             >
               1W
             </Button>
@@ -285,6 +293,16 @@ const BorrowAPRChart = () => {
               variant={liquidityProviderChartPeriod === 2 ? "solid" : "outline"}
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
               }}
             >
               1M
@@ -301,6 +319,16 @@ const BorrowAPRChart = () => {
               variant={liquidityProviderChartPeriod === 3 ? "solid" : "outline"}
               onClick={() => {
                 setLiquidityProviderChartPeriod(3);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
               }}
             >
               ALL
