@@ -290,7 +290,7 @@ const BorrowDashboard = ({
         temp.push("empty");
       }
     }
-    // console.log("all splits", temp);
+    console.log("all splits", temp);
     setAllSplit(temp);
     // const currentSplit = await getJediEstimatedLiqALiqBfromLp(
     //   liquidity,

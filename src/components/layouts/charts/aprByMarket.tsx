@@ -60,6 +60,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
   const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
+  console.log(usdcData,"usdc data")
   // useEffect(()=>{
 
   // },[])
@@ -127,6 +128,17 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
             ]);
         return { newData, newCategories };
         } else if (currentSelectedCoin == 1) {
+          usdtData?.aprs && usdtData?.apys ? 
+          (newData = [
+            {
+              name: "Supply Apr",
+              data: usdtData?.aprs,
+            },
+            {
+              name: "Borrow Apr",
+              data: usdtData?.apys,
+            },
+          ]):
           newData = [
             {
               name: "Supply Apr",
@@ -141,13 +153,26 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               ],
             },
           ];
-          newCategories = [
-            1689152545000, 1689156145000, 1689159745000, 1689163345000,
-            1689166945000, 1689170545000, 1689174145000, 1689177745000,
-            1689181345000, 1689184945000, 1689188545000, 1689192145000,
-          ];
+          usdtData?.dates
+          ? (newCategories = usdtData?.dates)
+          : (newCategories = [
+              1689152545000, 1689156145000, 1689159745000, 1689163345000,
+              1689166945000, 1689170545000, 1689174145000, 1689177745000,
+              1689181345000, 1689184945000, 1689188545000, 1689192145000,
+            ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 2) {
+          usdcData?.aprs && usdcData?.apys ? 
+          (newData = [
+            {
+              name: "Supply Apr",
+              data: usdcData?.aprs,
+            },
+            {
+              name: "Borrow Apr",
+              data: usdcData?.apys,
+            },
+          ]):
           newData = [
             {
               name: "Supply Apr",
@@ -162,22 +187,24 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               ],
             },
           ];
-          newCategories = [
-            1689152545000, 1689156145000, 1689159745000, 1689163345000,
-            1689166945000, 1689170545000, 1689174145000, 1689177745000,
-            1689181345000, 1689184945000, 1689188545000, 1689192145000,
-          ];
+          usdcData?.dates
+          ? (newCategories = usdcData?.dates)
+          : (newCategories = [
+              1689152545000, 1689156145000, 1689159745000, 1689163345000,
+              1689166945000, 1689170545000, 1689174145000, 1689177745000,
+              1689181345000, 1689184945000, 1689188545000, 1689192145000,
+            ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 3) {
-          btcData?.aprs && btcData?.apys
+          ethData?.aprs && ethData?.apys
             ? (newData = [
                 {
                   name: "Supply Apr",
-                  data: btcData?.aprs,
+                  data: ethData?.aprs,
                 },
                 {
                   name: "Borrow Apr",
-                  data: btcData?.apys,
+                  data: ethData?.apys,
                 },
               ])
             : (newData = [
@@ -194,8 +221,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                   ],
                 },
               ]);
-          btcData?.dates
-            ? (newCategories = btcData?.dates)
+          ethData?.dates
+            ? (newCategories = ethData?.dates)
             : (newCategories = [
                 1689152545000, 1689156145000, 1689159745000, 1689163345000,
                 1689166945000, 1689170545000, 1689174145000, 1689177745000,
@@ -203,6 +230,17 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               ]);
           return { newData, newCategories };
         } else {
+          daiData?.aprs && daiData?.apys ? 
+          (newData = [
+            {
+              name: "Supply Apr",
+              data: daiData?.aprs,
+            },
+            {
+              name: "Borrow Apr",
+              data: daiData?.apys,
+            },
+          ]):
           newData = [
             {
               name: "Supply Apr",
@@ -217,11 +255,13 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               ],
             },
           ];
-          newCategories = [
-            1689152545000, 1689156145000, 1689159745000, 1689163345000,
-            1689166945000, 1689170545000, 1689174145000, 1689177745000,
-            1689181345000, 1689184945000, 1689188545000, 1689192145000,
-          ];
+          daiData?.dates
+          ? (newCategories = daiData?.dates)
+          : (newCategories = [
+              1689152545000, 1689156145000, 1689159745000, 1689163345000,
+              1689166945000, 1689170545000, 1689174145000, 1689177745000,
+              1689181345000, 1689184945000, 1689188545000, 1689192145000,
+            ]);
           return { newData, newCategories };
         }
         break;
@@ -788,6 +828,12 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(1);
               }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
+              }}
             >
               1W
             </Button>
@@ -798,6 +844,12 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               variant={aprByMarket === 2 ? "solid" : "outline"}
               onClick={() => {
                 setAPRByMarket(2);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
               }}
             >
               1M
@@ -810,6 +862,12 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               variant={aprByMarket === 3 ? "solid" : "outline"}
               onClick={() => {
                 setAPRByMarket(3);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
               }}
             >
               ALL
