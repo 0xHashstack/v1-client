@@ -3,7 +3,13 @@ import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import {
+  selectHourlyBTCData,
+  selectHourlyDAIData,
+  selectHourlyETHData,
+  selectHourlyUSDCData,
+  selectHourlyUSDTData,
+} from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
@@ -32,7 +38,10 @@ const SupplyChart = () => {
     fetchData();
   }, [liquidityProviderChartPeriod]);
   const btcData = useSelector(selectHourlyBTCData);
-  // const ethData=useSelector
+  const ethData = useSelector(selectHourlyETHData);
+  const usdtData = useSelector(selectHourlyUSDTData);
+  const usdcData = useSelector(selectHourlyUSDCData);
+  const daiData = useSelector(selectHourlyDAIData);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   console.log(btcData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
@@ -45,7 +54,11 @@ const SupplyChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.supplyAmounts
+        btcData?.supplyAmounts &&
+        ethData?.supplyAmounts &&
+        usdtData?.supplyAmounts &&
+        usdcData?.supplyAmounts &&
+        daiData?.supplyAmounts
           ? (newData = [
               {
                 name: "BTC",
@@ -53,35 +66,19 @@ const SupplyChart = () => {
               },
               {
                 name: "ETH",
-                data: [
-                  20000000000, 4000000000, 20000000000, 4000000000, 20000000000,
-                  4000000000, 20000000000, 4000000000, 20000000000, 4000000000,
-                  20000000000, 4000000000,
-                ],
+                data: ethData?.supplyAmounts,
               },
               {
                 name: "USDT",
-                data: [
-                  30000000000, 4000000000, 30000000000, 3000000000, 40000000000,
-                  2000000000, 10000000000, 3000000000, 4000000000, 20000000000,
-                  4000000000, 20000000000, 4000000000,
-                ],
+                data: usdtData?.supplyAmounts,
               },
               {
                 name: "USDC",
-                data: [
-                  40000000000, 2000000000, 10000000000, 3000000000, 10000000000,
-                  2000000000, 20000000000, 4000000000, 20000000000, 4000000000,
-                  20000000000, 4000000000,
-                ],
+                data: usdcData?.supplyAmounts,
               },
               {
                 name: "DAI",
-                data: [
-                  10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
-                  1000000000, 15000000000, 3000000000, 40000000000, 2000000000,
-                  10000000000, 3000000000,
-                ],
+                data: daiData?.supplyAmounts,
               },
             ])
           : (newData = [
