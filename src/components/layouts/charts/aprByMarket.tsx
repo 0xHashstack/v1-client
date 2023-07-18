@@ -60,7 +60,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
   const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
-  console.log(usdcData,"usdc data")
+  // console.log(usdcData,"usdc data")
   // useEffect(()=>{
 
   // },[])
@@ -95,105 +95,105 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       case 0:
         if (currentSelectedCoin == 0) {
           btcData?.aprs && btcData?.apys
-          ? (newData = [
-              {
-                name: "Supply Apr",
-                data: btcData?.aprs,
-              },
-              {
-                name: "Borrow Apr",
-                data: btcData?.apys,
-              },
-            ])
-          : (newData = [
-              {
-                name: "Supply Apr",
-                data: [
-                  300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                ],
-              },
-              {
-                name: "Borrow Apr",
-                data: [
-                  200, 300, 250, 400, 390, 300, 400, 250, 280, 300, 400, 500,
-                ],
-              },
-            ]);
-        btcData?.dates
-          ? (newCategories = btcData?.dates)
-          : (newCategories = [
-              1689152545000, 1689156145000, 1689159745000, 1689163345000,
-              1689166945000, 1689170545000, 1689174145000, 1689177745000,
-              1689181345000, 1689184945000, 1689188545000, 1689192145000,
-            ]);
-        return { newData, newCategories };
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: btcData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: btcData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply Apr",
+                  data: [
+                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
+                  ],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [
+                    200, 300, 250, 400, 390, 300, 400, 250, 280, 300, 400, 500,
+                  ],
+                },
+              ]);
+          btcData?.dates
+            ? (newCategories = btcData?.dates)
+            : (newCategories = [
+                1689152545000, 1689156145000, 1689159745000, 1689163345000,
+                1689166945000, 1689170545000, 1689174145000, 1689177745000,
+                1689181345000, 1689184945000, 1689188545000, 1689192145000,
+              ]);
+          return { newData, newCategories };
         } else if (currentSelectedCoin == 1) {
-          usdtData?.aprs && usdtData?.apys ? 
-          (newData = [
-            {
-              name: "Supply Apr",
-              data: usdtData?.aprs,
-            },
-            {
-              name: "Borrow Apr",
-              data: usdtData?.apys,
-            },
-          ]):
-          newData = [
-            {
-              name: "Supply Apr",
-              data: [
-                300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-              ],
-            },
-            {
-              name: "Borrow Apr",
-              data: [
-                200, 300, 250, 400, 390, 300, 400, 250, 280, 300, 400, 500,
-              ],
-            },
-          ];
+          usdtData?.aprs && usdtData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: usdtData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: usdtData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply Apr",
+                  data: [
+                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
+                  ],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [
+                    200, 300, 250, 400, 390, 300, 400, 250, 280, 300, 400, 500,
+                  ],
+                },
+              ]);
           usdtData?.dates
-          ? (newCategories = usdtData?.dates)
-          : (newCategories = [
-              1689152545000, 1689156145000, 1689159745000, 1689163345000,
-              1689166945000, 1689170545000, 1689174145000, 1689177745000,
-              1689181345000, 1689184945000, 1689188545000, 1689192145000,
-            ]);
+            ? (newCategories = usdtData?.dates)
+            : (newCategories = [
+                1689152545000, 1689156145000, 1689159745000, 1689163345000,
+                1689166945000, 1689170545000, 1689174145000, 1689177745000,
+                1689181345000, 1689184945000, 1689188545000, 1689192145000,
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 2) {
-          usdcData?.aprs && usdcData?.apys ? 
-          (newData = [
-            {
-              name: "Supply Apr",
-              data: usdcData?.aprs,
-            },
-            {
-              name: "Borrow Apr",
-              data: usdcData?.apys,
-            },
-          ]):
-          newData = [
-            {
-              name: "Supply Apr",
-              data: [
-                300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-              ],
-            },
-            {
-              name: "Borrow Apr",
-              data: [
-                200, 300, 250, 400, 390, 300, 400, 250, 280, 300, 400, 500,
-              ],
-            },
-          ];
+          usdcData?.aprs && usdcData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: usdcData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: usdcData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply Apr",
+                  data: [
+                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
+                  ],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [
+                    200, 300, 250, 400, 390, 300, 400, 250, 280, 300, 400, 500,
+                  ],
+                },
+              ]);
           usdcData?.dates
-          ? (newCategories = usdcData?.dates)
-          : (newCategories = [
-              1689152545000, 1689156145000, 1689159745000, 1689163345000,
-              1689166945000, 1689170545000, 1689174145000, 1689177745000,
-              1689181345000, 1689184945000, 1689188545000, 1689192145000,
-            ]);
+            ? (newCategories = usdcData?.dates)
+            : (newCategories = [
+                1689152545000, 1689156145000, 1689159745000, 1689163345000,
+                1689166945000, 1689170545000, 1689174145000, 1689177745000,
+                1689181345000, 1689184945000, 1689188545000, 1689192145000,
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 3) {
           ethData?.aprs && ethData?.apys
@@ -230,38 +230,38 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               ]);
           return { newData, newCategories };
         } else {
-          daiData?.aprs && daiData?.apys ? 
-          (newData = [
-            {
-              name: "Supply Apr",
-              data: daiData?.aprs,
-            },
-            {
-              name: "Borrow Apr",
-              data: daiData?.apys,
-            },
-          ]):
-          newData = [
-            {
-              name: "Supply Apr",
-              data: [
-                300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-              ],
-            },
-            {
-              name: "Borrow Apr",
-              data: [
-                200, 300, 250, 400, 390, 300, 400, 250, 280, 300, 400, 500,
-              ],
-            },
-          ];
+          daiData?.aprs && daiData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: daiData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: daiData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply Apr",
+                  data: [
+                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
+                  ],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [
+                    200, 300, 250, 400, 390, 300, 400, 250, 280, 300, 400, 500,
+                  ],
+                },
+              ]);
           daiData?.dates
-          ? (newCategories = daiData?.dates)
-          : (newCategories = [
-              1689152545000, 1689156145000, 1689159745000, 1689163345000,
-              1689166945000, 1689170545000, 1689174145000, 1689177745000,
-              1689181345000, 1689184945000, 1689188545000, 1689192145000,
-            ]);
+            ? (newCategories = daiData?.dates)
+            : (newCategories = [
+                1689152545000, 1689156145000, 1689159745000, 1689163345000,
+                1689166945000, 1689170545000, 1689174145000, 1689177745000,
+                1689181345000, 1689184945000, 1689188545000, 1689192145000,
+              ]);
           return { newData, newCategories };
         }
         break;

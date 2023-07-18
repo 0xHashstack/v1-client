@@ -94,7 +94,10 @@ import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
 import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
-import { tokenAddressMap, tokenDecimalsMap } from "@/Blockchain/utils/addressServices";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
 import OffchainAPI from "@/services/offchainapi.service";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
 const useDataLoader = () => {
@@ -217,9 +220,13 @@ const useDataLoader = () => {
               const apys: any = [];
               for (var i = 0; i < response?.length; i++) {
                 // console.log(i,"inside loop")
-                const token=response?.[i].tokenName;
-                const supplyAmount:number=Number(response?.[i].supplyAmount)/Math.pow(10,tokenDecimalsMap[token])
-                const borrowAmount:number=Number(response?.[i].borrowAmount)/Math.pow(10,tokenDecimalsMap[token])
+                const token = response?.[i].tokenName;
+                const supplyAmount: number =
+                  Number(response?.[i].supplyAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
+                const borrowAmount: number =
+                  Number(response?.[i].borrowAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
                 // console.log(amount,token,response?.[i].supplyAmount,"amount and token")
                 // console.log(response?.[i].tokenName)
                 // const supplyAmount1=etherToWeiBN(amount,token)
