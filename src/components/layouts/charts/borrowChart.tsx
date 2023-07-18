@@ -51,31 +51,31 @@ const BorrowChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.supplyAmounts &&
-        ethData?.supplyAmounts &&
-        usdtData?.supplyAmounts &&
-        usdcData?.supplyAmounts &&
-        daiData?.supplyAmounts
+        btcData?.borrowAmounts &&
+        ethData?.borrowAmounts &&
+        usdtData?.borrowAmounts &&
+        usdcData?.borrowAmounts &&
+        daiData?.borrowAmounts
           ? (newData = [
               {
                 name: "BTC",
-                data: btcData?.supplyAmounts,
+                data: btcData?.borrowAmounts,
               },
               {
                 name: "ETH",
-                data: ethData?.supplyAmounts,
+                data: ethData?.borrowAmounts,
               },
               {
                 name: "USDT",
-                data: usdtData?.supplyAmounts,
+                data: usdtData?.borrowAmounts,
               },
               {
                 name: "USDC",
-                data: usdcData?.supplyAmounts,
+                data: usdcData?.borrowAmounts,
               },
               {
                 name: "DAI",
-                data: daiData?.supplyAmounts,
+                data: daiData?.borrowAmounts,
               },
             ])
           : (newData = [
