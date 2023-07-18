@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import SupplyModal from '../src/components/modals/SupplyModal'
 import {getTotalSupply,getTotalBorrow} from '../src/Blockchain/scripts/userStats'
-describe("Get total supply", () => {
+describe("Get user stats", () => {
     it("displays total supply", () => {
         const prices=[
             {
@@ -358,7 +358,7 @@ describe("Get total supply", () => {
                 "lastUpdated": "2023-07-17T11:10:30.000Z"
             }
         ]
-const stats=[
+        const stats=[
     {
         "borrowRate": 6.16,
         "supplyRate": 1.61,
