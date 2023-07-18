@@ -9,7 +9,7 @@ import {
   effectiveAprDeposit,
   getNetApr,
 } from "../src/Blockchain/scripts/userStats";
-describe("Get total supply", () => {
+describe("Get User Stats", () => {
   it("displays total supply", () => {
     const prices = [
       {
