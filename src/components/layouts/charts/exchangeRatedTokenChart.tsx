@@ -96,6 +96,30 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
     switch (aprByMarket) {
       case 0:
         if (currentSelectedCoin == 0) {
+          btcData?.dTokenExchangeRates
+          ? (newData = [
+              {
+                name: "Exchange Rate",
+                data: btcData?.dTokenExchangeRates,
+              },
+            ])
+          : (newData = [
+              {
+                name: "Exchange Rate",
+                data: [
+                  300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
+                ],
+              },
+            ]);
+        btcData?.dates
+          ? (newCategories = btcData?.dates)
+          : (newCategories = [
+              1689152545000, 1689156145000, 1689159745000, 1689163345000,
+              1689166945000, 1689170545000, 1689174145000, 1689177745000,
+              1689181345000, 1689184945000, 1689188545000, 1689192145000,
+            ]);
+        return { newData, newCategories };
+        } else if (currentSelectedCoin == 1) {
           newData = [
             {
               name: "Exchange Rate",
@@ -109,30 +133,6 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             1689166945000, 1689170545000, 1689174145000, 1689177745000,
             1689181345000, 1689184945000, 1689188545000, 1689192145000,
           ];
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 1) {
-          btcData?.dTokenExchangeRates
-            ? (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: btcData?.dTokenExchangeRates,
-                },
-              ])
-            : (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: [
-                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                  ],
-                },
-              ]);
-          btcData?.dates
-            ? (newCategories = btcData?.dates)
-            : (newCategories = [
-                1689152545000, 1689156145000, 1689159745000, 1689163345000,
-                1689166945000, 1689170545000, 1689174145000, 1689177745000,
-                1689181345000, 1689184945000, 1689188545000, 1689192145000,
-              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 2) {
           newData = [
