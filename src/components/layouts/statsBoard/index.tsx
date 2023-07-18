@@ -30,7 +30,7 @@ const StatsBoard = () => {
   const yourSupply = useSelector(selectYourSupply);
   const yourBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
-  console.log(yourBorrow)
+  // console.log(yourBorrow);
   // const netWorth= datanetWorth? datanetWorth:"-";
   // console.log(netWorth,"net worth")
 
@@ -103,7 +103,7 @@ const StatsBoard = () => {
           onclick={() => {
             handleRouteChange("/v1/your-metrics");
           }}
-          arrowHide={true}
+          arrowHide={false}
         />
         <Stats
           header={[
@@ -115,7 +115,7 @@ const StatsBoard = () => {
           onclick={() => {
             handleRouteChange("/v1/protocol-metrics");
           }}
-          arrowHide={true}
+          arrowHide={false}
         />
       </HStack>
     </Flex>

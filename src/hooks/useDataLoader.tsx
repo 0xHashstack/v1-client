@@ -85,6 +85,7 @@ import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
 import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import OffchainAPI from "@/services/offchainapi.service";
 const useDataLoader = () => {
   const { address } = useAccount();
   const protocolReserves = useSelector(selectProtocolReserves);
@@ -130,6 +131,29 @@ const useDataLoader = () => {
   const getTransactionCount = () => {
     return transactionRefresh;
   };
+  // useEffect(() => {
+  //   try {
+  //     const fetchData = async () => {
+  //       const data = await OffchainAPI.httpGet(
+  //         "/api/metrics/apm_platform/daily"
+  //       );
+  //       const apr = data?.map((val: any, idx: number) => val?.totalPlatformAPR);
+  //       const apy = data?.map((val: any, idx: number) => val?.totalPlatformAPY);
+  //       const dateTime = data?.map((val: any, idx: number) => val?.Datetime);
+  //       const dataArray = {
+  //         APR: apr,
+  //         APY: apy,
+  //         dateTime: dateTime,
+  //       };
+
+  //       console.log("dataArray ", data);
+  //       setSeriesData(dataArray);
+  //     };
+  //     fetchData();
+  //   } catch (err) {
+  //     console.log("error fetching aprByMarket data ", err);
+  //   }
+  // }, []);
   useEffect(() => {
     const fetchHourlyBTCData = async () => {
       try {
@@ -137,74 +161,89 @@ const useDataLoader = () => {
         // if(hourlyBTCData!=null){
         //   return;
         // }
+        const promises = [
+          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/DAI`),
+          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/BTC`),
+          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDT`),
+          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDC`),
+          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/ETH`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/DUAI`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/BTC`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDT`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDC`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/ETH`),
+        ];
 
-        const response = await axios.get(
-          `${metrics_api}/api/metrics/tvl/daily/DAI`
-        );
-        const responseApr = await axios.get(
-          `${metrics_api}/api/metrics/apm_market/daily/DAI`
-        );
+        // const response = await OffchainAPI.httpGet(
+        //   `/api/metrics/tvl/daily/DAI`
+        // );
+        // const responseApr = await OffchainAPI.httpGet(
+        //   `/api/metrics/apm_market/daily/DAI`
+        // );
         // console.log(response, "response data");
-        if (!response) {
-          return;
-        }
+        // if (!response) {
+        //   return;
+        // }
         // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
-        if (response?.data) {
-          const amounts: any = [];
-          const borrowAmounts: any = [];
-          const dates: any = [];
-          const supplyRates: any = [];
-          const borrowRates: any = [];
-          const tvlAmounts: any = [];
-          const supplyCounts: any = [];
-          const borrowCounts: any = [];
-          const utilRates: any = [];
-          const exchangeRates: any = [];
-          const totalTransactions: any = [];
-          const totalAccounts: any = [];
-          const aprs: any = [];
-          const apys: any = [];
-          for (var i = 0; i < 12; i++) {
-            amounts?.push(response?.data[i].supplyAmount);
-            borrowAmounts?.push(response?.data[i].borrowAmount);
-            tvlAmounts?.push(response?.data[i].tvlAmount);
-            // const dateObj = new Date(response?.data[i].Datetime)
-            dates?.push(response?.data[i].Datetime);
-            supplyRates?.push(response?.data[i].supplyRate);
-            borrowRates?.push(response?.data[i].borrowRate);
-            supplyCounts?.push(response?.data[i].supplyCount);
-            borrowCounts?.push(response?.data[i].borrowCount);
-            utilRates?.push(response?.data[i].utilRate);
-            exchangeRates?.push(response?.data[i].exchangeRate);
-            totalTransactions?.push(response?.data[i].totalTransactions);
-            totalAccounts?.push(response?.data[i].totalAccounts);
-            aprs?.push(responseApr?.data[i].APR);
-            apys?.push(responseApr?.data[i].APY);
-          }
-          // console.log(dates,"Dates")
-          const data = {
-            dates: dates,
-            supplyAmounts: amounts,
-            borrowAmounts: borrowAmounts,
-            tvlAmounts: tvlAmounts,
-            supplyRates: supplyRates,
-            borrowRates: borrowRates,
-            supplyCounts: supplyCounts,
-            borrowCounts: borrowCounts,
-            utilRates: utilRates,
-            exchangeRates: exchangeRates,
-            totalTransactions: totalTransactions,
-            totalAccounts: totalAccounts,
-            aprs: aprs,
-            apys: apys,
-          };
-          // console.log(btcData,"Data gone")
-          dispatch(setHourlyBTCData(data));
-          const count = getTransactionCount();
-          dispatch(setHourlyDataCount(count));
-          console.log(response?.data, "Data response");
-          console.log(btcData, "data in BTC");
-        }
+        Promise.allSettled(promises).then((val) => {
+          console.log("backend data ", promises);
+        });
+        // if (response?.data) {
+        //   const amounts: any = [];
+        //   const borrowAmounts: any = [];
+        //   const dates: any = [];
+        //   const supplyRates: any = [];
+        //   const borrowRates: any = [];
+        //   const tvlAmounts: any = [];
+        //   const supplyCounts: any = [];
+        //   const borrowCounts: any = [];
+        //   const utilRates: any = [];
+        //   const exchangeRates: any = [];
+        //   const totalTransactions: any = [];
+        //   const totalAccounts: any = [];
+        //   const aprs: any = [];
+        //   const apys: any = [];
+        //   for (var i = 0; i < 12; i++) {
+        //     amounts?.push(response?.data[i].supplyAmount);
+        //     borrowAmounts?.push(response?.data[i].borrowAmount);
+        //     tvlAmounts?.push(response?.data[i].tvlAmount);
+        //     // const dateObj = new Date(response?.data[i].Datetime)
+        //     dates?.push(response?.data[i].Datetime);
+        //     supplyRates?.push(response?.data[i].supplyRate);
+        //     borrowRates?.push(response?.data[i].borrowRate);
+        //     supplyCounts?.push(response?.data[i].supplyCount);
+        //     borrowCounts?.push(response?.data[i].borrowCount);
+        //     utilRates?.push(response?.data[i].utilRate);
+        //     exchangeRates?.push(response?.data[i].exchangeRate);
+        //     totalTransactions?.push(response?.data[i].totalTransactions);
+        //     totalAccounts?.push(response?.data[i].totalAccounts);
+        //     aprs?.push(responseApr?.data[i].APR);
+        //     apys?.push(responseApr?.data[i].APY);
+        //   }
+        //   // console.log(dates,"Dates")
+        //   const data = {
+        //     dates: dates,
+        //     supplyAmounts: amounts,
+        //     borrowAmounts: borrowAmounts,
+        //     tvlAmounts: tvlAmounts,
+        //     supplyRates: supplyRates,
+        //     borrowRates: borrowRates,
+        //     supplyCounts: supplyCounts,
+        //     borrowCounts: borrowCounts,
+        //     utilRates: utilRates,
+        //     exchangeRates: exchangeRates,
+        //     totalTransactions: totalTransactions,
+        //     totalAccounts: totalAccounts,
+        //     aprs: aprs,
+        //     apys: apys,
+        //   };
+        //   // console.log(btcData,"Data gone")
+        //   dispatch(setHourlyBTCData(data));
+        //   const count = getTransactionCount();
+        //   dispatch(setHourlyDataCount(count));
+        //   console.log(response?.data, "Data response");
+        //   console.log(btcData, "data in BTC");
+        // }
       } catch (err) {
         console.log(err, "err in hourly data");
       }
