@@ -28,6 +28,7 @@ import TotalCommunityActivity from "@/components/layouts/metrics/totalCommunityA
 import { selectProtocolReserves } from "@/store/slices/readDataSlice";
 import useDataLoader from "@/hooks/useDataLoader";
 import UtilisationRateChart from "@/components/layouts/charts/utilisationRateChart";
+import Image from "next/image";
 const ProtocolMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -73,15 +74,65 @@ const ProtocolMetrics = () => {
         border="1px solid #2b2f35"
       >
         <Box width="100%">
-          <HStack justifyContent="space-between" mb="4rem">
-            <Text color="#E6EDF3" fontSize="28px">
+          <HStack
+            justifyContent="flex-start"
+            mb="4rem"
+            alignItems="center"
+            gap={4}
+          >
+            <Link href={"/v1/market"}>
+              <Box
+                marginRight={1.5}
+                display="flex"
+                bg="transparent"
+                fontStyle="normal"
+                fontWeight="400"
+                fontSize="14px"
+                lineHeight="20px"
+                alignItems="center"
+                letterSpacing="-0.15px"
+                // padding="1.125rem 0.4rem"
+                margin="2px"
+                color="#6e7681"
+                // borderBottom={
+                //   pathname === `/${option.path}` ? "2px solid #F9826C" : ""
+                // }
+                borderRadius="0px"
+                _hover={{ bg: "transparent", color: "#E6EDF3" }}
+                gap={2}
+              >
+                <Image
+                  src={"/arrowNavLeft.svg"}
+                  alt="Arrow Navigation Left"
+                  width="6"
+                  height="6"
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  // _hover={{ bg: "transparent", color: "#E6EDF3" }}
+                />
+                back
+              </Box>
+            </Link>
+            <Text
+              color="#FFF"
+              fontSize="14px"
+              // bgColor="blue"
+              alignItems="center"
+              textAlign="center"
+              mt={0.5}
+              py="6px"
+              px="6px"
+              fontWeight="600"
+              borderBottom="2px solid #F9826C"
+            >
               Protocol metrics
             </Text>
-            <Link href={"/v1/market"}>
+            {/* <Link href={"/v1/market"}>
               <Box cursor="pointer">
                 <CancelIcon />
               </Box>
-            </Link>
+            </Link> */}
           </HStack>
           <Box display="flex" flexDir="column" gap="64px">
             <Box display="flex" gap="30px" w="full" mb="4rem">
@@ -89,7 +140,7 @@ const ProtocolMetrics = () => {
             </Box>
             {/* <UtilisationRateChart/> */}
           </Box>
-          <SupplyMetrics/>
+          <SupplyMetrics />
           {/* <BorrowMetrics/> */}
           {/* <MarketInformation/>
           <TotalCommunityActivity/> */}

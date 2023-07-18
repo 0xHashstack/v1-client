@@ -1,10 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Box } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import { selectUserLoans } from "@/store/slices/readDataSlice";
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
+  const userLoans = useSelector(selectUserLoans);
+  const borrowData = {
+    BTC: 0,
+    ETH: 0,
+    USDT: 0,
+    USDC: 0,
+    DAI: 0,
+  };
+  // useEffect(() => {
+  //   try {
+  //     const fetchBorrowData = async () => {
+  //       userLoans.forEach((loan: ILoan, idx: number) => {
+  //         if (loan) {
+  //           // borrowData?.[loans?.underlyingMarket]+;
+  //         }
+  //       });
+  //     };
+  //     if (userLoans) {
+  //       fetchBorrowData();
+  //     }
+  //   } catch (err) {
+  //     console.log("err fetchBorrowData ", err);
+  //   }
+  // }, [userLoans]);
   const chartOptions = {
     chart: {
       stacked: true,
@@ -26,7 +53,9 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
       axisBorder: {
         color: "grey",
       },
-      categories: categories ? categories : ["BTC","ETH","USDT","USDC","DAI"],
+      categories: categories
+        ? categories
+        : ["BTC", "ETH", "USDT", "USDC", "DAI"],
     },
     plotOptions: {
       bar: {
@@ -83,29 +112,29 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
   };
   const chartSeries = [
     {
-      name: 'BTC',
-      data:  [44000, 0, 0, 0, 0],
-      color: '#804D0F',
+      name: "BTC",
+      data: [44000, 0, 0, 0, 0],
+      color: "#804D0F",
     },
     {
-      name: 'ETH',
+      name: "ETH",
       data: [0, 55000, 0, 0, 0],
-      color: '#3B48A8',
+      color: "#3B48A8",
     },
     {
-      name: 'USDT',
+      name: "USDT",
       data: [0, 0, 41000, 0, 0],
-      color: '#136B51',
+      color: "#136B51",
     },
     {
-      name: 'USDC',
+      name: "USDC",
       data: [0, 0, 0, 17000, 0],
-      color: '#1A2683',
+      color: "#1A2683",
     },
     {
-      name: 'DAI',
+      name: "DAI",
       data: [0, 0, 0, 0, 15000],
-      color: '#996B22',
+      color: "#996B22",
     },
   ];
 
