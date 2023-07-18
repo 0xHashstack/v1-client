@@ -25,7 +25,7 @@ import MarketMetrics from "@/components/layouts/metrics/borrowMetrics";
 import BorrowMetrics from "@/components/layouts/metrics/borrowMetrics";
 import MarketInformation from "@/components/layouts/metrics/marketInformation";
 import TotalCommunityActivity from "@/components/layouts/metrics/totalCommunityActivity";
-import { selectProtocolReserves } from "@/store/slices/readDataSlice";
+import { selectHourlyBTCData, selectHourlyDAIData, selectHourlyETHData, selectHourlyUSDCData, selectHourlyUSDTData, selectProtocolReserves } from "@/store/slices/readDataSlice";
 import useDataLoader from "@/hooks/useDataLoader";
 import UtilisationRateChart from "@/components/layouts/charts/utilisationRateChart";
 import Image from "next/image";
@@ -63,6 +63,18 @@ const ProtocolMetrics = () => {
       return <TotalCommunityActivity />;
   };
   const protocolReserves = useSelector(selectProtocolReserves);
+  const btcData=useSelector(selectHourlyBTCData);
+  const ethData=useSelector(selectHourlyETHData);
+  const usdtData=useSelector(selectHourlyUSDTData);
+  const usdcData=useSelector(selectHourlyUSDCData);
+  const daiData=useSelector(selectHourlyDAIData);
+  const [loading, setLoading] = useState(true)
+  useEffect(()=>{
+    if(btcData && ethData &&usdcData && usdtData && daiData){
+      setLoading(false);
+    }
+  },[btcData,ethData,usdcData,usdtData,daiData])
+
   return (
     <PageCard pt="8rem">
       <Box
