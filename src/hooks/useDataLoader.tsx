@@ -139,10 +139,10 @@ const useDataLoader = () => {
         // }
 
         const response = await axios.get(
-          `${metrics_api}/api/metrics/tvl/daily/DAI`
+          `${metrics_api}/api/metrics/tvl/daily/BTC`
         );
         const responseApr = await axios.get(
-          `${metrics_api}/api/metrics/apm_market/daily/DAI`
+          `${metrics_api}/api/metrics/apm_market/daily/BTC`
         );
         // console.log(response, "response data");
         if (!response) {
@@ -159,7 +159,8 @@ const useDataLoader = () => {
           const supplyCounts: any = [];
           const borrowCounts: any = [];
           const utilRates: any = [];
-          const exchangeRates: any = [];
+          const rTokenExchangeRates: any = [];
+          const dTokenExchangeRates:any=[];
           const totalTransactions: any = [];
           const totalAccounts: any = [];
           const aprs: any = [];
@@ -175,7 +176,8 @@ const useDataLoader = () => {
             supplyCounts?.push(response?.data[i].supplyCount);
             borrowCounts?.push(response?.data[i].borrowCount);
             utilRates?.push(response?.data[i].utilRate);
-            exchangeRates?.push(response?.data[i].exchangeRate);
+            rTokenExchangeRates?.push(response?.data[i].rTokenExchangeRate);
+            dTokenExchangeRates?.push(response?.data[i].dTokenExchangeRate)
             totalTransactions?.push(response?.data[i].totalTransactions);
             totalAccounts?.push(response?.data[i].totalAccounts);
             aprs?.push(responseApr?.data[i].APR);
@@ -192,7 +194,8 @@ const useDataLoader = () => {
             supplyCounts: supplyCounts,
             borrowCounts: borrowCounts,
             utilRates: utilRates,
-            exchangeRates: exchangeRates,
+            rTokenExchangeRates: rTokenExchangeRates,
+            dTokenExchangeRates:dTokenExchangeRates,
             totalTransactions: totalTransactions,
             totalAccounts: totalAccounts,
             aprs: aprs,

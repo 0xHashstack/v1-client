@@ -20,7 +20,7 @@ const useTransactionHandler = () => {
     // console.log("trans activeTransactions useEffect called");
     if (activeTransactions) {
       const data = activeTransactions.map(
-        (transaction: any) => transaction.transaction_hash
+        (transaction: any) => transaction?.transaction_hash
       );
       setTransactions(data);
     }
@@ -42,92 +42,85 @@ const useTransactionHandler = () => {
     console.log("transaction active transactions ", activeTransactions);
     console.log("transaction transactions ", transactions);
     console.log("transaction results ", results);
-    let transactionData = results?.filter(
-      (transaction: UseTransactionResult, idx) => {
-        transaction.refetch();
-        const transaction_hash =
-          //@ts-ignore
-          transaction?.data?.transaction?.transaction_hash;
+    results?.forEach((transaction: UseTransactionResult, idx) => {
+      transaction.refetch();
+      const transaction_hash =
         //@ts-ignore
-        const transaction_status = transaction?.data?.status;
-        //@ts-ignore
-        const transaction_error = transaction?.data?.error;
-        if (
-          transaction_hash == "" ||
-          activeTransactions.transaction_hash == ""
-        ) {
-          return false;
-        }
-        const transaction_hxh = activeTransactions[idx]?.transaction_hash;
-        if (
-          transaction_status == "PENDING" ||
-          transaction_status == "ACCEPTED_ON_L2"
-        ) {
-          if (!toastHash.includes(transaction_hxh)) {
-            dispatch(setTransactionStatus("success"));
-            dispatch(setTransactionRefresh(""));
-            activeTransactions[idx].setCurrentTransactionStatus("success");
-            toast.success(
-              activeTransactions?.[idx]?.message ||
-                `Your transaction is complete`,
-              {
-                position: toast.POSITION.BOTTOM_RIGHT,
-              }
-            );
-          }
-          toastHash.push(transaction_hxh);
-          toastHash.push(activeTransactions[idx]?.transaction_hash);
-          toastHash.push(transaction_hash);
-        } else if (transaction_status == "REJECTED") {
-          console.log("treans rejected", transaction_error);
-          const toastContent = (
-            <div>
-              Transaction failed{" "}
-              <CopyToClipboard
-                text={"Transaction failed : " + transaction_error}
-              >
-                <Text as="u">copy error!</Text>
-              </CopyToClipboard>
-            </div>
-          );
-          // setFailureToastDisplayed(true);
-          if (!toastHash.includes(transaction_hxh)) {
-            dispatch(setTransactionStatus("failed"));
-            activeTransactions[idx].setCurrentTransactionStatus("failed");
-            toast.error(toastContent, {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: false,
-            });
-          }
-          toastHash.push(transaction_hxh);
-          toastHash.push(activeTransactions?.transaction_hash);
-          toastHash.push(transaction_hash);
-        }
-        if (
-          transaction_status == "PENDING" ||
-          transaction_status == "ACCEPTED_ON_L2" ||
-          transaction_status == "ACCEPTED_ON_L1" ||
-          transaction_status == "REJECTED"
-        ) {
-          if (activeTransactions[idx].transaction_hash == "") {
-            return false;
-          }
-          toastHash.push(transaction_hxh);
-          toastHash.push(activeTransactions?.transaction_hash);
-          toastHash.push(transaction_hash);
-          const newData = [...activeTransactions]; // Create a new array with the same values
-          newData[idx] = {
-            ...newData[idx],
-            transaction_hash: "", // Modify the specific property with the new value
-          };
-          toast.dismiss(activeTransactions?.[idx]?.toastId);
-          dispatch(setActiveTransactions(newData));
-          return false;
-        } else {
-          return true;
-        }
+        transaction?.data?.transaction?.transaction_hash;
+      //@ts-ignore
+      const transaction_status = transaction?.data?.status;
+      //@ts-ignore
+      const transaction_error = transaction?.data?.error;
+      if (transaction_hash == "" || activeTransactions.transaction_hash == "") {
+        return false;
       }
-    );
+      const transaction_hxh = activeTransactions[idx]?.transaction_hash;
+      if (
+        transaction_status == "PENDING" ||
+        transaction_status == "ACCEPTED_ON_L2"
+      ) {
+        if (!toastHash.includes(transaction_hxh)) {
+          dispatch(setTransactionStatus("success"));
+          dispatch(setTransactionRefresh(""));
+          activeTransactions[idx].setCurrentTransactionStatus("success");
+          toast.success(
+            activeTransactions?.[idx]?.message ||
+              `Your transaction is complete`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+            }
+          );
+        }
+        toastHash.push(transaction_hxh);
+        toastHash.push(activeTransactions[idx]?.transaction_hash);
+        toastHash.push(transaction_hash);
+      } else if (transaction_status == "REJECTED") {
+        console.log("treans rejected", transaction_error);
+        const toastContent = (
+          <div>
+            Transaction failed{" "}
+            <CopyToClipboard text={"Transaction failed : " + transaction_error}>
+              <Text as="u">copy error!</Text>
+            </CopyToClipboard>
+          </div>
+        );
+        // setFailureToastDisplayed(true);
+        if (!toastHash.includes(transaction_hxh)) {
+          dispatch(setTransactionStatus("failed"));
+          activeTransactions[idx].setCurrentTransactionStatus("failed");
+          toast.error(toastContent, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          });
+        }
+        toastHash.push(transaction_hxh);
+        toastHash.push(activeTransactions?.transaction_hash);
+        toastHash.push(transaction_hash);
+      }
+      if (
+        transaction_status == "PENDING" ||
+        transaction_status == "ACCEPTED_ON_L2" ||
+        transaction_status == "ACCEPTED_ON_L1" ||
+        transaction_status == "REJECTED"
+      ) {
+        if (activeTransactions[idx].transaction_hash == "") {
+          return false;
+        }
+        toastHash.push(transaction_hxh);
+        toastHash.push(activeTransactions?.transaction_hash);
+        toastHash.push(transaction_hash);
+        const newData = [...activeTransactions]; // Create a new array with the same values
+        newData[idx] = {
+          ...newData[idx],
+          transaction_hash: "", // Modify the specific property with the new value
+        };
+        toast.dismiss(activeTransactions?.[idx]?.toastId);
+        dispatch(setActiveTransactions(newData));
+        return false;
+      } else {
+        return true;
+      }
+    });
     // if (transactionData?.length != activeTransactions?.length) {
     //   dispatch(setActiveTransactions(transactionData));
     // }
