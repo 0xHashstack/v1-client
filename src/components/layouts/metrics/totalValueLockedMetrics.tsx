@@ -63,16 +63,19 @@ const TotalValueLockedMetrics = () => {
           : (newData = [
               {
                 name: "Total Value Locked",
-                data: [30000, 40000, 35000, 50000, 49000, 60000, 80000, 35000, 50000, 49000, 60000, 80000],
+                data: [
+                  30000, 40000, 35000, 50000, 49000, 60000, 80000, 35000, 50000,
+                  49000, 60000, 80000,
+                ],
               },
             ]);
         btcData?.dates
           ? (newCategories = btcData?.dates)
-          : (          newCategories = [
-            1689152545000, 1689156145000, 1689159745000, 1689163345000,
-            1689166945000, 1689170545000, 1689174145000, 1689177745000,
-            1689181345000, 1689184945000, 1689188545000, 1689192145000,
-          ]);
+          : (newCategories = [
+              1689152545000, 1689156145000, 1689159745000, 1689163345000,
+              1689166945000, 1689170545000, 1689174145000, 1689177745000,
+              1689181345000, 1689184945000, 1689188545000, 1689192145000,
+            ]);
         break;
       case 1:
         newData = [
@@ -351,6 +354,12 @@ const TotalValueLockedMetrics = () => {
                 onClick={() => {
                   setAPRByMarket(1);
                 }}
+                isDisabled={true}
+                _disabled={{
+                  cursor: "pointer",
+                  color: "#2B2F35",
+                  border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
+                }}
               >
                 1W
               </Button>
@@ -361,6 +370,12 @@ const TotalValueLockedMetrics = () => {
                 variant={aprByMarket === 2 ? "solid" : "outline"}
                 onClick={() => {
                   setAPRByMarket(2);
+                }}
+                isDisabled={true}
+                _disabled={{
+                  cursor: "pointer",
+                  color: "#2B2F35",
+                  border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
                 }}
               >
                 1M
@@ -374,26 +389,32 @@ const TotalValueLockedMetrics = () => {
                 onClick={() => {
                   setAPRByMarket(3);
                 }}
+                isDisabled={true}
+                _disabled={{
+                  cursor: "pointer",
+                  color: "#2B2F35",
+                  border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
+                }}
               >
                 ALL
               </Button>
             </Box>
           </Box>
         </Box>
-            <Box
-              border="1px solid #2B2F35"
-              borderRadius="6px"
-              padding="16px 24px 40px"
-            >
-              <ApexCharts
-                options={options}
-                series={splineChartData.series}
-                type="area"
-                height={350}
-              />
+        <Box
+          border="1px solid #2B2F35"
+          borderRadius="6px"
+          padding="16px 24px 40px"
+        >
+          <ApexCharts
+            options={options}
+            series={splineChartData.series}
+            type="area"
+            height={350}
+          />
         </Box>
       </Box>
-      <UtilisationRateChart/>
+      <UtilisationRateChart />
     </Box>
   );
 };

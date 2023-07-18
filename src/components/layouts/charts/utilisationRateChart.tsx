@@ -267,6 +267,16 @@ const UtilisationRateChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
+              }}
             >
               1W
             </Button>
@@ -281,6 +291,16 @@ const UtilisationRateChart = () => {
               variant={liquidityProviderChartPeriod === 2 ? "solid" : "outline"}
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
               }}
             >
               1M
@@ -297,6 +317,16 @@ const UtilisationRateChart = () => {
               variant={liquidityProviderChartPeriod === 3 ? "solid" : "outline"}
               onClick={() => {
                 setLiquidityProviderChartPeriod(3);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
               }}
             >
               ALL
