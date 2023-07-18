@@ -29,6 +29,7 @@ const TotalValueLockedMetrics = () => {
   ]);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   const btcData = useSelector(selectHourlyBTCData);
+  console.log(btcData,"data tvl")
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
