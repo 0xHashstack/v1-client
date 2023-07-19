@@ -197,9 +197,10 @@ export default function Home() {
         alignItems="flex-start"
         padding="32px"
         width="462px"
-        height="567px"
+        // height="567px"
         border="1px solid #30363D"
         borderRadius="8px"
+        // bgColor="red"
       >
         <Text color="#fff">Connect a wallet</Text>
         <Card
@@ -437,18 +438,27 @@ export default function Home() {
           </Button>
         </Box>
 
-        <Box mt="16px" display="flex" flexDirection="column" pb="32px">
+        <Box
+          mt="16px"
+          display="flex"
+          flexDirection="column"
+          // pb="32px"
+          // bgColor="blue"
+        >
           <Text
             fontSize="12px"
             lineHeight="18px"
             fontWeight="400"
             color="#8C8C8C"
           >
-            This mainnet is currently in alpha with limitations on the maximum
+            {/* This mainnet is currently in alpha with limitations on the maximum
             supply & borrow amount. This is done in consideration of the current
             network and liquidity constraints of the Starknet. We urge the users
             to use the dapp with caution. Hashstack will not cover any
-            accidental loss of user funds.
+            accidental loss of user funds. */}
+            Wallets are provided by External Providers and by selecting you
+            agree to Terms of those Providers. Your access to the wallet might
+            be reliant on the External Provider being operational.
           </Text>
           <Text
             fontSize="12px"
@@ -457,9 +467,8 @@ export default function Home() {
             color="#8C8C8C"
             mt="1rem"
           >
-            Wallets are provided by External Providers and by selecting you
-            agree to Terms of those Providers. Your access to the wallet might
-            be reliant on the External Provider being operational.
+            We urge the users to use the dapp with caution. Hashstack will not
+            cover any accidental loss of user funds.
           </Text>
         </Box>
       </Box>

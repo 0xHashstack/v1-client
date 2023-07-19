@@ -644,10 +644,10 @@ const SupplyModal = ({
     // check if newValue is float, if it is then round off to 6 decimals
 
     var percentage = (newValue * 100) / walletBalance;
-    if (walletBalance == 0) {
-      setDepositAmount(0);
-      setinputAmount(0);
-    }
+    // if (walletBalance == 0) {
+    //   setDepositAmount(0);
+    //   setinputAmount(0);
+    // }
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);

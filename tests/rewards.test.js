@@ -1,27 +1,31 @@
-import { Contract } from "starknet";
-import { getrTokensMinted } from "../src/Blockchain/scripts/Rewards";
-import { getProvider } from "../src/Blockchain/stark-constants";
-import { etherToWeiBN, parseAmount } from "../src/Blockchain/utils/utils";
+import {
+  diamondAddress,
+  getProvider,
+  metricsContractAddress,
+} from "../src/Blockchain/stark-constants";
+import { TextEncoder, TextDecoder } from "text-encoding-utf-8";
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
 import supplyABI from "../src/Blockchain/abi_new/supply_abi.json";
-import { tokenAddressMap } from "../src/Blockchain/utils/addressServices";
-
-describe("Get l3 interaction function values", () => {
-  it("displays the estimated rTokens minted", async () => {
-    const expectedRTokensMinted = 32.75;
+import { Contract, number, uint256 } from "starknet";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "../src/Blockchain/utils/addressServices";
+import { etherToWeiBN, parseAmount } from "../src/Blockchain/utils/utils";
+import stakingAbi from "../src/Blockchain/abi_new/staking_abi.json";
+describe("Get estimated values", () => {
+  it("displays the estimated rTokens minted add collateral", async () => {
+    const expectedRTokensMinted = "144.46";
     const rToken = "rUSDT";
-    const collateralAmount = 32.8;
-    // const rTokensMinted = await getrTokensMinted(rToken, collateralAmount);
-
+    const collateralAmount = "144.67";
     const provider = getProvider();
     const supplyContract = new Contract(
       supplyABI,
       tokenAddressMap[rToken],
       provider
     );
-    // console.log("Called")
-    // console.log(supplyContract,"suppply contract")
     const parsedAmount = etherToWeiBN(collateralAmount, rToken).toString();
-    // console.log(parsedAmount, "parsed amount");
     const res = await supplyContract.call(
       "preview_deposit",
       [[parsedAmount, 0]],
@@ -29,19 +33,59 @@ describe("Get l3 interaction function values", () => {
         blockIdentifier: "pending",
       }
     );
-    // console.log(res, "data in rewards");
     const data = parseAmount(
-      uint256.uint256ToBN(res?.shares).toString(),
+      uint256.uint256ToBN(res[0]).toString(),
       tokenDecimalsMap[rToken]
     );
-    // console.log(
-    //     parseAmount(
-    //         uint256.uint256ToBN(res?.shares).toString(),
-    //         tokenDecimalsMap[rToken]
-    //     )
-    // );
-    const rTokensMinted = data.toFixed(2);
 
-    expect(rTokensMinted).toBe(expectedRTokensMinted);
+    expect(data.toFixed(2)).toBe(expectedRTokensMinted);
+  });
+  it("display the estimated supply amount while withdrawing", async () => {
+    const expectedSupplyUnlocked = "2050.93";
+    const rToken = "rUSDT";
+    const amount = "2052.1";
+    const provider = getProvider();
+    const supplyContract = new Contract(
+      supplyABI,
+      tokenAddressMap[rToken],
+      provider
+    );
+    const parsedAmount = etherToWeiBN(amount, rToken).toString();
+    const res = await supplyContract.call(
+      "preview_redeem",
+      [[parsedAmount, 0]],
+      {
+        blockIdentifier: "pending",
+      }
+    );
+    const data = parseAmount(
+      uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),
+      tokenDecimalsMap[rToken]
+    );
+    expect(data.toFixed(2)).toBe(expectedSupplyUnlocked);
+  });
+  it("display the estimated r tokens", async () => {
+    const expectedrTokensUnlocked = 144.672119;
+    const rToken = "rUSDT";
+    const amount = "144.67";
+    const provider = getProvider();
+    const stakingContract = new Contract(
+      stakingAbi,
+      "0x386d428081fcae8d28cfdc1ff913fd6cd5da3c93d54060fb20687e8791c12e0",
+      provider
+    );
+    const parsedAmount = etherToWeiBN(amount, rToken).toString();
+    const res = await stakingContract.call(
+      "preview_redeem",
+      [tokenAddressMap[rToken], [parsedAmount, 0]],
+      {
+        blockIdentifier: "pending",
+      }
+    );
+    const data = parseAmount(
+      uint256.uint256ToBN(res?.rToken_amount_to_withdraw).toString(),
+      tokenDecimalsMap[rToken]
+    );
+    expect(data).toBe(expectedrTokensUnlocked);
   });
 });
