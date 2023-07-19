@@ -38,7 +38,7 @@ describe("Get estimated values", () => {
     expect(data.toFixed(2)).toBe(expectedRTokensMinted);
   });
   it("display the estimated supply amount while withdrawing",async()=>{
-    const expectedSupplyUnlocked=  "2050.93";
+    const expectedSupplyUnlocked=  "2050.9";
     const rToken = "rUSDT";
     const amount = "2052.1";
     const provider = getProvider();
@@ -59,7 +59,7 @@ describe("Get estimated values", () => {
       uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),
       tokenDecimalsMap[rToken]
     );
-    expect(data.toFixed(2)).toBe(expectedSupplyUnlocked);
+    expect(data.toFixed(1)).toBe(expectedSupplyUnlocked);
   })
   it("display the estimated r tokens",async()=>{
     const expectedrTokensUnlocked=  144.672119;

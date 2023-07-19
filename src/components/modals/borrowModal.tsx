@@ -2014,7 +2014,7 @@ const BorrowModal = ({
                       <Text>
                         {/* 5.56% */}
                         {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                        {(inputBorrowAmountUSD *
+                        {((inputBorrowAmountUSD *
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentBorrowCoin
                           )?.borrowRate -
@@ -2022,7 +2022,7 @@ const BorrowModal = ({
                             protocolStats?.find(
                               (stat: any) => stat?.token === rToken.slice(1)
                             )?.supplyRate) /
-                          inputBorrowAmountUSD}
+                          inputBorrowAmountUSD).toFixed(2)}
                         {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin
@@ -2090,7 +2090,7 @@ const BorrowModal = ({
                 display="flex"
                 alignItems="center"
                 mt="2rem"
-                mb="1rem"
+                // mb="1rem"
               >
                 <Box
                   display="flex"
@@ -2154,7 +2154,7 @@ const BorrowModal = ({
                     color="#8B949E"
                     size="sm"
                     width="100%"
-                    // mt="1.5rem"
+                    mt="1.5rem"
                     mb="1.5rem"
                     border="1px solid #8B949E"
                     labelSuccessArray={[
@@ -2189,7 +2189,7 @@ const BorrowModal = ({
                 color="#6E7681"
                 size="sm"
                 width="100%"
-                // mt="1.5rem"
+                mt="1.5rem"
                 mb="1.5rem"
                 border="1px solid #2B2F35"
                 _hover={{ bg: "#101216" }}
