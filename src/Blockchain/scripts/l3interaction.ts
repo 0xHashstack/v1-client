@@ -205,16 +205,16 @@ export async function getJediEstimatedLiqALiqBfromLp(
     }
     const tokenA = getTokenFromAddress(processAddress(res?.token0))?.name;
     const tokenB = getTokenFromAddress(processAddress(res?.token1))?.name;
-    console.log(
-      "split token A",
-      tokenA,
-      tokenDecimalsMap[tokenA],
-      "token B",
-      tokenB,
-      tokenDecimalsMap[tokenB],
-      "loanId",
-      loanId
-    );
+    // console.log(
+    //   "split token A",
+    //   tokenA,
+    //   tokenDecimalsMap[tokenA],
+    //   "token B",
+    //   tokenB,
+    //   tokenDecimalsMap[tokenB],
+    //   "loanId",
+    //   loanId
+    // );
 
     console.log(
       "split amountA",
