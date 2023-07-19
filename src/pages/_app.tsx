@@ -39,6 +39,9 @@ const theme = extendTheme({
     body: "Inter, sans-serif",
   },
 });
+const lightTheme = extendTheme({
+  // Add your light theme styles here
+});
 import { UserbackProvider } from "@userback/react";
 import Layout from "@/components/layouts/toasts";
 import spaceApiKey from "@/utils/constants/keys";
@@ -50,14 +53,14 @@ export default function App({ Component, pageProps }: AppProps) {
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
   const [feedback, setFeedback] = useState(false);
-  loadSpace(spaceApiKey)
-    .then((api) => {
-      if (!feedback) {
-        api.init();
-        setFeedback(true);
-      }
-    })
-    .catch((err) => console.log(err));
+  // loadSpace(spaceApiKey)
+  //   .then((api) => {
+  //     if (!feedback) {
+  //       api.init();
+  //       setFeedback(true);
+  //     }
+  //   })
+  //   .catch((err) => console.log(err));
 
   return (
     <>
@@ -72,17 +75,17 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <link rel="shortcut icon" href="/favicon-32x32.png" />
       </Head>
-      {/* <UserbackProvider token="40956|82606|h64VyoLnOnFyGHlNFmApltBdf"> */}
-      <ChakraProvider theme={theme}>
-        <StarknetProvider autoConnect={true} connectors={connectors}>
-          <Provider store={store}>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </Provider>
-        </StarknetProvider>
-      </ChakraProvider>
-      {/* </UserbackProvider> */}
+      <UserbackProvider token="41008|82779|jLWegItyD7nNxGyoXnZvkD1IX">
+        <ChakraProvider theme={theme}>
+          <StarknetProvider autoConnect={true} connectors={connectors}>
+            <Provider store={store}>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </Provider>
+          </StarknetProvider>
+        </ChakraProvider>
+      </UserbackProvider>
     </>
   );
 }

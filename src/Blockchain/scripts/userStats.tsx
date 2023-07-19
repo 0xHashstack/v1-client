@@ -81,7 +81,13 @@ export async function getTotalBorrow(
     if (oraclePrice && exchangeRate) {
       let loanAmoungUnderlying = loan.loanAmountParsed * exchangeRate;
       totalBorrow += loanAmoungUnderlying * oraclePrice.price;
-
+      // console.log(
+      //   "total borrow loan ID ",
+      //   loan?.loanId,
+      //   " is ",
+      //   loanAmoungUnderlying * oraclePrice.price,
+      //   totalBorrow
+      // );
       if (loan.loanState === "ACTIVE") {
         totalCurrentAmount += loan.currentLoanAmountParsed * oraclePrice.price;
       } else if (loan.loanState === "SPENT") {
@@ -125,7 +131,16 @@ export async function getNetworth(
   totalBorrow: number,
   totalCurrentAmount: number
 ) {
+  // console.log(
+  //   "getNetworth calling",
+  //   totalSupply,
+  //   totalBorrow,
+  //   totalCurrentAmount
+  // );
+
   const netWorth = totalSupply + totalCurrentAmount - totalBorrow;
+  console.log("total networth", netWorth);
+
   return netWorth;
 }
 
@@ -250,3 +265,7 @@ export async function effectiveAprDeposit(
     return (rTokenInterest + stakingInterest) / rTokenTotal;
   }
 }
+
+//!Data Oracle
+
+//!Data Deposit

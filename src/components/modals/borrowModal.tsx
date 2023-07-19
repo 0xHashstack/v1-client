@@ -295,9 +295,9 @@ const BorrowModal = ({
       console.log("borrow modal : error fetching protocolStats");
     }
   }, [protocolStatsRedux]);
-  useEffect(() => {
-    console.log("currentAvailableReserve", currentAvailableReserves);
-  }, [currentAvailableReserves]);
+  // useEffect(() => {
+  //   console.log("currentAvailableReserve", currentAvailableReserves);
+  // }, [currentAvailableReserves]);
   const oraclePrices = useSelector(selectOraclePrices);
   const marketInfo = useSelector(selectProtocolStats);
   const [healthFactor, setHealthFactor] = useState<number>();
@@ -376,24 +376,24 @@ const BorrowModal = ({
       //   currentBorrowCoin,
       //   inputBorrowAmount
       // );
-      console.log("got parsed usdt borrow", parsedBorrowAmount);
+      // console.log("got parsed usdt borrow", parsedBorrowAmount);
       setInputBorrowAmountUSD(parsedBorrowAmount);
-      console.log(
-        "effective apr values : ",
-        "loan_usd_value",
-        parsedBorrowAmount,
-        "loan_apr",
-        protocolStats?.find((stat: any) => stat?.token === currentBorrowCoin)
-          ?.borrowRate,
-        "collateral_usd_value",
-        inputCollateralAmountUSD,
-        "collateral_apr",
-        protocolStats?.find(
-          (stat: any) => stat?.token === currentCollateralCoin
-        )?.supplyRate,
-        "loan_usd_value",
-        parsedBorrowAmount
-      );
+      // console.log(
+      //   "effective apr values : ",
+      //   "loan_usd_value",
+      //   parsedBorrowAmount,
+      //   "loan_apr",
+      //   protocolStats?.find((stat: any) => stat?.token === currentBorrowCoin)
+      //     ?.borrowRate,
+      //   "collateral_usd_value",
+      //   inputCollateralAmountUSD,
+      //   "collateral_apr",
+      //   protocolStats?.find(
+      //     (stat: any) => stat?.token === currentCollateralCoin
+      //   )?.supplyRate,
+      //   "loan_usd_value",
+      //   parsedBorrowAmount
+      // );
     } catch (error) {
       console.log(error);
     }
@@ -584,7 +584,7 @@ const BorrowModal = ({
     const amount = validRTokens.find(({ rToken, rTokenAmount }: any) => {
       if (rToken == coin) return rTokenAmount;
     });
-    return amount ? amount.rTokenAmount : 0;
+    return amount ? numberFormatter(amount.rTokenAmount) : 0;
   };
 
   const fetchEffectiveApr = async () => {
@@ -742,6 +742,7 @@ const BorrowModal = ({
   useEffect(() => {
     setAmount(0);
     setsliderValue2(0);
+    setinputBorrowAmount(0);
   }, [currentBorrowCoin]);
   // console.log(currentCollateralCoin,"collateral coin")
   // useEffect(() => {
@@ -814,7 +815,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Select collateral market"
+                    label="Collateral market refers to the cryptocurrency that you keep as security agains the borrowed amount you take from Hashstack"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1026,17 +1027,17 @@ const BorrowModal = ({
                                 fontWeight="thin"
                               >
                                 Wallet Balance:{" "}
-                                {numberFormatter(
-                                  Number(
-                                    BNtoNum(
-                                      uint256.uint256ToBN(
-                                        walletBalances[coin]?.dataBalanceOf
-                                          ?.balance
-                                      ),
-                                      tokenDecimalsMap[coin]
-                                    )
-                                  )
-                                )}
+                                {walletBalances[coin]?.dataBalanceOf?.balance
+                                  ? Number(
+                                      BNtoNum(
+                                        uint256.uint256ToBN(
+                                          walletBalances[coin]?.dataBalanceOf
+                                            ?.balance
+                                        ),
+                                        tokenDecimalsMap[coin]
+                                      )
+                                    ).toFixed(2)
+                                  : "-"}
                               </Box>
                             </Box>
                           </Box>
@@ -1055,7 +1056,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Enter collateral amount"
+                    label="Collateral amount refers to the unit of crypto coins you are willing to keep as security against the borrowed amount"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1208,13 +1209,18 @@ const BorrowModal = ({
                     value={sliderValue}
                     onChange={(val) => {
                       setSliderValue(val);
-                      var ans = (val * walletBalance) / 100;
-                      ans = Math.round(ans * 100) / 100;
-                      dispatch(setInputBorrowModalCollateralAmount(ans));
-                      // setRTokenAmount(ans);
-                      // setAmount(ans);
-                      setCollateralAmount(ans);
-                      setRTokenAmount(ans);
+                      if (val == 100) {
+                        setCollateralAmount(walletBalance);
+                        setRTokenAmount(walletBalance);
+                      } else {
+                        var ans = (val * walletBalance) / 100;
+                        ans = Math.round(ans * 100) / 100;
+                        dispatch(setInputBorrowModalCollateralAmount(ans));
+                        // setRTokenAmount(ans);
+                        // setAmount(ans);
+                        setCollateralAmount(ans);
+                        setRTokenAmount(ans);
+                      }
                     }}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
@@ -1362,7 +1368,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Select borrow market"
+                    label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1503,7 +1509,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Enter borrow amount"
+                    label="Borrow amount refers to the unit of crypto coins you are willing to borrow from the protocol"
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1834,7 +1840,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Estimated gas fees for transaction"
+                    label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1876,7 +1882,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Borrow rate"
+                    label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1936,7 +1942,7 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Effective apr"
+                      label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -2048,7 +2054,7 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Health factor"
+                      label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}

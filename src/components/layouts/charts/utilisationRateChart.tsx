@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
@@ -17,7 +17,7 @@ const UtilisationRateChart = () => {
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
-  const btcData=useSelector(selectHourlyBTCData);
+  const btcData = useSelector(selectHourlyBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -43,74 +43,74 @@ const UtilisationRateChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.utilRates ? newData = [
+        btcData?.totalUrm
+          ? (newData = [
+              {
+                name: "Utlization Rate",
+                data: btcData?.totalUrm,
+              },
+            ])
+          : (newData = [
+              {
+                name: "Utlization Rate",
+                data: [
+                  300, 400, 350, 500, 490, 600, 800, 400, 350, 500, 490, 600,
+                  800,
+                ],
+              },
+            ]);
+        btcData?.dates
+          ? (newCategories = btcData?.dates)
+          : (newCategories = [
+              1689152545000, 1689156145000, 1689159745000, 1689163345000,
+              1689166945000, 1689170545000, 1689174145000, 1689177745000,
+              1689181345000, 1689184945000, 1689188545000, 1689192145000,
+            ]);
+        break;
+      case 1:
+        newData = [
           {
             name: "Utlization Rate",
-            data: btcData?.utilRates,
-          },
-        ]:newData = [
-          {
-            name: "Utlization Rate",
-            data: [300, 400, 350, 500, 490, 600, 800, 400, 350, 500, 490, 600, 800],
+            data: [400, 100, 420, 390, 440, 410, 430],
           },
         ];
-        btcData?.dates ?
-        newCategories = btcData?.dates
-        :newCategories = [
-          1689152545000, 1689156145000, 1689159745000, 1689163345000,
-          1689166945000, 1689170545000, 1689174145000, 1689177745000,
-          1689181345000, 1689184945000, 1689188545000, 1689192145000,
+        newCategories = [
+          new Date("2023-07-01").getTime(),
+          new Date("2023-07-02").getTime(),
+          new Date("2023-07-03").getTime(),
+          new Date("2023-07-04").getTime(),
+          new Date("2023-07-05").getTime(),
+          new Date("2023-07-06").getTime(),
+          new Date("2023-07-07").getTime(),
         ];
         break;
-        case 1:
-          newData = [
-            {
-              name: "Utlization Rate",
-              data: [
-                400, 100, 420, 390, 440, 410, 430, 
-              ],
-            },
-          ];
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
-          break;
-        case 2:
-          //y data axis
-          newData = [
-            {
-              name: "Utlization Rate",
-              data: [500, 490, 520, 480, 510,  480, 500, 480, 510, 480],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
+      case 2:
+        //y data axis
+        newData = [
+          {
+            name: "Utlization Rate",
+            data: [500, 490, 520, 480, 510, 480, 500, 480, 510, 480],
+          },
         ];
-          break;
+        //x axis data
+        newCategories = [
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-06").getTime(),
+          new Date("2023-06-09").getTime(),
+          new Date("2023-06-12").getTime(),
+          new Date("2023-06-15").getTime(),
+          new Date("2023-06-18").getTime(),
+          new Date("2023-06-21").getTime(),
+          new Date("2023-06-24").getTime(),
+          new Date("2023-06-27").getTime(),
+          new Date("2023-06-30").getTime(),
+        ];
+        break;
       case 3:
         newData = [
           {
             name: "Utlization Rate",
-            data: [
-              600, 580, 620, 590, 630, 600, 620, 590, 630,
-              600, 620, 700,
-            ],
+            data: [600, 580, 620, 590, 630, 600, 620, 590, 630, 600, 620, 700],
           },
         ];
 
@@ -151,7 +151,7 @@ const UtilisationRateChart = () => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return (val/10)?.toFixed(1)+ '%'; // Display the data value as the label
+          return (val / 100)?.toFixed(1) + "%"; // Display the data value as the label
         },
       },
 
@@ -175,7 +175,7 @@ const UtilisationRateChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return (value/10)?.toFixed(1)+ '%';
+            return (value / 100)?.toFixed(1) + "%";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -267,6 +267,16 @@ const UtilisationRateChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
+              }}
             >
               1W
             </Button>
@@ -281,6 +291,16 @@ const UtilisationRateChart = () => {
               variant={liquidityProviderChartPeriod === 2 ? "solid" : "outline"}
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
               }}
             >
               1M
@@ -297,6 +317,16 @@ const UtilisationRateChart = () => {
               variant={liquidityProviderChartPeriod === 3 ? "solid" : "outline"}
               onClick={() => {
                 setLiquidityProviderChartPeriod(3);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
               }}
             >
               ALL

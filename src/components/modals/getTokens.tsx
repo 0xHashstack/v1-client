@@ -56,6 +56,7 @@ import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectActiveTransactions,
+  selectTransactionStartedAndModalClosed,
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
   setTransactionStatus,
@@ -183,7 +184,7 @@ const GetTokensModal = ({
       mixpanel.track("Get Tokens Status", {
         Status: "Failure",
       });
-      dispatch(setTransactionStartedAndModalClosed(true));
+      // dispatch(setTransactionStartedAndModalClosed(true));
       const toastContent = (
         <div>
           Failed to mint{" " + coin + " "}
@@ -212,6 +213,7 @@ const GetTokensModal = ({
           isOpen={isOpen}
           onClose={() => {
             onClose();
+            dispatch(setTransactionStartedAndModalClosed(true))
             // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "800px", height: "100px" }}

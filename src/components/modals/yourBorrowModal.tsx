@@ -235,7 +235,7 @@ const YourBorrowModal = ({
     statusAddCollateral,
 
     dataAddCollateralRToken,
-    errorAddCollateralRToken,
+    errorAddCollateralRToken, 
     resetAddCollateralRToken,
     writeAddCollateralRToken,
     writeAsyncAddCollateralRToken,
@@ -249,6 +249,7 @@ const YourBorrowModal = ({
   const {
     repayAmount,
     setRepayAmount,
+    setLoan,
     // handleApprove,
     writeAsyncRepay,
     transRepayHash,
@@ -256,7 +257,6 @@ const YourBorrowModal = ({
     // repayTransactionReceipt,
     isLoadingRepay,
     errorRepay,
-    handleRepayBorrow,
 
     //SelfLiquidate - Repay with 0 amount
     writeAsyncSelfLiquidate,
@@ -265,6 +265,9 @@ const YourBorrowModal = ({
     // selfLiquidateTransactionReceipt,
     setIsSelfLiquidateHash,
   } = useRepay(loan);
+  useEffect(() => {
+    console.log("current loan", loan);
+  }, [loan]);
 
   const {
     swapLoanId,
@@ -325,6 +328,75 @@ const YourBorrowModal = ({
     isIdleRevertInteractWithL3,
     isLoadingRevertInteractWithL3,
   } = useRevertInteractWithL3();
+  const handleRepayBorrow = async () => {
+    // if (!repayAmount && loan?.loanId! && !diamondAddress) {
+    //   return;
+    // }
+    // if (!repayAmount || repayAmount < 0) {
+    if (!repayAmount || repayAmount < 0) {
+      return;
+    }
+    try {
+      const val = await writeAsyncRepay();
+      setTransRepayHash(val?.transaction_hash);
+      if (val?.transaction_hash) {
+        const toastid = toast.info(`Transaction pending `, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+        });
+        setToastId(toastid);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: val?.transaction_hash.toString(),
+          message: `You have successfully repaid`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+        mixpanel.track("Zero Repay Status", {
+          Status: "Success",
+          "Loan ID": loan?.loanId,
+        });
+
+        dispatch(setActiveTransactions(activeTransactions));
+        dispatch(setTransactionStatus("success"));
+      }
+    } catch (err: any) {
+      console.log(err, "err repay");
+      dispatch(setTransactionStatus("failed"));
+      const toastContent = (
+        <div>
+          Transaction failed{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      });
+      mixpanel.track("Repay Borrow Status", {
+        Status: "Failure",
+      });
+      // const toastParamValue = {
+      //   success: false,
+      //   heading: "Repay Transaction Failed",
+      //   desc: "Copy the error",
+      //   textToCopy: err,
+      // };
+      return;
+    }
+  };
 
   const handleRevertTransaction = async () => {
     try {
@@ -485,6 +557,14 @@ const YourBorrowModal = ({
     setLiquidityLoanId(
       currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
+    const result = userLoans.find(
+      (item: any) =>
+        item?.loanId ==
+        currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+    );
+    setLoan(
+      result
+    )
   }, [currentBorrowId1]);
   // console.log(userLoans);
 
@@ -535,7 +615,7 @@ const YourBorrowModal = ({
       case "dETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
         break;
-      case "rDAI":
+      case "dDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
       case "rBTC":
@@ -1099,7 +1179,7 @@ const YourBorrowModal = ({
                     hasArrow
                     placement="right-start"
                     boxShadow="dark-lg"
-                    label="Estimated LP tokens recieved"
+                    label="Estimated LP Tokens Received: This tool tip provides an estimate of the number of LP (Liquidity Provider) tokens you will receive when you provide liquidity to a pool."
                     bg="#24292F"
                     fontSize={"smaller"}
                     fontWeight={"thin"}
@@ -1152,7 +1232,7 @@ const YourBorrowModal = ({
                       hasArrow
                       placement="right-start"
                       boxShadow="dark-lg"
-                      label="Liquidity split for selected pools"
+                      label="refers to the fee charged for adjusting the allocation or distribution of liquidity across different assets within the protocol."
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -1237,7 +1317,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Fees"
+                  label="refer to the charges or costs incurred when completing a transactions"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1272,7 +1352,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Borrow apr"
+                  label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1321,7 +1401,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Estimated gas fees for transaction"
+                  label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1356,7 +1436,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Effective apr"
+                  label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1406,7 +1486,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Health factor"
+                  label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1470,7 +1550,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Current borrow market"
+                  label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1575,7 +1655,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Fees"
+                  label="refer to the charges or costs incurred when completing a transactions"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1610,7 +1690,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Estimated gas fees for transaction"
+                  label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1654,7 +1734,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Dapp"
+                  label="Choose a decentralized application (Dapp) to spend you loan on the protocol."
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1684,7 +1764,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Borrow amount"
+                  label="Borrow amount refers to the unit of crypto coins you are willing to borrow from the protocol"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1759,7 +1839,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Fees"
+                  label="refer to the charges or costs incurred when completing a transactions"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1784,7 +1864,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Estimated gas fees for transactions"
+                  label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1876,7 +1956,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Fees"
+                  label="refer to the charges or costs incurred when completing a transactions"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1911,7 +1991,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Estimated gas fees for transaction"
+                  label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1960,7 +2040,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Borrowed market"
+                  label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -1981,7 +2061,7 @@ const YourBorrowModal = ({
                 {currentBorrowMarketCoin1}
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#8B949E"
@@ -2015,7 +2095,7 @@ const YourBorrowModal = ({
               >
                 1.23
               </Text>
-            </Box>
+            </Box> */}
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
@@ -2065,7 +2145,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Fees"
+                  label="refer to the charges or costs incurred when completing a transactions"
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -2100,7 +2180,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Estimated gas fees for transaction"
+                  label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                   bg="#24292F"
                   fontSize={"smaller"}
                   fontWeight={"thin"}
@@ -2591,7 +2671,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Action"
+                            label="Action pertains to the dropdown menu that allows you to select different actions or operations related to a specific loan within protocol."
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -2715,7 +2795,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Enter Borrow ID"
+                            label="Borrow ID refers to unique identification number assigned to a specific loan within the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -2866,7 +2946,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="aBorrow market"
+                            label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -2987,7 +3067,7 @@ const YourBorrowModal = ({
                                 hasArrow
                                 placement="right-start"
                                 boxShadow="dark-lg"
-                                label="Repay amount"
+                                label="refers to the field where you can enter the specific amount you wish to repay for a loan within protocol"
                                 bg="#24292F"
                                 fontSize={"smaller"}
                                 fontWeight={"thin"}
@@ -3339,7 +3419,7 @@ const YourBorrowModal = ({
                               hasArrow
                               placement="right-start"
                               boxShadow="dark-lg"
-                              label="Dapp"
+                              label="Choose a decentralized application (Dapp) to spend you loan on the protocol."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -3381,7 +3461,7 @@ const YourBorrowModal = ({
                                 ""
                               )}
 
-                              <Text mt="0.10rem">{currentDapp}</Text>
+                              <Text mt="0.10rem" color="white">{currentDapp}</Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (
@@ -3443,7 +3523,7 @@ const YourBorrowModal = ({
                                         borderRadius="md"
                                       >
                                         <Box p="1">{getCoin(dapp.name)}</Box>
-                                        <Text pt="1">{dapp.name}</Text>
+                                        <Text pt="1" color="white">{dapp.name}</Text>
                                       </Box>
                                       {dapp.status === "disable" && (
                                         <Text
@@ -3471,7 +3551,7 @@ const YourBorrowModal = ({
                               hasArrow
                               placement="right-start"
                               boxShadow="dark-lg"
-                              label="Select pool"
+                              label="Choose a specific liquidity pool within protocol to participate in activities such as providing liquidity, earning rewards, or accessing specific financial services."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -4002,7 +4082,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Borrow ID"
+                            label="Borrow ID refers to unique identification number assigned to a specific loan within the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -4128,7 +4208,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Select borrow market"
+                            label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -4255,7 +4335,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Select token"
+                            label="Select from which token you want to add collateral"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -4425,26 +4505,10 @@ const YourBorrowModal = ({
                             & debt positions to repay the borrow.
                             The balance will be updated into rTokens"
                           bg="#24292F"
-                          display="flex"
-                          flexDirection="column"
-                          alignItems="center"
-                          pt="16px"
-                          pl="16px"
-                          fontSize="11px"
-                          fontWeight="400"
-                          fontStyle="normal"
-                          lineHeight="16px"
-                          color="#E6EDF3"
-                          letterSpacing="-0.15px"
-                          borderRadius="6px"
-                          backgroundColor="#101216"
-                          border="1px solid #2B2F35"
-                          flex="none"
-                          order="0"
-                          flexGrow="0"
-                          zIndex="0"
-                          width="240px"
-                          height="80px"
+                          fontSize={"smaller"}
+                          fontWeight={"thin"}
+                          borderRadius={"lg"}
+                          padding={"2"}
                         >
                           <Box>
                             <InfoIcon />
@@ -4476,7 +4540,7 @@ const YourBorrowModal = ({
                           hasArrow
                           placement="bottom-start"
                           boxShadow="dark-lg"
-                          label="Collateral amount"
+                          label="Collateral amount refers to the unit of crypto coins you are willing to keep as security against the borrowed amount"
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
@@ -4890,26 +4954,12 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label=" Borrow amount"
+                            label="Borrow amount refers to the unit of crypto coins you are willing to borrow from the protocol"
                             bg="#24292F"
-                            fontSize="12px"
-                            fontWeight="500"
-                            fontStyle="normal"
-                            borderRadius="6px"
-                            background="#101216"
-                            border="1px solid #2B2F35"
-                            pt="12px"
-                            pl="10px"
-                            gap="80px"
-                            display="flex"
-                            flexDirection="column"
-                            justifyContent="space-between"
-                            width="197px"
-                            height="72px"
-                            whiteSpace="pre-wrap"
-                            color="#E6EDF3"
-                            textAlign="center"
-                            lineHeight="2"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
                           >
                             <Box>
                               <InfoIcon />
@@ -4941,31 +4991,15 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Adding <amount> as collateral will mint
-                            <number> r<market_symbol> tokens.
+                            label="Adding amount as collateral will mint
+                             r tokens.
                             These tokens will accrue supply apr
                             and remain locked till the debt is repaid"
                             bg="#24292F"
-                            display="flex"
-                            flexDirection="column"
-                            alignItems="center"
-                            pt="16px"
-                            pl="16px"
-                            fontSize="11px"
-                            fontWeight="400"
-                            fontStyle="normal"
-                            lineHeight="16px"
-                            color="#E6EDF3"
-                            letterSpacing="-0.15px"
-                            borderRadius="6px"
-                            backgroundColor="#101216"
-                            border="1px solid #2B2F35"
-                            flex="none"
-                            order="0"
-                            flexGrow="0"
-                            zIndex="0"
-                            width="225px"
-                            height="96px"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
                           >
                             <Box>
                               <InfoIcon />
@@ -4995,7 +5029,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Fees"
+                            label="refer to the charges or costs incurred when completing a transactions"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -5030,7 +5064,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Borrow apr"
+                            label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -5082,7 +5116,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Estimated gas fees for transaction"
+                            label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -5117,7 +5151,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Effective apr"
+                            label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -5169,7 +5203,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Health factor"
+                            label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}

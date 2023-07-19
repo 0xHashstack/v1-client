@@ -169,19 +169,19 @@ const Navbar = ({ validRTokens }: any) => {
     // const walletConnected = localStorage.getItem("lastUsedConnector");
     // console.log(connector);
     if (connector?.options?.id == "braavos") {
+      dispatch(resetState(null));
+      dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "argentX");
       localStorage.setItem("connected", "argentX");
       connect(connectors[1]);
       router.push("/v1/market");
+    } else {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
-    } else {
       localStorage.setItem("lastUsedConnector", "braavos");
       localStorage.setItem("connected", "braavos");
       connect(connectors[0]);
       router.push("/v1/market");
-      dispatch(resetState(null));
-      dispatch(setAccountReset(null));
     }
   };
 
@@ -209,7 +209,11 @@ const Navbar = ({ validRTokens }: any) => {
         gap={"4px"}
         marginLeft="2rem"
       >
-        <Link href={router.pathname != "/waitlist" ? "/market" : "/waitlist"}>
+        <Link
+          href={
+            router.pathname != "/v1/waitlist" ? "/v1/market" : "/v1/waitlist"
+          }
+        >
           <Box
             height="100%"
             display="flex"

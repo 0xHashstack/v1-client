@@ -1,4 +1,4 @@
-import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import { IDeposit, ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
@@ -27,6 +27,8 @@ import {
   selectUserDepositsCount,
   selectUserInfoCount,
   selectUserLoansCount,
+  selectYourMetricsBorrowCount,
+  selectYourMetricsSupplyCount,
   selectprotocolReservesCount,
   setAprCount,
   setAprsAndHealthCount,
@@ -43,6 +45,8 @@ import {
   setUserInfoCount,
   setUserLoansCount,
   setUserUnspentLoans,
+  setYourMetricsBorrowCount,
+  setYourMetricsSupplyCount,
 } from "@/store/slices/userAccountSlice";
 import {
   setOraclePrices,
@@ -58,6 +62,12 @@ import {
   setHealthFactor,
   selectHourlyBTCData,
   setHourlyBTCData,
+  setHourlyDAIData,
+  setHourlyUSDTData,
+  setHourlyUSDCData,
+  setHourlyETHData,
+  setYourMetricsSupply,
+  setYourMetricsBorrow,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -83,6 +93,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
+import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
+import OffchainAPI from "@/services/offchainapi.service";
+import { etherToWeiBN } from "@/Blockchain/utils/utils";
 const useDataLoader = () => {
   const { address } = useAccount();
   const protocolReserves = useSelector(selectProtocolReserves);
@@ -115,11 +132,14 @@ const useDataLoader = () => {
   const netAprCount = useSelector(selectNetAprCount);
   const avgSupplyAprCount = useSelector(selectAvgSupplyAprCount);
   const avgBorrowAPRCount = useSelector(selectAvgBorrowAprCount);
+  const yourMetricsBorrowCount = useSelector(selectYourMetricsBorrowCount);
+  const yourMetricsSupplyCount = useSelector(selectYourMetricsSupplyCount);
 
   const dispatch = useDispatch();
   const Data: any = [];
   const [avgs, setAvgs] = useState<any>([]);
   const [btcData, setBtcData] = useState<any>();
+
   const avgsData: any = [];
   console.log("address", address);
   // useEffect(() => {
@@ -128,6 +148,29 @@ const useDataLoader = () => {
   const getTransactionCount = () => {
     return transactionRefresh;
   };
+  // useEffect(() => {
+  //   try {
+  //     const fetchData = async () => {
+  //       const data = await OffchainAPI.httpGet(
+  //         "/api/metrics/apm_platform/daily"
+  //       );
+  //       const apr = data?.map((val: any, idx: number) => val?.totalPlatformAPR);
+  //       const apy = data?.map((val: any, idx: number) => val?.totalPlatformAPY);
+  //       const dateTime = data?.map((val: any, idx: number) => val?.Datetime);
+  //       const dataArray = {
+  //         APR: apr,
+  //         APY: apy,
+  //         dateTime: dateTime,
+  //       };
+
+  //       console.log("dataArray ", data);
+  //       setSeriesData(dataArray);
+  //     };
+  //     fetchData();
+  //   } catch (err) {
+  //     console.log("error fetching aprByMarket data ", err);
+  //   }
+  // }, []);
   useEffect(() => {
     const fetchHourlyBTCData = async () => {
       try {
@@ -135,76 +178,120 @@ const useDataLoader = () => {
         // if(hourlyBTCData!=null){
         //   return;
         // }
-
-        const response = await axios.get(
-          `${metrics_api}/api/metrics/tvl/daily/DAI`
-        );
-        const responseApr = await axios.get(
-          `${metrics_api}/api/metrics/apm_market/daily/DAI`
-        );
-        // console.log(response, "response data");
-        if (!response) {
-          return;
-        }
-        // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
-        if (response?.data) {
-          const amounts: any = [];
-          const borrowAmounts: any = [];
-          const dates: any = [];
-          const supplyRates: any = [];
-          const borrowRates: any = [];
-          const tvlAmounts: any = [];
-          const supplyCounts: any = [];
-          const borrowCounts: any = [];
-          const utilRates:any=[];
-          const exchangeRates:any=[];
-          const totalTransactions:any=[];
-          const totalAccounts:any=[];
-          const aprs:any=[];
-          const apys:any=[];
-          for (var i = 0; i < 12; i++) {
-            amounts?.push(response?.data[i].supplyAmount);
-            borrowAmounts?.push(response?.data[i].borrowAmount);
-            tvlAmounts?.push(response?.data[i].tvlAmount);
-            // const dateObj = new Date(response?.data[i].Datetime)
-            dates?.push(response?.data[i].Datetime);
-            supplyRates?.push(response?.data[i].supplyRate);
-            borrowRates?.push(response?.data[i].borrowRate);
-            supplyCounts?.push(response?.data[i].supplyCount);
-            borrowCounts?.push(response?.data[i].borrowCount);
-            utilRates?.push(response?.data[i].utilRate);
-            exchangeRates?.push(response?.data[i].exchangeRate);
-            totalTransactions?.push(response?.data[i].totalTransactions);
-            totalAccounts?.push(response?.data[i].totalAccounts);
-            aprs?.push(responseApr?.data[i].APR);
-            apys?.push(responseApr?.data[i].APY);
-
-
+        const promises = [
+          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/DAI`),
+          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/BTC`),
+          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDT`),
+          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDC`),
+          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/ETH`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/DAI`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/BTC`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDT`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDC`),
+          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/ETH`),
+          await OffchainAPI.httpGet(`/api/metrics/urm_platform/daily`),
+        ];
+        Promise.allSettled([...promises]).then((val) => {
+          console.log("backend data ", promises);
+          for (var j = 0; j < 5; j++) {
+            // console.log(j,"for loop")
+            const response = promises[j];
+            const responseApr = promises[j + 5];
+            const responseTotal = promises[10];
+            // console.log(response, "response data");
+            // if (!response) {
+            //   return;
+            // }
+            // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
+            if (response && responseApr) {
+              const amounts: any = [];
+              const borrowAmounts: any = [];
+              const dates: any = [];
+              const supplyRates: any = [];
+              const borrowRates: any = [];
+              const tvlAmounts: any = [];
+              const supplyCounts: any = [];
+              const borrowCounts: any = [];
+              const utilRates: any = [];
+              const rTokenExchangeRates: any = [];
+              const dTokenExchangeRates: any = [];
+              const totalTransactions: any = [];
+              const totalAccounts: any = [];
+              const aprs: any = [];
+              const apys: any = [];
+              const totalUrm: any = [];
+              for (var i = 0; i < response?.length; i++) {
+                // console.log(i,"inside loop")
+                const token = response?.[i].tokenName;
+                const supplyAmount: number =
+                  Number(response?.[i].supplyAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
+                const borrowAmount: number =
+                  Number(response?.[i].borrowAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
+                const tvlAmount: number =
+                  Number(response?.[i].tvlAmount) / Math.pow(10, 8);
+                // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
+                // console.log(response?.[i].tokenName)
+                // const supplyAmount1=etherToWeiBN(amount,token)
+                // console.log(supplyAmount1,"aamount")
+                amounts?.push(supplyAmount);
+                borrowAmounts?.push(borrowAmount);
+                tvlAmounts?.push(tvlAmount);
+                // const dateObj = new Date(response?.data[i].Datetime)
+                dates?.push(response?.[i].Datetime);
+                supplyRates?.push(response?.[i].supplyRate);
+                borrowRates?.push(response?.[i].borrowRate);
+                supplyCounts?.push(response?.[i].supplyCount);
+                borrowCounts?.push(response?.[i].borrowCount);
+                utilRates?.push(response?.[i].utilRate);
+                rTokenExchangeRates?.push(response?.[i].rTokenExchangeRate);
+                dTokenExchangeRates?.push(response?.[i].dTokenExchangeRate);
+                totalTransactions?.push(response?.[i].totalTransactions);
+                totalAccounts?.push(response?.[i].totalAccounts);
+                aprs?.push(responseApr?.[i].APR);
+                apys?.push(responseApr?.[i].APY);
+                totalUrm?.push(responseTotal?.[i].totalPlatformURM);
+              }
+              // console.log(dates,"Dates")
+              const data = {
+                dates: dates,
+                supplyAmounts: amounts,
+                borrowAmounts: borrowAmounts,
+                tvlAmounts: tvlAmounts,
+                supplyRates: supplyRates,
+                borrowRates: borrowRates,
+                supplyCounts: supplyCounts,
+                borrowCounts: borrowCounts,
+                utilRates: utilRates,
+                rTokenExchangeRates: rTokenExchangeRates,
+                dTokenExchangeRates: dTokenExchangeRates,
+                totalTransactions: totalTransactions,
+                totalAccounts: totalAccounts,
+                aprs: aprs,
+                apys: apys,
+                totalUrm: totalUrm,
+              };
+              // console.log(data,"data in data loader")
+              // console.log(btcData,"Data gone")
+              if (j == 0) {
+                dispatch(setHourlyDAIData(data));
+              } else if (j == 1) {
+                dispatch(setHourlyBTCData(data));
+              } else if (j == 2) {
+                dispatch(setHourlyUSDTData(data));
+              } else if (j == 3) {
+                dispatch(setHourlyUSDCData(data));
+              } else if (j == 4) {
+                dispatch(setHourlyETHData(data));
+              }
+            }
           }
-          // console.log(dates,"Dates")
-          const data = {
-            dates: dates,
-            supplyAmounts: amounts,
-            borrowAmounts: borrowAmounts,
-            tvlAmounts: tvlAmounts,
-            supplyRates: supplyRates,
-            borrowRates: borrowRates,
-            supplyCounts: supplyCounts,
-            borrowCounts: borrowCounts,
-            utilRates:utilRates,
-            exchangeRates:exchangeRates,
-            totalTransactions:totalTransactions,
-            totalAccounts:totalAccounts,
-            aprs:aprs,
-            apys:apys
-          };
-          // console.log(btcData,"Data gone")
-          dispatch(setHourlyBTCData(data));
           const count = getTransactionCount();
           dispatch(setHourlyDataCount(count));
-          console.log(response?.data, "Data response");
-          console.log(btcData, "data in BTC");
-        }
+        });
+        // const count = getTransactionCount();
+        // dispatch(setHourlyDataCount(count));
       } catch (err) {
         console.log(err, "err in hourly data");
       }
@@ -212,7 +299,7 @@ const useDataLoader = () => {
     if (hourlyDataCount < transactionRefresh) {
       fetchHourlyBTCData();
     }
-  }, [address, transactionRefresh]);
+  }, []);
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {
@@ -473,6 +560,7 @@ const useDataLoader = () => {
       console.log(err, "error in your supply count");
     }
   }, [dataDeposit, dataOraclePrices]);
+
   useEffect(() => {
     try {
       const fetchUserSupply = async () => {
@@ -559,6 +647,16 @@ const useDataLoader = () => {
     userLoans,
     transactionRefresh,
   ]);
+  // useEffect(() => {
+  //   const fetchMinimumDepositAmount = async () => {
+  //     const data = await getMinimumDepositAmount(
+  //       tokenAddressMap["rBTC"],
+  //       "BTC"
+  //     );
+  //     console.log("fetchMinimumDepositAmount ", data);
+  //   };
+  //   fetchMinimumDepositAmount();
+  // }, []);
 
   useEffect(() => {
     try {
@@ -673,6 +771,97 @@ const useDataLoader = () => {
       console.log(err, "error in user info");
     }
   }, [protocolStats, transactionRefresh]);
+
+  useEffect(() => {
+    try {
+      const fetchSupplyData = async () => {
+        const data = dataDeposit?.map((deposit: IDeposit, idx: number) => {
+          const price = oraclePrices?.find(
+            (oraclePrice: any) => oraclePrice?.name == deposit?.token
+          )?.price;
+          const token_amount =
+            deposit?.rTokenAmountParsed + deposit?.rTokenStakedParsed;
+          if (price && token_amount) {
+            return price * token_amount;
+          }
+          return 0;
+        });
+        if (data && data?.length > 0) {
+          dispatch(setYourMetricsSupply(data));
+          const count = getTransactionCount();
+          dispatch(setYourMetricsSupplyCount(count));
+        }
+        console.log("supplyData", data);
+      };
+      if (
+        dataDeposit &&
+        dataDeposit?.length > 0 &&
+        oraclePrices &&
+        oraclePrices?.length > 0 &&
+        yourMetricsSupplyCount < transactionRefresh
+      ) {
+        fetchSupplyData();
+      }
+    } catch (err) {
+      console.log("your metrics supply err ", err);
+    }
+  }, [dataDeposit, oraclePrices, transactionRefresh, address]);
+
+  useEffect(() => {
+    try {
+      const fetchBorrowData = async () => {
+        const borrow = { BTC: 0, ETH: 0, USDT: 0, USDC: 0, DAI: 0 };
+        for (let loan of userLoans) {
+          if (
+            loan?.loanState === "REPAID" ||
+            loan?.loanState === "LIQUIDATED" ||
+            loan?.loanState === null
+          )
+            continue;
+
+          const oraclePrice = oraclePrices.find(
+            (oraclePrice: any) =>
+              oraclePrice.address === loan?.underlyingMarketAddress
+          );
+          let exchangeRate = protocolStats.find(
+            (marketInfo: any) =>
+              marketInfo.tokenAddress === loan?.underlyingMarketAddress
+          )?.exchangeRateDTokenToUnderlying;
+          if (oraclePrice && exchangeRate) {
+            let loanAmoungUnderlying = loan?.loanAmountParsed * exchangeRate;
+            if (loan?.underlyingMarket == "BTC") {
+              borrow.BTC += loanAmoungUnderlying * oraclePrice.price;
+            } else if (loan?.underlyingMarket == "USDT") {
+              borrow.USDT += loanAmoungUnderlying * oraclePrice.price;
+            } else if (loan?.underlyingMarket == "USDC") {
+              borrow.USDC += loanAmoungUnderlying * oraclePrice.price;
+            } else if (loan?.underlyingMarket == "ETH") {
+              borrow.ETH += loanAmoungUnderlying * oraclePrice.price;
+            } else if (loan?.underlyingMarket == "DAI") {
+              borrow.DAI += loanAmoungUnderlying * oraclePrice.price;
+            }
+          }
+        }
+        if (borrow) {
+          dispatch(setYourMetricsBorrow(borrow));
+          const count = getTransactionCount();
+          dispatch(setYourMetricsBorrowCount(count));
+        }
+        console.log("totalBorrow ", borrow);
+      };
+      if (
+        userLoans &&
+        protocolStats &&
+        oraclePrices &&
+        yourMetricsBorrowCount < transactionRefresh
+      ) {
+        fetchBorrowData();
+      }
+    } catch (err) {
+      console.log("err fetchBorrowData ", err);
+    }
+  }, [userLoans, protocolStats, oraclePrices, transactionRefresh, address]);
+
   // useEffect(() => {
   //   try {
   //     const fetchNetApr = async () => {
@@ -730,7 +919,7 @@ const useDataLoader = () => {
   useEffect(() => {
     console.log(
       "transaction refresh counts - ",
-      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount",
+      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount,yourMetricsSupplyCount,yourMetricsBorrowCount ",
       transactionRefresh,
       protocolStatsCount,
       protocolReservesCount,
@@ -742,7 +931,9 @@ const useDataLoader = () => {
       healthFactorCount,
       hourlyDataCount,
       netAprCount,
-      avgBorrowAPRCount
+      avgBorrowAPRCount,
+      yourMetricsSupplyCount,
+      yourMetricsBorrowCount
     );
   }, [
     transactionRefresh,
@@ -758,6 +949,8 @@ const useDataLoader = () => {
     hourlyDataCount,
     netAprCount,
     avgBorrowAPRCount,
+    yourMetricsSupplyCount,
+    yourMetricsBorrowCount,
   ]);
 };
 

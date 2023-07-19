@@ -57,6 +57,7 @@ const YourSupply = () => {
   // }, []);
   const totalSupply = useSelector(selectYourSupply);
   const netAPR = useSelector(selectNetAPR);
+
   return (
     <PageCard pt="6.5rem">
       <HStack
@@ -93,7 +94,7 @@ const YourSupply = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalSupply ? `$ ${numberFormatter(totalSupply)}` : "NA"}
+                {totalSupply ? `$${numberFormatter(totalSupply)}` : "NA"}
               </Text>
             )}
           </VStack>

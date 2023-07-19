@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import PageCard from "@/components/layouts/pageCard";
-import { Box, HStack, Skeleton, Text, Tooltip, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Skeleton,
+  Spinner,
+  Text,
+  Tooltip,
+  VStack,
+} from "@chakra-ui/react";
 import CancelIcon from "@/assets/icons/cancelIcon";
 import InfoIcon from "@/assets/icons/infoIcon";
 import BTCLogo from "@/assets/icons/coins/btc";
@@ -29,9 +37,12 @@ import {
   selectNetAPR,
   selectYourSupply,
   selectYourBorrow,
+  selectYourMetricsSupply,
+  selectYourMetricsBorrow,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
+import Image from "next/image";
 const YourMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -77,6 +88,14 @@ const YourMetrics = () => {
   useEffect(() => {
     console.log("avgBorrowApr ", avgBorrowApr);
   }, [avgBorrowApr]);
+  const [loading, setLoading] = useState(true);
+  const yourMetricsSupply = useSelector(selectYourMetricsSupply);
+  const yourMetricsBorrow = useSelector(selectYourMetricsBorrow);
+  useEffect(() => {
+    if (yourMetricsSupply && yourMetricsBorrow) {
+      setLoading(false);
+    }
+  }, [yourMetricsSupply, yourMetricsBorrow]);
 
   return (
     <PageCard pt="8rem">
@@ -89,99 +108,92 @@ const YourMetrics = () => {
         borderRadius="5px"
         border="1px solid #2b2f35"
       >
-        <Box
-          // bgColor="blue"
-          width="100%"
-        >
-          <HStack justifyContent="space-between" mb="4rem">
-            <Text color="#E6EDF3" fontSize="28px">
-              Your metrics
-            </Text>
-            <Link href={"/v1/market"}>
+        {!loading ? (
+          <Box
+            // bgColor="blue"
+            width="100%"
+          >
+            <HStack
+              justifyContent="flex-start"
+              mb="4rem"
+              alignItems="center"
+              gap={4}
+            >
+              <Link href={"/v1/market"}>
+                <Box
+                  marginRight={1.5}
+                  display="flex"
+                  bg="transparent"
+                  fontStyle="normal"
+                  fontWeight="400"
+                  fontSize="14px"
+                  lineHeight="20px"
+                  alignItems="center"
+                  letterSpacing="-0.15px"
+                  // padding="1.125rem 0.4rem"
+                  margin="2px"
+                  color="#6e7681"
+                  // borderBottom={
+                  //   pathname === `/${option.path}` ? "2px solid #F9826C" : ""
+                  // }
+                  borderRadius="0px"
+                  _hover={{ bg: "transparent", color: "#E6EDF3" }}
+                  gap={2}
+                >
+                  <Image
+                    src={"/arrowNavLeft.svg"}
+                    alt="Arrow Navigation Left"
+                    width="6"
+                    height="6"
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    // _hover={{ bg: "transparent", color: "#E6EDF3" }}
+                  />
+                  back
+                </Box>
+              </Link>
+              <Text
+                color="#FFF"
+                fontSize="14px"
+                // bgColor="blue"
+                alignItems="center"
+                textAlign="center"
+                mt={0.5}
+                py="6px"
+                px="6px"
+                fontWeight="600"
+                borderBottom="2px solid #F9826C"
+              >
+                Your metrics
+              </Text>
+              {/* <Link href={"/v1/market"}>
               <Box cursor="pointer">
                 <CancelIcon />
               </Box>
-            </Link>
-          </HStack>
-          <Box
-            // bgColor="cyan"
-            width="80%"
-            display="flex"
-            justifyContent="space-between"
-            mb="3rem"
-          >
-            {/* <HStack bgColor="green" justifyContent="space-between"> */}
-            <Box display="flex" flexDirection="row" gap="22px">
-              <VStack
-                display="flex"
-                justifyContent="center"
-                alignItems="flex-start"
-                gap={"3px"}
-                p="13px 25px"
-                // bgColor="pink"
-              >
-                <Text color="#6e7681" fontSize="14px" alignItems="center">
-                  Total Supply
-                </Text>
-                {!totalSupply ? (
-                  <Skeleton
-                    width="6rem"
-                    height="1.9rem"
-                    startColor="#101216"
-                    endColor="#2B2F35"
-                    borderRadius="6px"
-                  />
-                ) : (
-                  <Text color="#e6edf3" fontSize="20px">
-                    ${numberFormatter(totalSupply)}
-                  </Text>
-                )}
-              </VStack>
-              <VStack
-                display="flex"
-                justifyContent="center"
-                alignItems="flex-start"
-                gap={"3px"}
-                p="13px 25px"
-                // bgColor="pink"
-              >
-                <Text color="#6e7681" fontSize="14px" alignItems="center">
-                  Average Supply APR
-                </Text>
-                {!avgSupplyApr ? (
-                  <Skeleton
-                    width="6rem"
-                    height="1.9rem"
-                    startColor="#101216"
-                    endColor="#2B2F35"
-                    borderRadius="6px"
-                  />
-                ) : (
-                  <Text color="#e6edf3" fontSize="20px">
-                    {avgSupplyApr?.toFixed(2)}%
-                  </Text>
-                )}
-              </VStack>
-            </Box>
-            <Box display="flex" flexDirection="column" gap="22px">
-              <HStack
-                // width="13.5rem"
-                display="flex"
-                // bgColor="yellow"
-                // flexGrow={1}
-                gap="2rem"
-              >
+            </Link> */}
+            </HStack>
+            <Box
+              // bgColor="cyan"
+              width="80%"
+              display="flex"
+              justifyContent="space-between"
+              mb="3rem"
+            >
+              {/* <HStack bgColor="green" justifyContent="space-between"> */}
+              <Box display="flex" flexDirection="row" gap="22px">
                 <VStack
                   display="flex"
                   justifyContent="center"
                   alignItems="flex-start"
                   gap={"3px"}
                   p="13px 25px"
+                  // bgColor="pink"
                 >
                   <Text color="#6e7681" fontSize="14px" alignItems="center">
-                    Your borrow
+                    Total Supply
                   </Text>
-                  {!totalBorrow ? (
+                  {!totalSupply ? (
                     <Skeleton
                       width="6rem"
                       height="1.9rem"
@@ -191,20 +203,22 @@ const YourMetrics = () => {
                     />
                   ) : (
                     <Text color="#e6edf3" fontSize="20px">
-                      ${numberFormatter(totalBorrow)}
+                      ${numberFormatter(totalSupply)}
                     </Text>
                   )}
                 </VStack>
                 <VStack
-                  gap={"3px"}
-                  justifyContent="flex-start"
+                  display="flex"
+                  justifyContent="center"
                   alignItems="flex-start"
-                  // p="13px 25px"
+                  gap={"3px"}
+                  p="13px 25px"
+                  // bgColor="pink"
                 >
                   <Text color="#6e7681" fontSize="14px" alignItems="center">
-                    Average borrow apr
+                    Average Supply APR
                   </Text>
-                  {!avgBorrowApr ? (
+                  {!avgSupplyApr ? (
                     <Skeleton
                       width="6rem"
                       height="1.9rem"
@@ -214,41 +228,97 @@ const YourMetrics = () => {
                     />
                   ) : (
                     <Text color="#e6edf3" fontSize="20px">
-                      {numberFormatter(avgBorrowApr)}%
+                      {avgSupplyApr?.toFixed(2)}%
                     </Text>
                   )}
                 </VStack>
-                <VStack
-                  gap={"3px"}
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                  // p="13px 25px"
+              </Box>
+              <Box display="flex" flexDirection="column" gap="22px">
+                <HStack
+                  // width="13.5rem"
+                  display="flex"
+                  // bgColor="yellow"
+                  // flexGrow={1}
+                  gap="2rem"
                 >
-                  <Text color="#6e7681" fontSize="14px" alignItems="center">
-                    Effective apr
-                  </Text>
-                  {!netAPR ? (
-                    <Skeleton
-                      width="6rem"
-                      height="1.9rem"
-                      startColor="#101216"
-                      endColor="#2B2F35"
-                      borderRadius="6px"
-                    />
-                  ) : (
-                    <Text color="#e6edf3" fontSize="20px">
-                      {netAPR}%
+                  <VStack
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="flex-start"
+                    gap={"3px"}
+                    p="13px 25px"
+                  >
+                    <Text color="#6e7681" fontSize="14px" alignItems="center">
+                      Your borrow
                     </Text>
-                  )}
-                </VStack>
-              </HStack>
+                    {!totalBorrow ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.9rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      <Text color="#e6edf3" fontSize="20px">
+                        ${numberFormatter(totalBorrow)}
+                      </Text>
+                    )}
+                  </VStack>
+                  <VStack
+                    gap={"3px"}
+                    justifyContent="flex-start"
+                    alignItems="flex-start"
+                    // p="13px 25px"
+                  >
+                    <Text color="#6e7681" fontSize="14px" alignItems="center">
+                      Average borrow apr
+                    </Text>
+                    {!avgBorrowApr ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.9rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      <Text color="#e6edf3" fontSize="20px">
+                        {numberFormatter(avgBorrowApr)}%
+                      </Text>
+                    )}
+                  </VStack>
+                  <VStack
+                    gap={"3px"}
+                    justifyContent="flex-start"
+                    alignItems="flex-start"
+                    // p="13px 25px"
+                  >
+                    <Text color="#6e7681" fontSize="14px" alignItems="center">
+                      Effective apr
+                    </Text>
+                    {!netAPR ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.9rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      <Text color="#e6edf3" fontSize="20px">
+                        {netAPR}%
+                      </Text>
+                    )}
+                  </VStack>
+                </HStack>
+              </Box>
+              {/* </HStack> */}
             </Box>
-            {/* </HStack> */}
-          </Box>
-          <Box>
-            <YourMetricsSupplyBorrow currentMarketCoin={currentMarketCoin} />
-          </Box>
-          {/* <Box
+            <Box>
+              <YourMetricsSupplyBorrow currentMarketCoin={currentMarketCoin} />
+            </Box>
+            {/* <Box
             //   bgColor="green"
             borderRadius="6px"
             border="1px solid #2B2F35"
@@ -294,7 +364,24 @@ const YourMetrics = () => {
               <TotalRevenueChart />
             </Box>
           </Box> */}
-        </Box>
+          </Box>
+        ) : (
+          <Box
+            width="100%"
+            height="68vh"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="#010409"
+              size="xl"
+            />
+          </Box>
+        )}
       </Box>
       {/* )} */}
     </PageCard>

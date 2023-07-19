@@ -103,6 +103,7 @@ const StakeUnstakeModal = ({
   validRTokens,
   ...restProps
 }: any) => {
+  // console.log("coin - ", coin);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -307,6 +308,11 @@ const StakeUnstakeModal = ({
   //     }
   //   },
   // });
+  useEffect(() => {
+    if (coin) {
+      setAsset(coin ? coin?.name : "BTC");
+    }
+  }, [coin]);
   const handleStakeTransaction = async () => {
     try {
       // console.log("staking", rToken, rTokenAmount);
@@ -556,25 +562,33 @@ const StakeUnstakeModal = ({
   const handleUnstakeChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
 
+    
+
     var percentage = (newValue * 100) / unstakeWalletBalance;
-    percentage = Math.max(0, percentage);
-    if (unstakeWalletBalance == 0) {
-      setSliderValue2(0);
-      setInputUnstakeAmount(0);
-      setRTokenToWithdraw(0);
-    }
-    if (percentage > 100) {
+    if(percentage==100){
       setSliderValue2(100);
-      setRTokenToWithdraw(newValue);
-      // dispatch(setInputSupplyAmount(newValue));
-    } else {
-      percentage = Math.round(percentage);
-      if (isNaN(percentage)) {
-      } else {
-        setSliderValue2(percentage);
-        setRTokenToWithdraw(Number(newValue));
+      setInputUnstakeAmount(unstakeWalletBalance);
+      setRTokenToWithdraw(unstakeWalletBalance);
+    }else{
+      percentage = Math.max(0, percentage);
+      if (unstakeWalletBalance == 0) {
+        setSliderValue2(0);
+        setInputUnstakeAmount(0);
+        setRTokenToWithdraw(0);
       }
-      // dispatch(setInputSupplyAmount(newValue));
+      if (percentage > 100) {
+        setSliderValue2(100);
+        setRTokenToWithdraw(newValue);
+        // dispatch(setInputSupplyAmount(newValue));
+      } else {
+        percentage = Math.round(percentage);
+        if (isNaN(percentage)) {
+        } else {
+          setSliderValue2(percentage);
+          setRTokenToWithdraw(Number(newValue));
+        }
+        // dispatch(setInputSupplyAmount(newValue));
+      }
     }
   };
   const handleDropdownClick = (dropdownName: any) => {
@@ -680,6 +694,9 @@ const StakeUnstakeModal = ({
         ?.rTokenFreeParsed
     );
   }, [currentSelectedStakeCoin, userDeposit]);
+  useEffect(() => {
+    console.log("stake userDeposit", userDeposit);
+  }, [userDeposit]);
   useEffect(() => {
     setUnstakeWalletBalance(
       userDeposit?.find(
@@ -982,7 +999,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Select stake market"
+                            label="Select market refers to the crypto currency tokens selected to stake on the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -1050,7 +1067,9 @@ const StakeUnstakeModal = ({
                                     onClick={() => {
                                       setCurrentSelectedStakeCoin(coin);
                                       setRToken(coin.slice(1));
-                                      setAsset(coin);
+                                      setAsset(
+                                        coin[0] == "r" ? coin?.slice(1) : coin
+                                      );
                                       setWalletBalance(
                                         walletBalances[coin?.slice(1)]
                                           ?.statusBalanceOf === "success"
@@ -1106,10 +1125,7 @@ const StakeUnstakeModal = ({
                                         fontWeight="thin"
                                       >
                                         rToken Balance:{" "}
-                                        {validRTokens &&
-                                        validRTokens.length > 0 &&
-                                        userDeposit &&
-                                        userDeposit.length > 0
+                                        {userDeposit && userDeposit.length > 0
                                           ? userDeposit?.find(
                                               (item: any) => item.rToken == coin
                                             )?.rTokenFreeParsed
@@ -1139,7 +1155,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Enter stake amount"
+                            label="refers to the unit of crypto coins you are willing to stake on the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -1512,7 +1528,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="staking rewards"
+                              label="refers to the rewards earned by users who participate in staking activities within the protocol"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1575,7 +1591,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimated gas fees for transaction"
+                              label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1609,7 +1625,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Fees"
+                              label="refer to the charges or costs incurred when completing a transactions"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -1666,6 +1682,7 @@ const StakeUnstakeModal = ({
                           ) : (
                             <Box
                               onClick={() => {
+                                setTransactionStarted(true);
                                 if (transactionStarted == false) {
                                   mixpanel.track(
                                     "Stake Button Clicked Market page",
@@ -1678,7 +1695,7 @@ const StakeUnstakeModal = ({
                                   );
                                   handleStakeTransaction();
                                 }
-                                setTransactionStarted(true);
+                               
                               }}
                             >
                               <AnimatedButton
@@ -1752,6 +1769,7 @@ const StakeUnstakeModal = ({
                         ) : (
                           <Box
                             onClick={() => {
+                              setTransactionStarted(true);
                               if (transactionStarted == false) {
                                 mixpanel.track(
                                   "Stake Button Clicked Market page",
@@ -1764,7 +1782,7 @@ const StakeUnstakeModal = ({
                                 );
                                 hanldeStakeAndSupplyTransaction();
                               }
-                              setTransactionStarted(true);
+                             
                             }}
                           >
                             <AnimatedButton
@@ -1891,7 +1909,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Select unstake market"
+                            label="Select market refers to the crypto currency tokens selected to Unstake on the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -2002,7 +2020,7 @@ const StakeUnstakeModal = ({
                                         fontWeight="thin"
                                       >
                                         Staking shares:{" "}
-                                        {validRTokens && validRTokens.length > 0
+                                        {userDeposit && userDeposit.length > 0
                                           ? userDeposit?.find(
                                               (item: any) => item.rToken == coin
                                             )?.rTokenStakedParsed
@@ -2032,7 +2050,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Enter amount"
+                            label="refers to the unit of crypto coins you are willing to unstake from the protocol"
                             bg="#24292F"
                             fontSize={"smaller"}
                             fontWeight={"thin"}
@@ -2194,10 +2212,14 @@ const StakeUnstakeModal = ({
                                 return;
                               }
                               setSliderValue2(val);
-                              var ans = (val / 100) * unstakeWalletBalance;
-                              ans = Math.round(ans * 100) / 100;
-                              // dispatch(setInputSupplyAmount(ans))
-                              setRTokenToWithdraw(ans);
+                              if(val==100){
+                                setRTokenToWithdraw(unstakeWalletBalance)
+                              }else{
+                                var ans = (val / 100) * unstakeWalletBalance;
+                                ans = Math.round(ans * 100) / 100;
+                                // dispatch(setInputSupplyAmount(ans))
+                                setRTokenToWithdraw(ans);
+                              }
                             }}
                             isDisabled={unstakeTransactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
@@ -2326,7 +2348,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimated rtokens"
+                              label="estimation of the number of tokens you may receive after unstaking."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -2365,7 +2387,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimated gas fees for transaction"
+                              label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -2399,7 +2421,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Fees"
+                              label="refer to the charges or costs incurred when completing a transactions"
                               bg="#24292F"
                               fontSize={"smaller"}
                               fontWeight={"thin"}
@@ -2417,10 +2439,10 @@ const StakeUnstakeModal = ({
                         </Text>
                       </Card>
                       {rTokenToWithdraw > 0 &&
-                      rTokenToWithdraw <= unstakeWalletBalance &&
-                      coinsSupplied[currentSelectedUnstakeCoin] ? (
+                      rTokenToWithdraw <= unstakeWalletBalance  ? (
                         <Box
                           onClick={() => {
+                            setUnstakeTransactionStarted(true);
                             if (unstakeTransactionStarted == false) {
                               mixpanel.track(
                                 "Unstake Button Clicked Market page",
@@ -2433,7 +2455,7 @@ const StakeUnstakeModal = ({
                               );
                               hanldeUnstakeTransaction();
                             }
-                            setUnstakeTransactionStarted(true);
+                            
                           }}
                         >
                           <AnimatedButton

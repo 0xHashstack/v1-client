@@ -91,26 +91,11 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
     switch (aprByMarket) {
       case 0:
         if (currentSelectedCoin == 0) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [
-                300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-              ],
-            },
-          ];
-          newCategories = [
-            1689152545000, 1689156145000, 1689159745000, 1689163345000,
-            1689166945000, 1689170545000, 1689174145000, 1689177745000,
-            1689181345000, 1689184945000, 1689188545000, 1689192145000,
-          ];
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 1) {
-          btcData?.aprs && btcData?.apys
+          btcData?.rTokenExchangeRates
             ? (newData = [
                 {
                   name: "Exchange Rate",
-                  data: btcData?.aprs,
+                  data: btcData?.rTokenExchangeRates,
                 },
               ])
             : (newData = [
@@ -123,6 +108,30 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               ]);
           btcData?.dates
             ? (newCategories = btcData?.dates)
+            : (newCategories = [
+                1689152545000, 1689156145000, 1689159745000, 1689163345000,
+                1689166945000, 1689170545000, 1689174145000, 1689177745000,
+                1689181345000, 1689184945000, 1689188545000, 1689192145000,
+              ]);
+          return { newData, newCategories };
+        } else if (currentSelectedCoin == 1) {
+          usdtData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: usdtData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [
+                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
+                  ],
+                },
+              ]);
+          usdtData?.dates
+            ? (newCategories = usdtData?.dates)
             : (newCategories = [
                 1689152545000, 1689156145000, 1689159745000, 1689163345000,
                 1689166945000, 1689170545000, 1689174145000, 1689177745000,
@@ -130,26 +139,11 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 2) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [
-                300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-              ],
-            },
-          ];
-          newCategories = [
-            1689152545000, 1689156145000, 1689159745000, 1689163345000,
-            1689166945000, 1689170545000, 1689174145000, 1689177745000,
-            1689181345000, 1689184945000, 1689188545000, 1689192145000,
-          ];
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 3) {
-          btcData?.aprs && btcData?.apys
+          usdcData?.rTokenExchangeRates
             ? (newData = [
                 {
                   name: "Exchange Rate",
-                  data: btcData?.aprs,
+                  data: usdcData?.rTokenExchangeRates,
                 },
               ])
             : (newData = [
@@ -160,29 +154,60 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
                   ],
                 },
               ]);
-          btcData?.dates
-            ? (newCategories = btcData?.dates)
+          usdcData?.dates
+            ? (newCategories = usdcData?.dates)
             : (newCategories = [
                 1689152545000, 1689156145000, 1689159745000, 1689163345000,
                 1689166945000, 1689170545000, 1689174145000, 1689177745000,
                 1689181345000, 1689184945000, 1689188545000, 1689192145000,
               ]);
           return { newData, newCategories };
+        } else if (currentSelectedCoin == 3) {
+          ethData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: ethData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [
+                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
+                  ],
+                },
+              ]);
+          ethData?.dates
+            ? (newCategories = ethData?.dates)
+            : (newCategories = [
+                1689152545000, 1689156145000, 1689159745000, 1689163345000,
+                1689166945000, 1689170545000, 1689174145000, 1689177745000,
+                1689181345000, 1689184945000, 1689188545000, 1689192145000,
+              ]);
         } else {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [
-                300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-              ],
-            },
-          ];
-          newCategories = [
-            1689152545000, 1689156145000, 1689159745000, 1689163345000,
-            1689166945000, 1689170545000, 1689174145000, 1689177745000,
-            1689181345000, 1689184945000, 1689188545000, 1689192145000,
-          ];
-          return { newData, newCategories };
+          daiData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: daiData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [
+                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
+                  ],
+                },
+              ]);
+          daiData?.dates
+            ? (newCategories = daiData?.dates)
+            : (newCategories = [
+                1689152545000, 1689156145000, 1689159745000, 1689163345000,
+                1689166945000, 1689170545000, 1689174145000, 1689177745000,
+                1689181345000, 1689184945000, 1689188545000, 1689192145000,
+              ]);
         }
         break;
 
@@ -690,6 +715,12 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(1);
               }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
+              }}
             >
               1W
             </Button>
@@ -700,6 +731,12 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               variant={aprByMarket === 2 ? "solid" : "outline"}
               onClick={() => {
                 setAPRByMarket(2);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
               }}
             >
               1M
@@ -712,6 +749,12 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               variant={aprByMarket === 3 ? "solid" : "outline"}
               onClick={() => {
                 setAPRByMarket(3);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
               }}
             >
               ALL

@@ -39,6 +39,16 @@ const YourBorrow = () => {
   const { account, address } = useAccount();
   useDataLoader();
   const UserLoans = useSelector(selectUserLoans);
+  useEffect(() => {
+    if (UserLoans) {
+      if (UserLoans?.length <= (currentPagination - 1) * 6) {
+        console.log("pagination", Pagination, UserLoans);
+        if (currentPagination > 1) {
+          setCurrentPagination(currentPagination - 1);
+        }
+      }
+    }
+  }, [UserLoans]);
 
   // useEffect(() => {
   //   const loan = async () => {
@@ -130,7 +140,7 @@ const YourBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalBorrow ? `$ ${numberFormatter(totalBorrow)}` : "NA"}
+                {totalBorrow ? `$${numberFormatter(totalBorrow)}` : "NA"}
               </Text>
             )}
           </VStack>
@@ -158,6 +168,7 @@ const YourBorrow = () => {
       <BorrowDashboard
         width={"95%"}
         currentPagination={currentPagination}
+        setCurrentPagination={setCurrentPagination}
         Coins={Coins}
         columnItems={columnItems}
         Borrows={UserLoans}

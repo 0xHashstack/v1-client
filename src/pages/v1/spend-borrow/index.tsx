@@ -17,6 +17,7 @@ import { Skeleton } from "@chakra-ui/react";
 import { selectYourBorrow, selectNetAPR } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
+import { selectUserUnspentLoans } from "@/store/slices/userAccountSlice";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
 const SpendBorrow = () => {
   const { available, disconnect, connect, connectors, refresh } =
@@ -24,6 +25,7 @@ const SpendBorrow = () => {
   useDataLoader();
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
+  const userLoans = useSelector(selectUserUnspentLoans);
   console.log(totalBorrow, "total borrow spend borrow");
   console.log(netAPR, "netapr in spend borrow");
   return (
@@ -65,7 +67,7 @@ const SpendBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalBorrow ? `$ ${numberFormatter(totalBorrow)}` : "NA"}
+                {totalBorrow ? `$${numberFormatter(totalBorrow)}` : "NA"}
               </Text>
             )}
             {/* <Text color="#e6edf3" fontSize="20px">
@@ -86,7 +88,7 @@ const SpendBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {netAPR && !Number.isNaN(netAPR) ? `${netAPR} %` : "NA"}
+                {netAPR && !Number.isNaN(netAPR) ? `${netAPR}%` : "NA"}
               </Text>
             )}
           </VStack>

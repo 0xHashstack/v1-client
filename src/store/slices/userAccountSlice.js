@@ -59,6 +59,8 @@ const initialState = {
   netAprCount: -1,
   avgBorrowAprCount: -1,
   avgSupplyAprCount: -1,
+  yourMetricsSupplyCount: -1,
+  yourMetricsBorrowCount: -1,
 
   // walletBalance: {
   //   BTC: 0,
@@ -233,6 +235,12 @@ export const userAccountSlice = createSlice({
     setAvgSupplyAprCount(state, action) {
       state.avgSupplyAprCount = action.payload;
     },
+    setYourMetricsSupplyCount(state, action) {
+      state.yourMetricsSupplyCount = action.payload;
+    },
+    setYourMetricsBorrowCount(state, action) {
+      state.yourMetricsBorrowCount = action.payload;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -281,6 +289,8 @@ export const {
   setNetAprCount,
   setAvgBorrowAprCount,
   setAvgSupplyAprCount,
+  setYourMetricsSupplyCount,
+  setYourMetricsBorrowCount,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -311,7 +321,7 @@ export const selectTransactionStatus = (state) =>
 export const selectAssetWalletBalance = (state) =>
   state.user_account.assetWalletBalance;
 export const selectTransactionStartedAndModalClosed = (state) =>
-  state.user_account.transactionStartedAndModalClosed;
+  state.user_account?.transactionStartedAndModalClosed;
 export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;
 export const selectCoinSelectedSupplyModal = (state) =>
@@ -365,5 +375,9 @@ export const selectAvgBorrowAprCount = (state) =>
   state.user_account.avgBorrowAprCount;
 export const selectAvgSupplyAprCount = (state) =>
   state.user_account.avgSupplyAprCount;
+export const selectYourMetricsSupplyCount = (state) =>
+  state.user_account.yourMetricsSupplyCount;
+export const selectYourMetricsBorrowCount = (state) =>
+  state.user_account.yourMetricsBorrowCount;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

@@ -408,7 +408,7 @@ const SupplyDashboard = ({
               .map((supply: any, idx: number) => (
                 <>
                   <Tr
-                    key={idx}
+                    key={lower_bound + idx}
                     width={"100%"}
                     // height={"5.2rem"}
                     height={"6rem"}

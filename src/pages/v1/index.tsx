@@ -444,11 +444,14 @@ export default function Home() {
             fontWeight="400"
             color="#8C8C8C"
           >
-            This mainnet is currently in alpha with limitations on the maximum
+            {/* This mainnet is currently in alpha with limitations on the maximum
             supply & borrow amount. This is done in consideration of the current
             network and liquidity constraints of the Starknet. We urge the users
             to use the dapp with caution. Hashstack will not cover any
-            accidental loss of user funds.
+            accidental loss of user funds. */}
+            Wallets are provided by External Providers and by selecting you
+            agree to Terms of those Providers. Your access to the wallet might
+            be reliant on the External Provider being operational.
           </Text>
           <Text
             fontSize="12px"
@@ -457,9 +460,8 @@ export default function Home() {
             color="#8C8C8C"
             mt="1rem"
           >
-            Wallets are provided by External Providers and by selecting you
-            agree to Terms of those Providers. Your access to the wallet might
-            be reliant on the External Provider being operational.
+            We urge the users to use the dapp with caution. Hashstack will not
+            cover any accidental loss of user funds.
           </Text>
         </Box>
       </Box>

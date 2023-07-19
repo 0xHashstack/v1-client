@@ -106,6 +106,7 @@ import {
   getJediEstimatedLpAmountOut,
   getUSDValue,
 } from "@/Blockchain/scripts/l3interaction";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const TradeModal = ({
   buttonText,
   coin,
@@ -466,6 +467,10 @@ const TradeModal = ({
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
+  useEffect(() => {
+    setCurrentPool("Select a pool");
+    setCurrentPoolCoin("Select a pool");
+  }, [radioValue]);
 
   useEffect(() => {
     setinputBorrowAmount(0);
@@ -869,10 +874,11 @@ const TradeModal = ({
       currentPool === "Select a pool"
     )
       return;
+    // console.log("inputBorrowAmount", Number(inputBorrowAmount));
     const lp_tokon = await getJediEstimatedLpAmountOut(
       currentBorrowCoin,
       (
-        Math.floor(Number(inputBorrowAmount)) *
+        Number(inputBorrowAmount) *
         Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
       )?.toString(),
       toMarketLiqA,
@@ -1002,7 +1008,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Select collateral market"
+                        label="Collateral market refers to the cryptocurrency that you keep as security agains the borrowed amount you take from Hashstack"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1287,15 +1293,18 @@ const TradeModal = ({
                                     fontWeight="thin"
                                   >
                                     Wallet Balance:{" "}
-                                    {Number(
-                                      BNtoNum(
-                                        uint256.uint256ToBN(
-                                          walletBalances[coin]?.dataBalanceOf
-                                            ?.balance
-                                        ),
-                                        tokenDecimalsMap[coin]
-                                      )
-                                    ).toFixed(2)}
+                                    {walletBalances[coin]?.dataBalanceOf
+                                      ?.balance
+                                      ? Number(
+                                          BNtoNum(
+                                            uint256.uint256ToBN(
+                                              walletBalances[coin]
+                                                ?.dataBalanceOf?.balance
+                                            ),
+                                            tokenDecimalsMap[coin]
+                                          )
+                                        ).toFixed(2)
+                                      : "-"}
                                   </Box>
                                 </Box>
                               </Box>
@@ -1314,7 +1323,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Enter collateral amount"
+                        label="Collateral amount refers to the unit of crypto coins you are willing to keep as security against the borrowed amount"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1433,7 +1442,7 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Wallet Balance: {walletBalance}
+                          Wallet Balance: {numberFormatter(walletBalance)}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
@@ -1450,7 +1459,7 @@ const TradeModal = ({
                         fontStyle="normal"
                         fontFamily="Inter"
                       >
-                        Wallet Balance: {walletBalance}
+                        Wallet Balance: {numberFormatter(walletBalance)}
                         <Text color="#6E7781" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>
@@ -1463,12 +1472,18 @@ const TradeModal = ({
                         value={sliderValue}
                         onChange={(val) => {
                           setSliderValue(val);
-                          var ans = (val / 100) * walletBalance;
-                          ans = Math.round(ans * 100) / 100;
-                          dispatch(setInputTradeModalCollateralAmount(ans));
-                          setinputCollateralAmount(ans);
-                          setCollateralAmount(ans);
-                          setRTokenAmount(ans);
+                          if (val == 100) {
+                            setinputCollateralAmount(walletBalance);
+                            setCollateralAmount(walletBalance);
+                            setRTokenAmount(walletBalance);
+                          } else {
+                            var ans = (val / 100) * walletBalance;
+                            ans = Math.round(ans * 100) / 100;
+                            dispatch(setInputTradeModalCollateralAmount(ans));
+                            setinputCollateralAmount(ans);
+                            setCollateralAmount(ans);
+                            setRTokenAmount(ans);
+                          }
                         }}
                         isDisabled={transactionStarted == true}
                         _disabled={{ cursor: "pointer" }}
@@ -1587,7 +1602,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Enter borrow market"
+                        label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1779,7 +1794,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Enter borrow amount"
+                        label="Borrow amount refers to the unit of crypto coins you are willing to borrow from the protocol"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -1929,7 +1944,7 @@ const TradeModal = ({
                           justifyContent="flex-end"
                         >
                           Available Reserves:{" "}
-                          {currentAvailableReserves.toFixed(2)}
+                          {numberFormatter(currentAvailableReserves)}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentBorrowCoin}`}
                           </Text>
@@ -1947,9 +1962,9 @@ const TradeModal = ({
                         fontFamily="Inter"
                       >
                         Available reserves:{" "}
-                        {protocolStats?.find(
-                          (stat: any) => stat?.token == currentBorrowCoin
-                        )?.availableReserves || (
+                        {currentAvailableReserves ? (
+                          numberFormatter(currentAvailableReserves)
+                        ) : (
                           <Skeleton
                             width="4rem"
                             height=".85rem"
@@ -1971,11 +1986,16 @@ const TradeModal = ({
                         value={sliderValue2}
                         onChange={(val) => {
                           setsliderValue2(val);
-                          var ans = (val / 100) * currentAvailableReserves;
-                          ans = Math.round(ans * 100) / 100;
-                          dispatch(setInputTradeModalBorrowAmount(ans));
-                          setinputBorrowAmount(ans);
-                          setLoanAmount(ans);
+                          if (val == 100) {
+                            setinputBorrowAmount(currentAvailableReserves);
+                            setLoanAmount(currentAvailableReserves);
+                          } else {
+                            var ans = (val / 100) * currentAvailableReserves;
+                            ans = Math.round(ans * 100) / 100;
+                            dispatch(setInputTradeModalBorrowAmount(ans));
+                            setinputBorrowAmount(ans);
+                            setLoanAmount(ans);
+                          }
                         }}
                         isDisabled={
                           transactionStarted == true ||
@@ -2132,7 +2152,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Select dapp from below dropdown"
+                        label="Choose a decentralized application (Dapp) to spend you loan on the protocol."
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2237,7 +2257,9 @@ const TradeModal = ({
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(dapp.name)}</Box>
-                                  <Text pt="1">{dapp.name}</Text>
+                                  <Text pt="1" color="white">
+                                    {dapp.name}
+                                  </Text>
                                 </Box>
                                 {dapp.status === "disable" && (
                                   <Text
@@ -2265,7 +2287,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="select pool from below"
+                        label="Choose a specific liquidity pool within protocol to participate in activities such as providing liquidity, earning rewards, or accessing specific financial services."
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2453,7 +2475,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="Estimated LP tokens recieved"
+                          label="Estimated LP Tokens Received: This tool tip provides an estimate of the number of LP (Liquidity Provider) tokens you will receive when you provide liquidity to a pool."
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
@@ -2508,7 +2530,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="Liquidity split for selected pools"
+                          label="refers to the fee charged for adjusting the allocation or distribution of liquidity across different assets within the protocol."
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
@@ -2630,7 +2652,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Fees"
+                        label="refer to the charges or costs incurred when completing a transactions"
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2656,7 +2678,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Estimated gas fees for transaction"
+                        label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2681,7 +2703,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Borrow apr"
+                        label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
                         bg="#24292F"
                         fontSize={"smaller"}
                         fontWeight={"thin"}
@@ -2738,7 +2760,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="Effective apr"
+                          label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
@@ -2840,7 +2862,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="Health factor"
+                          label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
                           bg="#24292F"
                           fontSize={"smaller"}
                           fontWeight={"thin"}
@@ -2862,7 +2884,7 @@ const TradeModal = ({
                 </Box>
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
                 (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
-                inputBorrowAmount < currentAvailableReserves &&
+                inputBorrowAmount <= currentAvailableReserves &&
                 inputBorrowAmount > 0 &&
                 inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD &&
                 currentDapp != "Select a dapp" &&

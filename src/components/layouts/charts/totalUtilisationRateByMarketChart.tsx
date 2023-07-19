@@ -4,7 +4,7 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { selectHourlyBTCData, selectHourlyDAIData, selectHourlyETHData, selectHourlyUSDCData, selectHourlyUSDTData } from "@/store/slices/readDataSlice";
 import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -22,7 +22,7 @@ const TotalUtilisationRateByMarketChart = () => {
     },
   ]);
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
-  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"]
+  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -37,7 +37,11 @@ const TotalUtilisationRateByMarketChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
-  const btcData=useSelector(selectHourlyBTCData);
+  const btcData = useSelector(selectHourlyBTCData);
+  const ethData=useSelector(selectHourlyETHData);
+  const usdtData=useSelector(selectHourlyUSDTData);
+  const usdcData=useSelector(selectHourlyUSDCData);
+  const daiData=useSelector(selectHourlyDAIData);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -48,180 +52,217 @@ const TotalUtilisationRateByMarketChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.utilRates
+        btcData?.utilRates && ethData?.utilRates && usdtData?.utilRates && usdcData?.utilRates && daiData?.utilRates
           ? (newData = [
               {
-                name:"BTC",
+                name: "BTC",
                 data: btcData?.utilRates,
               },
               {
                 name: "ETH",
-                data: [200, 400, 2000, 400,2000, 400,2000, 400,2000, 400,2000, 400],
+                data: ethData?.utilRates,
               },
               {
                 name: "USDT",
-                data: [300, 400, 3000, 300,4000, 200, 1000, 300, 400,2000, 400,200],
+                data: usdtData?.utilRates,
               },
               {
                 name: "USDC",
-                data: [400, 200, 1000, 300,1000, 200,2000, 400,2000, 400,200, 400],
+                data: usdcData?.utilRates
               },
               {
                 name: "DAI",
-                data: [100, 400, 1000, 100,2000, 100,1500, 300,4000, 200, 1000, 300],
+                data: daiData?.utilRates
               },
             ])
           : (newData = [
               {
                 name: "BTC",
-                data: [200, 400, 2000, 400,2000, 400,2000, 400,2000, 400,2000, 400],
+                data: [
+                  200, 400, 2000, 400, 2000, 400, 2000, 400, 2000, 400, 2000,
+                  400,
+                ],
               },
               {
                 name: "ETH",
-                data: [200, 400, 2000, 400,2000, 400,2000, 400,2000, 400,2000, 400],
+                data: [
+                  200, 400, 2000, 400, 2000, 400, 2000, 400, 2000, 400, 2000,
+                  400,
+                ],
               },
               {
                 name: "USDT",
-                data: [300, 400, 3000, 300,4000, 200, 1000, 300, 400,2000, 400,200],
+                data: [
+                  300, 400, 3000, 300, 4000, 200, 1000, 300, 400, 2000, 400,
+                  200,
+                ],
               },
               {
                 name: "USDC",
-                data: [400, 200, 1000, 300,1000, 200,2000, 400,2000, 400,200, 400],
+                data: [
+                  400, 200, 1000, 300, 1000, 200, 2000, 400, 2000, 400, 200,
+                  400,
+                ],
               },
               {
                 name: "DAI",
-                data: [100, 400, 1000, 100,2000, 100,1500, 300,4000, 200, 1000, 300],
+                data: [
+                  100, 400, 1000, 100, 2000, 100, 1500, 300, 4000, 200, 1000,
+                  300,
+                ],
               },
             ]);
         btcData?.dates
           ? (newCategories = btcData?.dates)
-          : (newCategories=[
-            1689152545000, 1689156145000, 1689159745000, 1689163345000,
-            1689166945000, 1689170545000, 1689174145000, 1689177745000,
-            1689181345000, 1689184945000, 1689188545000, 1689192145000,
-          ]);
+          : (newCategories = [
+              1689152545000, 1689156145000, 1689159745000, 1689163345000,
+              1689166945000, 1689170545000, 1689174145000, 1689177745000,
+              1689181345000, 1689184945000, 1689188545000, 1689192145000,
+            ]);
         break;
-        case 1:
-          newData = [
-            {
-              name: "BTC",
-              data: [
-                10000000000, 4000000000, 10000000000, 1000000000,20000000000,  10000000000, 4000000000
-              ],
-            },
-            {
-              name: "ETH",
-              data: [
-                30000000000, 1000000000, 20000000000, 4000000000,10000000000,  10000000000, 1000000000
-              ],
-            },
-            {
-              name: "USDT",
-              data: [
-                40000000000, 4000000000, 10000000000, 2000000000,11000000000,  50000000000, 1300000000
-              ],
-            },
-            {
-              name: "USDC",
-              data: [
-                50000000000, 2000000000, 12000000000, 2300000000,21000000000,  11000000000, 430000000
-              ],
-            },
-            {
-              name: "DAI",
-              data: [
-                17000000000, 4100000000, 12000000000, 1400000000,23000000000,  10000000000, 4000000000
-              ],
-            },
-          ];
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
-          break;
-        case 2:
-          //y data axis
-          newData = [
-            {
-              name: "BTC",
-              data: [
-                10000000000, 4000000000, 10000000000, 1000000000,20000000000,  10000000000, 4000000000,11000000000,  50000000000, 1300000000
-              ],
-            },
-            {
-              name: "ETH",
-              data: [
-                30000000000, 1000000000, 20000000000, 4000000000,10000000000,  10000000000, 1000000000,10000000000, 4000000000, 10000000000,
-              ],
-            },
-            {
-              name: "USDT",
-              data: [
-                40000000000, 4000000000, 10000000000, 2000000000,11000000000,  50000000000, 1300000000,  10000000000, 4000000000, 11000000000, 430000000,
-              ],
-            },
-            {
-              name: "USDC",
-              data: [
-                50000000000, 2000000000, 12000000000, 2300000000,21000000000,  11000000000, 430000000,  10000000000, 4000000000, 1300000000
-              ],
-            },
-            {
-              name: "DAI",
-              data: [
-                17000000000, 4100000000, 12000000000, 1400000000,23000000000,  10000000000, 4000000000, 11000000000, 430000000,10000000000, 4000000000
-              ],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-        ];
-          break;
-      case 3:
+      case 1:
         newData = [
           {
             name: "BTC",
             data: [
-              10000000000, 4000000000, 10000000000, 1000000000,20000000000,  10000000000, 4000000000,11000000000,  50000000000, 1300000000, 4000000000,430000000
+              10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
+              10000000000, 4000000000,
             ],
           },
           {
             name: "ETH",
             data: [
-              30000000000, 1000000000, 20000000000, 4000000000,10000000000,  10000000000, 1000000000,10000000000, 4000000000, 10000000000,430000000,20000000000
+              30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
+              10000000000, 1000000000,
             ],
           },
           {
             name: "USDT",
             data: [
-              40000000000, 4000000000, 10000000000, 2000000000,11000000000,  50000000000, 1300000000,  10000000000, 4000000000, 11000000000, 430000000, 10000000000, 11000000000
+              40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
+              50000000000, 1300000000,
             ],
           },
           {
             name: "USDC",
             data: [
-              50000000000, 2000000000, 12000000000, 2300000000,21000000000,  11000000000, 430000000,  10000000000, 4000000000, 1300000000,10000000000, 11000000000
+              50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
+              11000000000, 430000000,
             ],
           },
           {
             name: "DAI",
             data: [
-              17000000000, 4100000000, 12000000000, 1400000000,23000000000,  10000000000, 4000000000, 11000000000, 430000000,10000000000, 4000000000, 1300000000
+              17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
+              10000000000, 4000000000,
+            ],
+          },
+        ];
+        newCategories = [
+          new Date("2023-07-01").getTime(),
+          new Date("2023-07-02").getTime(),
+          new Date("2023-07-03").getTime(),
+          new Date("2023-07-04").getTime(),
+          new Date("2023-07-05").getTime(),
+          new Date("2023-07-06").getTime(),
+          new Date("2023-07-07").getTime(),
+        ];
+        break;
+      case 2:
+        //y data axis
+        newData = [
+          {
+            name: "BTC",
+            data: [
+              10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
+              10000000000, 4000000000, 11000000000, 50000000000, 1300000000,
+            ],
+          },
+          {
+            name: "ETH",
+            data: [
+              30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
+              10000000000, 1000000000, 10000000000, 4000000000, 10000000000,
+            ],
+          },
+          {
+            name: "USDT",
+            data: [
+              40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
+              50000000000, 1300000000, 10000000000, 4000000000, 11000000000,
+              430000000,
+            ],
+          },
+          {
+            name: "USDC",
+            data: [
+              50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
+              11000000000, 430000000, 10000000000, 4000000000, 1300000000,
+            ],
+          },
+          {
+            name: "DAI",
+            data: [
+              17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
+              10000000000, 4000000000, 11000000000, 430000000, 10000000000,
+              4000000000,
+            ],
+          },
+        ];
+        //x axis data
+        newCategories = [
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-06").getTime(),
+          new Date("2023-06-09").getTime(),
+          new Date("2023-06-12").getTime(),
+          new Date("2023-06-15").getTime(),
+          new Date("2023-06-18").getTime(),
+          new Date("2023-06-21").getTime(),
+          new Date("2023-06-24").getTime(),
+          new Date("2023-06-27").getTime(),
+          new Date("2023-06-30").getTime(),
+        ];
+        break;
+      case 3:
+        newData = [
+          {
+            name: "BTC",
+            data: [
+              10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
+              10000000000, 4000000000, 11000000000, 50000000000, 1300000000,
+              4000000000, 430000000,
+            ],
+          },
+          {
+            name: "ETH",
+            data: [
+              30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
+              10000000000, 1000000000, 10000000000, 4000000000, 10000000000,
+              430000000, 20000000000,
+            ],
+          },
+          {
+            name: "USDT",
+            data: [
+              40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
+              50000000000, 1300000000, 10000000000, 4000000000, 11000000000,
+              430000000, 10000000000, 11000000000,
+            ],
+          },
+          {
+            name: "USDC",
+            data: [
+              50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
+              11000000000, 430000000, 10000000000, 4000000000, 1300000000,
+              10000000000, 11000000000,
+            ],
+          },
+          {
+            name: "DAI",
+            data: [
+              17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
+              10000000000, 4000000000, 11000000000, 430000000, 10000000000,
+              4000000000, 1300000000,
             ],
           },
         ];
@@ -255,6 +296,7 @@ const TotalUtilisationRateByMarketChart = () => {
         toolbar: {
           show: false,
         },
+        stacked:true,
       },
       dataLabels: {
         enabled: false,
@@ -312,8 +354,8 @@ const TotalUtilisationRateByMarketChart = () => {
           bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
         },
       },
-      fill:{
-        type: 'solid',
+      fill: {
+        type: "solid",
       },
       annotations: {
         xaxis: [
@@ -333,7 +375,7 @@ const TotalUtilisationRateByMarketChart = () => {
     //   ...splineChartData.options.stroke,
     //   curve: "smooth",
     // },
-    colors: splineColor
+    colors: splineColor,
     // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
   };
   return (
@@ -389,6 +431,16 @@ const TotalUtilisationRateByMarketChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
+              }}
             >
               1W
             </Button>
@@ -403,6 +455,16 @@ const TotalUtilisationRateByMarketChart = () => {
               variant={liquidityProviderChartPeriod === 2 ? "solid" : "outline"}
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
               }}
             >
               1M
@@ -419,6 +481,16 @@ const TotalUtilisationRateByMarketChart = () => {
               variant={liquidityProviderChartPeriod === 3 ? "solid" : "outline"}
               onClick={() => {
                 setLiquidityProviderChartPeriod(3);
+              }}
+              isDisabled={true}
+              _disabled={{
+                cursor: "pointer",
+                color: "#2B2F35",
+                border: `${
+                  liquidityProviderChartPeriod === 2
+                    ? "none"
+                    : "1px solid #2B2F35"
+                }`,
               }}
             >
               ALL
