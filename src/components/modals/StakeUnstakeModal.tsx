@@ -562,14 +562,12 @@ const StakeUnstakeModal = ({
   const handleUnstakeChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
 
-    
-
     var percentage = (newValue * 100) / unstakeWalletBalance;
-    if(percentage==100){
+    if (percentage == 100) {
       setSliderValue2(100);
       setInputUnstakeAmount(unstakeWalletBalance);
       setRTokenToWithdraw(unstakeWalletBalance);
-    }else{
+    } else {
       percentage = Math.max(0, percentage);
       if (unstakeWalletBalance == 0) {
         setSliderValue2(0);
@@ -790,7 +788,7 @@ const StakeUnstakeModal = ({
         rTokenToWithdraw
       );
       setEstrTokens(data);
-      // console.log(data,"stake");
+      console.log(data, "estr token");
     };
     fetchestrTokens();
   }, [rTokenToWithdraw]);
@@ -1695,7 +1693,6 @@ const StakeUnstakeModal = ({
                                   );
                                   handleStakeTransaction();
                                 }
-                               
                               }}
                             >
                               <AnimatedButton
@@ -1782,7 +1779,6 @@ const StakeUnstakeModal = ({
                                 );
                                 hanldeStakeAndSupplyTransaction();
                               }
-                             
                             }}
                           >
                             <AnimatedButton
@@ -2212,9 +2208,9 @@ const StakeUnstakeModal = ({
                                 return;
                               }
                               setSliderValue2(val);
-                              if(val==100){
-                                setRTokenToWithdraw(unstakeWalletBalance)
-                              }else{
+                              if (val == 100) {
+                                setRTokenToWithdraw(unstakeWalletBalance);
+                              } else {
                                 var ans = (val / 100) * unstakeWalletBalance;
                                 ans = Math.round(ans * 100) / 100;
                                 // dispatch(setInputSupplyAmount(ans))
@@ -2439,7 +2435,7 @@ const StakeUnstakeModal = ({
                         </Text>
                       </Card>
                       {rTokenToWithdraw > 0 &&
-                      rTokenToWithdraw <= unstakeWalletBalance  ? (
+                      rTokenToWithdraw <= unstakeWalletBalance ? (
                         <Box
                           onClick={() => {
                             setUnstakeTransactionStarted(true);
@@ -2455,7 +2451,6 @@ const StakeUnstakeModal = ({
                               );
                               hanldeUnstakeTransaction();
                             }
-                            
                           }}
                         >
                           <AnimatedButton
