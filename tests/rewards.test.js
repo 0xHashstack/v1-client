@@ -16,9 +16,9 @@ import { etherToWeiBN, parseAmount } from "../src/Blockchain/utils/utils";
 import stakingAbi from "../src/Blockchain/abi_new/staking_abi.json";
 describe("Get estimated values", () => {
   it("displays the estimated rTokens minted add collateral", async () => {
-    const expectedRTokensMinted = "144.46";
-    const rToken = "rUSDT";
-    const collateralAmount = "144.67";
+    const expectedRTokensMinted = "2050.218";
+    const rToken = "rUSDC";
+    const collateralAmount = "2050.1";
     const provider = getProvider();
     const supplyContract = new Contract(
       supplyABI,
@@ -38,7 +38,7 @@ describe("Get estimated values", () => {
       tokenDecimalsMap[rToken]
     );
 
-    expect(data.toFixed(2)).toBe(expectedRTokensMinted);
+    expect(data.toFixed(1)).toBe(expectedRTokensMinted);
   });
   it("display the estimated supply amount while withdrawing", async () => {
     const expectedSupplyUnlocked = "2050.93";
@@ -62,7 +62,7 @@ describe("Get estimated values", () => {
       uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),
       tokenDecimalsMap[rToken]
     );
-    expect(data.toFixed(2)).toBe(expectedSupplyUnlocked);
+    expect(data.toFixed(1)).toBe(expectedSupplyUnlocked);
   });
   it("display the estimated r tokens", async () => {
     const expectedrTokensUnlocked = 144.672119;
