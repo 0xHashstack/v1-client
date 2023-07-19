@@ -160,7 +160,7 @@ const DashboardRight = ({
                   textAlign="left"
                   // bgColor={"red"}
                 >
-                  <HStack gap={1.5}>
+                  <HStack gap="10px">
                     <Box height="32px" width="32px">
                       <Image
                         src={`/${coin?.name}.svg`}
