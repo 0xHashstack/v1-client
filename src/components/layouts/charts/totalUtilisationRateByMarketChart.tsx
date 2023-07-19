@@ -296,6 +296,7 @@ const TotalUtilisationRateByMarketChart = () => {
         toolbar: {
           show: false,
         },
+        stacked:true,
       },
       dataLabels: {
         enabled: false,
