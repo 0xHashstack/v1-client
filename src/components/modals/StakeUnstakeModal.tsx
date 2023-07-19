@@ -109,7 +109,7 @@ const StakeUnstakeModal = ({
   const [sliderValue, setSliderValue] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [sliderValue2, setSliderValue2] = useState(0);
-  const [inputStakeAmount, setInputStakeAmount] = useState(0);
+  const [inputStakeAmount, setInputStakeAmount] = useState<number>(0);
   const [inputUnstakeAmount, setInputUnstakeAmount] = useState(0);
   const [isSupplyTap, setIsSupplyTap] = useState(false);
   const [transactionStarted, setTransactionStarted] = useState(false);
@@ -535,14 +535,15 @@ const StakeUnstakeModal = ({
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     if (rtokenWalletBalance != 0) {
-      var percentage = (newValue * 100) / getBalance(currentSelectedStakeCoin);
+      var balance=Number(getBalance(currentSelectedStakeCoin));
+      var percentage = (newValue * 100) / balance;
     } else {
       var percentage = (newValue * 100) / walletBalance;
     }
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
-      setRTokenAmount(Number(newValue));
+      setRTokenAmount(newValue);
       setInputStakeAmount(newValue);
       setDepositAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
@@ -551,7 +552,7 @@ const StakeUnstakeModal = ({
       if (isNaN(percentage)) {
       } else {
         setSliderValue(percentage);
-        setRTokenAmount(Number(newValue));
+        setRTokenAmount(newValue);
         setInputStakeAmount(newValue);
         setDepositAmount(newValue);
       }
@@ -583,7 +584,7 @@ const StakeUnstakeModal = ({
         if (isNaN(percentage)) {
         } else {
           setSliderValue2(percentage);
-          setRTokenToWithdraw(Number(newValue));
+          setRTokenToWithdraw(newValue);
         }
         // dispatch(setInputSupplyAmount(newValue));
       }
@@ -650,7 +651,7 @@ const StakeUnstakeModal = ({
   );
   const userDeposit = useSelector(selectUserDeposits);
   // console.log(coin,"coin stake")
-  const [walletBalance, setWalletBalance] = useState<any>(
+  const [walletBalance, setWalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? Number(
           BNtoNum(
@@ -677,12 +678,12 @@ const StakeUnstakeModal = ({
         : 0
     );
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
-  const [rtokenWalletBalance, setrTokenWalletBalance] = useState<any>(
+  const [rtokenWalletBalance, setrTokenWalletBalance] = useState(
     userDeposit?.find((item: any) => item.rToken == currentSelectedUnstakeCoin)
       ?.rTokenFreeParsed
   );
   // console.log(rtokenWalletBalance,"rtoken wallet ")
-  const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<any>(
+  const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
     userDeposit?.find((item: any) => item.rToken == currentSelectedUnstakeCoin)
       ?.rTokenStakedParsed
   );
@@ -1177,9 +1178,7 @@ const StakeUnstakeModal = ({
                           border={`${
                             (rtokenWalletBalance != 0 &&
                               rTokenAmount >
-                                getBalance(currentSelectedStakeCoin).toFixed(
-                                  2
-                                )) ||
+                                Number(getBalance(currentSelectedStakeCoin))) ||
                             (rtokenWalletBalance == 0 &&
                               rTokenAmount > walletBalance)
                               ? "1px solid #CF222E"
@@ -1187,8 +1186,7 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenAmount > 0 &&
                                 (rTokenAmount <=
-                                  getBalance(currentSelectedStakeCoin).toFixed(
-                                    2
+                                  Number(getBalance(currentSelectedStakeCoin)
                                   ) ||
                                   rTokenAmount <= walletBalance)
                               ? "1px solid #1A7F37"
@@ -1216,9 +1214,9 @@ const StakeUnstakeModal = ({
                               color={`${
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount >
-                                    getBalance(
+                                    Number(getBalance(
                                       currentSelectedStakeCoin
-                                    ).toFixed(2)) ||
+                                    ))) ||
                                 (rtokenWalletBalance == 0 &&
                                   rTokenAmount > walletBalance)
                                   ? "#CF222E"
@@ -1267,7 +1265,7 @@ const StakeUnstakeModal = ({
                         </Box>
                         {(rtokenWalletBalance != 0 &&
                           rTokenAmount >
-                            getBalance(currentSelectedStakeCoin).toFixed(2)) ||
+                            Number(getBalance(currentSelectedStakeCoin))) ||
                         (rtokenWalletBalance == 0 &&
                           rTokenAmount > walletBalance) ||
                         rTokenAmount < 0 ? (
