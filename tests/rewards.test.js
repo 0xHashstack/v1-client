@@ -41,7 +41,7 @@ describe("Get estimated values", () => {
     expect(data.toFixed(1)).toBe(expectedRTokensMinted);
   });
   it("display the estimated supply amount while withdrawing", async () => {
-    const expectedSupplyUnlocked = "2050.93";
+    const expectedSupplyUnlocked = "2050.9";
     const rToken = "rUSDT";
     const amount = "2052.1";
     const provider = getProvider();

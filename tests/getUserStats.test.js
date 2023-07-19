@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+
 import SupplyModal from "../src/components/modals/SupplyModal";
 import {
   getTotalSupply,
