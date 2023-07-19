@@ -231,7 +231,7 @@ const useDataLoader = () => {
                 // const supplyAmount1=etherToWeiBN(amount,token)
                 // console.log(supplyAmount1,"aamount")
                 amounts?.push(supplyAmount);
-                borrowAmounts?.push(Math.log(borrowAmount));
+                borrowAmounts?.push(borrowAmount);
                 tvlAmounts?.push(tvlAmount);
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);

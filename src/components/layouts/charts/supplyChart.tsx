@@ -310,6 +310,7 @@ const SupplyChart = () => {
         toolbar: {
           show: false,
         },
+        stacked:true,
       },
       dataLabels: {
         position: "bottom",
@@ -530,6 +531,7 @@ const SupplyChart = () => {
           series={splineChartData.series}
           type="area"
           height={350}
+  
         />
       </Box>
     </Box>
