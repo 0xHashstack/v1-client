@@ -147,6 +147,7 @@ const YourBorrowModal = ({
   setSpendType,
   ...restProps
 }: any) => {
+  // useEffect(() => {}, []);
   // console.log(currentBorrowId1);
   // console.log(currentID)
   // console.log(borrowIds);
@@ -178,9 +179,9 @@ const YourBorrowModal = ({
     setBorrowAmount(result?.loanAmountParsed);
     setCurrentLoanMarket(result?.currentLoanMarket);
     setCurrentLoanAmount(result?.currentLoanAmount);
-    setCurrentPool('Select a pool')
-    setCurrentDapp('Select a dapp')
-    setCurrentPoolCoin('Select a pool')
+    setCurrentPool("Select a pool");
+    setCurrentDapp("Select a dapp");
+    setCurrentPoolCoin("Select a pool");
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
@@ -242,7 +243,7 @@ const YourBorrowModal = ({
     statusAddCollateral,
 
     dataAddCollateralRToken,
-    errorAddCollateralRToken, 
+    errorAddCollateralRToken,
     resetAddCollateralRToken,
     writeAddCollateralRToken,
     writeAsyncAddCollateralRToken,
@@ -569,9 +570,7 @@ const YourBorrowModal = ({
         item?.loanId ==
         currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
-    setLoan(
-      result
-    )
+    setLoan(result);
   }, [currentBorrowId1]);
   // console.log(userLoans);
 
@@ -2456,9 +2455,10 @@ const YourBorrowModal = ({
     );
     setCurrentSplit(null);
     fetchLiquiditySplit();
-  }, [toMarketA, currentBorrowId1, toMarketB,currentPool]);
+  }, [toMarketA, currentBorrowId1, toMarketB, currentPool]);
 
   useEffect(() => {
+    console.log("useeffect called fetch");
     setCurrentLPTokenAmount(null);
     fetchLPAmount();
   }, [toMarketA, currentBorrowId1, toMarketB,currentPool]);
@@ -3468,7 +3468,9 @@ const YourBorrowModal = ({
                                 ""
                               )}
 
-                              <Text mt="0.10rem" color="white">{currentDapp}</Text>
+                              <Text mt="0.10rem" color="white">
+                                {currentDapp}
+                              </Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (
@@ -3530,7 +3532,9 @@ const YourBorrowModal = ({
                                         borderRadius="md"
                                       >
                                         <Box p="1">{getCoin(dapp.name)}</Box>
-                                        <Text pt="1" color="white">{dapp.name}</Text>
+                                        <Text pt="1" color="white">
+                                          {dapp.name}
+                                        </Text>
                                       </Box>
                                       {dapp.status === "disable" && (
                                         <Text

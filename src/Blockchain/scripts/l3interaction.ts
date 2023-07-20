@@ -124,7 +124,7 @@ export async function getJediEstimatedLpAmountOut(
   tokenB: string
 ) {
   console.log(
-    "getJediEstimatedLpAmountOut",
+    "getJediEstimatedLpAmountOut -",
     loanMarket,
     currentAmount,
     tokenA,
