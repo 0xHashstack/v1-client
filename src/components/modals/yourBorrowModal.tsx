@@ -134,6 +134,8 @@ const YourBorrowModal = ({
   collateralBalance,
   setCollateralBalance,
   currentLoanAmount,
+  setCurrentLoanAmount,
+  setCurrentLoanMarket,
   currentLoanMarket,
   borrowIds,
   buttonText,
@@ -174,6 +176,11 @@ const YourBorrowModal = ({
         currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
+    setCurrentLoanMarket(result?.currentLoanMarket);
+    setCurrentLoanAmount(result?.currentLoanAmount);
+    setCurrentPool('Select a pool')
+    setCurrentDapp('Select a dapp')
+    setCurrentPoolCoin('Select a pool')
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
@@ -2449,7 +2456,7 @@ const YourBorrowModal = ({
     );
     setCurrentSplit(null);
     fetchLiquiditySplit();
-  }, [toMarketA, currentBorrowId1, toMarketB]);
+  }, [toMarketA, currentBorrowId1, toMarketB,currentPool]);
 
   useEffect(() => {
     setCurrentLPTokenAmount(null);
