@@ -230,7 +230,7 @@ const useDataLoader = () => {
                   Number(response?.[i].borrowAmount) /
                   Math.pow(10, tokenDecimalsMap[token]);
                 const tvlAmount: number =
-                  Number(response?.[i].tvlAmount) / Math.pow(10, 8);
+                  Number(response?.[i].tvlAmount) / Math.pow(10, tokenDecimalsMap[token]);
                 // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
                 // console.log(response?.[i].tokenName)
                 // const supplyAmount1=etherToWeiBN(amount,token)

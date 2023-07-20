@@ -2461,7 +2461,7 @@ const YourBorrowModal = ({
   useEffect(() => {
     setCurrentLPTokenAmount(null);
     fetchLPAmount();
-  }, [toMarketA, currentBorrowId1, toMarketB]);
+  }, [toMarketA, currentBorrowId1, toMarketB,currentPool]);
 
   const fetchLiquiditySplit = async () => {
     if (
