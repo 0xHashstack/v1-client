@@ -206,8 +206,8 @@ const useDataLoader = () => {
                 val?.[j]?.status == "fulfilled" && val?.[j]?.value && val[j]
                   ? val[j]?.value
                   : null;
-              const responseApr = val[j + 5]?.value;
-              // console.log(response, "response data");
+              const responseApr = val?.[j + 5]?.value;
+              console.log(val, response, "response data", responseApr);
               // if (!response) {
               //   return;
               // }
