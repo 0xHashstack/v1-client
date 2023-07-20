@@ -105,15 +105,12 @@ export async function getJediEstimateLiquiditySplit(
       "estimated liquidity split for loanId: ",
 
       " is: ",
-      res,
+      res
     );
-    const split1=parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8);
-    const split2=parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8)
+    const split1 = parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8);
+    const split2 = parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8);
     // console.log(split1,split2,"split amounts")
-    return [
-      split1,
-      split2
-    ];
+    return [split1, split2];
   } catch (error) {
     console.log("error in getJediEstimateLiquiditySplit: ", error);
   }
@@ -127,7 +124,7 @@ export async function getJediEstimatedLpAmountOut(
   tokenB: string
 ) {
   console.log(
-    "getJediEstimatedLpAmountOut",
+    "getJediEstimatedLpAmountOut -",
     loanMarket,
     currentAmount,
     tokenA,

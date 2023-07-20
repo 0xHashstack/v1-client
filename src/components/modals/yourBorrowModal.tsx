@@ -145,6 +145,7 @@ const YourBorrowModal = ({
   setSpendType,
   ...restProps
 }: any) => {
+  // useEffect(() => {}, []);
   // console.log(currentBorrowId1);
   // console.log(currentID)
   // console.log(borrowIds);
@@ -235,7 +236,7 @@ const YourBorrowModal = ({
     statusAddCollateral,
 
     dataAddCollateralRToken,
-    errorAddCollateralRToken, 
+    errorAddCollateralRToken,
     resetAddCollateralRToken,
     writeAddCollateralRToken,
     writeAsyncAddCollateralRToken,
@@ -562,9 +563,7 @@ const YourBorrowModal = ({
         item?.loanId ==
         currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
-    setLoan(
-      result
-    )
+    setLoan(result);
   }, [currentBorrowId1]);
   // console.log(userLoans);
 
@@ -2452,6 +2451,7 @@ const YourBorrowModal = ({
   }, [toMarketA, currentBorrowId1, toMarketB]);
 
   useEffect(() => {
+    console.log("useeffect called fetch");
     setCurrentLPTokenAmount(null);
     fetchLPAmount();
   }, [toMarketA, currentBorrowId1, toMarketB]);
@@ -3461,7 +3461,9 @@ const YourBorrowModal = ({
                                 ""
                               )}
 
-                              <Text mt="0.10rem" color="white">{currentDapp}</Text>
+                              <Text mt="0.10rem" color="white">
+                                {currentDapp}
+                              </Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (
@@ -3523,7 +3525,9 @@ const YourBorrowModal = ({
                                         borderRadius="md"
                                       >
                                         <Box p="1">{getCoin(dapp.name)}</Box>
-                                        <Text pt="1" color="white">{dapp.name}</Text>
+                                        <Text pt="1" color="white">
+                                          {dapp.name}
+                                        </Text>
                                       </Box>
                                       {dapp.status === "disable" && (
                                         <Text
