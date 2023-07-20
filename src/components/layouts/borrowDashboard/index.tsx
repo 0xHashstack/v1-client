@@ -257,8 +257,18 @@ const BorrowDashboard = ({
     let temp: any = [];
     for (let i = 0; i < Borrows?.length; i++) {
       if (Borrows[i].spendType === "LIQUIDITY") {
+        console.log(
+          "split index",
+          i,
+          ":",
+          Borrows[i]?.currentLoanAmount,
+          Borrows[i]?.loanId,
+          Borrows[i]?.currentLoanMarketAddress,
+          Borrows[i]?.loanMarket
+        );
+
         const data = await getJediEstimatedLiqALiqBfromLp(
-          parseInt(Borrows[i]?.currentLoanAmount),
+          Borrows[i]?.currentLoanAmount,
           Borrows[i]?.loanId,
           Borrows[i]?.currentLoanMarketAddress,
           Borrows[i]?.loanMarket
@@ -867,20 +877,29 @@ const BorrowDashboard = ({
                               </Box> */}
                             </Box>
                             <Text fontSize="14px" fontWeight="400">
-                              {borrow.spendType == "LIQUIDITY"
-                                ? allSplit.length === 0 ||
-                                  allSplit[lower_bound + idx] === "empty"
-                                  ? "-"
-                                  : numberFormatter(
-                                      allSplit?.[lower_bound + idx]?.amountA
-                                    ) +
-                                    "/" +
-                                    numberFormatter(
-                                      allSplit[lower_bound + idx]?.amountB
-                                    )
-                                : numberFormatter(
-                                    borrow?.currentLoanAmountParsed
-                                  )}
+                              {borrow.spendType == "LIQUIDITY" ? (
+                                allSplit.length === 0 ? (
+                                  <Skeleton
+                                    width="6rem"
+                                    height="1.2rem"
+                                    startColor="#101216"
+                                    endColor="#2B2F35"
+                                    borderRadius="6px"
+                                  />
+                                ) : allSplit[lower_bound + idx] === "empty" ? (
+                                  "-"
+                                ) : (
+                                  numberFormatter(
+                                    allSplit?.[lower_bound + idx]?.amountA
+                                  ) +
+                                  "/" +
+                                  numberFormatter(
+                                    allSplit[lower_bound + idx]?.amountB
+                                  )
+                                )
+                              ) : (
+                                numberFormatter(borrow?.currentLoanAmountParsed)
+                              )}
                             </Text>
                           </HStack>
                         </Box>

@@ -3,21 +3,24 @@ import {
   getProvider,
   metricsContractAddress,
 } from "../src/Blockchain/stark-constants";
-import { TextEncoder, TextDecoder } from 'text-encoding-utf-8';
+import { TextEncoder, TextDecoder } from "text-encoding-utf-8";
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 import supplyABI from "../src/Blockchain/abi_new/supply_abi.json";
-import { Contract,number,uint256 } from "starknet";
-import { tokenAddressMap,tokenDecimalsMap } from "../src/Blockchain/utils/addressServices";
+import { Contract, number, uint256 } from "starknet";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "../src/Blockchain/utils/addressServices";
 import { etherToWeiBN, parseAmount } from "../src/Blockchain/utils/utils";
 import stakingAbi from "../src/Blockchain/abi_new/staking_abi.json";
 describe("Get estimated values", () => {
   it("displays the estimated rTokens minted add collateral", async () => {
-    const expectedRTokensMinted=  "144.46";
+    const expectedRTokensMinted = "144.46";
     const rToken = "rUSDT";
     const collateralAmount = "144.67";
-    const provider =getProvider();
-    const supplyContract=new Contract(
+    const provider = getProvider();
+    const supplyContract = new Contract(
       supplyABI,
       tokenAddressMap[rToken],
       provider
@@ -37,8 +40,8 @@ describe("Get estimated values", () => {
 
     expect(data.toFixed(2)).toBe(expectedRTokensMinted);
   });
-  it("display the estimated supply amount while withdrawing",async()=>{
-    const expectedSupplyUnlocked=  "2050.9";
+  it("display the estimated supply amount while withdrawing", async () => {
+    const expectedSupplyUnlocked = "2050.9";
     const rToken = "rUSDT";
     const amount = "2052.1";
     const provider = getProvider();
@@ -60,9 +63,9 @@ describe("Get estimated values", () => {
       tokenDecimalsMap[rToken]
     );
     expect(data.toFixed(1)).toBe(expectedSupplyUnlocked);
-  })
-  it("display the estimated r tokens",async()=>{
-    const expectedrTokensUnlocked=  "144.672";
+  });
+  it("display the estimated r tokens", async () => {
+    const expectedrTokensUnlocked = "144.672";
     const rToken = "rUSDT";
     const amount = "144.67";
     const provider = getProvider();
@@ -84,5 +87,5 @@ describe("Get estimated values", () => {
       tokenDecimalsMap[rToken]
     );
     expect(data.toFixed(3)).toBe(expectedrTokensUnlocked);
-  })
+  });
 });

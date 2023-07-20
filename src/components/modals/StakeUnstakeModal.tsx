@@ -795,7 +795,7 @@ const StakeUnstakeModal = ({
       );
       // console.log("getEstrTokens ", data);
       setEstrTokens(data);
-      // console.log(data,"stake");
+      console.log(data, "estr token");
     };
     fetchestrTokens();
   }, [rTokenToWithdraw]);
