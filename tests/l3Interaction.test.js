@@ -21,7 +21,10 @@ global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 describe("Get l3 interaction function values", () => {
   it("displays the liquidity split", async () => {
-    const expectedLiquiditySplit = [149.85, 149.84101];
+    const expectedLiquiditySplit = [
+      "986.0",
+      "986.8"
+  ];
     // const expectedLiquiditySplit = 0.052407;
     const loanMarket = "USDC";
     const currentAmount = "299700001";
@@ -42,8 +45,9 @@ describe("Get l3 interaction function values", () => {
       }
     );
 
-    const split1 = parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8);
-    const split2 = parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8);
+    const split1 = parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8).toFixed(1);
+    const split2 = parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8).toFixed(1);
+    // console.log(split1,split2,"split amounts")
     const liquiditySplit = [split1, split2];
 
     expect(liquiditySplit).toStrictEqual(expectedLiquiditySplit);

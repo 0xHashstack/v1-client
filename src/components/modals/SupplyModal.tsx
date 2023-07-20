@@ -988,7 +988,7 @@ const SupplyModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
+                      placeholder={`0.01536 ${currentSelectedCoin}`}
                       color={`${
                         depositAmount > walletBalance
                           ? "#CF222E"

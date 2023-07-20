@@ -194,7 +194,7 @@ const BorrowDashboard = ({
   const [showEmptyNotification, setShowEmptyNotification] = useState(true);
   const avgs = useSelector(selectEffectiveApr);
   const avgsData: any = [];
-  useEffect(() => {
+useEffect(() => {
     let temp1: any = [];
     let temp2: any = [];
 
