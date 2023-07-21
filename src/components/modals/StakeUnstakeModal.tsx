@@ -535,7 +535,7 @@ const StakeUnstakeModal = ({
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     if (rtokenWalletBalance != 0) {
-      var balance=Number(getBalance(currentSelectedStakeCoin));
+      var balance = Number(getBalance(currentSelectedStakeCoin));
       var percentage = (newValue * 100) / balance;
     } else {
       var percentage = (newValue * 100) / walletBalance;
@@ -1186,7 +1186,8 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenAmount > 0 &&
                                 (rTokenAmount <=
-                                  Number(getBalance(currentSelectedStakeCoin)
+                                  Number(
+                                    getBalance(currentSelectedStakeCoin)
                                   ) ||
                                   rTokenAmount <= walletBalance)
                               ? "1px solid #1A7F37"
@@ -1214,9 +1215,9 @@ const StakeUnstakeModal = ({
                               color={`${
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount >
-                                    Number(getBalance(
-                                      currentSelectedStakeCoin
-                                    ))) ||
+                                    Number(
+                                      getBalance(currentSelectedStakeCoin)
+                                    )) ||
                                 (rtokenWalletBalance == 0 &&
                                   rTokenAmount > walletBalance)
                                   ? "#CF222E"

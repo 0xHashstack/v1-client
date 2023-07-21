@@ -2505,7 +2505,7 @@ const TradeModal = ({
                             />
                           </Box>
                         ) : (
-                          "" + currentLPTokenAmount
+                          numberFormatter(currentLPTokenAmount)
                         )}
                         {/* $ 10.91 */}
                       </Text>
@@ -2561,7 +2561,18 @@ const TradeModal = ({
                             />
                           </Box>
                           <Text>
-                            {currentSplit?.[0]?.toString() || (
+                            {/* {currentSplit?.[0]?.toString() || (
+                              <Skeleton
+                                width="2.3rem"
+                                height=".85rem"
+                                startColor="#2B2F35"
+                                endColor="#101216"
+                                borderRadius="6px"
+                              />
+                            )} */}
+                            {currentSplit?.[0].toString() ? (
+                              numberFormatter(currentSplit?.[0].toString())
+                            ) : (
                               <Skeleton
                                 width="2.3rem"
                                 height=".85rem"
@@ -2583,7 +2594,18 @@ const TradeModal = ({
                             />
                           </Box>
                           <Text>
-                            {currentSplit?.[1].toString() || (
+                            {/* {currentSplit?.[1].toString() || (
+                              <Skeleton
+                                width="2.3rem"
+                                height=".85rem"
+                                startColor="#2B2F35"
+                                endColor="#101216"
+                                borderRadius="6px"
+                              />
+                            )} */}
+                            {currentSplit?.[1].toString() ? (
+                              numberFormatter(currentSplit?.[1].toString())
+                            ) : (
                               <Skeleton
                                 width="2.3rem"
                                 height=".85rem"
