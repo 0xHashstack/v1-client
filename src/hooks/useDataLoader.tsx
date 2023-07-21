@@ -203,11 +203,14 @@ const useDataLoader = () => {
             ) {
               const responseTotal = val[10]?.value;
               const response =
-                val?.[j]?.status == "fulfilled" && val?.[j]?.value && val[j]
-                  ? val[j]?.value
+                val?.[j]?.status == "fulfilled" && 'value' in val[j]
+                  ? (val[j] as PromiseFulfilledResult<any>).value
                   : null;
-              const responseApr = val?.[j + 5]?.value;
+              const responseApr = 'value' in val[j + 5]
+                ? (val[j + 5] as PromiseFulfilledResult<any>).value
+                : null;
               console.log(val, response, "response data", responseApr);
+            
               // if (!response) {
               //   return;
               // }
