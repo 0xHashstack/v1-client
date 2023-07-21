@@ -226,11 +226,17 @@ export async function getJediEstimatedLiqALiqBfromLp(
     );
 
     return {
-      amountA: parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 18),
+      amountA: parseAmount(
+        uint256.uint256ToBN(res?.amountA).toString(),
+        tokenDecimalsMap[tokenA as Token]
+      ),
       tokenAAddress: res?.token0,
       tokenA: getTokenFromAddress(res?.token0)?.name as NativeToken,
 
-      amountB: parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 18),
+      amountB: parseAmount(
+        uint256.uint256ToBN(res?.amountB).toString(),
+        tokenDecimalsMap[tokenB as Token]
+      ),
       tokenBAddress: res?.token1,
       tokenB: getTokenFromAddress(res?.token1)?.name as NativeToken,
     };
