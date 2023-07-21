@@ -255,6 +255,7 @@ useEffect(() => {
 
   const getSplit = async () => {
     let temp: any = [];
+    const promises = [];
     for (let i = 0; i < Borrows?.length; i++) {
       if (Borrows[i].spendType === "LIQUIDITY") {
         console.log(
@@ -273,6 +274,7 @@ useEffect(() => {
           Borrows[i]?.currentLoanMarketAddress,
           Borrows[i]?.loanMarket
         );
+        promises.push(data);
         // console.log(
         //   getTokenFromAddress(processAddress(data?.tokenAAddress)),
         //   "all split amount - ",
@@ -285,24 +287,45 @@ useEffect(() => {
         // );
         console.log("split data", data, "loanId", Borrows[i]?.loanId);
 
-        if (data) {
-          temp.push({
-            ...data,
-            tokenA: getTokenFromAddress(processAddress(data?.tokenAAddress))
-              ?.name,
-            tokenB: getTokenFromAddress(processAddress(data?.tokenBAddress))
-              ?.name,
-            loanId: Borrows[i]?.loanId,
-          });
-        } else {
-          temp.push("empty");
-        }
+        // if (data) {
+        //   temp.push({
+        //     ...data,
+        //     tokenA: getTokenFromAddress(processAddress(data?.tokenAAddress))
+        //       ?.name,
+        //     tokenB: getTokenFromAddress(processAddress(data?.tokenBAddress))
+        //       ?.name,
+        //     loanId: Borrows[i]?.loanId,
+        //   });
+        // } else {
+        //   temp.push("empty");
+        // }
       } else {
-        temp.push("empty");
+        promises.push(Promise.resolve(null));
+        // temp.push("empty");
       }
     }
-    console.log("all splits", temp);
-    setAllSplit(temp);
+    Promise.allSettled([...promises]).then((val) => {
+      console.log("promises here ", val);
+      temp = val.map((data, i) => {
+        if (data && data?.status == "fulfilled" && data?.value) {
+          return {
+            ...data?.value,
+            tokenA: getTokenFromAddress(
+              processAddress(data?.value?.tokenAAddress)
+            )?.name,
+            tokenB: getTokenFromAddress(
+              processAddress(data?.value?.tokenBAddress)
+            )?.name,
+            loanId: Borrows[i]?.loanId,
+          };
+        } else {
+          return "empty";
+        }
+      });
+      // console.log("promises heree ", promises);
+      console.log("all splits", temp);
+      setAllSplit(temp);
+    });
     // const currentSplit = await getJediEstimatedLiqALiqBfromLp(
     //   liquidity,
     //   pairAddress

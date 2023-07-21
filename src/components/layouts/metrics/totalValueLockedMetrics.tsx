@@ -9,6 +9,10 @@ import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
 import { useSelector } from "react-redux";
 import {
   selectHourlyBTCData,
+  selectHourlyDAIData,
+  selectHourlyETHData,
+  selectHourlyUSDCData,
+  selectHourlyUSDTData,
   selectProtocolReserves,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
@@ -29,6 +33,10 @@ const TotalValueLockedMetrics = () => {
   ]);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   const btcData = useSelector(selectHourlyBTCData);
+  const ethData = useSelector(selectHourlyETHData);
+  const usdtData = useSelector(selectHourlyUSDTData);
+  const usdcData = useSelector(selectHourlyUSDCData);
+  const daiData = useSelector(selectHourlyDAIData);
   // console.log(btcData,"data tvl")
   useEffect(() => {
     // Fetch data based on selected option
@@ -43,6 +51,17 @@ const TotalValueLockedMetrics = () => {
 
     fetchData();
   }, [aprByMarket]);
+  const tvlamounts:any=[];
+  // console.log(btcData?.tvlAmounts,"data btc")
+  // console.log(ethData?.tvlAmounts,"data eth")
+  // console.log(usdtData?.tvlAmounts,"data usdt")
+  // console.log(usdcData?.tvlAmounts,"data usdc")
+  // console.log(daiData?.tvlAmounts,"data dai")
+  for(var i=0;i<btcData?.tvlAmounts?.length;i++){
+    var data=btcData?.tvlAmounts[i]+ethData?.tvlAmounts[i]+usdcData?.tvlAmounts[i]+usdtData?.tvlAmounts[i]+daiData?.tvlAmounts[i];
+    tvlamounts.push(data);
+  }
+  // console.log(tvlamounts,"amounts");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -57,7 +76,7 @@ const TotalValueLockedMetrics = () => {
           ? (newData = [
               {
                 name: "Total Value Locked",
-                data: btcData?.tvlAmounts,
+                data: tvlamounts,
               },
             ])
           : (newData = [

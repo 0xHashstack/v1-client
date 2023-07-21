@@ -724,7 +724,7 @@ const SupplyModal = ({
         <Modal
           isOpen={isOpen}
           onClose={() => {
-              dispatch(setTransactionStartedAndModalClosed(true));
+            dispatch(setTransactionStartedAndModalClosed(true));
             resetStates();
             onClose();
             // if (transactionStarted) dispatch(setToastTransactionStarted(true));
@@ -974,13 +974,7 @@ const SupplyModal = ({
                     min={0}
                     keepWithinRange={true}
                     onChange={handleChange}
-                    value={
-                      depositAmount
-                        ? depositAmount
-                        : walletBalance == 0
-                        ? 0
-                        : ""
-                    }
+                    value={depositAmount ? depositAmount : ""}
                     outline="none"
                     // precision={1}
                     step={parseFloat(`${depositAmount <= 99999 ? 0.1 : 0}`)}
