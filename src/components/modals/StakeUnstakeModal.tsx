@@ -78,7 +78,7 @@ import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { RToken } from "@/Blockchain/interfaces/interfaces";
+import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { BNtoNum } from "@/Blockchain/utils/utils";
@@ -535,7 +535,7 @@ const StakeUnstakeModal = ({
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     if (rtokenWalletBalance != 0) {
-      var balance=Number(getBalance(currentSelectedStakeCoin));
+      var balance = Number(getBalance(currentSelectedStakeCoin));
       var percentage = (newValue * 100) / balance;
     } else {
       var percentage = (newValue * 100) / walletBalance;
@@ -638,7 +638,7 @@ const StakeUnstakeModal = ({
   };
 
   const rcoins: RToken[] = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
-  const coinObj: any = coins.find((obj) => coin.name in obj);
+  const coinObj: any = coins?.find((obj) => coin?.name in obj);
   const rcoinValue = coinObj ? coinObj[coin.name] : "rUSDT";
   const [isSupplied, setIsSupplied] = useState(false);
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
@@ -773,7 +773,7 @@ const StakeUnstakeModal = ({
   useEffect(() => {
     setRToken(coin ? rcoinValue : "rBTC");
     setUnstakeRToken(coin ? rcoinValue : "rBTC");
-  }, [coin, coinObj, rcoinValue]);
+  }, [coin]);
 
   const router = useRouter();
   const { pathname } = router;
@@ -799,6 +799,13 @@ const StakeUnstakeModal = ({
     };
     fetchestrTokens();
   }, [rTokenToWithdraw]);
+  // useEffect(() => {
+  //   setRToken(
+  //     currentSelectedStakeCoin[0] != "r"
+  //       ? (("r" + currentSelectedStakeCoin) as RToken)
+  //       : currentSelectedStakeCoin
+  //   );
+  // }, [currentSelectedStakeCoin]);
 
   return (
     <Box>
@@ -1059,7 +1066,7 @@ const StakeUnstakeModal = ({
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {rcoins?.map((coin: any, index: number) => {
+                              {rcoins?.map((_coin: RToken, index: number) => {
                                 return (
                                   <Box
                                     key={index}
@@ -1070,21 +1077,22 @@ const StakeUnstakeModal = ({
                                     gap="1"
                                     pr="2"
                                     onClick={() => {
-                                      setCurrentSelectedStakeCoin(coin);
-                                      setRToken(coin.slice(1));
-                                      setAsset(
-                                        coin[0] == "r" ? coin?.slice(1) : coin
-                                      );
+                                      setCurrentSelectedStakeCoin(_coin);
+                                      setRToken(_coin);
+                                      setAsset(_coin?.slice(1) as NativeToken);
                                       setWalletBalance(
-                                        walletBalances[coin?.slice(1)]
+                                        walletBalances[_coin?.slice(1)]
                                           ?.statusBalanceOf === "success"
                                           ? Number(
                                               BNtoNum(
                                                 uint256.uint256ToBN(
-                                                  walletBalances[coin?.slice(1)]
-                                                    ?.dataBalanceOf?.balance
+                                                  walletBalances[
+                                                    _coin?.slice(1)
+                                                  ]?.dataBalanceOf?.balance
                                                 ),
-                                                tokenDecimalsMap[coin?.slice(1)]
+                                                tokenDecimalsMap[
+                                                  _coin?.slice(1)
+                                                ]
                                               )
                                             )
                                           : 0
@@ -1092,7 +1100,7 @@ const StakeUnstakeModal = ({
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
-                                    {coin === currentSelectedStakeCoin && (
+                                    {_coin === currentSelectedStakeCoin && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -1105,7 +1113,7 @@ const StakeUnstakeModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${
-                                        coin === currentSelectedStakeCoin
+                                        _coin === currentSelectedStakeCoin
                                           ? "1"
                                           : "5"
                                       }`}
@@ -1113,15 +1121,15 @@ const StakeUnstakeModal = ({
                                       gap="1"
                                       justifyContent="space-between"
                                       bg={`${
-                                        coin === currentSelectedStakeCoin
+                                        _coin === currentSelectedStakeCoin
                                           ? "#0C6AD9"
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
                                     >
                                       <Box display="flex">
-                                        <Box p="1">{getCoin(coin)}</Box>
-                                        <Text color="white">{coin}</Text>
+                                        <Box p="1">{getCoin(_coin)}</Box>
+                                        <Text color="white">{_coin}</Text>
                                       </Box>
                                       <Box
                                         fontSize="9px"
@@ -1132,7 +1140,8 @@ const StakeUnstakeModal = ({
                                         rToken Balance:{" "}
                                         {userDeposit && userDeposit.length > 0
                                           ? userDeposit?.find(
-                                              (item: any) => item.rToken == coin
+                                              (item: any) =>
+                                                item.rToken == _coin
                                             )?.rTokenFreeParsed
                                           : "loading..."}
                                       </Box>
@@ -1186,7 +1195,8 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenAmount > 0 &&
                                 (rTokenAmount <=
-                                  Number(getBalance(currentSelectedStakeCoin)
+                                  Number(
+                                    getBalance(currentSelectedStakeCoin)
                                   ) ||
                                   rTokenAmount <= walletBalance)
                               ? "1px solid #1A7F37"
@@ -1214,9 +1224,9 @@ const StakeUnstakeModal = ({
                               color={`${
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount >
-                                    Number(getBalance(
-                                      currentSelectedStakeCoin
-                                    ))) ||
+                                    Number(
+                                      getBalance(currentSelectedStakeCoin)
+                                    )) ||
                                 (rtokenWalletBalance == 0 &&
                                   rTokenAmount > walletBalance)
                                   ? "#CF222E"
@@ -1966,7 +1976,7 @@ const StakeUnstakeModal = ({
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {rcoins?.map((coin: any, index: number) => {
+                              {rcoins?.map((_coin: RToken, index: number) => {
                                 return (
                                   <Box
                                     key={index}
@@ -1977,12 +1987,13 @@ const StakeUnstakeModal = ({
                                     gap="1"
                                     pr="2"
                                     onClick={() => {
-                                      setcurrentSelectedUnstakeCoin(coin);
-                                      setRToken(coin);
+                                      setcurrentSelectedUnstakeCoin(_coin);
+                                      setUnstakeRToken(_coin);
+                                      // setRToken(_coin);
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
-                                    {coin === currentSelectedUnstakeCoin && (
+                                    {_coin === currentSelectedUnstakeCoin && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -1995,7 +2006,7 @@ const StakeUnstakeModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${
-                                        coin === currentSelectedUnstakeCoin
+                                        _coin === currentSelectedUnstakeCoin
                                           ? "1"
                                           : "5"
                                       }`}
@@ -2003,15 +2014,15 @@ const StakeUnstakeModal = ({
                                       gap="1"
                                       justifyContent="space-between"
                                       bg={`${
-                                        coin === currentSelectedUnstakeCoin
+                                        _coin === currentSelectedUnstakeCoin
                                           ? "#0C6AD9"
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
                                     >
                                       <Box display="flex">
-                                        <Box p="1">{getCoin(coin)}</Box>
-                                        <Text color="white">{coin}</Text>
+                                        <Box p="1">{getCoin(_coin)}</Box>
+                                        <Text color="white">{_coin}</Text>
                                       </Box>
                                       <Box
                                         fontSize="9px"
@@ -2022,7 +2033,8 @@ const StakeUnstakeModal = ({
                                         Staking shares:{" "}
                                         {userDeposit && userDeposit.length > 0
                                           ? userDeposit?.find(
-                                              (item: any) => item.rToken == coin
+                                              (item: any) =>
+                                                item.rToken == _coin
                                             )?.rTokenStakedParsed
                                           : "loading..."}
                                       </Box>

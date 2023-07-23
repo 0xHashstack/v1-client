@@ -193,112 +193,117 @@ const useDataLoader = () => {
         ];
         Promise.allSettled([...promises]).then((val) => {
           console.log("backend data ", val);
+          val.map((response, idx) => {
+            const res = response?.status != "rejected" ? response?.value : "0";
+          });
           for (var j = 0; j < 5; j++) {
             // console.log(j,"for loop")
-
-            if (
-              val[j]?.status == "fulfilled" &&
-              val[j + 5]?.status == "fulfilled" &&
-              val[10]?.status == "fulfilled"
-            ) {
-              const responseTotal = val[10]?.value;
-              const response =
-                val?.[j]?.status == "fulfilled" && val?.[j]?.value && val[j]
-                  ? val[j]?.value
-                  : null;
-              const responseApr = val?.[j + 5]?.value;
-              console.log(val, response, "response data", responseApr);
-              // if (!response) {
-              //   return;
-              // }
-              // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
-              if (response && responseApr) {
-                const amounts: any = [];
-                const borrowAmounts: any = [];
-                const dates: any = [];
-                const supplyRates: any = [];
-                const borrowRates: any = [];
-                const tvlAmounts: any = [];
-                const supplyCounts: any = [];
-                const borrowCounts: any = [];
-                const utilRates: any = [];
-                const rTokenExchangeRates: any = [];
-                const dTokenExchangeRates: any = [];
-                const totalTransactions: any = [];
-                const totalAccounts: any = [];
-                const aprs: any = [];
-                const apys: any = [];
-                const totalUrm: any = [];
-                for (var i = 0; i < response?.length; i++) {
-                  // console.log(i,"inside loop")
-                  const token = response?.[i].tokenName;
-                  const supplyAmount: number =
-                    Number(response?.[i].supplyAmount) /
-                    Math.pow(10, tokenDecimalsMap[token]);
-                  const borrowAmount: number =
-                    Number(response?.[i].borrowAmount) /
-                    Math.pow(10, tokenDecimalsMap[token]);
-                  const tvlAmount: number =
-                    Number(response?.[i].tvlAmount) / Math.pow(10, 8);
-                  // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
-                  // console.log(response?.[i].tokenName)
-                  // const supplyAmount1=etherToWeiBN(amount,token)
-                  // console.log(supplyAmount1,"aamount")
-                  amounts?.push(supplyAmount);
-                  borrowAmounts?.push(borrowAmount);
-                  tvlAmounts?.push(tvlAmount);
-                  // const dateObj = new Date(response?.data[i].Datetime)
-                  dates?.push(response?.[i].Datetime);
-                  supplyRates?.push(response?.[i].supplyRate);
-                  borrowRates?.push(response?.[i].borrowRate);
-                  supplyCounts?.push(response?.[i].supplyCount);
-                  borrowCounts?.push(response?.[i].borrowCount);
-                  utilRates?.push(response?.[i].utilRate);
-                  rTokenExchangeRates?.push(response?.[i].rTokenExchangeRate);
-                  dTokenExchangeRates?.push(response?.[i].dTokenExchangeRate);
-                  totalTransactions?.push(response?.[i].totalTransactions);
-                  totalAccounts?.push(response?.[i].totalAccounts);
-                  aprs?.push(responseApr?.[i].APR);
-                  apys?.push(responseApr?.[i].APY);
-                  totalUrm?.push(responseTotal?.[i].totalPlatformURM);
-                }
-                // console.log(dates,"Dates")
-                const data = {
-                  dates: dates,
-                  supplyAmounts: amounts,
-                  borrowAmounts: borrowAmounts,
-                  tvlAmounts: tvlAmounts,
-                  supplyRates: supplyRates,
-                  borrowRates: borrowRates,
-                  supplyCounts: supplyCounts,
-                  borrowCounts: borrowCounts,
-                  utilRates: utilRates,
-                  rTokenExchangeRates: rTokenExchangeRates,
-                  dTokenExchangeRates: dTokenExchangeRates,
-                  totalTransactions: totalTransactions,
-                  totalAccounts: totalAccounts,
-                  aprs: aprs,
-                  apys: apys,
-                  totalUrm: totalUrm,
-                };
-                // console.log(data,"data in data loader")
-                // console.log(btcData,"Data gone")
-                if (j == 0) {
-                  dispatch(setHourlyDAIData(data));
-                } else if (j == 1) {
-                  dispatch(setHourlyBTCData(data));
-                } else if (j == 2) {
-                  dispatch(setHourlyUSDTData(data));
-                } else if (j == 3) {
-                  dispatch(setHourlyUSDCData(data));
-                } else if (j == 4) {
-                  dispatch(setHourlyETHData(data));
-                }
+            const responseA = val?.[j] ? val?.[j] : null;
+            const responseB = val?.[j + 5] ? val?.[j + 5] : null;
+            const responseC = val?.[10] ? val?.[10] : null;
+            // if (
+            //   val[j]?.status != "rejected" &&
+            //   val[j + 5]?.status != "rejected" &&
+            //   val[10]?.status != "rejected"
+            // ) {
+            const responseTotal =
+              responseC?.status != "rejected" ? responseC?.value : null;
+            const response =
+              responseA?.status != "rejected" ? responseA?.value : null;
+            const responseApr =
+              responseB?.status != "rejected" ? responseB?.value : null;
+            // console.log(val, response, "response data", responseApr);
+            // if (!response) {
+            //   return;
+            // }
+            // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
+            if (response && responseApr && responseTotal) {
+              const amounts: any = [];
+              const borrowAmounts: any = [];
+              const dates: any = [];
+              const supplyRates: any = [];
+              const borrowRates: any = [];
+              const tvlAmounts: any = [];
+              const supplyCounts: any = [];
+              const borrowCounts: any = [];
+              const utilRates: any = [];
+              const rTokenExchangeRates: any = [];
+              const dTokenExchangeRates: any = [];
+              const totalTransactions: any = [];
+              const totalAccounts: any = [];
+              const aprs: any = [];
+              const apys: any = [];
+              const totalUrm: any = [];
+              for (var i = 0; i < response?.length; i++) {
+                // console.log(i,"inside loop")
+                const token = response?.[i].tokenName;
+                const supplyAmount: number =
+                  Number(response?.[i].supplyAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
+                const borrowAmount: number =
+                  Number(response?.[i].borrowAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
+                const tvlAmount: number =
+                  Number(response?.[i].tvlAmount) / Math.pow(10, 8);
+                // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
+                // console.log(response?.[i].tokenName)
+                // const supplyAmount1=etherToWeiBN(amount,token)
+                // console.log(supplyAmount1,"aamount")
+                amounts?.push(supplyAmount);
+                borrowAmounts?.push(borrowAmount);
+                tvlAmounts?.push(tvlAmount);
+                // const dateObj = new Date(response?.data[i].Datetime)
+                dates?.push(response?.[i].Datetime);
+                supplyRates?.push(response?.[i].supplyRate);
+                borrowRates?.push(response?.[i].borrowRate);
+                supplyCounts?.push(response?.[i].supplyCount);
+                borrowCounts?.push(response?.[i].borrowCount);
+                utilRates?.push(response?.[i].utilRate);
+                rTokenExchangeRates?.push(response?.[i].rTokenExchangeRate);
+                dTokenExchangeRates?.push(response?.[i].dTokenExchangeRate);
+                totalTransactions?.push(response?.[i].totalTransactions);
+                totalAccounts?.push(response?.[i].totalAccounts);
+                aprs?.push(responseApr?.[i].APR);
+                apys?.push(responseApr?.[i].APY);
+                totalUrm?.push(responseTotal?.[i].totalPlatformURM);
+              }
+              // console.log(dates,"Dates")
+              const data = {
+                dates: dates,
+                supplyAmounts: amounts,
+                borrowAmounts: borrowAmounts,
+                tvlAmounts: tvlAmounts,
+                supplyRates: supplyRates,
+                borrowRates: borrowRates,
+                supplyCounts: supplyCounts,
+                borrowCounts: borrowCounts,
+                utilRates: utilRates,
+                rTokenExchangeRates: rTokenExchangeRates,
+                dTokenExchangeRates: dTokenExchangeRates,
+                totalTransactions: totalTransactions,
+                totalAccounts: totalAccounts,
+                aprs: aprs,
+                apys: apys,
+                totalUrm: totalUrm,
+              };
+              // console.log(data,"data in data loader")
+              // console.log(btcData,"Data gone")
+              if (j == 0) {
+                dispatch(setHourlyDAIData(data));
+              } else if (j == 1) {
+                dispatch(setHourlyBTCData(data));
+              } else if (j == 2) {
+                dispatch(setHourlyUSDTData(data));
+              } else if (j == 3) {
+                dispatch(setHourlyUSDCData(data));
+              } else if (j == 4) {
+                dispatch(setHourlyETHData(data));
               }
             }
-            const count = getTransactionCount();
-            dispatch(setHourlyDataCount(count));
           }
+          const count = getTransactionCount();
+          dispatch(setHourlyDataCount(count));
+          // }
         });
         // const count = getTransactionCount();
         // dispatch(setHourlyDataCount(count));

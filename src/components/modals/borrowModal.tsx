@@ -138,7 +138,7 @@ const BorrowModal = ({
               tokenDecimalsMap[coin?.name]
             )
           )
-        : 24
+        : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [coin, walletBalances[coin?.name]?.statusBalanceOf]);
