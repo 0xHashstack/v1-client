@@ -128,16 +128,16 @@ const YourSupplyModal = ({
     DAI: any;
   }
   const walletBalances: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
-    rBTC: useBalanceOf(tokenAddressMap["rBTC"] || ""),
-    rUSDT: useBalanceOf(tokenAddressMap["rUSDT"] || ""),
-    rUSDC: useBalanceOf(tokenAddressMap["rUSDC"] || ""),
-    rETH: useBalanceOf(tokenAddressMap["rETH"] || ""),
-    rDAI: useBalanceOf(tokenAddressMap["rDAI"] || ""),
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    rBTC: useBalanceOf(tokenAddressMap["rBTC"]),
+    rUSDT: useBalanceOf(tokenAddressMap["rUSDT"]),
+    rUSDC: useBalanceOf(tokenAddressMap["rUSDC"]),
+    rETH: useBalanceOf(tokenAddressMap["rETH"]),
+    rDAI: useBalanceOf(tokenAddressMap["rDAI"]),
   };
   const userDeposit = useSelector(selectUserDeposits);
   // console.log(userDeposit,"user deposit your supply")

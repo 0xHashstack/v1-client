@@ -189,16 +189,16 @@ const TradeModal = ({
   }
 
   const walletBalances: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
-    rUSDT: useBalanceOf(tokenAddressMap["rUSDT"] || ""),
-    rUSDC: useBalanceOf(tokenAddressMap["rUSDC"] || ""),
-    rBTC: useBalanceOf(tokenAddressMap["rBTC"] || ""),
-    rETH: useBalanceOf(tokenAddressMap["rETH"] || ""),
-    rDAI: useBalanceOf(tokenAddressMap["rDAI"] || ""),
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    rUSDT: useBalanceOf(tokenAddressMap["rUSDT"]),
+    rUSDC: useBalanceOf(tokenAddressMap["rUSDC"]),
+    rBTC: useBalanceOf(tokenAddressMap["rBTC"]),
+    rETH: useBalanceOf(tokenAddressMap["rETH"]),
+    rDAI: useBalanceOf(tokenAddressMap["rDAI"]),
   };
   const [walletBalance, setwalletBalance] = useState<any>(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
