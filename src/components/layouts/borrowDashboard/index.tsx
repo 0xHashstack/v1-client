@@ -194,7 +194,7 @@ const BorrowDashboard = ({
   const [showEmptyNotification, setShowEmptyNotification] = useState(true);
   const avgs = useSelector(selectEffectiveApr);
   const avgsData: any = [];
-useEffect(() => {
+  useEffect(() => {
     let temp1: any = [];
     let temp2: any = [];
 
@@ -305,7 +305,7 @@ useEffect(() => {
       }
     }
     Promise.allSettled([...promises]).then((val) => {
-      console.log("promises here ", val);
+      // console.log("promises here ", val);
       temp = val.map((data, i) => {
         if (data && data?.status == "fulfilled" && data?.value) {
           return {

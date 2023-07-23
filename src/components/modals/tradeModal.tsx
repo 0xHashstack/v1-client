@@ -393,7 +393,7 @@ const TradeModal = ({
   useEffect(() => {
     try {
       fetchProtocolStats();
-      console.log("protocolStats", protocolStats);
+      // console.log("protocolStats", protocolStats);
     } catch (err: any) {
       console.log("borrow modal : error fetching protocolStats");
     }
@@ -403,14 +403,14 @@ const TradeModal = ({
       ?.availableReserves
   );
   useEffect(() => {
-    console.log("currentAvailableReserve", currentAvailableReserves);
+    // console.log("currentAvailableReserve", currentAvailableReserves);
   }, [currentAvailableReserves]);
 
   useEffect(() => {
     setCurrentAvailableReserves(
       protocolStats[coins.indexOf(currentBorrowCoin)]?.availableReserves
     );
-    console.log(coins.indexOf(currentBorrowCoin));
+    // console.log(coins.indexOf(currentBorrowCoin));
   }, [protocolStats, currentBorrowCoin]);
 
   const [radioValue, setRadioValue] = useState("1");
@@ -421,7 +421,7 @@ const TradeModal = ({
     } else if (radioValue === "2") {
       setMethod("SWAP");
     }
-    console.log("radio value", radioValue, method);
+    // console.log("radio value", radioValue, method);
   }, [radioValue]);
   const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
 
@@ -732,24 +732,24 @@ const TradeModal = ({
       //   currentBorrowCoin,
       //   inputBorrowAmount
       // );
-      console.log("got parsed usdt borrow", parsedBorrowAmount);
+      // console.log("got parsed usdt borrow", parsedBorrowAmount);
       setInputBorrowAmountUSD(parsedBorrowAmount);
-      console.log(
-        "effective apr values : ",
-        "loan_usd_value",
-        parsedBorrowAmount,
-        "loan_apr",
-        protocolStats?.find((stat: any) => stat?.token === currentBorrowCoin)
-          ?.borrowRate,
-        "collateral_usd_value",
-        inputCollateralAmountUSD,
-        "collateral_apr",
-        protocolStats?.find(
-          (stat: any) => stat?.token === currentCollateralCoin
-        )?.supplyRate,
-        "loan_usd_value",
-        parsedBorrowAmount
-      );
+      // console.log(
+      //   "effective apr values : ",
+      //   "loan_usd_value",
+      //   parsedBorrowAmount,
+      //   "loan_apr",
+      //   protocolStats?.find((stat: any) => stat?.token === currentBorrowCoin)
+      //     ?.borrowRate,
+      //   "collateral_usd_value",
+      //   inputCollateralAmountUSD,
+      //   "collateral_apr",
+      //   protocolStats?.find(
+      //     (stat: any) => stat?.token === currentCollateralCoin
+      //   )?.supplyRate,
+      //   "loan_usd_value",
+      //   parsedBorrowAmount
+      // );
     } catch (error) {
       console.log(error);
     }
@@ -780,15 +780,15 @@ const TradeModal = ({
         );
         setInputCollateralAmountUSD(parsedBorrowAmount);
       } else if (tokenTypeSelected === "rToken") {
-        console.log(
-          "rToken parsing",
-          rToken,
-          rTokenAmount,
-          oraclePrices.find((curr: any) => curr.name === rToken.slice(1))
-            ?.price,
-          protocolStats.find((curr: any) => curr.token === rToken.slice(1))
-            ?.exchangeRateRtokenToUnderlying
-        );
+        // console.log(
+        //   "rToken parsing",
+        //   rToken,
+        //   rTokenAmount,
+        //   oraclePrices.find((curr: any) => curr.name === rToken.slice(1))
+        //     ?.price,
+        //   protocolStats.find((curr: any) => curr.token === rToken.slice(1))
+        //     ?.exchangeRateRtokenToUnderlying
+        // );
 
         const parsedBorrowAmount =
           oraclePrices.find((curr: any) => curr.name === rToken.slice(1))
@@ -820,14 +820,14 @@ const TradeModal = ({
   >();
 
   useEffect(() => {
-    console.log(
-      "toMarketSplitConsole",
-      currentBorrowCoin,
-      inputBorrowAmount,
-      toMarketLiqA,
-      toMarketLiqB
-      // borrow
-    );
+    // console.log(
+    //   "toMarketSplitConsole",
+    //   currentBorrowCoin,
+    //   inputBorrowAmount,
+    //   toMarketLiqA,
+    //   toMarketLiqB
+    //   // borrow
+    // );
     setCurrentSplit(null);
     fetchLiquiditySplit();
   }, [inputBorrowAmount, currentBorrowCoin, toMarketLiqA, toMarketLiqB]);

@@ -693,9 +693,9 @@ const StakeUnstakeModal = ({
         ?.rTokenFreeParsed
     );
   }, [currentSelectedStakeCoin, userDeposit]);
-  useEffect(() => {
-    console.log("stake userDeposit", userDeposit);
-  }, [userDeposit]);
+  // useEffect(() => {
+  //   console.log("stake userDeposit", userDeposit);
+  // }, [userDeposit]);
   useEffect(() => {
     setUnstakeWalletBalance(
       userDeposit?.find(
@@ -795,7 +795,7 @@ const StakeUnstakeModal = ({
       );
       // console.log("getEstrTokens ", data);
       setEstrTokens(data);
-      console.log(data, "estr token");
+      // console.log(data, "estr token");
     };
     fetchestrTokens();
   }, [rTokenToWithdraw]);

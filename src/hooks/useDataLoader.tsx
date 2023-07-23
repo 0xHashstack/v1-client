@@ -141,7 +141,7 @@ const useDataLoader = () => {
   const [btcData, setBtcData] = useState<any>();
 
   const avgsData: any = [];
-  console.log("address", address);
+  // console.log("address", address);
   // useEffect(() => {
   //   console.log("switched to market");
   // }, []);
@@ -648,7 +648,7 @@ const useDataLoader = () => {
         }
       };
 
-      console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+      // console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
       if (userInfoCount < transactionRefresh) {
         fetchUserSupply();
       }

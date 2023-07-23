@@ -461,7 +461,7 @@ const BorrowModal = ({
     setCurrentAvailableReserves(
       protocolStats[coinAlign?.indexOf(currentBorrowCoin)]?.availableReserves
     );
-    console.log(coinAlign?.indexOf(currentBorrowCoin));
+    // console.log(coinAlign?.indexOf(currentBorrowCoin));
   }, [protocolStats, currentBorrowCoin]);
 
   const handleBorrow = async () => {
@@ -2014,15 +2014,17 @@ const BorrowModal = ({
                       <Text>
                         {/* 5.56% */}
                         {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                        {((inputBorrowAmountUSD *
-                          protocolStats?.find(
-                            (stat: any) => stat?.token === currentBorrowCoin
-                          )?.borrowRate -
-                          inputCollateralAmountUSD *
+                        {(
+                          (inputBorrowAmountUSD *
                             protocolStats?.find(
-                              (stat: any) => stat?.token === rToken.slice(1)
-                            )?.supplyRate) /
-                          inputBorrowAmountUSD).toFixed(2)}
+                              (stat: any) => stat?.token === currentBorrowCoin
+                            )?.borrowRate -
+                            inputCollateralAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) => stat?.token === rToken.slice(1)
+                              )?.supplyRate) /
+                          inputBorrowAmountUSD
+                        ).toFixed(2)}
                         {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin

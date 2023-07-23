@@ -151,9 +151,9 @@ const LiquidityProvisionModal = ({
   // const avgs=useSelector(selectAprAndHealthFactor)
   const avgs = useSelector(selectHealthFactor);
 
-  useEffect(() => {
-    console.log("liquidity user loans", userLoans);
-  }, [userLoans]);
+  // useEffect(() => {
+  //   console.log("liquidity user loans", userLoans);
+  // }, [userLoans]);
   // console.log(userLoans)
   // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
   useEffect(() => {
@@ -184,14 +184,14 @@ const LiquidityProvisionModal = ({
           currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
       )?.currentLoanMarket
     );
-    console.log(
-      "loanAmount",
-      currentLoanAmount,
-      ", loanMarket",
-      currentLoanMarket,
-      " currentBorrowId",
-      currentBorrowId
-    );
+    // console.log(
+    //   "loanAmount",
+    //   currentLoanAmount,
+    //   ", loanMarket",
+    //   currentLoanMarket,
+    //   " currentBorrowId",
+    //   currentBorrowId
+    // );
   }, [currentBorrowId]);
   useEffect(() => {
     setToMarketA(currentPool?.split("/")[0]);
@@ -531,14 +531,14 @@ const LiquidityProvisionModal = ({
   }, [currentBorrowMarketCoin]);
 
   useEffect(() => {
-    console.log(
-      "toMarketSplitConsole",
-      currentLoanMarket,
-      currentLoanAmount,
-      toMarketA,
-      toMarketB
-      // borrow
-    );
+    // console.log(
+    //   "toMarketSplitConsole",
+    //   currentLoanMarket,
+    //   currentLoanAmount,
+    //   toMarketA,
+    //   toMarketB
+    //   // borrow
+    // );
     setCurrentSplit(null);
     fetchLiquiditySplit();
   }, [toMarketA, currentLoanAmount, currentLoanMarket, toMarketB]);
