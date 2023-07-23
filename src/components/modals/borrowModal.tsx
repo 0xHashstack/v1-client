@@ -115,11 +115,11 @@ const BorrowModal = ({
     DAI: any;
   }
   const walletBalances: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
   };
   mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
     debug: true,
