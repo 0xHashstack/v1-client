@@ -285,6 +285,7 @@ useEffect(() => {
         //   " res -",
         //   data
         // );
+        console.log("split data", data, "loanId", Borrows[i]?.loanId);
 
         // if (data) {
         //   temp.push({

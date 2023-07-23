@@ -296,7 +296,7 @@ const SupplyDashboard = ({
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
   useEffect(() => {
-    if (userDeposits) {
+    if (userDeposits && reduxProtocolStats) {
       console.log(supplies, "loading - ", userDeposits);
       setLoading(false);
     }
