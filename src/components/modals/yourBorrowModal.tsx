@@ -134,6 +134,8 @@ const YourBorrowModal = ({
   collateralBalance,
   setCollateralBalance,
   currentLoanAmount,
+  setCurrentLoanAmount,
+  setCurrentLoanMarket,
   currentLoanMarket,
   borrowIds,
   buttonText,
@@ -145,6 +147,7 @@ const YourBorrowModal = ({
   setSpendType,
   ...restProps
 }: any) => {
+  // useEffect(() => {}, []);
   // console.log(currentBorrowId1);
   // console.log(currentID)
   // console.log(borrowIds);
@@ -174,6 +177,11 @@ const YourBorrowModal = ({
         currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
+    setCurrentLoanMarket(result?.currentLoanMarket);
+    setCurrentLoanAmount(result?.currentLoanAmount);
+    setCurrentPool("Select a pool");
+    setCurrentDapp("Select a dapp");
+    setCurrentPoolCoin("Select a pool");
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
@@ -235,7 +243,7 @@ const YourBorrowModal = ({
     statusAddCollateral,
 
     dataAddCollateralRToken,
-    errorAddCollateralRToken, 
+    errorAddCollateralRToken,
     resetAddCollateralRToken,
     writeAddCollateralRToken,
     writeAsyncAddCollateralRToken,
@@ -437,7 +445,7 @@ const YourBorrowModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-      console.log(revert);
+      // console.log(revert);
       dispatch(setTransactionStatus("success"));
     } catch (err) {
       console.log(err);
@@ -562,9 +570,7 @@ const YourBorrowModal = ({
         item?.loanId ==
         currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
-    setLoan(
-      result
-    )
+    setLoan(result);
   }, [currentBorrowId1]);
   // console.log(userLoans);
 
@@ -583,7 +589,7 @@ const YourBorrowModal = ({
     );
     setRToken(result?.collateralMarket);
 
-    console.log(rToken);
+    // console.log(rToken);
   }, [currentBorrowId2, currentBorrowMarketCoin2]);
 
   const getCoin = (CoinName: string) => {
@@ -801,7 +807,7 @@ const YourBorrowModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-      console.log(zeroRepay);
+      // console.log(zeroRepay);
       dispatch(setTransactionStatus("success"));
       console.log("zero repay success");
     } catch (err: any) {
@@ -2289,7 +2295,7 @@ const YourBorrowModal = ({
       // dispatch((newValue));
     }
   };
-  console.log(typeof walletBalance2, "balance borrow");
+  // console.log(typeof walletBalance2, "balance borrow");
 
   const handleCollateralChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
@@ -2419,7 +2425,7 @@ const YourBorrowModal = ({
 
   useEffect(() => {
     setToMarket(currentPoolCoin);
-    console.log(toMarket);
+    // console.log(toMarket);
   }, [currentPoolCoin]);
 
   useEffect(() => {
@@ -2427,9 +2433,9 @@ const YourBorrowModal = ({
     setSliderValue2(0);
   }, [currentTokenSelected]);
 
-  useEffect(() => {
-    console.log("spendType", spendType);
-  }, [spendType]);
+  // useEffect(() => {
+  //   console.log("spendType", spendType);
+  // }, [spendType]);
 
   const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
     Number | undefined | null
@@ -2439,22 +2445,23 @@ const YourBorrowModal = ({
   >();
 
   useEffect(() => {
-    console.log(
-      "toMarketSplitConsole",
-      currentLoanMarket,
-      currentLoanAmount,
-      toMarketA,
-      toMarketB
-      // borrow
-    );
+    // console.log(
+    //   "toMarketSplitConsole",
+    //   currentLoanMarket,
+    //   currentLoanAmount,
+    //   toMarketA,
+    //   toMarketB
+    //   // borrow
+    // );
     setCurrentSplit(null);
     fetchLiquiditySplit();
-  }, [toMarketA, currentBorrowId1, toMarketB]);
+  }, [toMarketA, currentBorrowId1, toMarketB, currentPool]);
 
   useEffect(() => {
+    console.log("useeffect called fetch");
     setCurrentLPTokenAmount(null);
     fetchLPAmount();
-  }, [toMarketA, currentBorrowId1, toMarketB]);
+  }, [toMarketA, currentBorrowId1, toMarketB, currentPool]);
 
   const fetchLiquiditySplit = async () => {
     if (
@@ -3461,7 +3468,9 @@ const YourBorrowModal = ({
                                 ""
                               )}
 
-                              <Text mt="0.10rem" color="white">{currentDapp}</Text>
+                              <Text mt="0.10rem" color="white">
+                                {currentDapp}
+                              </Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (
@@ -3523,7 +3532,9 @@ const YourBorrowModal = ({
                                         borderRadius="md"
                                       >
                                         <Box p="1">{getCoin(dapp.name)}</Box>
-                                        <Text pt="1" color="white">{dapp.name}</Text>
+                                        <Text pt="1" color="white">
+                                          {dapp.name}
+                                        </Text>
                                       </Box>
                                       {dapp.status === "disable" && (
                                         <Text

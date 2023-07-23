@@ -15,7 +15,7 @@ import { etherToWeiBN, parseAmount } from "../utils/utils";
 import { useState } from "react";
 import { RToken } from "../interfaces/interfaces";
 export async function getrTokensMinted(rToken: any, amount: any) {
-  console.log("getRtokensminted", rToken, amount);
+  // console.log("getRtokensminted", rToken, amount);
 
   try {
     const provider = getProvider();
@@ -81,7 +81,6 @@ export async function getSupplyunlocked(rToken: any, amount: any) {
     console.log(err, "err in getSupplyUnlocked");
   }
 }
-
 export async function getEstrTokens(rToken: any, amount: any) {
   try {
     const provider = getProvider();

@@ -644,10 +644,10 @@ const SupplyModal = ({
     // check if newValue is float, if it is then round off to 6 decimals
 
     var percentage = (newValue * 100) / walletBalance;
-    if (walletBalance == 0) {
-      setDepositAmount(0);
-      setinputAmount(0);
-    }
+    // if (walletBalance == 0) {
+    //   setDepositAmount(0);
+    //   setinputAmount(0);
+    // }
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
@@ -724,7 +724,7 @@ const SupplyModal = ({
         <Modal
           isOpen={isOpen}
           onClose={() => {
-              dispatch(setTransactionStartedAndModalClosed(true));
+            dispatch(setTransactionStartedAndModalClosed(true));
             resetStates();
             onClose();
             // if (transactionStarted) dispatch(setToastTransactionStarted(true));
@@ -974,13 +974,7 @@ const SupplyModal = ({
                     min={0}
                     keepWithinRange={true}
                     onChange={handleChange}
-                    value={
-                      depositAmount
-                        ? depositAmount
-                        : walletBalance == 0
-                        ? 0
-                        : ""
-                    }
+                    value={depositAmount ? depositAmount : ""}
                     outline="none"
                     // precision={1}
                     step={parseFloat(`${depositAmount <= 99999 ? 0.1 : 0}`)}
@@ -988,7 +982,7 @@ const SupplyModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
+                      placeholder={`0.01536 ${currentSelectedCoin}`}
                       color={`${
                         depositAmount > walletBalance
                           ? "#CF222E"

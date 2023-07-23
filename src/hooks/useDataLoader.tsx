@@ -141,7 +141,7 @@ const useDataLoader = () => {
   const [btcData, setBtcData] = useState<any>();
 
   const avgsData: any = [];
-  console.log("address", address);
+  // console.log("address", address);
   // useEffect(() => {
   //   console.log("switched to market");
   // }, []);
@@ -179,31 +179,45 @@ const useDataLoader = () => {
         //   return;
         // }
         const promises = [
-          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/DAI`),
-          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/BTC`),
-          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDT`),
-          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDC`),
-          await OffchainAPI.httpGet(`/api/metrics/tvl/daily/ETH`),
-          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/DAI`),
-          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/BTC`),
-          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDT`),
-          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDC`),
-          await OffchainAPI.httpGet(`/api/metrics/apm_market/daily/ETH`),
-          await OffchainAPI.httpGet(`/api/metrics/urm_platform/daily`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/daily/DAI`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/daily/BTC`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDT`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDC`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/daily/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/daily/DAI`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/daily/BTC`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDT`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDC`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/daily/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/urm_platform/daily`),
         ];
         Promise.allSettled([...promises]).then((val) => {
-          console.log("backend data ", promises);
+          console.log("backend data ", val);
+          val.map((response, idx) => {
+            const res = response?.status != "rejected" ? response?.value : "0";
+          });
           for (var j = 0; j < 5; j++) {
             // console.log(j,"for loop")
-            const response = promises[j];
-            const responseApr = promises[j + 5];
-            const responseTotal = promises[10];
-            // console.log(response, "response data");
+            const responseA = val?.[j] ? val?.[j] : null;
+            const responseB = val?.[j + 5] ? val?.[j + 5] : null;
+            const responseC = val?.[10] ? val?.[10] : null;
+            // if (
+            //   val[j]?.status != "rejected" &&
+            //   val[j + 5]?.status != "rejected" &&
+            //   val[10]?.status != "rejected"
+            // ) {
+            const responseTotal =
+              responseC?.status != "rejected" ? responseC?.value : null;
+            const response =
+              responseA?.status != "rejected" ? responseA?.value : null;
+            const responseApr =
+              responseB?.status != "rejected" ? responseB?.value : null;
+            // console.log(val, response, "response data", responseApr);
             // if (!response) {
             //   return;
             // }
             // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
-            if (response && responseApr) {
+            if (response && responseApr && responseTotal) {
               const amounts: any = [];
               const borrowAmounts: any = [];
               const dates: any = [];
@@ -289,6 +303,7 @@ const useDataLoader = () => {
           }
           const count = getTransactionCount();
           dispatch(setHourlyDataCount(count));
+          // }
         });
         // const count = getTransactionCount();
         // dispatch(setHourlyDataCount(count));
@@ -633,7 +648,7 @@ const useDataLoader = () => {
         }
       };
 
-      console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+      // console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
       if (userInfoCount < transactionRefresh) {
         fetchUserSupply();
       }
