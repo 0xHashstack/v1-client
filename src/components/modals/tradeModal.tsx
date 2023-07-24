@@ -203,11 +203,10 @@ const TradeModal = ({
   const [walletBalance, setwalletBalance] = useState<any>(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? parseAmount(
-            uint256.uint256ToBN(
-              walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
-            tokenDecimalsMap[coin?.name]
-          
+          uint256.uint256ToBN(
+            walletBalances[coin?.name]?.dataBalanceOf?.balance
+          ),
+          tokenDecimalsMap[coin?.name]
         )
       : 0
   );
@@ -215,11 +214,10 @@ const TradeModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-              uint256.uint256ToBN(
-                walletBalances[coin?.name]?.dataBalanceOf?.balance
-              ),
-              tokenDecimalsMap[coin?.name]
-            
+            uint256.uint256ToBN(
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[coin?.name]
           )
         : 0
     );
@@ -446,11 +444,10 @@ const TradeModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-              uint256.uint256ToBN(
-                walletBalances[coin?.name]?.dataBalanceOf?.balance
-              ),
-              tokenDecimalsMap[coin?.name]
-            
+            uint256.uint256ToBN(
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[coin?.name]
           )
         : 0
     );
@@ -1157,11 +1154,11 @@ const TradeModal = ({
                                         walletBalances[coin]
                                           ?.statusBalanceOf === "success"
                                           ? parseAmount(
-                                                uint256.uint256ToBN(
-                                                  walletBalances[coin]
-                                                    ?.dataBalanceOf?.balance
-                                                ),
-                                                tokenDecimalsMap[coin]
+                                              uint256.uint256ToBN(
+                                                walletBalances[coin]
+                                                  ?.dataBalanceOf?.balance
+                                              ),
+                                              tokenDecimalsMap[coin]
                                             )
                                           : 0
                                       );
@@ -1245,11 +1242,11 @@ const TradeModal = ({
                                     walletBalances[coin]?.statusBalanceOf ===
                                       "success"
                                       ? parseAmount(
-                                            uint256.uint256ToBN(
-                                              walletBalances[coin]
-                                                ?.dataBalanceOf?.balance
-                                            ),
-                                            tokenDecimalsMap[coin]
+                                          uint256.uint256ToBN(
+                                            walletBalances[coin]?.dataBalanceOf
+                                              ?.balance
+                                          ),
+                                          tokenDecimalsMap[coin]
                                         ).toFixed(2)
                                       : 0
                                   );
@@ -1855,7 +1852,8 @@ const TradeModal = ({
                           placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
                           color={`${
                             inputCollateralAmountUSD &&
-                            inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
+                            inputBorrowAmountUSD >
+                              4.9999 * inputCollateralAmountUSD
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
                               ? "#CF222E"
@@ -1898,7 +1896,17 @@ const TradeModal = ({
                                   (curr: any) => curr.name === currentBorrowCoin
                                 )?.price
                             );
-                            setsliderValue2(100);
+                            setsliderValue2(
+                              Math.round(
+                                ((4.9999 * inputCollateralAmountUSD) /
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price /
+                                  currentAvailableReserves) *
+                                  100
+                              )
+                            );
                           } else {
                             setinputBorrowAmount(currentAvailableReserves);
                             setLoanAmount(currentAvailableReserves);
@@ -1922,7 +1930,8 @@ const TradeModal = ({
                     {inputBorrowAmount > currentAvailableReserves ||
                     (inputBorrowAmount > 0 &&
                       inputCollateralAmountUSD &&
-                      inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD) ||
+                      inputBorrowAmountUSD >
+                        4.9999 * inputCollateralAmountUSD) ||
                     isNaN(inputBorrowAmount) ? (
                       <Text
                         display="flex"

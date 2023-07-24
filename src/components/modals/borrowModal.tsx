@@ -133,16 +133,16 @@ const BorrowModal = ({
 
   useEffect(() => {
     // console.log("coin here", coin, walletBalances[coin?.name]?.statusBalanceOf);
-      setwalletBalance(
-        walletBalances[coin?.name]?.statusBalanceOf === "success"
-          ? parseAmount(
-                uint256.uint256ToBN(
-                  walletBalances[coin?.name]?.dataBalanceOf?.balance
-                ),
-                tokenDecimalsMap[coin?.name]
-              )
-          : 0
-      );
+    setwalletBalance(
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
+        ? parseAmount(
+            uint256.uint256ToBN(
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[coin?.name]
+          )
+        : 0
+    );
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [coin]);
   const {
@@ -987,12 +987,12 @@ const BorrowModal = ({
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"
                                   ? parseAmount(
-                                        uint256.uint256ToBN(
-                                          walletBalances[coin]?.dataBalanceOf
-                                            ?.balance
-                                        ),
-                                        tokenDecimalsMap[coin]
-                                      )
+                                      uint256.uint256ToBN(
+                                        walletBalances[coin]?.dataBalanceOf
+                                          ?.balance
+                                      ),
+                                      tokenDecimalsMap[coin]
+                                    )
                                   : 0
                               );
                             }}
@@ -1035,11 +1035,11 @@ const BorrowModal = ({
                                 Wallet Balance:{" "}
                                 {walletBalances[coin]?.dataBalanceOf?.balance
                                   ? parseAmount(
-                                        uint256.uint256ToBN(
-                                          walletBalances[coin]?.dataBalanceOf
-                                            ?.balance
-                                        ),
-                                        tokenDecimalsMap[coin]
+                                      uint256.uint256ToBN(
+                                        walletBalances[coin]?.dataBalanceOf
+                                          ?.balance
+                                      ),
+                                      tokenDecimalsMap[coin]
                                     ).toFixed(2)
                                   : "-"}
                               </Box>
@@ -1613,12 +1613,21 @@ const BorrowModal = ({
                             )?.price
                         );
                         setinputBorrowAmount(
-                          (4.9999* inputCollateralAmountUSD) /
+                          (4.9999 * inputCollateralAmountUSD) /
                             oraclePrices.find(
                               (curr: any) => curr.name === currentBorrowCoin
                             )?.price
                         );
-                        setsliderValue2(100);
+                        setsliderValue2(
+                          Math.round(
+                            ((4.9999 * inputCollateralAmountUSD) /
+                              oraclePrices.find(
+                                (curr: any) => curr.name === currentBorrowCoin
+                              )?.price /
+                              currentAvailableReserves) *
+                              100
+                          )
+                        );
                       } else {
                         setAmount(currentAvailableReserves);
                         setinputBorrowAmount(currentAvailableReserves);
@@ -1661,7 +1670,8 @@ const BorrowModal = ({
                       <Text ml="0.3rem">
                         {amount > currentAvailableReserves
                           ? "Amount exceeds balance"
-                          : inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
+                          : inputBorrowAmountUSD >
+                            4.9999 * inputCollateralAmountUSD
                           ? "Not Permissible CDR"
                           : ""}
                       </Text>
