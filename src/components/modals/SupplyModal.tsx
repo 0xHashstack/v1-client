@@ -95,7 +95,11 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
-  coin,
+  coin = {
+    name: "BTC",
+    icon: "mdi-bitcoin",
+    symbol: "WBTC",
+  },
   backGroundOverLay,
   currentSupplyAPR,
   setCurrentSupplyAPR,
@@ -217,18 +221,20 @@ const SupplyModal = ({
       : 0
   );
   useEffect(() => {
-    setwalletBalance(
-      walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
-              uint256.uint256ToBN(
-                walletBalances[coin?.name]?.dataBalanceOf?.balance
-              ),
-              tokenDecimalsMap[coin?.name]
+    if (currentSelectedCoin == coin?.name) {
+      setwalletBalance(
+        walletBalances[coin?.name]?.statusBalanceOf === "success"
+          ? Number(
+              BNtoNum(
+                uint256.uint256ToBN(
+                  walletBalances[coin?.name]?.dataBalanceOf?.balance
+                ),
+                tokenDecimalsMap[coin?.name]
+              )
             )
-          )
-        : 0
-    );
+          : 0
+      );
+    }
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   // useEffect(()=>{
