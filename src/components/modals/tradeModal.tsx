@@ -2833,7 +2833,7 @@ const TradeModal = ({
                           <Text>
                             {/* 5.56% */}
                             {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                            {(inputBorrowAmountUSD *
+                            {Number((inputBorrowAmountUSD *
                               protocolStats?.find(
                                 (stat: any) => stat?.token === currentBorrowCoin
                               )?.borrowRate -
@@ -2841,7 +2841,7 @@ const TradeModal = ({
                                 protocolStats?.find(
                                   (stat: any) => stat?.token === rToken.slice(1)
                                 )?.supplyRate) /
-                              inputBorrowAmountUSD}
+                              inputBorrowAmountUSD).toFixed(2)}
                             {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin

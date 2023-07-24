@@ -693,6 +693,11 @@ const StakeUnstakeModal = ({
         ?.rTokenFreeParsed
     );
   }, [currentSelectedStakeCoin, userDeposit]);
+  // console.log(rToken);
+  // console.log(currentSelectedStakeCoin,"stake coin")
+  useEffect(()=>{
+    setRToken(currentSelectedStakeCoin)
+  },[currentSelectedStakeCoin])
   useEffect(() => {
     console.log("stake userDeposit", userDeposit);
   }, [userDeposit]);
@@ -773,7 +778,7 @@ const StakeUnstakeModal = ({
   useEffect(() => {
     setRToken(coin ? rcoinValue : "rBTC");
     setUnstakeRToken(coin ? rcoinValue : "rBTC");
-  }, [coin, coinObj, rcoinValue]);
+  }, [coin]);
 
   const router = useRouter();
   const { pathname } = router;
@@ -1071,20 +1076,20 @@ const StakeUnstakeModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setCurrentSelectedStakeCoin(coin);
-                                      setRToken(coin.slice(1));
+                                      setRToken(coin);
                                       setAsset(
                                         coin[0] == "r" ? coin?.slice(1) : coin
                                       );
                                       setWalletBalance(
-                                        walletBalances[coin?.slice(1)]
+                                        walletBalances[coin]
                                           ?.statusBalanceOf === "success"
                                           ? Number(
                                               BNtoNum(
                                                 uint256.uint256ToBN(
-                                                  walletBalances[coin?.slice(1)]
+                                                  walletBalances[coin]
                                                     ?.dataBalanceOf?.balance
                                                 ),
-                                                tokenDecimalsMap[coin?.slice(1)]
+                                                tokenDecimalsMap[coin]
                                               )
                                             )
                                           : 0
@@ -1978,7 +1983,8 @@ const StakeUnstakeModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setcurrentSelectedUnstakeCoin(coin);
-                                      setRToken(coin);
+                                      setUnstakeRToken(coin)
+                                      console.log(unstakeRToken,"rtokensssss")
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
