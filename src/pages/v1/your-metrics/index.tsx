@@ -137,7 +137,7 @@ const YourMetrics = () => {
                   //   pathname === `/${option.path}` ? "2px solid #F9826C" : ""
                   // }
                   borderRadius="0px"
-                  _hover={{ bg: "transparent", color: "#E6EDF3" }}
+                  // _hover={{ bg: "transparent", color: "#E6EDF3" }}
                   gap={2}
                 >
                   <Image
