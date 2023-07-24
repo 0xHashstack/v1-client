@@ -291,7 +291,7 @@ const TotalValueLockedMetrics = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value); // Divide by 1000 and append 'k' for thousands
+            return "$" + numberFormatter(value); // Divide by 1000 and append 'k' for thousands
           },
           min: 0,
           style: {

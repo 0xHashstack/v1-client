@@ -33,6 +33,11 @@ import DAILogo from "@/assets/icons/coins/dai";
 import { setCoinSelectedExchangeRateRToken } from "@/store/slices/userAccountSlice";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import ArrowUp from "@/assets/icons/arrowup";
+import Image from "next/image";
+import EthDisabled from "@/assets/icons/coins/ethDisabled";
+import UsdcDisabled from "@/assets/icons/coins/usdcDisabled";
+import UsdtDisabled from "@/assets/icons/coins/usdtDisabled";
+import DaiDisabled from "@/assets/icons/coins/daiDisabled";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const [aprByMarket, setAPRByMarket] = useState(0);
@@ -289,27 +294,28 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                   name: "Borrow Apr",
                   data: weeklyBtcData?.apys,
                 },
-              ]):
-          newData = [
-            {
-              name: "Supply APR",
-              data: [300, 400, 350, 500, 490, 600, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 400, 390, 500, 700],
-            },
-          ];
-          weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [300, 400, 350, 500, 490, 600, 800],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [200, 300, 250, 400, 390, 500, 700],
+                },
+              ]);
+          weeklyBtcData?.dates
+            ? (newCategories = weeklyBtcData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 1) {
           weeklyUsdtData?.aprs && weeklyUsdtData?.apys
@@ -322,27 +328,28 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                   name: "Borrow Apr",
                   data: weeklyUsdtData?.apys,
                 },
-              ]):
-          newData = [
-            {
-              name: "Supply APR",
-              data: [100, 200, 250, 400, 390, 500, 700],
-            },
-            {
-              name: "Borrow Apr",
-              data: [700, 400, 250, 600, 490, 400, 800],
-            },
-          ];
-          weeklyUsdtData?.dates ? newCategories=weeklyUsdtData?.dates :
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [100, 200, 250, 400, 390, 500, 700],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [700, 400, 250, 600, 490, 400, 800],
+                },
+              ]);
+          weeklyUsdtData?.dates
+            ? (newCategories = weeklyUsdtData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 2) {
           weeklyUsdcData?.aprs && weeklyUsdcData?.apys
@@ -355,27 +362,28 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                   name: "Borrow Apr",
                   data: weeklyUsdcData?.apys,
                 },
-              ]):
-          newData = [
-            {
-              name: "Supply APR",
-              data: [100, 200, 250, 400, 390, 500, 700],
-            },
-            {
-              name: "Borrow Apr",
-              data: [700, 400, 250, 600, 490, 400, 800],
-            },
-          ];
-          weeklyUsdcData?.dates ? newCategories=weeklyUsdcData?.dates :
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [100, 200, 250, 400, 390, 500, 700],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [700, 400, 250, 600, 490, 400, 800],
+                },
+              ]);
+          weeklyUsdcData?.dates
+            ? (newCategories = weeklyUsdcData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 3) {
           weeklyEthData?.aprs && weeklyEthData?.apys
@@ -388,27 +396,28 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                   name: "Borrow Apr",
                   data: weeklyEthData?.apys,
                 },
-              ]):
-          newData = [
-            {
-              name: "Supply APR",
-              data: [100, 400, 250, 300, 390, 500, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [300, 400, 350, 300, 490, 500, 800],
-            },
-          ];
-          weeklyEthData?.dates ? newCategories=weeklyEthData?.dates :
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [100, 400, 250, 300, 390, 500, 800],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [300, 400, 350, 300, 490, 500, 800],
+                },
+              ]);
+          weeklyEthData?.dates
+            ? (newCategories = weeklyEthData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 4) {
           weeklyDaiData?.aprs && weeklyDaiData?.apys
@@ -421,27 +430,28 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                   name: "Borrow Apr",
                   data: weeklyDaiData?.apys,
                 },
-              ]):
-          newData = [
-            {
-              name: "Supply APR",
-              data: [100, 400, 250, 300, 390, 500, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [300, 400, 350, 300, 490, 500, 800],
-            },
-          ];
-          weeklyDaiData?.dates ? newCategories=weeklyDaiData?.dates :
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [100, 400, 250, 300, 390, 500, 800],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [300, 400, 350, 300, 490, 500, 800],
+                },
+              ]);
+          weeklyDaiData?.dates
+            ? (newCategories = weeklyDaiData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         }
         break;
@@ -837,10 +847,10 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
       case 1:
-        return <USDCLogo height={"16px"} width={"16px"} />;
+        return <USDTLogo height={"16px"} width={"16px"} />;
         break;
       case 2:
-        return <USDTLogo height={"16px"} width={"16px"} />;
+        return <USDCLogo height={"16px"} width={"16px"} />;
         break;
       case 3:
         return <ETHLogo height={"16px"} width={"16px"} />;
@@ -954,7 +964,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         borderRadius="6px"
         padding="16px 24px 40px"
       >
-        <Box
+        {/* <Box
           display="flex"
           border="1px"
           borderColor="#2B2F35"
@@ -1048,120 +1058,137 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               })}
             </Box>
           )}
+        </Box> */}
+
+        <Box display="flex" gap="4" mb="1.1rem" mt="0.3rem">
+          <Box
+            display="flex"
+            gap="2"
+            bg={currentSelectedCoin === 0 ? "inherit" : "#19191C"}
+            borderRadius="md"
+            border="1px"
+            borderColor={currentSelectedCoin === 0 ? "white" : "#2B2F35"}
+            // p="1"
+            onClick={() => setCurrentSelectedCoin(0)}
+            cursor="pointer"
+            p="2"
+          >
+            <Box>
+              {currentSelectedCoin === 0 ? getCoin(0) : <DaiDisabled />}
+            </Box>
+            <Text
+              my="auto"
+              color="white"
+              fontSize="xs"
+              textColor={currentSelectedCoin === 0 ? "white" : "#2B2F35"}
+            >
+              BTC
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            gap="2"
+            bg={currentSelectedCoin === 3 ? "inherit" : "#19191C"}
+            borderRadius="md"
+            border="1px"
+            borderColor={currentSelectedCoin === 3 ? "white" : "#2B2F35"}
+            // p="1"
+            onClick={() => setCurrentSelectedCoin(3)}
+            cursor="pointer"
+            p="2"
+          >
+            <Box>
+              {currentSelectedCoin === 3 ? getCoin(3) : <EthDisabled />}
+            </Box>
+            <Text
+              my="auto"
+              color="white"
+              fontSize="xs"
+              textColor={currentSelectedCoin === 3 ? "white" : "#2B2F35"}
+            >
+              ETH
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            gap="2"
+            bg={currentSelectedCoin === 1 ? "inherit" : "#19191C"}
+            borderRadius="md"
+            border="1px"
+            borderColor={currentSelectedCoin === 1 ? "white" : "#2B2F35"}
+            // p="1"
+            onClick={() => setCurrentSelectedCoin(1)}
+            cursor="pointer"
+            p="2"
+          >
+            <Box>
+              {currentSelectedCoin === 1 ? getCoin(1) : <UsdtDisabled />}
+            </Box>
+            <Text
+              my="auto"
+              color="white"
+              fontSize="xs"
+              textColor={currentSelectedCoin === 1 ? "white" : "#2B2F35"}
+            >
+              USDT
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            gap="2"
+            bg={currentSelectedCoin === 2 ? "inherit" : "#19191C"}
+            borderRadius="md"
+            border="1px"
+            borderColor={currentSelectedCoin === 2 ? "white" : "#2B2F35"}
+            // p="1"
+            onClick={() => setCurrentSelectedCoin(2)}
+            cursor="pointer"
+            p="2"
+          >
+            <Box>
+              {currentSelectedCoin === 2 ? getCoin(2) : <UsdcDisabled />}
+            </Box>
+            <Text
+              my="auto"
+              color="white"
+              fontSize="xs"
+              textColor={currentSelectedCoin === 2 ? "white" : "#2B2F35"}
+            >
+              USDC
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            gap="2"
+            bg={currentSelectedCoin === 4 ? "inherit" : "#19191C"}
+            borderRadius="md"
+            border="1px"
+            borderColor={currentSelectedCoin === 4 ? "white" : "#2B2F35"}
+            // p="1"
+            onClick={() => setCurrentSelectedCoin(4)}
+            cursor="pointer"
+            p="2"
+          >
+            <Box>
+              {currentSelectedCoin === 4 ? getCoin(4) : <DaiDisabled />}
+            </Box>
+            <Text
+              my="auto"
+              color="white"
+              fontSize="xs"
+              textColor={currentSelectedCoin === 4 ? "white" : "#2B2F35"}
+            >
+              DAI
+            </Text>
+          </Box>
         </Box>
+
         <ApexCharts
           options={options}
           series={splineChartData.series}
           type="line"
           height={350}
         />
-        {/* <Box display="flex" gap="4">
-          <Box
-            display="flex"
-            gap="1"
-            bg={currentSelectedCoin === 0 ? "#2c2f34" : "inherit"}
-            borderRadius="md"
-            p="2"
-            onClick={() => setCurrentSelectedCoin(0)}
-            cursor="pointer"
-          >
-            <Box p="1">
-              <Box
-                height="10px"
-                width="10px"
-                bgColor="#136B51"
-                borderRadius="100%"
-              ></Box>
-            </Box>
-            <Text color="white" fontSize="xs">
-              USDT
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            gap="1"
-            bg={currentSelectedCoin === 1 ? "#2c2f34" : "inherit"}
-            borderRadius="md"
-            p="2"
-            onClick={() => setCurrentSelectedCoin(1)}
-            cursor="pointer"
-          >
-            <Box p="1">
-              <Box
-                height="10px"
-                width="10px"
-                bgColor="#804D0F"
-                borderRadius="100%"
-              ></Box>
-            </Box>
-            <Text color="white" fontSize="xs">
-              BTC
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            gap="1"
-            bg={currentSelectedCoin === 2 ? "#2c2f34" : "inherit"}
-            borderRadius="md"
-            p="2"
-            onClick={() => setCurrentSelectedCoin(2)}
-            cursor="pointer"
-          >
-            <Box p="1">
-              <Box
-                height="10px"
-                width="10px"
-                bgColor="#1A2683"
-                borderRadius="100%"
-              ></Box>
-            </Box>
-            <Text color="white" fontSize="xs">
-              USDC
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            gap="1"
-            bg={currentSelectedCoin === 3 ? "#2c2f34" : "inherit"}
-            borderRadius="md"
-            p="2"
-            onClick={() => setCurrentSelectedCoin(3)}
-            cursor="pointer"
-          >
-            <Box p="1">
-              <Box
-                height="10px"
-                width="10px"
-                bgColor="#3B48A8"
-                borderRadius="100%"
-              ></Box>
-            </Box>
-            <Text color="white" fontSize="xs">
-              ETH
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            gap="1"
-            bg={currentSelectedCoin === 4 ? "#2c2f34" : "inherit"}
-            borderRadius="md"
-            p="2"
-            onClick={() => setCurrentSelectedCoin(4)}
-            cursor="pointer"
-          >
-            <Box p="1">
-              <Box
-                height="10px"
-                width="10px"
-                bgColor="#996B22"
-                borderRadius="100%"
-              ></Box>
-            </Box>
-            <Text color="white" fontSize="xs">
-              DAI
-            </Text>
-          </Box>
-        </Box> */}
       </Box>
     </Box>
   );

@@ -206,13 +206,11 @@ const SupplyModal = ({
   // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
-      ? 
-        parseAmount(
+      ? parseAmount(
           uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
           ),
           tokenDecimalsMap[coin?.name]
-        
         )
       : 0
   );
@@ -229,18 +227,16 @@ const SupplyModal = ({
   useEffect(() => {
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
-      ? 
-          parseAmount(
+        ? parseAmount(
             uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
             ),
             tokenDecimalsMap[coin?.name]
-  
           )
-      : 0
+        : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
-  }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
+  }, [walletBalances[coin?.name]?.statusBalanceOf]);
   // useEffect(()=>{
 
   // },[currentSelectedCoin])
@@ -687,13 +683,11 @@ const SupplyModal = ({
     setIsChecked(true);
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ?
-            parseAmount(
-              uint256.uint256ToBN(
-                walletBalances[coin?.name]?.dataBalanceOf?.balance
-              ),
-              tokenDecimalsMap[coin?.name]
-            
+        ? parseAmount(
+            uint256.uint256ToBN(
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[coin?.name]
           )
         : 0
     );
