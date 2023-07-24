@@ -80,7 +80,7 @@ import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ArrowUp from "@/assets/icons/arrowup";
 import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
 import { useWaitForTransaction } from "@starknet-react/core";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
@@ -143,14 +143,14 @@ const YourSupplyModal = ({
   // console.log(userDeposit,"user deposit your supply")
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
+      ? 
+          parseAmount(
             uint256.uint256ToBN(
               walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
             ),
             tokenDecimalsMap[currentSelectedSupplyCoin]
           )
-        )
+        
       : 0
   );
   // console.log(currentSelectedWithdrawlCoin)
@@ -163,15 +163,15 @@ const YourSupplyModal = ({
   useEffect(() => {
     setwalletBalance(
       walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
+        ? 
+            parseAmount(
               uint256.uint256ToBN(
                 walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf
                   ?.balance
               ),
               tokenDecimalsMap[currentSelectedSupplyCoin]
             )
-          )
+          
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf)

@@ -77,7 +77,7 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import ArrowUp from "@/assets/icons/arrowup";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import {
   tokenAddressMap,
@@ -202,26 +202,24 @@ const TradeModal = ({
   };
   const [walletBalance, setwalletBalance] = useState<any>(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
+      ? parseAmount(
             uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
             ),
             tokenDecimalsMap[coin?.name]
-          )
+          
         )
       : 0
   );
   useEffect(() => {
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
+        ? parseAmount(
               uint256.uint256ToBN(
                 walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
               tokenDecimalsMap[coin?.name]
-            )
+            
           )
         : 0
     );
@@ -447,13 +445,12 @@ const TradeModal = ({
     dispatch(resetModalDropdowns());
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
+        ? parseAmount(
               uint256.uint256ToBN(
                 walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
               tokenDecimalsMap[coin?.name]
-            )
+            
           )
         : 0
     );
@@ -1159,14 +1156,12 @@ const TradeModal = ({
                                       setwalletBalance(
                                         walletBalances[coin]
                                           ?.statusBalanceOf === "success"
-                                          ? Number(
-                                              BNtoNum(
+                                          ? parseAmount(
                                                 uint256.uint256ToBN(
                                                   walletBalances[coin]
                                                     ?.dataBalanceOf?.balance
                                                 ),
                                                 tokenDecimalsMap[coin]
-                                              )
                                             )
                                           : 0
                                       );
@@ -1249,14 +1244,12 @@ const TradeModal = ({
                                   setwalletBalance(
                                     walletBalances[coin]?.statusBalanceOf ===
                                       "success"
-                                      ? Number(
-                                          BNtoNum(
+                                      ? parseAmount(
                                             uint256.uint256ToBN(
                                               walletBalances[coin]
                                                 ?.dataBalanceOf?.balance
                                             ),
                                             tokenDecimalsMap[coin]
-                                          )
                                         ).toFixed(2)
                                       : 0
                                   );
@@ -1828,7 +1821,7 @@ const TradeModal = ({
                       color="white"
                       border={`${
                         inputCollateralAmountUSD &&
-                        inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
+                        inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
                           ? "1px solid #CF222E"
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
@@ -1862,7 +1855,7 @@ const TradeModal = ({
                           placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
                           color={`${
                             inputCollateralAmountUSD &&
-                            inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
+                            inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
                               ? "#CF222E"
@@ -1894,13 +1887,13 @@ const TradeModal = ({
                         onClick={() => {
                           if (inputCollateralAmountUSD) {
                             setinputBorrowAmount(
-                              (5 * inputCollateralAmountUSD) /
+                              (4.9999 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
                                   (curr: any) => curr.name === currentBorrowCoin
                                 )?.price
                             );
                             setLoanAmount(
-                              (5 * inputCollateralAmountUSD) /
+                              (4.9999 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
                                   (curr: any) => curr.name === currentBorrowCoin
                                 )?.price
@@ -1929,7 +1922,7 @@ const TradeModal = ({
                     {inputBorrowAmount > currentAvailableReserves ||
                     (inputBorrowAmount > 0 &&
                       inputCollateralAmountUSD &&
-                      inputBorrowAmountUSD > 5 * inputCollateralAmountUSD) ||
+                      inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD) ||
                     isNaN(inputBorrowAmount) ? (
                       <Text
                         display="flex"
@@ -1950,7 +1943,7 @@ const TradeModal = ({
                             {inputBorrowAmount > currentAvailableReserves
                               ? "Amount exceeds balance"
                               : inputBorrowAmountUSD >
-                                5 * inputCollateralAmountUSD
+                                4.9999 * inputCollateralAmountUSD
                               ? "Not Permissible CDR"
                               : "Invalid Input"}
                           </Text>
@@ -2968,7 +2961,7 @@ const TradeModal = ({
                 (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
                 inputBorrowAmount <= currentAvailableReserves &&
                 inputBorrowAmount > 0 &&
-                inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD &&
+                inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD &&
                 currentDapp != "Select a dapp" &&
                 (currentPool != "Select a pool" ||
                   currentPoolCoin != "Select a pool") ? (

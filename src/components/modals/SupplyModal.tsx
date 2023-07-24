@@ -71,7 +71,7 @@ import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useToast } from "@chakra-ui/react";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
@@ -95,11 +95,7 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
-  coin = {
-    name: "BTC",
-    icon: "mdi-bitcoin",
-    symbol: "WBTC",
-  },
+  coin,
   backGroundOverLay,
   currentSupplyAPR,
   setCurrentSupplyAPR,
@@ -210,31 +206,39 @@ const SupplyModal = ({
   // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
+      ? 
+        parseAmount(
+          uint256.uint256ToBN(
+            walletBalances[coin?.name]?.dataBalanceOf?.balance
+          ),
+          tokenDecimalsMap[coin?.name]
+        
+        )
+      : 0
+  );
+  // useEffect(()=>{
+  //   console.log(
+  //     Number(parseAmount(
+  //       uint256.uint256ToBN(
+  //         walletBalances[coin?.name]?.dataBalanceOf?.balance
+  //       ),
+  //       tokenDecimalsMap[coin?.name]
+  //     )),currentSelectedCoin,"coin bug"
+  //   );
+  // },[currentSelectedCoin,coin])
+  useEffect(() => {
+    setwalletBalance(
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
+      ? 
+          parseAmount(
             uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
             ),
             tokenDecimalsMap[coin?.name]
+  
           )
-        )
       : 0
-  );
-  useEffect(() => {
-    if (currentSelectedCoin == coin?.name) {
-      setwalletBalance(
-        walletBalances[coin?.name]?.statusBalanceOf === "success"
-          ? Number(
-              BNtoNum(
-                uint256.uint256ToBN(
-                  walletBalances[coin?.name]?.dataBalanceOf?.balance
-                ),
-                tokenDecimalsMap[coin?.name]
-              )
-            )
-          : 0
-      );
-    }
+    );
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   // useEffect(()=>{
@@ -683,13 +687,13 @@ const SupplyModal = ({
     setIsChecked(true);
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
+        ?
+            parseAmount(
               uint256.uint256ToBN(
                 walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
               tokenDecimalsMap[coin?.name]
-            )
+            
           )
         : 0
     );

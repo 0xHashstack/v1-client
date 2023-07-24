@@ -92,7 +92,7 @@ import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import { Account, uint256 } from "starknet";
 import { useAccount, useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
@@ -495,14 +495,14 @@ const YourBorrowModal = ({
     setwalletBalance1(
       walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
         ?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
+        ? 
+        parseAmount(
               uint256.uint256ToBN(
                 walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
                   ?.dataBalanceOf?.balance
               ),
               tokenDecimalsMap[currentBorrowMarketCoin1.slice(1) as NativeToken]
-            )
+            
           )
         : 0
     );
@@ -516,27 +516,24 @@ const YourBorrowModal = ({
 
   const [walletBalance2, setwalletBalance2] = useState(
     walletBalances[collateralAsset]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
+      ? parseAmount(
             uint256.uint256ToBN(
               walletBalances[collateralAsset]?.dataBalanceOf?.balance
             ),
             tokenDecimalsMap[collateralAsset]
           )
-        )
+
       : 0
   );
   useEffect(() => {
     setwalletBalance2(
       walletBalances[collateralAsset]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
+        ? parseAmount(
               uint256.uint256ToBN(
                 walletBalances[collateralAsset]?.dataBalanceOf?.balance
               ),
               tokenDecimalsMap[collateralAsset]
             )
-          )
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
@@ -5464,6 +5461,8 @@ const YourBorrowModal = ({
                           setCurrentTransactionStatus={
                             setCurrentTransactionStatus
                           }
+                          _disabled={{ bgColor: "white", color: "black" }}
+                          isDisabled={collateralTransactionStarted == true}
                         >
                           Add Collateral
                         </AnimatedButton>
