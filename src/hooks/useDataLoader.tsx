@@ -1,7 +1,10 @@
 import { IDeposit, ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
-import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
+import {
+  OraclePrice,
+  getOraclePrices,
+} from "@/Blockchain/scripts/getOraclePrices";
 import {
   getProtocolReserves,
   getProtocolStats,
@@ -244,28 +247,39 @@ const useDataLoader = () => {
                   Number(response?.[i].borrowAmount) /
                   Math.pow(10, tokenDecimalsMap[token]);
                 const tvlAmount: number =
-                  Number(response?.[i].tvlAmount) / Math.pow(10, 8);
+                  Number(response?.[i].tvlAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
                 // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
                 // console.log(response?.[i].tokenName)
                 // const supplyAmount1=etherToWeiBN(amount,token)
                 // console.log(supplyAmount1,"aamount")
                 amounts?.push(supplyAmount);
                 borrowAmounts?.push(borrowAmount);
-                tvlAmounts?.push(tvlAmount);
+                // tvlAmounts?.push(tvlAmount);
+                tvlAmounts?.push(
+                  supplyAmount *
+                    oraclePrices?.find(
+                      (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                    )?.price
+                );
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);
-                supplyRates?.push(response?.[i].supplyRate);
-                borrowRates?.push(response?.[i].borrowRate);
+                supplyRates?.push(response?.[i].supplyRate / 100);
+                borrowRates?.push(response?.[i].borrowRate / 100);
                 supplyCounts?.push(response?.[i].supplyCount);
                 borrowCounts?.push(response?.[i].borrowCount);
-                utilRates?.push(response?.[i].utilRate);
-                rTokenExchangeRates?.push(response?.[i].rTokenExchangeRate);
-                dTokenExchangeRates?.push(response?.[i].dTokenExchangeRate);
+                utilRates?.push(response?.[i].utilRate / 10000);
+                rTokenExchangeRates?.push(
+                  response?.[i].rTokenExchangeRate / 10000
+                );
+                dTokenExchangeRates?.push(
+                  response?.[i].dTokenExchangeRate / 10000
+                );
                 totalTransactions?.push(response?.[i].totalTransactions);
                 totalAccounts?.push(response?.[i].totalAccounts);
                 aprs?.push(responseApr?.[i].APR);
                 apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(responseTotal?.[i].totalPlatformURM);
+                totalUrm?.push(responseTotal?.[i].totalPlatformURM / 10000);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -311,10 +325,10 @@ const useDataLoader = () => {
         console.log(err, "err in hourly data");
       }
     };
-    if (hourlyDataCount < transactionRefresh) {
+    if (hourlyDataCount < transactionRefresh && oraclePrices) {
       fetchHourlyBTCData();
     }
-  }, []);
+  }, [oraclePrices]);
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {

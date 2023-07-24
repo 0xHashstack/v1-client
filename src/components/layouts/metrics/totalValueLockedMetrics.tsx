@@ -51,14 +51,19 @@ const TotalValueLockedMetrics = () => {
 
     fetchData();
   }, [aprByMarket]);
-  const tvlamounts:any=[];
+  const tvlamounts: any = [];
   // console.log(btcData?.tvlAmounts,"data btc")
   // console.log(ethData?.tvlAmounts,"data eth")
   // console.log(usdtData?.tvlAmounts,"data usdt")
   // console.log(usdcData?.tvlAmounts,"data usdc")
   // console.log(daiData?.tvlAmounts,"data dai")
-  for(var i=0;i<btcData?.tvlAmounts?.length;i++){
-    var data=btcData?.tvlAmounts[i]+ethData?.tvlAmounts[i]+usdcData?.tvlAmounts[i]+usdtData?.tvlAmounts[i]+daiData?.tvlAmounts[i];
+  for (var i = 0; i < btcData?.tvlAmounts?.length; i++) {
+    var data =
+      btcData?.tvlAmounts[i] +
+      ethData?.tvlAmounts[i] +
+      usdcData?.tvlAmounts[i] +
+      usdtData?.tvlAmounts[i] +
+      daiData?.tvlAmounts[i];
     tvlamounts.push(data);
   }
   // console.log(tvlamounts,"amounts");
