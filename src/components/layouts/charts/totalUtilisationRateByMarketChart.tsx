@@ -353,7 +353,7 @@ const TotalUtilisationRateByMarketChart = () => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return val / 1000 + "k"; // Display the data value as the label
+          return val; // Display the data value as the label
         },
         position: "top",
       },
@@ -377,7 +377,7 @@ const TotalUtilisationRateByMarketChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return numberFormatter(value) + "%";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels

@@ -193,7 +193,7 @@ const YourMetrics = () => {
                   <Text color="#6e7681" fontSize="14px" alignItems="center">
                     Total Supply
                   </Text>
-                  {!totalSupply ? (
+                  {totalSupply == null ? (
                     <Skeleton
                       width="6rem"
                       height="1.9rem"
@@ -201,6 +201,10 @@ const YourMetrics = () => {
                       endColor="#2B2F35"
                       borderRadius="6px"
                     />
+                  ) : totalSupply == 0 ? (
+                    <Text color="#e6edf3" fontSize="20px">
+                      NA
+                    </Text>
                   ) : (
                     <Text color="#e6edf3" fontSize="20px">
                       ${numberFormatter(totalSupply)}
@@ -226,6 +230,10 @@ const YourMetrics = () => {
                       endColor="#2B2F35"
                       borderRadius="6px"
                     />
+                  ) : avgSupplyApr == 0 ? (
+                    <Text color="#e6edf3" fontSize="20px">
+                      NA
+                    </Text>
                   ) : (
                     <Text color="#e6edf3" fontSize="20px">
                       {avgSupplyApr?.toFixed(2)}%
@@ -251,7 +259,7 @@ const YourMetrics = () => {
                     <Text color="#6e7681" fontSize="14px" alignItems="center">
                       Your borrow
                     </Text>
-                    {!totalBorrow ? (
+                    {totalBorrow == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.9rem"
@@ -259,6 +267,10 @@ const YourMetrics = () => {
                         endColor="#2B2F35"
                         borderRadius="6px"
                       />
+                    ) : totalBorrow == 0 ? (
+                      <Text color="#e6edf3" fontSize="20px">
+                        NA
+                      </Text>
                     ) : (
                       <Text color="#e6edf3" fontSize="20px">
                         ${numberFormatter(totalBorrow)}
@@ -274,7 +286,7 @@ const YourMetrics = () => {
                     <Text color="#6e7681" fontSize="14px" alignItems="center">
                       Average borrow apr
                     </Text>
-                    {!avgBorrowApr ? (
+                    {avgBorrowApr == "null" ? (
                       <Skeleton
                         width="6rem"
                         height="1.9rem"
@@ -282,6 +294,10 @@ const YourMetrics = () => {
                         endColor="#2B2F35"
                         borderRadius="6px"
                       />
+                    ) : avgBorrowApr == 0 ? (
+                      <Text color="#e6edf3" fontSize="20px">
+                        NA
+                      </Text>
                     ) : (
                       <Text color="#e6edf3" fontSize="20px">
                         {numberFormatter(avgBorrowApr)}%
@@ -297,7 +313,7 @@ const YourMetrics = () => {
                     <Text color="#6e7681" fontSize="14px" alignItems="center">
                       Effective apr
                     </Text>
-                    {!netAPR ? (
+                    {netAPR == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.9rem"
@@ -305,6 +321,10 @@ const YourMetrics = () => {
                         endColor="#2B2F35"
                         borderRadius="6px"
                       />
+                    ) : netAPR == 0 ? (
+                      <Text color="#e6edf3" fontSize="20px">
+                        NA
+                      </Text>
                     ) : (
                       <Text color="#e6edf3" fontSize="20px">
                         {netAPR}%

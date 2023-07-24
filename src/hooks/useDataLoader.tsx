@@ -280,9 +280,9 @@ const useDataLoader = () => {
                 dates?.push(response?.[i].Datetime);
                 supplyRates?.push(response?.[i].supplyRate / 100);
                 borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyCount);
-                borrowCounts?.push(response?.[i].borrowCount);
-                utilRates?.push(response?.[i].utilRate / 10000);
+                supplyCounts?.push(response?.[i].supplyAccounts);
+                borrowCounts?.push(response?.[i].borrowAccounts);
+                utilRates?.push(response?.[i].utilRate / 100);
                 rTokenExchangeRates?.push(
                   1 / (response?.[i].rTokenExchangeRate / 10000)
                 );
@@ -443,18 +443,18 @@ const useDataLoader = () => {
                 borrowRates?.push(response?.[i].borrowRate / 100);
                 supplyCounts?.push(response?.[i].supplyAccounts);
                 borrowCounts?.push(response?.[i].borrowAccounts);
-                utilRates?.push(response?.[i].utilRate / 10000);
+                utilRates?.push(response?.[i].utilRate / 100);
                 rTokenExchangeRates?.push(
-                  response?.[i].rTokenExchangeRate / 10000
+                  1 / (response?.[i].rTokenExchangeRate / 10000)
                 );
                 dTokenExchangeRates?.push(
-                  response?.[i].dTokenExchangeRate / 10000
+                  1 / (response?.[i].dTokenExchangeRate / 10000)
                 );
                 totalTransactions?.push(response?.[i].totalTransactions);
                 totalAccounts?.push(response?.[i].totalAccounts);
                 aprs?.push(responseApr?.[i].APR);
                 apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(1 - responseTotal?.[i].totalPlatformURM / 10000);
+                totalUrm?.push(responseTotal?.[i].totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -891,9 +891,9 @@ const useDataLoader = () => {
             dataOraclePrices,
             protocolStats
           );
-          console.log("netApr", dataNetApr);
           //@ts-ignore
           if (isNaN(dataNetApr)) {
+            // console.log("netApr", dataNetApr);
             dispatch(setNetAPR(0));
           } else {
             dispatch(setNetAPR(dataNetApr));
