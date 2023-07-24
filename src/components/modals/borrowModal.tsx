@@ -1486,9 +1486,10 @@ const BorrowModal = ({
                                 display="flex"
                               >
                                 Available reserves:{" "}
-                                {numberFormatter(
-                                  protocolStats?.[index]?.availableReserves
-                                ) || (
+                                {(protocolStats?.[index]?.availableReserves &&
+                                  numberFormatter(
+                                    protocolStats?.[index]?.availableReserves
+                                  )) || (
                                   <Skeleton
                                     width="3rem"
                                     height="1rem"
