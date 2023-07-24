@@ -2619,7 +2619,7 @@ const TradeModal = ({
                       </Box>
                     </Box>
                   )}
-                  {radioValue == "2" && (
+                  {/* {radioValue == "2" && (
                     <Box
                       display="flex"
                       justifyContent="space-between"
@@ -2664,7 +2664,7 @@ const TradeModal = ({
                         $10.91
                       </Text>
                     </Box>
-                  )}
+                  )} */}
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
                       <Text color="#6E7681" fontSize="xs">

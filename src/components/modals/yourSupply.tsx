@@ -2083,7 +2083,7 @@ const YourSupplyModal = ({
                               font-size="12px"
                               color="#6A737D"
                             >
-                              Gas Estimate balance:
+                              Gas Estimate:
                             </Text>
                             <Tooltip
                               hasArrow
