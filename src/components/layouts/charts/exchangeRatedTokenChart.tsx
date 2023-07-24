@@ -605,6 +605,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
     return { newData, newCategories };
   };
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
     series: chartData,
     options: {
@@ -656,6 +657,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           },
         },
         min: minValue - 0.05 * minValue,
+        max: maxValue + 0.05 * maxValue,
       },
       plotOptions: {
         bar: {
@@ -711,10 +713,10 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
       case 1:
-        return <USDCLogo height={"16px"} width={"16px"} />;
+        return <USDTLogo height={"16px"} width={"16px"} />;
         break;
       case 2:
-        return <USDTLogo height={"16px"} width={"16px"} />;
+        return <USDCLogo height={"16px"} width={"16px"} />;
         break;
       case 3:
         return <ETHLogo height={"16px"} width={"16px"} />;

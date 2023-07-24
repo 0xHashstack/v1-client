@@ -95,6 +95,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
     // console.log(coinsData[currentSelectedCoin],"coin apr")
   }, [aprByMarket, currentSelectedCoin]);
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number, option2: number) => {
@@ -651,6 +652,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           },
         },
         min: minValue - 0.05 * minValue,
+        max: maxValue + 0.05 * maxValue,
       },
       plotOptions: {
         bar: {
@@ -710,10 +712,10 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
       case 1:
-        return <USDCLogo height={"16px"} width={"16px"} />;
+        return <USDTLogo height={"16px"} width={"16px"} />;
         break;
       case 2:
-        return <USDTLogo height={"16px"} width={"16px"} />;
+        return <USDCLogo height={"16px"} width={"16px"} />;
         break;
       case 3:
         return <ETHLogo height={"16px"} width={"16px"} />;
