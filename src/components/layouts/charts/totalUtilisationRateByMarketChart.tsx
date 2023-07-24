@@ -4,7 +4,18 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
-import { selectDailyBTCData, selectDailyDAIData, selectDailyETHData, selectDailyUSDCData, selectDailyUSDTData, selectHourlyBTCData, selectHourlyDAIData, selectHourlyETHData, selectHourlyUSDCData, selectHourlyUSDTData } from "@/store/slices/readDataSlice";
+import {
+  selectDailyBTCData,
+  selectDailyDAIData,
+  selectDailyETHData,
+  selectDailyUSDCData,
+  selectDailyUSDTData,
+  selectHourlyBTCData,
+  selectHourlyDAIData,
+  selectHourlyETHData,
+  selectHourlyUSDCData,
+  selectHourlyUSDTData,
+} from "@/store/slices/readDataSlice";
 import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -38,10 +49,10 @@ const TotalUtilisationRateByMarketChart = () => {
     fetchData();
   }, [liquidityProviderChartPeriod]);
   const btcData = useSelector(selectHourlyBTCData);
-  const ethData=useSelector(selectHourlyETHData);
-  const usdtData=useSelector(selectHourlyUSDTData);
-  const usdcData=useSelector(selectHourlyUSDCData);
-  const daiData=useSelector(selectHourlyDAIData);
+  const ethData = useSelector(selectHourlyETHData);
+  const usdtData = useSelector(selectHourlyUSDTData);
+  const usdcData = useSelector(selectHourlyUSDCData);
+  const daiData = useSelector(selectHourlyDAIData);
   const weeklyBtcData = useSelector(selectDailyBTCData);
   const weeklyEthData = useSelector(selectDailyETHData);
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
@@ -57,7 +68,11 @@ const TotalUtilisationRateByMarketChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        btcData?.utilRates && ethData?.utilRates && usdtData?.utilRates && usdcData?.utilRates && daiData?.utilRates
+        btcData?.utilRates &&
+        ethData?.utilRates &&
+        usdtData?.utilRates &&
+        usdcData?.utilRates &&
+        daiData?.utilRates
           ? (newData = [
               {
                 name: "BTC",
@@ -73,11 +88,11 @@ const TotalUtilisationRateByMarketChart = () => {
               },
               {
                 name: "USDC",
-                data: usdcData?.utilRates
+                data: usdcData?.utilRates,
               },
               {
                 name: "DAI",
-                data: daiData?.utilRates
+                data: daiData?.utilRates,
               },
             ])
           : (newData = [
@@ -126,76 +141,81 @@ const TotalUtilisationRateByMarketChart = () => {
             ]);
         break;
       case 1:
-        weeklyBtcData?.utilRates && weeklyEthData?.utilRates && weeklyUsdtData?.utilRates && weeklyUsdcData?.utilRates && weeklyDaiData?.utilRates
-        ? (newData = [
-            {
-              name: "BTC",
-              data: weeklyBtcData?.utilRates,
-            },
-            {
-              name: "ETH",
-              data: weeklyEthData?.utilRates,
-            },
-            {
-              name: "USDT",
-              data: weeklyUsdtData?.utilRates,
-            },
-            {
-              name: "USDC",
-              data: weeklyUsdcData?.utilRates
-            },
-            {
-              name: "DAI",
-              data: weeklyDaiData?.utilRates
-            },
-          ]):
-        newData = [
-          {
-            name: "BTC",
-            data: [
-              10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
-              10000000000, 4000000000,
-            ],
-          },
-          {
-            name: "ETH",
-            data: [
-              30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
-              10000000000, 1000000000,
-            ],
-          },
-          {
-            name: "USDT",
-            data: [
-              40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
-              50000000000, 1300000000,
-            ],
-          },
-          {
-            name: "USDC",
-            data: [
-              50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
-              11000000000, 430000000,
-            ],
-          },
-          {
-            name: "DAI",
-            data: [
-              17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
-              10000000000, 4000000000,
-            ],
-          },
-        ];
-        weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        weeklyBtcData?.utilRates &&
+        weeklyEthData?.utilRates &&
+        weeklyUsdtData?.utilRates &&
+        weeklyUsdcData?.utilRates &&
+        weeklyDaiData?.utilRates
+          ? (newData = [
+              {
+                name: "BTC",
+                data: weeklyBtcData?.utilRates,
+              },
+              {
+                name: "ETH",
+                data: weeklyEthData?.utilRates,
+              },
+              {
+                name: "USDT",
+                data: weeklyUsdtData?.utilRates,
+              },
+              {
+                name: "USDC",
+                data: weeklyUsdcData?.utilRates,
+              },
+              {
+                name: "DAI",
+                data: weeklyDaiData?.utilRates,
+              },
+            ])
+          : (newData = [
+              {
+                name: "BTC",
+                data: [
+                  10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
+                  10000000000, 4000000000,
+                ],
+              },
+              {
+                name: "ETH",
+                data: [
+                  30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
+                  10000000000, 1000000000,
+                ],
+              },
+              {
+                name: "USDT",
+                data: [
+                  40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
+                  50000000000, 1300000000,
+                ],
+              },
+              {
+                name: "USDC",
+                data: [
+                  50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
+                  11000000000, 430000000,
+                ],
+              },
+              {
+                name: "DAI",
+                data: [
+                  17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
+                  10000000000, 4000000000,
+                ],
+              },
+            ]);
+        weeklyBtcData?.dates
+          ? (newCategories = weeklyBtcData?.dates)
+          : (newCategories = [
+              new Date("2023-07-01").getTime(),
+              new Date("2023-07-02").getTime(),
+              new Date("2023-07-03").getTime(),
+              new Date("2023-07-04").getTime(),
+              new Date("2023-07-05").getTime(),
+              new Date("2023-07-06").getTime(),
+              new Date("2023-07-07").getTime(),
+            ]);
         break;
       case 2:
         //y data axis
@@ -326,7 +346,7 @@ const TotalUtilisationRateByMarketChart = () => {
         toolbar: {
           show: false,
         },
-        stacked:true,
+        stacked: true,
       },
       dataLabels: {
         enabled: false,
@@ -537,7 +557,7 @@ const TotalUtilisationRateByMarketChart = () => {
         <ApexCharts
           options={options}
           series={splineChartData.series}
-          type="area"
+          type="line"
           height={400}
         />
       </Box>
