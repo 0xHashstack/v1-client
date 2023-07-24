@@ -282,7 +282,7 @@ const useDataLoader = () => {
                 borrowRates?.push(response?.[i].borrowRate / 100);
                 supplyCounts?.push(response?.[i].supplyAccounts);
                 borrowCounts?.push(response?.[i].borrowAccounts);
-                utilRates?.push(response?.[i].utilRate / 10000);
+                utilRates?.push(response?.[i].utilRate / 100);
                 rTokenExchangeRates?.push(
                   1 / (response?.[i].rTokenExchangeRate / 10000)
                 );
