@@ -3,6 +3,11 @@ import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import {
+  selectDailyBTCData,
+  selectDailyDAIData,
+  selectDailyETHData,
+  selectDailyUSDCData,
+  selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
@@ -28,6 +33,11 @@ const BorrowChart = () => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const weeklyBtcData = useSelector(selectDailyBTCData);
+  const weeklyEthData = useSelector(selectDailyETHData);
+  const weeklyUsdtData = useSelector(selectDailyUSDTData);
+  const weeklyUsdcData = useSelector(selectDailyUSDCData);
+  const weeklyDaiData = useSelector(selectDailyDAIData);
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -129,6 +139,29 @@ const BorrowChart = () => {
             ]);
         break;
       case 1:
+        weeklyBtcData?.borrowAmounts && weeklyEthData?.borrowAmounts && weeklyUsdcData?.borrowAmounts && weeklyUsdtData?.borrowAmounts && weeklyDaiData?.borrowAmounts ?
+        newData = [
+          {
+            name: "BTC",
+            data: weeklyBtcData?.borrowAmounts,
+          },
+          {
+            name: "ETH",
+            data: weeklyEthData?.borrowAmounts,
+          },
+          {
+            name: "USDT",
+            data: weeklyUsdtData?.borrowAmounts,
+          },
+          {
+            name: "USDC",
+            data: weeklyUsdcData?.borrowAmounts,
+          },
+          {
+            name: "DAI",
+            data: weeklyDaiData?.borrowAmounts,
+          },
+        ]:   
         newData = [
           {
             name: "BTC",
@@ -166,6 +199,7 @@ const BorrowChart = () => {
             ],
           },
         ];
+        weeklyBtcData?.dates ? newCategories= weeklyBtcData?.dates :
         newCategories = [
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
@@ -440,7 +474,7 @@ const BorrowChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

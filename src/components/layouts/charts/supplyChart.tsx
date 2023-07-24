@@ -4,6 +4,11 @@ import { Box, Button } from "@chakra-ui/react";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 import { useSelector } from "react-redux";
 import {
+  selectDailyBTCData,
+  selectDailyDAIData,
+  selectDailyETHData,
+  selectDailyUSDCData,
+  selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
@@ -42,6 +47,11 @@ const SupplyChart = () => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const weeklyBtcData=useSelector(selectDailyBTCData);
+  const weeklyEthData=useSelector(selectDailyETHData);
+  const weeklyUsdtData=useSelector(selectDailyUSDTData);
+  const weeklyUsdcData=useSelector(selectDailyUSDCData);
+  const weeklyDaiData=useSelector(selectDailyDAIData);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   // console.log(usdtData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
@@ -132,6 +142,29 @@ const SupplyChart = () => {
             ]);
         break;
       case 1:
+        weeklyBtcData?.supplyAmounts && weeklyEthData?.supplyAmounts && weeklyUsdtData?.supplyAmounts && weeklyUsdcData?.supplyAmounts && weeklyDaiData?.supplyAmounts ?
+        newData = [
+          {
+            name: "BTC",
+            data: weeklyBtcData?.supplyAmounts,
+          },
+          {
+            name: "ETH",
+            data: weeklyEthData.supplyAmounts,
+          },
+          {
+            name: "USDT",
+            data: weeklyUsdtData.supplyAmounts,
+          },
+          {
+            name: "USDC",
+            data: weeklyUsdcData.supplyAmounts,
+          },
+          {
+            name: "DAI",
+            data: weeklyDaiData.supplyAmounts,
+          },
+        ]:
         newData = [
           {
             name: "BTC",
@@ -169,6 +202,7 @@ const SupplyChart = () => {
             ],
           },
         ];
+        weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
         newCategories = [
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
@@ -454,7 +488,7 @@ const SupplyChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

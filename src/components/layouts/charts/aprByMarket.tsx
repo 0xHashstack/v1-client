@@ -6,6 +6,11 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectDailyBTCData,
+  selectDailyDAIData,
+  selectDailyETHData,
+  selectDailyUSDCData,
+  selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
@@ -59,6 +64,12 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const weeklyBtcData = useSelector(selectDailyBTCData);
+  const weeklyEthData = useSelector(selectDailyETHData);
+  const weeklyUsdtData = useSelector(selectDailyUSDTData);
+  const weeklyUsdcData = useSelector(selectDailyUSDCData);
+  const weeklyDaiData = useSelector(selectDailyDAIData);
+  // console.log(weeklyUsdtData?.aprs,"aprs")
   const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
   // console.log(usdcData,"usdc data")
   // useEffect(()=>{
@@ -268,6 +279,17 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
 
       case 1:
         if (currentSelectedCoin == 0) {
+          weeklyBtcData?.aprs && weeklyBtcData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: weeklyBtcData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: weeklyBtcData?.apys,
+                },
+              ]):
           newData = [
             {
               name: "Supply APR",
@@ -278,6 +300,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               data: [200, 300, 250, 400, 390, 500, 700],
             },
           ];
+          weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -289,16 +312,28 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           ];
           return { newData, newCategories };
         } else if (currentSelectedCoin == 1) {
+          weeklyUsdtData?.aprs && weeklyUsdtData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: weeklyUsdtData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: weeklyUsdtData?.apys,
+                },
+              ]):
           newData = [
             {
               name: "Supply APR",
-              data: [200, 300, 250, 400, 390, 500, 700],
+              data: [100, 200, 250, 400, 390, 500, 700],
             },
             {
               name: "Borrow Apr",
-              data: [300, 400, 350, 500, 490, 600, 800],
+              data: [700, 400, 250, 600, 490, 400, 800],
             },
           ];
+          weeklyUsdtData?.dates ? newCategories=weeklyUsdtData?.dates :
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -310,6 +345,17 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           ];
           return { newData, newCategories };
         } else if (currentSelectedCoin == 2) {
+          weeklyUsdcData?.aprs && weeklyUsdcData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: weeklyUsdcData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: weeklyUsdcData?.apys,
+                },
+              ]):
           newData = [
             {
               name: "Supply APR",
@@ -320,6 +366,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               data: [700, 400, 250, 600, 490, 400, 800],
             },
           ];
+          weeklyUsdcData?.dates ? newCategories=weeklyUsdcData?.dates :
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -331,16 +378,28 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           ];
           return { newData, newCategories };
         } else if (currentSelectedCoin == 3) {
+          weeklyEthData?.aprs && weeklyEthData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: weeklyEthData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: weeklyEthData?.apys,
+                },
+              ]):
           newData = [
             {
               name: "Supply APR",
-              data: [200, 300, 250, 400, 390, 500, 700],
+              data: [100, 400, 250, 300, 390, 500, 800],
             },
             {
               name: "Borrow Apr",
-              data: [300, 400, 350, 500, 490, 600, 800],
+              data: [300, 400, 350, 300, 490, 500, 800],
             },
           ];
+          weeklyEthData?.dates ? newCategories=weeklyEthData?.dates :
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -352,6 +411,17 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           ];
           return { newData, newCategories };
         } else if (currentSelectedCoin == 4) {
+          weeklyDaiData?.aprs && weeklyDaiData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: weeklyDaiData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: weeklyDaiData?.apys,
+                },
+              ]):
           newData = [
             {
               name: "Supply APR",
@@ -362,6 +432,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               data: [300, 400, 350, 300, 490, 500, 800],
             },
           ];
+          weeklyDaiData?.dates ? newCategories=weeklyDaiData?.dates :
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -828,7 +899,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
