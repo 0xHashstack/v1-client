@@ -4,6 +4,11 @@ import { Box, Button } from "@chakra-ui/react";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 import { useSelector } from "react-redux";
 import {
+  selectDailyBTCData,
+  selectDailyDAIData,
+  selectDailyETHData,
+  selectDailyUSDCData,
+  selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
@@ -15,6 +20,8 @@ import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 
 const SupplyChart = () => {
+  
+
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
     useState(0);
   const [chartData, setChartData] = useState([
@@ -23,7 +30,8 @@ const SupplyChart = () => {
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
-  const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
+
+  const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5]);
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -42,10 +50,15 @@ const SupplyChart = () => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const weeklyBtcData = useSelector(selectDailyBTCData);
+  const weeklyEthData = useSelector(selectDailyETHData);
+  const weeklyUsdtData = useSelector(selectDailyUSDTData);
+  const weeklyUsdcData = useSelector(selectDailyUSDCData);
+  const weeklyDaiData = useSelector(selectDailyDAIData);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
-  // console.log(usdtData?.supplyAmounts, "data protocol");
+  console.log(daiData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
-
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option
     // Replace this with your actual implementation
@@ -132,52 +145,81 @@ const SupplyChart = () => {
             ]);
         break;
       case 1:
-        newData = [
-          {
-            name: "BTC",
-            data: [
-              10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
-              10000000000, 4000000000,
-            ],
-          },
-          {
-            name: "ETH",
-            data: [
-              30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
-              10000000000, 1000000000,
-            ],
-          },
-          {
-            name: "USDT",
-            data: [
-              40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
-              50000000000, 1300000000,
-            ],
-          },
-          {
-            name: "USDC",
-            data: [
-              50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
-              11000000000, 430000000,
-            ],
-          },
-          {
-            name: "DAI",
-            data: [
-              17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
-              10000000000, 4000000000,
-            ],
-          },
-        ];
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        weeklyBtcData?.supplyAmounts &&
+        weeklyEthData?.supplyAmounts &&
+        weeklyUsdtData?.supplyAmounts &&
+        weeklyUsdcData?.supplyAmounts &&
+        weeklyDaiData?.supplyAmounts
+          ? (newData = [
+              {
+                name: "BTC",
+                data: weeklyBtcData?.supplyAmounts,
+              },
+              {
+                name: "ETH",
+                data: weeklyEthData.supplyAmounts,
+              },
+              {
+                name: "USDT",
+                data: weeklyUsdtData.supplyAmounts,
+              },
+              {
+                name: "USDC",
+                data: weeklyUsdcData.supplyAmounts,
+              },
+              {
+                name: "DAI",
+                data: weeklyDaiData.supplyAmounts,
+              },
+            ])
+          : (newData = [
+              {
+                name: "BTC",
+                data: [
+                  10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
+                  10000000000, 4000000000,
+                ],
+              },
+              {
+                name: "ETH",
+                data: [
+                  30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
+                  10000000000, 1000000000,
+                ],
+              },
+              {
+                name: "USDT",
+                data: [
+                  40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
+                  50000000000, 1300000000,
+                ],
+              },
+              {
+                name: "USDC",
+                data: [
+                  50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
+                  11000000000, 430000000,
+                ],
+              },
+              {
+                name: "DAI",
+                data: [
+                  17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
+                  10000000000, 4000000000,
+                ],
+              },
+            ]);
+        weeklyBtcData?.dates
+          ? (newCategories = weeklyBtcData?.dates)
+          : (newCategories = [
+              new Date("2023-07-01").getTime(),
+              new Date("2023-07-02").getTime(),
+              new Date("2023-07-03").getTime(),
+              new Date("2023-07-04").getTime(),
+              new Date("2023-07-05").getTime(),
+              new Date("2023-07-06").getTime(),
+              new Date("2023-07-07").getTime(),
+            ]);
         break;
       case 2:
         //y data axis
@@ -301,16 +343,14 @@ const SupplyChart = () => {
   };
 
   const splineChartData = {
-    series: chartData.map((data) => ({
-      ...data,
-      fillOpacity: 1, // Set fillOpacity to 1 for each series data
-    })),
+    series: chartData,
+ // Set fillOpacity to 1 for each series data
     options: {
       chart: {
         toolbar: {
           show: false,
         },
-        stacked:true,
+        stacked: true,
       },
       dataLabels: {
         position: "bottom",
@@ -351,7 +391,7 @@ const SupplyChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+       min: minValue - 0.05 * minValue,
       },
       // stroke: {
       //   curve: "smooth",
@@ -391,6 +431,7 @@ const SupplyChart = () => {
       },
     },
   };
+  
   const options: ApexOptions = {
     ...splineChartData.options,
     // stroke: {
@@ -454,7 +495,7 @@ const SupplyChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
@@ -531,7 +572,6 @@ const SupplyChart = () => {
           series={splineChartData.series}
           type="area"
           height={350}
-  
         />
       </Box>
     </Box>

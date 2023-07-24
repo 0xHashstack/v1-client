@@ -4,7 +4,7 @@ import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { useContractWrite } from "@starknet-react/core";
 import { useState } from "react";
 
-const useGetTokens = (tokenParam: NativeToken) => {
+const useGetTokens = (tokenParam: NativeToken = "BTC") => {
   const [token, setToken] = useState<NativeToken>(tokenParam);
 
   const {

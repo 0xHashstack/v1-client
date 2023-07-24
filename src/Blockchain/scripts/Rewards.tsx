@@ -7,13 +7,17 @@ import governorAbi from "../abi_new/governor_abi.json";
 import {
   diamondAddress,
   getProvider,
+  getRTokenFromAddress,
   metricsContractAddress,
+  stakingContractAddress,
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount } from "../utils/utils";
 // import { useContractWrite } from "@starknet-react/core";
 import { useState } from "react";
 import { RToken } from "../interfaces/interfaces";
+import { useAccount } from "@starknet-react/core";
+// const { address } = useAccount();
 export async function getrTokensMinted(rToken: any, amount: any) {
   // console.log("getRtokensminted", rToken, amount);
 
@@ -134,10 +138,31 @@ export async function getMinimumDepositAmount(
       tokenDecimalsMap[tokenName]
     );
     // console.log("getMinimumDepositAmount ", res, result);
-    return result;
+    return res;
   } catch (err) {
     console.log(err, "err in getMinimumDepositAmount");
   }
+}
+
+export async function getUserStakingShares(address: string, tokenName: RToken) {
+  try {
+    const provider = getProvider();
+    const stakingContract = new Contract(
+      stakingAbi,
+      stakingContractAddress,
+      provider
+    );
+    const result = await stakingContract.call("get_user_staking_shares", [
+      address,
+      tokenAddressMap[tokenName],
+    ]);
+    const res = parseAmount(
+      uint256.uint256ToBN(result?.user_staking_share).toString(),
+      tokenDecimalsMap[tokenName]
+    );
+    // console.log("getUserStakingShares ", res);
+    return res;
+  } catch (err) {}
 }
 
 // const userTokensMinted=()=>{

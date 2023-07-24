@@ -71,7 +71,7 @@ import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useToast } from "@chakra-ui/react";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
@@ -95,11 +95,7 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
-  coin = {
-    name: "BTC",
-    icon: "mdi-bitcoin",
-    symbol: "WBTC",
-  },
+  coin,
   backGroundOverLay,
   currentSupplyAPR,
   setCurrentSupplyAPR,
@@ -210,31 +206,39 @@ const SupplyModal = ({
   // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
+      ? 
+        parseAmount(
+          uint256.uint256ToBN(
+            walletBalances[coin?.name]?.dataBalanceOf?.balance
+          ),
+          tokenDecimalsMap[coin?.name]
+        
+        )
+      : 0
+  );
+  // useEffect(()=>{
+  //   console.log(
+  //     Number(parseAmount(
+  //       uint256.uint256ToBN(
+  //         walletBalances[coin?.name]?.dataBalanceOf?.balance
+  //       ),
+  //       tokenDecimalsMap[coin?.name]
+  //     )),currentSelectedCoin,"coin bug"
+  //   );
+  // },[currentSelectedCoin,coin])
+  useEffect(() => {
+    setwalletBalance(
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
+      ? 
+          parseAmount(
             uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
             ),
             tokenDecimalsMap[coin?.name]
+  
           )
-        )
       : 0
-  );
-  useEffect(() => {
-    if (currentSelectedCoin == coin?.name) {
-      setwalletBalance(
-        walletBalances[coin?.name]?.statusBalanceOf === "success"
-          ? Number(
-              BNtoNum(
-                uint256.uint256ToBN(
-                  walletBalances[coin?.name]?.dataBalanceOf?.balance
-                ),
-                tokenDecimalsMap[coin?.name]
-              )
-            )
-          : 0
-      );
-    }
+    );
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   // useEffect(()=>{
@@ -683,13 +687,13 @@ const SupplyModal = ({
     setIsChecked(true);
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
+        ?
+            parseAmount(
               uint256.uint256ToBN(
                 walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
               tokenDecimalsMap[coin?.name]
-            )
+            
           )
         : 0
     );
@@ -782,21 +786,28 @@ const SupplyModal = ({
                   >
                     Supply Market
                   </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="Supply market refers to the crypto currency tokens selected to deposit on the Hashstack protocol"
-                    bg="#24292F"
-                    fontSize={"smaller"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
+                  <Box>
+                    <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label="Supply market refers to the crypto currency tokens selected to deposit on the Hashstack protocol"
+                      bg="#101216"
+                      fontSize="11px"
+                      fontWeight={"thin"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      maxW="222px"
+                      mt="14px"
+                    >
+                      <Box>
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Box>
                 </Text>
                 <Box
                   display="flex"
@@ -945,11 +956,15 @@ const SupplyModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Amount refers to the unit oc coins you are willing to supply"
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize="11px"
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
                   >
                     <Box>
                       <InfoIcon />
@@ -1268,11 +1283,15 @@ const SupplyModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="refer to the charges or costs incurred when completing a transactions"
-                      bg="#24292F"
-                      fontSize={"smaller"}
+                      bg="#101216"
+                      fontSize={"11px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      arrowShadowColor="#2B2F35"
+                      maxW="222px"
                     >
                       <Box>
                         <InfoIcon />
@@ -1311,11 +1330,15 @@ const SupplyModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                      bg="#24292F"
-                      fontSize={"smaller"}
+                      bg="#101216"
+                      fontSize={"11px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      arrowShadowColor="#2B2F35"
+                      maxW="222px"
                     >
                       <Box>
                         <InfoIcon />
@@ -1349,14 +1372,20 @@ const SupplyModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right"
+                      placement="right-end"
                       boxShadow="dark-lg"
                       label="Supply APR (Annual Percentage Rate) refers to the annualized interest rate earned on supplied funds."
-                      bg="#24292F"
-                      fontSize={"smaller"}
+                      bg="#101216"
+                      fontSize={"11px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      arrowShadowColor="#2B2F35"
+                      // arrowPadding={2}
+                      maxW="222px"
+                      // marginTop={20}
                     >
                       <Box>
                         <InfoIcon />

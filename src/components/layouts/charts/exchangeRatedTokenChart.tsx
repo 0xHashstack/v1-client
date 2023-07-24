@@ -6,6 +6,11 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectDailyBTCData,
+  selectDailyDAIData,
+  selectDailyETHData,
+  selectDailyUSDCData,
+  selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
@@ -62,6 +67,11 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const weeklyBtcData=useSelector(selectDailyBTCData);
+  const weeklyEthData=useSelector(selectDailyETHData);
+  const weeklyUsdtData=useSelector(selectDailyUSDTData);
+  const weeklyUsdcData=useSelector(selectDailyUSDCData);
+  const weeklyDaiData=useSelector(selectDailyDAIData);
   const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
   // useEffect(()=>{
 
@@ -95,38 +105,29 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
 
     switch (aprByMarket) {
       case 0:
-        if (currentSelectedCoin == 0) {
-          btcData?.dTokenExchangeRates
-            ? (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: btcData?.dTokenExchangeRates,
-                },
-              ])
-            : (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: [
-                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                  ],
-                },
-              ]);
-          btcData?.dates
-            ? (newCategories = btcData?.dates)
-            : (newCategories = [
-                1689152545000, 1689156145000, 1689159745000, 1689163345000,
-                1689166945000, 1689170545000, 1689174145000, 1689177745000,
-                1689181345000, 1689184945000, 1689188545000, 1689192145000,
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 1) {
           usdtData?.dTokenExchangeRates
             ? (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: usdtData?.dTokenExchangeRates,
-                },
-              ])
+              {
+                name: "BTC",
+                data: btcData?.dTokenExchangeRates,
+              },
+              {
+                name: "ETH",
+                data: ethData?.dTokenExchangeRates,
+              },
+              {
+                name: "USDT",
+                data: usdtData?.dTokenExchangeRates,
+              },
+              {
+                name: "USDC",
+                data: usdcData?.dTokenExchangeRates,
+              },
+              {
+                name: "DAI",
+                data: daiData?.dTokenExchangeRates,
+              },
+            ])
             : (newData = [
                 {
                   name: "Exchange Rate",
@@ -142,88 +143,38 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
                 1689166945000, 1689170545000, 1689174145000, 1689177745000,
                 1689181345000, 1689184945000, 1689188545000, 1689192145000,
               ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 2) {
-          usdcData?.dTokenExchangeRates
-            ? (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: usdcData?.dTokenExchangeRates,
-                },
-              ])
-            : (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: [
-                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                  ],
-                },
-              ]);
-          usdcData?.dates
-            ? (newCategories = usdcData?.dates)
-            : (newCategories = [
-                1689152545000, 1689156145000, 1689159745000, 1689163345000,
-                1689166945000, 1689170545000, 1689174145000, 1689177745000,
-                1689181345000, 1689184945000, 1689188545000, 1689192145000,
-              ]);
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 3) {
-          ethData?.dTokenExchangeRates
-            ? (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: ethData?.dTokenExchangeRates,
-                },
-              ])
-            : (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: [
-                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                  ],
-                },
-              ]);
-          ethData?.dates
-            ? (newCategories = ethData?.dates)
-            : (newCategories = [
-                1689152545000, 1689156145000, 1689159745000, 1689163345000,
-                1689166945000, 1689170545000, 1689174145000, 1689177745000,
-                1689181345000, 1689184945000, 1689188545000, 1689192145000,
-              ]);
-        } else {
-          daiData?.dTokenExchangeRates
-            ? (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: daiData?.dTokenExchangeRates,
-                },
-              ])
-            : (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: [
-                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
-                  ],
-                },
-              ]);
-          daiData?.dates
-            ? (newCategories = daiData?.dates)
-            : (newCategories = [
-                1689152545000, 1689156145000, 1689159745000, 1689163345000,
-                1689166945000, 1689170545000, 1689174145000, 1689177745000,
-                1689181345000, 1689184945000, 1689188545000, 1689192145000,
-              ]);
-        }
-        break;
-
+          break;
       case 1:
-        if (currentSelectedCoin == 0) {
+          weeklyBtcData?.dTokenExchangeRates ?
+          newData = [
+            {
+              name: "BTC",
+              data: weeklyBtcData?.dTokenExchangeRates,
+            },
+            {
+              name: "ETH",
+              data: weeklyEthData?.dTokenExchangeRates,
+            },
+            {
+              name: "USDT",
+              data: weeklyUsdtData?.dTokenExchangeRates,
+            },
+            {
+              name: "USDC",
+              data: weeklyUsdcData?.dTokenExchangeRates,
+            },
+            {
+              name: "DAI",
+              data: weeklyDaiData?.dTokenExchangeRates,
+            },
+          ]:        
           newData = [
             {
               name: "Exchange Rate",
               data: [300, 400, 350, 500, 490, 600, 800],
             },
           ];
+          weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -233,76 +184,6 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             new Date("2023-07-06").getTime(),
             new Date("2023-07-07").getTime(),
           ];
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 1) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [200, 300, 250, 400, 390, 500, 700],
-            },
-          ];
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 2) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [100, 200, 250, 400, 390, 500, 700],
-            },
-          ];
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 3) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [200, 300, 250, 400, 390, 500, 700],
-            },
-          ];
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
-          return { newData, newCategories };
-        } else if (currentSelectedCoin == 4) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [100, 400, 250, 300, 390, 500, 800],
-            },
-          ];
-          newCategories = [
-            new Date("2023-07-01").getTime(),
-            new Date("2023-07-02").getTime(),
-            new Date("2023-07-03").getTime(),
-            new Date("2023-07-04").getTime(),
-            new Date("2023-07-05").getTime(),
-            new Date("2023-07-06").getTime(),
-            new Date("2023-07-07").getTime(),
-          ];
-          return { newData, newCategories };
-        }
         break;
       case 2:
         //y data axis
@@ -545,6 +426,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
 
     return { newData, newCategories };
   };
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
   const splineChartData = {
     series: chartData,
     options: {
@@ -552,6 +434,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         toolbar: {
           show: false,
         },
+        stacked:true,
       },
       dataLabels: {
         enabled: false,
@@ -562,10 +445,6 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           return numberFormatter(val); // Display the data value as the label
         },
         position: "top",
-      },
-      markers: {
-        size: 2,
-        colors: ["#fff"],
       },
       xaxis: {
         type: "datetime" as const, // Set x-axis type to datetime
@@ -584,6 +463,9 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         },
         categories: xAxisCategories,
       },
+      fill: {
+        type: "solid",
+      },
       yaxis: {
         labels: {
           formatter: function (value: any) {
@@ -595,7 +477,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue,
       },
       plotOptions: {
         bar: {
@@ -606,7 +488,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           },
         },
       },
-      colors: ["#04aacf"],
+      colors: splineColor,
       grid: {
         borderColor: "#2B2F35",
         padding: {
@@ -715,7 +597,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
@@ -874,101 +756,6 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             </Text>
           </Box>
         </Box> */}
-        <Box
-          display="flex"
-          border="1px"
-          borderColor="#2B2F35"
-          justifyContent="space-between"
-          w="35%"
-          py="2"
-          pl="3"
-          pr="3"
-          mb="1rem"
-          mt="0.3rem"
-          borderRadius="md"
-          className="navbar"
-          cursor="pointer"
-          onClick={() => {
-            handleDropdownClick("coinSelectedExchangeRateDToken");
-            // if (transactionStarted) {
-            //   return;
-            // } else {
-            // }
-          }}
-        >
-          <Box display="flex" gap="1">
-            <Box p="1">{getCoin(currentSelectedCoin)}</Box>
-            <Text color="white">{coins[currentSelectedCoin]}</Text>
-          </Box>
-
-          <Box pt="1" className="navbar-button">
-            {activeModal ? <ArrowUp /> : <DropdownUp />}
-          </Box>
-          {modalDropdowns.coinSelectedExchangeRateDToken && (
-            <Box
-              w="full"
-              left="0"
-              bg="#03060B"
-              py="2"
-              className="dropdown-container"
-              boxShadow="dark-lg"
-            >
-              {coins?.map((coin: any, index: number) => {
-                return (
-                  <Box
-                    key={index}
-                    as="button"
-                    w="full"
-                    // display="flex"
-                    alignItems="center"
-                    gap="1"
-                    pr="2"
-                    display="flex"
-                    onClick={() => {
-                      setCurrentSelectedCoin(index);
-                      // setAsset(coin);
-                      // setCurrentSupplyAPR(
-                      //   coinIndex.find(
-                      //     (curr: any) => curr?.token === coin
-                      //   )?.idx
-                      // );
-                      // console.log(coin,"coin in supply modal")
-
-                      dispatch(setCoinSelectedSupplyModal(coin));
-                    }}
-                  >
-                    {index === currentSelectedCoin && (
-                      <Box
-                        w="3px"
-                        h="28px"
-                        bg="#0C6AD9"
-                        borderRightRadius="md"
-                      ></Box>
-                    )}
-                    <Box
-                      w="full"
-                      display="flex"
-                      py="5px"
-                      pl={`${index === currentSelectedCoin ? "1" : "5"}`}
-                      pr="6px"
-                      gap="1"
-                      justifyContent="space-between"
-                      bg={`${
-                        index === currentSelectedCoin ? "#0C6AD9" : "inherit"
-                      }`}
-                      borderRadius="md"
-                    >
-                      <Box display="flex">
-                        <Box p="1">{getCoin(coins.indexOf(coin))}</Box>
-                        <Text color="white">{coin}</Text>
-                      </Box>
-                    </Box>
-                  </Box>
-                );
-              })}
-            </Box>
-          )}
-        </Box>
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}

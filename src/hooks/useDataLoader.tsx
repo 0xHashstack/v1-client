@@ -1,7 +1,10 @@
 import { IDeposit, ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
-import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
+import {
+  OraclePrice,
+  getOraclePrices,
+} from "@/Blockchain/scripts/getOraclePrices";
 import {
   getProtocolReserves,
   getProtocolStats,
@@ -27,6 +30,7 @@ import {
   selectUserDepositsCount,
   selectUserInfoCount,
   selectUserLoansCount,
+  selectWeeklyDataCount,
   selectYourMetricsBorrowCount,
   selectYourMetricsSupplyCount,
   selectprotocolReservesCount,
@@ -45,6 +49,7 @@ import {
   setUserInfoCount,
   setUserLoansCount,
   setUserUnspentLoans,
+  setWeeklyDataCount,
   setYourMetricsBorrowCount,
   setYourMetricsSupplyCount,
 } from "@/store/slices/userAccountSlice";
@@ -68,6 +73,11 @@ import {
   setHourlyETHData,
   setYourMetricsSupply,
   setYourMetricsBorrow,
+  setDailyDAIData,
+  setDailyBTCData,
+  setDailyETHData,
+  setDailyUSDCData,
+  setDailyUSDTData,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -93,7 +103,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
-import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import {
+  getMinimumDepositAmount,
+  getUserStakingShares,
+} from "@/Blockchain/scripts/Rewards";
 import {
   tokenAddressMap,
   tokenDecimalsMap,
@@ -134,6 +147,7 @@ const useDataLoader = () => {
   const avgBorrowAPRCount = useSelector(selectAvgBorrowAprCount);
   const yourMetricsBorrowCount = useSelector(selectYourMetricsBorrowCount);
   const yourMetricsSupplyCount = useSelector(selectYourMetricsSupplyCount);
+  const weeklyDataCount = useSelector(selectWeeklyDataCount);
 
   const dispatch = useDispatch();
   const Data: any = [];
@@ -171,8 +185,10 @@ const useDataLoader = () => {
   //     console.log("error fetching aprByMarket data ", err);
   //   }
   // }, []);
+
   useEffect(() => {
-    const fetchHourlyBTCData = async () => {
+    console.log("fetchHourlyData called ", oraclePrices);
+    const fetchHourlyData = async () => {
       try {
         // console.log("HIII")
         // if(hourlyBTCData!=null){
@@ -238,34 +254,46 @@ const useDataLoader = () => {
                 // console.log(i,"inside loop")
                 const token = response?.[i].tokenName;
                 const supplyAmount: number =
-                  Number(response?.[i].supplyAmount) /
-                  Math.pow(10, tokenDecimalsMap[token]);
+                  (Number(response?.[i].supplyAmount) /
+                    Math.pow(10, tokenDecimalsMap[token])) *
+                  oraclePrices?.find(
+                    (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                  )?.price;
                 const borrowAmount: number =
-                  Number(response?.[i].borrowAmount) /
-                  Math.pow(10, tokenDecimalsMap[token]);
+                  (Number(response?.[i].borrowAmount) /
+                    Math.pow(10, tokenDecimalsMap[token])) *
+                  oraclePrices?.find(
+                    (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                  )?.price;
                 const tvlAmount: number =
-                  Number(response?.[i].tvlAmount) / Math.pow(10, 8);
+                  Number(response?.[i].tvlAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
                 // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
                 // console.log(response?.[i].tokenName)
                 // const supplyAmount1=etherToWeiBN(amount,token)
                 // console.log(supplyAmount1,"aamount")
                 amounts?.push(supplyAmount);
                 borrowAmounts?.push(borrowAmount);
-                tvlAmounts?.push(tvlAmount);
+                // tvlAmounts?.push(tvlAmount);
+                tvlAmounts?.push(supplyAmount);
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);
-                supplyRates?.push(response?.[i].supplyRate);
-                borrowRates?.push(response?.[i].borrowRate);
+                supplyRates?.push(response?.[i].supplyRate / 100);
+                borrowRates?.push(response?.[i].borrowRate / 100);
                 supplyCounts?.push(response?.[i].supplyCount);
                 borrowCounts?.push(response?.[i].borrowCount);
-                utilRates?.push(response?.[i].utilRate);
-                rTokenExchangeRates?.push(response?.[i].rTokenExchangeRate);
-                dTokenExchangeRates?.push(response?.[i].dTokenExchangeRate);
+                utilRates?.push(response?.[i].utilRate / 10000);
+                rTokenExchangeRates?.push(
+                  1 / (response?.[i].rTokenExchangeRate / 10000)
+                );
+                dTokenExchangeRates?.push(
+                  1 / (response?.[i].dTokenExchangeRate / 10000)
+                );
                 totalTransactions?.push(response?.[i].totalTransactions);
                 totalAccounts?.push(response?.[i].totalAccounts);
                 aprs?.push(responseApr?.[i].APR);
                 apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(responseTotal?.[i].totalPlatformURM);
+                totalUrm?.push(1 - responseTotal?.[i].totalPlatformURM / 10000);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -286,6 +314,11 @@ const useDataLoader = () => {
                 apys: apys,
                 totalUrm: totalUrm,
               };
+              // console.log(
+              //   "backend loop daily - ",
+              //   response?.[0]?.tokenName,
+              //   data
+              // );
               // console.log(data,"data in data loader")
               // console.log(btcData,"Data gone")
               if (j == 0) {
@@ -311,10 +344,167 @@ const useDataLoader = () => {
         console.log(err, "err in hourly data");
       }
     };
-    if (hourlyDataCount < transactionRefresh) {
-      fetchHourlyBTCData();
+    if (hourlyDataCount < transactionRefresh && oraclePrices) {
+      fetchHourlyData();
     }
-  }, []);
+  }, [oraclePrices]);
+  useEffect(() => {
+    const fetchDailyData = async () => {
+      try {
+        // console.log("HIII")
+        // if(hourlyBTCData!=null){
+        //   return;
+        // }
+        const promises = [
+          OffchainAPI.httpGet(`/api/metrics/tvl/weekly/DAI`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/weekly/BTC`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/weekly/USDT`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/weekly/USDC`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/weekly/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/DAI`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/BTC`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/USDT`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/USDC`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/urm_platform/weekly`),
+        ];
+        Promise.allSettled([...promises]).then((val) => {
+          // console.log("backend data weekly - ", val);
+          val.map((response, idx) => {
+            const res = response?.status != "rejected" ? response?.value : "0";
+          });
+          for (var j = 0; j < 5; j++) {
+            // console.log(j,"for loop")
+            const responseA = val?.[j] ? val?.[j] : null;
+            const responseB = val?.[j + 5] ? val?.[j + 5] : null;
+            const responseC = val?.[10] ? val?.[10] : null;
+            // if (
+            //   val[j]?.status != "rejected" &&
+            //   val[j + 5]?.status != "rejected" &&
+            //   val[10]?.status != "rejected"
+            // ) {
+            const responseTotal =
+              responseC?.status != "rejected" ? responseC?.value : null;
+            const response =
+              responseA?.status != "rejected" ? responseA?.value : null;
+            const responseApr =
+              responseB?.status != "rejected" ? responseB?.value : null;
+            // console.log(val, response, "response data", responseApr);
+            // if (!response) {
+            //   return;
+            // }
+            // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
+            if (response && responseApr && responseTotal) {
+              const amounts: any = [];
+              const borrowAmounts: any = [];
+              const dates: any = [];
+              const supplyRates: any = [];
+              const borrowRates: any = [];
+              const tvlAmounts: any = [];
+              const supplyCounts: any = [];
+              const borrowCounts: any = [];
+              const utilRates: any = [];
+              const rTokenExchangeRates: any = [];
+              const dTokenExchangeRates: any = [];
+              const totalTransactions: any = [];
+              const totalAccounts: any = [];
+              const aprs: any = [];
+              const apys: any = [];
+              const totalUrm: any = [];
+              for (var i = 0; i < response?.length; i++) {
+                // console.log(i,"inside loop")
+                const token = response?.[i].tokenName;
+                const supplyAmount: number =
+                  (Number(response?.[i].supplyAmount) /
+                    Math.pow(10, tokenDecimalsMap[token])) *
+                  oraclePrices?.find(
+                    (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                  )?.price;
+                const borrowAmount: number =
+                  (Number(response?.[i].borrowAmount) /
+                    Math.pow(10, tokenDecimalsMap[token])) *
+                  oraclePrices?.find(
+                    (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                  )?.price;
+                const tvlAmount: number =
+                  Number(response?.[i].tvlAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
+                // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
+                // console.log(response?.[i].tokenName)
+                // const supplyAmount1=etherToWeiBN(amount,token)
+                // console.log(supplyAmount1,"aamount")
+                amounts?.push(supplyAmount);
+                borrowAmounts?.push(borrowAmount);
+                // tvlAmounts?.push(tvlAmount);
+                tvlAmounts?.push(supplyAmount);
+                // const dateObj = new Date(response?.data[i].Datetime)
+                dates?.push(response?.[i].Datetime);
+                supplyRates?.push(response?.[i].supplyRate / 100);
+                borrowRates?.push(response?.[i].borrowRate / 100);
+                supplyCounts?.push(response?.[i].supplyAccounts);
+                borrowCounts?.push(response?.[i].borrowAccounts);
+                utilRates?.push(response?.[i].utilRate / 10000);
+                rTokenExchangeRates?.push(
+                  response?.[i].rTokenExchangeRate / 10000
+                );
+                dTokenExchangeRates?.push(
+                  response?.[i].dTokenExchangeRate / 10000
+                );
+                totalTransactions?.push(response?.[i].totalTransactions);
+                totalAccounts?.push(response?.[i].totalAccounts);
+                aprs?.push(responseApr?.[i].APR);
+                apys?.push(responseApr?.[i].APY);
+                totalUrm?.push(1 - responseTotal?.[i].totalPlatformURM / 10000);
+              }
+              // console.log(dates,"Dates")
+              const data = {
+                dates: dates,
+                supplyAmounts: amounts,
+                borrowAmounts: borrowAmounts,
+                tvlAmounts: tvlAmounts,
+                supplyRates: supplyRates,
+                borrowRates: borrowRates,
+                supplyCounts: supplyCounts,
+                borrowCounts: borrowCounts,
+                utilRates: utilRates,
+                rTokenExchangeRates: rTokenExchangeRates,
+                dTokenExchangeRates: dTokenExchangeRates,
+                totalTransactions: totalTransactions,
+                totalAccounts: totalAccounts,
+                aprs: aprs,
+                apys: apys,
+                totalUrm: totalUrm,
+              };
+              // console.log("backend looping 2 -", data);
+              // console.log(data,"data in data loader")
+              // console.log(btcData,"Data gone")
+              if (j == 0) {
+                dispatch(setDailyDAIData(data));
+              } else if (j == 1) {
+                dispatch(setDailyBTCData(data));
+              } else if (j == 2) {
+                dispatch(setDailyUSDTData(data));
+              } else if (j == 3) {
+                dispatch(setDailyUSDCData(data));
+              } else if (j == 4) {
+                dispatch(setDailyETHData(data));
+              }
+            }
+          }
+          const count = getTransactionCount();
+          dispatch(setWeeklyDataCount(count));
+          // }
+        });
+        // const count = getTransactionCount();
+        // dispatch(setHourlyDataCount(count));
+      } catch (err) {
+        console.log(err, "err in hourly data");
+      }
+    };
+    if (weeklyDataCount < transactionRefresh && oraclePrices) {
+      fetchDailyData();
+    }
+  }, [oraclePrices]);
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {
