@@ -370,7 +370,7 @@ const SwapModal = ({
     setSwapLoanId(
       currentBorrowId?.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
     );
-    setCurrentSelectedCoin('Select a market')
+    setCurrentSelectedCoin("Select a market");
   }, [currentBorrowId]);
   // console.log(onOpen)
   useEffect(() => {
@@ -509,11 +509,15 @@ const SwapModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="select market refers to the crypto currency tokens selected to swap on the protocol"
-                  bg="#24292F"
-                  fontSize={"smaller"}
+                  bg="#101216"
+                  fontSize={"11px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
+                  border="1px solid"
+                  borderColor="#2B2F35"
+                  arrowShadowColor="#2B2F35"
+                  maxW="252px"
                 >
                   <Box>
                     <InfoIcon />
@@ -622,11 +626,15 @@ const SwapModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="Borrow ID refers to unique identification number assigned to a specific loan within the protocol"
-                  bg="#24292F"
-                  fontSize={"smaller"}
+                  bg="#101216"
+                  fontSize={"11px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
+                  border="1px solid"
+                  borderColor="#2B2F35"
+                  arrowShadowColor="#2B2F35"
+                  maxW="222px"
                 >
                   <Box>
                     <InfoIcon />
@@ -747,11 +755,15 @@ const SwapModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="Borrowed amount refers to the unit of crypto coins you had borrowed from the protocol"
-                  bg="#24292F"
-                  fontSize={"smaller"}
+                  bg="#101216"
+                  fontSize={"11px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
+                  border="1px solid"
+                  borderColor="#2B2F35"
+                  arrowShadowColor="#2B2F35"
+                  maxW="222px"
                 >
                   <Box>
                     <InfoIcon />
@@ -814,11 +826,15 @@ const SwapModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Refers to the app where loan should be spent."
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
                   >
                     <Box ml="0.1rem" mt="0.2rem">
                       <InfoIcon />
@@ -956,11 +972,15 @@ const SwapModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="refer to the charges or costs incurred when completing a transactions"
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
                   >
                     <Box ml="0.2rem" mt="0.2rem">
                       <InfoIcon />
@@ -991,11 +1011,15 @@ const SwapModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
                   >
                     <Box ml="0.2rem" mt="0.2rem">
                       <InfoIcon />
@@ -1026,11 +1050,15 @@ const SwapModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
                   >
                     <Box ml="0.2rem" mt="0.2rem">
                       <InfoIcon />
@@ -1073,14 +1101,18 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="right"
+                    placement="right-end"
                     boxShadow="dark-lg"
                     label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="272px"
                   >
                     <Box ml="0.2rem" mt="0.2rem">
                       <InfoIcon />
@@ -1123,14 +1155,18 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="right"
+                    placement="right-end"
                     boxShadow="dark-lg"
                     label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
                   >
                     <Box ml="0.2rem" mt="0.2rem">
                       <InfoIcon />
