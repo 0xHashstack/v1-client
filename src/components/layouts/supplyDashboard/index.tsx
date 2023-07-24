@@ -129,6 +129,11 @@ const SupplyDashboard = ({
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
   let userDeposits = useSelector(selectUserDeposits);
   let reduxProtocolStats = useSelector(selectProtocolStats);
+  const [coinPassed, setCoinPassed] = useState({
+    name: "BTC",
+    icon: "mdi-bitcoin",
+    symbol: "WBTC",
+  });
   const dispatch = useDispatch();
   const handleStatusHover = (idx: string) => {
     setStatusHoverIndex(idx);
@@ -843,6 +848,7 @@ const SupplyDashboard = ({
                 supplyAPRs={supplyAPRs}
                 currentSupplyAPR={currentSupplyAPR}
                 setCurrentSupplyAPR={setCurrentSupplyAPR}
+                coin={coinPassed}
               />
             </Box>
             {/* <Box

@@ -20,8 +20,6 @@ import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 
 const SupplyChart = () => {
-  
-
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
     useState(0);
   const [chartData, setChartData] = useState([
@@ -344,7 +342,7 @@ const SupplyChart = () => {
 
   const splineChartData = {
     series: chartData,
- // Set fillOpacity to 1 for each series data
+    // Set fillOpacity to 1 for each series data
     options: {
       chart: {
         toolbar: {
@@ -359,7 +357,7 @@ const SupplyChart = () => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return numberFormatter(val); // Display the data value as the label
+          return "$" + numberFormatter(val); // Display the data value as the label
         },
       },
 
@@ -383,7 +381,7 @@ const SupplyChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return "$" + numberFormatter(value);
           },
           style: {
             colors: "#6E7681",
@@ -391,7 +389,7 @@ const SupplyChart = () => {
             fontWeight: "400",
           },
         },
-       min: minValue - 0.05 * minValue,
+        min: minValue - 0.05 * minValue,
       },
       // stroke: {
       //   curve: "smooth",
@@ -431,7 +429,7 @@ const SupplyChart = () => {
       },
     },
   };
-  
+
   const options: ApexOptions = {
     ...splineChartData.options,
     // stroke: {

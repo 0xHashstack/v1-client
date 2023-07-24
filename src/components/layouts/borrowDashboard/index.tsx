@@ -44,6 +44,7 @@ import TableInfoIcon from "../table/tableIcons/infoIcon";
 import TableClose from "../table/tableIcons/close";
 import { setCurrentPage } from "@/store/slices/userAccountSlice";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
 
 export interface ICoin {
   name: string;
@@ -193,6 +194,11 @@ const BorrowDashboard = ({
   // const avgs = useSelector(selectAprAndHealthFactor);
   const [showEmptyNotification, setShowEmptyNotification] = useState(true);
   const avgs = useSelector(selectEffectiveApr);
+  const [coinPassed, setCoinPassed] = useState({
+    name: "BTC",
+    icon: "mdi-bitcoin",
+    symbol: "WBTC",
+  });
   const avgsData: any = [];
   useEffect(() => {
     let temp1: any = [];
@@ -1095,6 +1101,7 @@ const BorrowDashboard = ({
                 borrowAPRs={borrowAPRs}
                 currentBorrowAPR={currentBorrowAPR}
                 setCurrentBorrowAPR={setCurrentBorrowAPR}
+                coin={coinPassed}
               />
             </Box>
             {/* <Box

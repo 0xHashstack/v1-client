@@ -352,7 +352,7 @@ const BorrowChart = () => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return numberFormatter(val); // Display the data value as the label
+          return "$" + numberFormatter(val); // Display the data value as the label
         },
       },
 
@@ -376,7 +376,7 @@ const BorrowChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return "$" + numberFormatter(value);
           },
           style: {
             colors: "#6E7681", // Set the color of the labels

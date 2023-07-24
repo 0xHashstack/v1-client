@@ -21,8 +21,8 @@ const UtilisationRateChart = () => {
     },
   ]);
   const btcData = useSelector(selectHourlyBTCData);
-  const weeklyBtcData=useSelector(selectDailyBTCData);
-  console.log(weeklyBtcData,"week data")
+  const weeklyBtcData = useSelector(selectDailyBTCData);
+  // console.log(weeklyBtcData, "week data");
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
@@ -190,7 +190,7 @@ const UtilisationRateChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value?.toFixed(2);
+            return value?.toFixed(2) + "% ";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -253,7 +253,7 @@ const UtilisationRateChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Utilisation Rate:</Box>
+          <Box mt="auto">Utilisation</Box>
           <Box display="flex" gap="2">
             <Button
               color="#2B2F35"
