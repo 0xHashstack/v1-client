@@ -75,7 +75,7 @@ import WarningIcon from "@/assets/icons/coins/warningIcon";
 import ArrowUp from "@/assets/icons/arrowup";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
-import { useWaitForTransaction } from "@starknet-react/core";
+import { useAccount, useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
@@ -84,7 +84,10 @@ import Image from "next/image";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
-import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
+import {
+  getEstrTokens,
+  getUserStakingShares,
+} from "@/Blockchain/scripts/Rewards";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
@@ -115,8 +118,11 @@ const StakeUnstakeModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
     useState(false);
+  const [stakingShares, setStakingShares] = useState<any>(null);
   let activeTransactions = useSelector(selectActiveTransactions);
   const protocolStats = useSelector(selectProtocolStats);
+
+  const { address } = useAccount();
 
   const {
     rToken,
@@ -313,6 +319,22 @@ const StakeUnstakeModal = ({
       setAsset(coin ? coin?.name : "BTC");
     }
   }, [coin]);
+
+  useEffect(() => {
+    try {
+      const getStakingShares = async () => {
+        if (!address) return;
+        const data = await getUserStakingShares(address, "rUSDT");
+        if (data != null) {
+          setStakingShares(data);
+        }
+      };
+      getStakingShares();
+    } catch (err) {
+      console.log("getStakingShares error ", err);
+    }
+  }, [address]);
+
   const handleStakeTransaction = async () => {
     try {
       // console.log("staking", rToken, rTokenAmount);
@@ -752,7 +774,6 @@ const StakeUnstakeModal = ({
   );
   // console.log(activeModal);
 
-  useEffect(() => {});
   // useEffect(()=>{
   //   const fetchrTokens=async()=>{
   //     const data=await getEstrTokens("rUSDT",30.0);
@@ -2031,11 +2052,8 @@ const StakeUnstakeModal = ({
                                         fontWeight="thin"
                                       >
                                         Staking shares:{" "}
-                                        {userDeposit && userDeposit.length > 0
-                                          ? userDeposit?.find(
-                                              (item: any) =>
-                                                item.rToken == _coin
-                                            )?.rTokenStakedParsed
+                                        {stakingShares
+                                          ? stakingShares
                                           : "loading..."}
                                       </Box>
                                     </Box>
@@ -2187,7 +2205,18 @@ const StakeUnstakeModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              Staking Shares: {unstakeWalletBalance}
+                              Staking Shares:{" "}
+                              {stakingShares ? (
+                                stakingShares
+                              ) : (
+                                <Skeleton
+                                  width="6rem"
+                                  height="1.4rem"
+                                  startColor="#101216"
+                                  endColor="#2B2F35"
+                                  borderRadius="6px"
+                                />
+                              )}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedUnstakeCoin}`}
                               </Text>
@@ -2204,7 +2233,18 @@ const StakeUnstakeModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Staking Shares: {unstakeWalletBalance}
+                            Staking Shares:{" "}
+                            {stakingShares ? (
+                              stakingShares
+                            ) : (
+                              <Skeleton
+                                width="6rem"
+                                height="1.4rem"
+                                startColor="#101216"
+                                endColor="#2B2F35"
+                                borderRadius="6px"
+                              />
+                            )}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedUnstakeCoin}`}
                             </Text>

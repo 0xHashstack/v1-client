@@ -42,11 +42,11 @@ const TotalValueLockedMetrics = () => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
-  const weeklyBtcData=useSelector(selectDailyBTCData);
-  const weeklyEthData=useSelector(selectDailyETHData);
-  const weeklyUsdtData=useSelector(selectDailyUSDTData);
-  const weeklyUsdcData=useSelector(selectDailyUSDCData);
-  const weeklyDaiData=useSelector(selectDailyDAIData);
+  const weeklyBtcData = useSelector(selectDailyBTCData);
+  const weeklyEthData = useSelector(selectDailyETHData);
+  const weeklyUsdtData = useSelector(selectDailyUSDTData);
+  const weeklyUsdcData = useSelector(selectDailyUSDCData);
+  const weeklyDaiData = useSelector(selectDailyDAIData);
   // console.log(btcData,"data tvl")
   useEffect(() => {
     // Fetch data based on selected option
@@ -62,12 +62,13 @@ const TotalValueLockedMetrics = () => {
     fetchData();
   }, [aprByMarket]);
   const tvlamounts: any = [];
+  const tvlAmountsWeekly: any = [];
   // console.log(btcData?.tvlAmounts,"data btc")
   // console.log(ethData?.tvlAmounts,"data eth")
   // console.log(usdtData?.tvlAmounts,"data usdt")
   // console.log(usdcData?.tvlAmounts,"data usdc")
   // console.log(daiData?.tvlAmounts,"data dai")
-  for (var i = 0; i < btcData?.tvlAmounts?.length; i++) {
+  for (let i = 0; i < btcData?.tvlAmounts?.length; i++) {
     var data =
       btcData?.tvlAmounts[i] +
       ethData?.tvlAmounts[i] +
@@ -75,6 +76,15 @@ const TotalValueLockedMetrics = () => {
       usdtData?.tvlAmounts[i] +
       daiData?.tvlAmounts[i];
     tvlamounts.push(data);
+  }
+  for (let i = 0; i < weeklyBtcData?.tvlAmounts?.length; i++) {
+    var data =
+      weeklyBtcData?.tvlAmounts[i] +
+      weeklyEthData?.tvlAmounts[i] +
+      weeklyUsdcData?.tvlAmounts[i] +
+      weeklyUsdtData?.tvlAmounts[i] +
+      weeklyDaiData?.tvlAmounts[i];
+    tvlAmountsWeekly.push(data);
   }
   // console.log(tvlamounts,"amounts");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
@@ -112,29 +122,30 @@ const TotalValueLockedMetrics = () => {
             ]);
         break;
       case 1:
-        weeklyBtcData?.tvlAmounts ?
-        newData = [
-          {
-            name: "Total Value Locked",
-            data: weeklyBtcData?.tvlAmounts,
-          },
-        ]:
-        newData = [
-          {
-            name: "Total Value Locked",
-            data: [40000, 0, 42000, 39000, 44000, 41000, 43000],
-          },
-        ];
-        weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        weeklyBtcData?.tvlAmounts
+          ? (newData = [
+              {
+                name: "Total Value Locked",
+                data: tvlAmountsWeekly,
+              },
+            ])
+          : (newData = [
+              {
+                name: "Total Value Locked",
+                data: [40000, 0, 42000, 39000, 44000, 41000, 43000],
+              },
+            ]);
+        weeklyBtcData?.dates
+          ? (newCategories = weeklyBtcData?.dates)
+          : (newCategories = [
+              new Date("2023-07-01").getTime(),
+              new Date("2023-07-02").getTime(),
+              new Date("2023-07-03").getTime(),
+              new Date("2023-07-04").getTime(),
+              new Date("2023-07-05").getTime(),
+              new Date("2023-07-06").getTime(),
+              new Date("2023-07-07").getTime(),
+            ]);
         break;
       case 2:
         //y data axis

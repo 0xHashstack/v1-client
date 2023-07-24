@@ -99,6 +99,9 @@ export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
 export const metricsContractAddress: string =
   contractsEnv.METRICS_CONTRACT_ADDRESS;
 
+export const stakingContractAddress: string =
+  contractsEnv.peripherals.STAKING_ADDRESS;
+
 export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 
 export const faucetAddress: string = contractsEnv.FAUCET_ADDRESS;

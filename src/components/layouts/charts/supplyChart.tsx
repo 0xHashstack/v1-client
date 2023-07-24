@@ -47,11 +47,11 @@ const SupplyChart = () => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
-  const weeklyBtcData=useSelector(selectDailyBTCData);
-  const weeklyEthData=useSelector(selectDailyETHData);
-  const weeklyUsdtData=useSelector(selectDailyUSDTData);
-  const weeklyUsdcData=useSelector(selectDailyUSDCData);
-  const weeklyDaiData=useSelector(selectDailyDAIData);
+  const weeklyBtcData = useSelector(selectDailyBTCData);
+  const weeklyEthData = useSelector(selectDailyETHData);
+  const weeklyUsdtData = useSelector(selectDailyUSDTData);
+  const weeklyUsdcData = useSelector(selectDailyUSDCData);
+  const weeklyDaiData = useSelector(selectDailyDAIData);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   // console.log(usdtData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
@@ -142,76 +142,81 @@ const SupplyChart = () => {
             ]);
         break;
       case 1:
-        weeklyBtcData?.supplyAmounts && weeklyEthData?.supplyAmounts && weeklyUsdtData?.supplyAmounts && weeklyUsdcData?.supplyAmounts && weeklyDaiData?.supplyAmounts ?
-        newData = [
-          {
-            name: "BTC",
-            data: weeklyBtcData?.supplyAmounts,
-          },
-          {
-            name: "ETH",
-            data: weeklyEthData.supplyAmounts,
-          },
-          {
-            name: "USDT",
-            data: weeklyUsdtData.supplyAmounts,
-          },
-          {
-            name: "USDC",
-            data: weeklyUsdcData.supplyAmounts,
-          },
-          {
-            name: "DAI",
-            data: weeklyDaiData.supplyAmounts,
-          },
-        ]:
-        newData = [
-          {
-            name: "BTC",
-            data: [
-              10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
-              10000000000, 4000000000,
-            ],
-          },
-          {
-            name: "ETH",
-            data: [
-              30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
-              10000000000, 1000000000,
-            ],
-          },
-          {
-            name: "USDT",
-            data: [
-              40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
-              50000000000, 1300000000,
-            ],
-          },
-          {
-            name: "USDC",
-            data: [
-              50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
-              11000000000, 430000000,
-            ],
-          },
-          {
-            name: "DAI",
-            data: [
-              17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
-              10000000000, 4000000000,
-            ],
-          },
-        ];
-        weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        weeklyBtcData?.supplyAmounts &&
+        weeklyEthData?.supplyAmounts &&
+        weeklyUsdtData?.supplyAmounts &&
+        weeklyUsdcData?.supplyAmounts &&
+        weeklyDaiData?.supplyAmounts
+          ? (newData = [
+              {
+                name: "BTC",
+                data: weeklyBtcData?.supplyAmounts,
+              },
+              {
+                name: "ETH",
+                data: weeklyEthData.supplyAmounts,
+              },
+              {
+                name: "USDT",
+                data: weeklyUsdtData.supplyAmounts,
+              },
+              {
+                name: "USDC",
+                data: weeklyUsdcData.supplyAmounts,
+              },
+              {
+                name: "DAI",
+                data: weeklyDaiData.supplyAmounts,
+              },
+            ])
+          : (newData = [
+              {
+                name: "BTC",
+                data: [
+                  10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
+                  10000000000, 4000000000,
+                ],
+              },
+              {
+                name: "ETH",
+                data: [
+                  30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
+                  10000000000, 1000000000,
+                ],
+              },
+              {
+                name: "USDT",
+                data: [
+                  40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
+                  50000000000, 1300000000,
+                ],
+              },
+              {
+                name: "USDC",
+                data: [
+                  50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
+                  11000000000, 430000000,
+                ],
+              },
+              {
+                name: "DAI",
+                data: [
+                  17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
+                  10000000000, 4000000000,
+                ],
+              },
+            ]);
+        weeklyBtcData?.dates
+          ? (newCategories = weeklyBtcData?.dates)
+          : (newCategories = [
+              new Date("2023-07-01").getTime(),
+              new Date("2023-07-02").getTime(),
+              new Date("2023-07-03").getTime(),
+              new Date("2023-07-04").getTime(),
+              new Date("2023-07-05").getTime(),
+              new Date("2023-07-06").getTime(),
+              new Date("2023-07-07").getTime(),
+            ]);
         break;
       case 2:
         //y data axis
@@ -344,7 +349,7 @@ const SupplyChart = () => {
         toolbar: {
           show: false,
         },
-        stacked:true,
+        stacked: true,
       },
       dataLabels: {
         position: "bottom",
@@ -565,7 +570,6 @@ const SupplyChart = () => {
           series={splineChartData.series}
           type="area"
           height={350}
-  
         />
       </Box>
     </Box>
