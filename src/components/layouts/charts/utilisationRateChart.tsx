@@ -20,6 +20,7 @@ const UtilisationRateChart = () => {
   const btcData = useSelector(selectHourlyBTCData);
   const weeklyBtcData=useSelector(selectDailyBTCData);
   console.log(weeklyBtcData,"week data")
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -194,7 +195,7 @@ const UtilisationRateChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue,
       },
       plotOptions: {
         bar: {

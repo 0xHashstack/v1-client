@@ -20,6 +20,8 @@ import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 
 const SupplyChart = () => {
+  
+
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
     useState(0);
   const [chartData, setChartData] = useState([
@@ -28,6 +30,7 @@ const SupplyChart = () => {
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
+
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -55,7 +58,7 @@ const SupplyChart = () => {
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   console.log(daiData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
-
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option
     // Replace this with your actual implementation
@@ -388,7 +391,7 @@ const SupplyChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+       min: minValue - 0.05 * minValue,
       },
       // stroke: {
       //   curve: "smooth",
@@ -428,6 +431,7 @@ const SupplyChart = () => {
       },
     },
   };
+  
   const options: ApexOptions = {
     ...splineChartData.options,
     // stroke: {
