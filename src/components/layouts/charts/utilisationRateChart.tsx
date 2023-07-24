@@ -3,7 +3,7 @@ import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { number } from "starknet";
 import { kMaxLength } from "buffer";
@@ -18,6 +18,8 @@ const UtilisationRateChart = () => {
     },
   ]);
   const btcData = useSelector(selectHourlyBTCData);
+  const weeklyBtcData=useSelector(selectDailyBTCData);
+  console.log(weeklyBtcData,"week data")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -68,12 +70,21 @@ const UtilisationRateChart = () => {
             ]);
         break;
       case 1:
+        weeklyBtcData?.totalUrm ?
+        newData=[
+          {
+            name:"Utilization Rate",
+            data:weeklyBtcData?.totalUrm,
+          }
+        ]:
         newData = [
           {
             name: "Utlization Rate",
             data: [400, 100, 420, 390, 440, 410, 430],
           },
         ];
+        weeklyBtcData?.dates
+        ? newCategories=weeklyBtcData?.dates:
         newCategories = [
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
@@ -267,7 +278,7 @@ const UtilisationRateChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

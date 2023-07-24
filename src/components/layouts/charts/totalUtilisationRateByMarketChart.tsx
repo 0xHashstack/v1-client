@@ -4,7 +4,7 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData, selectHourlyDAIData, selectHourlyETHData, selectHourlyUSDCData, selectHourlyUSDTData } from "@/store/slices/readDataSlice";
+import { selectDailyBTCData, selectDailyDAIData, selectDailyETHData, selectDailyUSDCData, selectDailyUSDTData, selectHourlyBTCData, selectHourlyDAIData, selectHourlyETHData, selectHourlyUSDCData, selectHourlyUSDTData } from "@/store/slices/readDataSlice";
 import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -42,6 +42,11 @@ const TotalUtilisationRateByMarketChart = () => {
   const usdtData=useSelector(selectHourlyUSDTData);
   const usdcData=useSelector(selectHourlyUSDCData);
   const daiData=useSelector(selectHourlyDAIData);
+  const weeklyBtcData = useSelector(selectDailyBTCData);
+  const weeklyEthData = useSelector(selectDailyETHData);
+  const weeklyUsdtData = useSelector(selectDailyUSDTData);
+  const weeklyUsdcData = useSelector(selectDailyUSDCData);
+  const weeklyDaiData = useSelector(selectDailyDAIData);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -121,6 +126,29 @@ const TotalUtilisationRateByMarketChart = () => {
             ]);
         break;
       case 1:
+        weeklyBtcData?.utilRates && weeklyEthData?.utilRates && weeklyUsdtData?.utilRates && weeklyUsdcData?.utilRates && weeklyDaiData?.utilRates
+        ? (newData = [
+            {
+              name: "BTC",
+              data: weeklyBtcData?.utilRates,
+            },
+            {
+              name: "ETH",
+              data: weeklyEthData?.utilRates,
+            },
+            {
+              name: "USDT",
+              data: weeklyUsdtData?.utilRates,
+            },
+            {
+              name: "USDC",
+              data: weeklyUsdcData?.utilRates
+            },
+            {
+              name: "DAI",
+              data: weeklyDaiData?.utilRates
+            },
+          ]):
         newData = [
           {
             name: "BTC",
@@ -158,6 +186,7 @@ const TotalUtilisationRateByMarketChart = () => {
             ],
           },
         ];
+        weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
         newCategories = [
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
@@ -431,7 +460,7 @@ const TotalUtilisationRateByMarketChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

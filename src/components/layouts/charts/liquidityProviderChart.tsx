@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import dynamic from "next/dynamic";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -11,11 +11,12 @@ const LiquidityProviderChart = () => {
     useState(0);
   const [chartData, setChartData] = useState([
     {
-      name: "Supply APR",
+      name: "Liquidity Provider",
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
   const btcData = useSelector(selectHourlyBTCData);
+  const weeklyBtcData=useSelector(selectDailyBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -43,13 +44,13 @@ const LiquidityProviderChart = () => {
         btcData?.supplyCounts
           ? (newData = [
               {
-                name: "Supply APR",
+                name: "Liquidity Provider",
                 data: btcData?.supplyCounts,
               },
             ])
           : (newData = [
               {
-                name: "Supply APR",
+                name: "Liquidity Provider",
                 data: [
                   20000, 40000, 38000, 42000, 39000, 44000, 20000, 40000, 38000,
                   42000, 39000, 44000,
@@ -65,12 +66,20 @@ const LiquidityProviderChart = () => {
             ]);
         break;
       case 1:
+        weeklyBtcData?.supplyCounts ? 
         newData = [
           {
-            name: "Supply APR",
+            name: "Liquidity Provider",
+            data: weeklyBtcData?.supplyCounts,
+          },
+        ]:
+        newData = [
+          {
+            name: "Liquidity Provider",
             data: [40000, 10000, 42000, 39000, 44000, 41000, 43000],
           },
         ];
+        weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
         newCategories = [
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
@@ -83,15 +92,23 @@ const LiquidityProviderChart = () => {
         break;
       case 2:
         //y data axis
+        weeklyBtcData?.supplyCounts ?
         newData = [
           {
-            name: "Supply APR",
+            name: "Liquidity Provider",
+            data: weeklyBtcData?.supplyCounts,
+          },
+        ]:   
+        newData = [
+          {
+            name: "Liquidity Provider",
             data: [
               50000, 49000, 52000, 48000, 51000, 48000, 50000, 48000, 51000,
               48000,
             ],
           },
         ];
+        weeklyBtcData?.dates ? newCategories=weeklyBtcData:
         //x axis data
         newCategories = [
           new Date("2023-06-03").getTime(),
@@ -109,7 +126,7 @@ const LiquidityProviderChart = () => {
       case 3:
         newData = [
           {
-            name: "Supply APR",
+            name: "Liquidity Provider",
             data: [
               60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000,
               60000, 62000, 70000,
@@ -274,7 +291,7 @@ const LiquidityProviderChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
