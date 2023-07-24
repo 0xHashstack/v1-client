@@ -337,6 +337,7 @@ const TotalUtilisationRateByMarketChart = () => {
 
     return { newData, newCategories };
   };
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
 
   const splineChartData = {
     series: chartData,
@@ -385,7 +386,7 @@ const TotalUtilisationRateByMarketChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue,
       },
       plotOptions: {
         bar: {

@@ -155,6 +155,7 @@ const LiquidityProviderChart = () => {
 
     return { newData, newCategories };
   };
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
 
   const splineChartData = {
     series: chartData,
