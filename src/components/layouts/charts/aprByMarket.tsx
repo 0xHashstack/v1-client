@@ -738,6 +738,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
     return { newData, newCategories };
   };
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
     series: chartData,
     options: {
@@ -789,6 +790,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           },
         },
         min: minValue - 0.05 * minValue,
+        max: maxValue + 0.05 * maxValue,
       },
       stroke: {
         curve: "smooth",

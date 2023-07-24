@@ -91,6 +91,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
     // console.log(coinsData[currentSelectedCoin],"coin apr")
   }, [aprByMarket, currentSelectedCoin]);
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number, option2: number) => {
@@ -642,6 +643,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           },
         },
         min: minValue - 0.05 * minValue,
+        max: maxValue + 0.05 * maxValue,
       },
       plotOptions: {
         bar: {
