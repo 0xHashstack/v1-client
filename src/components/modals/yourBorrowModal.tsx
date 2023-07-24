@@ -3702,6 +3702,9 @@ const YourBorrowModal = ({
                                 boxShadow="dark-lg"
                               >
                                 {coins?.map((coin: string, index: number) => {
+                                  if(coin===currentBorrowMarketCoin1.slice(1)){
+                                    return;
+                                  }
                                   return (
                                     <Box
                                       key={index}
@@ -3741,7 +3744,7 @@ const YourBorrowModal = ({
                                         borderRadius="md"
                                       >
                                         <Box p="1">{getCoin(coin)}</Box>
-                                        <Text>{coin}</Text>
+                                        <Text mt="0.5">{coin}</Text>
                                       </Box>
                                     </Box>
                                   );

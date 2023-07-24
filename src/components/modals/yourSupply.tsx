@@ -489,7 +489,7 @@ const YourSupplyModal = ({
         }
         const trans_data = {
           transaction_hash: withdraw?.transaction_hash.toString(),
-          message: `Successfully withdrawn :  : ${inputWithdrawlAmount}r${asset}`,
+          message: `Successfully withdrawn :  : ${estSupply}${asset}`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
