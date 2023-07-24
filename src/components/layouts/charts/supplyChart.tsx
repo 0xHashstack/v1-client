@@ -28,7 +28,7 @@ const SupplyChart = () => {
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
-  const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
+  const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5]);
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -53,7 +53,7 @@ const SupplyChart = () => {
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
-  // console.log(usdtData?.supplyAmounts, "data protocol");
+  console.log(daiData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -340,10 +340,8 @@ const SupplyChart = () => {
   };
 
   const splineChartData = {
-    series: chartData.map((data) => ({
-      ...data,
-      fillOpacity: 1, // Set fillOpacity to 1 for each series data
-    })),
+    series: chartData,
+ // Set fillOpacity to 1 for each series data
     options: {
       chart: {
         toolbar: {

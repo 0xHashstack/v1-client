@@ -1033,11 +1033,17 @@ const StakeUnstakeModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="Select market refers to the crypto currency tokens selected to stake on the protocol"
-                            bg="#24292F"
-                            fontSize={"smaller"}
+                            bg="#101216"
+                            fontSize={"11px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
+                            border="1px solid"
+                            borderColor="#2B2F35"
+                            arrowShadowColor="#2B2F35"
+                            maxW="222px"
+                            mt="14px"
+                            // arrowPadding={30}
                           >
                             <Box>
                               <InfoIcon />
@@ -1191,11 +1197,15 @@ const StakeUnstakeModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="refers to the unit of crypto coins you are willing to stake on the protocol"
-                            bg="#24292F"
-                            fontSize={"smaller"}
+                            bg="#101216"
+                            fontSize={"11px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
+                            border="1px solid"
+                            borderColor="#2B2F35"
+                            arrowShadowColor="#2B2F35"
+                            maxW="222px"
                           >
                             <Box>
                               <InfoIcon />
@@ -1562,11 +1572,16 @@ const StakeUnstakeModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="refers to the rewards earned by users who participate in staking activities within the protocol"
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              bg="#101216"
+                              fontSize={"11px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
+                              mt="16px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1625,11 +1640,15 @@ const StakeUnstakeModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              bg="#101216"
+                              fontSize={"11px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1659,11 +1678,15 @@ const StakeUnstakeModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="refer to the charges or costs incurred when completing a transactions"
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              bg="#101216"
+                              fontSize={"11px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
                             >
                               <Box>
                                 <InfoIcon />

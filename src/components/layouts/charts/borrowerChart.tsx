@@ -171,7 +171,7 @@ const BorrowerChart = () => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return numberFormatter(val); // Display the data value as the label
+          return val.toFixed(0); // Display the data value as the label
         },
       },
 
@@ -195,7 +195,7 @@ const BorrowerChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return value.toFixed(0);
           },
           style: {
             colors: "#6E7681", // Set the color of the labels

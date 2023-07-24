@@ -489,7 +489,7 @@ const YourSupplyModal = ({
         }
         const trans_data = {
           transaction_hash: withdraw?.transaction_hash.toString(),
-          message: `Successfully withdrawn :  : ${inputWithdrawlAmount}r${asset}`,
+          message: `Successfully withdrawn :  : ${estSupply}${asset}`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
@@ -775,11 +775,16 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="Supply market refers to the cryptocurrency tokens selected to deposit on the Hashstack protocol"
-                            bg="#24292F"
-                            fontSize={"smaller"}
+                            bg="#101216"
+                            fontSize={"11px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
+                            border="1px solid"
+                            borderColor="#2B2F35"
+                            arrowShadowColor="#2B2F35"
+                            maxW="272px"
+                            mt="15px"
                           >
                             <Box>
                               <InfoIcon />
@@ -939,11 +944,15 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="Amount refers to the unit of crypto coins you are willing to supply"
-                            bg="#24292F"
-                            fontSize={"smaller"}
+                            bg="#101216"
+                            fontSize={"11px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
+                            border="1px solid"
+                            borderColor="#2B2F35"
+                            arrowShadowColor="#2B2F35"
+                            maxW="222px"
                           >
                             <Box>
                               <InfoIcon />
@@ -1244,11 +1253,15 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="refer to the charges or costs incurred when completing a transactions"
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              bg="#101216"
+                              fontSize={"11px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="272px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1279,11 +1292,15 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              bg="#101216"
+                              fontSize={"11px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="272px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1313,11 +1330,16 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Supply APR (Annual Percentage Rate) refers to the annualized interest rate earned on supplied funds."
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              bg="#101216"
+                              fontSize={"11px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="272px"
+                              mb="16px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1486,11 +1508,15 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="Supply market refers to the crypto currency tokens selected to withdraw from the protocol"
-                            bg="#24292F"
-                            fontSize={"smaller"}
+                            bg="#101216"
+                            fontSize={"11px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
+                            border="1px solid"
+                            borderColor="#2B2F35"
+                            arrowShadowColor="#2B2F35"
+                            maxW="272px"
                           >
                             <Box>
                               <InfoIcon />
@@ -1631,11 +1657,15 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="Withdraw Amount refers to the unit of crypto coins you are willing to withdraw"
-                            bg="#24292F"
-                            fontSize={"smaller"}
+                            bg="#101216"
+                            fontSize={"11px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
+                            border="1px solid"
+                            borderColor="#2B2F35"
+                            arrowShadowColor="#2B2F35"
+                            maxW="222px"
                           >
                             <Box>
                               <InfoIcon />
@@ -1909,11 +1939,16 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="estimate of the amount of your deposit that will become unlocked and available for withdrawal"
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              bg="#101216"
+                              fontSize={"11px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="247px"
+                              mt="15px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -2054,11 +2089,15 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="refer to the charges or costs incurred when completing a transactions"
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              bg="#101216"
+                              fontSize={"11px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -2083,18 +2122,23 @@ const YourSupplyModal = ({
                               font-size="12px"
                               color="#6A737D"
                             >
-                              Gas Estimate balance:
+                              Gas Estimate:
                             </Text>
                             <Tooltip
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
                               label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              bg="#101216"
+                              fontSize={"11px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="292px"
+                              mb="15px"
                             >
                               <Box>
                                 <InfoIcon />

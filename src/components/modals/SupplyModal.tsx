@@ -782,21 +782,28 @@ const SupplyModal = ({
                   >
                     Supply Market
                   </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="Supply market refers to the crypto currency tokens selected to deposit on the Hashstack protocol"
-                    bg="#24292F"
-                    fontSize={"smaller"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
+                  <Box>
+                    <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label="Supply market refers to the crypto currency tokens selected to deposit on the Hashstack protocol"
+                      bg="#101216"
+                      fontSize="11px"
+                      fontWeight={"thin"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      maxW="222px"
+                      mt="14px"
+                    >
+                      <Box>
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Box>
                 </Text>
                 <Box
                   display="flex"
@@ -945,11 +952,15 @@ const SupplyModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Amount refers to the unit oc coins you are willing to supply"
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize="11px"
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
                   >
                     <Box>
                       <InfoIcon />
@@ -1268,11 +1279,15 @@ const SupplyModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="refer to the charges or costs incurred when completing a transactions"
-                      bg="#24292F"
-                      fontSize={"smaller"}
+                      bg="#101216"
+                      fontSize={"11px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      arrowShadowColor="#2B2F35"
+                      maxW="222px"
                     >
                       <Box>
                         <InfoIcon />
@@ -1311,11 +1326,15 @@ const SupplyModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                      bg="#24292F"
-                      fontSize={"smaller"}
+                      bg="#101216"
+                      fontSize={"11px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      arrowShadowColor="#2B2F35"
+                      maxW="222px"
                     >
                       <Box>
                         <InfoIcon />
@@ -1349,14 +1368,20 @@ const SupplyModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right"
+                      placement="right-end"
                       boxShadow="dark-lg"
                       label="Supply APR (Annual Percentage Rate) refers to the annualized interest rate earned on supplied funds."
-                      bg="#24292F"
-                      fontSize={"smaller"}
+                      bg="#101216"
+                      fontSize={"11px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      arrowShadowColor="#2B2F35"
+                      // arrowPadding={2}
+                      maxW="222px"
+                      // marginTop={20}
                     >
                       <Box>
                         <InfoIcon />
