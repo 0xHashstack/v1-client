@@ -75,7 +75,7 @@ import WarningIcon from "@/assets/icons/coins/warningIcon";
 import ArrowUp from "@/assets/icons/arrowup";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
-import { useAccount, useWaitForTransaction } from "@starknet-react/core";
+import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
@@ -84,10 +84,7 @@ import Image from "next/image";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
-import {
-  getEstrTokens,
-  getUserStakingShares,
-} from "@/Blockchain/scripts/Rewards";
+import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
@@ -127,8 +124,6 @@ const StakeUnstakeModal = ({
   });
   let activeTransactions = useSelector(selectActiveTransactions);
   const protocolStats = useSelector(selectProtocolStats);
-
-  const { address } = useAccount();
 
   const {
     rToken,
@@ -798,6 +793,7 @@ const StakeUnstakeModal = ({
   );
   // console.log(activeModal);
 
+  useEffect(() => {});
   // useEffect(()=>{
   //   const fetchrTokens=async()=>{
   //     const data=await getEstrTokens("rUSDT",30.0);
@@ -1057,17 +1053,11 @@ const StakeUnstakeModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="Select market refers to the crypto currency tokens selected to stake on the protocol"
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#24292F"
+                            fontSize={"smaller"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
-                            arrowShadowColor="#2B2F35"
-                            maxW="222px"
-                            mt="14px"
-                            // arrowPadding={30}
                           >
                             <Box>
                               <InfoIcon />
@@ -1221,15 +1211,11 @@ const StakeUnstakeModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="refers to the unit of crypto coins you are willing to stake on the protocol"
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#24292F"
+                            fontSize={"smaller"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
-                            arrowShadowColor="#2B2F35"
-                            maxW="222px"
                           >
                             <Box>
                               <InfoIcon />
@@ -1596,16 +1582,11 @@ const StakeUnstakeModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="refers to the rewards earned by users who participate in staking activities within the protocol"
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#24292F"
+                              fontSize={"smaller"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
-                              arrowShadowColor="#2B2F35"
-                              maxW="222px"
-                              mt="16px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1664,15 +1645,11 @@ const StakeUnstakeModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#24292F"
+                              fontSize={"smaller"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
-                              arrowShadowColor="#2B2F35"
-                              maxW="222px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1702,15 +1679,11 @@ const StakeUnstakeModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="refer to the charges or costs incurred when completing a transactions"
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#24292F"
+                              fontSize={"smaller"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
-                              arrowShadowColor="#2B2F35"
-                              maxW="222px"
                             >
                               <Box>
                                 <InfoIcon />

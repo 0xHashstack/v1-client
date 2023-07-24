@@ -143,7 +143,7 @@ const SupplyChartChart = () => {
     return { newData, newCategories };
   };
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
-
+  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
     series: chartData,
     options: {
@@ -195,6 +195,7 @@ const SupplyChartChart = () => {
           },
         },
         min: minValue - 0.05 * minValue,
+        max: maxValue + 0.05 * maxValue,
       },
       plotOptions: {
         bar: {
