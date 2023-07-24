@@ -557,7 +557,7 @@ const TotalUtilisationRateByMarketChart = () => {
         <ApexCharts
           options={options}
           series={splineChartData.series}
-          type="line"
+          type="area"
           height={400}
         />
       </Box>

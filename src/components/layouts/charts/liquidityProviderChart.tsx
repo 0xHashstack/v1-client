@@ -208,7 +208,7 @@ const LiquidityProviderChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue
       },
       plotOptions: {
         bar: {

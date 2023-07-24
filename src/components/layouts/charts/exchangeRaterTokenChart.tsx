@@ -422,6 +422,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
     return { newData, newCategories };
   };
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  // const [activeLegend, setActiveLegend] = useState(0);
   const splineChartData = {
     series: chartData,
     options: {
@@ -429,6 +430,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         toolbar: {
           show: false,
         },
+        stacked:true,
       },
       dataLabels: {
         enabled: false,
@@ -652,7 +654,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}
-          type="line"
+          type="area"
           height={350}
         />
         {/* <Box display="flex" gap="4">
