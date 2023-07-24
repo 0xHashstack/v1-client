@@ -118,7 +118,13 @@ const StakeUnstakeModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
     useState(false);
-  const [stakingShares, setStakingShares] = useState<any>(null);
+  const [stakingShares, setStakingShares] = useState<any>({
+    rBTC: null,
+    rETH: null,
+    rUSDT: null,
+    rUSDC: null,
+    rDAI: null,
+  });
   let activeTransactions = useSelector(selectActiveTransactions);
   const protocolStats = useSelector(selectProtocolStats);
 
@@ -324,6 +330,24 @@ const StakeUnstakeModal = ({
     try {
       const getStakingShares = async () => {
         if (!address) return;
+        const promises = [
+          getUserStakingShares(address, "rBTC"),
+          getUserStakingShares(address, "rETH"),
+          getUserStakingShares(address, "rUSDT"),
+          getUserStakingShares(address, "rUSDC"),
+          getUserStakingShares(address, "rDAI"),
+        ];
+        Promise.allSettled([...promises]).then((val) => {
+          const data = {
+            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
+            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
+            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
+            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+          };
+          console.log("shares ", val, data);
+          setStakingShares(data);
+        });
         const data = await getUserStakingShares(address, "rUSDT");
         if (data != null) {
           setStakingShares(data);
@@ -724,7 +748,7 @@ const StakeUnstakeModal = ({
         (item: any) => item.rToken == currentSelectedUnstakeCoin
       )?.rTokenStakedParsed
     );
-  }, [currentSelectedUnstakeCoin,userDeposit]);
+  }, [currentSelectedUnstakeCoin, userDeposit]);
   const [buttonId, setButtonId] = useState(0);
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const resetStates = () => {
@@ -2075,8 +2099,8 @@ const StakeUnstakeModal = ({
                                         fontWeight="thin"
                                       >
                                         Staking shares:{" "}
-                                        {stakingShares
-                                          ? stakingShares
+                                        {stakingShares != null
+                                          ? stakingShares[_coin]
                                           : "loading..."}
                                       </Box>
                                     </Box>
@@ -2229,11 +2253,20 @@ const StakeUnstakeModal = ({
                               justifyContent="flex-end"
                             >
                               Staking Shares:{" "}
-                              {stakingShares ? (
-                                stakingShares
+                              {stakingShares &&
+                              stakingShares[
+                                currentSelectedUnstakeCoin[0] == "r"
+                                  ? currentSelectedUnstakeCoin
+                                  : "r" + currentSelectedUnstakeCoin
+                              ] != null ? (
+                                stakingShares[
+                                  currentSelectedUnstakeCoin[0] == "r"
+                                    ? currentSelectedUnstakeCoin
+                                    : "r" + currentSelectedUnstakeCoin
+                                ]
                               ) : (
                                 <Skeleton
-                                  width="6rem"
+                                  width="4rem"
                                   height="1.4rem"
                                   startColor="#101216"
                                   endColor="#2B2F35"
@@ -2257,8 +2290,17 @@ const StakeUnstakeModal = ({
                             fontFamily="Inter"
                           >
                             Staking Shares:{" "}
-                            {stakingShares ? (
-                              stakingShares
+                            {stakingShares &&
+                            stakingShares[
+                              currentSelectedUnstakeCoin[0] == "r"
+                                ? currentSelectedUnstakeCoin
+                                : "r" + currentSelectedUnstakeCoin
+                            ] != null ? (
+                              stakingShares[
+                                currentSelectedUnstakeCoin[0] == "r"
+                                  ? currentSelectedUnstakeCoin
+                                  : "r" + currentSelectedUnstakeCoin
+                              ]
                             ) : (
                               <Skeleton
                                 width="6rem"
