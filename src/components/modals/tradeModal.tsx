@@ -1006,11 +1006,16 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Collateral market refers to the cryptocurrency that you keep as security agains the borrowed amount you take from Hashstack"
-                        bg="#24292F"
-                        fontSize={"smaller"}
+                        bg="#101216"
+                        fontSize={"11px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        border="1px solid"
+                        borderColor="#2B2F35"
+                        arrowShadowColor="#2B2F35"
+                        maxW="252px"
+                        mt="12px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -1317,11 +1322,15 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Collateral amount refers to the unit of crypto coins you are willing to keep as security against the borrowed amount"
-                        bg="#24292F"
-                        fontSize={"smaller"}
+                        bg="#101216"
+                        fontSize={"11px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        border="1px solid"
+                        borderColor="#2B2F35"
+                        arrowShadowColor="#2B2F35"
+                        maxW="222px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -1596,11 +1605,15 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
-                        bg="#24292F"
-                        fontSize={"smaller"}
+                        bg="#101216"
+                        fontSize={"11px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        border="1px solid"
+                        borderColor="#2B2F35"
+                        arrowShadowColor="#2B2F35"
+                        maxW="242px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -1788,11 +1801,15 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Borrow amount refers to the unit of crypto coins you are willing to borrow from the protocol"
-                        bg="#24292F"
-                        fontSize={"smaller"}
+                        bg="#101216"
+                        fontSize={"11px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        border="1px solid"
+                        borderColor="#2B2F35"
+                        arrowShadowColor="#2B2F35"
+                        maxW="222px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -2146,11 +2163,16 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Choose a decentralized application (Dapp) to spend you loan on the protocol."
-                        bg="#24292F"
-                        fontSize={"smaller"}
+                        bg="#101216"
+                        fontSize={"11px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        border="1px solid"
+                        borderColor="#2B2F35"
+                        arrowShadowColor="#2B2F35"
+                        maxW="242px"
+                        mt="5px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -2281,11 +2303,15 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Choose a specific liquidity pool within protocol to participate in activities such as providing liquidity, earning rewards, or accessing specific financial services."
-                        bg="#24292F"
-                        fontSize={"smaller"}
+                        bg="#101216"
+                        fontSize={"11px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        border="1px solid"
+                        borderColor="#2B2F35"
+                        arrowShadowColor="#2B2F35"
+                        maxW="222px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -2469,11 +2495,16 @@ const TradeModal = ({
                           placement="right"
                           boxShadow="dark-lg"
                           label="Estimated LP Tokens Received: This tool tip provides an estimate of the number of LP (Liquidity Provider) tokens you will receive when you provide liquidity to a pool."
-                          bg="#24292F"
-                          fontSize={"smaller"}
+                          bg="#101216"
+                          fontSize={"11px"}
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
+                          border="1px solid"
+                          borderColor="#2B2F35"
+                          arrowShadowColor="#2B2F35"
+                          maxW="232px"
+                          mt="50px"
                         >
                           <Box p="1">
                             <InfoIcon />
@@ -2524,11 +2555,15 @@ const TradeModal = ({
                           placement="right"
                           boxShadow="dark-lg"
                           label="refers to the fee charged for adjusting the allocation or distribution of liquidity across different assets within the protocol."
-                          bg="#24292F"
-                          fontSize={"smaller"}
+                          bg="#101216"
+                          fontSize={"11px"}
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
+                          border="1px solid"
+                          borderColor="#2B2F35"
+                          arrowShadowColor="#2B2F35"
+                          maxW="222px"
                         >
                           <Box ml="0.2rem" mt="0.2rem">
                             <InfoIcon />
@@ -2612,7 +2647,7 @@ const TradeModal = ({
                       </Box>
                     </Box>
                   )}
-                  {radioValue == "2" && (
+                  {/* {radioValue == "2" && (
                     <Box
                       display="flex"
                       justifyContent="space-between"
@@ -2657,7 +2692,7 @@ const TradeModal = ({
                         $10.91
                       </Text>
                     </Box>
-                  )}
+                  )} */}
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
                       <Text color="#6E7681" fontSize="xs">
@@ -2668,11 +2703,15 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="refer to the charges or costs incurred when completing a transactions"
-                        bg="#24292F"
-                        fontSize={"smaller"}
+                        bg="#101216"
+                        fontSize={"11px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        border="1px solid"
+                        borderColor="#2B2F35"
+                        arrowShadowColor="#2B2F35"
+                        maxW="222px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -2694,11 +2733,15 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                        bg="#24292F"
-                        fontSize={"smaller"}
+                        bg="#101216"
+                        fontSize={"11px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        border="1px solid"
+                        borderColor="#2B2F35"
+                        arrowShadowColor="#2B2F35"
+                        maxW="222px"
                       >
                         <Box padding="0.25rem">
                           <InfoIcon />
@@ -2719,11 +2762,16 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
-                        bg="#24292F"
-                        fontSize={"smaller"}
+                        bg="#101216"
+                        fontSize={"11px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        border="1px solid"
+                        borderColor="#2B2F35"
+                        arrowShadowColor="#2B2F35"
+                        maxW="274px"
+                        mb="10px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -2776,11 +2824,15 @@ const TradeModal = ({
                           placement="right"
                           boxShadow="dark-lg"
                           label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
-                          bg="#24292F"
-                          fontSize={"smaller"}
+                          bg="#101216"
+                          fontSize={"11px"}
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
+                          border="1px solid"
+                          borderColor="#2B2F35"
+                          arrowShadowColor="#2B2F35"
+                          maxW="222px"
                         >
                           <Box>
                             <InfoIcon />
@@ -2848,15 +2900,19 @@ const TradeModal = ({
                           <Text>
                             {/* 5.56% */}
                             {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                            {Number((inputBorrowAmountUSD *
-                              protocolStats?.find(
-                                (stat: any) => stat?.token === currentBorrowCoin
-                              )?.borrowRate -
-                              inputCollateralAmountUSD *
+                            {Number(
+                              (inputBorrowAmountUSD *
                                 protocolStats?.find(
-                                  (stat: any) => stat?.token === rToken.slice(1)
-                                )?.supplyRate) /
-                              inputBorrowAmountUSD).toFixed(2)}
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate -
+                                inputCollateralAmountUSD *
+                                  protocolStats?.find(
+                                    (stat: any) =>
+                                      stat?.token === rToken.slice(1)
+                                  )?.supplyRate) /
+                                inputBorrowAmountUSD
+                            ).toFixed(2)}
                             {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin
@@ -2878,11 +2934,15 @@ const TradeModal = ({
                           placement="right"
                           boxShadow="dark-lg"
                           label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
-                          bg="#24292F"
-                          fontSize={"smaller"}
+                          bg="#101216"
+                          fontSize={"11px"}
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
+                          border="1px solid"
+                          borderColor="#2B2F35"
+                          arrowShadowColor="#2B2F35"
+                          maxW="222px"
                         >
                           <Box padding="0.25rem">
                             <InfoIcon />

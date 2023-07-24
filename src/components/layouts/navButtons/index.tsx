@@ -3,7 +3,7 @@ import {
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
 import { Box, Button, ButtonGroup, HStack } from "@chakra-ui/react";
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { capitalizeWords } from "../../../utils/functions/capitalizeWords";
 import Link from "next/link";
@@ -17,6 +17,7 @@ const NavButtons = ({
   width: number;
   marginBottom: string;
 }) => {
+  const [backHover, setBackHover] = useState(false);
   const dispatch = useDispatch();
   const currentPage = useSelector(selectCurrentPage);
 
@@ -74,11 +75,23 @@ const NavButtons = ({
               }
               borderRadius="0px"
               _hover={{ bg: "transparent", color: "#E6EDF3" }}
+              onMouseEnter={() => {
+                if (option.path === "v1/market" && pathname !== "/v1/market")
+                  setBackHover(true);
+              }}
+              onMouseLeave={() => {
+                if (option.path === "v1/market" && pathname !== "/v1/market")
+                  setBackHover(false);
+              }}
             >
               {option.path === "v1/market" && pathname !== "/v1/market" && (
                 <Box marginRight={1.5}>
                   <Image
-                    src={"/arrowNavLeft.svg"}
+                    src={
+                      !backHover
+                        ? "/arrowNavLeft.svg"
+                        : "/arrowNavLeftActive.svg"
+                    }
                     alt="Arrow Navigation Left"
                     width="6"
                     height="6"

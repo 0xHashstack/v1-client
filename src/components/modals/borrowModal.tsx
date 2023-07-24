@@ -819,11 +819,16 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Collateral market refers to the cryptocurrency that you keep as security agains the borrowed amount you take from Hashstack"
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
+                    mt="28px"
                   >
                     <Box p="1">
                       <InfoIcon />
@@ -1056,11 +1061,15 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Collateral amount refers to the unit of crypto coins you are willing to keep as security against the borrowed amount"
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
                   >
                     <Box p="1">
                       <InfoIcon />
@@ -1368,11 +1377,16 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
+                    mt="12px"
                   >
                     <Box p="1">
                       <InfoIcon />
@@ -1478,9 +1492,10 @@ const BorrowModal = ({
                                 display="flex"
                               >
                                 Available reserves:{" "}
-                                {numberFormatter(
-                                  protocolStats?.[index]?.availableReserves
-                                ) || (
+                                {(protocolStats?.[index]?.availableReserves &&
+                                  numberFormatter(
+                                    protocolStats?.[index]?.availableReserves
+                                  )) || (
                                   <Skeleton
                                     width="3rem"
                                     height="1rem"
@@ -1509,11 +1524,15 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Borrow amount refers to the unit of crypto coins you are willing to borrow from the protocol"
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
                   >
                     <Box p="1">
                       <InfoIcon />
@@ -1840,11 +1859,16 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="300px"
+                    mt="12px"
                   >
                     <Box>
                       <InfoIcon />
@@ -1882,11 +1906,15 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
-                    bg="#24292F"
-                    fontSize={"smaller"}
+                    bg="#101216"
+                    fontSize={"11px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    maxW="256px"
                   >
                     <Box>
                       <InfoIcon />

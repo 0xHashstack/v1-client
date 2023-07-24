@@ -139,76 +139,81 @@ const BorrowChart = () => {
             ]);
         break;
       case 1:
-        weeklyBtcData?.borrowAmounts && weeklyEthData?.borrowAmounts && weeklyUsdcData?.borrowAmounts && weeklyUsdtData?.borrowAmounts && weeklyDaiData?.borrowAmounts ?
-        newData = [
-          {
-            name: "BTC",
-            data: weeklyBtcData?.borrowAmounts,
-          },
-          {
-            name: "ETH",
-            data: weeklyEthData?.borrowAmounts,
-          },
-          {
-            name: "USDT",
-            data: weeklyUsdtData?.borrowAmounts,
-          },
-          {
-            name: "USDC",
-            data: weeklyUsdcData?.borrowAmounts,
-          },
-          {
-            name: "DAI",
-            data: weeklyDaiData?.borrowAmounts,
-          },
-        ]:   
-        newData = [
-          {
-            name: "BTC",
-            data: [
-              10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
-              10000000000, 4000000000,
-            ],
-          },
-          {
-            name: "ETH",
-            data: [
-              30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
-              10000000000, 1000000000,
-            ],
-          },
-          {
-            name: "USDT",
-            data: [
-              40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
-              50000000000, 1300000000,
-            ],
-          },
-          {
-            name: "USDC",
-            data: [
-              50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
-              11000000000, 430000000,
-            ],
-          },
-          {
-            name: "DAI",
-            data: [
-              17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
-              10000000000, 4000000000,
-            ],
-          },
-        ];
-        weeklyBtcData?.dates ? newCategories= weeklyBtcData?.dates :
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        weeklyBtcData?.borrowAmounts &&
+        weeklyEthData?.borrowAmounts &&
+        weeklyUsdcData?.borrowAmounts &&
+        weeklyUsdtData?.borrowAmounts &&
+        weeklyDaiData?.borrowAmounts
+          ? (newData = [
+              {
+                name: "BTC",
+                data: weeklyBtcData?.borrowAmounts,
+              },
+              {
+                name: "ETH",
+                data: weeklyEthData?.borrowAmounts,
+              },
+              {
+                name: "USDT",
+                data: weeklyUsdtData?.borrowAmounts,
+              },
+              {
+                name: "USDC",
+                data: weeklyUsdcData?.borrowAmounts,
+              },
+              {
+                name: "DAI",
+                data: weeklyDaiData?.borrowAmounts,
+              },
+            ])
+          : (newData = [
+              {
+                name: "BTC",
+                data: [
+                  10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
+                  10000000000, 4000000000,
+                ],
+              },
+              {
+                name: "ETH",
+                data: [
+                  30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
+                  10000000000, 1000000000,
+                ],
+              },
+              {
+                name: "USDT",
+                data: [
+                  40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
+                  50000000000, 1300000000,
+                ],
+              },
+              {
+                name: "USDC",
+                data: [
+                  50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
+                  11000000000, 430000000,
+                ],
+              },
+              {
+                name: "DAI",
+                data: [
+                  17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
+                  10000000000, 4000000000,
+                ],
+              },
+            ]);
+        weeklyBtcData?.dates
+          ? (newCategories = weeklyBtcData?.dates)
+          : (newCategories = [
+              new Date("2023-07-01").getTime(),
+              new Date("2023-07-02").getTime(),
+              new Date("2023-07-03").getTime(),
+              new Date("2023-07-04").getTime(),
+              new Date("2023-07-05").getTime(),
+              new Date("2023-07-06").getTime(),
+              new Date("2023-07-07").getTime(),
+            ]);
         break;
       case 2:
         //y data axis
@@ -338,7 +343,7 @@ const BorrowChart = () => {
         toolbar: {
           show: false,
         },
-        stacked:true,
+        stacked: false,
       },
       dataLabels: {
         position: "bottom",

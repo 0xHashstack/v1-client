@@ -103,7 +103,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
-import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import {
+  getMinimumDepositAmount,
+  getUserStakingShares,
+} from "@/Blockchain/scripts/Rewards";
 import {
   tokenAddressMap,
   tokenDecimalsMap,
@@ -182,6 +185,7 @@ const useDataLoader = () => {
   //     console.log("error fetching aprByMarket data ", err);
   //   }
   // }, []);
+
   useEffect(() => {
     console.log("fetchHourlyData called ", oraclePrices);
     const fetchHourlyData = async () => {
@@ -250,11 +254,17 @@ const useDataLoader = () => {
                 // console.log(i,"inside loop")
                 const token = response?.[i].tokenName;
                 const supplyAmount: number =
-                  Number(response?.[i].supplyAmount) /
-                  Math.pow(10, tokenDecimalsMap[token]);
+                  (Number(response?.[i].supplyAmount) /
+                    Math.pow(10, tokenDecimalsMap[token])) *
+                  oraclePrices?.find(
+                    (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                  )?.price;
                 const borrowAmount: number =
-                  Number(response?.[i].borrowAmount) /
-                  Math.pow(10, tokenDecimalsMap[token]);
+                  (Number(response?.[i].borrowAmount) /
+                    Math.pow(10, tokenDecimalsMap[token])) *
+                  oraclePrices?.find(
+                    (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                  )?.price;
                 const tvlAmount: number =
                   Number(response?.[i].tvlAmount) /
                   Math.pow(10, tokenDecimalsMap[token]);
@@ -265,12 +275,7 @@ const useDataLoader = () => {
                 amounts?.push(supplyAmount);
                 borrowAmounts?.push(borrowAmount);
                 // tvlAmounts?.push(tvlAmount);
-                tvlAmounts?.push(
-                  supplyAmount *
-                    oraclePrices?.find(
-                      (oraclePrice: OraclePrice) => oraclePrice?.name == token
-                    )?.price
-                );
+                tvlAmounts?.push(supplyAmount);
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);
                 supplyRates?.push(response?.[i].supplyRate / 100);
@@ -279,16 +284,16 @@ const useDataLoader = () => {
                 borrowCounts?.push(response?.[i].borrowAccounts);
                 utilRates?.push(response?.[i].utilRate / 10000);
                 rTokenExchangeRates?.push(
-                  response?.[i].rTokenExchangeRate / 10000
+                  1 / (response?.[i].rTokenExchangeRate / 10000)
                 );
                 dTokenExchangeRates?.push(
-                  response?.[i].dTokenExchangeRate / 10000
+                  1 / (response?.[i].dTokenExchangeRate / 10000)
                 );
                 totalTransactions?.push(response?.[i].totalTransactions);
                 totalAccounts?.push(response?.[i].totalAccounts);
                 aprs?.push(responseApr?.[i].APR);
                 apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(responseTotal?.[i].totalPlatformURM / 10000);
+                totalUrm?.push(1 - responseTotal?.[i].totalPlatformURM / 10000);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -309,6 +314,11 @@ const useDataLoader = () => {
                 apys: apys,
                 totalUrm: totalUrm,
               };
+              // console.log(
+              //   "backend loop daily - ",
+              //   response?.[0]?.tokenName,
+              //   data
+              // );
               // console.log(data,"data in data loader")
               // console.log(btcData,"Data gone")
               if (j == 0) {
@@ -359,7 +369,7 @@ const useDataLoader = () => {
           OffchainAPI.httpGet(`/api/metrics/urm_platform/weekly`),
         ];
         Promise.allSettled([...promises]).then((val) => {
-          console.log("backend data weekly - ", val);
+          // console.log("backend data weekly - ", val);
           val.map((response, idx) => {
             const res = response?.status != "rejected" ? response?.value : "0";
           });
@@ -405,11 +415,17 @@ const useDataLoader = () => {
                 // console.log(i,"inside loop")
                 const token = response?.[i].tokenName;
                 const supplyAmount: number =
-                  Number(response?.[i].supplyAmount) /
-                  Math.pow(10, tokenDecimalsMap[token]);
+                  (Number(response?.[i].supplyAmount) /
+                    Math.pow(10, tokenDecimalsMap[token])) *
+                  oraclePrices?.find(
+                    (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                  )?.price;
                 const borrowAmount: number =
-                  Number(response?.[i].borrowAmount) /
-                  Math.pow(10, tokenDecimalsMap[token]);
+                  (Number(response?.[i].borrowAmount) /
+                    Math.pow(10, tokenDecimalsMap[token])) *
+                  oraclePrices?.find(
+                    (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                  )?.price;
                 const tvlAmount: number =
                   Number(response?.[i].tvlAmount) /
                   Math.pow(10, tokenDecimalsMap[token]);
@@ -420,12 +436,7 @@ const useDataLoader = () => {
                 amounts?.push(supplyAmount);
                 borrowAmounts?.push(borrowAmount);
                 // tvlAmounts?.push(tvlAmount);
-                tvlAmounts?.push(
-                  supplyAmount *
-                    oraclePrices?.find(
-                      (oraclePrice: OraclePrice) => oraclePrice?.name == token
-                    )?.price
-                );
+                tvlAmounts?.push(supplyAmount);
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);
                 supplyRates?.push(response?.[i].supplyRate / 100);
@@ -443,7 +454,7 @@ const useDataLoader = () => {
                 totalAccounts?.push(response?.[i].totalAccounts);
                 aprs?.push(responseApr?.[i].APR);
                 apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(responseTotal?.[i].totalPlatformURM / 10000);
+                totalUrm?.push(1 - responseTotal?.[i].totalPlatformURM / 10000);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -464,6 +475,7 @@ const useDataLoader = () => {
                 apys: apys,
                 totalUrm: totalUrm,
               };
+              // console.log("backend looping 2 -", data);
               // console.log(data,"data in data loader")
               // console.log(btcData,"Data gone")
               if (j == 0) {
@@ -489,10 +501,10 @@ const useDataLoader = () => {
         console.log(err, "err in hourly data");
       }
     };
-    if (weeklyDataCount < transactionRefresh) {
+    if (weeklyDataCount < transactionRefresh && oraclePrices) {
       fetchDailyData();
     }
-  }, []);
+  }, [oraclePrices]);
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {
