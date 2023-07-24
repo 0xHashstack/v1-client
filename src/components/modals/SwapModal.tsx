@@ -572,6 +572,9 @@ const SwapModal = ({
                     boxShadow="dark-lg"
                   >
                     {coins?.map((coin: string, index: number) => {
+                        if (coin === currentBorrowMarketCoin) {
+                          return null;
+                        }
                       return (
                         <Box
                           key={index}
@@ -608,6 +611,7 @@ const SwapModal = ({
                             }`}
                             borderRadius="md"
                           >
+                            
                             <Box p="1">{getCoin(coin)}</Box>
                             <Text color="white">{coin}</Text>
                           </Box>
@@ -787,6 +791,7 @@ const SwapModal = ({
                   <Text color="white">{currentBorrowMarketCoin}</Text>
                 </Box>
               </Box>
+              
               <Text
                 color="#E6EDF3"
                 display="flex"
@@ -1198,7 +1203,7 @@ const SwapModal = ({
                 </Text>
               </Box>
             </Box>
-            {currentSelectedCoin != "Select a market" ? (
+            {currentSelectedCoin != "Select a market" && currentBorrowMarketCoin!=currentSelectedCoin ? (
               <Box
                 onClick={() => {
                   setTransactionStarted(true);

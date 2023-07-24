@@ -157,7 +157,7 @@ const SupplyChartChart = () => {
           colors: ["#000000"],
         },
         formatter: function (value: any) {
-          return (value / 100)?.toFixed(1) + "%";
+          return value?.toFixed(1) + "%";
         },
         position: "top",
       },
@@ -185,7 +185,7 @@ const SupplyChartChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return (value / 100)?.toFixed(1) + "%";
+            return value?.toFixed(1) + "%";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
