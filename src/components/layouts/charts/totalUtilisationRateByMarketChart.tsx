@@ -346,7 +346,6 @@ const TotalUtilisationRateByMarketChart = () => {
         toolbar: {
           show: false,
         },
-        stacked: true,
       },
       dataLabels: {
         enabled: false,
@@ -557,7 +556,7 @@ const TotalUtilisationRateByMarketChart = () => {
         <ApexCharts
           options={options}
           series={splineChartData.series}
-          type="area"
+          type="line"
           height={400}
         />
       </Box>
