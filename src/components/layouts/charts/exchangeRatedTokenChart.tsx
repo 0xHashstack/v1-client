@@ -759,7 +759,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}
-          type="area"
+          type="line"
           height={350}
         />
       </Box>
