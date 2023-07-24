@@ -75,7 +75,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   // useEffect(()=>{
 
   // },[])
-  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
+  const splineColor = ["#00C7F2", "#846ED4", "#136B51", "#1A2683", "#996B22"];
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
   // console.log(btcData, "btc")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);

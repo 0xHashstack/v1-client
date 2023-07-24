@@ -207,7 +207,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
           colors: ["#000000"],
         },
         formatter: function (val: any) {
-          return numberFormatter(val); // Display the data value as the label
+          return val.toFixed(0); // Display the data value as the label
         },
       },
       markers: {
@@ -234,7 +234,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return value.toFixed(0);
           },
           style: {
             colors: "#6E7681",
