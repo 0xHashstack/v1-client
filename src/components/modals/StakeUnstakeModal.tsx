@@ -623,10 +623,10 @@ const StakeUnstakeModal = ({
   };
 
   const coinsSupplied: any = {
-    rBTC: false,
+    rBTC: true,
     rUSDT: true,
     rUSDC: true,
-    rETH: false,
+    rETH: true,
     rDAI: true,
   };
 
@@ -702,7 +702,7 @@ const StakeUnstakeModal = ({
         (item: any) => item.rToken == currentSelectedUnstakeCoin
       )?.rTokenStakedParsed
     );
-  }, [currentSelectedUnstakeCoin]);
+  }, [currentSelectedUnstakeCoin,userDeposit]);
   const [buttonId, setButtonId] = useState(0);
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const resetStates = () => {

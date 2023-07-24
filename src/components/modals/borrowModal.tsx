@@ -65,7 +65,7 @@ import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import { useWaitForTransaction } from "@starknet-react/core";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { toast } from "react-toastify";
@@ -133,20 +133,16 @@ const BorrowModal = ({
 
   useEffect(() => {
     // console.log("coin here", coin, walletBalances[coin?.name]?.statusBalanceOf);
-    if (currentCollateralCoin == coin?.name) {
       setwalletBalance(
         walletBalances[coin?.name]?.statusBalanceOf === "success"
-          ? Number(
-              BNtoNum(
+          ? parseAmount(
                 uint256.uint256ToBN(
                   walletBalances[coin?.name]?.dataBalanceOf?.balance
                 ),
                 tokenDecimalsMap[coin?.name]
               )
-            )
           : 0
       );
-    }
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [coin]);
   const {
@@ -985,15 +981,13 @@ const BorrowModal = ({
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"
-                                  ? Number(
-                                      BNtoNum(
+                                  ? parseAmount(
                                         uint256.uint256ToBN(
                                           walletBalances[coin]?.dataBalanceOf
                                             ?.balance
                                         ),
                                         tokenDecimalsMap[coin]
                                       )
-                                    )
                                   : 0
                               );
                             }}
@@ -1035,14 +1029,12 @@ const BorrowModal = ({
                               >
                                 Wallet Balance:{" "}
                                 {walletBalances[coin]?.dataBalanceOf?.balance
-                                  ? Number(
-                                      BNtoNum(
+                                  ? parseAmount(
                                         uint256.uint256ToBN(
                                           walletBalances[coin]?.dataBalanceOf
                                             ?.balance
                                         ),
                                         tokenDecimalsMap[coin]
-                                      )
                                     ).toFixed(2)
                                   : "-"}
                               </Box>
@@ -1533,7 +1525,7 @@ const BorrowModal = ({
                   color="white"
                   border={`${
                     inputCollateralAmountUSD &&
-                    inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
+                    inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
                       ? "1px solid #CF222E"
                       : inputBorrowAmountUSD < 0 ||
                         inputBorrowAmount > currentAvailableReserves
@@ -1564,7 +1556,7 @@ const BorrowModal = ({
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
                       color={`${
                         inputCollateralAmountUSD &&
-                        inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
+                        inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
                           ? "#CF222E"
                           : isNaN(amount)
                           ? "#CF222E"
@@ -1596,13 +1588,13 @@ const BorrowModal = ({
                     onClick={() => {
                       if (inputCollateralAmountUSD) {
                         setAmount(
-                          (5 * inputCollateralAmountUSD) /
+                          (4.9999 * inputCollateralAmountUSD) /
                             oraclePrices.find(
                               (curr: any) => curr.name === currentBorrowCoin
                             )?.price
                         );
                         setinputBorrowAmount(
-                          (5 * inputCollateralAmountUSD) /
+                          (4.9999* inputCollateralAmountUSD) /
                             oraclePrices.find(
                               (curr: any) => curr.name === currentBorrowCoin
                             )?.price
@@ -1632,7 +1624,7 @@ const BorrowModal = ({
                 {amount > currentAvailableReserves ||
                 (amount > 0 &&
                   inputCollateralAmountUSD &&
-                  inputBorrowAmountUSD > 5 * inputCollateralAmountUSD) ? (
+                  inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD) ? (
                   <Box
                     display="flex"
                     justifyContent="space-between"
@@ -1650,7 +1642,7 @@ const BorrowModal = ({
                       <Text ml="0.3rem">
                         {amount > currentAvailableReserves
                           ? "Amount exceeds balance"
-                          : inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
+                          : inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
                           ? "Not Permissible CDR"
                           : ""}
                       </Text>
@@ -2135,7 +2127,7 @@ const BorrowModal = ({
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 &&
             inputBorrowAmount < currentAvailableReserves &&
-            inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (
+            inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD ? (
               // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
               // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&
               // inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (
