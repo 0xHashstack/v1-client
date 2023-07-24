@@ -922,10 +922,10 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             </Box>
           )}
         </Box> */}
-        <Box display="flex" gap="4" mb="1.1rem" mt="0.3rem">
+        <Box display="flex" gap="4" mb="1.1rem" mt="0.3rem" fontWeight={500}>
           <Box
             display="flex"
-            gap="1"
+            gap="2"
             bg={currentSelectedCoin === 0 ? "inherit" : "#19191C"}
             borderRadius="md"
             border="1px"
@@ -942,6 +942,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               my="auto"
               color="white"
               fontSize="xs"
+              fontWeight="bold"
               textColor={currentSelectedCoin === 0 ? "white" : "#2B2F35"}
             >
               BTC
@@ -949,7 +950,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           </Box>
           <Box
             display="flex"
-            gap="1"
+            gap="2"
             bg={currentSelectedCoin === 3 ? "inherit" : "#19191C"}
             borderRadius="md"
             border="1px"
@@ -973,7 +974,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           </Box>
           <Box
             display="flex"
-            gap="1"
+            gap="2"
             bg={currentSelectedCoin === 1 ? "inherit" : "#19191C"}
             borderRadius="md"
             border="1px"
@@ -997,7 +998,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           </Box>
           <Box
             display="flex"
-            gap="1"
+            gap="2"
             bg={currentSelectedCoin === 2 ? "inherit" : "#19191C"}
             borderRadius="md"
             border="1px"
@@ -1021,7 +1022,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           </Box>
           <Box
             display="flex"
-            gap="1"
+            gap="2"
             bg={currentSelectedCoin === 4 ? "inherit" : "#19191C"}
             borderRadius="md"
             border="1px"
