@@ -293,7 +293,7 @@ const useDataLoader = () => {
                 totalAccounts?.push(response?.[i].totalAccounts);
                 aprs?.push(responseApr?.[i].APR);
                 apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(1 - responseTotal?.[i].totalPlatformURM / 10000);
+                totalUrm?.push(responseTotal?.[i].totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
               const data = {

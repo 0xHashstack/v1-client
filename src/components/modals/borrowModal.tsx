@@ -85,11 +85,7 @@ import { getUSDValue } from "@/Blockchain/scripts/l3interaction";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const BorrowModal = ({
   buttonText,
-  coin = {
-    name: "BTC",
-    icon: "mdi-bitcoin",
-    symbol: "WBTC",
-  },
+  coin,
   borrowAPRs,
   currentBorrowAPR,
   setCurrentBorrowAPR,
@@ -132,7 +128,11 @@ const BorrowModal = ({
   });
 
   useEffect(() => {
-    // console.log("coin here", coin, walletBalances[coin?.name]?.statusBalanceOf);
+    // console.log(
+    //   "coin here - ",
+    //   coin,
+    //   walletBalances[coin?.name]?.statusBalanceOf
+    // );
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
@@ -144,7 +144,7 @@ const BorrowModal = ({
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
-  }, [coin]);
+  }, [walletBalances[coin?.name]?.statusBalanceOf]);
   const {
     market,
     setMarket,
