@@ -6,6 +6,11 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectDailyBTCData,
+  selectDailyDAIData,
+  selectDailyETHData,
+  selectDailyUSDCData,
+  selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
@@ -57,6 +62,11 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const weeklyBtcData=useSelector(selectDailyBTCData);
+  const weeklyEthData=useSelector(selectDailyETHData);
+  const weeklyUsdtData=useSelector(selectDailyUSDTData);
+  const weeklyUsdcData=useSelector(selectDailyUSDCData);
+  const weeklyDaiData=useSelector(selectDailyDAIData);
   const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
   // useEffect(()=>{
 
@@ -213,12 +223,20 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
 
       case 1:
         if (currentSelectedCoin == 0) {
+          weeklyBtcData?.rTokenExchangeRates ?
+          newData = [
+            {
+              name: "Exchange Rate",
+              data: weeklyBtcData?.rTokenExchangeRates,
+            },
+          ]:        
           newData = [
             {
               name: "Exchange Rate",
               data: [300, 400, 350, 500, 490, 600, 800],
             },
           ];
+          weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -230,12 +248,20 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           ];
           return { newData, newCategories };
         } else if (currentSelectedCoin == 1) {
+          weeklyUsdtData?.rTokenExchangeRates ?
+          newData = [
+            {
+              name: "Exchange Rate",
+              data: weeklyUsdtData?.rTokenExchangeRates,
+            },
+          ]:         
           newData = [
             {
               name: "Exchange Rate",
               data: [200, 300, 250, 400, 390, 500, 700],
             },
           ];
+          weeklyUsdtData?.dates ? newCategories=weeklyUsdtData?.dates :
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -247,12 +273,20 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           ];
           return { newData, newCategories };
         } else if (currentSelectedCoin == 2) {
+          weeklyUsdcData?.rTokenExchangeRates ?
+          newData = [
+            {
+              name: "Exchange Rate",
+              data: weeklyUsdcData?.rTokenExchangeRates,
+            },
+          ]:         
           newData = [
             {
               name: "Exchange Rate",
               data: [100, 200, 250, 400, 390, 500, 700],
             },
           ];
+          weeklyUsdcData?.dates ? newCategories= weeklyUsdcData?.dates:
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -264,12 +298,20 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           ];
           return { newData, newCategories };
         } else if (currentSelectedCoin == 3) {
+          weeklyEthData?.rTokenExchangeRates ? 
+          newData = [
+            {
+              name: "Exchange Rate",
+              data: weeklyEthData?.rTokenExchangeRates,
+            },
+          ]:  
           newData = [
             {
               name: "Exchange Rate",
               data: [200, 300, 250, 400, 390, 500, 700],
             },
           ];
+          weeklyEthData?.dates ? newCategories=weeklyEthData?.dates:
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -281,12 +323,20 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           ];
           return { newData, newCategories };
         } else if (currentSelectedCoin == 4) {
+          weeklyDaiData?.rTokenExchangeRates ? 
+          newData = [
+            {
+              name: "Exchange Rate",
+              data: weeklyDaiData?.rTokenExchangeRates,
+            },
+          ]:
           newData = [
             {
               name: "Exchange Rate",
               data: [100, 400, 250, 300, 390, 500, 800],
             },
           ];
+          weeklyDaiData?.dates ? newCategories=weeklyDaiData?.dates:
           newCategories = [
             new Date("2023-07-01").getTime(),
             new Date("2023-07-02").getTime(),
@@ -715,7 +765,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
