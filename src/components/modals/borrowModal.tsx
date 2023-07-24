@@ -85,7 +85,11 @@ import { getUSDValue } from "@/Blockchain/scripts/l3interaction";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const BorrowModal = ({
   buttonText,
-  coin,
+  coin = {
+    name: "BTC",
+    icon: "mdi-bitcoin",
+    symbol: "WBTC",
+  },
   borrowAPRs,
   currentBorrowAPR,
   setCurrentBorrowAPR,
@@ -115,11 +119,11 @@ const BorrowModal = ({
     DAI: any;
   }
   const walletBalances: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
   };
   mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
     debug: true,
@@ -128,20 +132,23 @@ const BorrowModal = ({
   });
 
   useEffect(() => {
-    setwalletBalance(
-      walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
-              uint256.uint256ToBN(
-                walletBalances[coin?.name]?.dataBalanceOf?.balance
-              ),
-              tokenDecimalsMap[coin?.name]
+    // console.log("coin here", coin, walletBalances[coin?.name]?.statusBalanceOf);
+    if (currentCollateralCoin == coin?.name) {
+      setwalletBalance(
+        walletBalances[coin?.name]?.statusBalanceOf === "success"
+          ? Number(
+              BNtoNum(
+                uint256.uint256ToBN(
+                  walletBalances[coin?.name]?.dataBalanceOf?.balance
+                ),
+                tokenDecimalsMap[coin?.name]
+              )
             )
-          )
-        : 24
-    );
+          : 0
+      );
+    }
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
-  }, [coin, walletBalances[coin?.name]?.statusBalanceOf]);
+  }, [coin]);
   const {
     market,
     setMarket,
@@ -461,7 +468,7 @@ const BorrowModal = ({
     setCurrentAvailableReserves(
       protocolStats[coinAlign?.indexOf(currentBorrowCoin)]?.availableReserves
     );
-    console.log(coinAlign?.indexOf(currentBorrowCoin));
+    // console.log(coinAlign?.indexOf(currentBorrowCoin));
   }, [protocolStats, currentBorrowCoin]);
 
   const handleBorrow = async () => {
@@ -2014,15 +2021,17 @@ const BorrowModal = ({
                       <Text>
                         {/* 5.56% */}
                         {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                        {((inputBorrowAmountUSD *
-                          protocolStats?.find(
-                            (stat: any) => stat?.token === currentBorrowCoin
-                          )?.borrowRate -
-                          inputCollateralAmountUSD *
+                        {(
+                          (inputBorrowAmountUSD *
                             protocolStats?.find(
-                              (stat: any) => stat?.token === rToken.slice(1)
-                            )?.supplyRate) /
-                          inputBorrowAmountUSD).toFixed(2)}
+                              (stat: any) => stat?.token === currentBorrowCoin
+                            )?.borrowRate -
+                            inputCollateralAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) => stat?.token === rToken.slice(1)
+                              )?.supplyRate) /
+                          inputBorrowAmountUSD
+                        ).toFixed(2)}
                         {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin

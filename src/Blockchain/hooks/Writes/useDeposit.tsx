@@ -9,7 +9,7 @@ import { Abi, uint256 } from "starknet";
 import { ERC20Abi, diamondAddress } from "../../stark-constants";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
-import { Token } from "@/Blockchain/interfaces/interfaces";
+import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 
 const useDeposit = () => {
   const { address: account } = useAccount();

@@ -445,7 +445,7 @@ const YourBorrowModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-      console.log(revert);
+      // console.log(revert);
       dispatch(setTransactionStatus("success"));
     } catch (err) {
       console.log(err);
@@ -470,11 +470,11 @@ const YourBorrowModal = ({
     DAI: any;
   }
   const walletBalances: assetB = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
   };
 
   const [walletBalance1, setwalletBalance1] = useState(
@@ -589,7 +589,7 @@ const YourBorrowModal = ({
     );
     setRToken(result?.collateralMarket);
 
-    console.log(rToken);
+    // console.log(rToken);
   }, [currentBorrowId2, currentBorrowMarketCoin2]);
 
   const getCoin = (CoinName: string) => {
@@ -807,7 +807,7 @@ const YourBorrowModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-      console.log(zeroRepay);
+      // console.log(zeroRepay);
       dispatch(setTransactionStatus("success"));
       console.log("zero repay success");
     } catch (err: any) {
@@ -2295,7 +2295,7 @@ const YourBorrowModal = ({
       // dispatch((newValue));
     }
   };
-  console.log(typeof walletBalance2, "balance borrow");
+  // console.log(typeof walletBalance2, "balance borrow");
 
   const handleCollateralChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
@@ -2425,7 +2425,7 @@ const YourBorrowModal = ({
 
   useEffect(() => {
     setToMarket(currentPoolCoin);
-    console.log(toMarket);
+    // console.log(toMarket);
   }, [currentPoolCoin]);
 
   useEffect(() => {
@@ -2433,9 +2433,9 @@ const YourBorrowModal = ({
     setSliderValue2(0);
   }, [currentTokenSelected]);
 
-  useEffect(() => {
-    console.log("spendType", spendType);
-  }, [spendType]);
+  // useEffect(() => {
+  //   console.log("spendType", spendType);
+  // }, [spendType]);
 
   const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
     Number | undefined | null
@@ -2445,14 +2445,14 @@ const YourBorrowModal = ({
   >();
 
   useEffect(() => {
-    console.log(
-      "toMarketSplitConsole",
-      currentLoanMarket,
-      currentLoanAmount,
-      toMarketA,
-      toMarketB
-      // borrow
-    );
+    // console.log(
+    //   "toMarketSplitConsole",
+    //   currentLoanMarket,
+    //   currentLoanAmount,
+    //   toMarketA,
+    //   toMarketB
+    //   // borrow
+    // );
     setCurrentSplit(null);
     fetchLiquiditySplit();
   }, [toMarketA, currentBorrowId1, toMarketB, currentPool]);
@@ -2461,7 +2461,7 @@ const YourBorrowModal = ({
     console.log("useeffect called fetch");
     setCurrentLPTokenAmount(null);
     fetchLPAmount();
-  }, [toMarketA, currentBorrowId1, toMarketB,currentPool]);
+  }, [toMarketA, currentBorrowId1, toMarketB, currentPool]);
 
   const fetchLiquiditySplit = async () => {
     if (

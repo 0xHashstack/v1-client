@@ -250,7 +250,7 @@ const SpendTable = () => {
   const fetchProtocolStats = async () => {
     try {
       const stats = reduxProtocolStats;
-      console.log("fetchprotocolstats", stats); //23014
+      // console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
         stats?.[2]?.borrowRate,
         stats?.[3]?.borrowRate,
@@ -288,7 +288,7 @@ const SpendTable = () => {
         ]);
       }
       setLtv(ltv_ratio);
-      console.log("spendtable ltv ", ltv);
+      // console.log("spendtable ltv ", ltv);
     }
   }, [userLoans, oraclePrices]);
 
