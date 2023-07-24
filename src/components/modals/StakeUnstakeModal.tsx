@@ -75,7 +75,7 @@ import WarningIcon from "@/assets/icons/coins/warningIcon";
 import ArrowUp from "@/assets/icons/arrowup";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
-import { useWaitForTransaction } from "@starknet-react/core";
+import { useAccount, useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
@@ -84,7 +84,10 @@ import Image from "next/image";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
-import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
+import {
+  getEstrTokens,
+  getUserStakingShares,
+} from "@/Blockchain/scripts/Rewards";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
@@ -113,6 +116,7 @@ const StakeUnstakeModal = ({
   const [inputUnstakeAmount, setInputUnstakeAmount] = useState(0);
   const [isSupplyTap, setIsSupplyTap] = useState(false);
   const [transactionStarted, setTransactionStarted] = useState(false);
+  const { address } = useAccount();
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
     useState(false);
   const [stakingShares, setStakingShares] = useState<any>({
@@ -122,8 +126,8 @@ const StakeUnstakeModal = ({
     rUSDC: null,
     rDAI: null,
   });
+  let protocolStats = useSelector(selectProtocolStats);
   let activeTransactions = useSelector(selectActiveTransactions);
-  const protocolStats = useSelector(selectProtocolStats);
 
   const {
     rToken,
