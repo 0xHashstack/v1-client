@@ -1687,7 +1687,7 @@ const BorrowModal = ({
                           ? "Amount exceeds balance"
                           : inputBorrowAmountUSD >
                             4.9999 * inputCollateralAmountUSD
-                          ? "Not Permissible CDR"
+                          ? "Debt higher than permitted"
                           : ""}
                       </Text>
                     </Text>
