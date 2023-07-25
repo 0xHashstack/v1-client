@@ -1884,29 +1884,38 @@ const TradeModal = ({
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
                           if (inputCollateralAmountUSD) {
-                            setinputBorrowAmount(
-                              (4.9999 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) => curr.name === currentBorrowCoin
-                                )?.price
-                            );
-                            setLoanAmount(
-                              (4.9999 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) => curr.name === currentBorrowCoin
-                                )?.price
-                            );
-                            setsliderValue2(
-                              Math.round(
-                                ((4.9999 * inputCollateralAmountUSD) /
+                            if((4.9999 * inputCollateralAmountUSD) /
+                            oraclePrices.find(
+                              (curr: any) => curr.name === currentBorrowCoin
+                            )?.price>currentAvailableReserves){
+                              setinputBorrowAmount(currentAvailableReserves);
+                              setLoanAmount(currentAvailableReserves);
+                              setsliderValue2(100);
+                            }else{
+                              setinputBorrowAmount(
+                                (4.9999 * inputCollateralAmountUSD) /
                                   oraclePrices.find(
-                                    (curr: any) =>
-                                      curr.name === currentBorrowCoin
-                                  )?.price /
-                                  currentAvailableReserves) *
-                                  100
-                              )
-                            );
+                                    (curr: any) => curr.name === currentBorrowCoin
+                                  )?.price
+                              );
+                              setLoanAmount(
+                                (4.9999 * inputCollateralAmountUSD) /
+                                  oraclePrices.find(
+                                    (curr: any) => curr.name === currentBorrowCoin
+                                  )?.price
+                              );
+                              setsliderValue2(
+                                Math.round(
+                                  ((4.9999 * inputCollateralAmountUSD) /
+                                    oraclePrices.find(
+                                      (curr: any) =>
+                                        curr.name === currentBorrowCoin
+                                    )?.price /
+                                    currentAvailableReserves) *
+                                    100
+                                )
+                              );
+                            }
                           } else {
                             setinputBorrowAmount(currentAvailableReserves);
                             setLoanAmount(currentAvailableReserves);
