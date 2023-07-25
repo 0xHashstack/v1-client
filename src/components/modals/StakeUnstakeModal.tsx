@@ -107,6 +107,7 @@ const StakeUnstakeModal = ({
   validRTokens,
   ...restProps
 }: any) => {
+  console.log(validRTokens,"tokens stake modal")
   // console.log("coin - ", coin);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -1953,41 +1954,6 @@ const StakeUnstakeModal = ({
                         border="1px solid #2B2F35"
                         mt="1.5rem"
                       >
-                        {!isValid(currentSelectedUnstakeCoin) && (
-                          <Box
-                            // display="flex"
-                            // justifyContent="left"
-                            w="100%"
-                            pb="4"
-                          >
-                            <Box
-                              display="flex"
-                              bg="#FFF8C5"
-                              color="black"
-                              fontSize="xs"
-                              p="4"
-                              my="auto"
-                              fontStyle="normal"
-                              fontWeight="500"
-                              borderRadius="6px"
-                              // textAlign="center"
-                            >
-                              <Box pr="3" my="auto" cursor="pointer">
-                                <WarningIcon />
-                              </Box>
-                              Selected market is not staked. Firstly stake the
-                              coins to unstake
-                              {/* <Box
-                                py="1"
-                                pl="4"
-                                cursor="pointer"
-                                // onClick={handleClick}
-                              >
-                                <TableClose />
-                              </Box> */}
-                            </Box>
-                          </Box>
-                        )}
                         <Text
                           color="#8B949E"
                           display="flex"
@@ -2169,9 +2135,7 @@ const StakeUnstakeModal = ({
                           width="100%"
                           color="white"
                           border={`${
-                            !isValid(currentSelectedUnstakeCoin)
-                              ? "1px solid #2B2F35"
-                              : rTokenToWithdraw > unstakeWalletBalance
+                              rTokenToWithdraw > unstakeWalletBalance
                               ? "1px solid #CF222E"
                               : rTokenToWithdraw < 0
                               ? "1px solid #CF222E"
@@ -2190,11 +2154,11 @@ const StakeUnstakeModal = ({
                             keepWithinRange={true}
                             onChange={handleUnstakeChange}
                             value={
-                              isValid(currentSelectedUnstakeCoin)
-                                ? rTokenToWithdraw
+
+                               rTokenToWithdraw
                                   ? rTokenToWithdraw
                                   : ""
-                                : ""
+
                             }
                             outline="none"
                             step={parseFloat(
@@ -2238,9 +2202,9 @@ const StakeUnstakeModal = ({
                             color="#0969DA"
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
-                              if (!coinsSupplied[currentSelectedUnstakeCoin]) {
-                                return;
-                              }
+                              // if (!coinsSupplied[currentSelectedUnstakeCoin]) {
+                              //   return;
+                              // }
                               setRTokenToWithdraw(unstakeWalletBalance);
                               setSliderValue2(100);
                             }}
@@ -2347,15 +2311,11 @@ const StakeUnstakeModal = ({
                           <Slider
                             aria-label="slider-ex-6"
                             defaultValue={sliderValue2}
-                            value={
-                              !isValid(currentSelectedUnstakeCoin)
-                                ? 0
-                                : sliderValue2
-                            }
+                            value={sliderValue2}
                             onChange={(val) => {
-                              if (!isValid(currentSelectedUnstakeCoin)) {
-                                return;
-                              }
+                              // if (!isValid(currentSelectedUnstakeCoin)) {
+                              //   return;
+                              // }
                               setSliderValue2(val);
                               if (val == 100) {
                                 setRTokenToWithdraw(unstakeWalletBalance);
@@ -2437,9 +2397,7 @@ const StakeUnstakeModal = ({
                             </SliderMark>
                             <SliderMark
                               value={
-                                !isValid(currentSelectedUnstakeCoin)
-                                  ? 0
-                                  : sliderValue2
+                                  sliderValue2
                               }
                               textAlign="center"
                               // bg='blue.500'
