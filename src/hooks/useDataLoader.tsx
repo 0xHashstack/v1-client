@@ -280,8 +280,8 @@ const useDataLoader = () => {
                 dates?.push(response?.[i].Datetime);
                 supplyRates?.push(response?.[i].supplyRate / 100);
                 borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyAccounts);
-                borrowCounts?.push(response?.[i].borrowAccounts);
+                supplyCounts?.push(response?.[i].supplyCount);
+                borrowCounts?.push(response?.[i].borrowCount);
                 utilRates?.push(response?.[i].utilRate / 100);
                 rTokenExchangeRates?.push(
                   1 / (response?.[i].rTokenExchangeRate / 10000)
@@ -441,8 +441,8 @@ const useDataLoader = () => {
                 dates?.push(response?.[i].Datetime);
                 supplyRates?.push(response?.[i].supplyRate / 100);
                 borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyAccounts);
-                borrowCounts?.push(response?.[i].borrowAccounts);
+                supplyCounts?.push(response?.[i].supplyCount);
+                borrowCounts?.push(response?.[i].borrowCount);
                 utilRates?.push(response?.[i].utilRate / 100);
                 rTokenExchangeRates?.push(
                   1 / (response?.[i].rTokenExchangeRate / 10000)
