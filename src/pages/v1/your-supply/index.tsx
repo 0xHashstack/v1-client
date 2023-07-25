@@ -112,7 +112,7 @@ const YourSupply = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {netAPR && !Number.isNaN(netAPR) ? `${netAPR}%` : "NA"}
+                {netAPR ? `${netAPR}%` : "NA"}
               </Text>
             )}
           </VStack>
