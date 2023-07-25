@@ -27,6 +27,7 @@ import {
   selectNetAprCount,
   selectOraclePricesCount,
   selectProtocolStatsCount,
+  selectStakingSharesCount,
   selectUserDepositsCount,
   selectUserInfoCount,
   selectUserLoansCount,
@@ -45,6 +46,7 @@ import {
   setOraclePricesCount,
   setProtocolReservesCount,
   setProtocolStatsCount,
+  setStakingSharesCount,
   setUserDepositsCount,
   setUserInfoCount,
   setUserLoansCount,
@@ -78,6 +80,8 @@ import {
   setDailyETHData,
   setDailyUSDCData,
   setDailyUSDTData,
+  setStakingShares,
+  selectStakingShares,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -148,6 +152,8 @@ const useDataLoader = () => {
   const yourMetricsBorrowCount = useSelector(selectYourMetricsBorrowCount);
   const yourMetricsSupplyCount = useSelector(selectYourMetricsSupplyCount);
   const weeklyDataCount = useSelector(selectWeeklyDataCount);
+  // const stakingShares = useSelector(selectStakingShares);
+  const stakingSharesCount = useSelector(selectStakingSharesCount);
 
   const dispatch = useDispatch();
   const Data: any = [];
@@ -597,6 +603,39 @@ const useDataLoader = () => {
       }
     } catch (err) {
       console.log("user deposits - transactionRefresh error", err);
+    }
+  }, [address, transactionRefresh]);
+
+  useEffect(() => {
+    try {
+      const getStakingShares = async () => {
+        if (!address) return;
+        const promises = [
+          getUserStakingShares(address, "rBTC"),
+          getUserStakingShares(address, "rETH"),
+          getUserStakingShares(address, "rUSDT"),
+          getUserStakingShares(address, "rUSDC"),
+          getUserStakingShares(address, "rDAI"),
+        ];
+        Promise.allSettled([...promises]).then((val) => {
+          const data = {
+            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
+            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
+            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
+            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+          };
+          console.log("shares ", val, data);
+          dispatch(setStakingShares(data));
+          const count = getTransactionCount();
+          dispatch(setStakingSharesCount(count));
+        });
+      };
+      if (stakingSharesCount < transactionRefresh) {
+        getStakingShares();
+      }
+    } catch (err) {
+      console.log("getStakingShares error ", err);
     }
   }, [address, transactionRefresh]);
 
@@ -1124,7 +1163,7 @@ const useDataLoader = () => {
   useEffect(() => {
     console.log(
       "transaction refresh counts - ",
-      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount,yourMetricsSupplyCount,yourMetricsBorrowCount ",
+      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount,yourMetricsSupplyCount,yourMetricsBorrowCount,stakingSharesCount ",
       transactionRefresh,
       protocolStatsCount,
       protocolReservesCount,
@@ -1138,7 +1177,8 @@ const useDataLoader = () => {
       netAprCount,
       avgBorrowAPRCount,
       yourMetricsSupplyCount,
-      yourMetricsBorrowCount
+      yourMetricsBorrowCount,
+      stakingSharesCount
     );
   }, [
     transactionRefresh,
@@ -1156,6 +1196,7 @@ const useDataLoader = () => {
     avgBorrowAPRCount,
     yourMetricsSupplyCount,
     yourMetricsBorrowCount,
+    stakingSharesCount,
   ]);
 };
 
