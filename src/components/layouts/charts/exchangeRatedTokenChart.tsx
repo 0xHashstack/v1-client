@@ -657,8 +657,8 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             fontWeight: "400",
           },
         },
-        min: minValue - 0.05 * minValue,
-        max: maxValue + 0.05 * maxValue,
+        min: minValue - 0.0002 * minValue,
+        max: maxValue + 0.0002 * maxValue,
       },
       plotOptions: {
         bar: {

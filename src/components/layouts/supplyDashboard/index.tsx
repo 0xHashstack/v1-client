@@ -144,6 +144,7 @@ const SupplyDashboard = ({
   };
   const [avgs, setAvgs] = useState<any>([]);
   const avgsData: any = [];
+
   useEffect(() => {
     const getSupply = async () => {
       if (!userDeposits || !reduxProtocolStats) {
@@ -159,18 +160,18 @@ const SupplyDashboard = ({
 
         // console.log("supply in supply dash: ", supply);
         if (!supply) return;
-        let temp: any = [];
-        let indexes: any = [2, 3, 0, 1, 4];
+        // let data: any = [];
+        // let indexes: any = [2, 3, 0, 1, 4];
 
-        indexes.map((index: number) => {
-          if (
-            supply?.[index].rTokenAmountParsed !== 0 ||
-            supply?.[index].rTokenFreeParsed !== 0 ||
-            supply?.[index].rTokenLockedParsed !== 0 ||
-            supply?.[index].rTokenStakedParsed !== 0
-          )
-            temp.push(supply[index]);
-        });
+        // data = indexes.map((index: number) => {
+        //   if (
+        //     supply?.[index].rTokenAmountParsed !== 0 ||
+        //     supply?.[index].rTokenFreeParsed !== 0 ||
+        //     supply?.[index].rTokenLockedParsed !== 0 ||
+        //     supply?.[index].rTokenStakedParsed !== 0
+        //   )
+        //     return supply[index];
+        // });
 
         // supply.map((currSupply: any) => {
         //   if (
@@ -181,7 +182,7 @@ const SupplyDashboard = ({
         //   )
         //     temp.push(currSupply);
         // });
-        setSupplies(temp);
+        // setSupplies(data);
         // console.log(supplies,"supply dash");
         // console.log(reduxProtocolStats,"supply stats")
         if (avgs.length == 0) {
@@ -301,11 +302,31 @@ const SupplyDashboard = ({
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
   useEffect(() => {
-    if (userDeposits && reduxProtocolStats) {
+    if (userDeposits) {
+      const supply = userDeposits;
+      // console.log("users deposits - ", userDeposits);
+
+      // const supply = await getUserDeposits(address);
+
+      // console.log("supply in supply dash: ", supply);
+      if (!supply) return;
+      let data: any = [];
+      let indexes: any = [2, 3, 0, 1, 4];
+
+      data = indexes.map((index: number) => {
+        if (
+          supply?.[index].rTokenAmountParsed !== 0 ||
+          supply?.[index].rTokenFreeParsed !== 0 ||
+          supply?.[index].rTokenLockedParsed !== 0 ||
+          supply?.[index].rTokenStakedParsed !== 0
+        )
+          return supply[index];
+      });
+      setSupplies(data);
       console.log(supplies, "loading - ", userDeposits);
       setLoading(false);
     }
-  }, [supplies]);
+  }, [userDeposits]);
 
   return loading ? (
     <>

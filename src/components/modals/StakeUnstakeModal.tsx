@@ -107,7 +107,7 @@ const StakeUnstakeModal = ({
   validRTokens,
   ...restProps
 }: any) => {
-  console.log(validRTokens,"tokens stake modal")
+  // console.log(validRTokens, "tokens stake modal");
   // console.log("coin - ", coin);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -736,12 +736,13 @@ const StakeUnstakeModal = ({
       currentSelectedUnstakeCoin[0] == "r"
         ? currentSelectedUnstakeCoin
         : "r" + currentSelectedUnstakeCoin
-    ] != null ? 
-      stakingShares[
-        currentSelectedUnstakeCoin[0] == "r"
-          ? currentSelectedUnstakeCoin
-          : "r" + currentSelectedUnstakeCoin
-      ]:0
+    ] != null
+      ? stakingShares[
+          currentSelectedUnstakeCoin[0] == "r"
+            ? currentSelectedUnstakeCoin
+            : "r" + currentSelectedUnstakeCoin
+        ]
+      : 0
   );
   useEffect(() => {
     setrTokenWalletBalance(
@@ -759,12 +760,13 @@ const StakeUnstakeModal = ({
         currentSelectedUnstakeCoin[0] == "r"
           ? currentSelectedUnstakeCoin
           : "r" + currentSelectedUnstakeCoin
-      ] != null ? 
-        stakingShares[
-          currentSelectedUnstakeCoin[0] == "r"
-            ? currentSelectedUnstakeCoin
-            : "r" + currentSelectedUnstakeCoin
-        ]:0
+      ] != null
+        ? stakingShares[
+            currentSelectedUnstakeCoin[0] == "r"
+              ? currentSelectedUnstakeCoin
+              : "r" + currentSelectedUnstakeCoin
+          ]
+        : 0
     );
   }, [currentSelectedUnstakeCoin, userDeposit]);
   const [buttonId, setButtonId] = useState(0);
@@ -778,7 +780,7 @@ const StakeUnstakeModal = ({
     setToastDisplayed(false);
     setCurrentSelectedStakeCoin(coin ? rcoinValue : "rBTC");
     setAsset(coin ? rcoinValue.slice(1) : "BTC");
-    setRToken(coin ? rcoinValue:"rBTC");
+    setRToken(coin ? rcoinValue : "rBTC");
     setcurrentSelectedUnstakeCoin(coin ? rcoinValue : "rBTC");
     setUnstakeRToken(coin ? rcoinValue : "rBTC");
     setTransactionStarted(false);
@@ -788,21 +790,22 @@ const StakeUnstakeModal = ({
         currentSelectedUnstakeCoin[0] == "r"
           ? currentSelectedUnstakeCoin
           : "r" + currentSelectedUnstakeCoin
-      ] != null ? 
-        stakingShares[
-          currentSelectedUnstakeCoin[0] == "r"
-            ? currentSelectedUnstakeCoin
-            : "r" + currentSelectedUnstakeCoin
-        ]:0
+      ] != null
+        ? stakingShares[
+            currentSelectedUnstakeCoin[0] == "r"
+              ? currentSelectedUnstakeCoin
+              : "r" + currentSelectedUnstakeCoin
+          ]
+        : 0
     );
     setWalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-              uint256.uint256ToBN(
-                walletBalances[coin?.name]?.dataBalanceOf?.balance
-              ),
-              tokenDecimalsMap[coin?.name]
-            )
+            uint256.uint256ToBN(
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[coin?.name]
+          )
         : 0
     );
     dispatch(resetModalDropdowns());
@@ -1157,14 +1160,11 @@ const StakeUnstakeModal = ({
                                         walletBalances[_coin?.slice(1)]
                                           ?.statusBalanceOf === "success"
                                           ? parseAmount(
-                                                uint256.uint256ToBN(
-                                                  walletBalances[
-                                                    _coin?.slice(1)
-                                                  ]?.dataBalanceOf?.balance
-                                                ),
-                                                tokenDecimalsMap[
-                                                  _coin?.slice(1)
-                                                ]
+                                              uint256.uint256ToBN(
+                                                walletBalances[_coin?.slice(1)]
+                                                  ?.dataBalanceOf?.balance
+                                              ),
+                                              tokenDecimalsMap[_coin?.slice(1)]
                                             )
                                           : 0
                                       );
@@ -2135,7 +2135,7 @@ const StakeUnstakeModal = ({
                           width="100%"
                           color="white"
                           border={`${
-                              rTokenToWithdraw > unstakeWalletBalance
+                            rTokenToWithdraw > unstakeWalletBalance
                               ? "1px solid #CF222E"
                               : rTokenToWithdraw < 0
                               ? "1px solid #CF222E"
@@ -2153,13 +2153,7 @@ const StakeUnstakeModal = ({
                             min={0}
                             keepWithinRange={true}
                             onChange={handleUnstakeChange}
-                            value={
-
-                               rTokenToWithdraw
-                                  ? rTokenToWithdraw
-                                  : ""
-
-                            }
+                            value={rTokenToWithdraw ? rTokenToWithdraw : ""}
                             outline="none"
                             step={parseFloat(
                               `${rTokenToWithdraw <= 99999 ? 0.1 : 0}`
@@ -2265,7 +2259,8 @@ const StakeUnstakeModal = ({
                                 />
                               )}
                               <Text color="#6E7781" ml="0.2rem">
-                                {` ${currentSelectedUnstakeCoin}`}
+                                shares
+                                {/* {` ${currentSelectedUnstakeCoin}`} */}
                               </Text>
                             </Text>
                           </Text>
@@ -2302,8 +2297,9 @@ const StakeUnstakeModal = ({
                                 mx={2}
                               />
                             )}
-                            <Text color="#6E7781" ml="0.2rem">
-                              {` ${currentSelectedUnstakeCoin}`}
+                            <Text color="#6E7781" ml="0.4rem">
+                              {"shares"}
+                              {/* {` ${currentSelectedUnstakeCoin}`} */}
                             </Text>
                           </Text>
                         )}
@@ -2396,9 +2392,7 @@ const StakeUnstakeModal = ({
                               )}
                             </SliderMark>
                             <SliderMark
-                              value={
-                                  sliderValue2
-                              }
+                              value={sliderValue2}
                               textAlign="center"
                               // bg='blue.500'
                               color="white"

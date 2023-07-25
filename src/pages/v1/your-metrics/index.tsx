@@ -43,6 +43,7 @@ import {
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
 import Image from "next/image";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 const YourMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -85,9 +86,9 @@ const YourMetrics = () => {
       fetchProtocolStats();
     } catch (err: any) {}
   }, [protocolStatsRedux]);
-  useEffect(() => {
-    console.log("avgBorrowApr ", avgBorrowApr);
-  }, [avgBorrowApr]);
+  // useEffect(() => {
+  //   console.log("avgBorrowApr ", avgBorrowApr);
+  // }, [avgBorrowApr]);
   const [loading, setLoading] = useState(true);
   const yourMetricsSupply = useSelector(selectYourMetricsSupply);
   const yourMetricsBorrow = useSelector(selectYourMetricsBorrow);
@@ -222,7 +223,7 @@ const YourMetrics = () => {
                   <Text color="#6e7681" fontSize="14px" alignItems="center">
                     Average Supply APR
                   </Text>
-                  {!avgSupplyApr ? (
+                  {avgSupplyApr == null ? (
                     <Skeleton
                       width="6rem"
                       height="1.9rem"
@@ -273,7 +274,7 @@ const YourMetrics = () => {
                       </Text>
                     ) : (
                       <Text color="#e6edf3" fontSize="20px">
-                        ${numberFormatter(totalBorrow)}
+                        ${numberFormatterPercentage(totalBorrow)}
                       </Text>
                     )}
                   </VStack>
@@ -286,7 +287,7 @@ const YourMetrics = () => {
                     <Text color="#6e7681" fontSize="14px" alignItems="center">
                       Average borrow apr
                     </Text>
-                    {avgBorrowApr == "null" ? (
+                    {avgBorrowApr == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.9rem"
@@ -300,7 +301,7 @@ const YourMetrics = () => {
                       </Text>
                     ) : (
                       <Text color="#e6edf3" fontSize="20px">
-                        {numberFormatter(avgBorrowApr)}%
+                        {numberFormatterPercentage(avgBorrowApr)}%
                       </Text>
                     )}
                   </VStack>

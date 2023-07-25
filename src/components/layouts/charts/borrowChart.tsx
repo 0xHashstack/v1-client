@@ -344,7 +344,7 @@ const BorrowChart = () => {
         toolbar: {
           show: false,
         },
-        stacked: false,
+        stacked: true,
       },
       dataLabels: {
         position: "bottom",
