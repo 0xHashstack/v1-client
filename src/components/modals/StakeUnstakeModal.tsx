@@ -82,7 +82,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import {
@@ -747,6 +747,7 @@ const StakeUnstakeModal = ({
       userDeposit?.find((item: any) => item.rToken == currentSelectedStakeCoin)
         ?.rTokenFreeParsed
     );
+    setRToken(currentSelectedStakeCoin);
   }, [currentSelectedStakeCoin, userDeposit]);
   // useEffect(() => {
   //   console.log("stake userDeposit", userDeposit);
@@ -776,7 +777,7 @@ const StakeUnstakeModal = ({
     setToastDisplayed(false);
     setCurrentSelectedStakeCoin(coin ? rcoinValue : "rBTC");
     setAsset(coin ? rcoinValue.slice(1) : "BTC");
-    setRToken("rBTC");
+    setRToken(coin ? rcoinValue:"rBTC");
     setcurrentSelectedUnstakeCoin(coin ? rcoinValue : "rBTC");
     setUnstakeRToken(coin ? rcoinValue : "rBTC");
     setTransactionStarted(false);
@@ -795,14 +796,12 @@ const StakeUnstakeModal = ({
     );
     setWalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
+        ? parseAmount(
               uint256.uint256ToBN(
                 walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
               tokenDecimalsMap[coin?.name]
             )
-          )
         : 0
     );
     dispatch(resetModalDropdowns());
@@ -1156,8 +1155,7 @@ const StakeUnstakeModal = ({
                                       setWalletBalance(
                                         walletBalances[_coin?.slice(1)]
                                           ?.statusBalanceOf === "success"
-                                          ? Number(
-                                              BNtoNum(
+                                          ? parseAmount(
                                                 uint256.uint256ToBN(
                                                   walletBalances[
                                                     _coin?.slice(1)
@@ -1166,7 +1164,6 @@ const StakeUnstakeModal = ({
                                                 tokenDecimalsMap[
                                                   _coin?.slice(1)
                                                 ]
-                                              )
                                             )
                                           : 0
                                       );
