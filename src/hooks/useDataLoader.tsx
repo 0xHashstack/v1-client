@@ -40,6 +40,7 @@ import {
   setAvgBorrowAPR,
   setAvgBorrowAprCount,
   setAvgSupplyAPR,
+  setAvgSupplyAprCount,
   setHealthFactorCount,
   setHourlyDataCount,
   setNetAprCount,
@@ -960,7 +961,8 @@ const useDataLoader = () => {
 
   useEffect(() => {
     try {
-      const fetchAvgBorrowAPRCount = async () => {
+      const fetchAvgSupplyAPRCount = async () => {
+        if (!dataDeposit || !protocolStats) return;
         // console.log(getUserDeposits(address),"deposits in pagecard")
 
         // const dataMarket=await getProtocolStats();
@@ -972,34 +974,153 @@ const useDataLoader = () => {
         // console.log(userLoans, "userLoans is here");
         // console.log(protocolStats, "protocolStats is here");
         // console.log(aprsAndHealth, "aprs and health is here");
-        if (protocolStatsCount == transactionRefresh) {
-          const avgSupplyApr =
-            (protocolStats?.[0]?.supplyRate +
-              protocolStats?.[1]?.supplyRate +
-              protocolStats?.[2]?.supplyRate +
-              protocolStats?.[3]?.supplyRate +
-              protocolStats?.[4]?.supplyRate) /
-            5;
-          // const avgSupplyApr = await effectiveAprDeposit(
-          //   dataDeposit[0],
-          //   protocolStats
-          // );
-          console.log(avgSupplyApr, "data avg supply apr pagecard");
+        const aprA =
+          dataDeposit?.[0].rTokenAmountParsed !== 0 ||
+          dataDeposit?.[0].rTokenFreeParsed !== 0 ||
+          dataDeposit?.[0].rTokenLockedParsed !== 0 ||
+          dataDeposit?.[0].rTokenStakedParsed !== 0
+            ? protocolStats?.[0]?.supplyRate
+            : 0;
+        const aprB =
+          dataDeposit?.[1].rTokenAmountParsed !== 0 ||
+          dataDeposit?.[1].rTokenFreeParsed !== 0 ||
+          dataDeposit?.[1].rTokenLockedParsed !== 0 ||
+          dataDeposit?.[1].rTokenStakedParsed !== 0
+            ? protocolStats?.[1]?.supplyRate
+            : 0;
+        const aprC =
+          dataDeposit?.[2].rTokenAmountParsed !== 0 ||
+          dataDeposit?.[2].rTokenFreeParsed !== 0 ||
+          dataDeposit?.[2].rTokenLockedParsed !== 0 ||
+          dataDeposit?.[2].rTokenStakedParsed !== 0
+            ? protocolStats?.[2]?.supplyRate
+            : 0;
+        const aprD =
+          dataDeposit?.[3].rTokenAmountParsed !== 0 ||
+          dataDeposit?.[3].rTokenFreeParsed !== 0 ||
+          dataDeposit?.[3].rTokenLockedParsed !== 0 ||
+          dataDeposit?.[3].rTokenStakedParsed !== 0
+            ? protocolStats?.[3]?.supplyRate
+            : 0;
+        const aprE =
+          dataDeposit?.[4].rTokenAmountParsed !== 0 ||
+          dataDeposit?.[4].rTokenFreeParsed !== 0 ||
+          dataDeposit?.[4].rTokenLockedParsed !== 0 ||
+          dataDeposit?.[4].rTokenStakedParsed !== 0
+            ? protocolStats?.[4]?.supplyRate
+            : 0;
+        const avgSupplyApr =
+          (aprA + aprB + aprC + aprD + aprE) /
+          ((
+            aprA
+              ? 1
+              : 0 + aprB
+              ? 1
+              : 0 + aprC
+              ? 1
+              : 0 + aprD
+              ? 1
+              : 0 + aprE
+              ? 1
+              : 0
+          )
+            ? (aprA ? 1 : 0) +
+              (aprB ? 1 : 0) +
+              (aprC ? 1 : 0) +
+              (aprD ? 1 : 0) +
+              (aprE ? 1 : 0)
+            : 1);
+        // const avgSupplyApr = await effectiveAprDeposit(
+        //   dataDeposit[0],
+        //   protocolStats
+        // );
+        // console.log(
+        //   avgSupplyApr,
+        //   "data avg supply apr useEffect",
+        //   (aprA ? 1 : 0) +
+        //     (aprB ? 1 : 0) +
+        //     (aprC ? 1 : 0) +
+        //     (aprD ? 1 : 0) +
+        //     (aprE ? 1 : 0)
+        // );
+        if (avgSupplyApr != null) {
           dispatch(setAvgSupplyAPR(avgSupplyApr));
-          const avgBorrowApr =
-            (protocolStats?.[0]?.borrowRate +
-              protocolStats?.[1]?.borrowRate +
-              protocolStats?.[2]?.borrowRate +
-              protocolStats?.[3]?.borrowRate +
-              protocolStats?.[4]?.borrowRate) /
-            5;
-          // const avgBorrowApr = await effectivAPRLoan(
-          //   userLoans[0],
-          //   protocolStats,
-          //   dataOraclePrices
-          // );
-          console.log(avgBorrowApr, "data avg borrow apr pagecard");
+          const count = getTransactionCount();
+          dispatch(setAvgSupplyAprCount(count));
+        }
+        // const avgBorrowApr =
+        //   (protocolStats?.[0]?.borrowRate +
+        //     protocolStats?.[1]?.borrowRate +
+        //     protocolStats?.[2]?.borrowRate +
+        //     protocolStats?.[3]?.borrowRate +
+        //     protocolStats?.[4]?.borrowRate) /
+        //   5;
+        // // const avgBorrowApr = await effectivAPRLoan(
+        // //   userLoans[0],
+        // //   protocolStats,
+        // //   dataOraclePrices
+        // // );
+        // console.log(avgBorrowApr, "data avg borrow apr pagecard");
 
+        // dispatch(setAvgBorrowAPR(avgBorrowApr));
+        // const count = getTransactionCount();
+        // dispatch(setAvgBorrowAprCount(count));
+      };
+
+      if (
+        avgSupplyAprCount < transactionRefresh &&
+        protocolStatsCount == transactionRefresh &&
+        userDepositsCount == transactionRefresh
+      ) {
+        fetchAvgSupplyAPRCount();
+      }
+    } catch (err) {
+      console.log(err, "error in user info");
+    }
+  }, [address, protocolStats, transactionRefresh, dataDeposit]);
+  useEffect(() => {
+    try {
+      const fetchAvgBorrowAPRCount = async () => {
+        if (!userLoans || !protocolStats) return;
+        const loans = userLoans;
+        const loanCheck = [0, 0, 0, 0, 0];
+        loans.forEach((val: any, idx: number) => {
+          if (val?.underlyingMarket == "BTC") {
+            loanCheck[0] = 1;
+          } else if (val?.underlyingMarket == "ETH") {
+            loanCheck[1] = 1;
+          } else if (val?.underlyingMarket == "USDT") {
+            loanCheck[2] = 1;
+          } else if (val?.underlyingMarket == "USDC") {
+            loanCheck[3] = 1;
+          } else if (val?.underlyingMarket == "DAI") {
+            loanCheck[4] = 1;
+          }
+        });
+        const avgBorrowApr =
+          ((loanCheck[0] ? protocolStats?.[0]?.borrowRate : 0) +
+            (loanCheck[1] ? protocolStats?.[1]?.borrowRate : 0) +
+            (loanCheck[2] ? protocolStats?.[2]?.borrowRate : 0) +
+            (loanCheck[3] ? protocolStats?.[3]?.borrowRate : 0) +
+            (loanCheck[4] ? protocolStats?.[4]?.borrowRate : 0)) /
+          ((loanCheck[0] ? 1 : 0) +
+          (loanCheck[1] ? 1 : 0) +
+          (loanCheck[2] ? 1 : 0) +
+          (loanCheck[3] ? 1 : 0) +
+          (loanCheck[4] ? 1 : 0)
+            ? (loanCheck[0] ? 1 : 0) +
+              (loanCheck[1] ? 1 : 0) +
+              (loanCheck[2] ? 1 : 0) +
+              (loanCheck[3] ? 1 : 0) +
+              (loanCheck[4] ? 1 : 0)
+            : 1);
+        // const avgBorrowApr = await effectivAPRLoan(
+        //   userLoans[0],
+        //   protocolStats,
+        //   dataOraclePrices
+        // );
+        // console.log(avgBorrowApr, "data avg borrow apr useEffect", loanCheck);
+        if (avgBorrowApr != null) {
           dispatch(setAvgBorrowAPR(avgBorrowApr));
           const count = getTransactionCount();
           dispatch(setAvgBorrowAprCount(count));
@@ -1008,14 +1129,15 @@ const useDataLoader = () => {
 
       if (
         avgBorrowAPRCount < transactionRefresh &&
-        protocolStatsCount == transactionRefresh
+        protocolStatsCount == transactionRefresh &&
+        userLoansCount == transactionRefresh
       ) {
         fetchAvgBorrowAPRCount();
       }
     } catch (err) {
       console.log(err, "error in user info");
     }
-  }, [protocolStats, transactionRefresh]);
+  }, [address, protocolStats, transactionRefresh, userLoans]);
 
   useEffect(() => {
     try {
