@@ -54,7 +54,7 @@ const SupplyChart = () => {
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
-  console.log(daiData?.supplyAmounts, "data protocol");
+  // console.log(daiData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
   const fetchDataBasedOnOption = async (option: number) => {
@@ -152,6 +152,7 @@ const SupplyChart = () => {
               {
                 name: "BTC",
                 data: weeklyBtcData?.supplyAmounts,
+                // color: "#fffff",
               },
               {
                 name: "ETH",
@@ -391,6 +392,17 @@ const SupplyChart = () => {
         },
         min: minValue - 0.05 * minValue,
       },
+      legend: {
+        fontSize: "12px",
+        fontWeight: "400",
+        labels: {
+          colors: "#fff",
+          // Set the color of the legend texts to white
+        },
+      },
+      // legend:{
+      //   color:"#fff"
+      // },
       // stroke: {
       //   curve: "smooth",
       //   color: splineColor,

@@ -404,6 +404,14 @@ const BorrowChart = () => {
           bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
         },
       },
+      legend: {
+        fontSize: "12px",
+        fontWeight: "400",
+        labels: {
+          colors: "#fff",
+          // Set the color of the legend texts to white
+        },
+      },
       fill: {
         type: "solid",
       },

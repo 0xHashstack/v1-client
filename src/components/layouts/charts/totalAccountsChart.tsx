@@ -204,7 +204,7 @@ const TotalAccountsChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue,
         max: maxValue + 0.05 * maxValue,
       },
       plotOptions: {

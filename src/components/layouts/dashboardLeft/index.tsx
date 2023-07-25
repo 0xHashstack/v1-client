@@ -33,6 +33,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "@starknet-react/core";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
 export interface ICoin {
   name: string;
   symbol: string;

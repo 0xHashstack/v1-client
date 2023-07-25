@@ -122,6 +122,10 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
     legend: {
       position: "top" as const,
       horizontalAlign: "left" as const,
+      labels: {
+        colors: "#fff",
+        // Set the color of the legend texts to white
+      },
     },
     annotations: {
       xaxis: [

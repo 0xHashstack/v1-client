@@ -143,14 +143,12 @@ const YourSupplyModal = ({
   // console.log(userDeposit,"user deposit your supply")
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
-      ? 
-          parseAmount(
-            uint256.uint256ToBN(
-              walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
-            ),
-            tokenDecimalsMap[currentSelectedSupplyCoin]
-          )
-        
+      ? parseAmount(
+          uint256.uint256ToBN(
+            walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
+          ),
+          tokenDecimalsMap[currentSelectedSupplyCoin]
+        )
       : 0
   );
   // console.log(currentSelectedWithdrawlCoin)
@@ -163,15 +161,12 @@ const YourSupplyModal = ({
   useEffect(() => {
     setwalletBalance(
       walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
-        ? 
-            parseAmount(
-              uint256.uint256ToBN(
-                walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf
-                  ?.balance
-              ),
-              tokenDecimalsMap[currentSelectedSupplyCoin]
-            )
-          
+        ? parseAmount(
+            uint256.uint256ToBN(
+              walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[currentSelectedSupplyCoin]
+          )
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf)
@@ -466,8 +461,8 @@ const YourSupplyModal = ({
   const handleWithdrawSupply = async () => {
     try {
       const withdraw = await writeAsyncWithdrawDeposit();
-      setDepositTransHash(withdraw?.transaction_hash);
       if (withdraw?.transaction_hash) {
+        setDepositTransHash(withdraw?.transaction_hash);
         console.log("toast here");
         const toastid = toast.info(
           // `Please wait your withdraw transaction is running in background : ${inputWithdrawlAmount}r${asset}`,
@@ -489,7 +484,7 @@ const YourSupplyModal = ({
         }
         const trans_data = {
           transaction_hash: withdraw?.transaction_hash.toString(),
-          message: `Successfully withdrawn :  : ${estSupply}${asset}`,
+          message: `Successfully withdrawn ${asset}`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };

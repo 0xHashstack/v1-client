@@ -62,6 +62,7 @@ const initialState = {
   avgSupplyAprCount: -1,
   yourMetricsSupplyCount: -1,
   yourMetricsBorrowCount: -1,
+  stakingSharesCount: -1,
 
   // walletBalance: {
   //   BTC: 0,
@@ -245,6 +246,9 @@ export const userAccountSlice = createSlice({
     setYourMetricsBorrowCount(state, action) {
       state.yourMetricsBorrowCount = action.payload;
     },
+    setStakingSharesCount(state, action) {
+      state.stakingSharesCount = action.payload;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -296,6 +300,7 @@ export const {
   setAvgSupplyAprCount,
   setYourMetricsSupplyCount,
   setYourMetricsBorrowCount,
+  setStakingSharesCount,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -386,5 +391,8 @@ export const selectYourMetricsSupplyCount = (state) =>
   state.user_account.yourMetricsSupplyCount;
 export const selectYourMetricsBorrowCount = (state) =>
   state.user_account.yourMetricsBorrowCount;
+export const selectStakingSharesCount = (state) =>
+  state.user_account.stakingSharesCount;
+
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

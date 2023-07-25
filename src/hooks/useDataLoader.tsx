@@ -27,6 +27,7 @@ import {
   selectNetAprCount,
   selectOraclePricesCount,
   selectProtocolStatsCount,
+  selectStakingSharesCount,
   selectUserDepositsCount,
   selectUserInfoCount,
   selectUserLoansCount,
@@ -45,6 +46,7 @@ import {
   setOraclePricesCount,
   setProtocolReservesCount,
   setProtocolStatsCount,
+  setStakingSharesCount,
   setUserDepositsCount,
   setUserInfoCount,
   setUserLoansCount,
@@ -78,6 +80,8 @@ import {
   setDailyETHData,
   setDailyUSDCData,
   setDailyUSDTData,
+  setStakingShares,
+  selectStakingShares,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -148,6 +152,8 @@ const useDataLoader = () => {
   const yourMetricsBorrowCount = useSelector(selectYourMetricsBorrowCount);
   const yourMetricsSupplyCount = useSelector(selectYourMetricsSupplyCount);
   const weeklyDataCount = useSelector(selectWeeklyDataCount);
+  // const stakingShares = useSelector(selectStakingShares);
+  const stakingSharesCount = useSelector(selectStakingSharesCount);
 
   const dispatch = useDispatch();
   const Data: any = [];
@@ -252,15 +258,15 @@ const useDataLoader = () => {
               const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
                 // console.log(i,"inside loop")
-                const token = response?.[i].tokenName;
+                const token = response?.[i]?.tokenName;
                 const supplyAmount: number =
-                  (Number(response?.[i].supplyAmount) /
+                  (Number(response?.[i]?.supplyAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
                   )?.price;
                 const borrowAmount: number =
-                  (Number(response?.[i].borrowAmount) /
+                  (Number(response?.[i]?.borrowAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
@@ -278,22 +284,22 @@ const useDataLoader = () => {
                 tvlAmounts?.push(supplyAmount);
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);
-                supplyRates?.push(response?.[i].supplyRate / 100);
-                borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyCount);
-                borrowCounts?.push(response?.[i].borrowCount);
-                utilRates?.push(response?.[i].utilRate / 10000);
+                supplyRates?.push(response?.[i]?.supplyRate / 100);
+                borrowRates?.push(response?.[i]?.borrowRate / 100);
+                supplyCounts?.push(response?.[i]?.supplyAccounts);
+                borrowCounts?.push(response?.[i]?.borrowAccounts);
+                utilRates?.push(response?.[i]?.utilRate / 100);
                 rTokenExchangeRates?.push(
-                  1 / (response?.[i].rTokenExchangeRate / 10000)
+                  1 / (response?.[i]?.rTokenExchangeRate / 10000)
                 );
                 dTokenExchangeRates?.push(
-                  1 / (response?.[i].dTokenExchangeRate / 10000)
+                  1 / (response?.[i]?.dTokenExchangeRate / 10000)
                 );
-                totalTransactions?.push(response?.[i].totalTransactions);
-                totalAccounts?.push(response?.[i].totalAccounts);
-                aprs?.push(responseApr?.[i].APR);
-                apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(responseTotal?.[i].totalPlatformURM / 100);
+                totalTransactions?.push(response?.[i]?.totalTransactions);
+                totalAccounts?.push(response?.[i]?.totalAccounts);
+                aprs?.push(responseApr?.[i]?.APR);
+                apys?.push(responseApr?.[i]?.APY);
+                totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -413,15 +419,15 @@ const useDataLoader = () => {
               const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
                 // console.log(i,"inside loop")
-                const token = response?.[i].tokenName;
+                const token = response?.[i]?.tokenName;
                 const supplyAmount: number =
-                  (Number(response?.[i].supplyAmount) /
+                  (Number(response?.[i]?.supplyAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
                   )?.price;
                 const borrowAmount: number =
-                  (Number(response?.[i].borrowAmount) /
+                  (Number(response?.[i]?.borrowAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
@@ -439,22 +445,22 @@ const useDataLoader = () => {
                 tvlAmounts?.push(supplyAmount);
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);
-                supplyRates?.push(response?.[i].supplyRate / 100);
-                borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyAccounts);
-                borrowCounts?.push(response?.[i].borrowAccounts);
-                utilRates?.push(response?.[i].utilRate / 10000);
+                supplyRates?.push(response?.[i]?.supplyRate / 100);
+                borrowRates?.push(response?.[i]?.borrowRate / 100);
+                supplyCounts?.push(response?.[i]?.supplyAccounts);
+                borrowCounts?.push(response?.[i]?.borrowAccounts);
+                utilRates?.push(response?.[i]?.utilRate / 100);
                 rTokenExchangeRates?.push(
-                  response?.[i].rTokenExchangeRate / 10000
+                  1 / (response?.[i]?.rTokenExchangeRate / 10000)
                 );
                 dTokenExchangeRates?.push(
-                  response?.[i].dTokenExchangeRate / 10000
+                  1 / (response?.[i]?.dTokenExchangeRate / 10000)
                 );
-                totalTransactions?.push(response?.[i].totalTransactions);
-                totalAccounts?.push(response?.[i].totalAccounts);
-                aprs?.push(responseApr?.[i].APR);
-                apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(1 - responseTotal?.[i].totalPlatformURM / 10000);
+                totalTransactions?.push(response?.[i]?.totalTransactions);
+                totalAccounts?.push(response?.[i]?.totalAccounts);
+                aprs?.push(responseApr?.[i]?.APR);
+                apys?.push(responseApr?.[i]?.APY);
+                totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -597,6 +603,40 @@ const useDataLoader = () => {
       }
     } catch (err) {
       console.log("user deposits - transactionRefresh error", err);
+    }
+  }, [address, transactionRefresh]);
+
+  useEffect(() => {
+    try {
+      const getStakingShares = async () => {
+        if (!address) return;
+        const promises = [
+          getUserStakingShares(address, "rBTC"),
+          getUserStakingShares(address, "rETH"),
+          getUserStakingShares(address, "rUSDT"),
+          getUserStakingShares(address, "rUSDC"),
+          getUserStakingShares(address, "rDAI"),
+        ];
+        Promise.allSettled([...promises]).then((val) => {
+          const data = {
+            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
+            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
+            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
+            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+          };
+          if (data?.rBTC == null) return;
+          console.log("shares ", address, val, data);
+          dispatch(setStakingShares(data));
+          const count = getTransactionCount();
+          dispatch(setStakingSharesCount(count));
+        });
+      };
+      if (stakingSharesCount < transactionRefresh) {
+        getStakingShares();
+      }
+    } catch (err) {
+      console.log("getStakingShares error ", err);
     }
   }, [address, transactionRefresh]);
 
@@ -891,9 +931,9 @@ const useDataLoader = () => {
             dataOraclePrices,
             protocolStats
           );
-          console.log("netApr", dataNetApr);
           //@ts-ignore
           if (isNaN(dataNetApr)) {
+            // console.log("netApr", dataNetApr);
             dispatch(setNetAPR(0));
           } else {
             dispatch(setNetAPR(dataNetApr));
@@ -984,8 +1024,9 @@ const useDataLoader = () => {
           const price = oraclePrices?.find(
             (oraclePrice: any) => oraclePrice?.name == deposit?.token
           )?.price;
-          const token_amount =
-            deposit?.rTokenAmountParsed + deposit?.rTokenStakedParsed;
+          const token_amount = deposit?.underlyingAssetAmountParsed;
+          // const token_amount =
+          //   deposit?.rTokenAmountParsed + deposit?.rTokenStakedParsed;
           if (price && token_amount) {
             return price * token_amount;
           }
@@ -1124,7 +1165,7 @@ const useDataLoader = () => {
   useEffect(() => {
     console.log(
       "transaction refresh counts - ",
-      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount,yourMetricsSupplyCount,yourMetricsBorrowCount ",
+      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount,yourMetricsSupplyCount,yourMetricsBorrowCount,stakingSharesCount ",
       transactionRefresh,
       protocolStatsCount,
       protocolReservesCount,
@@ -1138,7 +1179,8 @@ const useDataLoader = () => {
       netAprCount,
       avgBorrowAPRCount,
       yourMetricsSupplyCount,
-      yourMetricsBorrowCount
+      yourMetricsBorrowCount,
+      stakingSharesCount
     );
   }, [
     transactionRefresh,
@@ -1156,6 +1198,7 @@ const useDataLoader = () => {
     avgBorrowAPRCount,
     yourMetricsSupplyCount,
     yourMetricsBorrowCount,
+    stakingSharesCount,
   ]);
 };
 
