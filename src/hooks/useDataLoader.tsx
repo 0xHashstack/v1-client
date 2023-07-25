@@ -258,15 +258,15 @@ const useDataLoader = () => {
               const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
                 // console.log(i,"inside loop")
-                const token = response?.[i].tokenName;
+                const token = response?.[i]?.tokenName;
                 const supplyAmount: number =
-                  (Number(response?.[i].supplyAmount) /
+                  (Number(response?.[i]?.supplyAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
                   )?.price;
                 const borrowAmount: number =
-                  (Number(response?.[i].borrowAmount) /
+                  (Number(response?.[i]?.borrowAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
@@ -284,22 +284,22 @@ const useDataLoader = () => {
                 tvlAmounts?.push(supplyAmount);
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);
-                supplyRates?.push(response?.[i].supplyRate / 100);
-                borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyAccounts);
-                borrowCounts?.push(response?.[i].borrowAccounts);
-                utilRates?.push(response?.[i].utilRate / 100);
+                supplyRates?.push(response?.[i]?.supplyRate / 100);
+                borrowRates?.push(response?.[i]?.borrowRate / 100);
+                supplyCounts?.push(response?.[i]?.supplyAccounts);
+                borrowCounts?.push(response?.[i]?.borrowAccounts);
+                utilRates?.push(response?.[i]?.utilRate / 100);
                 rTokenExchangeRates?.push(
-                  1 / (response?.[i].rTokenExchangeRate / 10000)
+                  1 / (response?.[i]?.rTokenExchangeRate / 10000)
                 );
                 dTokenExchangeRates?.push(
-                  1 / (response?.[i].dTokenExchangeRate / 10000)
+                  1 / (response?.[i]?.dTokenExchangeRate / 10000)
                 );
-                totalTransactions?.push(response?.[i].totalTransactions);
-                totalAccounts?.push(response?.[i].totalAccounts);
-                aprs?.push(responseApr?.[i].APR);
-                apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(responseTotal?.[i].totalPlatformURM / 100);
+                totalTransactions?.push(response?.[i]?.totalTransactions);
+                totalAccounts?.push(response?.[i]?.totalAccounts);
+                aprs?.push(responseApr?.[i]?.APR);
+                apys?.push(responseApr?.[i]?.APY);
+                totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -419,15 +419,15 @@ const useDataLoader = () => {
               const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
                 // console.log(i,"inside loop")
-                const token = response?.[i].tokenName;
+                const token = response?.[i]?.tokenName;
                 const supplyAmount: number =
-                  (Number(response?.[i].supplyAmount) /
+                  (Number(response?.[i]?.supplyAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
                   )?.price;
                 const borrowAmount: number =
-                  (Number(response?.[i].borrowAmount) /
+                  (Number(response?.[i]?.borrowAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
@@ -445,22 +445,22 @@ const useDataLoader = () => {
                 tvlAmounts?.push(supplyAmount);
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);
-                supplyRates?.push(response?.[i].supplyRate / 100);
-                borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyAccounts);
-                borrowCounts?.push(response?.[i].borrowAccounts);
-                utilRates?.push(response?.[i].utilRate / 100);
+                supplyRates?.push(response?.[i]?.supplyRate / 100);
+                borrowRates?.push(response?.[i]?.borrowRate / 100);
+                supplyCounts?.push(response?.[i]?.supplyAccounts);
+                borrowCounts?.push(response?.[i]?.borrowAccounts);
+                utilRates?.push(response?.[i]?.utilRate / 100);
                 rTokenExchangeRates?.push(
-                  1 / (response?.[i].rTokenExchangeRate / 10000)
+                  1 / (response?.[i]?.rTokenExchangeRate / 10000)
                 );
                 dTokenExchangeRates?.push(
-                  1 / (response?.[i].dTokenExchangeRate / 10000)
+                  1 / (response?.[i]?.dTokenExchangeRate / 10000)
                 );
-                totalTransactions?.push(response?.[i].totalTransactions);
-                totalAccounts?.push(response?.[i].totalAccounts);
-                aprs?.push(responseApr?.[i].APR);
-                apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(responseTotal?.[i].totalPlatformURM / 100);
+                totalTransactions?.push(response?.[i]?.totalTransactions);
+                totalAccounts?.push(response?.[i]?.totalAccounts);
+                aprs?.push(responseApr?.[i]?.APR);
+                apys?.push(responseApr?.[i]?.APY);
+                totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
               const data = {
