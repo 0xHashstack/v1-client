@@ -66,6 +66,7 @@ import {
 } from "@/store/slices/userAccountSlice";
 import {
   selectProtocolStats,
+  selectStakingShares,
   selectUserDeposits,
 } from "@/store/slices/readDataSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
@@ -119,15 +120,16 @@ const StakeUnstakeModal = ({
   const { address } = useAccount();
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
     useState(false);
-  const [stakingShares, setStakingShares] = useState<any>({
-    rBTC: null,
-    rETH: null,
-    rUSDT: null,
-    rUSDC: null,
-    rDAI: null,
-  });
+  // const [stakingShares, setStakingShares] = useState<any>({
+  //   rBTC: null,
+  //   rETH: null,
+  //   rUSDT: null,
+  //   rUSDC: null,
+  //   rDAI: null,
+  // });
   let protocolStats = useSelector(selectProtocolStats);
   let activeTransactions = useSelector(selectActiveTransactions);
+  let stakingShares = useSelector(selectStakingShares);
 
   const {
     rToken,
@@ -325,38 +327,38 @@ const StakeUnstakeModal = ({
     }
   }, [coin]);
 
-  useEffect(() => {
-    try {
-      const getStakingShares = async () => {
-        if (!address) return;
-        const promises = [
-          getUserStakingShares(address, "rBTC"),
-          getUserStakingShares(address, "rETH"),
-          getUserStakingShares(address, "rUSDT"),
-          getUserStakingShares(address, "rUSDC"),
-          getUserStakingShares(address, "rDAI"),
-        ];
-        Promise.allSettled([...promises]).then((val) => {
-          const data = {
-            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
-            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
-            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
-            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
-            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
-          };
-          console.log("shares ", val, data);
-          setStakingShares(data);
-        });
-        const data = await getUserStakingShares(address, "rUSDT");
-        if (data != null) {
-          setStakingShares(data);
-        }
-      };
-      getStakingShares();
-    } catch (err) {
-      console.log("getStakingShares error ", err);
-    }
-  }, [address]);
+  // useEffect(() => {
+  //   try {
+  //     const getStakingShares = async () => {
+  //       if (!address) return;
+  //       const promises = [
+  //         getUserStakingShares(address, "rBTC"),
+  //         getUserStakingShares(address, "rETH"),
+  //         getUserStakingShares(address, "rUSDT"),
+  //         getUserStakingShares(address, "rUSDC"),
+  //         getUserStakingShares(address, "rDAI"),
+  //       ];
+  //       Promise.allSettled([...promises]).then((val) => {
+  //         const data = {
+  //           rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+  //           rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
+  //           rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
+  //           rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
+  //           rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+  //         };
+  //         console.log("shares ", val, data);
+  //         setStakingShares(data);
+  //       });
+  //       const data = await getUserStakingShares(address, "rUSDT");
+  //       if (data != null) {
+  //         setStakingShares(data);
+  //       }
+  //     };
+  //     getStakingShares();
+  //   } catch (err) {
+  //     console.log("getStakingShares error ", err);
+  //   }
+  // }, [address]);
 
   const handleStakeTransaction = async () => {
     try {
@@ -729,8 +731,16 @@ const StakeUnstakeModal = ({
   );
   // console.log(rtokenWalletBalance,"rtoken wallet ")
   const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
-    userDeposit?.find((item: any) => item.rToken == currentSelectedUnstakeCoin)
-      ?.rTokenStakedParsed
+    stakingShares[
+      currentSelectedUnstakeCoin[0] == "r"
+        ? currentSelectedUnstakeCoin
+        : "r" + currentSelectedUnstakeCoin
+    ] != null ? 
+      stakingShares[
+        currentSelectedUnstakeCoin[0] == "r"
+          ? currentSelectedUnstakeCoin
+          : "r" + currentSelectedUnstakeCoin
+      ]:0
   );
   useEffect(() => {
     setrTokenWalletBalance(
@@ -743,9 +753,16 @@ const StakeUnstakeModal = ({
   // }, [userDeposit]);
   useEffect(() => {
     setUnstakeWalletBalance(
-      userDeposit?.find(
-        (item: any) => item.rToken == currentSelectedUnstakeCoin
-      )?.rTokenStakedParsed
+      stakingShares[
+        currentSelectedUnstakeCoin[0] == "r"
+          ? currentSelectedUnstakeCoin
+          : "r" + currentSelectedUnstakeCoin
+      ] != null ? 
+        stakingShares[
+          currentSelectedUnstakeCoin[0] == "r"
+            ? currentSelectedUnstakeCoin
+            : "r" + currentSelectedUnstakeCoin
+        ]:0
     );
   }, [currentSelectedUnstakeCoin, userDeposit]);
   const [buttonId, setButtonId] = useState(0);
@@ -765,9 +782,16 @@ const StakeUnstakeModal = ({
     setTransactionStarted(false);
     setUnstakeTransactionStarted(false);
     setUnstakeWalletBalance(
-      userDeposit?.find(
-        (item: any) => item.rToken == currentSelectedUnstakeCoin
-      )?.rTokenStakedParsed
+      stakingShares[
+        currentSelectedUnstakeCoin[0] == "r"
+          ? currentSelectedUnstakeCoin
+          : "r" + currentSelectedUnstakeCoin
+      ] != null ? 
+        stakingShares[
+          currentSelectedUnstakeCoin[0] == "r"
+            ? currentSelectedUnstakeCoin
+            : "r" + currentSelectedUnstakeCoin
+        ]:0
     );
     setWalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
@@ -2271,11 +2295,12 @@ const StakeUnstakeModal = ({
                                 ]
                               ) : (
                                 <Skeleton
-                                  width="4rem"
-                                  height="1.4rem"
+                                  width="4.5rem"
+                                  height="1.2rem"
                                   startColor="#101216"
                                   endColor="#2B2F35"
                                   borderRadius="6px"
+                                  mx={2}
                                 />
                               )}
                               <Text color="#6E7781" ml="0.2rem">
@@ -2308,11 +2333,12 @@ const StakeUnstakeModal = ({
                               ]
                             ) : (
                               <Skeleton
-                                width="6rem"
-                                height="1.4rem"
+                                width="4.5rem"
+                                height="1.2rem"
                                 startColor="#101216"
                                 endColor="#2B2F35"
                                 borderRadius="6px"
+                                mx={2}
                               />
                             )}
                             <Text color="#6E7781" ml="0.2rem">

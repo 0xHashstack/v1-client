@@ -92,6 +92,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -204,6 +205,7 @@ const SupplyModal = ({
     persistence: "localStorage",
   });
   // const walletBalances = useSelector(selectAssetWalletBalance);
+  // const transactionRefresh=useSelector(selectTransactionRefresh);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? parseAmount(
