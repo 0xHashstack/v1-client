@@ -38,6 +38,7 @@ import EthDisabled from "@/assets/icons/coins/ethDisabled";
 import UsdcDisabled from "@/assets/icons/coins/usdcDisabled";
 import UsdtDisabled from "@/assets/icons/coins/usdtDisabled";
 import DaiDisabled from "@/assets/icons/coins/daiDisabled";
+import BtcDisabled from "@/assets/icons/coins/btcDisabled";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const [aprByMarket, setAPRByMarket] = useState(0);
@@ -1074,7 +1075,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
             p="2"
           >
             <Box>
-              {currentSelectedCoin === 0 ? getCoin(0) : <DaiDisabled />}
+              {currentSelectedCoin === 0 ? getCoin(0) : <BtcDisabled />}
             </Box>
             <Text
               my="auto"

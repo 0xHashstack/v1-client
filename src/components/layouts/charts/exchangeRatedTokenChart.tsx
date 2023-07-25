@@ -38,6 +38,7 @@ import UsdcDisabled from "@/assets/icons/coins/usdcDisabled";
 import DaiDisabled from "@/assets/icons/coins/daiDisabled";
 import UsdtDisabled from "@/assets/icons/coins/usdtDisabled";
 import EthDisabled from "@/assets/icons/coins/ethDisabled";
+import BtcDisabled from "@/assets/icons/coins/btcDisabled";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -1045,7 +1046,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             p="2"
           >
             <Box>
-              {currentSelectedCoin === 0 ? getCoin(0) : <DaiDisabled />}
+              {currentSelectedCoin === 0 ? getCoin(0) : <BtcDisabled />}
             </Box>
             <Text
               my="auto"
