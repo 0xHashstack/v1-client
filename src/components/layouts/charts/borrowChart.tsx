@@ -3,6 +3,11 @@ import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import {
+  selectDailyBTCData,
+  selectDailyDAIData,
+  selectDailyETHData,
+  selectDailyUSDCData,
+  selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
@@ -28,6 +33,11 @@ const BorrowChart = () => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const weeklyBtcData = useSelector(selectDailyBTCData);
+  const weeklyEthData = useSelector(selectDailyETHData);
+  const weeklyUsdtData = useSelector(selectDailyUSDTData);
+  const weeklyUsdcData = useSelector(selectDailyUSDCData);
+  const weeklyDaiData = useSelector(selectDailyDAIData);
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -129,52 +139,81 @@ const BorrowChart = () => {
             ]);
         break;
       case 1:
-        newData = [
-          {
-            name: "BTC",
-            data: [
-              10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
-              10000000000, 4000000000,
-            ],
-          },
-          {
-            name: "ETH",
-            data: [
-              30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
-              10000000000, 1000000000,
-            ],
-          },
-          {
-            name: "USDT",
-            data: [
-              40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
-              50000000000, 1300000000,
-            ],
-          },
-          {
-            name: "USDC",
-            data: [
-              50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
-              11000000000, 430000000,
-            ],
-          },
-          {
-            name: "DAI",
-            data: [
-              17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
-              10000000000, 4000000000,
-            ],
-          },
-        ];
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        weeklyBtcData?.borrowAmounts &&
+        weeklyEthData?.borrowAmounts &&
+        weeklyUsdcData?.borrowAmounts &&
+        weeklyUsdtData?.borrowAmounts &&
+        weeklyDaiData?.borrowAmounts
+          ? (newData = [
+              {
+                name: "BTC",
+                data: weeklyBtcData?.borrowAmounts,
+              },
+              {
+                name: "ETH",
+                data: weeklyEthData?.borrowAmounts,
+              },
+              {
+                name: "USDT",
+                data: weeklyUsdtData?.borrowAmounts,
+              },
+              {
+                name: "USDC",
+                data: weeklyUsdcData?.borrowAmounts,
+              },
+              {
+                name: "DAI",
+                data: weeklyDaiData?.borrowAmounts,
+              },
+            ])
+          : (newData = [
+              {
+                name: "BTC",
+                data: [
+                  10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
+                  10000000000, 4000000000,
+                ],
+              },
+              {
+                name: "ETH",
+                data: [
+                  30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
+                  10000000000, 1000000000,
+                ],
+              },
+              {
+                name: "USDT",
+                data: [
+                  40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
+                  50000000000, 1300000000,
+                ],
+              },
+              {
+                name: "USDC",
+                data: [
+                  50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
+                  11000000000, 430000000,
+                ],
+              },
+              {
+                name: "DAI",
+                data: [
+                  17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
+                  10000000000, 4000000000,
+                ],
+              },
+            ]);
+        weeklyBtcData?.dates
+          ? (newCategories = weeklyBtcData?.dates)
+          : (newCategories = [
+              new Date("2023-07-01").getTime(),
+              new Date("2023-07-02").getTime(),
+              new Date("2023-07-03").getTime(),
+              new Date("2023-07-04").getTime(),
+              new Date("2023-07-05").getTime(),
+              new Date("2023-07-06").getTime(),
+              new Date("2023-07-07").getTime(),
+            ]);
         break;
       case 2:
         //y data axis
@@ -296,7 +335,8 @@ const BorrowChart = () => {
 
     return { newData, newCategories };
   };
-
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
     series: chartData,
     options: {
@@ -304,7 +344,7 @@ const BorrowChart = () => {
         toolbar: {
           show: false,
         },
-        stacked:true,
+        stacked: false,
       },
       dataLabels: {
         position: "bottom",
@@ -313,7 +353,7 @@ const BorrowChart = () => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return numberFormatter(val); // Display the data value as the label
+          return "$" + numberFormatter(val); // Display the data value as the label
         },
       },
 
@@ -337,7 +377,7 @@ const BorrowChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return "$" + numberFormatter(value);
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -345,7 +385,8 @@ const BorrowChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue,
+        
       },
       plotOptions: {
         bar: {
@@ -440,7 +481,7 @@ const BorrowChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

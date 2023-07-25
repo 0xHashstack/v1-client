@@ -129,6 +129,11 @@ const SupplyDashboard = ({
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
   let userDeposits = useSelector(selectUserDeposits);
   let reduxProtocolStats = useSelector(selectProtocolStats);
+  const [coinPassed, setCoinPassed] = useState({
+    name: "BTC",
+    icon: "mdi-bitcoin",
+    symbol: "WBTC",
+  });
   const dispatch = useDispatch();
   const handleStatusHover = (idx: string) => {
     setStatusHoverIndex(idx);
@@ -296,7 +301,7 @@ const SupplyDashboard = ({
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
   useEffect(() => {
-    if (userDeposits) {
+    if (userDeposits && reduxProtocolStats) {
       console.log(supplies, "loading - ", userDeposits);
       setLoading(false);
     }
@@ -843,6 +848,7 @@ const SupplyDashboard = ({
                 supplyAPRs={supplyAPRs}
                 currentSupplyAPR={currentSupplyAPR}
                 setCurrentSupplyAPR={setCurrentSupplyAPR}
+                coin={coinPassed}
               />
             </Box>
             {/* <Box

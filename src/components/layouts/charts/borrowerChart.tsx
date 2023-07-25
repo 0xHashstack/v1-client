@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import dynamic from "next/dynamic";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import finalPropsSelectorFactory from "react-redux/es/connect/selectorFactory";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const BorrowerChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -16,6 +17,7 @@ const BorrowerChart = () => {
     },
   ]);
   const btcData = useSelector(selectHourlyBTCData);
+  const weeklyBtcData=useSelector(selectDailyBTCData)
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -65,12 +67,21 @@ const BorrowerChart = () => {
             ]);
         break;
       case 1:
+        weeklyBtcData?.borrowCounts ? 
+        newData = [
+          {
+            name: "Borrower",
+            data: weeklyBtcData?.borrowCounts,
+          },
+        ]:   
         newData = [
           {
             name: "Borrower",
             data: [40000, 10000, 42000, 39000, 44000, 41000, 43000],
           },
         ];
+        weeklyBtcData?.dates ?
+        newCategories=weeklyBtcData?.dates:
         newCategories = [
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
@@ -140,7 +151,8 @@ const BorrowerChart = () => {
 
     return { newData, newCategories };
   };
-
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
     series: chartData,
     options: {
@@ -160,7 +172,7 @@ const BorrowerChart = () => {
           colors: ["#fff"],
         },
         formatter: function (val: any) {
-          return numberFormatter(val); // Display the data value as the label
+          return val.toFixed(0); // Display the data value as the label
         },
       },
 
@@ -184,7 +196,7 @@ const BorrowerChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return value.toFixed(0);
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -192,7 +204,8 @@ const BorrowerChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue,
+        max: maxValue + 0.05 * maxValue,
       },
       plotOptions: {
         bar: {
@@ -276,7 +289,7 @@ const BorrowerChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

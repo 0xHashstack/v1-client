@@ -5,7 +5,7 @@ import SmallGreenDot from "@/assets/icons/smallGreenDot";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const TotalTransactionChart = ({ color, curveColor, series }: any) => {
@@ -17,6 +17,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
     },
   ]);
   const btcData = useSelector(selectHourlyBTCData);
+  const weeklyBtcData=useSelector(selectDailyBTCData)
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -66,12 +67,20 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
             ]);
         break;
       case 1:
+        weeklyBtcData?.totalTransactions ?
+        newData = [
+          {
+            name: "Total transactions",
+            data: weeklyBtcData?.totalTransactions,
+          },
+        ]:  
         newData = [
           {
             name: "Total transactions",
             data: [40000, 10000, 42000, 39000, 44000, 41000, 43000],
           },
         ];
+        weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates :
         newCategories = [
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
@@ -183,6 +192,8 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
 
     return { newData, newCategories };
   };
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
     series: chartData,
     options: {
@@ -198,7 +209,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
           colors: ["#000000"],
         },
         formatter: function (val: any) {
-          return numberFormatter(val); // Display the data value as the label
+          return val.toFixed(0); // Display the data value as the label
         },
       },
       markers: {
@@ -225,7 +236,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return numberFormatter(value);
+            return value.toFixed(0);
           },
           style: {
             colors: "#6E7681",
@@ -233,7 +244,8 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue,
+        max: maxValue + 0.05 * maxValue,
       },
       plotOptions: {
         bar: {
@@ -313,7 +325,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

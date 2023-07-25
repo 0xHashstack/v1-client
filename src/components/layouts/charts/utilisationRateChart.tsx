@@ -3,7 +3,10 @@ import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import {
+  selectDailyBTCData,
+  selectHourlyBTCData,
+} from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { number } from "starknet";
 import { kMaxLength } from "buffer";
@@ -18,6 +21,10 @@ const UtilisationRateChart = () => {
     },
   ]);
   const btcData = useSelector(selectHourlyBTCData);
+  const weeklyBtcData = useSelector(selectDailyBTCData);
+  // console.log(weeklyBtcData, "week data");
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -68,21 +75,30 @@ const UtilisationRateChart = () => {
             ]);
         break;
       case 1:
-        newData = [
-          {
-            name: "Utlization Rate",
-            data: [400, 100, 420, 390, 440, 410, 430],
-          },
-        ];
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        weeklyBtcData?.totalUrm
+          ? (newData = [
+              {
+                name: "Utilization Rate",
+                data: weeklyBtcData?.totalUrm,
+              },
+            ])
+          : (newData = [
+              {
+                name: "Utlization Rate",
+                data: [400, 100, 420, 390, 440, 410, 430],
+              },
+            ]);
+        weeklyBtcData?.dates
+          ? (newCategories = weeklyBtcData?.dates)
+          : (newCategories = [
+              new Date("2023-07-01").getTime(),
+              new Date("2023-07-02").getTime(),
+              new Date("2023-07-03").getTime(),
+              new Date("2023-07-04").getTime(),
+              new Date("2023-07-05").getTime(),
+              new Date("2023-07-06").getTime(),
+              new Date("2023-07-07").getTime(),
+            ]);
         break;
       case 2:
         //y data axis
@@ -175,7 +191,7 @@ const UtilisationRateChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return (value / 100)?.toFixed(1) + "%";
+            return value?.toFixed(2) + "% ";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -183,7 +199,8 @@ const UtilisationRateChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue,
+        max: maxValue + 0.05 * maxValue,
       },
       plotOptions: {
         bar: {
@@ -238,7 +255,7 @@ const UtilisationRateChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Utilisation Rate:</Box>
+          <Box mt="auto">Utilisation</Box>
           <Box display="flex" gap="2">
             <Button
               color="#2B2F35"
@@ -267,7 +284,7 @@ const UtilisationRateChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

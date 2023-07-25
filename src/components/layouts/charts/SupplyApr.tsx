@@ -4,7 +4,7 @@ import { Box, Button } from "@chakra-ui/react";
 
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
-import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import dynamic from "next/dynamic";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const SupplyChartChart = () => {
@@ -31,6 +31,7 @@ const SupplyChartChart = () => {
     fetchData();
   }, [liquidityProviderChartPeriod]);
   const btcData = useSelector(selectHourlyBTCData);
+  const weeklyBtcData=useSelector(selectDailyBTCData);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -66,12 +67,20 @@ const SupplyChartChart = () => {
             ]);
         break;
       case 1:
+        weeklyBtcData?.supplyRates ?
+        newData = [
+          {
+            name: "Supply APR",
+            data: weeklyBtcData?.supplyRates,
+          },
+        ]:   
         newData = [
           {
             name: "Supply APR",
             data: [400, 100, 420, 390, 440, 410, 430],
           },
         ];
+        weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates:
         newCategories = [
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
@@ -133,7 +142,8 @@ const SupplyChartChart = () => {
 
     return { newData, newCategories };
   };
-
+  const minValue = Math.min(...chartData.flatMap((series) => series.data));
+  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
     series: chartData,
     options: {
@@ -148,7 +158,7 @@ const SupplyChartChart = () => {
           colors: ["#000000"],
         },
         formatter: function (value: any) {
-          return (value / 100)?.toFixed(1) + "%";
+          return value?.toFixed(1) + "%";
         },
         position: "top",
       },
@@ -176,7 +186,7 @@ const SupplyChartChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return (value / 100)?.toFixed(1) + "%";
+            return value?.toFixed(1) + "%";
           },
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -184,7 +194,8 @@ const SupplyChartChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue,
+        max: maxValue + 0.05 * maxValue,
       },
       plotOptions: {
         bar: {
@@ -269,7 +280,7 @@ const SupplyChartChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

@@ -26,8 +26,8 @@ const SpendBorrow = () => {
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
   const userLoans = useSelector(selectUserUnspentLoans);
-  console.log(totalBorrow, "total borrow spend borrow");
-  console.log(netAPR, "netapr in spend borrow");
+  // console.log(totalBorrow, "total borrow spend borrow");
+  // console.log(netAPR, "netapr in spend borrow");
   return (
     <PageCard pt="6.5rem">
       <HStack

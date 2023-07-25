@@ -197,9 +197,10 @@ export default function Home() {
         alignItems="flex-start"
         padding="32px"
         width="462px"
-        height="567px"
+        // height="567px"
         border="1px solid #30363D"
         borderRadius="8px"
+        // bgColor="red"
       >
         <Text color="#fff">Connect a wallet</Text>
         <Card
@@ -437,7 +438,13 @@ export default function Home() {
           </Button>
         </Box>
 
-        <Box mt="16px" display="flex" flexDirection="column" pb="32px">
+        <Box
+          mt="16px"
+          display="flex"
+          flexDirection="column"
+          // pb="32px"
+          // bgColor="blue"
+        >
           <Text
             fontSize="12px"
             lineHeight="18px"
