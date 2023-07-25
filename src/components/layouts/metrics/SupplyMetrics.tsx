@@ -82,8 +82,9 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
         <SupplyAprChart />
         <BorrowAprChart/>
       </Box>
-      <Box display="flex" gap="30px">
+      <Box display="flex" gap="30px" w="full">
         <TotalAccountsChart/>
+        <TotalTransactionChart/>
       </Box>
       <Box color="White" fontSize="28px" fontWeight="600">
         Supply
@@ -130,9 +131,6 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
             // series={series2[liquidityProviderChartPeriod]}
           />
         </Box> */}
-      </Box>
-      <Box display="flex" gap="30px">
-        <TotalTransactionChart/>
       </Box>
     </Box>
   );

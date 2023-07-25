@@ -165,10 +165,6 @@ const LiquidityProviderChart = () => {
           show: false,
         },
       },
-      markers: {
-        size: 2,
-        colors: ["#fff"],
-      },
       dataLabels: {
         position: "bottom",
         enabled: false,
