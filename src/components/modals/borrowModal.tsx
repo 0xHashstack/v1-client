@@ -736,6 +736,16 @@ const BorrowModal = ({
     setInputCollateralAmountUSD(0);
     setInputBorrowAmountUSD(0);
     setinputBorrowAmount(0);
+    setwalletBalance(
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
+        ? parseAmount(
+            uint256.uint256ToBN(
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[coin?.name]
+          )
+        : 0
+    );
     // setDepositTransHash("")
   };
   useEffect(() => {
