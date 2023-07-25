@@ -729,8 +729,16 @@ const StakeUnstakeModal = ({
   );
   // console.log(rtokenWalletBalance,"rtoken wallet ")
   const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
-    userDeposit?.find((item: any) => item.rToken == currentSelectedUnstakeCoin)
-      ?.rTokenStakedParsed
+    stakingShares[
+      currentSelectedUnstakeCoin[0] == "r"
+        ? currentSelectedUnstakeCoin
+        : "r" + currentSelectedUnstakeCoin
+    ] != null ? 
+      stakingShares[
+        currentSelectedUnstakeCoin[0] == "r"
+          ? currentSelectedUnstakeCoin
+          : "r" + currentSelectedUnstakeCoin
+      ]:0
   );
   useEffect(() => {
     setrTokenWalletBalance(
@@ -743,9 +751,16 @@ const StakeUnstakeModal = ({
   // }, [userDeposit]);
   useEffect(() => {
     setUnstakeWalletBalance(
-      userDeposit?.find(
-        (item: any) => item.rToken == currentSelectedUnstakeCoin
-      )?.rTokenStakedParsed
+      stakingShares[
+        currentSelectedUnstakeCoin[0] == "r"
+          ? currentSelectedUnstakeCoin
+          : "r" + currentSelectedUnstakeCoin
+      ] != null ? 
+        stakingShares[
+          currentSelectedUnstakeCoin[0] == "r"
+            ? currentSelectedUnstakeCoin
+            : "r" + currentSelectedUnstakeCoin
+        ]:0
     );
   }, [currentSelectedUnstakeCoin, userDeposit]);
   const [buttonId, setButtonId] = useState(0);
@@ -765,9 +780,16 @@ const StakeUnstakeModal = ({
     setTransactionStarted(false);
     setUnstakeTransactionStarted(false);
     setUnstakeWalletBalance(
-      userDeposit?.find(
-        (item: any) => item.rToken == currentSelectedUnstakeCoin
-      )?.rTokenStakedParsed
+      stakingShares[
+        currentSelectedUnstakeCoin[0] == "r"
+          ? currentSelectedUnstakeCoin
+          : "r" + currentSelectedUnstakeCoin
+      ] != null ? 
+        stakingShares[
+          currentSelectedUnstakeCoin[0] == "r"
+            ? currentSelectedUnstakeCoin
+            : "r" + currentSelectedUnstakeCoin
+        ]:0
     );
     setWalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
