@@ -286,8 +286,8 @@ const useDataLoader = () => {
                 dates?.push(response?.[i].Datetime);
                 supplyRates?.push(response?.[i].supplyRate / 100);
                 borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyCount);
-                borrowCounts?.push(response?.[i].borrowCount);
+                supplyCounts?.push(response?.[i].supplyAccounts);
+                borrowCounts?.push(response?.[i].borrowAccounts);
                 utilRates?.push(response?.[i].utilRate / 100);
                 rTokenExchangeRates?.push(
                   1 / (response?.[i].rTokenExchangeRate / 10000)
@@ -447,8 +447,8 @@ const useDataLoader = () => {
                 dates?.push(response?.[i].Datetime);
                 supplyRates?.push(response?.[i].supplyRate / 100);
                 borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyCount);
-                borrowCounts?.push(response?.[i].borrowCount);
+                supplyCounts?.push(response?.[i].supplyAccounts);
+                borrowCounts?.push(response?.[i].borrowAccounts);
                 utilRates?.push(response?.[i].utilRate / 100);
                 rTokenExchangeRates?.push(
                   1 / (response?.[i].rTokenExchangeRate / 10000)
@@ -625,7 +625,8 @@ const useDataLoader = () => {
             rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
             rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
           };
-          console.log("shares ", val, data);
+          if (data?.rBTC == null) return;
+          console.log("shares ", address, val, data);
           dispatch(setStakingShares(data));
           const count = getTransactionCount();
           dispatch(setStakingSharesCount(count));
@@ -1023,8 +1024,9 @@ const useDataLoader = () => {
           const price = oraclePrices?.find(
             (oraclePrice: any) => oraclePrice?.name == deposit?.token
           )?.price;
-          const token_amount =
-            deposit?.rTokenAmountParsed + deposit?.rTokenStakedParsed;
+          const token_amount = deposit?.underlyingAssetAmountParsed;
+          // const token_amount =
+          //   deposit?.rTokenAmountParsed + deposit?.rTokenStakedParsed;
           if (price && token_amount) {
             return price * token_amount;
           }
