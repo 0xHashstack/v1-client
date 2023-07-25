@@ -963,17 +963,6 @@ const useDataLoader = () => {
     try {
       const fetchAvgSupplyAPRCount = async () => {
         if (!dataDeposit || !protocolStats) return;
-        // console.log(getUserDeposits(address),"deposits in pagecard")
-
-        // const dataMarket=await getProtocolStats();
-        // const dataOraclePrices=await getOraclePrices();
-        // console.log(dataMarket,"data market page")
-        // console.log("user info called - transactionRefresh");
-        // console.log(dataDeposit, "dataDeposit is here");
-        // console.log(dataOraclePrices, "dataOraclePrices is here");
-        // console.log(userLoans, "userLoans is here");
-        // console.log(protocolStats, "protocolStats is here");
-        // console.log(aprsAndHealth, "aprs and health is here");
         const aprA =
           dataDeposit?.[0].rTokenAmountParsed !== 0 ||
           dataDeposit?.[0].rTokenFreeParsed !== 0 ||
@@ -1011,19 +1000,11 @@ const useDataLoader = () => {
             : 0;
         const avgSupplyApr =
           (aprA + aprB + aprC + aprD + aprE) /
-          ((
-            aprA
-              ? 1
-              : 0 + aprB
-              ? 1
-              : 0 + aprC
-              ? 1
-              : 0 + aprD
-              ? 1
-              : 0 + aprE
-              ? 1
-              : 0
-          )
+          ((aprA ? 1 : 0) +
+          (aprB ? 1 : 0) +
+          (aprC ? 1 : 0) +
+          (aprD ? 1 : 0) +
+          (aprE ? 1 : 0)
             ? (aprA ? 1 : 0) +
               (aprB ? 1 : 0) +
               (aprC ? 1 : 0) +
