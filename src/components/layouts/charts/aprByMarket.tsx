@@ -803,6 +803,14 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         min: minValue - 0.05 * minValue,
         max: maxValue + 0.05 * maxValue,
       },
+      legend: {
+        fontSize: "12px",
+        fontWeight: "400",
+        labels: {
+          colors: "#fff",
+          // Set the color of the legend texts to white
+        },
+      },
       stroke: {
         curve: "smooth",
         color: splineColor,
@@ -810,9 +818,6 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       },
       grid: {
         borderColor: "#2B2F35",
-      },
-      legend: {
-        show: true, // Hide the series buttons when only one series is present
       },
       // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
       color: splineColor,
