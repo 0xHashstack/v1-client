@@ -164,10 +164,6 @@ const BorrowAPRChart = () => {
         },
         position: "top",
       },
-      markers: {
-        size: 2,
-        colors: ["#fff"],
-      },
       xaxis: {
         type: "datetime" as const, // Set x-axis type to datetime
         labels: {

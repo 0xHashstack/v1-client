@@ -171,10 +171,6 @@ const TotalAccountsChart = () => {
           return val.toFixed(0); // Display the data value as the label
         },
       },
-      markers: {
-        size: 2,
-        colors: ["#fff"],
-      },
 
       xaxis: {
         type: "datetime" as const,
