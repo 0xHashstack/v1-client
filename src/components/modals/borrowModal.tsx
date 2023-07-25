@@ -276,7 +276,7 @@ const BorrowModal = ({
   const protocolStatsRedux = useSelector(selectProtocolStats);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
     protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
-      ?.availableReserves
+      ?.availableReserves * 0.895
   );
   const fetchProtocolStats = async () => {
     // const stats = await getProtocolStats();
@@ -462,7 +462,8 @@ const BorrowModal = ({
 
   useEffect(() => {
     setCurrentAvailableReserves(
-      protocolStats[coinAlign?.indexOf(currentBorrowCoin)]?.availableReserves
+      protocolStats[coinAlign?.indexOf(currentBorrowCoin)]?.availableReserves *
+        0.895
     );
     // console.log(coinAlign?.indexOf(currentBorrowCoin));
   }, [protocolStats, currentBorrowCoin]);
@@ -1446,7 +1447,8 @@ const BorrowModal = ({
                             onClick={() => {
                               setCurrentBorrowCoin(coin);
                               setCurrentAvailableReserves(
-                                protocolStats?.[index]?.availableReserves
+                                protocolStats?.[index]?.availableReserves *
+                                  0.895
                               );
                               // setMarket(coin);
                               setMarket(coin);
@@ -1494,7 +1496,8 @@ const BorrowModal = ({
                                 Available reserves:{" "}
                                 {(protocolStats?.[index]?.availableReserves &&
                                   numberFormatter(
-                                    protocolStats?.[index]?.availableReserves
+                                    protocolStats?.[index]?.availableReserves *
+                                      0.895
                                   )) || (
                                   <Skeleton
                                     width="3rem"
@@ -1606,14 +1609,17 @@ const BorrowModal = ({
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
                       if (inputCollateralAmountUSD) {
-                        if((4.9999 * inputCollateralAmountUSD) /
-                        oraclePrices.find(
-                          (curr: any) => curr.name === currentBorrowCoin
-                        )?.price>currentAvailableReserves){
+                        if (
+                          (4.9999 * inputCollateralAmountUSD) /
+                            oraclePrices.find(
+                              (curr: any) => curr.name === currentBorrowCoin
+                            )?.price >
+                          currentAvailableReserves
+                        ) {
                           setAmount(currentAvailableReserves);
                           setsliderValue2(100);
                           setinputBorrowAmount(currentAvailableReserves);
-                        }else{
+                        } else {
                           setAmount(
                             (4.9999 * inputCollateralAmountUSD) /
                               oraclePrices.find(
@@ -1626,16 +1632,16 @@ const BorrowModal = ({
                                 (curr: any) => curr.name === currentBorrowCoin
                               )?.price
                           );
-                            setsliderValue2(
-                              Math.round(
-                                ((4.9999 * inputCollateralAmountUSD) /
-                                  oraclePrices.find(
-                                    (curr: any) => curr.name === currentBorrowCoin
-                                  )?.price /
-                                  currentAvailableReserves) *
-                                  100
-                              )
-                            );
+                          setsliderValue2(
+                            Math.round(
+                              ((4.9999 * inputCollateralAmountUSD) /
+                                oraclePrices.find(
+                                  (curr: any) => curr.name === currentBorrowCoin
+                                )?.price /
+                                currentAvailableReserves) *
+                                100
+                            )
+                          );
                         }
                       } else {
                         setAmount(currentAvailableReserves);
@@ -1693,7 +1699,7 @@ const BorrowModal = ({
                     >
                       Available reserves:{" "}
                       {availableReserves ? (
-                        numberFormatter(availableReserves)
+                        numberFormatter(availableReserves * 0.895)
                       ) : (
                         <Skeleton
                           width="4rem"
@@ -1722,7 +1728,7 @@ const BorrowModal = ({
                   >
                     Available reserves:{" "}
                     {availableReserves ? (
-                      numberFormatter(availableReserves)
+                      numberFormatter(availableReserves * 0.895)
                     ) : (
                       <Skeleton
                         width="4rem"

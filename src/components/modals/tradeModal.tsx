@@ -396,7 +396,7 @@ const TradeModal = ({
   }, [stats]);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
     protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
-      ?.availableReserves
+      ?.availableReserves * 0.895
   );
   useEffect(() => {
     // console.log("currentAvailableReserve", currentAvailableReserves);
@@ -404,7 +404,7 @@ const TradeModal = ({
 
   useEffect(() => {
     setCurrentAvailableReserves(
-      protocolStats[coins.indexOf(currentBorrowCoin)]?.availableReserves
+      protocolStats[coins.indexOf(currentBorrowCoin)]?.availableReserves * 0.895
     );
     // console.log(coins.indexOf(currentBorrowCoin));
   }, [protocolStats, currentBorrowCoin]);
@@ -1724,7 +1724,8 @@ const TradeModal = ({
                                 onClick={() => {
                                   setCurrentBorrowCoin(coin);
                                   setCurrentAvailableReserves(
-                                    protocolStats?.[index]?.availableReserves
+                                    protocolStats?.[index]?.availableReserves *
+                                      0.895
                                   );
                                   setLoanMarket(coin);
                                   // setMarket(coin);
@@ -1768,8 +1769,8 @@ const TradeModal = ({
                                     display="flex"
                                   >
                                     Available reserves:{" "}
-                                    {protocolStats?.[index]
-                                      ?.availableReserves || (
+                                    {protocolStats?.[index]?.availableReserves *
+                                      0.895 || (
                                       <Skeleton
                                         width="3rem"
                                         height="1rem"
@@ -1884,24 +1885,29 @@ const TradeModal = ({
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
                           if (inputCollateralAmountUSD) {
-                            if((4.9999 * inputCollateralAmountUSD) /
-                            oraclePrices.find(
-                              (curr: any) => curr.name === currentBorrowCoin
-                            )?.price>currentAvailableReserves){
+                            if (
+                              (4.9999 * inputCollateralAmountUSD) /
+                                oraclePrices.find(
+                                  (curr: any) => curr.name === currentBorrowCoin
+                                )?.price >
+                              currentAvailableReserves
+                            ) {
                               setinputBorrowAmount(currentAvailableReserves);
                               setLoanAmount(currentAvailableReserves);
                               setsliderValue2(100);
-                            }else{
+                            } else {
                               setinputBorrowAmount(
                                 (4.9999 * inputCollateralAmountUSD) /
                                   oraclePrices.find(
-                                    (curr: any) => curr.name === currentBorrowCoin
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
                                   )?.price
                               );
                               setLoanAmount(
                                 (4.9999 * inputCollateralAmountUSD) /
                                   oraclePrices.find(
-                                    (curr: any) => curr.name === currentBorrowCoin
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
                                   )?.price
                               );
                               setsliderValue2(
@@ -1972,7 +1978,7 @@ const TradeModal = ({
                           justifyContent="flex-end"
                         >
                           Available Reserves:{" "}
-                          {numberFormatter(currentAvailableReserves)}
+                          {numberFormatter(currentAvailableReserves * 0.895)}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentBorrowCoin}`}
                           </Text>
@@ -1991,7 +1997,7 @@ const TradeModal = ({
                       >
                         Available reserves:{" "}
                         {currentAvailableReserves ? (
-                          numberFormatter(currentAvailableReserves)
+                          numberFormatter(currentAvailableReserves * 0.895)
                         ) : (
                           <Skeleton
                             width="4rem"
