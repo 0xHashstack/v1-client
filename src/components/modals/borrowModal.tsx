@@ -718,7 +718,8 @@ const BorrowModal = ({
   );
   const resetStates = () => {
     setCurrentCollateralCoin(coin?.name ? coin?.name : "BTC");
-    setRToken(coin?.name ? coin?.name : "BTC");
+    setRToken(coin?.name ? coin?.name : "rBTC");
+    setCollateralMarket(coin?.name ? coin.name :"BTC")
     setCurrentBorrowCoin(coin?.name ? coin?.name : "BTC");
     setMarket(coin?.name ? coin?.name : "BTC");
     setAmount(0);

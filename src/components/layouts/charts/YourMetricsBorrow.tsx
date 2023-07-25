@@ -105,7 +105,7 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
     plotOptions: {
       bar: {
         opacity: 1,
-        columnWidth: "70%",
+        columnWidth: "40%",
         colors: {
           backgroundBarOpacity: 1,
         },
