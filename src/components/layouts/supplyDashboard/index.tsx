@@ -313,17 +313,17 @@ const SupplyDashboard = ({
       let data: any = [];
       let indexes: any = [2, 3, 0, 1, 4];
 
-      data = indexes.map((index: number) => {
+      indexes.forEach((index: number) => {
         if (
           supply?.[index].rTokenAmountParsed !== 0 ||
           supply?.[index].rTokenFreeParsed !== 0 ||
           supply?.[index].rTokenLockedParsed !== 0 ||
           supply?.[index].rTokenStakedParsed !== 0
         )
-          return supply[index];
+          data[index] = supply[index];
       });
       setSupplies(data);
-      console.log(supplies, "loading - ", userDeposits);
+      console.log(data, "loading - ", userDeposits);
       setLoading(false);
     }
   }, [userDeposits]);
