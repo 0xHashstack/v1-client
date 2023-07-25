@@ -392,6 +392,17 @@ const SupplyChart = () => {
         },
         min: minValue - 0.05 * minValue,
       },
+      legend: {
+        fontSize: "12px",
+        fontWeight: "400",
+        labels: {
+          colors: "#fff",
+          // Set the color of the legend texts to white
+        },
+      },
+      // legend:{
+      //   color:"#fff"
+      // },
       // stroke: {
       //   curve: "smooth",
       //   color: splineColor,

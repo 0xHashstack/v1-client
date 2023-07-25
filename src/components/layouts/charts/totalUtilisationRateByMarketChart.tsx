@@ -407,6 +407,14 @@ const TotalUtilisationRateByMarketChart = () => {
       fill: {
         type: "solid",
       },
+      legend: {
+        fontSize: "12px",
+        fontWeight: "400",
+        labels: {
+          colors: "#fff",
+          // Set the color of the legend texts to white
+        },
+      },
       annotations: {
         xaxis: [
           {
