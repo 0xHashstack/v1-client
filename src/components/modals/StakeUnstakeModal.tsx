@@ -1388,7 +1388,7 @@ const StakeUnstakeModal = ({
                                 ? numberFormatter(walletBalance)
                                 : rtokenWalletBalance !== undefined
                                 ? numberFormatter(rtokenWalletBalance)
-                                : "loading"}
+                                : "loading..."}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedStakeCoin}`}
                               </Text>
@@ -1412,7 +1412,7 @@ const StakeUnstakeModal = ({
                               ? numberFormatter(walletBalance)
                               : rtokenWalletBalance !== undefined
                               ? numberFormatter(rtokenWalletBalance)
-                              : "loading"}
+                              : "loading..."}
                             {/* {walletBalance} */}
                             <Text color="#6E7781" ml="0.2rem">
                               {rtokenWalletBalance == 0
