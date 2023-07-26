@@ -721,7 +721,13 @@ const SupplyModal = ({
         {...restProps}
       >
         {buttonText !== "Click here to supply" ? (
-          buttonText
+          buttonText === "Supply from metrics" ? (
+            <Button w="70px" h="32px" fontSize="14px" p="12px" mx="auto">
+              Supply
+            </Button>
+          ) : (
+            buttonText
+          )
         ) : (
           <Text fontSize="sm">Click here to supply</Text>
         )}
