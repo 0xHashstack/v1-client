@@ -263,7 +263,7 @@ const BorrowDashboard = ({
     let temp: any = [];
     const promises = [];
     for (let i = 0; i < Borrows?.length; i++) {
-      if (Borrows[i].spendType === "LIQUIDITY") {
+      if (Borrows[i]?.spendType === "LIQUIDITY") {
         console.log(
           "split index",
           i,
@@ -274,7 +274,7 @@ const BorrowDashboard = ({
           Borrows[i]?.loanMarket
         );
 
-        const data = await getJediEstimatedLiqALiqBfromLp(
+        const data = getJediEstimatedLiqALiqBfromLp(
           Borrows[i]?.currentLoanAmount,
           Borrows[i]?.loanId,
           Borrows[i]?.currentLoanMarketAddress,
@@ -348,7 +348,9 @@ const BorrowDashboard = ({
   // }, []);
 
   useEffect(() => {
-    getSplit();
+    if (Borrows) {
+      getSplit();
+    }
   }, [Borrows]);
 
   useEffect(() => {

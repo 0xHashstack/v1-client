@@ -794,7 +794,11 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchYourSupply = () => {
-        if (userDepositsCount == transactionRefresh && oraclePrices) {
+        if (
+          userDepositsCount == transactionRefresh &&
+          dataDeposit &&
+          oraclePrices
+        ) {
           const data = getTotalSupply(dataDeposit, dataOraclePrices);
           if (data != null) {
             dispatch(setYourSupply(data));
@@ -805,7 +809,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log(err, "error in your supply count");
     }
-  }, [dataDeposit, dataOraclePrices]);
+  }, [userDepositsCount, dataOraclePrices]);
 
   useEffect(() => {
     try {
@@ -831,6 +835,9 @@ const useDataLoader = () => {
           transactionRefresh
         );
         if (
+          dataDeposit &&
+          protocolStats &&
+          userLoans &&
           userDepositsCount == transactionRefresh &&
           protocolStatsCount == transactionRefresh &&
           userLoansCount == transactionRefresh &&
@@ -887,10 +894,10 @@ const useDataLoader = () => {
       console.log(err, "error in user info");
     }
   }, [
-    dataDeposit,
-    protocolStats,
+    userDepositsCount,
+    protocolStatsCount,
     dataOraclePrices,
-    userLoans,
+    userLoansCount,
     transactionRefresh,
   ]);
   // useEffect(() => {
@@ -919,6 +926,9 @@ const useDataLoader = () => {
         // console.log(protocolStats, "protocolStats is here");
         // console.log(aprsAndHealth, "aprs and health is here");
         if (
+          dataDeposit &&
+          userLoans &&
+          protocolStats &&
           userDepositsCount == transactionRefresh &&
           protocolStatsCount == transactionRefresh &&
           userLoansCount == transactionRefresh &&
@@ -952,10 +962,10 @@ const useDataLoader = () => {
       console.log(err, "error in user info");
     }
   }, [
-    dataDeposit,
-    userLoans,
+    userDepositsCount,
+    userLoansCount,
     dataOraclePrices,
-    protocolStats,
+    protocolStatsCount,
     transactionRefresh,
   ]);
 
@@ -1051,14 +1061,16 @@ const useDataLoader = () => {
       if (
         avgSupplyAprCount < transactionRefresh &&
         protocolStatsCount == transactionRefresh &&
-        userDepositsCount == transactionRefresh
+        userDepositsCount == transactionRefresh &&
+        dataDeposit &&
+        protocolStatsCount
       ) {
         fetchAvgSupplyAPRCount();
       }
     } catch (err) {
       console.log(err, "error in user info");
     }
-  }, [address, protocolStats, transactionRefresh, dataDeposit]);
+  }, [protocolStatsCount, transactionRefresh, userDepositsCount]);
   useEffect(() => {
     try {
       const fetchAvgBorrowAPRCount = async () => {
@@ -1110,7 +1122,9 @@ const useDataLoader = () => {
 
       if (
         avgBorrowAPRCount < transactionRefresh &&
+        protocolStats &&
         protocolStatsCount == transactionRefresh &&
+        userLoans &&
         userLoansCount == transactionRefresh
       ) {
         fetchAvgBorrowAPRCount();
@@ -1118,7 +1132,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log(err, "error in user info");
     }
-  }, [address, protocolStats, transactionRefresh, userLoans]);
+  }, [protocolStatsCount, transactionRefresh, userLoansCount]);
 
   useEffect(() => {
     try {
@@ -1144,6 +1158,7 @@ const useDataLoader = () => {
       };
       if (
         dataDeposit &&
+        userDepositsCount == transactionRefresh &&
         dataDeposit?.length > 0 &&
         oraclePrices &&
         oraclePrices?.length > 0 &&
@@ -1154,7 +1169,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("your metrics supply err ", err);
     }
-  }, [dataDeposit, oraclePrices, transactionRefresh, address]);
+  }, [userDepositsCount, oraclePrices, transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -1200,7 +1215,9 @@ const useDataLoader = () => {
       };
       if (
         userLoans &&
+        userLoansCount == transactionRefresh &&
         protocolStats &&
+        protocolStatsCount == transactionRefresh &&
         oraclePrices &&
         yourMetricsBorrowCount < transactionRefresh
       ) {
@@ -1209,7 +1226,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("err fetchBorrowData ", err);
     }
-  }, [userLoans, protocolStats, oraclePrices, transactionRefresh, address]);
+  }, [userLoansCount, protocolStatsCount, oraclePrices, transactionRefresh]);
 
   // useEffect(() => {
   //   try {
