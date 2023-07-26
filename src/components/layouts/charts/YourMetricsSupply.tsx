@@ -14,7 +14,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   // const userDeposits = useSelector(selectUserDeposits);
   // const oraclePrices = useSelector(selectOraclePrices);
   const supplyData = useSelector(selectYourMetricsSupply);
-
+  // console.log("supplyData your metrics ", supplyData);
   // useEffect(() => {
   //   try {
   //     const fetchSupplyData = async () => {
