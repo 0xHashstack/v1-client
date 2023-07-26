@@ -53,13 +53,21 @@ const AnimatedButton: React.FC<Props> = ({
   const modalClosed=useSelector(selectTransactionStartedAndModalClosed)
   // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
   // console.log(transactionStatus,"transaction from button");
-  useEffect(()=>{
-    if(modalClosed==true){
-      setCurrentStringIndex(-1);
-      setProgressBarWidth("0%");
-    }
-  },[modalClosed])
-  console.log(modalClosed,"close");
+  // useEffect(()=>{
+  //   if(modalClosed==true){
+  //     setCurrentStringIndex(-1);
+  //     setProgressBarWidth("0%");
+  //   }
+  // },[modalClosed])
+  // console.log(modalClosed,"close");
+  // useEffect(() => {
+  //   // Reset all the states to their initial values when modalClosed becomes true
+  //   if (modalClosed) {
+  //     setIsAnimationStarted(false);
+  //     setCurrentStringIndex(-1);
+  //     setProgressBarWidth("0%");
+  //   }
+  // }, [modalClosed]);
   useEffect(() => {
     // console.log(transactionStatus);
     // if(modalClosed==true){
@@ -128,8 +136,13 @@ const AnimatedButton: React.FC<Props> = ({
   //   }
   // };
   useEffect(() => {
-    if (transactionStatus == "success" || transactionStatus == "failed" && !modalClosed) {
-      setIsAnimationStarted(true);
+    if(modalClosed){
+      return;
+    }else{
+      if (transactionStatus == "success" || transactionStatus == "failed") {
+        setIsAnimationStarted(true);
+      }
+
     }
   }, [transactionStatus]);
 
