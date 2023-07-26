@@ -47,6 +47,7 @@ import {
   selectActiveTransactions,
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
+  selectTransactionStartedAndModalClosed,
   // selectTransactionStarted,
   // setTransactionStarted,
   // selectCurrentTransactionStatus,
@@ -447,6 +448,7 @@ const SupplyModal = ({
   //   },
   // });
   // const { hashes, addTransaction } = useTransactionManager();
+  // const transactionStartedAndModalClosed=useSelector(selectTransactionStartedAndModalClosed);
   const handleTransaction = async () => {
     try {
       if (ischecked) {
@@ -556,8 +558,11 @@ const SupplyModal = ({
       mixpanel.track("Supply Market Status", {
         Status: "Failure",
       });
-
+      // console.log(transactionStartedAndModalClosed,"close")
+      // if(transactionStartedAndModalClosed==false){
+      // }
       dispatch(setTransactionStatus("failed"));
+
       const toastContent = (
         <div>
           Transaction failed{" "}
