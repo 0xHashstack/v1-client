@@ -51,6 +51,7 @@ const AnimatedButton: React.FC<Props> = ({
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
   const transactionStatus = useSelector(selectTransactionStatus);
   const modalClosed = useSelector(selectTransactionStartedAndModalClosed);
+  const [transFailed, setTransFailed] = useState(0);
   // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
   // console.log(transactionStatus,"transaction from button");
   // useEffect(() => {
@@ -166,24 +167,40 @@ const AnimatedButton: React.FC<Props> = ({
     ) {
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
+          if (prevIndex == 1) return prevIndex;
           const nextIndex = prevIndex + 1;
           // if (nextIndex === labelErrorArray?.length - 1) {
           //   if (!currentTransactionStatus) return prevIndex;
           // }
-          if (nextIndex === labelErrorArray?.length) {
+          // if (nextIndex === labelErrorArray?.length) {
+          if (transFailed === 0) {
+            console.log("transaction animation before");
+            setTransFailed((before) => before + 1);
+            return 0;
+          } else {
+            console.log("transaction animation after");
             setIsAnimationStarted(false);
             dispatch(setToastTransactionStarted(false));
-
-            return prevIndex; // Reset currentStringIndex to -1 after the animation completes
+            return 1;
           }
-          // return nextIndex % labelArray.length;
-          return nextIndex % labelErrorArray?.length;
+          // if (nextIndex % labelErrorArray?.length === 0) {
+          //   return nextIndex % labelErrorArray?.length;
+          // }
+
+          // // return prevIndex; // Reset currentStringIndex to -1 after the animation completes
+          // // }
+          // // return nextIndex % labelArray.length;
+          // return nextIndex % labelErrorArray?.length;
         });
       }, 2000);
     }
 
     return () => clearInterval(interval);
   }, [isAnimationStarted, currentTransactionStatus]);
+  useEffect(() => {
+    console.log("Transaction animation failed", transFailed);
+    if (transFailed > 2) setCurrentStringIndex(1);
+  }, [transFailed]);
   const { bgColor } = rest;
   return (
     <Button
