@@ -719,7 +719,7 @@ const BorrowModal = ({
   const resetStates = () => {
     setCurrentCollateralCoin(coin?.name ? coin?.name : "BTC");
     setRToken(coin?.name ? coin?.name : "rBTC");
-    setCollateralMarket(coin?.name ? coin.name :"BTC")
+    setCollateralMarket(coin?.name ? coin.name : "BTC");
     setCurrentBorrowCoin(coin?.name ? coin?.name : "BTC");
     setMarket(coin?.name ? coin?.name : "BTC");
     setAmount(0);
@@ -772,7 +772,13 @@ const BorrowModal = ({
     <Box>
       <Button {...restProps} onClick={onOpen}>
         {buttonText !== "Click here to borrow" ? (
-          buttonText
+          buttonText === "Borrow from metrics" ? (
+            <Button w="70px" h="32px" fontSize="14px" p="12px" mx="auto">
+              Borrow
+            </Button>
+          ) : (
+            buttonText
+          )
         ) : (
           <Text fontSize="sm">Click here to borrow</Text>
         )}

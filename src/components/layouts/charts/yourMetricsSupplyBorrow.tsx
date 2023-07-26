@@ -1,8 +1,18 @@
-import React from "react";
-import { Box } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import YourMetricsSupply from "./YourMetricsSupply";
 import YourMetricsBorrow from "./YourMetricsBorrow";
-const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
+import Image from "next/image";
+import GraphContainer from "../../../../public/Graph container.png";
+import { selectProtocolStats } from "@/store/slices/readDataSlice";
+import { useSelector } from "react-redux";
+import SupplyModal from "@/components/modals/SupplyModal";
+import BorrowModal from "@/components/modals/borrowModal";
+const YourMetricsSupplyBorrow = ({
+  currentMarketCoin,
+  totalSupply,
+  totalBorrow,
+}: any) => {
   const series1: any = {
     BTC: [
       {
@@ -68,6 +78,50 @@ const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
       },
     ],
   };
+  let reduxProtocolStats = useSelector(selectProtocolStats);
+
+  const [supplyAPRs, setSupplyAPRs]: any = useState([]);
+  useEffect(() => {
+    const getMarketData = async () => {
+      try {
+        const stats = reduxProtocolStats;
+
+        // const stats = await getProtocolStats();
+        if (stats) {
+          console.log("se3nding", stats);
+          // dispatch(setProtocolStats(stats));
+        }
+        // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
+        // const temp: any = ;
+        setSupplyAPRs([
+          stats?.[2].supplyRate,
+          stats?.[3].supplyRate,
+          stats?.[0].supplyRate,
+          stats?.[1].supplyRate,
+          stats?.[4].supplyRate,
+        ]);
+        setBorrowAPRs([
+          stats?.[2].borrowRate,
+          stats?.[3].borrowRate,
+          stats?.[0].borrowRate,
+          stats?.[1].borrowRate,
+          stats?.[4].borrowRate,
+        ]);
+      } catch (error) {
+        console.log("error on getting protocol stats");
+      }
+    };
+    getMarketData();
+  }, [reduxProtocolStats]);
+  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<Number>(2);
+  const [coinPassed, setCoinPassed] = useState({
+    name: "BTC",
+    icon: "mdi-bitcoin",
+    symbol: "WBTC",
+  });
+
+  const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
+  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<Number>(2);
 
   return (
     // <Box display="flex" gap="30px">
@@ -130,10 +184,59 @@ const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
         >
           Supply:
         </Box>
-        <YourMetricsSupply
-          color={"#61a6a5"}
-          series={series1[currentMarketCoin]}
-        />
+        {totalSupply !== 0 ? (
+          <YourMetricsSupply
+            color={"#61a6a5"}
+            series={series1[currentMarketCoin]}
+          />
+        ) : (
+          <Box w="full" h="full" pos="relative" height="423px">
+            <Image
+              height={100}
+              width={100}
+              alt="disable chart"
+              src={GraphContainer}
+              style={{ margin: 0, height: "100%", width: "100%" }}
+            />
+            <Box
+              pos="absolute"
+              top="36"
+              left="0"
+              w="full"
+              h="full"
+              zIndex="2"
+              display="flex"
+              flexDir="column"
+              textAlign="center"
+            >
+              <Text textColor="white" fontWeight="bold" fontSize="18px">
+                No data source for this report
+              </Text>
+              <Text textColor="#6E7681" fontSize="18px" mb="1rem">
+                Supply assets to uncover insights from this report
+              </Text>
+              {/* <Button w="70px" h="32px" fontSize="14px" p="12px" mx="auto">
+                Supply
+              </Button> */}
+              <SupplyModal
+                buttonText="Supply from metrics"
+                variant="link"
+                fontSize="16px"
+                fontWeight="400"
+                display="inline"
+                color="#0969DA"
+                cursor="pointer"
+                ml="0.3rem"
+                lineHeight="24px"
+                backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
+                supplyAPRs={supplyAPRs}
+                currentSupplyAPR={currentSupplyAPR}
+                setCurrentSupplyAPR={setCurrentSupplyAPR}
+                coin={coinPassed}
+              />
+            </Box>
+          </Box>
+        )}
         {/* <TrialChart
                   color={"#61a6a5"}
                   series={series1[currentMarketCoin]}
@@ -156,7 +259,56 @@ const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
         >
           Borrow:
         </Box>
-        <YourMetricsBorrow color={"#4c60ee"} />
+        {totalBorrow !== 0 ? (
+          <YourMetricsBorrow color={"#4c60ee"} />
+        ) : (
+          <Box w="full" h="full" pos="relative" height="423px">
+            <Image
+              height={100}
+              width={100}
+              alt="disable chart"
+              src={GraphContainer}
+              style={{ margin: 0, height: "100%", width: "100%" }}
+            />
+            <Box
+              pos="absolute"
+              top="36"
+              left="0"
+              w="full"
+              h="full"
+              zIndex="2"
+              display="flex"
+              flexDir="column"
+              textAlign="center"
+            >
+              <Text textColor="white" fontWeight="bold" fontSize="18px">
+                No data source for this report
+              </Text>
+              <Text textColor="#6E7681" fontSize="18px" mb="1rem">
+                Borrow assets to uncover insights from this report
+              </Text>
+              {/* <Button w="70px" h="32px" fontSize="14px" p="12px" mx="auto">
+                Borrow
+              </Button> */}
+              <BorrowModal
+                buttonText="Borrow from metrics"
+                variant="link"
+                fontSize="16px"
+                fontWeight="400"
+                display="inline"
+                color="#0969DA"
+                cursor="pointer"
+                ml="0.3rem"
+                lineHeight="24px"
+                backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
+                borrowAPRs={borrowAPRs}
+                currentBorrowAPR={currentBorrowAPR}
+                setCurrentBorrowAPR={setCurrentBorrowAPR}
+                coin={coinPassed}
+              />
+            </Box>
+          </Box>
+        )}
       </Box>
     </Box>
   );

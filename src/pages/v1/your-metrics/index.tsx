@@ -337,7 +337,11 @@ const YourMetrics = () => {
               {/* </HStack> */}
             </Box>
             <Box>
-              <YourMetricsSupplyBorrow currentMarketCoin={currentMarketCoin} />
+              <YourMetricsSupplyBorrow
+                totalSupply={totalSupply}
+                totalBorrow={totalBorrow}
+                currentMarketCoin={currentMarketCoin}
+              />
             </Box>
             {/* <Box
             //   bgColor="green"
