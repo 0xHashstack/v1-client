@@ -660,7 +660,8 @@ const useDataLoader = () => {
       };
       if (
         dataOraclePrices &&
-        userLoans?.length > 0 &&
+        userLoans &&
+        protocolStats &&
         userLoansCount == transactionRefresh &&
         protocolStatsCount == transactionRefresh &&
         effectiveAprCount < transactionRefresh
@@ -690,7 +691,7 @@ const useDataLoader = () => {
         });
       };
       if (
-        userLoans?.length > 0 &&
+        userLoans &&
         userLoansCount == transactionRefresh &&
         healthFactorCount < transactionRefresh
       ) {
@@ -699,7 +700,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("fetchHealthFactor ", err);
     }
-  }, [userLoans, transactionRefresh]);
+  }, [userLoansCount, transactionRefresh]);
 
   // useEffect(() => {
   //   const fetchAprsAndHealth = async () => {
@@ -1063,7 +1064,7 @@ const useDataLoader = () => {
         protocolStatsCount == transactionRefresh &&
         userDepositsCount == transactionRefresh &&
         dataDeposit &&
-        protocolStatsCount
+        protocolStats
       ) {
         fetchAvgSupplyAPRCount();
       }
