@@ -490,24 +490,24 @@ const YourSupplyModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track("Withdraw Supply Status", {
-          Status: "Success",
-          "Token Selected": asset,
-          "Token Amount": inputWithdrawlAmount,
-        });
-
         dispatch(setActiveTransactions(activeTransactions));
       }
+      mixpanel.track("Withdraw Supply Status", {
+        Status: "Success",
+        "Token Selected": asset,
+        "Token Amount": inputWithdrawlAmount,
+      });
+
       // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       // }
       dispatch(setTransactionStatus("success"));
       console.log(withdraw);
     } catch (err: any) {
       console.log("withraw", err);
-      dispatch(setTransactionStatus("failed"));
       mixpanel.track("Withdraw Supply Status", {
         Status: "Failure",
       });
+      dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
           Transaction failed{" "}
