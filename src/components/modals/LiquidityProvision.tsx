@@ -148,6 +148,8 @@ const LiquidityProvisionModal = ({
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const userLoans = useSelector(selectUserLoans);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
 
   let activeTransactions = useSelector(selectActiveTransactions);
   // const avgs=useSelector(selectAprAndHealthFactor)
@@ -366,12 +368,14 @@ const LiquidityProvisionModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: liquidity?.transaction_hash.toString(),
             // message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
             message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -386,7 +390,12 @@ const LiquidityProvisionModal = ({
         }
         console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       } else if (currentSwap == "MySwap") {
         const liquidity = await writeAsyncmySwap_addLiquidity();
         if (liquidity?.transaction_hash) {
@@ -409,12 +418,14 @@ const LiquidityProvisionModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: liquidity?.transaction_hash.toString(),
             // message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
             message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -429,11 +440,21 @@ const LiquidityProvisionModal = ({
         }
         console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       }
     } catch (err: any) {
       console.log(err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -638,6 +659,14 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               // console.log("hi");
             } else {
+              const uqID = Math.random();
+              setUniqueID(uqID);
+              let data: any = localStorage.getItem("transactionCheck");
+              data = data ? JSON.parse(data) : [];
+              if (data && !data.includes(uqID)) {
+                data.push(uqID);
+                localStorage.setItem("transactionCheck", JSON.stringify(data));
+              }
               onOpen();
               mixpanel.track("Liquidity Modal Selected", {
                 Clicked: true,
@@ -656,6 +685,14 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               // console.log("hi");
             } else {
+              const uqID = Math.random();
+              setUniqueID(uqID);
+              let data: any = localStorage.getItem("transactionCheck");
+              data = data ? JSON.parse(data) : [];
+              if (data && !data.includes(uqID)) {
+                data.push(uqID);
+                localStorage.setItem("transactionCheck", JSON.stringify(data));
+              }
               onOpen();
               mixpanel.track("Liquidity Modal Selected", {
                 Clicked: true,
@@ -677,10 +714,18 @@ const LiquidityProvisionModal = ({
         <Modal
           isOpen={isOpen}
           onClose={() => {
-            onClose();
+            const uqID = getUniqueId();
+            let data: any = localStorage.getItem("transactionCheck");
+            data = data ? JSON.parse(data) : [];
+            // console.log(uqID, "data here", data);
+            if (data && data.includes(uqID)) {
+              data = data.filter((val: any) => val != uqID);
+              localStorage.setItem("transactionCheck", JSON.stringify(data));
+            }
             if (transactionStarted) {
               dispatch(setTransactionStartedAndModalClosed(true));
             }
+            onClose();
             resetStates();
           }}
           isCentered

@@ -28,6 +28,7 @@ import {
   selectOraclePricesCount,
   selectProtocolStatsCount,
   selectStakingSharesCount,
+  selectTransactionStatus,
   selectUserDepositsCount,
   selectUserInfoCount,
   selectUserLoansCount,
@@ -155,6 +156,7 @@ const useDataLoader = () => {
   const weeklyDataCount = useSelector(selectWeeklyDataCount);
   // const stakingShares = useSelector(selectStakingShares);
   const stakingSharesCount = useSelector(selectStakingSharesCount);
+  const transactionStatus = useSelector(selectTransactionStatus);
 
   const dispatch = useDispatch();
   const Data: any = [];
@@ -192,6 +194,9 @@ const useDataLoader = () => {
   //     console.log("error fetching aprByMarket data ", err);
   //   }
   // }, []);
+  // useEffect(() => {
+  //   console.log("your supply catch transactionStatus ", transactionStatus);
+  // }, [transactionStatus]);
 
   useEffect(() => {
     console.log("fetchHourlyData called ", oraclePrices);
@@ -660,7 +665,8 @@ const useDataLoader = () => {
       };
       if (
         dataOraclePrices &&
-        userLoans?.length > 0 &&
+        userLoans &&
+        protocolStats &&
         userLoansCount == transactionRefresh &&
         protocolStatsCount == transactionRefresh &&
         effectiveAprCount < transactionRefresh
@@ -690,7 +696,7 @@ const useDataLoader = () => {
         });
       };
       if (
-        userLoans?.length > 0 &&
+        userLoans &&
         userLoansCount == transactionRefresh &&
         healthFactorCount < transactionRefresh
       ) {
@@ -699,7 +705,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("fetchHealthFactor ", err);
     }
-  }, [userLoans, transactionRefresh]);
+  }, [userLoansCount, transactionRefresh]);
 
   // useEffect(() => {
   //   const fetchAprsAndHealth = async () => {
@@ -954,7 +960,7 @@ const useDataLoader = () => {
         }
       };
 
-      console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+      // console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
       if (netAprCount < transactionRefresh) {
         fetchNetApr();
       }
@@ -1063,7 +1069,7 @@ const useDataLoader = () => {
         protocolStatsCount == transactionRefresh &&
         userDepositsCount == transactionRefresh &&
         dataDeposit &&
-        protocolStatsCount
+        protocolStats
       ) {
         fetchAvgSupplyAPRCount();
       }

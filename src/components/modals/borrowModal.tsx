@@ -303,6 +303,8 @@ const BorrowModal = ({
   // }, [currentAvailableReserves]);
   const oraclePrices = useSelector(selectOraclePrices);
   const marketInfo = useSelector(selectProtocolStats);
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
   const [healthFactor, setHealthFactor] = useState<number>();
   useEffect(() => {
     try {
@@ -496,11 +498,13 @@ const BorrowModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: borrow?.transaction_hash.toString(),
             message: `Successfully borrowed : ${inputBorrowAmount} d${currentBorrowCoin}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           mixpanel.track("Borrow Market Status", {
             Status: "Success",
@@ -515,7 +519,12 @@ const BorrowModal = ({
         }
         setIsLoanRequestHash(borrow?.transaction_hash);
         setBorrowTransHash(borrow?.transaction_hash);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       } else {
         const borrow = await writeAsyncLoanRequest();
         if (borrow?.transaction_hash) {
@@ -540,11 +549,13 @@ const BorrowModal = ({
               // Check if activeTransactions is frozen or sealed
               activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
             }
+            const uqID = getUniqueId();
             const trans_data = {
               transaction_hash: borrow?.transaction_hash.toString(),
               message: `Successfully borrowed : ${inputBorrowAmount} d${currentBorrowCoin}`,
               toastId: toastid,
               setCurrentTransactionStatus: setCurrentTransactionStatus,
+              uniqueID: uqID,
             };
             // addTransaction({ hash: deposit?.transaction_hash });
             activeTransactions?.push(trans_data);
@@ -560,11 +571,21 @@ const BorrowModal = ({
           "Borrow Token": currentBorrowCoin,
         });
         setIsLoanRequestHash(borrow?.transaction_hash);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         setBorrowTransHash(borrow?.transaction_hash);
       }
     } catch (err: any) {
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       console.log("handle borrow", err);
       mixpanel.track("Borrow Market Status", {
         Status: "Failure",
@@ -770,7 +791,20 @@ const BorrowModal = ({
   const rTokens: RToken[] = ["rBTC", "rUSDT", "rETH"];
   return (
     <Box>
-      <Button {...restProps} onClick={onOpen}>
+      <Button
+        {...restProps}
+        onClick={() => {
+          const uqID = Math.random();
+          setUniqueID(uqID);
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          if (data && !data.includes(uqID)) {
+            data.push(uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
+          onOpen();
+        }}
+      >
         {buttonText !== "Click here to borrow" ? (
           buttonText === "Borrow from metrics" ? (
             <Button w="70px" h="32px" fontSize="14px" p="12px" mx="auto">
@@ -788,6 +822,14 @@ const BorrowModal = ({
       <Modal
         isOpen={isOpen}
         onClose={() => {
+          const uqID = getUniqueId();
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          // console.log(uqID, "data here", data);
+          if (data && data.includes(uqID)) {
+            data = data.filter((val: any) => val != uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           onClose();
           resetStates();
           if (transactionStarted) {

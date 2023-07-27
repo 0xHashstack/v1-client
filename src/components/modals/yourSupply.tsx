@@ -117,6 +117,8 @@ const YourSupplyModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
 
   let activeTransactions = useSelector(selectActiveTransactions);
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
 
   // const [coins, setCoins] = useState([])
   // const walletBalances = useSelector(selectAssetWalletBalance);
@@ -350,7 +352,7 @@ const YourSupplyModal = ({
             currentSelectedWithdrawlCoin,
             inputWithdrawlAmount
           );
-          console.log(data, "data in your supply");
+          // console.log(data, "data in your supply");
           setEstSupply(data);
         }
       } catch (err) {
@@ -379,6 +381,7 @@ const YourSupplyModal = ({
     setTransactionStarted(false);
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
+    const uqID = getUniqueId();
     dispatch(setTransactionStatus(""));
     setToastDisplayed(false);
     setDepositTransHash("");
@@ -482,11 +485,13 @@ const YourSupplyModal = ({
           // Check if activeTransactions is frozen or sealed
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
+        const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: withdraw?.transaction_hash.toString(),
           message: `Successfully withdrawn ${asset}`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
+          uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
@@ -500,14 +505,26 @@ const YourSupplyModal = ({
 
       // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       // }
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
+
       console.log(withdraw);
     } catch (err: any) {
       console.log("withraw", err);
       mixpanel.track("Withdraw Supply Status", {
         Status: "Failure",
       });
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
+      console.log(uqID, "your supply catch", data);
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -553,11 +570,13 @@ const YourSupplyModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: addSupplyAndStake?.transaction_hash.toString(),
             message: `Successfully supplied and staked ${depositAmount} ${supplyAsset}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -569,7 +588,12 @@ const YourSupplyModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         console.log("addSupply", addSupplyAndStake);
       } else {
         const addSupply = await writeAsyncDeposit();
@@ -595,11 +619,13 @@ const YourSupplyModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: addSupply?.transaction_hash.toString(),
             message: `Successfully added supply : ${depositAmount} ${supplyAsset}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -611,12 +637,24 @@ const YourSupplyModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         console.log("addSupply", addSupply);
       }
     } catch (err) {
       console.log("Unable to add supply ", err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      console.log("data check", data);
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        console.log(uqID, "your supply catch", data);
+        dispatch(setTransactionStatus("failed"));
+      }
       mixpanel.track("Add Supply Your Supply Status", {
         Status: "Failure",
       });
@@ -675,7 +713,17 @@ const YourSupplyModal = ({
         _hover={{ bg: "white", color: "black" }}
         borderRadius={"6px"}
         color="#BDBFC1"
-        onClick={onOpen}
+        onClick={() => {
+          const uqID = Math.random();
+          setUniqueID(uqID);
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          if (data && !data.includes(uqID)) {
+            data.push(uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
+          onOpen();
+        }}
       >
         Actions
       </Button>
@@ -683,6 +731,14 @@ const YourSupplyModal = ({
       <Modal
         isOpen={isOpen}
         onClose={() => {
+          const uqID = getUniqueId();
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          // console.log(uqID, "data here", data);
+          if (data && data.includes(uqID)) {
+            data = data.filter((val: any) => val != uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           onClose();
           if (transactionStarted || withdrawTransactionStarted) {
             dispatch(setTransactionStartedAndModalClosed(true));
@@ -1418,10 +1474,12 @@ const YourSupplyModal = ({
                                 Clicked: true,
                               }
                             );
-                            dispatch(
-                              setTransactionStartedAndModalClosed(false)
-                            );
-                            handleAddSupply();
+                            if (transactionStarted == false) {
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              );
+                              handleAddSupply();
+                            }
                           }}
                         >
                           <AnimatedButton

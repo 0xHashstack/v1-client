@@ -376,6 +376,8 @@ const TradeModal = ({
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
     coin ? coin?.name : "BTC"
   );
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const stats = useSelector(selectProtocolStats);
   const fetchProtocolStats = async () => {
@@ -608,12 +610,14 @@ const TradeModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: borrowAndSpend?.transaction_hash.toString(),
             // message: `You have successfully traded`,
             message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -630,7 +634,12 @@ const TradeModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log("borrowAndSpend Success");
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       } else if (rToken) {
         const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
         setDepositTransHash(borrowAndSpendR?.transaction_hash);
@@ -654,12 +663,14 @@ const TradeModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: borrowAndSpendR?.transaction_hash.toString(),
             // message: `You have successfully traded`,
             message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -676,11 +687,21 @@ const TradeModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log("borrowAndSpend R Success");
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       }
     } catch (err: any) {
       console.log(err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -975,7 +996,17 @@ const TradeModal = ({
             backgroundColor: "#0969DA",
           },
         }}
-        onClick={onOpen}
+        onClick={() => {
+          const uqID = Math.random();
+          setUniqueID(uqID);
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          if (data && !data.includes(uqID)) {
+            data.push(uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
+          onOpen();
+        }}
       >
         Trade
       </Text>
@@ -984,6 +1015,14 @@ const TradeModal = ({
       <Modal
         isOpen={isOpen}
         onClose={() => {
+          const uqID = getUniqueId();
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          // console.log(uqID, "data here", data);
+          if (data && data.includes(uqID)) {
+            data = data.filter((val: any) => val != uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           onClose();
           if (transactionStarted) {
             dispatch(setTransactionStartedAndModalClosed(true));
@@ -3102,14 +3141,14 @@ const TradeModal = ({
                         />,
                       ]}
                       labelErrorArray={[
-                        "Performing Checks",
-                        "Processing",
                         <ErrorButton
                           errorText="Transaction failed"
                           key={"error1"}
                         />,
                         <ErrorButton errorText="Copy error!" key={"error2"} />,
                       ]}
+                      _disabled={{ bgColor: "white", color: "black" }}
+                      isDisabled={transactionStarted == true}
                       currentTransactionStatus={currentTransactionStatus}
                       setCurrentTransactionStatus={setCurrentTransactionStatus}
                     >

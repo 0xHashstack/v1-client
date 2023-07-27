@@ -448,7 +448,7 @@ const Navbar = ({ validRTokens }: any) => {
         </Box> */}
       </HStack>
       <HStack
-        width="40%"
+        width="50%"
         display="flex"
         justifyContent="flex-end"
         alignItems="center"
@@ -531,7 +531,7 @@ const Navbar = ({ validRTokens }: any) => {
                 />
               )} */}
               <Text fontSize="14px" lineHeight="14px" color="grey">
-                Transfer Deposit
+                {"Transfer Deposit"}
               </Text>
             </Box>
           </Box>

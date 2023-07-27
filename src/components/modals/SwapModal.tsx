@@ -108,6 +108,8 @@ const SwapModal = ({
   const [sliderValue, setSliderValue] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -256,12 +258,14 @@ const SwapModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: swap?.transaction_hash.toString(),
             // message: `You have successfully swaped for Loan ID : ${swapLoanId}`,
             message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -274,7 +278,12 @@ const SwapModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       } else if (currentSwap == "MySwap") {
         const swap = await writeAsyncmySwap_swap();
         console.log(swap);
@@ -299,12 +308,14 @@ const SwapModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: swap?.transaction_hash.toString(),
             // message: `You have successfully swaped for Loan ID : ${swapLoanId}`,
             message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -317,11 +328,21 @@ const SwapModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       }
     } catch (err: any) {
       console.log(err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -434,6 +455,14 @@ const SwapModal = ({
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
+              const uqID = Math.random();
+              setUniqueID(uqID);
+              let data: any = localStorage.getItem("transactionCheck");
+              data = data ? JSON.parse(data) : [];
+              if (data && !data.includes(uqID)) {
+                data.push(uqID);
+                localStorage.setItem("transactionCheck", JSON.stringify(data));
+              }
               onOpen();
             }
           }}
@@ -451,6 +480,14 @@ const SwapModal = ({
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
+              const uqID = Math.random();
+              setUniqueID(uqID);
+              let data: any = localStorage.getItem("transactionCheck");
+              data = data ? JSON.parse(data) : [];
+              if (data && !data.includes(uqID)) {
+                data.push(uqID);
+                localStorage.setItem("transactionCheck", JSON.stringify(data));
+              }
               onOpen();
             }
           }}
@@ -469,6 +506,14 @@ const SwapModal = ({
       <Modal
         isOpen={isOpen}
         onClose={() => {
+          const uqID = getUniqueId();
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          // console.log(uqID, "data here", data);
+          if (data && data.includes(uqID)) {
+            data = data.filter((val: any) => val != uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           onClose();
           if (transactionStarted) {
             dispatch(setTransactionStartedAndModalClosed(true));
