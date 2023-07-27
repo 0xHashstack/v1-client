@@ -148,6 +148,8 @@ const LiquidityProvisionModal = ({
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const userLoans = useSelector(selectUserLoans);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
 
   let activeTransactions = useSelector(selectActiveTransactions);
   // const avgs=useSelector(selectAprAndHealthFactor)
@@ -386,7 +388,12 @@ const LiquidityProvisionModal = ({
         }
         console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data:any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       } else if (currentSwap == "MySwap") {
         const liquidity = await writeAsyncmySwap_addLiquidity();
         if (liquidity?.transaction_hash) {
@@ -429,11 +436,21 @@ const LiquidityProvisionModal = ({
         }
         console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data:any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       }
     } catch (err: any) {
       console.log(err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data:any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -617,6 +634,7 @@ const LiquidityProvisionModal = ({
         <Box
           cursor="pointer"
           onClick={() => {
+            
             if (selectedDapp == "") {
               // console.log("hi");
             } else {
@@ -638,6 +656,14 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               // console.log("hi");
             } else {
+              const uqID = Math.random();
+              setUniqueID(uqID);
+              let data:any = localStorage.getItem("transactionCheck");
+              data = data ? JSON.parse(data) : [];
+              if (data && !data.includes(uqID)) {
+                data.push(uqID);
+                localStorage.setItem("transactionCheck", JSON.stringify(data));
+              }
               onOpen();
               mixpanel.track("Liquidity Modal Selected", {
                 Clicked: true,
@@ -656,6 +682,14 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               // console.log("hi");
             } else {
+              const uqID = Math.random();
+              setUniqueID(uqID);
+              let data:any = localStorage.getItem("transactionCheck");
+              data = data ? JSON.parse(data) : [];
+              if (data && !data.includes(uqID)) {
+                data.push(uqID);
+                localStorage.setItem("transactionCheck", JSON.stringify(data));
+              }
               onOpen();
               mixpanel.track("Liquidity Modal Selected", {
                 Clicked: true,
@@ -677,10 +711,19 @@ const LiquidityProvisionModal = ({
         <Modal
           isOpen={isOpen}
           onClose={() => {
-            onClose();
+            
+            const uqID = getUniqueId();
+            let data:any = localStorage.getItem("transactionCheck");
+            data = data ? JSON.parse(data) : [];
+            console.log(uqID, "data here", data);
+            if (data && data.includes(uqID)) {
+              data = data.filter((val:any) => val != uqID);
+              localStorage.setItem("transactionCheck", JSON.stringify(data));
+            }
             if (transactionStarted) {
               dispatch(setTransactionStartedAndModalClosed(true));
             }
+            onClose();
             resetStates();
           }}
           isCentered
