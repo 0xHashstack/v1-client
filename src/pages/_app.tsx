@@ -75,7 +75,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <link rel="shortcut icon" href="/favicon-32x32.png" />
       </Head>
-      <UserbackProvider token="41008|82779|jLWegItyD7nNxGyoXnZvkD1IX">
+      <UserbackProvider token="41130|83179|yuKUdxxi1Q2T4EFo0Sg7Zbmbz">
         <ChakraProvider theme={theme}>
           <StarknetProvider autoConnect={true} connectors={connectors}>
             <Provider store={store}>
