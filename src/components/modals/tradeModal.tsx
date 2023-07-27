@@ -104,6 +104,8 @@ import Image from "next/image";
 import {
   getJediEstimateLiquiditySplit,
   getJediEstimatedLpAmountOut,
+  getMySwapEstimateLiquiditySplit,
+  getMySwapEstimatedLpAmountOut,
   getUSDValue,
 } from "@/Blockchain/scripts/l3interaction";
 import numberFormatter from "@/utils/functions/numberFormatter";
@@ -824,12 +826,24 @@ const TradeModal = ({
     // );
     setCurrentSplit(null);
     fetchLiquiditySplit();
-  }, [inputBorrowAmount, currentBorrowCoin, toMarketLiqA, toMarketLiqB]);
+  }, [
+    inputBorrowAmount,
+    currentBorrowCoin,
+    toMarketLiqA,
+    toMarketLiqB,
+    currentDapp,
+  ]);
 
   useEffect(() => {
     setCurrentLPTokenAmount(null);
     fetchLPAmount();
-  }, [inputBorrowAmount, currentBorrowCoin, toMarketLiqA, toMarketLiqB]);
+  }, [
+    inputBorrowAmount,
+    currentBorrowCoin,
+    toMarketLiqA,
+    toMarketLiqB,
+    currentDapp,
+  ]);
 
   const fetchLiquiditySplit = async () => {
     if (
@@ -837,25 +851,44 @@ const TradeModal = ({
       !toMarketLiqA ||
       !toMarketLiqB ||
       !currentBorrowCoin ||
+      !inputBorrowAmount ||
       currentPool === "Select a pool"
     )
       return;
 
-    const split = await getJediEstimateLiquiditySplit(
-      currentBorrowCoin,
-      (
-        Math.floor(Number(inputBorrowAmount)) *
-        Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
-      )?.toString(),
-      toMarketLiqA,
-      toMarketLiqB
-      // "USDT",
-      // 99,
-      // "ETH",
-      // "USDT"
-    );
-    console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
-    setCurrentSplit(split);
+    if (currentDapp === "Jediswap") {
+      const split = await getJediEstimateLiquiditySplit(
+        currentBorrowCoin,
+        (
+          Math.floor(Number(inputBorrowAmount)) *
+          Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
+        )?.toString(),
+        toMarketLiqA,
+        toMarketLiqB
+        // "USDT",
+        // 99,
+        // "ETH",
+        // "USDT"
+      );
+      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
+      setCurrentSplit(split);
+    } else if (currentDapp === "mySwap") {
+      const split = await getMySwapEstimateLiquiditySplit(
+        currentBorrowCoin,
+        (
+          Math.floor(Number(inputBorrowAmount)) *
+          Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
+        )?.toString(),
+        toMarketLiqA,
+        toMarketLiqB
+        // "USDT",
+        // 99,
+        // "ETH",
+        // "USDT"
+      );
+      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
+      setCurrentSplit(split);
+    }
   };
 
   const fetchLPAmount = async () => {
@@ -869,21 +902,39 @@ const TradeModal = ({
     )
       return;
     // console.log("inputBorrowAmount", Number(inputBorrowAmount));
-    const lp_tokon = await getJediEstimatedLpAmountOut(
-      currentBorrowCoin,
-      (
-        Number(inputBorrowAmount) *
-        Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
-      )?.toString(),
-      toMarketLiqA,
-      toMarketLiqB
-      // "USDT",
-      // "99",
-      // "ETH",
-      // "USDT"
-    );
-    console.log("toMarketSplitLP", lp_tokon);
-    setCurrentLPTokenAmount(lp_tokon);
+    if (currentDapp === "Jediswap") {
+      const lp_tokon = await getJediEstimatedLpAmountOut(
+        currentBorrowCoin,
+        (
+          Number(inputBorrowAmount) *
+          Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
+        )?.toString(),
+        toMarketLiqA,
+        toMarketLiqB
+        // "USDT",
+        // "99",
+        // "ETH",
+        // "USDT"
+      );
+      console.log("toMarketSplitLP", lp_tokon);
+      setCurrentLPTokenAmount(lp_tokon);
+    } else if (currentDapp === "mySwap") {
+      const lp_tokon = await getMySwapEstimatedLpAmountOut(
+        currentBorrowCoin,
+        (
+          Number(inputBorrowAmount) *
+          Math.pow(10, tokenDecimalsMap[currentBorrowCoin])
+        )?.toString(),
+        toMarketLiqA,
+        toMarketLiqB
+        // "USDT",
+        // "99",
+        // "ETH",
+        // "USDT"
+      );
+      console.log("toMarketSplitLP", lp_tokon);
+      setCurrentLPTokenAmount(lp_tokon);
+    }
   };
 
   // useEffect(() => {

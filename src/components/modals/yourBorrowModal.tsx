@@ -4285,6 +4285,10 @@ const YourBorrowModal = ({
                               py="2"
                               className="dropdown-container"
                               boxShadow="dark-lg"
+                              height={`${
+                                borrowIds.length >= 5 ? "182px" : "none"
+                              }`}
+                              overflowY="scroll"
                             >
                               {borrowIds.map((coin: string, index: number) => {
                                 return (
