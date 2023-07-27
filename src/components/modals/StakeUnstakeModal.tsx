@@ -416,7 +416,7 @@ const StakeUnstakeModal = ({
       // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       // }
       const uqID = getUniqueId();
-      let data = localStorage.getItem("transactionCheck");
+      let data:any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("success"));
@@ -427,7 +427,7 @@ const StakeUnstakeModal = ({
       // );
     } catch (err: any) {
       const uqID = getUniqueId();
-      let data = localStorage.getItem("transactionCheck");
+      let data:any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("failed"));
@@ -495,15 +495,24 @@ const StakeUnstakeModal = ({
         TokenAmount: inputStakeAmount,
       });
       setDepositTransHash(depositStake?.transaction_hash);
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data:any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
       // console.log("Status transaction", deposit);
       console.log(isSuccessDeposit, "success ?");
     } catch (err: any) {
       mixpanel.track("Stake Market Status", {
         Status: "Failure",
       });
-
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -574,10 +583,20 @@ const StakeUnstakeModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data:any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
       console.log(unstake);
     } catch (err: any) {
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data:any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       console.log("Unstake transaction failed : ", err);
       const toastContent = (
         <div>
@@ -909,7 +928,7 @@ const StakeUnstakeModal = ({
           onClick={() => {
             const uqID = Math.random();
             setUniqueID(uqID);
-            let data = localStorage.getItem("transactionCheck");
+            let data:any = localStorage.getItem("transactionCheck");
             data = data ? JSON.parse(data) : [];
             if (data && !data.includes(uqID)) {
               data.push(uqID);
@@ -970,7 +989,7 @@ const StakeUnstakeModal = ({
           onClick={() => {
             const uqID = Math.random();
             setUniqueID(uqID);
-            let data = localStorage.getItem("transactionCheck");
+            let data:any = localStorage.getItem("transactionCheck");
             data = data ? JSON.parse(data) : [];
             if (data && !data.includes(uqID)) {
               data.push(uqID);
@@ -989,11 +1008,11 @@ const StakeUnstakeModal = ({
         // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
           const uqID = getUniqueId();
-          let data = localStorage.getItem("transactionCheck");
+          let data:any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
           console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
-            data = data.filter((val) => val != uqID);
+            data = data.filter((val:any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));
           }
           onClose();

@@ -502,7 +502,7 @@ const SupplyModal = ({
         });
         setDepositTransHash(depositStake?.transaction_hash);
         const uqID = getUniqueId();
-        let data = localStorage.getItem("transactionCheck");
+        let data:any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
@@ -561,7 +561,7 @@ const SupplyModal = ({
         // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
         // }
         const uqID = getUniqueId();
-        let data = localStorage.getItem("transactionCheck");
+        let data:any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
@@ -575,7 +575,7 @@ const SupplyModal = ({
         Status: "Failure",
       });
       const uqID = getUniqueId();
-      let data = localStorage.getItem("transactionCheck");
+      let data:any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("failed"));
@@ -738,7 +738,7 @@ const SupplyModal = ({
         onClick={() => {
           const uqID = Math.random();
           setUniqueID(uqID);
-          let data = localStorage.getItem("transactionCheck");
+          let data:any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
           if (data && !data.includes(uqID)) {
             data.push(uqID);
@@ -766,11 +766,11 @@ const SupplyModal = ({
           isOpen={isOpen}
           onClose={() => {
             const uqID = getUniqueId();
-            let data = localStorage.getItem("transactionCheck");
+            let data:any = localStorage.getItem("transactionCheck");
             data = data ? JSON.parse(data) : [];
             console.log(uqID, "data here", data);
             if (data && data.includes(uqID)) {
-              data = data.filter((val) => val != uqID);
+              data = data.filter((val:any) => val != uqID);
               localStorage.setItem("transactionCheck", JSON.stringify(data));
             }
             dispatch(setTransactionStartedAndModalClosed(true));
