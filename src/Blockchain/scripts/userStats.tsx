@@ -192,6 +192,13 @@ export async function getNetApr(
       netBorrowInterest += loanAmountUsd * market_info.borrowRate;
     }
   }
+  // console.log(
+  //   "net aprs ",
+  //   netSupplyInterest,
+  //   totalSupply,
+  //   netBorrowInterest,
+  //   totalBorrow
+  // );
   let netApr =
     netSupplyInterest / totalSupply - netBorrowInterest / totalBorrow;
 

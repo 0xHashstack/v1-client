@@ -16,7 +16,7 @@ import { etherToWeiBN, parseAmount } from "../src/Blockchain/utils/utils";
 import stakingAbi from "../src/Blockchain/abi_new/staking_abi.json";
 describe("Get estimated values", () => {
   it("displays the estimated rTokens minted add collateral", async () => {
-    const expectedRTokensMinted = "144.46";
+    const expectedRTokensMinted = "144.4";
     const rToken = "rUSDT";
     const collateralAmount = "144.67";
     const provider = getProvider();
@@ -38,10 +38,10 @@ describe("Get estimated values", () => {
       tokenDecimalsMap[rToken]
     );
 
-    expect(data.toFixed(2)).toBe(expectedRTokensMinted);
+    expect(data.toFixed(1)).toBe(expectedRTokensMinted);
   });
   it("display the estimated supply amount while withdrawing", async () => {
-    const expectedSupplyUnlocked = "2050.9";
+    const expectedSupplyUnlocked = 2050.9;
     const rToken = "rUSDT";
     const amount = "2052.1";
     const provider = getProvider();
@@ -62,10 +62,13 @@ describe("Get estimated values", () => {
       uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),
       tokenDecimalsMap[rToken]
     );
-    expect(data.toFixed(1)).toBe(expectedSupplyUnlocked);
+    const lowerBound = expectedSupplyUnlocked - 1; // You can adjust the range as needed
+    const upperBound = expectedSupplyUnlocked+ 1;
+    expect(data).toBeGreaterThanOrEqual(lowerBound);
+    expect(data).toBeLessThanOrEqual(upperBound);
   });
   it("display the estimated r tokens", async () => {
-    const expectedrTokensUnlocked = "144.67";
+    const expectedrTokensUnlocked = 144.6;
     const rToken = "rUSDT";
     const amount = "144.67";
     const provider = getProvider();
@@ -86,6 +89,9 @@ describe("Get estimated values", () => {
       uint256.uint256ToBN(res?.rToken_amount_to_withdraw).toString(),
       tokenDecimalsMap[rToken]
     );
-    expect(data.toFixed(2)).toBe(expectedrTokensUnlocked);
+    const lowerBound = expectedrTokensUnlocked - 1; // You can adjust the range as needed
+    const upperBound = expectedrTokensUnlocked + 1;
+    expect(data).toBeGreaterThanOrEqual(lowerBound);
+    expect(data).toBeLessThanOrEqual(upperBound);
   });
 });

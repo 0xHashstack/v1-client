@@ -151,11 +151,12 @@ export async function getJediEstimatedLpAmountOut(
         blockIdentifier: "pending",
       }
     );
-    // console.log(
-    //   "estimated lp amount out for loanId: ",
-    //   " is: ",
-    //   parseAmount(uint256.uint256ToBN(res?.lp_amount_out))
-    // );
+    console.log(
+      "estimated lp amount out for loanId: ",
+      " is: ",
+      parseAmount(uint256.uint256ToBN(res?.lp_amount_out), 18),
+      res
+    );
     return parseAmount(uint256.uint256ToBN(res?.lp_amount_out), 18);
   } catch (error) {
     console.log("error in getJediEstimatedLpAmountOut: ", error);

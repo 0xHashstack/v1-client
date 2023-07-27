@@ -47,6 +47,7 @@ import {
   selectActiveTransactions,
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
+  selectTransactionStartedAndModalClosed,
   // selectTransactionStarted,
   // setTransactionStarted,
   // selectCurrentTransactionStatus,
@@ -447,6 +448,7 @@ const SupplyModal = ({
   //   },
   // });
   // const { hashes, addTransaction } = useTransactionManager();
+  // const transactionStartedAndModalClosed=useSelector(selectTransactionStartedAndModalClosed);
   const handleTransaction = async () => {
     try {
       if (ischecked) {
@@ -556,8 +558,11 @@ const SupplyModal = ({
       mixpanel.track("Supply Market Status", {
         Status: "Failure",
       });
-
+      // console.log(transactionStartedAndModalClosed,"close")
+      // if(transactionStartedAndModalClosed==false){
+      // }
       dispatch(setTransactionStatus("failed"));
+
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -721,7 +726,13 @@ const SupplyModal = ({
         {...restProps}
       >
         {buttonText !== "Click here to supply" ? (
-          buttonText
+          buttonText === "Supply from metrics" ? (
+            <Button w="70px" h="32px" fontSize="14px" p="12px" mx="auto">
+              Supply
+            </Button>
+          ) : (
+            buttonText
+          )
         ) : (
           <Text fontSize="sm">Click here to supply</Text>
         )}
@@ -788,7 +799,7 @@ const SupplyModal = ({
                       arrowShadowColor="#2B2F35"
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Supply market refers to the crypto currency tokens selected to deposit on the Hashstack protocol"
+                      label="The tokens selected to supply on the protocol."
                       bg="#101216"
                       fontSize="11px"
                       fontWeight={"thin"}
@@ -951,7 +962,7 @@ const SupplyModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Amount refers to the unit oc coins you are willing to supply"
+                    label="The unit of tokens being supplied."
                     bg="#101216"
                     fontSize="11px"
                     fontWeight={"thin"}
@@ -1278,7 +1289,7 @@ const SupplyModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="refer to the charges or costs incurred when completing a transactions"
+                      label="Cost incurred during transactions."
                       bg="#101216"
                       fontSize={"11px"}
                       fontWeight={"thin"}
@@ -1325,7 +1336,7 @@ const SupplyModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
+                      label="Estimation of resources & costs for blockchain transactions."
                       bg="#101216"
                       fontSize={"11px"}
                       fontWeight={"thin"}
@@ -1370,7 +1381,7 @@ const SupplyModal = ({
                       hasArrow
                       placement="right-end"
                       boxShadow="dark-lg"
-                      label="Supply APR (Annual Percentage Rate) refers to the annualized interest rate earned on supplied funds."
+                      label="Annual interest rate earned on supplied tokens."
                       bg="#101216"
                       fontSize={"11px"}
                       fontWeight={"thin"}
