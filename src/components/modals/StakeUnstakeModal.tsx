@@ -1083,7 +1083,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="The token selected to stake on the protocol"
+                            label="The token selected to stake on the protocol."
                             bg="#101216"
                             fontSize={"11px"}
                             fontWeight={"thin"}
@@ -1240,7 +1240,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="The unit of tokens you will stake on the protocol"
+                            label="The unit of tokens you will stake on the protocol."
                             bg="#101216"
                             fontSize={"11px"}
                             fontWeight={"thin"}
@@ -1615,7 +1615,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Rewards earned in staking activities within the protocol"
+                              label="Rewards earned in staking activities within the protocol."
                               bg="#101216"
                               fontSize={"11px"}
                               fontWeight={"thin"}
@@ -1682,7 +1682,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimation of resources & costs for blockchain transactions"
+                              label="Estimation of resources & costs for blockchain transactions."
                               bg="#101216"
                               fontSize={"11px"}
                               fontWeight={"thin"}
@@ -1720,7 +1720,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Cost incurred during transactions"
+                              label="Cost incurred during transactions."
                               bg="#101216"
                               fontSize={"11px"}
                               fontWeight={"thin"}
@@ -1971,7 +1971,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="The token selected to unstake on the protocol"
+                            label="The token selected to unstake on the protocol."
                             bg="#101216"
                             fontSize={"11px"}
                             fontWeight={"thin"}
@@ -2115,7 +2115,7 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="The unit of tokens to unstake from the protocol"
+                            label="The unit of tokens to unstake from the protocol."
                             bg="#101216"
                             fontSize={"11px"}
                             fontWeight={"thin"}
@@ -2445,7 +2445,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimation of token amount you may receive after the transaction"
+                              label="Estimation of token amount you may receive after the transaction."
                               bg="#101216"
                               fontSize={"11px"}
                               fontWeight={"thin"}
@@ -2488,7 +2488,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Estimation of resources & costs for blockchain transactions"
+                              label="Estimation of resources & costs for blockchain transactions."
                               bg="#101216"
                               fontSize={"11px"}
                               fontWeight={"thin"}
@@ -2526,7 +2526,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Cost incurred during transactions"
+                              label="Cost incurred during transactions."
                               bg="#101216"
                               fontSize={"11px"}
                               fontWeight={"thin"}

@@ -1002,7 +1002,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Collateral market refers to the cryptocurrency that you keep as security agains the borrowed amount you take from Hashstack"
+                        label="Tokens held as security for borrowed funds."
                         bg="#101216"
                         fontSize={"11px"}
                         fontWeight={"thin"}
@@ -1318,7 +1318,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Collateral amount refers to the unit of crypto coins you are willing to keep as security against the borrowed amount"
+                        label="The amount of tokens used as security for borrowed funds."
                         bg="#101216"
                         fontSize={"11px"}
                         fontWeight={"thin"}
@@ -1601,7 +1601,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
+                        label="The token borrowed from the protocol."
                         bg="#101216"
                         fontSize={"11px"}
                         fontWeight={"thin"}
@@ -1798,7 +1798,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Borrow amount refers to the unit of crypto coins you are willing to borrow from the protocol"
+                        label="The quantity of tokens you want to borrow from the protocol."
                         bg="#101216"
                         fontSize={"11px"}
                         fontWeight={"thin"}
@@ -2186,7 +2186,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Choose a decentralized application (Dapp) to spend you loan on the protocol."
+                        label="Choosing a Dapp to utilize the borrow tokens on the protocol."
                         bg="#101216"
                         fontSize={"11px"}
                         fontWeight={"thin"}
@@ -2326,7 +2326,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Choose a specific liquidity pool within protocol to participate in activities such as providing liquidity, earning rewards, or accessing specific financial services."
+                        label="Choose a specific liquidity pool within the protocol."
                         bg="#101216"
                         fontSize={"11px"}
                         fontWeight={"thin"}
@@ -2518,7 +2518,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="Estimated LP Tokens Received: This tool tip provides an estimate of the number of LP (Liquidity Provider) tokens you will receive when you provide liquidity to a pool."
+                          label="Estimated Liquidity Provider Tokens Received: Estimate of LP tokens received by providing liquidity to a pool."
                           bg="#101216"
                           fontSize={"11px"}
                           fontWeight={"thin"}
@@ -2578,7 +2578,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="refers to the fee charged for adjusting the allocation or distribution of liquidity across different assets within the protocol."
+                          label="The fee for reallocating liquidity across assets in a protocol."
                           bg="#101216"
                           fontSize={"11px"}
                           fontWeight={"thin"}
@@ -2726,7 +2726,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="refer to the charges or costs incurred when completing a transactions"
+                        label="Cost incurred during transactions."
                         bg="#101216"
                         fontSize={"11px"}
                         fontWeight={"thin"}
@@ -2756,7 +2756,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
+                        label="Estimation of resources & costs for blockchain transactions."
                         bg="#101216"
                         fontSize={"11px"}
                         fontWeight={"thin"}
@@ -2785,7 +2785,7 @@ const TradeModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
+                        label="The annual interest rate charged on borrowed funds from the protocol."
                         bg="#101216"
                         fontSize={"11px"}
                         fontWeight={"thin"}
@@ -2847,7 +2847,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
+                          label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
                           bg="#101216"
                           fontSize={"11px"}
                           fontWeight={"thin"}
@@ -2957,7 +2957,7 @@ const TradeModal = ({
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
+                          label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
                           bg="#101216"
                           fontSize={"11px"}
                           fontWeight={"thin"}

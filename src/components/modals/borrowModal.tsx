@@ -836,7 +836,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Token held as security for borrowed funds"
+                    label="Token held as security for borrowed funds."
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -1078,7 +1078,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="The amount of tokens used as security for borrowed funds"
+                    label="The amount of tokens used as security for borrowed funds."
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -1394,7 +1394,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="The token borrowed from the protocol"
+                    label="The token borrowed from the protocol."
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -1543,7 +1543,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="The quantity of tokens you want to borrow from the protocol"
+                    label="The quantity of tokens you want to borrow from the protocol."
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -1900,7 +1900,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Estimation of resources & costs for blockchain transactions"
+                    label="Estimation of resources & costs for blockchain transactions."
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -1947,7 +1947,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="The annual interest rate charged on borrowed funds from the protocol"
+                    label="The annual interest rate charged on borrowed funds from the protocol."
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -2011,7 +2011,7 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Annualized interest rate including fees and charges, reflecting total borrowing cost"
+                      label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
                       fontSize={"11px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
@@ -2130,7 +2130,7 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation"
+                      label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
                       fontSize={"11px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}

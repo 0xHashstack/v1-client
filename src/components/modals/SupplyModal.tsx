@@ -799,7 +799,7 @@ const SupplyModal = ({
                       arrowShadowColor="#2B2F35"
                       placement="right"
                       boxShadow="dark-lg"
-                      label="The tokens selected to supply on the protocol"
+                      label="The tokens selected to supply on the protocol."
                       bg="#101216"
                       fontSize="11px"
                       fontWeight={"thin"}
@@ -962,7 +962,7 @@ const SupplyModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="The unit of tokens being supplied"
+                    label="The unit of tokens being supplied."
                     bg="#101216"
                     fontSize="11px"
                     fontWeight={"thin"}
@@ -1289,7 +1289,7 @@ const SupplyModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Cost incurred during transactions"
+                      label="Cost incurred during transactions."
                       bg="#101216"
                       fontSize={"11px"}
                       fontWeight={"thin"}
@@ -1336,7 +1336,7 @@ const SupplyModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Estimation of resources & costs for blockchain transactions"
+                      label="Estimation of resources & costs for blockchain transactions."
                       bg="#101216"
                       fontSize={"11px"}
                       fontWeight={"thin"}
