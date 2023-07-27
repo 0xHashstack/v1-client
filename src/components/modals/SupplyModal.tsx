@@ -502,7 +502,7 @@ const SupplyModal = ({
         });
         setDepositTransHash(depositStake?.transaction_hash);
         const uqID = getUniqueId();
-        let data:any = localStorage.getItem("transactionCheck");
+        let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
@@ -538,12 +538,14 @@ const SupplyModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: deposit?.transaction_hash.toString(),
             message: `Successfully supplied ${inputAmount} ${currentSelectedCoin}`,
             // message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -561,7 +563,7 @@ const SupplyModal = ({
         // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
         // }
         const uqID = getUniqueId();
-        let data:any = localStorage.getItem("transactionCheck");
+        let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
@@ -575,7 +577,7 @@ const SupplyModal = ({
         Status: "Failure",
       });
       const uqID = getUniqueId();
-      let data:any = localStorage.getItem("transactionCheck");
+      let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("failed"));
@@ -738,7 +740,7 @@ const SupplyModal = ({
         onClick={() => {
           const uqID = Math.random();
           setUniqueID(uqID);
-          let data:any = localStorage.getItem("transactionCheck");
+          let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
           if (data && !data.includes(uqID)) {
             data.push(uqID);
@@ -766,11 +768,11 @@ const SupplyModal = ({
           isOpen={isOpen}
           onClose={() => {
             const uqID = getUniqueId();
-            let data:any = localStorage.getItem("transactionCheck");
+            let data: any = localStorage.getItem("transactionCheck");
             data = data ? JSON.parse(data) : [];
             console.log(uqID, "data here", data);
             if (data && data.includes(uqID)) {
-              data = data.filter((val:any) => val != uqID);
+              data = data.filter((val: any) => val != uqID);
               localStorage.setItem("transactionCheck", JSON.stringify(data));
             }
             dispatch(setTransactionStartedAndModalClosed(true));

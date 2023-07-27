@@ -366,11 +366,13 @@ const YourBorrowModal = ({
           // Check if activeTransactions is frozen or sealed
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
+        const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: val?.transaction_hash.toString(),
           message: `You have successfully repaid`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
+          uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
@@ -443,11 +445,13 @@ const YourBorrowModal = ({
           // Check if activeTransactions is frozen or sealed
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
+        const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: revert?.transaction_hash.toString(),
           message: `You have successfully revert spent for Loan ID : ${revertLoanId}`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
+          uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
@@ -809,11 +813,13 @@ const YourBorrowModal = ({
           // Check if activeTransactions is frozen or sealed
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
+        const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: zeroRepay?.transaction_hash.toString(),
           message: `Successfully repaid`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
+          uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
@@ -881,11 +887,13 @@ const YourBorrowModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: trade?.transaction_hash.toString(),
             message: `Successfully traded for loan ID : ${swapLoanId}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -925,13 +933,16 @@ const YourBorrowModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: tradeMySwap?.transaction_hash.toString(),
             message: `Successfully traded for loan ID : ${swapLoanId}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
+
           activeTransactions?.push(trans_data);
           mixpanel.track("Spend Borrow Status Your Borrow", {
             Status: "Success",
@@ -998,12 +1009,14 @@ const YourBorrowModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: liquidity?.transaction_hash.toString(),
             // message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
             message: `Successfully added Liquidity`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -1045,12 +1058,14 @@ const YourBorrowModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: mySwapLiquidity?.transaction_hash.toString(),
             // message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
             message: `Successfully added Liquidity`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -1119,12 +1134,14 @@ const YourBorrowModal = ({
               // Check if activeTransactions is frozen or sealed
               activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
             }
+            const uqID = getUniqueId();
             const trans_data = {
               transaction_hash: addCollateral?.transaction_hash.toString(),
               // message: `You have successfully added collateral in Loan ID ${loanId} : ${rTokenAmount} ${rToken} `,
               message: `Successfully added collateral`,
               toastId: toastid,
               setCurrentTransactionStatus: setCurrentTransactionStatus,
+              uniqueID: uqID,
             };
             // addTransaction({ hash: deposit?.transaction_hash });
             activeTransactions?.push(trans_data);
@@ -1170,12 +1187,14 @@ const YourBorrowModal = ({
                 // Check if activeTransactions is frozen or sealed
                 activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
               }
+              const uqID = getUniqueId();
               const trans_data = {
                 transaction_hash: addCollateral?.transaction_hash.toString(),
                 // message: `You have successfully added collateral in Loan ID ${loanId} : ${collateralAmount} r${collateralAsset} `,
                 message: `Successfully added collateral`,
                 toastId: toastid,
                 setCurrentTransactionStatus: setCurrentTransactionStatus,
+                uniqueID: uqID,
               };
               // addTransaction({ hash: deposit?.transaction_hash });
               activeTransactions?.push(trans_data);
