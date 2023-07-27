@@ -192,6 +192,8 @@ const YourBorrowModal = ({
   const avgsLoneHealth = useSelector(selectHealthFactor);
   const avgsData: any = [];
   const { address } = useAccount();
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
   // useEffect(() => {
   //   const fetchAprs = async () => {
   //     if (avgs?.length == 0) {
@@ -378,11 +380,21 @@ const YourBorrowModal = ({
         });
 
         dispatch(setActiveTransactions(activeTransactions));
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       }
     } catch (err: any) {
       console.log(err, "err repay");
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -448,10 +460,20 @@ const YourBorrowModal = ({
         dispatch(setActiveTransactions(activeTransactions));
       }
       // console.log(revert);
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
     } catch (err) {
       console.log(err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       mixpanel.track("Convert to Borrow Market Status", {
         Status: "Failure",
       });
@@ -804,11 +826,21 @@ const YourBorrowModal = ({
         dispatch(setActiveTransactions(activeTransactions));
       }
       // console.log(zeroRepay);
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
       console.log("zero repay success");
     } catch (err: any) {
       console.log("zero repay failed - ", err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       mixpanel.track("Zero Repay Status", {
         Status: "Failure",
       });
@@ -868,7 +900,12 @@ const YourBorrowModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log(trade);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       } else if (currentDapp == "mySwap") {
         const tradeMySwap = await writeAsyncmySwap_swap();
         setDepositTransHash(tradeMySwap?.transaction_hash);
@@ -908,11 +945,21 @@ const YourBorrowModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log(tradeMySwap);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       }
     } catch (err: any) {
       console.log(err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -972,7 +1019,12 @@ const YourBorrowModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log(liquidity);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       } else if (currentDapp == "mySwap") {
         const mySwapLiquidity = await writeAsyncmySwap_addLiquidity();
         console.log(mySwapLiquidity);
@@ -1012,11 +1064,21 @@ const YourBorrowModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       }
     } catch (err: any) {
       console.log(err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -1078,7 +1140,12 @@ const YourBorrowModal = ({
         }
 
         console.log("add collateral - ", addCollateral);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       } else {
         const addCollateral = await writeAsyncAddCollateral();
         if (addCollateral?.transaction_hash) {
@@ -1125,11 +1192,21 @@ const YourBorrowModal = ({
         }
 
         console.log("add collateral - ", addCollateral);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       }
     } catch (err: any) {
       console.log("add collateral error");
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       mixpanel.track("Add Collateral Your Borrow Status", {
         Status: "Failure",
       });
@@ -2483,7 +2560,12 @@ const YourBorrowModal = ({
       setTransactionStarted(false);
       dispatch(resetModalDropdowns());
       setcurrentTokenSelected("rToken");
-      dispatch(setTransactionStatus(""));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus(""));
+      }
     } catch (err) {
       console.log("yourBorrowModal reset states - ", err);
     }
@@ -2631,13 +2713,35 @@ const YourBorrowModal = ({
 
   return (
     <Box>
-      <Button key="suppy" onClick={onOpen} {...restProps}>
+      <Button
+        key="suppy"
+        onClick={() => {
+          const uqID = Math.random();
+          setUniqueID(uqID);
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          if (data && !data.includes(uqID)) {
+            data.push(uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
+          onOpen();
+        }}
+        {...restProps}
+      >
         {buttonText}
       </Button>
 
       <Modal
         isOpen={isOpen}
         onClose={() => {
+          const uqID = getUniqueId();
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          console.log(uqID, "data here", data);
+          if (data && data.includes(uqID)) {
+            data = data.filter((val: any) => val != uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           resetStates();
           if (transactionStarted || collateralTransactionStarted) {
             dispatch(setTransactionStartedAndModalClosed(true));

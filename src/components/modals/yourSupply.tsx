@@ -117,6 +117,8 @@ const YourSupplyModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
 
   let activeTransactions = useSelector(selectActiveTransactions);
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
 
   // const [coins, setCoins] = useState([])
   // const walletBalances = useSelector(selectAssetWalletBalance);
@@ -379,7 +381,12 @@ const YourSupplyModal = ({
     setTransactionStarted(false);
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
-    dispatch(setTransactionStatus(""));
+    const uqID = getUniqueId();
+    let data: any = localStorage.getItem("transactionCheck");
+    data = data ? JSON.parse(data) : [];
+    if (data && data.includes(uqID)) {
+      dispatch(setTransactionStatus(""));
+    }
     setToastDisplayed(false);
     setDepositTransHash("");
     setEstSupply(undefined);
@@ -500,14 +507,25 @@ const YourSupplyModal = ({
 
       // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       // }
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
+
       console.log(withdraw);
     } catch (err: any) {
       console.log("withraw", err);
       mixpanel.track("Withdraw Supply Status", {
         Status: "Failure",
       });
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -569,7 +587,12 @@ const YourSupplyModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         console.log("addSupply", addSupplyAndStake);
       } else {
         const addSupply = await writeAsyncDeposit();
@@ -611,12 +634,22 @@ const YourSupplyModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         console.log("addSupply", addSupply);
       }
     } catch (err) {
       console.log("Unable to add supply ", err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
       mixpanel.track("Add Supply Your Supply Status", {
         Status: "Failure",
       });
@@ -675,7 +708,17 @@ const YourSupplyModal = ({
         _hover={{ bg: "white", color: "black" }}
         borderRadius={"6px"}
         color="#BDBFC1"
-        onClick={onOpen}
+        onClick={() => {
+          const uqID = Math.random();
+          setUniqueID(uqID);
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          if (data && !data.includes(uqID)) {
+            data.push(uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
+          onOpen();
+        }}
       >
         Actions
       </Button>
@@ -683,6 +726,14 @@ const YourSupplyModal = ({
       <Modal
         isOpen={isOpen}
         onClose={() => {
+          const uqID = getUniqueId();
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          console.log(uqID, "data here", data);
+          if (data && data.includes(uqID)) {
+            data = data.filter((val: any) => val != uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           onClose();
           if (transactionStarted || withdrawTransactionStarted) {
             dispatch(setTransactionStartedAndModalClosed(true));
