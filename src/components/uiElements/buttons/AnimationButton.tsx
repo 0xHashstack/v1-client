@@ -60,7 +60,7 @@ const AnimatedButton: React.FC<Props> = ({
   //     setProgressBarWidth("0%");
   //   }
   // }, [modalClosed]);
-  console.log(modalClosed, "close");
+  // console.log(modalClosed, "close");
   useEffect(() => {
     // console.log(transactionStatus);
     // if(modalClosed==true){
@@ -122,7 +122,7 @@ const AnimatedButton: React.FC<Props> = ({
       // }, 1500);
       // return () => clearInterval(interval);
     }
-  }, [currentStringIndex]);
+  }, [currentStringIndex,modalClosed]);
 
   const dispatch = useDispatch();
   // const handleClick = () => {
@@ -174,11 +174,11 @@ const AnimatedButton: React.FC<Props> = ({
           // }
           // if (nextIndex === labelErrorArray?.length) {
           if (transFailed === 0) {
-            console.log("transaction animation before");
+            // console.log("transaction animation before");
             setTransFailed((before) => before + 1);
             return 0;
           } else {
-            console.log("transaction animation after");
+            // console.log("transaction animation after");
             setIsAnimationStarted(false);
             dispatch(setToastTransactionStarted(false));
             return 1;
@@ -198,7 +198,7 @@ const AnimatedButton: React.FC<Props> = ({
     return () => clearInterval(interval);
   }, [isAnimationStarted, currentTransactionStatus]);
   useEffect(() => {
-    console.log("Transaction animation failed", transFailed);
+    // console.log("Transaction animation failed", transFailed);
     if (transFailed > 2) setCurrentStringIndex(1);
   }, [transFailed]);
   const { bgColor } = rest;
