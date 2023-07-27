@@ -508,7 +508,7 @@ const StakeUnstakeModal = ({
         Status: "Failure",
       });
       const uqID = getUniqueId();
-      let data = localStorage.getItem("transactionCheck");
+      let data:any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("failed"));
