@@ -716,7 +716,7 @@ const TradeModal = ({
   const fetchParsedUSDValueBorrow = async () => {
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
-        console.log("got parsed zero borrow");
+        // console.log("got parsed zero borrow");
         setInputBorrowAmountUSD(0);
         return;
       }
@@ -755,7 +755,7 @@ const TradeModal = ({
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
         setInputCollateralAmountUSD(0);
-        console.log("got parsed zero collateral");
+        // console.log("got parsed zero collateral");
 
         return;
       }
@@ -768,12 +768,12 @@ const TradeModal = ({
         //   currentBorrowCoin,
         //   inputBorrowAmount
         // );
-        console.log(
-          "got parsed usdt collateral",
-          parsedBorrowAmount,
-          " max should be",
-          5 * parsedBorrowAmount
-        );
+        // console.log(
+        //   "got parsed usdt collateral",
+        //   parsedBorrowAmount,
+        //   " max should be",
+        //   5 * parsedBorrowAmount
+        // );
         setInputCollateralAmountUSD(parsedBorrowAmount);
       } else if (tokenTypeSelected === "rToken") {
         // console.log(
@@ -796,12 +796,12 @@ const TradeModal = ({
         //   currentBorrowCoin,
         //   inputBorrowAmount
         // );
-        console.log(
-          "got parsed usdt collateral",
-          parsedBorrowAmount,
-          " max should be",
-          5 * parsedBorrowAmount
-        );
+        // console.log(
+        //   "got parsed usdt collateral",
+        //   parsedBorrowAmount,
+        //   " max should be",
+        //   5 * parsedBorrowAmount
+        // );
         setInputCollateralAmountUSD(parsedBorrowAmount);
       }
     } catch (error) {
