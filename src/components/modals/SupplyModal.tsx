@@ -111,8 +111,9 @@ const SupplyModal = ({
   // };
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [transactionStarted, setTransactionStarted] = useState(false);
-
   const [toastId, setToastId] = useState<any>();
+  const [uniqueID, setUniqueID] = useState(0);
+
   const {
     depositAmount,
     setDepositAmount,
@@ -154,12 +155,14 @@ const SupplyModal = ({
     { token: "DAI", idx: 4 },
   ];
 
-  useEffect(() => {
-    // setCurrentSupplyAPR(
-    //   coinIndex.map(({ curr }: any) => curr?.token === currentSelectedCoin)?.idx
-    // );
-    // console.log("currentSupplyAPR", currentSupplyAPR);
-  }, [currentSupplyAPR]);
+  // useEffect(() => {
+  //   // setCurrentSupplyAPR(
+  //   //   coinIndex.map(({ curr }: any) => curr?.token === currentSelectedCoin)?.idx
+  //   // );
+  //   // console.log("currentSupplyAPR", currentSupplyAPR);
+  // }, [currentSupplyAPR]);
+
+  const getUniqueId = () => uniqueID;
 
   interface assetB {
     USDT: any;
@@ -449,6 +452,7 @@ const SupplyModal = ({
   // });
   // const { hashes, addTransaction } = useTransactionManager();
   // const transactionStartedAndModalClosed=useSelector(selectTransactionStartedAndModalClosed);
+
   const handleTransaction = async () => {
     try {
       if (ischecked) {
@@ -477,12 +481,14 @@ const SupplyModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: depositStake?.transaction_hash.toString(),
             message: `Successfully staked ${inputAmount} ${currentSelectedCoin}`,
             // message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -495,7 +501,12 @@ const SupplyModal = ({
           TokenAmount: inputAmount,
         });
         setDepositTransHash(depositStake?.transaction_hash);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
       } else {
@@ -549,7 +560,12 @@ const SupplyModal = ({
         setDepositTransHash(deposit?.transaction_hash);
         // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
         // }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
       }
@@ -558,10 +574,13 @@ const SupplyModal = ({
       mixpanel.track("Supply Market Status", {
         Status: "Failure",
       });
-      // console.log(transactionStartedAndModalClosed,"close")
-      // if(transactionStartedAndModalClosed==false){
-      // }
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
+      console.log(uqID, "transaction check supply transaction failed : ", err);
 
       const toastContent = (
         <div>
@@ -713,13 +732,18 @@ const SupplyModal = ({
     setSliderValue(0);
   }, [currentSelectedCoin]);
 
-  // const { } = useBalanceOf();
-  // const { } = useTransfer();
-
   return (
     <div>
       <Button
         onClick={() => {
+          const uqID = Math.random();
+          setUniqueID(uqID);
+          let data = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          if (data && !data.includes(uqID)) {
+            data.push(uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           onOpen();
           dispatch(setToastTransactionStarted(false));
         }}
@@ -741,11 +765,17 @@ const SupplyModal = ({
         <Modal
           isOpen={isOpen}
           onClose={() => {
+            const uqID = getUniqueId();
+            let data = localStorage.getItem("transactionCheck");
+            data = data ? JSON.parse(data) : [];
+            console.log(uqID, "data here", data);
+            if (data && data.includes(uqID)) {
+              data = data.filter((val) => val != uqID);
+              localStorage.setItem("transactionCheck", JSON.stringify(data));
+            }
             dispatch(setTransactionStartedAndModalClosed(true));
             resetStates();
             onClose();
-            // if (transactionStarted) dispatch(setToastTransactionStarted(true));
-            // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}
           isCentered
@@ -1436,6 +1466,7 @@ const SupplyModal = ({
                       setTransactionStarted(true);
                       if (transactionStarted === false) {
                         dispatch(setTransactionStartedAndModalClosed(false));
+
                         handleTransaction();
                         mixpanel.track("Supply Market Clicked Button", {
                           "Supply Clicked": true,

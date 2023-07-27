@@ -119,6 +119,7 @@ export default function Home() {
     // const storedAccount = localStorage.getItem("account");
     const hasVisited = localStorage.getItem("visited");
     const walletConnected = localStorage.getItem("lastUsedConnector");
+    localStorage.setItem("transactionCheck", JSON.stringify([]));
     localStorage.setItem("connected", "");
     if (walletConnected == "braavos") {
       disconnect();

@@ -59,6 +59,7 @@ import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
 import useWithdrawStake from "@/Blockchain/hooks/Writes/useWithdrawStake";
 import {
   selectActiveTransactions,
+  selectTransactionCheck,
   selectWalletBalance,
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
@@ -131,6 +132,9 @@ const StakeUnstakeModal = ({
   let protocolStats = useSelector(selectProtocolStats);
   let activeTransactions = useSelector(selectActiveTransactions);
   let stakingShares = useSelector(selectStakingShares);
+
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
 
   const {
     rToken,
@@ -278,6 +282,7 @@ const StakeUnstakeModal = ({
     track_pageview: true,
     persistence: "localStorage",
   });
+
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -389,12 +394,14 @@ const StakeUnstakeModal = ({
           // Check if activeTransactions is frozen or sealed
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
+        const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: stake?.transaction_hash.toString(),
           message: `Successfully staked : ${inputStakeAmount} ${currentSelectedStakeCoin}`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
+          uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
@@ -408,14 +415,24 @@ const StakeUnstakeModal = ({
       }
       // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       // }
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
       // console.log(
       //   "Staking Modal-stake transaction check",
       //   recieptData?.data?.status == "ACCEPTED_ON_L2"
       // );
     } catch (err: any) {
-      dispatch(setTransactionStatus("failed"));
-      console.log("stake transaction failed : ", err);
+      const uqID = getUniqueId();
+      let data = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("failed"));
+      }
+      console.log(uqID, "transaction check stake transaction failed : ", err);
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -878,7 +895,9 @@ const StakeUnstakeModal = ({
   //       : currentSelectedStakeCoin
   //   );
   // }, [currentSelectedStakeCoin]);
-
+  // useEffect(() => {
+  //   console.log("transactionCheck uniqueID", uniqueID);
+  // }, [uniqueID]);
   return (
     <Box>
       {nav ? (
@@ -887,7 +906,18 @@ const StakeUnstakeModal = ({
           justifyContent="space-between"
           alignItems="center"
           gap={"8px"}
-          onClick={onOpen}
+          onClick={() => {
+            const uqID = Math.random();
+            setUniqueID(uqID);
+            let data = localStorage.getItem("transactionCheck");
+            data = data ? JSON.parse(data) : [];
+            if (data && !data.includes(uqID)) {
+              data.push(uqID);
+              localStorage.setItem("transactionCheck", JSON.stringify(data));
+            }
+
+            onOpen();
+          }}
           color={router.pathname != "/waitlist" && stakeHover ? "gray" : ""}
         >
           {router.pathname != "/waitlist" && stakeHover ? (
@@ -937,7 +967,17 @@ const StakeUnstakeModal = ({
               backgroundColor: "#0969DA",
             },
           }}
-          onClick={onOpen}
+          onClick={() => {
+            const uqID = Math.random();
+            setUniqueID(uqID);
+            let data = localStorage.getItem("transactionCheck");
+            data = data ? JSON.parse(data) : [];
+            if (data && !data.includes(uqID)) {
+              data.push(uqID);
+              localStorage.setItem("transactionCheck", JSON.stringify(data));
+            }
+            onOpen();
+          }}
         >
           Details
         </Text>
@@ -948,6 +988,14 @@ const StakeUnstakeModal = ({
         // isOpen={isSupplyTap ? isOpenCustom : isOpen}
         // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
+          const uqID = getUniqueId();
+          let data = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          console.log(uqID, "data here", data);
+          if (data && data.includes(uqID)) {
+            data = data.filter((val) => val != uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           onClose();
           if (transactionStarted || unstakeTransactionStarted) {
             dispatch(setTransactionStartedAndModalClosed(true));
