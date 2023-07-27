@@ -836,7 +836,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Collateral market refers to the cryptocurrency that you keep as security agains the borrowed amount you take from Hashstack"
+                    label="Token held as security for borrowed funds"
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -1078,7 +1078,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Collateral amount refers to the unit of crypto coins you are willing to keep as security against the borrowed amount"
+                    label="The amount of tokens used as security for borrowed funds"
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -1394,7 +1394,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Borrow market refers to the crypto currency that you are borrowing from the protocol"
+                    label="The token borrowed from the protocol"
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -1543,7 +1543,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Borrow amount refers to the unit of crypto coins you are willing to borrow from the protocol"
+                    label="The quantity of tokens you want to borrow from the protocol"
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -1900,7 +1900,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
+                    label="Estimation of resources & costs for blockchain transactions"
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -1947,7 +1947,7 @@ const BorrowModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
+                    label="The annual interest rate charged on borrowed funds from the protocol"
                     bg="#101216"
                     fontSize={"11px"}
                     fontWeight={"thin"}
@@ -2011,12 +2011,17 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
-                      bg="#24292F"
-                      fontSize={"smaller"}
+                      label="Annualized interest rate including fees and charges, reflecting total borrowing cost"
+                      fontSize={"11px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      arrowShadowColor="#2B2F35"
+                      maxW="300px"
+                      mt="12px"
+                      bg="#101216"
                     >
                       <Box>
                         <InfoIcon />
@@ -2125,12 +2130,17 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
-                      bg="#24292F"
-                      fontSize={"smaller"}
+                      label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation"
+                      fontSize={"11px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      arrowShadowColor="#2B2F35"
+                      maxW="300px"
+                      mt="12px"
+                      bg="#101216"
                     >
                       <Box>
                         <InfoIcon />

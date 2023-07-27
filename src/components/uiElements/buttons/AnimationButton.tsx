@@ -122,7 +122,7 @@ const AnimatedButton: React.FC<Props> = ({
       // }, 1500);
       // return () => clearInterval(interval);
     }
-  }, [currentStringIndex]);
+  }, [currentStringIndex,modalClosed]);
 
   const dispatch = useDispatch();
   // const handleClick = () => {
