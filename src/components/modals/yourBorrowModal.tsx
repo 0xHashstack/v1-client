@@ -2578,12 +2578,7 @@ const YourBorrowModal = ({
       setTransactionStarted(false);
       dispatch(resetModalDropdowns());
       setcurrentTokenSelected("rToken");
-      const uqID = getUniqueId();
-      let data: any = localStorage.getItem("transactionCheck");
-      data = data ? JSON.parse(data) : [];
-      if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus(""));
-      }
+      dispatch(setTransactionStatus(""));
     } catch (err) {
       console.log("yourBorrowModal reset states - ", err);
     }

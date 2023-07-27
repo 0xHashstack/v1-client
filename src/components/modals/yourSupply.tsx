@@ -382,11 +382,7 @@ const YourSupplyModal = ({
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
     const uqID = getUniqueId();
-    let data: any = localStorage.getItem("transactionCheck");
-    data = data ? JSON.parse(data) : [];
-    if (data && data.includes(uqID)) {
-      dispatch(setTransactionStatus(""));
-    }
+    dispatch(setTransactionStatus(""));
     setToastDisplayed(false);
     setDepositTransHash("");
     setEstSupply(undefined);
@@ -653,6 +649,7 @@ const YourSupplyModal = ({
       console.log("Unable to add supply ", err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
+      console.log("data check",data);
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         console.log(uqID, "your supply catch", data);
@@ -1477,10 +1474,12 @@ const YourSupplyModal = ({
                                 Clicked: true,
                               }
                             );
-                            dispatch(
-                              setTransactionStartedAndModalClosed(false)
-                            );
-                            handleAddSupply();
+                            if(transactionStarted==false){
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              );
+                              handleAddSupply();
+                            }
                           }}
                         >
                           <AnimatedButton
