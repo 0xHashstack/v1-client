@@ -28,6 +28,7 @@ import {
   selectOraclePricesCount,
   selectProtocolStatsCount,
   selectStakingSharesCount,
+  selectTransactionStatus,
   selectUserDepositsCount,
   selectUserInfoCount,
   selectUserLoansCount,
@@ -155,6 +156,7 @@ const useDataLoader = () => {
   const weeklyDataCount = useSelector(selectWeeklyDataCount);
   // const stakingShares = useSelector(selectStakingShares);
   const stakingSharesCount = useSelector(selectStakingSharesCount);
+  const transactionStatus = useSelector(selectTransactionStatus);
 
   const dispatch = useDispatch();
   const Data: any = [];
@@ -192,6 +194,9 @@ const useDataLoader = () => {
   //     console.log("error fetching aprByMarket data ", err);
   //   }
   // }, []);
+  // useEffect(() => {
+  //   console.log("your supply catch transactionStatus ", transactionStatus);
+  // }, [transactionStatus]);
 
   useEffect(() => {
     console.log("fetchHourlyData called ", oraclePrices);
