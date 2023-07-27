@@ -424,8 +424,8 @@ const LiquidityProvisionModal = ({
             // message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
             message: `Transaction successful`,
             toastId: toastid,
-            uniqueID:uqID
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);

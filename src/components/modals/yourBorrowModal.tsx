@@ -382,7 +382,6 @@ const YourBorrowModal = ({
         });
 
         dispatch(setActiveTransactions(activeTransactions));
-        const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
         if (data && data.includes(uqID)) {
