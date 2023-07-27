@@ -352,7 +352,7 @@ const YourSupplyModal = ({
             currentSelectedWithdrawlCoin,
             inputWithdrawlAmount
           );
-          console.log(data, "data in your supply");
+          // console.log(data, "data in your supply");
           setEstSupply(data);
         }
       } catch (err) {
@@ -649,7 +649,7 @@ const YourSupplyModal = ({
       console.log("Unable to add supply ", err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
-      console.log("data check",data);
+      console.log("data check", data);
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         console.log(uqID, "your supply catch", data);
@@ -1474,7 +1474,7 @@ const YourSupplyModal = ({
                                 Clicked: true,
                               }
                             );
-                            if(transactionStarted==false){
+                            if (transactionStarted == false) {
                               dispatch(
                                 setTransactionStartedAndModalClosed(false)
                               );

@@ -960,7 +960,7 @@ const useDataLoader = () => {
         }
       };
 
-      console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+      // console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
       if (netAprCount < transactionRefresh) {
         fetchNetApr();
       }

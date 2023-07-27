@@ -717,7 +717,7 @@ const LiquidityProvisionModal = ({
             const uqID = getUniqueId();
             let data: any = localStorage.getItem("transactionCheck");
             data = data ? JSON.parse(data) : [];
-            console.log(uqID, "data here", data);
+            // console.log(uqID, "data here", data);
             if (data && data.includes(uqID)) {
               data = data.filter((val: any) => val != uqID);
               localStorage.setItem("transactionCheck", JSON.stringify(data));
