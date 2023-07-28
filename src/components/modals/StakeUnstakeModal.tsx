@@ -2198,8 +2198,9 @@ const StakeUnstakeModal = ({
                                         display="flex"
                                       >
                                         Staking shares:{" "}
-                                        {stakingShares != null ? (
-                                          stakingShares[_coin]
+                                        {stakingShares != null &&
+                                        stakingShares[_coin] != null ? (
+                                          numberFormatter(stakingShares[_coin])
                                         ) : (
                                           <Skeleton
                                             width="3rem"
@@ -2210,12 +2211,6 @@ const StakeUnstakeModal = ({
                                             ml={2}
                                           />
                                         )}
-                                        {stakingShares != null &&
-                                        stakingShares[_coin] != null
-                                          ? numberFormatter(
-                                              stakingShares[_coin]
-                                            )
-                                          : "loading..."}
                                       </Box>
                                     </Box>
                                   </Box>

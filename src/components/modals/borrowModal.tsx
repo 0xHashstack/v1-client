@@ -1011,8 +1011,8 @@ const BorrowModal = ({
                                       <Skeleton
                                         width="3rem"
                                         height="1rem"
-                                        startColor="#2B2F35"
-                                        endColor="#101216"
+                                        startColor="#1E212F"
+                                        endColor="#03060B"
                                         borderRadius="6px"
                                         ml={2}
                                       />
@@ -1105,13 +1105,15 @@ const BorrowModal = ({
                               >
                                 Wallet Balance:{" "}
                                 {walletBalances[coin]?.dataBalanceOf?.balance
-                                  ? numberFormatter(parseAmount(
-                                      uint256.uint256ToBN(
-                                        walletBalances[coin]?.dataBalanceOf
-                                          ?.balance
-                                      ),
-                                      tokenDecimalsMap[coin]
-                                    ))
+                                  ? numberFormatter(
+                                      parseAmount(
+                                        uint256.uint256ToBN(
+                                          walletBalances[coin]?.dataBalanceOf
+                                            ?.balance
+                                        ),
+                                        tokenDecimalsMap[coin]
+                                      )
+                                    )
                                   : "-"}
                               </Box>
                             </Box>

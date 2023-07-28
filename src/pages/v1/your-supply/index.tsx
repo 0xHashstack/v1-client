@@ -28,7 +28,7 @@ const YourSupply = () => {
     "Supply APR",
     "Effective APR",
     "Status",
-    "Actions",
+    "",
   ];
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();

@@ -16,6 +16,7 @@ import {
   Spinner,
   useTimeout,
   Skeleton,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import BTCLogo from "@/assets/images/stakeIcon.svg";
@@ -328,6 +329,14 @@ const SupplyDashboard = ({
     }
   }, [userDeposits]);
 
+  const tooltips = [
+    "Allocated quantity of rTokens for a market after supplying funds to the protocol.",
+    "Conversion rate for exchanging assets within a protocol.",
+    "Annual interest rate earned on supplied tokens.",
+    "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
+    "Track the borrowed amount's progress and key details within the protocol.",
+  ];
+
   return loading ? (
     <>
       <Box
@@ -415,8 +424,31 @@ const SupplyDashboard = ({
                     height={"2rem"}
                     // textAlign="center"
                     color={"#BDBFC1"}
+                    cursor="context-menu"
                   >
-                    {val}
+                    <Tooltip
+                      hasArrow
+                      label={tooltips[idx1]}
+                      placement={
+                        (idx1 === 0 && "bottom-start") ||
+                        (idx1 === columnItems.length - 1 && "bottom-end") ||
+                        "bottom"
+                      }
+                      rounded="md"
+                      boxShadow="dark-lg"
+                      bg="#101216"
+                      fontSize={"11px"}
+                      fontWeight={"thin"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      arrowShadowColor="#2B2F35"
+                      // maxW="222px"
+                      // mt="28px"
+                    >
+                      {val}
+                    </Tooltip>
                   </Text>
                 </Td>
               ))}
