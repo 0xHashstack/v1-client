@@ -587,7 +587,7 @@ const TradeModal = ({
 
   const handleBorrowAndSpend = async () => {
     try {
-      if (collateralMarket) {
+      if (currentCollateralCoin[0]!="r") {
         const borrowAndSpend = await writeAsyncBorrowAndSpend();
         setDepositTransHash(borrowAndSpend?.transaction_hash);
         if (borrowAndSpend?.transaction_hash) {
@@ -640,7 +640,7 @@ const TradeModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-      } else if (rToken) {
+      } else if (currentCollateralCoin[0]=="r") {
         const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
         setDepositTransHash(borrowAndSpendR?.transaction_hash);
         if (borrowAndSpendR?.transaction_hash) {

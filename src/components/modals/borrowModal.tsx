@@ -1290,7 +1290,7 @@ const BorrowModal = ({
                     fontFamily="Inter"
                   >
                     {currentCollateralCoin && currentCollateralCoin[0] == "r"
-                      ? "rToken Balance: " + getBalance(currentCollateralCoin)
+                      ? "rToken Balance: " +  getBalance(currentCollateralCoin)
                       : "Wallet Balance: " +
                         (walletBalance.toFixed(5).replace(/\.?0+$/, "").length >
                         5
