@@ -690,7 +690,12 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   //   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    stroke: {
+      curve: "smooth",
+    },
+  };
   const handleDropdownClick = (dropdownName: any) => {
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
     dispatch(setModalDropdown(dropdownName));
@@ -1045,7 +1050,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           </Box>
         </Box>
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
           type="line"
           height={350}
