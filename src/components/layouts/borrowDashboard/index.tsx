@@ -14,6 +14,7 @@ import {
   useTimeout,
   Spinner,
   Skeleton,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import Image from "next/image";
@@ -417,6 +418,16 @@ const BorrowDashboard = ({
     }
   };
 
+  const tooltips = [
+    "A unique ID number assigned to a specific borrow within the protocol.",
+    "The unit of tokens borrowed from the protocol.",
+    "The annual interest rate charged on borrowed tokens from the protocol.",
+    "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
+    "Collateral are the tokens held as security for borrowed amount.",
+    "Shows if borrowed amount was used in other pools or dapps within the protocol.",
+    "Extra interest rate added to account for risk in supply and borrow.",
+  ];
+
   // console.log("Borrows", loading, Borrows);
   return loading ? (
     <>
@@ -509,8 +520,34 @@ const BorrowDashboard = ({
                   pl={idx1 == 0 ? 2 : idx1 == 1 ? "24%  " : 0}
                   pr={idx1 == columnItems.length - 1 ? 5 : 0}
                   color={"#BDBFC1"}
+                  cursor="context-menu"
                 >
-                  {val}
+                  <Tooltip
+                    hasArrow
+                    label={tooltips[idx1]}
+                    // arrowPadding={-5420}
+                    placement={
+                      (idx1 === 0 && "bottom-start") ||
+                      (idx1 === columnItems.length - 1 && "bottom-end") ||
+                      "bottom"
+                    }
+                    rounded="md"
+                    boxShadow="dark-lg"
+                    bg="#101216"
+                    fontSize={"11px"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    // cursor="context-menu"
+                    // marginRight={idx1 === 1 ? "52px" : ""}
+                    // maxW="222px"
+                    // mt="28px"
+                  >
+                    {val}
+                  </Tooltip>
                 </Text>
               </Td>
             ))}
