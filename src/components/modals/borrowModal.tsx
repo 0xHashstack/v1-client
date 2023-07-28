@@ -1017,23 +1017,37 @@ const BorrowModal = ({
                                         ml={2}
                                       />
                                     )}
+                                    {validRTokens && validRTokens.length > 0 ? (
+                                      numberFormatter(amount)
+                                    ) : (
+                                      <Skeleton
+                                        width="3rem"
+                                        height="1rem"
+                                        startColor="#1E212F"
+                                        endColor="#03060B"
+                                        borderRadius="6px"
+                                        ml={2}
+                                      />
+                                    )}
                                   </Box>
                                 </Box>
                               </Box>
                             );
                           }
                         )}
-                      <hr
-                        style={{
-                          height: "1px",
-                          borderWidth: "0",
-                          backgroundColor: "#2B2F35",
-                          width: "96%",
-                          marginTop: "7px",
-                          // marginRight: "5px",
-                          marginLeft: "5px",
-                        }}
-                      />
+                      {validRTokens && validRTokens.length > 0 && (
+                        <hr
+                          style={{
+                            height: "1px",
+                            borderWidth: "0",
+                            backgroundColor: "#2B2F35",
+                            width: "96%",
+                            marginTop: "7px",
+                            // marginRight: "5px",
+                            marginLeft: "5px",
+                          }}
+                        />
+                      )}
                       {coins?.map((coin: NativeToken, index: number) => {
                         return (
                           <Box
@@ -1104,17 +1118,25 @@ const BorrowModal = ({
                                 fontWeight="thin"
                               >
                                 Wallet Balance:{" "}
-                                {walletBalances[coin]?.dataBalanceOf?.balance
-                                  ? numberFormatter(
-                                      parseAmount(
-                                        uint256.uint256ToBN(
-                                          walletBalances[coin]?.dataBalanceOf
-                                            ?.balance
-                                        ),
-                                        tokenDecimalsMap[coin]
-                                      )
-                                    )
-                                  : "-"}
+                                {walletBalances[coin]?.dataBalanceOf
+                                  ?.balance ? (
+                                  parseAmount(
+                                    uint256.uint256ToBN(
+                                      walletBalances[coin]?.dataBalanceOf
+                                        ?.balance
+                                    ),
+                                    tokenDecimalsMap[coin]
+                                  ).toFixed(2)
+                                ) : (
+                                  <Skeleton
+                                    width="3rem"
+                                    height="1rem"
+                                    startColor="#1E212F"
+                                    endColor="#03060B"
+                                    borderRadius="6px"
+                                    ml={2}
+                                  />
+                                )}
                               </Box>
                             </Box>
                           </Box>
@@ -2216,37 +2238,49 @@ const BorrowModal = ({
               )}
             </Card>
 
-            {currentCollateralCoin && currentCollateralCoin[0] !== "r" && (
-              <Box
-                // display="flex"
-                // justifyContent="left"
-                w="100%"
-                // pb="4"
-                height="64px"
-                display="flex"
-                alignItems="center"
-                mt="2rem"
-                // mb="1rem"
-              >
+            {currentCollateralCoin &&
+              currentCollateralCoin[0] !== "r" &&
+              protocolStatsRedux && (
                 <Box
+                  // display="flex"
+                  // justifyContent="left"
+                  w="100%"
+                  // pb="4"
+                  height="64px"
                   display="flex"
-                  bg="#0C425C"
-                  color="white"
-                  fontSize="12px"
-                  p="4"
-                  border="1px solid rgba(84, 174, 255, 0.4)"
-                  fontStyle="normal"
-                  fontWeight="400"
-                  lineHeight="18px"
-                  borderRadius="6px"
-                  // textAlign="center"
+                  alignItems="center"
+                  mt="2rem"
+                  // mb="1rem"
                 >
-                  <Box pr="3" mt="0.5" cursor="pointer">
-                    <BlueInfoIcon />
-                  </Box>
-                  You have selected native token as collateral which will be
-                  converted to rtokens 1rBTC = XXBTC
-                  {/* <Box
+                  <Box
+                    display="flex"
+                    bg="#0C425C"
+                    color="white"
+                    fontSize="12px"
+                    p="4"
+                    border="1px solid rgba(84, 174, 255, 0.4)"
+                    fontStyle="normal"
+                    fontWeight="400"
+                    lineHeight="18px"
+                    borderRadius="6px"
+                    // textAlign="center"
+                  >
+                    <Box pr="3" mt="0.5" cursor="pointer">
+                      <BlueInfoIcon />
+                    </Box>
+                    You have selected native token as collateral which will be
+                    converted to rtokens 1r{currentCollateralCoin} ={" "}
+                    {(protocolStatsRedux.find(
+                      (val: any) => val?.token == currentCollateralCoin.split(1)
+                    )?.exchangeRateRtokenToUnderlying
+                      ? numberFormatter(
+                          protocolStatsRedux.find(
+                            (val: any) =>
+                              val?.token == currentCollateralCoin.split(1)
+                          )?.exchangeRateRtokenToUnderlying
+                        )
+                      : "") + currentCollateralCoin?.split(1)}
+                    {/* <Box
                                 py="1"
                                 pl="4"
                                 cursor="pointer"
@@ -2254,9 +2288,9 @@ const BorrowModal = ({
                               >
                                 <TableClose />
                               </Box> */}
+                  </Box>
                 </Box>
-              </Box>
-            )}
+              )}
 
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&

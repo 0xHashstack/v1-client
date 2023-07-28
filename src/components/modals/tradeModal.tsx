@@ -1292,17 +1292,19 @@ const TradeModal = ({
                                 );
                               }
                             )}
-                          <hr
-                            style={{
-                              height: "1px",
-                              borderWidth: "0",
-                              backgroundColor: "#2B2F35",
-                              width: "96%",
-                              marginTop: "7px",
-                              // marginRight: "5px",
-                              marginLeft: "5px",
-                            }}
-                          />
+                          {validRTokens && validRTokens.length > 0 && (
+                            <hr
+                              style={{
+                                height: "1px",
+                                borderWidth: "0",
+                                backgroundColor: "#2B2F35",
+                                width: "96%",
+                                marginTop: "7px",
+                                // marginRight: "5px",
+                                marginLeft: "5px",
+                              }}
+                            />
+                          )}
                           {coins?.map((coin: NativeToken, index: number) => {
                             return (
                               <Box

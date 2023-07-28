@@ -886,7 +886,7 @@ const Navbar = ({ validRTokens }: any) => {
                     onClick={toggleMode}
                   > */}
                   <Box
-                    onClick={() => setToggleDarkMode(!toggleDarkMode)}
+                    // onClick={() => setToggleDarkMode(!toggleDarkMode)}
                     // bgColor="blue"
                     display="flex"
                     justifyContent="center"
