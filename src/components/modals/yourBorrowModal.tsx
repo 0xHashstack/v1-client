@@ -477,7 +477,7 @@ const YourBorrowModal = ({
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         // dispatch(setTransactionStatus("failed"));
-        setTransactionStarted(false)
+        setTransactionStarted(false);
       }
       mixpanel.track("Convert to Borrow Market Status", {
         Status: "Failure",
@@ -972,7 +972,7 @@ const YourBorrowModal = ({
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         // dispatch(setTransactionStatus("failed"));
-        setTransactionStarted(false)
+        setTransactionStarted(false);
       }
       const toastContent = (
         <div>

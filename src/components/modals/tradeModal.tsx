@@ -1103,7 +1103,7 @@ const TradeModal = ({
                         borderColor="#2B2F35"
                         arrowShadowColor="#2B2F35"
                         maxW="252px"
-                        mt="12px"
+                        // mt="12px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -1372,14 +1372,15 @@ const TradeModal = ({
                                     Wallet Balance:{" "}
                                     {walletBalances[coin]?.dataBalanceOf
                                       ?.balance
-                                      ? numberFormatter(parseAmount(
+                                      ? numberFormatter(
+                                          parseAmount(
                                             uint256.uint256ToBN(
                                               walletBalances[coin]
                                                 ?.dataBalanceOf?.balance
                                             ),
                                             tokenDecimalsMap[coin]
-                                          ))
-                                        
+                                          )
+                                        )
                                       : "-"}
                                   </Box>
                                 </Box>
@@ -1850,11 +1851,12 @@ const TradeModal = ({
                                     display="flex"
                                   >
                                     Available reserves:{" "}
-                                    {(protocolStats?.[index]?.availableReserves &&
-                                  numberFormatter(
-                                    protocolStats?.[index]?.availableReserves *
-                                      0.895
-                                  )) || (
+                                    {(protocolStats?.[index]
+                                      ?.availableReserves &&
+                                      numberFormatter(
+                                        protocolStats?.[index]
+                                          ?.availableReserves * 0.895
+                                      )) || (
                                       <Skeleton
                                         width="3rem"
                                         height="1rem"
@@ -2280,7 +2282,7 @@ const TradeModal = ({
                         borderColor="#2B2F35"
                         arrowShadowColor="#2B2F35"
                         maxW="242px"
-                        mt="5px"
+                        // mt="5px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -2536,7 +2538,7 @@ const TradeModal = ({
                           boxShadow="dark-lg"
                         >
                           {coins?.map((coin: NativeToken, index: number) => {
-                            if(coin==currentBorrowCoin){
+                            if (coin == currentBorrowCoin) {
                               return null;
                             }
                             return (
@@ -2615,7 +2617,7 @@ const TradeModal = ({
                           borderColor="#2B2F35"
                           arrowShadowColor="#2B2F35"
                           maxW="232px"
-                          mt="50px"
+                          // mt="50px"
                         >
                           <Box p="1">
                             <InfoIcon />
@@ -2882,7 +2884,7 @@ const TradeModal = ({
                         borderColor="#2B2F35"
                         arrowShadowColor="#2B2F35"
                         maxW="274px"
-                        mb="10px"
+                        // mb="10px"
                       >
                         <Box p="1">
                           <InfoIcon />

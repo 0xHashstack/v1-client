@@ -840,8 +840,6 @@ const SupplyModal = ({
                       padding={"2"}
                       border="1px solid"
                       borderColor="#2B2F35"
-                      maxW="222px"
-                      mt="14px"
                     >
                       <Box>
                         <InfoIcon />
@@ -1004,7 +1002,7 @@ const SupplyModal = ({
                     border="1px solid"
                     borderColor="#2B2F35"
                     arrowShadowColor="#2B2F35"
-                    maxW="222px"
+                    // maxW="222px"
                   >
                     <Box>
                       <InfoIcon />
@@ -1022,7 +1020,7 @@ const SupplyModal = ({
                       : isNaN(depositAmount)
                       ? "1px solid #CF222E"
                       : depositAmount > 0 && depositAmount <= walletBalance
-                      ? "1px solid #1A7F37"
+                      ? "1px solid #0969DA"
                       : "1px solid #2B2F35 "
                   }`}
                   borderRadius="6px"
@@ -1053,7 +1051,7 @@ const SupplyModal = ({
                           ? "#CF222E"
                           : depositAmount == 0
                           ? "white"
-                          : "#1A7F37"
+                          : "#0969DA"
                       }`}
                       _disabled={{ color: "#1A7F37" }}
                       border="0px"
