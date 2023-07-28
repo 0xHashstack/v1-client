@@ -655,7 +655,7 @@ const YourSupplyModal = ({
       if (data && data.includes(uqID)) {
         console.log(uqID, "your supply catch", data);
         // dispatch(setTransactionStatus("failed"));
-        setTransactionStarted(false)
+        setTransactionStarted(false);
       }
       mixpanel.track("Add Supply Your Supply Status", {
         Status: "Failure",
@@ -837,7 +837,7 @@ const YourSupplyModal = ({
                             borderColor="#2B2F35"
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
-                            mt="15px"
+                            // mt="15px"
                           >
                             <Box>
                               <InfoIcon />
@@ -1392,7 +1392,7 @@ const YourSupplyModal = ({
                               borderColor="#2B2F35"
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
-                              mb="16px"
+                              // mb="16px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -2003,7 +2003,7 @@ const YourSupplyModal = ({
                               borderColor="#2B2F35"
                               arrowShadowColor="#2B2F35"
                               maxW="247px"
-                              mt="15px"
+                              // mt="15px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -2193,7 +2193,7 @@ const YourSupplyModal = ({
                               borderColor="#2B2F35"
                               arrowShadowColor="#2B2F35"
                               maxW="292px"
-                              mb="15px"
+                              // mb="15px"
                             >
                               <Box>
                                 <InfoIcon />
