@@ -394,7 +394,8 @@ const YourBorrowModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
       }
       const toastContent = (
         <div>
@@ -475,7 +476,8 @@ const YourBorrowModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false)
       }
       mixpanel.track("Convert to Borrow Market Status", {
         Status: "Failure",
@@ -844,7 +846,8 @@ const YourBorrowModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
       }
       mixpanel.track("Zero Repay Status", {
         Status: "Failure",
@@ -968,7 +971,8 @@ const YourBorrowModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false)
       }
       const toastContent = (
         <div>
@@ -1091,7 +1095,8 @@ const YourBorrowModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
       }
       const toastContent = (
         <div>
@@ -1223,7 +1228,8 @@ const YourBorrowModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setCollateralTransactionStarted(false);
       }
       mixpanel.track("Add Collateral Your Borrow Status", {
         Status: "Failure",
