@@ -115,12 +115,14 @@ export default function Home() {
   // console.log(account ,"index page")
   // console.log("Index reload check",account);
   useEffect(() => {
+    localStorage.setItem("connected", "");
+  }, []);
+  useEffect(() => {
     // alert(status)
     // const storedAccount = localStorage.getItem("account");
     const hasVisited = localStorage.getItem("visited");
     const walletConnected = localStorage.getItem("lastUsedConnector");
     localStorage.setItem("transactionCheck", JSON.stringify([]));
-    localStorage.setItem("connected", "");
     if (walletConnected == "braavos") {
       disconnect();
       connect(connectors[0]);
