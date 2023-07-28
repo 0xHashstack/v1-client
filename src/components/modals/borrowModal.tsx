@@ -1105,13 +1105,13 @@ const BorrowModal = ({
                               >
                                 Wallet Balance:{" "}
                                 {walletBalances[coin]?.dataBalanceOf?.balance
-                                  ? parseAmount(
+                                  ? numberFormatter(parseAmount(
                                       uint256.uint256ToBN(
                                         walletBalances[coin]?.dataBalanceOf
                                           ?.balance
                                       ),
                                       tokenDecimalsMap[coin]
-                                    ).toFixed(2)
+                                    ))
                                   : "-"}
                               </Box>
                             </Box>

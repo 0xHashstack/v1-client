@@ -1241,18 +1241,7 @@ const TradeModal = ({
                                       setCollateralMarket(coin);
                                       setTokenTypeSelected("rToken");
                                       setRToken(coin);
-                                      setwalletBalance(
-                                        walletBalances[coin]
-                                          ?.statusBalanceOf === "success"
-                                          ? parseAmount(
-                                              uint256.uint256ToBN(
-                                                walletBalances[coin]
-                                                  ?.dataBalanceOf?.balance
-                                              ),
-                                              tokenDecimalsMap[coin]
-                                            )
-                                          : 0
-                                      );
+                                      setwalletBalance(amount);
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
@@ -1295,7 +1284,7 @@ const TradeModal = ({
                                       >
                                         rToken Balance:{" "}
                                         {validRTokens && validRTokens.length > 0
-                                          ? amount.toFixed(2)
+                                          ? numberFormatter(amount)
                                           : " -"}
                                       </Box>
                                     </Box>
@@ -1381,15 +1370,14 @@ const TradeModal = ({
                                     Wallet Balance:{" "}
                                     {walletBalances[coin]?.dataBalanceOf
                                       ?.balance
-                                      ? Number(
-                                          BNtoNum(
+                                      ? numberFormatter(parseAmount(
                                             uint256.uint256ToBN(
                                               walletBalances[coin]
                                                 ?.dataBalanceOf?.balance
                                             ),
                                             tokenDecimalsMap[coin]
-                                          )
-                                        ).toFixed(2)
+                                          ))
+                                        
                                       : "-"}
                                   </Box>
                                 </Box>
@@ -1860,8 +1848,11 @@ const TradeModal = ({
                                     display="flex"
                                   >
                                     Available reserves:{" "}
-                                    {protocolStats?.[index]?.availableReserves *
-                                      0.895 || (
+                                    {(protocolStats?.[index]?.availableReserves &&
+                                  numberFormatter(
+                                    protocolStats?.[index]?.availableReserves *
+                                      0.895
+                                  )) || (
                                       <Skeleton
                                         width="3rem"
                                         height="1rem"
@@ -2543,6 +2534,9 @@ const TradeModal = ({
                           boxShadow="dark-lg"
                         >
                           {coins?.map((coin: NativeToken, index: number) => {
+                            if(coin==currentBorrowCoin){
+                              return null;
+                            }
                             return (
                               <Box
                                 key={index}
