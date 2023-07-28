@@ -362,7 +362,7 @@ const GetTokensModal = ({
                 borderRadius="6px"
               >
                 <Link href="https://faucet.goerli.starknet.io/" target="_blank">
-                  <Text>Get Eth for free</Text>
+                  <Text>Get test ETH</Text>
                 </Link>
               </Box>
             </ModalBody>
