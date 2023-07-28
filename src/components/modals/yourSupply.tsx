@@ -528,7 +528,7 @@ const YourSupplyModal = ({
       console.log(uqID, "your supply catch", data);
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -662,7 +662,7 @@ const YourSupplyModal = ({
       });
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction Declined{" "}
           <CopyToClipboard text={err as string}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1044,7 +1044,7 @@ const YourSupplyModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
+                              placeholder={`0.01536 ${currentSelectedSupplyCoin}`}
                               color={`${
                                 inputSupplyAmount > walletBalance
                                   ? "#CF222E"
@@ -1763,7 +1763,7 @@ const YourSupplyModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
+                              placeholder={`0.01536 ${currentSelectedWithdrawlCoin}`}
                               color={`${
                                 inputWithdrawlAmount > withdrawWalletBalance
                                   ? "#CF222E"

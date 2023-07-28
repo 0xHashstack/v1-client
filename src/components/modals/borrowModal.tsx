@@ -593,7 +593,7 @@ const BorrowModal = ({
       });
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1017,18 +1017,6 @@ const BorrowModal = ({
                                         ml={2}
                                       />
                                     )}
-                                    {validRTokens && validRTokens.length > 0 ? (
-                                      numberFormatter(amount)
-                                    ) : (
-                                      <Skeleton
-                                        width="3rem"
-                                        height="1rem"
-                                        startColor="#1E212F"
-                                        endColor="#03060B"
-                                        borderRadius="6px"
-                                        ml={2}
-                                      />
-                                    )}
                                   </Box>
                                 </Box>
                               </Box>
@@ -1120,13 +1108,15 @@ const BorrowModal = ({
                                 Wallet Balance:{" "}
                                 {walletBalances[coin]?.dataBalanceOf
                                   ?.balance ? (
-                                  parseAmount(
-                                    uint256.uint256ToBN(
-                                      walletBalances[coin]?.dataBalanceOf
-                                        ?.balance
-                                    ),
-                                    tokenDecimalsMap[coin]
-                                  ).toFixed(2)
+                                  numberFormatter(
+                                    parseAmount(
+                                      uint256.uint256ToBN(
+                                        walletBalances[coin]?.dataBalanceOf
+                                          ?.balance
+                                      ),
+                                      tokenDecimalsMap[coin]
+                                    )
+                                  )
                                 ) : (
                                   <Skeleton
                                     width="3rem"
@@ -1208,7 +1198,7 @@ const BorrowModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
+                      placeholder={`0.01536 ${currentCollateralCoin}`}
                       border="0px"
                       _disabled={{ color: "#1A7F37" }}
                       _placeholder={{
@@ -1290,7 +1280,7 @@ const BorrowModal = ({
                     fontFamily="Inter"
                   >
                     {currentCollateralCoin && currentCollateralCoin[0] == "r"
-                      ? "rToken Balance: " + getBalance(currentCollateralCoin)
+                      ? "rToken Balance: " +  getBalance(currentCollateralCoin)
                       : "Wallet Balance: " +
                         (walletBalance.toFixed(5).replace(/\.?0+$/, "").length >
                         5
@@ -1669,7 +1659,7 @@ const BorrowModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
+                      placeholder={`0.01536 ${currentBorrowCoin}`}
                       color={`${
                         inputCollateralAmountUSD &&
                         inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD

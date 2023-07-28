@@ -430,12 +430,13 @@ const StakeUnstakeModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
       }
       console.log(uqID, "transaction check stake transaction failed : ", err);
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -513,11 +514,12 @@ const StakeUnstakeModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
       }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -599,12 +601,13 @@ const StakeUnstakeModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setUnstakeTransactionStarted(false);
       }
       console.log("Unstake transaction failed : ", err);
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1282,10 +1285,16 @@ const StakeUnstakeModal = ({
                                       >
                                         rToken Balance:{" "}
                                         {userDeposit &&
-                                        userDeposit.length > 0 ? (
-                                          userDeposit?.find(
-                                            (item: any) => item.rToken == _coin
-                                          )?.rTokenFreeParsed
+                                        userDeposit.length > 0 &&
+                                        userDeposit?.find(
+                                          (item: any) => item.rToken == _coin
+                                        )?.rTokenFreeParsed != null ? (
+                                          numberFormatter(
+                                            userDeposit?.find(
+                                              (item: any) =>
+                                                item.rToken == _coin
+                                            )?.rTokenFreeParsed
+                                          )
                                         ) : (
                                           <Skeleton
                                             width="3rem"
@@ -1376,7 +1385,7 @@ const StakeUnstakeModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
+                              placeholder={`0.01536 ${currentSelectedStakeCoin}`}
                               color={`${
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount >
@@ -2199,7 +2208,9 @@ const StakeUnstakeModal = ({
                                       >
                                         Staking shares:{" "}
                                         {stakingShares != null &&
-                                        stakingShares[_coin] != null ? (
+                                        stakingShares[_coin] != null &&
+                                        stakingShares[_coin] != undefined &&
+                                        !isNaN(stakingShares[_coin]) ? (
                                           numberFormatter(stakingShares[_coin])
                                         ) : (
                                           <Skeleton
@@ -2286,7 +2297,7 @@ const StakeUnstakeModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
+                              placeholder={`0.01536 ${currentSelectedUnstakeCoin}`}
                               color={`${
                                 !isValid(currentSelectedUnstakeCoin)
                                   ? "#1A7F37"

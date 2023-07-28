@@ -587,7 +587,7 @@ const TradeModal = ({
 
   const handleBorrowAndSpend = async () => {
     try {
-      if (collateralMarket) {
+      if (currentCollateralCoin[0]!="r") {
         const borrowAndSpend = await writeAsyncBorrowAndSpend();
         setDepositTransHash(borrowAndSpend?.transaction_hash);
         if (borrowAndSpend?.transaction_hash) {
@@ -640,7 +640,7 @@ const TradeModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-      } else if (rToken) {
+      } else if (currentCollateralCoin[0]=="r") {
         const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
         setDepositTransHash(borrowAndSpendR?.transaction_hash);
         if (borrowAndSpendR?.transaction_hash) {
@@ -705,7 +705,7 @@ const TradeModal = ({
       }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1450,7 +1450,7 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                          placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
+                          placeholder={`0.01536 ${currentCollateralCoin}`}
                           color={`${
                             inputCollateralAmount > walletBalance
                               ? "#CF222E"
@@ -1936,7 +1936,7 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                          placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
+                          placeholder={`0.01536 ${currentBorrowCoin}`}
                           color={`${
                             inputCollateralAmountUSD &&
                             inputBorrowAmountUSD >
