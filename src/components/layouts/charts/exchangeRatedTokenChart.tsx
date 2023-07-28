@@ -685,6 +685,12 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
       },
     },
   };
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    stroke: {
+      curve: "smooth",
+    },
+  };
   //   const options: ApexOptions = {
   //     ...splineChartData.options,
   //     stroke: {
@@ -1151,7 +1157,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           </Box>
         </Box>
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
           type="line"
           height={350}
