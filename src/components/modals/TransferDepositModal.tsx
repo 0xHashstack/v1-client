@@ -443,7 +443,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     step={parseFloat(`${inputAmount <= 99999 ? 0.1 : 0}`)}
                   >
                     <NumberInputField
-                      placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
+                      placeholder={`0.01536 ${currentSelectedCoin}`}
                       color={`${
                         inputAmount > walletBalance
                           ? "#CF222E"

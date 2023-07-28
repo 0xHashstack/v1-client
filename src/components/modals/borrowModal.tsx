@@ -593,7 +593,7 @@ const BorrowModal = ({
       });
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1198,7 +1198,7 @@ const BorrowModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
+                      placeholder={`0.01536 ${currentCollateralCoin}`}
                       border="0px"
                       _disabled={{ color: "#1A7F37" }}
                       _placeholder={{
@@ -1659,7 +1659,7 @@ const BorrowModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
+                      placeholder={`0.01536 ${currentBorrowCoin}`}
                       color={`${
                         inputCollateralAmountUSD &&
                         inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD

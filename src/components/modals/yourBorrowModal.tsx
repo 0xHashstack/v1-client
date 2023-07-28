@@ -399,7 +399,7 @@ const YourBorrowModal = ({
       }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -854,7 +854,7 @@ const YourBorrowModal = ({
       });
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -976,7 +976,7 @@ const YourBorrowModal = ({
       }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1100,7 +1100,7 @@ const YourBorrowModal = ({
       }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1236,7 +1236,7 @@ const YourBorrowModal = ({
       });
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -3365,7 +3365,7 @@ const YourBorrowModal = ({
                                 _disabled={{ cursor: "pointer" }}
                               >
                                 <NumberInputField
-                                  placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
+                                  placeholder={`0.01536 ${currentBorrowMarketCoin1}`}
                                   color={`${
                                     repayAmount > walletBalance1
                                       ? "#CF222E"
@@ -4942,7 +4942,7 @@ const YourBorrowModal = ({
                           _disabled={{ cursor: "pointer" }}
                         >
                           <NumberInputField
-                            placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
+                            placeholder={`0.01536 ${currentSelectedCoin}`}
                             border="0px"
                             _placeholder={{
                               color: "#393D4F",

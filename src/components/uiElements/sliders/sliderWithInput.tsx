@@ -60,7 +60,7 @@ const SliderWithInput = () => {
           value={inputAmount}
         >
           <NumberInputField
-            placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
+            placeholder={`0.01536 ${currentSelectedCoin}`}
             border="0px"
             _placeholder={{
               color: "#393D4F",

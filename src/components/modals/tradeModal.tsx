@@ -705,7 +705,7 @@ const TradeModal = ({
       }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1449,7 +1449,7 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                          placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
+                          placeholder={`0.01536 ${currentCollateralCoin}`}
                           color={`${
                             inputCollateralAmount > walletBalance
                               ? "#CF222E"
@@ -1934,7 +1934,7 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                          placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
+                          placeholder={`0.01536 ${currentBorrowCoin}`}
                           color={`${
                             inputCollateralAmountUSD &&
                             inputBorrowAmountUSD >
