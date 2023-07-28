@@ -522,7 +522,8 @@ const YourSupplyModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setWithdrawTransactionStarted(false);
       }
       console.log(uqID, "your supply catch", data);
       const toastContent = (
@@ -653,7 +654,8 @@ const YourSupplyModal = ({
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         console.log(uqID, "your supply catch", data);
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false)
       }
       mixpanel.track("Add Supply Your Supply Status", {
         Status: "Failure",

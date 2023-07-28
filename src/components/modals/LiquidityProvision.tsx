@@ -453,7 +453,8 @@ const LiquidityProvisionModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
       }
       const toastContent = (
         <div>
