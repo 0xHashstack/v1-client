@@ -584,7 +584,8 @@ const BorrowModal = ({
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        dispatch(setTransactionStatus("failed"));
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
       }
       console.log("handle borrow", err);
       mixpanel.track("Borrow Market Status", {
@@ -750,6 +751,7 @@ const BorrowModal = ({
     setToastDisplayed(false);
     setTransactionStarted(false);
     setHealthFactor(undefined);
+    setCollateralAmount(0);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
     setCurrentTransactionStatus("");
