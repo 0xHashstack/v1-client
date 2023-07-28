@@ -1865,8 +1865,8 @@ const TradeModal = ({
                                       <Skeleton
                                         width="3rem"
                                         height="1rem"
-                                        startColor="#2B2F35"
-                                        endColor="#101216"
+                                        startColor="#1E212F"
+                                        endColor="#03060B"
                                         borderRadius="6px"
                                         ml={2}
                                       />

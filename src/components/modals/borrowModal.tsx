@@ -1005,9 +1005,18 @@ const BorrowModal = ({
                                     fontWeight="thin"
                                   >
                                     rToken Balance:{" "}
-                                    {validRTokens && validRTokens.length > 0
-                                      ? numberFormatter(amount)
-                                      : "loading..."}
+                                    {validRTokens && validRTokens.length > 0 ? (
+                                      numberFormatter(amount)
+                                    ) : (
+                                      <Skeleton
+                                        width="3rem"
+                                        height="1rem"
+                                        startColor="#2B2F35"
+                                        endColor="#101216"
+                                        borderRadius="6px"
+                                        ml={2}
+                                      />
+                                    )}
                                   </Box>
                                 </Box>
                               </Box>
@@ -1563,8 +1572,8 @@ const BorrowModal = ({
                                   <Skeleton
                                     width="3rem"
                                     height="1rem"
-                                    startColor="#2B2F35"
-                                    endColor="#101216"
+                                    startColor="#1E212F"
+                                    endColor="#03060B"
                                     borderRadius="6px"
                                     ml={2}
                                   />
