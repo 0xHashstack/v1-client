@@ -6,6 +6,7 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
 import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import dynamic from "next/dynamic";
+import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const SupplyChartChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -222,6 +223,12 @@ const SupplyChartChart = () => {
       },
     },
   };
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    stroke: {
+      curve: "smooth",
+    },
+  };
 
   return (
     <Box display="flex" flexDirection="column" gap="8px" width="50%">
@@ -349,7 +356,7 @@ const SupplyChartChart = () => {
         padding="16px 24px 40px"
       >
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
           type="line"
           height={350}
