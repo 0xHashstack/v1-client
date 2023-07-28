@@ -751,6 +751,7 @@ const BorrowModal = ({
     setToastDisplayed(false);
     setTransactionStarted(false);
     setHealthFactor(undefined);
+    setCollateralAmount(0);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
     setCurrentTransactionStatus("");

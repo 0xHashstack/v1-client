@@ -429,6 +429,9 @@ const TotalUtilisationRateByMarketChart = () => {
   };
   const options: ApexOptions = {
     ...splineChartData.options,
+    stroke: {
+      curve: "smooth",
+    },
     // stroke: {
     //   ...splineChartData.options.stroke,
     //   curve: "smooth",
