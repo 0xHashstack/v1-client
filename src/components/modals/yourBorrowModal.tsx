@@ -477,7 +477,7 @@ const YourBorrowModal = ({
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         // dispatch(setTransactionStatus("failed"));
-        setTransactionStarted(false)
+        setTransactionStarted(false);
       }
       mixpanel.track("Convert to Borrow Market Status", {
         Status: "Failure",
@@ -972,7 +972,7 @@ const YourBorrowModal = ({
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         // dispatch(setTransactionStatus("failed"));
-        setTransactionStarted(false)
+        setTransactionStarted(false);
       }
       const toastContent = (
         <div>
@@ -4754,17 +4754,48 @@ const YourBorrowModal = ({
                                           color="white"
                                           mt="6px"
                                           fontWeight="thin"
+                                          display="flex"
                                         >
                                           Wallet Balance:{" "}
-                                          {coin == "Native Token"
-                                            ? walletBalance2
-                                            : userDeposit?.find(
+                                          {coin == "Native Token" ? (
+                                            walletBalance2 != null ? (
+                                              numberFormatter(walletBalance2)
+                                            ) : (
+                                              <Skeleton
+                                                width="3rem"
+                                                height="1rem"
+                                                startColor="#1E212F"
+                                                endColor="#03060B"
+                                                borderRadius="6px"
+                                                ml={2}
+                                              />
+                                            )
+                                          ) : userDeposit?.find(
+                                              (item: any) =>
+                                                item.rToken ==
+                                                collateralBalance.substring(
+                                                  spaceIndex + 1
+                                                )
+                                            )?.rTokenFreeParsed != null ? (
+                                            numberFormatter(
+                                              userDeposit?.find(
                                                 (item: any) =>
                                                   item.rToken ==
                                                   collateralBalance.substring(
                                                     spaceIndex + 1
                                                   )
-                                              )?.rTokenFreeParsed}
+                                              )?.rTokenFreeParsed
+                                            )
+                                          ) : (
+                                            <Skeleton
+                                              width="3rem"
+                                              height="1rem"
+                                              startColor="#1E212F"
+                                              endColor="#03060B"
+                                              borderRadius="6px"
+                                              ml={2}
+                                            />
+                                          )}
                                         </Box>
                                       </Box>
                                     </Box>

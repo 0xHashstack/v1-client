@@ -1282,10 +1282,16 @@ const StakeUnstakeModal = ({
                                       >
                                         rToken Balance:{" "}
                                         {userDeposit &&
-                                        userDeposit.length > 0 ? (
-                                          userDeposit?.find(
-                                            (item: any) => item.rToken == _coin
-                                          )?.rTokenFreeParsed
+                                        userDeposit.length > 0 &&
+                                        userDeposit?.find(
+                                          (item: any) => item.rToken == _coin
+                                        )?.rTokenFreeParsed != null ? (
+                                          numberFormatter(
+                                            userDeposit?.find(
+                                              (item: any) =>
+                                                item.rToken == _coin
+                                            )?.rTokenFreeParsed
+                                          )
                                         ) : (
                                           <Skeleton
                                             width="3rem"
@@ -2199,7 +2205,9 @@ const StakeUnstakeModal = ({
                                       >
                                         Staking shares:{" "}
                                         {stakingShares != null &&
-                                        stakingShares[_coin] != null ? (
+                                        stakingShares[_coin] != null &&
+                                        stakingShares[_coin] != undefined &&
+                                        !isNaN(stakingShares[_coin]) ? (
                                           numberFormatter(stakingShares[_coin])
                                         ) : (
                                           <Skeleton
