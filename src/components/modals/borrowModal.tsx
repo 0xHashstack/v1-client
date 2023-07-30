@@ -895,7 +895,7 @@ const BorrowModal = ({
                     borderColor="#2B2F35"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
-                    mt="28px"
+                    // mt="28px"
                   >
                     <Box p="1">
                       <InfoIcon />
@@ -1476,7 +1476,7 @@ const BorrowModal = ({
                     borderColor="#2B2F35"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
-                    mt="12px"
+                    // mt="12px"
                   >
                     <Box p="1">
                       <InfoIcon />
@@ -1983,7 +1983,7 @@ const BorrowModal = ({
                     borderColor="#2B2F35"
                     arrowShadowColor="#2B2F35"
                     maxW="300px"
-                    mt="12px"
+                    // mt="12px"
                   >
                     <Box>
                       <InfoIcon />

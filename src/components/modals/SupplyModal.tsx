@@ -840,8 +840,6 @@ const SupplyModal = ({
                       padding={"2"}
                       border="1px solid"
                       borderColor="#2B2F35"
-                      maxW="222px"
-                      mt="14px"
                     >
                       <Box>
                         <InfoIcon />
@@ -1004,7 +1002,7 @@ const SupplyModal = ({
                     border="1px solid"
                     borderColor="#2B2F35"
                     arrowShadowColor="#2B2F35"
-                    maxW="222px"
+                    // maxW="222px"
                   >
                     <Box>
                       <InfoIcon />

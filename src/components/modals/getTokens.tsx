@@ -241,7 +241,7 @@ const GetTokensModal = ({
               fontStyle="normal"
               lineHeight="20px"
             >
-              Get Tokens
+              Get tokens faucet
             </ModalHeader>
             <ModalCloseButton
               // onClick={() => {
