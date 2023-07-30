@@ -711,7 +711,12 @@ const BorrowModal = ({
 
   const handleBorrowChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
-    var percentage = (newValue * 100) / currentAvailableReserves;
+    console.log(inputCollateralAmountUSD,"amount")
+    if(inputCollateralAmountUSD>0){
+      var percentage = (newValue * 100) / (inputCollateralAmountUSD*4.9999);
+    }else{
+      var percentage = (newValue * 100) / currentAvailableReserves;
+    }
     percentage = Math.max(0, percentage);
     // console.log(percentage,"percent")
     if (percentage > 100) {
@@ -1692,7 +1697,7 @@ const BorrowModal = ({
                     color="#0969DA"
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
-                      if (inputCollateralAmountUSD) {
+                      if (inputCollateralAmountUSD>0) {
                         if (
                           (4.9999 * inputCollateralAmountUSD) /
                             oraclePrices.find(
@@ -1717,15 +1722,7 @@ const BorrowModal = ({
                               )?.price
                           );
                           setsliderValue2(
-                            Math.round(
-                              ((4.9999 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) => curr.name === currentBorrowCoin
-                                )?.price /
-                                currentAvailableReserves) *
-                                100
-                            )
-                          );
+                          100)
                         }
                       } else {
                         setAmount(currentAvailableReserves);
@@ -1835,10 +1832,19 @@ const BorrowModal = ({
                     value={sliderValue2}
                     onChange={(val) => {
                       setsliderValue2(val);
-                      var ans = (val / 100) * currentAvailableReserves;
+                      if(inputCollateralAmountUSD>0){
+                        var ans = (val / 100) * (inputCollateralAmountUSD*4.9999);
+                      }else{
+                        var ans = (val / 100) * currentAvailableReserves;
+                      }
                       if (val == 100) {
-                        setAmount(currentAvailableReserves);
-                        setinputBorrowAmount(currentAvailableReserves);
+                        if(inputCollateralAmountUSD>0){
+                          setAmount(inputCollateralAmountUSD*4.9999);
+                          setinputBorrowAmount(inputCollateralAmountUSD*4.9999)
+                        }else{
+                          setAmount(currentAvailableReserves);
+                          setinputBorrowAmount(currentAvailableReserves);
+                        }
                       } else {
                         ans = Math.round(ans * 100) / 100;
                         dispatch(setInputBorrowModalBorrowAmount(ans));
