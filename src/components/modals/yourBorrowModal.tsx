@@ -399,7 +399,7 @@ const YourBorrowModal = ({
       }
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -854,7 +854,7 @@ const YourBorrowModal = ({
       });
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -976,7 +976,7 @@ const YourBorrowModal = ({
       }
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1100,7 +1100,7 @@ const YourBorrowModal = ({
       }
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1236,7 +1236,7 @@ const YourBorrowModal = ({
       });
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -3394,7 +3394,17 @@ const YourBorrowModal = ({
                               </NumberInput>
                               <Button
                                 variant="ghost"
-                                color="#0969DA"
+                                color={`${
+                                  repayAmount > walletBalance1
+                                    ? "#CF222E"
+                                    : isNaN(repayAmount)
+                                    ? "#CF222E"
+                                    : repayAmount < 0
+                                    ? "#CF222E"
+                                    : repayAmount == 0
+                                    ? "#0969DA"
+                                    : "#1A7F37"
+                                }`}
                                 _hover={{ bg: "#101216" }}
                                 onClick={() => {
                                   if (currentAction === "Zero Repay") return;
@@ -4959,7 +4969,22 @@ const YourBorrowModal = ({
                         </NumberInput>
                         <Button
                           variant="ghost"
-                          color="#0969DA"
+                          color={`${
+                            inputCollateralAmount >
+                            (currentTokenSelected == "Native Token"
+                              ? walletBalance2
+                              : userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed)
+                              ? "#CF222E"
+                              : inputCollateralAmount < 0
+                              ? "#CF222E"
+                              : inputCollateralAmount == 0
+                              ? "#0969DA"
+                              : "#1A7F37"
+                          }`}
                           _hover={{ bg: "#101216" }}
                           onClick={() => {
                             if (currentTokenSelected === "rToken") {

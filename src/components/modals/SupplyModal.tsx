@@ -587,7 +587,7 @@ const SupplyModal = ({
 
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1069,7 +1069,18 @@ const SupplyModal = ({
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color="#0969DA"
+                    color={`${
+                      depositAmount > walletBalance
+                        ? "#CF222E"
+                        : isNaN(depositAmount)
+                        ? "#CF222E"
+                        : depositAmount < 0
+                        ? "#CF222E"
+                        : depositAmount == 0
+                        ? "#0969DA"
+                        : "#1A7F37"
+                    }`}
+                    // color="#0969DA"
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
                       setDepositAmount(walletBalance);
