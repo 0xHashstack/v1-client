@@ -448,8 +448,8 @@ const SpendTable = () => {
                         }
                         rounded="md"
                         boxShadow="dark-lg"
-                        bg="#101216"
-                        fontSize={"11px"}
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
