@@ -281,6 +281,8 @@ const BorrowModal = ({
   const fetchProtocolStats = async () => {
     // const stats = await getProtocolStats();
     const stats = protocolStatsRedux;
+    // console.log("stats in your borrow", stats);
+
     if (stats)
       setProtocolStats([
         stats?.[0],
@@ -1803,7 +1805,7 @@ const BorrowModal = ({
                     >
                       Available reserves:{" "}
                       {availableReserves ? (
-                        numberFormatter(currentAvailableReserves * 0.895)
+                        numberFormatter(currentAvailableReserves)
                       ) : (
                         <Skeleton
                           width="4rem"
@@ -1832,7 +1834,7 @@ const BorrowModal = ({
                   >
                     Available reserves:{" "}
                     {availableReserves ? (
-                      numberFormatter(currentAvailableReserves * 0.895)
+                      numberFormatter(currentAvailableReserves)
                     ) : (
                       <Skeleton
                         width="4rem"
