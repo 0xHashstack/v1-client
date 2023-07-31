@@ -528,7 +528,7 @@ const YourSupplyModal = ({
       console.log(uqID, "your supply catch", data);
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -655,14 +655,14 @@ const YourSupplyModal = ({
       if (data && data.includes(uqID)) {
         console.log(uqID, "your supply catch", data);
         // dispatch(setTransactionStatus("failed"));
-        setTransactionStarted(false)
+        setTransactionStarted(false);
       }
       mixpanel.track("Add Supply Your Supply Status", {
         Status: "Failure",
       });
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction Declined{" "}
           <CopyToClipboard text={err as string}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -828,8 +828,8 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="The tokens selected to supply on the protocol."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -837,7 +837,7 @@ const YourSupplyModal = ({
                             borderColor="#2B2F35"
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
-                            mt="15px"
+                            // mt="15px"
                           >
                             <Box>
                               <InfoIcon />
@@ -997,8 +997,8 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="The unit of tokens being supplied."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -1044,7 +1044,7 @@ const YourSupplyModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
+                              placeholder={`0.01536 ${currentSelectedSupplyCoin}`}
                               color={`${
                                 inputSupplyAmount > walletBalance
                                   ? "#CF222E"
@@ -1070,7 +1070,15 @@ const YourSupplyModal = ({
                           </NumberInput>
                           <Button
                             variant="ghost"
-                            color="#0969DA"
+                            color={`${
+                              inputSupplyAmount > walletBalance
+                                ? "#CF222E"
+                                : inputSupplyAmount < 0
+                                ? "#CF222E"
+                                : inputSupplyAmount == 0
+                                ? "#0969DA"
+                                : "#1A7F37"
+                            }`}
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
                               setinputSupplyAmount(walletBalance);
@@ -1306,8 +1314,8 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Cost incurred during transactions."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -1345,8 +1353,8 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Estimation of resources & costs for blockchain transactions."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -1383,8 +1391,8 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Annual interest rate earned on supplied tokens."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -1392,7 +1400,7 @@ const YourSupplyModal = ({
                               borderColor="#2B2F35"
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
-                              mb="16px"
+                              // mb="16px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1563,8 +1571,8 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="The tokens selected to supply on the protocol."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -1712,8 +1720,8 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="Unit of tokens to be withdrawn."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -1763,7 +1771,7 @@ const YourSupplyModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
+                              placeholder={`0.01536 ${currentSelectedWithdrawlCoin}`}
                               color={`${
                                 inputWithdrawlAmount > withdrawWalletBalance
                                   ? "#CF222E"
@@ -1789,7 +1797,15 @@ const YourSupplyModal = ({
                           </NumberInput>
                           <Button
                             variant="ghost"
-                            color="#0969DA"
+                            color={`${
+                              inputWithdrawlAmount > withdrawWalletBalance
+                                ? "#CF222E"
+                                : inputWithdrawlAmount < 0
+                                ? "#CF222E"
+                                : inputWithdrawlAmount == 0
+                                ? "#0969DA"
+                                : "#1A7F37"
+                            }`}
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
                               setinputWithdrawlAmount(withdrawWalletBalance);
@@ -1994,8 +2010,8 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Estimated amount available for withdrawal from the deposited tokens."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -2003,7 +2019,7 @@ const YourSupplyModal = ({
                               borderColor="#2B2F35"
                               arrowShadowColor="#2B2F35"
                               maxW="247px"
-                              mt="15px"
+                              // mt="15px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -2144,8 +2160,8 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Cost incurred during transactions."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -2184,8 +2200,8 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Estimation of resources & costs for blockchain transactions."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -2193,7 +2209,7 @@ const YourSupplyModal = ({
                               borderColor="#2B2F35"
                               arrowShadowColor="#2B2F35"
                               maxW="292px"
-                              mb="15px"
+                              // mb="15px"
                             >
                               <Box>
                                 <InfoIcon />

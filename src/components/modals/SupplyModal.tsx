@@ -587,7 +587,7 @@ const SupplyModal = ({
 
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -833,15 +833,13 @@ const SupplyModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="The tokens selected to supply on the protocol."
-                      bg="#101216"
-                      fontSize="11px"
+                      bg="#010409"
+                      fontSize="13px"
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
                       border="1px solid"
                       borderColor="#2B2F35"
-                      maxW="222px"
-                      mt="14px"
                     >
                       <Box>
                         <InfoIcon />
@@ -996,15 +994,15 @@ const SupplyModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="The unit of tokens being supplied."
-                    bg="#101216"
-                    fontSize="11px"
+                    bg="#010409"
+                    fontSize="13px"
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
                     border="1px solid"
                     borderColor="#2B2F35"
                     arrowShadowColor="#2B2F35"
-                    maxW="222px"
+                    // maxW="222px"
                   >
                     <Box>
                       <InfoIcon />
@@ -1071,7 +1069,18 @@ const SupplyModal = ({
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color="#0969DA"
+                    color={`${
+                      depositAmount > walletBalance
+                        ? "#CF222E"
+                        : isNaN(depositAmount)
+                        ? "#CF222E"
+                        : depositAmount < 0
+                        ? "#CF222E"
+                        : depositAmount == 0
+                        ? "#0969DA"
+                        : "#1A7F37"
+                    }`}
+                    // color="#0969DA"
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
                       setDepositAmount(walletBalance);
@@ -1323,11 +1332,12 @@ const SupplyModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="Cost incurred during transactions."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      color="#fff"
                       border="1px solid"
                       borderColor="#2B2F35"
                       arrowShadowColor="#2B2F35"
@@ -1370,8 +1380,8 @@ const SupplyModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="Estimation of resources & costs for blockchain transactions."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -1415,8 +1425,8 @@ const SupplyModal = ({
                       placement="right-end"
                       boxShadow="dark-lg"
                       label="Annual interest rate earned on supplied tokens."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}

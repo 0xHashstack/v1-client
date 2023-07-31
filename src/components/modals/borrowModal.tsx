@@ -281,6 +281,8 @@ const BorrowModal = ({
   const fetchProtocolStats = async () => {
     // const stats = await getProtocolStats();
     const stats = protocolStatsRedux;
+    // console.log("stats in your borrow", stats);
+
     if (stats)
       setProtocolStats([
         stats?.[0],
@@ -593,7 +595,7 @@ const BorrowModal = ({
       });
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -711,7 +713,16 @@ const BorrowModal = ({
 
   const handleBorrowChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
-    var percentage = (newValue * 100) / currentAvailableReserves;
+    console.log(inputCollateralAmountUSD, "amount");
+    if (inputCollateralAmountUSD > 0) {
+      var percentage =
+        (newValue * 100) /
+        ((4.9999 * inputCollateralAmountUSD) /
+          oraclePrices.find((curr: any) => curr.name === currentBorrowCoin)
+            ?.price);
+    } else {
+      var percentage = (newValue * 100) / currentAvailableReserves;
+    }
     percentage = Math.max(0, percentage);
     // console.log(percentage,"percent")
     if (percentage > 100) {
@@ -881,8 +892,8 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Token held as security for borrowed funds."
-                    bg="#101216"
-                    fontSize={"11px"}
+                    bg="#010409"
+                    fontSize={"13px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
@@ -890,7 +901,7 @@ const BorrowModal = ({
                     borderColor="#2B2F35"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
-                    mt="28px"
+                    // mt="28px"
                   >
                     <Box p="1">
                       <InfoIcon />
@@ -1017,18 +1028,6 @@ const BorrowModal = ({
                                         ml={2}
                                       />
                                     )}
-                                    {validRTokens && validRTokens.length > 0 ? (
-                                      numberFormatter(amount)
-                                    ) : (
-                                      <Skeleton
-                                        width="3rem"
-                                        height="1rem"
-                                        startColor="#1E212F"
-                                        endColor="#03060B"
-                                        borderRadius="6px"
-                                        ml={2}
-                                      />
-                                    )}
                                   </Box>
                                 </Box>
                               </Box>
@@ -1120,13 +1119,15 @@ const BorrowModal = ({
                                 Wallet Balance:{" "}
                                 {walletBalances[coin]?.dataBalanceOf
                                   ?.balance ? (
-                                  parseAmount(
-                                    uint256.uint256ToBN(
-                                      walletBalances[coin]?.dataBalanceOf
-                                        ?.balance
-                                    ),
-                                    tokenDecimalsMap[coin]
-                                  ).toFixed(2)
+                                  numberFormatter(
+                                    parseAmount(
+                                      uint256.uint256ToBN(
+                                        walletBalances[coin]?.dataBalanceOf
+                                          ?.balance
+                                      ),
+                                      tokenDecimalsMap[coin]
+                                    )
+                                  )
                                 ) : (
                                   <Skeleton
                                     width="3rem"
@@ -1156,8 +1157,8 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="The amount of tokens used as security for borrowed funds."
-                    bg="#101216"
-                    fontSize={"11px"}
+                    bg="#010409"
+                    fontSize={"13px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
@@ -1208,7 +1209,7 @@ const BorrowModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
+                      placeholder={`0.01536 ${currentCollateralCoin}`}
                       border="0px"
                       _disabled={{ color: "#1A7F37" }}
                       _placeholder={{
@@ -1225,7 +1226,15 @@ const BorrowModal = ({
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color="#0969DA"
+                    color={`${
+                      rTokenAmount > walletBalance
+                        ? "#CF222E"
+                        : rTokenAmount < 0
+                        ? "#CF222E"
+                        : rTokenAmount == 0
+                        ? "#0969DA"
+                        : "#1A7F37"
+                    }`}
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
                       // setRTokenAmount(walletBalance);
@@ -1472,8 +1481,8 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="The token borrowed from the protocol."
-                    bg="#101216"
-                    fontSize={"11px"}
+                    bg="#010409"
+                    fontSize={"13px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
@@ -1481,7 +1490,7 @@ const BorrowModal = ({
                     borderColor="#2B2F35"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
-                    mt="12px"
+                    // mt="12px"
                   >
                     <Box p="1">
                       <InfoIcon />
@@ -1621,8 +1630,8 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="The quantity of tokens you want to borrow from the protocol."
-                    bg="#101216"
-                    fontSize={"11px"}
+                    bg="#010409"
+                    fontSize={"13px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
@@ -1669,7 +1678,7 @@ const BorrowModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
+                      placeholder={`0.01536 ${currentBorrowCoin}`}
                       color={`${
                         inputCollateralAmountUSD &&
                         inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
@@ -1699,10 +1708,22 @@ const BorrowModal = ({
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color="#0969DA"
+                    color={`${
+                      inputCollateralAmountUSD &&
+                      inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
+                        ? "#CF222E"
+                        : isNaN(amount)
+                        ? "#CF222E"
+                        : inputBorrowAmount < 0 ||
+                          inputBorrowAmount > currentAvailableReserves
+                        ? "#CF222E"
+                        : inputBorrowAmountUSD == 0
+                        ? "#0969DA"
+                        : "#1A7F37"
+                    }`}
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
-                      if (inputCollateralAmountUSD) {
+                      if (inputCollateralAmountUSD > 0) {
                         if (
                           (4.9999 * inputCollateralAmountUSD) /
                             oraclePrices.find(
@@ -1726,16 +1747,7 @@ const BorrowModal = ({
                                 (curr: any) => curr.name === currentBorrowCoin
                               )?.price
                           );
-                          setsliderValue2(
-                            Math.round(
-                              ((4.9999 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) => curr.name === currentBorrowCoin
-                                )?.price /
-                                currentAvailableReserves) *
-                                100
-                            )
-                          );
+                          setsliderValue2(100);
                         }
                       } else {
                         setAmount(currentAvailableReserves);
@@ -1793,7 +1805,7 @@ const BorrowModal = ({
                     >
                       Available reserves:{" "}
                       {availableReserves ? (
-                        numberFormatter(availableReserves * 0.895)
+                        numberFormatter(currentAvailableReserves)
                       ) : (
                         <Skeleton
                           width="4rem"
@@ -1822,7 +1834,7 @@ const BorrowModal = ({
                   >
                     Available reserves:{" "}
                     {availableReserves ? (
-                      numberFormatter(availableReserves * 0.895)
+                      numberFormatter(currentAvailableReserves)
                     ) : (
                       <Skeleton
                         width="4rem"
@@ -1845,10 +1857,34 @@ const BorrowModal = ({
                     value={sliderValue2}
                     onChange={(val) => {
                       setsliderValue2(val);
-                      var ans = (val / 100) * currentAvailableReserves;
+                      if (inputCollateralAmountUSD > 0) {
+                        var ans =
+                          (val / 100) *
+                          ((4.9999 * inputCollateralAmountUSD) /
+                            oraclePrices.find(
+                              (curr: any) => curr.name === currentBorrowCoin
+                            )?.price);
+                      } else {
+                        var ans = (val / 100) * currentAvailableReserves;
+                      }
                       if (val == 100) {
-                        setAmount(currentAvailableReserves);
-                        setinputBorrowAmount(currentAvailableReserves);
+                        if (inputCollateralAmountUSD > 0) {
+                          setAmount(
+                            (4.9999 * inputCollateralAmountUSD) /
+                              oraclePrices.find(
+                                (curr: any) => curr.name === currentBorrowCoin
+                              )?.price
+                          );
+                          setinputBorrowAmount(
+                            (4.9999 * inputCollateralAmountUSD) /
+                              oraclePrices.find(
+                                (curr: any) => curr.name === currentBorrowCoin
+                              )?.price
+                          );
+                        } else {
+                          setAmount(currentAvailableReserves);
+                          setinputBorrowAmount(currentAvailableReserves);
+                        }
                       } else {
                         ans = Math.round(ans * 100) / 100;
                         dispatch(setInputBorrowModalBorrowAmount(ans));
@@ -1978,8 +2014,8 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Estimation of resources & costs for blockchain transactions."
-                    bg="#101216"
-                    fontSize={"11px"}
+                    bg="#010409"
+                    fontSize={"13px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
@@ -1987,7 +2023,7 @@ const BorrowModal = ({
                     borderColor="#2B2F35"
                     arrowShadowColor="#2B2F35"
                     maxW="300px"
-                    mt="12px"
+                    // mt="12px"
                   >
                     <Box>
                       <InfoIcon />
@@ -2025,8 +2061,8 @@ const BorrowModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="The annual interest rate charged on borrowed funds from the protocol."
-                    bg="#101216"
-                    fontSize={"11px"}
+                    bg="#010409"
+                    fontSize={"13px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
@@ -2089,7 +2125,7 @@ const BorrowModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
-                      fontSize={"11px"}
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -2098,7 +2134,7 @@ const BorrowModal = ({
                       arrowShadowColor="#2B2F35"
                       maxW="300px"
                       mt="12px"
-                      bg="#101216"
+                      bg="#010409"
                     >
                       <Box>
                         <InfoIcon />
@@ -2208,7 +2244,7 @@ const BorrowModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
-                      fontSize={"11px"}
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -2217,7 +2253,7 @@ const BorrowModal = ({
                       arrowShadowColor="#2B2F35"
                       maxW="300px"
                       mt="12px"
-                      bg="#101216"
+                      bg="#010409"
                     >
                       <Box>
                         <InfoIcon />

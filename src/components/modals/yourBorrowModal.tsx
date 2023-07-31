@@ -399,7 +399,7 @@ const YourBorrowModal = ({
       }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -477,7 +477,7 @@ const YourBorrowModal = ({
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         // dispatch(setTransactionStatus("failed"));
-        setTransactionStarted(false)
+        setTransactionStarted(false);
       }
       mixpanel.track("Convert to Borrow Market Status", {
         Status: "Failure",
@@ -854,7 +854,7 @@ const YourBorrowModal = ({
       });
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -972,11 +972,11 @@ const YourBorrowModal = ({
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
         // dispatch(setTransactionStatus("failed"));
-        setTransactionStarted(false)
+        setTransactionStarted(false);
       }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1100,7 +1100,7 @@ const YourBorrowModal = ({
       }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1236,7 +1236,7 @@ const YourBorrowModal = ({
       });
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1283,8 +1283,8 @@ const YourBorrowModal = ({
                     placement="right-start"
                     boxShadow="dark-lg"
                     label="Estimated Liquidity Provider Tokens Received: Estimate of LP tokens received by providing liquidity to a pool."
-                    bg="#101216"
-                    fontSize={"11px"}
+                    bg="#010409"
+                    fontSize={"13px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
@@ -1340,8 +1340,8 @@ const YourBorrowModal = ({
                       placement="right-start"
                       boxShadow="dark-lg"
                       label="Fee for adjusting liquidity allocation across assets within the protocol."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -1429,8 +1429,8 @@ const YourBorrowModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="Cost incurred during transactions."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -1468,8 +1468,8 @@ const YourBorrowModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="The annual interest rate charged on borrowed funds from the protocol."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -1521,8 +1521,8 @@ const YourBorrowModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="Estimation of resources & costs for blockchain transactions."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -1560,8 +1560,8 @@ const YourBorrowModal = ({
                   placement="right-end"
                   boxShadow="dark-lg"
                   label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -1615,8 +1615,8 @@ const YourBorrowModal = ({
                   placement="right-end"
                   boxShadow="dark-lg"
                   label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -1683,8 +1683,8 @@ const YourBorrowModal = ({
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="The token borrowed from the protocol."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -1792,8 +1792,8 @@ const YourBorrowModal = ({
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Cost incurred during transactions."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -1831,8 +1831,8 @@ const YourBorrowModal = ({
                   placement="right-end"
                   boxShadow="dark-lg"
                   label="Estimation of resources & costs for blockchain transactions."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -1879,8 +1879,8 @@ const YourBorrowModal = ({
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Application where the loan was spent."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -1913,8 +1913,8 @@ const YourBorrowModal = ({
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="The unit of tokens you have borrowed from the protocol."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -1992,8 +1992,8 @@ const YourBorrowModal = ({
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Cost incurred during transactions."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -2021,8 +2021,8 @@ const YourBorrowModal = ({
                   placement="right-end"
                   boxShadow="dark-lg"
                   label="Estimation of resources & costs for blockchain transactions."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -2117,8 +2117,8 @@ const YourBorrowModal = ({
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Cost incurred during transactions."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -2156,8 +2156,8 @@ const YourBorrowModal = ({
                   placement="right-end"
                   boxShadow="dark-lg"
                   label="Estimation of resources & costs for blockchain transactions."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -2209,8 +2209,8 @@ const YourBorrowModal = ({
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="The token borrowed from the protocol."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -2318,8 +2318,8 @@ const YourBorrowModal = ({
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Cost incurred during transactions."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -2357,8 +2357,8 @@ const YourBorrowModal = ({
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Estimation of resources & costs for blockchain transactions."
-                  bg="#101216"
-                  fontSize={"11px"}
+                  bg="#010409"
+                  fontSize={"13px"}
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
@@ -2906,8 +2906,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Dropdown menu for loan-related operations within protocol."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -3034,8 +3034,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="A unique ID number assigned to a specific borrow within the protocol."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -3189,8 +3189,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="The token borrowed from the protocol."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -3314,8 +3314,8 @@ const YourBorrowModal = ({
                                 placement="right-start"
                                 boxShadow="dark-lg"
                                 label="The amount to repay for a loan within protocol."
-                                bg="#101216"
-                                fontSize={"11px"}
+                                bg="#010409"
+                                fontSize={"13px"}
                                 fontWeight={"thin"}
                                 borderRadius={"lg"}
                                 padding={"2"}
@@ -3365,7 +3365,7 @@ const YourBorrowModal = ({
                                 _disabled={{ cursor: "pointer" }}
                               >
                                 <NumberInputField
-                                  placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
+                                  placeholder={`0.01536 ${currentBorrowMarketCoin1}`}
                                   color={`${
                                     repayAmount > walletBalance1
                                       ? "#CF222E"
@@ -3394,7 +3394,17 @@ const YourBorrowModal = ({
                               </NumberInput>
                               <Button
                                 variant="ghost"
-                                color="#0969DA"
+                                color={`${
+                                  repayAmount > walletBalance1
+                                    ? "#CF222E"
+                                    : isNaN(repayAmount)
+                                    ? "#CF222E"
+                                    : repayAmount < 0
+                                    ? "#CF222E"
+                                    : repayAmount == 0
+                                    ? "#0969DA"
+                                    : "#1A7F37"
+                                }`}
                                 _hover={{ bg: "#101216" }}
                                 onClick={() => {
                                   if (currentAction === "Zero Repay") return;
@@ -3592,8 +3602,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Borrow purpose refers to the options given to spend loans which is borrowed from the protocol."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -3674,8 +3684,8 @@ const YourBorrowModal = ({
                               placement="right-start"
                               boxShadow="dark-lg"
                               label="Choose a decentralized application to spend the borrowed tokens on the protocol."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -3814,8 +3824,8 @@ const YourBorrowModal = ({
                               placement="right-start"
                               boxShadow="dark-lg"
                               label="Choose a specific liquidity pool within the protocol."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -4354,8 +4364,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="A unique ID number assigned to a specific borrow within the protocol."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -4488,8 +4498,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="The token borrowed from the protocol."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -4619,8 +4629,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Select from which token you want to add collateral."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -4754,17 +4764,48 @@ const YourBorrowModal = ({
                                           color="white"
                                           mt="6px"
                                           fontWeight="thin"
+                                          display="flex"
                                         >
                                           Wallet Balance:{" "}
-                                          {coin == "Native Token"
-                                            ? walletBalance2
-                                            : userDeposit?.find(
+                                          {coin == "Native Token" ? (
+                                            walletBalance2 != null ? (
+                                              numberFormatter(walletBalance2)
+                                            ) : (
+                                              <Skeleton
+                                                width="3rem"
+                                                height="1rem"
+                                                startColor="#1E212F"
+                                                endColor="#03060B"
+                                                borderRadius="6px"
+                                                ml={2}
+                                              />
+                                            )
+                                          ) : userDeposit?.find(
+                                              (item: any) =>
+                                                item.rToken ==
+                                                collateralBalance.substring(
+                                                  spaceIndex + 1
+                                                )
+                                            )?.rTokenFreeParsed != null ? (
+                                            numberFormatter(
+                                              userDeposit?.find(
                                                 (item: any) =>
                                                   item.rToken ==
                                                   collateralBalance.substring(
                                                     spaceIndex + 1
                                                   )
-                                              )?.rTokenFreeParsed}
+                                              )?.rTokenFreeParsed
+                                            )
+                                          ) : (
+                                            <Skeleton
+                                              width="3rem"
+                                              height="1rem"
+                                              startColor="#1E212F"
+                                              endColor="#03060B"
+                                              borderRadius="6px"
+                                              ml={2}
+                                            />
+                                          )}
                                         </Box>
                                       </Box>
                                     </Box>
@@ -4791,8 +4832,8 @@ const YourBorrowModal = ({
                           label="Hashstack self liquidates your collateral
                             & debt positions to repay the borrow.
                             The balance will be updated into rTokens."
-                          bg="#101216"
-                          fontSize={"11px"}
+                          bg="#010409"
+                          fontSize={"13px"}
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
@@ -4832,8 +4873,8 @@ const YourBorrowModal = ({
                           placement="bottom-start"
                           boxShadow="dark-lg"
                           label="The amount of tokens used as security for borrowed funds."
-                          bg="#101216"
-                          fontSize={"11px"}
+                          bg="#010409"
+                          fontSize={"13px"}
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
@@ -4911,7 +4952,7 @@ const YourBorrowModal = ({
                           _disabled={{ cursor: "pointer" }}
                         >
                           <NumberInputField
-                            placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
+                            placeholder={`0.01536 ${currentSelectedCoin}`}
                             border="0px"
                             _placeholder={{
                               color: "#393D4F",
@@ -4928,7 +4969,22 @@ const YourBorrowModal = ({
                         </NumberInput>
                         <Button
                           variant="ghost"
-                          color="#0969DA"
+                          color={`${
+                            inputCollateralAmount >
+                            (currentTokenSelected == "Native Token"
+                              ? walletBalance2
+                              : userDeposit?.find(
+                                  (item: any) =>
+                                    item.rToken ==
+                                    collateralBalance.substring(spaceIndex + 1)
+                                )?.rTokenFreeParsed)
+                              ? "#CF222E"
+                              : inputCollateralAmount < 0
+                              ? "#CF222E"
+                              : inputCollateralAmount == 0
+                              ? "#0969DA"
+                              : "#1A7F37"
+                          }`}
                           _hover={{ bg: "#101216" }}
                           onClick={() => {
                             if (currentTokenSelected === "rToken") {
@@ -5250,8 +5306,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="The quantity of tokens you want to borrow from the protocol."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -5294,8 +5350,8 @@ const YourBorrowModal = ({
                              r tokens.
                             These tokens will accrue supply apr
                             and remain locked till the debt is repaid."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -5333,8 +5389,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Cost incurred during transactions."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -5372,8 +5428,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="The annual interest rate charged on borrowed funds from the protocol."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -5428,8 +5484,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Estimation of resources & costs for blockchain transactions."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -5467,8 +5523,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -5523,8 +5579,8 @@ const YourBorrowModal = ({
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
-                            bg="#101216"
-                            fontSize={"11px"}
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}

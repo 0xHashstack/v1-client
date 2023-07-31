@@ -343,6 +343,13 @@ const TradeModal = ({
   };
   const handleBorrowChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
+    if (inputCollateralAmountUSD > 0) {
+      var percentage =
+        (newValue * 100) /
+        ((4.9999 * inputCollateralAmountUSD) /
+          oraclePrices.find((curr: any) => curr.name === currentBorrowCoin)
+            ?.price);
+    }
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -587,7 +594,7 @@ const TradeModal = ({
 
   const handleBorrowAndSpend = async () => {
     try {
-      if (collateralMarket) {
+      if (currentCollateralCoin[0] != "r") {
         const borrowAndSpend = await writeAsyncBorrowAndSpend();
         setDepositTransHash(borrowAndSpend?.transaction_hash);
         if (borrowAndSpend?.transaction_hash) {
@@ -640,7 +647,7 @@ const TradeModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-      } else if (rToken) {
+      } else if (currentCollateralCoin[0] == "r") {
         const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
         setDepositTransHash(borrowAndSpendR?.transaction_hash);
         if (borrowAndSpendR?.transaction_hash) {
@@ -705,7 +712,7 @@ const TradeModal = ({
       }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1094,8 +1101,8 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Tokens held as security for borrowed funds."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -1103,7 +1110,7 @@ const TradeModal = ({
                         borderColor="#2B2F35"
                         arrowShadowColor="#2B2F35"
                         maxW="252px"
-                        mt="12px"
+                        // mt="12px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -1372,14 +1379,15 @@ const TradeModal = ({
                                     Wallet Balance:{" "}
                                     {walletBalances[coin]?.dataBalanceOf
                                       ?.balance
-                                      ? numberFormatter(parseAmount(
+                                      ? numberFormatter(
+                                          parseAmount(
                                             uint256.uint256ToBN(
                                               walletBalances[coin]
                                                 ?.dataBalanceOf?.balance
                                             ),
                                             tokenDecimalsMap[coin]
-                                          ))
-                                        
+                                          )
+                                        )
                                       : "-"}
                                   </Box>
                                 </Box>
@@ -1400,8 +1408,8 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="The amount of tokens used as security for borrowed funds."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -1449,7 +1457,7 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                          placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
+                          placeholder={`0.01536 ${currentCollateralCoin}`}
                           color={`${
                             inputCollateralAmount > walletBalance
                               ? "#CF222E"
@@ -1477,7 +1485,17 @@ const TradeModal = ({
                       </NumberInput>
                       <Button
                         variant="ghost"
-                        color="#0969DA"
+                        color={`${
+                          inputCollateralAmount > walletBalance
+                            ? "#CF222E"
+                            : isNaN(inputCollateralAmount)
+                            ? "#CF222E"
+                            : inputCollateralAmount < 0
+                            ? "#CF222E"
+                            : inputCollateralAmount == 0
+                            ? "#0969DA"
+                            : "#1A7F37"
+                        }`}
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
                           setinputCollateralAmount(walletBalance);
@@ -1683,8 +1701,8 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="The token borrowed from the protocol."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -1850,11 +1868,12 @@ const TradeModal = ({
                                     display="flex"
                                   >
                                     Available reserves:{" "}
-                                    {(protocolStats?.[index]?.availableReserves &&
-                                  numberFormatter(
-                                    protocolStats?.[index]?.availableReserves *
-                                      0.895
-                                  )) || (
+                                    {(protocolStats?.[index]
+                                      ?.availableReserves &&
+                                      numberFormatter(
+                                        protocolStats?.[index]
+                                          ?.availableReserves * 0.895
+                                      )) || (
                                       <Skeleton
                                         width="3rem"
                                         height="1rem"
@@ -1883,8 +1902,8 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="The quantity of tokens you want to borrow from the protocol."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -1934,7 +1953,7 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                          placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
+                          placeholder={`0.01536 ${currentBorrowCoin}`}
                           color={`${
                             inputCollateralAmountUSD &&
                             inputBorrowAmountUSD >
@@ -1965,10 +1984,23 @@ const TradeModal = ({
                       </NumberInput>
                       <Button
                         variant="ghost"
-                        color="#0969DA"
+                        color={`${
+                          inputCollateralAmountUSD &&
+                          inputBorrowAmountUSD >
+                            4.9999 * inputCollateralAmountUSD
+                            ? "#CF222E"
+                            : isNaN(inputBorrowAmount)
+                            ? "#CF222E"
+                            : inputBorrowAmount < 0 ||
+                              inputBorrowAmount > currentAvailableReserves
+                            ? "#CF222E"
+                            : inputBorrowAmount == 0
+                            ? "#0969DA"
+                            : "#1A7F37"
+                        }`}
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
-                          if (inputCollateralAmountUSD) {
+                          if (inputCollateralAmountUSD > 0) {
                             if (
                               (4.9999 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
@@ -1994,17 +2026,7 @@ const TradeModal = ({
                                       curr.name === currentBorrowCoin
                                   )?.price
                               );
-                              setsliderValue2(
-                                Math.round(
-                                  ((4.9999 * inputCollateralAmountUSD) /
-                                    oraclePrices.find(
-                                      (curr: any) =>
-                                        curr.name === currentBorrowCoin
-                                    )?.price /
-                                    currentAvailableReserves) *
-                                    100
-                                )
-                              );
+                              setsliderValue2(100);
                             }
                           } else {
                             setinputBorrowAmount(currentAvailableReserves);
@@ -2062,7 +2084,7 @@ const TradeModal = ({
                           justifyContent="flex-end"
                         >
                           Available Reserves:{" "}
-                          {numberFormatter(currentAvailableReserves * 0.895)}
+                          {numberFormatter(currentAvailableReserves)}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentBorrowCoin}`}
                           </Text>
@@ -2081,7 +2103,7 @@ const TradeModal = ({
                       >
                         Available reserves:{" "}
                         {currentAvailableReserves ? (
-                          numberFormatter(currentAvailableReserves * 0.895)
+                          numberFormatter(currentAvailableReserves)
                         ) : (
                           <Skeleton
                             width="4rem"
@@ -2105,10 +2127,37 @@ const TradeModal = ({
                         onChange={(val) => {
                           setsliderValue2(val);
                           if (val == 100) {
-                            setinputBorrowAmount(currentAvailableReserves);
-                            setLoanAmount(currentAvailableReserves);
+                            if (inputCollateralAmountUSD > 0) {
+                              setinputBorrowAmount(
+                                (4.9999 * inputCollateralAmountUSD) /
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price
+                              );
+                              setLoanAmount(
+                                (4.9999 * inputCollateralAmountUSD) /
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price
+                              );
+                            } else {
+                              setinputBorrowAmount(currentAvailableReserves);
+                              setLoanAmount(currentAvailableReserves);
+                            }
                           } else {
-                            var ans = (val / 100) * currentAvailableReserves;
+                            if (inputCollateralAmountUSD > 0) {
+                              var ans =
+                                (val / 100) *
+                                ((4.9999 * inputCollateralAmountUSD) /
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price);
+                            } else {
+                              var ans = (val / 100) * currentAvailableReserves;
+                            }
                             ans = Math.round(ans * 100) / 100;
                             dispatch(setInputTradeModalBorrowAmount(ans));
                             setinputBorrowAmount(ans);
@@ -2271,8 +2320,8 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Choosing a Dapp to utilize the borrow tokens on the protocol."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -2280,7 +2329,7 @@ const TradeModal = ({
                         borderColor="#2B2F35"
                         arrowShadowColor="#2B2F35"
                         maxW="242px"
-                        mt="5px"
+                        // mt="5px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -2411,8 +2460,9 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Choose a specific liquidity pool within the protocol."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        bg="#010409"
+                        color="#fff"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -2536,7 +2586,7 @@ const TradeModal = ({
                           boxShadow="dark-lg"
                         >
                           {coins?.map((coin: NativeToken, index: number) => {
-                            if(coin==currentBorrowCoin){
+                            if (coin == currentBorrowCoin) {
                               return null;
                             }
                             return (
@@ -2606,8 +2656,8 @@ const TradeModal = ({
                           placement="right"
                           boxShadow="dark-lg"
                           label="Estimated Liquidity Provider Tokens Received: Estimate of LP tokens received by providing liquidity to a pool."
-                          bg="#101216"
-                          fontSize={"11px"}
+                          bg="#010409"
+                          fontSize={"13px"}
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
@@ -2615,7 +2665,7 @@ const TradeModal = ({
                           borderColor="#2B2F35"
                           arrowShadowColor="#2B2F35"
                           maxW="232px"
-                          mt="50px"
+                          // mt="50px"
                         >
                           <Box p="1">
                             <InfoIcon />
@@ -2666,8 +2716,8 @@ const TradeModal = ({
                           placement="right"
                           boxShadow="dark-lg"
                           label="The fee for reallocating liquidity across assets in a protocol."
-                          bg="#101216"
-                          fontSize={"11px"}
+                          bg="#010409"
+                          fontSize={"13px"}
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
@@ -2814,8 +2864,8 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Cost incurred during transactions."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -2844,8 +2894,8 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Estimation of resources & costs for blockchain transactions."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -2873,8 +2923,8 @@ const TradeModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="The annual interest rate charged on borrowed funds from the protocol."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -2882,7 +2932,7 @@ const TradeModal = ({
                         borderColor="#2B2F35"
                         arrowShadowColor="#2B2F35"
                         maxW="274px"
-                        mb="10px"
+                        // mb="10px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -2935,8 +2985,8 @@ const TradeModal = ({
                           placement="right"
                           boxShadow="dark-lg"
                           label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
-                          bg="#101216"
-                          fontSize={"11px"}
+                          bg="#010409"
+                          fontSize={"13px"}
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
@@ -3045,8 +3095,8 @@ const TradeModal = ({
                           placement="right"
                           boxShadow="dark-lg"
                           label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
-                          bg="#101216"
-                          fontSize={"11px"}
+                          bg="#010409"
+                          fontSize={"13px"}
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
