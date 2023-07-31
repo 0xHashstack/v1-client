@@ -343,6 +343,13 @@ const TradeModal = ({
   };
   const handleBorrowChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
+    if(inputCollateralAmountUSD>0){
+      var percentage = (newValue * 100) / ( (4.9999 * inputCollateralAmountUSD) /
+      oraclePrices.find(
+        (curr: any) =>
+          curr.name === currentBorrowCoin
+      )?.price);
+    }
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -1970,7 +1977,7 @@ const TradeModal = ({
                         color="#0969DA"
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
-                          if (inputCollateralAmountUSD) {
+                          if (inputCollateralAmountUSD>0) {
                             if (
                               (4.9999 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
@@ -1982,6 +1989,7 @@ const TradeModal = ({
                               setLoanAmount(currentAvailableReserves);
                               setsliderValue2(100);
                             } else {
+                              
                               setinputBorrowAmount(
                                 (4.9999 * inputCollateralAmountUSD) /
                                   oraclePrices.find(
@@ -1996,16 +2004,7 @@ const TradeModal = ({
                                       curr.name === currentBorrowCoin
                                   )?.price
                               );
-                              setsliderValue2(
-                                Math.round(
-                                  ((4.9999 * inputCollateralAmountUSD) /
-                                    oraclePrices.find(
-                                      (curr: any) =>
-                                        curr.name === currentBorrowCoin
-                                    )?.price /
-                                    currentAvailableReserves) *
-                                    100
-                                )
+                              setsliderValue2(100
                               );
                             }
                           } else {
@@ -2107,10 +2106,33 @@ const TradeModal = ({
                         onChange={(val) => {
                           setsliderValue2(val);
                           if (val == 100) {
-                            setinputBorrowAmount(currentAvailableReserves);
-                            setLoanAmount(currentAvailableReserves);
+                            if(inputCollateralAmountUSD>0){
+                              setinputBorrowAmount( (4.9999 * inputCollateralAmountUSD) /
+                              oraclePrices.find(
+                                (curr: any) =>
+                                  curr.name === currentBorrowCoin
+                              )?.price);
+                              setLoanAmount( (4.9999 * inputCollateralAmountUSD) /
+                              oraclePrices.find(
+                                (curr: any) =>
+                                  curr.name === currentBorrowCoin
+                              )?.price);
+                            }else{
+                              setinputBorrowAmount(currentAvailableReserves);
+                              setLoanAmount(currentAvailableReserves);
+
+                            }
                           } else {
-                            var ans = (val / 100) * currentAvailableReserves;
+                            if(inputCollateralAmountUSD>0){
+                              var ans = (val / 100) * ( (4.9999 * inputCollateralAmountUSD) /
+                              oraclePrices.find(
+                                (curr: any) =>
+                                  curr.name === currentBorrowCoin
+                              )?.price);
+                            }else{
+
+                              var ans = (val / 100) * currentAvailableReserves;
+                            }
                             ans = Math.round(ans * 100) / 100;
                             dispatch(setInputTradeModalBorrowAmount(ans));
                             setinputBorrowAmount(ans);

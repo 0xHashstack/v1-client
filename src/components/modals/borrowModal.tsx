@@ -713,7 +713,11 @@ const BorrowModal = ({
     if (newValue > 9_000_000_000) return;
     console.log(inputCollateralAmountUSD,"amount")
     if(inputCollateralAmountUSD>0){
-      var percentage = (newValue * 100) / (inputCollateralAmountUSD*4.9999);
+      var percentage = (newValue * 100) / ( (4.9999 * inputCollateralAmountUSD) /
+      oraclePrices.find(
+        (curr: any) =>
+          curr.name === currentBorrowCoin
+      )?.price);
     }else{
       var percentage = (newValue * 100) / currentAvailableReserves;
     }
@@ -1833,14 +1837,26 @@ const BorrowModal = ({
                     onChange={(val) => {
                       setsliderValue2(val);
                       if(inputCollateralAmountUSD>0){
-                        var ans = (val / 100) * (inputCollateralAmountUSD*4.9999);
+                        var ans = (val / 100) * ( (4.9999 * inputCollateralAmountUSD) /
+                        oraclePrices.find(
+                          (curr: any) =>
+                            curr.name === currentBorrowCoin
+                        )?.price);
                       }else{
                         var ans = (val / 100) * currentAvailableReserves;
                       }
                       if (val == 100) {
                         if(inputCollateralAmountUSD>0){
-                          setAmount(inputCollateralAmountUSD*4.9999);
-                          setinputBorrowAmount(inputCollateralAmountUSD*4.9999)
+                          setAmount( (4.9999 * inputCollateralAmountUSD) /
+                          oraclePrices.find(
+                            (curr: any) =>
+                              curr.name === currentBorrowCoin
+                          )?.price);
+                          setinputBorrowAmount( (4.9999 * inputCollateralAmountUSD) /
+                          oraclePrices.find(
+                            (curr: any) =>
+                              curr.name === currentBorrowCoin
+                          )?.price)
                         }else{
                           setAmount(currentAvailableReserves);
                           setinputBorrowAmount(currentAvailableReserves);
