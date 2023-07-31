@@ -528,7 +528,7 @@ const YourSupplyModal = ({
       console.log(uqID, "your supply catch", data);
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1070,7 +1070,15 @@ const YourSupplyModal = ({
                           </NumberInput>
                           <Button
                             variant="ghost"
-                            color="#0969DA"
+                            color={`${
+                              inputSupplyAmount > walletBalance
+                                ? "#CF222E"
+                                : inputSupplyAmount < 0
+                                ? "#CF222E"
+                                : inputSupplyAmount == 0
+                                ? "#0969DA"
+                                : "#1A7F37"
+                            }`}
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
                               setinputSupplyAmount(walletBalance);
@@ -1789,7 +1797,15 @@ const YourSupplyModal = ({
                           </NumberInput>
                           <Button
                             variant="ghost"
-                            color="#0969DA"
+                            color={`${
+                              inputWithdrawlAmount > withdrawWalletBalance
+                                ? "#CF222E"
+                                : inputWithdrawlAmount < 0
+                                ? "#CF222E"
+                                : inputWithdrawlAmount == 0
+                                ? "#0969DA"
+                                : "#1A7F37"
+                            }`}
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
                               setinputWithdrawlAmount(withdrawWalletBalance);

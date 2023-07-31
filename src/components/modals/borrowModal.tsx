@@ -593,7 +593,7 @@ const BorrowModal = ({
       });
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -711,10 +711,10 @@ const BorrowModal = ({
 
   const handleBorrowChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
-    console.log(inputCollateralAmountUSD,"amount")
-    if(inputCollateralAmountUSD>0){
-      var percentage = (newValue * 100) / (inputCollateralAmountUSD*4.9999);
-    }else{
+    console.log(inputCollateralAmountUSD, "amount");
+    if (inputCollateralAmountUSD > 0) {
+      var percentage = (newValue * 100) / (inputCollateralAmountUSD * 4.9999);
+    } else {
       var percentage = (newValue * 100) / currentAvailableReserves;
     }
     percentage = Math.max(0, percentage);
@@ -1220,7 +1220,15 @@ const BorrowModal = ({
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color="#0969DA"
+                    color={`${
+                      rTokenAmount > walletBalance
+                        ? "#CF222E"
+                        : rTokenAmount < 0
+                        ? "#CF222E"
+                        : rTokenAmount == 0
+                        ? "#0969DA"
+                        : "#1A7F37"
+                    }`}
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
                       // setRTokenAmount(walletBalance);
@@ -1285,7 +1293,7 @@ const BorrowModal = ({
                     fontFamily="Inter"
                   >
                     {currentCollateralCoin && currentCollateralCoin[0] == "r"
-                      ? "rToken Balance: " +  getBalance(currentCollateralCoin)
+                      ? "rToken Balance: " + getBalance(currentCollateralCoin)
                       : "Wallet Balance: " +
                         (walletBalance.toFixed(5).replace(/\.?0+$/, "").length >
                         5
@@ -1694,10 +1702,22 @@ const BorrowModal = ({
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color="#0969DA"
+                    color={`${
+                      inputCollateralAmountUSD &&
+                      inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
+                        ? "#CF222E"
+                        : isNaN(amount)
+                        ? "#CF222E"
+                        : inputBorrowAmount < 0 ||
+                          inputBorrowAmount > currentAvailableReserves
+                        ? "#CF222E"
+                        : inputBorrowAmountUSD == 0
+                        ? "#0969DA"
+                        : "#1A7F37"
+                    }`}
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
-                      if (inputCollateralAmountUSD>0) {
+                      if (inputCollateralAmountUSD > 0) {
                         if (
                           (4.9999 * inputCollateralAmountUSD) /
                             oraclePrices.find(
@@ -1721,8 +1741,7 @@ const BorrowModal = ({
                                 (curr: any) => curr.name === currentBorrowCoin
                               )?.price
                           );
-                          setsliderValue2(
-                          100)
+                          setsliderValue2(100);
                         }
                       } else {
                         setAmount(currentAvailableReserves);
@@ -1780,7 +1799,7 @@ const BorrowModal = ({
                     >
                       Available reserves:{" "}
                       {availableReserves ? (
-                        numberFormatter(availableReserves * 0.895)
+                        numberFormatter(currentAvailableReserves * 0.895)
                       ) : (
                         <Skeleton
                           width="4rem"
@@ -1809,7 +1828,7 @@ const BorrowModal = ({
                   >
                     Available reserves:{" "}
                     {availableReserves ? (
-                      numberFormatter(availableReserves * 0.895)
+                      numberFormatter(currentAvailableReserves * 0.895)
                     ) : (
                       <Skeleton
                         width="4rem"
@@ -1832,16 +1851,19 @@ const BorrowModal = ({
                     value={sliderValue2}
                     onChange={(val) => {
                       setsliderValue2(val);
-                      if(inputCollateralAmountUSD>0){
-                        var ans = (val / 100) * (inputCollateralAmountUSD*4.9999);
-                      }else{
+                      if (inputCollateralAmountUSD > 0) {
+                        var ans =
+                          (val / 100) * (inputCollateralAmountUSD * 4.9999);
+                      } else {
                         var ans = (val / 100) * currentAvailableReserves;
                       }
                       if (val == 100) {
-                        if(inputCollateralAmountUSD>0){
-                          setAmount(inputCollateralAmountUSD*4.9999);
-                          setinputBorrowAmount(inputCollateralAmountUSD*4.9999)
-                        }else{
+                        if (inputCollateralAmountUSD > 0) {
+                          setAmount(inputCollateralAmountUSD * 4.9999);
+                          setinputBorrowAmount(
+                            inputCollateralAmountUSD * 4.9999
+                          );
+                        } else {
                           setAmount(currentAvailableReserves);
                           setinputBorrowAmount(currentAvailableReserves);
                         }

@@ -587,7 +587,7 @@ const TradeModal = ({
 
   const handleBorrowAndSpend = async () => {
     try {
-      if (currentCollateralCoin[0]!="r") {
+      if (currentCollateralCoin[0] != "r") {
         const borrowAndSpend = await writeAsyncBorrowAndSpend();
         setDepositTransHash(borrowAndSpend?.transaction_hash);
         if (borrowAndSpend?.transaction_hash) {
@@ -640,7 +640,7 @@ const TradeModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-      } else if (currentCollateralCoin[0]=="r") {
+      } else if (currentCollateralCoin[0] == "r") {
         const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
         setDepositTransHash(borrowAndSpendR?.transaction_hash);
         if (borrowAndSpendR?.transaction_hash) {
@@ -705,7 +705,7 @@ const TradeModal = ({
       }
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1478,7 +1478,17 @@ const TradeModal = ({
                       </NumberInput>
                       <Button
                         variant="ghost"
-                        color="#0969DA"
+                        color={`${
+                          inputCollateralAmount > walletBalance
+                            ? "#CF222E"
+                            : isNaN(inputCollateralAmount)
+                            ? "#CF222E"
+                            : inputCollateralAmount < 0
+                            ? "#CF222E"
+                            : inputCollateralAmount == 0
+                            ? "#0969DA"
+                            : "#1A7F37"
+                        }`}
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
                           setinputCollateralAmount(walletBalance);
@@ -1967,7 +1977,20 @@ const TradeModal = ({
                       </NumberInput>
                       <Button
                         variant="ghost"
-                        color="#0969DA"
+                        color={`${
+                          inputCollateralAmountUSD &&
+                          inputBorrowAmountUSD >
+                            4.9999 * inputCollateralAmountUSD
+                            ? "#CF222E"
+                            : isNaN(inputBorrowAmount)
+                            ? "#CF222E"
+                            : inputBorrowAmount < 0 ||
+                              inputBorrowAmount > currentAvailableReserves
+                            ? "#CF222E"
+                            : inputBorrowAmount == 0
+                            ? "#0969DA"
+                            : "#1A7F37"
+                        }`}
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
                           if (inputCollateralAmountUSD) {
