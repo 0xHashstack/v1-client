@@ -4,8 +4,9 @@ import {
   getProvider,
   getRTokenFromAddress,
 } from "../stark-constants";
-import routerAbi from "@/Blockchain/abis/router_abi.json";
+// import routerAbi from "@/Blockchain/abis/router_abi.json";
 // import routerAbi from "@/Blockchain/abi_new/router_abi.json";
+import routerAbi from "@/Blockchain/abis_upgrade/router_abi.json";
 import { BNtoNum, parseAmount } from "../utils/utils";
 import { IMarketInfo, NativeToken, RToken } from "../interfaces/interfaces";
 import { OraclePrice } from "./getOraclePrices";

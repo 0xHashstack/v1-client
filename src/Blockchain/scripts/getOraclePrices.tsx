@@ -1,7 +1,7 @@
 import { Contract, Provider, number, shortString } from "starknet";
 import { contractsEnv, getProvider } from "../stark-constants";
 // import EmpiricAbi from "../abis/mockups/empiric_proxy.cairo/empiric_proxy.json";
-import EmpiricAbi from "../abi_new/mockups/empiric_proxy.cairo/empiric_proxy.json";
+import EmpiricAbi from "../abis_upgrade/empiric_proxy.json";
 
 export interface OraclePrice {
   name: string;

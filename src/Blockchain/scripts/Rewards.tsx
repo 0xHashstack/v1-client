@@ -1,9 +1,12 @@
 import { Contract, number, uint256 } from "starknet";
 // import stakingAbi from "../abis/staking_abi.json"
 // import supplyABI from "../abis/supply_abi.json"
-import stakingAbi from "../abi_new/staking_abi.json";
-import supplyABI from "../abi_new/supply_abi.json";
-import governorAbi from "../abi_new/governor_abi.json";
+// import stakingAbi from "../abi_new/staking_abi.json";
+// import supplyABI from "../abi_new/supply_abi.json";
+// import governorAbi from "../abi_new/governor_abi.json";
+import stakingAbi from "../abis_upgrade/staking_abi.json";
+import supplyABI from "../abis_upgrade/supply_abi.json";
+import governorAbi from "../abis_upgrade/governor_abi.json";
 import {
   diamondAddress,
   getProvider,

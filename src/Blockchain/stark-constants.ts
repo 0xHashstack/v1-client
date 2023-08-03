@@ -1,8 +1,9 @@
 // import DeployDetailsProd from "../../contract_addresses.json";
-import DeployDetailsProd from "../../contract_addresses_new.json";
-// import DeployDetailsProd from "../../contract_addresses_2.json";
+// import DeployDetailsProd from "../../contract_addresses_new.json";
+import DeployDetailsProd from "../../contract_addresses_2.json";
 // import ERC20Abi from "./abis/erc20_abi.json";
-import ERC20Abi from "./abi_new/erc20_abi.json";
+// import ERC20Abi from "./abi_new/erc20_abi.json";
+import ERC20Abi from "./abis_upgrade/erc20_abi.json";
 import { Provider, number } from "starknet";
 import { UseWaitForTransactionResult } from "@starknet-react/core";
 
