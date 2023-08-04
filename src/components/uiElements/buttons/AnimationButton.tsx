@@ -12,6 +12,7 @@ import {
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ErrorButton from "./ErrorButton";
+import CopyToClipboard from "react-copy-to-clipboard";
 interface Props extends ButtonProps {
   children: ReactNode;
   labelSuccessArray: Array<string | ReactNode>;
@@ -33,7 +34,8 @@ const AnimatedButton: React.FC<Props> = ({
   if (className) classes.push(className);
   const transactionFailed = [
     <ErrorButton errorText="Transaction failed" key={"error1"} />,
-    <ErrorButton errorText="Copy error!" key={"error2"} />,
+      <ErrorButton errorText="Copy error!" key={"error2"} />,
+
   ];
   //Below array is previously static data which is now used as labelArray as props
 
@@ -50,16 +52,17 @@ const AnimatedButton: React.FC<Props> = ({
   const [progressBarWidth, setProgressBarWidth] = useState("0%");
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
   const transactionStatus = useSelector(selectTransactionStatus);
-  const modalClosed=useSelector(selectTransactionStartedAndModalClosed)
+  const modalClosed = useSelector(selectTransactionStartedAndModalClosed);
+  const [transFailed, setTransFailed] = useState(0);
   // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
   // console.log(transactionStatus,"transaction from button");
-  useEffect(()=>{
-    if(modalClosed==true){
-      setCurrentStringIndex(-1);
-      setProgressBarWidth("0%");
-    }
-  },[modalClosed])
-  console.log(modalClosed,"close");
+  // useEffect(() => {
+  //   if (modalClosed == true) {
+  //     setCurrentStringIndex(-1);
+  //     setProgressBarWidth("0%");
+  //   }
+  // }, [modalClosed]);
+  // console.log(modalClosed, "close");
   useEffect(() => {
     // console.log(transactionStatus);
     // if(modalClosed==true){
@@ -80,7 +83,11 @@ const AnimatedButton: React.FC<Props> = ({
       }, 500);
 
       return () => clearInterval(interval);
-    } else if (isAnimationStarted && transactionStatus == "failed" && !modalClosed) {
+    } else if (
+      isAnimationStarted &&
+      transactionStatus == "failed" &&
+      !modalClosed
+    ) {
       setProgressBarWidth(`${100}%`);
 
       // setProgressBarWidth(
@@ -94,7 +101,7 @@ const AnimatedButton: React.FC<Props> = ({
 
       // return () => clearInterval(interval);
     }
-  }, [currentStringIndex,modalClosed]);
+  }, [currentStringIndex, modalClosed]);
 
   useEffect(() => {
     if (isAnimationStarted && transactionStatus == "success" && !modalClosed) {
@@ -117,7 +124,7 @@ const AnimatedButton: React.FC<Props> = ({
       // }, 1500);
       // return () => clearInterval(interval);
     }
-  }, [currentStringIndex]);
+  }, [currentStringIndex, modalClosed]);
 
   const dispatch = useDispatch();
   // const handleClick = () => {
@@ -128,14 +135,17 @@ const AnimatedButton: React.FC<Props> = ({
   //   }
   // };
   useEffect(() => {
-    if (transactionStatus == "success" || transactionStatus == "failed" && !modalClosed) {
+    if (
+      transactionStatus == "success" ||
+      (transactionStatus == "failed" && !modalClosed)
+    ) {
       setIsAnimationStarted(true);
     }
   }, [transactionStatus]);
 
   useEffect(() => {
     let interval: any;
-    
+
     if (isAnimationStarted && transactionStatus == "success" && !modalClosed) {
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
@@ -152,27 +162,47 @@ const AnimatedButton: React.FC<Props> = ({
           return nextIndex % labelSuccessArray.length;
         });
       }, 2000);
-    } else if (isAnimationStarted && transactionStatus == "failed" && !modalClosed) {
+    } else if (
+      isAnimationStarted &&
+      transactionStatus == "failed" &&
+      !modalClosed
+    ) {
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
+          if (prevIndex == 1) return prevIndex;
           const nextIndex = prevIndex + 1;
           // if (nextIndex === labelErrorArray?.length - 1) {
           //   if (!currentTransactionStatus) return prevIndex;
           // }
-          if (nextIndex === labelErrorArray?.length) {
+          // if (nextIndex === labelErrorArray?.length) {
+          if (transFailed === 0) {
+            // console.log("transaction animation before");
+            setTransFailed((before) => before + 1);
+            return 0;
+          } else {
+            // console.log("transaction animation after");
             setIsAnimationStarted(false);
             dispatch(setToastTransactionStarted(false));
-
-            return prevIndex; // Reset currentStringIndex to -1 after the animation completes
+            return 1;
           }
-          // return nextIndex % labelArray.length;
-          return nextIndex % labelErrorArray?.length;
+          // if (nextIndex % labelErrorArray?.length === 0) {
+          //   return nextIndex % labelErrorArray?.length;
+          // }
+
+          // // return prevIndex; // Reset currentStringIndex to -1 after the animation completes
+          // // }
+          // // return nextIndex % labelArray.length;
+          // return nextIndex % labelErrorArray?.length;
         });
       }, 2000);
     }
 
     return () => clearInterval(interval);
   }, [isAnimationStarted, currentTransactionStatus]);
+  useEffect(() => {
+    // console.log("Transaction animation failed", transFailed);
+    if (transFailed > 2) setCurrentStringIndex(1);
+  }, [transFailed]);
   const { bgColor } = rest;
   return (
     <Button
@@ -189,12 +219,12 @@ const AnimatedButton: React.FC<Props> = ({
       _active={{ border: isAnimationStarted ? "" : "3px solid grey" }}
       {...rest}
       border={
-        isAnimationStarted &&!modalClosed && transactionStatus == "failed"
+        isAnimationStarted && !modalClosed && transactionStatus == "failed"
           ? "1px solid #9A131D"
           : "1px solid #8B949E"
       }
-      bgColor={isAnimationStarted &&!modalClosed ? "#eeeff2" : bgColor}
-      color={isAnimationStarted &&!modalClosed ? "#010409" : "#6A737D"}
+      bgColor={isAnimationStarted && !modalClosed ? "#eeeff2" : bgColor}
+      color={isAnimationStarted && !modalClosed ? "#010409" : "#6A737D"}
       _hover={{ color: "#010409", bgColor: "#eeeff2" }}
     >
       <Box
@@ -202,8 +232,8 @@ const AnimatedButton: React.FC<Props> = ({
         width="100%"
         position="relative"
         overflow="hidden"
-        // borderRadius="8px"
-        // bgColor="blue"
+      // borderRadius="8px"
+      // bgColor="blue"
       >
         <AnimatePresence initial={false}>
           {currentStringIndex === -1 ? (
@@ -250,19 +280,19 @@ const AnimatedButton: React.FC<Props> = ({
             >
               {currentStringIndex === -1
                 ? children
-                : transactionStatus === "success" 
-                ? currentTransactionStatus === ""
-                  ? labelSuccessArray[currentStringIndex]
-                  : currentTransactionStatus === "success"
-                  ? labelSuccessArray[currentStringIndex]
-                  : currentStringIndex === labelSuccessArray.length - 1
-                  ? transactionFailed[
-                      labelSuccessArray.length - currentStringIndex === 1
-                        ? 0
-                        : 1
-                    ]
-                  : labelSuccessArray[currentStringIndex]
-                : labelErrorArray[currentStringIndex]}
+                : transactionStatus === "success"
+                  ? currentTransactionStatus === ""
+                    ? labelSuccessArray[currentStringIndex]
+                    : currentTransactionStatus === "success"
+                      ? labelSuccessArray[currentStringIndex]
+                      : currentStringIndex === labelSuccessArray.length - 1
+                        ? transactionFailed[
+                        labelSuccessArray.length - currentStringIndex === 1
+                          ? 0
+                          : 1
+                        ]
+                        : labelSuccessArray[currentStringIndex]
+                  : labelErrorArray[currentStringIndex]}
               {/* {labelArray[currentStringIndex]} */}
             </motion.div>
           )}
@@ -272,9 +302,9 @@ const AnimatedButton: React.FC<Props> = ({
       <Box
         bgColor={
           transactionStatus === "success" ||
-          (transactionStatus === "" &&
-            (currentTransactionStatus === "" ||
-              currentTransactionStatus === "success"))
+            (transactionStatus === "" &&
+              (currentTransactionStatus === "" ||
+                currentTransactionStatus === "success"))
             ? "#2DA44E"
             : "#CF222E"
         }
@@ -285,7 +315,7 @@ const AnimatedButton: React.FC<Props> = ({
         height="100%"
         zIndex={0}
         transition="width 0.5s ease-in-out"
-        // borderLeftRadius="8px"
+      // borderLeftRadius="8px"
       />
     </Button>
   );

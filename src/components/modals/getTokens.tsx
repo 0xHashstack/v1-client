@@ -107,6 +107,9 @@ const GetTokensModal = ({
 
   let activeTransactions = useSelector(selectActiveTransactions);
 
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
+
   const {
     token,
     setToken,
@@ -161,12 +164,14 @@ const GetTokensModal = ({
           // Check if activeTransactions is frozen or sealed
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
+        const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: getTokens?.transaction_hash.toString(),
           message: `Successfully minted TestToken : ${coin}`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: () => {},
+          uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         mixpanel.track("Get Tokens Status", {
@@ -213,7 +218,7 @@ const GetTokensModal = ({
           isOpen={isOpen}
           onClose={() => {
             onClose();
-            dispatch(setTransactionStartedAndModalClosed(true))
+            dispatch(setTransactionStartedAndModalClosed(true));
             // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "800px", height: "100px" }}
@@ -236,7 +241,7 @@ const GetTokensModal = ({
               fontStyle="normal"
               lineHeight="20px"
             >
-              Get Tokens
+              Get tokens faucet
             </ModalHeader>
             <ModalCloseButton
               // onClick={() => {
@@ -357,7 +362,7 @@ const GetTokensModal = ({
                 borderRadius="6px"
               >
                 <Link href="https://faucet.goerli.starknet.io/" target="_blank">
-                  <Text>Get Eth for free</Text>
+                  <Text>Get test ETH</Text>
                 </Link>
               </Box>
             </ModalBody>

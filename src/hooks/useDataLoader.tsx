@@ -27,6 +27,8 @@ import {
   selectNetAprCount,
   selectOraclePricesCount,
   selectProtocolStatsCount,
+  selectStakingSharesCount,
+  selectTransactionStatus,
   selectUserDepositsCount,
   selectUserInfoCount,
   selectUserLoansCount,
@@ -39,12 +41,14 @@ import {
   setAvgBorrowAPR,
   setAvgBorrowAprCount,
   setAvgSupplyAPR,
+  setAvgSupplyAprCount,
   setHealthFactorCount,
   setHourlyDataCount,
   setNetAprCount,
   setOraclePricesCount,
   setProtocolReservesCount,
   setProtocolStatsCount,
+  setStakingSharesCount,
   setUserDepositsCount,
   setUserInfoCount,
   setUserLoansCount,
@@ -78,6 +82,8 @@ import {
   setDailyETHData,
   setDailyUSDCData,
   setDailyUSDTData,
+  setStakingShares,
+  selectStakingShares,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -148,6 +154,9 @@ const useDataLoader = () => {
   const yourMetricsBorrowCount = useSelector(selectYourMetricsBorrowCount);
   const yourMetricsSupplyCount = useSelector(selectYourMetricsSupplyCount);
   const weeklyDataCount = useSelector(selectWeeklyDataCount);
+  // const stakingShares = useSelector(selectStakingShares);
+  const stakingSharesCount = useSelector(selectStakingSharesCount);
+  const transactionStatus = useSelector(selectTransactionStatus);
 
   const dispatch = useDispatch();
   const Data: any = [];
@@ -185,6 +194,9 @@ const useDataLoader = () => {
   //     console.log("error fetching aprByMarket data ", err);
   //   }
   // }, []);
+  // useEffect(() => {
+  //   console.log("your supply catch transactionStatus ", transactionStatus);
+  // }, [transactionStatus]);
 
   useEffect(() => {
     console.log("fetchHourlyData called ", oraclePrices);
@@ -252,15 +264,15 @@ const useDataLoader = () => {
               const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
                 // console.log(i,"inside loop")
-                const token = response?.[i].tokenName;
+                const token = response?.[i]?.tokenName;
                 const supplyAmount: number =
-                  (Number(response?.[i].supplyAmount) /
+                  (Number(response?.[i]?.supplyAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
                   )?.price;
                 const borrowAmount: number =
-                  (Number(response?.[i].borrowAmount) /
+                  (Number(response?.[i]?.borrowAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
@@ -278,22 +290,22 @@ const useDataLoader = () => {
                 tvlAmounts?.push(supplyAmount);
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);
-                supplyRates?.push(response?.[i].supplyRate / 100);
-                borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyCount);
-                borrowCounts?.push(response?.[i].borrowCount);
-                utilRates?.push(response?.[i].utilRate / 10000);
+                supplyRates?.push(response?.[i]?.supplyRate / 100);
+                borrowRates?.push(response?.[i]?.borrowRate / 100);
+                supplyCounts?.push(response?.[i]?.supplyAccounts);
+                borrowCounts?.push(response?.[i]?.borrowAccounts);
+                utilRates?.push(response?.[i]?.utilRate / 100);
                 rTokenExchangeRates?.push(
-                  1 / (response?.[i].rTokenExchangeRate / 10000)
+                  1 / (response?.[i]?.rTokenExchangeRate / 10000)
                 );
                 dTokenExchangeRates?.push(
-                  1 / (response?.[i].dTokenExchangeRate / 10000)
+                  1 / (response?.[i]?.dTokenExchangeRate / 10000)
                 );
-                totalTransactions?.push(response?.[i].totalTransactions);
-                totalAccounts?.push(response?.[i].totalAccounts);
-                aprs?.push(responseApr?.[i].APR);
-                apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(responseTotal?.[i].totalPlatformURM / 100);
+                totalTransactions?.push(response?.[i]?.totalTransactions);
+                totalAccounts?.push(response?.[i]?.totalAccounts);
+                aprs?.push(responseApr?.[i]?.APR);
+                apys?.push(responseApr?.[i]?.APY);
+                totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -413,15 +425,15 @@ const useDataLoader = () => {
               const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
                 // console.log(i,"inside loop")
-                const token = response?.[i].tokenName;
+                const token = response?.[i]?.tokenName;
                 const supplyAmount: number =
-                  (Number(response?.[i].supplyAmount) /
+                  (Number(response?.[i]?.supplyAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
                   )?.price;
                 const borrowAmount: number =
-                  (Number(response?.[i].borrowAmount) /
+                  (Number(response?.[i]?.borrowAmount) /
                     Math.pow(10, tokenDecimalsMap[token])) *
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
@@ -439,22 +451,22 @@ const useDataLoader = () => {
                 tvlAmounts?.push(supplyAmount);
                 // const dateObj = new Date(response?.data[i].Datetime)
                 dates?.push(response?.[i].Datetime);
-                supplyRates?.push(response?.[i].supplyRate / 100);
-                borrowRates?.push(response?.[i].borrowRate / 100);
-                supplyCounts?.push(response?.[i].supplyAccounts);
-                borrowCounts?.push(response?.[i].borrowAccounts);
-                utilRates?.push(response?.[i].utilRate / 10000);
+                supplyRates?.push(response?.[i]?.supplyRate / 100);
+                borrowRates?.push(response?.[i]?.borrowRate / 100);
+                supplyCounts?.push(response?.[i]?.supplyAccounts);
+                borrowCounts?.push(response?.[i]?.borrowAccounts);
+                utilRates?.push(response?.[i]?.utilRate / 100);
                 rTokenExchangeRates?.push(
-                  response?.[i].rTokenExchangeRate / 10000
+                  1 / (response?.[i]?.rTokenExchangeRate / 10000)
                 );
                 dTokenExchangeRates?.push(
-                  response?.[i].dTokenExchangeRate / 10000
+                  1 / (response?.[i]?.dTokenExchangeRate / 10000)
                 );
-                totalTransactions?.push(response?.[i].totalTransactions);
-                totalAccounts?.push(response?.[i].totalAccounts);
-                aprs?.push(responseApr?.[i].APR);
-                apys?.push(responseApr?.[i].APY);
-                totalUrm?.push(1 - responseTotal?.[i].totalPlatformURM / 10000);
+                totalTransactions?.push(response?.[i]?.totalTransactions);
+                totalAccounts?.push(response?.[i]?.totalAccounts);
+                aprs?.push(responseApr?.[i]?.APR);
+                apys?.push(responseApr?.[i]?.APY);
+                totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
               const data = {
@@ -602,6 +614,40 @@ const useDataLoader = () => {
 
   useEffect(() => {
     try {
+      const getStakingShares = async () => {
+        if (!address) return;
+        const promises = [
+          getUserStakingShares(address, "rBTC"),
+          getUserStakingShares(address, "rETH"),
+          getUserStakingShares(address, "rUSDT"),
+          getUserStakingShares(address, "rUSDC"),
+          getUserStakingShares(address, "rDAI"),
+        ];
+        Promise.allSettled([...promises]).then((val) => {
+          const data = {
+            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
+            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
+            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
+            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+          };
+          if (data?.rBTC == null) return;
+          console.log("shares ", address, val, data);
+          dispatch(setStakingShares(data));
+          const count = getTransactionCount();
+          dispatch(setStakingSharesCount(count));
+        });
+      };
+      if (stakingSharesCount < transactionRefresh) {
+        getStakingShares();
+      }
+    } catch (err) {
+      console.log("getStakingShares error ", err);
+    }
+  }, [address, transactionRefresh]);
+
+  useEffect(() => {
+    try {
       const fetchEffectiveApr = async () => {
         const promises = userLoans?.map((val: any) => {
           return effectivAPRLoan(val, protocolStats, dataOraclePrices);
@@ -619,7 +665,8 @@ const useDataLoader = () => {
       };
       if (
         dataOraclePrices &&
-        userLoans?.length > 0 &&
+        userLoans &&
+        protocolStats &&
         userLoansCount == transactionRefresh &&
         protocolStatsCount == transactionRefresh &&
         effectiveAprCount < transactionRefresh
@@ -649,7 +696,7 @@ const useDataLoader = () => {
         });
       };
       if (
-        userLoans?.length > 0 &&
+        userLoans &&
         userLoansCount == transactionRefresh &&
         healthFactorCount < transactionRefresh
       ) {
@@ -658,7 +705,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("fetchHealthFactor ", err);
     }
-  }, [userLoans, transactionRefresh]);
+  }, [userLoansCount, transactionRefresh]);
 
   // useEffect(() => {
   //   const fetchAprsAndHealth = async () => {
@@ -753,7 +800,11 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchYourSupply = () => {
-        if (userDepositsCount == transactionRefresh && oraclePrices) {
+        if (
+          userDepositsCount == transactionRefresh &&
+          dataDeposit &&
+          oraclePrices
+        ) {
           const data = getTotalSupply(dataDeposit, dataOraclePrices);
           if (data != null) {
             dispatch(setYourSupply(data));
@@ -764,7 +815,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log(err, "error in your supply count");
     }
-  }, [dataDeposit, dataOraclePrices]);
+  }, [userDepositsCount, dataOraclePrices]);
 
   useEffect(() => {
     try {
@@ -790,6 +841,9 @@ const useDataLoader = () => {
           transactionRefresh
         );
         if (
+          dataDeposit &&
+          protocolStats &&
+          userLoans &&
           userDepositsCount == transactionRefresh &&
           protocolStatsCount == transactionRefresh &&
           userLoansCount == transactionRefresh &&
@@ -846,10 +900,10 @@ const useDataLoader = () => {
       console.log(err, "error in user info");
     }
   }, [
-    dataDeposit,
-    protocolStats,
+    userDepositsCount,
+    protocolStatsCount,
     dataOraclePrices,
-    userLoans,
+    userLoansCount,
     transactionRefresh,
   ]);
   // useEffect(() => {
@@ -878,6 +932,9 @@ const useDataLoader = () => {
         // console.log(protocolStats, "protocolStats is here");
         // console.log(aprsAndHealth, "aprs and health is here");
         if (
+          dataDeposit &&
+          userLoans &&
+          protocolStats &&
           userDepositsCount == transactionRefresh &&
           protocolStatsCount == transactionRefresh &&
           userLoansCount == transactionRefresh &&
@@ -891,9 +948,9 @@ const useDataLoader = () => {
             dataOraclePrices,
             protocolStats
           );
-          console.log("netApr", dataNetApr);
           //@ts-ignore
           if (isNaN(dataNetApr)) {
+            // console.log("netApr", dataNetApr);
             dispatch(setNetAPR(0));
           } else {
             dispatch(setNetAPR(dataNetApr));
@@ -903,7 +960,7 @@ const useDataLoader = () => {
         }
       };
 
-      console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+      // console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
       if (netAprCount < transactionRefresh) {
         fetchNetApr();
       }
@@ -911,55 +968,158 @@ const useDataLoader = () => {
       console.log(err, "error in user info");
     }
   }, [
-    dataDeposit,
-    userLoans,
+    userDepositsCount,
+    userLoansCount,
     dataOraclePrices,
-    protocolStats,
+    protocolStatsCount,
     transactionRefresh,
   ]);
 
   useEffect(() => {
     try {
-      const fetchAvgBorrowAPRCount = async () => {
-        // console.log(getUserDeposits(address),"deposits in pagecard")
-
-        // const dataMarket=await getProtocolStats();
-        // const dataOraclePrices=await getOraclePrices();
-        // console.log(dataMarket,"data market page")
-        // console.log("user info called - transactionRefresh");
-        // console.log(dataDeposit, "dataDeposit is here");
-        // console.log(dataOraclePrices, "dataOraclePrices is here");
-        // console.log(userLoans, "userLoans is here");
-        // console.log(protocolStats, "protocolStats is here");
-        // console.log(aprsAndHealth, "aprs and health is here");
-        if (protocolStatsCount == transactionRefresh) {
-          const avgSupplyApr =
-            (protocolStats?.[0]?.supplyRate +
-              protocolStats?.[1]?.supplyRate +
-              protocolStats?.[2]?.supplyRate +
-              protocolStats?.[3]?.supplyRate +
-              protocolStats?.[4]?.supplyRate) /
-            5;
-          // const avgSupplyApr = await effectiveAprDeposit(
-          //   dataDeposit[0],
-          //   protocolStats
-          // );
-          console.log(avgSupplyApr, "data avg supply apr pagecard");
+      const fetchAvgSupplyAPRCount = async () => {
+        if (!dataDeposit || !protocolStats) return;
+        const aprA =
+          dataDeposit?.[0].rTokenAmountParsed !== 0 ||
+          dataDeposit?.[0].rTokenFreeParsed !== 0 ||
+          dataDeposit?.[0].rTokenLockedParsed !== 0 ||
+          dataDeposit?.[0].rTokenStakedParsed !== 0
+            ? protocolStats?.[0]?.supplyRate
+            : 0;
+        const aprB =
+          dataDeposit?.[1].rTokenAmountParsed !== 0 ||
+          dataDeposit?.[1].rTokenFreeParsed !== 0 ||
+          dataDeposit?.[1].rTokenLockedParsed !== 0 ||
+          dataDeposit?.[1].rTokenStakedParsed !== 0
+            ? protocolStats?.[1]?.supplyRate
+            : 0;
+        const aprC =
+          dataDeposit?.[2].rTokenAmountParsed !== 0 ||
+          dataDeposit?.[2].rTokenFreeParsed !== 0 ||
+          dataDeposit?.[2].rTokenLockedParsed !== 0 ||
+          dataDeposit?.[2].rTokenStakedParsed !== 0
+            ? protocolStats?.[2]?.supplyRate
+            : 0;
+        const aprD =
+          dataDeposit?.[3].rTokenAmountParsed !== 0 ||
+          dataDeposit?.[3].rTokenFreeParsed !== 0 ||
+          dataDeposit?.[3].rTokenLockedParsed !== 0 ||
+          dataDeposit?.[3].rTokenStakedParsed !== 0
+            ? protocolStats?.[3]?.supplyRate
+            : 0;
+        const aprE =
+          dataDeposit?.[4].rTokenAmountParsed !== 0 ||
+          dataDeposit?.[4].rTokenFreeParsed !== 0 ||
+          dataDeposit?.[4].rTokenLockedParsed !== 0 ||
+          dataDeposit?.[4].rTokenStakedParsed !== 0
+            ? protocolStats?.[4]?.supplyRate
+            : 0;
+        const avgSupplyApr =
+          (aprA + aprB + aprC + aprD + aprE) /
+          ((aprA ? 1 : 0) +
+          (aprB ? 1 : 0) +
+          (aprC ? 1 : 0) +
+          (aprD ? 1 : 0) +
+          (aprE ? 1 : 0)
+            ? (aprA ? 1 : 0) +
+              (aprB ? 1 : 0) +
+              (aprC ? 1 : 0) +
+              (aprD ? 1 : 0) +
+              (aprE ? 1 : 0)
+            : 1);
+        // const avgSupplyApr = await effectiveAprDeposit(
+        //   dataDeposit[0],
+        //   protocolStats
+        // );
+        // console.log(
+        //   avgSupplyApr,
+        //   "data avg supply apr useEffect",
+        //   (aprA ? 1 : 0) +
+        //     (aprB ? 1 : 0) +
+        //     (aprC ? 1 : 0) +
+        //     (aprD ? 1 : 0) +
+        //     (aprE ? 1 : 0)
+        // );
+        if (avgSupplyApr != null) {
           dispatch(setAvgSupplyAPR(avgSupplyApr));
-          const avgBorrowApr =
-            (protocolStats?.[0]?.borrowRate +
-              protocolStats?.[1]?.borrowRate +
-              protocolStats?.[2]?.borrowRate +
-              protocolStats?.[3]?.borrowRate +
-              protocolStats?.[4]?.borrowRate) /
-            5;
-          // const avgBorrowApr = await effectivAPRLoan(
-          //   userLoans[0],
-          //   protocolStats,
-          //   dataOraclePrices
-          // );
-          console.log(avgBorrowApr, "data avg borrow apr pagecard");
+          const count = getTransactionCount();
+          dispatch(setAvgSupplyAprCount(count));
+        }
+        // const avgBorrowApr =
+        //   (protocolStats?.[0]?.borrowRate +
+        //     protocolStats?.[1]?.borrowRate +
+        //     protocolStats?.[2]?.borrowRate +
+        //     protocolStats?.[3]?.borrowRate +
+        //     protocolStats?.[4]?.borrowRate) /
+        //   5;
+        // // const avgBorrowApr = await effectivAPRLoan(
+        // //   userLoans[0],
+        // //   protocolStats,
+        // //   dataOraclePrices
+        // // );
+        // console.log(avgBorrowApr, "data avg borrow apr pagecard");
 
+        // dispatch(setAvgBorrowAPR(avgBorrowApr));
+        // const count = getTransactionCount();
+        // dispatch(setAvgBorrowAprCount(count));
+      };
+
+      if (
+        avgSupplyAprCount < transactionRefresh &&
+        protocolStatsCount == transactionRefresh &&
+        userDepositsCount == transactionRefresh &&
+        dataDeposit &&
+        protocolStats
+      ) {
+        fetchAvgSupplyAPRCount();
+      }
+    } catch (err) {
+      console.log(err, "error in user info");
+    }
+  }, [protocolStatsCount, transactionRefresh, userDepositsCount]);
+  useEffect(() => {
+    try {
+      const fetchAvgBorrowAPRCount = async () => {
+        if (!userLoans || !protocolStats) return;
+        const loans = userLoans;
+        const loanCheck = [0, 0, 0, 0, 0];
+        loans.forEach((val: any, idx: number) => {
+          if (val?.underlyingMarket == "BTC") {
+            loanCheck[0] = 1;
+          } else if (val?.underlyingMarket == "ETH") {
+            loanCheck[1] = 1;
+          } else if (val?.underlyingMarket == "USDT") {
+            loanCheck[2] = 1;
+          } else if (val?.underlyingMarket == "USDC") {
+            loanCheck[3] = 1;
+          } else if (val?.underlyingMarket == "DAI") {
+            loanCheck[4] = 1;
+          }
+        });
+        const avgBorrowApr =
+          ((loanCheck[0] ? protocolStats?.[0]?.borrowRate : 0) +
+            (loanCheck[1] ? protocolStats?.[1]?.borrowRate : 0) +
+            (loanCheck[2] ? protocolStats?.[2]?.borrowRate : 0) +
+            (loanCheck[3] ? protocolStats?.[3]?.borrowRate : 0) +
+            (loanCheck[4] ? protocolStats?.[4]?.borrowRate : 0)) /
+          ((loanCheck[0] ? 1 : 0) +
+          (loanCheck[1] ? 1 : 0) +
+          (loanCheck[2] ? 1 : 0) +
+          (loanCheck[3] ? 1 : 0) +
+          (loanCheck[4] ? 1 : 0)
+            ? (loanCheck[0] ? 1 : 0) +
+              (loanCheck[1] ? 1 : 0) +
+              (loanCheck[2] ? 1 : 0) +
+              (loanCheck[3] ? 1 : 0) +
+              (loanCheck[4] ? 1 : 0)
+            : 1);
+        // const avgBorrowApr = await effectivAPRLoan(
+        //   userLoans[0],
+        //   protocolStats,
+        //   dataOraclePrices
+        // );
+        // console.log(avgBorrowApr, "data avg borrow apr useEffect", loanCheck);
+        if (avgBorrowApr != null) {
           dispatch(setAvgBorrowAPR(avgBorrowApr));
           const count = getTransactionCount();
           dispatch(setAvgBorrowAprCount(count));
@@ -968,14 +1128,17 @@ const useDataLoader = () => {
 
       if (
         avgBorrowAPRCount < transactionRefresh &&
-        protocolStatsCount == transactionRefresh
+        protocolStats &&
+        protocolStatsCount == transactionRefresh &&
+        userLoans &&
+        userLoansCount == transactionRefresh
       ) {
         fetchAvgBorrowAPRCount();
       }
     } catch (err) {
       console.log(err, "error in user info");
     }
-  }, [protocolStats, transactionRefresh]);
+  }, [protocolStatsCount, transactionRefresh, userLoansCount]);
 
   useEffect(() => {
     try {
@@ -984,8 +1147,9 @@ const useDataLoader = () => {
           const price = oraclePrices?.find(
             (oraclePrice: any) => oraclePrice?.name == deposit?.token
           )?.price;
-          const token_amount =
-            deposit?.rTokenAmountParsed + deposit?.rTokenStakedParsed;
+          const token_amount = deposit?.underlyingAssetAmountParsed;
+          // const token_amount =
+          //   deposit?.rTokenAmountParsed + deposit?.rTokenStakedParsed;
           if (price && token_amount) {
             return price * token_amount;
           }
@@ -1000,6 +1164,7 @@ const useDataLoader = () => {
       };
       if (
         dataDeposit &&
+        userDepositsCount == transactionRefresh &&
         dataDeposit?.length > 0 &&
         oraclePrices &&
         oraclePrices?.length > 0 &&
@@ -1010,7 +1175,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("your metrics supply err ", err);
     }
-  }, [dataDeposit, oraclePrices, transactionRefresh, address]);
+  }, [userDepositsCount, oraclePrices, transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -1056,7 +1221,9 @@ const useDataLoader = () => {
       };
       if (
         userLoans &&
+        userLoansCount == transactionRefresh &&
         protocolStats &&
+        protocolStatsCount == transactionRefresh &&
         oraclePrices &&
         yourMetricsBorrowCount < transactionRefresh
       ) {
@@ -1065,7 +1232,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log("err fetchBorrowData ", err);
     }
-  }, [userLoans, protocolStats, oraclePrices, transactionRefresh, address]);
+  }, [userLoansCount, protocolStatsCount, oraclePrices, transactionRefresh]);
 
   // useEffect(() => {
   //   try {
@@ -1124,7 +1291,7 @@ const useDataLoader = () => {
   useEffect(() => {
     console.log(
       "transaction refresh counts - ",
-      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount,yourMetricsSupplyCount,yourMetricsBorrowCount ",
+      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount,yourMetricsSupplyCount,yourMetricsBorrowCount,stakingSharesCount ",
       transactionRefresh,
       protocolStatsCount,
       protocolReservesCount,
@@ -1138,7 +1305,8 @@ const useDataLoader = () => {
       netAprCount,
       avgBorrowAPRCount,
       yourMetricsSupplyCount,
-      yourMetricsBorrowCount
+      yourMetricsBorrowCount,
+      stakingSharesCount
     );
   }, [
     transactionRefresh,
@@ -1156,6 +1324,7 @@ const useDataLoader = () => {
     avgBorrowAPRCount,
     yourMetricsSupplyCount,
     yourMetricsBorrowCount,
+    stakingSharesCount,
   ]);
 };
 

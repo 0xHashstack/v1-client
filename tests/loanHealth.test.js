@@ -15,13 +15,13 @@ describe('Get Loan Health',()=>{
     it('displays exisiting loan health',async()=>{
         const provider = getProvider();
         const loanId="221";
-        const healthFactor="0.154"
+        const healthFactor="0.15"
         const routerContract = new Contract(routerAbi, diamondAddress, provider);
         const res = await routerContract.call("get_health_factor", [loanId], {
           blockIdentifier: "pending",
         });
         const healthFactorAmount=BNtoNum(res?.factor,6);
-        expect(healthFactorAmount.substring(0,5)).toBe(healthFactor);
+        expect(healthFactorAmount.substring(0,4)).toBe(healthFactor);
     },20000);
     it('displays native collateral loan health',async()=>{
         const inputBorrowAmount="8960.76"

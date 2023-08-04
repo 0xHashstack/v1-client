@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const TotalAccountsChart = () => {
@@ -171,10 +172,6 @@ const TotalAccountsChart = () => {
           return val.toFixed(0); // Display the data value as the label
         },
       },
-      markers: {
-        size: 2,
-        colors: ["#fff"],
-      },
 
       xaxis: {
         type: "datetime" as const,
@@ -204,7 +201,7 @@ const TotalAccountsChart = () => {
             fontWeight: "400",
           },
         },
-        min: 0,
+        min: minValue - 0.05 * minValue,
         max: maxValue + 0.05 * maxValue,
       },
       plotOptions: {
@@ -233,6 +230,12 @@ const TotalAccountsChart = () => {
           },
         ],
       },
+    },
+  };
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    stroke: {
+      curve: "smooth",
     },
   };
 
@@ -362,7 +365,7 @@ const TotalAccountsChart = () => {
         padding="16px 24px 40px"
       >
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
           type="line"
           height={350}

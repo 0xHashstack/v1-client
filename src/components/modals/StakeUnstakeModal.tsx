@@ -59,6 +59,7 @@ import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
 import useWithdrawStake from "@/Blockchain/hooks/Writes/useWithdrawStake";
 import {
   selectActiveTransactions,
+  selectTransactionCheck,
   selectWalletBalance,
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
@@ -66,6 +67,7 @@ import {
 } from "@/store/slices/userAccountSlice";
 import {
   selectProtocolStats,
+  selectStakingShares,
   selectUserDeposits,
 } from "@/store/slices/readDataSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
@@ -75,16 +77,19 @@ import WarningIcon from "@/assets/icons/coins/warningIcon";
 import ArrowUp from "@/assets/icons/arrowup";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
-import { useWaitForTransaction } from "@starknet-react/core";
+import { useAccount, useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
-import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
+import {
+  getEstrTokens,
+  getUserStakingShares,
+} from "@/Blockchain/scripts/Rewards";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
@@ -103,6 +108,7 @@ const StakeUnstakeModal = ({
   validRTokens,
   ...restProps
 }: any) => {
+  // console.log(validRTokens, "tokens stake modal");
   // console.log("coin - ", coin);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -113,10 +119,23 @@ const StakeUnstakeModal = ({
   const [inputUnstakeAmount, setInputUnstakeAmount] = useState(0);
   const [isSupplyTap, setIsSupplyTap] = useState(false);
   const [transactionStarted, setTransactionStarted] = useState(false);
+  const { address } = useAccount();
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
     useState(false);
+  // const [stakingShares, setStakingShares] = useState<any>({
+  //   rBTC: null,
+  //   rETH: null,
+  //   rUSDT: null,
+  //   rUSDC: null,
+  //   rDAI: null,
+  // });
+  let protocolStats = useSelector(selectProtocolStats);
   let activeTransactions = useSelector(selectActiveTransactions);
-  const protocolStats = useSelector(selectProtocolStats);
+  let stakingShares = useSelector(selectStakingShares);
+  // console.log(stakingShares,"staking shares")
+
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
 
   const {
     rToken,
@@ -264,6 +283,7 @@ const StakeUnstakeModal = ({
     track_pageview: true,
     persistence: "localStorage",
   });
+
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -313,6 +333,40 @@ const StakeUnstakeModal = ({
       setAsset(coin ? coin?.name : "BTC");
     }
   }, [coin]);
+
+  // useEffect(() => {
+  //   try {
+  //     const getStakingShares = async () => {
+  //       if (!address) return;
+  //       const promises = [
+  //         getUserStakingShares(address, "rBTC"),
+  //         getUserStakingShares(address, "rETH"),
+  //         getUserStakingShares(address, "rUSDT"),
+  //         getUserStakingShares(address, "rUSDC"),
+  //         getUserStakingShares(address, "rDAI"),
+  //       ];
+  //       Promise.allSettled([...promises]).then((val) => {
+  //         const data = {
+  //           rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+  //           rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
+  //           rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
+  //           rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
+  //           rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+  //         };
+  //         console.log("shares ", val, data);
+  //         setStakingShares(data);
+  //       });
+  //       const data = await getUserStakingShares(address, "rUSDT");
+  //       if (data != null) {
+  //         setStakingShares(data);
+  //       }
+  //     };
+  //     getStakingShares();
+  //   } catch (err) {
+  //     console.log("getStakingShares error ", err);
+  //   }
+  // }, [address]);
+
   const handleStakeTransaction = async () => {
     try {
       // console.log("staking", rToken, rTokenAmount);
@@ -341,12 +395,14 @@ const StakeUnstakeModal = ({
           // Check if activeTransactions is frozen or sealed
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
+        const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: stake?.transaction_hash.toString(),
           message: `Successfully staked : ${inputStakeAmount} ${currentSelectedStakeCoin}`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
+          uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
@@ -360,17 +416,28 @@ const StakeUnstakeModal = ({
       }
       // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       // }
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
       // console.log(
       //   "Staking Modal-stake transaction check",
       //   recieptData?.data?.status == "ACCEPTED_ON_L2"
       // );
     } catch (err: any) {
-      dispatch(setTransactionStatus("failed"));
-      console.log("stake transaction failed : ", err);
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
+      }
+      console.log(uqID, "transaction check stake transaction failed : ", err);
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -412,12 +479,14 @@ const StakeUnstakeModal = ({
           // Check if activeTransactions is frozen or sealed
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
+        const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: depositStake?.transaction_hash.toString(),
           message: `Successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
+          uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
@@ -430,18 +499,28 @@ const StakeUnstakeModal = ({
         TokenAmount: inputStakeAmount,
       });
       setDepositTransHash(depositStake?.transaction_hash);
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
       // console.log("Status transaction", deposit);
       console.log(isSuccessDeposit, "success ?");
     } catch (err: any) {
       mixpanel.track("Stake Market Status", {
         Status: "Failure",
       });
-
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
+      }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -492,12 +571,14 @@ const StakeUnstakeModal = ({
           // Check if activeTransactions is frozen or sealed
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
+        const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: unstake?.transaction_hash.toString(),
           message: `Successfully unstaked : ${rTokenToWithdraw} ${currentSelectedUnstakeCoin}`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
+          uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
@@ -509,14 +590,25 @@ const StakeUnstakeModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
       console.log(unstake);
     } catch (err: any) {
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        // dispatch(setTransactionStatus("failed"));
+        setUnstakeTransactionStarted(false);
+      }
       console.log("Unstake transaction failed : ", err);
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -679,30 +771,48 @@ const StakeUnstakeModal = ({
     );
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   const [rtokenWalletBalance, setrTokenWalletBalance] = useState(
-    userDeposit?.find((item: any) => item.rToken == currentSelectedUnstakeCoin)
+    userDeposit?.find((item: any) => item.rToken == currentSelectedStakeCoin)
       ?.rTokenFreeParsed
   );
   // console.log(rtokenWalletBalance,"rtoken wallet ")
   const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
-    userDeposit?.find((item: any) => item.rToken == currentSelectedUnstakeCoin)
-      ?.rTokenStakedParsed
+    stakingShares[
+      currentSelectedUnstakeCoin[0] == "r"
+        ? currentSelectedUnstakeCoin
+        : "r" + currentSelectedUnstakeCoin
+    ] != null
+      ? stakingShares[
+          currentSelectedUnstakeCoin[0] == "r"
+            ? currentSelectedUnstakeCoin
+            : "r" + currentSelectedUnstakeCoin
+        ]
+      : 0
   );
   useEffect(() => {
     setrTokenWalletBalance(
       userDeposit?.find((item: any) => item.rToken == currentSelectedStakeCoin)
         ?.rTokenFreeParsed
     );
+    setRToken(currentSelectedStakeCoin);
   }, [currentSelectedStakeCoin, userDeposit]);
   // useEffect(() => {
   //   console.log("stake userDeposit", userDeposit);
   // }, [userDeposit]);
   useEffect(() => {
     setUnstakeWalletBalance(
-      userDeposit?.find(
-        (item: any) => item.rToken == currentSelectedUnstakeCoin
-      )?.rTokenStakedParsed
+      stakingShares[
+        currentSelectedUnstakeCoin[0] == "r"
+          ? currentSelectedUnstakeCoin
+          : "r" + currentSelectedUnstakeCoin
+      ] != null
+        ? stakingShares[
+            currentSelectedUnstakeCoin[0] == "r"
+              ? currentSelectedUnstakeCoin
+              : "r" + currentSelectedUnstakeCoin
+          ]
+        : 0
     );
-  }, [currentSelectedUnstakeCoin,userDeposit]);
+  }, [currentSelectedUnstakeCoin, userDeposit]);
   const [buttonId, setButtonId] = useState(0);
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const resetStates = () => {
@@ -714,25 +824,31 @@ const StakeUnstakeModal = ({
     setToastDisplayed(false);
     setCurrentSelectedStakeCoin(coin ? rcoinValue : "rBTC");
     setAsset(coin ? rcoinValue.slice(1) : "BTC");
-    setRToken("rBTC");
+    setRToken(coin ? rcoinValue : "rBTC");
     setcurrentSelectedUnstakeCoin(coin ? rcoinValue : "rBTC");
     setUnstakeRToken(coin ? rcoinValue : "rBTC");
     setTransactionStarted(false);
     setUnstakeTransactionStarted(false);
     setUnstakeWalletBalance(
-      userDeposit?.find(
-        (item: any) => item.rToken == currentSelectedUnstakeCoin
-      )?.rTokenStakedParsed
+      stakingShares[
+        currentSelectedUnstakeCoin[0] == "r"
+          ? currentSelectedUnstakeCoin
+          : "r" + currentSelectedUnstakeCoin
+      ] != null
+        ? stakingShares[
+            currentSelectedUnstakeCoin[0] == "r"
+              ? currentSelectedUnstakeCoin
+              : "r" + currentSelectedUnstakeCoin
+          ]
+        : 0
     );
     setWalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
-              uint256.uint256ToBN(
-                walletBalances[coin?.name]?.dataBalanceOf?.balance
-              ),
-              tokenDecimalsMap[coin?.name]
-            )
+        ? parseAmount(
+            uint256.uint256ToBN(
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[coin?.name]
           )
         : 0
     );
@@ -806,7 +922,9 @@ const StakeUnstakeModal = ({
   //       : currentSelectedStakeCoin
   //   );
   // }, [currentSelectedStakeCoin]);
-
+  // useEffect(() => {
+  //   console.log("transactionCheck uniqueID", uniqueID);
+  // }, [uniqueID]);
   return (
     <Box>
       {nav ? (
@@ -815,7 +933,18 @@ const StakeUnstakeModal = ({
           justifyContent="space-between"
           alignItems="center"
           gap={"8px"}
-          onClick={onOpen}
+          onClick={() => {
+            const uqID = Math.random();
+            setUniqueID(uqID);
+            let data: any = localStorage.getItem("transactionCheck");
+            data = data ? JSON.parse(data) : [];
+            if (data && !data.includes(uqID)) {
+              data.push(uqID);
+              localStorage.setItem("transactionCheck", JSON.stringify(data));
+            }
+
+            onOpen();
+          }}
           color={router.pathname != "/waitlist" && stakeHover ? "gray" : ""}
         >
           {router.pathname != "/waitlist" && stakeHover ? (
@@ -865,7 +994,17 @@ const StakeUnstakeModal = ({
               backgroundColor: "#0969DA",
             },
           }}
-          onClick={onOpen}
+          onClick={() => {
+            const uqID = Math.random();
+            setUniqueID(uqID);
+            let data: any = localStorage.getItem("transactionCheck");
+            data = data ? JSON.parse(data) : [];
+            if (data && !data.includes(uqID)) {
+              data.push(uqID);
+              localStorage.setItem("transactionCheck", JSON.stringify(data));
+            }
+            onOpen();
+          }}
         >
           Details
         </Text>
@@ -876,6 +1015,14 @@ const StakeUnstakeModal = ({
         // isOpen={isSupplyTap ? isOpenCustom : isOpen}
         // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
+          const uqID = getUniqueId();
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          // console.log(uqID, "data here", data);
+          if (data && data.includes(uqID)) {
+            data = data.filter((val: any) => val != uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           onClose();
           if (transactionStarted || unstakeTransactionStarted) {
             dispatch(setTransactionStartedAndModalClosed(true));
@@ -1011,12 +1158,16 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Select market refers to the crypto currency tokens selected to stake on the protocol"
-                            bg="#24292F"
-                            fontSize={"smaller"}
+                            label="The token selected to stake on the protocol."
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
+                            border="1px solid"
+                            borderColor="#2B2F35"
+                            arrowShadowColor="#2B2F35"
+                            maxW="272px"
                           >
                             <Box>
                               <InfoIcon />
@@ -1083,17 +1234,12 @@ const StakeUnstakeModal = ({
                                       setWalletBalance(
                                         walletBalances[_coin?.slice(1)]
                                           ?.statusBalanceOf === "success"
-                                          ? Number(
-                                              BNtoNum(
-                                                uint256.uint256ToBN(
-                                                  walletBalances[
-                                                    _coin?.slice(1)
-                                                  ]?.dataBalanceOf?.balance
-                                                ),
-                                                tokenDecimalsMap[
-                                                  _coin?.slice(1)
-                                                ]
-                                              )
+                                          ? parseAmount(
+                                              uint256.uint256ToBN(
+                                                walletBalances[_coin?.slice(1)]
+                                                  ?.dataBalanceOf?.balance
+                                              ),
+                                              tokenDecimalsMap[_coin?.slice(1)]
                                             )
                                           : 0
                                       );
@@ -1136,14 +1282,30 @@ const StakeUnstakeModal = ({
                                         color="white"
                                         mt="6px"
                                         fontWeight="thin"
+                                        display="flex"
                                       >
                                         rToken Balance:{" "}
-                                        {userDeposit && userDeposit.length > 0
-                                          ? userDeposit?.find(
+                                        {userDeposit &&
+                                        userDeposit.length > 0 &&
+                                        userDeposit?.find(
+                                          (item: any) => item.rToken == _coin
+                                        )?.rTokenFreeParsed != null ? (
+                                          numberFormatter(
+                                            userDeposit?.find(
                                               (item: any) =>
                                                 item.rToken == _coin
                                             )?.rTokenFreeParsed
-                                          : "loading..."}
+                                          )
+                                        ) : (
+                                          <Skeleton
+                                            width="3rem"
+                                            height="1rem"
+                                            startColor="#1E212F"
+                                            endColor="#03060B"
+                                            borderRadius="6px"
+                                            ml={2}
+                                          />
+                                        )}
                                       </Box>
                                     </Box>
                                   </Box>
@@ -1169,12 +1331,16 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="refers to the unit of crypto coins you are willing to stake on the protocol"
-                            bg="#24292F"
-                            fontSize={"smaller"}
+                            label="The unit of tokens you will stake on the protocol."
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
+                            border="1px solid"
+                            borderColor="#2B2F35"
+                            arrowShadowColor="#2B2F35"
+                            maxW="222px"
                           >
                             <Box>
                               <InfoIcon />
@@ -1220,7 +1386,7 @@ const StakeUnstakeModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
+                              placeholder={`0.01536 ${currentSelectedStakeCoin}`}
                               color={`${
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount >
@@ -1252,7 +1418,21 @@ const StakeUnstakeModal = ({
                           </NumberInput>
                           <Button
                             variant="ghost"
-                            color="#0969DA"
+                            color={`${
+                              (rtokenWalletBalance != 0 &&
+                                rTokenAmount >
+                                  Number(
+                                    getBalance(currentSelectedStakeCoin)
+                                  )) ||
+                              (rtokenWalletBalance == 0 &&
+                                rTokenAmount > walletBalance)
+                                ? "#CF222E"
+                                : rTokenAmount < 0
+                                ? "#CF222E"
+                                : rTokenAmount == 0
+                                ? "#0969DA"
+                                : "#1A7F37"
+                            }`}
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
                               if (rtokenWalletBalance != 0) {
@@ -1309,11 +1489,20 @@ const StakeUnstakeModal = ({
                               {rtokenWalletBalance == 0
                                 ? "Wallet Balance: "
                                 : `rToken Balance: `}
-                              {rtokenWalletBalance == 0
-                                ? numberFormatter(walletBalance)
-                                : rtokenWalletBalance !== undefined
-                                ? numberFormatter(rtokenWalletBalance)
-                                : "loading"}
+                              {rtokenWalletBalance == 0 ? (
+                                numberFormatter(walletBalance)
+                              ) : rtokenWalletBalance !== undefined ? (
+                                numberFormatter(rtokenWalletBalance)
+                              ) : (
+                                <Skeleton
+                                  width="3rem"
+                                  height="1rem"
+                                  startColor="#1E212F"
+                                  endColor="#03060B"
+                                  borderRadius="6px"
+                                  ml={2}
+                                />
+                              )}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedStakeCoin}`}
                               </Text>
@@ -1333,11 +1522,20 @@ const StakeUnstakeModal = ({
                             {rtokenWalletBalance == 0
                               ? "Wallet Balance: "
                               : `rToken Balance: `}
-                            {rtokenWalletBalance == 0
-                              ? numberFormatter(walletBalance)
-                              : rtokenWalletBalance !== undefined
-                              ? numberFormatter(rtokenWalletBalance)
-                              : "loading"}
+                            {rtokenWalletBalance == 0 ? (
+                              numberFormatter(walletBalance)
+                            ) : rtokenWalletBalance !== undefined ? (
+                              numberFormatter(rtokenWalletBalance)
+                            ) : (
+                              <Skeleton
+                                width="3rem"
+                                height="1rem"
+                                startColor="#1E212F"
+                                endColor="#03060B"
+                                borderRadius="6px"
+                                ml={2}
+                              />
+                            )}
                             {/* {walletBalance} */}
                             <Text color="#6E7781" ml="0.2rem">
                               {rtokenWalletBalance == 0
@@ -1540,12 +1738,16 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="refers to the rewards earned by users who participate in staking activities within the protocol"
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              label="Rewards earned in staking activities within the protocol."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="282px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1603,12 +1805,16 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              label="Estimation of resources & costs for blockchain transactions."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1637,12 +1843,16 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="refer to the charges or costs incurred when completing a transactions"
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              label="Cost incurred during transactions."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1684,7 +1894,10 @@ const StakeUnstakeModal = ({
                           />
                         </Text>
                       </Text> */}
-                      {isValid(currentSelectedStakeCoin) ? (
+                      {isValid(currentSelectedStakeCoin) &&
+                      userDeposit?.find(
+                        (item: any) => item.rToken == currentSelectedStakeCoin
+                      )?.rTokenFreeParsed ? (
                         rTokenAmount > 0 &&
                         rTokenAmount <= rtokenWalletBalance ? (
                           buttonId == 1 ? (
@@ -1750,11 +1963,7 @@ const StakeUnstakeModal = ({
                                   setCurrentTransactionStatus
                                 }
                               >
-                                {`${
-                                  !isValid(currentSelectedStakeCoin)
-                                    ? "Stake and Supply"
-                                    : "Stake"
-                                }`}
+                                Stake
                               </AnimatedButton>
                             </Box>
                           )
@@ -1769,7 +1978,15 @@ const StakeUnstakeModal = ({
                             border="1px solid #2B2F35"
                             _hover={{ bg: "#101216" }}
                           >
-                            Stake
+                            {`${
+                              !isValid(currentSelectedStakeCoin) &&
+                              userDeposit?.find(
+                                (item: any) =>
+                                  item.rToken == currentSelectedStakeCoin
+                              )?.rTokenFreeParsed != 0
+                                ? "Stake and Supply"
+                                : "Stake"
+                            }`}
                           </Button>
                         )
                       ) : rTokenAmount > 0 && rTokenAmount <= walletBalance ? (
@@ -1852,9 +2069,13 @@ const StakeUnstakeModal = ({
                           _hover={{ bg: "#101216" }}
                         >
                           {`${
-                            !isValid(currentSelectedStakeCoin)
-                              ? "Stake and Supply"
-                              : "Stake"
+                            isValid(currentSelectedStakeCoin) &&
+                            userDeposit?.find(
+                              (item: any) =>
+                                item.rToken == currentSelectedStakeCoin
+                            )?.rTokenFreeParsed > 0
+                              ? "Stake"
+                              : "Stake and Supply"
                           }`}
                         </Button>
                       )}
@@ -1867,41 +2088,6 @@ const StakeUnstakeModal = ({
                         border="1px solid #2B2F35"
                         mt="1.5rem"
                       >
-                        {!isValid(currentSelectedUnstakeCoin) && (
-                          <Box
-                            // display="flex"
-                            // justifyContent="left"
-                            w="100%"
-                            pb="4"
-                          >
-                            <Box
-                              display="flex"
-                              bg="#FFF8C5"
-                              color="black"
-                              fontSize="xs"
-                              p="4"
-                              my="auto"
-                              fontStyle="normal"
-                              fontWeight="500"
-                              borderRadius="6px"
-                              // textAlign="center"
-                            >
-                              <Box pr="3" my="auto" cursor="pointer">
-                                <WarningIcon />
-                              </Box>
-                              Selected market is not staked. Firstly stake the
-                              coins to unstake
-                              {/* <Box
-                                py="1"
-                                pl="4"
-                                cursor="pointer"
-                                // onClick={handleClick}
-                              >
-                                <TableClose />
-                              </Box> */}
-                            </Box>
-                          </Box>
-                        )}
                         <Text
                           color="#8B949E"
                           display="flex"
@@ -1919,12 +2105,16 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Select market refers to the crypto currency tokens selected to Unstake on the protocol"
-                            bg="#24292F"
-                            fontSize={"smaller"}
+                            label="The token selected to unstake on the protocol."
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
+                            border="1px solid"
+                            borderColor="#2B2F35"
+                            arrowShadowColor="#2B2F35"
+                            maxW="272px"
                           >
                             <Box>
                               <InfoIcon />
@@ -2029,14 +2219,24 @@ const StakeUnstakeModal = ({
                                         color="white"
                                         mt="6px"
                                         fontWeight="thin"
+                                        display="flex"
                                       >
                                         Staking shares:{" "}
-                                        {userDeposit && userDeposit.length > 0
-                                          ? userDeposit?.find(
-                                              (item: any) =>
-                                                item.rToken == _coin
-                                            )?.rTokenStakedParsed
-                                          : "loading..."}
+                                        {stakingShares != null &&
+                                        stakingShares[_coin] != null &&
+                                        stakingShares[_coin] != undefined &&
+                                        !isNaN(stakingShares[_coin]) ? (
+                                          numberFormatter(stakingShares[_coin])
+                                        ) : (
+                                          <Skeleton
+                                            width="3rem"
+                                            height="1rem"
+                                            startColor="#1E212F"
+                                            endColor="#03060B"
+                                            borderRadius="6px"
+                                            ml={2}
+                                          />
+                                        )}
                                       </Box>
                                     </Box>
                                   </Box>
@@ -2062,12 +2262,16 @@ const StakeUnstakeModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="refers to the unit of crypto coins you are willing to unstake from the protocol"
-                            bg="#24292F"
-                            fontSize={"smaller"}
+                            label="The unit of tokens to unstake from the protocol."
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
+                            border="1px solid"
+                            borderColor="#2B2F35"
+                            arrowShadowColor="#2B2F35"
+                            maxW="222px"
                           >
                             <Box>
                               <InfoIcon />
@@ -2078,9 +2282,7 @@ const StakeUnstakeModal = ({
                           width="100%"
                           color="white"
                           border={`${
-                            !isValid(currentSelectedUnstakeCoin)
-                              ? "1px solid #2B2F35"
-                              : rTokenToWithdraw > unstakeWalletBalance
+                            rTokenToWithdraw > unstakeWalletBalance
                               ? "1px solid #CF222E"
                               : rTokenToWithdraw < 0
                               ? "1px solid #CF222E"
@@ -2098,13 +2300,7 @@ const StakeUnstakeModal = ({
                             min={0}
                             keepWithinRange={true}
                             onChange={handleUnstakeChange}
-                            value={
-                              isValid(currentSelectedUnstakeCoin)
-                                ? rTokenToWithdraw
-                                  ? rTokenToWithdraw
-                                  : ""
-                                : ""
-                            }
+                            value={rTokenToWithdraw ? rTokenToWithdraw : ""}
                             outline="none"
                             step={parseFloat(
                               `${rTokenToWithdraw <= 99999 ? 0.1 : 0}`
@@ -2116,7 +2312,7 @@ const StakeUnstakeModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
+                              placeholder={`0.01536 ${currentSelectedUnstakeCoin}`}
                               color={`${
                                 !isValid(currentSelectedUnstakeCoin)
                                   ? "#1A7F37"
@@ -2144,12 +2340,20 @@ const StakeUnstakeModal = ({
                           </NumberInput>
                           <Button
                             variant="ghost"
-                            color="#0969DA"
+                            color={`${
+                                rTokenToWithdraw > unstakeWalletBalance
+                                ? "#CF222E"
+                                : rTokenToWithdraw < 0
+                                ? "#CF222E"
+                                : rTokenToWithdraw == 0
+                                ? "#0969DA"
+                                : "#1A7F37"
+                            }`}
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
-                              if (!coinsSupplied[currentSelectedUnstakeCoin]) {
-                                return;
-                              }
+                              // if (!coinsSupplied[currentSelectedUnstakeCoin]) {
+                              //   return;
+                              // }
                               setRTokenToWithdraw(unstakeWalletBalance);
                               setSliderValue2(100);
                             }}
@@ -2171,6 +2375,7 @@ const StakeUnstakeModal = ({
                             fontWeight="500"
                             fontStyle="normal"
                             fontFamily="Inter"
+                            whiteSpace="nowrap"
                           >
                             <Text color="#CF222E" display="flex">
                               <Text mt="0.2rem">
@@ -2187,9 +2392,33 @@ const StakeUnstakeModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                               Staking Shares: {unstakeWalletBalance}
+                              Staking Shares:{" "}
+                              {stakingShares &&
+                              stakingShares[
+                                currentSelectedUnstakeCoin[0] == "r"
+                                  ? currentSelectedUnstakeCoin
+                                  : "r" + currentSelectedUnstakeCoin
+                              ] != null ? (
+                                numberFormatter(
+                                  stakingShares[
+                                    currentSelectedUnstakeCoin[0] == "r"
+                                      ? currentSelectedUnstakeCoin
+                                      : "r" + currentSelectedUnstakeCoin
+                                  ]
+                                )
+                              ) : (
+                                <Skeleton
+                                  width="3rem"
+                                  height="1rem"
+                                  startColor="#1E212F"
+                                  endColor="#03060B"
+                                  borderRadius="6px"
+                                  ml={2}
+                                />
+                              )}
                               <Text color="#6E7781" ml="0.2rem">
-                                {` ${currentSelectedUnstakeCoin}`}
+                                shares
+                                {/* {` ${currentSelectedUnstakeCoin}`} */}
                               </Text>
                             </Text>
                           </Text>
@@ -2204,9 +2433,33 @@ const StakeUnstakeModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Staking Shares: {unstakeWalletBalance}
-                            <Text color="#6E7781" ml="0.2rem">
-                              {` ${currentSelectedUnstakeCoin}`}
+                            Staking Shares:{" "}
+                            {stakingShares &&
+                            stakingShares[
+                              currentSelectedUnstakeCoin[0] == "r"
+                                ? currentSelectedUnstakeCoin
+                                : "r" + currentSelectedUnstakeCoin
+                            ] != null ? (
+                              numberFormatter(
+                                stakingShares[
+                                  currentSelectedUnstakeCoin[0] == "r"
+                                    ? currentSelectedUnstakeCoin
+                                    : "r" + currentSelectedUnstakeCoin
+                                ]
+                              )
+                            ) : (
+                              <Skeleton
+                                width="3rem"
+                                height="1rem"
+                                startColor="#1E212F"
+                                endColor="#03060B"
+                                borderRadius="6px"
+                                ml={2}
+                              />
+                            )}
+                            <Text color="#6E7781" ml="0.4rem">
+                              {"shares"}
+                              {/* {` ${currentSelectedUnstakeCoin}`} */}
                             </Text>
                           </Text>
                         )}
@@ -2214,15 +2467,11 @@ const StakeUnstakeModal = ({
                           <Slider
                             aria-label="slider-ex-6"
                             defaultValue={sliderValue2}
-                            value={
-                              !isValid(currentSelectedUnstakeCoin)
-                                ? 0
-                                : sliderValue2
-                            }
+                            value={sliderValue2}
                             onChange={(val) => {
-                              if (!isValid(currentSelectedUnstakeCoin)) {
-                                return;
-                              }
+                              // if (!isValid(currentSelectedUnstakeCoin)) {
+                              //   return;
+                              // }
                               setSliderValue2(val);
                               if (val == 100) {
                                 setRTokenToWithdraw(unstakeWalletBalance);
@@ -2303,11 +2552,7 @@ const StakeUnstakeModal = ({
                               )}
                             </SliderMark>
                             <SliderMark
-                              value={
-                                !isValid(currentSelectedUnstakeCoin)
-                                  ? 0
-                                  : sliderValue2
-                              }
+                              value={sliderValue2}
                               textAlign="center"
                               // bg='blue.500'
                               color="white"
@@ -2360,12 +2605,16 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="estimation of the number of tokens you may receive after unstaking."
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              label="Estimation of token amount you may receive after the transaction."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -2399,12 +2648,16 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              label="Estimation of resources & costs for blockchain transactions."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -2433,12 +2686,16 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="refer to the charges or costs incurred when completing a transactions"
-                              bg="#24292F"
-                              fontSize={"smaller"}
+                              label="Cost incurred during transactions."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
                             >
                               <Box>
                                 <InfoIcon />

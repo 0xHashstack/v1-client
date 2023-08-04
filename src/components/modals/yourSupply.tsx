@@ -117,6 +117,8 @@ const YourSupplyModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
 
   let activeTransactions = useSelector(selectActiveTransactions);
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
 
   // const [coins, setCoins] = useState([])
   // const walletBalances = useSelector(selectAssetWalletBalance);
@@ -143,14 +145,12 @@ const YourSupplyModal = ({
   // console.log(userDeposit,"user deposit your supply")
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
-      ? 
-          parseAmount(
-            uint256.uint256ToBN(
-              walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
-            ),
-            tokenDecimalsMap[currentSelectedSupplyCoin]
-          )
-        
+      ? parseAmount(
+          uint256.uint256ToBN(
+            walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
+          ),
+          tokenDecimalsMap[currentSelectedSupplyCoin]
+        )
       : 0
   );
   // console.log(currentSelectedWithdrawlCoin)
@@ -163,15 +163,12 @@ const YourSupplyModal = ({
   useEffect(() => {
     setwalletBalance(
       walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
-        ? 
-            parseAmount(
-              uint256.uint256ToBN(
-                walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf
-                  ?.balance
-              ),
-              tokenDecimalsMap[currentSelectedSupplyCoin]
-            )
-          
+        ? parseAmount(
+            uint256.uint256ToBN(
+              walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[currentSelectedSupplyCoin]
+          )
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf)
@@ -355,7 +352,7 @@ const YourSupplyModal = ({
             currentSelectedWithdrawlCoin,
             inputWithdrawlAmount
           );
-          console.log(data, "data in your supply");
+          // console.log(data, "data in your supply");
           setEstSupply(data);
         }
       } catch (err) {
@@ -384,6 +381,7 @@ const YourSupplyModal = ({
     setTransactionStarted(false);
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
+    const uqID = getUniqueId();
     dispatch(setTransactionStatus(""));
     setToastDisplayed(false);
     setDepositTransHash("");
@@ -466,8 +464,8 @@ const YourSupplyModal = ({
   const handleWithdrawSupply = async () => {
     try {
       const withdraw = await writeAsyncWithdrawDeposit();
-      setDepositTransHash(withdraw?.transaction_hash);
       if (withdraw?.transaction_hash) {
+        setDepositTransHash(withdraw?.transaction_hash);
         console.log("toast here");
         const toastid = toast.info(
           // `Please wait your withdraw transaction is running in background : ${inputWithdrawlAmount}r${asset}`,
@@ -487,35 +485,50 @@ const YourSupplyModal = ({
           // Check if activeTransactions is frozen or sealed
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
+        const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: withdraw?.transaction_hash.toString(),
-          message: `Successfully withdrawn :  : ${estSupply}${asset}`,
+          message: `Successfully withdrawn ${asset}`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
+          uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track("Withdraw Supply Status", {
-          Status: "Success",
-          "Token Selected": asset,
-          "Token Amount": inputWithdrawlAmount,
-        });
-
         dispatch(setActiveTransactions(activeTransactions));
       }
+      mixpanel.track("Withdraw Supply Status", {
+        Status: "Success",
+        "Token Selected": asset,
+        "Token Amount": inputWithdrawlAmount,
+      });
+
       // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       // }
-      dispatch(setTransactionStatus("success"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus("success"));
+      }
+
       console.log(withdraw);
     } catch (err: any) {
       console.log("withraw", err);
-      dispatch(setTransactionStatus("failed"));
       mixpanel.track("Withdraw Supply Status", {
         Status: "Failure",
       });
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        // dispatch(setTransactionStatus("failed"));
+        setWithdrawTransactionStarted(false);
+      }
+      console.log(uqID, "your supply catch", data);
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -558,11 +571,13 @@ const YourSupplyModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: addSupplyAndStake?.transaction_hash.toString(),
             message: `Successfully supplied and staked ${depositAmount} ${supplyAsset}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -574,7 +589,12 @@ const YourSupplyModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         console.log("addSupply", addSupplyAndStake);
       } else {
         const addSupply = await writeAsyncDeposit();
@@ -600,11 +620,13 @@ const YourSupplyModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: addSupply?.transaction_hash.toString(),
             message: `Successfully added supply : ${depositAmount} ${supplyAsset}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -616,18 +638,31 @@ const YourSupplyModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         console.log("addSupply", addSupply);
       }
     } catch (err) {
       console.log("Unable to add supply ", err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      console.log("data check", data);
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        console.log(uqID, "your supply catch", data);
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
+      }
       mixpanel.track("Add Supply Your Supply Status", {
         Status: "Failure",
       });
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction Declined{" "}
           <CopyToClipboard text={err as string}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -680,7 +715,17 @@ const YourSupplyModal = ({
         _hover={{ bg: "white", color: "black" }}
         borderRadius={"6px"}
         color="#BDBFC1"
-        onClick={onOpen}
+        onClick={() => {
+          const uqID = Math.random();
+          setUniqueID(uqID);
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          if (data && !data.includes(uqID)) {
+            data.push(uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
+          onOpen();
+        }}
       >
         Actions
       </Button>
@@ -688,6 +733,14 @@ const YourSupplyModal = ({
       <Modal
         isOpen={isOpen}
         onClose={() => {
+          const uqID = getUniqueId();
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          // console.log(uqID, "data here", data);
+          if (data && data.includes(uqID)) {
+            data = data.filter((val: any) => val != uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           onClose();
           if (transactionStarted || withdrawTransactionStarted) {
             dispatch(setTransactionStartedAndModalClosed(true));
@@ -774,9 +827,9 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Supply market refers to the cryptocurrency tokens selected to deposit on the Hashstack protocol"
-                            bg="#101216"
-                            fontSize={"11px"}
+                            label="The tokens selected to supply on the protocol."
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -784,7 +837,7 @@ const YourSupplyModal = ({
                             borderColor="#2B2F35"
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
-                            mt="15px"
+                            // mt="15px"
                           >
                             <Box>
                               <InfoIcon />
@@ -943,9 +996,9 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Amount refers to the unit of crypto coins you are willing to supply"
-                            bg="#101216"
-                            fontSize={"11px"}
+                            label="The unit of tokens being supplied."
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -991,7 +1044,7 @@ const YourSupplyModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
+                              placeholder={`0.01536 ${currentSelectedSupplyCoin}`}
                               color={`${
                                 inputSupplyAmount > walletBalance
                                   ? "#CF222E"
@@ -1017,7 +1070,15 @@ const YourSupplyModal = ({
                           </NumberInput>
                           <Button
                             variant="ghost"
-                            color="#0969DA"
+                            color={`${
+                              inputSupplyAmount > walletBalance
+                                ? "#CF222E"
+                                : inputSupplyAmount < 0
+                                ? "#CF222E"
+                                : inputSupplyAmount == 0
+                                ? "#0969DA"
+                                : "#1A7F37"
+                            }`}
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
                               setinputSupplyAmount(walletBalance);
@@ -1252,9 +1313,9 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="refer to the charges or costs incurred when completing a transactions"
-                              bg="#101216"
-                              fontSize={"11px"}
+                              label="Cost incurred during transactions."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -1291,9 +1352,9 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              label="Estimation of resources & costs for blockchain transactions."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -1329,9 +1390,9 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Supply APR (Annual Percentage Rate) refers to the annualized interest rate earned on supplied funds."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              label="Annual interest rate earned on supplied tokens."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -1339,7 +1400,7 @@ const YourSupplyModal = ({
                               borderColor="#2B2F35"
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
-                              mb="16px"
+                              // mb="16px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1423,10 +1484,12 @@ const YourSupplyModal = ({
                                 Clicked: true,
                               }
                             );
-                            dispatch(
-                              setTransactionStartedAndModalClosed(false)
-                            );
-                            handleAddSupply();
+                            if (transactionStarted == false) {
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              );
+                              handleAddSupply();
+                            }
                           }}
                         >
                           <AnimatedButton
@@ -1507,9 +1570,9 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Supply market refers to the crypto currency tokens selected to withdraw from the protocol"
-                            bg="#101216"
-                            fontSize={"11px"}
+                            label="The tokens selected to supply on the protocol."
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -1656,9 +1719,9 @@ const YourSupplyModal = ({
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="Withdraw Amount refers to the unit of crypto coins you are willing to withdraw"
-                            bg="#101216"
-                            fontSize={"11px"}
+                            label="Unit of tokens to be withdrawn."
+                            bg="#010409"
+                            fontSize={"13px"}
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
@@ -1708,7 +1771,7 @@ const YourSupplyModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
+                              placeholder={`0.01536 ${currentSelectedWithdrawlCoin}`}
                               color={`${
                                 inputWithdrawlAmount > withdrawWalletBalance
                                   ? "#CF222E"
@@ -1734,7 +1797,15 @@ const YourSupplyModal = ({
                           </NumberInput>
                           <Button
                             variant="ghost"
-                            color="#0969DA"
+                            color={`${
+                              inputWithdrawlAmount > withdrawWalletBalance
+                                ? "#CF222E"
+                                : inputWithdrawlAmount < 0
+                                ? "#CF222E"
+                                : inputWithdrawlAmount == 0
+                                ? "#0969DA"
+                                : "#1A7F37"
+                            }`}
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
                               setinputWithdrawlAmount(withdrawWalletBalance);
@@ -1938,9 +2009,9 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="estimate of the amount of your deposit that will become unlocked and available for withdrawal"
-                              bg="#101216"
-                              fontSize={"11px"}
+                              label="Estimated amount available for withdrawal from the deposited tokens."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -1948,7 +2019,7 @@ const YourSupplyModal = ({
                               borderColor="#2B2F35"
                               arrowShadowColor="#2B2F35"
                               maxW="247px"
-                              mt="15px"
+                              // mt="15px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -2088,9 +2159,9 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="refer to the charges or costs incurred when completing a transactions"
-                              bg="#101216"
-                              fontSize={"11px"}
+                              label="Cost incurred during transactions."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -2128,9 +2199,9 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                              bg="#101216"
-                              fontSize={"11px"}
+                              label="Estimation of resources & costs for blockchain transactions."
+                              bg="#010409"
+                              fontSize={"13px"}
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
@@ -2138,7 +2209,7 @@ const YourSupplyModal = ({
                               borderColor="#2B2F35"
                               arrowShadowColor="#2B2F35"
                               maxW="292px"
-                              mb="15px"
+                              // mb="15px"
                             >
                               <Box>
                                 <InfoIcon />

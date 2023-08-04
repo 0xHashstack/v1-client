@@ -74,6 +74,8 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import {
   getJediEstimateLiquiditySplit,
   getJediEstimatedLpAmountOut,
+  getMySwapEstimateLiquiditySplit,
+  getMySwapEstimatedLpAmountOut,
 } from "@/Blockchain/scripts/l3interaction";
 import BtcToUsdc from "@/assets/icons/pools/btcToUsdc";
 import BtcToDai from "@/assets/icons/pools/btcToDai";
@@ -146,6 +148,8 @@ const LiquidityProvisionModal = ({
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const userLoans = useSelector(selectUserLoans);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
 
   let activeTransactions = useSelector(selectActiveTransactions);
   // const avgs=useSelector(selectAprAndHealthFactor)
@@ -364,12 +368,14 @@ const LiquidityProvisionModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: liquidity?.transaction_hash.toString(),
             // message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
             message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -384,7 +390,12 @@ const LiquidityProvisionModal = ({
         }
         console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       } else if (currentSwap == "MySwap") {
         const liquidity = await writeAsyncmySwap_addLiquidity();
         if (liquidity?.transaction_hash) {
@@ -407,12 +418,14 @@ const LiquidityProvisionModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: liquidity?.transaction_hash.toString(),
             // message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
             message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -427,14 +440,25 @@ const LiquidityProvisionModal = ({
         }
         console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
       }
     } catch (err: any) {
       console.log(err);
-      dispatch(setTransactionStatus("failed"));
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
+      }
       const toastContent = (
         <div>
-          Transaction failed{" "}
+           Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -550,35 +574,64 @@ const LiquidityProvisionModal = ({
 
   const fetchLiquiditySplit = async () => {
     if (!toMarketA || !toMarketB || currentPool === "Select a pool") return;
-
-    const split = await getJediEstimateLiquiditySplit(
-      currentLoanMarket,
-      currentLoanAmount,
-      toMarketA,
-      toMarketB
-      // "USDT",
-      // 99,
-      // "ETH",
-      // "USDT"
-    );
-    console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
-    setCurrentSplit(split);
+    if (currentSwap === "Jediswap" || currentSwap === "MySwap") {
+      const split = await getJediEstimateLiquiditySplit(
+        currentLoanMarket,
+        currentLoanAmount,
+        toMarketA,
+        toMarketB
+        // "USDT",
+        // 99,
+        // "ETH",
+        // "USDT"
+      );
+      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
+      setCurrentSplit(split);
+    } else if (currentSwap === "MySwap") {
+      const split = await getMySwapEstimateLiquiditySplit(
+        currentLoanMarket,
+        currentLoanAmount,
+        toMarketA,
+        toMarketB
+        // "USDT",
+        // 99,
+        // "ETH",
+        // "USDT"
+      );
+      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
+      setCurrentSplit(split);
+    }
   };
 
   const fetchLPAmount = async () => {
     if (!toMarketA || !toMarketB || currentPool === "Select a pool") return;
-    const lp_tokon = await getJediEstimatedLpAmountOut(
-      currentLoanMarket,
-      currentLoanAmount,
-      toMarketA,
-      toMarketB
-      // "USDT",
-      // "99",
-      // "ETH",
-      // "USDT"
-    );
-    console.log("toMarketSplitLP", lp_tokon);
-    setCurrentLPTokenAmount(lp_tokon);
+    if (currentSwap === "Jediswap" || currentSwap === "MySwap") {
+      const lp_tokon = await getJediEstimatedLpAmountOut(
+        currentLoanMarket,
+        currentLoanAmount,
+        toMarketA,
+        toMarketB
+        // "USDT",
+        // "99",
+        // "ETH",
+        // "USDT"
+      );
+      console.log("toMarketSplitLP", lp_tokon);
+      setCurrentLPTokenAmount(lp_tokon);
+    } else if (currentSwap === "MySwap") {
+      const lp_tokon = await getMySwapEstimatedLpAmountOut(
+        currentLoanMarket,
+        currentLoanAmount,
+        toMarketA,
+        toMarketB
+        // "USDT",
+        // "99",
+        // "ETH",
+        // "USDT"
+      );
+      console.log("toMarketSplitLP", lp_tokon);
+      setCurrentLPTokenAmount(lp_tokon);
+    }
   };
   return (
     <div>
@@ -607,6 +660,14 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               // console.log("hi");
             } else {
+              const uqID = Math.random();
+              setUniqueID(uqID);
+              let data: any = localStorage.getItem("transactionCheck");
+              data = data ? JSON.parse(data) : [];
+              if (data && !data.includes(uqID)) {
+                data.push(uqID);
+                localStorage.setItem("transactionCheck", JSON.stringify(data));
+              }
               onOpen();
               mixpanel.track("Liquidity Modal Selected", {
                 Clicked: true,
@@ -625,6 +686,14 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               // console.log("hi");
             } else {
+              const uqID = Math.random();
+              setUniqueID(uqID);
+              let data: any = localStorage.getItem("transactionCheck");
+              data = data ? JSON.parse(data) : [];
+              if (data && !data.includes(uqID)) {
+                data.push(uqID);
+                localStorage.setItem("transactionCheck", JSON.stringify(data));
+              }
               onOpen();
               mixpanel.track("Liquidity Modal Selected", {
                 Clicked: true,
@@ -646,10 +715,18 @@ const LiquidityProvisionModal = ({
         <Modal
           isOpen={isOpen}
           onClose={() => {
-            onClose();
+            const uqID = getUniqueId();
+            let data: any = localStorage.getItem("transactionCheck");
+            data = data ? JSON.parse(data) : [];
+            // console.log(uqID, "data here", data);
+            if (data && data.includes(uqID)) {
+              data = data.filter((val: any) => val != uqID);
+              localStorage.setItem("transactionCheck", JSON.stringify(data));
+            }
             if (transactionStarted) {
               dispatch(setTransactionStartedAndModalClosed(true));
             }
+            onClose();
             resetStates();
           }}
           isCentered
@@ -690,9 +767,9 @@ const LiquidityProvisionModal = ({
                     hasArrow
                     placement="right-start"
                     boxShadow="dark-lg"
-                    label="indicates the option to choose a specific liquidity pool within the protocol. Liquidity pools are pools of funds used for various purposes such as trading, providing liquidity, or accessing specific DeFi services."
-                    bg="#101216"
-                    fontSize={"11px"}
+                    label="Choose a liquidity pool for trading, providing liquidity, or accessing DeFi services within the protocol."
+                    bg="#010409"
+                    fontSize={"13px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
@@ -810,9 +887,9 @@ const LiquidityProvisionModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Borrow ID refers to unique identification number assigned to a specific loan within the protocol"
-                    bg="#101216"
-                    fontSize={"11px"}
+                    label="A unique ID number assigned to a specific borrow within the protocol"
+                    bg="#010409"
+                    fontSize={"13px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
@@ -939,9 +1016,9 @@ const LiquidityProvisionModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Borrowed amount refers to the unit of crypto coins you had borrowed from the protocol"
-                    bg="#101216"
-                    fontSize={"11px"}
+                    label="The unit of tokens you have borrowed from the protocol."
+                    bg="#010409"
+                    fontSize={"13px"}
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
@@ -1024,8 +1101,8 @@ const LiquidityProvisionModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="Refers to the app where loan should be spent."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -1080,9 +1157,9 @@ const LiquidityProvisionModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Estimated LP Tokens Received: This tool tip provides an estimate of the number of LP (Liquidity Provider) tokens you will receive when you provide liquidity to a pool."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        label="Estimated Liquidity Provider Tokens Received: Estimate of LP tokens received by providing liquidity to a pool."
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -1139,9 +1216,9 @@ const LiquidityProvisionModal = ({
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="refers to the fee charged for adjusting the allocation or distribution of liquidity across different assets within the protocol."
-                        bg="#101216"
-                        fontSize={"11px"}
+                        label="The fee for reallocating liquidity across assets within a protocol."
+                        bg="#010409"
+                        fontSize={"13px"}
                         fontWeight={"thin"}
                         borderRadius={"lg"}
                         padding={"2"}
@@ -1228,9 +1305,9 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="refer to the charges or costs incurred when completing a transactions"
-                      bg="#101216"
-                      fontSize={"11px"}
+                      label="Cost incurred during transactions."
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -1267,9 +1344,9 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      label="Estimation of resources & costs for blockchain transactions."
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -1306,9 +1383,9 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Borrow APR (Annual Percentage Rate) refers to the annualized interest rate charged on borrowed funds from the protocol."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      label="The annual interest rate charged on borrowed funds from the protocol."
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -1363,9 +1440,9 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right-end"
                       boxShadow="dark-lg"
-                      label="Effective APR (Annual Percentage Rate) is the true annualized interest rate that reflects both the nominal interest rate and any associated fees or charges, providing a more accurate representation of the total cost of borrowing."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -1418,9 +1495,9 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right-end"
                       boxShadow="dark-lg"
-                      label="Health factor refers to a metric that assesses the collateralization ratio of a loan, indicating the level of risk and potential liquidation based on the value of the collateral compared to the borrowed amount."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}

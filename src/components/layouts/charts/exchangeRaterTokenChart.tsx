@@ -35,6 +35,7 @@ import UsdcDisabled from "@/assets/icons/coins/usdcDisabled";
 import UsdtDisabled from "@/assets/icons/coins/usdtDisabled";
 import EthDisabled from "@/assets/icons/coins/ethDisabled";
 import DaiDisabled from "@/assets/icons/coins/daiDisabled";
+import BtcDisabled from "@/assets/icons/coins/btcDisabled";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   const [aprByMarket, setAPRByMarket] = useState(0);
@@ -619,10 +620,6 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         },
         position: "top",
       },
-      markers: {
-        size: 2,
-        colors: ["#fff"],
-      },
       xaxis: {
         type: "datetime" as const, // Set x-axis type to datetime
         labels: {
@@ -651,8 +648,8 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             fontWeight: "400",
           },
         },
-        min: minValue - 0.05 * minValue,
-        max: maxValue + 0.05 * maxValue,
+        min: minValue - 0.0002 * minValue,
+        max: maxValue + 0.0002 * maxValue,
       },
       plotOptions: {
         bar: {
@@ -693,7 +690,12 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   //   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    stroke: {
+      curve: "smooth",
+    },
+  };
   const handleDropdownClick = (dropdownName: any) => {
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
     dispatch(setModalDropdown(dropdownName));
@@ -938,7 +940,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             p="2"
           >
             <Box>
-              {currentSelectedCoin === 0 ? getCoin(0) : <DaiDisabled />}
+              {currentSelectedCoin === 0 ? getCoin(0) : <BtcDisabled />}
             </Box>
             <Text
               my="auto"
@@ -1048,7 +1050,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           </Box>
         </Box>
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
           type="line"
           height={350}

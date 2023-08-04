@@ -42,6 +42,9 @@ const useTransactionHandler = () => {
     // console.log("transaction active transactions ", activeTransactions);
     // console.log("transaction transactions ", transactions);
     // console.log("transaction results ", results);
+    let data = localStorage.getItem("transactionCheck");
+    data = data ? JSON.parse(data) : [];
+
     results?.forEach((transaction: UseTransactionResult, idx) => {
       transaction.refetch();
       const transaction_hash =
@@ -60,9 +63,11 @@ const useTransactionHandler = () => {
         transaction_status == "ACCEPTED_ON_L2"
       ) {
         if (!toastHash.includes(transaction_hxh)) {
-          dispatch(setTransactionStatus("success"));
+          if (data && data.includes(activeTransactions[idx]?.uniqueID)) {
+            dispatch(setTransactionStatus("success"));
+            activeTransactions[idx].setCurrentTransactionStatus("success");
+          }
           dispatch(setTransactionRefresh(""));
-          activeTransactions[idx].setCurrentTransactionStatus("success");
           toast.success(
             activeTransactions?.[idx]?.message ||
               `Your transaction is complete`,
@@ -86,8 +91,10 @@ const useTransactionHandler = () => {
         );
         // setFailureToastDisplayed(true);
         if (!toastHash.includes(transaction_hxh)) {
-          dispatch(setTransactionStatus("failed"));
-          activeTransactions[idx].setCurrentTransactionStatus("failed");
+          if (data && data.includes(activeTransactions[idx]?.uniqueID)) {
+            dispatch(setTransactionStatus("failed"));
+            activeTransactions[idx].setCurrentTransactionStatus("failed");
+          }
           toast.error(toastContent, {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,

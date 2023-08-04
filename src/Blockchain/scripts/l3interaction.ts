@@ -2,9 +2,12 @@ import { Contract, number, uint256 } from "starknet";
 // import jediSwapAbi from "../abis/jedi_swap_abi.json";
 // import pricerAbi from "../abis/pricer_abi.json";
 // import mySwapAbi from "../abis/my_swap_abi.json";
-import jediSwapAbi from "../abi_new/l3_jedi_swap_abi.json";
-import pricerAbi from "../abi_new/pricer_abi.json";
-import mySwapAbi from "../abi_new/l3_my_swap_abi.json";
+// import jediSwapAbi from "../abi_new/l3_jedi_swap_abi.json";
+// import pricerAbi from "../abi_new/pricer_abi.json";
+// import mySwapAbi from "../abi_new/l3_my_swap_abi.json";
+import jediSwapAbi from "../abis_upgrade/l3_jedi_swap_abi.json";
+import pricerAbi from "../abis_upgrade/pricer_abi.json";
+import mySwapAbi from "../abis_upgrade/l3_my_swap_abi.json";
 import {
   diamondAddress,
   getProvider,
@@ -151,11 +154,12 @@ export async function getJediEstimatedLpAmountOut(
         blockIdentifier: "pending",
       }
     );
-    // console.log(
-    //   "estimated lp amount out for loanId: ",
-    //   " is: ",
-    //   parseAmount(uint256.uint256ToBN(res?.lp_amount_out))
-    // );
+    console.log(
+      "estimated lp amount out for loanId: ",
+      " is: ",
+      parseAmount(uint256.uint256ToBN(res?.lp_amount_out), 18),
+      res
+    );
     return parseAmount(uint256.uint256ToBN(res?.lp_amount_out), 18);
   } catch (error) {
     console.log("error in getJediEstimatedLpAmountOut: ", error);
@@ -269,7 +273,7 @@ export async function getMySwapEstimateLiquiditySplit(
     const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
 
     const res = await l3Contract.call(
-      "get_jedi_estimate_liquidity_split",
+      "get_myswap_estimate_liquidity_split",
       // [loanId, tokenAAddress, tokenBAddress],
       [
         tokenAddressMap[loanMarket],
@@ -317,9 +321,9 @@ export async function getMySwapEstimatedLpAmountOut(
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();
   try {
-    const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
+    const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
     const res = await l3Contract.call(
-      "get_jedi_estimated_lp_amount_out",
+      "get_myswap_estimated_lp_amount_out",
       // [loanId, tokenAAddress, tokenBAddress],
       [
         tokenAddressMap[loanMarket],
@@ -363,7 +367,7 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
     console.log("split before calling");
     const res = await l3Contract.call(
-      "get_jedi_estimated_liqA_liqB_from_lp",
+      "get_myswap_estimated_liqA_liqB_from_lp",
       // [liquidity, pairAddress],
       [[liquidity, 0], pairAddress],
       {

@@ -5,7 +5,10 @@ import SmallGreenDot from "@/assets/icons/smallGreenDot";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
-import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import {
+  selectDailyBTCData,
+  selectHourlyBTCData,
+} from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const TotalTransactionChart = ({ color, curveColor, series }: any) => {
@@ -17,8 +20,9 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
     },
   ]);
   const btcData = useSelector(selectHourlyBTCData);
-  const weeklyBtcData=useSelector(selectDailyBTCData)
+  const weeklyBtcData = useSelector(selectDailyBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
+
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -67,29 +71,30 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
             ]);
         break;
       case 1:
-        weeklyBtcData?.totalTransactions ?
-        newData = [
-          {
-            name: "Total transactions",
-            data: weeklyBtcData?.totalTransactions,
-          },
-        ]:  
-        newData = [
-          {
-            name: "Total transactions",
-            data: [40000, 10000, 42000, 39000, 44000, 41000, 43000],
-          },
-        ];
-        weeklyBtcData?.dates ? newCategories=weeklyBtcData?.dates :
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        weeklyBtcData?.totalTransactions
+          ? (newData = [
+              {
+                name: "Total transactions",
+                data: weeklyBtcData?.totalTransactions,
+              },
+            ])
+          : (newData = [
+              {
+                name: "Total transactions",
+                data: [40000, 10000, 42000, 39000, 44000, 41000, 43000],
+              },
+            ]);
+        weeklyBtcData?.dates
+          ? (newCategories = weeklyBtcData?.dates)
+          : (newCategories = [
+              new Date("2023-07-01").getTime(),
+              new Date("2023-07-02").getTime(),
+              new Date("2023-07-03").getTime(),
+              new Date("2023-07-04").getTime(),
+              new Date("2023-07-05").getTime(),
+              new Date("2023-07-06").getTime(),
+              new Date("2023-07-07").getTime(),
+            ]);
         break;
       case 2:
         //y data axis
@@ -212,10 +217,6 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
           return val.toFixed(0); // Display the data value as the label
         },
       },
-      markers: {
-        size: 2,
-        colors: ["#fff"],
-      },
       xaxis: {
         type: "datetime" as const, // Set x-axis type to datetime
         labels: {
@@ -278,6 +279,9 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
 
   const options: ApexOptions = {
     ...splineChartData.options,
+    stroke: {
+      curve: "smooth",
+    },
   };
 
   return (

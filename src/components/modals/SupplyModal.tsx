@@ -47,6 +47,7 @@ import {
   selectActiveTransactions,
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
+  selectTransactionStartedAndModalClosed,
   // selectTransactionStarted,
   // setTransactionStarted,
   // selectCurrentTransactionStatus,
@@ -92,6 +93,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -109,8 +111,9 @@ const SupplyModal = ({
   // };
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [transactionStarted, setTransactionStarted] = useState(false);
-
   const [toastId, setToastId] = useState<any>();
+  const [uniqueID, setUniqueID] = useState(0);
+
   const {
     depositAmount,
     setDepositAmount,
@@ -152,12 +155,14 @@ const SupplyModal = ({
     { token: "DAI", idx: 4 },
   ];
 
-  useEffect(() => {
-    // setCurrentSupplyAPR(
-    //   coinIndex.map(({ curr }: any) => curr?.token === currentSelectedCoin)?.idx
-    // );
-    // console.log("currentSupplyAPR", currentSupplyAPR);
-  }, [currentSupplyAPR]);
+  // useEffect(() => {
+  //   // setCurrentSupplyAPR(
+  //   //   coinIndex.map(({ curr }: any) => curr?.token === currentSelectedCoin)?.idx
+  //   // );
+  //   // console.log("currentSupplyAPR", currentSupplyAPR);
+  // }, [currentSupplyAPR]);
+
+  const getUniqueId = () => uniqueID;
 
   interface assetB {
     USDT: any;
@@ -204,6 +209,7 @@ const SupplyModal = ({
     persistence: "localStorage",
   });
   // const walletBalances = useSelector(selectAssetWalletBalance);
+  // const transactionRefresh=useSelector(selectTransactionRefresh);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? parseAmount(
@@ -445,6 +451,8 @@ const SupplyModal = ({
   //   },
   // });
   // const { hashes, addTransaction } = useTransactionManager();
+  // const transactionStartedAndModalClosed=useSelector(selectTransactionStartedAndModalClosed);
+
   const handleTransaction = async () => {
     try {
       if (ischecked) {
@@ -473,12 +481,14 @@ const SupplyModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: depositStake?.transaction_hash.toString(),
             message: `Successfully staked ${inputAmount} ${currentSelectedCoin}`,
             // message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -491,7 +501,12 @@ const SupplyModal = ({
           TokenAmount: inputAmount,
         });
         setDepositTransHash(depositStake?.transaction_hash);
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
       } else {
@@ -523,12 +538,14 @@ const SupplyModal = ({
             // Check if activeTransactions is frozen or sealed
             activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
+          const uqID = getUniqueId();
           const trans_data = {
             transaction_hash: deposit?.transaction_hash.toString(),
             message: `Successfully supplied ${inputAmount} ${currentSelectedCoin}`,
             // message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
@@ -545,7 +562,12 @@ const SupplyModal = ({
         setDepositTransHash(deposit?.transaction_hash);
         // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
         // }
-        dispatch(setTransactionStatus("success"));
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
       }
@@ -554,11 +576,18 @@ const SupplyModal = ({
       mixpanel.track("Supply Market Status", {
         Status: "Failure",
       });
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        setTransactionStarted(false);
+        // dispatch(setTransactionStatus("failed"));
+      }
+      console.log(uqID, "transaction check supply transaction failed : ", err);
 
-      dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Transaction failed{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -706,20 +735,31 @@ const SupplyModal = ({
     setSliderValue(0);
   }, [currentSelectedCoin]);
 
-  // const { } = useBalanceOf();
-  // const { } = useTransfer();
-
   return (
     <div>
       <Button
         onClick={() => {
+          const uqID = Math.random();
+          setUniqueID(uqID);
+          let data: any = localStorage.getItem("transactionCheck");
+          data = data ? JSON.parse(data) : [];
+          if (data && !data.includes(uqID)) {
+            data.push(uqID);
+            localStorage.setItem("transactionCheck", JSON.stringify(data));
+          }
           onOpen();
           dispatch(setToastTransactionStarted(false));
         }}
         {...restProps}
       >
         {buttonText !== "Click here to supply" ? (
-          buttonText
+          buttonText === "Supply from metrics" ? (
+            <Button w="70px" h="32px" fontSize="14px" p="12px" mx="auto">
+              Supply
+            </Button>
+          ) : (
+            buttonText
+          )
         ) : (
           <Text fontSize="sm">Click here to supply</Text>
         )}
@@ -728,11 +768,17 @@ const SupplyModal = ({
         <Modal
           isOpen={isOpen}
           onClose={() => {
+            const uqID = getUniqueId();
+            let data: any = localStorage.getItem("transactionCheck");
+            data = data ? JSON.parse(data) : [];
+            // console.log(uqID, "data here", data);
+            if (data && data.includes(uqID)) {
+              data = data.filter((val: any) => val != uqID);
+              localStorage.setItem("transactionCheck", JSON.stringify(data));
+            }
             dispatch(setTransactionStartedAndModalClosed(true));
             resetStates();
             onClose();
-            // if (transactionStarted) dispatch(setToastTransactionStarted(true));
-            // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}
           isCentered
@@ -786,16 +832,14 @@ const SupplyModal = ({
                       arrowShadowColor="#2B2F35"
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Supply market refers to the crypto currency tokens selected to deposit on the Hashstack protocol"
-                      bg="#101216"
-                      fontSize="11px"
+                      label="The tokens selected to supply on the protocol."
+                      bg="#010409"
+                      fontSize="13px"
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
                       border="1px solid"
                       borderColor="#2B2F35"
-                      maxW="222px"
-                      mt="14px"
                     >
                       <Box>
                         <InfoIcon />
@@ -949,16 +993,16 @@ const SupplyModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Amount refers to the unit oc coins you are willing to supply"
-                    bg="#101216"
-                    fontSize="11px"
+                    label="The unit of tokens being supplied."
+                    bg="#010409"
+                    fontSize="13px"
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
                     border="1px solid"
                     borderColor="#2B2F35"
                     arrowShadowColor="#2B2F35"
-                    maxW="222px"
+                    // maxW="222px"
                   >
                     <Box>
                       <InfoIcon />
@@ -1025,7 +1069,18 @@ const SupplyModal = ({
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color="#0969DA"
+                    color={`${
+                      depositAmount > walletBalance
+                        ? "#CF222E"
+                        : isNaN(depositAmount)
+                        ? "#CF222E"
+                        : depositAmount < 0
+                        ? "#CF222E"
+                        : depositAmount == 0
+                        ? "#0969DA"
+                        : "#1A7F37"
+                    }`}
+                    // color="#0969DA"
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
                       setDepositAmount(walletBalance);
@@ -1276,12 +1331,13 @@ const SupplyModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="refer to the charges or costs incurred when completing a transactions"
-                      bg="#101216"
-                      fontSize={"11px"}
+                      label="Cost incurred during transactions."
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      color="#fff"
                       border="1px solid"
                       borderColor="#2B2F35"
                       arrowShadowColor="#2B2F35"
@@ -1323,9 +1379,9 @@ const SupplyModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Gas estimate is an estimation of the computational resources needed and associated costs for executing a transaction or smart contract on a blockchain."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      label="Estimation of resources & costs for blockchain transactions."
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -1368,9 +1424,9 @@ const SupplyModal = ({
                       hasArrow
                       placement="right-end"
                       boxShadow="dark-lg"
-                      label="Supply APR (Annual Percentage Rate) refers to the annualized interest rate earned on supplied funds."
-                      bg="#101216"
-                      fontSize={"11px"}
+                      label="Annual interest rate earned on supplied tokens."
+                      bg="#010409"
+                      fontSize={"13px"}
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
@@ -1423,6 +1479,7 @@ const SupplyModal = ({
                       setTransactionStarted(true);
                       if (transactionStarted === false) {
                         dispatch(setTransactionStartedAndModalClosed(false));
+
                         handleTransaction();
                         mixpanel.track("Supply Market Clicked Button", {
                           "Supply Clicked": true,

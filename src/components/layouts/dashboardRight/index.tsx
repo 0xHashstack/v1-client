@@ -10,6 +10,7 @@ import {
   Box,
   HStack,
   useMediaQuery,
+  Tooltip,
 } from "@chakra-ui/react";
 import { Skeleton } from "@chakra-ui/react";
 import Image from "next/image";
@@ -82,6 +83,13 @@ const DashboardRight = ({
   useEffect(() => {
     // console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
   }, [currentBorrowMarketCoin]);
+  const tooltips = [
+    "Available markets.",
+    "Market value of the token.",
+    "The number of tokens that are currently borrowed from the protocol.",
+    "Represents how much of a pool has been borrowed",
+    "The annual interest rate charged on borrowed funds from the protocol.",
+  ];
 
   return (
     <TableContainer
@@ -128,7 +136,29 @@ const DashboardRight = ({
                   padding={0}
                   // pl={idx == 0 ? 5 : 0}
                 >
-                  {val}
+                  <Tooltip
+                    hasArrow
+                    label={tooltips[idx]}
+                    placement={
+                      (idx === 0 && "bottom-start") ||
+                      (idx === columnItems.length - 1 && "bottom-end") ||
+                      "bottom"
+                    }
+                    rounded="md"
+                    boxShadow="dark-lg"
+                    bg="#010409"
+                    fontSize={"13px"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    // maxW="222px"
+                    // mt="28px"
+                  >
+                    {val}
+                  </Tooltip>
                 </Text>
               </Td>
             ))}

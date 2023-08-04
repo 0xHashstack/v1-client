@@ -6,6 +6,7 @@ import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readData
 import dynamic from "next/dynamic";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import finalPropsSelectorFactory from "react-redux/es/connect/selectorFactory";
+import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const BorrowerChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -161,10 +162,6 @@ const BorrowerChart = () => {
           show: false,
         },
       },
-      markers: {
-        size: 2,
-        colors: ["#fff"],
-      },
       dataLabels: {
         position: "bottom",
         enabled: false,
@@ -233,6 +230,12 @@ const BorrowerChart = () => {
           },
         ],
       },
+    },
+  };
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    stroke: {
+      curve: "smooth",
     },
   };
 
@@ -362,7 +365,7 @@ const BorrowerChart = () => {
         padding="16px 24px 40px"
       >
         <ApexCharts
-          options={splineChartData.options}
+          options={options}
           series={splineChartData.series}
           type="line"
           height={350}

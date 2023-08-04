@@ -37,6 +37,13 @@ const initialState = {
   healthFactor: null,
   yourMetricsSupply: null,
   yourMetricsBorrow: null,
+  stakingShares: {
+    rBTC: null,
+    rETH: null,
+    rUSDT: null,
+    rUSDC: null,
+    rDAI: null,
+  },
 };
 
 export const readDataSlice = createSlice({
@@ -131,6 +138,9 @@ export const readDataSlice = createSlice({
     setYourMetricsBorrow(state, action) {
       state.yourMetricsBorrow = action.payload;
     },
+    setStakingShares(state, action) {
+      state.stakingShares = action.payload;
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -174,6 +184,7 @@ export const {
   setDailyDAIData,
   setYourMetricsBorrow,
   setYourMetricsSupply,
+  setStakingShares,
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -210,4 +221,5 @@ export const selectYourMetricsSupply = (state) =>
   state.read_data.yourMetricsSupply;
 export const selectYourMetricsBorrow = (state) =>
   state.read_data.yourMetricsBorrow;
+export const selectStakingShares = (state) => state.read_data.stakingShares;
 export default readDataSlice.reducer;

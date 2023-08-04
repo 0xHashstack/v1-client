@@ -344,7 +344,7 @@ const BorrowChart = () => {
         toolbar: {
           show: false,
         },
-        stacked: false,
+        stacked: true,
       },
       dataLabels: {
         position: "bottom",
@@ -402,6 +402,14 @@ const BorrowChart = () => {
         borderColor: "#2B2F35",
         padding: {
           bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
+        },
+      },
+      legend: {
+        fontSize: "12px",
+        fontWeight: "400",
+        labels: {
+          colors: "#fff",
+          // Set the color of the legend texts to white
         },
       },
       fill: {

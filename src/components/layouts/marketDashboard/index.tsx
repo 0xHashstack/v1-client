@@ -152,7 +152,7 @@ const MarketDashboard = () => {
           stats?.[0].borrowRate) /
         5;
       // console.log(avg,"avg borrow")
-      dispatch(setAvgBorrowAPR(avg));
+      // dispatch(setAvgBorrowAPR(avg));
       setSupplyAPRs([
         stats?.[2].supplyRate,
         stats?.[3].supplyRate,
@@ -167,7 +167,7 @@ const MarketDashboard = () => {
           stats?.[1].supplyRate +
           stats?.[0].supplyRate) /
         5;
-      dispatch(setAvgSupplyAPR(avgSupply));
+      // dispatch(setAvgSupplyAPR(avgSupply));
       setUtilizations([
         stats?.[2].utilisationPerMarket,
         stats?.[3].utilisationPerMarket,

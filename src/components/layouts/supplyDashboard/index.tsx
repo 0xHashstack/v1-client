@@ -16,6 +16,7 @@ import {
   Spinner,
   useTimeout,
   Skeleton,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import BTCLogo from "@/assets/images/stakeIcon.svg";
@@ -144,6 +145,7 @@ const SupplyDashboard = ({
   };
   const [avgs, setAvgs] = useState<any>([]);
   const avgsData: any = [];
+
   useEffect(() => {
     const getSupply = async () => {
       if (!userDeposits || !reduxProtocolStats) {
@@ -159,18 +161,18 @@ const SupplyDashboard = ({
 
         // console.log("supply in supply dash: ", supply);
         if (!supply) return;
-        let temp: any = [];
-        let indexes: any = [2, 3, 0, 1, 4];
+        // let data: any = [];
+        // let indexes: any = [2, 3, 0, 1, 4];
 
-        indexes.map((index: number) => {
-          if (
-            supply?.[index].rTokenAmountParsed !== 0 ||
-            supply?.[index].rTokenFreeParsed !== 0 ||
-            supply?.[index].rTokenLockedParsed !== 0 ||
-            supply?.[index].rTokenStakedParsed !== 0
-          )
-            temp.push(supply[index]);
-        });
+        // data = indexes.map((index: number) => {
+        //   if (
+        //     supply?.[index].rTokenAmountParsed !== 0 ||
+        //     supply?.[index].rTokenFreeParsed !== 0 ||
+        //     supply?.[index].rTokenLockedParsed !== 0 ||
+        //     supply?.[index].rTokenStakedParsed !== 0
+        //   )
+        //     return supply[index];
+        // });
 
         // supply.map((currSupply: any) => {
         //   if (
@@ -181,7 +183,7 @@ const SupplyDashboard = ({
         //   )
         //     temp.push(currSupply);
         // });
-        setSupplies(temp);
+        // setSupplies(data);
         // console.log(supplies,"supply dash");
         // console.log(reduxProtocolStats,"supply stats")
         if (avgs.length == 0) {
@@ -301,11 +303,39 @@ const SupplyDashboard = ({
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
   useEffect(() => {
-    if (userDeposits && reduxProtocolStats) {
-      console.log(supplies, "loading - ", userDeposits);
+    if (userDeposits) {
+      const supply = userDeposits;
+      // console.log("users deposits - ", userDeposits);
+
+      // const supply = await getUserDeposits(address);
+
+      // console.log("supply in supply dash: ", supply);
+      if (!supply) return;
+      let data: any = [];
+      let indexes: any = [2, 3, 0, 1, 4];
+
+      indexes.forEach((index: number) => {
+        if (
+          supply?.[index].rTokenAmountParsed !== 0 ||
+          supply?.[index].rTokenFreeParsed !== 0 ||
+          supply?.[index].rTokenLockedParsed !== 0 ||
+          supply?.[index].rTokenStakedParsed !== 0
+        )
+          data[index] = supply[index];
+      });
+      setSupplies(data);
+      console.log(data, "loading - ", userDeposits);
       setLoading(false);
     }
-  }, [supplies]);
+  }, [userDeposits]);
+
+  const tooltips = [
+    "Allocated quantity of rTokens for a market after supplying funds to the protocol.",
+    "Conversion rate for exchanging assets within a protocol.",
+    "Annual interest rate earned on supplied tokens.",
+    "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
+    "Track the borrowed amount's progress and key details within the protocol.",
+  ];
 
   return loading ? (
     <>
@@ -394,8 +424,31 @@ const SupplyDashboard = ({
                     height={"2rem"}
                     // textAlign="center"
                     color={"#BDBFC1"}
+                    cursor="context-menu"
                   >
-                    {val}
+                    <Tooltip
+                      hasArrow
+                      label={tooltips[idx1]}
+                      placement={
+                        (idx1 === 0 && "bottom-start") ||
+                        (idx1 === columnItems.length - 1 && "bottom-end") ||
+                        "bottom"
+                      }
+                      rounded="md"
+                      boxShadow="dark-lg"
+                      bg="#010409"
+                      fontSize={"13px"}
+                      fontWeight={"thin"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      border="1px solid"
+                      borderColor="#2B2F35"
+                      arrowShadowColor="#2B2F35"
+                      // maxW="222px"
+                      // mt="28px"
+                    >
+                      {val}
+                    </Tooltip>
                   </Text>
                 </Td>
               ))}

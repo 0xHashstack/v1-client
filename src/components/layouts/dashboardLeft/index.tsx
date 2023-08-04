@@ -12,6 +12,7 @@ import {
   HStack,
   useMediaQuery,
   Skeleton,
+  Tooltip,
 } from "@chakra-ui/react";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 import Image from "next/image";
@@ -33,6 +34,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "@starknet-react/core";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -187,6 +189,13 @@ const DashboardLeft = ({
   //   }
   // }, [dataBalanceOf]);
 
+  const tooltips = [
+    "Available markets.",
+    "Market value of the token",
+    "The number of tokens that currently exists in the protocol.",
+    "Annual interest rate earned on supplied funds.",
+  ];
+
   return (
     <TableContainer
       bg="#101216"
@@ -208,7 +217,7 @@ const DashboardLeft = ({
       <Table variant="unstyled" width="100%" height="100%">
         <Thead width={"100%"} height={"2.7rem"}>
           <Tr width={"100%"}>
-            {columnItems.map((val, idx) => (
+            {columnItems.map((val: any, idx: any) => (
               <Td
                 key={idx}
                 fontSize={"12px"}
@@ -229,7 +238,29 @@ const DashboardLeft = ({
                   padding={0}
                   // pl={idx == 0 ? "7.2%" : 0}
                 >
-                  {val}
+                  <Tooltip
+                    hasArrow
+                    label={tooltips[idx]}
+                    placement={
+                      (idx === 0 && "bottom-start") ||
+                      (idx === columnItems.length - 1 && "bottom-end") ||
+                      "bottom"
+                    }
+                    rounded="md"
+                    boxShadow="dark-lg"
+                    bg="#010409"
+                    fontSize={"13px"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    // maxW="222px"
+                    // mt="28px"
+                  >
+                    {val}
+                  </Tooltip>
                 </Text>
               </Td>
             ))}

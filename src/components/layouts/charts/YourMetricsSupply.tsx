@@ -14,7 +14,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   // const userDeposits = useSelector(selectUserDeposits);
   // const oraclePrices = useSelector(selectOraclePrices);
   const supplyData = useSelector(selectYourMetricsSupply);
-
+  // console.log("supplyData your metrics ", supplyData);
   // useEffect(() => {
   //   try {
   //     const fetchSupplyData = async () => {
@@ -122,6 +122,10 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
     legend: {
       position: "top" as const,
       horizontalAlign: "left" as const,
+      labels: {
+        colors: "#fff",
+        // Set the color of the legend texts to white
+      },
     },
     annotations: {
       xaxis: [

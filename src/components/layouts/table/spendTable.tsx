@@ -18,6 +18,7 @@ import {
   useTimeout,
   Spinner,
   Skeleton,
+  Tooltip,
 } from "@chakra-ui/react";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import TableUsdtLogo from "./usdtLogo";
@@ -317,6 +318,15 @@ const SpendTable = () => {
     }
   }, [userLoans]);
   const dummy_data = [1, 2, 3];
+
+  const tooltips = [
+    "A unique ID number assigned to a specific borrow within the protocol.",
+    "The token you had borrowed from the protocol.",
+    "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
+    "Loan-to-Value ratio is the proportion of loan amount to collateral value in protocol.",
+    "Loan risk metric comparing collateral value to borrowed amount to check potential liquidation.",
+  ];
+
   return (
     <>
       {showWarning && (
@@ -426,8 +436,31 @@ const SpendTable = () => {
                       pl={idx1 == 0 ? "3rem" : 0}
                       pr={idx1 == columnItems.length - 1 ? 35 : 0}
                       color={"#BDBFC1"}
+                      cursor="context-menu"
                     >
-                      {val}
+                      <Tooltip
+                        hasArrow
+                        label={tooltips[idx1]}
+                        placement={
+                          (idx1 === 0 && "bottom-start") ||
+                          (idx1 === columnItems.length - 1 && "bottom-end") ||
+                          "bottom"
+                        }
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#010409"
+                        fontSize={"13px"}
+                        fontWeight={"thin"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        border="1px solid"
+                        borderColor="#2B2F35"
+                        arrowShadowColor="#2B2F35"
+                        // maxW="222px"
+                        // mt="28px"
+                      >
+                        {val}
+                      </Tooltip>
                     </Text>
                   </Td>
                 ))}

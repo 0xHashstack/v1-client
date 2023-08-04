@@ -115,11 +115,14 @@ export default function Home() {
   // console.log(account ,"index page")
   // console.log("Index reload check",account);
   useEffect(() => {
+    localStorage.setItem("connected", "");
+  }, []);
+  useEffect(() => {
     // alert(status)
     // const storedAccount = localStorage.getItem("account");
     const hasVisited = localStorage.getItem("visited");
     const walletConnected = localStorage.getItem("lastUsedConnector");
-    localStorage.setItem("connected", "");
+    localStorage.setItem("transactionCheck", JSON.stringify([]));
     if (walletConnected == "braavos") {
       disconnect();
       connect(connectors[0]);
@@ -210,28 +213,6 @@ export default function Home() {
           width="400px"
           mt="8px"
         >
-          <Box
-            display="flex"
-            border="1px"
-            borderColor="#2B2F35"
-            justifyContent="space-between"
-            py="1"
-            pl="3"
-            pr="3"
-            mb="1rem"
-            mt="0.5rem"
-            borderRadius="md"
-            className="navbar"
-            cursor="pointer"
-            // onClick={() => handleDropdownClick("walletConnectDropDown")}
-          >
-            <Box display="flex" gap="1">
-              <Box p="1">{getCoin("Starknet")}</Box>
-              <Text color="white" p="1">
-                Starknet
-              </Text>
-            </Box>
-          </Box>
           {available?.[0]?.options?.id == "braavos" ||
           available?.[1]?.options?.id == "braavos" ? (
             <Box
