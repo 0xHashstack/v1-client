@@ -1,0 +1,396 @@
+{
+  "goerli": {
+    "TOKENS": [
+      {
+        "name": "BTC",
+        "symbol": "BTC",
+        "decimals": 8,
+        "minDeposit": 0.0005,
+        "maxDeposit": 100000,
+        "minLoan": 0.0015,
+        "maxLoan": 100000,
+        "rToken": "0x1a542a2859369b78515fe0ea16647e094dac5dba307f0c656a25c2b260df6ad",
+        "dToken": "0x2880ea27d58d202ae78984f8462dd5b2808c3f6e7327af6deaa7ef454be58f",
+        "address": "0x25ef77455d671317799ecda57ee634633b2577d9f9f439c062d7e9c9e1fc29f",
+        "CEXSymbol": "BTCUSDT",
+        "pontis_key": "18669995996566340",
+        "mockPrice": 20000,
+        "ethereumAddress": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "ETH",
+        "symbol": "ETH",
+        "decimals": 18,
+        "minDeposit": 0.00625,
+        "maxDeposit": 100000,
+        "minLoan": 0.018,
+        "maxLoan": 100000,
+        "rToken": "0x5bac7932c6a6dc0578feab3643269fa3ce7bf2729a1ede9c37273dcb9b1eec1",
+        "dToken": "0x5b5dece096eaf569624f215fcf0ed8210a16f79dca691aef1a42c716bd37da0",
+        "address": "0x5d22cffa8d9538876d2b553e97c6067d34de78949c146d9d7e37b054403a536",
+        "CEXSymbol": "ETHUSDT",
+        "pontis_key": "19514442401534788",
+        "mockPrice": 2000,
+        "ethereumAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "USDT",
+        "symbol": "USDT",
+        "decimals": 6,
+        "minDeposit": 10,
+        "maxDeposit": 100000000,
+        "minLoan": 30,
+        "maxLoan": 300000000,
+        "rToken": "0x300f2c472ab337f55993a32fdf7c43016cb0d81c1d3e8b155b92fe6475086a1",
+        "dToken": "0x7a6a7296e19273a10b3d4834ae14bec18f075f7d77d998b072bd5e5a747ab20",
+        "address": "0x4b68b44da8123719395b1670c60e55f0a5e0571d0dbb33b2c2d991ee4a3f1c5",
+        "CEXSymbol": null,
+        "pontis_key": "6148333044652921668",
+        "mockPrice": 1,
+        "ethereumAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "USDC",
+        "symbol": "USDC",
+        "decimals": 6,
+        "minDeposit": 10,
+        "maxDeposit": 100000000,
+        "minLoan": 30,
+        "maxLoan": 300000000,
+        "rToken": "0x2fb267c4b264af1b8fea1052d3f8d853f438c7e2270eb39637375d3b5952a40",
+        "dToken": "0x3b8e16870d6eb725650d23a020883056a6f1093326fe547ac4d40e4c71052c9",
+        "address": "0x27d11831d1a104c63210944ee137375f8b0a2adcfa085453827cda2991454ca",
+        "CEXSymbol": "USDCUSDT",
+        "pontis_key": "6148332971638477636",
+        "mockPrice": 1,
+        "ethereumAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "DAI",
+        "symbol": "DAI",
+        "decimals": 18,
+        "minDeposit": 10,
+        "maxDeposit": 100000000,
+        "minLoan": 30,
+        "maxLoan": 300000000,
+        "rToken": "0x1e8ca2770648c089818c047ee09395258fd2b1562a081c2e31788b86e2355ac",
+        "dToken": "0x4d84998c8cb5daa6664124c58d0006250c7631051a4b3abd61b03663ee1cc02",
+        "address": "0xc1e528bbbb53eeab7f89c00ad87aef8a12e4caf07832112febc53d76cfca16",
+        "CEXSymbol": "USDTDAI",
+        "pontis_key": "19212080998863684",
+        "mockPrice": 1,
+        "ethereumAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
+        "NETWORK_TOKEN_ADDRESS": ""
+      }
+    ],
+    "rTOKENS": [
+      {
+        "name": "rBTC",
+        "symbol": "rBTC",
+        "decimals": 8,
+        "underlying_asset": "0x25ef77455d671317799ecda57ee634633b2577d9f9f439c062d7e9c9e1fc29f",
+        "address": "0x1a542a2859369b78515fe0ea16647e094dac5dba307f0c656a25c2b260df6ad",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "rETH",
+        "symbol": "rETH",
+        "decimals": 18,
+        "underlying_asset": "0x5d22cffa8d9538876d2b553e97c6067d34de78949c146d9d7e37b054403a536",
+        "address": "0x5bac7932c6a6dc0578feab3643269fa3ce7bf2729a1ede9c37273dcb9b1eec1",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "rUSDT",
+        "symbol": "rUSDT",
+        "decimals": 6,
+        "underlying_asset": "0x4b68b44da8123719395b1670c60e55f0a5e0571d0dbb33b2c2d991ee4a3f1c5",
+        "address": "0x300f2c472ab337f55993a32fdf7c43016cb0d81c1d3e8b155b92fe6475086a1",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "rUSDC",
+        "symbol": "rUSDC",
+        "decimals": 6,
+        "underlying_asset": "0x27d11831d1a104c63210944ee137375f8b0a2adcfa085453827cda2991454ca",
+        "address": "0x2fb267c4b264af1b8fea1052d3f8d853f438c7e2270eb39637375d3b5952a40",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "rDAI",
+        "symbol": "rDAI",
+        "decimals": 18,
+        "underlying_asset": "0xc1e528bbbb53eeab7f89c00ad87aef8a12e4caf07832112febc53d76cfca16",
+        "address": "0x1e8ca2770648c089818c047ee09395258fd2b1562a081c2e31788b86e2355ac",
+        "NETWORK_TOKEN_ADDRESS": ""
+      }
+    ],
+    "dTOKENS": [
+      {
+        "name": "dBTC",
+        "symbol": "dBTC",
+        "decimals": 8,
+        "underlying_asset": "0x25ef77455d671317799ecda57ee634633b2577d9f9f439c062d7e9c9e1fc29f",
+        "address": "0x2880ea27d58d202ae78984f8462dd5b2808c3f6e7327af6deaa7ef454be58f",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "dETH",
+        "symbol": "dETH",
+        "decimals": 18,
+        "underlying_asset": "0x5d22cffa8d9538876d2b553e97c6067d34de78949c146d9d7e37b054403a536",
+        "address": "0x5b5dece096eaf569624f215fcf0ed8210a16f79dca691aef1a42c716bd37da0",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "dUSDT",
+        "symbol": "dUSDT",
+        "decimals": 6,
+        "underlying_asset": "0x4b68b44da8123719395b1670c60e55f0a5e0571d0dbb33b2c2d991ee4a3f1c5",
+        "address": "0x7a6a7296e19273a10b3d4834ae14bec18f075f7d77d998b072bd5e5a747ab20",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "dUSDC",
+        "symbol": "dUSDC",
+        "decimals": 6,
+        "underlying_asset": "0x27d11831d1a104c63210944ee137375f8b0a2adcfa085453827cda2991454ca",
+        "address": "0x3b8e16870d6eb725650d23a020883056a6f1093326fe547ac4d40e4c71052c9",
+        "NETWORK_TOKEN_ADDRESS": ""
+      },
+      {
+        "name": "dDAI",
+        "symbol": "dDAI",
+        "decimals": 18,
+        "underlying_asset": "0xc1e528bbbb53eeab7f89c00ad87aef8a12e4caf07832112febc53d76cfca16",
+        "address": "0x4d84998c8cb5daa6664124c58d0006250c7631051a4b3abd61b03663ee1cc02",
+        "NETWORK_TOKEN_ADDRESS": ""
+      }
+    ],
+    "peripherals": {
+      "INSURANCE_ADDRESS": "0x272f3ea309a943d6102d8853e8f90c61d61304ddec42da42a6202b6bad8a672",
+      "TIER1_ADDRESS": "0x3ecf33f41577a591ccdd94a38f317f3bada2c6e946b5218a217d6ecb187763",
+      "TREASURY_ADDRESS": "0x3b63a0eef1a5b5294b1fb5deb800645b00c7fadecbbcb8a99b234e53d5fa9d2",
+      "COLLECTOR_ADDRESS": "0x469afb21df89be3793b93fdfb6df062af26aae324626a70b6a82cb59775cf3f",
+      "STAKING_ADDRESS": "0x6d57484e9004989d7df9f35fdfc6c760854d49223e4dae0e175da278dc9d37c"
+    },
+    "DEPLOYER_ADDRESS": "0x1ad42cd83da439ea01f5212249e482bcbc44efe58c9143f77319e02fed3402e",
+    "DEPLOYMENT_CONTRACT_ADDRESS": "0x11a1eabb35121465128c6982f9fde32ecb32b485fc259ec0e1a6de8afb4585b",
+    "DIAMOND_ADDRESS": "0x40ac8baf878c1bd7815e12c381c3ca827d7364501412bd9fc08c9aa8d6d0a0",
+    "ACCESS_CONTROL_ADDRESS": "0x3cdd21c9e85d856ea32b1343dbf73fddc0d8b2e3d9510ee7186a6a3a8d50ae3",
+    "EMPIRIC_PROXY_ADDRESS": "0x446812BAC98C08190DEE8967180F4E3CDCD1DB9373CA269904ACB17F67F7093",
+    "JEDI_SWAP_ROUTER_ADDRESS": "0x6845886f8d5bebd655e69f6d77d5ad0df9fb58cfb14134d0c08499d57b8289",
+    "MYSWAP_ROUTER_ADDRESS": "0x653cc2020ca6198bec38a51feddda8b919944402eade38c13f8761c1991cdf3",
+    "L3_DIAMOND_ADDRESS": "0x33fc4c5fb619f3b5ce0a446b69f3abe558e5fa6d8e82814a414f4012f0f28da",
+    "FAUCET_ADDRESS": "0x16743390bac16d1c8298cac1f5c31c10e45d4d4b62d71215f2bd4539aafe9e",
+    "METRICS_CONTRACT_ADDRESS": "0x22b05e0f99b14a1157bd34a0f7f711547f1754c090b7cda320d2825c8f2437b",
+    "PRE_DEPLOYED_ACCOUNTS": [
+      {
+        "ADDRESS": "0x2d11259a63898fc87d18219b4cbdbffc534862f321a1b1002a98056ecf3b78f",
+        "ADDRESS_PK": "0x7204a6532c544cea9a27425c161f92a1"
+      },
+      {
+        "ADDRESS": "0x254a32026c93b61c1be0096bb77c69fa96a57cdf467e7012081f840edf7d1b1",
+        "ADDRESS_PK": "0xc57d5924ad8d0aa5290d4b2f95766eb9"
+      },
+      {
+        "ADDRESS": "0x38ab016d4e507500f04a944b721067e1ae295a7dc6a24a411de5f13190a01e4",
+        "ADDRESS_PK": "0x9b20612dbf497a30b3de68ca5a53e1fe"
+      },
+      {
+        "ADDRESS": "0x4344117d737ef2b4f4279ef0a9bcfdbab9c8bda100ea657dd8335092845e29c",
+        "ADDRESS_PK": "0xe7416d68331f6520a89a502703f4271b"
+      },
+      {
+        "ADDRESS": "0x6dbedda9b495637d0d5ae3db15d892e137799935ee193ad46fd6b42ad6f2662",
+        "ADDRESS_PK": "0x4f52971828752d3029c7466501782429"
+      },
+      {
+        "ADDRESS": "0x72fdeccc5daa67f3563c47a2727620cf1f52d3f9b48597cb0f94af2a0ba684e",
+        "ADDRESS_PK": "0xf6bc2b241cdae2b15e80a993c164c41c"
+      },
+      {
+        "ADDRESS": "0x4b466cd07e0f932b03205f8073d2f3273abd4f88a89afd4150c0fc5db0ee2df",
+        "ADDRESS_PK": "0x4bc22f84f9e6664abcb65368910d0983"
+      },
+      {
+        "ADDRESS": "0x33a8a17985e133f1c46f576441437726d601eae7846ab998134ede6135535e4",
+        "ADDRESS_PK": "0xdf85cc4c915818f9bc3f2cc69b8783df"
+      },
+      {
+        "ADDRESS": "0x6ea18783fa002c18d3ee720e70c0a3eb3a333a5743262e2a264c48e96a54e0a",
+        "ADDRESS_PK": "0x9c44070356cf9d3cca20f87e40270857"
+      },
+      {
+        "ADDRESS": "0x4bb890a80f3f2ff941b4fac79d98b383be7754db6967ba42714ee9af64fba5d",
+        "ADDRESS_PK": "0x111ef926b3ed701a30812922462a4a96"
+      },
+      {
+        "ADDRESS": "0x24a7aff745cfaf19bc5066e47da62f24201b85eb9c6d3604671a59b88c7df27",
+        "ADDRESS_PK": "0xbebaeb122b7f3d136042abb6492cfb8e"
+      },
+      {
+        "ADDRESS": "0x4b341ca405ba097f1d5e287f01cf68e040e25f49d82b85300e767f411ef7620",
+        "ADDRESS_PK": "0x77f23bdf1643d8cdfb56b5ec976b2ad9"
+      },
+      {
+        "ADDRESS": "0x226d3e75d499547a084e7c9b291dfa95681732c4fa2adb8ff8cf4e51a71e10e",
+        "ADDRESS_PK": "0x231c4dbd6f53cb8c5491eb29a054a93d"
+      },
+      {
+        "ADDRESS": "0x93b24ec68648e444880dd45b8bcd5d19596a28141be3b41b152a3e19c9caea",
+        "ADDRESS_PK": "0x3bc00163ce57e9dbafaf8192336c842a"
+      },
+      {
+        "ADDRESS": "0x6d81ea2a8d189addf0ecd37f8b9f470d582571e19b61f4c6d8aeb81aa2e32ba",
+        "ADDRESS_PK": "0xfbb3c39b980e419a6db0926a69d2cb90"
+      },
+      {
+        "ADDRESS": "0x5ae0f1155541d977a13b303de555fee4a32e5b7a9a6c2e3b0b2a024f5372161",
+        "ADDRESS_PK": "0xed14ebe11640c881c8b63a68ba5f6233"
+      },
+      {
+        "ADDRESS": "0x448edb29c93ace93863c1573c6a4645e58098658f78157a8efd49a22bc263e8",
+        "ADDRESS_PK": "0xbd701fe637ace12db1a222013d0e1b01"
+      },
+      {
+        "ADDRESS": "0x30c79a877f9815f1710a05491dc0e3da1e186a43b9c57de60b1768913d8fa9d",
+        "ADDRESS_PK": "0xffd904ee185cbd26c520a9947672ab9d"
+      },
+      {
+        "ADDRESS": "0x4c3bd60b2cbde603ca465057c007d4159e94a1f425d49e680f7256dedea9610",
+        "ADDRESS_PK": "0xca9a7d2e28377f3088895c1655fe1872"
+      },
+      {
+        "ADDRESS": "0x1ee31c9017f3be746bbe3dae536d6c5791039e90b7f7ea6700d58e76227f95f",
+        "ADDRESS_PK": "0x69635d2127e0f0ee60caa2ccb43f797a"
+      },
+      {
+        "ADDRESS": "0x3b1e38be1aa0376b8c8630614f8a04d7465521ef84557cee6f8df7fe7b24f84",
+        "ADDRESS_PK": "0x58a5edd2df58f1987eba914b25548bb5"
+      },
+      {
+        "ADDRESS": "0x3d22a6d36b5038259b3e932f1da37dd262b0a06d710fa3aa9ebdf62400908fa",
+        "ADDRESS_PK": "0xf53fb783821e5bdabf05b3cfff5dd0eb"
+      },
+      {
+        "ADDRESS": "0x66a4b3939aa2d91994f96fea488212ab067c5a282bad037880c68168d4f2b9e",
+        "ADDRESS_PK": "0xaf1feee7dbb52534c14d0c8d2636c07f"
+      },
+      {
+        "ADDRESS": "0x47a999bd2bc9625a2ce4507160fe3acc627db1784a646af86b8e9a56b3effc0",
+        "ADDRESS_PK": "0xe13920c4a1be1e6f198df865ac945754"
+      },
+      {
+        "ADDRESS": "0x38c3e7229e44e70ceb87ac5171e74d5da6271b55d0c19e4df58b3870c1093c2",
+        "ADDRESS_PK": "0xa556f29c2d92ee6cf2cf66f564e7bf2d"
+      },
+      {
+        "ADDRESS": "0x5c449e9f4b53c4f098379786f3d93a1b456fdf8c2ba44aad46467926ca36231",
+        "ADDRESS_PK": "0x3cd40d2ed56c1af6c290885ad07079e1"
+      },
+      {
+        "ADDRESS": "0x2826029be583e3aa4c9c367790844df2d4976022173dc0c34d24f58eb6f80d5",
+        "ADDRESS_PK": "0x66f1a70bb193a9a1279970ac6e5de539"
+      },
+      {
+        "ADDRESS": "0x1045386753a8971b331d46be7b1ec36a6f031419305a7ad91dfcbf19c17d75f",
+        "ADDRESS_PK": "0x6ed666000fabee63a1dc78a991a1cfcf"
+      },
+      {
+        "ADDRESS": "0x49f90985bf24fae3e097fb2b143a8905dd231127e69af8a3fe85fe497bc4e38",
+        "ADDRESS_PK": "0xe95dd46209940ade7066549c0fa812bb"
+      },
+      {
+        "ADDRESS": "0x7787d44f103279ca8c0b9ec2ceed8f7f936ebd66ad1ea14ea4717d7e9d6dff2",
+        "ADDRESS_PK": "0xabd863ba1d855ad92ced5bad0566a7e4"
+      },
+      {
+        "ADDRESS": "0x6b5ea05960fcb5671ecbcce6f8e831f9cf65d0f3fe171a65d64048388ffa27f",
+        "ADDRESS_PK": "0xda0431dd0e1bbe12a2e6a34cc68179b4"
+      },
+      {
+        "ADDRESS": "0x3492b15b3588d0874269d857793bc035510062f6dde9328e7e85815f3a01ffb",
+        "ADDRESS_PK": "0xf30585a948924f172f8dfd8920fa2fb2"
+      },
+      {
+        "ADDRESS": "0x502666b5036b7be9397c4160231a17049aa140d88aa15ec8e8851c189dad12a",
+        "ADDRESS_PK": "0xdb02697177111f1febc83d6b3db6d999"
+      },
+      {
+        "ADDRESS": "0xe549da84f25a467591d823d1ab4b5d3dd0239863a0bfbe56d4952bc8db12d6",
+        "ADDRESS_PK": "0x86069849b585e8f84fc4f8a6db27fbbb"
+      },
+      {
+        "ADDRESS": "0xff2e644ae4a2ffa005c5e1454cf39936ab93387fc6f423a80ada0a1be7d270",
+        "ADDRESS_PK": "0x60f408a749370682a5c979969d953e31"
+      },
+      {
+        "ADDRESS": "0x8c660278721a92d32908075fe384f65b7e241eac7e0fd1c56f36cef32cd90f",
+        "ADDRESS_PK": "0xeca235fef4636c47f5865b267c724948"
+      },
+      {
+        "ADDRESS": "0x29ff55bc85f043d0e418da1578e18e0327057b7a4d7bdb789a8b1f342ec901d",
+        "ADDRESS_PK": "0x814badbee76700644bae9981945d3232"
+      },
+      {
+        "ADDRESS": "0x4ef87012423b69a95c291265ee6f566412c6d86a6dd1650f19efc8b18650bc2",
+        "ADDRESS_PK": "0x986eafe1da833a8f56adaaa006064df8"
+      },
+      {
+        "ADDRESS": "0xf4cb921cf7085882a599de786697db7e65670b9c2690da1db24a64ef1a6541",
+        "ADDRESS_PK": "0x226553d362bd1693464a3015326c51bd"
+      },
+      {
+        "ADDRESS": "0x25c318207bc476a436fe9537139df6de331530791c5633ebb3f42127d3054ed",
+        "ADDRESS_PK": "0x96ce5fb8ef2c0ba4c5b36a972a77cd55"
+      },
+      {
+        "ADDRESS": "0x3cf0cf3e4a4e4393b5a0b95694644a61b44b8fdaf1a5c69be3c318ef83a6251",
+        "ADDRESS_PK": "0x639087038e946eb36f98ebc7faee2fe8"
+      },
+      {
+        "ADDRESS": "0x70ff5fd80d44ef9e5c7d86b908c08eeb57941e10e2a25fc1ce2fc555b6a20ab",
+        "ADDRESS_PK": "0x9c556654bb91949f107d245ec236e38e"
+      },
+      {
+        "ADDRESS": "0x4b117d2f6e98f9b21938b9a9c5137ec666542af7dc28024d1b6cff2590d56a3",
+        "ADDRESS_PK": "0x757ce8b95439edfe42a7876722ec6d57"
+      },
+      {
+        "ADDRESS": "0x76896b56df13b4757661ee27be8672dacefb96acb9bf36833354f095362f6f7",
+        "ADDRESS_PK": "0xfb412f53372d7a2eca718ae3fc5e6cc3"
+      },
+      {
+        "ADDRESS": "0x731c651f30c32b2c2b35d1bfdcca8473bdaec07a87eb6d5bfb7d7817cc10fa8",
+        "ADDRESS_PK": "0xdf05c779c581a949303e6c60f9130ac"
+      },
+      {
+        "ADDRESS": "0x74f5838f80dcc8f4a20b74221c44e9bf743111a86418fbf5d7c7b5dbc400fb0",
+        "ADDRESS_PK": "0x650a271729da1356416e06c75003950e"
+      },
+      {
+        "ADDRESS": "0x2a3c30e3d19f8f70cd530e69ac0b65bc2324d92a6ca01697d11492d8d5f4e7b",
+        "ADDRESS_PK": "0xdd18cc32404f808741d5f48ad97da901"
+      },
+      {
+        "ADDRESS": "0x47fe9ad128acf9b46e7ffd3ee5cfa05f5838a9bbf7147cf5aac236ceb2988c0",
+        "ADDRESS_PK": "0x49272c26b1d7e96643e5e8d4db7ab629"
+      },
+      {
+        "ADDRESS": "0x2d447b48957c4b1864773ea34e464124c648ed58f476af1412e53a6b3ea3cc2",
+        "ADDRESS_PK": "0x69365cadbf9ba6150c5c8d4f62b62776"
+      },
+      {
+        "ADDRESS": "0x5bf6e5e56478087dcb0d106bb558b111130b1e375d754fef15b42737568df31",
+        "ADDRESS_PK": "0xa79c720c2fc9506b97f6d4485bb7655d"
+      }
+    ],
+    "LAST_DEPLOYMENT_STEP": 0,
+    "DEPLOYER_ADDRESS_PK": "0x3ed29494c9d672179215897fd82aa4f472528353859cefaec955b3e9f6bb56c"
+  }
+}

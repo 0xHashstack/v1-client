@@ -1,7 +1,9 @@
 // import DeployDetailsProd from "../../contract_addresses.json";
-import DeployDetailsProd from "../../contract_addresses_new.json";
+// import DeployDetailsProd from "../../contract_addresses_new.json";
+import DeployDetailsProd from "../../contract_addresses_2.json";
 // import ERC20Abi from "./abis/erc20_abi.json";
-import ERC20Abi from "./abi_new/erc20_abi.json";
+// import ERC20Abi from "./abi_new/erc20_abi.json";
+import ERC20Abi from "./abis_upgrade/erc20_abi.json";
 import { Provider, number } from "starknet";
 import { UseWaitForTransactionResult } from "@starknet-react/core";
 
@@ -57,6 +59,7 @@ export const getProvider = () => {
     const provider = new Provider({
       sequencer: {
         baseUrl: "https://alpha4.starknet.io",
+        // baseUrl: "http://127.0.0.1:5050/",
         feederGatewayUrl: "feeder_gateway",
         gatewayUrl: "gateway",
         blockIdentifier: "pending",

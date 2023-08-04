@@ -132,6 +132,7 @@ const StakeUnstakeModal = ({
   let protocolStats = useSelector(selectProtocolStats);
   let activeTransactions = useSelector(selectActiveTransactions);
   let stakingShares = useSelector(selectStakingShares);
+  // console.log(stakingShares,"staking shares")
 
   const [uniqueID, setUniqueID] = useState(0);
   const getUniqueId = () => uniqueID;
@@ -2340,9 +2341,7 @@ const StakeUnstakeModal = ({
                           <Button
                             variant="ghost"
                             color={`${
-                              !isValid(currentSelectedUnstakeCoin)
-                                ? "#1A7F37"
-                                : rTokenToWithdraw > unstakeWalletBalance
+                                rTokenToWithdraw > unstakeWalletBalance
                                 ? "#CF222E"
                                 : rTokenToWithdraw < 0
                                 ? "#CF222E"

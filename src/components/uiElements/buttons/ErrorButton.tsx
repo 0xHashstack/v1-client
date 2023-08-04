@@ -1,6 +1,7 @@
 import { Box, Button, Text } from "@chakra-ui/react";
 import TickIcon from "@/assets/icons/tickIcon";
 import React, { ReactNode, useEffect, useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
 const ErrorButton = ({ errorText }: { errorText: string }) => {
   return (
     <Box
@@ -13,9 +14,11 @@ const ErrorButton = ({ errorText }: { errorText: string }) => {
       height="100%"
       width="100%"
     >
+        <CopyToClipboard text="Transaction failed">
       <Text color="white" ml="0.4rem">
         {errorText}
       </Text>
+          </CopyToClipboard>
     </Box>
   );
 };

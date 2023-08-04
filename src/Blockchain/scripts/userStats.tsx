@@ -7,7 +7,8 @@ import {
 } from "../interfaces/interfaces";
 import metricsAbi from "../abis/metrics_abi.json";
 // import borrowTokenAbi from "../abis/dToken_abi.json";
-import borrowTokenAbi from "../abi_new/dToken_abi.json";
+// import borrowTokenAbi from "../abi_new/dToken_abi.json";
+import borrowTokenAbi from "../abis_upgrade/dToken_abi.json";
 import {
   getProvider,
   getRTokenFromAddress,

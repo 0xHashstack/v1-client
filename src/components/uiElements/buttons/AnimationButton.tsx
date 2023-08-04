@@ -12,6 +12,7 @@ import {
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import ErrorButton from "./ErrorButton";
+import CopyToClipboard from "react-copy-to-clipboard";
 interface Props extends ButtonProps {
   children: ReactNode;
   labelSuccessArray: Array<string | ReactNode>;
@@ -33,7 +34,8 @@ const AnimatedButton: React.FC<Props> = ({
   if (className) classes.push(className);
   const transactionFailed = [
     <ErrorButton errorText="Transaction failed" key={"error1"} />,
-    <ErrorButton errorText="Copy error!" key={"error2"} />,
+      <ErrorButton errorText="Copy error!" key={"error2"} />,
+
   ];
   //Below array is previously static data which is now used as labelArray as props
 
@@ -122,7 +124,7 @@ const AnimatedButton: React.FC<Props> = ({
       // }, 1500);
       // return () => clearInterval(interval);
     }
-  }, [currentStringIndex,modalClosed]);
+  }, [currentStringIndex, modalClosed]);
 
   const dispatch = useDispatch();
   // const handleClick = () => {
@@ -230,8 +232,8 @@ const AnimatedButton: React.FC<Props> = ({
         width="100%"
         position="relative"
         overflow="hidden"
-        // borderRadius="8px"
-        // bgColor="blue"
+      // borderRadius="8px"
+      // bgColor="blue"
       >
         <AnimatePresence initial={false}>
           {currentStringIndex === -1 ? (
@@ -279,18 +281,18 @@ const AnimatedButton: React.FC<Props> = ({
               {currentStringIndex === -1
                 ? children
                 : transactionStatus === "success"
-                ? currentTransactionStatus === ""
-                  ? labelSuccessArray[currentStringIndex]
-                  : currentTransactionStatus === "success"
-                  ? labelSuccessArray[currentStringIndex]
-                  : currentStringIndex === labelSuccessArray.length - 1
-                  ? transactionFailed[
-                      labelSuccessArray.length - currentStringIndex === 1
-                        ? 0
-                        : 1
-                    ]
-                  : labelSuccessArray[currentStringIndex]
-                : labelErrorArray[currentStringIndex]}
+                  ? currentTransactionStatus === ""
+                    ? labelSuccessArray[currentStringIndex]
+                    : currentTransactionStatus === "success"
+                      ? labelSuccessArray[currentStringIndex]
+                      : currentStringIndex === labelSuccessArray.length - 1
+                        ? transactionFailed[
+                        labelSuccessArray.length - currentStringIndex === 1
+                          ? 0
+                          : 1
+                        ]
+                        : labelSuccessArray[currentStringIndex]
+                  : labelErrorArray[currentStringIndex]}
               {/* {labelArray[currentStringIndex]} */}
             </motion.div>
           )}
@@ -300,9 +302,9 @@ const AnimatedButton: React.FC<Props> = ({
       <Box
         bgColor={
           transactionStatus === "success" ||
-          (transactionStatus === "" &&
-            (currentTransactionStatus === "" ||
-              currentTransactionStatus === "success"))
+            (transactionStatus === "" &&
+              (currentTransactionStatus === "" ||
+                currentTransactionStatus === "success"))
             ? "#2DA44E"
             : "#CF222E"
         }
@@ -313,7 +315,7 @@ const AnimatedButton: React.FC<Props> = ({
         height="100%"
         zIndex={0}
         transition="width 0.5s ease-in-out"
-        // borderLeftRadius="8px"
+      // borderLeftRadius="8px"
       />
     </Button>
   );

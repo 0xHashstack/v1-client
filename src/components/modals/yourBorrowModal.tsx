@@ -4658,7 +4658,7 @@ const YourBorrowModal = ({
                           className="navbar"
                           cursor="pointer"
                           onClick={() => {
-                            if (transactionStarted) {
+                            if (collateralTransactionStarted) {
                               return;
                             } else {
                               handleDropdownClick("yourBorrowTokenDropdown");
