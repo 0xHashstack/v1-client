@@ -144,13 +144,15 @@ export async function getUserDeposits(account: string) {
     // return promises;
     return new Promise((resolve, reject) => {
       Promise.allSettled([...promises]).then((val) => {
-        const results = val.map((deposit, idx) => {
-          if (deposit?.status == "fulfilled" && deposit?.value)
-            return parseDeposit(deposit?.value?.deposit);
-          else return {};
-          // else {
-          //   return "nothing";
-        });
+        const results = val
+          .filter((deposit, idx) => {
+            return deposit?.status == "fulfilled" && deposit?.value;
+          })
+          .map((deposit, idx) => {
+            if (deposit?.status == "fulfilled" && deposit?.value)
+              return parseDeposit(deposit?.value?.deposit);
+            else return {};
+          });
         console.log("supplies result: ", results);
         resolve(results);
       });
