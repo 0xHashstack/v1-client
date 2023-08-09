@@ -1,4 +1,8 @@
-import { IDeposit, ILoan } from "@/Blockchain/interfaces/interfaces";
+import {
+  IDeposit,
+  ILoan,
+  IMarketInfo,
+} from "@/Blockchain/interfaces/interfaces";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import {
@@ -568,7 +572,7 @@ const useDataLoader = () => {
         console.log("protocol stats called - transactionRefresh");
         const dataStats = await getProtocolStats();
         console.log("protocol stats - transactionRefresh done", dataStats);
-        if (!dataStats || dataStats?.length < 5) {
+        if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 5)) {
           return;
         }
         // console.log(dataStats,"data market in pagecard")

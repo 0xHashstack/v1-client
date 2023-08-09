@@ -724,11 +724,11 @@ const BorrowDashboard = ({
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         {avgs?.find(
-                          (item: any) => item.loanId == borrow?.loanId
+                          (item: any) => item?.loanId == borrow?.loanId
                         )?.avg ? (
                           Number(
                             avgs?.find(
-                              (item: any) => item.loanId == borrow?.loanId
+                              (item: any) => item?.loanId == borrow?.loanId
                             )?.avg
                           )?.toFixed(3) + "%"
                         ) : (

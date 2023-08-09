@@ -5,7 +5,7 @@ import {
   getTokenFromAddress,
   metricsContractAddress,
 } from "../stark-constants";
-import metricsAbi from "../abis/metrics_abi.json";
+import metricsAbi from "../abis_upgrade/metrics_abi.json";
 // import metricsAbi from "../abi_new/metrics_abi.json";
 import {
   IMarketInfo,
@@ -14,8 +14,10 @@ import {
   Token,
 } from "../interfaces/interfaces";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
+import { tokenDecimalsMap } from "../utils/addressServices";
 
-function parseProtocolStat(marketData: any): IMarketInfo {
+function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
+  console.log("decimals ", decimal);
   let marketInfo: IMarketInfo = {
     borrowRate: parseAmount(
       uint256.uint256ToBN(marketData?.borrow_rate).toString(),
@@ -64,7 +66,7 @@ function parseProtocolStat(marketData: any): IMarketInfo {
     ),
     exchangeRateDTokenToUnderlying: parseAmount(
       uint256.uint256ToBN(marketData?.exchange_rate_dToken_to_asset).toString(),
-      18
+      decimal
     ),
     exchangeRateUnderlyingToRtoken: parseAmount(
       uint256.uint256ToBN(marketData?.exchange_rate_asset_to_rToken).toString(),
@@ -72,7 +74,7 @@ function parseProtocolStat(marketData: any): IMarketInfo {
     ),
     exchangeRateUnderlyingToDtoken: parseAmount(
       uint256.uint256ToBN(marketData?.exchange_rate_asset_to_dToken).toString(),
-      18
+      decimal
     ),
 
     tokenAddress: number.toHex(marketData?.token_address),
@@ -91,27 +93,36 @@ export async function getProtocolStats() {
     provider
   );
   try {
+    const promises: any = [];
     for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
       const token = contractsEnv.TOKENS[i];
 
-      // console.log("get_protocol_stat for token: ", token.name);
-      const res = await metricsContract.call(
-        "get_protocol_stat",
-        [token.address],
-        {
-          blockIdentifier: "pending",
-        }
-      );
-      // console.log(
-      //   "get_protocol_stat finished for token: ",
-      //   token.name,
-      //   res?.market_info
-      // );
-      const market_info = parseProtocolStat(res?.market_info);
-      marketStats.push(market_info);
+      console.log("get_protocol_stat for token: ", token.name);
+      const res = metricsContract.call("get_protocol_stats", [token.address], {
+        blockIdentifier: "pending",
+      });
+      promises.push(res);
     }
+    return new Promise((resolve, reject) => {
+      Promise.allSettled([...promises]).then((val) => {
+        console.log("protocol stats result - ", val);
+        const results = val.map((stat, idx) => {
+          if (
+            stat?.status == "fulfilled" &&
+            stat?.value &&
+            stat?.value?.market_info
+          )
+            return parseProtocolStat(
+              stat?.value?.market_info,
+              contractsEnv?.TOKENS[idx]?.decimals
+            );
+          else return marketStats;
+        });
+        console.log("protocol stats result: ", results);
+        resolve(results);
+      });
+    });
     // console.log(marketStats,"market Stats in protocol stats")
-    return marketStats;
   } catch (e) {
     console.log("get_protocol_stat failed for token: ", e);
     return marketStats;

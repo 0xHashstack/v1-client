@@ -156,7 +156,7 @@ const YourSupplyModal = ({
   // console.log(currentSelectedWithdrawlCoin)
   const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
     userDeposit?.find(
-      (item: any) => item.rToken == currentSelectedWithdrawlCoin
+      (item: any) => item?.rToken == currentSelectedWithdrawlCoin
     )?.rTokenFreeParsed
   );
 
@@ -179,7 +179,7 @@ const YourSupplyModal = ({
   useEffect(() => {
     setWithdrawWalletBalance(
       userDeposit?.find(
-        (item: any) => item.rToken == currentSelectedWithdrawlCoin
+        (item: any) => item?.rToken == currentSelectedWithdrawlCoin
       )?.rTokenFreeParsed
     );
     // console.log("supply modal status wallet balance",walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf)
@@ -1691,7 +1691,7 @@ const YourSupplyModal = ({
                                         Wallet Balance:{" "}
                                         {
                                           userDeposit?.find(
-                                            (item: any) => item.rToken == coin
+                                            (item: any) => item?.rToken == coin
                                           )?.rTokenFreeParsed
                                         }
                                       </Box>
