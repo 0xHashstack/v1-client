@@ -626,8 +626,9 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />: */}
                         {avgs && avgs?.length > 0 ? (
-                          avgs?.find((item: any) => item.token == supply?.token)
-                            ?.avg + "%"
+                          avgs?.find(
+                            (item: any) => item?.token == supply?.token
+                          )?.avg + "%"
                         ) : (
                           <Skeleton
                             width="4rem"

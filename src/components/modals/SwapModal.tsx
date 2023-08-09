@@ -346,7 +346,7 @@ const SwapModal = ({
       }
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1177,14 +1177,14 @@ const SwapModal = ({
                 >
                   {avgs?.find(
                     (item: any) =>
-                      item.loanId ==
+                      item?.loanId ==
                       currentBorrowId
                         .slice(currentBorrowId?.indexOf("-") + 1)
                         ?.trim()
                   )?.avg
                     ? avgs?.find(
                         (item: any) =>
-                          item.loanId ==
+                          item?.loanId ==
                           currentBorrowId
                             .slice(currentBorrowId?.indexOf("-") + 1)
                             ?.trim()
@@ -1231,14 +1231,14 @@ const SwapModal = ({
                 >
                   {avgsLoneHealth?.find(
                     (item: any) =>
-                      item.loanId ==
+                      item?.loanId ==
                       currentBorrowId
                         .slice(currentBorrowId?.indexOf("-") + 1)
                         ?.trim()
                   )?.loanHealth
                     ? avgsLoneHealth?.find(
                         (item: any) =>
-                          item.loanId ==
+                          item?.loanId ==
                           currentBorrowId
                             .slice(currentBorrowId?.indexOf("-") + 1)
                             ?.trim()
