@@ -16,6 +16,11 @@ import {
   selectHourlyETHData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
+  selectMonthlyBTCData,
+  selectMonthlyDAIData,
+  selectMonthlyETHData,
+  selectMonthlyUSDCData,
+  selectMonthlyUSDTData,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import {
@@ -75,6 +80,11 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const monthlyBtcData = useSelector(selectMonthlyBTCData);
+  const monthlyEthData = useSelector(selectMonthlyETHData);
+  const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
+  const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
+  const monthlyDaiData = useSelector(selectMonthlyDAIData);
   // console.log(weeklyUsdtData?.aprs,"aprs")
   const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
   // console.log(usdcData,"usdc data")
@@ -459,129 +469,174 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       case 2:
         //y data axis
         if (currentSelectedCoin == 0) {
-          newData = [
-            {
-              name: "Supply Apr",
-              data: [300, 400, 350, 500, 490, 600, 800, 500, 490, 600, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 400, 390, 500, 700, 500, 490, 600, 800],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-          ];
+          monthlyBtcData?.aprs && monthlyBtcData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: monthlyBtcData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: monthlyBtcData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [300, 400, 350, 500, 490, 600, 800],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [200, 300, 250, 400, 390, 500, 700],
+                },
+              ]);
+          monthlyBtcData?.dates
+            ? (newCategories = monthlyBtcData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 1) {
-          newData = [
-            {
-              name: "Supply Apr",
-              data: [100, 400, 350, 200, 490, 300, 800, 500, 290, 500, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [100, 300, 250, 200, 390, 400, 700, 500, 490, 700, 800],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-          ];
+          monthlyUsdtData?.aprs && monthlyUsdtData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: monthlyUsdtData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: monthlyUsdtData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [100, 200, 250, 400, 390, 500, 700],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [700, 400, 250, 600, 490, 400, 800],
+                },
+              ]);
+          monthlyUsdtData?.dates
+            ? (newCategories = monthlyUsdtData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 2) {
-          newData = [
-            {
-              name: "Supply Apr",
-              data: [200, 400, 350, 200, 490, 300, 800, 500, 290, 200, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 100, 390, 800, 700, 500, 490, 700, 200],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-          ];
+          monthlyUsdcData?.aprs && monthlyUsdcData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: monthlyUsdcData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: monthlyUsdcData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [100, 200, 250, 400, 390, 500, 700],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [700, 400, 250, 600, 490, 400, 800],
+                },
+              ]);
+          monthlyUsdcData?.dates
+            ? (newCategories = monthlyUsdcData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 3) {
-          newData = [
-            {
-              name: "Supply Apr",
-              data: [100, 400, 350, 200, 490, 300, 800, 500, 290, 500, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [100, 300, 250, 200, 390, 400, 700, 500, 490, 700, 800],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-          ];
+          monthlyEthData?.aprs && monthlyEthData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: monthlyEthData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: monthlyEthData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [100, 400, 250, 300, 390, 500, 800],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [300, 400, 350, 300, 490, 500, 800],
+                },
+              ]);
+          monthlyEthData?.dates
+            ? (newCategories = monthlyEthData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 4) {
-          newData = [
-            {
-              name: "Supply Apr",
-              data: [200, 400, 350, 200, 490, 300, 800, 500, 290, 200, 800],
-            },
-            {
-              name: "Borrow Apr",
-              data: [200, 300, 250, 100, 390, 800, 700, 500, 490, 700, 200],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-          ];
+          monthlyDaiData?.aprs && monthlyDaiData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: monthlyDaiData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: monthlyDaiData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [100, 400, 250, 300, 390, 500, 800],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [300, 400, 350, 300, 490, 500, 800],
+                },
+              ]);
+          monthlyDaiData?.dates
+            ? (newCategories = monthlyDaiData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         }
         break;
@@ -935,7 +990,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

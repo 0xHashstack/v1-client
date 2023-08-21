@@ -4,7 +4,7 @@ import { Box, Button } from "@chakra-ui/react";
 
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
-import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { selectDailyBTCData, selectHourlyBTCData, selectMonthlyBTCData } from "@/store/slices/readDataSlice";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -33,6 +33,7 @@ const SupplyChartChart = () => {
   }, [liquidityProviderChartPeriod]);
   const btcData = useSelector(selectHourlyBTCData);
   const weeklyBtcData=useSelector(selectDailyBTCData);
+  const monthlyBtcData=useSelector(selectMonthlyBTCData);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -94,12 +95,20 @@ const SupplyChartChart = () => {
         break;
       case 2:
         //y data axis
+        monthlyBtcData?.supplyRates ?
+        newData=[
+          {
+            name:"Supply APR",
+            data:monthlyBtcData?.supplyRates,
+          }
+        ]:
         newData = [
           {
             name: "Supply APR",
             data: [500, 490, 520, 480, 510, 480, 500, 480, 510, 480],
           },
         ];
+        monthlyBtcData?.dates ? newCategories=monthlyBtcData?.dates:
         //x axis data
         newCategories = [
           new Date("2023-06-03").getTime(),
@@ -308,7 +317,7 @@ const SupplyChartChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

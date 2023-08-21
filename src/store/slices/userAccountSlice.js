@@ -57,6 +57,7 @@ const initialState = {
   healthFactorCount: -1,
   hourlyDataCount: -1,
   weeklyDataCount: -1,
+  monthlyDataCount:-1,
   netAprCount: -1,
   avgBorrowAprCount: -1,
   avgSupplyAprCount: -1,
@@ -222,6 +223,9 @@ export const userAccountSlice = createSlice({
     setWeeklyDataCount(state, action) {
       state.weeklyDataCount = action.payload;
     },
+    setMonthlyDataCount(state,action){
+      state.monthlyDataCount=action.payload;
+    },
     setAccountReset(state, action) {
       return { ...initialState };
     },
@@ -304,6 +308,7 @@ export const {
   setAprsAndHealthCount,
   setHourlyDataCount,
   setWeeklyDataCount,
+  setMonthlyDataCount,
   setUserUnspentLoans,
   setTransactionStartedAndModalClosed,
   setAccountReset,
@@ -392,6 +397,8 @@ export const selectHourlyDataCount = (state) =>
   state.user_account.hourlyDataCount;
 export const selectWeeklyDataCount = (state) =>
   state.user_account.weeklyDataCount;
+  export const selectMonthlyDataCount = (state) =>
+  state.user_account.monthlyDataCount;
 export const selectUserUnspentLoans = (state) =>
   state.user_account.userUnspentLoans;
 export const selectAprCount = (state) => state.user_account.aprCount;

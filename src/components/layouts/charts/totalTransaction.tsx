@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import {
   selectDailyBTCData,
   selectHourlyBTCData,
+  selectMonthlyBTCData,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -21,6 +22,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
   ]);
   const btcData = useSelector(selectHourlyBTCData);
   const weeklyBtcData = useSelector(selectDailyBTCData);
+  const monthlyBtcData=useSelector(selectMonthlyBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
 
   useEffect(() => {
@@ -98,6 +100,13 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
         break;
       case 2:
         //y data axis
+        monthlyBtcData?.totalTransactions ?
+        newData=[
+          {
+            name:"Total transactions",
+            data:monthlyBtcData?.totalTransactions
+          }
+        ]:
         newData = [
           {
             name: "Total transactions",
@@ -108,6 +117,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
           },
         ];
         //x axis data
+        monthlyBtcData?.dates ? newCategories=monthlyBtcData?.dates:
         newCategories = [
           new Date("2023-06-03").getTime(),
           new Date("2023-06-06").getTime(),
@@ -346,7 +356,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

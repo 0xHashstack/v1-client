@@ -15,6 +15,11 @@ import {
   selectHourlyETHData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
+  selectMonthlyBTCData,
+  selectMonthlyDAIData,
+  selectMonthlyETHData,
+  selectMonthlyUSDCData,
+  selectMonthlyUSDTData,
 } from "@/store/slices/readDataSlice";
 import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -58,6 +63,11 @@ const TotalUtilisationRateByMarketChart = () => {
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const monthlyBtcData = useSelector(selectMonthlyBTCData);
+  const monthlyEthData = useSelector(selectMonthlyETHData);
+  const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
+  const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
+  const monthlyDaiData = useSelector(selectMonthlyDAIData);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -219,6 +229,33 @@ const TotalUtilisationRateByMarketChart = () => {
         break;
       case 2:
         //y data axis
+        monthlyBtcData?.utilRates &&
+        monthlyEthData?.utilRates &&
+        monthlyUsdtData?.utilRates &&
+        monthlyUsdcData?.utilRates &&
+        monthlyDaiData?.utilRates
+          ? (newData = [
+              {
+                name: "BTC",
+                data: monthlyBtcData?.utilRates,
+              },
+              {
+                name: "ETH",
+                data: monthlyEthData?.utilRates,
+              },
+              {
+                name: "USDT",
+                data: monthlyUsdtData?.utilRates,
+              },
+              {
+                name: "USDC",
+                data: monthlyUsdcData?.utilRates,
+              },
+              {
+                name: "DAI",
+                data: monthlyDaiData?.utilRates,
+              },
+            ]):
         newData = [
           {
             name: "BTC",
@@ -259,6 +296,7 @@ const TotalUtilisationRateByMarketChart = () => {
           },
         ];
         //x axis data
+        monthlyBtcData?.dates ? newCategories=monthlyBtcData?.dates:
         newCategories = [
           new Date("2023-06-03").getTime(),
           new Date("2023-06-06").getTime(),
@@ -517,7 +555,7 @@ const TotalUtilisationRateByMarketChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

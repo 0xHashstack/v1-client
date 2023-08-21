@@ -3,7 +3,7 @@ import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
-import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { selectDailyBTCData, selectHourlyBTCData, selectMonthlyBTCData } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
@@ -19,6 +19,7 @@ const TotalAccountsChart = () => {
   ]);
   const btcData = useSelector(selectHourlyBTCData);
   const weeklyBtcData=useSelector(selectDailyBTCData);
+  const monthlyBtcData=useSelector(selectMonthlyBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -95,6 +96,13 @@ const TotalAccountsChart = () => {
         break;
       case 2:
         //y data axis
+        monthlyBtcData?.totalAccounts ?
+        newData=[
+          {
+            name:"Total Accounts",
+            data:monthlyBtcData?.totalAccounts
+          }
+        ]:
         newData = [
           {
             name: "Total Accounts",
@@ -105,6 +113,7 @@ const TotalAccountsChart = () => {
           },
         ];
         //x axis data
+        monthlyBtcData?.dates ? newCategories=monthlyBtcData?.dates:
         newCategories = [
           new Date("2023-06-03").getTime(),
           new Date("2023-06-06").getTime(),
@@ -317,7 +326,7 @@ const TotalAccountsChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

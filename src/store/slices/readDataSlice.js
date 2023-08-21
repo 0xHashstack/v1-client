@@ -242,11 +242,11 @@ export const selectDailyETHData = (state) => state.read_data.dailyETHData;
 export const selectDailyUSDTData = (state) => state.read_data.dailyUSDTData;
 export const selectDailyUSDCData = (state) => state.read_data.dailyUSDCData;
 export const selectDailyDAIData = (state) => state.read_data.dailyDAIData;
-export const selectMonthlyBTCData = (state) => state.read_data.dailyBTCData;
-export const selectMonthlyETHData = (state) => state.read_data.dailyETHData;
-export const selectMonthlyUSDTData = (state) => state.read_data.dailyUSDTData;
-export const selectMonthlyUSDCData = (state) => state.read_data.dailyUSDCData;
-export const selectMonthlyDAIData = (state) => state.read_data.dailyDAIData;
+export const selectMonthlyBTCData = (state) => state.read_data.monthlyBTCData;
+export const selectMonthlyETHData = (state) => state.read_data.monthlyETHData;
+export const selectMonthlyUSDTData = (state) => state.read_data.monthlyUSDTData;
+export const selectMonthlyUSDCData = (state) => state.read_data.monthlyUSDCData;
+export const selectMonthlyDAIData = (state) => state.read_data.monthlyDAIData;
 export const selectYourMetricsSupply = (state) =>
   state.read_data.yourMetricsSupply;
 export const selectYourMetricsBorrow = (state) =>
