@@ -1012,7 +1012,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
-                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
+                border: `${aprByMarket === 3 ? "none" : "1px solid #2B2F35"}`,
               }}
             >
               ALL

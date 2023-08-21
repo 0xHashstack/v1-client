@@ -348,7 +348,7 @@ const SupplyChartChart = () => {
                 cursor: "pointer",
                 color: "#2B2F35",
                 border: `${
-                  liquidityProviderChartPeriod === 2
+                  liquidityProviderChartPeriod === 3
                     ? "none"
                     : "1px solid #2B2F35"
                 }`,
