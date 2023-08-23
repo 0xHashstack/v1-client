@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import {
   selectDailyBTCData,
   selectHourlyBTCData,
+  selectMonthlyBTCData,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { number } from "starknet";
@@ -22,6 +23,8 @@ const UtilisationRateChart = () => {
   ]);
   const btcData = useSelector(selectHourlyBTCData);
   const weeklyBtcData = useSelector(selectDailyBTCData);
+  const monthlyBtcData=useSelector(selectMonthlyBTCData);
+  console.log(monthlyBtcData,"month data")
   // console.log(weeklyBtcData, "week data");
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
   const maxValue = Math.max(...chartData.flatMap((series) => series.data));
@@ -102,6 +105,13 @@ const UtilisationRateChart = () => {
         break;
       case 2:
         //y data axis
+        monthlyBtcData?.totalUrm ?
+        newData=[
+          {
+            name:"Utlization Rate",
+            data:monthlyBtcData?.totalUrm,
+          }
+        ]:
         newData = [
           {
             name: "Utlization Rate",
@@ -109,6 +119,7 @@ const UtilisationRateChart = () => {
           },
         ];
         //x axis data
+        monthlyBtcData?.dates ? newCategories=monthlyBtcData?.dates :
         newCategories = [
           new Date("2023-06-03").getTime(),
           new Date("2023-06-06").getTime(),
@@ -309,7 +320,7 @@ const UtilisationRateChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
@@ -340,7 +351,7 @@ const UtilisationRateChart = () => {
                 cursor: "pointer",
                 color: "#2B2F35",
                 border: `${
-                  liquidityProviderChartPeriod === 2
+                  liquidityProviderChartPeriod === 3
                     ? "none"
                     : "1px solid #2B2F35"
                 }`,

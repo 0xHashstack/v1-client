@@ -13,6 +13,11 @@ import {
   selectHourlyETHData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
+  selectMonthlyBTCData,
+  selectMonthlyDAIData,
+  selectMonthlyETHData,
+  selectMonthlyUSDCData,
+  selectMonthlyUSDTData,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dynamic from "next/dynamic";
@@ -38,6 +43,11 @@ const BorrowChart = () => {
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const monthlyBtcData = useSelector(selectMonthlyBTCData);
+  const monthlyEthData = useSelector(selectMonthlyETHData);
+  const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
+  const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
+  const monthlyDaiData = useSelector(selectMonthlyDAIData);
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -217,6 +227,33 @@ const BorrowChart = () => {
         break;
       case 2:
         //y data axis
+        monthlyBtcData?.borrowAmounts &&
+        monthlyEthData?.borrowAmounts &&
+        monthlyUsdcData?.borrowAmounts &&
+        monthlyUsdtData?.borrowAmounts &&
+        monthlyDaiData?.borrowAmounts
+          ? (newData = [
+              {
+                name: "BTC",
+                data: monthlyBtcData?.borrowAmounts,
+              },
+              {
+                name: "ETH",
+                data: monthlyEthData?.borrowAmounts,
+              },
+              {
+                name: "USDT",
+                data: monthlyUsdtData?.borrowAmounts,
+              },
+              {
+                name: "USDC",
+                data: monthlyUsdcData?.borrowAmounts,
+              },
+              {
+                name: "DAI",
+                data: monthlyDaiData?.borrowAmounts,
+              },
+            ]):
         newData = [
           {
             name: "BTC",
@@ -257,6 +294,7 @@ const BorrowChart = () => {
           },
         ];
         //x axis data
+        monthlyBtcData?.dates ? newCategories=monthlyBtcData?.dates:
         newCategories = [
           new Date("2023-06-03").getTime(),
           new Date("2023-06-06").getTime(),
@@ -514,7 +552,7 @@ const BorrowChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
@@ -545,7 +583,7 @@ const BorrowChart = () => {
                 cursor: "pointer",
                 color: "#2B2F35",
                 border: `${
-                  liquidityProviderChartPeriod === 2
+                  liquidityProviderChartPeriod === 3
                     ? "none"
                     : "1px solid #2B2F35"
                 }`,

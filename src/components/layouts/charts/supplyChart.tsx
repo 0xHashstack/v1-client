@@ -14,6 +14,11 @@ import {
   selectHourlyETHData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
+  selectMonthlyBTCData,
+  selectMonthlyDAIData,
+  selectMonthlyETHData,
+  selectMonthlyUSDCData,
+  selectMonthlyUSDTData,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dynamic from "next/dynamic";
@@ -53,6 +58,11 @@ const SupplyChart = () => {
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const monthlyBtcData = useSelector(selectMonthlyBTCData);
+  const monthlyEthData = useSelector(selectMonthlyETHData);
+  const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
+  const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
+  const monthlyDaiData = useSelector(selectMonthlyDAIData);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   // console.log(daiData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
@@ -222,6 +232,34 @@ const SupplyChart = () => {
         break;
       case 2:
         //y data axis
+        monthlyBtcData?.supplyAmounts &&
+        monthlyEthData?.supplyAmounts &&
+        monthlyUsdtData?.supplyAmounts &&
+        monthlyUsdcData?.supplyAmounts &&
+        monthlyDaiData?.supplyAmounts
+          ? (newData = [
+              {
+                name: "BTC",
+                data: monthlyBtcData?.supplyAmounts,
+                // color: "#fffff",
+              },
+              {
+                name: "ETH",
+                data: monthlyEthData.supplyAmounts,
+              },
+              {
+                name: "USDT",
+                data: monthlyUsdtData.supplyAmounts,
+              },
+              {
+                name: "USDC",
+                data:monthlyUsdcData.supplyAmounts,
+              },
+              {
+                name: "DAI",
+                data: monthlyDaiData.supplyAmounts,
+              },
+            ]):
         newData = [
           {
             name: "BTC",
@@ -262,6 +300,7 @@ const SupplyChart = () => {
           },
         ];
         //x axis data
+        monthlyBtcData?.dates ? newCategories=monthlyBtcData?.dates :
         newCategories = [
           new Date("2023-06-03").getTime(),
           new Date("2023-06-06").getTime(),
@@ -530,7 +569,7 @@ const SupplyChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
@@ -561,7 +600,7 @@ const SupplyChart = () => {
                 cursor: "pointer",
                 color: "#2B2F35",
                 border: `${
-                  liquidityProviderChartPeriod === 2
+                  liquidityProviderChartPeriod === 3
                     ? "none"
                     : "1px solid #2B2F35"
                 }`,

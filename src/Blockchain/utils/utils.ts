@@ -5,7 +5,6 @@ import { Logger } from "ethers/lib/utils";
 import { getTokenFromAddress } from "../stark-constants";
 import { tokenDecimalsMap } from "./addressServices";
 import { Token } from "../interfaces/interfaces";
-
 export const fixedSpecial = (num: number, n: number) => {
   var str = num.toPrecision();
   if (str.indexOf("e+") === -1) return str;
@@ -158,10 +157,9 @@ export const weiToEtherNumber = (amount: string, tokenName: Token) => {
 };
 
 export const parseAmount = (amount: string, decimals = 18) => {
-  const factor = 1000_000;
-  const amountBN = number
-    .toBN(amount)
-    .mul(number.toBN(factor))
-    .div(number.toBN(10).pow(number.toBN(decimals)));
-  return amountBN.toNumber() / factor;
+  const factor = new BigNumber(1000000);
+  const amountBN = new BigNumber(amount)
+    .times(factor)
+    .dividedBy(new BigNumber(10).exponentiatedBy(decimals));
+  return amountBN.toNumber() / factor.toNumber();
 };
