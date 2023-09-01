@@ -110,15 +110,15 @@ export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 export const faucetAddress: string = contractsEnv.FAUCET_ADDRESS;
 
 export const getTokenFromAddress = (address: string) => {
-  return contractsEnv.TOKENS.find((item) => item.address === address);
+  return contractsEnv.TOKENS.find((item) => item?.address === address);
 };
 
 export const getRTokenFromAddress = (address: string) => {
-  return contractsEnv.rTOKENS.find((item) => item.address === address);
+  return contractsEnv.rTOKENS.find((item) => item?.address === address);
 };
 
 export const getDTokenFromAddress = (address: string) => {
-  return contractsEnv.dTOKENS.find((item) => item.address === address);
+  return contractsEnv.dTOKENS.find((item) => item?.address === address);
 };
 
 export { ERC20Abi, contractsEnv };

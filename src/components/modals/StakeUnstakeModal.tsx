@@ -771,7 +771,7 @@ const StakeUnstakeModal = ({
     );
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   const [rtokenWalletBalance, setrTokenWalletBalance] = useState(
-    userDeposit?.find((item: any) => item.rToken == currentSelectedStakeCoin)
+    userDeposit?.find((item: any) => item?.rToken == currentSelectedStakeCoin)
       ?.rTokenFreeParsed
   );
   // console.log(rtokenWalletBalance,"rtoken wallet ")
@@ -790,7 +790,7 @@ const StakeUnstakeModal = ({
   );
   useEffect(() => {
     setrTokenWalletBalance(
-      userDeposit?.find((item: any) => item.rToken == currentSelectedStakeCoin)
+      userDeposit?.find((item: any) => item?.rToken == currentSelectedStakeCoin)
         ?.rTokenFreeParsed
     );
     setRToken(currentSelectedStakeCoin);
@@ -1288,12 +1288,12 @@ const StakeUnstakeModal = ({
                                         {userDeposit &&
                                         userDeposit.length > 0 &&
                                         userDeposit?.find(
-                                          (item: any) => item.rToken == _coin
+                                          (item: any) => item?.rToken == _coin
                                         )?.rTokenFreeParsed != null ? (
                                           numberFormatter(
                                             userDeposit?.find(
                                               (item: any) =>
-                                                item.rToken == _coin
+                                                item?.rToken == _coin
                                             )?.rTokenFreeParsed
                                           )
                                         ) : (
@@ -1896,7 +1896,7 @@ const StakeUnstakeModal = ({
                       </Text> */}
                       {isValid(currentSelectedStakeCoin) &&
                       userDeposit?.find(
-                        (item: any) => item.rToken == currentSelectedStakeCoin
+                        (item: any) => item?.rToken == currentSelectedStakeCoin
                       )?.rTokenFreeParsed ? (
                         rTokenAmount > 0 &&
                         rTokenAmount <= rtokenWalletBalance ? (
@@ -1982,7 +1982,7 @@ const StakeUnstakeModal = ({
                               !isValid(currentSelectedStakeCoin) &&
                               userDeposit?.find(
                                 (item: any) =>
-                                  item.rToken == currentSelectedStakeCoin
+                                  item?.rToken == currentSelectedStakeCoin
                               )?.rTokenFreeParsed != 0
                                 ? "Stake and Supply"
                                 : "Stake"
@@ -2072,7 +2072,7 @@ const StakeUnstakeModal = ({
                             isValid(currentSelectedStakeCoin) &&
                             userDeposit?.find(
                               (item: any) =>
-                                item.rToken == currentSelectedStakeCoin
+                                item?.rToken == currentSelectedStakeCoin
                             )?.rTokenFreeParsed > 0
                               ? "Stake"
                               : "Stake and Supply"
@@ -2341,7 +2341,7 @@ const StakeUnstakeModal = ({
                           <Button
                             variant="ghost"
                             color={`${
-                                rTokenToWithdraw > unstakeWalletBalance
+                              rTokenToWithdraw > unstakeWalletBalance
                                 ? "#CF222E"
                                 : rTokenToWithdraw < 0
                                 ? "#CF222E"

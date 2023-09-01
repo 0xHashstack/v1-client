@@ -568,10 +568,10 @@ const SpendTable = () => {
                           lineHeight="22px"
                         >
                           {avgs?.find(
-                            (item: any) => item.loanId == borrow?.loanId
+                            (item: any) => item?.loanId == borrow?.loanId
                           )?.avg
                             ? avgs?.find(
-                                (item: any) => item.loanId == borrow?.loanId
+                                (item: any) => item?.loanId == borrow?.loanId
                               )?.avg
                             : "3.2"}
                           %
@@ -620,10 +620,11 @@ const SpendTable = () => {
                               textAlign="right"
                             >
                               {avgsLoneHealth?.find(
-                                (item: any) => item.loanId == borrow?.loanId
+                                (item: any) => item?.loanId == borrow?.loanId
                               )?.loanHealth
                                 ? avgsLoneHealth?.find(
-                                    (item: any) => item.loanId == borrow?.loanId
+                                    (item: any) =>
+                                      item?.loanId == borrow?.loanId
                                   )?.loanHealth
                                 : "2.5"}
                               %

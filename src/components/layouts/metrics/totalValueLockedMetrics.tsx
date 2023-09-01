@@ -18,6 +18,11 @@ import {
   selectHourlyETHData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
+  selectMonthlyBTCData,
+  selectMonthlyDAIData,
+  selectMonthlyETHData,
+  selectMonthlyUSDCData,
+  selectMonthlyUSDTData,
   selectProtocolReserves,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
@@ -47,6 +52,11 @@ const TotalValueLockedMetrics = () => {
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const monthlyBtcData = useSelector(selectMonthlyBTCData);
+  const monthlyEthData = useSelector(selectMonthlyETHData);
+  const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
+  const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
+  const monthlyDaiData = useSelector(selectMonthlyDAIData);
   // console.log(btcData,"data tvl")
   useEffect(() => {
     // Fetch data based on selected option
@@ -63,6 +73,7 @@ const TotalValueLockedMetrics = () => {
   }, [aprByMarket]);
   const tvlamounts: any = [];
   const tvlAmountsWeekly: any = [];
+  const tvlAmountsMonthly:any=[];
   // console.log(btcData?.tvlAmounts,"data btc")
   // console.log(ethData?.tvlAmounts,"data eth")
   // console.log(usdtData?.tvlAmounts,"data usdt")
@@ -85,6 +96,15 @@ const TotalValueLockedMetrics = () => {
       weeklyUsdtData?.tvlAmounts[i] +
       weeklyDaiData?.tvlAmounts[i];
     tvlAmountsWeekly.push(data);
+  }
+  for (let i = 0; i < monthlyBtcData?.tvlAmounts?.length; i++) {
+    var data =
+      monthlyBtcData?.tvlAmounts[i] +
+      monthlyEthData?.tvlAmounts[i] +
+      monthlyUsdcData?.tvlAmounts[i] +
+      monthlyUsdtData?.tvlAmounts[i] +
+      monthlyDaiData?.tvlAmounts[i];
+    tvlAmountsMonthly.push(data);
   }
   // console.log(tvlamounts,"amounts");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
@@ -149,6 +169,13 @@ const TotalValueLockedMetrics = () => {
         break;
       case 2:
         //y data axis
+        monthlyBtcData?.tvlAmounts ?
+        newData=[
+          {
+            name:"Total Value Locked",
+            data:tvlAmountsMonthly
+          }
+        ]:
         newData = [
           {
             name: "Total Value Locked",
@@ -161,6 +188,7 @@ const TotalValueLockedMetrics = () => {
           },
         ];
         //x axis data
+        monthlyBtcData?.dates ? newCategories=monthlyBtcData?.dates :
         newCategories = [
           new Date("2023-06-01").getTime(),
           new Date("2023-06-02").getTime(),
@@ -424,7 +452,7 @@ const TotalValueLockedMetrics = () => {
                 onClick={() => {
                   setAPRByMarket(2);
                 }}
-                isDisabled={true}
+                isDisabled={false}
                 _disabled={{
                   cursor: "pointer",
                   color: "#2B2F35",
@@ -446,7 +474,7 @@ const TotalValueLockedMetrics = () => {
                 _disabled={{
                   cursor: "pointer",
                   color: "#2B2F35",
-                  border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
+                  border: `${aprByMarket === 3 ? "none" : "1px solid #2B2F35"}`,
                 }}
               >
                 ALL

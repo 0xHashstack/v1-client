@@ -16,6 +16,11 @@ import {
   selectHourlyETHData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
+  selectMonthlyBTCData,
+  selectMonthlyDAIData,
+  selectMonthlyETHData,
+  selectMonthlyUSDCData,
+  selectMonthlyUSDTData,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { setCoinSelectedExchangeRateRToken } from "@/store/slices/userAccountSlice";
@@ -72,6 +77,11 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const monthlyBtcData = useSelector(selectMonthlyBTCData);
+  const monthlyEthData = useSelector(selectMonthlyETHData);
+  const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
+  const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
+  const monthlyDaiData = useSelector(selectMonthlyDAIData);
   const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
   // useEffect(()=>{
 
@@ -364,109 +374,134 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
       case 2:
         //y data axis
         if (currentSelectedCoin == 0) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [300, 400, 350, 500, 490, 600, 800, 500, 490, 600, 800],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-          ];
+          monthlyBtcData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: monthlyBtcData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [300, 400, 350, 500, 490, 600, 800],
+                },
+              ]);
+          monthlyBtcData?.dates
+            ? (newCategories = monthlyBtcData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 1) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [100, 400, 350, 200, 490, 300, 800, 500, 290, 500, 800],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-          ];
+          monthlyUsdtData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: monthlyUsdtData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [200, 300, 250, 400, 390, 500, 700],
+                },
+              ]);
+          monthlyUsdtData?.dates
+            ? (newCategories = monthlyUsdtData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 2) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [200, 400, 350, 200, 490, 300, 800, 500, 290, 200, 800],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-          ];
+          monthlyUsdcData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: monthlyUsdcData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [100, 200, 250, 400, 390, 500, 700],
+                },
+              ]);
+          monthlyUsdcData?.dates
+            ? (newCategories = monthlyUsdcData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 3) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [100, 400, 350, 200, 490, 300, 800, 500, 290, 500, 800],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-          ];
+          monthlyEthData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: monthlyEthData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [200, 300, 250, 400, 390, 500, 700],
+                },
+              ]);
+          monthlyEthData?.dates
+            ? (newCategories = monthlyEthData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 4) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [200, 400, 350, 200, 490, 300, 800, 500, 290, 200, 800],
-            },
-          ];
-          //x axis data
-          newCategories = [
-            new Date("2023-06-03").getTime(),
-            new Date("2023-06-06").getTime(),
-            new Date("2023-06-09").getTime(),
-            new Date("2023-06-12").getTime(),
-            new Date("2023-06-15").getTime(),
-            new Date("2023-06-18").getTime(),
-            new Date("2023-06-21").getTime(),
-            new Date("2023-06-24").getTime(),
-            new Date("2023-06-27").getTime(),
-            new Date("2023-06-30").getTime(),
-          ];
+          monthlyDaiData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: monthlyDaiData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [100, 400, 250, 300, 390, 500, 800],
+                },
+              ]);
+          monthlyDaiData?.dates
+            ? (newCategories = monthlyDaiData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         }
         break;
@@ -796,7 +831,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
@@ -818,7 +853,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
-                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
+                border: `${aprByMarket === 3 ? "none" : "1px solid #2B2F35"}`,
               }}
             >
               ALL

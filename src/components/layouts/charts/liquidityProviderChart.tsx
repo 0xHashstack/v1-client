@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { selectDailyBTCData, selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import { selectDailyBTCData, selectHourlyBTCData, selectMonthlyBTCData } from "@/store/slices/readDataSlice";
 import dynamic from "next/dynamic";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { ApexOptions } from "apexcharts";
@@ -18,6 +18,7 @@ const LiquidityProviderChart = () => {
   ]);
   const btcData = useSelector(selectHourlyBTCData);
   const weeklyBtcData=useSelector(selectDailyBTCData);
+  const monthlyBtcData=useSelector(selectMonthlyBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -93,11 +94,11 @@ const LiquidityProviderChart = () => {
         break;
       case 2:
         //y data axis
-        weeklyBtcData?.supplyCounts ?
+        monthlyBtcData?.supplyCounts ?
         newData = [
           {
             name: "Liquidity Provider",
-            data: weeklyBtcData?.supplyCounts,
+            data: monthlyBtcData?.supplyCounts,
           },
         ]:   
         newData = [
@@ -109,7 +110,7 @@ const LiquidityProviderChart = () => {
             ],
           },
         ];
-        weeklyBtcData?.dates ? newCategories=weeklyBtcData:
+        monthlyBtcData?.dates ? newCategories=monthlyBtcData?.dates:
         //x axis data
         newCategories = [
           new Date("2023-06-03").getTime(),
@@ -321,7 +322,7 @@ const LiquidityProviderChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
@@ -352,7 +353,7 @@ const LiquidityProviderChart = () => {
                 cursor: "pointer",
                 color: "#2B2F35",
                 border: `${
-                  liquidityProviderChartPeriod === 2
+                  liquidityProviderChartPeriod === 3
                     ? "none"
                     : "1px solid #2B2F35"
                 }`,

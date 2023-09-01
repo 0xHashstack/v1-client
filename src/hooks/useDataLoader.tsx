@@ -1,4 +1,8 @@
-import { IDeposit, ILoan } from "@/Blockchain/interfaces/interfaces";
+import {
+  IDeposit,
+  ILoan,
+  IMarketInfo,
+} from "@/Blockchain/interfaces/interfaces";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import {
@@ -24,6 +28,7 @@ import {
   selectAvgSupplyAprCount,
   selectHealthFactorCount,
   selectHourlyDataCount,
+  selectMonthlyDataCount,
   selectNetAprCount,
   selectOraclePricesCount,
   selectProtocolStatsCount,
@@ -44,6 +49,7 @@ import {
   setAvgSupplyAprCount,
   setHealthFactorCount,
   setHourlyDataCount,
+  setMonthlyDataCount,
   setNetAprCount,
   setOraclePricesCount,
   setProtocolReservesCount,
@@ -84,6 +90,11 @@ import {
   setDailyUSDTData,
   setStakingShares,
   selectStakingShares,
+  setMonthlyDAIData,
+  setMonthlyBTCData,
+  setMonthlyUSDCData,
+  setMonthlyUSDTData,
+  setMonthlyETHData,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -154,6 +165,7 @@ const useDataLoader = () => {
   const yourMetricsBorrowCount = useSelector(selectYourMetricsBorrowCount);
   const yourMetricsSupplyCount = useSelector(selectYourMetricsSupplyCount);
   const weeklyDataCount = useSelector(selectWeeklyDataCount);
+  const monthlyDataCount=useSelector(selectMonthlyDataCount);
   // const stakingShares = useSelector(selectStakingShares);
   const stakingSharesCount = useSelector(selectStakingSharesCount);
   const transactionStatus = useSelector(selectTransactionStatus);
@@ -278,8 +290,11 @@ const useDataLoader = () => {
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
                   )?.price;
                 const tvlAmount: number =
-                  Number(response?.[i].tvlAmount) /
-                  Math.pow(10, tokenDecimalsMap[token]);
+                (Number(response?.[i]?.tvlAmount) /
+                Math.pow(10, tokenDecimalsMap[token])) *
+              oraclePrices?.find(
+                (oraclePrice: OraclePrice) => oraclePrice?.name == token
+              )?.price;
                 // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
                 // console.log(response?.[i].tokenName)
                 // const supplyAmount1=etherToWeiBN(amount,token)
@@ -518,6 +533,164 @@ const useDataLoader = () => {
     }
   }, [oraclePrices]);
   useEffect(() => {
+    const fetchMonthlyData = async () => {
+      try {
+        // console.log("HIII")
+        // if(hourlyBTCData!=null){
+        //   return;
+        // }
+        const promises = [
+          OffchainAPI.httpGet(`/api/metrics/tvl/monthly/DAI`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/monthly/BTC`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/monthly/USDT`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/monthly/USDC`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/monthly/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/DAI`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/BTC`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/USDT`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/USDC`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/urm_platform/monthly`),
+        ];
+        Promise.allSettled([...promises]).then((val) => {
+          // console.log("backend data weekly - ", val);
+          val.map((response, idx) => {
+            const res = response?.status != "rejected" ? response?.value : "0";
+          });
+          for (var j = 0; j < 5; j++) {
+            // console.log(j,"for loop")
+            const responseA = val?.[j] ? val?.[j] : null;
+            const responseB = val?.[j + 5] ? val?.[j + 5] : null;
+            const responseC = val?.[10] ? val?.[10] : null;
+            // if (
+            //   val[j]?.status != "rejected" &&
+            //   val[j + 5]?.status != "rejected" &&
+            //   val[10]?.status != "rejected"
+            // ) {
+            const responseTotal =
+              responseC?.status != "rejected" ? responseC?.value : null;
+            const response =
+              responseA?.status != "rejected" ? responseA?.value : null;
+            const responseApr =
+              responseB?.status != "rejected" ? responseB?.value : null;
+            // console.log(val, response, "response data", responseApr);
+            // if (!response) {
+            //   return;
+            // }
+            // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
+            if (response && responseApr && responseTotal) {
+              const amounts: any = [];
+              const borrowAmounts: any = [];
+              const dates: any = [];
+              const supplyRates: any = [];
+              const borrowRates: any = [];
+              const tvlAmounts: any = [];
+              const supplyCounts: any = [];
+              const borrowCounts: any = [];
+              const utilRates: any = [];
+              const rTokenExchangeRates: any = [];
+              const dTokenExchangeRates: any = [];
+              const totalTransactions: any = [];
+              const totalAccounts: any = [];
+              const aprs: any = [];
+              const apys: any = [];
+              const totalUrm: any = [];
+              for (var i = 0; i < response?.length; i++) {
+                // console.log(i,"inside loop")
+                const token = response?.[i]?.tokenName;
+                const supplyAmount: number =
+                  (Number(response?.[i]?.supplyAmount) /
+                    Math.pow(10, tokenDecimalsMap[token])) *
+                  oraclePrices?.find(
+                    (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                  )?.price;
+                const borrowAmount: number =
+                  (Number(response?.[i]?.borrowAmount) /
+                    Math.pow(10, tokenDecimalsMap[token])) *
+                  oraclePrices?.find(
+                    (oraclePrice: OraclePrice) => oraclePrice?.name == token
+                  )?.price;
+                const tvlAmount: number =
+                  Number(response?.[i].tvlAmount) /
+                  Math.pow(10, tokenDecimalsMap[token]);
+                // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
+                // console.log(response?.[i].tokenName)
+                // const supplyAmount1=etherToWeiBN(amount,token)
+                // console.log(supplyAmount1,"aamount")
+                amounts?.push(supplyAmount);
+                borrowAmounts?.push(borrowAmount);
+                // tvlAmounts?.push(tvlAmount);
+                tvlAmounts?.push(supplyAmount);
+                // const dateObj = new Date(response?.data[i].Datetime)
+                dates?.push(response?.[i].Datetime);
+                supplyRates?.push(response?.[i]?.supplyRate / 100);
+                borrowRates?.push(response?.[i]?.borrowRate / 100);
+                supplyCounts?.push(response?.[i]?.supplyAccounts);
+                borrowCounts?.push(response?.[i]?.borrowAccounts);
+                utilRates?.push(response?.[i]?.utilRate / 100);
+                rTokenExchangeRates?.push(
+                  1 / (response?.[i]?.rTokenExchangeRate / 10000)
+                );
+                dTokenExchangeRates?.push(
+                  1 / (response?.[i]?.dTokenExchangeRate / 10000)
+                );
+                totalTransactions?.push(response?.[i]?.totalTransactions);
+                totalAccounts?.push(response?.[i]?.totalAccounts);
+                aprs?.push(responseApr?.[i]?.APR);
+                apys?.push(responseApr?.[i]?.APY);
+                totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
+              }
+              // console.log(dates,"Dates")
+              const data = {
+                dates: dates,
+                supplyAmounts: amounts,
+                borrowAmounts: borrowAmounts,
+                tvlAmounts: tvlAmounts,
+                supplyRates: supplyRates,
+                borrowRates: borrowRates,
+                supplyCounts: supplyCounts,
+                borrowCounts: borrowCounts,
+                utilRates: utilRates,
+                rTokenExchangeRates: rTokenExchangeRates,
+                dTokenExchangeRates: dTokenExchangeRates,
+                totalTransactions: totalTransactions,
+                totalAccounts: totalAccounts,
+                aprs: aprs,
+                apys: apys,
+                totalUrm: totalUrm,
+              };
+              // console.log(dates,"monthly dates")
+              // console.log("backend looping 2 -", data);
+              // console.log(data,"data in data loader")
+              // console.log(btcData,"Data gone")
+              if (j == 0) {
+                dispatch(setMonthlyDAIData(data));
+              } else if (j == 1) {
+                dispatch(setMonthlyBTCData(data));
+              } else if (j == 2) {
+                dispatch(setMonthlyUSDTData(data));
+              } else if (j == 3) {
+                dispatch(setMonthlyUSDCData(data));
+              } else if (j == 4) {
+                dispatch(setMonthlyETHData(data));
+              }
+            }
+          }
+          const count = getTransactionCount();
+          dispatch(setMonthlyDataCount(count));
+          // }
+        });
+        // const count = getTransactionCount();
+        // dispatch(setHourlyDataCount(count));
+      } catch (err) {
+        console.log(err, "err in hourly data");
+      }
+    };
+    if (monthlyDataCount < transactionRefresh && oraclePrices) {
+      fetchMonthlyData();
+    }
+  }, [oraclePrices]);
+  useEffect(() => {
     try {
       const fetchOraclePrices = async () => {
         console.log("oracle prices - transactionRefresh called");
@@ -568,7 +741,7 @@ const useDataLoader = () => {
         console.log("protocol stats called - transactionRefresh");
         const dataStats = await getProtocolStats();
         console.log("protocol stats - transactionRefresh done", dataStats);
-        if (!dataStats || dataStats?.length < 5) {
+        if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 5)) {
           return;
         }
         // console.log(dataStats,"data market in pagecard")

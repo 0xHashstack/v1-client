@@ -458,7 +458,7 @@ const LiquidityProvisionModal = ({
       }
       const toastContent = (
         <div>
-           Transaction declined{" "}
+          Transaction declined{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1465,14 +1465,14 @@ const LiquidityProvisionModal = ({
                   >
                     {avgs?.find(
                       (item: any) =>
-                        item.loanId ==
+                        item?.loanId ==
                         currentBorrowId
                           .slice(currentBorrowId?.indexOf("-") + 1)
                           ?.trim()
                     )?.avg
                       ? avgs?.find(
                           (item: any) =>
-                            item.loanId ==
+                            item?.loanId ==
                             currentBorrowId
                               .slice(currentBorrowId?.indexOf("-") + 1)
                               ?.trim()
@@ -1519,14 +1519,14 @@ const LiquidityProvisionModal = ({
                   >
                     {avgs?.find(
                       (item: any) =>
-                        item.loanId ==
+                        item?.loanId ==
                         currentBorrowId
                           .slice(currentBorrowId?.indexOf("-") + 1)
                           ?.trim()
                     )?.avg
                       ? avgs?.find(
                           (item: any) =>
-                            item.loanId ==
+                            item?.loanId ==
                             currentBorrowId
                               .slice(currentBorrowId?.indexOf("-") + 1)
                               ?.trim()

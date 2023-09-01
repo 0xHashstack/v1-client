@@ -17,7 +17,7 @@ const useUserDeposits = () => {
       }
       const data = await getUserDeposits(address);
       console.log(data, "data deposit in useEffect");
-      if (data && data?.length > 0) {
+      if (data && Array.isArray(data) && data?.length > 0) {
         dispatch(setUserDeposits(data));
       }
     };
