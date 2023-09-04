@@ -4,6 +4,7 @@ import { Box, Button } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import {
+  selectAllBTCData,
   selectDailyBTCData,
   selectHourlyBTCData,
   selectMonthlyBTCData,
@@ -24,8 +25,9 @@ const UtilisationRateChart = () => {
   const btcData = useSelector(selectHourlyBTCData);
   const weeklyBtcData = useSelector(selectDailyBTCData);
   const monthlyBtcData=useSelector(selectMonthlyBTCData);
-  console.log(monthlyBtcData,"month data")
-  // console.log(weeklyBtcData, "week data");
+  const allBtcData=useSelector(selectAllBTCData);
+
+  console.log(allBtcData, "week data");
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
   const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
@@ -134,12 +136,21 @@ const UtilisationRateChart = () => {
         ];
         break;
       case 3:
+        allBtcData?.totalUrm ?
+        newData=[
+          {
+            name:"Utilization Rate",
+            data:allBtcData.totalUrm,
+          }
+        ]:
         newData = [
           {
             name: "Utlization Rate",
             data: [600, 580, 620, 590, 630, 600, 620, 590, 630, 600, 620, 700],
           },
         ];
+        allBtcData?.dates ?
+        newCategories=allBtcData?.dates:
 
         newCategories = [
           new Date("2022-01-01").getTime(),
@@ -295,7 +306,7 @@ const UtilisationRateChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={false}
+              isDisabled={true}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
@@ -320,7 +331,7 @@ const UtilisationRateChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
               }}
-              isDisabled={false}
+              isDisabled={true}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

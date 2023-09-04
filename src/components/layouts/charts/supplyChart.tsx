@@ -4,6 +4,11 @@ import { Box, Button } from "@chakra-ui/react";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 import { useSelector } from "react-redux";
 import {
+  selectAllBTCData,
+  selectAllDAIData,
+  selectAllETHData,
+  selectAllUSDCData,
+  selectAllUSDTData,
   selectDailyBTCData,
   selectDailyDAIData,
   selectDailyETHData,
@@ -63,6 +68,11 @@ const SupplyChart = () => {
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
   const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
   const monthlyDaiData = useSelector(selectMonthlyDAIData);
+  const allBtcData = useSelector(selectAllBTCData);
+  const allEthData = useSelector(selectAllETHData);
+  const allUsdtData = useSelector(selectAllUSDTData);
+  const allUsdcData = useSelector(selectAllUSDCData);
+  const allDaiData = useSelector(selectAllDAIData);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   // console.log(daiData?.supplyAmounts, "data protocol");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
@@ -315,13 +325,40 @@ const SupplyChart = () => {
         ];
         break;
       case 3:
+        allBtcData?.supplyAmounts &&
+        allEthData?.supplyAmounts &&
+        allUsdtData?.supplyAmounts &&
+        allUsdcData?.supplyAmounts &&
+        allDaiData?.supplyAmounts
+          ? (newData = [
+              {
+                name: "BTC",
+                data: allBtcData?.supplyAmounts,
+                // color: "#fffff",
+              },
+              {
+                name: "ETH",
+                data: allEthData.supplyAmounts,
+              },
+              {
+                name: "USDT",
+                data: allUsdtData.supplyAmounts,
+              },
+              {
+                name: "USDC",
+                data:allUsdcData.supplyAmounts,
+              },
+              {
+                name: "DAI",
+                data: allDaiData.supplyAmounts,
+              },
+            ]):
         newData = [
           {
             name: "BTC",
             data: [
               10000000000, 4000000000, 10000000000, 1000000000, 20000000000,
               10000000000, 4000000000, 11000000000, 50000000000, 1300000000,
-              4000000000, 430000000,
             ],
           },
           {
@@ -329,7 +366,6 @@ const SupplyChart = () => {
             data: [
               30000000000, 1000000000, 20000000000, 4000000000, 10000000000,
               10000000000, 1000000000, 10000000000, 4000000000, 10000000000,
-              430000000, 20000000000,
             ],
           },
           {
@@ -337,7 +373,7 @@ const SupplyChart = () => {
             data: [
               40000000000, 4000000000, 10000000000, 2000000000, 11000000000,
               50000000000, 1300000000, 10000000000, 4000000000, 11000000000,
-              430000000, 10000000000, 11000000000,
+              430000000,
             ],
           },
           {
@@ -345,7 +381,6 @@ const SupplyChart = () => {
             data: [
               50000000000, 2000000000, 12000000000, 2300000000, 21000000000,
               11000000000, 430000000, 10000000000, 4000000000, 1300000000,
-              10000000000, 11000000000,
             ],
           },
           {
@@ -353,24 +388,23 @@ const SupplyChart = () => {
             data: [
               17000000000, 4100000000, 12000000000, 1400000000, 23000000000,
               10000000000, 4000000000, 11000000000, 430000000, 10000000000,
-              4000000000, 1300000000,
+              4000000000,
             ],
           },
         ];
-
+        //x axis data
+        allBtcData?.dates ? newCategories=allBtcData?.dates :
         newCategories = [
-          new Date("2022-01-01").getTime(),
-          new Date("2022-02-01").getTime(),
-          new Date("2022-03-01").getTime(),
-          new Date("2022-04-01").getTime(),
-          new Date("2022-05-01").getTime(),
-          new Date("2022-06-01").getTime(),
-          new Date("2022-07-01").getTime(),
-          new Date("2022-08-01").getTime(),
-          new Date("2022-09-01").getTime(),
-          new Date("2022-10-01").getTime(),
-          new Date("2022-11-01").getTime(),
-          new Date("2022-12-01").getTime(),
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-06").getTime(),
+          new Date("2023-06-09").getTime(),
+          new Date("2023-06-12").getTime(),
+          new Date("2023-06-15").getTime(),
+          new Date("2023-06-18").getTime(),
+          new Date("2023-06-21").getTime(),
+          new Date("2023-06-24").getTime(),
+          new Date("2023-06-27").getTime(),
+          new Date("2023-06-30").getTime(),
         ];
         break;
       default:
@@ -544,7 +578,7 @@ const SupplyChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(1);
               }}
-              isDisabled={false}
+              isDisabled={true}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
@@ -569,7 +603,7 @@ const SupplyChart = () => {
               onClick={() => {
                 setLiquidityProviderChartPeriod(2);
               }}
-              isDisabled={false}
+              isDisabled={true}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

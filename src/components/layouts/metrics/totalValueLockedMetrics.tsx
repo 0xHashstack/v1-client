@@ -8,6 +8,11 @@ import RiskPremiumChart from "../charts/RiskPremium";
 import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
 import { useSelector } from "react-redux";
 import {
+  selectAllBTCData,
+  selectAllDAIData,
+  selectAllETHData,
+  selectAllUSDCData,
+  selectAllUSDTData,
   selectDailyBTCData,
   selectDailyDAIData,
   selectDailyETHData,
@@ -57,6 +62,11 @@ const TotalValueLockedMetrics = () => {
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
   const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
   const monthlyDaiData = useSelector(selectMonthlyDAIData);
+  const allBtcData = useSelector(selectAllBTCData);
+  const allEthData = useSelector(selectAllETHData);
+  const allUsdtData = useSelector(selectAllUSDTData);
+  const allUsdcData = useSelector(selectAllUSDCData);
+  const allDaiData = useSelector(selectAllDAIData);
   // console.log(btcData,"data tvl")
   useEffect(() => {
     // Fetch data based on selected option
@@ -74,6 +84,7 @@ const TotalValueLockedMetrics = () => {
   const tvlamounts: any = [];
   const tvlAmountsWeekly: any = [];
   const tvlAmountsMonthly:any=[];
+  const alltvlAmount:any=[];
   // console.log(btcData?.tvlAmounts,"data btc")
   // console.log(ethData?.tvlAmounts,"data eth")
   // console.log(usdtData?.tvlAmounts,"data usdt")
@@ -105,6 +116,15 @@ const TotalValueLockedMetrics = () => {
       monthlyUsdtData?.tvlAmounts[i] +
       monthlyDaiData?.tvlAmounts[i];
     tvlAmountsMonthly.push(data);
+  }
+  for (let i = 0; i < allBtcData?.tvlAmounts?.length; i++) {
+    var data =
+      allBtcData?.tvlAmounts[i] +
+      allEthData?.tvlAmounts[i] +
+      allUsdcData?.tvlAmounts[i] +
+      allUsdtData?.tvlAmounts[i] +
+      allDaiData?.tvlAmounts[i];
+    alltvlAmount.push(data);
   }
   // console.log(tvlamounts,"amounts");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
@@ -223,29 +243,57 @@ const TotalValueLockedMetrics = () => {
         ];
         break;
       case 3:
+        allBtcData?.tvlAmounts ?
+        newData=[
+          {
+            name:"Total Value Locked",
+            data:alltvlAmount
+          }
+        ]:
         newData = [
           {
             name: "Total Value Locked",
             data: [
-              60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000,
-              60000, 62000, 70000,
+              50000, 49000, 52000, 48000, 51000, 48000, 50000, 52000, 48000,
+              51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000,
+              51000, 48000, 50000, 52000, 48000, 51000, 48000, 50000, 48000,
+              51000, 48000, 30000,
             ],
           },
         ];
-
+        //x axis data
+        allBtcData?.dates ? newCategories=allBtcData?.dates :
         newCategories = [
-          new Date("2022-01-01").getTime(),
-          new Date("2022-02-01").getTime(),
-          new Date("2022-03-01").getTime(),
-          new Date("2022-04-01").getTime(),
-          new Date("2022-05-01").getTime(),
-          new Date("2022-06-01").getTime(),
-          new Date("2022-07-01").getTime(),
-          new Date("2022-08-01").getTime(),
-          new Date("2022-09-01").getTime(),
-          new Date("2022-10-01").getTime(),
-          new Date("2022-11-01").getTime(),
-          new Date("2022-12-01").getTime(),
+          new Date("2023-06-01").getTime(),
+          new Date("2023-06-02").getTime(),
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-04").getTime(),
+          new Date("2023-06-05").getTime(),
+          new Date("2023-06-06").getTime(),
+          new Date("2023-06-07").getTime(),
+          new Date("2023-06-08").getTime(),
+          new Date("2023-06-09").getTime(),
+          new Date("2023-06-10").getTime(),
+          new Date("2023-06-11").getTime(),
+          new Date("2023-06-12").getTime(),
+          new Date("2023-06-13").getTime(),
+          new Date("2023-06-14").getTime(),
+          new Date("2023-06-15").getTime(),
+          new Date("2023-06-16").getTime(),
+          new Date("2023-06-17").getTime(),
+          new Date("2023-06-18").getTime(),
+          new Date("2023-06-19").getTime(),
+          new Date("2023-06-20").getTime(),
+          new Date("2023-06-21").getTime(),
+          new Date("2023-06-22").getTime(),
+          new Date("2023-06-23").getTime(),
+          new Date("2023-06-24").getTime(),
+          new Date("2023-06-25").getTime(),
+          new Date("2023-06-26").getTime(),
+          new Date("2023-06-27").getTime(),
+          new Date("2023-06-28").getTime(),
+          new Date("2023-06-29").getTime(),
+          new Date("2023-06-30").getTime(),
         ];
         break;
       case 4:
@@ -435,7 +483,7 @@ const TotalValueLockedMetrics = () => {
                 onClick={() => {
                   setAPRByMarket(1);
                 }}
-                isDisabled={false}
+                isDisabled={true}
                 _disabled={{
                   cursor: "pointer",
                   color: "#2B2F35",
@@ -452,7 +500,7 @@ const TotalValueLockedMetrics = () => {
                 onClick={() => {
                   setAPRByMarket(2);
                 }}
-                isDisabled={false}
+                isDisabled={true}
                 _disabled={{
                   cursor: "pointer",
                   color: "#2B2F35",
