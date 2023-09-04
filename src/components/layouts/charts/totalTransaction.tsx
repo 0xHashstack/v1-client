@@ -6,6 +6,7 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useSelector } from "react-redux";
 import {
+  selectAllBTCData,
   selectDailyBTCData,
   selectHourlyBTCData,
   selectMonthlyBTCData,
@@ -23,6 +24,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
   const btcData = useSelector(selectHourlyBTCData);
   const weeklyBtcData = useSelector(selectDailyBTCData);
   const monthlyBtcData=useSelector(selectMonthlyBTCData);
+  const allBtcData=useSelector(selectAllBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
 
   useEffect(() => {
@@ -131,25 +133,15 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
           new Date("2023-06-30").getTime(),
         ];
         break;
-        //y data axis
-        newData = [
-          {
-            name: "Total transactions",
-            data: [50000, 49000, 52000, 48000, 51000, 48000, 50000],
-          },
-        ];
-        //x axis data
-        newCategories = [
-          new Date("2023-01-01").getTime(),
-          new Date("2023-02-01").getTime(),
-          new Date("2023-03-01").getTime(),
-          new Date("2023-04-01").getTime(),
-          new Date("2023-05-01").getTime(),
-          new Date("2023-06-01").getTime(),
-          new Date("2023-07-01").getTime(),
-        ];
-        break;
+
       case 3:
+        allBtcData?.totalTransactions ?
+        newData=[
+          {
+            name:"Total transactions",
+            data:allBtcData?.totalTransactions
+          }
+        ]:
         newData = [
           {
             name: "Total transactions",
@@ -159,6 +151,8 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
             ],
           },
         ];
+        allBtcData?.dates ?
+        newCategories=allBtcData?.dates:
 
         newCategories = [
           new Date("2022-01-01").getTime(),
@@ -356,7 +350,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(2);
               }}
-              isDisabled={false}
+              isDisabled={true}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

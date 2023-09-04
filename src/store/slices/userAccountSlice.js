@@ -58,6 +58,7 @@ const initialState = {
   hourlyDataCount: -1,
   weeklyDataCount: -1,
   monthlyDataCount:-1,
+  allDataCount:-1,
   netAprCount: -1,
   avgBorrowAprCount: -1,
   avgSupplyAprCount: -1,
@@ -65,6 +66,7 @@ const initialState = {
   yourMetricsBorrowCount: -1,
   stakingSharesCount: -1,
   transactionCheck: [],
+  lightModeSelected:false,
 
   // walletBalance: {
   //   BTC: 0,
@@ -226,6 +228,9 @@ export const userAccountSlice = createSlice({
     setMonthlyDataCount(state,action){
       state.monthlyDataCount=action.payload;
     },
+    setAllDataCount(state,action){
+      state.allDataCount=action.payload;
+    },
     setAccountReset(state, action) {
       return { ...initialState };
     },
@@ -253,6 +258,9 @@ export const userAccountSlice = createSlice({
     },
     setStakingSharesCount(state, action) {
       state.stakingSharesCount = action.payload;
+    },
+    setLightModeSelected(state,action){
+      state.lightModeSelected=action.payload;
     },
     setTransactionCheck(state, action) {
       let data = state.transactionCheck;
@@ -309,6 +317,7 @@ export const {
   setHourlyDataCount,
   setWeeklyDataCount,
   setMonthlyDataCount,
+  setAllDataCount,
   setUserUnspentLoans,
   setTransactionStartedAndModalClosed,
   setAccountReset,
@@ -321,6 +330,7 @@ export const {
   setYourMetricsBorrowCount,
   setStakingSharesCount,
   setTransactionCheck,
+  setLightModeSelected
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -399,6 +409,8 @@ export const selectWeeklyDataCount = (state) =>
   state.user_account.weeklyDataCount;
   export const selectMonthlyDataCount = (state) =>
   state.user_account.monthlyDataCount;
+  export const selectAllDataCount = (state) =>
+  state.user_account.allDataCount;
 export const selectUserUnspentLoans = (state) =>
   state.user_account.userUnspentLoans;
 export const selectAprCount = (state) => state.user_account.aprCount;
@@ -418,5 +430,7 @@ export const selectStakingSharesCount = (state) =>
 
 export const selectTransactionCheck = (state) =>
   state.user_account.transactionCheck;
+export const selectLightModeSelected=(state)=>
+  state.user_account.lightModeSelected;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

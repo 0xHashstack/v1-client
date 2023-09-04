@@ -6,6 +6,11 @@ import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectAllBTCData,
+  selectAllDAIData,
+  selectAllETHData,
+  selectAllUSDCData,
+  selectAllUSDTData,
   selectDailyBTCData,
   selectDailyDAIData,
   selectDailyETHData,
@@ -82,6 +87,11 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
   const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
   const monthlyDaiData = useSelector(selectMonthlyDAIData);
+  const allBtcData = useSelector(selectAllBTCData);
+  const allEthData = useSelector(selectAllETHData);
+  const allUsdtData = useSelector(selectAllUSDTData);
+  const allUsdcData = useSelector(selectAllUSDCData);
+  const allDaiData = useSelector(selectAllDAIData);
   const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
   // useEffect(()=>{
 
@@ -507,129 +517,134 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         break;
       case 3:
         if (currentSelectedCoin == 0) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [
-                300, 400, 350, 500, 490, 600, 800, 500, 490, 600, 800, 400,
-              ],
-            },
-          ];
-
-          newCategories = [
-            new Date("2022-01-01").getTime(),
-            new Date("2022-02-01").getTime(),
-            new Date("2022-03-01").getTime(),
-            new Date("2022-04-01").getTime(),
-            new Date("2022-05-01").getTime(),
-            new Date("2022-06-01").getTime(),
-            new Date("2022-07-01").getTime(),
-            new Date("2022-08-01").getTime(),
-            new Date("2022-09-01").getTime(),
-            new Date("2022-10-01").getTime(),
-            new Date("2022-11-01").getTime(),
-            new Date("2022-12-01").getTime(),
-          ];
+          allBtcData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: allBtcData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [300, 400, 350, 500, 490, 600, 800],
+                },
+              ]);
+          allBtcData?.dates
+            ? (newCategories = allBtcData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 1) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [
-                200, 400, 350, 300, 490, 600, 800, 100, 490, 600, 200, 400,
-              ],
-            },
-          ];
-
-          newCategories = [
-            new Date("2022-01-01").getTime(),
-            new Date("2022-02-01").getTime(),
-            new Date("2022-03-01").getTime(),
-            new Date("2022-04-01").getTime(),
-            new Date("2022-05-01").getTime(),
-            new Date("2022-06-01").getTime(),
-            new Date("2022-07-01").getTime(),
-            new Date("2022-08-01").getTime(),
-            new Date("2022-09-01").getTime(),
-            new Date("2022-10-01").getTime(),
-            new Date("2022-11-01").getTime(),
-            new Date("2022-12-01").getTime(),
-          ];
+          allUsdtData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: allUsdtData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [200, 300, 250, 400, 390, 500, 700],
+                },
+              ]);
+          allUsdtData?.dates
+            ? (newCategories = allUsdtData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 2) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [
-                100, 300, 250, 400, 290, 500, 700, 500, 190, 600, 100, 200,
-              ],
-            },
-          ];
-
-          newCategories = [
-            new Date("2022-01-01").getTime(),
-            new Date("2022-02-01").getTime(),
-            new Date("2022-03-01").getTime(),
-            new Date("2022-04-01").getTime(),
-            new Date("2022-05-01").getTime(),
-            new Date("2022-06-01").getTime(),
-            new Date("2022-07-01").getTime(),
-            new Date("2022-08-01").getTime(),
-            new Date("2022-09-01").getTime(),
-            new Date("2022-10-01").getTime(),
-            new Date("2022-11-01").getTime(),
-            new Date("2022-12-01").getTime(),
-          ];
+          allUsdcData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: allUsdcData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [100, 200, 250, 400, 390, 500, 700],
+                },
+              ]);
+          allUsdcData?.dates
+            ? (newCategories = allUsdcData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 3) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [
-                200, 400, 350, 300, 490, 600, 800, 100, 490, 600, 200, 400,
-              ],
-            },
-          ];
-
-          newCategories = [
-            new Date("2022-01-01").getTime(),
-            new Date("2022-02-01").getTime(),
-            new Date("2022-03-01").getTime(),
-            new Date("2022-04-01").getTime(),
-            new Date("2022-05-01").getTime(),
-            new Date("2022-06-01").getTime(),
-            new Date("2022-07-01").getTime(),
-            new Date("2022-08-01").getTime(),
-            new Date("2022-09-01").getTime(),
-            new Date("2022-10-01").getTime(),
-            new Date("2022-11-01").getTime(),
-            new Date("2022-12-01").getTime(),
-          ];
+          allEthData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: allEthData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [200, 300, 250, 400, 390, 500, 700],
+                },
+              ]);
+          allEthData?.dates
+            ? (newCategories = allEthData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         } else if (currentSelectedCoin == 4) {
-          newData = [
-            {
-              name: "Exchange Rate",
-              data: [
-                100, 400, 350, 200, 490, 600, 100, 500, 490, 600, 800, 400,
-              ],
-            },
-          ];
-
-          newCategories = [
-            new Date("2022-01-01").getTime(),
-            new Date("2022-02-01").getTime(),
-            new Date("2022-03-01").getTime(),
-            new Date("2022-04-01").getTime(),
-            new Date("2022-05-01").getTime(),
-            new Date("2022-06-01").getTime(),
-            new Date("2022-07-01").getTime(),
-            new Date("2022-08-01").getTime(),
-            new Date("2022-09-01").getTime(),
-            new Date("2022-10-01").getTime(),
-            new Date("2022-11-01").getTime(),
-            new Date("2022-12-01").getTime(),
-          ];
+          allDaiData?.rTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: allDaiData?.rTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [100, 400, 250, 300, 390, 500, 800],
+                },
+              ]);
+          allDaiData?.dates
+            ? (newCategories = allDaiData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
           return { newData, newCategories };
         }
         break;
@@ -831,7 +846,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(2);
               }}
-              isDisabled={false}
+              isDisabled={true}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",

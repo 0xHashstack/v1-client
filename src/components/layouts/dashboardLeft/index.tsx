@@ -198,21 +198,23 @@ const DashboardLeft = ({
 
   return (
     <TableContainer
-      bg="#101216"
-      border="1px"
-      borderColor="#2B2F35"
-      color="white"
-      borderRadius="md"
-      w={width}
-      display="flex"
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      // bgColor={"yellow"}
-      height={"100%"}
-      paddingX={isLargerThan1280 ? "2rem" : "1rem"}
-      pt={"1.7rem"}
-      // pb={"0.5rem"}
-      overflowX="hidden"
+    bg="#101216"
+    border="1px"
+    borderColor="#2B2F35"
+    color="white"
+    borderRadius="md"
+    w={width}
+    display="flex"
+    justifyContent="flex-start"
+    alignItems="flex-start"
+    // bgColor={"yellow"}
+    height={"100%"}
+    paddingX={isLargerThan1280 ? "2rem" : "1rem"}
+    pt={"1.7rem"}
+    // pb={"0.5rem"}
+    overflowX="hidden"
+    // bgColor={"red"}
+    // px={"1.5rem"}
     >
       <Table variant="unstyled" width="100%" height="100%">
         <Thead width={"100%"} height={"2.7rem"}>

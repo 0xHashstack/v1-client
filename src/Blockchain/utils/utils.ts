@@ -163,3 +163,4 @@ export const parseAmount = (amount: string, decimals = 18) => {
     .dividedBy(new BigNumber(10).exponentiatedBy(decimals));
   return amountBN.toNumber() / factor.toNumber();
 };
+
