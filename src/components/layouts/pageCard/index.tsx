@@ -1,5 +1,5 @@
 import Navbar from "@/components/layouts/navbar/Navbar";
-import { Box, Stack, StackProps, Text, useMediaQuery } from "@chakra-ui/react";
+import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, StackProps, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,6 +28,8 @@ import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import useTransactionHandler from "@/hooks/useTransactionHandler";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { AccountInterface } from "starknet";
+import FeedbackModal from "@/components/modals/feedbackModal";
+import InfoIcon from "@/assets/icons/infoIcon";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -257,6 +259,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       console.log("Error fetching protocol reserves", err);
     }
   };
+  const { isOpen, onOpen, onClose } = useDisclosure();
   // const protocolReserves = useSelector(selectProtocolReserves);
 
   // const dataDeposit = useSelector(selectUserDeposits);
@@ -416,6 +419,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       {render ? (
         <>
           <Navbar validRTokens={validRTokens} />
+          <Box>
+            <FeedbackModal/>
+          </Box>
           <Stack
             alignItems="center"
             minHeight={"100vh"}
