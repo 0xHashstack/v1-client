@@ -97,6 +97,7 @@ const Navbar = ({ validRTokens }: any) => {
   //   console.log("Sahitya", parsedAccount);
   // }, []);
   const [dashboardHover, setDashboardHover] = useState(false);
+  const [campaignHover, setCampaignHover] = useState(false);
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
   const [stakeHover, setStakeHover] = useState(false);
@@ -381,6 +382,46 @@ const Navbar = ({ validRTokens }: any) => {
             setStakeHover={setStakeHover}
             validRTokens={validRTokens}
           />
+        </Box>
+        <Box
+          padding="16px 12px"
+          fontSize="12px"
+          borderRadius="5px"
+          cursor="pointer"
+          marginBottom="0px"
+          // className="button"
+          // backgroundColor={"blue"}
+          _hover={{ color: "#6e7681" }}
+          onMouseEnter={() => setCampaignHover(true)}
+          onMouseLeave={() => setCampaignHover(false)}
+          onClick={()=>{router.push('/v1/campaign')}}
+        >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={"8px"}
+            >
+              {campaignHover ? (
+                <Image
+                  src={hoverStake}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <Image
+                  src={"/stake.svg"}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              )}
+
+              <Text fontSize="14px">Campaign</Text>
+            </Box>
         </Box>
         {/* <Box
           style={{

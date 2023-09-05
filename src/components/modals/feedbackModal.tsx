@@ -149,6 +149,7 @@ const FeedbackModal = ({
     setFeedbackSelected("");
     setstarRating(0);
   };
+  const Datetime=new Date();
 
   const handleRating = async () => {
     const lastResponseTime = localStorage.getItem('RatingTime');
@@ -161,7 +162,8 @@ const FeedbackModal = ({
         return;
       }
     }
-    axios.post('/api/feedback/rating', { starRating, address })
+    
+    axios.post('/api/feedback/rating', { starRating, address})
       .then((response) => {
         if (response) {
           const currentTime = new Date();
