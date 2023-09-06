@@ -209,21 +209,21 @@ export default function Home() {
 
       <Box
         display="flex"
-        background="#010409"
+        background="#02010F"
         flexDirection="column"
         alignItems="flex-start"
         padding="32px"
         width="462px"
         // height="567px"
-        border="1px solid #30363D"
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         borderRadius="8px"
         // bgColor="red"
       >
         <Text color="#fff">Connect a wallet</Text>
         <Card
-          bg="#101216"
           p="1rem"
-          border="1px solid #2B2F35"
+          background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
           width="400px"
           mt="8px"
         >
@@ -231,9 +231,8 @@ export default function Home() {
           available?.[1]?.options?.id == "braavos" ? (
             <Box
               w="full"
-              backgroundColor="#101216"
+              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               py="2"
-              border="1px solid #2B2F35"
               borderRadius="6px"
               gap="3px"
               display="flex"
@@ -273,9 +272,8 @@ export default function Home() {
             <Link href="https://braavos.app" target="_blank">
               <Box
                 w="full"
-                backgroundColor="#101216"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 py="2"
-                border="1px solid #2B2F35"
                 borderRadius="6px"
                 gap="3px"
                 display="flex"
@@ -314,9 +312,8 @@ export default function Home() {
           available[0]?.options.id == "argentX" ? (
             <Box
               w="full"
-              backgroundColor="#101216"
               py="2"
-              border="1px solid #2B2F35"
+              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               borderRadius="6px"
               gap="3px"
               mt="1rem"
@@ -425,7 +422,7 @@ export default function Home() {
             variant="link"
             fontSize="14px"
             display="inline"
-            color="#0969DA"
+            color="#4D59E8"
             cursor="pointer"
             lineHeight="22px"
           >
@@ -444,7 +441,7 @@ export default function Home() {
             fontSize="12px"
             lineHeight="18px"
             fontWeight="400"
-            color="#8C8C8C"
+            color="#3E415C"
           >
             {/* This mainnet is currently in alpha with limitations on the maximum
             supply & borrow amount. This is done in consideration of the current
@@ -459,7 +456,7 @@ export default function Home() {
             fontSize="12px"
             lineHeight="18px"
             fontWeight="400"
-            color="#8C8C8C"
+            color="#3E415C"
             mt="1rem"
           >
             We urge the users to use the dapp with caution. Hashstack will not

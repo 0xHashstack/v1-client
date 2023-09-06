@@ -377,9 +377,9 @@ const SupplyDashboard = ({
     <Box
       height={"37rem"}
       w={width}
-      bg="#101216"
-      border="1px"
-      borderColor="#2B2F35"
+      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
       color="white"
       borderRadius="md"
     >
@@ -868,13 +868,14 @@ const SupplyDashboard = ({
         <Box display="flex" justifyContent="left" w="94%" pb="2">
           <Box
             display="flex"
-            bg="#DDF4FF"
+            bg="#222766"
             fontSize="14px"
             p="4"
             fontStyle="normal"
             fontWeight="400"
             borderRadius="6px"
             // textAlign="center"
+            color="#B1B0B5"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
@@ -894,10 +895,10 @@ const SupplyDashboard = ({
                 fontSize="16px"
                 fontWeight="400"
                 display="inline"
-                color="#0969DA"
+                color="#4D59E8"
                 cursor="pointer"
                 ml="0.3rem"
-                lineHeight="24px"
+                lineHeight="22px"
                 backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
                 supplyAPRs={supplyAPRs}
                 currentSupplyAPR={currentSupplyAPR}

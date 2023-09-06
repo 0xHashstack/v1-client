@@ -333,13 +333,14 @@ const SpendTable = () => {
         <Box display="flex" justifyContent="left" w="94%" pb="2">
           <Box
             display="flex"
-            bg="#DDF4FF"
+            bg="#222766"
             fontSize="14px"
             p="4"
             fontStyle="normal"
             fontWeight="400"
             borderRadius="6px"
             // textAlign="center"
+            color="#B1B0B5"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
@@ -357,7 +358,7 @@ const SpendTable = () => {
                 ml="1"
                 as="span"
                 textDecoration="underline"
-                color="#0C6AD9"
+                color="#4D59E8"
                 cursor="pointer"
               >
                 your borrow
@@ -372,7 +373,7 @@ const SpendTable = () => {
       {loading ? (
         <Box
           border="1px"
-          borderColor="#2B2F35"
+          borderColor="#676D9A4D"
           // py="6"
           color="white"
           borderRadius="md"
@@ -398,7 +399,7 @@ const SpendTable = () => {
         <TableContainer
           //   bg="#101216"
           border="1px"
-          borderColor="#2B2F35"
+          borderColor="#676D9A4D"
           // py="6"
           color="white"
           h="283px"
@@ -454,8 +455,8 @@ const SpendTable = () => {
                         borderRadius={"lg"}
                         padding={"2"}
                         border="1px solid"
-                        borderColor="#2B2F35"
-                        arrowShadowColor="#2B2F35"
+                        borderColor="#676D9A4D"
+                        arrowShadowColor="#676D9A4D"
                         // maxW="222px"
                         // mt="28px"
                       >
@@ -475,7 +476,7 @@ const SpendTable = () => {
                     <>
                       <Tr
                         _hover={{
-                          // backgroundColor: "#2B2F35",
+                          // backgroundColor: "#676D9A4D",
                           // width: "80%",
                           borderRadius: "0px",
                         }}
@@ -484,7 +485,7 @@ const SpendTable = () => {
                         key={lower_bound + borrow.idx}
                         cursor="pointer"
                         bgColor={
-                          currentBorrow == borrow.loanId ? "#2B2F35" : "none "
+                          currentBorrow == borrow.loanId ? "#676D9A4D" : "none "
                         }
                         // bgColor="green"
                         onClick={() => {
@@ -504,7 +505,7 @@ const SpendTable = () => {
                             height="24px"
                             width="4px"
                             // borderRadius="6px"
-                            bgColor="#2B2F35"
+                            bgColor="#676D9A4D"
                             left={-2}
                             display={
                               currentBorrow == borrow.loanId ? "block" : "none"
@@ -689,7 +690,7 @@ const SpendTable = () => {
             >
               <TabList
                 // borderRadius="26px"
-                color={selectedDapp == "" ? "#2B2F35" : "white"}
+                color={selectedDapp == "" ? "#676D9A4D" : "white"}
                 h="2rem"
                 width="100%"
                 display="flex"
@@ -701,18 +702,18 @@ const SpendTable = () => {
                   fontSize="14px"
                   fontStyle="normal"
                   border="1px"
-                  borderColor="#2B2F35"
+                  borderColor="#676D9A4D"
                   lineHeight="20px"
                   // borderLeftRadius="md"
                   fontWeight="500"
                   borderLeftRadius="6px"
                   _selected={{
                     // color: "white",
-                    bg: selectedDapp != "" ? "#0969DA" : "none",
+                    bg: selectedDapp != "" ? "#4D59E8" : "none",
                     // border: "none",
                   }}
                   _disabled={{
-                    background: "#101216",
+                    background: "#676D9A1A",
                   }}
                   isDisabled={selectedDapp == ""}
                 >
@@ -724,18 +725,18 @@ const SpendTable = () => {
                   fontSize="14px"
                   fontStyle="normal"
                   border="1px"
-                  borderColor="#2B2F35"
+                  borderColor="#676D9A4D"
                   lineHeight="20px"
                   // borderLeftRadius="md"
                   fontWeight="500"
                   borderRadius="0px"
                   _selected={{
                     // color: "white",
-                    bg: selectedDapp != "" ? "#0969DA" : "none",
+                    bg: selectedDapp != "" ? "#4D59E8" : "none",
                     // border: "none",
                   }}
                   _disabled={{
-                    background: "#101216",
+                    background: "#676D9A1A",
                   }}
                   isDisabled={selectedDapp == ""}
                   // isDisabled={selectedDapp == ""}
@@ -748,17 +749,17 @@ const SpendTable = () => {
                   fontSize="14px"
                   fontStyle="normal"
                   border="1px"
-                  borderColor="#2B2F35"
+                  borderColor="#676D9A4D"
                   lineHeight="20px"
                   fontWeight="500"
                   // borderRadius="0px"
                   _selected={{
                     // color: "white",
-                    bg: selectedDapp != "" ? "#0969DA" : "none",
+                    bg: selectedDapp != "" ? "#4D59E8" : "none",
                     // border: "none",
                   }}
                   _disabled={{
-                    background: "#101216",
+                    background: "#676D9A1A",
                   }}
                   onClick={() => setTradeNote(true)}
                   isDisabled={selectedDapp == ""}
@@ -772,7 +773,7 @@ const SpendTable = () => {
                   fontSize="14px"
                   fontStyle="normal"
                   border="1px"
-                  borderColor="#2B2F35"
+                  borderColor="#676D9A4D"
                   lineHeight="20px"
                   // borderLeftRadius="md"
                   fontWeight="500"
@@ -780,11 +781,11 @@ const SpendTable = () => {
                   borderRightRadius="6px"
                   _selected={{
                     // color: "white",
-                    bg: selectedDapp != "" ? "#0969DA" : "none",
+                    bg: selectedDapp != "" ? "#4D59E8" : "none",
                     // border: "none",
                   }}
                   _disabled={{
-                    background: "#101216",
+                    background: "#676D9A1A",
                   }}
                   onClick={() => setTradeNote(true)}
                   isDisabled={selectedDapp == ""}
@@ -796,7 +797,7 @@ const SpendTable = () => {
                 <TabPanel p={0}>
                   <Box display="flex" flexDirection="column">
                     <Text
-                      color={selectedDapp != "" ? "white" : "#2B2F35"}
+                      color={selectedDapp != "" ? "white" : "#676D9A4D"}
                       fontSize="sm"
                     >
                       Select a Dapp to begin with the spend
@@ -821,7 +822,7 @@ const SpendTable = () => {
                 <TabPanel padding="0">
                   <Box>
                     <Text
-                      color={selectedDapp != "" ? "white" : "#2B2F35"}
+                      color={selectedDapp != "" ? "white" : "#676D9A4D"}
                       fontSize="sm"
                     >
                       Select a Dapp to begin with the spend
@@ -842,7 +843,7 @@ const SpendTable = () => {
                 {/* <TabPanel p={0}>
               <Box>
                 <Text
-                  color={selectedDapp != "" ? "white" : "#2B2F35"}
+                  color={selectedDapp != "" ? "white" : "#676D9A4D"}
                   fontSize="sm"
                 >
                   Select a Dapp to begin with the spend
@@ -868,7 +869,7 @@ const SpendTable = () => {
                 <TabPanel p={0}>
                   <Box
                     display={tradeNote ? "flex" : "none"}
-                    bg="#DDF4FF"
+                    bg="#4D3C03"
                     fontSize="14px"
                     p="8px"
                     fontStyle="normal"
@@ -876,7 +877,6 @@ const SpendTable = () => {
                     borderRadius="6px"
                     justifyContent="center"
                     alignItems="flex-start"
-                    bgColor="#fff8c5"
                     // textAlign="center"
                     // bgColor="red"
                   >
@@ -892,7 +892,7 @@ const SpendTable = () => {
                       <AlertTrade />
                     </Box>
                     <Box p="6px 2px" display="flex">
-                      <Text fontSize="sm">
+                      <Text fontSize="sm" color="#F0F0F5">
                         We are evaluating few promising DEXes to integrate.
                         Please check back at a late time.
                       </Text>
@@ -955,7 +955,7 @@ const SpendTable = () => {
               </Box> */}
                   <Box
                     display={tradeNote ? "flex" : "none"}
-                    bg="#DDF4FF"
+                    bg="#4D3C03"
                     fontSize="14px"
                     p="8px"
                     fontStyle="normal"
@@ -963,7 +963,6 @@ const SpendTable = () => {
                     borderRadius="6px"
                     justifyContent="center"
                     alignItems="flex-start"
-                    bgColor="#fff8c5"
                     // textAlign="center"
                     // bgColor="red"
                   >
@@ -979,7 +978,7 @@ const SpendTable = () => {
                       <AlertTrade />
                     </Box>
                     <Box p="6px 2px" display="flex">
-                      <Text fontSize="sm">
+                      <Text fontSize="sm" color="#F0F0F5">
                         We are evaluating few promising DEXes to integrate.
                         Please check back at a late time.
                       </Text>
