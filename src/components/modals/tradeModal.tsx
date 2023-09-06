@@ -985,7 +985,7 @@ const TradeModal = ({
         key="borrow-details"
         as="span"
         position="relative"
-        color="#0969DA"
+        color="#4D59E8"
         fontSize="14px"
         width="100%"
         display="flex"
@@ -1041,7 +1041,7 @@ const TradeModal = ({
         scrollBehavior="inside"
       >
         <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
-        <ModalContent mt="8rem" bg={"#010409"} maxW="884px">
+        <ModalContent mt="8rem" bg={"#02010F"} maxW="884px">
           <ModalHeader
             // pt="1rem"
             // mt="1rem"
@@ -1083,9 +1083,8 @@ const TradeModal = ({
                 <Box
                   display="flex"
                   flexDirection="column"
-                  backgroundColor="#101216"
-                  border="1px"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                   p="1rem"
                   my="4"
                   borderRadius="md"
@@ -1093,7 +1092,7 @@ const TradeModal = ({
                 >
                   <Box display="flex" flexDirection="column" gap="1">
                     <Box display="flex">
-                      <Text fontSize="xs" color="#8B949E">
+                      <Text fontSize="xs" color="#676D9A">
                         Collateral Market
                       </Text>
                       <Tooltip
@@ -1256,7 +1255,7 @@ const TradeModal = ({
                                       <Box
                                         w="3px"
                                         h="28px"
-                                        bg="#0C6AD9"
+                                        bg="#4D59E8"
                                         borderRightRadius="md"
                                       ></Box>
                                     )}
@@ -1274,7 +1273,7 @@ const TradeModal = ({
                                       justifyContent="space-between"
                                       bg={`${
                                         coin === currentCollateralCoin
-                                          ? "#0C6AD9"
+                                          ? "#4D59E8"
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
@@ -1345,7 +1344,7 @@ const TradeModal = ({
                                   <Box
                                     w="3px"
                                     h="28px"
-                                    bg="#0C6AD9"
+                                    bg="#4D59E8"
                                     borderRightRadius="md"
                                   ></Box>
                                 )}
@@ -1360,7 +1359,7 @@ const TradeModal = ({
                                   gap="1"
                                   bg={`${
                                     coin === currentCollateralCoin
-                                      ? "#0C6AD9"
+                                      ? "#4D59E8"
                                       : "inherit"
                                   }`}
                                   borderRadius="md"
@@ -1400,7 +1399,7 @@ const TradeModal = ({
                   </Box>
                   <Box display="flex" flexDirection="column" gap="1">
                     <Box display="flex">
-                      <Text fontSize="xs" color="#8B949E">
+                      <Text fontSize="xs" color="#676D9A">
                         Collateral Amount
                       </Text>
                       <Tooltip
@@ -1435,7 +1434,7 @@ const TradeModal = ({
                           ? "1px solid #CF222E"
                           : inputCollateralAmount > 0 &&
                             inputCollateralAmount <= walletBalance
-                          ? "1px solid #1A7F37"
+                          ? "1px solid #00D395"
                           : "1px solid #2B2F35 "
                       }`}
                       borderRadius="6px"
@@ -1467,9 +1466,9 @@ const TradeModal = ({
                               ? "#CF222E"
                               : inputCollateralAmount == 0
                               ? "white"
-                              : "#1A7F37"
+                              : "#00D395"
                           }`}
-                          _disabled={{ color: "#1A7F37" }}
+                          _disabled={{ color: "#00D395" }}
                           border="0px"
                           _placeholder={{
                             color: "#393D4F",
@@ -1494,7 +1493,7 @@ const TradeModal = ({
                             ? "#CF222E"
                             : inputCollateralAmount == 0
                             ? "#0969DA"
-                            : "#1A7F37"
+                            : "#00D395"
                         }`}
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
@@ -1536,19 +1535,19 @@ const TradeModal = ({
                           </Text>
                         </Text>
                         <Text
-                          color="#E6EDF3"
+                          color="#C7CBF6"
                           display="flex"
                           justifyContent="flex-end"
                         >
                           Wallet Balance: {numberFormatter(walletBalance)}
-                          <Text color="#6E7781" ml="0.2rem">
+                          <Text color="#676D9A" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
                         </Text>
                       </Text>
                     ) : (
                       <Text
-                        color="#E6EDF3"
+                        color="#C7CBF6"
                         display="flex"
                         justifyContent="flex-end"
                         mt="0.4rem"
@@ -1558,7 +1557,7 @@ const TradeModal = ({
                         fontFamily="Inter"
                       >
                         Wallet Balance: {numberFormatter(walletBalance)}
-                        <Text color="#6E7781" ml="0.2rem">
+                        <Text color="#676D9A" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>
                       </Text>
@@ -1683,9 +1682,8 @@ const TradeModal = ({
                 <Box
                   display="flex"
                   flexDirection="column"
-                  backgroundColor="#101216"
-                  border="1px"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                   p="1rem"
                   my="4"
                   borderRadius="md"
@@ -1693,7 +1691,7 @@ const TradeModal = ({
                 >
                   <Box display="flex" flexDirection="column" gap="1">
                     <Box display="flex">
-                      <Text fontSize="xs" color="#8B949E">
+                      <Text fontSize="xs" color="#676D9A">
                         Borrow Market
                       </Text>
                       <Tooltip
@@ -1835,7 +1833,7 @@ const TradeModal = ({
                                   <Box
                                     w="3px"
                                     h="28px"
-                                    bg="#0C6AD9"
+                                    bg="#4D59E8"
                                     borderRightRadius="md"
                                   ></Box>
                                 )}
@@ -1850,7 +1848,7 @@ const TradeModal = ({
                                   gap="1"
                                   bg={`${
                                     coin === currentBorrowCoin
-                                      ? "#0C6AD9"
+                                      ? "#4D59E8"
                                       : "inherit"
                                   }`}
                                   borderRadius="md"
@@ -1894,7 +1892,7 @@ const TradeModal = ({
                   </Box>
                   <Box display="flex" flexDirection="column" gap="1">
                     <Box display="flex">
-                      <Text fontSize="xs" color="#8B949E">
+                      <Text fontSize="xs" color="#676D9A">
                         Borrow Amount
                       </Text>
                       <Tooltip
@@ -1930,7 +1928,7 @@ const TradeModal = ({
                           : isNaN(inputBorrowAmount)
                           ? "1px solid #CF222E"
                           : inputBorrowAmount > 0
-                          ? "1px solid #1A7F37"
+                          ? "1px solid #00D395"
                           : "1px solid #2B2F35 "
                       }`}
                       borderRadius="6px"
@@ -1966,10 +1964,10 @@ const TradeModal = ({
                               ? "#CF222E"
                               : inputBorrowAmount == 0
                               ? "white"
-                              : "#1A7F37"
+                              : "#00D395"
                           }`}
                           border="0px"
-                          _disabled={{ color: "#1A7F37" }}
+                          _disabled={{ color: "#00D395" }}
                           _placeholder={{
                             color: "#393D4F",
                             fontSize: ".89rem",
@@ -1996,7 +1994,7 @@ const TradeModal = ({
                             ? "#CF222E"
                             : inputBorrowAmount == 0
                             ? "#0969DA"
-                            : "#1A7F37"
+                            : "#00D395"
                         }`}
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
@@ -2079,20 +2077,20 @@ const TradeModal = ({
                           </Text>
                         </Text>
                         <Text
-                          color="#E6EDF3"
+                          color="#C7CBF6"
                           display="flex"
                           justifyContent="flex-end"
                         >
                           Available Reserves:{" "}
                           {numberFormatter(currentAvailableReserves)}
-                          <Text color="#6E7781" ml="0.2rem">
+                          <Text color="#676D9A" ml="0.2rem">
                             {` ${currentBorrowCoin}`}
                           </Text>
                         </Text>
                       </Text>
                     ) : (
                       <Text
-                        color="#E6EDF3"
+                        color="#C7CBF6"
                         display="flex"
                         justifyContent="flex-end"
                         mt="0.4rem"
@@ -2114,7 +2112,7 @@ const TradeModal = ({
                             m={1}
                           />
                         )}
-                        <Text color="#6E7781" ml="0.2rem">
+                        <Text color="#676D9A" ml="0.2rem">
                           {` ${currentBorrowCoin}`}
                         </Text>
                       </Text>
@@ -2302,9 +2300,8 @@ const TradeModal = ({
                 <Box
                   display="flex"
                   flexDirection="column"
-                  backgroundColor="#101216"
-                  border="1px"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                   p="3"
                   // my="4"
                   borderRadius="md"
@@ -2312,7 +2309,7 @@ const TradeModal = ({
                 >
                   <Box display="flex" flexDirection="column" gap="1">
                     <Box display="flex">
-                      <Text fontSize="xs" color="#8B949E">
+                      <Text fontSize="xs" color="#676D9A">
                         Select Dapp
                       </Text>
                       <Tooltip
@@ -2409,7 +2406,7 @@ const TradeModal = ({
                                   <Box
                                     w="3px"
                                     h="28px"
-                                    bg="#0C6AD9"
+                                    bg="#4D59E8"
                                     borderRightRadius="md"
                                   ></Box>
                                 )}
@@ -2423,7 +2420,7 @@ const TradeModal = ({
                                   gap="1"
                                   bg={`${
                                     dapp.name === currentDapp
-                                      ? "#0C6AD9"
+                                      ? "#4D59E8"
                                       : "inherit"
                                   }`}
                                   borderRadius="md"
@@ -2452,7 +2449,7 @@ const TradeModal = ({
                   </Box>
                   <Box display="flex" flexDirection="column" gap="1">
                     <Box display="flex">
-                      <Text fontSize="xs" color="#8B949E">
+                      <Text fontSize="xs" color="#676D9A">
                         Select Pool
                       </Text>
                       <Tooltip
@@ -2553,7 +2550,7 @@ const TradeModal = ({
                                   <Box
                                     w="3px"
                                     h="28px"
-                                    bg="#0C6AD9"
+                                    bg="#4D59E8"
                                     borderRightRadius="md"
                                   ></Box>
                                 )}
@@ -2564,7 +2561,7 @@ const TradeModal = ({
                                   px={`${pool === currentPool ? "1" : "5"}`}
                                   gap="1"
                                   bg={`${
-                                    pool === currentPool ? "#0C6AD9" : "inherit"
+                                    pool === currentPool ? "#4D59E8" : "inherit"
                                   }`}
                                   borderRadius="md"
                                 >
@@ -2607,7 +2604,7 @@ const TradeModal = ({
                                   <Box
                                     w="3px"
                                     h="28px"
-                                    bg="#0C6AD9"
+                                    bg="#4D59E8"
                                     borderRightRadius="md"
                                   ></Box>
                                 )}
@@ -2619,7 +2616,7 @@ const TradeModal = ({
                                   gap="1"
                                   bg={`${
                                     coin === currentPoolCoin
-                                      ? "#0C6AD9"
+                                      ? "#4D59E8"
                                       : "inherit"
                                   }`}
                                   borderRadius="md"
@@ -2639,16 +2636,15 @@ const TradeModal = ({
                 </Box>
                 <Box
                   p="4"
-                  borderRadius="md"
-                  border="1px"
-                  borderColor="#2B2F35"
-                  bg="#101216"
+                  borderRadius="6px"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                   my="4"
                 >
                   {radioValue == "1" && currentPool !== "Select a pool" && (
                     <Box display="flex" justifyContent="space-between" mb="1">
                       <Box display="flex">
-                        <Text color="#6E7681" fontSize="xs">
+                        <Text color="#676D9A" fontSize="xs">
                           est LP tokens recieved:{" "}
                         </Text>
                         <Tooltip
@@ -2673,7 +2669,7 @@ const TradeModal = ({
                         </Tooltip>
                       </Box>
                       <Text
-                        color="#6A737D"
+                        color="#676D9A"
                         fontSize="12px"
                         fontWeight="400"
                         fontStyle="normal"
@@ -2704,7 +2700,7 @@ const TradeModal = ({
                     >
                       <Box display="flex">
                         <Text
-                          color="#6A737D"
+                          color="#676D9A"
                           fontSize="12px"
                           fontWeight="400"
                           fontStyle="normal"
@@ -2734,7 +2730,7 @@ const TradeModal = ({
                       <Box
                         display="flex"
                         gap="2"
-                        color="#6A737D"
+                        color="#676D9A"
                         fontSize="12px"
                         fontWeight="400"
                         fontStyle="normal"
@@ -2856,7 +2852,7 @@ const TradeModal = ({
                   )} */}
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
-                      <Text color="#6E7681" fontSize="xs">
+                      <Text color="#676D9A" fontSize="xs">
                         Fees:{" "}
                       </Text>
                       <Tooltip
@@ -2879,14 +2875,14 @@ const TradeModal = ({
                         </Box>
                       </Tooltip>
                     </Box>
-                    <Text color="#6E7681" fontSize="xs">
+                    <Text color="#676D9A" fontSize="xs">
                       {TransactionFees.spend}%
                     </Text>
                   </Box>
 
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
-                      <Text color="#6E7681" fontSize="xs">
+                      <Text color="#676D9A" fontSize="xs">
                         Gas estimate:{" "}
                       </Text>
                       <Tooltip
@@ -2909,13 +2905,13 @@ const TradeModal = ({
                         </Box>
                       </Tooltip>
                     </Box>
-                    <Text color="#6E7681" fontSize="xs">
+                    <Text color="#676D9A" fontSize="xs">
                       $0.91
                     </Text>
                   </Box>
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
-                      <Text color="#6E7681" fontSize="xs">
+                      <Text color="#676D9A" fontSize="xs">
                         Borrow apr:{" "}
                       </Text>
                       <Tooltip
@@ -2939,7 +2935,7 @@ const TradeModal = ({
                         </Box>
                       </Tooltip>
                     </Box>
-                    <Text color="#6E7681" fontSize="xs">
+                    <Text color="#676D9A" fontSize="xs">
                       {!borrowAPRs ||
                       borrowAPRs.length === 0 ||
                       !borrowAPRs[currentBorrowAPR] ? (
@@ -2976,7 +2972,7 @@ const TradeModal = ({
                           font-weight="400"
                           font-size="14px"
                           lineHeight="16px"
-                          color="#6A737D"
+                          color="#676D9A"
                         >
                           Effective apr:
                         </Text>
@@ -3020,7 +3016,7 @@ const TradeModal = ({
                               />
                             </Box>
                           ) : (
-                            <Text>
+                            <Text color="#676D9A">
                               {/* 5.56% */}
                               {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                               {}
@@ -3087,7 +3083,7 @@ const TradeModal = ({
                   {healthFactor ? (
                     <Box display="flex" justifyContent="space-between">
                       <Box display="flex">
-                        <Text color="#6E7681" fontSize="xs">
+                        <Text color="#676D9A" fontSize="xs">
                           Health factor:{" "}
                         </Text>
                         <Tooltip
@@ -3110,7 +3106,7 @@ const TradeModal = ({
                           </Box>
                         </Tooltip>
                       </Box>
-                      <Text color="#6E7681" fontSize="xs">
+                      <Text color="#676D9A" fontSize="xs">
                         {healthFactor?.toFixed(2)}
                       </Text>
                     </Box>
@@ -3165,15 +3161,15 @@ const TradeModal = ({
                     }}
                   >
                     <AnimatedButton
-                      bgColor="#101216"
                       // bgColor="red"
                       // p={0}
-                      color="#8B949E"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                      color="#676D9A"
                       size="sm"
                       width="100%"
                       mt="1.5rem"
                       mb="1.5rem"
-                      border="1px solid #8B949E"
                       labelSuccessArray={[
                         "Performing Checks",
                         "Processing",
@@ -3204,13 +3200,13 @@ const TradeModal = ({
                   </Box>
                 ) : (
                   <Button
-                    bg="#101216"
-                    color="#6E7681"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                    color="#676D9A"
                     size="sm"
                     width="100%"
                     mt="1.5rem"
                     mb="1.5rem"
-                    border="1px solid #2B2F35"
                     _hover={{ bg: "#101216" }}
                   >
                     Borrow
@@ -3233,7 +3229,7 @@ export default TradeModal;
   <Box className="flex justify-between">
     <Box className="flex">
       <Text
-        className="text-xs text-[#8B949E]"
+        className="text-xs text-[#676D9A]"
         font-style="normal"
         font-weight="400"
         font-size="12px"
@@ -3258,14 +3254,14 @@ export default TradeModal;
         </Box>
       </Tooltip>
     </Box>
-    <Text className="text-xs text-[#6E7681] font-bold">
+    <Text className="text-xs text-[#676D9A] font-bold">
       $ 10.91
     </Text>
   </Box>
   <Box className="flex justify-between">
     <Box className="flex">
       <Text
-        className="text-xs text-[#8B949E]"
+        className="text-xs text-[#676D9A]"
         font-style="normal"
         font-weight="400"
         font-size="12px"
@@ -3290,12 +3286,12 @@ export default TradeModal;
         </Box>
       </Tooltip>
     </Box>
-    <Text className="text-xs text-[#6E7681] font-bold">5.56%</Text>
+    <Text className="text-xs text-[#676D9A] font-bold">5.56%</Text>
   </Box>
   <Box className="flex justify-between">
     <Box className="flex">
       <Text
-        className="text-xs text-[#8B949E]"
+        className="text-xs text-[#676D9A]"
         font-style="normal"
         font-weight="400"
         font-size="12px"
@@ -3320,12 +3316,12 @@ export default TradeModal;
         </Box>
       </Tooltip>
     </Box>
-    <Text className="text-xs text-[#6E7681] font-bold">5.56%</Text>
+    <Text className="text-xs text-[#676D9A] font-bold">5.56%</Text>
   </Box>
   <Box className="flex justify-between">
     <Box className="flex">
       <Text
-        className="text-xs text-[#8B949E]"
+        className="text-xs text-[#676D9A]"
         font-style="normal"
         font-weight="400"
         font-size="12px"
@@ -3350,7 +3346,7 @@ export default TradeModal;
         </Box>
       </Tooltip>
     </Box>
-    <Text className="text-xs text-[#6E7681] font-bold">5.56%</Text>
+    <Text className="text-xs text-[#676D9A] font-bold">5.56%</Text>
   </Box>
 </Box> */
 }

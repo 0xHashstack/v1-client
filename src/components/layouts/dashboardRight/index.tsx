@@ -111,9 +111,8 @@ const DashboardRight = ({
 
   return (
     <TableContainer
-    bg="#101216"
-    border="1px"
-    borderColor="#2B2F35"
+    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
     color="white"
     borderRadius="md"
     w={width}

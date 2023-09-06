@@ -60,7 +60,7 @@ const Footer = () => {
       position="fixed"
       bottom="0"
       // backgroundColor="#161B22"
-      bgColor="#010409"
+      bgColor="#02010F"
       width="100vw"
       boxShadow="rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px"
       display="flex"
@@ -82,13 +82,13 @@ const Footer = () => {
                 height={10}
               />
             </Box>
-            <Text color="#04C78A" fontSize="12px">
+            <Text color="#00D395" fontSize="12px">
               Stable Connection
             </Text>
           </HStack>
         </Link>
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
-          <Text color="#BDBFC1" fontSize="12px">
+          <Text color="#676D9A" fontSize="12px">
             Latest Synced block:
           </Text>
           <Box
@@ -98,7 +98,7 @@ const Footer = () => {
             alignItems={"center"}
             gap={1}
           >
-            <Box color="#2EA043" fontSize="12px">
+            <Box color="#00D395" fontSize="12px">
               {currentBlock || (
                 <Skeleton
                   width="3rem"
@@ -119,7 +119,7 @@ const Footer = () => {
           </Box>
         </HStack>
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
-          <Box color="#BDBFC1" fontSize="12px" display="flex">
+          <Box color="#676D9A" fontSize="12px" display="flex">
             Network:
             {currentChainId === "0x534e5f474f45524c49" ? (
               " Starknet Goerli"

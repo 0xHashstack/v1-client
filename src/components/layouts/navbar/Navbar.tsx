@@ -191,7 +191,7 @@ const Navbar = ({ validRTokens }: any) => {
       zIndex="10"
       position="fixed"
       pt={"4px"}
-      backgroundColor="#161B22"
+      background=" var(--surface-of-10, rgba(103, 109, 154, 0.10))"
       width="100vw"
       boxShadow="rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px"
       display="flex"
@@ -238,10 +238,10 @@ const Navbar = ({ validRTokens }: any) => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
-          color={`${pathname == "/market" ? "#6e7681" : "white"}`}
-          _hover={{
-            color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
-          }}
+          color={`${pathname != "/v1/campaign" ? "#00D395" : "white"}`}
+          // _hover={{
+          //   color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
+          // }}
           onClick={() => {
             if (router.pathname != "/waitlist") {
               router.push("/v1/market");
@@ -256,8 +256,7 @@ const Navbar = ({ validRTokens }: any) => {
             alignItems="center"
             gap={"8px"}
           >
-            {router.pathname != "/market" ? (
-              dashboardHover ? (
+            {router.pathname != "/v1/campaign" ? (
                 <Image
                   src={hoverDashboardIcon}
                   alt="Picture of the author"
@@ -265,23 +264,14 @@ const Navbar = ({ validRTokens }: any) => {
                   height="16"
                   style={{ cursor: "pointer" }}
                 />
-              ) : (
-                <Image
-                  src={"/dashboardIcon.svg"}
-                  alt="Picture of the author"
-                  width="16"
-                  height="16"
-                  style={{ cursor: "pointer" }}
-                />
-              )
             ) : (
               <Image
-                src={hoverDashboardIcon}
-                alt="Picture of the author"
-                width="16"
-                height="16"
-                style={{ cursor: "pointer" }}
-              />
+              src={"/dashboardIcon.svg"}
+              alt="Picture of the author"
+              width="16"
+              height="16"
+              style={{ cursor: "pointer" }}
+            />
             )}
 
             <Text fontSize="14px">Dashboard</Text>
@@ -324,7 +314,7 @@ const Navbar = ({ validRTokens }: any) => {
                 />
               )}
 
-              <Text fontSize="14px">Contribute-2-Earn</Text>
+              <Text fontSize="14px" color="#676D9A">Contribute-2-Earn</Text>
             </Box>
           </Link>
         </Box>
@@ -420,7 +410,7 @@ const Navbar = ({ validRTokens }: any) => {
                 />
               )}
 
-              <Text fontSize="14px">Campaign</Text>
+              <Text fontSize="14px" color="#676D9A">Campaign</Text>
             </Box>
         </Box>
         {/* <Box
@@ -496,10 +486,10 @@ const Navbar = ({ validRTokens }: any) => {
       >
         <HStack
           display="flex"
-          gap="6px"
+          gap="8px"
           justifyContent="center"
           alignItems="center"
-          marginRight="1rem"
+          marginRight="1.2rem"
         >
           <GetTokensModal
             buttonText="Get Tokens"
@@ -518,7 +508,7 @@ const Navbar = ({ validRTokens }: any) => {
             cursor="pointer"
             margin="0"
             height="2rem"
-            border="0.5px solid #6e6e6e"
+            border="1px solid #676D9A"
             // border={`0.5px solid ${
             //   router.pathname != "/waitlist" && transferDepositHover
             //     ? "#6e6e6e"
@@ -571,7 +561,7 @@ const Navbar = ({ validRTokens }: any) => {
                   style={{ cursor: "pointer" }}
                 />
               )} */}
-              <Text fontSize="14px" lineHeight="14px" color="grey">
+              <Text fontSize="14px" lineHeight="14px" color="#676D9A">
                 {"Transfer Deposit"}
               </Text>
             </Box>
@@ -593,9 +583,9 @@ const Navbar = ({ validRTokens }: any) => {
             ref={ref2}
           >
             <Box
-              backgroundColor="#2DA44E"
+              // backgroundColor="#2DA44E"
               display="flex"
-              border="0.5px solid #57606A"
+              border="1px solid var(--secondary, #00D395)"
               borderRadius="6px"
               flexDirection="row"
               paddingY="6px"
@@ -838,6 +828,7 @@ const Navbar = ({ validRTokens }: any) => {
             flexGrow="1"
             className="button navbar"
             ref={ref1}
+            ml="0.4rem"
 
             // onClick={() => {
             //   handleButtonConnectWallet();
