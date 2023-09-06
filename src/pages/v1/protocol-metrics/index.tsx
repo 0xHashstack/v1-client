@@ -87,10 +87,10 @@ const ProtocolMetrics = () => {
       <Box
         width="95%"
         p="2rem 4rem"
-        bgColor="#101216"
         display="flex"
         borderRadius="5px"
-        border="1px solid #2b2f35"
+        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
       >
         {!loading ? (
           <Box width="100%">
@@ -113,7 +113,7 @@ const ProtocolMetrics = () => {
                   letterSpacing="-0.15px"
                   // padding="1.125rem 0.4rem"
                   margin="2px"
-                  color="#6e7681"
+                  color="#676D9A"
                   // borderBottom={
                   //   pathname === `/${option.path}` ? "2px solid #F9826C" : ""
                   // }
@@ -144,7 +144,7 @@ const ProtocolMetrics = () => {
                 py="6px"
                 px="6px"
                 fontWeight="600"
-                borderBottom="2px solid #F9826C"
+                borderBottom="2px solid #4D59E8"
               >
                 Protocol metrics
               </Text>

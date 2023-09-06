@@ -26,6 +26,7 @@
     "@userback/react": "^0.3.0",
     "@usersnap/browser": "^0.0.4",
     "apexcharts": "^3.40.0",
+    "aws-sdk": "^2.1451.0",
     "axios": "^1.4.0",
     "babel-jest": "^29.5.0",
     "bignumber.js": "9.0.1",

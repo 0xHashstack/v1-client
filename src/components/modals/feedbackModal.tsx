@@ -101,6 +101,7 @@ const FeedbackModal = ({
   const [descriptionBugFeedback, setdescriptionBugFeedback] = useState("")
   const [titleSuggestions, setTitleSuggestions] = useState("")
   const [descriptionSuggestions, setdescriptionSuggestions] = useState("")
+  const [bugScreenshoturl, setBugScreenshoturl] = useState("")
   const getUniqueId = () => uniqueID;
 
   const dispatch = useDispatch();
@@ -113,7 +114,7 @@ const FeedbackModal = ({
     const element: any = document.getElementById('buttonclick');
     html2canvas(element).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
-      console.log(screenshotDataUrl, "url")
+      setBugScreenshoturl(screenshotDataUrl);
 
       // Now you have the screenshot in a data URL format
       // You can send it to the backend using an HTTP request.
@@ -131,7 +132,6 @@ const FeedbackModal = ({
 
   const ratingChanged = (newRating: any) => {
     setstarRating(newRating);
-    console.log(starRating, "rating")
   }
   //   mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
   //     debug: true,
@@ -149,7 +149,6 @@ const FeedbackModal = ({
     setFeedbackSelected("");
     setstarRating(0);
   };
-  const Datetime=new Date();
 
   const handleRating = async () => {
     const lastResponseTime = localStorage.getItem('RatingTime');
@@ -176,9 +175,9 @@ const FeedbackModal = ({
       });
   }
   const handleBugFeedback=async()=>{
-    axios.post('/api/feedback/bug',{address:address,title:titleBugFeedback,description:descriptionBugFeedback,screenshot:""})
+    axios.post('/api/feedback/bug',{address:address,title:titleBugFeedback,description:descriptionBugFeedback,screenshot:bugScreenshoturl})
     .then((response)=>{
-      console.log(response)
+      console.log(response,"res")
     })
     .catch((error)=>{
       console.log(error);
@@ -327,7 +326,7 @@ const FeedbackModal = ({
                       </Box>
                       <Box textAlign="center">
 
-                        <Button mt="0.8rem" textAlign="center" type="submit" isDisabled={!(titleBugFeedback && descriptionBugFeedback)}>
+                        <Button mt="0.8rem" textAlign="center" type="submit" isDisabled={!(titleBugFeedback && descriptionBugFeedback)} onClick={handleBugFeedback}>
                           Submit
                         </Button>
                       </Box>
