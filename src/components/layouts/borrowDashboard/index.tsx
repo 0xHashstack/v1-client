@@ -438,8 +438,9 @@ const BorrowDashboard = ({
         alignItems="center"
         width="95%"
         height={"37rem"}
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
         // height="552px"
-        bgColor="#101216"
+        bg={" var(--surface-of-10, rgba(103, 109, 154, 0.10)); "  }
         borderRadius="8px"
       >
         {/* <Text color="#FFFFFF" fontSize="20px">
@@ -467,9 +468,10 @@ const BorrowDashboard = ({
     </>
   ) : upper_bound >= lower_bound && Borrows && Borrows?.length > 0 ? (
     <TableContainer
-    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-      color="white"
+    // background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+    bg= "var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+      
+    color="white"
       borderRadius="md"
       w={width}
       display="flex"
@@ -478,6 +480,8 @@ const BorrowDashboard = ({
       // bgColor={"red"}
       // height={"100%"}
       height={"37rem"}
+      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
+
       padding={"1rem 2rem 0rem"}
       overflowX="hidden"
       // mt={"3rem"}

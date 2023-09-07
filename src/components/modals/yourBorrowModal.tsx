@@ -1260,7 +1260,9 @@ const YourBorrowModal = ({
       case "Spend Borrow":
         return (
           <Box
-            bg="#101216"
+            
+            background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
             borderRadius="6px"
             p="1rem"
             border="1px solid #2B2F35"
@@ -1665,7 +1667,8 @@ const YourBorrowModal = ({
             borderRadius="md"
             border="1px"
             borderColor="#2B2F35"
-            bg="#101216"
+            background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
             my="6"
           >
             <Box display="flex" justifyContent="space-between">
@@ -1866,7 +1869,8 @@ const YourBorrowModal = ({
             borderRadius="md"
             border="1px"
             borderColor="#2B2F35"
-            bg="#101216"
+            background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
             my="6"
           >
             <Box display="flex" justifyContent="space-between">
@@ -2047,7 +2051,9 @@ const YourBorrowModal = ({
       case "Convert to borrow market":
         return (
           <Box
-            bg="#101216"
+          
+            background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
             borderRadius="6px"
             p="1rem"
             border="1px solid #2B2F35"
@@ -2191,7 +2197,8 @@ const YourBorrowModal = ({
             borderRadius="md"
             border="1px"
             borderColor="#2B2F35"
-            bg="#101216"
+            background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
             my="6"
           >
             <Box display="flex" justifyContent="space-between">
@@ -2772,7 +2779,7 @@ const YourBorrowModal = ({
         // size="sm"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
-        <ModalContent mt="8rem" bg={"#010409"} maxW="464px" overflow="hidden">
+        <ModalContent mt="8rem" bg={"var(--Base_surface, #02010F);"} maxW="464px" overflow="hidden">
           <ModalHeader bg="inherit">
             <Box position="relative" pl="5px">
               <Tabs variant="unstyled">
@@ -2853,7 +2860,7 @@ const YourBorrowModal = ({
                     <Box
                       display="flex"
                       flexDirection="column"
-                      backgroundColor="#101216"
+                      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                       border="1px"
                       borderColor="#2B2F35"
                       p="5"
@@ -3666,7 +3673,8 @@ const YourBorrowModal = ({
                       <Box
                         display="flex"
                         flexDirection="column"
-                        backgroundColor="#101216"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                         border="1px"
                         borderColor="#2B2F35"
                         p="3"
@@ -4027,7 +4035,8 @@ const YourBorrowModal = ({
                     {getContainer(currentAction)}
                     {currentAction === "Select action" ? (
                       <Button
-                        bg="#101216"
+                      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                         color="#6E7681"
                         size="sm"
                         width="100%"
@@ -4068,7 +4077,8 @@ const YourBorrowModal = ({
                           }}
                         >
                           <AnimatedButton
-                            bgColor="#101216"
+                              background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                             // bgColor="red"
                             // p={0}
                             color="#8B949E"
@@ -4109,13 +4119,15 @@ const YourBorrowModal = ({
                         </Box>
                       ) : (
                         <Button
-                          bg="#101216"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                           color="#6E7681"
                           size="sm"
                           width="100%"
                           mb="2rem"
                           border="1px solid #2B2F35"
-                          _hover={{ bg: "#101216" }}
+                          _hover={{   bg:"var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        }}
                         >
                           Spend
                         </Button>
@@ -4141,7 +4153,9 @@ const YourBorrowModal = ({
                           }}
                         >
                           <AnimatedButton
-                            bgColor="#101216"
+                            
+                            background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                             // bgColor="red"
                             // p={0}
                             color="#8B949E"
@@ -4185,13 +4199,15 @@ const YourBorrowModal = ({
                         </Box>
                       ) : (
                         <Button
-                          bg="#101216"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                           color="#6E7681"
                           size="sm"
                           width="100%"
                           mb="2rem"
                           border="1px solid #2B2F35"
-                          _hover={{ bg: "#101216" }}
+                          _hover={{   bg:"var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        }}
                         >
                           Repay borrow
                         </Button>
@@ -4216,7 +4232,8 @@ const YourBorrowModal = ({
                         }}
                       >
                         <AnimatedButton
-                          bgColor="#101216"
+                           background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                           // bgColor="red"
                           // p={0}
                           color="#8B949E"
@@ -4275,7 +4292,8 @@ const YourBorrowModal = ({
                           }}
                         >
                           <AnimatedButton
-                            bgColor="#101216"
+                             background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                             // bgColor="red"
                             // p={0}
                             color="#8B949E"
@@ -4317,13 +4335,15 @@ const YourBorrowModal = ({
                         </Box>
                       ) : (
                         <Button
-                          bg="#101216"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                       
                           color="#6E7681"
                           size="sm"
                           width="100%"
                           mb="2rem"
                           border="1px solid #2B2F35"
-                          _hover={{ bg: "#101216" }}
+                          _hover={{   bg:"var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        }}
                         >
                           Zero repay
                         </Button>
@@ -4337,7 +4357,7 @@ const YourBorrowModal = ({
                     <Box
                       display="flex"
                       flexDirection="column"
-                      backgroundColor="#101216"
+                      background= "var(--surface-of-10, rgba(103, 109, 154, 0.10));"
                       border="1px"
                       borderColor="#2B2F35"
                       p="5"
@@ -4849,7 +4869,9 @@ const YourBorrowModal = ({
                       </Text>
                       <Box
                         w="full"
-                        backgroundColor="#101216"
+                      
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                         py="2"
                         border="1px solid #2B2F35"
                         borderRadius="6px"
@@ -5279,7 +5301,7 @@ const YourBorrowModal = ({
                       </Box>
                     </Box>
                     <Card
-                      bg="#101216"
+                      background="var(--surface-of-10, rgba(103, 109, 154, 0.10));"
                       mt="2rem"
                       p="1rem"
                       border="1px solid #2B2F35"
@@ -5640,7 +5662,9 @@ const YourBorrowModal = ({
                         }}
                       >
                         <AnimatedButton
-                          bgColor="#101216"
+              
+                          background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                           // bgColor="red"
                           // p={0}
                           color="#8B949E"
@@ -5684,14 +5708,16 @@ const YourBorrowModal = ({
                       </Box>
                     ) : (
                       <Button
-                        bg="#101216"
+                      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
                         color="#6E7681"
                         size="sm"
                         width="100%"
                         mt="1.5rem"
                         mb="1.5rem"
                         border="1px solid #2B2F35"
-                        _hover={{ bg: "#101216" }}
+                        _hover={{   bg:"var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                      }}
                       >
                         Add Collateral
                       </Button>
