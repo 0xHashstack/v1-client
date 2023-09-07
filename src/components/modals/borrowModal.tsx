@@ -1416,7 +1416,7 @@ const BorrowModal = ({
                     >
                       {sliderValue}%
                     </SliderMark>
-                    <SliderTrack bg="#343333">
+                    <SliderTrack bg="#3E415C">
                       <SliderFilledTrack
                         bg="white"
                         w={`${sliderValue}`}
@@ -1974,7 +1974,7 @@ const BorrowModal = ({
                     >
                       {sliderValue2}%
                     </SliderMark>
-                    <SliderTrack bg="#343333">
+                    <SliderTrack bg="#3E415C">
                       <SliderFilledTrack
                         bg="white"
                         w={`${sliderValue2}`}

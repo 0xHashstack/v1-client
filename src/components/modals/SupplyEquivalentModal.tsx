@@ -451,7 +451,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                         </Text>
                       </Box>
                     </SliderMark>
-                    <SliderTrack bg="#343333">
+                    <SliderTrack bg="#3E415C">
                       <SliderFilledTrack bg="white" w={`${sliderValue}`} />
                     </SliderTrack>
                   </Slider>
