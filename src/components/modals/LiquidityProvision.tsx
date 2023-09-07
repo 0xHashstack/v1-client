@@ -734,7 +734,7 @@ const LiquidityProvisionModal = ({
         >
           <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
           <ModalContent
-            bg="#010409"
+            background="var(--Base_surface, #02010F)"
             color="white"
             borderRadius="md"
             maxW="464px"
@@ -754,12 +754,12 @@ const LiquidityProvisionModal = ({
             <ModalCloseButton mt="1rem" mr="1rem" />
             <ModalBody>
               <Card
-                bg="#101216"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 mb="0.5rem"
                 p="1rem"
-                border="1px solid #2B2F35"
               >
-                <Text color="#8B949E" display="flex" alignItems="center">
+                <Text color="#676D9A" display="flex" alignItems="center">
                   <Text mr="0.3rem" fontSize="12px">
                     Select Liquidity Pool
                   </Text>
@@ -855,7 +855,7 @@ const LiquidityProvisionModal = ({
                               <Box
                                 w="3px"
                                 h="28px"
-                                bg="#0C6AD9"
+                                bg="#4D59E8"
                                 borderRightRadius="md"
                               ></Box>
                             )}
@@ -866,7 +866,7 @@ const LiquidityProvisionModal = ({
                               px={`${pool === currentPool ? "1" : "5"}`}
                               gap="1"
                               bg={`${
-                                pool === currentPool ? "#0C6AD9" : "inherit"
+                                pool === currentPool ? "#4D59E8" : "inherit"
                               }`}
                               borderRadius="md"
                             >
@@ -879,7 +879,7 @@ const LiquidityProvisionModal = ({
                     </Box>
                   )}
                 </Box>
-                <Text color="#8B949E" display="flex" alignItems="center">
+                <Text color="#676D9A" display="flex" alignItems="center">
                   <Text mr="0.3rem" fontSize="12px">
                     Borrow ID
                   </Text>
@@ -975,7 +975,7 @@ const LiquidityProvisionModal = ({
                               <Box
                                 w="3px"
                                 h="28px"
-                                bg="#0C6AD9"
+                                bg="#4D59E8"
                                 borderRightRadius="md"
                               ></Box>
                             )}
@@ -989,7 +989,7 @@ const LiquidityProvisionModal = ({
                               gap="1"
                               bg={`${
                                 "ID - " + coin === currentBorrowId
-                                  ? "#0C6AD9"
+                                  ? "#4D59E8"
                                   : "inherit"
                               }`}
                               borderRadius="md"
@@ -1004,7 +1004,7 @@ const LiquidityProvisionModal = ({
                   )}
                 </Box>
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   display="flex"
                   alignItems="center"
                   mt="1rem"
@@ -1063,7 +1063,7 @@ const LiquidityProvisionModal = ({
                   </Box>
                 </Box>
                 <Text
-                  color="#E6EDF3"
+                  color="#C7CBF6"
                   display="flex"
                   justifyContent="flex-end"
                   mt="0.4rem"
@@ -1073,23 +1073,23 @@ const LiquidityProvisionModal = ({
                   fontFamily="Inter"
                 >
                   Borrow Balance: {borrowAmount}
-                  <Text color="#6E7781" ml="0.2rem">
+                  <Text color="#676D9A" ml="0.2rem">
                     {` ${currentBorrowMarketCoin}`}
                   </Text>
                 </Text>
               </Card>
 
               <Box
-                bg="#101216"
                 borderRadius="6px"
                 p="1rem"
-                border="1px solid #2B2F35"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 mt="1.5rem"
               >
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
                   <Box display="flex">
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -1127,7 +1127,7 @@ const LiquidityProvisionModal = ({
                       />
                     </Box>
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -1145,7 +1145,7 @@ const LiquidityProvisionModal = ({
                     <Box display="flex">
                       <Box display="flex" gap="2px">
                         <Text
-                          color="#6A737D"
+                          color="#676D9A"
                           fontSize="12px"
                           fontWeight="400"
                           fontStyle="normal"
@@ -1174,7 +1174,7 @@ const LiquidityProvisionModal = ({
                       </Tooltip>
                     </Box>
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -1205,7 +1205,7 @@ const LiquidityProvisionModal = ({
                   >
                     <Box display="flex">
                       <Text
-                        color="#6A737D"
+                        color="#676D9A"
                         fontSize="12px"
                         fontWeight="400"
                         fontStyle="normal"
@@ -1235,7 +1235,7 @@ const LiquidityProvisionModal = ({
                     <Box
                       display="flex"
                       gap="2"
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -1294,7 +1294,7 @@ const LiquidityProvisionModal = ({
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
                   <Box display="flex">
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -1322,7 +1322,7 @@ const LiquidityProvisionModal = ({
                     </Tooltip>
                   </Box>
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1333,7 +1333,7 @@ const LiquidityProvisionModal = ({
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
                   <Box display="flex">
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -1361,7 +1361,7 @@ const LiquidityProvisionModal = ({
                     </Tooltip>
                   </Box>
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1372,7 +1372,7 @@ const LiquidityProvisionModal = ({
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
                   <Box display="flex">
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -1400,7 +1400,7 @@ const LiquidityProvisionModal = ({
                     </Tooltip>
                   </Box>
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1429,7 +1429,7 @@ const LiquidityProvisionModal = ({
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
                   <Box display="flex">
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -1458,7 +1458,7 @@ const LiquidityProvisionModal = ({
                     </Tooltip>
                   </Box>
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1484,7 +1484,7 @@ const LiquidityProvisionModal = ({
                 <Box display="flex" justifyContent="space-between">
                   <Box display="flex">
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -1512,7 +1512,7 @@ const LiquidityProvisionModal = ({
                     </Tooltip>
                   </Box>
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1550,15 +1550,15 @@ const LiquidityProvisionModal = ({
                   }}
                 >
                   <AnimatedButton
-                    bgColor="#101216"
                     // bgColor="red"
                     // p={0}
-                    color="#8B949E"
+                    color="#676D9A"
                     size="sm"
                     width="100%"
                     mt="1.5rem"
                     mb="1.5rem"
-                    border="1px solid #8B949E"
+                    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                     labelSuccessArray={[
                       "Performing pre-checks",
                       "Processing the spend borrow",
@@ -1587,13 +1587,13 @@ const LiquidityProvisionModal = ({
                 </Box>
               ) : (
                 <Button
-                  bg="#101216"
                   color="#6E7681"
                   size="sm"
                   width="100%"
                   mt="1.5rem"
                   mb="1.5rem"
-                  border="1px solid #2B2F35"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                   _hover={{ bg: "#101216" }}
                 >
                   Spend Borrow

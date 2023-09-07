@@ -420,13 +420,17 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         <>
           <Navbar validRTokens={validRTokens} />
           <Box>
-            <FeedbackModal/>
+            <FeedbackModal />
           </Box>
           <Stack
             alignItems="center"
             minHeight={"100vh"}
             pt="8rem"
-            backgroundColor="#010409"
+            background={`
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
+            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            black
+          `}
             pb={isLargerThan1280 ? "7rem" : "0rem"}
             className={classes.join(" ")}
             {...rest}

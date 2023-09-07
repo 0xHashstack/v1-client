@@ -751,7 +751,7 @@ const YourSupplyModal = ({
         scrollBehavior="inside"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
-        <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
+        <ModalContent mt="8rem" background="var(--Base_surface, #02010F)" maxW="464px">
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalCloseButton mt="1rem" mr="1rem" color="white" />
           <ModalBody color={"#E6EDF3"} pt={6} px={7}>
@@ -767,7 +767,7 @@ const YourSupplyModal = ({
                     <Tab
                       py="1"
                       px="3"
-                      color="#6E7681"
+                      color="#676D9A"
                       fontSize="sm"
                       border="1px"
                       borderColor="#2B2F35"
@@ -775,7 +775,7 @@ const YourSupplyModal = ({
                       fontWeight="normal"
                       _selected={{
                         color: "white",
-                        bg: "#0969DA",
+                        bg: "#4D59E8",
                         border: "none",
                       }}
                       isDisabled={withdrawTransactionStarted == true}
@@ -785,7 +785,7 @@ const YourSupplyModal = ({
                     <Tab
                       py="1"
                       px="3"
-                      color="#6E7681"
+                      color="#676D9A"
                       fontSize="sm"
                       border="1px"
                       borderColor="#2B2F35"
@@ -793,7 +793,7 @@ const YourSupplyModal = ({
                       fontWeight="normal"
                       _selected={{
                         color: "white",
-                        bg: "#0969DA",
+                        bg: "#4D59E8",
                         border: "none",
                       }}
                       isDisabled={transactionStarted == true}
@@ -804,14 +804,14 @@ const YourSupplyModal = ({
                   <TabPanels>
                     <TabPanel p="0" m="0">
                       <Card
-                        bg="#101216"
                         mb="0.5rem"
                         p="1rem"
-                        border="1px solid #2B2F35"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         mt="1.5rem"
                       >
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -914,7 +914,7 @@ const YourSupplyModal = ({
                                       <Box
                                         w="3px"
                                         h="28px"
-                                        bg="#0C6AD9"
+                                        bg="#4D59E8"
                                         borderRightRadius="md"
                                       ></Box>
                                     )}
@@ -933,7 +933,7 @@ const YourSupplyModal = ({
                                       bg={`${
                                         coin.substring(1) ===
                                         currentSelectedSupplyCoin
-                                          ? "#0C6AD9"
+                                          ? "#4D59E8"
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
@@ -980,7 +980,7 @@ const YourSupplyModal = ({
                           )}
                         </Box>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -1022,7 +1022,7 @@ const YourSupplyModal = ({
                               ? "1px solid #CF222E"
                               : inputSupplyAmount > 0 &&
                                 inputSupplyAmount <= walletBalance
-                              ? "1px solid #1A7F37"
+                              ? "1px solid #00D395"
                               : "1px solid #2B2F35 "
                           }`}
                           borderRadius="6px"
@@ -1052,10 +1052,10 @@ const YourSupplyModal = ({
                                   ? "#CF222E"
                                   : inputSupplyAmount == 0
                                   ? "white"
-                                  : "#1A7F37"
+                                  : "#00D395"
                               }`}
                               border="0px"
-                              _disabled={{ color: "#1A7F37" }}
+                              _disabled={{ color: "#00D395" }}
                               _placeholder={{
                                 color: "#393D4F",
                                 fontSize: ".89rem",
@@ -1077,7 +1077,7 @@ const YourSupplyModal = ({
                                 ? "#CF222E"
                                 : inputSupplyAmount == 0
                                 ? "#0969DA"
-                                : "#1A7F37"
+                                : "#00D395"
                             }`}
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
@@ -1115,19 +1115,19 @@ const YourSupplyModal = ({
                               </Text>
                             </Text>
                             <Text
-                              color="#E6EDF3"
+                              color="#C7CBF6"
                               display="flex"
                               justifyContent="flex-end"
                             >
                               Wallet Balance: {numberFormatter(walletBalance)}
-                              <Text color="#6E7781" ml="0.2rem">
+                              <Text color="#676D9A" ml="0.2rem">
                                 {` ${currentSelectedSupplyCoin}`}
                               </Text>
                             </Text>
                           </Text>
                         ) : (
                           <Text
-                            color="#E6EDF3"
+                            color="#C7CBF6"
                             display="flex"
                             justifyContent="flex-end"
                             mt="0.4rem"
@@ -1137,7 +1137,7 @@ const YourSupplyModal = ({
                             fontFamily="Inter"
                           >
                             Wallet Balance: {numberFormatter(walletBalance)}
-                            <Text color="#6E7781" ml="0.2rem">
+                            <Text color="#676D9A" ml="0.2rem">
                               {` ${currentSelectedSupplyCoin}`}
                             </Text>
                           </Text>
@@ -1276,7 +1276,7 @@ const YourSupplyModal = ({
                         <Text
                           fontSize="12px"
                           fontWeight="400"
-                          color="#6E7681"
+                          color="#B1B0B5"
                           mt="1rem"
                           lineHeight="20px"
                         >
@@ -1286,10 +1286,10 @@ const YourSupplyModal = ({
                       </Box>
 
                       <Card
-                        bg="#101216"
                         mt="1rem"
                         p="1rem"
-                        border="1px solid #2B2F35"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         mb="1rem"
                       >
                         <Text
@@ -1305,7 +1305,7 @@ const YourSupplyModal = ({
                               font-weight="400"
                               font-size="12px"
                               lineHeight="16px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Fees:
                             </Text>
@@ -1329,10 +1329,10 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">{TransactionFees.stake}%</Text>
+                          <Text color="#676D9A">{TransactionFees.stake}%</Text>
                         </Text>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -1344,7 +1344,7 @@ const YourSupplyModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Gas estimate:
                             </Text>
@@ -1368,10 +1368,10 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">$ 0.91</Text>
+                          <Text color="#676D9A">$ 0.91</Text>
                         </Text>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -1382,7 +1382,7 @@ const YourSupplyModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Supply apr:
                             </Text>
@@ -1407,7 +1407,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">
+                          <Text color="#676D9A">
                             {!protocolStats ||
                             protocolStats.length === 0 ||
                             !getBorrowAPR(currentSelectedSupplyCoin) ? (
@@ -1493,15 +1493,15 @@ const YourSupplyModal = ({
                           }}
                         >
                           <AnimatedButton
-                            bgColor="#101216"
                             // bgColor="red"
                             // p={0}
-                            color="#8B949E"
+                            color="#676D9A"
                             size="sm"
                             width="100%"
                             // mt="1.5rem"
                             mb="1.5rem"
-                            border="1px solid #8B949E"
+                            background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                             labelSuccessArray={[
                               "Deposit Amount approved",
                               "Successfully transfered to Hashstack's supply vault.",
@@ -1537,13 +1537,13 @@ const YourSupplyModal = ({
                         </Box>
                       ) : (
                         <Button
-                          bg="#101216"
-                          color="#6E7681"
+                          color="#676D9A"
                           size="sm"
                           width="100%"
                           // mt="1.5rem"
                           mb="1.5rem"
-                          border="1px solid #2B2F35"
+                          background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           _hover={{ bg: "#101216" }}
                         >
                           Supply
@@ -1552,14 +1552,14 @@ const YourSupplyModal = ({
                     </TabPanel>
                     <TabPanel p="0" m="0">
                       <Card
-                        bg="#101216"
                         mb="0.5rem"
                         p="1rem"
-                        border="1px solid #2B2F35"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         mt="1.5rem"
                       >
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -1655,7 +1655,7 @@ const YourSupplyModal = ({
                                       <Box
                                         w="3px"
                                         h="28px"
-                                        bg="#0C6AD9"
+                                        bg="#4D59E8"
                                         borderRightRadius="md"
                                       ></Box>
                                     )}
@@ -1672,7 +1672,7 @@ const YourSupplyModal = ({
                                       gap="1"
                                       bg={`${
                                         coin === currentSelectedWithdrawlCoin
-                                          ? "#0C6AD9"
+                                          ? "#4D59E8"
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
@@ -1703,7 +1703,7 @@ const YourSupplyModal = ({
                           )}
                         </Box>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -1747,7 +1747,7 @@ const YourSupplyModal = ({
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount > 0 &&
                                 inputWithdrawlAmount <= withdrawWalletBalance
-                              ? "1px solid #1A7F37"
+                              ? "1px solid #00D395"
                               : "1px solid #2B2F35 "
                           }`}
                           borderRadius="6px"
@@ -1779,9 +1779,9 @@ const YourSupplyModal = ({
                                   ? "#CF222E"
                                   : inputWithdrawlAmount == 0
                                   ? "white"
-                                  : "#1A7F37"
+                                  : "#00D395"
                               }`}
-                              _disabled={{ color: "#1A7F37" }}
+                              _disabled={{ color: "#00D395" }}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -1804,7 +1804,7 @@ const YourSupplyModal = ({
                                 ? "#CF222E"
                                 : inputWithdrawlAmount == 0
                                 ? "#0969DA"
-                                : "#1A7F37"
+                                : "#00D395"
                             }`}
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
@@ -1840,20 +1840,20 @@ const YourSupplyModal = ({
                               </Text>
                             </Text>
                             <Text
-                              color="#E6EDF3"
+                              color="#C7CBF6"
                               display="flex"
                               justifyContent="flex-end"
                             >
                               Wallet Balance:{" "}
                               {numberFormatter(withdrawWalletBalance)}
-                              <Text color="#6E7781" ml="0.2rem">
+                              <Text color="#676D9A" ml="0.2rem">
                                 {` ${currentSelectedWithdrawlCoin}`}
                               </Text>
                             </Text>
                           </Text>
                         ) : (
                           <Text
-                            color="#E6EDF3"
+                            color="#C7CBF6"
                             display="flex"
                             justifyContent="flex-end"
                             mt="0.4rem"
@@ -1864,7 +1864,7 @@ const YourSupplyModal = ({
                           >
                             Wallet Balance:{" "}
                             {numberFormatter(withdrawWalletBalance)}
-                            <Text color="#6E7781" ml="0.2rem">
+                            <Text color="#676D9A" ml="0.2rem">
                               {` ${currentSelectedWithdrawlCoin}`}
                             </Text>
                           </Text>
@@ -1982,14 +1982,14 @@ const YourSupplyModal = ({
                       </Card>
 
                       <Card
-                        bg="#101216"
                         mt="1.5rem"
                         p="1rem"
-                        border="1px solid #2B2F35"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         mb="0.5rem"
                       >
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -2001,7 +2001,7 @@ const YourSupplyModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               est. supply unlocked:
                             </Text>
@@ -2036,11 +2036,11 @@ const YourSupplyModal = ({
                               ml={2}
                             />
                           ) : (
-                            <Text color="#6E7681">$ {estSupply}</Text>
+                            <Text color="#676D9A">$ {estSupply}</Text>
                           )}
                         </Text>
                         {/* <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -2052,7 +2052,7 @@ const YourSupplyModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Earned APR:
                             </Text>
@@ -2136,7 +2136,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">1.240 rETH</Text>
+                          <Text color="#676D9A">1.240 rETH</Text>
                         </Text> */}
                         <Text
                           display="flex"
@@ -2151,7 +2151,7 @@ const YourSupplyModal = ({
                               font-weight="400"
                               font-size="12px"
                               lineHeight="16px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Fees:
                             </Text>
@@ -2175,12 +2175,12 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">
+                          <Text color="#676D9A">
                             {TransactionFees.withdrawSupply}%
                           </Text>
                         </Text>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -2191,7 +2191,7 @@ const YourSupplyModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Gas Estimate:
                             </Text>
@@ -2216,7 +2216,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">$ 0.91</Text>
+                          <Text color="#676D9A">$ 0.91</Text>
                         </Text>
                       </Card>
                       {inputWithdrawlAmount > 0 &&
@@ -2239,15 +2239,15 @@ const YourSupplyModal = ({
                           }}
                         >
                           <AnimatedButton
-                            bgColor="#101216"
                             // bgColor="red"
                             // p={0}
-                            color="#8B949E"
+                            color="#676D9A"
                             size="sm"
                             width="100%"
                             mt="1.5rem"
                             mb="1.5rem"
-                            border="1px solid #8B949E"
+                            background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                             labelSuccessArray={[
                               "Checking if sufficient rTokens are available",
                               <Text key={0} display="flex">
@@ -2300,13 +2300,13 @@ const YourSupplyModal = ({
                         </Box>
                       ) : (
                         <Button
-                          bg="#101216"
-                          color="#6E7681"
+                          color="#676D9A"
                           size="sm"
                           width="100%"
                           mt="1.5rem"
                           mb="1.5rem"
-                          border="1px solid #2B2F35"
+                          background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           _hover={{ bg: "#101216" }}
                         >
                           Withdraw

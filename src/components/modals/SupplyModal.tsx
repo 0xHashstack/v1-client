@@ -1268,7 +1268,7 @@ const SupplyModal = ({
                     >
                       {sliderValue}%
                     </SliderMark>
-                    <SliderTrack bg="#343333">
+                    <SliderTrack bg="#676D9A">
                       <SliderFilledTrack
                         bg="white"
                         w={`${sliderValue}`}
