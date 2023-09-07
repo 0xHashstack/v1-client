@@ -1273,7 +1273,7 @@ const YourBorrowModal = ({
               <Box display="flex" justifyContent="space-between" mb="0.2rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1301,7 +1301,7 @@ const YourBorrowModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1330,7 +1330,7 @@ const YourBorrowModal = ({
                 <Box display="flex" justifyContent="space-between" mb="0.2rem">
                   <Box display="flex">
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -1360,7 +1360,7 @@ const YourBorrowModal = ({
                   <Box
                     display="flex"
                     gap="2"
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1419,7 +1419,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1447,7 +1447,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#6A737D"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -1458,7 +1458,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1486,7 +1486,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#6A737D"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -1511,7 +1511,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1539,7 +1539,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#6A737D"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -1550,7 +1550,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1579,7 +1579,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#6A737D"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -1605,7 +1605,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1633,7 +1633,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#6A737D"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -1674,7 +1674,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1702,7 +1702,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -1713,7 +1713,7 @@ const YourBorrowModal = ({
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1737,7 +1737,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -1748,7 +1748,7 @@ const YourBorrowModal = ({
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1772,7 +1772,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -1783,7 +1783,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1811,7 +1811,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -1822,7 +1822,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1850,7 +1850,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -1875,7 +1875,7 @@ const YourBorrowModal = ({
           >
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E" fontSize="xs">
+                <Text color="#676D9A" fontSize="xs">
                   Dapp:{" "}
                 </Text>
                 <Tooltip
@@ -1898,7 +1898,7 @@ const YourBorrowModal = ({
                   </Box>
                 </Tooltip>
               </Box>
-              <Box display="flex" color="#8B949E" fontSize="xs" gap="2">
+              <Box display="flex" color="#676D9A" fontSize="xs" gap="2">
                 <Box display="flex" gap="2px">
                   <Box>
                     <JediswapLogo />
@@ -1909,7 +1909,7 @@ const YourBorrowModal = ({
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E" fontSize="xs">
+                <Text color="#676D9A" fontSize="xs">
                   Borrow amount:{" "}
                 </Text>
                 <Tooltip
@@ -1932,13 +1932,13 @@ const YourBorrowModal = ({
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#8B949E" fontSize="xs">
+              <Text color="#676D9A" fontSize="xs">
                 {borrowAmount} {currentBorrowMarketCoin1}
               </Text>
             </Box>
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E" fontSize="xs">
+                <Text color="#676D9A" fontSize="xs">
                   rTokens unlocked:{" "}
                 </Text>
                 <Tooltip
@@ -1957,13 +1957,13 @@ const YourBorrowModal = ({
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#8B949E" fontSize="xs">
+              <Text color="#676D9A" fontSize="xs">
                 1.23
               </Text>
             </Box> */}
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E" fontSize="xs">
+                <Text color="#676D9A" fontSize="xs">
                   Est collateral value:{" "}
                 </Text>
                 <Tooltip
@@ -1982,13 +1982,13 @@ const YourBorrowModal = ({
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#8B949E" fontSize="xs">
+              <Text color="#676D9A" fontSize="xs">
                 5.56%
               </Text>
             </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E" fontSize="xs">
+                <Text color="#676D9A" fontSize="xs">
                   Fees:{" "}
                 </Text>
                 <Tooltip
@@ -2011,13 +2011,13 @@ const YourBorrowModal = ({
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#8B949E" fontSize="xs">
+              <Text color="#676D9A" fontSize="xs">
                 {TransactionFees.repay}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E" fontSize="xs">
+                <Text color="#676D9A" fontSize="xs">
                   Gas estimate:{" "}
                 </Text>
                 <Tooltip
@@ -2040,7 +2040,7 @@ const YourBorrowModal = ({
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#8B949E" fontSize="xs">
+              <Text color="#676D9A" fontSize="xs">
                 $ 0.91
               </Text>
             </Box>
@@ -2063,7 +2063,7 @@ const YourBorrowModal = ({
             {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -2089,7 +2089,7 @@ const YourBorrowModal = ({
               <Box
                 display="flex"
                 gap="2"
-                color="#6A737D"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -2111,7 +2111,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -2139,7 +2139,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#6A737D"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -2150,7 +2150,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -2178,7 +2178,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#6A737D"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -2204,7 +2204,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -2232,7 +2232,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -2243,7 +2243,7 @@ const YourBorrowModal = ({
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -2267,7 +2267,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -2278,7 +2278,7 @@ const YourBorrowModal = ({
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -2302,7 +2302,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -2313,7 +2313,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -2341,7 +2341,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -2352,7 +2352,7 @@ const YourBorrowModal = ({
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
-                  color="#8B949E"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -2380,7 +2380,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 fontSize="12px"
                 fontWeight="400"
                 fontStyle="normal"
@@ -2794,7 +2794,7 @@ const YourBorrowModal = ({
                     <Tab
                       py="1"
                       px="3"
-                      color="#6E7681"
+                      color="#676D9A"
                       fontSize="sm"
                       border="1px"
                       borderColor="#2B2F35"
@@ -2816,7 +2816,7 @@ const YourBorrowModal = ({
                     <Tab
                       py="1"
                       px="3"
-                      color="#6E7681"
+                      color="#676D9A"
                       fontSize="sm"
                       border="1px"
                       borderColor="#2B2F35"
@@ -2905,7 +2905,7 @@ const YourBorrowModal = ({
                         )}
                       <Box display="flex" flexDirection="column" gap="1">
                         <Box display="flex">
-                          <Text fontSize="xs" color="#8B949E">
+                          <Text fontSize="xs" color="#676D9A">
                             Action
                           </Text>
                           <Tooltip
@@ -2997,7 +2997,7 @@ const YourBorrowModal = ({
                                       <Box
                                         w="3px"
                                         h="28px"
-                                        bg="#0C6AD9"
+                                        bg="#4D59E8"
                                         borderRightRadius="md"
                                       ></Box>
                                     )}
@@ -3011,7 +3011,7 @@ const YourBorrowModal = ({
                                       gap="1"
                                       bg={`${
                                         action === currentAction
-                                          ? "#0C6AD9"
+                                          ? "#4D59E8"
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
@@ -3032,7 +3032,7 @@ const YourBorrowModal = ({
                             fontSize="12px"
                             fontWeight="400"
                             fontStyle="normal"
-                            color="#8B949E"
+                            color="#676D9A"
                           >
                             Borrow ID
                           </Text>
@@ -3148,7 +3148,7 @@ const YourBorrowModal = ({
                                           <Box
                                             w="3px"
                                             h="28px"
-                                            bg="#0C6AD9"
+                                            bg="#4D59E8"
                                             borderRightRadius="md"
                                           ></Box>
                                         )}
@@ -3164,7 +3164,7 @@ const YourBorrowModal = ({
                                           gap="1"
                                           bg={`${
                                             "ID - " + coin === currentBorrowId1
-                                              ? "#0C6AD9"
+                                              ? "#4D59E8"
                                               : "inherit"
                                           }`}
                                           borderRadius="md"
@@ -3187,7 +3187,7 @@ const YourBorrowModal = ({
                             fontSize="12px"
                             fontWeight="400"
                             fontStyle="normal"
-                            color="#8B949E"
+                            color="#676D9A"
                           >
                             Borrow Market
                           </Text>
@@ -3263,7 +3263,7 @@ const YourBorrowModal = ({
                                         <Box
                                           w="3px"
                                           h="28px"
-                                          bg="#0C6AD9"
+                                          bg="#4D59E8"
                                           borderRightRadius="md"
                                         ></Box>
                                       )}
@@ -3279,7 +3279,7 @@ const YourBorrowModal = ({
                                         gap="1"
                                         bg={`${
                                           coin === currentBorrowMarketCoin1
-                                            ? "#0C6AD9"
+                                            ? "#4D59E8"
                                             : "inherit"
                                         }`}
                                         borderRadius="md"
@@ -3298,7 +3298,7 @@ const YourBorrowModal = ({
                         ) : (
                           <Text textAlign="right" fontSize="xs" mt="0.2rem">
                             Borrow Balance: {borrowAmount}
-                            <Text as="span" color="#8B949E" ml="0.2rem">
+                            <Text as="span" color="#676D9A" ml="0.2rem">
                               {currentBorrowMarketCoin1}
                             </Text>
                           </Text>
@@ -3313,7 +3313,7 @@ const YourBorrowModal = ({
                             mt="0"
                           >
                             <Box display="flex">
-                              <Text fontSize="xs" color="#8B949E">
+                              <Text fontSize="xs" color="#676D9A">
                                 Repay Amount
                               </Text>
                               <Tooltip
@@ -3601,7 +3601,7 @@ const YourBorrowModal = ({
                     {currentAction === "Spend Borrow" && (
                       <Box display="flex" flexDir="column" p="3" gap="1">
                         <Box display="flex">
-                          <Text fontSize="xs" color="#8B949E">
+                          <Text fontSize="xs" color="#676D9A">
                             Purpose
                           </Text>
                           <Tooltip
@@ -3684,7 +3684,7 @@ const YourBorrowModal = ({
                       >
                         <Box display="flex" flexDirection="column" gap="1">
                           <Box display="flex">
-                            <Text fontSize="xs" color="#8B949E">
+                            <Text fontSize="xs" color="#676D9A">
                               Dapp
                             </Text>
                             <Tooltip
@@ -3781,7 +3781,7 @@ const YourBorrowModal = ({
                                         <Box
                                           w="3px"
                                           h="28px"
-                                          bg="#0C6AD9"
+                                          bg="#4D59E8"
                                           borderRightRadius="md"
                                         ></Box>
                                       )}
@@ -3795,7 +3795,7 @@ const YourBorrowModal = ({
                                         gap="1"
                                         bg={`${
                                           dapp.name === currentDapp
-                                            ? "#0C6AD9"
+                                            ? "#4D59E8"
                                             : "inherit"
                                         }`}
                                         borderRadius="md"
@@ -3824,7 +3824,7 @@ const YourBorrowModal = ({
                         </Box>
                         <Box display="flex" flexDirection="column" gap="1">
                           <Box display="flex">
-                            <Text fontSize="xs" color="#8B949E">
+                            <Text fontSize="xs" color="#676D9A">
                               Select Pool
                             </Text>
                             <Tooltip
@@ -3938,7 +3938,7 @@ const YourBorrowModal = ({
                                         <Box
                                           w="3px"
                                           h="28px"
-                                          bg="#0C6AD9"
+                                          bg="#4D59E8"
                                           borderRightRadius="md"
                                         ></Box>
                                       )}
@@ -3952,7 +3952,7 @@ const YourBorrowModal = ({
                                         gap="1"
                                         bg={`${
                                           pool === currentPool
-                                            ? "#0C6AD9"
+                                            ? "#4D59E8"
                                             : "inherit"
                                         }`}
                                         borderRadius="md"
@@ -3999,7 +3999,7 @@ const YourBorrowModal = ({
                                         <Box
                                           w="3px"
                                           h="28px"
-                                          bg="#0C6AD9"
+                                          bg="#4D59E8"
                                           borderRightRadius="md"
                                         ></Box>
                                       )}
@@ -4013,7 +4013,7 @@ const YourBorrowModal = ({
                                         gap="1"
                                         bg={`${
                                           coin === currentPoolCoin
-                                            ? "#0C6AD9"
+                                            ? "#4D59E8"
                                             : "inherit"
                                         }`}
                                         borderRadius="md"
@@ -4037,7 +4037,7 @@ const YourBorrowModal = ({
                       <Button
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
-                        color="#6E7681"
+                        color="#676D9A"
                         size="sm"
                         width="100%"
                         mb="2rem"
@@ -4081,11 +4081,11 @@ const YourBorrowModal = ({
 
                             // bgColor="red"
                             // p={0}
-                            color="#8B949E"
+                            color="#676D9A"
                             size="sm"
                             width="100%"
                             mb="1.5rem"
-                            border="1px solid #8B949E"
+                            border="1px solid #676D9A"
                             labelSuccessArray={[
                               "Performing pre-checks",
                               "Processing the spend borrow",
@@ -4121,7 +4121,7 @@ const YourBorrowModal = ({
                         <Button
                         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
-                          color="#6E7681"
+                          color="#676D9A"
                           size="sm"
                           width="100%"
                           mb="2rem"
@@ -4158,11 +4158,11 @@ const YourBorrowModal = ({
 
                             // bgColor="red"
                             // p={0}
-                            color="#8B949E"
+                            color="#676D9A"
                             size="sm"
                             width="100%"
                             mb="1.5rem"
-                            border="1px solid #8B949E"
+                            border="1px solid #676D9A"
                             labelSuccessArray={[
                               "Calculating the outstanding borrow amount.",
                               "transferring the repay amount to the borrow vault.",
@@ -4201,7 +4201,7 @@ const YourBorrowModal = ({
                         <Button
                         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
-                          color="#6E7681"
+                          color="#676D9A"
                           size="sm"
                           width="100%"
                           mb="2rem"
@@ -4236,11 +4236,11 @@ const YourBorrowModal = ({
 
                           // bgColor="red"
                           // p={0}
-                          color="#8B949E"
+                          color="#676D9A"
                           size="sm"
                           width="100%"
                           mb="1.5rem"
-                          border="1px solid #8B949E"
+                          border="1px solid #676D9A"
                           // _active={{color:"black",bg:"white"}}
                           labelSuccessArray={[
                             "Performing prechecks.",
@@ -4296,11 +4296,11 @@ const YourBorrowModal = ({
 
                             // bgColor="red"
                             // p={0}
-                            color="#8B949E"
+                            color="#676D9A"
                             size="sm"
                             width="100%"
                             mb="1.5rem"
-                            border="1px solid #8B949E"
+                            border="1px solid #676D9A"
                             // _active={{color:"black",bg:"white"}}
                             labelSuccessArray={[
                               "Performing prechecks.",
@@ -4337,7 +4337,7 @@ const YourBorrowModal = ({
                         <Button
                         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                        
-                          color="#6E7681"
+                          color="#676D9A"
                           size="sm"
                           width="100%"
                           mb="2rem"
@@ -4367,7 +4367,7 @@ const YourBorrowModal = ({
                     >
                       <Box display="flex" flexDirection="column" gap="1">
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -4468,7 +4468,7 @@ const YourBorrowModal = ({
                                       <Box
                                         w="3px"
                                         h="28px"
-                                        bg="#0C6AD9"
+                                        bg="#4D59E8"
                                         borderRightRadius="md"
                                       ></Box>
                                     )}
@@ -4484,7 +4484,7 @@ const YourBorrowModal = ({
                                       gap="1"
                                       bg={`${
                                         "ID - " + coin === currentBorrowId2
-                                          ? "#0C6AD9"
+                                          ? "#4D59E8"
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
@@ -4501,7 +4501,7 @@ const YourBorrowModal = ({
                       </Box>
                       <Box display="flex" flexDirection="column" gap="1">
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -4599,7 +4599,7 @@ const YourBorrowModal = ({
                                         <Box
                                           w="3px"
                                           h="28px"
-                                          bg="#0C6AD9"
+                                          bg="#4D59E8"
                                           borderRightRadius="md"
                                         ></Box>
                                       )}
@@ -4615,7 +4615,7 @@ const YourBorrowModal = ({
                                         gap="1"
                                         bg={`${
                                           coin === currentBorrowMarketCoin2
-                                            ? "#0C6AD9"
+                                            ? "#4D59E8"
                                             : "inherit"
                                         }`}
                                         borderRadius="md"
@@ -4632,7 +4632,7 @@ const YourBorrowModal = ({
                       </Box>
                       <Box display="flex" flexDirection="column" gap="1">
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -4732,7 +4732,7 @@ const YourBorrowModal = ({
                                         <Box
                                           w="3px"
                                           h="28px"
-                                          bg="#0C6AD9"
+                                          bg="#4D59E8"
                                           borderRightRadius="md"
                                         ></Box>
                                       )}
@@ -4749,7 +4749,7 @@ const YourBorrowModal = ({
                                         justifyContent="space-between"
                                         bg={`${
                                           coin === currentTokenSelected
-                                            ? "#0C6AD9"
+                                            ? "#4D59E8"
                                             : "inherit"
                                         }`}
                                         borderRadius="md"
@@ -4836,7 +4836,7 @@ const YourBorrowModal = ({
                           )}
                         </Box>
                       </Box>
-                      <Text color="#8B949E" display="flex" alignItems="center">
+                      <Text color="#676D9A" display="flex" alignItems="center">
                         <Text
                           mr="0.3rem"
                           fontSize="12px"
@@ -4881,7 +4881,7 @@ const YourBorrowModal = ({
                           {collateralBalance}
                         </Text>
                       </Box>
-                      <Text color="#8B949E" display="flex" alignItems="center">
+                      <Text color="#676D9A" display="flex" alignItems="center">
                         <Text
                           mr="0.3rem"
                           fontSize="12px"
@@ -5319,7 +5319,7 @@ const YourBorrowModal = ({
                             font-weight="400"
                             font-size="12px"
                             lineHeight="16px"
-                            color="#6A737D"
+                            color="#676D9A"
                           >
                             Borrow amount:
                           </Text>
@@ -5343,7 +5343,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">
+                        <Text color="#676D9A">
                           {borrowAmount} {currentBorrowMarketCoin2}
                         </Text>
                       </Text>
@@ -5360,7 +5360,7 @@ const YourBorrowModal = ({
                             font-weight="400"
                             font-size="12px"
                             lineHeight="16px"
-                            color="#6A737D"
+                            color="#676D9A"
                           >
                             est rTokens minted:
                           </Text>
@@ -5387,10 +5387,10 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">$ {estrTokensMinted}</Text>
+                        <Text color="#676D9A">$ {estrTokensMinted}</Text>
                       </Text>
                       <Text
-                        color="#8B949E"
+                        color="#676D9A"
                         display="flex"
                         justifyContent="space-between"
                         fontSize="12px"
@@ -5402,7 +5402,7 @@ const YourBorrowModal = ({
                             font-style="normal"
                             font-weight="400"
                             font-size="12px"
-                            color="#6A737D"
+                            color="#676D9A"
                           >
                             Fees:
                           </Text>
@@ -5426,10 +5426,10 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">0.1%</Text>
+                        <Text color="#676D9A">0.1%</Text>
                       </Text>
                       <Text
-                        color="#8B949E"
+                        color="#676D9A"
                         display="flex"
                         justifyContent="space-between"
                         fontSize="12px"
@@ -5441,7 +5441,7 @@ const YourBorrowModal = ({
                             font-style="normal"
                             font-weight="400"
                             font-size="12px"
-                            color="#6A737D"
+                            color="#676D9A"
                           >
                             Borrow apr:
                           </Text>
@@ -5465,7 +5465,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">
+                        <Text color="#676D9A">
                           {!borrowAPRs ||
                           borrowAPRs.length === 0 ||
                           !getBorrowAPR(currentBorrowMarketCoin2.slice(1)) ? (
@@ -5497,7 +5497,7 @@ const YourBorrowModal = ({
                             font-weight="400"
                             font-size="12px"
                             lineHeight="16px"
-                            color="#6A737D"
+                            color="#676D9A"
                           >
                             Gas estimate:
                           </Text>
@@ -5521,7 +5521,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">$ 0.91</Text>
+                        <Text color="#676D9A">$ 0.91</Text>
                       </Text>
                       <Text
                         display="flex"
@@ -5536,7 +5536,7 @@ const YourBorrowModal = ({
                             font-weight="400"
                             font-size="12px"
                             lineHeight="16px"
-                            color="#6A737D"
+                            color="#676D9A"
                           >
                             Effective apr:
                           </Text>
@@ -5560,7 +5560,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">
+                        <Text color="#676D9A">
                           {" "}
                           {avgs?.find(
                             (item: any) =>
@@ -5592,7 +5592,7 @@ const YourBorrowModal = ({
                             font-weight="400"
                             font-size="12px"
                             lineHeight="16px"
-                            color="#6A737D"
+                            color="#676D9A"
                           >
                             Health factor
                           </Text>
@@ -5616,7 +5616,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">
+                        <Text color="#676D9A">
                           {" "}
                           {avgsLoneHealth?.find(
                             (item: any) =>
@@ -5667,12 +5667,12 @@ const YourBorrowModal = ({
 
                           // bgColor="red"
                           // p={0}
-                          color="#8B949E"
+                          color="#676D9A"
                           size="sm"
                           width="100%"
                           mt="1.5rem"
                           mb="1.5rem"
-                          border="1px solid #8B949E"
+                          border="1px solid #676D9A"
                           labelSuccessArray={[
                             "Processing",
                             "Transferring collateral to supply vault.",
@@ -5710,7 +5710,7 @@ const YourBorrowModal = ({
                       <Button
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
-                        color="#6E7681"
+                        color="#676D9A"
                         size="sm"
                         width="100%"
                         mt="1.5rem"
