@@ -151,6 +151,7 @@ const Campaign = () => {
   // }, [account, UserLoans]);
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
+  const [campaignSelected, setCampaignSelected] = useState(1);
   const [tabValue, setTabValue] = useState(1);
 
   return (
@@ -177,10 +178,11 @@ const Campaign = () => {
             letterSpacing="-0.15px"
             padding="1.125rem 0.4rem"
             margin="2px"
-            color="#ffffff"
-            borderBottom="2px solid #4D59E8"
+            color={campaignSelected==1 ?"#fff":"#676D9A"}
+            borderBottom={campaignSelected==1 ?"2px solid #4D59E8":""}
             borderRadius="0px"
             _hover={{ bg: "transparent", color: "#E6EDF3" }}
+            onClick={()=>{setCampaignSelected(1)}}
           >
             Liquidity mining campaign
           </Button>
@@ -194,14 +196,16 @@ const Campaign = () => {
             letterSpacing="-0.15px"
             padding="1.125rem 0.4rem"
             margin="2px"
-            color="#676D9A"
+            color={campaignSelected==2 ?"#fff":"#676D9A"}
+            borderBottom={campaignSelected==2 ?"2px solid #4D59E8":""}
             borderRadius="0px"
             _hover={{ bg: "transparent", color: "#E6EDF3" }}
+            onClick={()=>{setCampaignSelected(2)}}
           >
             Referal mining Campign
           </Button>
         </HStack>
-        <HStack mt="2.5rem" display="flex" flexDirection="column" alignItems="flex-start" width="100%">
+        {campaignSelected==1 &&        <HStack mt="2.5rem" display="flex" flexDirection="column" alignItems="flex-start" width="100%">
           <Box display="flex">
             <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
               liquidity mining campaign -
@@ -297,8 +301,8 @@ const Campaign = () => {
                     </VStack>
             </HStack>
           </HStack>
-        </HStack>
-          <Box borderRadius={'lg'} width={'100%'} 
+        </HStack>}
+        {campaignSelected==1 &&          <Box borderRadius={'lg'} width={'100%'} 
               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
           mt="1rem"
@@ -366,7 +370,16 @@ const Campaign = () => {
             leaderBoardData={sampleDate}
             columnItems={columnItems} /> : <></>}
           {/* <SupplyModal /> */}
-         </Box> 
+         </Box> }
+          {campaignSelected==1 &&         <Box mt="1rem">
+         <Pagination
+          currentPagination={currentPagination}
+          setCurrentPagination={(x: any) => setCurrentPagination(x)}
+          max={sampleDate?.length || 0}
+          rows={6}
+        />
+         </Box>}
+
       </HStack>
     </PageCard>
   );

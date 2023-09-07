@@ -188,10 +188,10 @@ const Navbar = ({ validRTokens }: any) => {
 
   return (
     <HStack
-      zIndex="10"
+      zIndex="100"
       position="fixed"
       pt={"4px"}
-      background=" var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
       width="100vw"
       boxShadow="rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px"
       display="flex"

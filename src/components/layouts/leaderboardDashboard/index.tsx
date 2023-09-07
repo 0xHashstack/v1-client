@@ -435,16 +435,11 @@ const tooltips = [
       </Table>
    
     </TableContainer>
-    <Pagination
-          currentPagination={currentPagination}
-          setCurrentPagination={(x: any) => setCurrentPagination(x)}
-          max={leaderBoardData?.length || 0}
-          rows={6}
-        />
-        <br/>
+
     </>
     
-  );
+  )
+    )
 };
 
 export default LeaderboardDashboard;
