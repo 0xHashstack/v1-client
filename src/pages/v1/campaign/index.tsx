@@ -76,6 +76,12 @@ const Campaign = () => {
     id:4,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
   },{
     id:5,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
+  },{
+    id:6,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
+  },{
+    id:7,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
+  },{
+    id:8,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
   }]
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
@@ -85,15 +91,23 @@ const Campaign = () => {
   useDataLoader();
   const UserLoans = useSelector(selectUserLoans);
   useEffect(() => {
-    if (UserLoans) {
-      if (UserLoans?.length <= (currentPagination - 1) * 6) {
-        console.log("pagination", Pagination, UserLoans);
+    // if (UserLoans) {
+    //   if (UserLoans?.length <= (currentPagination - 1) * 6) {
+    //     console.log("pagination", Pagination, UserLoans);
+    //     if (currentPagination > 1) {
+    //       setCurrentPagination(currentPagination - 1);
+    //     }
+    //   }
+    // }
+       if (sampleDate) {
+      if (sampleDate.length <= (currentPagination - 1) * 6) {
+        console.log("pagination", Pagination, sampleDate);
         if (currentPagination > 1) {
           setCurrentPagination(currentPagination - 1);
         }
       }
     }
-  }, [UserLoans]);
+  }, []);
 
   // useEffect(() => {
   //   const loan = async () => {
@@ -204,11 +218,11 @@ const Campaign = () => {
                   </TabList>
               </Tabs>
               </Box>
-         {tabValue==1? <LeaderboardDashboard   width={"95%"}
+         {tabValue==1?<> <LeaderboardDashboard   width={"95%"}
         currentPagination={currentPagination}
         setCurrentPagination={setCurrentPagination}
         leaderBoardData={sampleDate}
-        columnItems={columnItems} /> : <></>}
+        columnItems={columnItems} /></>: <></>}
       {/* <SupplyModal /> */}
       </Box>
     </PageCard>
