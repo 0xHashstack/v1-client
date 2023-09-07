@@ -102,6 +102,7 @@ const FeedbackModal = ({
   const [titleSuggestions, setTitleSuggestions] = useState("")
   const [descriptionSuggestions, setdescriptionSuggestions] = useState("")
   const [bugScreenshoturl, setBugScreenshoturl] = useState("")
+  const [suggestionUrl, setSuggestionUrl] = useState("")
   const getUniqueId = () => uniqueID;
 
   const dispatch = useDispatch();
@@ -115,6 +116,16 @@ const FeedbackModal = ({
     html2canvas(element).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setBugScreenshoturl(screenshotDataUrl);
+
+      // Now you have the screenshot in a data URL format
+      // You can send it to the backend using an HTTP request.
+    });
+  };
+  const handleCaptureClickSuggestions = async () => {
+    const element: any = document.getElementById('buttonclick');
+    html2canvas(element).then((canvas) => {
+      const screenshotDataUrl = canvas.toDataURL('image/png');
+      setSuggestionUrl(screenshotDataUrl);
 
       // Now you have the screenshot in a data URL format
       // You can send it to the backend using an HTTP request.
@@ -148,6 +159,11 @@ const FeedbackModal = ({
   const resetStates = () => {
     setFeedbackSelected("");
     setstarRating(0);
+    setTitleBugFeedback("");
+    setdescriptionBugFeedback("");
+    setBugScreenshoturl("");
+    setTitleSuggestions("");
+    setdescriptionSuggestions("");
   };
 
   const handleRating = async () => {
@@ -175,9 +191,46 @@ const FeedbackModal = ({
       });
   }
   const handleBugFeedback=async()=>{
+    const lastResponseTime = localStorage.getItem('BugTime');
+    if (lastResponseTime) {
+      const twentyFourHoursAgo = new Date();
+      twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 72);
+      if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
+        // Rating feature is disabled, so don't make the API call
+        console.log('Bug reporting is disabled for 72 hours.');
+        return;
+      }
+    }
     axios.post('/api/feedback/bug',{address:address,title:titleBugFeedback,description:descriptionBugFeedback,screenshot:bugScreenshoturl})
     .then((response)=>{
-      console.log(response,"res")
+      if(response){
+        const currentTime = new Date();
+        localStorage.setItem('BugTime', currentTime.toISOString());
+        console.log(response,"res")
+      }
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+  }
+  const handleSuggestionFeedback=async()=>{
+    const lastResponseTime = localStorage.getItem('SuggestionTime');
+    if (lastResponseTime) {
+      const twentyFourHoursAgo = new Date();
+      twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 96);
+      if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
+        // Rating feature is disabled, so don't make the API call
+        console.log('Suggestion reporting is disabled for 96 hours.');
+        return;
+      }
+    }
+    axios.post('/api/feedback/suggestion',{address:address,title:titleSuggestions,description:descriptionSuggestions,screenshot:suggestionUrl})
+    .then((response)=>{
+      if(response){
+        const currentTime = new Date();
+        localStorage.setItem('SuggestionTime', currentTime.toISOString());
+        console.log(response,"res")
+      }
     })
     .catch((error)=>{
       console.log(error);
@@ -239,7 +292,7 @@ const FeedbackModal = ({
               textAlign="center"
               color="white"
             >
-              <Box onClick={() => { setFeedbackSelected("") }} cursor="pointer">
+              <Box onClick={() => { resetStates() }} cursor="pointer">
                 <BtcToDai />
 
               </Box>
@@ -343,12 +396,11 @@ const FeedbackModal = ({
                           onChange={(e)=>{setdescriptionSuggestions(e.target.value)}}
                         // resize="vertical" // This allows the textarea to resize vertically as needed
                         />
-                        <Button onClick={handleCaptureClick} mt="0.4rem">
+                        <Button onClick={handleCaptureClickSuggestions} mt="0.4rem">
                           Capture
                         </Button>
                         <Box textAlign="center">
-
-                          <Button mt="0.8rem" textAlign="center" isDisabled={!(titleSuggestions && descriptionSuggestions)}>
+                          <Button mt="0.8rem" textAlign="center" isDisabled={!(titleSuggestions && descriptionSuggestions)} onClick={handleSuggestionFeedback}>
                             Submit
                           </Button>
                         </Box>

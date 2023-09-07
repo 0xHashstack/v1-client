@@ -1,21 +1,63 @@
 // pages/api/upload-screenshot.js
 import type { NextApiRequest, NextApiResponse } from 'next'
 import s3 from '../../../utils/aws';
+import { google } from 'googleapis';
 export default async  function handler(req:NextApiRequest, res:NextApiResponse) {
     if (req.method === 'POST') {
       // Get the screenshot data from the request body
       const {address, title,description, screenshot } = req.body;
-
+      const Datetime=new Date();
       const params={
         Bucket:'bugsfeedback',
         Key: `screenshots/${Date.now()}_screenshot.png`,
         Body:Buffer.from(screenshot, 'base64'),
         ContentType:'image/png'
       }
+      const auth=new google.auth.GoogleAuth({
+        credentials:{
+          client_email:process.env.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL,
+          private_key:process.env.NEXT_PUBLIC_GOOGLE_PRIVATE_KEY?.replace(/\\n/g,"\n")
+
+        },
+        scopes:[
+          'https://www.googleapis.com/auth/drive',
+          'https://www.googleapis.com/auth/drive.file',
+          'https://www.googleapis.com/auth/spreadsheets'
+        ]
+       })
+       const sheets=google.sheets({
+        auth,
+        version:'v4'
+       })
       try{
-        console.log(Buffer.from(screenshot, 'base64'))
-        // await s3.upload(params).promise();
-        // console.log('Screenshot uploaded successfully');
+        if(screenshot!=""){
+          console.log(Buffer.from(screenshot, 'base64'))
+          // await s3.upload(params).promise();
+          // console.log('Screenshot uploaded successfully');
+        }else{
+          if(!title ||!description){
+            res.status(400).json({ error: 'Title and description is required' });
+            return;
+          }
+          const response=await sheets.spreadsheets.values.append({
+            spreadsheetId:process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID_BUGS,
+            range:'A1:E1',
+            valueInputOption:'USER_ENTERED',
+            requestBody:{
+              values:[
+                [
+                  Datetime,address,title,description,screenshot
+                ]
+              ]
+            }
+         })
+         res.status(200).json(
+           { 
+             message: 'Bug reported  successfully',
+             data:response.data
+           }
+           );
+        }
       }catch(err){
         console.log(err,"aws")
       }
@@ -24,7 +66,7 @@ export default async  function handler(req:NextApiRequest, res:NextApiResponse) 
       // You may need to decode the data URL and save it as an image file
   
       // Send a response back to the frontend
-      res.status(200).json({ message: 'Bug reported successfully' });
+
     } else {
       res.status(405).end(); // Method Not Allowed
     }
