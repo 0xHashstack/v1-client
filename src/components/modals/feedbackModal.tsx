@@ -71,6 +71,11 @@ import BtcToDai from "@/assets/icons/pools/btcToDai";
 import ReactStars from "react-stars";
 import axios from "axios";
 import html2canvas from "html2canvas";
+import StarRating from "@/assets/icons/starRating";
+import BugIcon from "@/assets/icons/bugIcon";
+import FeedbackIcon from "@/assets/icons/feedbackIcon";
+import BackIconFeedback from "@/assets/icons/backIconFeedback";
+import CaptureBugIcon from "@/assets/icons/captureBugIcon";
 const FeedbackModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -103,6 +108,7 @@ const FeedbackModal = ({
   const [descriptionSuggestions, setdescriptionSuggestions] = useState("")
   const [bugScreenshoturl, setBugScreenshoturl] = useState("")
   const [suggestionUrl, setSuggestionUrl] = useState("")
+  const [descriptionRatingFeedback, setdescriptionRatingFeedback] = useState("")
   const getUniqueId = () => uniqueID;
 
   const dispatch = useDispatch();
@@ -116,6 +122,7 @@ const FeedbackModal = ({
     html2canvas(element).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setBugScreenshoturl(screenshotDataUrl);
+      console.log(screenshotDataUrl)
 
       // Now you have the screenshot in a data URL format
       // You can send it to the backend using an HTTP request.
@@ -177,8 +184,8 @@ const FeedbackModal = ({
         return;
       }
     }
-    
-    axios.post('/api/feedback/rating', { starRating, address})
+
+    axios.post('/api/feedback/rating', { starRating, address })
       .then((response) => {
         if (response) {
           const currentTime = new Date();
@@ -190,7 +197,7 @@ const FeedbackModal = ({
         console.error('Error:', error);
       });
   }
-  const handleBugFeedback=async()=>{
+  const handleBugFeedback = async () => {
     const lastResponseTime = localStorage.getItem('BugTime');
     if (lastResponseTime) {
       const twentyFourHoursAgo = new Date();
@@ -201,19 +208,19 @@ const FeedbackModal = ({
         return;
       }
     }
-    axios.post('/api/feedback/bug',{address:address,title:titleBugFeedback,description:descriptionBugFeedback,screenshot:bugScreenshoturl})
-    .then((response)=>{
-      if(response){
-        const currentTime = new Date();
-        localStorage.setItem('BugTime', currentTime.toISOString());
-        console.log(response,"res")
-      }
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
+    axios.post('/api/feedback/bug', { address: address, title: titleBugFeedback, description: descriptionBugFeedback, screenshot: bugScreenshoturl })
+      .then((response) => {
+        if (response) {
+          const currentTime = new Date();
+          localStorage.setItem('BugTime', currentTime.toISOString());
+          console.log(response, "res")
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
-  const handleSuggestionFeedback=async()=>{
+  const handleSuggestionFeedback = async () => {
     const lastResponseTime = localStorage.getItem('SuggestionTime');
     if (lastResponseTime) {
       const twentyFourHoursAgo = new Date();
@@ -224,31 +231,35 @@ const FeedbackModal = ({
         return;
       }
     }
-    axios.post('/api/feedback/suggestion',{address:address,title:titleSuggestions,description:descriptionSuggestions,screenshot:suggestionUrl})
-    .then((response)=>{
-      if(response){
-        const currentTime = new Date();
-        localStorage.setItem('SuggestionTime', currentTime.toISOString());
-        console.log(response,"res")
-      }
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
+    axios.post('/api/feedback/suggestion', { address: address, title: titleSuggestions, description: descriptionSuggestions, screenshot: suggestionUrl })
+      .then((response) => {
+        if (response) {
+          const currentTime = new Date();
+          localStorage.setItem('SuggestionTime', currentTime.toISOString());
+          console.log(response, "res")
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
   return (
     <div>
       <Box>
         <Button
           position="fixed"
-          color="white"
-          bg="purple"
+          color="#F0F0F5"
+          border="1px solid var(--Blue-dark, #3841AA)"
+          bg="#4D59E8"
           top="42vh"
           right="0"
+          fontSize="14px"
+          fontStyle="normal"
+          fontWeight="500"
+          lineHeight="20px"
           transform="rotate(-90deg)"
-          style={{
-            transformOrigin: 'bottom right', // Rotate from the bottom right corner
-          }}
+          _hover={{ backgroundColor: "#4D59E8" }}
+          transformOrigin="bottom right"
           onClick={onOpen}
         >
           Feedback
@@ -264,9 +275,10 @@ const FeedbackModal = ({
         >
           <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
           <ModalContent
-            bg="white"
+            bg="#02010F"
             borderRadius="md"
             maxW="464px"
+            height="520px"
             zIndex={1}
             mt="8rem"
             className="modal-content"
@@ -277,136 +289,206 @@ const FeedbackModal = ({
               fontWeight="600"
               fontStyle="normal"
               lineHeight="20px"
-              bg="blue"
-              textAlign="center"
+              mt="1rem"
               color="white"
             >
               Feedback & Support
-            </ModalHeader> : <ModalHeader
-              // mt="1rem"
-              fontSize="14px"
-              fontWeight="600"
-              fontStyle="normal"
-              lineHeight="20px"
-              bg="blue"
-              textAlign="center"
-              color="white"
-            >
-              <Box onClick={() => { resetStates() }} cursor="pointer">
-                <BtcToDai />
-
-              </Box>
-              Feedback & Support
-            </ModalHeader>}
-
-            <ModalCloseButton mr="1rem" color="white" />
+            </ModalHeader> :
+              feedbackSelected == "rating" ? <ModalHeader
+                // mt="1rem"
+                fontSize="14px"
+                fontWeight="600"
+                fontStyle="normal"
+                lineHeight="20px"
+                mt="1rem"
+                color="white"
+                display="flex"
+                gap="2rem"
+              >
+                <Box onClick={() => { resetStates() }} cursor="pointer" mt="0.1rem">
+                  <BackIconFeedback />
+                </Box>
+                Rate your experience
+              </ModalHeader> :
+                feedbackSelected == "reportIssue" ? <ModalHeader
+                  // mt="1rem"
+                  fontSize="14px"
+                  fontWeight="600"
+                  fontStyle="normal"
+                  lineHeight="20px"
+                  mt="1rem"
+                  color="white"
+                  display="flex"
+                  gap="2rem"
+                >
+                  <Box onClick={() => { resetStates() }} cursor="pointer" mt="0.1rem">
+                    <BackIconFeedback />
+                  </Box>
+                  Report an issue
+                </ModalHeader>
+                  :
+                  feedbackSelected == "suggestion" ? <ModalHeader
+                    // mt="1rem"
+                    fontSize="14px"
+                    fontWeight="600"
+                    fontStyle="normal"
+                    lineHeight="20px"
+                    mt="1rem"
+                    color="white"
+                    display="flex"
+                    gap="2rem"
+                  >
+                    <Box onClick={() => { resetStates() }} cursor="pointer" mt="0.1rem">
+                      <BackIconFeedback />
+                    </Box>
+                    Suggestions
+                  </ModalHeader> : ""}
+            <ModalCloseButton mr="1rem" mt="1rem" color="white" />
             <ModalBody>
               {feedbackSelected == "" ?
                 <Box>
-                  <Box display="flex" gap="2rem" mt="1rem" cursor="pointer" _hover={{ background: "grey" }} onClick={() => { setFeedbackSelected("rating") }}>
-                    <Box>
-                      <InfoIcon />
+                  <Box border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" borderRadius="6px" bg="rgba(103, 109, 154, 0.10)" display="flex" mt="1rem" cursor="pointer" onClick={() => { setFeedbackSelected("rating") }}>
+                    <Box mt="1rem" ml="1rem">
+                      <StarRating />
                     </Box>
-                    <Box display="flex" flexDirection="column">
-                      <Text fontWeight="600">
+                    <Box display="flex" flexDirection="column" p="16px" >
+                      <Text fontWeight="700" color="#D4BFF8" fontSize="14px" fontStyle="normal">
                         Rate your experience
                       </Text>
-                      <Text>
-                        How is your experience so far with
+                      <Text fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">
+                        How is your experience so far with the testnet?
                       </Text>
-                      the testnet?
                     </Box>
                   </Box>
-                  <Box display="flex" gap="2rem" mt="1rem" cursor="pointer" _hover={{ background: "grey" }} onClick={() => { setFeedbackSelected("reportIssue") }}>
-                    <Box>
-                      <InfoIcon />
+                  <Box border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" borderRadius="6px" bg="rgba(103, 109, 154, 0.10)" display="flex" mt="1rem" cursor="pointer" onClick={() => { setFeedbackSelected("reportIssue") }}>
+                    <Box mt="1rem" ml="1rem">
+                      <BugIcon />
                     </Box>
-                    <Box display="flex" flexDirection="column">
-                      <Text fontWeight="600">
+                    <Box display="flex" flexDirection="column" p="16px">
+                      <Text fontWeight="700" color="#D4BFF8" fontSize="14px" fontStyle="normal">
                         Report an issue
                       </Text>
-                      <Text>
+                      <Text fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">
                         Something broken? Let us know!
                       </Text>
                     </Box>
                   </Box>
-                  <Box display="flex" gap="2rem" mt="1rem" cursor="pointer" _hover={{ background: "grey" }} onClick={() => { setFeedbackSelected("suggestion") }}>
-                    <Box>
-                      <InfoIcon />
+                  <Box bg="rgba(103, 109, 154, 0.10)" border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" borderRadius="6px" display="flex" gap="2rem" mt="1rem" cursor="pointer" onClick={() => { setFeedbackSelected("suggestion") }}>
+                    <Box mt="1rem" ml="1rem">
+                      <FeedbackIcon />
                     </Box>
-                    <Box display="flex" flexDirection="column">
-                      <Text fontWeight="600">
-                        Send an idea
+                    <Box display="flex" flexDirection="column" p="16px">
+                      <Text fontWeight="700" color="#D4BFF8" fontSize="14px" fontStyle="normal">
+                        Suggestions
                       </Text>
-                      <Text>
+                      <Text fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">
                         Let us know how we can improve
                       </Text>
                     </Box>
                   </Box>
                 </Box>
                 : feedbackSelected == "rating" ?
-                  <Box display="flex" flexDirection="column" alignItems="center">
-                    <Text textAlign="center">
+                  <Box display="flex" flexDirection="column" alignItems="center" mt="1rem">
+                    <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">
                       How would you rate our experience
                     </Text>
                     <ReactStars
                       count={5}
-                      size={50}
+                      size={60}
                       color2={'#ffd700'}
                       value={starRating}
                       onChange={ratingChanged}
                     />
-                    <Button onClick={handleRating}>
+                    <Textarea
+                      mt="0.8rem"
+                      placeholder="Leave your comment"
+                      resize="none"
+                      height="160px"
+                      color="white"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                      borderRadius="6px"
+                      value={descriptionRatingFeedback}
+                      onChange={(e) => { setdescriptionRatingFeedback(e.target.value) }}
+                    // resize="vertical" // This allows the textarea to resize vertically as needed
+                    />
+                    <Button onClick={handleRating} background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                      color="#6E7681"
+                      size="sm"
+                      width="100%"
+                      mt="1.5rem"
+                      mb="1.5rem"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))">
                       Submit
                     </Button>
                   </Box>
                   : feedbackSelected == "reportIssue" ?
-                    <Box>
-                      <Text textAlign="center">Tell us what's broken</Text>
-                      <Input mt="0.4rem" placeholder='Add a title' required value={titleBugFeedback} onChange={(e)=>{setTitleBugFeedback(e.target.value)}} />
+                    <Box display="flex" flexDirection="column" mt="1rem">
+                      <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">Tell us what's broken</Text>
+                      <Input mt="0.4rem" placeholder='Add a title' color="white"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" required value={titleBugFeedback} onChange={(e) => { setTitleBugFeedback(e.target.value) }} />
                       <Textarea
                         mt="0.8rem"
                         placeholder="Describe the bug in detail"
                         resize="none"
+                        height="160px"
+                        color="white"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                        borderRadius="6px"
                         value={descriptionBugFeedback}
-                        onChange={(e)=>{setdescriptionBugFeedback(e.target.value)}}
+                        onChange={(e) => { setdescriptionBugFeedback(e.target.value) }}
                       // resize="vertical" // This allows the textarea to resize vertically as needed
                       />
                       <Box>
-                        <Button onClick={handleCaptureClick} mt="0.4rem">
-                          Capture
-                        </Button>
+                        <Box onClick={handleCaptureClick} mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end">
+                          <CaptureBugIcon/>
+                        </Box>
                       </Box>
                       <Box textAlign="center">
 
-                        <Button mt="0.8rem" textAlign="center" type="submit" isDisabled={!(titleBugFeedback && descriptionBugFeedback)} onClick={handleBugFeedback}>
+                        <Button background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                      color="#6E7681"
+                      size="sm"
+                      width="100%"
+                      mt="1.5rem"
+                      mb="1.5rem"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" isDisabled={!(titleBugFeedback && descriptionBugFeedback)} onClick={handleBugFeedback}>
                           Submit
                         </Button>
                       </Box>
                     </Box>
                     : feedbackSelected == "suggestion" ?
-                      <Box>
-                        <Text textAlign="center">Tell us how we can improve</Text>
-                        <Input mt="0.4rem" placeholder='Give your idea a name' value={titleSuggestions} onChange={(e)=>{setTitleSuggestions(e.target.value)}} />
+                      <Box display="flex" flexDirection="column" mt="1rem">
+                        <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">Tell us how we can improve</Text>
+                        <Input mt="0.4rem" placeholder='Add a title' color="white"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" value={titleSuggestions} onChange={(e) => { setTitleSuggestions(e.target.value) }} />
                         <Textarea
                           mt="0.8rem"
-                          placeholder="tell us more,including the problem it solves"
+                          placeholder="Description"
                           resize="none"
+                          height="160px"
+                          color="white"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                          borderRadius="6px"
                           value={descriptionSuggestions}
-                          onChange={(e)=>{setdescriptionSuggestions(e.target.value)}}
+                          onChange={(e) => { setdescriptionSuggestions(e.target.value) }}
                         // resize="vertical" // This allows the textarea to resize vertically as needed
                         />
-                        <Button onClick={handleCaptureClickSuggestions} mt="0.4rem">
-                          Capture
-                        </Button>
+                      <Box onClick={handleCaptureClickSuggestions} mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end">
+                          <CaptureBugIcon/>
+                        </Box>
                         <Box textAlign="center">
-                          <Button mt="0.8rem" textAlign="center" isDisabled={!(titleSuggestions && descriptionSuggestions)} onClick={handleSuggestionFeedback}>
+                          <Button background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                      color="#6E7681"
+                      size="sm"
+                      width="100%"
+                      mt="1.5rem"
+                      mb="1.5rem"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" isDisabled={!(titleSuggestions && descriptionSuggestions)} onClick={handleSuggestionFeedback}>
                             Submit
                           </Button>
                         </Box>
                       </Box>
                       :
-
                       ""}
 
             </ModalBody>
