@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
-    Table,
-    Thead,
-    Tbody,
-    Tr,
-    Td,
-    TableContainer,
-    Text,
-    Box,
-    HStack,
-    VStack,
-    useTimeout,
-    Spinner,
-    Skeleton,
-    Tooltip,
-    Select,
-  } from "@chakra-ui/react";
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Td,
+  TableContainer,
+  Text,
+  Box,
+  HStack,
+  VStack,
+  useTimeout,
+  Spinner,
+  Skeleton,
+  Tooltip,
+  Select,
+} from "@chakra-ui/react";
 import { NativeToken } from '@/Blockchain/interfaces/interfaces';
 import { tokenDecimalsMap } from '@/Blockchain/utils/addressServices';
 import { BNtoNum } from '@/Blockchain/utils/utils';
@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { uint256 } from 'starknet';
 import ArrowUp from '@/assets/icons/arrowup';
 import DropdownUp from '@/assets/icons/dropdownUpIcon';
+import Pagination from "@/components/uiElements/pagination";
 const LeaderboardDashboard = ({
     width,
     currentPagination,
@@ -63,7 +64,6 @@ const tooltips = [
     "How much liquidity your referees hold with us",
     "Points earned for rewards",
     "Estimated token earning with us ",
-  
   ];
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -85,14 +85,14 @@ const tooltips = [
                 {/* <Text color="#FFFFFF" fontSize="20px">
                   Loading...
                 </Text> */}
-                <Spinner
-                  thickness="4px"
-                  speed="0.65s"
-                  emptyColor="gray.200"
-                  color="#010409"
-                  size="xl"
-                />
-                {/* <YourBorrowModal
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="#010409"
+          size="xl"
+        />
+        {/* <YourBorrowModal
                   buttonText="Borrow assets"
                   variant="link"
                   fontSize="16px"
@@ -103,13 +103,13 @@ const tooltips = [
                   ml="0.4rem"
                   lineHeight="24px"
                 /> */}
-              </Box>
-            </>
-          ) :
-              <TableContainer
-      
-    //   border="1px"
-    //   borderColor="#2B2F35"
+      </Box>
+    </>
+  ) : (
+    <>
+    <TableContainer
+      //   border="1px"
+      //   borderColor="#2B2F35"
       color="white"
       borderRadius="md"
       w={width}
@@ -119,7 +119,7 @@ const tooltips = [
       
       // bgColor={"red"}
       // height={"100%"}
-      height={"37rem"}
+      height={"34rem"}
       padding={"1rem 2rem 0rem"}
       overflowX="hidden"
       // mt={"3rem"}
@@ -243,11 +243,9 @@ const tooltips = [
                   height={"2rem"}
                   fontSize="12px"
                   textAlign={
-                    idx1 == columnItems?.length - 1
-                      ? "right"
-                      : "center"
+                    idx1 == columnItems?.length - 1 ? "right" : "center"
                   }
-                  pl={idx1 == 0 ? 2  : 0}
+                  pl={idx1 == 0 ? 2 : 0}
                   pr={idx1 == columnItems.length - 1 ? 5 : 0}
                   color={"#BDBFC1"}
                   cursor="context-menu"
@@ -291,16 +289,17 @@ const tooltips = [
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-               {leaderBoardData?.slice(lower_bound, upper_bound + 1).map(
-            (member: any, idx: any) => {
+          {leaderBoardData
+            ?.slice(lower_bound, upper_bound + 1)
+            .map((member: any, idx: any) => {
               // console.log("faisal coin check", coin);
               // borrowIDCoinMap.push([coin.id, coin?.name]);
               return (
                 <>
                   <Tr
                     key={lower_bound + idx}
-                 width={"100%"} height="4rem"
-
+                    width={"100%"}
+                    height="4rem"
                     // height={"5rem"}
                     // bgColor="green"
                     // borderBottom="1px solid #2b2f35"
@@ -315,7 +314,7 @@ const tooltips = [
                       padding={2}
                       textAlign="center"
                     >
-                       <Text
+                      <Text
                         width="100%"
                         height="100%"
                         display="flex"
@@ -326,29 +325,7 @@ const tooltips = [
                         color="#E6EDF3"
                         // bgColor={"blue"}
                       >
-                       {member.start} - {member.end}
-                      </Text>
-                    </Td>
-                    <Td
-                      width={"16.6%"}
-                      // maxWidth={`${gap[idx1][idx2]}%`}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      padding={2}
-                      textAlign="center"
-                    >
-                       <Text
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        fontWeight="400"
-                        fontSize="14px"
-                        color="#E6EDF3"
-                        // bgColor={"blue"}
-                      >
-                       {member.ref}
+                        {member.start} - {member.end}
                       </Text>
                     </Td>
                     <Td
@@ -370,7 +347,7 @@ const tooltips = [
                         color="#E6EDF3"
                         // bgColor={"blue"}
                       >
-                       {member.liq}
+                        {member.ref}
                       </Text>
                     </Td>
                     <Td
@@ -392,7 +369,29 @@ const tooltips = [
                         color="#E6EDF3"
                         // bgColor={"blue"}
                       >
-                       {member.pts}
+                        {member.liq}
+                      </Text>
+                    </Td>
+                    <Td
+                      width={"16.6%"}
+                      // maxWidth={`${gap[idx1][idx2]}%`}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      padding={2}
+                      textAlign="center"
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                        // bgColor={"blue"}
+                      >
+                        {member.pts}
                       </Text>
                     </Td>
                     <Td
@@ -412,14 +411,14 @@ const tooltips = [
                         fontWeight="400"
                         fontSize="14px"
                         color="#E6EDF3"
-                  
+
                         // bgColor={"blue"}
                       >
-                       {member.est}
+                        {member.est}
                       </Text>
                     </Td>
-                    </Tr>
-                    <Tr
+                  </Tr>
+                  <Tr
                     style={{
                       position: "absolute",
                       // left: "0%",
@@ -429,15 +428,23 @@ const tooltips = [
                       display: `${member.id == 5 ? "none" : "block"}`,
                     }}
                   />
-                  </>
-                    
-              )})}
+                </>
+              );
+            })}
         </Tbody>
-        </Table>
-        </TableContainer>
-          
-          
-    )
-  }
+      </Table>
+   
+    </TableContainer>
+    <Pagination
+          currentPagination={currentPagination}
+          setCurrentPagination={(x: any) => setCurrentPagination(x)}
+          max={leaderBoardData?.length || 0}
+          rows={6}
+        />
+        <br/>
+    </>
+    
+  );
+};
 
-  export default LeaderboardDashboard;
+export default LeaderboardDashboard;
