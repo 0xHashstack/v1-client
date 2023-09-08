@@ -122,14 +122,19 @@ const FeedbackModal = ({
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const handleCaptureClick = async () => {
-  const element: any = document.getElementById('buttonclick');
-    html2canvas(element).then((canvas) => {
+    const element: any = document.getElementById('buttonclick');
+
+    html2canvas(document.body, {
+      width: window.innerWidth,  // Set the width of the screenshot
+  height: window.innerHeight,  // Set the height of the screenshot
+      logging: false,
+      useCORS: true,
+      allowTaint: true,
+      removeContainer: false,
+    }).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setBugScreenshoturl(screenshotDataUrl);
-      console.log(screenshotDataUrl)
-
-      // Now you have the screenshot in a data URL format
-      // You can send it to the backend using an HTTP request.
+      console.log(screenshotDataUrl, "url");
     });
   };
   const handleCaptureClickSuggestions = async () => {
@@ -395,11 +400,11 @@ const FeedbackModal = ({
                 </Box>
                 : feedbackSelected == "rating" ?
                 ratingDisabled ?                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mt="5rem">
-                <Text fontWeight="700" color="#D4BFF8" fontSize="18px" fontStyle="normal" mt="1rem">
-                  Please try later!
+                <Text fontWeight="700" color="#D4BFF8" fontSize="22px" fontStyle="normal" mt="1rem">
+                  Feedback limit is reached.
                 </Text>
                 <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="16px" fontStyle="normal">
-                  Rating is disabled for 24 hours
+                Please try again after  24 hours
                 </Text>
 
               </Box>:
@@ -435,7 +440,12 @@ const FeedbackModal = ({
                       onChange={(e) => { setdescriptionRatingFeedback(e.target.value) }}
                     // resize="vertical" // This allows the textarea to resize vertically as needed
                     />
-                    <Button onClick={handleRating} background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                    <Button onClick={()=>{
+                      setRatingFeedbackSubmitted(true);
+                      if(!ratingFeedbackSubmitted){
+                        handleRating();
+                      }
+                    }} background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                       color="#6E7681"
                       size="sm"
                       width="100%"
@@ -447,11 +457,11 @@ const FeedbackModal = ({
                   </Box>
                   : feedbackSelected == "reportIssue" ?
                   bugFeedbackDisabled ?                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mt="5rem">
-                  <Text fontWeight="700" color="#D4BFF8" fontSize="18px" fontStyle="normal" mt="1rem">
-                    Please try later!
+                  <Text fontWeight="700" color="#D4BFF8" fontSize="22px" fontStyle="normal" mt="1rem">
+                    Feedback limit is reached.
                   </Text>
                   <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="16px" fontStyle="normal">
-                    Feedback is disabled for 72 hours
+                  Please try again after 72 hours
                   </Text>
   
                 </Box>:
@@ -494,18 +504,23 @@ const FeedbackModal = ({
                       width="100%"
                       mt="1.5rem"
                       mb="1.5rem"
-                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" isDisabled={!(titleBugFeedback && descriptionBugFeedback)} onClick={handleBugFeedback}>
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" isDisabled={!(titleBugFeedback && descriptionBugFeedback)} onClick={()=>{
+                        setBugFeedbackSubmitted(true);
+                        if(!bugFeedbackSubmitted){
+                          handleBugFeedback()
+                        }
+                      }}>
                           Submit
                         </Button>
                       </Box>
                     </Box>
                     : feedbackSelected == "suggestion" ?
                     suggestionFeedbackDisabled ?                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mt="5rem">
-                    <Text fontWeight="700" color="#D4BFF8" fontSize="18px" fontStyle="normal" mt="1rem">
-                      Please try later!
+                    <Text fontWeight="700" color="#D4BFF8" fontSize="22px" fontStyle="normal" mt="1rem">
+                      Feedback limit is reached.
                     </Text>
                     <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="16px" fontStyle="normal">
-                      Feedback is disabled for 96 hours
+                    Please try again after 96 hours
                     </Text>
     
                   </Box>:
@@ -545,7 +560,12 @@ const FeedbackModal = ({
                       width="100%"
                       mt="1.5rem"
                       mb="1.5rem"
-                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" isDisabled={!(titleSuggestions && descriptionSuggestions)} onClick={handleSuggestionFeedback}>
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" isDisabled={!(titleSuggestions && descriptionSuggestions)} onClick={()=>{
+                        setsuggestionFeedbackSubmitted(true);
+                        if(!suggestionFeedbackSubmitted){
+                          handleSuggestionFeedback()
+                        }
+                        }}>
                             Submit
                           </Button>
                         </Box>

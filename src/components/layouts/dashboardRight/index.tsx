@@ -124,7 +124,6 @@ const DashboardRight = ({
     paddingX={isLargerThan1280 ? "2rem" : "1rem"}
     pt={"1.7rem"}
     // pb={"0.5rem"}
-    id="buttonclick"
     overflowX="hidden"
     >
       <Table variant="unstyled" width="100%" height="100%">
