@@ -109,8 +109,12 @@ const FeedbackModal = ({
   const [bugScreenshoturl, setBugScreenshoturl] = useState("")
   const [suggestionUrl, setSuggestionUrl] = useState("")
   const [descriptionRatingFeedback, setdescriptionRatingFeedback] = useState("")
-  const getUniqueId = () => uniqueID;
-
+  const [ratingFeedbackSubmitted, setRatingFeedbackSubmitted] = useState(false)
+  const [bugFeedbackSubmitted, setBugFeedbackSubmitted] = useState(false)
+  const [suggestionFeedbackSubmitted, setsuggestionFeedbackSubmitted] = useState(false)
+  const [ratingDisabled, setRatingDisabled] = useState(false)
+  const [bugFeedbackDisabled, setBugFeedbackDisabled] = useState(false)
+  const [suggestionFeedbackDisabled, setSuggestionFeedbackDisabled] = useState(false)
   const dispatch = useDispatch();
 
   let activeTransactions = useSelector(selectActiveTransactions);
@@ -138,16 +142,6 @@ const FeedbackModal = ({
       // You can send it to the backend using an HTTP request.
     });
   };
-  // const borrowIds = [
-  //     "ID - 123456",
-  //     "ID - 123457",
-  //     "ID - 123458",
-  //     "ID - 123459",
-  //     "ID - 1234510",
-  // ];
-  const userLoans = useSelector(selectUserLoans);
-  //This Function handles the modalDropDowns
-
   const ratingChanged = (newRating: any) => {
     setstarRating(newRating);
   }
@@ -180,14 +174,16 @@ const FeedbackModal = ({
       twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
       if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
         // Rating feature is disabled, so don't make the API call
+        setRatingDisabled(true);
         console.log('Rating feature is disabled for 24 hours.');
         return;
       }
     }
 
-    axios.post('/api/feedback/rating', { starRating, address })
+    axios.post('/api/feedback/rating', { starRating, address,descriptionRatingFeedback })
       .then((response) => {
         if (response) {
+          setRatingFeedbackSubmitted(true);
           const currentTime = new Date();
           localStorage.setItem('RatingTime', currentTime.toISOString());
         }
@@ -204,6 +200,7 @@ const FeedbackModal = ({
       twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 72);
       if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
         // Rating feature is disabled, so don't make the API call
+        setBugFeedbackDisabled(true);
         console.log('Bug reporting is disabled for 72 hours.');
         return;
       }
@@ -211,6 +208,7 @@ const FeedbackModal = ({
     axios.post('/api/feedback/bug', { address: address, title: titleBugFeedback, description: descriptionBugFeedback, screenshot: bugScreenshoturl })
       .then((response) => {
         if (response) {
+          setBugFeedbackSubmitted(true);
           const currentTime = new Date();
           localStorage.setItem('BugTime', currentTime.toISOString());
           console.log(response, "res")
@@ -227,6 +225,7 @@ const FeedbackModal = ({
       twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 96);
       if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
         // Rating feature is disabled, so don't make the API call
+        setSuggestionFeedbackDisabled(true);
         console.log('Suggestion reporting is disabled for 96 hours.');
         return;
       }
@@ -234,6 +233,7 @@ const FeedbackModal = ({
     axios.post('/api/feedback/suggestion', { address: address, title: titleSuggestions, description: descriptionSuggestions, screenshot: suggestionUrl })
       .then((response) => {
         if (response) {
+          setsuggestionFeedbackSubmitted(true);
           const currentTime = new Date();
           localStorage.setItem('SuggestionTime', currentTime.toISOString());
           console.log(response, "res")
@@ -348,7 +348,7 @@ const FeedbackModal = ({
               {feedbackSelected == "" ?
                 <Box>
                   <Box border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" borderRadius="6px" bg="rgba(103, 109, 154, 0.10)" display="flex" mt="1rem" cursor="pointer" onClick={() => { setFeedbackSelected("rating") }}>
-                    <Box mt="1rem" ml="1rem">
+                    <Box mt="1.2rem" ml="1rem">
                       <StarRating />
                     </Box>
                     <Box display="flex" flexDirection="column" p="16px" >
@@ -361,7 +361,7 @@ const FeedbackModal = ({
                     </Box>
                   </Box>
                   <Box border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" borderRadius="6px" bg="rgba(103, 109, 154, 0.10)" display="flex" mt="1rem" cursor="pointer" onClick={() => { setFeedbackSelected("reportIssue") }}>
-                    <Box mt="1rem" ml="1rem">
+                    <Box mt="1.2rem" ml="1rem">
                       <BugIcon />
                     </Box>
                     <Box display="flex" flexDirection="column" p="16px">
@@ -373,11 +373,17 @@ const FeedbackModal = ({
                       </Text>
                     </Box>
                   </Box>
-                  <Box bg="rgba(103, 109, 154, 0.10)" border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" borderRadius="6px" display="flex" gap="2rem" mt="1rem" cursor="pointer" onClick={() => { setFeedbackSelected("suggestion") }}>
-                    <Box mt="1rem" ml="1rem">
-                      <FeedbackIcon />
+                  <Box bg="rgba(103, 109, 154, 0.10)" border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" borderRadius="6px" display="flex"  mt="1rem" cursor="pointer" onClick={() => { setFeedbackSelected("suggestion") }}>
+                    <Box mt="1.2rem" ml="1.5rem">
+                    <Image
+                src={"/feedbackIcon.png"}
+                alt="Picture of the author"
+                width="32"
+                height="32"
+                style={{ cursor: "pointer" }}
+              />
                     </Box>
-                    <Box display="flex" flexDirection="column" p="16px">
+                    <Box display="flex" flexDirection="column" p="16px" ml="0.3rem">
                       <Text fontWeight="700" color="#D4BFF8" fontSize="14px" fontStyle="normal">
                         Suggestions
                       </Text>
@@ -388,7 +394,25 @@ const FeedbackModal = ({
                   </Box>
                 </Box>
                 : feedbackSelected == "rating" ?
-                  <Box display="flex" flexDirection="column" alignItems="center" mt="1rem">
+                ratingDisabled ?                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mt="5rem">
+                <Text fontWeight="700" color="#D4BFF8" fontSize="18px" fontStyle="normal" mt="1rem">
+                  Please try later!
+                </Text>
+                <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="16px" fontStyle="normal">
+                  Rating is disabled for 24 hours
+                </Text>
+
+              </Box>:
+                ratingFeedbackSubmitted ?                  
+                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mt="5rem">
+                <Text fontWeight="700" color="#D4BFF8" fontSize="18px" fontStyle="normal" mt="1rem">
+                  Thank you!
+                </Text>
+                <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="16px" fontStyle="normal">
+                  We Really appreciate your feedback.
+                </Text>
+
+              </Box>:                  <Box display="flex" flexDirection="column" alignItems="center" mt="1rem">
                     <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">
                       How would you rate our experience
                     </Text>
@@ -422,6 +446,25 @@ const FeedbackModal = ({
                     </Button>
                   </Box>
                   : feedbackSelected == "reportIssue" ?
+                  bugFeedbackDisabled ?                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mt="5rem">
+                  <Text fontWeight="700" color="#D4BFF8" fontSize="18px" fontStyle="normal" mt="1rem">
+                    Please try later!
+                  </Text>
+                  <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="16px" fontStyle="normal">
+                    Feedback is disabled for 72 hours
+                  </Text>
+  
+                </Box>:
+                  bugFeedbackSubmitted ?                  
+                  <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mt="5rem">
+                  <Text fontWeight="700" color="#D4BFF8" fontSize="18px" fontStyle="normal" mt="1rem">
+                    Thank you!
+                  </Text>
+                  <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="16px" fontStyle="normal">
+                    We Really appreciate your feedback.
+                  </Text>
+  
+                </Box>:
                     <Box display="flex" flexDirection="column" mt="1rem">
                       <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">Tell us what's broken</Text>
                       <Input mt="0.4rem" placeholder='Add a title' color="white"
@@ -457,6 +500,25 @@ const FeedbackModal = ({
                       </Box>
                     </Box>
                     : feedbackSelected == "suggestion" ?
+                    suggestionFeedbackDisabled ?                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mt="5rem">
+                    <Text fontWeight="700" color="#D4BFF8" fontSize="18px" fontStyle="normal" mt="1rem">
+                      Please try later!
+                    </Text>
+                    <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="16px" fontStyle="normal">
+                      Feedback is disabled for 96 hours
+                    </Text>
+    
+                  </Box>:
+                    suggestionFeedbackSubmitted ?                  
+                    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mt="5rem">
+                    <Text fontWeight="700" color="#D4BFF8" fontSize="18px" fontStyle="normal" mt="1rem">
+                      Thank you!
+                    </Text>
+                    <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="16px" fontStyle="normal">
+                      We Really appreciate your feedback.
+                    </Text>
+    
+                  </Box>:
                       <Box display="flex" flexDirection="column" mt="1rem">
                         <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">Tell us how we can improve</Text>
                         <Input mt="0.4rem" placeholder='Add a title' color="white"
