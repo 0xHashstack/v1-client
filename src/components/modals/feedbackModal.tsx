@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRef } from "react";
 import {
   Button,
   Modal,
@@ -110,6 +111,7 @@ const FeedbackModal = ({
   const [suggestionUrl, setSuggestionUrl] = useState("")
   const [descriptionRatingFeedback, setdescriptionRatingFeedback] = useState("")
   const getUniqueId = () => uniqueID;
+  
 
   const dispatch = useDispatch();
 
@@ -161,7 +163,34 @@ const FeedbackModal = ({
 
   // console.log(onOpen)
 
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [base64Image, setBase64Image] = useState<string | ArrayBuffer | null>('');
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      // Read the selected image file as a base64 string
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event?.target?.result) {
+          setBase64Image(event.target.result as string);
+          console.log("base64:-",event.target.result);
+        }
+      };
+      reader.readAsDataURL(file);
+
+      setSelectedImage(URL.createObjectURL(file));
+      console.log("selected image:-",URL.createObjectURL(file))
+    } else {
+      setSelectedImage(null);
+      setBase64Image('');
+    }
+  };
+  const handleClick = () => {
+    inputRef.current.click();
+  };
+  const inputRef = useRef();
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const resetStates = () => {
     setFeedbackSelected("");
@@ -441,6 +470,14 @@ const FeedbackModal = ({
                       <Box>
                         <Box onClick={handleCaptureClick} mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end">
                           <CaptureBugIcon/>
+                        </Box>
+                      </Box>
+                      <Box>
+                        <Box mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end">
+                       {selectedImage ?<Image width={200} src = {selectedImage} height={200} alt="Selected" ></Image> :  <Box
+      mt="0.4rem" bg="#4D59E8" fontSize={"14px"} color={"white"} cursor="pointer" display="flex" width="30%" justifyContent="center"
+      onClick={handleClick}
+    >     <CaptureBugIcon/>ATTACH FILE<Input  hidden={true} ref={ inputRef} type={"file"} accept="image/*" onChange={handleImageChange}/></Box>  }
                         </Box>
                       </Box>
                       <Box textAlign="center">
