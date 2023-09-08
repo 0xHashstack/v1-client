@@ -73,7 +73,7 @@ const SliderWithInput = () => {
         <Button
           variant="ghost"
           color="#0969DA"
-          _hover={{ bg: "#101216" }}
+          _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
           onClick={() => {
             setinputAmount(walletBalance);
             setSliderValue(100);

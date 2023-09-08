@@ -69,6 +69,7 @@ import mixpanel from "mixpanel-browser";
 import useDataLoader from "@/hooks/useDataLoader";
 import {
   resetState,
+  selectCurrentNetwork,
   setAprAndHealthFactor,
   setNetAPR,
   setNetWorth,
@@ -87,6 +88,7 @@ const Navbar = ({ validRTokens }: any) => {
   const [parsedAccount, setParsedAccount] = useState<any>();
   const currentDropdown = useSelector(selectCurrentDropdown);
   const { account } = useAccount();
+  const currentChainId = useSelector(selectCurrentNetwork);
   // console.log(account, "Navbar");
   // useEffect(() => {
   //   const storedAccount = localStorage.getItem("account");
@@ -492,7 +494,7 @@ const Navbar = ({ validRTokens }: any) => {
           alignItems="center"
           marginRight="1.2rem"
         >
-          <GetTokensModal
+          {currentChainId == "0x534e5f4d41494e"  ?"":          <GetTokensModal
             buttonText="Get Tokens"
             height={"2rem"}
             fontSize={"12px"}
@@ -503,7 +505,8 @@ const Navbar = ({ validRTokens }: any) => {
             borderRadius={"6px"}
             color="white"
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
-          />
+          />}
+
           <Box
             borderRadius="6px"
             cursor="pointer"

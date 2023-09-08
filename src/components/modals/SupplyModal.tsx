@@ -1081,7 +1081,7 @@ const SupplyModal = ({
                         : "#00D395"
                     }`}
                     // color="#0969DA"
-                    _hover={{ bg: "#101216" }}
+                    _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                     onClick={() => {
                       setDepositAmount(walletBalance);
                       setinputAmount(walletBalance);
@@ -1543,7 +1543,7 @@ const SupplyModal = ({
                   mt="1.5rem"
                   mb="1.5rem"
                   border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                  _hover={{ bg: "#101216" }}
+                  _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                 >
                   Supply
                 </Button>

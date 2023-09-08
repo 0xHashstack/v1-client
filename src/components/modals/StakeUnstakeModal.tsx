@@ -1434,7 +1434,7 @@ const StakeUnstakeModal = ({
                                 ? "#0969DA"
                                 : "#00D395"
                             }`}
-                            _hover={{ bg: "#101216" }}
+                            _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                             onClick={() => {
                               if (rtokenWalletBalance != 0) {
                                 setRTokenAmount(rtokenWalletBalance);
@@ -1977,7 +1977,7 @@ const StakeUnstakeModal = ({
                             width="100%"
                             mt="1.5rem"
                             mb="1.5rem"
-                            _hover={{ bg: "#101216" }}
+                            _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                           >
                             {`${
                               !isValid(currentSelectedStakeCoin) &&
@@ -2067,7 +2067,7 @@ const StakeUnstakeModal = ({
                           mb="1.5rem"
                           background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          _hover={{ bg: "#101216" }}
+                          _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                         >
                           {`${
                             isValid(currentSelectedStakeCoin) &&
@@ -2350,7 +2350,7 @@ const StakeUnstakeModal = ({
                                 ? "#0969DA"
                                 : "#00D395"
                             }`}
-                            _hover={{ bg: "#101216" }}
+                            _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                             onClick={() => {
                               // if (!coinsSupplied[currentSelectedUnstakeCoin]) {
                               //   return;
@@ -2778,7 +2778,7 @@ const StakeUnstakeModal = ({
                           mb="1.5rem"
                           background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          _hover={{ bg: "#101216" }}
+                          _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                         >
                           Unstake
                         </Button>

@@ -124,7 +124,7 @@ const FeedbackModal = ({
 
   const handleCaptureClick = async () => {
   const element: any = document.getElementById('buttonclick');
-    html2canvas(element).then((canvas) => {
+    html2canvas(document.body).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setBugScreenshoturl(screenshotDataUrl);
       console.log(screenshotDataUrl, "url");
@@ -132,7 +132,7 @@ const FeedbackModal = ({
   };
   const handleCaptureClickSuggestions = async () => {
     const element: any = document.getElementById('buttonclick');
-    html2canvas(element).then((canvas) => {
+    html2canvas(document.body).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setSuggestionUrl(screenshotDataUrl);
 
@@ -156,7 +156,7 @@ const FeedbackModal = ({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [base64Image, setBase64Image] = useState<string | ArrayBuffer | null>('');
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e:any) => {
     const file = e.target.files[0];
 
     if (file) {
@@ -180,7 +180,7 @@ const FeedbackModal = ({
   const handleClick = () => {
     inputRef.current.click();
   };
-  const inputRef = useRef();
+  const inputRef:any = useRef();
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const resetStates = () => {
     setFeedbackSelected("");

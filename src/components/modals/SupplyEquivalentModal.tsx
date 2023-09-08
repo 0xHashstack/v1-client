@@ -349,7 +349,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   <Button
                     variant="ghost"
                     color="#0969DA"
-                    _hover={{ bg: "#101216" }}
+                    _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                     onClick={() => {
                       setinputAmount(walletBalance);
                       setSliderValue(100);
@@ -652,7 +652,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   mt="1.5rem"
                   mb="1.5rem"
                   border="1px solid #2B2F35"
-                  _hover={{ bg: "#101216" }}
+                  _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                 >
                   Supply
                 </Button>

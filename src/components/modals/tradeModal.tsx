@@ -1495,7 +1495,7 @@ const TradeModal = ({
                             ? "#0969DA"
                             : "#00D395"
                         }`}
-                        _hover={{ bg: "#101216" }}
+                        _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                         onClick={() => {
                           setinputCollateralAmount(walletBalance);
                           setCollateralAmount(walletBalance);
@@ -1996,7 +1996,7 @@ const TradeModal = ({
                             ? "#0969DA"
                             : "#00D395"
                         }`}
-                        _hover={{ bg: "#101216" }}
+                        _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                         onClick={() => {
                           if (inputCollateralAmountUSD > 0) {
                             if (
@@ -3207,7 +3207,7 @@ const TradeModal = ({
                     width="100%"
                     mt="1.5rem"
                     mb="1.5rem"
-                    _hover={{ bg: "#101216" }}
+                    _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                   >
                     Borrow
                   </Button>
