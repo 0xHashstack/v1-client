@@ -29,11 +29,14 @@ export default async  function handler(req:NextApiRequest, res:NextApiResponse) 
         auth,
         version:'v4'
        })
+       console.log(Buffer.from(screenshot, 'base64'))
       try{
-        if(screenshot!=""){
-          console.log(Buffer.from(screenshot, 'base64'))
-          // await s3.upload(params).promise();
-          // console.log('Screenshot uploaded successfully');
+        if(screenshot){
+          await s3.upload(params).promise();
+          console.log('Screenshot uploaded successfully');
+          return res.status(200).json({
+            message:"Bug reported"
+          })
         }else{
           if(!title ||!description){
             res.status(400).json({ error: 'Title and description is required' });
@@ -54,7 +57,7 @@ export default async  function handler(req:NextApiRequest, res:NextApiResponse) 
          res.status(200).json(
            { 
              message: 'Bug reported  successfully',
-             data:response.data
+            //  data:response.data
            }
            );
         }

@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { starRating, address } = req.body;
+    const { starRating, address,descriptionRatingFeedback } = req.body;
     const Datetime=new Date();
     try{
       if (starRating === undefined) {
@@ -29,12 +29,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
        const response=await sheets.spreadsheets.values.append({
           spreadsheetId:process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID,
-          range:'A1:C1',
+          range:'A1:D1',
           valueInputOption:'USER_ENTERED',
           requestBody:{
             values:[
               [
-                Datetime,address,starRating
+                Datetime,address,starRating,descriptionRatingFeedback
               ]
             ]
           }

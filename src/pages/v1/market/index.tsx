@@ -95,10 +95,10 @@ export default function Market() {
   // }, [account]);
 
   return (
-    <PageCard>
+    <PageCard >
       <StatsBoard />
-      <NavButtons width={95} marginBottom={"1.125rem"} />
-      <MarketDashboard />
+      <NavButtons width={95} marginBottom={"1.125rem"}  />
+      <MarketDashboard  />
       {/* <SupplyModal /> */}
       {/* <Box
         paddingY="1rem"

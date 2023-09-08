@@ -238,7 +238,7 @@ const Navbar = ({ validRTokens }: any) => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
-          color={`${pathname != "/v1/campaign" ? "#00D395" : "white"}`}
+          color={`${pathname != "/v1/campaign" ? "#00D395" : "#676D9A"}`}
           // _hover={{
           //   color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
           // }}
@@ -256,7 +256,7 @@ const Navbar = ({ validRTokens }: any) => {
             alignItems="center"
             gap={"8px"}
           >
-            {router.pathname != "/v1/campaign" ? (
+            {router.pathname == "/v1/campaign" ? (
                 <Image
                   src={hoverDashboardIcon}
                   alt="Picture of the author"
@@ -381,6 +381,7 @@ const Navbar = ({ validRTokens }: any) => {
           marginBottom="0px"
           // className="button"
           // backgroundColor={"blue"}
+          color={`${pathname == "/v1/campaign" ? "#00D395" : "#676D9A"}`}
           _hover={{ color: "#6e7681" }}
           onMouseEnter={() => setCampaignHover(true)}
           onMouseLeave={() => setCampaignHover(false)}
@@ -392,7 +393,7 @@ const Navbar = ({ validRTokens }: any) => {
               alignItems="center"
               gap={"8px"}
             >
-              {campaignHover ? (
+              {pathname == "/v1/campaign" ? (
                 <Image
                   src={hoverStake}
                   alt="Picture of the author"
@@ -410,7 +411,7 @@ const Navbar = ({ validRTokens }: any) => {
                 />
               )}
 
-              <Text fontSize="14px" color="#676D9A">Campaign</Text>
+              <Text fontSize="14px" >Campaign</Text>
             </Box>
         </Box>
         {/* <Box
