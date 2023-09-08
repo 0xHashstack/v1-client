@@ -205,15 +205,24 @@ const Campaign = () => {
             Referal mining Campign
           </Button>
         </HStack>
-        {campaignSelected==1 &&        <HStack mt="2.5rem" display="flex" flexDirection="column" alignItems="flex-start" width="100%">
-          <Box display="flex">
+             <HStack mt="2.5rem" display="flex" flexDirection="column" alignItems="flex-start" width="100%">
+              {campaignSelected==1 ?          <Box display="flex">
             <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
-              liquidity mining campaign -
+              Liquidity mining campaign -
             </Text>
             <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
               {` 99 days 11 hours left`}
             </Text>
-          </Box>
+          </Box>:
+                    <Box display="flex">
+                    <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
+                      Referal campaign -
+                    </Text>
+                    <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
+                      {` 99 days 11 hours left`}
+                    </Text>
+                  </Box>
+          }
           <HStack display="flex" justifyContent="space-between" width="100%">
             <HStack
                     // width="13.5rem"
@@ -265,44 +274,94 @@ const Campaign = () => {
                         </Text>
                     </VStack>
             </HStack>
+            {campaignSelected==1 ?
+                        <HStack
+                        // width="13.5rem"
+                        display="flex"
+                        // bgColor="yellow"
+                        // flexGrow={1}
+                        gap="5rem"
+                      >
+                        <VStack
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="flex-start"
+                          gap={"6px"}
+                          p="13px 25px"
+                        >
+                          <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+                          Total $ of tokens staked
+                          </Text>
+                            <Text color="#e6edf3" fontSize="20px">
+                            5,3100.00
+                            </Text>
+                        </VStack>
+                        <VStack
+                          gap={"6px"}
+                          justifyContent="flex-start"
+                          alignItems="flex-start"
+                          // p="13px 25px"
+                        >
+                          <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+                          Total $ of tokens borrowed
+                          </Text>
+                            <Text color="#e6edf3" fontSize="20px">
+                            5,3100.00
+                            </Text>
+                        </VStack>
+                </HStack>
+            :
             <HStack
-                    // width="13.5rem"
-                    display="flex"
-                    // bgColor="yellow"
-                    // flexGrow={1}
-                    gap="5rem"
-                  >
-                    <VStack
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="flex-start"
-                      gap={"6px"}
-                      p="13px 25px"
-                    >
-                      <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                      Total $ of tokens staked
-                      </Text>
-                        <Text color="#e6edf3" fontSize="20px">
-                        5,3100.00
-                        </Text>
-                    </VStack>
-                    <VStack
-                      gap={"6px"}
-                      justifyContent="flex-start"
-                      alignItems="flex-start"
-                      // p="13px 25px"
-                    >
-                      <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                      Total $ of tokens borrowed
-                      </Text>
-                        <Text color="#e6edf3" fontSize="20px">
-                        5,3100.00
-                        </Text>
-                    </VStack>
-            </HStack>
+            // width="13.5rem"
+            display="flex"
+            // bgColor="yellow"
+            // flexGrow={1}
+            gap="5rem"
+          >
+            <VStack
+              display="flex"
+              justifyContent="center"
+              alignItems="flex-start"
+              gap={"6px"}
+              p="13px 25px"
+            >
+              <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+              Traders referred
+              </Text>
+                <Text color="#e6edf3" fontSize="20px">
+                5,310
+                </Text>
+            </VStack>
+            <VStack
+              gap={"6px"}
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              // p="13px 25px"
+            >
+              <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+              Referees liquidity
+              </Text>
+                <Text color="#e6edf3" fontSize="20px">
+                $5,3100.00
+                </Text>
+            </VStack>
+            <VStack
+              gap={"6px"}
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              // p="13px 25px"
+            >
+              <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+              User slab
+              </Text>
+                <Text color="#e6edf3" fontSize="20px">
+                1
+                </Text>
+            </VStack>
+    </HStack>}
           </HStack>
-        </HStack>}
-        {campaignSelected==1 &&          <Box borderRadius={'lg'} width={'100%'} 
+        </HStack>
+        <Box borderRadius={'lg'} width={'100%'} 
               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
           mt="1rem"
@@ -370,16 +429,15 @@ const Campaign = () => {
             leaderBoardData={sampleDate}
             columnItems={columnItems} /> : <></>}
           {/* <SupplyModal /> */}
-         </Box> }
-          {campaignSelected==1 &&         <Box mt="1rem">
+         </Box> 
+         <Box mt="1rem">
          <Pagination
           currentPagination={currentPagination}
           setCurrentPagination={(x: any) => setCurrentPagination(x)}
           max={sampleDate?.length || 0}
           rows={6}
         />
-         </Box>}
-
+         </Box>
       </HStack>
     </PageCard>
   );

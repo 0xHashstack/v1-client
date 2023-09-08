@@ -118,7 +118,7 @@ const FeedbackModal = ({
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const handleCaptureClick = async () => {
-    const element: any = document.getElementById('buttonclick');
+  const element: any = document.getElementById('buttonclick');
     html2canvas(element).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setBugScreenshoturl(screenshotDataUrl);
