@@ -230,7 +230,7 @@ const FeedbackModal = ({
         return;
       }
     }
-    axios.post('/api/feedback/bug', { address: address, title: titleBugFeedback, description: descriptionBugFeedback, screenshot: bugScreenshoturl })
+    axios.post('/api/feedback/bug', { address: address, title: titleBugFeedback, description: descriptionBugFeedback, screenshot: bugScreenshoturl})
       .then((response) => {
         if (response) {
           setBugFeedbackSubmitted(true);

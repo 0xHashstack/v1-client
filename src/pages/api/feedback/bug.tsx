@@ -25,18 +25,30 @@ export default async  function handler(req:NextApiRequest, res:NextApiResponse) 
        })
        const params={
         Bucket:'common-static-assets',
-        Key: `feedback-test/${Date.now()}_screenshot.png`,
+        Key: `feedback-test/${Datetime}_screenshot.png`,
         Body:Buffer.from(screenshot, 'base64'),
         ContentType:'image/png'
       }
-       console.log(Buffer.from(screenshot, 'base64'))
+      const fetchParams = {
+        Bucket: 'common-static-assets',
+        Key:`feedback-test/${Datetime}_screenshot.png`,
+      };
+      //  console.log(Buffer.from(screenshot, 'base64'))
       try{
         if(screenshot){
           await s3.upload(params).promise();
+          s3.getSignedUrl('getObject', fetchParams, (error, url) => {
+            if (error) {
+              console.error('Error generating signed URL:', error);
+            } else {
+              console.log('Public URL:', url);
+            }
+          });
           console.log('Screenshot uploaded successfully');
           return res.status(200).json({
             message:"Bug reported"
           })
+          
         }else{
           if(!title ||!description){
             res.status(400).json({ error: 'Title and description is required' });
