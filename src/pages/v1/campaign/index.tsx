@@ -56,9 +56,30 @@ import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
 import LeaderboardDashboard from "@/components/layouts/leaderboardDashboard";
+import PersonalStatsDashboard from "@/components/layouts/personalStatsDashboard";
 const Campaign = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
-  const columnItems = [
+  const columnItemsLeaderBoard = [
+    "Rank",
+    "Wallet",
+    "Referees Liquidity",
+    "Points earned",
+    "Est.token earning \n $STRK (i)"
+  ];
+  const columnItemsLeaderBoardReferalCampaign = [
+    "Rank",
+    "Wallet",
+    "Liquidity Provided",
+    "Points earned",
+    "Est.token earning \n $HASH (i)"
+  ];
+  const columnItemsPersonalStats = [
+    "Liquidity Provided",
+    "Referees liquidity (in $)",
+    "Points earned",
+    "Est.token earning \n $STRK (i)"
+  ];
+  const columnItemsPersonalStatsReferalCampaign = [
     "Traders Referred",
     "Referees liquidity (in $)",
     "Points earned",
@@ -82,6 +103,25 @@ const Campaign = () => {
     id:7,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
   },{
     id:8,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
+  }]
+  const sampleDataLeaderBoard = [{
+    id:0,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+  },{
+    id:1,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+  },{
+    id:2,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+  },{
+    id:3,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+  },{
+    id:4,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+  },{
+    id:5,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+  },{
+    id:6,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+  },{
+    id:7,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+  },{
+    id:8,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
   }]
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
@@ -426,8 +466,14 @@ const Campaign = () => {
           {tabValue == 1 ? <LeaderboardDashboard width={"95%"}
             currentPagination={currentPagination}
             setCurrentPagination={setCurrentPagination}
+            leaderBoardData={sampleDataLeaderBoard}
+            columnItems={campaignSelected==1 ?columnItemsLeaderBoard:columnItemsLeaderBoardReferalCampaign} /> :
+            <PersonalStatsDashboard width={"95%"}
+            currentPagination={currentPagination}
+            setCurrentPagination={setCurrentPagination}
             leaderBoardData={sampleDate}
-            columnItems={columnItems} /> : <></>}
+            columnItems={campaignSelected==1?columnItemsPersonalStats:columnItemsPersonalStatsReferalCampaign} />
+            }
           {/* <SupplyModal /> */}
          </Box> 
          <Box mt="1rem">

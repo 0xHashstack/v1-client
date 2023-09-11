@@ -205,7 +205,7 @@ const FeedbackModal = ({
       }
     }
 
-    axios.post('/api/feedback/rating', { starRating, address,descriptionRatingFeedback })
+    axios.post('/api/feedback/rating', { starRating, address })
       .then((response) => {
         if (response) {
           setRatingFeedbackSubmitted(true);
@@ -448,18 +448,6 @@ const FeedbackModal = ({
                       value={starRating}
                       onChange={ratingChanged}
                     />
-                    <Textarea
-                      mt="0.8rem"
-                      placeholder="Leave your comment"
-                      resize="none"
-                      height="160px"
-                      color="white"
-                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                      borderRadius="6px"
-                      value={descriptionRatingFeedback}
-                      onChange={(e) => { setdescriptionRatingFeedback(e.target.value) }}
-                    // resize="vertical" // This allows the textarea to resize vertically as needed
-                    />
                     <Button onClick={()=>{
                       setRatingFeedbackSubmitted(true);
                       if(!ratingFeedbackSubmitted){
@@ -469,7 +457,7 @@ const FeedbackModal = ({
                       color="#6E7681"
                       size="sm"
                       width="100%"
-                      mt="1.5rem"
+                      mt="14.5rem"
                       mb="1.5rem"
                       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))">
                       Submit

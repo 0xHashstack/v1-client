@@ -7,12 +7,6 @@ export default async  function handler(req:NextApiRequest, res:NextApiResponse) 
       // Get the screenshot data from the request body
       const {address, title,description, screenshot } = req.body;
       const Datetime=new Date();
-      const params={
-        Bucket:'bugsfeedback',
-        Key: `screenshots/${Date.now()}_screenshot.png`,
-        Body:Buffer.from(screenshot, 'base64'),
-        ContentType:'image/png'
-      }
       const auth=new google.auth.GoogleAuth({
         credentials:{
           client_email:process.env.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL,
@@ -29,6 +23,12 @@ export default async  function handler(req:NextApiRequest, res:NextApiResponse) 
         auth,
         version:'v4'
        })
+       const params={
+        Bucket:'common-static-assets',
+        Key: `feedback-test/${Date.now()}_screenshot.png`,
+        Body:Buffer.from(screenshot, 'base64'),
+        ContentType:'image/png'
+      }
        console.log(Buffer.from(screenshot, 'base64'))
       try{
         if(screenshot){
