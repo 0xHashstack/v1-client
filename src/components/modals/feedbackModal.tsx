@@ -119,7 +119,8 @@ const FeedbackModal = ({
   const dispatch = useDispatch();
 
   let activeTransactions = useSelector(selectActiveTransactions);
-
+  const [screenshotDataLocalhostUrl, setScreenshotDataLocalhostUrl] = useState<string | null>('')
+const [base64ImageSuggestion, setBase64ImageSuggestion] = useState('')
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const handleCaptureClick = async () => {
@@ -127,15 +128,25 @@ const FeedbackModal = ({
     html2canvas(document.body).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setBugScreenshoturl(screenshotDataUrl);
+      // const localURL = window.URL.createObjectURL(
+      //   new Blob([atob(screenshotDataUrl)], { type: 'image/png' })
+      // );
+      // setScreenshotDataLocalhostUrl(localURL);
+      const objectURL = window.URL.createObjectURL(
+        new Blob([atob(screenshotDataUrl.split(',')[1])], { type: screenshotDataUrl.split(':')[1] })
+      );
+        console.log(objectURL,"object")
+      setScreenshotDataLocalhostUrl(objectURL);
       console.log(screenshotDataUrl, "url");
     });
   };
+
   const handleCaptureClickSuggestions = async () => {
     const element: any = document.getElementById('buttonclick');
     html2canvas(document.body).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setSuggestionUrl(screenshotDataUrl);
-
+    
       // Now you have the screenshot in a data URL format
       // You can send it to the backend using an HTTP request.
     });
@@ -156,7 +167,9 @@ const FeedbackModal = ({
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [base64Image, setBase64Image] = useState<string | ArrayBuffer | null>('');
 
-  const handleImageChange = (e:any) => {
+
+
+  const handleImageUploadBug = (e) => {
     const file = e.target.files[0];
 
     if (file) {
@@ -170,17 +183,40 @@ const FeedbackModal = ({
       };
       reader.readAsDataURL(file);
 
-      setSelectedImage(URL.createObjectURL(file));
+      setBugScreenshoturl(URL.createObjectURL(file));
       console.log("selected image:-",URL.createObjectURL(file))
     } else {
-      setSelectedImage(null);
+      setBase64Image('');
+    }
+  };
+  const handleImageUploadSugegstion = (e:any) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      // Read the selected image file as a base64 string
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event?.target?.result) {
+          setBase64Image(event.target.result as string);
+          console.log("base64:-",event.target.result);
+        }
+      };
+      reader.readAsDataURL(file);
+
+      setSuggestionUrl(URL.createObjectURL(file));
+      console.log("selected image:-",URL.createObjectURL(file))
+    } else {
       setBase64Image('');
     }
   };
   const handleClick = () => {
     inputRef.current.click();
   };
-  const inputRef:any = useRef();
+  const inputRef = useRef();
+  const suggestioninputref=useRef()
+  const handleClickSuggestionUpload = () =>{
+    suggestioninputref.current.click();
+  }
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const resetStates = () => {
     setFeedbackSelected("");
@@ -499,19 +535,20 @@ const FeedbackModal = ({
                         onChange={(e) => { setdescriptionBugFeedback(e.target.value) }}
                       // resize="vertical" // This allows the textarea to resize vertically as needed
                       />
-                      <Box>
-                        <Box onClick={handleCaptureClick} mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end">
-                          <CaptureBugIcon/>
-                        </Box>
-                      </Box>
-                      <Box>
+                         <Box>
                         <Box mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end">
-                       {selectedImage ?<Image width={200} src = {selectedImage} height={200} alt="Selected" ></Image> :  <Box
+                         <Box
       mt="0.4rem" bg="#4D59E8" fontSize={"14px"} color={"white"} cursor="pointer" display="flex" width="30%" justifyContent="center"
       onClick={handleClick}
-    >     <CaptureBugIcon/>ATTACH FILE<Input  hidden={true} ref={ inputRef} type={"file"} accept="image/*" onChange={handleImageChange}/></Box>  }
+    >     <CaptureBugIcon/><Input  hidden={true} ref={ inputRef} type={"file"} accept="image/*" onChange={handleImageUploadBug}/></Box>  }
                         </Box>
                       </Box>
+                      <Box onClick={handleCaptureClick} mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end"><CaptureBugIcon/></Box>
+                      <Box>
+                       {bugScreenshoturl?<Image width={200} height={200} src = {bugScreenshoturl}  alt="Selected" ></Image>  : <></>
+                        }
+                      </Box>
+                   
                       <Box textAlign="center">
 
                         <Button background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
@@ -566,9 +603,22 @@ const FeedbackModal = ({
                           onChange={(e) => { setdescriptionSuggestions(e.target.value) }}
                         // resize="vertical" // This allows the textarea to resize vertically as needed
                         />
-                      <Box onClick={handleCaptureClickSuggestions} mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end">
+                      {/* <Box onClick={handleCaptureClickSuggestions} mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end">
                           <CaptureBugIcon/>
+                        </Box> */}
+                                <Box>
+                        <Box mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end">
+                         <Box
+      mt="0.4rem" bg="#4D59E8" fontSize={"14px"} color={"white"} cursor="pointer" display="flex" width="30%" justifyContent="center"
+      onClick={handleClickSuggestionUpload}
+    >     <CaptureBugIcon/><Input  hidden={true} ref={ suggestioninputref} type={"file"} accept="image/*" onChange={handleImageUploadSugegstion}/></Box>  }
                         </Box>
+                      </Box>
+                      <Box onClick={handleCaptureClickSuggestions} mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end"><CaptureBugIcon/></Box>
+                      <Box>
+                       {suggestionUrl?<Image width={200} height={200} src = {suggestionUrl}  alt="Selected" ></Image>  : <></>
+                        }
+                      </Box>
                         <Box textAlign="center">
                           <Button background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                       color="#6E7681"
