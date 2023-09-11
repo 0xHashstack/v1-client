@@ -121,7 +121,8 @@ const FeedbackModal = ({
 
   let activeTransactions = useSelector(selectActiveTransactions);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const handleImageUploadBug = (e) => {
+  console.log(suggestionUrl,"url")
+  const handleImageUploadBug = (e:any) => {
     const file = e.target.files[0];
 
     if (file) {
