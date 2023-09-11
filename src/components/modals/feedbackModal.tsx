@@ -120,10 +120,44 @@ const FeedbackModal = ({
   const dispatch = useDispatch();
 
   let activeTransactions = useSelector(selectActiveTransactions);
-  const [screenshotDataLocalhostUrl, setScreenshotDataLocalhostUrl] = useState<string | null>('')
-  const [base64ImageSuggestion, setBase64ImageSuggestion] = useState('')
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const handleImageUploadBug = (e) => {
+    const file = e.target.files[0];
 
+    if (file) {
+      // Read the selected image file as a base64 string
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event?.target?.result) {
+          setBugScreenshoturl(event.target.result as string);
+          console.log("bug  url(upload):-=",event.target.result);
+        }
+      };
+      reader.readAsDataURL(file);
+
+    } else {
+    }
+  };
+  const handleImageUploadSugegstion = (e:any) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      // Read the selected image file as a base64 string
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event?.target?.result) {
+          setSuggestionUrl(event.target.result as string);
+          console.log("base64:-",event.target.result);
+      console.log("sugg  url(upload):-=",event.target.result)
+
+        }
+      };
+      reader.readAsDataURL(file);
+
+    } else {
+
+    }
+  };
   const handleCaptureClick = async () => {
     const element: any = document.getElementById('buttonclick');
     html2canvas(document.body).then((canvas) => {
@@ -133,12 +167,11 @@ const FeedbackModal = ({
       //   new Blob([atob(screenshotDataUrl)], { type: 'image/png' })
       // );
       // setScreenshotDataLocalhostUrl(localURL);
+      console.log("bug  url(capture):-=",screenshotDataUrl)
+
       const objectURL = window.URL.createObjectURL(
         new Blob([atob(screenshotDataUrl.split(',')[1])], { type: screenshotDataUrl.split(':')[1] })
       );
-      console.log(objectURL, "object")
-      setScreenshotDataLocalhostUrl(objectURL);
-      console.log(screenshotDataUrl, "url");
     });
   };
 
@@ -147,7 +180,8 @@ const FeedbackModal = ({
     html2canvas(document.body).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setSuggestionUrl(screenshotDataUrl);
-
+      console.log("sugg  url(capture):-=",screenshotDataUrl)
+      
       // Now you have the screenshot in a data URL format
       // You can send it to the backend using an HTTP request.
     });
@@ -165,52 +199,10 @@ const FeedbackModal = ({
 
   // console.log(onOpen)
 
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [base64Image, setBase64Image] = useState<string | ArrayBuffer | null>('');
 
 
 
-  const handleImageUploadBug = (e: any) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      // Read the selected image file as a base64 string
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event?.target?.result) {
-          setBase64Image(event.target.result as string);
-          console.log("base64:-", event.target.result);
-        }
-      };
-      reader.readAsDataURL(file);
-
-      setBugScreenshoturl(URL.createObjectURL(file));
-      console.log("selected image:-", URL.createObjectURL(file))
-    } else {
-      setBase64Image('');
-    }
-  };
-  const handleImageUploadSugegstion = (e: any) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      // Read the selected image file as a base64 string
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event?.target?.result) {
-          setBase64Image(event.target.result as string);
-          console.log("base64:-", event.target.result);
-        }
-      };
-      reader.readAsDataURL(file);
-
-      setSuggestionUrl(URL.createObjectURL(file));
-      console.log("selected image:-", URL.createObjectURL(file))
-    } else {
-      setBase64Image('');
-    }
-  };
-  console.log(suggestionUrl,"suggestion url")
+ 
   const handleClick = () => {
     inputRef.current.click();
   };
