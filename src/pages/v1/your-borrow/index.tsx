@@ -16,7 +16,7 @@ import { useAccount, useConnectors } from "@starknet-react/core";
 import { selectYourBorrow, selectNetAPR } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
-// rt { ILoan } from "@/Blockchain/interfaces/interfaces";
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { Skeleton } from "@chakra-ui/react";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";

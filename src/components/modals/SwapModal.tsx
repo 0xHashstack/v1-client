@@ -1305,7 +1305,7 @@ const SwapModal = ({
                 mb="1.5rem"
                 background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                 border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                _hover={{ bg: "#101216" }}
+                _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
               >
                 Spend Borrow
               </Button>

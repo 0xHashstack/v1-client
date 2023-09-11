@@ -3412,7 +3412,7 @@ const YourBorrowModal = ({
                                     ? "#0969DA"
                                     : "#1A7F37"
                                 }`}
-                                _hover={{ bg: "#101216" }}
+                                _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                                 onClick={() => {
                                   if (currentAction === "Zero Repay") return;
                                   setRepayAmount(walletBalance1);
@@ -4042,7 +4042,7 @@ const YourBorrowModal = ({
                         width="100%"
                         mb="2rem"
                         border="1px solid #2B2F35"
-                        _hover={{ bg: "#101216" }}
+                        _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                       >
                         Select action
                       </Button>
@@ -5007,7 +5007,7 @@ const YourBorrowModal = ({
                               ? "#0969DA"
                               : "#1A7F37"
                           }`}
-                          _hover={{ bg: "#101216" }}
+                          _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                           onClick={() => {
                             if (currentTokenSelected === "rToken") {
                               setinputCollateralAmount(

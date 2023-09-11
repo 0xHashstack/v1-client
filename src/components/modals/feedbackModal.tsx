@@ -124,10 +124,8 @@ const [base64ImageSuggestion, setBase64ImageSuggestion] = useState('')
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const handleCaptureClick = async () => {
-    console.log("capturing..")
-  html2canvas(document.body).then((canvas) => {
-      
-      console.log( "scrrurl",canvas);
+  const element: any = document.getElementById('buttonclick');
+    html2canvas(document.body).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setBugScreenshoturl(screenshotDataUrl);
       // const localURL = window.URL.createObjectURL(
@@ -144,7 +142,7 @@ const [base64ImageSuggestion, setBase64ImageSuggestion] = useState('')
   };
 
   const handleCaptureClickSuggestions = async () => {
- 
+    const element: any = document.getElementById('buttonclick');
     html2canvas(document.body).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setSuggestionUrl(screenshotDataUrl);
@@ -169,6 +167,8 @@ const [base64ImageSuggestion, setBase64ImageSuggestion] = useState('')
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [base64Image, setBase64Image] = useState<string | ArrayBuffer | null>('');
 
+
+
   const handleImageUploadBug = (e) => {
     const file = e.target.files[0];
 
@@ -189,7 +189,7 @@ const [base64ImageSuggestion, setBase64ImageSuggestion] = useState('')
       setBase64Image('');
     }
   };
-  const handleImageUploadSugegstion = (e) => {
+  const handleImageUploadSugegstion = (e:any) => {
     const file = e.target.files[0];
 
     if (file) {
@@ -197,7 +197,7 @@ const [base64ImageSuggestion, setBase64ImageSuggestion] = useState('')
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event?.target?.result) {
-          setBase64ImageSuggestion(event.target.result as string);
+          setBase64Image(event.target.result as string);
           console.log("base64:-",event.target.result);
         }
       };
@@ -206,7 +206,7 @@ const [base64ImageSuggestion, setBase64ImageSuggestion] = useState('')
       setSuggestionUrl(URL.createObjectURL(file));
       console.log("selected image:-",URL.createObjectURL(file))
     } else {
-      setBase64ImageSuggestion('');
+      setBase64Image('');
     }
   };
   const handleClick = () => {
