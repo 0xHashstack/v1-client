@@ -55,6 +55,7 @@ export default function Home() {
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const [isWaitListed, setIsWaitListed] = useState(true);
   const [availableDataLoading, setAvailableDataLoading] = useState(true);
+  const [walletConnectedRefresh, setWalletConnectedRefresh] = useState(false)
 
   const router = useRouter();
   const waitlistHref = "/v1/waitlist";
@@ -123,24 +124,36 @@ export default function Home() {
     const hasVisited = localStorage.getItem("visited");
     const walletConnected = localStorage.getItem("lastUsedConnector");
     localStorage.setItem("transactionCheck", JSON.stringify([]));
+    console.log(1)
     if (walletConnected == "braavos") {
-      disconnect();
-      connect(connectors[0]);
-      if (!isWaitListed) {
-        router.replace(waitlistHref);
-      } else {
-        router.replace(marketHref2);
+      console.log(2999)
+        disconnect();
+        connect(connectors[0]);
+      if(!account){
+        return;
+      }else{
+        if (!isWaitListed) {
+          router.replace(waitlistHref);
+        } else {
+          router.replace(marketHref2);
+        }
       }
       // dispatch(setTransactionRefresh("reset"));
     } else if (walletConnected == "argentX") {
-      disconnect();
-      connect(connectors[1]);
-      if (!isWaitListed) {
-        router.replace(waitlistHref);
-      } else {
-        router.replace(marketHref2);
+        disconnect();
+        connect(connectors[1]);
+      if(!account){
+        return;
+      }else{
+        if (!isWaitListed) {
+          router.replace(waitlistHref);
+        } else {
+          router.replace(marketHref2);
+        }
       }
       // dispatch(setTransactionRefresh("reset"));
+    }else{
+      return
     }
     if (walletConnected) {
       localStorage.setItem("connected", walletConnected);
@@ -166,6 +179,7 @@ export default function Home() {
         "Wallet address": address,
         "Wallet Connected": walletConnected,
       });
+      
 
       // if (!isWhiteListed) {
       //   router.replace(whitelistHref);

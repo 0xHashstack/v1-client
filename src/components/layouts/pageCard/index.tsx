@@ -200,7 +200,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         return (
           // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
           // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-          account?.chainId == "0x534e5f474f45524c49"
+          extendedAccount.provider?.chainId == "0x534e5f474f45524c49"
         );
       } else if (walletConnected == "argentX") {
         // Your code here
@@ -219,6 +219,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       setRender(true);
     }
   }, [account]);
+  console.log(account)
 
   const [validRTokens, setValidRTokens] = useState([]);
   const userDepositsRedux = useSelector(selectUserDeposits);

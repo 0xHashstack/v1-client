@@ -71,6 +71,7 @@ const YourMetrics = () => {
   const avgBorrowApr = useSelector(selectAvgBorrowAPR);
   const avgSupplyApr = useSelector(selectAvgSupplyAPR);
   const protocolStatsRedux = useSelector(selectProtocolStats);
+  
   useEffect(() => {
     try {
       const fetchProtocolStats = async () => {

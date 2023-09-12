@@ -22,6 +22,11 @@ const initialState = {
   monthlyUSDTData: null,
   monthlyUSDCData: null,
   monthlyDAIData: null,
+  allBTCData: null,
+  allETHData: null,
+  allUSDTData: null,
+  allUSDCData: null,
+  allDAIData: null,
 
   protocolReserves: {
     totalReserves: null,
@@ -143,6 +148,21 @@ export const readDataSlice = createSlice({
     setMonthlyDAIData(state, action) {
       state.monthlyDAIData = action.payload;
     },
+    setAllBTCData(state, action) {
+      state.allBTCData = action.payload;
+    },
+    setAllETHData(state, action) {
+      state.allETHData = action.payload;
+    },
+    setAllUSDTData(state, action) {
+      state.allUSDTData = action.payload;
+    },
+    setAllUSDCData(state, action) {
+      state.allUSDCData = action.payload;
+    },
+    setAllDAIData(state, action) {
+      state.allDAIData = action.payload;
+    },
     resetState(state, action) {
       return { ...initialState };
     },
@@ -207,6 +227,11 @@ export const {
   setMonthlyUSDCData,
   setMonthlyUSDTData,
   setMonthlyDAIData,
+  setAllBTCData,
+  setAllETHData,
+  setAllUSDCData,
+  setAllUSDTData,
+  setAllDAIData,
   setYourMetricsBorrow,
   setYourMetricsSupply,
   setStakingShares,
@@ -247,6 +272,11 @@ export const selectMonthlyETHData = (state) => state.read_data.monthlyETHData;
 export const selectMonthlyUSDTData = (state) => state.read_data.monthlyUSDTData;
 export const selectMonthlyUSDCData = (state) => state.read_data.monthlyUSDCData;
 export const selectMonthlyDAIData = (state) => state.read_data.monthlyDAIData;
+export const selectAllBTCData = (state) => state.read_data.allBTCData;
+export const selectAllETHData = (state) => state.read_data.allETHData;
+export const selectAllUSDTData = (state) => state.read_data.allUSDTData;
+export const selectAllUSDCData = (state) => state.read_data.allUSDCData;
+export const selectAllDAIData = (state) => state.read_data.allDAIData;
 export const selectYourMetricsSupply = (state) =>
   state.read_data.yourMetricsSupply;
 export const selectYourMetricsBorrow = (state) =>
