@@ -215,7 +215,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
       // console.log("starknetAccount", account?.provider?.chainId);
     }
-    if (account && !isCorrectNetwork()) {
+    if ((account && !isCorrectNetwork())) {
+      console.log("Account",account)
       setRender(false);
     } else {
       setRender(true);
@@ -418,13 +419,22 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     <>
       {render ? (
         <>
-          <Navbar validRTokens={validRTokens} />
-          <Box>
+        <Box   background={`
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
+            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            black
+          `}  position={'fixed'} zIndex={3} >
+          <Navbar  validRTokens={validRTokens} />
+          </Box>
+          <Box position={'fixed'} zIndex={0.5}>
             <FeedbackModal />
           </Box>
           <Stack
+         zIndex={1}
+          
             alignItems="center"
             minHeight={"100vh"}
+            
             pt="8rem"
             background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,

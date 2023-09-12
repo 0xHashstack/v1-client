@@ -234,18 +234,18 @@ const FeedbackModal = ({
       }
     }
 
-    axios.post('/api/feedback/rating', { starRating, address,descriptionRatingFeedback })
-      .then((response) => {
-        if (response) {
-          setRatingFeedbackSubmitted(true);
-          const currentTime = new Date();
-          localStorage.setItem('RatingTime', currentTime.toISOString());
-        }
-        console.log(response, "response"); // Log the response from the backend.
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    // axios.post('/api/feedback/rating', { starRating, address,descriptionRatingFeedback })
+    //   .then((response) => {
+    //     if (response) {
+    //       setRatingFeedbackSubmitted(true);
+    //       const currentTime = new Date();
+    //       localStorage.setItem('RatingTime', currentTime.toISOString());
+    //     }
+    //     console.log(response, "response"); // Log the response from the backend.
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error:', error);
+    //   });
   }
   const handleBugFeedback = async () => {
     const lastResponseTime = localStorage.getItem('BugTime');
@@ -259,18 +259,18 @@ const FeedbackModal = ({
         return;
       }
     }
-    axios.post('/api/feedback/bug', { address: address, title: titleBugFeedback, description: descriptionBugFeedback, screenshot: bugScreenshoturl })
-      .then((response) => {
-        if (response) {
-          setBugFeedbackSubmitted(true);
-          const currentTime = new Date();
-          localStorage.setItem('BugTime', currentTime.toISOString());
-          console.log(response, "res")
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    // axios.post('/api/feedback/bug', { address: address, title: titleBugFeedback, description: descriptionBugFeedback, screenshot: bugScreenshoturl })
+    //   .then((response) => {
+    //     if (response) {
+    //       setBugFeedbackSubmitted(true);
+    //       const currentTime = new Date();
+    //       localStorage.setItem('BugTime', currentTime.toISOString());
+    //       console.log(response, "res")
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
   }
   const handleSuggestionFeedback = async () => {
     const lastResponseTime = localStorage.getItem('SuggestionTime');
@@ -284,18 +284,18 @@ const FeedbackModal = ({
         return;
       }
     }
-    axios.post('/api/feedback/suggestion', { address: address, title: titleSuggestions, description: descriptionSuggestions, screenshot: suggestionUrl })
-      .then((response) => {
-        if (response) {
-          setsuggestionFeedbackSubmitted(true);
-          const currentTime = new Date();
-          localStorage.setItem('SuggestionTime', currentTime.toISOString());
-          console.log(response, "res")
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    // axios.post('/api/feedback/suggestion', { address: address, title: titleSuggestions, description: descriptionSuggestions, screenshot: suggestionUrl })
+    //   .then((response) => {
+    //     if (response) {
+    //       setsuggestionFeedbackSubmitted(true);
+    //       const currentTime = new Date();
+    //       localStorage.setItem('SuggestionTime', currentTime.toISOString());
+    //       console.log(response, "res")
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
   }
   return (
     <div>
