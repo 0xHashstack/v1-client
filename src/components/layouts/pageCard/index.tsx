@@ -198,20 +198,38 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
+      const network=process.env.NEXT_PUBLIC_NODE_ENV;
       if (walletConnected == "braavos") {
-        return (
-          // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
-          // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-          account?.chainId == "0x534e5f474f45524c49"
-        );
+        if(network=="testnet"){
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+            account?.chainId == "0x534e5f474f45524c49"
+          );
+        }else{
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+            account?.chainId == "0x534e5f4d41494e"
+          );
+        }
       } else if (walletConnected == "argentX") {
         // Your code here
-        return (
-          // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
-          // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-
-          extendedAccount.provider?.chainId === "0x534e5f474f45524c49"
-        );
+        if(network=="testnet"){
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+  
+            extendedAccount.provider?.chainId === "0x534e5f474f45524c49"
+          );
+        }else{
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+  
+            extendedAccount.provider?.chainId === "0x534e5f4d41494e"
+          );
+        }
       }
       // console.log("starknetAccount", account?.provider?.chainId);
     }

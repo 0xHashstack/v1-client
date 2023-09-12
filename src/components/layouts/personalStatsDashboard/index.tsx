@@ -27,7 +27,7 @@ import { uint256 } from 'starknet';
 import ArrowUp from '@/assets/icons/arrowup';
 import DropdownUp from '@/assets/icons/dropdownUpIcon';
 import Pagination from "@/components/uiElements/pagination";
-const LeaderboardDashboard = ({
+const PersonalStatsDashboard = ({
     width,
     currentPagination,
     setCurrentPagination,
@@ -347,29 +347,7 @@ const tooltips = [
                         color="#E6EDF3"
                         // bgColor={"blue"}
                       >
-                        {member.rank}
-                      </Text>
-                    </Td>
-                    <Td
-                      width={"16.6%"}
-                      // maxWidth={`${gap[idx1][idx2]}%`}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      padding={2}
-                      textAlign="center"
-                    >
-                      <Text
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        fontWeight="400"
-                        fontSize="14px"
-                        color="#E6EDF3"
-                        // bgColor={"blue"}
-                      >
-                        {member.wallet}
+                        {member.ref}
                       </Text>
                     </Td>
                     <Td
@@ -429,12 +407,11 @@ const tooltips = [
                         height="100%"
                         display="flex"
                         alignItems="center"
-                        justifyContent="flex-end"
+                        justifyContent="end"
                         fontWeight="400"
                         fontSize="14px"
                         color="#E6EDF3"
                         pr="10"
-
                         // bgColor={"blue"}
                       >
                         {member.est}
@@ -465,4 +442,4 @@ const tooltips = [
     )
 };
 
-export default LeaderboardDashboard;
+export default PersonalStatsDashboard;

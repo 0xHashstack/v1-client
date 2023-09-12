@@ -359,7 +359,6 @@ export default function Home() {
             <Link href="https://www.argent.xyz/argent-x" target="_black">
               <Box
                 w="full"
-                backgroundColor="#101216"
                 py="2"
                 border="1px solid #2B2F35"
                 borderRadius="6px"

@@ -7,12 +7,6 @@ export default async  function handler(req:NextApiRequest, res:NextApiResponse) 
       // Get the screenshot data from the request body
       const {address, title,description, screenshot } = req.body;
       const Datetime=new Date();
-      const params={
-        Bucket:'bugsfeedback',
-        Key: `screenshots/${Date.now()}_screenshot.png`,
-        Body:Buffer.from(screenshot, 'base64'),
-        ContentType:'image/png'
-      }
       const auth=new google.auth.GoogleAuth({
         credentials:{
           client_email:process.env.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL,
@@ -29,14 +23,32 @@ export default async  function handler(req:NextApiRequest, res:NextApiResponse) 
         auth,
         version:'v4'
        })
-       console.log(Buffer.from(screenshot, 'base64'))
+       const params={
+        Bucket:'common-static-assets',
+        Key: `feedback-test/${Datetime}_screenshot.png`,
+        Body:Buffer.from(screenshot, 'base64'),
+        ContentType:'image/png'
+      }
+      const fetchParams = {
+        Bucket: 'common-static-assets',
+        Key:`feedback-test/${Datetime}_screenshot.png`,
+      };
+      //  console.log(Buffer.from(screenshot, 'base64'))
       try{
         if(screenshot){
           await s3.upload(params).promise();
+          s3.getSignedUrl('getObject', fetchParams, (error, url) => {
+            if (error) {
+              console.error('Error generating signed URL:', error);
+            } else {
+              console.log('Public URL:', url);
+            }
+          });
           console.log('Screenshot uploaded successfully');
           return res.status(200).json({
             message:"Bug reported"
           })
+          
         }else{
           if(!title ||!description){
             res.status(400).json({ error: 'Title and description is required' });

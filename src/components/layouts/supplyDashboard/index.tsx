@@ -347,7 +347,8 @@ const SupplyDashboard = ({
         width="95%"
         height={"37rem"}
         // height="552px"
-        bgColor="#101216"
+        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         borderRadius="8px"
       >
         {/* <Text color="#FFFFFF" fontSize="20px">

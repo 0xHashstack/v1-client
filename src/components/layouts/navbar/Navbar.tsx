@@ -374,7 +374,7 @@ console.log("chainid:-",currentChainId)
             validRTokens={validRTokens}
           />
         </Box>
-        <Box
+        {currentChainId == "0x534e5f4d41494e" ?        <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
@@ -414,7 +414,8 @@ console.log("chainid:-",currentChainId)
 
               <Text fontSize="14px" >Campaign</Text>
             </Box>
-        </Box>
+        </Box>:""}
+
         {/* <Box
           style={{
             padding: "3px 0px",
