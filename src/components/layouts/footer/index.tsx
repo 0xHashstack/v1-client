@@ -41,8 +41,8 @@ const Footer = () => {
   // console.log(walletConnected);
   useEffect(() => {
     if (connector?.options?.id == "braavos") {
-      if (account && account?.chainId && account?.chainId != currentChainId) {
-        dispatch(setCurrentNetwork(account?.chainId));
+      if (account && extendedAccount.provider?.chainId && extendedAccount.provider?.chainId != currentChainId) {
+        dispatch(setCurrentNetwork(extendedAccount.provider?.chainId));
       }
     } else if (connector?.options?.id == "argentX") {
       if (

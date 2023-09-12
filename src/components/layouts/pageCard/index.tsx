@@ -204,13 +204,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            account?.chainId == "0x534e5f474f45524c49"
+            extendedAccount.provider?.chainId == "0x534e5f474f45524c49"
           );
         }else{
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            account?.chainId == "0x534e5f4d41494e"
+            extendedAccount.provider?.chainId == "0x534e5f4d41494e"
           );
         }
       } else if (walletConnected == "argentX") {
@@ -510,7 +510,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         </>
       ) : (
         <>
-          <Navbar />
+        <Box   background={`
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
+            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            black
+          `}  position={'fixed'} zIndex={3} >
+          <Navbar  validRTokens={validRTokens} />
+          </Box>
           <Stack
             alignItems="center"
             minHeight={"100vh"}
