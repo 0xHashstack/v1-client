@@ -213,13 +213,12 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
       // console.log("starknetAccount", account?.provider?.chainId);
     }
-    if (account && !isCorrectNetwork()) {
+    if (extendedAccount && !isCorrectNetwork()) {
       setRender(false);
     } else {
       setRender(true);
     }
-  }, [account]);
-  console.log(account)
+  }, [extendedAccount]);
 
   const [validRTokens, setValidRTokens] = useState([]);
   const userDepositsRedux = useSelector(selectUserDeposits);
