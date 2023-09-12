@@ -121,7 +121,7 @@ const FeedbackModal = ({
 
   let activeTransactions = useSelector(selectActiveTransactions);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  console.log(suggestionUrl,"url")
+  // console.log(suggestionUrl,"url")
   const handleImageUploadBug = (e:any) => {
     const file = e.target.files[0];
 
@@ -131,7 +131,7 @@ const FeedbackModal = ({
       reader.onload = (event) => {
         if (event?.target?.result) {
           setBugScreenshoturl(event.target.result as string);
-          console.log("bug  url(upload):-=",event.target.result);
+          // console.log("bug  url(upload):-=",event.target.result);
         }
       };
       reader.readAsDataURL(file);
@@ -148,8 +148,8 @@ const FeedbackModal = ({
       reader.onload = (event) => {
         if (event?.target?.result) {
           setSuggestionUrl(event.target.result as string);
-          console.log("base64:-",event.target.result);
-      console.log("sugg  url(upload):-=",event.target.result)
+      //     console.log("base64:-",event.target.result);
+      // console.log("sugg  url(upload):-=",event.target.result)
 
         }
       };
