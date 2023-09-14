@@ -262,18 +262,18 @@ const FeedbackModal = ({
         return;
       }
     }
-    // axios.post('/api/feedback/bug', { address: address, title: titleBugFeedback, description: descriptionBugFeedback, screenshot: bugScreenshoturl })
-    //   .then((response) => {
-    //     if (response) {
-    //       setBugFeedbackSubmitted(true);
-    //       const currentTime = new Date();
-    //       localStorage.setItem('BugTime', currentTime.toISOString());
-    //       console.log(response, "res")
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
+    axios.post('/api/feedback/bug', { address: address, title: titleBugFeedback, description: descriptionBugFeedback, screenshot: bugScreenshoturl })
+      .then((response) => {
+        if (response) {
+          setBugFeedbackSubmitted(true);
+          const currentTime = new Date();
+          localStorage.setItem('BugTime', currentTime.toISOString());
+          console.log(response, "res")
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
   const handleSuggestionFeedback = async () => {
     const lastResponseTime = localStorage.getItem('SuggestionTime');
@@ -287,18 +287,18 @@ const FeedbackModal = ({
         return;
       }
     }
-    // axios.post('/api/feedback/suggestion', { address: address, title: titleSuggestions, description: descriptionSuggestions, screenshot: suggestionUrl })
-    //   .then((response) => {
-    //     if (response) {
-    //       setsuggestionFeedbackSubmitted(true);
-    //       const currentTime = new Date();
-    //       localStorage.setItem('SuggestionTime', currentTime.toISOString());
-    //       console.log(response, "res")
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
+    axios.post('/api/feedback/suggestion', { address: address, title: titleSuggestions, description: descriptionSuggestions, screenshot: suggestionUrl })
+      .then((response) => {
+        if (response) {
+          setsuggestionFeedbackSubmitted(true);
+          const currentTime = new Date();
+          localStorage.setItem('SuggestionTime', currentTime.toISOString());
+          console.log(response, "res")
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
   return (
     <div>
@@ -415,6 +415,7 @@ const FeedbackModal = ({
                       <Text fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">
                         How is your experience so far with the testnet?
                       </Text>
+                      
                     </Box>
                   </Box>
                   <Box border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" borderRadius="6px" bg="rgba(103, 109, 154, 0.10)" display="flex" mt="1rem" cursor="pointer" onClick={() => { setFeedbackSelected("reportIssue") }}>

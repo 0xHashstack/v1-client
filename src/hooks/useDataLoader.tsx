@@ -1319,38 +1319,38 @@ const useDataLoader = () => {
       const fetchAvgSupplyAPRCount = async () => {
         if (!dataDeposit || !protocolStats) return;
         const aprA =
-          dataDeposit?.[0].rTokenAmountParsed !== 0 ||
-          dataDeposit?.[0].rTokenFreeParsed !== 0 ||
-          dataDeposit?.[0].rTokenLockedParsed !== 0 ||
-          dataDeposit?.[0].rTokenStakedParsed !== 0
+          dataDeposit?.[0]?.rTokenAmountParsed !== 0 ||
+          dataDeposit?.[0]?.rTokenFreeParsed !== 0 ||
+          dataDeposit?.[0]?.rTokenLockedParsed !== 0 ||
+          dataDeposit?.[0]?.rTokenStakedParsed !== 0
             ? protocolStats?.[0]?.supplyRate
             : 0;
         const aprB =
-          dataDeposit?.[1].rTokenAmountParsed !== 0 ||
-          dataDeposit?.[1].rTokenFreeParsed !== 0 ||
-          dataDeposit?.[1].rTokenLockedParsed !== 0 ||
-          dataDeposit?.[1].rTokenStakedParsed !== 0
+          dataDeposit?.[1]?.rTokenAmountParsed !== 0 ||
+          dataDeposit?.[1]?.rTokenFreeParsed !== 0 ||
+          dataDeposit?.[1]?.rTokenLockedParsed !== 0 ||
+          dataDeposit?.[1]?.rTokenStakedParsed !== 0
             ? protocolStats?.[1]?.supplyRate
             : 0;
         const aprC =
-          dataDeposit?.[2].rTokenAmountParsed !== 0 ||
-          dataDeposit?.[2].rTokenFreeParsed !== 0 ||
-          dataDeposit?.[2].rTokenLockedParsed !== 0 ||
-          dataDeposit?.[2].rTokenStakedParsed !== 0
+          dataDeposit?.[2]?.rTokenAmountParsed !== 0 ||
+          dataDeposit?.[2]?.rTokenFreeParsed !== 0 ||
+          dataDeposit?.[2]?.rTokenLockedParsed !== 0 ||
+          dataDeposit?.[2]?.rTokenStakedParsed !== 0
             ? protocolStats?.[2]?.supplyRate
             : 0;
         const aprD =
-          dataDeposit?.[3].rTokenAmountParsed !== 0 ||
-          dataDeposit?.[3].rTokenFreeParsed !== 0 ||
-          dataDeposit?.[3].rTokenLockedParsed !== 0 ||
-          dataDeposit?.[3].rTokenStakedParsed !== 0
+          dataDeposit?.[3]?.rTokenAmountParsed !== 0 ||
+          dataDeposit?.[3]?.rTokenFreeParsed !== 0 ||
+          dataDeposit?.[3]?.rTokenLockedParsed !== 0 ||
+          dataDeposit?.[3]?.rTokenStakedParsed !== 0
             ? protocolStats?.[3]?.supplyRate
             : 0;
         const aprE =
-          dataDeposit?.[4].rTokenAmountParsed !== 0 ||
-          dataDeposit?.[4].rTokenFreeParsed !== 0 ||
-          dataDeposit?.[4].rTokenLockedParsed !== 0 ||
-          dataDeposit?.[4].rTokenStakedParsed !== 0
+          dataDeposit?.[4]?.rTokenAmountParsed !== 0 ||
+          dataDeposit?.[4]?.rTokenFreeParsed !== 0 ||
+          dataDeposit?.[4]?.rTokenLockedParsed !== 0 ||
+          dataDeposit?.[4]?.rTokenStakedParsed !== 0
             ? protocolStats?.[4]?.supplyRate
             : 0;
         const avgSupplyApr =
