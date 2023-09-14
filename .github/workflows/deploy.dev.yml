@@ -37,14 +37,6 @@ jobs:
           touch .env
           echo 'NEXT_PUBLIC_APP_ENV=production' >> .env
           echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_MIXPANEL_KEY_DEV}}' >> .env
-          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL_DEV}}' >> .env
-          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_GOOGLE_PRIVATE_KEY_DEV}}' >> .env
-          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_GOOGLE_SHEET_ID_DEV}}' >> .env
-          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_AWS_ACCESS_KEY_ID_DEV}}' >> .env
-          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY_DEV}}' >> .env
-          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_GOOGLE_SHEET_ID_BUGS_DEV}}' >> .env
-          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_GOOGLE_SHEET_ID_SUGGESTIONS_DEV}}' >> .env
-          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_NODE_ENV_DEV}}' >> .env
     
       - name: Build
         run: yarn build
