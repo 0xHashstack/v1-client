@@ -78,6 +78,8 @@ import FeedbackIcon from "@/assets/icons/feedbackIcon";
 import BackIconFeedback from "@/assets/icons/backIconFeedback";
 import CaptureBugIcon from "@/assets/icons/captureBugIcon";
 import AddFiles from "@/assets/icons/addFiles";
+import CancelIcon from "@/assets/icons/cancelIcon";
+import CancelIconSmall from "@/assets/icons/cancelIconSmall";
 const FeedbackModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -109,6 +111,8 @@ const FeedbackModal = ({
   const [titleSuggestions, setTitleSuggestions] = useState("")
   const [descriptionSuggestions, setdescriptionSuggestions] = useState("")
   const [bugScreenshoturl, setBugScreenshoturl] = useState("")
+  const [bugScreenshotFilename, setBugScreenshotFilename] = useState("");
+  const [suggestionScreenshotFilename, setSuggestionScreenshotFilename] = useState("")
   const [suggestionUrl, setSuggestionUrl] = useState("")
   const [descriptionRatingFeedback, setdescriptionRatingFeedback] = useState("")
   const [ratingFeedbackSubmitted, setRatingFeedbackSubmitted] = useState(false)
@@ -126,6 +130,8 @@ const FeedbackModal = ({
     const file = e.target.files[0];
 
     if (file) {
+      console.log(file.name,"file name");
+      setBugScreenshotFilename(file.name);
       // Read the selected image file as a base64 string
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -143,11 +149,13 @@ const FeedbackModal = ({
     const file = e.target.files[0];
 
     if (file) {
+      setSuggestionScreenshotFilename(file.name);
       // Read the selected image file as a base64 string
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event?.target?.result) {
           setSuggestionUrl(event.target.result as string);
+          
       //     console.log("base64:-",event.target.result);
       // console.log("sugg  url(upload):-=",event.target.result)
 
@@ -164,6 +172,9 @@ const FeedbackModal = ({
     html2canvas(document.body).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setBugScreenshoturl(screenshotDataUrl);
+      const timestamp = new Date().getTime();
+      const filename = `screenshot_${timestamp}.png`;
+      setBugScreenshotFilename(filename);
       // const localURL = window.URL.createObjectURL(
       //   new Blob([atob(screenshotDataUrl)], { type: 'image/png' })
       // );
@@ -181,6 +192,9 @@ const FeedbackModal = ({
     html2canvas(document.body).then((canvas) => {
       const screenshotDataUrl = canvas.toDataURL('image/png');
       setSuggestionUrl(screenshotDataUrl);
+      const timestamp = new Date().getTime();
+      const filename = `screenshot_${timestamp}.png`;
+      setSuggestionScreenshotFilename(filename);
       console.log("sugg  url(capture):-=",screenshotDataUrl)
       
       // Now you have the screenshot in a data URL format
@@ -200,9 +214,15 @@ const FeedbackModal = ({
 
   // console.log(onOpen)
 
+  const deleteBugScreenshot = () =>{
+    setBugScreenshoturl("");
+    setBugScreenshotFilename("");
+  }
 
-
-
+const deleteSuggestionScreenshot = () =>{
+  setSuggestionUrl("");
+  setSuggestionScreenshotFilename("");
+}
  
   const handleClick = () => {
     inputRef.current.click();
@@ -532,11 +552,9 @@ const FeedbackModal = ({
                           // resize="vertical" // This allows the textarea to resize vertically as needed
                           />
                           <Box display="flex" justifyContent="flex-end" alignItems="center">
+                 
                             <Box onClick={handleCaptureClick} mt="0.4rem" bg="none" cursor="pointer" display="flex" justifyContent="flex-end"><CaptureBugIcon /></Box>
-                            <Box mt="0.4rem">
-                              {bugScreenshoturl ? <Image width={200} height={200} src={bugScreenshoturl} alt="Selected" ></Image> : <></>
-                              }
-                            </Box>
+                            
                             <Box>
                               <Box mt="0.4rem" bg="none" cursor="pointer" display="flex" justifyContent="flex-end">
                                 <Box
@@ -547,6 +565,12 @@ const FeedbackModal = ({
                             </Box>
 
                           </Box>
+                          {bugScreenshotFilename &&          <Box mt="0.4rem" color={'white'} display="flex" alignItems={'center'} justifyContent='flex-end'>
+
+{/* {bugScreenshotUrl ? <Image width={200} height={200} src={bugScreenshotUrl} alt="Selected" ></Image> : <></>
+} */}
+<Box>{bugScreenshotFilename }</Box><Box cursor={'pointer'} onClick={deleteBugScreenshot}><CancelIconSmall/></Box> 
+</Box>}
 
                           <Box textAlign="center">
 
@@ -606,11 +630,9 @@ const FeedbackModal = ({
                           <CaptureBugIcon/>
                         </Box> */}
                             <Box display="flex" alignItems="center"  justifyContent="flex-end">
+                  
                             <Box onClick={handleCaptureClickSuggestions} mt="0.4rem" bg="none" cursor="pointer" display="flex" width="100%" justifyContent="flex-end"><CaptureBugIcon /></Box>
-                            <Box>
-                              {suggestionUrl ? <Image width={200} height={200} src={suggestionUrl} alt="Selected" ></Image> : <></>
-                              }
-                            </Box>
+                          
                             <Box>
                               <Box mt="0.4rem" bg="none" cursor="pointer" display="flex"  justifyContent="flex-end">
                                 <Box
@@ -621,6 +643,12 @@ const FeedbackModal = ({
                             </Box>
 
                             </Box>
+                  {suggestionScreenshotFilename &&          <Box mt="0.4rem" color={'white'} display="flex" alignItems={'center'} justifyContent='flex-end'>
+
+{/* {suggestionUrl ? <Image width={200} height={200} src={suggestionUrl} alt="Selected" ></Image> : <></>
+} */}
+<Box>{suggestionScreenshotFilename }</Box><Box cursor={'pointer'} onClick={deleteSuggestionScreenshot}><CancelIconSmall/></Box> 
+</Box>}
                             <Box textAlign="center">
                               <Button background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                                 color="#6E7681"

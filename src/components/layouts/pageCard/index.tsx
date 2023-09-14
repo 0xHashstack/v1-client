@@ -199,6 +199,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
       const network=process.env.NEXT_PUBLIC_NODE_ENV;
+      console.log()
       if (walletConnected == "braavos") {
         if(network=="testnet"){
           return (
