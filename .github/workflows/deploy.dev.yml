@@ -36,7 +36,7 @@ jobs:
         run: |
           touch .env
           echo 'NEXT_PUBLIC_APP_ENV=production' >> .env
-          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_MIXPANEL_KEY}}' >> .env
+          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_MIXPANEL_KEY_DEV}}' >> .env
     
       - name: Build
         run: yarn build
