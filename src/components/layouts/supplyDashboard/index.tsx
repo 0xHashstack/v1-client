@@ -316,10 +316,10 @@ const SupplyDashboard = ({
 
       indexes.forEach((index: number) => {
         if (
-          supply?.[index].rTokenAmountParsed !== 0 ||
-          supply?.[index].rTokenFreeParsed !== 0 ||
-          supply?.[index].rTokenLockedParsed !== 0 ||
-          supply?.[index].rTokenStakedParsed !== 0
+          supply?.[index]?.rTokenAmountParsed !== 0 ||
+          supply?.[index]?.rTokenFreeParsed !== 0 ||
+          supply?.[index]?.rTokenLockedParsed !== 0 ||
+          supply?.[index]?.rTokenStakedParsed !== 0
         )
           data[index] = supply[index];
       });

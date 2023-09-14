@@ -72,6 +72,7 @@ import {
   selectAprAndHealthFactor,
   selectEffectiveApr,
   selectHealthFactor,
+  selectJediSwapPoolsSupported,
   selectOraclePrices,
   selectProtocolStats,
   selectUserDeposits,
@@ -340,6 +341,7 @@ const YourBorrowModal = ({
     isIdleRevertInteractWithL3,
     isLoadingRevertInteractWithL3,
   } = useRevertInteractWithL3();
+  const poolsPairs=useSelector(selectJediSwapPoolsSupported)
   const handleRepayBorrow = async () => {
     // if (!repayAmount && loan?.loanId! && !diamondAddress) {
     //   return;
@@ -3913,6 +3915,7 @@ const YourBorrowModal = ({
                                 overflow="scroll"
                               >
                                 {pools.map((pool, index) => {
+                                  const matchingPair = poolsPairs.find((pair:any) => pair.keyvalue === pool);
                                   return (
                                     <Box
                                       key={index}

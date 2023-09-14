@@ -159,16 +159,14 @@ export async function getSupportedPools(
       diamondAddress,
       provider
     );
+    const jediswap="1962660952167394271600"
     const result = await governorContract.call(
       "get_secondary_market_support",
-      [poolPairAddress,dapp],
+      [poolPairAddress,jediswap],
       { blockIdentifier: "pending" }
     );
-    const data = parseAmount(
-      uint256.uint256ToBN(result?.secondary_market).toString(),
-      0
-    );
-    console.log("getPoolsSupported ", result,data);
+    const data = result?.secondary_market?.supported.toString()
+    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
     return data;
   } catch (err) {
     console.log(err, "err in getPoolsSupporte");

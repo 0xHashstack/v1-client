@@ -51,6 +51,7 @@ import {
 import {
   selectProtocolStats,
   selectOraclePrices,
+  selectJediSwapPoolsSupported,
 } from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
@@ -400,60 +401,89 @@ const TradeModal = ({
         stats?.[4],
       ]);
   };
-  const poolsPairs = [
-    {
-      address: "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e",
-      keyvalue: "USDC/USDT"
-    },
-    {
-    address: "0x4b6e4bef4dd1424b06d599a55c464e94cd9f3cb1a305eaa8a3db923519585f7",
-      keyvalue: "ETH/USDT"
-    },
-    {
-    address: "0x129c74ca4274e3dbf7ab83f5916bebf087ce7af7495b3c648f1d2f2ab302330",
-      keyvalue: "ETH/USDC"
-    },
-    {
-  address: "0x436fd41efe1872ce981331e2f11a50eca547a67f8e4d2bc476f60dc24dd5884",
-      keyvalue: "DAI/ETH"
-    },
-    {
-    address: "0x1d26e4dd7e42781721577f5f3615aa9f1c5076776b337e968e3194d8af78ea0",
-      keyvalue: "BTC/USDT"
-    },
-    {
-    address: "0x1d26e4dd7e42781721577f5f3615aa9f1c5076776b337e968e3194d8af78ea0",
-      keyvalue: "BTC/USDC"
-    },
-    {
-  address: "0x51c32e614dd57eaaeed77c3342dd0da177d7200b6adfd8497647f7a5a71a717",
-      keyvalue: "BTC/DAI"
-    },
-    {
-    address: "0x79ac8e9b3ce75f3294d3be2b361ca7ffa481fe56b0dd36500e43f5ce3f47077",
-      keyvalue: "USDT/DAI"
-    },
-    {
-    address: "0x3d58a2767ebb27cf36b5fa1d0da6566b6042bd1a9a051c40129bad48edb147b",
-      keyvalue: "USDC/DAI"
-    }
-  ]
-  useEffect(() => {
-    // const fetchPools = async (poolAddress:any) => {
-    //   const data = await getSupportedPools(poolAddress, constants?.JEDI_SWAP);
-    //   if (data === 0) {
-    //     const poolToUpdate = poolsPairs.find((pool) => pool.address === poolAddress);
-    //     if (poolToUpdate) {
-    //       poolToUpdate.keyvalue = "null";
-    //     }
-    //   }
-    //   console.log(data, "data");
-    // };
-  
-    // poolsPairs.forEach((pool) => {
-    //   fetchPools(pool.address);
-    // });
-  }, [coin]);
+  const poolsPairs=useSelector(selectJediSwapPoolsSupported);
+  // const [poolsPairs,setPoolPairs] = useState<any>([
+  //   {
+  //     address: "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e",
+  //     keyvalue: "USDC/USDT"
+  //   },
+  //   {
+  //   address: "0x4b6e4bef4dd1424b06d599a55c464e94cd9f3cb1a305eaa8a3db923519585f7",
+  //     keyvalue: "ETH/USDT"
+  //   },
+  //   {
+  //   address: "0x129c74ca4274e3dbf7ab83f5916bebf087ce7af7495b3c648f1d2f2ab302330",
+  //     keyvalue: "ETH/USDC"
+  //   },
+  //   {
+  // address: "0x436fd41efe1872ce981331e2f11a50eca547a67f8e4d2bc476f60dc24dd5884",
+  //     keyvalue: "DAI/ETH"
+  //   },
+  //   {
+  //   address: "0x1d26e4dd7e42781721577f5f3615aa9f1c5076776b337e968e3194d8af78ea0",
+  //     keyvalue: "BTC/USDT"
+  //   },
+  //   {
+  //   address: "0x1d26e4dd7e42781721577f5f3615aa9f1c5076776b337e968e3194d8af78ea0",
+  //     keyvalue: "BTC/USDC"
+  //   },
+  //   {
+  // address: "0x51c32e614dd57eaaeed77c3342dd0da177d7200b6adfd8497647f7a5a71a717",
+  //     keyvalue: "BTC/DAI"
+  //   },
+  //   {
+  //   address: "0x79ac8e9b3ce75f3294d3be2b361ca7ffa481fe56b0dd36500e43f5ce3f47077",
+  //     keyvalue: "USDT/DAI"
+  //   },
+  //   {
+  //   address: "0x3d58a2767ebb27cf36b5fa1d0da6566b6042bd1a9a051c40129bad48edb147b",
+  //     keyvalue: "USDC/DAI"
+  //   }
+  // ])
+  //   try{
+  //     const fetchPools = async () => {
+  //       // const promises=[
+  //       //   getSupportedPools(poolsPairs[0]?.address, constants?.JEDI_SWAP),
+  //       //   getSupportedPools(poolsPairs[1]?.address, constants?.JEDI_SWAP),
+  //       //   getSupportedPools(poolsPairs[2]?.address, constants?.JEDI_SWAP),
+  //       //   getSupportedPools(poolsPairs[3]?.address, constants?.JEDI_SWAP),
+  //       //   getSupportedPools(poolsPairs[4]?.address, constants?.JEDI_SWAP),
+  //       //   getSupportedPools(poolsPairs[5]?.address, constants?.JEDI_SWAP),
+  //       //   getSupportedPools(poolsPairs[6]?.address, constants?.JEDI_SWAP),
+  //       //   getSupportedPools(poolsPairs[7]?.address, constants?.JEDI_SWAP),
+  //       //   getSupportedPools(poolsPairs[8]?.address, constants?.JEDI_SWAP),
+  //       // ]
+  //       // Promise.allSettled([...promises]).then((val)=>{
+  //       //   console.log(val);
+  //       // })
+  //       // if (data === 0) {
+  //       //   // Create a copy of the poolsPairs array
+  //       //   const updatedPoolsPairs = [...poolsPairs];
+    
+  //       //   // Find the poolToUpdate in the copy
+  //       //   const poolToUpdate = updatedPoolsPairs.find((pool) => pool.address === poolAddress);
+          
+  //       //   if (poolToUpdate) {
+  //       //     // Update the keyvalue property
+  //       //     poolToUpdate.keyvalue = "null";
+    
+  //       //     // Update the state with the updated array
+  //       //     setPoolPairs(updatedPoolsPairs);
+  //       //   }
+  //       // }
+  //       // console.log(data, "data");
+  //     };
+  //     fetchPools();
+  //   }catch(err){
+  //     console.log(err);
+  //   }
+  //   // fetchPools("0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e")
+  //   // fetchPools("0x129c74ca4274e3dbf7ab83f5916bebf087ce7af7495b3c648f1d2f2ab302330")
+  //   // poolsPairs.forEach((pool:any) => {
+  //   //   fetchPools(pool.address);
+  //   // });
+
+  // }, []);
   
   useEffect(() => {
     try {
@@ -2575,7 +2605,7 @@ const TradeModal = ({
                           overflow="scroll"
                         >
                           {pools.map((pool, index) => {
-                            const matchingPair = poolsPairs.find(pair => pair.keyvalue === pool);
+                            const matchingPair = poolsPairs.find((pair:any) => pair.keyvalue === pool);
 
                             if (!matchingPair) {
                               return null; // Skip rendering for pools with keyvalue "null"

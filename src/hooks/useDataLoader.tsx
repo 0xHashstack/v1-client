@@ -29,6 +29,7 @@ import {
   selectAvgSupplyAprCount,
   selectHealthFactorCount,
   selectHourlyDataCount,
+  selectJediSwapPoolsSupportedCount,
   selectMonthlyDataCount,
   selectNetAprCount,
   selectOraclePricesCount,
@@ -51,6 +52,7 @@ import {
   setAvgSupplyAprCount,
   setHealthFactorCount,
   setHourlyDataCount,
+  setJediSwapPoolsSupportedCount,
   setMonthlyDataCount,
   setNetAprCount,
   setOraclePricesCount,
@@ -102,6 +104,7 @@ import {
   setAllETHData,
   setAllUSDCData,
   setAllUSDTData,
+  setJediSwapPoolsSupported,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -129,6 +132,7 @@ import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
 import {
   getMinimumDepositAmount,
+  getSupportedPools,
   getUserStakingShares,
 } from "@/Blockchain/scripts/Rewards";
 import {
@@ -137,6 +141,7 @@ import {
 } from "@/Blockchain/utils/addressServices";
 import OffchainAPI from "@/services/offchainapi.service";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
+import { constants } from "@/Blockchain/utils/constants";
 const useDataLoader = () => {
   const { address } = useAccount();
   const protocolReserves = useSelector(selectProtocolReserves);
@@ -176,8 +181,46 @@ const useDataLoader = () => {
   const allDataCount=useSelector(selectAllDataCount);
   // const stakingShares = useSelector(selectStakingShares);
   const stakingSharesCount = useSelector(selectStakingSharesCount);
+  const jediSwapPoolsSupportedCount = useSelector(selectJediSwapPoolsSupportedCount);
   const transactionStatus = useSelector(selectTransactionStatus);
-
+  const [poolsPairs,setPoolPairs] = useState<any>([
+    {
+      address: "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e",
+      keyvalue: "USDC/USDT"
+    },
+    {
+    address: "0x4b6e4bef4dd1424b06d599a55c464e94cd9f3cb1a305eaa8a3db923519585f7",
+      keyvalue: "ETH/USDT"
+    },
+    {
+    address: "0x129c74ca4274e3dbf7ab83f5916bebf087ce7af7495b3c648f1d2f2ab302330",
+      keyvalue: "ETH/USDC"
+    },
+    {
+  address: "0x436fd41efe1872ce981331e2f11a50eca547a67f8e4d2bc476f60dc24dd5884",
+      keyvalue: "DAI/ETH"
+    },
+    {
+    address: "0x1d26e4dd7e42781721577f5f3615aa9f1c5076776b337e968e3194d8af78ea0",
+      keyvalue: "BTC/USDT"
+    },
+    {
+    address: "0x1d26e4dd7e42781721577f5f3615aa9f1c5076776b337e968e3194d8af78ea0",
+      keyvalue: "BTC/USDC"
+    },
+    {
+  address: "0x51c32e614dd57eaaeed77c3342dd0da177d7200b6adfd8497647f7a5a71a717",
+      keyvalue: "BTC/DAI"
+    },
+    {
+    address: "0x79ac8e9b3ce75f3294d3be2b361ca7ffa481fe56b0dd36500e43f5ce3f47077",
+      keyvalue: "USDT/DAI"
+    },
+    {
+    address: "0x3d58a2767ebb27cf36b5fa1d0da6566b6042bd1a9a051c40129bad48edb147b",
+      keyvalue: "USDC/DAI"
+    }
+  ])
   const dispatch = useDispatch();
   const Data: any = [];
   const [avgs, setAvgs] = useState<any>([]);
@@ -950,7 +993,69 @@ const useDataLoader = () => {
       console.log("user deposits - transactionRefresh error", err);
     }
   }, [address, transactionRefresh]);
+  useEffect(() => {
+    try{
+      const fetchPools = async () => {
+        const promises=[
+          getSupportedPools(poolsPairs[0]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(poolsPairs[1]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(poolsPairs[2]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(poolsPairs[3]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(poolsPairs[4]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(poolsPairs[5]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(poolsPairs[6]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(poolsPairs[7]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(poolsPairs[8]?.address, constants?.JEDI_SWAP),
+        ]
+        const Poolsdata:any=[];
+        let data: any;
+        Promise.allSettled([...promises]).then((val)=>{
+          val.map((response, idx) => {
+            const res = response?.status != "rejected" ? response?.value : "0";
+            if(res==1){
+              data=poolsPairs[idx];
+            }else{
+              data={
+                address:poolsPairs[idx]?.address,
+                keyvalue:"null"
+              }
+            }
+            Poolsdata.push(data);
+          });
+          dispatch(setJediSwapPoolsSupported(Poolsdata));
+          const count = getTransactionCount();
+          dispatch(setJediSwapPoolsSupportedCount(count));
+        })
+        // if (data === 0) {
+        //   // Create a copy of the poolsPairs array
+        //   const updatedPoolsPairs = [...poolsPairs];
+    
+        //   // Find the poolToUpdate in the copy
+        //   const poolToUpdate = updatedPoolsPairs.find((pool) => pool.address === poolAddress);
+          
+        //   if (poolToUpdate) {
+        //     // Update the keyvalue property
+        //     poolToUpdate.keyvalue = "null";
+    
+        //     // Update the state with the updated array
+        //     setPoolPairs(updatedPoolsPairs);
+        //   }
+        // }
+        // console.log(data, "data");
+      };
+      if (jediSwapPoolsSupportedCount < transactionRefresh) {
+        fetchPools();
+      }
+    }catch(err){
+      console.log(err);
+    }
+    // fetchPools("0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e")
+    // fetchPools("0x129c74ca4274e3dbf7ab83f5916bebf087ce7af7495b3c648f1d2f2ab302330")
+    // poolsPairs.forEach((pool:any) => {
+    //   fetchPools(pool.address);
+    // });
 
+  }, [transactionRefresh]);
   useEffect(() => {
     try {
       const getStakingShares = async () => {
@@ -1645,7 +1750,8 @@ const useDataLoader = () => {
       avgBorrowAPRCount,
       yourMetricsSupplyCount,
       yourMetricsBorrowCount,
-      stakingSharesCount
+      stakingSharesCount,
+      jediSwapPoolsSupportedCount
     );
   }, [
     transactionRefresh,
@@ -1664,6 +1770,7 @@ const useDataLoader = () => {
     yourMetricsSupplyCount,
     yourMetricsBorrowCount,
     stakingSharesCount,
+    jediSwapPoolsSupportedCount
   ]);
 };
 
