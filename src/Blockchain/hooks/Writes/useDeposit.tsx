@@ -88,7 +88,6 @@ const useDeposit = () => {
       },
     ],
   });
-  console.log(dataDeposit,"data value of deposit")
 
 
   return {

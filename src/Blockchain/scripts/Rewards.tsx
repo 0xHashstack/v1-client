@@ -147,6 +147,34 @@ export async function getMinimumDepositAmount(
   }
 }
 
+export async function getSupportedPools(
+  poolPairAddress: any,
+  dapp:any
+) {
+  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  try {
+    const provider = getProvider();
+    const governorContract = new Contract(
+      governorAbi,
+      diamondAddress,
+      provider
+    );
+    const result = await governorContract.call(
+      "get_secondary_market_support",
+      [poolPairAddress,dapp],
+      { blockIdentifier: "pending" }
+    );
+    const data = parseAmount(
+      uint256.uint256ToBN(result?.secondary_market).toString(),
+      0
+    );
+    console.log("getPoolsSupported ", result,data);
+    return data;
+  } catch (err) {
+    console.log(err, "err in getPoolsSupporte");
+  }
+}
+
 export async function getUserStakingShares(address: string, tokenName: RToken) {
   try {
     const provider = getProvider();

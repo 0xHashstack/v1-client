@@ -187,7 +187,6 @@ const Navbar = ({ validRTokens }: any) => {
       router.push("/v1/market");
     }
   };
-console.log("chainid:-",currentChainId)
   return (
     <HStack
       zIndex="100"
