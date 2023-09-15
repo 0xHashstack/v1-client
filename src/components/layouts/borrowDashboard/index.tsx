@@ -46,7 +46,8 @@ import TableClose from "../table/tableIcons/close";
 import { setCurrentPage } from "@/store/slices/userAccountSlice";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
-
+import { selectUserDeposits } from "@/store/slices/readDataSlice";
+import { useAccount } from "@starknet-react/core";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -186,6 +187,7 @@ const BorrowDashboard = ({
   const [currentBorrowId2, setCurrentBorrowId2] = useState("");
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
     useState("BTC");
+    const [validRTokens, setValidRTokens] = useState([]);
   const [collateralBalance, setCollateralBalance] = useState("123 eth");
   const [currentSpendStatus, setCurrentSpendStatus] = useState("");
   const [currentLoanAmount, setCurrentLoanAmount] = useState("");
@@ -224,6 +226,40 @@ const BorrowDashboard = ({
     //   setCurrentPagination(currentPagination - 1);
     // }
   }, [Borrows]);
+  const { account, address } = useAccount();
+  const userDeposits = useSelector(selectUserDeposits);
+  const fetchUserDeposits = async () => {
+    try {
+      if (!account || userDeposits?.length <= 0) return;
+      // const reserves = await getUserDeposits(address as string);
+      const reserves = userDeposits;
+      // console.log("got reservers", reserves);
+
+      const rTokens: any = [];
+      if (reserves) {
+        reserves.map((reserve: any) => {
+          if (reserve.rTokenFreeParsed > 0) {
+            rTokens.push({
+              rToken: reserve.rToken,
+              rTokenAmount: reserve.rTokenFreeParsed,
+            });
+          }
+        });
+      }
+      // console.log("rtokens", rTokens);
+      if (rTokens.length === 0) return;
+      setValidRTokens(rTokens);
+      // console.log("valid rtoken", validRTokens);
+      // console.log("market page -user supply", reserves);
+    } catch (err) {
+      // console.log("Error fetching protocol reserves", err);
+    }
+  };
+  useEffect(() => {
+    if (validRTokens.length === 0) {
+      fetchUserDeposits();
+    }
+  }, [userDeposits, validRTokens, address]);
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
 
@@ -1143,6 +1179,7 @@ const BorrowDashboard = ({
                 backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
                 borrowAPRs={borrowAPRs}
                 currentBorrowAPR={currentBorrowAPR}
+                validRTokens={validRTokens}
                 setCurrentBorrowAPR={setCurrentBorrowAPR}
                 coin={coinPassed}
               />

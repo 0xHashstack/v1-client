@@ -2306,7 +2306,6 @@ const StakeUnstakeModal = ({
                               `${rTokenToWithdraw <= 99999 ? 0.1 : 0}`
                             )}
                             isDisabled={
-                              !isValid(currentSelectedUnstakeCoin) ||
                               unstakeTransactionStarted == true
                             }
                             _disabled={{ cursor: "pointer" }}
@@ -2314,9 +2313,7 @@ const StakeUnstakeModal = ({
                             <NumberInputField
                               placeholder={`0.01536 ${currentSelectedUnstakeCoin}`}
                               color={`${
-                                !isValid(currentSelectedUnstakeCoin)
-                                  ? "#00D395"
-                                  : rTokenToWithdraw > unstakeWalletBalance
+                                   rTokenToWithdraw > unstakeWalletBalance
                                   ? "#CF222E"
                                   : rTokenToWithdraw < 0
                                   ? "#CF222E"
