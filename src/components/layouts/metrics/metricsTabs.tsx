@@ -1,7 +1,6 @@
 import { capitalizeWords } from "@/utils/functions/capitalizeWords";
-import { Box, Button, ButtonGroup, HStack } from "@chakra-ui/react";
-import Image from "next/image";
-import React, { useState } from "react";
+import { Box, Button, ButtonGroup,  } from "@chakra-ui/react";
+import React, {  } from "react";
 
 const MetricsTabs = ({ currentMetric, setCurrentMetric }: any) => {
   const navOptions = [

@@ -200,7 +200,6 @@ const BorrowDashboard = ({
     icon: "mdi-bitcoin",
     symbol: "WBTC",
   });
-  const avgsData: any = [];
   useEffect(() => {
     let temp1: any = [];
     let temp2: any = [];

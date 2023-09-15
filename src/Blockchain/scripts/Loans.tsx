@@ -8,7 +8,7 @@ import {
 } from "../stark-constants";
 import routerAbi from "@/Blockchain/abis_upgrade/router_abi.json";
 // import routerAbi from "@/Blockchain/abi_new/router_abi.json";
-import { BNtoNum, etherToWeiBN, weiToEtherNumber } from "../utils/utils";
+import { BNtoNum, weiToEtherNumber } from "../utils/utils";
 import { ILoan, NativeToken, RToken, Token } from "../interfaces/interfaces";
 
 function parseLoansData(loansData: any, collateralsData: any): ILoan[] {

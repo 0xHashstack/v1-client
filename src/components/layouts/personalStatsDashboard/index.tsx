@@ -8,25 +8,13 @@ import {
   TableContainer,
   Text,
   Box,
-  HStack,
-  VStack,
-  useTimeout,
   Spinner,
-  Skeleton,
   Tooltip,
-  Select,
 } from "@chakra-ui/react";
-import { NativeToken } from '@/Blockchain/interfaces/interfaces';
-import { tokenDecimalsMap } from '@/Blockchain/utils/addressServices';
-import { BNtoNum } from '@/Blockchain/utils/utils';
 import { selectModalDropDowns, setModalDropdown } from '@/store/slices/dropdownsSlice';
-import { setCoinSelectedSupplyModal } from '@/store/slices/userAccountSlice';
-import coins from '@/utils/constants/coins';
 import { useDispatch, useSelector } from 'react-redux';
-import { uint256 } from 'starknet';
 import ArrowUp from '@/assets/icons/arrowup';
 import DropdownUp from '@/assets/icons/dropdownUpIcon';
-import Pagination from "@/components/uiElements/pagination";
 const PersonalStatsDashboard = ({
     width,
     currentPagination,
@@ -48,7 +36,6 @@ const PersonalStatsDashboard = ({
     let lower_bound = 6 * (currentPagination - 1);
     let upper_bound = lower_bound + 5;
 const [loading, setLoading] = useState<boolean>(false);
-const [duration, setDuration] = useState<string>("1")
 const [currentSelectedTenure, setcurrentSelectedTenure] = useState(
   "Day"
 );

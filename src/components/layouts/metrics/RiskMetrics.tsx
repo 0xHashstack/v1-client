@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { Box, Button } from "@chakra-ui/react";
-import AssetUtilizationChart from "../charts/AssetUtilization";
-import AssetUtilizationRateChart from "../charts/AssetUtilizationRate";
-import SupplyAprChart from "../charts/SupplyApr";
-import BorrowAprChart from "../charts/BorrowApr";
-import RiskPremiumChart from "../charts/RiskPremium";
+
 import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
 
 const RiskMetrics = () => {

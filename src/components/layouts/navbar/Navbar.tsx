@@ -4,25 +4,17 @@ import Link from "next/link";
 
 // import "./navbar.css";
 
-import arrowDown from "../../../assets/images/ArrowDownDark.svg";
-import arrowUp from "../../../assets/images/ArrowUpDark.svg";
-import starknetLogoBordered from "../../../assets/images/starknetLogoBordered.svg";
 // import transferDeposit from "../../../assets/images/transferDeposit.svg";
-import languageArrow from "../../../assets/images/languageArrow.svg";
 // import dashboardIcon from "/assets/images/dashboardIcon.svg";
 import hoverDashboardIcon from "../../../assets/images/hoverDashboardIcon.svg";
 // import contributeEarnIcon from "../../../assets/images/contributeEarnIcon.svg";
 import hoverContributeEarnIcon from "../../../assets/images/hoverContributeEarnIcon.svg";
 import tickMark from "../../../assets/images/tickMark.svg";
 // import moreIcon from "../../../assets/images/moreIcon.svg";
-import hoverMoreIcon from "../../../assets/images/hoverMoreIcon.svg";
 // import stake from "../../../assets/images/stake.svg";
 import hoverStake from "../../../assets/images/hoverStakeIcon.svg";
-import starknetIcon from "../../../assets/images/starknetWallet.svg";
 import darkModeOn from "../../../assets/images/darkModeOn.svg";
 import darkModeOff from "../../../assets/images/darkModeOff.svg";
-import darkModeIcon from "../../../assets/images/darkModeIcon.svg";
-import darkIcon from "../../../assets/images/darkIcon.svg";
 import arrowNavRight from "../../../assets/images/arrowNavRight.svg";
 import arrowNavLeft from "../../../assets/images/arrowNavLeft.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,62 +22,40 @@ import {
   selectCurrentDropdown,
   selectNavDropdowns,
   setNavDropdown,
-  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import {
   Box,
-  Button,
-  Center,
   HStack,
-  LinkOverlay,
   Skeleton,
   Text,
-  background,
   useOutsideClick,
 } from "@chakra-ui/react";
 import {
-  selectAccount,
   selectAccountAddress,
   selectLanguage,
   setAccountReset,
-  setAvgBorrowAPR,
-  setAvgSupplyAPR,
   setLanguage,
 } from "@/store/slices/userAccountSlice";
 import {
   useAccount,
   useConnectors,
-  useStarknet,
-  useBlock,
 } from "@starknet-react/core";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
 import { useRouter } from "next/router";
-import { type } from "os";
 import GetTokensModal from "@/components/modals/getTokens";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import { Coins } from "../dashboardLeft";
 import mixpanel from "mixpanel-browser";
-import useDataLoader from "@/hooks/useDataLoader";
 import {
   resetState,
   selectCurrentNetwork,
-  setAprAndHealthFactor,
-  setNetAPR,
-  setNetWorth,
-  setOraclePrices,
-  setProtocolStats,
-  setTransactionRefresh,
-  setUserDeposits,
-  setUserLoans,
-  setYourBorrow,
-  setYourSupply,
+
 } from "@/store/slices/readDataSlice";
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
   const language = useSelector(selectLanguage);
-  const [parsedAccount, setParsedAccount] = useState<any>();
   const currentDropdown = useSelector(selectCurrentDropdown);
   const { account } = useAccount();
   const currentChainId = useSelector(selectCurrentNetwork);
@@ -103,7 +73,6 @@ const Navbar = ({ validRTokens }: any) => {
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
   const [stakeHover, setStakeHover] = useState(false);
-  const [connected, setConnected] = useState(true);
   const { available, disconnect, connect, connectors } = useConnectors();
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName));
@@ -115,8 +84,7 @@ const Navbar = ({ validRTokens }: any) => {
       justifyContent === "flex-start" ? "flex-end" : "flex-start"
     );
   };
-  const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
-  const walletConnectionDropdown = ["Disconnect", "Switch wallet"];
+  
 
   const { connector } = useAccount();
 
@@ -130,8 +98,6 @@ const Navbar = ({ validRTokens }: any) => {
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
 
-  const { address } = useAccount();
-  const accountAddress = useSelector(selectAccountAddress);
   // useEffect(() => {
   //   if(address && address!=accountAddress)
   //   {

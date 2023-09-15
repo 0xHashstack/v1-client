@@ -117,7 +117,6 @@ const StakeUnstakeModal = ({
   const [sliderValue2, setSliderValue2] = useState(0);
   const [inputStakeAmount, setInputStakeAmount] = useState<number>(0);
   const [inputUnstakeAmount, setInputUnstakeAmount] = useState(0);
-  const [isSupplyTap, setIsSupplyTap] = useState(false);
   const [transactionStarted, setTransactionStarted] = useState(false);
   const { address } = useAccount();
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =

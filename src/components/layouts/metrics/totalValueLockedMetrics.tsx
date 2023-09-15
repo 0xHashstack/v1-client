@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Skeleton } from "@chakra-ui/react";
-import AssetUtilizationChart from "../charts/AssetUtilization";
-import AssetUtilizationRateChart from "../charts/AssetUtilizationRate";
-import SupplyAprChart from "../charts/SupplyApr";
-import BorrowAprChart from "../charts/BorrowApr";
-import RiskPremiumChart from "../charts/RiskPremium";
-import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
+
 import { useSelector } from "react-redux";
 import {
   selectAllBTCData,

@@ -42,7 +42,6 @@ const TotalUtilisationRateByMarketChart = () => {
       data: [35000, 50000, 49000, 60000, 80000, 30000, 40000],
     },
   ]);
-  const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
