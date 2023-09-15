@@ -205,13 +205,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            extendedAccount.provider?.chainId == "0x534e5f474f45524c49"
+            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_TESTNET_CHAINID
           );
         }else{
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            extendedAccount.provider?.chainId == "0x534e5f4d41494e"
+            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID
           );
         }
       } else if (walletConnected == "argentX") {
@@ -221,14 +221,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
   
-            extendedAccount.provider?.chainId === "0x534e5f474f45524c49"
+            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID
           );
         }else{
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
   
-            extendedAccount.provider?.chainId === "0x534e5f4d41494e"
+            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_MAINNET_CHAINID
           );
         }
       }

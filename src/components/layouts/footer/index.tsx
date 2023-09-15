@@ -121,11 +121,9 @@ const Footer = () => {
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Box color="#676D9A" fontSize="12px" display="flex">
             Network:
-            {currentChainId === "0x534e5f474f45524c49" ? (
+            {currentChainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID ? (
               " Starknet Goerli"
-            ) : currentChainId == "0x534e5f474f45524c4932" ? (
-              " Starknet Goerli 2"
-            ) : currentChainId == "0x534e5f4d41494e" ? (
+            ) : currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ? (
               " Starknet Mainnet"
             ) : (
               <Skeleton

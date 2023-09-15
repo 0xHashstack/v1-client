@@ -373,7 +373,7 @@ const Navbar = ({ validRTokens }: any) => {
             validRTokens={validRTokens}
           />
         </Box>
-        {currentChainId == "0x534e5f4d41494e" ?        <Box
+        {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
@@ -493,7 +493,7 @@ const Navbar = ({ validRTokens }: any) => {
           alignItems="center"
           marginRight="1.2rem"
         >
-          {currentChainId == "0x534e5f4d41494e"  ?"":          <GetTokensModal
+          {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID  ?"":          <GetTokensModal
             buttonText="Get Tokens"
             height={"2rem"}
             fontSize={"12px"}
@@ -908,7 +908,7 @@ const Navbar = ({ validRTokens }: any) => {
                   width={"100%"}
                   paddingX="8px"
                 >
-                  <Text fontSize="14px">Dark mode</Text>
+                  {/* <Text fontSize="14px">Dark mode</Text> */}
                   {/* <Box
                     // height="fit-content"
                     display="flex"
@@ -920,7 +920,7 @@ const Navbar = ({ validRTokens }: any) => {
                     borderRadius="100px"
                     onClick={toggleMode}
                   > */}
-                  <Box
+                  {/* <Box
                     // bgColor="blue"
                     display="flex"
                     justifyContent="center"
@@ -933,7 +933,7 @@ const Navbar = ({ validRTokens }: any) => {
                       height="22"
                       style={{ cursor: "pointer" }}
                     />
-                  </Box>
+                  </Box> */}
                   {/* </Box> */}
                 </HStack>
                 {/* <hr />

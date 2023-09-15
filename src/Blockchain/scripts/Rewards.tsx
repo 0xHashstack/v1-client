@@ -159,10 +159,9 @@ export async function getSupportedPools(
       diamondAddress,
       provider
     );
-    const jediswap="1962660952167394271600"
     const result = await governorContract.call(
       "get_secondary_market_support",
-      [poolPairAddress,jediswap],
+      [poolPairAddress,dapp],
       { blockIdentifier: "pending" }
     );
     const data = result?.secondary_market?.supported.toString()

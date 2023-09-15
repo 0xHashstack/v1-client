@@ -31,6 +31,7 @@ import {
   selectHourlyDataCount,
   selectJediSwapPoolsSupportedCount,
   selectMonthlyDataCount,
+  selectMySwapPoolsSupportedCount,
   selectNetAprCount,
   selectOraclePricesCount,
   selectProtocolStatsCount,
@@ -54,6 +55,7 @@ import {
   setHourlyDataCount,
   setJediSwapPoolsSupportedCount,
   setMonthlyDataCount,
+  setMySwapPoolsSupportedCount,
   setNetAprCount,
   setOraclePricesCount,
   setProtocolReservesCount,
@@ -105,6 +107,7 @@ import {
   setAllUSDCData,
   setAllUSDTData,
   setJediSwapPoolsSupported,
+  setMySwapPoolsSupported,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -182,6 +185,7 @@ const useDataLoader = () => {
   // const stakingShares = useSelector(selectStakingShares);
   const stakingSharesCount = useSelector(selectStakingSharesCount);
   const jediSwapPoolsSupportedCount = useSelector(selectJediSwapPoolsSupportedCount);
+  const mySwapPoolsSupportedCount = useSelector(selectMySwapPoolsSupportedCount);
   const transactionStatus = useSelector(selectTransactionStatus);
   const [poolsPairs,setPoolPairs] = useState<any>([
     {
@@ -201,7 +205,7 @@ const useDataLoader = () => {
       keyvalue: "DAI/ETH"
     },
     {
-    address: "0x1d26e4dd7e42781721577f5f3615aa9f1c5076776b337e968e3194d8af78ea0",
+    address: "0x393d6cbf933e7ecc819a74cf865fce148b237004954e49c118773cdd0e84ab9",
       keyvalue: "BTC/USDT"
     },
     {
@@ -221,6 +225,45 @@ const useDataLoader = () => {
       keyvalue: "USDC/DAI"
     }
   ])
+  const mySwapPoolPairs=[
+    {
+      address: "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e",
+      keyvalue: "USDC/USDT"
+    },
+    {
+    address: "0x4b6e4bef4dd1424b06d599a55c464e94cd9f3cb1a305eaa8a3db923519585f7",
+      keyvalue: "ETH/USDT"
+    },
+    {
+    address: "0x129c74ca4274e3dbf7ab83f5916bebf087ce7af7495b3c648f1d2f2ab302330",
+      keyvalue: "ETH/USDC"
+    },
+    {
+  address: "0x436fd41efe1872ce981331e2f11a50eca547a67f8e4d2bc476f60dc24dd5884",
+      keyvalue: "DAI/ETH"
+    },
+    {
+    address: "0x393d6cbf933e7ecc819a74cf865fce148b237004954e49c118773cdd0e84ab9",
+      keyvalue: "BTC/USDT"
+    },
+    {
+    address: "0x1d26e4dd7e42781721577f5f3615aa9f1c5076776b337e968e3194d8af78ea0",
+      keyvalue: "BTC/USDC"
+    },
+    {
+  address: "0x51c32e614dd57eaaeed77c3342dd0da177d7200b6adfd8497647f7a5a71a717",
+      keyvalue: "BTC/DAI"
+    },
+    {
+    address: "0x79ac8e9b3ce75f3294d3be2b361ca7ffa481fe56b0dd36500e43f5ce3f47077",
+      keyvalue: "USDT/DAI"
+    },
+    {
+    address: "0x3d58a2767ebb27cf36b5fa1d0da6566b6042bd1a9a051c40129bad48edb147b",
+      keyvalue: "USDC/DAI"
+    }
+
+  ]
   const dispatch = useDispatch();
   const Data: any = [];
   const [avgs, setAvgs] = useState<any>([]);
@@ -1022,6 +1065,7 @@ const useDataLoader = () => {
             }
             Poolsdata.push(data);
           });
+          console.log(Poolsdata,"val")
           dispatch(setJediSwapPoolsSupported(Poolsdata));
           const count = getTransactionCount();
           dispatch(setJediSwapPoolsSupportedCount(count));
@@ -1054,6 +1098,50 @@ const useDataLoader = () => {
     // poolsPairs.forEach((pool:any) => {
     //   fetchPools(pool.address);
     // });
+
+  }, [transactionRefresh]);
+  useEffect(() => {
+    try{
+      const fetchMySwapPools = async () => {
+        const promises=[
+          getSupportedPools(mySwapPoolPairs[0]?.address, constants?.MY_SWAP),
+          getSupportedPools(mySwapPoolPairs[1]?.address, constants?.MY_SWAP),
+          getSupportedPools(mySwapPoolPairs[2]?.address, constants?.MY_SWAP),
+          getSupportedPools(mySwapPoolPairs[3]?.address, constants?.MY_SWAP),
+          getSupportedPools(mySwapPoolPairs[4]?.address, constants?.MY_SWAP),
+          getSupportedPools(mySwapPoolPairs[5]?.address, constants?.MY_SWAP),
+          getSupportedPools(mySwapPoolPairs[6]?.address, constants?.MY_SWAP),
+          getSupportedPools(mySwapPoolPairs[7]?.address, constants?.MY_SWAP),
+          getSupportedPools(mySwapPoolPairs[8]?.address, constants?.MY_SWAP),
+        ]
+        const Poolsdata:any=[];
+        let data: any;
+        Promise.allSettled([...promises]).then((val)=>{
+          val.map((response, idx) => {
+            const res = response?.status != "rejected" ? response?.value : "0";
+            
+            if(res==1){
+              data=poolsPairs[idx];
+            }else{
+              data={
+                address:poolsPairs[idx]?.address,
+                keyvalue:"null"
+              }
+            }
+            Poolsdata.push(data);
+          });
+          // console.log(Poolsdata,"val 2")
+          dispatch(setMySwapPoolsSupported(Poolsdata));
+          const count = getTransactionCount();
+          dispatch(setMySwapPoolsSupportedCount(count));
+        })
+      };
+      if (mySwapPoolsSupportedCount < transactionRefresh) {
+        fetchMySwapPools();
+      }
+    }catch(err){
+      console.log(err);
+    }
 
   }, [transactionRefresh]);
   useEffect(() => {

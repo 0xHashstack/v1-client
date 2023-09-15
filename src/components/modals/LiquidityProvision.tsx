@@ -60,6 +60,7 @@ import {
   selectAprAndHealthFactor,
   selectHealthFactor,
   selectJediSwapPoolsSupported,
+  selectMySwapPoolsSupported,
   selectUserLoans,
 } from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -307,6 +308,7 @@ const LiquidityProvisionModal = ({
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
   const poolsPairs=useSelector(selectJediSwapPoolsSupported)
+  const mySwapPoolPairs=useSelector(selectMySwapPoolsSupported)
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -837,7 +839,10 @@ const LiquidityProvisionModal = ({
                       overflow="scroll"
                     >
                       {pools.map((pool, index) => {
-                        const matchingPair = poolsPairs.find((pair:any) => pair.keyvalue === pool);
+                        const matchingPair = currentSwap=="Jediswap" ? poolsPairs.find((pair:any) => pair.keyvalue === pool):mySwapPoolPairs.find((pair:any) => pair.keyvalue === pool);
+                        if (!matchingPair  ) {
+                          return null; // Skip rendering for pools with keyvalue "null"
+                        }
                         return (
                           <Box
                             key={index}

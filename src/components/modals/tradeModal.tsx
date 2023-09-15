@@ -52,6 +52,7 @@ import {
   selectProtocolStats,
   selectOraclePrices,
   selectJediSwapPoolsSupported,
+  selectMySwapPoolsSupported,
 } from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
@@ -402,6 +403,7 @@ const TradeModal = ({
       ]);
   };
   const poolsPairs=useSelector(selectJediSwapPoolsSupported);
+  const mySwapPoolPairs=useSelector(selectMySwapPoolsSupported);
   // const [poolsPairs,setPoolPairs] = useState<any>([
   //   {
   //     address: "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e",
@@ -440,50 +442,13 @@ const TradeModal = ({
   //     keyvalue: "USDC/DAI"
   //   }
   // ])
-  //   try{
-  //     const fetchPools = async () => {
-  //       // const promises=[
-  //       //   getSupportedPools(poolsPairs[0]?.address, constants?.JEDI_SWAP),
-  //       //   getSupportedPools(poolsPairs[1]?.address, constants?.JEDI_SWAP),
-  //       //   getSupportedPools(poolsPairs[2]?.address, constants?.JEDI_SWAP),
-  //       //   getSupportedPools(poolsPairs[3]?.address, constants?.JEDI_SWAP),
-  //       //   getSupportedPools(poolsPairs[4]?.address, constants?.JEDI_SWAP),
-  //       //   getSupportedPools(poolsPairs[5]?.address, constants?.JEDI_SWAP),
-  //       //   getSupportedPools(poolsPairs[6]?.address, constants?.JEDI_SWAP),
-  //       //   getSupportedPools(poolsPairs[7]?.address, constants?.JEDI_SWAP),
-  //       //   getSupportedPools(poolsPairs[8]?.address, constants?.JEDI_SWAP),
-  //       // ]
-  //       // Promise.allSettled([...promises]).then((val)=>{
-  //       //   console.log(val);
-  //       // })
-  //       // if (data === 0) {
-  //       //   // Create a copy of the poolsPairs array
-  //       //   const updatedPoolsPairs = [...poolsPairs];
-    
-  //       //   // Find the poolToUpdate in the copy
-  //       //   const poolToUpdate = updatedPoolsPairs.find((pool) => pool.address === poolAddress);
-          
-  //       //   if (poolToUpdate) {
-  //       //     // Update the keyvalue property
-  //       //     poolToUpdate.keyvalue = "null";
-    
-  //       //     // Update the state with the updated array
-  //       //     setPoolPairs(updatedPoolsPairs);
-  //       //   }
-  //       // }
-  //       // console.log(data, "data");
-  //     };
-  //     fetchPools();
-  //   }catch(err){
-  //     console.log(err);
+  // useEffect(()=>{
+  //   const fetchPools=async()=>{
+  //     const data=await getSupportedPools("0x3d58a2767ebb27cf36b5fa1d0da6566b6042bd1a9a051c40129bad48edb147b","30814223327519088")
+  //     console.log(data,"check");
   //   }
-  //   // fetchPools("0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e")
-  //   // fetchPools("0x129c74ca4274e3dbf7ab83f5916bebf087ce7af7495b3c648f1d2f2ab302330")
-  //   // poolsPairs.forEach((pool:any) => {
-  //   //   fetchPools(pool.address);
-  //   // });
-
-  // }, []);
+  //   fetchPools();
+  // },[])
   
   useEffect(() => {
     try {
@@ -2605,9 +2570,9 @@ const TradeModal = ({
                           overflow="scroll"
                         >
                           {pools.map((pool, index) => {
-                            const matchingPair = poolsPairs.find((pair:any) => pair.keyvalue === pool);
+                            const matchingPair = currentDapp=="Jediswap" ? poolsPairs.find((pair:any) => pair.keyvalue === pool):mySwapPoolPairs.find((pair:any) => pair.keyvalue === pool);
 
-                            if (!matchingPair) {
+                            if (!matchingPair && currentDapp!="Select a dapp" ) {
                               return null; // Skip rendering for pools with keyvalue "null"
                             }
                             return (
