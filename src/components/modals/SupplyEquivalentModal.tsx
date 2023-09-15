@@ -21,7 +21,6 @@ import {
   Portal,
 } from "@chakra-ui/react";
 import TransactionFees from "../../../TransactionFees.json";
-import TickIcon from "@/assets/icons/tickIcon";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -44,7 +43,6 @@ import {
   setModalDropdown,
   selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
-import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import { useRouter } from "next/router";
 

@@ -10,8 +10,6 @@ import governorAbi from "../abis_upgrade/governor_abi.json";
 import {
   diamondAddress,
   getProvider,
-  getRTokenFromAddress,
-  metricsContractAddress,
   stakingContractAddress,
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";

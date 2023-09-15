@@ -3,24 +3,15 @@ import React from "react";
 import { useState, useEffect } from "react";
 import DashboardLeft from "../dashboardLeft";
 import DashboardRight from "../dashboardRight";
-import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
-// import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
-import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
-// import { getUserReserves } from "@/Blockchain/scripts/userStats";
-import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
+
 import { useAccount } from "@starknet-react/core";
-import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setAvgBorrowAPR,
-  setAvgSupplyAPR,
-} from "@/store/slices/userAccountSlice";
+
 import {
   selectProtocolStats,
   selectOraclePrices,
 } from "@/store/slices/readDataSlice";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
-import { resolve } from "path";
 const MarketDashboard = () => {
   // const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
   //   []
@@ -87,7 +78,6 @@ const MarketDashboard = () => {
   //     console.log("Error fetching protocol reserves", err);
   //   }
   // };
-  const dispatch = useDispatch();
 
   // const fetchOraclePrices = async () => {
   //   try {
@@ -160,13 +150,7 @@ const MarketDashboard = () => {
         stats?.[1].supplyRate,
         stats?.[4].supplyRate,
       ]);
-      const avgSupply =
-        (stats?.[4].supplyRate +
-          stats?.[3].supplyRate +
-          stats?.[2].supplyRate +
-          stats?.[1].supplyRate +
-          stats?.[0].supplyRate) /
-        5;
+     
       // dispatch(setAvgSupplyAPR(avgSupply));
       setUtilizations([
         stats?.[2].utilisationPerMarket,

@@ -21,20 +21,15 @@ import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { uint256 } from "starknet";
 import { BNtoNum } from "@/Blockchain/utils/utils";
-import { Dispatch } from "@reduxjs/toolkit";
-import {
-  selectAssetWalletBalance,
-  setAssetWalletBalance,
-} from "@/store/slices/userAccountSlice";
+
 import numberFormatter from "@/utils/functions/numberFormatter";
 import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useAccount } from "@starknet-react/core";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
-import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
 export interface ICoin {
   name: string;
   symbol: string;

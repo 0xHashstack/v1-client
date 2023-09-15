@@ -14,7 +14,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { Skeleton } from "@chakra-ui/react";
-import ReactStars from 'react-stars'
 import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
@@ -78,24 +77,22 @@ const DashboardRight = ({
     return null;
   });
 
-  const handleCaptureClick = async () => {
-    const element:any = document.getElementById('buttonclick');
-    html2canvas(element).then((canvas) => {
-      const screenshotDataUrl = canvas.toDataURL('image/png');
-      console.log(screenshotDataUrl,"url")
+  // const handleCaptureClick = async () => {
+  //   const element:any = document.getElementById('buttonclick');
+  //   html2canvas(element).then((canvas) => {
+  //     const screenshotDataUrl = canvas.toDataURL('image/png');
+  //     console.log(screenshotDataUrl,"url")
       
-      // Now you have the screenshot in a data URL format
-      // You can send it to the backend using an HTTP request.
-    });
-  };
+  //     // Now you have the screenshot in a data URL format
+  //     // You can send it to the backend using an HTTP request.
+  //   });
+  // };
 
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
-  const ratingChanged = (newRating:any) => {
-    console.log(newRating,"ratting")
-  }
+
   
 
   useEffect(() => {

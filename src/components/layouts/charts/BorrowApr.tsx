@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
-import numberFormatter from "@/utils/functions/numberFormatter";
 import { useSelector } from "react-redux";
 import { selectAllBTCData, selectDailyBTCData, selectHourlyBTCData, selectMonthlyBTCData } from "@/store/slices/readDataSlice";
 import dynamic from "next/dynamic";

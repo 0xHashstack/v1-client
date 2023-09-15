@@ -20,8 +20,6 @@ import {
   NumberInputField,
   Portal,
 } from "@chakra-ui/react";
-import TickIcon from "@/assets/icons/tickIcon";
-import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
 import BTCLogo from "../../assets/icons/coins/btc";
@@ -29,8 +27,6 @@ import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
-import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import {
   selectInputSupplyAmount,
@@ -43,73 +39,20 @@ import {
   setModalDropdown,
   selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
-import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 
 const ReferFreindsModal = ({ buttonText, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
 
   const dispatch = useDispatch();
-  const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
 
-  const getCoin = (CoinName: string) => {
-    switch (CoinName) {
-      case "BTC":
-        return <BTCLogo height={"16px"} width={"16px"} />;
-        break;
-      case "USDC":
-        return <USDCLogo height={"16px"} width={"16px"} />;
-        break;
-      case "USDT":
-        return <USDTLogo height={"16px"} width={"16px"} />;
-        break;
-      case "ETH":
-        return <ETHLogo height={"16px"} width={"16px"} />;
-        break;
-      case "DAI":
-        return <DAILogo height={"16px"} width={"16px"} />;
-        break;
-      default:
-        break;
-    }
-  };
-  // console.log(inputAmount);
 
-  //This Function handles the modalDropDowns
-  const handleDropdownClick = (dropdownName: any) => {
-    // Dispatches an action called setModalDropdown with the dropdownName as the payload
-    dispatch(setModalDropdown(dropdownName));
-  };
-
-  //This function is used to find the percentage of the slider from the input given by the user
-  const handleChange = (newValue: any) => {
-    // Calculate the percentage of the new value relative to the wallet balance
-    if (newValue > 9_000_000_000) return;
-    var percentage = (newValue * 100) / walletBalance;
-    percentage = Math.max(0, percentage);
-    if (percentage > 100) {
-      setSliderValue(100);
-      setinputAmount(newValue);
-      dispatch(setInputSupplyAmount(newValue));
-    } else {
-      percentage = Math.round(percentage);
-      if (isNaN(percentage)) {
-      } else {
-        setSliderValue(percentage);
-        setinputAmount(newValue);
-        dispatch(setInputSupplyAmount(newValue));
-      }
-    }
-  };
-
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   return (
     <div>

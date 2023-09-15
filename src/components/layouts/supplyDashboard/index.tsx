@@ -19,24 +19,17 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
-import BTCLogo from "@/assets/images/stakeIcon.svg";
-import USDTLogo from "@/assets/images/stakeIcon.svg";
 import Image from "next/image";
-import BorrowModal from "@/components/modals/borrowModal";
 import SupplyModal from "@/components/modals/SupplyModal";
 import YourSupplyModal from "@/components/modals/yourSupply";
-import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
-import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProtocolStats } from "@/store/slices/readDataSlice";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
-import { token } from "@project-serum/anchor/dist/cjs/utils";
-import { isTemplateExpression } from "typescript";
-import TableClose from "../table/tableIcons/close";
+
 import TableInfoIcon from "../table/tableIcons/infoIcon";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 
@@ -239,7 +232,6 @@ const SupplyDashboard = ({
   // },[userDeposits])
   const [protocolStats, setProtocolStats]: any = useState([]);
   const [supplyAPRs, setSupplyAPRs]: any = useState([]);
-  const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>();
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<Number>(2);
 
   useEffect(() => {

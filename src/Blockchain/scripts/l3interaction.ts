@@ -85,8 +85,7 @@ export async function getJediEstimateLiquiditySplit(
     tokenA,
     tokenB
   );
-  let tokenAAddress = tokenAddressMap[tokenA];
-  let tokenBAddress = tokenAddressMap[tokenB];
+
   const provider = getProvider();
   try {
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
@@ -136,8 +135,7 @@ export async function getJediEstimatedLpAmountOut(
   if (!currentAmount) {
     return 0;
   }
-  let tokenAAddress = tokenAddressMap[tokenA];
-  let tokenBAddress = tokenAddressMap[tokenB];
+
   const provider = getProvider();
   try {
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
@@ -266,8 +264,7 @@ export async function getMySwapEstimateLiquiditySplit(
     tokenA,
     tokenB
   );
-  let tokenAAddress = tokenAddressMap[tokenA];
-  let tokenBAddress = tokenAddressMap[tokenB];
+
   const provider = getProvider();
   try {
     const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
@@ -317,8 +314,7 @@ export async function getMySwapEstimatedLpAmountOut(
   if (!currentAmount) {
     return 0;
   }
-  let tokenAAddress = tokenAddressMap[tokenA];
-  let tokenBAddress = tokenAddressMap[tokenB];
+
   const provider = getProvider();
   try {
     const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);

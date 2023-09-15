@@ -6,7 +6,6 @@ import { Box, Button, ButtonGroup, HStack } from "@chakra-ui/react";
 import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { capitalizeWords } from "../../../utils/functions/capitalizeWords";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
 

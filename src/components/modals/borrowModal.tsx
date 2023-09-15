@@ -204,7 +204,6 @@ const BorrowModal = ({
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [showToast, setShowToast] = useState("true");
   const [toastId, setToastId] = useState<any>();
-  const [effectiveApr, setEffectiveApr] = useState(null);
   // const recieptData = useWaitForTransaction({
   //   hash: borrowTransHash,
   //   watch: true,
@@ -615,16 +614,7 @@ const BorrowModal = ({
     return amount ? numberFormatter(amount.rTokenAmount) : 0;
   };
 
-  const fetchEffectiveApr = async () => {
-    return (
-      inputBorrowAmountUSD * borrowAPRs[currentBorrowAPR] -
-      (inputCollateralAmountUSD *
-        protocolStats?.find(
-          (stat: any) => stat?.token === currentCollateralCoin
-        )?.supplyRate) /
-        inputBorrowAmountUSD
-    );
-  };
+ 
 
   // const {  market,
   //   setMarket,
