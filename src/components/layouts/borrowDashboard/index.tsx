@@ -1069,6 +1069,8 @@ const BorrowDashboard = ({
                         }}
                         // bgColor={"blue"}
                       >
+                        <Box>
+
                         <YourBorrowModal
                           currentID={borrow.loanId}
                           currentMarket={borrow.loanMarket}
@@ -1108,6 +1110,7 @@ const BorrowDashboard = ({
                           spendType={currentSpendStatus}
                           setSpendType={setCurrentSpendStatus}
                         />
+                        </Box>
                       </Box>
                     </Td>
                   </Tr>
