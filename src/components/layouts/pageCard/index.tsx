@@ -201,6 +201,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       const network=process.env.NEXT_PUBLIC_NODE_ENV;
       console.log()
       if (walletConnected == "braavos") {
+
         if(network=="testnet"){
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
@@ -214,6 +215,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID
           );
         }
+
       } else if (walletConnected == "argentX") {
         // Your code here
         if(network=="testnet"){

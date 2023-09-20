@@ -22,13 +22,12 @@ const Footer = () => {
   const { data: block } = useBlockNumber({
     refetchInterval: 10000,
   });
-  const extendedAccount = account as ExtendedAccountInterface;
   // const [walletConnected, setwalletConnected] = useState<any>()
   // useEffect(()=>{
   //   const walletConnected=localStorage.getItem('lastUsedConnector');
   //   setwalletConnected(walletConnected);
   // },[account])
-
+  const extendedAccount = account as ExtendedAccountInterface;
   const currentBlock = useSelector(selectBlock);
   const currentChainId = useSelector(selectCurrentNetwork);
   const dispatch = useDispatch();
