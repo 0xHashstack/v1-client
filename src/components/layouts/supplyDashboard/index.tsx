@@ -19,24 +19,17 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
-import BTCLogo from "@/assets/images/stakeIcon.svg";
-import USDTLogo from "@/assets/images/stakeIcon.svg";
 import Image from "next/image";
-import BorrowModal from "@/components/modals/borrowModal";
 import SupplyModal from "@/components/modals/SupplyModal";
 import YourSupplyModal from "@/components/modals/yourSupply";
-import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
-import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProtocolStats } from "@/store/slices/readDataSlice";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
-import { token } from "@project-serum/anchor/dist/cjs/utils";
-import { isTemplateExpression } from "typescript";
-import TableClose from "../table/tableIcons/close";
+
 import TableInfoIcon from "../table/tableIcons/infoIcon";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 
@@ -239,7 +232,6 @@ const SupplyDashboard = ({
   // },[userDeposits])
   const [protocolStats, setProtocolStats]: any = useState([]);
   const [supplyAPRs, setSupplyAPRs]: any = useState([]);
-  const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>();
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<Number>(2);
 
   useEffect(() => {
@@ -316,10 +308,10 @@ const SupplyDashboard = ({
 
       indexes.forEach((index: number) => {
         if (
-          supply?.[index].rTokenAmountParsed !== 0 ||
-          supply?.[index].rTokenFreeParsed !== 0 ||
-          supply?.[index].rTokenLockedParsed !== 0 ||
-          supply?.[index].rTokenStakedParsed !== 0
+          supply?.[index]?.rTokenAmountParsed !== 0 ||
+          supply?.[index]?.rTokenFreeParsed !== 0 ||
+          supply?.[index]?.rTokenLockedParsed !== 0 ||
+          supply?.[index]?.rTokenStakedParsed !== 0
         )
           data[index] = supply[index];
       });
@@ -347,7 +339,8 @@ const SupplyDashboard = ({
         width="95%"
         height={"37rem"}
         // height="552px"
-        bgColor="#101216"
+        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         borderRadius="8px"
       >
         {/* <Text color="#FFFFFF" fontSize="20px">
@@ -377,9 +370,9 @@ const SupplyDashboard = ({
     <Box
       height={"37rem"}
       w={width}
-      bg="#101216"
-      border="1px"
-      borderColor="#2B2F35"
+      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
       color="white"
       borderRadius="md"
     >
@@ -520,8 +513,7 @@ const SupplyDashboard = ({
                             color="#F7BB5B"
                           >
                             {numberFormatter(
-                              supply?.rTokenAmountParsed +
-                                supply?.rTokenStakedParsed
+                              supply?.underlyingAssetAmountParsed
                               // supply?.rTokenLockedParsed
                             )}
                           </Text>
@@ -868,13 +860,14 @@ const SupplyDashboard = ({
         <Box display="flex" justifyContent="left" w="94%" pb="2">
           <Box
             display="flex"
-            bg="#DDF4FF"
+            bg="#222766"
             fontSize="14px"
             p="4"
             fontStyle="normal"
             fontWeight="400"
             borderRadius="6px"
             // textAlign="center"
+            color="#B1B0B5"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
@@ -894,10 +887,10 @@ const SupplyDashboard = ({
                 fontSize="16px"
                 fontWeight="400"
                 display="inline"
-                color="#0969DA"
+                color="#4D59E8"
                 cursor="pointer"
                 ml="0.3rem"
-                lineHeight="24px"
+                lineHeight="22px"
                 backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
                 supplyAPRs={supplyAPRs}
                 currentSupplyAPR={currentSupplyAPR}

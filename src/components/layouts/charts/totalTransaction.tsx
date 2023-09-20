@@ -11,7 +11,6 @@ import {
   selectHourlyBTCData,
   selectMonthlyBTCData,
 } from "@/store/slices/readDataSlice";
-import numberFormatter from "@/utils/functions/numberFormatter";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const TotalTransactionChart = ({ color, curveColor, series }: any) => {
   const [aprByMarket, setAPRByMarket] = useState(0);

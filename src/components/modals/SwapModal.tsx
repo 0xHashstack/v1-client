@@ -526,7 +526,7 @@ const SwapModal = ({
       >
         <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
         <ModalContent
-          bg="#010409"
+ background="var(--Base_surface, #02010F)"
           color="white"
           borderRadius="md"
           maxW="464px"
@@ -545,8 +545,9 @@ const SwapModal = ({
           </ModalHeader>
           <ModalCloseButton mt="1rem" mr="1rem" />
           <ModalBody>
-            <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35">
-              <Text color="#8B949E" display="flex" alignItems="center">
+            <Card  mb="0.5rem" p="1rem"                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))">
+              <Text color="#676D9A" display="flex" alignItems="center">
                 <Text mr="0.3rem" fontSize="12px">
                   Select Market
                 </Text>
@@ -640,7 +641,7 @@ const SwapModal = ({
                             <Box
                               w="3px"
                               h="28px"
-                              bg="#0C6AD9"
+                              bg="#4D59E8"
                               borderRightRadius="md"
                             ></Box>
                           )}
@@ -652,7 +653,7 @@ const SwapModal = ({
                             gap="1"
                             bg={`${
                               coin === currentSelectedCoin
-                                ? "#0C6AD9"
+                                ? "#4D59E8"
                                 : "inherit"
                             }`}
                             borderRadius="md"
@@ -666,7 +667,7 @@ const SwapModal = ({
                   </Box>
                 )}
               </Box>
-              <Text color="#8B949E" display="flex" alignItems="center">
+              <Text color="#676D9A" display="flex" alignItems="center">
                 <Text mr="0.3rem" fontSize="12px">
                   Borrow ID
                 </Text>
@@ -762,7 +763,7 @@ const SwapModal = ({
                             <Box
                               w="3px"
                               h="28px"
-                              bg="#0C6AD9"
+                              bg="#4D59E8"
                               borderRightRadius="md"
                             ></Box>
                           )}
@@ -776,7 +777,7 @@ const SwapModal = ({
                             gap="1"
                             bg={`${
                               "ID - " + coin === currentBorrowId
-                                ? "#0C6AD9"
+                                ? "#4D59E8"
                                 : "inherit"
                             }`}
                             borderRadius="md"
@@ -791,7 +792,7 @@ const SwapModal = ({
                 )}
               </Box>
               <Text
-                color="#8B949E"
+                color="#676D9A"
                 display="flex"
                 alignItems="center"
                 mt="1rem"
@@ -855,10 +856,10 @@ const SwapModal = ({
             </Card>
 
             <Box
-              bg="#101216"
               borderRadius="6px"
               p="1rem"
-              border="1px solid #2B2F35"
+              background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               mt="1.5rem"
             >
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
@@ -1263,15 +1264,15 @@ const SwapModal = ({
                 }}
               >
                 <AnimatedButton
-                  bgColor="#101216"
                   // bgColor="red"
                   // p={0}
-                  color="#8B949E"
+                  color="#676D9A"
                   size="sm"
                   width="100%"
                   mt="1.5rem"
                   mb="1.5rem"
-                  border="1px solid #8B949E"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                   labelSuccessArray={[
                     "Processing",
                     "Updating loan records",
@@ -1297,14 +1298,14 @@ const SwapModal = ({
               </Box>
             ) : (
               <Button
-                bg="#101216"
                 color="#6E7681"
                 size="sm"
                 width="100%"
                 mt="1.5rem"
                 mb="1.5rem"
-                border="1px solid #2B2F35"
-                _hover={{ bg: "#101216" }}
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
               >
                 Spend Borrow
               </Button>

@@ -10,8 +10,6 @@ import governorAbi from "../abis_upgrade/governor_abi.json";
 import {
   diamondAddress,
   getProvider,
-  getRTokenFromAddress,
-  metricsContractAddress,
   stakingContractAddress,
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
@@ -144,6 +142,31 @@ export async function getMinimumDepositAmount(
     return res;
   } catch (err) {
     console.log(err, "err in getMinimumDepositAmount");
+  }
+}
+
+export async function getSupportedPools(
+  poolPairAddress: any,
+  dapp:any
+) {
+  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  try {
+    const provider = getProvider();
+    const governorContract = new Contract(
+      governorAbi,
+      diamondAddress,
+      provider
+    );
+    const result = await governorContract.call(
+      "get_secondary_market_support",
+      [poolPairAddress,dapp],
+      { blockIdentifier: "pending" }
+    );
+    const data = result?.secondary_market?.supported.toString()
+    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    return data;
+  } catch (err) {
+    console.log(err, "err in getPoolsSupporte");
   }
 }
 

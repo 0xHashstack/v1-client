@@ -14,7 +14,6 @@ import {
   Token,
 } from "../interfaces/interfaces";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
-import { tokenDecimalsMap } from "../utils/addressServices";
 
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
   console.log("decimals ", decimal);

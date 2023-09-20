@@ -14,7 +14,6 @@ export async function getOraclePrices(): Promise<OraclePrice[]> {
   const MEDIAN_AGGREGATION_MODE = shortString.encodeShortString("MEDIAN");
   // console.log('Using aggregation mode:', MEDIAN_AGGREGATION_MODE);
   const prices: OraclePrice[] = [];
-  const now = new Date();
   const provider = getProvider();
   try {
     const empiricContract = new Contract(

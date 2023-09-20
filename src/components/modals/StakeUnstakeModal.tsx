@@ -117,7 +117,6 @@ const StakeUnstakeModal = ({
   const [sliderValue2, setSliderValue2] = useState(0);
   const [inputStakeAmount, setInputStakeAmount] = useState<number>(0);
   const [inputUnstakeAmount, setInputUnstakeAmount] = useState(0);
-  const [isSupplyTap, setIsSupplyTap] = useState(false);
   const [transactionStarted, setTransactionStarted] = useState(false);
   const { address } = useAccount();
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
@@ -966,7 +965,7 @@ const StakeUnstakeModal = ({
           )}
           <Box fontSize="14px">
             <Box position="relative" display="inline-block">
-              <Text>Stake</Text>
+              <Text color="#676D9A">Stake</Text>
             </Box>
           </Box>
         </Box>
@@ -975,7 +974,7 @@ const StakeUnstakeModal = ({
           key="borrow-details"
           as="span"
           position="relative"
-          color="#0969DA"
+          color="#4D59E8"
           fontSize="14px"
           width="100%"
           display="flex"
@@ -1034,7 +1033,8 @@ const StakeUnstakeModal = ({
         scrollBehavior="inside"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
-        <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
+        <ModalContent mt="8rem" background="var(--Base_surface, #02010F)"
+             maxW="464px">
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalCloseButton
             // onClick={() => setIsOpenCustom(false)}
@@ -1055,7 +1055,7 @@ const StakeUnstakeModal = ({
                     <Tab
                       py="1"
                       px="3"
-                      color="#6E7681"
+                      color="#676D9A"
                       fontSize="sm"
                       border="1px"
                       borderColor="#2B2F35"
@@ -1063,7 +1063,7 @@ const StakeUnstakeModal = ({
                       fontWeight="normal"
                       _selected={{
                         color: "white",
-                        bg: "#0969DA",
+                        bg: "#4D59E8",
                         border: "none",
                       }}
                       isDisabled={unstakeTransactionStarted == true}
@@ -1076,7 +1076,7 @@ const StakeUnstakeModal = ({
                     <Tab
                       py="1"
                       px="3"
-                      color="#6E7681"
+                      color="#676D9A"
                       fontSize="sm"
                       border="1px"
                       borderColor="#2B2F35"
@@ -1084,7 +1084,7 @@ const StakeUnstakeModal = ({
                       fontWeight="normal"
                       _selected={{
                         color: "white",
-                        bg: "#0969DA",
+                        bg: "#4D59E8",
                         border: "none",
                       }}
                       isDisabled={transactionStarted == true}
@@ -1098,10 +1098,10 @@ const StakeUnstakeModal = ({
                   <TabPanels>
                     <TabPanel p="0" m="0">
                       <Card
-                        bg="#101216"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                         mb="0.5rem"
                         p="1rem"
-                        border="1px solid #2B2F35"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         mt="1.5rem"
                       >
                         {/* {!isValid(currentSelectedStakeCoin) && (
@@ -1137,7 +1137,7 @@ const StakeUnstakeModal = ({
                           //     </Box> */}
 
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -1250,7 +1250,7 @@ const StakeUnstakeModal = ({
                                       <Box
                                         w="3px"
                                         h="28px"
-                                        bg="#0C6AD9"
+                                        bg="#4D59E8"
                                         borderRightRadius="md"
                                       ></Box>
                                     )}
@@ -1268,7 +1268,7 @@ const StakeUnstakeModal = ({
                                       justifyContent="space-between"
                                       bg={`${
                                         _coin === currentSelectedStakeCoin
-                                          ? "#0C6AD9"
+                                          ? "#4D59E8"
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
@@ -1315,7 +1315,7 @@ const StakeUnstakeModal = ({
                           )}
                         </Box>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -1365,7 +1365,7 @@ const StakeUnstakeModal = ({
                                     getBalance(currentSelectedStakeCoin)
                                   ) ||
                                   rTokenAmount <= walletBalance)
-                              ? "1px solid #1A7F37"
+                              ? "1px solid #00D395"
                               : "1px solid #2B2F35 "
                           }`}
                           borderRadius="6px"
@@ -1400,9 +1400,9 @@ const StakeUnstakeModal = ({
                                   ? "#CF222E"
                                   : rTokenAmount == 0
                                   ? "white"
-                                  : "#1A7F37"
+                                  : "#00D395"
                               }`}
-                              _disabled={{ color: "#1A7F37" }}
+                              _disabled={{ color: "#00D395" }}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -1431,9 +1431,9 @@ const StakeUnstakeModal = ({
                                 ? "#CF222E"
                                 : rTokenAmount == 0
                                 ? "#0969DA"
-                                : "#1A7F37"
+                                : "#00D395"
                             }`}
-                            _hover={{ bg: "#101216" }}
+                            _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                             onClick={() => {
                               if (rtokenWalletBalance != 0) {
                                 setRTokenAmount(rtokenWalletBalance);
@@ -1482,7 +1482,7 @@ const StakeUnstakeModal = ({
                               </Text>
                             </Text>
                             <Text
-                              color="#E6EDF3"
+                              color="#C7CBF6"
                               display="flex"
                               justifyContent="flex-end"
                             >
@@ -1503,14 +1503,14 @@ const StakeUnstakeModal = ({
                                   ml={2}
                                 />
                               )}
-                              <Text color="#6E7781" ml="0.2rem">
+                              <Text color="#676D9A" ml="0.2rem">
                                 {` ${currentSelectedStakeCoin}`}
                               </Text>
                             </Text>
                           </Text>
                         ) : (
                           <Text
-                            color="#E6EDF3"
+                            color="#C7CBF6"
                             display="flex"
                             justifyContent="flex-end"
                             mt="0.4rem"
@@ -1537,7 +1537,7 @@ const StakeUnstakeModal = ({
                               />
                             )}
                             {/* {walletBalance} */}
-                            <Text color="#6E7781" ml="0.2rem">
+                            <Text color="#676D9A" ml="0.2rem">
                               {rtokenWalletBalance == 0
                                 ? currentSelectedStakeCoin.slice(1)
                                 : currentSelectedStakeCoin}
@@ -1658,7 +1658,7 @@ const StakeUnstakeModal = ({
                             >
                               {sliderValue}%
                             </SliderMark>
-                            <SliderTrack bg="#343333">
+                            <SliderTrack bg="#3E415C">
                               <SliderFilledTrack
                                 bg="white"
                                 w={`${sliderValue}`}
@@ -1683,7 +1683,7 @@ const StakeUnstakeModal = ({
                         // >
                         //   <Text
                         //     fontSize="12px"
-                        //     color="#6E7681"
+                        //     color="#676D9A"
                         //     fontStyle="normal"
                         //     fontWeight="400"
                         //     lineHeight="20px"
@@ -1703,7 +1703,7 @@ const StakeUnstakeModal = ({
                           <Text
                             fontSize="12px"
                             fontWeight="400"
-                            color="#6E7681"
+                            color="#676D9A"
                             mt="1rem"
                           >
                             Ticking would stake the received rTokens. unchecking
@@ -1712,13 +1712,13 @@ const StakeUnstakeModal = ({
                         </Box>
                       )} */}
                       <Card
-                        bg="#101216"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                         mt="1rem"
                         p="1rem"
-                        border="1px solid #2B2F35"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       >
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -1730,7 +1730,7 @@ const StakeUnstakeModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Staking rewards:
                             </Text>
@@ -1754,7 +1754,7 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">
+                          <Text color="#676D9A">
                             {protocolStats?.find(
                               (stat: any) =>
                                 stat.token ==
@@ -1785,7 +1785,7 @@ const StakeUnstakeModal = ({
                           </Text>
                         </Text>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -1797,7 +1797,7 @@ const StakeUnstakeModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Gas estimate:
                             </Text>
@@ -1821,10 +1821,10 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">$ 0.91</Text>
+                          <Text color="#676D9A">$ 0.91</Text>
                         </Text>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -1835,7 +1835,7 @@ const StakeUnstakeModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Fees:
                             </Text>
@@ -1859,7 +1859,7 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">{TransactionFees.stake}%</Text>
+                          <Text color="#676D9A">{TransactionFees.stake}%</Text>
                         </Text>
                       </Card>
 
@@ -1870,7 +1870,7 @@ const StakeUnstakeModal = ({
                         fontSize="12px"
                         fontWeight="400"
                         fontStyle="normal"
-                        color=" #6A737D"
+                        color=" #676D9A"
                         mt="1rem"
                         lineHeight="18px"
                       >
@@ -1923,15 +1923,15 @@ const StakeUnstakeModal = ({
                               }}
                             >
                               <AnimatedButton
-                                bgColor="#101216"
                                 // bgColor="red"
                                 // p={0}
-                                color="#8B949E"
+                                color="#676D9A"
                                 size="sm"
                                 width="100%"
                                 mt="1.5rem"
                                 mb="1.5rem"
-                                border="1px solid #8B949E"
+                                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                                 labelSuccessArray={[
                                   "Processing",
                                   "Checking for sufficient rtoken balance.",
@@ -1969,14 +1969,14 @@ const StakeUnstakeModal = ({
                           )
                         ) : (
                           <Button
-                            bg="#101216"
-                            color="#6E7681"
+                          background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            color="#676D9A"
                             size="sm"
                             width="100%"
                             mt="1.5rem"
                             mb="1.5rem"
-                            border="1px solid #2B2F35"
-                            _hover={{ bg: "#101216" }}
+                            _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                           >
                             {`${
                               !isValid(currentSelectedStakeCoin) &&
@@ -2013,15 +2013,15 @@ const StakeUnstakeModal = ({
                             }}
                           >
                             <AnimatedButton
-                              bgColor="#101216"
+               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               // bgColor="red"
                               // p={0}
-                              color="#8B949E"
+                              color="#676D9A"
                               size="sm"
                               width="100%"
                               mt="1.5rem"
                               mb="1.5rem"
-                              border="1px solid #8B949E"
                               labelSuccessArray={[
                                 "Processing",
                                 "Checking for sufficient rtoken balance.",
@@ -2059,14 +2059,14 @@ const StakeUnstakeModal = ({
                         )
                       ) : (
                         <Button
-                          bg="#101216"
-                          color="#6E7681"
+                          color="#676D9A"
                           size="sm"
                           width="100%"
                           mt="1.5rem"
                           mb="1.5rem"
-                          border="1px solid #2B2F35"
-                          _hover={{ bg: "#101216" }}
+                          background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                          _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                         >
                           {`${
                             isValid(currentSelectedStakeCoin) &&
@@ -2082,14 +2082,14 @@ const StakeUnstakeModal = ({
                     </TabPanel>
                     <TabPanel p="0" m="0">
                       <Card
-                        bg="#101216"
                         mb="0.5rem"
                         p="1rem"
-                        border="1px solid #2B2F35"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         mt="1.5rem"
                       >
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -2187,7 +2187,7 @@ const StakeUnstakeModal = ({
                                       <Box
                                         w="3px"
                                         h="28px"
-                                        bg="#0C6AD9"
+                                        bg="#4D59E8"
                                         borderRightRadius="md"
                                       ></Box>
                                     )}
@@ -2205,7 +2205,7 @@ const StakeUnstakeModal = ({
                                       justifyContent="space-between"
                                       bg={`${
                                         _coin === currentSelectedUnstakeCoin
-                                          ? "#0C6AD9"
+                                          ? "#4D59E8"
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
@@ -2246,7 +2246,7 @@ const StakeUnstakeModal = ({
                           )}
                         </Box>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           alignItems="center"
                         >
@@ -2288,7 +2288,7 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenToWithdraw > 0 &&
                                 rTokenToWithdraw <= unstakeWalletBalance
-                              ? "1px solid #1A7F37"
+                              ? "1px solid #00D395"
                               : "1px solid #2B2F35 "
                           }`}
                           borderRadius="6px"
@@ -2306,7 +2306,6 @@ const StakeUnstakeModal = ({
                               `${rTokenToWithdraw <= 99999 ? 0.1 : 0}`
                             )}
                             isDisabled={
-                              !isValid(currentSelectedUnstakeCoin) ||
                               unstakeTransactionStarted == true
                             }
                             _disabled={{ cursor: "pointer" }}
@@ -2314,15 +2313,13 @@ const StakeUnstakeModal = ({
                             <NumberInputField
                               placeholder={`0.01536 ${currentSelectedUnstakeCoin}`}
                               color={`${
-                                !isValid(currentSelectedUnstakeCoin)
-                                  ? "#1A7F37"
-                                  : rTokenToWithdraw > unstakeWalletBalance
+                                   rTokenToWithdraw > unstakeWalletBalance
                                   ? "#CF222E"
                                   : rTokenToWithdraw < 0
                                   ? "#CF222E"
                                   : rTokenToWithdraw == 0
                                   ? "white"
-                                  : "#1A7F37"
+                                  : "#00D395"
                               }`}
                               _disabled={{ cursor: "pointer" }}
                               border="0px"
@@ -2347,9 +2344,9 @@ const StakeUnstakeModal = ({
                                 ? "#CF222E"
                                 : rTokenToWithdraw == 0
                                 ? "#0969DA"
-                                : "#1A7F37"
+                                : "#00D395"
                             }`}
-                            _hover={{ bg: "#101216" }}
+                            _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                             onClick={() => {
                               // if (!coinsSupplied[currentSelectedUnstakeCoin]) {
                               //   return;
@@ -2388,7 +2385,7 @@ const StakeUnstakeModal = ({
                               </Text>
                             </Text>
                             <Text
-                              color="#E6EDF3"
+                              color="#C7CBF6"
                               display="flex"
                               justifyContent="flex-end"
                             >
@@ -2424,7 +2421,7 @@ const StakeUnstakeModal = ({
                           </Text>
                         ) : (
                           <Text
-                            color="#E6EDF3"
+                            color="#C7CBF6"
                             display="flex"
                             justifyContent="flex-end"
                             mt="0.4rem"
@@ -2457,7 +2454,7 @@ const StakeUnstakeModal = ({
                                 ml={2}
                               />
                             )}
-                            <Text color="#6E7781" ml="0.4rem">
+                            <Text color="#676D9A" ml="0.4rem">
                               {"shares"}
                               {/* {` ${currentSelectedUnstakeCoin}`} */}
                             </Text>
@@ -2566,7 +2563,7 @@ const StakeUnstakeModal = ({
                             >
                               {sliderValue2}%
                             </SliderMark>
-                            <SliderTrack bg="#343333">
+                            <SliderTrack bg="#3E415C">
                               <SliderFilledTrack
                                 bg="white"
                                 w={`${sliderValue2}`}
@@ -2579,13 +2576,13 @@ const StakeUnstakeModal = ({
                       </Card>
 
                       <Card
-                        bg="#101216"
                         mt="1rem"
                         p="1rem"
-                        border="1px solid #2B2F35"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       >
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -2597,7 +2594,7 @@ const StakeUnstakeModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               est. rTokens:
                             </Text>
@@ -2622,13 +2619,13 @@ const StakeUnstakeModal = ({
                             </Tooltip>
                           </Text>
                           {unstakeWalletBalance ? (
-                            <Text color="#6E7681">{estrTokens}</Text>
+                            <Text color="#676D9A">{estrTokens?.toFixed(4)}</Text>
                           ) : (
-                            <Text color="#6E7681">0</Text>
+                            <Text color="#676D9A">0</Text>
                           )}
                         </Text>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -2640,7 +2637,7 @@ const StakeUnstakeModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Gas estimate:
                             </Text>
@@ -2664,10 +2661,10 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">$ 0.91</Text>
+                          <Text color="#676D9A">$ 0.91</Text>
                         </Text>
                         <Text
-                          color="#8B949E"
+                          color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -2678,7 +2675,7 @@ const StakeUnstakeModal = ({
                               font-style="normal"
                               font-weight="400"
                               font-size="12px"
-                              color="#6A737D"
+                              color="#676D9A"
                             >
                               Fees:
                             </Text>
@@ -2702,7 +2699,7 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">
+                          <Text color="#676D9A">
                             {TransactionFees.unstake}%
                           </Text>
                         </Text>
@@ -2727,15 +2724,15 @@ const StakeUnstakeModal = ({
                           }}
                         >
                           <AnimatedButton
-                            bgColor="#101216"
                             // bgColor="red"
                             // p={0}
-                            color="#8B949E"
+                            color="#676D9A"
                             size="sm"
                             width="100%"
                             mt="1.5rem"
                             mb="1.5rem"
-                            border="1px solid #8B949E"
+                            background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                             labelSuccessArray={[
                               "Processing",
                               "Unstake amount matches staked rToken balance",
@@ -2770,14 +2767,14 @@ const StakeUnstakeModal = ({
                         </Box>
                       ) : (
                         <Button
-                          bg="#101216"
-                          color="#6E7681"
+                          color="#676D9A"
                           size="sm"
                           width="100%"
                           mt="1.5rem"
                           mb="1.5rem"
-                          border="1px solid #2B2F35"
-                          _hover={{ bg: "#101216" }}
+                          background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                          _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                         >
                           Unstake
                         </Button>

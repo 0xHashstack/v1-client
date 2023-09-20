@@ -305,7 +305,7 @@ const AnimatedButton: React.FC<Props> = ({
             (transactionStatus === "" &&
               (currentTransactionStatus === "" ||
                 currentTransactionStatus === "success"))
-            ? "#2DA44E"
+            ? "#00D395"
             : "#CF222E"
         }
         position="absolute"

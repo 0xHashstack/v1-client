@@ -2,9 +2,7 @@ import React, { memo, useEffect, useState } from "react";
 import { Flex, HStack, VStack } from "@chakra-ui/react";
 import Stats from "@/components/layouts/stats";
 import { useRouter } from "next/router";
-import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 // import { getUserReserves } from "@/Blockchain/scripts/userStats";
-import { IProtocolReserves } from "@/Blockchain/interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
 import { useSelector } from "react-redux";
 import {
@@ -115,7 +113,7 @@ const StatsBoard = () => {
           onclick={() => {
             handleRouteChange("/v1/protocol-metrics");
           }}
-          arrowHide={false}
+          arrowHide={true}
         />
       </HStack>
     </Flex>

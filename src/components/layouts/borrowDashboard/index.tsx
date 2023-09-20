@@ -46,7 +46,8 @@ import TableClose from "../table/tableIcons/close";
 import { setCurrentPage } from "@/store/slices/userAccountSlice";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
-
+import { selectUserDeposits } from "@/store/slices/readDataSlice";
+import { useAccount } from "@starknet-react/core";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -186,6 +187,7 @@ const BorrowDashboard = ({
   const [currentBorrowId2, setCurrentBorrowId2] = useState("");
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
     useState("BTC");
+    const [validRTokens, setValidRTokens] = useState([]);
   const [collateralBalance, setCollateralBalance] = useState("123 eth");
   const [currentSpendStatus, setCurrentSpendStatus] = useState("");
   const [currentLoanAmount, setCurrentLoanAmount] = useState("");
@@ -200,7 +202,6 @@ const BorrowDashboard = ({
     icon: "mdi-bitcoin",
     symbol: "WBTC",
   });
-  const avgsData: any = [];
   useEffect(() => {
     let temp1: any = [];
     let temp2: any = [];
@@ -225,6 +226,40 @@ const BorrowDashboard = ({
     //   setCurrentPagination(currentPagination - 1);
     // }
   }, [Borrows]);
+  const { account, address } = useAccount();
+  const userDeposits = useSelector(selectUserDeposits);
+  const fetchUserDeposits = async () => {
+    try {
+      if (!account || userDeposits?.length <= 0) return;
+      // const reserves = await getUserDeposits(address as string);
+      const reserves = userDeposits;
+      // console.log("got reservers", reserves);
+
+      const rTokens: any = [];
+      if (reserves) {
+        reserves.map((reserve: any) => {
+          if (reserve.rTokenFreeParsed > 0) {
+            rTokens.push({
+              rToken: reserve.rToken,
+              rTokenAmount: reserve.rTokenFreeParsed,
+            });
+          }
+        });
+      }
+      // console.log("rtokens", rTokens);
+      if (rTokens.length === 0) return;
+      setValidRTokens(rTokens);
+      // console.log("valid rtoken", validRTokens);
+      // console.log("market page -user supply", reserves);
+    } catch (err) {
+      // console.log("Error fetching protocol reserves", err);
+    }
+  };
+  useEffect(() => {
+    if (validRTokens.length === 0) {
+      fetchUserDeposits();
+    }
+  }, [userDeposits, validRTokens, address]);
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
 
@@ -429,6 +464,7 @@ const BorrowDashboard = ({
   ];
 
   // console.log("Borrows", loading, Borrows);
+  console.log(Borrows,"Borrows in dashboard")
   return loading ? (
     <>
       <Box
@@ -438,8 +474,9 @@ const BorrowDashboard = ({
         alignItems="center"
         width="95%"
         height={"37rem"}
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
         // height="552px"
-        bgColor="#101216"
+        bg={" var(--surface-of-10, rgba(103, 109, 154, 0.10)); "  }
         borderRadius="8px"
       >
         {/* <Text color="#FFFFFF" fontSize="20px">
@@ -467,10 +504,10 @@ const BorrowDashboard = ({
     </>
   ) : upper_bound >= lower_bound && Borrows && Borrows?.length > 0 ? (
     <TableContainer
-      bg="#101216"
-      border="1px"
-      borderColor="#2B2F35"
-      color="white"
+    // background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+    bg= "var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+      
+    color="white"
       borderRadius="md"
       w={width}
       display="flex"
@@ -479,6 +516,8 @@ const BorrowDashboard = ({
       // bgColor={"red"}
       // height={"100%"}
       height={"37rem"}
+      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
+
       padding={"1rem 2rem 0rem"}
       overflowX="hidden"
       // mt={"3rem"}
@@ -1030,6 +1069,8 @@ const BorrowDashboard = ({
                         }}
                         // bgColor={"blue"}
                       >
+                        <Box>
+
                         <YourBorrowModal
                           currentID={borrow.loanId}
                           currentMarket={borrow.loanMarket}
@@ -1069,6 +1110,7 @@ const BorrowDashboard = ({
                           spendType={currentSpendStatus}
                           setSpendType={setCurrentSpendStatus}
                         />
+                        </Box>
                       </Box>
                     </Td>
                   </Tr>
@@ -1106,12 +1148,13 @@ const BorrowDashboard = ({
         <Box display="flex" justifyContent="left" w="94%" pb="2">
           <Box
             display="flex"
-            bg="#DDF4FF"
+            bg="#222766"
             fontSize="14px"
             p="4"
             fontStyle="normal"
             fontWeight="400"
             borderRadius="6px"
+            color="#B1B0B5"
             // textAlign="center"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
@@ -1132,13 +1175,14 @@ const BorrowDashboard = ({
                 fontSize="16px"
                 fontWeight="400"
                 display="inline"
-                color="#0969DA"
+                color="#4D59E8"
                 cursor="pointer"
                 ml="0.3rem"
-                lineHeight="24px"
+                lineHeight="22px"
                 backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
                 borrowAPRs={borrowAPRs}
                 currentBorrowAPR={currentBorrowAPR}
+                validRTokens={validRTokens}
                 setCurrentBorrowAPR={setCurrentBorrowAPR}
                 coin={coinPassed}
               />

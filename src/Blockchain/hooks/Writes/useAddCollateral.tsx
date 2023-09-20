@@ -1,13 +1,12 @@
 import {
-  useAccount,
-  useContractRead,
+  
   useContractWrite,
-  useWaitForTransaction,
+
 } from "@starknet-react/core";
-import { useEffect, useState } from "react";
-import { Abi, uint256 } from "starknet";
-import { ERC20Abi, diamondAddress } from "../../stark-constants";
-import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
+import {  useState } from "react";
+import {   } from "starknet";
+import { diamondAddress } from "../../stark-constants";
+import { etherToWeiBN } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 

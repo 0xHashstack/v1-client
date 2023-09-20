@@ -65,6 +65,8 @@ const initialState = {
   yourMetricsSupplyCount: -1,
   yourMetricsBorrowCount: -1,
   stakingSharesCount: -1,
+  jediSwapPoolsSupportedCount:-1,
+  mySwapPoolsSupportedCount:-1,
   transactionCheck: [],
   lightModeSelected:false,
 
@@ -259,6 +261,12 @@ export const userAccountSlice = createSlice({
     setStakingSharesCount(state, action) {
       state.stakingSharesCount = action.payload;
     },
+    setJediSwapPoolsSupportedCount(state,action){
+      state.jediSwapPoolsSupportedCount=action.payload;
+    },
+    setMySwapPoolsSupportedCount(state,action){
+      state.mySwapPoolsSupportedCount=action.payload;
+    },
     setLightModeSelected(state,action){
       state.lightModeSelected=action.payload;
     },
@@ -329,6 +337,8 @@ export const {
   setYourMetricsSupplyCount,
   setYourMetricsBorrowCount,
   setStakingSharesCount,
+  setJediSwapPoolsSupportedCount,
+  setMySwapPoolsSupportedCount,
   setTransactionCheck,
   setLightModeSelected
 } = userAccountSlice.actions;
@@ -427,7 +437,10 @@ export const selectYourMetricsBorrowCount = (state) =>
   state.user_account.yourMetricsBorrowCount;
 export const selectStakingSharesCount = (state) =>
   state.user_account.stakingSharesCount;
-
+  export const selectJediSwapPoolsSupportedCount = (state) =>
+  state.user_account.jediSwapPoolsSupportedCount;
+  export const selectMySwapPoolsSupportedCount = (state) =>
+  state.user_account.mySwapPoolsSupportedCount;
 export const selectTransactionCheck = (state) =>
   state.user_account.transactionCheck;
 export const selectLightModeSelected=(state)=>

@@ -32,14 +32,14 @@ const SuccessButton = ({ successText }: any) => {
         width="25"
         height="25"
         viewBox="0 0 258 258"
-        fill="white"
+        fill="black"
       >
         {/* Check mark  */}
         <motion.path
           transform="translate(60 85)"
           d="M3 50L45 92L134 3"
           fill="transparent"
-          stroke="#fff"
+          stroke="#000"
           strokeWidth={17}
           style={{ pathLength: checkmarkPathLength }}
         />
@@ -47,7 +47,7 @@ const SuccessButton = ({ successText }: any) => {
       {/* <motion.div initial={{ scale: 0 }} animate={iconAnimation}>
         <TickIcon />
       </motion.div> */}
-      <Text ml="0.4rem">{successText}</Text>
+      <Text ml="0.4rem" color="#02010F">{successText}</Text>
     </Box>
   );
 };

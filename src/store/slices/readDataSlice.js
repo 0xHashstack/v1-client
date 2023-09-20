@@ -47,6 +47,8 @@ const initialState = {
   healthFactor: null,
   yourMetricsSupply: null,
   yourMetricsBorrow: null,
+  jediSwapPoolsSupported:null,
+  mySwapPoolsSupported:null,
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -54,6 +56,7 @@ const initialState = {
     rUSDC: null,
     rDAI: null,
   },
+  
 };
 
 export const readDataSlice = createSlice({
@@ -181,6 +184,12 @@ export const readDataSlice = createSlice({
     setStakingShares(state, action) {
       state.stakingShares = action.payload;
     },
+    setJediSwapPoolsSupported(state,action){
+      state.jediSwapPoolsSupported=action.payload;
+    },
+    setMySwapPoolsSupported(state,action){
+      state.mySwapPoolsSupported=action.payload;
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -235,6 +244,8 @@ export const {
   setYourMetricsBorrow,
   setYourMetricsSupply,
   setStakingShares,
+  setJediSwapPoolsSupported,
+  setMySwapPoolsSupported
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -282,4 +293,6 @@ export const selectYourMetricsSupply = (state) =>
 export const selectYourMetricsBorrow = (state) =>
   state.read_data.yourMetricsBorrow;
 export const selectStakingShares = (state) => state.read_data.stakingShares;
+export const selectJediSwapPoolsSupported = (state) => state.read_data.jediSwapPoolsSupported;
+export const selectMySwapPoolsSupported = (state) => state.read_data.mySwapPoolsSupported;
 export default readDataSlice.reducer;

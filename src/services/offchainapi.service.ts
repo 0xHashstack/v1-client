@@ -3,8 +3,7 @@ import axios from "axios";
 export default class OffchainAPI {
   // static ENDPOINT = "https://offchainapi.mainnet.starknet.hashstack.finance";
   // static ENDPOINT = "http://18.143.34.55:3010";
-  static ENDPOINT =
-    "https://n4mqvzurra.execute-api.ap-southeast-1.amazonaws.com/";
+  static ENDPOINT = process.env.NEXT_PUBLIC_METRICS_API;
   static WHITELIST_ENDPOINT = this.ENDPOINT;
 
   static async httpGet(route: string) {

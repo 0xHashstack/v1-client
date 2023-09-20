@@ -1,5 +1,5 @@
 import Navbar from "@/components/layouts/navbar/Navbar";
-import { Box, Stack, StackProps, Text, useMediaQuery } from "@chakra-ui/react";
+import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, StackProps, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,6 +28,8 @@ import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import useTransactionHandler from "@/hooks/useTransactionHandler";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { AccountInterface } from "starknet";
+import FeedbackModal from "@/components/modals/feedbackModal";
+import InfoIcon from "@/assets/icons/infoIcon";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -196,24 +198,46 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
+      const network=process.env.NEXT_PUBLIC_NODE_ENV;
+      console.log()
       if (walletConnected == "braavos") {
-        return (
-          // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
-          // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-          extendedAccount.provider?.chainId == "0x534e5f474f45524c49"
-        );
+
+        if(network=="testnet"){
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_TESTNET_CHAINID
+          );
+        }else{
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID
+          );
+        }
+
       } else if (walletConnected == "argentX") {
         // Your code here
-        return (
-          // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
-          // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-
-          extendedAccount.provider?.chainId === "0x534e5f474f45524c49"
-        );
+        if(network=="testnet"){
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+  
+            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID
+          );
+        }else{
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+  
+            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_MAINNET_CHAINID
+          );
+        }
       }
       // console.log("starknetAccount", account?.provider?.chainId);
     }
-    if (account && !isCorrectNetwork()) {
+    if ((account && !isCorrectNetwork())) {
+      console.log("Account",account)
       setRender(false);
     } else {
       setRender(true);
@@ -257,6 +281,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       console.log("Error fetching protocol reserves", err);
     }
   };
+  const { isOpen, onOpen, onClose } = useDisclosure();
   // const protocolReserves = useSelector(selectProtocolReserves);
 
   // const dataDeposit = useSelector(selectUserDeposits);
@@ -415,12 +440,28 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     <>
       {render ? (
         <>
-          <Navbar validRTokens={validRTokens} />
+        <Box   background={`
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
+            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            black
+          `}  position={'fixed'} zIndex={3} >
+          <Navbar  validRTokens={validRTokens} />
+          </Box>
+          <Box position={'fixed'} zIndex={0.5}>
+            <FeedbackModal />
+          </Box>
           <Stack
+         zIndex={1}
+          
             alignItems="center"
             minHeight={"100vh"}
+            
             pt="8rem"
-            backgroundColor="#010409"
+            background={`
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
+            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            black
+          `}
             pb={isLargerThan1280 ? "7rem" : "0rem"}
             className={classes.join(" ")}
             {...rest}
@@ -472,7 +513,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         </>
       ) : (
         <>
-          <Navbar />
+        <Box   background={`
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
+            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            black
+          `}  position={'fixed'} zIndex={3} >
+          <Navbar  validRTokens={validRTokens} />
+          </Box>
           <Stack
             alignItems="center"
             minHeight={"100vh"}

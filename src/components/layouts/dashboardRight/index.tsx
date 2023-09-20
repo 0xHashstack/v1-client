@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Table,
   Thead,
@@ -11,6 +11,7 @@ import {
   HStack,
   useMediaQuery,
   Tooltip,
+  Button,
 } from "@chakra-ui/react";
 import { Skeleton } from "@chakra-ui/react";
 import Image from "next/image";
@@ -18,6 +19,7 @@ import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import html2canvas from "html2canvas";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -75,10 +77,23 @@ const DashboardRight = ({
     return null;
   });
 
+  // const handleCaptureClick = async () => {
+  //   const element:any = document.getElementById('buttonclick');
+  //   html2canvas(element).then((canvas) => {
+  //     const screenshotDataUrl = canvas.toDataURL('image/png');
+  //     console.log(screenshotDataUrl,"url")
+      
+  //     // Now you have the screenshot in a data URL format
+  //     // You can send it to the backend using an HTTP request.
+  //   });
+  // };
+
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
+
+  
 
   useEffect(() => {
     // console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
@@ -93,9 +108,8 @@ const DashboardRight = ({
 
   return (
     <TableContainer
-    bg="#101216"
-    border="1px"
-    borderColor="#2B2F35"
+    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
     color="white"
     borderRadius="md"
     w={width}

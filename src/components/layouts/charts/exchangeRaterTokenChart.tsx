@@ -39,8 +39,6 @@ import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
-import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import ArrowUp from "@/assets/icons/arrowup";
 import UsdcDisabled from "@/assets/icons/coins/usdcDisabled";
 import UsdtDisabled from "@/assets/icons/coins/usdtDisabled";
 import EthDisabled from "@/assets/icons/coins/ethDisabled";
@@ -92,7 +90,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   const allUsdtData = useSelector(selectAllUSDTData);
   const allUsdcData = useSelector(selectAllUSDCData);
   const allDaiData = useSelector(selectAllDAIData);
-  const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
+  // const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
   // useEffect(()=>{
 
   // },[])

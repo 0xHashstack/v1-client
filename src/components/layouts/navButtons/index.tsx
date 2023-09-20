@@ -6,7 +6,6 @@ import { Box, Button, ButtonGroup, HStack } from "@chakra-ui/react";
 import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { capitalizeWords } from "../../../utils/functions/capitalizeWords";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
@@ -69,9 +68,9 @@ const NavButtons = ({
               letterSpacing="-0.15px"
               padding="1.125rem 0.4rem"
               margin="2px"
-              color={pathname === `/${option.path}` ? "#ffffff" : "#6e7681"}
+              color={pathname === `/${option.path}` ? "#ffffff" : "#676D9A"}
               borderBottom={
-                pathname === `/${option.path}` ? "2px solid #F9826C" : ""
+                pathname === `/${option.path}` ? "2px solid #4D59E8" : ""
               }
               borderRadius="0px"
               _hover={{ bg: "transparent", color: "#E6EDF3" }}

@@ -163,27 +163,27 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
     {
       name: "BTC",
       data: [totalBorrow?.BTC ? totalBorrow?.BTC : "0", 0, 0, 0, 0],
-      color: "#804D0F",
+      color: "#4D3C03",
     },
     {
       name: "ETH",
       data: [0, totalBorrow?.ETH ? totalBorrow?.ETH : "0", 0, 0, 0],
-      color: "#3B48A8",
+      color: "#4D59E8",
     },
     {
       name: "USDT",
       data: [0, 0, totalBorrow?.USDT ? totalBorrow?.USDT : "0", 0, 0],
-      color: "#136B51",
+      color: "#2DA44E",
     },
     {
       name: "USDC",
       data: [0, 0, 0, totalBorrow?.USDC ? totalBorrow?.USDC : "0", 0],
-      color: "#1A2683",
+      color: "#222766",
     },
     {
       name: "DAI",
       data: [0, 0, 0, 0, totalBorrow?.DAI ? totalBorrow?.DAI : "0"],
-      color: "#996B22",
+      color: "#A48007",
     },
   ];
 

@@ -4,7 +4,7 @@ import {
   Method,
   NativeToken,
   RToken,
-  Token,
+  
 } from "@/Blockchain/interfaces/interfaces";
 import { useState } from "react";
 import { diamondAddress } from "@/Blockchain/stark-constants";
