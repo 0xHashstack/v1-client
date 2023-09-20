@@ -113,7 +113,7 @@ const StatsBoard = () => {
           onclick={() => {
             handleRouteChange("/v1/protocol-metrics");
           }}
-          arrowHide={true}
+          arrowHide={false}
         />
       </HStack>
     </Flex>

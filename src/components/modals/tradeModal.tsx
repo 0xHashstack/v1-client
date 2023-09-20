@@ -484,12 +484,10 @@ const TradeModal = ({
     // console.log("radio value", radioValue, method);
   }, [radioValue]);
   const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
-
   useEffect(() => {
     setLoanMarket(coin ? coin.name : "BTC")
     setCollateralMarket(coin ? coin.name : "BTC")
   }, [coin])
-
   const resetStates = () => {
     setSliderValue(0);
     setsliderValue2(0);
@@ -500,12 +498,10 @@ const TradeModal = ({
     setLoanAmount(0);
     setCurrentDapp("Select a dapp");
     setCurrentPool("Select a pool");
-
     setCurrentCollateralCoin(coin ? coin.name : "BTC");
     setCollateralMarket(coin ? coin.name : "BTC");
     setCurrentBorrowCoin(coin ? coin.name : "BTC");
     setLoanMarket(coin ? coin.name : "BTC");
-
     setCurrentPoolCoin("Select a pool");
     setRadioValue("1");
     setHealthFactor(undefined);
