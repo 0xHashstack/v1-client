@@ -537,7 +537,7 @@ const deleteSuggestionScreenshot = () =>{
 
                         </Box> :
                         <Box display="flex" flexDirection="column" mt="1rem">
-                          <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">Tell us what's broken</Text>
+                          <Text textAlign="center" fontWeight="400" color="#B1B0B5" fontSize="14px" fontStyle="normal">Tell us what&apos;s broken</Text>
                           <Input mt="0.4rem" placeholder='Add a title' color="white"
                             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" required value={titleBugFeedback} onChange={(e) => { setTitleBugFeedback(e.target.value) }} />
                           <Textarea
