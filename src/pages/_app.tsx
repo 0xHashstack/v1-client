@@ -68,6 +68,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta httpEquiv="Cache-Control" content="no-cache, must-revalidate" />
         <meta httpEquiv="Pragma" content="no-cache" />
         <meta httpEquiv="Expires" content="0" />
+        <meta name="google-site-verification" content="9U0-YnKdWueBdZmj8Y5_JEkGNPOiV-_d8cPrmjIgifs" />
         <title>Hashstack | Under-collateralised loans | Defi</title>
         <meta
           name="description"
