@@ -3489,11 +3489,15 @@ const YourBorrowModal = ({
                                 if (currentAction === "Zero Repay") return;
                                 setSliderValue(val);
                                 var ans = (val / 100) * walletBalance1;
-                                ans = Math.round(ans * 100) / 100;
-                                dispatch(
-                                  setInputYourBorrowModalRepayAmount(ans)
-                                );
-                                setRepayAmount(ans);
+                                if(val==100){
+                                  setRepayAmount(walletBalance1)
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  dispatch(
+                                    setInputYourBorrowModalRepayAmount(ans)
+                                  );
+                                  setRepayAmount(ans);
+                                }
                               }}
                               isDisabled={
                                 transactionStarted == true ||

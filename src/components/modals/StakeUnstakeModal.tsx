@@ -2619,7 +2619,7 @@ const StakeUnstakeModal = ({
                             </Tooltip>
                           </Text>
                           {unstakeWalletBalance ? (
-                            <Text color="#676D9A">{estrTokens}</Text>
+                            <Text color="#676D9A">{estrTokens?.toFixed(4)}</Text>
                           ) : (
                             <Text color="#676D9A">0</Text>
                           )}

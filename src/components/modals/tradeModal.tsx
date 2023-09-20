@@ -3045,7 +3045,7 @@ const TradeModal = ({
                         font-style="normal"
                         font-weight="400"
                         font-size="14px"
-                        color="#6A737D"
+                        color="#676D9A"
                       >
                         {tokenTypeSelected === "Native" ? (
                           inputBorrowAmount === 0 ||

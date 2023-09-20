@@ -27,14 +27,14 @@ export default async  function handler(req:NextApiRequest, res:NextApiResponse) 
        })
        const params={
         Bucket:'common-static-assets',
-        Key: `feedback-test/${Datetime}_screenshot.png`,
+        Key: process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`feedback-test/${Datetime}_screenshot.png` :`feedback/${Datetime}_screenshot.png`,
         Body:Buffer.from(base64str,'base64'),
         ContentType:'image/png',
       }
       
       const fetchParams = {
         Bucket: 'common-static-assets',
-        Key:`feedback-test/${Datetime}_screenshot.png`,
+        Key:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`feedback-test/${Datetime}_screenshot.png` :`feedback/${Datetime}_screenshot.png`,
       };
       try{
         if(screenshot){
@@ -42,7 +42,7 @@ export default async  function handler(req:NextApiRequest, res:NextApiResponse) 
           // console.log('Screenshot uploaded successfully');
           const upload=await s3.upload(params).promise();
           if(upload){
-            const data=`https://common-static-assets.s3.ap-southeast-1.amazonaws.com/feedback-test/${Datetime}_screenshot.png`
+            const data=process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://${params.Bucket}.s3.ap-southeast-1.amazonaws.com/feedback-test/${Datetime}_screenshot.png`:`https://common-static-assets.s3.ap-southeast-1.amazonaws.com/feedback/${Datetime}_screenshot.png`
             const response=await sheets.spreadsheets.values.append({
               spreadsheetId:process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID_SUGGESTIONS,
               range:'A1:E1',
