@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import AssetUtilizationChart from "../charts/AssetUtilization";
-import AssetUtilizationRateChart from "../charts/AssetUtilizationRate";
 
 const AssetMetrics = () => {
   const [tvl, setTvl] = useState(null);

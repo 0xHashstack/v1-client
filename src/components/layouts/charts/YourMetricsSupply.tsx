@@ -149,27 +149,27 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
     {
       name: "BTC",
       data: supplyData ? [supplyData?.[0], 0, 0, 0, 0] : [44000, 0, 0, 0, 0],
-      color: "#804D0F",
+      color: "#4D3C03",
     },
     {
       name: "ETH",
       data: supplyData ? [0, supplyData?.[1], 0, 0, 0] : [0, 55000, 0, 0, 0],
-      color: "#3B48A8",
+      color: "#4D59E8",
     },
     {
       name: "USDT",
       data: supplyData ? [0, 0, supplyData?.[2], 0, 0] : [0, 0, 41000, 0, 0],
-      color: "#136B51",
+      color: "#2DA44E",
     },
     {
       name: "USDC",
       data: supplyData ? [0, 0, 0, supplyData?.[3], 0] : [0, 0, 0, 17000, 0],
-      color: "#1A2683",
+      color: "#222766",
     },
     {
       name: "DAI",
       data: supplyData ? [0, 0, 0, 0, supplyData?.[4]] : [0, 0, 0, 0, 15000],
-      color: "#996B22",
+      color: "#A48007",
     },
   ];
 

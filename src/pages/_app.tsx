@@ -18,12 +18,12 @@ const theme = extendTheme({
       baseStyle: {
         tab: {
           _disabled: {
-            background: "#101216",
+            background: "#676D9A1A",
             opacity: "100%",
             cursor: "pointer",
           },
           "> *:first-of-type": {
-            background: "#101216",
+            background: "#676D9A1A",
             opacity: "100%",
           },
         },
@@ -68,6 +68,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta httpEquiv="Cache-Control" content="no-cache, must-revalidate" />
         <meta httpEquiv="Pragma" content="no-cache" />
         <meta httpEquiv="Expires" content="0" />
+        <meta name="google-site-verification" content="9U0-YnKdWueBdZmj8Y5_JEkGNPOiV-_d8cPrmjIgifs" />
         <title>Hashstack | Under-collateralised loans | Defi</title>
         <meta
           name="description"

@@ -21,7 +21,6 @@ import {
   Portal,
 } from "@chakra-ui/react";
 import TransactionFees from "../../../TransactionFees.json";
-import TickIcon from "@/assets/icons/tickIcon";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -44,7 +43,6 @@ import {
   setModalDropdown,
   selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
-import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import { useRouter } from "next/router";
 
@@ -349,7 +347,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   <Button
                     variant="ghost"
                     color="#0969DA"
-                    _hover={{ bg: "#101216" }}
+                    _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                     onClick={() => {
                       setinputAmount(walletBalance);
                       setSliderValue(100);
@@ -451,7 +449,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                         </Text>
                       </Box>
                     </SliderMark>
-                    <SliderTrack bg="#343333">
+                    <SliderTrack bg="#3E415C">
                       <SliderFilledTrack bg="white" w={`${sliderValue}`} />
                     </SliderTrack>
                   </Slider>
@@ -652,7 +650,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   mt="1.5rem"
                   mb="1.5rem"
                   border="1px solid #2B2F35"
-                  _hover={{ bg: "#101216" }}
+                  _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                 >
                   Supply
                 </Button>

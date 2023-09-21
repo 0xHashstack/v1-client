@@ -21,20 +21,15 @@ import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { uint256 } from "starknet";
 import { BNtoNum } from "@/Blockchain/utils/utils";
-import { Dispatch } from "@reduxjs/toolkit";
-import {
-  selectAssetWalletBalance,
-  setAssetWalletBalance,
-} from "@/store/slices/userAccountSlice";
+
 import numberFormatter from "@/utils/functions/numberFormatter";
 import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useAccount } from "@starknet-react/core";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
-import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -198,9 +193,8 @@ const DashboardLeft = ({
 
   return (
     <TableContainer
-    bg="#101216"
-    border="1px"
-    borderColor="#2B2F35"
+    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
     color="white"
     borderRadius="md"
     w={width}

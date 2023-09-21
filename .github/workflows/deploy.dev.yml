@@ -36,7 +36,18 @@ jobs:
         run: |
           touch .env
           echo 'NEXT_PUBLIC_APP_ENV=production' >> .env
-          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_MIXPANEL_KEY}}' >> .env
+          echo 'NEXT_PUBLIC_NODE_ENV=testnet' >> .env
+          echo 'NEXT_PUBLIC_TESTNET_CHAINID=0x534e5f474f45524c49' >> .env
+          echo 'NEXT_PUBLIC_MAINNET_CHAINID=0x534e5f4d41494e' >> .env
+          echo 'NEXT_PUBLIC_GOOGLE_SHEET_ID_SUGGESTIONS=1izyJKiQ5V2Ac8Yte6LOnVa2AFtGexASrEIUULHqbBvM' >> .env
+          echo 'NEXT_PUBLIC_GOOGLE_SHEET_ID_BUGS=1IbDqMPz7S6haGe2aj4cvOfNAcGv6ckRo6nLAE3ngEMc' >> .env
+          echo 'NEXT_PUBLIC_GOOGLE_SHEET_ID=1wrfZVXCdDHgemM3kfTRe4HPAJdhYLm90z8GHXd_AOTw' >> .env
+          echo 'NEXT_PUBLIC_METRICS_API=https://n4mqvzurra.execute-api.ap-southeast-1.amazonaws.com/' >> .env
+          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_MIXPANEL_KEY_DEV}}' >> .env
+          echo 'NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL=${{secrets.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL_DEV}}' >> .env
+          echo 'NEXT_PUBLIC_GOOGLE_PRIVATE_KEY=${{secrets.NEXT_PUBLIC_GOOGLE_PRIVATE_KEY_DEV}}' >> .env
+          echo 'NEXT_PUBLIC_AWS_ACCESS_KEY_ID=${{secrets.NEXT_PUBLIC_AWS_ACCESS_KEY_ID_DEV}}' >> .env
+          echo 'NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY=${{secrets.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY_DEV}}' >> .env
     
       - name: Build
         run: yarn build

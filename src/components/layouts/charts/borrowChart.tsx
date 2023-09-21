@@ -407,7 +407,7 @@ const BorrowChart = () => {
     return { newData, newCategories };
   };
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
-  const maxValue = Math.max(...chartData.flatMap((series) => series.data));
+  // const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const splineChartData = {
     series: chartData,
     options: {

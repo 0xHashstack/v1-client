@@ -782,9 +782,9 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
     }
   };
 
-  const activeModal = Object.keys(modalDropdowns).find(
-    (key) => modalDropdowns[key] === true
-  );
+  // const activeModal = Object.keys(modalDropdowns).find(
+  //   (key) => modalDropdowns[key] === true
+  // );
   return (
     <Box display="flex" flexDirection="column" gap="8px" width="100%">
       <Box

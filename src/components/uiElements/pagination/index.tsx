@@ -68,7 +68,7 @@ const Pagination = ({
                 buttons.push(
                   <Button
                     key={i}
-                    bgColor={i == currentPagination ? "#0969DA" : "#010409"}
+                    bgColor={i == currentPagination ? "#4D59E8" : "#010409"}
                     width="2rem"
                     height="2rem"
                     borderRadius="6px"
@@ -78,7 +78,7 @@ const Pagination = ({
                     fontWeight="400"
                     onClick={() => setCurrentPagination(i)}
                     _hover={{
-                      bgColor: currentPagination == i ? "#0969DA" : "#010409",
+                      bgColor: currentPagination == i ? "#4D59E8" : "#010409",
                       border:
                         currentPagination == i ? "none" : "1px solid #D0D7DE",
                     }}

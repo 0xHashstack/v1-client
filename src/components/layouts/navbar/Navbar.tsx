@@ -4,25 +4,17 @@ import Link from "next/link";
 
 // import "./navbar.css";
 
-import arrowDown from "../../../assets/images/ArrowDownDark.svg";
-import arrowUp from "../../../assets/images/ArrowUpDark.svg";
-import starknetLogoBordered from "../../../assets/images/starknetLogoBordered.svg";
 // import transferDeposit from "../../../assets/images/transferDeposit.svg";
-import languageArrow from "../../../assets/images/languageArrow.svg";
 // import dashboardIcon from "/assets/images/dashboardIcon.svg";
 import hoverDashboardIcon from "../../../assets/images/hoverDashboardIcon.svg";
 // import contributeEarnIcon from "../../../assets/images/contributeEarnIcon.svg";
 import hoverContributeEarnIcon from "../../../assets/images/hoverContributeEarnIcon.svg";
 import tickMark from "../../../assets/images/tickMark.svg";
 // import moreIcon from "../../../assets/images/moreIcon.svg";
-import hoverMoreIcon from "../../../assets/images/hoverMoreIcon.svg";
 // import stake from "../../../assets/images/stake.svg";
 import hoverStake from "../../../assets/images/hoverStakeIcon.svg";
-import starknetIcon from "../../../assets/images/starknetWallet.svg";
 import darkModeOn from "../../../assets/images/darkModeOn.svg";
 import darkModeOff from "../../../assets/images/darkModeOff.svg";
-import darkModeIcon from "../../../assets/images/darkModeIcon.svg";
-import darkIcon from "../../../assets/images/darkIcon.svg";
 import arrowNavRight from "../../../assets/images/arrowNavRight.svg";
 import arrowNavLeft from "../../../assets/images/arrowNavLeft.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,63 +22,43 @@ import {
   selectCurrentDropdown,
   selectNavDropdowns,
   setNavDropdown,
-  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import {
   Box,
-  Button,
-  Center,
   HStack,
-  LinkOverlay,
   Skeleton,
   Text,
-  background,
   useOutsideClick,
 } from "@chakra-ui/react";
 import {
-  selectAccount,
   selectAccountAddress,
   selectLanguage,
   setAccountReset,
-  setAvgBorrowAPR,
-  setAvgSupplyAPR,
   setLanguage,
 } from "@/store/slices/userAccountSlice";
 import {
   useAccount,
   useConnectors,
-  useStarknet,
-  useBlock,
 } from "@starknet-react/core";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
 import { useRouter } from "next/router";
-import { type } from "os";
 import GetTokensModal from "@/components/modals/getTokens";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import { Coins } from "../dashboardLeft";
 import mixpanel from "mixpanel-browser";
-import useDataLoader from "@/hooks/useDataLoader";
 import {
   resetState,
-  setAprAndHealthFactor,
-  setNetAPR,
-  setNetWorth,
-  setOraclePrices,
-  setProtocolStats,
-  setTransactionRefresh,
-  setUserDeposits,
-  setUserLoans,
-  setYourBorrow,
-  setYourSupply,
+  selectCurrentNetwork,
+
 } from "@/store/slices/readDataSlice";
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
   const language = useSelector(selectLanguage);
-  const [parsedAccount, setParsedAccount] = useState<any>();
   const currentDropdown = useSelector(selectCurrentDropdown);
   const { account } = useAccount();
+  const currentChainId = useSelector(selectCurrentNetwork);
   // console.log(account, "Navbar");
   // useEffect(() => {
   //   const storedAccount = localStorage.getItem("account");
@@ -97,10 +69,10 @@ const Navbar = ({ validRTokens }: any) => {
   //   console.log("Sahitya", parsedAccount);
   // }, []);
   const [dashboardHover, setDashboardHover] = useState(false);
+  const [campaignHover, setCampaignHover] = useState(false);
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
   const [stakeHover, setStakeHover] = useState(false);
-  const [connected, setConnected] = useState(true);
   const { available, disconnect, connect, connectors } = useConnectors();
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName));
@@ -112,8 +84,7 @@ const Navbar = ({ validRTokens }: any) => {
       justifyContent === "flex-start" ? "flex-end" : "flex-start"
     );
   };
-  const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
-  const walletConnectionDropdown = ["Disconnect", "Switch wallet"];
+  
 
   const { connector } = useAccount();
 
@@ -127,8 +98,6 @@ const Navbar = ({ validRTokens }: any) => {
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
 
-  const { address } = useAccount();
-  const accountAddress = useSelector(selectAccountAddress);
   // useEffect(() => {
   //   if(address && address!=accountAddress)
   //   {
@@ -184,13 +153,11 @@ const Navbar = ({ validRTokens }: any) => {
       router.push("/v1/market");
     }
   };
-
   return (
     <HStack
-      zIndex="10"
-      position="fixed"
+      zIndex="100"
       pt={"4px"}
-      backgroundColor="#161B22"
+      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
       width="100vw"
       boxShadow="rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px"
       display="flex"
@@ -237,10 +204,10 @@ const Navbar = ({ validRTokens }: any) => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
-          color={`${pathname == "/market" ? "#6e7681" : "white"}`}
-          _hover={{
-            color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
-          }}
+          color={`${pathname != "/v1/campaign" ? "#00D395" : "#676D9A"}`}
+          // _hover={{
+          //   color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
+          // }}
           onClick={() => {
             if (router.pathname != "/waitlist") {
               router.push("/v1/market");
@@ -255,8 +222,7 @@ const Navbar = ({ validRTokens }: any) => {
             alignItems="center"
             gap={"8px"}
           >
-            {router.pathname != "/market" ? (
-              dashboardHover ? (
+            {router.pathname == "/v1/campaign" ? (
                 <Image
                   src={hoverDashboardIcon}
                   alt="Picture of the author"
@@ -264,23 +230,14 @@ const Navbar = ({ validRTokens }: any) => {
                   height="16"
                   style={{ cursor: "pointer" }}
                 />
-              ) : (
-                <Image
-                  src={"/dashboardIcon.svg"}
-                  alt="Picture of the author"
-                  width="16"
-                  height="16"
-                  style={{ cursor: "pointer" }}
-                />
-              )
             ) : (
               <Image
-                src={hoverDashboardIcon}
-                alt="Picture of the author"
-                width="16"
-                height="16"
-                style={{ cursor: "pointer" }}
-              />
+              src={"/dashboardIcon.svg"}
+              alt="Picture of the author"
+              width="16"
+              height="16"
+              style={{ cursor: "pointer" }}
+            />
             )}
 
             <Text fontSize="14px">Dashboard</Text>
@@ -307,7 +264,7 @@ const Navbar = ({ validRTokens }: any) => {
             >
               {contibutionHover ? (
                 <Image
-                  src={hoverContributeEarnIcon}
+                  src={"/contributeEarnIcon.svg"}
                   alt="Picture of the author"
                   width="16"
                   height="16"
@@ -323,7 +280,7 @@ const Navbar = ({ validRTokens }: any) => {
                 />
               )}
 
-              <Text fontSize="14px">Contribute-2-Earn</Text>
+              <Text fontSize="14px" color="#676D9A">Contribute-2-Earn</Text>
             </Box>
           </Link>
         </Box>
@@ -382,6 +339,48 @@ const Navbar = ({ validRTokens }: any) => {
             validRTokens={validRTokens}
           />
         </Box>
+        {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
+          padding="16px 12px"
+          fontSize="12px"
+          borderRadius="5px"
+          cursor="pointer"
+          marginBottom="0px"
+          // className="button"
+          // backgroundColor={"blue"}
+          color={`${pathname == "/v1/campaign" ? "#00D395" : "#676D9A"}`}
+          _hover={{ color: "#6e7681" }}
+          onMouseEnter={() => setCampaignHover(true)}
+          onMouseLeave={() => setCampaignHover(false)}
+          onClick={()=>{router.push('/v1/campaign')}}
+        >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={"8px"}
+            >
+              {pathname == "/v1/campaign" ? (
+                <Image
+                  src={hoverStake}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <Image
+                  src={"/stake.svg"}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              )}
+
+              <Text fontSize="14px" >Campaign</Text>
+            </Box>
+        </Box>:""}
+
         {/* <Box
           style={{
             padding: "3px 0px",
@@ -455,12 +454,12 @@ const Navbar = ({ validRTokens }: any) => {
       >
         <HStack
           display="flex"
-          gap="6px"
+          gap="8px"
           justifyContent="center"
           alignItems="center"
-          marginRight="1rem"
+          marginRight="1.2rem"
         >
-          <GetTokensModal
+          {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID  ?"":          <GetTokensModal
             buttonText="Get Tokens"
             height={"2rem"}
             fontSize={"12px"}
@@ -471,13 +470,14 @@ const Navbar = ({ validRTokens }: any) => {
             borderRadius={"6px"}
             color="white"
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
-          />
+          />}
+
           <Box
             borderRadius="6px"
             cursor="pointer"
             margin="0"
             height="2rem"
-            border="0.5px solid #6e6e6e"
+            border="1px solid #676D9A"
             // border={`0.5px solid ${
             //   router.pathname != "/waitlist" && transferDepositHover
             //     ? "#6e6e6e"
@@ -530,7 +530,7 @@ const Navbar = ({ validRTokens }: any) => {
                   style={{ cursor: "pointer" }}
                 />
               )} */}
-              <Text fontSize="14px" lineHeight="14px" color="grey">
+              <Text fontSize="14px" lineHeight="14px" color="#676D9A">
                 {"Transfer Deposit"}
               </Text>
             </Box>
@@ -552,9 +552,9 @@ const Navbar = ({ validRTokens }: any) => {
             ref={ref2}
           >
             <Box
-              backgroundColor="#2DA44E"
+              // backgroundColor="#2DA44E"
               display="flex"
-              border="0.5px solid #57606A"
+              border="1px solid var(--secondary, #00D395)"
               borderRadius="6px"
               flexDirection="row"
               paddingY="6px"
@@ -797,6 +797,7 @@ const Navbar = ({ validRTokens }: any) => {
             flexGrow="1"
             className="button navbar"
             ref={ref1}
+            ml="0.4rem"
 
             // onClick={() => {
             //   handleButtonConnectWallet();
@@ -873,7 +874,7 @@ const Navbar = ({ validRTokens }: any) => {
                   width={"100%"}
                   paddingX="8px"
                 >
-                  <Text fontSize="14px">Dark mode</Text>
+                  {/* <Text fontSize="14px">Dark mode</Text> */}
                   {/* <Box
                     // height="fit-content"
                     display="flex"
@@ -885,7 +886,7 @@ const Navbar = ({ validRTokens }: any) => {
                     borderRadius="100px"
                     onClick={toggleMode}
                   > */}
-                  <Box
+                  {/* <Box
                     // bgColor="blue"
                     display="flex"
                     justifyContent="center"
@@ -898,7 +899,7 @@ const Navbar = ({ validRTokens }: any) => {
                       height="22"
                       style={{ cursor: "pointer" }}
                     />
-                  </Box>
+                  </Box> */}
                   {/* </Box> */}
                 </HStack>
                 {/* <hr />
