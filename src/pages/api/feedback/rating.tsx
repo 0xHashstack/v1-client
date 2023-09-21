@@ -14,7 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         credentials:{
           client_email:process.env.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL,
           private_key:process.env.NEXT_PUBLIC_GOOGLE_PRIVATE_KEY?.replace(/\\n/g,"\n")
-
         },
         scopes:[
           'https://www.googleapis.com/auth/drive',

@@ -948,7 +948,7 @@ const StakeUnstakeModal = ({
         >
           {router.pathname != "/waitlist" && stakeHover ? (
             <Image
-              src={hoverStake}
+              src="/stake.svg"
               alt="Picture of the author"
               width="16"
               height="16"

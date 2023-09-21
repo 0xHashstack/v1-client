@@ -264,7 +264,7 @@ const Navbar = ({ validRTokens }: any) => {
             >
               {contibutionHover ? (
                 <Image
-                  src={hoverContributeEarnIcon}
+                  src={"/contributeEarnIcon.svg"}
                   alt="Picture of the author"
                   width="16"
                   height="16"
