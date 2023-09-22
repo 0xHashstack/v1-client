@@ -566,13 +566,13 @@ const YourBorrowModal = ({
         )
         : 0
     );
+    
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [
     walletBalances[collateralAsset]?.statusBalanceOf,
     collateralAsset,
     currentBorrowId2,
   ]);
-
   useEffect(() => {
     if (loan) {
       setCollateralAsset(
@@ -705,7 +705,10 @@ const YourBorrowModal = ({
   const [radioValue, setRadioValue] = useState("1");
   const [liquiditySplitCoin1, setLiquiditySplitCoin1] = useState("ETH");
   const [liquiditySplitCoin2, setLiquiditySplitCoin2] = useState("USDT");
-
+  useEffect(() => {
+    setCurrentPool("Select a pool");
+    setCurrentPoolCoin("Select a pool");
+  }, [radioValue]);
   const userDeposit = useSelector(selectUserDeposits);
 
   // const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
