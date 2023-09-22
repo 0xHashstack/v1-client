@@ -43,6 +43,7 @@ jobs:
       - name: Accessing the cer
         run: |
           echo '${{secrets.AWS_ACCESS_KEY_CER}}' >> deployer.cer && chmod 600 deployer.cer
+          ls -la
 
       - name: Stopping the application instance
         run: |
