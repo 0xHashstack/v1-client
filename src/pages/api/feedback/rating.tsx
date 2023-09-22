@@ -53,6 +53,11 @@ export default async function handler(
           message: "Rating submitted successfully",
           rating: starRating,
           data: response.data,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          },
         });
       }
     } catch (e: any) {
