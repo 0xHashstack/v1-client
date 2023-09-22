@@ -27,9 +27,17 @@ const nextConfig = {
             value: "max-age=63072000; includeSubDomains; preload",
           },
           {
-            key: "Referrer-Policy",
-            value: "origin-when-cross-origin",
+            key: 'Access-Control-Allow-Origin',
+            value: '*', // Replace with your allowed origin(s)
           },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, POST, PUT, DELETE, OPTIONS', // Specify allowed HTTP methods
+          },
+          // {
+          //   key: "Referrer-Policy",
+          //   value: "origin-when-cross-origin",
+          // },
         ],
       },
     ];
