@@ -117,7 +117,9 @@ const Footer = () => {
             />
           </Box>
         </HStack>
-        <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
+   
+      </HStack>
+      <HStack borderLeft="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Box color="#676D9A" fontSize="12px" display="flex">
             Network:
             {currentChainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID ? (
@@ -150,7 +152,6 @@ const Footer = () => {
             />
           </Box>
         </HStack>
-      </HStack>
       {/* <HStack>
         <HStack
           borderX="1px solid #2B2F35"
