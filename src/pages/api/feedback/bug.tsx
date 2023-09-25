@@ -4,6 +4,7 @@ import s3 from '../../../utils/aws';
 import { google } from 'googleapis';
 export default async  function handler(req:NextApiRequest, res:NextApiResponse) {
     if (req.method === 'POST') {
+      
       // Get the screenshot data from the request body
       const {address, title,description,screenshot } = req.body;
       const base64str=screenshot.replace(/^data:image\/\w+;base64,/,'');

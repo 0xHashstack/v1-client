@@ -456,8 +456,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             
             pt="8rem"
             background={`
-            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
-            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.15), transparent) top left,
+            radial-gradient(circle 1300px at bottom right, rgba(115, 49, 234, 0.15), transparent) bottom right,
             black
           `}
             pb={isLargerThan1280 ? "7rem" : "0rem"}
@@ -529,7 +529,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             <Box>
               <Text color="white" fontSize="25px">
-                Please switch to Starknet Goerli and refresh
+                Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"Goerli":"Mainnet"} and refresh
               </Text>
             </Box>
           </Stack>

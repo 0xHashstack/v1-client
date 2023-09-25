@@ -464,7 +464,6 @@ const BorrowDashboard = ({
   ];
 
   // console.log("Borrows", loading, Borrows);
-  console.log(Borrows,"Borrows in dashboard")
   return loading ? (
     <>
       <Box
