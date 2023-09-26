@@ -2291,7 +2291,7 @@ const BorrowModal = ({
                     <Box pr="3" mt="0.5" cursor="pointer">
                       <BlueInfoIcon />
                     </Box>
-                    You have selected native token as collateral which will be
+                    You have selected a native token as collateral which will be
                     converted to rtokens 1r{currentCollateralCoin} ={" "}
                     {(protocolStatsRedux.find(
                       (val: any) => val?.token == currentCollateralCoin.split(1)
