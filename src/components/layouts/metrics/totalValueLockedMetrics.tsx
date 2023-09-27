@@ -495,7 +495,7 @@ const TotalValueLockedMetrics = () => {
                 onClick={() => {
                   setAPRByMarket(2);
                 }}
-                isDisabled={true}
+                isDisabled={false}
                 _disabled={{
                   cursor: "pointer",
                   color: "#2B2F35",

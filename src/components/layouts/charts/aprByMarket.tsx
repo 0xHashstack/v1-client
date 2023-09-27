@@ -1014,7 +1014,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               onClick={() => {
                 setAPRByMarket(2);
               }}
-              isDisabled={true}
+              isDisabled={false}
               _disabled={{
                 cursor: "pointer",
                 color: "#2B2F35",
@@ -1145,7 +1145,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           )}
         </Box> */}
 
-        <Box display="flex" gap="4" mb="1.1rem" mt="0.3rem">
+        <Box display="flex" gap="4" mb="1.4rem" mt="0.3rem">
           <Box
             display="flex"
             gap="2"
