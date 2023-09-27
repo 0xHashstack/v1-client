@@ -45,15 +45,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const classes = [];
   const { account, address, status, isConnected } = useAccount();
   const extendedAccount = account as ExtendedAccountInterface;
-  const [isMounted, setIsMounted] = useState(false);
-  const dispatch = useDispatch();
 
   const { available, disconnect, connect, connectors } = useConnectors();
   if (className) classes.push(className);
   const router = useRouter();
 
-  const toastTransactionStarted = useSelector(selectToastTransactionStarted);
-  let activeTransactions = useSelector(selectActiveTransactions);
   useTransactionHandler();
   // const handleRouteChange = () => {
   //   if (!_account) {
@@ -165,20 +161,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   }
   // }, [address]);
   // const dispatch=useDispatch();
-  interface assetB {
-    USDT: any;
-    USDC: any;
-    BTC: any;
-    ETH: any;
-    DAI: any;
-  }
-  const assetBalance: assetB = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"]),
-    USDC: useBalanceOf(tokenAddressMap["USDC"]),
-    BTC: useBalanceOf(tokenAddressMap["BTC"]),
-    ETH: useBalanceOf(tokenAddressMap["ETH"]),
-    DAI: useBalanceOf(tokenAddressMap["DAI"]),
-  };
 
   // useEffect(() => {
   //   const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -199,7 +181,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
       const network=process.env.NEXT_PUBLIC_NODE_ENV;
-      console.log()
+      
       if (walletConnected == "braavos") {
         if(network=="testnet"){
           return (

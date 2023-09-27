@@ -55,8 +55,7 @@ export async function getrTokensMinted(rToken: any, amount: any) {
     console.log("getRtokensmintedAns", ans);
     return ans;
   } catch (err) {
-    console.log(err);
-    console.log("err in rewards");
+    console.log(err,"err in rewards");
   }
 }
 export async function getSupplyunlocked(rToken: any, amount: any) {
@@ -188,7 +187,9 @@ export async function getUserStakingShares(address: string, tokenName: RToken) {
     );
     // console.log("getUserStakingShares ", res);
     return res;
-  } catch (err) {}
+  } catch (err) {
+    console.log(err,"err in getUserStakingShares")
+  }
 }
 
 // const userTokensMinted=()=>{
