@@ -1790,17 +1790,18 @@ const BorrowModal = ({
                       alignItems="center"
                     >
                       Available reserves:{" "}
-                      {availableReserves ? (
-                        numberFormatter(currentAvailableReserves)
+                      {availableReserves==null ? (
+                         <Skeleton
+                         width="4rem"
+                         height=".85rem"
+                         startColor="#2B2F35"
+                         endColor="#101216"
+                         borderRadius="4px"
+                         m={1}
+                       />
                       ) : (
-                        <Skeleton
-                          width="4rem"
-                          height=".85rem"
-                          startColor="#2B2F35"
-                          endColor="#101216"
-                          borderRadius="4px"
-                          m={1}
-                        />
+                        numberFormatter(currentAvailableReserves)
+                       
                       )}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentBorrowCoin}`}
@@ -1819,17 +1820,18 @@ const BorrowModal = ({
                     fontFamily="Inter"
                   >
                     Available reserves:{" "}
-                    {availableReserves ? (
-                      numberFormatter(currentAvailableReserves)
+                    {availableReserves==null ? (
+                       <Skeleton
+                       width="4rem"
+                       height=".85rem"
+                       startColor="#2B2F35"
+                       endColor="#101216"
+                       borderRadius="4px"
+                       m={1}
+                     />
                     ) : (
-                      <Skeleton
-                        width="4rem"
-                        height=".85rem"
-                        startColor="#2B2F35"
-                        endColor="#101216"
-                        borderRadius="4px"
-                        m={1}
-                      />
+                      numberFormatter(currentAvailableReserves)
+                     
                     )}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentBorrowCoin}`}
@@ -2069,7 +2071,7 @@ const BorrowModal = ({
                   font-size="14px"
                   color="#676D9A"
                 >
-                  {!borrowAPRs || !borrowAPRs[currentBorrowAPR] ? (
+                  {!borrowAPRs || borrowAPRs[currentBorrowAPR]==null ? (
                     <Box pt="2px">
                       <Skeleton
                         width="2.3rem"
@@ -2080,7 +2082,7 @@ const BorrowModal = ({
                       />
                     </Box>
                   ) : (
-                    borrowAPRs[currentBorrowAPR]
+                    `${borrowAPRs[currentBorrowAPR]}%`
                   )}
                   {/* 5.56% */}
                 </Text>

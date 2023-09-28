@@ -2144,7 +2144,7 @@ const TradeModal = ({
                         fontFamily="Inter"
                       >
                         Available reserves:{" "}
-                        {currentAvailableReserves ? (
+                        {currentAvailableReserves!=null ? (
                           numberFormatter(currentAvailableReserves)
                         ) : (
                           <Skeleton

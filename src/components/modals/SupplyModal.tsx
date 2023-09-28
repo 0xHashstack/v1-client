@@ -1450,7 +1450,7 @@ const SupplyModal = ({
                   >
                     {!supplyAPRs ||
                     supplyAPRs.length === 0 ||
-                    !supplyAPRs[currentSupplyAPR] ? (
+                    supplyAPRs[currentSupplyAPR] ==null ? (
                       <Box pt="3px">
                         <Skeleton
                           width="2.3rem"
