@@ -3352,7 +3352,7 @@ const YourBorrowModal = ({
                                       ? "1px solid #CF222E"
                                       : repayAmount > 0 &&
                                         repayAmount <= walletBalance1
-                                        ? "1px solid #1A7F37"
+                                        ? "1px solid #00D395"
                                         : "1px solid #2B2F35 "
                                 }`}
                             >
@@ -3382,10 +3382,10 @@ const YourBorrowModal = ({
                                           ? "#CF222E"
                                           : repayAmount == 0
                                             ? "white"
-                                            : "#1A7F37"
+                                            : "#00D395"
                                     }`}
                                   border="0px"
-                                  _disabled={{ color: "#1A7F37" }}
+                                  _disabled={{ color: "#00D395" }}
                                   _placeholder={{
                                     color: "#393D4F",
                                     fontSize: ".89rem",
@@ -3409,7 +3409,7 @@ const YourBorrowModal = ({
                                         ? "#CF222E"
                                         : repayAmount == 0
                                           ? "#0969DA"
-                                          : "#1A7F37"
+                                          : "#00D395"
                                   }`}
                                 _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                                 onClick={() => {
@@ -4925,7 +4925,7 @@ const YourBorrowModal = ({
                               ? "1px solid #CF222E"
                               : inputCollateralAmount > 0 &&
                                 inputAmount <= walletBalance2
-                                ? "1px solid #1A7F37"
+                                ? "1px solid #00D395"
                                 : inputCollateralAmount >
                                   userDeposit?.find(
                                     (item: any) =>
@@ -4956,7 +4956,7 @@ const YourBorrowModal = ({
                                 ? "#CF222E"
                                 : inputCollateralAmount == 0
                                   ? "white"
-                                  : "#1A7F37"
+                                  : "#00D395"
                             }`}
                           keepWithinRange={true}
                           onChange={handleCollateralChange}
@@ -4979,7 +4979,7 @@ const YourBorrowModal = ({
                               fontWeight: "600",
                               outline: "none",
                             }}
-                            _disabled={{ color: "#1A7F37" }}
+                            _disabled={{ color: "#00D395" }}
                             _focus={{
                               outline: "0",
                               boxShadow: "none",
@@ -5001,7 +5001,7 @@ const YourBorrowModal = ({
                                 ? "#CF222E"
                                 : inputCollateralAmount == 0
                                   ? "#0969DA"
-                                  : "#1A7F37"
+                                  : "#00D395"
                             }`}
                           _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                           onClick={() => {
