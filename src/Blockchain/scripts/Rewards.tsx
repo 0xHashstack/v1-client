@@ -1,12 +1,11 @@
 import { Contract, number, uint256 } from "starknet";
-// import stakingAbi from "../abis/staking_abi.json"
-// import supplyABI from "../abis/supply_abi.json"
-// import stakingAbi from "../abi_new/staking_abi.json";
-// import supplyABI from "../abi_new/supply_abi.json";
-// import governorAbi from "../abi_new/governor_abi.json";
-import stakingAbi from "../abis_upgrade/staking_abi.json";
-import supplyABI from "../abis_upgrade/supply_abi.json";
-import governorAbi from "../abis_upgrade/governor_abi.json";
+
+// import stakingAbi from "../abis_upgrade/staking_abi.json";
+// import supplyABI from "../abis_upgrade/supply_abi.json";
+// import governorAbi from "../abis_upgrade/governor_abi.json";
+import stakingAbi from "../abis_mainnet/staking_abi.json";
+import supplyABI from "../abis_mainnet/supply_abi.json";
+import governorAbi from "../abis_mainnet/governor_abi.json";
 import {
   diamondAddress,
   getProvider,
@@ -90,7 +89,7 @@ export async function getEstrTokens(rToken: any, amount: any) {
     const provider = getProvider();
     const stakingContract = new Contract(
       stakingAbi,
-      "0x386d428081fcae8d28cfdc1ff913fd6cd5da3c93d54060fb20687e8791c12e0",
+      stakingContractAddress,
       provider
     );
     // const parsedAmount=etherToWeiBN(amount,rToken).toString();

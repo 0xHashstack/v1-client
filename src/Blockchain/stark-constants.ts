@@ -15,7 +15,7 @@ export function processAddress(address: string) {
 //   process.env.NODE_ENV === "development"
 //     ? DeployDetailsDev.devn\et
 //     : DeployDetailsProd.goerli_2;
-let contractsEnv = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? DeployDetailsProd.goerli : DeployDetailsProd.goerli_2;
+let contractsEnv = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? DeployDetailsProd.goerli : DeployDetailsProd.mainnet;
 contractsEnv.DIAMOND_ADDRESS = processAddress(contractsEnv.DIAMOND_ADDRESS);
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(
@@ -107,7 +107,7 @@ export const stakingContractAddress: string =
 
 export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 
-export const faucetAddress: string = contractsEnv.FAUCET_ADDRESS;
+export const faucetAddress: string =  contractsEnv.FAUCET_ADDRESS;
 
 export const getTokenFromAddress = (address: string) => {
   return contractsEnv.TOKENS.find((item) => item?.address === address);

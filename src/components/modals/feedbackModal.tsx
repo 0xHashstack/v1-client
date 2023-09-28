@@ -257,7 +257,7 @@ const deleteSuggestionScreenshot = () =>{
       }
     }
 
-    axios.post('/api/feedback/rating', { starRating, address })
+    axios.post('https://5c8l45vyxb.execute-api.ap-southeast-1.amazonaws.com/api/feedback/rating', { starRating, address })
       .then((response) => {
         if (response) {
           setRatingFeedbackSubmitted(true);
@@ -282,7 +282,7 @@ const deleteSuggestionScreenshot = () =>{
         return;
       }
     }
-    axios.post('/api/feedback/bug', { address: address, title: titleBugFeedback, description: descriptionBugFeedback, screenshot: bugScreenshoturl })
+    axios.post('https://5c8l45vyxb.execute-api.ap-southeast-1.amazonaws.com/api/feedback/bug', { address: address, title: titleBugFeedback, description: descriptionBugFeedback, screenshot: bugScreenshoturl })
       .then((response) => {
         if (response) {
           setBugFeedbackSubmitted(true);
@@ -307,7 +307,7 @@ const deleteSuggestionScreenshot = () =>{
         return;
       }
     }
-    axios.post('/api/feedback/suggestion', { address: address, title: titleSuggestions, description: descriptionSuggestions, screenshot: suggestionUrl })
+    axios.post('https://5c8l45vyxb.execute-api.ap-southeast-1.amazonaws.com/api/feedback/suggestion', { address: address, title: titleSuggestions, description: descriptionSuggestions, screenshot: suggestionUrl })
       .then((response) => {
         if (response) {
           setsuggestionFeedbackSubmitted(true);

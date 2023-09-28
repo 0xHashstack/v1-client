@@ -1,13 +1,10 @@
 import { Contract, number, uint256 } from "starknet";
-// import jediSwapAbi from "../abis/jedi_swap_abi.json";
-// import pricerAbi from "../abis/pricer_abi.json";
-// import mySwapAbi from "../abis/my_swap_abi.json";
-// import jediSwapAbi from "../abi_new/l3_jedi_swap_abi.json";
-// import pricerAbi from "../abi_new/pricer_abi.json";
-// import mySwapAbi from "../abi_new/l3_my_swap_abi.json";
-import jediSwapAbi from "../abis_upgrade/l3_jedi_swap_abi.json";
-import pricerAbi from "../abis_upgrade/pricer_abi.json";
-import mySwapAbi from "../abis_upgrade/l3_my_swap_abi.json";
+// import jediSwapAbi from "../abis_upgrade/l3_jedi_swap_abi.json";
+// import pricerAbi from "../abis_upgrade/pricer_abi.json";
+// import mySwapAbi from "../abis_upgrade/l3_my_swap_abi.json";
+import jediSwapAbi from "../abis_mainnet/l3_jedi_swap_abi.json";
+import pricerAbi from "../abis_mainnet/pricer_abi.json";
+import mySwapAbi from "../abis_mainnet/l3_my_swap_abi.json";
 import {
   diamondAddress,
   getProvider,

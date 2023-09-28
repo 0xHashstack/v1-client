@@ -427,9 +427,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           `}  position={'fixed'} zIndex={3} >
           <Navbar  validRTokens={validRTokens} />
           </Box>
-          {/* <Box position={'fixed'} zIndex={0.5}>
-            <FeedbackModal />
-          </Box> */}
+               <Box position={'fixed'} zIndex={0.5}>
+                <FeedbackModal />
+            </Box> 
           <Stack
          zIndex={1}
           
