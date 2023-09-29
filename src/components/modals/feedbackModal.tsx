@@ -499,7 +499,7 @@ const FeedbackModal = ({
                         fontSize="14px"
                         fontStyle="normal"
                       >
-                        How is your experience so far with the testnet?
+                        How is your experience so far {process.env.NEXT_PUBLIC_NODE_ENV ==='testnet' ? 'with the testnet?': '?' }
                       </Text>
                     </Box>
                   </Box>
@@ -638,12 +638,14 @@ const FeedbackModal = ({
                   </Box>
                 ) : (
                   <Box
+                  height={'100%'}
                     display="flex"
                     flexDirection="column"
                     justifyContent={"space-between"}
                     alignItems="center"
                     mt="1rem"
                   >
+                    <Box display={'flex'}  flexDirection='column' height={'80%'}>
                     <Text
                       textAlign="center"
                       fontWeight="400"
@@ -660,6 +662,8 @@ const FeedbackModal = ({
                       value={starRating}
                       onChange={ratingChanged}
                     />
+                    </Box>
+                    
                     <Button
                       onClick={() => {
                         setRatingFeedbackSubmitted(true);
@@ -671,7 +675,7 @@ const FeedbackModal = ({
                       color="#6E7681"
                       size="sm"
                       width="100%"
-                      mt="14.5rem"
+                      mt="1.5rem"
                       mb="1.5rem"
                       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                     >
