@@ -1567,11 +1567,18 @@ const StakeUnstakeModal = ({
                                   setDepositAmount(rtokenWalletBalance);
                                 }
                               } else {
-                                ans = Math.round(ans * 100) / 100;
+                                if(ans<10){
+                                  setRTokenAmount(ans);
+                                  setInputStakeAmount(ans);
+                                  setDepositAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  setRTokenAmount(ans);
+                                  setInputStakeAmount(ans);
+                                  setDepositAmount(ans);
+                                }
                                 // dispatch(setInputSupplyAmount(ans))
-                                setRTokenAmount(ans);
-                                setInputStakeAmount(ans);
-                                setDepositAmount(ans);
+
                               }
                             }}
                             isDisabled={transactionStarted == true}
@@ -2474,9 +2481,13 @@ const StakeUnstakeModal = ({
                                 setRTokenToWithdraw(unstakeWalletBalance);
                               } else {
                                 var ans = (val / 100) * unstakeWalletBalance;
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setRTokenToWithdraw(ans);
+                                if(ans<10){
+                                  setRTokenToWithdraw(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setRTokenToWithdraw(ans);
+                                }
                               }
                             }}
                             isDisabled={unstakeTransactionStarted == true}

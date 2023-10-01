@@ -1176,12 +1176,19 @@ const SupplyModal = ({
                         setDepositAmount(walletBalance);
                         setinputAmount(walletBalance);
                       } else {
-                        ans = Math.round(ans * 100) / 100;
+                        // ans = Math.round(ans * 100) / 100;
+                        if(ans<10){
+                          setDepositAmount(ans);
+                          setinputAmount(ans);
+                        }else{
+                          ans = Math.round(ans * 100) / 100;
+                          setDepositAmount(ans);
+                          setinputAmount(ans);
+                        }
 
                         // console.log(ans)
                         // dispatch(setInputSupplyAmount(ans));
-                        setDepositAmount(ans);
-                        setinputAmount(ans);
+
                       }
                     }}
                     isDisabled={transactionStarted == true}

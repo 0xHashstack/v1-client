@@ -3495,11 +3495,18 @@ const YourBorrowModal = ({
                                 if(val==100){
                                   setRepayAmount(walletBalance1)
                                 }else{
-                                  ans = Math.round(ans * 100) / 100;
-                                  dispatch(
-                                    setInputYourBorrowModalRepayAmount(ans)
-                                  );
-                                  setRepayAmount(ans);
+                                  if(ans<10){
+                                    dispatch(
+                                      setInputYourBorrowModalRepayAmount(ans)
+                                    );
+                                    setRepayAmount(ans);
+                                  }else{
+                                    ans = Math.round(ans * 100) / 100;
+                                    dispatch(
+                                      setInputYourBorrowModalRepayAmount(ans)
+                                    );
+                                    setRepayAmount(ans);
+                                  }
                                 }
                               }}
                               isDisabled={
@@ -5145,11 +5152,17 @@ const YourBorrowModal = ({
                                 setCollateralAmount(walletBalance2);
                                 setRTokenAmount(walletBalance2);
                               } else {
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputCollateralAmount(ans);
-                                setCollateralAmount(ans);
-                                setRTokenAmount(ans);
+                                if(ans<10){
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }
                               }
                             } else {
                               var ans =
@@ -5188,11 +5201,17 @@ const YourBorrowModal = ({
                                   )?.rTokenFreeParsed
                                 );
                               } else {
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputCollateralAmount(ans);
-                                setCollateralAmount(ans);
-                                setRTokenAmount(ans);
+                                if(ans<10){
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }
                               }
                             }
                             // ans = Math.round(ans * 100) / 100;
