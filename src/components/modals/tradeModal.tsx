@@ -1624,11 +1624,18 @@ const TradeModal = ({
                             setRTokenAmount(walletBalance);
                           } else {
                             var ans = (val / 100) * walletBalance;
-                            ans = Math.round(ans * 100) / 100;
-                            dispatch(setInputTradeModalCollateralAmount(ans));
-                            setinputCollateralAmount(ans);
-                            setCollateralAmount(ans);
-                            setRTokenAmount(ans);
+                            if(ans<10){
+                              dispatch(setInputTradeModalCollateralAmount(ans));
+                              setinputCollateralAmount(ans);
+                              setCollateralAmount(ans);
+                              setRTokenAmount(ans);
+                            }else{
+                              ans = Math.round(ans * 100) / 100;
+                              dispatch(setInputTradeModalCollateralAmount(ans));
+                              setinputCollateralAmount(ans);
+                              setCollateralAmount(ans);
+                              setRTokenAmount(ans);
+                            }
                           }
                         }}
                         isDisabled={transactionStarted == true}
@@ -2200,10 +2207,16 @@ const TradeModal = ({
                             } else {
                               var ans = (val / 100) * currentAvailableReserves;
                             }
-                            ans = Math.round(ans * 100) / 100;
-                            dispatch(setInputTradeModalBorrowAmount(ans));
-                            setinputBorrowAmount(ans);
-                            setLoanAmount(ans);
+                            if(ans<10){
+                              dispatch(setInputTradeModalBorrowAmount(ans));
+                              setinputBorrowAmount(ans);
+                              setLoanAmount(ans);
+                            }else{
+                              ans = Math.round(ans * 100) / 100;
+                              dispatch(setInputTradeModalBorrowAmount(ans));
+                              setinputBorrowAmount(ans);
+                              setLoanAmount(ans);
+                            }
                           }
                         }}
                         isDisabled={

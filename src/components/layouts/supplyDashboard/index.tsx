@@ -585,7 +585,7 @@ const SupplyDashboard = ({
                           Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
-                                return stat.supplyRate;
+                                return stat?.supplyRate;
                             })?.supplyRate
                           )?.toFixed(3) + "%"
                         )}

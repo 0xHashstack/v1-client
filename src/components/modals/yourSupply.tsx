@@ -1154,10 +1154,15 @@ const YourSupplyModal = ({
                                 setinputSupplyAmount(walletBalance);
                                 setDepositAmount(walletBalance);
                               } else {
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputSupplyAmount(ans);
-                                setDepositAmount(ans);
+                                if(ans<10){
+                                  setinputSupplyAmount(ans);
+                                  setDepositAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputSupplyAmount(ans);
+                                  setDepositAmount(ans);
+                                }
                               }
                             }}
                             isDisabled={transactionStarted == true}
@@ -1880,9 +1885,13 @@ const YourSupplyModal = ({
                                 setinputWithdrawlAmount(withdrawWalletBalance);
                               } else {
                                 var ans = (val / 100) * withdrawWalletBalance;
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputWithdrawlAmount(ans);
+                                if(ans<10){
+                                  setinputWithdrawlAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputWithdrawlAmount(ans);
+                                }
                               }
                             }}
                             focusThumbOnChange={false}

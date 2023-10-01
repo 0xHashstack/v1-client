@@ -1314,12 +1314,21 @@ const BorrowModal = ({
                         setRTokenAmount(walletBalance);
                       } else {
                         var ans = (val * walletBalance) / 100;
-                        ans = Math.round(ans * 100) / 100;
-                        dispatch(setInputBorrowModalCollateralAmount(ans));
-                        // setRTokenAmount(ans);
-                        // setAmount(ans);
-                        setCollateralAmount(ans);
-                        setRTokenAmount(ans);
+                        if(ans<10){
+                          dispatch(setInputBorrowModalCollateralAmount(ans));
+                          // setRTokenAmount(ans);
+                          // setAmount(ans);
+                          setCollateralAmount(ans);
+                          setRTokenAmount(ans);
+                        }else{
+                          ans = Math.round(ans * 100) / 100;
+                          dispatch(setInputBorrowModalCollateralAmount(ans));
+                          // setRTokenAmount(ans);
+                          // setAmount(ans);
+                          setCollateralAmount(ans);
+                          setRTokenAmount(ans);
+                        }
+
                       }
                     }}
                     isDisabled={transactionStarted == true}
@@ -1874,10 +1883,16 @@ const BorrowModal = ({
                           setinputBorrowAmount(currentAvailableReserves);
                         }
                       } else {
-                        ans = Math.round(ans * 100) / 100;
-                        dispatch(setInputBorrowModalBorrowAmount(ans));
-                        setAmount(ans);
-                        setinputBorrowAmount(ans);
+                        if(ans<10){
+                          dispatch(setInputBorrowModalBorrowAmount(ans));
+                          setAmount(ans);
+                          setinputBorrowAmount(ans);
+                        }else{
+                          ans = Math.round(ans * 100) / 100;
+                          dispatch(setInputBorrowModalBorrowAmount(ans));
+                          setAmount(ans);
+                          setinputBorrowAmount(ans);
+                        }
                       }
                     }}
                     isDisabled={

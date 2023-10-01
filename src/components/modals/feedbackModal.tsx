@@ -676,7 +676,7 @@ const FeedbackModal = ({
                       size="sm"
                       width="100%"
                       mt="1.5rem"
-                      mb="1.5rem"
+                      mb="2.5rem"
                       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                     >
                       Submit
