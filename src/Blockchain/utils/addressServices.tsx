@@ -2,15 +2,15 @@ import { ItokenAddressMap, ItokenDecimalsMap } from "../interfaces/interfaces";
 import { contractsEnv } from "../stark-constants";
 
 export const getTokenFromName = (name: string) => {
-  return contractsEnv.TOKENS.find((Token) => Token.name == name);
+  return contractsEnv.TOKENS.find((Token:any) => Token.name == name);
 };
 
 export const getRTokenFromName = (name: string) => {
-  return contractsEnv.rTOKENS.find((rToken) => rToken.name == name);
+  return contractsEnv.rTOKENS.find((rToken:any) => rToken.name == name);
 };
 
 export const getDTokenFromName = (name: string) => {
-  return contractsEnv.dTOKENS.find((dToken) => dToken.name == name);
+  return contractsEnv.dTOKENS.find((dToken:any) => dToken.name == name);
 };
 export const getTokenFromAddress = (address: string) => {
   return contractsEnv?.TOKENS?.find((val: any) => val?.address == address);
