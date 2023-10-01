@@ -3,7 +3,7 @@ module.exports = {
 	reactStrictMode: true,
 	swcMinify: true,
 };
-const withPlugins = require('next-compose-plugins');
+// const withPlugins = require('next-compose-plugins');
 const withOptimizedImages = require('next-optimized-images');
 const path = require('path');
 const withSass = require('@zeit/next-sass');
