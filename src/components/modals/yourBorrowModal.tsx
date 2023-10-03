@@ -4013,7 +4013,7 @@ const YourBorrowModal = ({
                                   const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
                                   if (
                                     coin === currentBorrowMarketCoin1.slice(1)
-                                    || ( currentDapp=="mySwap" &&!matchingPair)
+                                    || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& currentDapp=="mySwap" &&!matchingPair)
                                   ) {
                                     return;
                                   }
