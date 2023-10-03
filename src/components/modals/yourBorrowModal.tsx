@@ -2714,7 +2714,7 @@ const YourBorrowModal = ({
        // Token not found in any "keyvalue" pairs
   }
   if(mySwapPoolPairs){
-    findSideForMember(mySwapPoolPairs,currentBorrowMarketCoin1);
+    findSideForMember(mySwapPoolPairs,currentBorrowMarketCoin1.slice(1));
   }
   },[currentBorrowMarketCoin1,mySwapPoolPairs])
   const fetchLPAmount = async () => {
@@ -4013,7 +4013,7 @@ const YourBorrowModal = ({
                                   const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
                                   if (
                                     coin === currentBorrowMarketCoin1.slice(1)
-                                    || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentDapp=="mySwap" &&!matchingPair)
+                                    || ( currentDapp=="mySwap" &&!matchingPair)
                                   ) {
                                     return;
                                   }
