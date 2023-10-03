@@ -83,6 +83,7 @@ import {
 } from "@/Blockchain/scripts/LoanHealth";
 import { getUSDValue } from "@/Blockchain/scripts/l3interaction";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { getMaximumLoanAmount, getMinimumLoanAmount } from "@/Blockchain/scripts/Rewards";
 const BorrowModal = ({
   buttonText,
   coin,
@@ -204,6 +205,8 @@ const BorrowModal = ({
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [showToast, setShowToast] = useState("true");
   const [toastId, setToastId] = useState<any>();
+  const [minimumLoanAmount, setMinimumLoanAmount] = useState<any>(0)
+  const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0)
   // const recieptData = useWaitForTransaction({
   //   hash: borrowTransHash,
   //   watch: true,
@@ -735,7 +738,18 @@ const BorrowModal = ({
 
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
   const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-
+  useEffect(()=>{
+    const fetchMinLoanAmount=async()=>{
+      const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
+      setMinimumLoanAmount(data);
+    }
+    const fetchMaxLoanAmount=async()=>{
+      const data=await getMaximumLoanAmount("d"+currentBorrowCoin);
+      setMaximumLoanAmount(data);
+    }
+    fetchMaxLoanAmount();
+    fetchMinLoanAmount();
+  },[currentBorrowCoin])
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
@@ -1650,6 +1664,10 @@ const BorrowModal = ({
                       : inputBorrowAmountUSD < 0 ||
                         inputBorrowAmount > currentAvailableReserves
                       ? "1px solid #CF222E"
+                      :inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
+                      ?"1px solid #CF222E"
+                      : inputBorrowAmount>maximumLoanAmount 
+                      ?"1px solid #CF222E"
                       : isNaN(amount)
                       ? "1px solid #CF222E"
                       : amount > 0
@@ -1679,7 +1697,11 @@ const BorrowModal = ({
                         inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
                           ? "#CF222E"
                           : isNaN(amount)
-                          ? "#CF222E"
+                          ? "#CF222E":
+                            inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
+                          ?"#CF222E"
+                          : inputBorrowAmount>maximumLoanAmount
+                          ? "CF222E"
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
                           ? "#CF222E"
@@ -1708,7 +1730,11 @@ const BorrowModal = ({
                       inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
                         ? "#CF222E"
                         : isNaN(amount)
-                        ? "#CF222E"
+                        ? "#CF222E":
+                        inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
+                      ?"#CF222E"
+                      :inputBorrowAmount>maximumLoanAmount ?
+                      "#CF222E"
                         : inputBorrowAmount < 0 ||
                           inputBorrowAmount > currentAvailableReserves
                         ? "#CF222E"
@@ -1766,6 +1792,8 @@ const BorrowModal = ({
                   </Button>
                 </Box>
                 {amount > currentAvailableReserves ||
+                (inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount) ||
+                inputBorrowAmount>maximumLoanAmount ||
                 (amount > 0 &&
                   inputCollateralAmountUSD &&
                   inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD) ? (
@@ -1786,6 +1814,10 @@ const BorrowModal = ({
                       <Text ml="0.3rem">
                         {amount > currentAvailableReserves
                           ? "Amount exceeds balance"
+                          :inputBorrowAmount<minimumLoanAmount ?
+                          "Less than min Amount"
+                          :inputBorrowAmount>maximumLoanAmount?
+                          "More than max Amount"
                           : inputBorrowAmountUSD >
                             4.9999 * inputCollateralAmountUSD
                           ? "Debt higher than permitted"
@@ -2335,6 +2367,8 @@ const BorrowModal = ({
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 &&
+            inputBorrowAmount>=minimumLoanAmount &&
+            inputBorrowAmount<maximumLoanAmount &&
             rTokenAmount <= walletBalance &&
             inputBorrowAmount <= currentAvailableReserves &&
             inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD ? (

@@ -166,6 +166,84 @@ export async function getMinimumDepositAmount(
     console.log(err, "err in getMinimumDeposit");
   }
 }
+export async function getMaximumDepositAmount(
+  rToken:any,
+) {
+  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  try {
+    const provider = getProvider();
+    const governorContract = new Contract(
+      governorAbi,
+      diamondAddress,
+      provider
+    );
+    const result = await governorContract.call(
+      "get_maximum_deposit_amount",
+      [tokenAddressMap[rToken]],
+      { blockIdentifier: "pending" }
+    );
+    const res = parseAmount(
+      uint256.uint256ToBN(result?._get_maximum_deposit_amount).toString(),
+      tokenDecimalsMap[rToken]
+    );
+    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    return res;
+  } catch (err) {
+    console.log(err, "err in getMaximumDeposit");
+  }
+}
+export async function getMaximumLoanAmount(
+  dToken:any,
+) {
+  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  try {
+    const provider = getProvider();
+    const governorContract = new Contract(
+      governorAbi,
+      diamondAddress,
+      provider
+    );
+    const result = await governorContract.call(
+      "get_maximum_loan_amount",
+      [tokenAddressMap[dToken]],
+      { blockIdentifier: "pending" }
+    );
+    const res = parseAmount(
+      uint256.uint256ToBN(result?._get_maximum_loan_amount).toString(),
+      tokenDecimalsMap[dToken]
+    );
+    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    return res;
+  } catch (err) {
+    console.log(err, "err in getMaximumDeposit");
+  }
+}
+export async function getMinimumLoanAmount(
+  dToken:any,
+) {
+  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  try {
+    const provider = getProvider();
+    const governorContract = new Contract(
+      governorAbi,
+      diamondAddress,
+      provider
+    );
+    const result = await governorContract.call(
+      "get_minimum_loan_amount",
+      [tokenAddressMap[dToken]],
+      { blockIdentifier: "pending" }
+    );
+    const res = parseAmount(
+      uint256.uint256ToBN(result?._get_minimum_loan_amount).toString(),
+      tokenDecimalsMap[dToken]
+    );
+    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    return res;
+  } catch (err) {
+    console.log(err, "err in getMaximumDeposit");
+  }
+}
 
 export async function getUserStakingShares(address: string, tokenName: RToken) {
   try {
