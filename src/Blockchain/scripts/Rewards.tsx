@@ -115,33 +115,6 @@ export async function getEstrTokens(rToken: any, amount: any) {
   }
 }
 
-export async function getMinimumDepositAmount(
-  rTokenAddress: any,
-  tokenName: any
-) {
-  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
-  try {
-    const provider = getProvider();
-    const governorContract = new Contract(
-      governorAbi,
-      diamondAddress,
-      provider
-    );
-    const result = await governorContract.call(
-      "get_minimum_deposit_amount",
-      [rTokenAddress],
-      { blockIdentifier: "pending" }
-    );
-    const res = parseAmount(
-      uint256.uint256ToBN(result?._get_minimum_deposit_amount).toString(),
-      tokenDecimalsMap[tokenName]
-    );
-    // console.log("getMinimumDepositAmount ", res, result);
-    return res;
-  } catch (err) {
-    console.log(err, "err in getMinimumDepositAmount");
-  }
-}
 
 export async function getSupportedPools(
   poolPairAddress: any,
@@ -165,6 +138,32 @@ export async function getSupportedPools(
     return data;
   } catch (err) {
     console.log(err, "err in getPoolsSupporte");
+  }
+}
+export async function getMinimumDepositAmount(
+  rToken:any,
+) {
+  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  try {
+    const provider = getProvider();
+    const governorContract = new Contract(
+      governorAbi,
+      diamondAddress,
+      provider
+    );
+    const result = await governorContract.call(
+      "get_minimum_deposit_amount",
+      [tokenAddressMap[rToken]],
+      { blockIdentifier: "pending" }
+    );
+    const res = parseAmount(
+      uint256.uint256ToBN(result?._get_minimum_deposit_amount).toString(),
+      tokenDecimalsMap[rToken]
+    );
+    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    return res;
+  } catch (err) {
+    console.log(err, "err in getMinimumDeposit");
   }
 }
 

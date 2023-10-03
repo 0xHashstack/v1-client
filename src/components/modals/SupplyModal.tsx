@@ -94,6 +94,7 @@ import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
+import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -661,6 +662,14 @@ const SupplyModal = ({
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
   // }, [])
   // console.log(inputAmount);
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  useEffect(()=>{
+    const fetchMinDeposit=async()=>{
+      const data=await getMinimumDepositAmount("r"+currentSelectedCoin)
+      setMinimumDepositAmount(data);
+    }
+    fetchMinDeposit();
+  },[currentSelectedCoin])
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -1015,9 +1024,11 @@ const SupplyModal = ({
                   border={`${
                     depositAmount > walletBalance
                       ? "1px solid #CF222E"
-                      : depositAmount < 0
+                      : depositAmount < 0 
                       ? "1px solid #CF222E"
                       : isNaN(depositAmount)
+                      ? "1px solid #CF222E"
+                      :depositAmount<minimumDepositAmount && depositAmount>0
                       ? "1px solid #CF222E"
                       : depositAmount > 0 && depositAmount <= walletBalance
                       ? "1px solid #00D395"
@@ -1047,6 +1058,8 @@ const SupplyModal = ({
                           ? "#CF222E"
                           : isNaN(depositAmount)
                           ? "#CF222E"
+                          :depositAmount<minimumDepositAmount && depositAmount>0
+                          ? "#CF222E"
                           : depositAmount < 0
                           ? "#CF222E"
                           : depositAmount == 0
@@ -1074,6 +1087,8 @@ const SupplyModal = ({
                         ? "#CF222E"
                         : isNaN(depositAmount)
                         ? "#CF222E"
+                        :depositAmount<minimumDepositAmount && depositAmount>0
+                        ? "#CF222E"
                         : depositAmount < 0
                         ? "#CF222E"
                         : depositAmount == 0
@@ -1095,7 +1110,7 @@ const SupplyModal = ({
                   </Button>
                 </Box>
                 {depositAmount > walletBalance ||
-                depositAmount < 0 ||
+                depositAmount < 0 ||                       (depositAmount<minimumDepositAmount && depositAmount>0) ||
                 isNaN(depositAmount) ? (
                   <Text
                     display="flex"
@@ -1115,7 +1130,7 @@ const SupplyModal = ({
                       <Text ml="0.3rem">
                         {depositAmount > walletBalance
                           ? "Amount exceeds balance"
-                          : "Invalid Input"}
+                          : "Insufficient Quantity"}
                       </Text>
                     </Text>
                     <Text
@@ -1474,7 +1489,7 @@ const SupplyModal = ({
                   </Text>
                 </Text>
               </Card>
-              {depositAmount > 0 && depositAmount <= walletBalance ? (
+              {depositAmount > 0 && depositAmount <= walletBalance && (depositAmount>0 && depositAmount>minimumDepositAmount) ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (
