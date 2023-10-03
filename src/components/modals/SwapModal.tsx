@@ -47,6 +47,7 @@ import {
   selectAprAndHealthFactor,
   selectEffectiveApr,
   selectHealthFactor,
+  selectMySwapPoolsSupported,
   selectUserLoans,
 } from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -398,6 +399,28 @@ const SwapModal = ({
   useEffect(() => {
     setToMarket(currentSelectedCoin);
   }, [currentSelectedCoin]);
+  const mySwapPoolPairs=useSelector(selectMySwapPoolsSupported);
+  const [myswapPools, setmyswapPools] = useState([]);
+  useEffect(()=>{
+    function findSideForMember(array:any, token:any) {
+      const data:any=[];
+      for (const obj of array) {
+          const keyvalue = obj.keyvalue;
+          const [tokenA, tokenB] = keyvalue.split('/');
+          
+          if (tokenA === token) {
+            console.log(tokenB,"tokenB");
+              data.push(tokenB)
+          } else if (tokenB === token) {
+            console.log(tokenA,"tokenA")
+              data.push(tokenA);
+          }
+      }
+      setmyswapPools(data);
+       // Token not found in any "keyvalue" pairs
+  }
+  findSideForMember(mySwapPoolPairs,currentBorrowMarketCoin);
+  },[currentBorrowMarketCoin])
 
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const resetStates = () => {
@@ -619,7 +642,8 @@ const SwapModal = ({
                     boxShadow="dark-lg"
                   >
                     {coins?.map((coin: string, index: number) => {
-                      if (coin === currentBorrowMarketCoin) {
+                      const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
+                      if (coin === currentBorrowMarketCoin || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentSwap == "MySwap" &&!matchingPair)) {
                         return null;
                       }
                       return (

@@ -2575,6 +2575,9 @@ const YourBorrowModal = ({
   const [tabValue, setTabValue] = useState(1);
   const [currentTokenSelected, setcurrentTokenSelected] = useState("rToken");
   const tokensArray = ["rToken", "Native Token"];
+  useEffect(()=>{
+    setCurrentPoolCoin('Select a pool')
+  },[currentDapp])
   const resetStates = () => {
     try {
       setRadioValue("1");
@@ -2691,7 +2694,29 @@ const YourBorrowModal = ({
       setCurrentSplit(split);
     }
   };
-
+  const [myswapPools, setmyswapPools] = useState([]);
+  useEffect(()=>{
+    function findSideForMember(array:any, token:any) {
+      const data:any=[];
+      for (const obj of array) {
+          const keyvalue = obj.keyvalue;
+          const [tokenA, tokenB] = keyvalue.split('/');
+          
+          if (tokenA === token) {
+            console.log(tokenB,"tokenB");
+              data.push(tokenB)
+          } else if (tokenB === token) {
+            console.log(tokenA,"tokenA")
+              data.push(tokenA);
+          }
+      }
+      setmyswapPools(data);
+       // Token not found in any "keyvalue" pairs
+  }
+  if(mySwapPoolPairs){
+    findSideForMember(mySwapPoolPairs,currentBorrowMarketCoin1);
+  }
+  },[currentBorrowMarketCoin1,mySwapPoolPairs])
   const fetchLPAmount = async () => {
     if (
       spendType !== "UNSPENT" ||
@@ -3985,8 +4010,10 @@ const YourBorrowModal = ({
                                 boxShadow="dark-lg"
                               >
                                 {coins?.map((coin: string, index: number) => {
+                                  const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
                                   if (
                                     coin === currentBorrowMarketCoin1.slice(1)
+                                    || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentDapp=="mySwap" &&!matchingPair)
                                   ) {
                                     return;
                                   }

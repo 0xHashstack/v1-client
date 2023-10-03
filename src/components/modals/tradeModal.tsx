@@ -206,16 +206,7 @@ const TradeModal = ({
     rETH: useBalanceOf(tokenAddressMap["rETH"]),
     rDAI: useBalanceOf(tokenAddressMap["rDAI"]),
   };
-  const [walletBalance, setwalletBalance] = useState<any>(
-    walletBalances[coin?.name]?.statusBalanceOf === "success"
-      ? parseAmount(
-        uint256.uint256ToBN(
-          walletBalances[coin?.name]?.dataBalanceOf?.balance
-        ),
-        tokenDecimalsMap[coin?.name]
-      )
-      : 0
-  );
+  const [walletBalance, setwalletBalance] = useState(0)
   useEffect(() => {
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
@@ -404,6 +395,30 @@ const TradeModal = ({
   };
   const poolsPairs=useSelector(selectJediSwapPoolsSupported);
   const mySwapPoolPairs=useSelector(selectMySwapPoolsSupported);
+  const [myswapPools, setmyswapPools] = useState([]);
+  useEffect(()=>{
+    function findSideForMember(array:any, token:any) {
+      const data:any=[];
+      for (const obj of array) {
+          const keyvalue = obj.keyvalue;
+          const [tokenA, tokenB] = keyvalue.split('/');
+          
+          if (tokenA === token) {
+            console.log(tokenB,"tokenB");
+              data.push(tokenB)
+          } else if (tokenB === token) {
+            console.log(tokenA,"tokenA")
+              data.push(tokenA);
+          }
+      }
+      setmyswapPools(data);
+       // Token not found in any "keyvalue" pairs
+  }
+  if(mySwapPoolPairs){
+    findSideForMember(mySwapPoolPairs,currentBorrowCoin);
+  }
+  },[currentBorrowCoin,mySwapPoolPairs])
+
   // const [poolsPairs,setPoolPairs] = useState<any>([
   //   {
   //     address: "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e",
@@ -488,6 +503,9 @@ const TradeModal = ({
     setLoanMarket(coin ? coin.name : "BTC")
     setCollateralMarket(coin ? coin.name : "BTC")
   }, [coin])
+  useEffect(()=>{
+    setCurrentPoolCoin('Select a pool')
+  },[currentDapp])
   const resetStates = () => {
     setSliderValue(0);
     setsliderValue2(0);
@@ -538,6 +556,7 @@ const TradeModal = ({
     setLoanAmount(0);
     // setLoanAmount(0);
     setsliderValue2(0);
+    setCurrentPoolCoin("Select a pool");
     // setHealthFactor(undefined)
   }, [currentBorrowCoin]);
 
@@ -1389,7 +1408,7 @@ const TradeModal = ({
                                             ?.balance
                                         ),
                                         tokenDecimalsMap[coin]
-                                      ).toFixed(2)
+                                      )
                                       : 0
                                   );
                                 }}
@@ -1588,7 +1607,9 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Wallet Balance: {numberFormatter(walletBalance)}
+                          Wallet Balance: {" "}                      {walletBalance?.toFixed(5).replace(/\.?0+$/, "").length > 5
+                        ? numberFormatter(walletBalance)
+                        : numberFormatter(walletBalance)}
                           <Text color="#676D9A" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
@@ -1605,7 +1626,9 @@ const TradeModal = ({
                         fontStyle="normal"
                         fontFamily="Inter"
                       >
-                        Wallet Balance: {numberFormatter(walletBalance)}
+                        Wallet Balance: {" "}                      {walletBalance?.toFixed(5).replace(/\.?0+$/, "").length > 5
+                        ? numberFormatter(walletBalance)
+                        : numberFormatter(walletBalance)}
                         <Text color="#676D9A" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>
@@ -2642,7 +2665,8 @@ const TradeModal = ({
                           boxShadow="dark-lg"
                         >
                           {coins?.map((coin: NativeToken, index: number) => {
-                            if (coin == currentBorrowCoin) {
+                            const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
+                            if (coin == currentBorrowCoin || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentDapp=="mySwap" &&!matchingPair)) {
                               return null;
                             }
                             return (
