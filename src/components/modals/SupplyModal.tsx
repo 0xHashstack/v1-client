@@ -1324,7 +1324,7 @@ const SupplyModal = ({
                   colorScheme="customBlue"
                   defaultChecked
                   mb="auto"
-                  mt="1.2rem"
+                  mt="0.7rem"
                   borderColor="#2B2F35"
                   isDisabled={transactionStarted == true}
                   _disabled={{
@@ -1337,14 +1337,14 @@ const SupplyModal = ({
                   }}
                 />
                 <Text
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight="400"
                   color="#B1B0B5"
-                  mt="1rem"
-                  lineHeight="20px"
+                  mt="0.5rem"
+                  lineHeight="22px"
+                  width="100%"
                 >
-                  Ticking would stake the received rTokens. unchecking
-                  wouldn&apos;t stake rTokens
+                  I would like to stake the rTokens.
                 </Text>
               </Box>
 
