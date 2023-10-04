@@ -114,7 +114,7 @@ import {
   getUSDValue,
 } from "@/Blockchain/scripts/l3interaction";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { getSupportedPools } from "@/Blockchain/scripts/Rewards";
+import { getMaximumLoanAmount, getMinimumLoanAmount, getSupportedPools } from "@/Blockchain/scripts/Rewards";
 const TradeModal = ({
   buttonText,
   coin,
@@ -928,7 +928,20 @@ const TradeModal = ({
   const [currentSplit, setCurrentSplit] = useState<
     Number[] | undefined | null
   >();
-
+  const [minimumLoanAmount, setMinimumLoanAmount] = useState<any>(0)
+  const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0)
+  useEffect(()=>{
+    const fetchMinLoanAmount=async()=>{
+      const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
+      setMinimumLoanAmount(data);
+    }
+    const fetchMaxLoanAmount=async()=>{
+      const data=await getMaximumLoanAmount("d"+currentBorrowCoin);
+      setMaximumLoanAmount(data);
+    }
+    fetchMaxLoanAmount();
+    fetchMinLoanAmount();
+  },[currentBorrowCoin])
   useEffect(() => {
     // console.log(
     //   "toMarketSplitConsole",
@@ -2021,6 +2034,10 @@ const TradeModal = ({
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
                             ? "1px solid #CF222E"
+                            :inputBorrowAmount<minimumLoanAmount && inputBorrowAmount>0
+                            ? "1px solid #CF222E"
+                            :inputBorrowAmount>maximumLoanAmount 
+                            ? "1px solid #CF222E"
                             : isNaN(inputBorrowAmount)
                               ? "1px solid #CF222E"
                               : inputBorrowAmount > 0
@@ -2057,6 +2074,10 @@ const TradeModal = ({
                                 : inputBorrowAmount < 0 ||
                                   inputBorrowAmount > currentAvailableReserves
                                   ? "#CF222E"
+                                  :inputBorrowAmount<minimumLoanAmount &&inputBorrowAmount>0
+                                  ? "#CF222E"
+                                  :inputBorrowAmount>maximumLoanAmount 
+                                  ?"#CF222E"
                                   : inputBorrowAmount == 0
                                     ? "white"
                                     : "#00D395"
@@ -2086,6 +2107,10 @@ const TradeModal = ({
                               : inputBorrowAmount < 0 ||
                                 inputBorrowAmount > currentAvailableReserves
                                 ? "#CF222E"
+                                :inputBorrowAmount<minimumLoanAmount && inputBorrowAmount>0
+                                ?"#CF222E"
+                                :inputBorrowAmount>maximumLoanAmount
+                                ?"#CF222E"
                                 : inputBorrowAmount == 0
                                   ? "#0969DA"
                                   : "#00D395"
@@ -2141,6 +2166,8 @@ const TradeModal = ({
                       </Button>
                     </Box>
                     {inputBorrowAmount > currentAvailableReserves ||
+                    inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount ||
+                    inputBorrowAmount>maximumLoanAmount ||
                       (inputBorrowAmount > 0 &&
                         inputCollateralAmountUSD &&
                         inputBorrowAmountUSD >
@@ -2164,6 +2191,10 @@ const TradeModal = ({
                           <Text ml="0.3rem">
                             {inputBorrowAmount > currentAvailableReserves
                               ? "Amount exceeds balance"
+                              :inputBorrowAmount< minimumLoanAmount
+                              ? "Less than min amount"
+                              : inputBorrowAmount>maximumLoanAmount
+                              ? "More than max amount"
                               : inputBorrowAmountUSD >
                                 4.9999 * inputCollateralAmountUSD
                                 ? "Debt higher than permitted"
@@ -3218,6 +3249,8 @@ const TradeModal = ({
                 </Box>
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
                   (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
+                  inputBorrowAmount>=minimumLoanAmount &&
+                  inputBorrowAmount<=maximumLoanAmount &&
                   inputBorrowAmount <= currentAvailableReserves &&
                   inputBorrowAmount > 0 &&
                   inputCollateralAmount > minimumDepositAmount &&
