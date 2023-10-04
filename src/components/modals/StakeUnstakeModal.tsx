@@ -83,6 +83,8 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+
 import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
@@ -366,6 +368,7 @@ const StakeUnstakeModal = ({
   //   }
   // }, [address]);
 
+
   const handleStakeTransaction = async () => {
     try {
       // console.log("staking", rToken, rTokenAmount);
@@ -451,6 +454,7 @@ const StakeUnstakeModal = ({
       });
     }
   };
+
   const hanldeStakeAndSupplyTransaction = async () => {
     try {
       mixpanel.track("Action Selected", {
@@ -737,6 +741,14 @@ const StakeUnstakeModal = ({
   const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] = useState(
     !nav ? rcoinValue : "rUSDT"
   );
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  useEffect(()=>{
+    const fetchMinDeposit=async()=>{
+      const data=await getMinimumDepositAmount("r"+currentSelectedStakeCoin)
+      setMinimumDepositAmount(data);
+    }
+    fetchMinDeposit();
+  },[currentSelectedStakeCoin])
   const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] = useState(
     !nav ? rcoinValue : "rUSDT"
   );
@@ -1359,6 +1371,8 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenAmount < 0
                               ? "1px solid #CF222E"
+                              :rTokenAmount<minimumDepositAmount && rTokenAmount>0
+                              ? "1px solid #CF222E"
                               : rTokenAmount > 0 &&
                                 (rTokenAmount <=
                                   Number(
@@ -1398,6 +1412,8 @@ const StakeUnstakeModal = ({
                                   ? "#CF222E"
                                   : rTokenAmount < 0
                                   ? "#CF222E"
+                                  :rTokenAmount<minimumDepositAmount && rTokenAmount>0
+                                  ? "#CF222E"
                                   : rTokenAmount == 0
                                   ? "white"
                                   : "#00D395"
@@ -1428,6 +1444,9 @@ const StakeUnstakeModal = ({
                                 rTokenAmount > walletBalance)
                                 ? "#CF222E"
                                 : rTokenAmount < 0
+
+                                ? "#CF222E"
+                                :rTokenAmount<minimumDepositAmount && rTokenAmount>0
                                 ? "#CF222E"
                                 : rTokenAmount == 0
                                 ? "#0969DA"
@@ -1905,7 +1924,7 @@ const StakeUnstakeModal = ({
                       userDeposit?.find(
                         (item: any) => item?.rToken == currentSelectedStakeCoin
                       )?.rTokenFreeParsed ? (
-                        rTokenAmount > 0 &&
+                        rTokenAmount > 0 && (rTokenAmount>0 && rTokenAmount>minimumDepositAmount)  &&
                         rTokenAmount <= rtokenWalletBalance ? (
                           buttonId == 1 ? (
                             <SuccessButton successText="Stake success" />

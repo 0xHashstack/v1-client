@@ -23,6 +23,8 @@ import {
 
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
+import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
@@ -126,6 +128,7 @@ const BorrowModal = ({
     track_pageview: true,
     persistence: "localStorage",
   });
+
 
   useEffect(() => {
     // console.log(
@@ -271,6 +274,15 @@ const BorrowModal = ({
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
     coin ? coin?.name : "BTC"
   );
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  useEffect(()=>{
+    // const fetchMinDeposit=async()=>{
+    //   const data=await getMinimumDepositAmount("r"+inputCollateralAmount)
+    //   console.log("minimum value",data)
+      setMinimumDepositAmount(2);
+    // }
+    // fetchMinDeposit();
+  },[inputCollateralAmount])
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const protocolStatsRedux = useSelector(selectProtocolStats);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
@@ -1650,8 +1662,11 @@ const BorrowModal = ({
                       : inputBorrowAmountUSD < 0 ||
                         inputBorrowAmount > currentAvailableReserves
                       ? "1px solid #CF222E"
+                      // :depositAmount<minimumDepositAmount && depositAmount>0
+                      // ? "1px solid #CF222E"
                       : isNaN(amount)
                       ? "1px solid #CF222E"
+ 
                       : amount > 0
                       ? "1px solid #00D395"
                       : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
@@ -1683,6 +1698,7 @@ const BorrowModal = ({
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
                           ? "#CF222E"
+
                           : inputBorrowAmountUSD == 0
                           ? "white"
                           : "#00D395"
@@ -2335,6 +2351,7 @@ const BorrowModal = ({
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 &&
+            rTokenAmount>minimumDepositAmount &&
             rTokenAmount <= walletBalance &&
             inputBorrowAmount <= currentAvailableReserves &&
             inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD ? (

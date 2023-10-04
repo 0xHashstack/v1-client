@@ -26,6 +26,8 @@ import {
 
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
+import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
@@ -666,7 +668,15 @@ const TradeModal = ({
     currentCollateralCoin,
     rTokenAmount,
   ]);
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
 
+  useEffect(()=>{
+    const fetchMinDeposit=async()=>{
+      const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
+      setMinimumDepositAmount(data);
+    }
+    fetchMinDeposit();
+  },[currentCollateralCoin])
   const handleBorrowAndSpend = async () => {
     try {
       if (currentCollateralCoin[0] != "r") {
@@ -1502,6 +1512,9 @@ const TradeModal = ({
                             ? "1px solid #CF222E"
                             : isNaN(inputCollateralAmount)
                               ? "1px solid #CF222E"
+                              :inputCollateralAmount>0 && inputCollateralAmount<minimumDepositAmount
+                              ? "1px solid #CF222E"
+                              
                               : inputCollateralAmount > 0 &&
                                 inputCollateralAmount <= walletBalance
                                 ? "1px solid #00D395"
@@ -1533,6 +1546,9 @@ const TradeModal = ({
                                 ? "#CF222E"
                                 : inputCollateralAmount < 0
                                   ? "#CF222E"
+                          :inputCollateralAmount<minimumDepositAmount && inputCollateralAmount>0
+                                  ? "#CF222E"
+                                  
                                   : inputCollateralAmount == 0
                                     ? "white"
                                     : "#00D395"
@@ -1557,6 +1573,9 @@ const TradeModal = ({
                             ? "#CF222E"
                             : isNaN(inputCollateralAmount)
                               ? "#CF222E"
+                        :inputCollateralAmount<minimumDepositAmount && inputCollateralAmount>0
+                        ? "#CF222E"
+
                               : inputCollateralAmount < 0
                                 ? "#CF222E"
                                 : inputCollateralAmount == 0
@@ -1581,6 +1600,7 @@ const TradeModal = ({
                     </Box>
                     {inputCollateralAmount > walletBalance ||
                       inputCollateralAmount < 0 ||
+                      (inputCollateralAmount<minimumDepositAmount && inputCollateralAmount>0) ||
                       isNaN(inputCollateralAmount) ? (
                       <Text
                         display="flex"
@@ -3200,6 +3220,7 @@ const TradeModal = ({
                   (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
                   inputBorrowAmount <= currentAvailableReserves &&
                   inputBorrowAmount > 0 &&
+                  inputCollateralAmount > minimumDepositAmount &&
                   inputCollateralAmount <= walletBalance &&
                   inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD &&
                   currentDapp != "Select a dapp" &&
