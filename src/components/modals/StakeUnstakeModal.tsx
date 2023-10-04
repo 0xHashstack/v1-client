@@ -1391,6 +1391,8 @@ const StakeUnstakeModal = ({
                               : (rtokenWalletBalance==0 && (depositAmount>0&& depositAmount>maximumDepositAmount) )
                               ? "1px solid #CF222E"
                               //do max 1209
+                              : (rtokenWalletBalance==0 && rTokenAmount <= walletBalance &&rTokenAmount>0)
+                              ?"1px solid #00D395"
                               : rtokenWalletBalance!=0 &&( rTokenAmount > 0 && 
                                 (rTokenAmount <=
                                   Number(
@@ -2040,7 +2042,7 @@ const StakeUnstakeModal = ({
                             }`}
                           </Button>
                         )
-                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance && rTokenAmount>=minimumDepositAmount ? (
+                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance && rTokenAmount>=minimumDepositAmount &&rTokenAmount<=maximumDepositAmount ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (
