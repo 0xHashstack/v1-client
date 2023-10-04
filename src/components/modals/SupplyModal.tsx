@@ -1396,7 +1396,7 @@ const SupplyModal = ({
                     {TransactionFees.supply}%
                   </Text>
                 </Text>
-                <Text
+                {/* <Text
                   color="#8B949E"
                   display="flex"
                   justifyContent="space-between"
@@ -1412,7 +1412,6 @@ const SupplyModal = ({
                       color="#676D9A"
                     >
                       Gas estimate:
-                      {/* <SpinnerLoader/> */}
                     </Text>
                     <Tooltip
                       hasArrow
@@ -1442,7 +1441,7 @@ const SupplyModal = ({
                   >
                     $ 0.90
                   </Text>
-                </Text>
+                </Text> */}
                 <Text
                   color="#8B949E"
                   display="flex"
