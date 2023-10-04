@@ -55,6 +55,8 @@ import {
   selectOraclePrices,
   selectJediSwapPoolsSupported,
   selectMySwapPoolsSupported,
+  selectMaximumLoanAmounts,
+  selectMinimumLoanAmounts,
 } from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
@@ -671,19 +673,19 @@ const TradeModal = ({
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
 
-  useEffect(()=>{
-    const fetchMinDeposit=async()=>{
-      const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
-      setMinimumDepositAmount(data);
-    }
-    const fetchMaxDeposit=async()=>{
-      const data=await getMaximumDepositAmount("r"+currentCollateralCoin);
-      setmaximumDepositAmount(data);
-    }
-    fetchMaxDeposit();
-    fetchMinDeposit();
-    // setMinimumDepositAmount(2)
-  },[currentCollateralCoin])
+  // useEffect(()=>{
+  //   const fetchMinDeposit=async()=>{
+  //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
+  //     setMinimumDepositAmount(data);
+  //   }
+  //   const fetchMaxDeposit=async()=>{
+  //     const data=await getMaximumDepositAmount("r"+currentCollateralCoin);
+  //     setmaximumDepositAmount(data);
+  //   }
+  //   fetchMaxDeposit();
+  //   fetchMinDeposit();
+  //   // setMinimumDepositAmount(2)
+  // },[currentCollateralCoin])
   const handleBorrowAndSpend = async () => {
     try {
       if (currentCollateralCoin[0] != "r") {
@@ -937,18 +939,25 @@ const TradeModal = ({
   >();
   const [minimumLoanAmount, setMinimumLoanAmount] = useState<any>(0)
   const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0)
+  const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
+  const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
+  console.log(minLoanAmounts)
   useEffect(()=>{
-    const fetchMinLoanAmount=async()=>{
-      const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
-      setMinimumLoanAmount(data);
-    }
-    const fetchMaxLoanAmount=async()=>{
-      const data=await getMaximumLoanAmount("d"+currentBorrowCoin);
-      setMaximumLoanAmount(data);
-    }
-    fetchMaxLoanAmount();
-    fetchMinLoanAmount();
-  },[currentBorrowCoin])
+    setMinimumLoanAmount(minLoanAmounts["d"+currentBorrowCoin])
+    setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
+  },[currentBorrowCoin,maxLoanAmounts,minLoanAmounts])
+  // useEffect(()=>{
+  //   const fetchMinLoanAmount=async()=>{
+  //     const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
+  //     setMinimumLoanAmount(data);
+  //   }
+  //   const fetchMaxLoanAmount=async()=>{
+  //     const data=await getMaximumLoanAmount("d"+currentBorrowCoin);
+  //     setMaximumLoanAmount(data);
+  //   }
+  //   fetchMaxLoanAmount();
+  //   fetchMinLoanAmount();
+  // },[currentBorrowCoin])
   useEffect(() => {
     // console.log(
     //   "toMarketSplitConsole",

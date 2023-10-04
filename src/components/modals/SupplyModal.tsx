@@ -93,7 +93,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
+import { selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
 import { getMaximumDepositAmount, getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
 import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
@@ -664,18 +664,23 @@ const SupplyModal = ({
   // console.log(inputAmount);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  const minAmounts=useSelector(selectMinimumDepositAmounts);
+  const maxAmounts=useSelector(selectMaximumDepositAmounts);
   useEffect(()=>{
-    const fetchMinDeposit=async()=>{
-      const data=await getMinimumDepositAmount("r"+currentSelectedCoin)
-      setMinimumDepositAmount(data);
-    }
-    const fetchMaxDeposit=async()=>{
-      const data=await getMaximumDepositAmount("r"+currentSelectedCoin);
-      setmaximumDepositAmount(data);
-    }
-    fetchMaxDeposit();
-    fetchMinDeposit();
-  },[currentSelectedCoin])
+    setMinimumDepositAmount(minAmounts["r"+currentSelectedCoin])
+    setmaximumDepositAmount(maxAmounts["r"+currentSelectedCoin])
+  },[currentSelectedCoin,minAmounts,maxAmounts])
+  
+  // useEffect(()=>{
+  //     const data=useSelector(selectMinimumDepositAmounts);
+  //     setMinimumDepositAmount(data(currentSelectedCoin));
+  //   const fetchMaxDeposit=async()=>{
+  //     const data=await getMaximumDepositAmount("r"+currentSelectedCoin);
+  //     setmaximumDepositAmount(data);
+  //   }
+  //   fetchMaxDeposit();
+
+  // },[currentSelectedCoin])
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {

@@ -30,6 +30,8 @@ import {
   selectHealthFactorCount,
   selectHourlyDataCount,
   selectJediSwapPoolsSupportedCount,
+  selectMinMaxDepositCount,
+  selectMinMaxLoanCount,
   selectMonthlyDataCount,
   selectMySwapPoolsSupportedCount,
   selectNetAprCount,
@@ -54,6 +56,8 @@ import {
   setHealthFactorCount,
   setHourlyDataCount,
   setJediSwapPoolsSupportedCount,
+  setMinMaxDepositCount,
+  setMinMaxLoanCount,
   setMonthlyDataCount,
   setMySwapPoolsSupportedCount,
   setNetAprCount,
@@ -108,6 +112,10 @@ import {
   setAllUSDTData,
   setJediSwapPoolsSupported,
   setMySwapPoolsSupported,
+  setMinimumDepositAmounts,
+  setMaximumDepositAmounts,
+  setMinimumLoanAmounts,
+  setMaximumLoanAmounts,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -134,7 +142,10 @@ import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
 import {
+  getMaximumDepositAmount,
+  getMaximumLoanAmount,
   getMinimumDepositAmount,
+  getMinimumLoanAmount,
   getSupportedPools,
   getUserStakingShares,
 } from "@/Blockchain/scripts/Rewards";
@@ -184,6 +195,8 @@ const useDataLoader = () => {
   const allDataCount=useSelector(selectAllDataCount);
   // const stakingShares = useSelector(selectStakingShares);
   const stakingSharesCount = useSelector(selectStakingSharesCount);
+  const minMaxCount=useSelector(selectMinMaxDepositCount);
+  const minMaxLoanCount=useSelector(selectMinMaxLoanCount)
   const jediSwapPoolsSupportedCount = useSelector(selectJediSwapPoolsSupportedCount);
   const mySwapPoolsSupportedCount = useSelector(selectMySwapPoolsSupportedCount);
   const transactionStatus = useSelector(selectTransactionStatus);
@@ -1265,6 +1278,98 @@ const useDataLoader = () => {
     }
   }, [address, transactionRefresh]);
 
+  useEffect(()=>{
+    try{
+      const getMinDeposit=async()=>{
+        const promises=[
+          getMinimumDepositAmount("rBTC"),
+          getMinimumDepositAmount("rETH"),
+          getMinimumDepositAmount("rUSDT"),
+          getMinimumDepositAmount("rUSDC"),
+          getMinimumDepositAmount("rDAI"),
+          getMaximumDepositAmount("rBTC"),
+          getMaximumDepositAmount("rETH"),
+          getMaximumDepositAmount("rUSDT"),
+          getMaximumDepositAmount("rUSDC"),
+          getMaximumDepositAmount("rDAI"),
+        ]
+        Promise.allSettled([...promises]).then((val)=>{
+          const data={
+            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
+            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
+            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
+            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+          }
+          const maxdata={
+            rBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00074,
+            rETH: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0.012,
+            rUSDT: val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 20,
+            rUSDC: val?.[8]?.status == "fulfilled" ? val?.[8]?.value : 20,
+            rDAI: val?.[9]?.status == "fulfilled" ? val?.[9]?.value : 20,
+          }
+          if (data?.rBTC == null) return;
+          if (maxdata?.rBTC == null) return;
+          console.log(data,maxdata,"min max deposit")
+          dispatch(setMinimumDepositAmounts(data));
+          dispatch(setMaximumDepositAmounts(maxdata));
+          const count = getTransactionCount();
+          dispatch(setMinMaxDepositCount(count));
+        })
+      }
+      if(minMaxCount<transactionRefresh){
+        getMinDeposit();
+      }
+    }catch(err){
+      console.log(err,"err in get min max deposits");
+    }
+  },[transactionRefresh])
+  useEffect(()=>{
+    try{
+      const getMinDeposit=async()=>{
+        const promises=[
+          getMinimumLoanAmount("dBTC"),
+          getMinimumLoanAmount("dETH"),
+          getMinimumLoanAmount("dUSDT"),
+          getMinimumLoanAmount("dUSDC"),
+          getMinimumLoanAmount("dDAI"),
+          getMaximumLoanAmount("dBTC"),
+          getMaximumLoanAmount("dETH"),
+          getMaximumLoanAmount("dUSDT"),
+          getMaximumLoanAmount("dUSDC"),
+          getMaximumLoanAmount("dDAI"),
+        ]
+        Promise.allSettled([...promises]).then((val)=>{
+          const data={
+            dBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+            dETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
+            dUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
+            dUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
+            dDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+          }
+          const maxdata={
+            dBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00074,
+            dETH: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0.012,
+            dUSDT: val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 20,
+            dUSDC: val?.[8]?.status == "fulfilled" ? val?.[8]?.value : 20,
+            dDAI: val?.[9]?.status == "fulfilled" ? val?.[9]?.value : 20,
+          }
+          if (data?.dBTC == null) return;
+          if (maxdata?.dBTC == null) return;
+          console.log(data,maxdata,"min max deposit")
+          dispatch(setMinimumLoanAmounts(data));
+          dispatch(setMaximumLoanAmounts(maxdata));
+          const count = getTransactionCount();
+          dispatch(setMinMaxLoanCount(count));
+        })
+      }
+      if(minMaxLoanCount<transactionRefresh){
+        getMinDeposit();
+      }
+    }catch(err){
+      console.log(err,"err in get min max deposits");
+    }
+  },[transactionRefresh])
   useEffect(() => {
     try {
       const fetchEffectiveApr = async () => {

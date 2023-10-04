@@ -66,6 +66,8 @@ import {
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import {
+  selectMaximumDepositAmounts,
+  selectMinimumDepositAmounts,
   selectProtocolStats,
   selectStakingShares,
   selectUserDeposits,
@@ -744,23 +746,14 @@ const StakeUnstakeModal = ({
   );
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
- 
+  const minAmounts=useSelector(selectMinimumDepositAmounts);
+  const maxAmounts=useSelector(selectMaximumDepositAmounts);
+  
   useEffect(()=>{
-    const fetchMinDeposit=async()=>{
-      const data=await getMinimumDepositAmount(currentSelectedStakeCoin)
-      setMinimumDepositAmount(data);
-    }
-    const fetchMaxDeposit=async()=>{
-      const data=await getMaximumDepositAmount(currentSelectedStakeCoin);
-      setmaximumDepositAmount(data);
-    }
-    fetchMinDeposit();
-    fetchMaxDeposit();
-
-
-    // setMinimumDepositAmount(2);
-
+    setMinimumDepositAmount(minAmounts[currentSelectedStakeCoin])
+    setmaximumDepositAmount(maxAmounts[currentSelectedStakeCoin])
   },[currentSelectedStakeCoin])
+
   const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] = useState(
     !nav ? rcoinValue : "rUSDT"
   );

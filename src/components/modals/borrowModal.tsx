@@ -48,6 +48,10 @@ import {
 import {
   selectProtocolStats,
   selectOraclePrices,
+  selectMinimumDepositAmounts,
+  selectMaximumDepositAmounts,
+  selectMinimumLoanAmounts,
+  selectMaximumLoanAmounts,
 } from "@/store/slices/readDataSlice";
 import {
   setModalDropdown,
@@ -279,24 +283,29 @@ const BorrowModal = ({
   );
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
-  
+  const minAmounts=useSelector(selectMinimumDepositAmounts);
+  const maxAmounts=useSelector(selectMaximumDepositAmounts);
   useEffect(()=>{
-    const fetchMinDeposit=async()=>{
-      const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
-      console.log("minimum value",data)
-      setMinimumDepositAmount(data);
-    }
-    const fetchMaxDeposit=async()=>{
-      const data=await getMaximumDepositAmount("r"+currentCollateralCoin);
-      setmaximumDepositAmount(data);
-    }
-    fetchMaxDeposit();
-
-    fetchMinDeposit();
-
-      // setMinimumDepositAmount(2);
-
+    setMinimumDepositAmount(minAmounts["r"+currentCollateralCoin])
+    setmaximumDepositAmount(maxAmounts["r"+currentCollateralCoin])
   },[currentCollateralCoin])
+  // useEffect(()=>{
+  //   const fetchMinDeposit=async()=>{
+  //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
+  //     console.log("minimum value",data)
+  //     setMinimumDepositAmount(data);
+  //   }
+  //   const fetchMaxDeposit=async()=>{
+  //     const data=await getMaximumDepositAmount("r"+currentCollateralCoin);
+  //     setmaximumDepositAmount(data);
+  //   }
+  //   fetchMaxDeposit();
+
+  //   fetchMinDeposit();
+
+  //     // setMinimumDepositAmount(2);
+
+  // },[currentCollateralCoin])
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const protocolStatsRedux = useSelector(selectProtocolStats);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
@@ -761,18 +770,25 @@ const BorrowModal = ({
 
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
   const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
+  const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
+  console.log(minLoanAmounts)
   useEffect(()=>{
-    const fetchMinLoanAmount=async()=>{
-      const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
-      setMinimumLoanAmount(data);
-    }
-    const fetchMaxLoanAmount=async()=>{
-      const data=await getMaximumLoanAmount("d"+currentBorrowCoin);
-      setMaximumLoanAmount(data);
-    }
-    fetchMaxLoanAmount();
-    fetchMinLoanAmount();
-  },[currentBorrowCoin])
+    setMinimumLoanAmount(minLoanAmounts["d"+currentBorrowCoin])
+    setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
+  },[currentBorrowCoin,maxLoanAmounts,minLoanAmounts])
+  // useEffect(()=>{
+  //   const fetchMinLoanAmount=async()=>{
+  //     const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
+  //     setMinimumLoanAmount(data);
+  //   }
+  //   const fetchMaxLoanAmount=async()=>{
+  //     const data=await getMaximumLoanAmount("d"+currentBorrowCoin);
+  //     setMaximumLoanAmount(data);
+  //   }
+  //   fetchMaxLoanAmount();
+  //   fetchMinLoanAmount();
+  // },[currentBorrowCoin])
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
@@ -1742,6 +1758,8 @@ const BorrowModal = ({
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
                           ? "#CF222E"
+                          :amount>0
+                          ?"#00D395"
 
                           : inputBorrowAmountUSD == 0
                           ? "white"
