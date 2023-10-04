@@ -83,7 +83,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { getMinimumDepositAmount,getMaximumDepositAmount } from "@/Blockchain/scripts/Rewards";
 
 import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
@@ -742,12 +742,20 @@ const StakeUnstakeModal = ({
     !nav ? rcoinValue : "rUSDT"
   );
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+ 
   useEffect(()=>{
     const fetchMinDeposit=async()=>{
       const data=await getMinimumDepositAmount("r"+currentSelectedStakeCoin)
       setMinimumDepositAmount(data);
     }
+    const fetchMaxDeposit=async()=>{
+      const data=await getMaximumDepositAmount("r"+currentSelectedStakeCoin);
+      setmaximumDepositAmount(data);
+    }
     fetchMinDeposit();
+    fetchMaxDeposit();
+
 
     // setMinimumDepositAmount(2);
 
@@ -1378,7 +1386,7 @@ const StakeUnstakeModal = ({
                               userDeposit?.find(
                                 (item: any) =>
                                   item?.rToken == currentSelectedStakeCoin
-                              )?.rTokenFreeParsed != 0) && rTokenAmount<minimumDepositAmount && rTokenAmount>0
+                              )?.rTokenFreeParsed != 0) && (rTokenAmount<minimumDepositAmount || rTokenAmount>maximumDepositAmount)&& rTokenAmount>0
                               ? "1px solid #CF222E"
                               //do max 1209
                               : rTokenAmount > 0 &&
@@ -1424,7 +1432,7 @@ const StakeUnstakeModal = ({
                                   userDeposit?.find(
                                     (item: any) =>
                                       item?.rToken == currentSelectedStakeCoin
-                                  )?.rTokenFreeParsed != 0 )&& rTokenAmount<minimumDepositAmount && rTokenAmount>0)
+                                  )?.rTokenFreeParsed != 0 )&& (rTokenAmount<minimumDepositAmount || rTokenAmount>maximumDepositAmount) && rTokenAmount>0)
                                   ? "#CF222E"
                                   : rTokenAmount == 0
                                   ? "white"
@@ -1462,7 +1470,7 @@ const StakeUnstakeModal = ({
                                 userDeposit?.find(
                                   (item: any) =>
                                     item?.rToken == currentSelectedStakeCoin
-                                )?.rTokenFreeParsed != 0)&&rTokenAmount<minimumDepositAmount && rTokenAmount>0
+                                )?.rTokenFreeParsed != 0)&&(rTokenAmount<minimumDepositAmount || rTokenAmount>maximumDepositAmount) && rTokenAmount>0
                                 ? "#CF222E"
                                 : rTokenAmount == 0
                                 ? "#0969DA"
@@ -1519,6 +1527,12 @@ const StakeUnstakeModal = ({
                                       item?.rToken == currentSelectedStakeCoin
                                   )?.rTokenFreeParsed != 0)&&rTokenAmount <minimumDepositAmount 
                                   ? `less than min amount`
+                                  :(!isValid(currentSelectedStakeCoin) &&
+                                  userDeposit?.find(
+                                    (item: any) =>
+                                      item?.rToken == currentSelectedStakeCoin
+                                  )?.rTokenFreeParsed != 0)&&rTokenAmount >maximumDepositAmount 
+                                  ? `more than max amount`
                                   : "Invalid Input"}{" "}
                               </Text>
                             </Text>
@@ -2041,7 +2055,7 @@ const StakeUnstakeModal = ({
                       userDeposit?.find(
                         (item: any) =>
                           item?.rToken == currentSelectedStakeCoin
-                      )?.rTokenFreeParsed != 0) && rTokenAmount > 0 && (rTokenAmount>0 && rTokenAmount>=minimumDepositAmount) && rTokenAmount <= walletBalance ? (
+                      )?.rTokenFreeParsed != 0) && rTokenAmount > 0 && (rTokenAmount>0 && (rTokenAmount>=minimumDepositAmount|| rTokenAmount<=maximumDepositAmount)) && rTokenAmount <= walletBalance ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (

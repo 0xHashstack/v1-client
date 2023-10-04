@@ -23,7 +23,7 @@ import {
 
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
-import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { getMinimumDepositAmount,getMaximumDepositAmount } from "@/Blockchain/scripts/Rewards";
 
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
@@ -278,12 +278,20 @@ const BorrowModal = ({
     coin ? coin?.name : "BTC"
   );
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  
   useEffect(()=>{
     const fetchMinDeposit=async()=>{
       const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
       console.log("minimum value",data)
       setMinimumDepositAmount(data);
     }
+    const fetchMaxDeposit=async()=>{
+      const data=await getMaximumDepositAmount("r"+currentCollateralCoin);
+      setmaximumDepositAmount(data);
+    }
+    fetchMaxDeposit();
+
     fetchMinDeposit();
 
       // setMinimumDepositAmount(2);
@@ -1196,7 +1204,7 @@ const BorrowModal = ({
                       ? "#CF222E"
                       : rTokenAmount < 0
                       ? "#CF222E"
-                      :(rTokenAmount>0 && rTokenAmount<minimumDepositAmount)
+                      :(rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount))
                       ? "#CF222E"
 
                       : rTokenAmount == 0
@@ -1208,7 +1216,7 @@ const BorrowModal = ({
                       ? "1px solid #CF222E"
                       : rTokenAmount < 0
                       ? "1px solid #CF222E"
-                      :rTokenAmount>0 && rTokenAmount<minimumDepositAmount
+                      :rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount)
                       ? "1px solid #CF222E"
                       // DO MAX CHECK 1209
                       : rTokenAmount > 0 && rTokenAmount <= walletBalance
@@ -1254,7 +1262,7 @@ const BorrowModal = ({
                         ? "#CF222E"
                         : rTokenAmount < 0
                         ? "#CF222E"
-                        :rTokenAmount>0 && rTokenAmount<minimumDepositAmount
+                        :rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount)
                         ? "#CF222E"
 
                         : rTokenAmount == 0
@@ -1278,7 +1286,7 @@ const BorrowModal = ({
                     MAX
                   </Button>
                 </Box>
-                {rTokenAmount > walletBalance || rTokenAmount < 0 || (rTokenAmount>0 && rTokenAmount<minimumDepositAmount) ? (
+                {rTokenAmount > walletBalance || rTokenAmount < 0 || (rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount))? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -1298,6 +1306,8 @@ const BorrowModal = ({
                           ? "Amount exceeds balance"
                           :rTokenAmount <minimumDepositAmount 
                           ? `less than min amount`
+                          :rTokenAmount>maximumDepositAmount
+                          ?'more than max amount'
                           : "Invalid"}
                       </Text>
                     </Text>
@@ -2399,7 +2409,7 @@ const BorrowModal = ({
             inputBorrowAmount<maximumLoanAmount &&
             rTokenAmount <= walletBalance &&
             // rTokenAmount<
-            (rTokenAmount>0 && rTokenAmount>=minimumDepositAmount) &&
+            (rTokenAmount>0 && rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount) &&
             // do max 1209
             inputBorrowAmount <= currentAvailableReserves &&
             inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD ? (
