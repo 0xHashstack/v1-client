@@ -26,7 +26,7 @@ import {
 
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
-import { getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { getMinimumDepositAmount,getMaximumDepositAmount } from "@/Blockchain/scripts/Rewards";
 
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
@@ -669,12 +669,18 @@ const TradeModal = ({
     rTokenAmount,
   ]);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
 
   useEffect(()=>{
     const fetchMinDeposit=async()=>{
       const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
       setMinimumDepositAmount(data);
     }
+    const fetchMaxDeposit=async()=>{
+      const data=await getMaximumDepositAmount("r"+currentCollateralCoin);
+      setmaximumDepositAmount(data);
+    }
+    fetchMaxDeposit();
     fetchMinDeposit();
     // setMinimumDepositAmount(2)
   },[currentCollateralCoin])
@@ -1526,7 +1532,7 @@ const TradeModal = ({
                             ? "1px solid #CF222E"
                             : isNaN(inputCollateralAmount)
                               ? "1px solid #CF222E"
-                              :inputCollateralAmount>0 && inputCollateralAmount<minimumDepositAmount
+                              :inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount)
                               ? "1px solid #CF222E"
                               
                               : inputCollateralAmount > 0 &&
@@ -1560,7 +1566,7 @@ const TradeModal = ({
                                 ? "#CF222E"
                                 : inputCollateralAmount < 0
                                   ? "#CF222E"
-                          :inputCollateralAmount<minimumDepositAmount && inputCollateralAmount>0
+                          :(inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount) && inputCollateralAmount>0
                                   ? "#CF222E"
                                   
                                   : inputCollateralAmount == 0
@@ -1587,7 +1593,7 @@ const TradeModal = ({
                             ? "#CF222E"
                             : isNaN(inputCollateralAmount)
                               ? "#CF222E"
-                        :inputCollateralAmount<minimumDepositAmount && inputCollateralAmount>0
+                        :(inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount) && inputCollateralAmount>0
                         ? "#CF222E"
 
                               : inputCollateralAmount < 0
@@ -1614,7 +1620,7 @@ const TradeModal = ({
                     </Box>
                     {inputCollateralAmount > walletBalance ||
                       inputCollateralAmount < 0 ||
-                      (inputCollateralAmount<minimumDepositAmount && inputCollateralAmount>0) ||
+                      ((inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount)&& inputCollateralAmount>0) ||
                       isNaN(inputCollateralAmount) ? (
                       <Text
                         display="flex"
@@ -1635,6 +1641,8 @@ const TradeModal = ({
                               ? "Amount exceeds balance"
                               :inputCollateralAmount <minimumDepositAmount 
                               ? `less than min amount`
+                              :inputCollateralAmount>maximumDepositAmount
+                              ?'more than max amount'
                               //do max 1209
                               : "Invalid Input"}
                           </Text>
@@ -3258,6 +3266,7 @@ const TradeModal = ({
                   inputBorrowAmount <= currentAvailableReserves &&
                   inputBorrowAmount > 0 &&
                   inputCollateralAmount >= minimumDepositAmount &&
+                  inputCollateralAmount<=maximumDepositAmount &&
                   inputCollateralAmount <= walletBalance &&
                   inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD &&
                   currentDapp != "Select a dapp" &&
