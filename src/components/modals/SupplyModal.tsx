@@ -1121,7 +1121,7 @@ const SupplyModal = ({
                     MAX
                   </Button>
                 </Box>
-                {depositAmount > walletBalance ||
+                {depositAmount > walletBalance || depositAmount>maximumDepositAmount ||
                 depositAmount < 0 ||                       (depositAmount<minimumDepositAmount && depositAmount>0) ||
                 isNaN(depositAmount) ? (
                   <Text
@@ -1142,7 +1142,12 @@ const SupplyModal = ({
                       <Text ml="0.3rem">
                         {depositAmount > walletBalance
                           ? "Amount exceeds balance"
-                          : "Less than min amount"}
+                          :depositAmount>maximumDepositAmount 
+                          ? "More than max amount"
+                          :depositAmount<minimumDepositAmount
+                          ?"Less than min amount":
+                          ""
+                        }
                       </Text>
                     </Text>
                     <Text
