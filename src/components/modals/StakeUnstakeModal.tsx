@@ -748,6 +748,9 @@ const StakeUnstakeModal = ({
       setMinimumDepositAmount(data);
     }
     fetchMinDeposit();
+
+    // setMinimumDepositAmount(2);
+
   },[currentSelectedStakeCoin])
   const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] = useState(
     !nav ? rcoinValue : "rUSDT"
@@ -1497,6 +1500,8 @@ const StakeUnstakeModal = ({
                                 (rtokenWalletBalance == 0 &&
                                   rTokenAmount > walletBalance)
                                   ? "Amount exceeds balance"
+                                  :rTokenAmount <minimumDepositAmount 
+                                  ? `less than min amount`
                                   : "Invalid Input"}{" "}
                               </Text>
                             </Text>
@@ -1924,7 +1929,7 @@ const StakeUnstakeModal = ({
                       userDeposit?.find(
                         (item: any) => item?.rToken == currentSelectedStakeCoin
                       )?.rTokenFreeParsed ? (
-                        rTokenAmount > 0 && (rTokenAmount>0 && rTokenAmount>minimumDepositAmount)  &&
+                        rTokenAmount > 0 && (rTokenAmount>0 && rTokenAmount>=minimumDepositAmount)  &&
                         rTokenAmount <= rtokenWalletBalance ? (
                           buttonId == 1 ? (
                             <SuccessButton successText="Stake success" />

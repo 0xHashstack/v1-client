@@ -676,6 +676,7 @@ const TradeModal = ({
       setMinimumDepositAmount(data);
     }
     fetchMinDeposit();
+    // setMinimumDepositAmount(2)
   },[currentCollateralCoin])
   const handleBorrowAndSpend = async () => {
     try {
@@ -1632,6 +1633,9 @@ const TradeModal = ({
                           <Text ml="0.3rem">
                             {inputCollateralAmount > walletBalance
                               ? "Amount exceeds balance"
+                              :inputCollateralAmount <minimumDepositAmount 
+                              ? `less than min amount`
+                              //do max 1209
                               : "Invalid Input"}
                           </Text>
                         </Text>
@@ -3253,7 +3257,7 @@ const TradeModal = ({
                   inputBorrowAmount<=maximumLoanAmount &&
                   inputBorrowAmount <= currentAvailableReserves &&
                   inputBorrowAmount > 0 &&
-                  inputCollateralAmount > minimumDepositAmount &&
+                  inputCollateralAmount >= minimumDepositAmount &&
                   inputCollateralAmount <= walletBalance &&
                   inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD &&
                   currentDapp != "Select a dapp" &&

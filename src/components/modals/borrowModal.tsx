@@ -279,13 +279,16 @@ const BorrowModal = ({
   );
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   useEffect(()=>{
-    // const fetchMinDeposit=async()=>{
-    //   const data=await getMinimumDepositAmount("r"+inputCollateralAmount)
-    //   console.log("minimum value",data)
-      setMinimumDepositAmount(2);
-    // }
-    // fetchMinDeposit();
-  },[inputCollateralAmount])
+    const fetchMinDeposit=async()=>{
+      const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
+      console.log("minimum value",data)
+      setMinimumDepositAmount(data);
+    }
+    fetchMinDeposit();
+
+      // setMinimumDepositAmount(2);
+
+  },[currentCollateralCoin])
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const protocolStatsRedux = useSelector(selectProtocolStats);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
@@ -1193,6 +1196,9 @@ const BorrowModal = ({
                       ? "#CF222E"
                       : rTokenAmount < 0
                       ? "#CF222E"
+                      :rTokenAmount>0 && rTokenAmount<minimumDepositAmount
+                      ? "#CF222E"
+
                       : rTokenAmount == 0
                       ? "white"
                       : "#00D395"
@@ -1202,6 +1208,9 @@ const BorrowModal = ({
                       ? "1px solid #CF222E"
                       : rTokenAmount < 0
                       ? "1px solid #CF222E"
+                      :rTokenAmount>0 && rTokenAmount<minimumDepositAmount
+                      ? "1px solid #CF222E"
+                      // DO MAX CHECK 1209
                       : rTokenAmount > 0 && rTokenAmount <= walletBalance
                       ? "1px solid #00D395"
                       : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
@@ -1245,6 +1254,9 @@ const BorrowModal = ({
                         ? "#CF222E"
                         : rTokenAmount < 0
                         ? "#CF222E"
+                        :rTokenAmount>0 && rTokenAmount<minimumDepositAmount
+                        ? "#CF222E"
+
                         : rTokenAmount == 0
                         ? "#0969DA"
                         : "#00D395"
@@ -1266,7 +1278,7 @@ const BorrowModal = ({
                     MAX
                   </Button>
                 </Box>
-                {rTokenAmount > walletBalance || rTokenAmount < 0 ? (
+                {rTokenAmount > walletBalance || rTokenAmount < 0 || (rTokenAmount>0 && rTokenAmount<minimumDepositAmount) ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -1284,6 +1296,8 @@ const BorrowModal = ({
                       <Text ml="0.3rem">
                         {rTokenAmount > walletBalance
                           ? "Amount exceeds balance"
+                          :rTokenAmount <minimumDepositAmount 
+                          ? `less than min amount`
                           : "Invalid"}
                       </Text>
                     </Text>
@@ -2384,6 +2398,9 @@ const BorrowModal = ({
             inputBorrowAmount>=minimumLoanAmount &&
             inputBorrowAmount<maximumLoanAmount &&
             rTokenAmount <= walletBalance &&
+            // rTokenAmount<
+            (rTokenAmount>0 && rTokenAmount>=minimumDepositAmount) &&
+            // do max 1209
             inputBorrowAmount <= currentAvailableReserves &&
             inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD ? (
               // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
