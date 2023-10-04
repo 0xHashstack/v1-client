@@ -1843,7 +1843,7 @@ const StakeUnstakeModal = ({
                             )} */}
                           </Text>
                         </Text>
-                        <Text
+                        {/* <Text
                           color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
@@ -1881,7 +1881,7 @@ const StakeUnstakeModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">$ 0.91</Text>
-                        </Text>
+                        </Text> */}
                         <Text
                           color="#676D9A"
                           display="flex"
@@ -2687,7 +2687,7 @@ const StakeUnstakeModal = ({
                             <Text color="#676D9A">0</Text>
                           )}
                         </Text>
-                        <Text
+                        {/* <Text
                           color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
@@ -2725,7 +2725,7 @@ const StakeUnstakeModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">$ 0.91</Text>
-                        </Text>
+                        </Text> */}
                         <Text
                           color="#676D9A"
                           display="flex"

@@ -3024,7 +3024,7 @@ const TradeModal = ({
                       {TransactionFees.spend}%
                     </Text>
                   </Box>
-
+{/* 
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
                       <Text color="#676D9A" fontSize="xs">
@@ -3053,7 +3053,7 @@ const TradeModal = ({
                     <Text color="#676D9A" fontSize="xs">
                       $0.91
                     </Text>
-                  </Box>
+                  </Box> */}
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
                       <Text color="#676D9A" fontSize="xs">
