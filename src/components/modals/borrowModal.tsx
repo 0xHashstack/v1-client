@@ -1196,7 +1196,7 @@ const BorrowModal = ({
                       ? "#CF222E"
                       : rTokenAmount < 0
                       ? "#CF222E"
-                      :rTokenAmount>0 && rTokenAmount<minimumDepositAmount
+                      :(rTokenAmount>0 && rTokenAmount<minimumDepositAmount)
                       ? "#CF222E"
 
                       : rTokenAmount == 0
