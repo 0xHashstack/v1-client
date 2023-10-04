@@ -688,6 +688,7 @@ const StakeUnstakeModal = ({
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
+ 
   const coins = [
     { BTC: "rBTC" },
     { USDT: "rUSDT" },
@@ -746,11 +747,11 @@ const StakeUnstakeModal = ({
  
   useEffect(()=>{
     const fetchMinDeposit=async()=>{
-      const data=await getMinimumDepositAmount("r"+currentSelectedStakeCoin)
+      const data=await getMinimumDepositAmount(currentSelectedStakeCoin)
       setMinimumDepositAmount(data);
     }
     const fetchMaxDeposit=async()=>{
-      const data=await getMaximumDepositAmount("r"+currentSelectedStakeCoin);
+      const data=await getMaximumDepositAmount(currentSelectedStakeCoin);
       setmaximumDepositAmount(data);
     }
     fetchMinDeposit();
@@ -851,6 +852,8 @@ const StakeUnstakeModal = ({
     setUnstakeRToken(coin ? rcoinValue : "rBTC");
     setTransactionStarted(false);
     setUnstakeTransactionStarted(false);
+    setRTokenAmount(0);
+    setDepositAmount(0);
     setUnstakeWalletBalance(
       stakingShares[
         currentSelectedUnstakeCoin[0] == "r"
@@ -890,7 +893,6 @@ const StakeUnstakeModal = ({
   );
   // console.log(activeModal);
 
-  useEffect(() => {});
   // useEffect(()=>{
   //   const fetchrTokens=async()=>{
   //     const data=await getEstrTokens("rUSDT",30.0);
@@ -900,6 +902,7 @@ const StakeUnstakeModal = ({
 
   useEffect(() => {
     setRTokenAmount(0);
+    setDepositAmount(0);
     setSliderValue(0);
   }, [currentSelectedStakeCoin]);
 
@@ -1383,17 +1386,19 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenAmount < 0
                               ? "1px solid #CF222E"
-                              : (rTokenAmount<minimumDepositAmount && rtokenWalletBalance==0 && rTokenAmount>0 )
+                              : (rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )
+                              ? "1px solid #CF222E"
+                              : (rtokenWalletBalance==0 && (depositAmount>0&& depositAmount>maximumDepositAmount) )
                               ? "1px solid #CF222E"
                               //do max 1209
-                              : rTokenAmount > 0 && 
+                              : rtokenWalletBalance!=0 &&( rTokenAmount > 0 && 
                                 (rTokenAmount <=
                                   Number(
                                     getBalance(currentSelectedStakeCoin)
                                   ) ||
-                                  rTokenAmount <= walletBalance)
+                                  rTokenAmount <= walletBalance))
                               ? "1px solid #00D395"
-                              : "1px solid #2B2F35 "
+                              : "1px solid #2B2F35"
                           }`}
                           borderRadius="6px"
                           display="flex"
@@ -1420,16 +1425,11 @@ const StakeUnstakeModal = ({
                                     Number(
                                       getBalance(currentSelectedStakeCoin)
                                     )) ||
-                                (rtokenWalletBalance == 0 &&
-                                  rTokenAmount > walletBalance)
+                                ((rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) ))
                                   ? "#CF222E"
                                   : rTokenAmount < 0
                                   ? "#CF222E"
-                                  :((!isValid(currentSelectedStakeCoin) &&
-                                  userDeposit?.find(
-                                    (item: any) =>
-                                      item?.rToken == currentSelectedStakeCoin
-                                  )?.rTokenFreeParsed != 0 )&& (rTokenAmount<minimumDepositAmount || rTokenAmount>maximumDepositAmount) && rTokenAmount>0)
+                                  : ((rtokenWalletBalance==0 && (depositAmount>0&& depositAmount>maximumDepositAmount) ))
                                   ? "#CF222E"
                                   : rTokenAmount == 0
                                   ? "white"
@@ -1463,11 +1463,9 @@ const StakeUnstakeModal = ({
                                 : rTokenAmount < 0
 
                                 ? "#CF222E"
-                                :(  !isValid(currentSelectedStakeCoin) &&
-                                userDeposit?.find(
-                                  (item: any) =>
-                                    item?.rToken == currentSelectedStakeCoin
-                                )?.rTokenFreeParsed != 0)&&(rTokenAmount<minimumDepositAmount || rTokenAmount>maximumDepositAmount) && rTokenAmount>0
+                                :((rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )) 
+                                ? "#CF222E"
+                                :((rtokenWalletBalance==0 && (depositAmount>0&& depositAmount>maximumDepositAmount) )) 
                                 ? "#CF222E"
                                 : rTokenAmount == 0
                                 ? "#0969DA"
@@ -1498,6 +1496,8 @@ const StakeUnstakeModal = ({
                             Number(getBalance(currentSelectedStakeCoin))) ||
                         (rtokenWalletBalance == 0 &&
                           rTokenAmount > walletBalance) ||
+                          (rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )||
+                          ( rtokenWalletBalance==0 && (depositAmount>0 && depositAmount>maximumDepositAmount))||
                         rTokenAmount < 0 ? (
                           <Text
                             display="flex"
@@ -1514,22 +1514,14 @@ const StakeUnstakeModal = ({
                                 <SmallErrorIcon />{" "}
                               </Text>
                               <Text ml="0.3rem">
-                                {rTokenAmount > rtokenWalletBalance ||
-                                (rtokenWalletBalance == 0 &&
+                                {rtokenWalletBalance!=0 && rTokenAmount > rtokenWalletBalance ||
+                                (rtokenWalletBalance != 0 &&
                                   rTokenAmount > walletBalance)
                                   ? "Amount exceeds balance"
-                                  :(!isValid(currentSelectedStakeCoin) &&
-                                  userDeposit?.find(
-                                    (item: any) =>
-                                      item?.rToken == currentSelectedStakeCoin
-                                  )?.rTokenFreeParsed != 0)&&rTokenAmount <minimumDepositAmount 
-                                  ? `less than min amount`
-                                  :(!isValid(currentSelectedStakeCoin) &&
-                                  userDeposit?.find(
-                                    (item: any) =>
-                                      item?.rToken == currentSelectedStakeCoin
-                                  )?.rTokenFreeParsed != 0)&&rTokenAmount >maximumDepositAmount 
-                                  ? `more than max amount`
+                                  :(rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )
+                                  ? `Less than min amount`
+                                  :(rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount >maximumDepositAmount) 
+                                  ? `More than max amount`
                                   : "Invalid Input"}{" "}
                               </Text>
                             </Text>
