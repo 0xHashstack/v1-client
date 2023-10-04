@@ -889,7 +889,7 @@ const SwapModal = ({
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -927,7 +927,7 @@ const SwapModal = ({
                     />
                   </Box>
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -940,7 +940,7 @@ const SwapModal = ({
                 <Box display="flex">
                   <Box display="flex" gap="3px">
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -951,7 +951,7 @@ const SwapModal = ({
                       <SmallEth />
                     </Box>
                     <Box
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -976,7 +976,7 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -987,7 +987,7 @@ const SwapModal = ({
               {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1013,7 +1013,7 @@ const SwapModal = ({
                 <Box
                   display="flex"
                   gap="2"
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1035,7 +1035,7 @@ const SwapModal = ({
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1063,7 +1063,7 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1071,10 +1071,10 @@ const SwapModal = ({
                   {TransactionFees.spend}%
                 </Text>
               </Box>
-              <Box display="flex" justifyContent="space-between" mb="0.3rem">
+              {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1102,18 +1102,18 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
                 >
                   $ 0.91
                 </Text>
-              </Box>
+              </Box> */}
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1141,7 +1141,7 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1167,7 +1167,7 @@ const SwapModal = ({
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1195,7 +1195,7 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1221,7 +1221,7 @@ const SwapModal = ({
               <Box display="flex" justifyContent="space-between">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1249,7 +1249,7 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"

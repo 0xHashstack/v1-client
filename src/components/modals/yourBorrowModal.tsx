@@ -1515,7 +1515,7 @@ const YourBorrowModal = ({
                 )}
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+            {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -1553,7 +1553,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -1826,7 +1826,7 @@ const YourBorrowModal = ({
                 {TransactionFees.repay}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -1864,7 +1864,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -2022,7 +2022,7 @@ const YourBorrowModal = ({
                 {TransactionFees.repay}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#676D9A" fontSize="xs">
                   Gas estimate:{" "}
@@ -2050,7 +2050,7 @@ const YourBorrowModal = ({
               <Text color="#676D9A" fontSize="xs">
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -2154,7 +2154,7 @@ const YourBorrowModal = ({
                 {TransactionFees.convertToBorrowMarket}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+            {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -2192,7 +2192,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -2356,7 +2356,7 @@ const YourBorrowModal = ({
                 {TransactionFees.repay}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -2394,7 +2394,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -5526,7 +5526,7 @@ const YourBorrowModal = ({
                           )}
                         </Text>
                       </Text>
-                      <Text
+                      {/* <Text
                         display="flex"
                         justifyContent="space-between"
                         fontSize="12px"
@@ -5564,7 +5564,7 @@ const YourBorrowModal = ({
                           </Tooltip>
                         </Text>
                         <Text color="#676D9A">$ 0.91</Text>
-                      </Text>
+                      </Text> */}
                       <Text
                         display="flex"
                         justifyContent="space-between"

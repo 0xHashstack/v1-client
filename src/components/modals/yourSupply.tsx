@@ -1336,7 +1336,7 @@ const YourSupplyModal = ({
                           </Text>
                           <Text color="#676D9A">{TransactionFees.stake}%</Text>
                         </Text>
-                        <Text
+                        {/* <Text
                           color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
@@ -1374,7 +1374,7 @@ const YourSupplyModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">$ 0.91</Text>
-                        </Text>
+                        </Text> */}
                         <Text
                           color="#676D9A"
                           display="flex"
@@ -2188,7 +2188,7 @@ const YourSupplyModal = ({
                             {TransactionFees.withdrawSupply}%
                           </Text>
                         </Text>
-                        <Text
+                        {/* <Text
                           color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
@@ -2226,7 +2226,7 @@ const YourSupplyModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">$ 0.91</Text>
-                        </Text>
+                        </Text> */}
                       </Card>
                       {inputWithdrawlAmount > 0 &&
                       inputWithdrawlAmount <= withdrawWalletBalance ? (

@@ -1338,7 +1338,7 @@ const LiquidityProvisionModal = ({
                     {TransactionFees.spend}%
                   </Text>
                 </Box>
-                <Box display="flex" justifyContent="space-between" mb="0.3rem">
+                {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                   <Box display="flex">
                     <Text
                       color="#676D9A"
@@ -1376,7 +1376,7 @@ const LiquidityProvisionModal = ({
                   >
                     $ 0.91
                   </Text>
-                </Box>
+                </Box> */}
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
                   <Box display="flex">
                     <Text
