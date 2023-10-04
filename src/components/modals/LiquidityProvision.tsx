@@ -602,7 +602,7 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
+      console.log("getMySwapEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     }
   };

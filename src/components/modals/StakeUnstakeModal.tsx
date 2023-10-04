@@ -1341,6 +1341,7 @@ const StakeUnstakeModal = ({
                           color="#676D9A"
                           display="flex"
                           alignItems="center"
+                          mb="0.2rem"
                         >
                           <Text
                             mr="0.3rem"
@@ -1382,14 +1383,10 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenAmount < 0
                               ? "1px solid #CF222E"
-                              :(!isValid(currentSelectedStakeCoin) &&
-                              userDeposit?.find(
-                                (item: any) =>
-                                  item?.rToken == currentSelectedStakeCoin
-                              )?.rTokenFreeParsed != 0) && (rTokenAmount<minimumDepositAmount || rTokenAmount>maximumDepositAmount)&& rTokenAmount>0
+                              : (rTokenAmount<minimumDepositAmount && rtokenWalletBalance==0 && rTokenAmount>0 )
                               ? "1px solid #CF222E"
                               //do max 1209
-                              : rTokenAmount > 0 &&
+                              : rTokenAmount > 0 && 
                                 (rTokenAmount <=
                                   Number(
                                     getBalance(currentSelectedStakeCoin)
@@ -2051,11 +2048,7 @@ const StakeUnstakeModal = ({
                             }`}
                           </Button>
                         )
-                      ) : ( !isValid(currentSelectedStakeCoin) &&
-                      userDeposit?.find(
-                        (item: any) =>
-                          item?.rToken == currentSelectedStakeCoin
-                      )?.rTokenFreeParsed != 0) && rTokenAmount > 0 && (rTokenAmount>0 && (rTokenAmount>=minimumDepositAmount|| rTokenAmount<=maximumDepositAmount)) && rTokenAmount <= walletBalance ? (
+                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance && rTokenAmount>=minimumDepositAmount ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (

@@ -95,6 +95,7 @@ import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
 import { getMaximumDepositAmount, getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -114,7 +115,6 @@ const SupplyModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [toastId, setToastId] = useState<any>();
   const [uniqueID, setUniqueID] = useState(0);
-
   const {
     depositAmount,
     setDepositAmount,

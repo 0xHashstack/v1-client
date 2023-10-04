@@ -85,6 +85,11 @@ const SpendTable = () => {
   ];
   const { account, address, isConnected } = useAccount();
   const userLoans = useSelector(selectUserUnspentLoans);
+  
+  // console.log(getTokenFromAddress(
+  //   getDTokenFromAddress(number.toHex(loanData?.market))
+  //     ?.underlying_asset || ""
+  // )?.name)
   // const userLoans = null;
   // const [userLoans, setUserLoans] = useState<any>(null);
   // let userLoansRedux = useSelector(selectUserLoans);

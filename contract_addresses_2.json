@@ -680,12 +680,12 @@
           "maxLoan": "1275000000000000000000",
           "rToken": "0x19c981ec23aa9cbac1cc1eb7f92cf09ea2816db9cbd932e251c86a2e8fb725f",
           "dToken": "0x7eeed99c095f83716e465e2c52a3ec8f47b323041ddc4f97778ac0393b7f358",
-          "address": "0x0da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+          "address": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
           "CEXSymbol": "USDTDAI",
           "pontis_key": "19212080998863684",
           "mockPrice": 1,
           "ethereumAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
-          "NETWORK_TOKEN_ADDRESS": "0x0da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+          "NETWORK_TOKEN_ADDRESS": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
           "base_apr": "300",
           "apr_at_optimal_ur": "1500",
           "optimal_ur": "5000",
@@ -771,9 +771,9 @@
           "name": "dDAI",
           "symbol": "dDAI",
           "decimals": 18,
-          "underlying_asset": "0x0da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+          "underlying_asset": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
           "address": "0x7eeed99c095f83716e465e2c52a3ec8f47b323041ddc4f97778ac0393b7f358",
-          "NETWORK_TOKEN_ADDRESS": "0x0da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3"
+          "NETWORK_TOKEN_ADDRESS": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3"
         }
       ],
       "peripherals": {
