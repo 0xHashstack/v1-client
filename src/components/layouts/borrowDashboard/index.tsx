@@ -33,7 +33,7 @@ import {
 } from "@/store/slices/readDataSlice";
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
-import { getJediEstimatedLiqALiqBfromLp } from "@/Blockchain/scripts/l3interaction";
+import { getJediEstimatedLiqALiqBfromLp, getMySwapEstimatedLiqALiqBfromLp } from "@/Blockchain/scripts/l3interaction";
 import {
   getTokenFromAddress,
   tokenAddressMap,
@@ -309,14 +309,33 @@ const BorrowDashboard = ({
           Borrows[i]?.currentLoanMarketAddress,
           Borrows[i]?.loanMarket
         );
+        // if(Borrows[i]?.l3App=="J"){
 
-        const data = getJediEstimatedLiqALiqBfromLp(
-          Borrows[i]?.currentLoanAmount,
-          Borrows[i]?.loanId,
-          Borrows[i]?.currentLoanMarketAddress,
-          Borrows[i]?.loanMarket
-        );
-        promises.push(data);
+        // }
+        // if(Borrows[i]?.l3App){
+
+        // }
+        console.log(Borrows[i]?.l3App,"app")
+        if(Borrows[i]?.l3App=="JEDI_SWAP"){
+          const data = getJediEstimatedLiqALiqBfromLp(
+            Borrows[i]?.currentLoanAmount,
+            Borrows[i]?.loanId,
+            Borrows[i]?.currentLoanMarketAddress,
+            Borrows[i]?.loanMarket
+          );
+          promises.push(data);
+          console.log("split data", data, "loanId", Borrows[i]?.loanId);
+        }else if(Borrows[i]?.l3App=="MY_SWAP"){
+          const data = getMySwapEstimatedLiqALiqBfromLp(
+            Borrows[i]?.currentLoanAmount,
+            Borrows[i]?.loanId,
+            Borrows[i]?.currentLoanMarketAddress,
+            Borrows[i]?.loanMarket
+          );
+          promises.push(data);
+          console.log("split data", data, "loanId", Borrows[i]?.loanId);
+        }
+
         // console.log(
         //   getTokenFromAddress(processAddress(data?.tokenAAddress)),
         //   "all split amount - ",
@@ -327,7 +346,7 @@ const BorrowDashboard = ({
         //   " res -",
         //   data
         // );
-        console.log("split data", data, "loanId", Borrows[i]?.loanId);
+        
 
         // if (data) {
         //   temp.push({

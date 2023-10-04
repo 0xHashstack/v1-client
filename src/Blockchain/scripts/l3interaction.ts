@@ -357,7 +357,7 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
   // ]);
 
   try {
-    const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
+    const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
     console.log("split before calling");
     const res = await l3Contract.call(
       "get_myswap_estimated_liqA_liqB_from_lp",
@@ -419,7 +419,7 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
     };
   } catch (error) {
     console.log(
-      "split error in getJediEstimatedLiqALiqBfromLp: ",
+      "split error in getMySwapEstimatedLiqALiqBfromLp: ",
       error,
       "loanId",
       loanId
