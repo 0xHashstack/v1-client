@@ -1279,14 +1279,14 @@ const YourSupplyModal = ({
                           }}
                         />
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           fontWeight="400"
                           color="#B1B0B5"
                           mt="1rem"
+                          width="100%"
                           lineHeight="20px"
                         >
-                          Ticking would stake the received rTokens. unchecking
-                          wouldn&apos;t stake rTokens
+                          I would like to stake the rTokens.
                         </Text>
                       </Box>
 
