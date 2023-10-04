@@ -633,7 +633,7 @@ const FeedbackModal = ({
                       fontSize="16px"
                       fontStyle="normal"
                     >
-                      We Really appreciate your feedback.
+                      We really appreciate your feedback.
                     </Text>
                   </Box>
                 ) : (
@@ -735,7 +735,7 @@ const FeedbackModal = ({
                       fontSize="16px"
                       fontStyle="normal"
                     >
-                      We Really appreciate your feedback.
+                      We really appreciate your feedback.
                     </Text>
                   </Box>
                 ) : (
@@ -934,7 +934,7 @@ const FeedbackModal = ({
                       fontSize="16px"
                       fontStyle="normal"
                     >
-                      We Really appreciate your feedback.
+                      We really appreciate your feedback.
                     </Text>
                   </Box>
                 ) : (
