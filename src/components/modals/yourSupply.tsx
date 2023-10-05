@@ -1154,10 +1154,15 @@ const YourSupplyModal = ({
                                 setinputSupplyAmount(walletBalance);
                                 setDepositAmount(walletBalance);
                               } else {
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputSupplyAmount(ans);
-                                setDepositAmount(ans);
+                                if(ans<10){
+                                  setinputSupplyAmount(ans);
+                                  setDepositAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputSupplyAmount(ans);
+                                  setDepositAmount(ans);
+                                }
                               }
                             }}
                             isDisabled={transactionStarted == true}
@@ -1274,14 +1279,14 @@ const YourSupplyModal = ({
                           }}
                         />
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           fontWeight="400"
                           color="#B1B0B5"
                           mt="1rem"
+                          width="100%"
                           lineHeight="20px"
                         >
-                          Ticking would stake the received rTokens. unchecking
-                          wouldn&apos;t stake rTokens
+                          I would like to stake the rTokens.
                         </Text>
                       </Box>
 
@@ -1331,7 +1336,7 @@ const YourSupplyModal = ({
                           </Text>
                           <Text color="#676D9A">{TransactionFees.stake}%</Text>
                         </Text>
-                        <Text
+                        {/* <Text
                           color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
@@ -1369,7 +1374,7 @@ const YourSupplyModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">$ 0.91</Text>
-                        </Text>
+                        </Text> */}
                         <Text
                           color="#676D9A"
                           display="flex"
@@ -1880,9 +1885,13 @@ const YourSupplyModal = ({
                                 setinputWithdrawlAmount(withdrawWalletBalance);
                               } else {
                                 var ans = (val / 100) * withdrawWalletBalance;
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputWithdrawlAmount(ans);
+                                if(ans<10){
+                                  setinputWithdrawlAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputWithdrawlAmount(ans);
+                                }
                               }
                             }}
                             focusThumbOnChange={false}
@@ -2179,7 +2188,7 @@ const YourSupplyModal = ({
                             {TransactionFees.withdrawSupply}%
                           </Text>
                         </Text>
-                        <Text
+                        {/* <Text
                           color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
@@ -2217,7 +2226,7 @@ const YourSupplyModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">$ 0.91</Text>
-                        </Text>
+                        </Text> */}
                       </Card>
                       {inputWithdrawlAmount > 0 &&
                       inputWithdrawlAmount <= withdrawWalletBalance ? (

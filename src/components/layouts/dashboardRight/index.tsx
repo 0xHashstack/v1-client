@@ -232,7 +232,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!coinPrices[idx] ? (
+                    {coinPrices[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -263,7 +263,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!totalBorrows[idx] ? (
+                    {totalBorrows[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -294,7 +294,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!utilization[idx] ? (
+                    {utilization[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -325,7 +325,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!borrowAPRs[idx] ? (
+                    {borrowAPRs[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"

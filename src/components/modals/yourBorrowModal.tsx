@@ -1515,7 +1515,7 @@ const YourBorrowModal = ({
                 )}
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+            {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -1553,7 +1553,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -1826,7 +1826,7 @@ const YourBorrowModal = ({
                 {TransactionFees.repay}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -1864,7 +1864,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -2022,7 +2022,7 @@ const YourBorrowModal = ({
                 {TransactionFees.repay}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#676D9A" fontSize="xs">
                   Gas estimate:{" "}
@@ -2050,7 +2050,7 @@ const YourBorrowModal = ({
               <Text color="#676D9A" fontSize="xs">
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -2154,7 +2154,7 @@ const YourBorrowModal = ({
                 {TransactionFees.convertToBorrowMarket}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+            {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -2192,7 +2192,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -2356,7 +2356,7 @@ const YourBorrowModal = ({
                 {TransactionFees.repay}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -2394,7 +2394,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -2575,6 +2575,9 @@ const YourBorrowModal = ({
   const [tabValue, setTabValue] = useState(1);
   const [currentTokenSelected, setcurrentTokenSelected] = useState("rToken");
   const tokensArray = ["rToken", "Native Token"];
+  useEffect(()=>{
+    setCurrentPoolCoin('Select a pool')
+  },[currentDapp])
   const resetStates = () => {
     try {
       setRadioValue("1");
@@ -2691,7 +2694,29 @@ const YourBorrowModal = ({
       setCurrentSplit(split);
     }
   };
-
+  const [myswapPools, setmyswapPools] = useState([]);
+  useEffect(()=>{
+    function findSideForMember(array:any, token:any) {
+      const data:any=[];
+      for (const obj of array) {
+          const keyvalue = obj.keyvalue;
+          const [tokenA, tokenB] = keyvalue.split('/');
+          
+          if (tokenA === token) {
+            console.log(tokenB,"tokenB");
+              data.push(tokenB)
+          } else if (tokenB === token) {
+            console.log(tokenA,"tokenA")
+              data.push(tokenA);
+          }
+      }
+      setmyswapPools(data);
+       // Token not found in any "keyvalue" pairs
+  }
+  if(mySwapPoolPairs){
+    findSideForMember(mySwapPoolPairs,currentBorrowMarketCoin1.slice(1));
+  }
+  },[currentBorrowMarketCoin1,mySwapPoolPairs])
   const fetchLPAmount = async () => {
     if (
       spendType !== "UNSPENT" ||
@@ -3352,7 +3377,7 @@ const YourBorrowModal = ({
                                       ? "1px solid #CF222E"
                                       : repayAmount > 0 &&
                                         repayAmount <= walletBalance1
-                                        ? "1px solid #1A7F37"
+                                        ? "1px solid #00D395"
                                         : "1px solid #2B2F35 "
                                 }`}
                             >
@@ -3382,10 +3407,10 @@ const YourBorrowModal = ({
                                           ? "#CF222E"
                                           : repayAmount == 0
                                             ? "white"
-                                            : "#1A7F37"
+                                            : "#00D395"
                                     }`}
                                   border="0px"
-                                  _disabled={{ color: "#1A7F37" }}
+                                  _disabled={{ color: "#00D395" }}
                                   _placeholder={{
                                     color: "#393D4F",
                                     fontSize: ".89rem",
@@ -3409,7 +3434,7 @@ const YourBorrowModal = ({
                                         ? "#CF222E"
                                         : repayAmount == 0
                                           ? "#0969DA"
-                                          : "#1A7F37"
+                                          : "#00D395"
                                   }`}
                                 _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                                 onClick={() => {
@@ -3495,11 +3520,18 @@ const YourBorrowModal = ({
                                 if(val==100){
                                   setRepayAmount(walletBalance1)
                                 }else{
-                                  ans = Math.round(ans * 100) / 100;
-                                  dispatch(
-                                    setInputYourBorrowModalRepayAmount(ans)
-                                  );
-                                  setRepayAmount(ans);
+                                  if(ans<10){
+                                    dispatch(
+                                      setInputYourBorrowModalRepayAmount(ans)
+                                    );
+                                    setRepayAmount(ans);
+                                  }else{
+                                    ans = Math.round(ans * 100) / 100;
+                                    dispatch(
+                                      setInputYourBorrowModalRepayAmount(ans)
+                                    );
+                                    setRepayAmount(ans);
+                                  }
                                 }
                               }}
                               isDisabled={
@@ -3978,8 +4010,10 @@ const YourBorrowModal = ({
                                 boxShadow="dark-lg"
                               >
                                 {coins?.map((coin: string, index: number) => {
+                                  const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
                                   if (
                                     coin === currentBorrowMarketCoin1.slice(1)
+                                    || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& currentDapp=="mySwap" &&!matchingPair)
                                   ) {
                                     return;
                                   }
@@ -4925,7 +4959,7 @@ const YourBorrowModal = ({
                               ? "1px solid #CF222E"
                               : inputCollateralAmount > 0 &&
                                 inputAmount <= walletBalance2
-                                ? "1px solid #1A7F37"
+                                ? "1px solid #00D395"
                                 : inputCollateralAmount >
                                   userDeposit?.find(
                                     (item: any) =>
@@ -4956,7 +4990,7 @@ const YourBorrowModal = ({
                                 ? "#CF222E"
                                 : inputCollateralAmount == 0
                                   ? "white"
-                                  : "#1A7F37"
+                                  : "#00D395"
                             }`}
                           keepWithinRange={true}
                           onChange={handleCollateralChange}
@@ -4979,7 +5013,7 @@ const YourBorrowModal = ({
                               fontWeight: "600",
                               outline: "none",
                             }}
-                            _disabled={{ color: "#1A7F37" }}
+                            _disabled={{ color: "#00D395" }}
                             _focus={{
                               outline: "0",
                               boxShadow: "none",
@@ -5001,7 +5035,7 @@ const YourBorrowModal = ({
                                 ? "#CF222E"
                                 : inputCollateralAmount == 0
                                   ? "#0969DA"
-                                  : "#1A7F37"
+                                  : "#00D395"
                             }`}
                           _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                           onClick={() => {
@@ -5145,11 +5179,17 @@ const YourBorrowModal = ({
                                 setCollateralAmount(walletBalance2);
                                 setRTokenAmount(walletBalance2);
                               } else {
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputCollateralAmount(ans);
-                                setCollateralAmount(ans);
-                                setRTokenAmount(ans);
+                                if(ans<10){
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }
                               }
                             } else {
                               var ans =
@@ -5188,11 +5228,17 @@ const YourBorrowModal = ({
                                   )?.rTokenFreeParsed
                                 );
                               } else {
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputCollateralAmount(ans);
-                                setCollateralAmount(ans);
-                                setRTokenAmount(ans);
+                                if(ans<10){
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }
                               }
                             }
                             // ans = Math.round(ans * 100) / 100;
@@ -5480,7 +5526,7 @@ const YourBorrowModal = ({
                           )}
                         </Text>
                       </Text>
-                      <Text
+                      {/* <Text
                         display="flex"
                         justifyContent="space-between"
                         fontSize="12px"
@@ -5518,7 +5564,7 @@ const YourBorrowModal = ({
                           </Tooltip>
                         </Text>
                         <Text color="#676D9A">$ 0.91</Text>
-                      </Text>
+                      </Text> */}
                       <Text
                         display="flex"
                         justifyContent="space-between"

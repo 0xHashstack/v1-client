@@ -30,6 +30,8 @@ import {
   selectHealthFactorCount,
   selectHourlyDataCount,
   selectJediSwapPoolsSupportedCount,
+  selectMinMaxDepositCount,
+  selectMinMaxLoanCount,
   selectMonthlyDataCount,
   selectMySwapPoolsSupportedCount,
   selectNetAprCount,
@@ -54,6 +56,8 @@ import {
   setHealthFactorCount,
   setHourlyDataCount,
   setJediSwapPoolsSupportedCount,
+  setMinMaxDepositCount,
+  setMinMaxLoanCount,
   setMonthlyDataCount,
   setMySwapPoolsSupportedCount,
   setNetAprCount,
@@ -108,6 +112,10 @@ import {
   setAllUSDTData,
   setJediSwapPoolsSupported,
   setMySwapPoolsSupported,
+  setMinimumDepositAmounts,
+  setMaximumDepositAmounts,
+  setMinimumLoanAmounts,
+  setMaximumLoanAmounts,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -134,7 +142,10 @@ import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
 import {
+  getMaximumDepositAmount,
+  getMaximumLoanAmount,
   getMinimumDepositAmount,
+  getMinimumLoanAmount,
   getSupportedPools,
   getUserStakingShares,
 } from "@/Blockchain/scripts/Rewards";
@@ -184,6 +195,8 @@ const useDataLoader = () => {
   const allDataCount=useSelector(selectAllDataCount);
   // const stakingShares = useSelector(selectStakingShares);
   const stakingSharesCount = useSelector(selectStakingSharesCount);
+  const minMaxCount=useSelector(selectMinMaxDepositCount);
+  const minMaxLoanCount=useSelector(selectMinMaxLoanCount)
   const jediSwapPoolsSupportedCount = useSelector(selectJediSwapPoolsSupportedCount);
   const mySwapPoolsSupportedCount = useSelector(selectMySwapPoolsSupportedCount);
   const transactionStatus = useSelector(selectTransactionStatus);
@@ -205,6 +218,10 @@ const useDataLoader = () => {
       keyvalue: "DAI/ETH"
     },
     {
+      address: "0x260e98362e0949fefff8b4de85367c035e44f734c9f8069b6ce2075ae86b45c",
+        keyvalue: "BTC/ETH"
+      },
+    {
     address: "0x393d6cbf933e7ecc819a74cf865fce148b237004954e49c118773cdd0e84ab9",
       keyvalue: "BTC/USDT"
     },
@@ -222,6 +239,48 @@ const useDataLoader = () => {
     },
     {
     address: "0x3d58a2767ebb27cf36b5fa1d0da6566b6042bd1a9a051c40129bad48edb147b",
+      keyvalue: "USDC/DAI"
+    }
+  ])
+  const [poolsPairsMainnet,setPoolPairsMainnet] = useState<any>([
+    {
+      address: "0x5801bdad32f343035fb242e98d1e9371ae85bc1543962fedea16c59b35bd19b",
+      keyvalue: "USDC/USDT"
+    },
+    {
+    address: "0x45e7131d776dddc137e30bdd490b431c7144677e97bf9369f629ed8d3fb7dd6",
+      keyvalue: "ETH/USDT"
+    },
+    {
+      address: "0x260e98362e0949fefff8b4de85367c035e44f734c9f8069b6ce2075ae86b45c",
+        keyvalue: "BTC/ETH"
+      },
+    {
+    address: "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+      keyvalue: "ETH/USDC"
+    },
+    {
+  address: "0x7e2a13b40fc1119ec55e0bcf9428eedaa581ab3c924561ad4e955f95da63138",
+      keyvalue: "DAI/ETH"
+    },
+    {
+    address: "0x44d13ad98a46fd2322ef2637e5e4c292ce8822f47b7cb9a1d581176a801c1a0",
+      keyvalue: "BTC/USDT"
+    },
+    {
+    address: "0x5a8054e5ca0b277b295a830e53bd71a6a6943b42d0dbb22329437522bc80c8",
+      keyvalue: "BTC/USDC"
+    },
+    {
+  address: "0x39c183c8e5a2df130eefa6fbaa3b8aad89b29891f6272cb0c90deaa93ec6315",
+      keyvalue: "BTC/DAI"
+    },
+    {
+    address: "0xf0f5b3eed258344152e1f17baf84a2e1b621cd754b625bec169e8595aea767",
+      keyvalue: "USDT/DAI"
+    },
+    {
+    address: "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
       keyvalue: "USDC/DAI"
     }
   ])
@@ -260,6 +319,45 @@ const useDataLoader = () => {
     },
     {
     address: "0x3d58a2767ebb27cf36b5fa1d0da6566b6042bd1a9a051c40129bad48edb147b",
+      keyvalue: "USDC/DAI"
+    }
+
+  ]
+  const mySwapPoolPairsMainnet=[
+    {
+      address: "0x1ea237607b7d9d2e9997aa373795929807552503683e35d8739f4dc46652de1",
+      keyvalue: "USDC/USDT"
+    },
+    {
+    address: "0x41f9a1e9a4d924273f5a5c0c138d52d66d2e6a8bee17412c6b0f48fe059ae04",
+      keyvalue: "ETH/USDT"
+    },
+    {
+    address: "0x22b05f9396d2c48183f6deaf138a57522bcc8b35b67dee919f76403d1783136",
+      keyvalue: "ETH/USDC"
+    },
+    {
+  address: "0x7c662b10f409d7a0a69c8da79b397fd91187ca5f6230ed30effef2dceddc5b3",
+      keyvalue: "DAI/ETH"
+    },
+    {
+    address: "0x393d6cbf933e7ecc819a74cf865fce148b237004954e49c118773cdd0e84ab9",
+      keyvalue: "BTC/USDT"
+    },
+    {
+    address: "0x25b392609604c75d62dde3d6ae98e124a31b49123b8366d7ce0066ccb94f696",
+      keyvalue: "BTC/USDC"
+    },
+    {
+  address: "0x51c32e614dd57eaaeed77c3342dd0da177d7200b6adfd8497647f7a5a71a717",
+      keyvalue: "BTC/DAI"
+    },
+    {
+    address: "0x79ac8e9b3ce75f3294d3be2b361ca7ffa481fe56b0dd36500e43f5ce3f47077",
+      keyvalue: "USDT/DAI"
+    },
+    {
+    address: "0x611e8f4f3badf1737b9e8f0ca77dd2f6b46a1d33ce4eed951c6b18ac497d505",
       keyvalue: "USDC/DAI"
     }
 
@@ -1040,15 +1138,16 @@ const useDataLoader = () => {
     try{
       const fetchPools = async () => {
         const promises=[
-          getSupportedPools(poolsPairs[0]?.address, constants?.JEDI_SWAP),
-          getSupportedPools(poolsPairs[1]?.address, constants?.JEDI_SWAP),
-          getSupportedPools(poolsPairs[2]?.address, constants?.JEDI_SWAP),
-          getSupportedPools(poolsPairs[3]?.address, constants?.JEDI_SWAP),
-          getSupportedPools(poolsPairs[4]?.address, constants?.JEDI_SWAP),
-          getSupportedPools(poolsPairs[5]?.address, constants?.JEDI_SWAP),
-          getSupportedPools(poolsPairs[6]?.address, constants?.JEDI_SWAP),
-          getSupportedPools(poolsPairs[7]?.address, constants?.JEDI_SWAP),
-          getSupportedPools(poolsPairs[8]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?poolsPairs[0]?.address: poolsPairsMainnet[0]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?poolsPairs[1]?.address: poolsPairsMainnet[1]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?poolsPairs[2]?.address: poolsPairsMainnet[2]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?poolsPairs[3]?.address: poolsPairsMainnet[3]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?poolsPairs[4]?.address: poolsPairsMainnet[4]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?poolsPairs[5]?.address: poolsPairsMainnet[5]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?poolsPairs[6]?.address: poolsPairsMainnet[6]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?poolsPairs[7]?.address: poolsPairsMainnet[7]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?poolsPairs[8]?.address: poolsPairsMainnet[8]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?poolsPairs[9]?.address: poolsPairsMainnet[9]?.address, constants?.JEDI_SWAP),
         ]
         const Poolsdata:any=[];
         let data: any;
@@ -1056,10 +1155,10 @@ const useDataLoader = () => {
           val.map((response, idx) => {
             const res = response?.status != "rejected" ? response?.value : "0";
             if(res==1){
-              data=poolsPairs[idx];
+              data=process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? poolsPairs[idx]:poolsPairsMainnet[idx];
             }else{
               data={
-                address:poolsPairs[idx]?.address,
+                address:process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? poolsPairs[idx]?.address:poolsPairsMainnet[idx],
                 keyvalue:"null"
               }
             }
@@ -1103,16 +1202,17 @@ const useDataLoader = () => {
   useEffect(() => {
     try{
       const fetchMySwapPools = async () => {
+        console.log(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[4]?.address : mySwapPoolPairsMainnet[4]?.address,"address passed")
         const promises=[
-          getSupportedPools(mySwapPoolPairs[0]?.address, constants?.MY_SWAP),
-          getSupportedPools(mySwapPoolPairs[1]?.address, constants?.MY_SWAP),
-          getSupportedPools(mySwapPoolPairs[2]?.address, constants?.MY_SWAP),
-          getSupportedPools(mySwapPoolPairs[3]?.address, constants?.MY_SWAP),
-          getSupportedPools(mySwapPoolPairs[4]?.address, constants?.MY_SWAP),
-          getSupportedPools(mySwapPoolPairs[5]?.address, constants?.MY_SWAP),
-          getSupportedPools(mySwapPoolPairs[6]?.address, constants?.MY_SWAP),
-          getSupportedPools(mySwapPoolPairs[7]?.address, constants?.MY_SWAP),
-          getSupportedPools(mySwapPoolPairs[8]?.address, constants?.MY_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[0]?.address : mySwapPoolPairsMainnet[0]?.address, constants?.MY_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[1]?.address:mySwapPoolPairsMainnet[1]?.address, constants?.MY_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[2]?.address:mySwapPoolPairsMainnet[2]?.address, constants?.MY_SWAP),
+          getSupportedPools( process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?mySwapPoolPairs[3]?.address:mySwapPoolPairsMainnet[3]?.address, constants?.MY_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[4]?.address:mySwapPoolPairsMainnet[4]?.address , constants?.MY_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[5]?.address:mySwapPoolPairsMainnet[5]?.address , constants?.MY_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[6]?.address:mySwapPoolPairsMainnet[6]?.address , constants?.MY_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[7]?.address:mySwapPoolPairsMainnet[7]?.address , constants?.MY_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[8]?.address:mySwapPoolPairsMainnet[8]?.address , constants?.MY_SWAP),
         ]
         const Poolsdata:any=[];
         let data: any;
@@ -1121,16 +1221,16 @@ const useDataLoader = () => {
             const res = response?.status != "rejected" ? response?.value : "0";
             
             if(res==1){
-              data=poolsPairs[idx];
+              data=process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[idx]: mySwapPoolPairsMainnet[idx];
             }else{
               data={
-                address:poolsPairs[idx]?.address,
+                address:process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? mySwapPoolPairs[idx]?.address :mySwapPoolPairsMainnet[idx]?.address,
                 keyvalue:"null"
               }
             }
             Poolsdata.push(data);
           });
-          // console.log(Poolsdata,"val 2")
+          console.log(Poolsdata,"myswap val")
           dispatch(setMySwapPoolsSupported(Poolsdata));
           const count = getTransactionCount();
           dispatch(setMySwapPoolsSupportedCount(count));
@@ -1178,6 +1278,98 @@ const useDataLoader = () => {
     }
   }, [address, transactionRefresh]);
 
+  useEffect(()=>{
+    try{
+      const getMinDeposit=async()=>{
+        const promises=[
+          getMinimumDepositAmount("rBTC"),
+          getMinimumDepositAmount("rETH"),
+          getMinimumDepositAmount("rUSDT"),
+          getMinimumDepositAmount("rUSDC"),
+          getMinimumDepositAmount("rDAI"),
+          getMaximumDepositAmount("rBTC"),
+          getMaximumDepositAmount("rETH"),
+          getMaximumDepositAmount("rUSDT"),
+          getMaximumDepositAmount("rUSDC"),
+          getMaximumDepositAmount("rDAI"),
+        ]
+        Promise.allSettled([...promises]).then((val)=>{
+          const data={
+            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
+            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
+            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
+            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+          }
+          const maxdata={
+            rBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00074,
+            rETH: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0.012,
+            rUSDT: val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 20,
+            rUSDC: val?.[8]?.status == "fulfilled" ? val?.[8]?.value : 20,
+            rDAI: val?.[9]?.status == "fulfilled" ? val?.[9]?.value : 20,
+          }
+          if (data?.rBTC == null) return;
+          if (maxdata?.rBTC == null) return;
+          console.log(data,maxdata,"min max deposit")
+          dispatch(setMinimumDepositAmounts(data));
+          dispatch(setMaximumDepositAmounts(maxdata));
+          const count = getTransactionCount();
+          dispatch(setMinMaxDepositCount(count));
+        })
+      }
+      if(minMaxCount<transactionRefresh){
+        getMinDeposit();
+      }
+    }catch(err){
+      console.log(err,"err in get min max deposits");
+    }
+  },[transactionRefresh])
+  useEffect(()=>{
+    try{
+      const getMinDeposit=async()=>{
+        const promises=[
+          getMinimumLoanAmount("dBTC"),
+          getMinimumLoanAmount("dETH"),
+          getMinimumLoanAmount("dUSDT"),
+          getMinimumLoanAmount("dUSDC"),
+          getMinimumLoanAmount("dDAI"),
+          getMaximumLoanAmount("dBTC"),
+          getMaximumLoanAmount("dETH"),
+          getMaximumLoanAmount("dUSDT"),
+          getMaximumLoanAmount("dUSDC"),
+          getMaximumLoanAmount("dDAI"),
+        ]
+        Promise.allSettled([...promises]).then((val)=>{
+          const data={
+            dBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+            dETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
+            dUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
+            dUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
+            dDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+          }
+          const maxdata={
+            dBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00074,
+            dETH: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0.012,
+            dUSDT: val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 20,
+            dUSDC: val?.[8]?.status == "fulfilled" ? val?.[8]?.value : 20,
+            dDAI: val?.[9]?.status == "fulfilled" ? val?.[9]?.value : 20,
+          }
+          if (data?.dBTC == null) return;
+          if (maxdata?.dBTC == null) return;
+          console.log(data,maxdata,"min max deposit")
+          dispatch(setMinimumLoanAmounts(data));
+          dispatch(setMaximumLoanAmounts(maxdata));
+          const count = getTransactionCount();
+          dispatch(setMinMaxLoanCount(count));
+        })
+      }
+      if(minMaxLoanCount<transactionRefresh){
+        getMinDeposit();
+      }
+    }catch(err){
+      console.log(err,"err in get min max deposits");
+    }
+  },[transactionRefresh])
   useEffect(() => {
     try {
       const fetchEffectiveApr = async () => {

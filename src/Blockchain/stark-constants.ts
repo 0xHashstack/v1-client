@@ -3,7 +3,8 @@
 import DeployDetailsProd from "../../contract_addresses_2.json";
 // import ERC20Abi from "./abis/erc20_abi.json";
 // import ERC20Abi from "./abi_new/erc20_abi.json";
-import ERC20Abi from "./abis_upgrade/erc20_abi.json";
+// import ERC20Abi from "./abis_upgrade/erc20_abi.json";
+import ERC20Abi from "./abis_mainnet/erc20_abi.json";
 import { Provider, number } from "starknet";
 import { UseWaitForTransactionResult } from "@starknet-react/core";
 
@@ -15,7 +16,7 @@ export function processAddress(address: string) {
 //   process.env.NODE_ENV === "development"
 //     ? DeployDetailsDev.devn\et
 //     : DeployDetailsProd.goerli_2;
-let contractsEnv = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? DeployDetailsProd.goerli : DeployDetailsProd.goerli_2;
+let contractsEnv:any = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? DeployDetailsProd.goerli : DeployDetailsProd.mainnet;
 contractsEnv.DIAMOND_ADDRESS = processAddress(contractsEnv.DIAMOND_ADDRESS);
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(
@@ -107,18 +108,18 @@ export const stakingContractAddress: string =
 
 export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 
-export const faucetAddress: string = contractsEnv.FAUCET_ADDRESS;
+export const faucetAddress: string =  contractsEnv.FAUCET_ADDRESS;
 
 export const getTokenFromAddress = (address: string) => {
-  return contractsEnv.TOKENS.find((item) => item?.address === address);
+  return contractsEnv.TOKENS.find((item:any) => item?.address === address);
 };
 
 export const getRTokenFromAddress = (address: string) => {
-  return contractsEnv.rTOKENS.find((item) => item?.address === address);
+  return contractsEnv.rTOKENS.find((item:any) => item?.address === address);
 };
 
 export const getDTokenFromAddress = (address: string) => {
-  return contractsEnv.dTOKENS.find((item) => item?.address === address);
+  return contractsEnv.dTOKENS.find((item:any) => item?.address === address);
 };
 
 export { ERC20Abi, contractsEnv };

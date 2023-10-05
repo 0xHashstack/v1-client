@@ -56,6 +56,35 @@ const initialState = {
     rUSDC: null,
     rDAI: null,
   },
+  minDepositAmounts:{
+    rBTC: null,
+    rETH: null,
+    rUSDT: null,
+    rUSDC: null,
+    rDAI: null,
+  },
+  maxDepositAmounts:{
+    rBTC: null,
+    rETH: null,
+    rUSDT: null,
+    rUSDC: null,
+    rDAI: null,
+  },
+  minLoanAmounts:{
+    dBTC: null,
+    dETH: null,
+    dUSDT: null,
+    dUSDC: null,
+    dDAI: null,
+  },
+  maxLoanAmounts:{
+    dBTC: null,
+    dETH: null,
+    dUSDT: null,
+    dUSDC: null,
+    dDAI: null,
+  }
+
   
 };
 
@@ -184,6 +213,18 @@ export const readDataSlice = createSlice({
     setStakingShares(state, action) {
       state.stakingShares = action.payload;
     },
+    setMinimumDepositAmounts(state,action){
+      state.minDepositAmounts=action.payload;
+    },
+    setMaximumDepositAmounts(state,action){
+      state.maxDepositAmounts=action.payload;
+    },
+    setMinimumLoanAmounts(state,action){
+      state.minLoanAmounts=action.payload;
+    },
+    setMaximumLoanAmounts(state,action){
+      state.maxLoanAmounts=action.payload;
+    },
     setJediSwapPoolsSupported(state,action){
       state.jediSwapPoolsSupported=action.payload;
     },
@@ -244,6 +285,10 @@ export const {
   setYourMetricsBorrow,
   setYourMetricsSupply,
   setStakingShares,
+  setMinimumDepositAmounts,
+  setMaximumDepositAmounts,
+  setMinimumLoanAmounts,
+  setMaximumLoanAmounts,
   setJediSwapPoolsSupported,
   setMySwapPoolsSupported
 } = readDataSlice.actions;
@@ -293,6 +338,10 @@ export const selectYourMetricsSupply = (state) =>
 export const selectYourMetricsBorrow = (state) =>
   state.read_data.yourMetricsBorrow;
 export const selectStakingShares = (state) => state.read_data.stakingShares;
+export const selectMinimumDepositAmounts=(state)=>state.read_data.minDepositAmounts;
+export const selectMaximumDepositAmounts=(state)=>state.read_data.maxDepositAmounts;
+export const selectMinimumLoanAmounts=(state)=>state.read_data.minLoanAmounts;
+export const selectMaximumLoanAmounts=(state)=>state.read_data.maxLoanAmounts;
 export const selectJediSwapPoolsSupported = (state) => state.read_data.jediSwapPoolsSupported;
 export const selectMySwapPoolsSupported = (state) => state.read_data.mySwapPoolsSupported;
 export default readDataSlice.reducer;

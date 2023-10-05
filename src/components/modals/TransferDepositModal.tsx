@@ -643,7 +643,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     {TransactionFees.convertToBorrowMarket}%
                   </Text>
                 </Text>
-                <Text
+                {/* <Text
                   color="#8B949E"
                   display="flex"
                   justifyContent="space-between"
@@ -659,7 +659,6 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                       color="#6A737D"
                     >
                       Gas estimate:
-                      {/* <SpinnerLoader/> */}
                     </Text>
                     <Tooltip
                       hasArrow
@@ -685,7 +684,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                   >
                     $ 0.50
                   </Text>
-                </Text>
+                </Text> */}
                 <Text
                   color="#8B949E"
                   display="flex"

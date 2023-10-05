@@ -93,7 +93,9 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
+import { selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
+import { getMaximumDepositAmount, getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -113,7 +115,6 @@ const SupplyModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [toastId, setToastId] = useState<any>();
   const [uniqueID, setUniqueID] = useState(0);
-
   const {
     depositAmount,
     setDepositAmount,
@@ -661,6 +662,25 @@ const SupplyModal = ({
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
   // }, [])
   // console.log(inputAmount);
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  const minAmounts=useSelector(selectMinimumDepositAmounts);
+  const maxAmounts=useSelector(selectMaximumDepositAmounts);
+  useEffect(()=>{
+    setMinimumDepositAmount(minAmounts["r"+currentSelectedCoin])
+    setmaximumDepositAmount(maxAmounts["r"+currentSelectedCoin])
+  },[currentSelectedCoin,minAmounts,maxAmounts])
+  
+  // useEffect(()=>{
+  //     const data=useSelector(selectMinimumDepositAmounts);
+  //     setMinimumDepositAmount(data(currentSelectedCoin));
+  //   const fetchMaxDeposit=async()=>{
+  //     const data=await getMaximumDepositAmount("r"+currentSelectedCoin);
+  //     setmaximumDepositAmount(data);
+  //   }
+  //   fetchMaxDeposit();
+
+  // },[currentSelectedCoin])
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -1015,9 +1035,13 @@ const SupplyModal = ({
                   border={`${
                     depositAmount > walletBalance
                       ? "1px solid #CF222E"
-                      : depositAmount < 0
+                      : depositAmount> maximumDepositAmount ?
+                      "1px solid #CF222E"
+                      : depositAmount < 0 
                       ? "1px solid #CF222E"
                       : isNaN(depositAmount)
+                      ? "1px solid #CF222E"
+                      :depositAmount<minimumDepositAmount && depositAmount>0
                       ? "1px solid #CF222E"
                       : depositAmount > 0 && depositAmount <= walletBalance
                       ? "1px solid #00D395"
@@ -1045,7 +1069,11 @@ const SupplyModal = ({
                       color={`${
                         depositAmount > walletBalance
                           ? "#CF222E"
+                          :depositAmount> maximumDepositAmount ?
+                            "#CF222E"
                           : isNaN(depositAmount)
+                          ? "#CF222E"
+                          :depositAmount<minimumDepositAmount && depositAmount>0
                           ? "#CF222E"
                           : depositAmount < 0
                           ? "#CF222E"
@@ -1072,7 +1100,11 @@ const SupplyModal = ({
                     color={`${
                       depositAmount > walletBalance
                         ? "#CF222E"
+                        :depositAmount> maximumDepositAmount ?
+                          "#CF222E"
                         : isNaN(depositAmount)
+                        ? "#CF222E"
+                        :depositAmount<minimumDepositAmount && depositAmount>0
                         ? "#CF222E"
                         : depositAmount < 0
                         ? "#CF222E"
@@ -1094,8 +1126,8 @@ const SupplyModal = ({
                     MAX
                   </Button>
                 </Box>
-                {depositAmount > walletBalance ||
-                depositAmount < 0 ||
+                {depositAmount > walletBalance || depositAmount>maximumDepositAmount ||
+                depositAmount < 0 ||                       (depositAmount<minimumDepositAmount && depositAmount>0) ||
                 isNaN(depositAmount) ? (
                   <Text
                     display="flex"
@@ -1115,7 +1147,12 @@ const SupplyModal = ({
                       <Text ml="0.3rem">
                         {depositAmount > walletBalance
                           ? "Amount exceeds balance"
-                          : "Invalid Input"}
+                          :depositAmount>maximumDepositAmount 
+                          ? "More than max amount"
+                          :depositAmount<minimumDepositAmount
+                          ?"Less than min amount":
+                          ""
+                        }
                       </Text>
                     </Text>
                     <Text
@@ -1176,12 +1213,19 @@ const SupplyModal = ({
                         setDepositAmount(walletBalance);
                         setinputAmount(walletBalance);
                       } else {
-                        ans = Math.round(ans * 100) / 100;
+                        // ans = Math.round(ans * 100) / 100;
+                        if(ans<10){
+                          setDepositAmount(ans);
+                          setinputAmount(ans);
+                        }else{
+                          ans = Math.round(ans * 100) / 100;
+                          setDepositAmount(ans);
+                          setinputAmount(ans);
+                        }
 
                         // console.log(ans)
                         // dispatch(setInputSupplyAmount(ans));
-                        setDepositAmount(ans);
-                        setinputAmount(ans);
+
                       }
                     }}
                     isDisabled={transactionStarted == true}
@@ -1285,7 +1329,7 @@ const SupplyModal = ({
                   colorScheme="customBlue"
                   defaultChecked
                   mb="auto"
-                  mt="1.2rem"
+                  mt="0.7rem"
                   borderColor="#2B2F35"
                   isDisabled={transactionStarted == true}
                   _disabled={{
@@ -1298,14 +1342,14 @@ const SupplyModal = ({
                   }}
                 />
                 <Text
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight="400"
                   color="#B1B0B5"
-                  mt="1rem"
-                  lineHeight="20px"
+                  mt="0.5rem"
+                  lineHeight="22px"
+                  width="100%"
                 >
-                  Ticking would stake the received rTokens. unchecking
-                  wouldn&apos;t stake rTokens
+                  I would like to stake the rTokens.
                 </Text>
               </Box>
 
@@ -1357,7 +1401,7 @@ const SupplyModal = ({
                     {TransactionFees.supply}%
                   </Text>
                 </Text>
-                <Text
+                {/* <Text
                   color="#8B949E"
                   display="flex"
                   justifyContent="space-between"
@@ -1373,7 +1417,6 @@ const SupplyModal = ({
                       color="#676D9A"
                     >
                       Gas estimate:
-                      {/* <SpinnerLoader/> */}
                     </Text>
                     <Tooltip
                       hasArrow
@@ -1403,7 +1446,7 @@ const SupplyModal = ({
                   >
                     $ 0.90
                   </Text>
-                </Text>
+                </Text> */}
                 <Text
                   color="#8B949E"
                   display="flex"
@@ -1450,7 +1493,7 @@ const SupplyModal = ({
                   >
                     {!supplyAPRs ||
                     supplyAPRs.length === 0 ||
-                    !supplyAPRs[currentSupplyAPR] ? (
+                    supplyAPRs[currentSupplyAPR] ==null ? (
                       <Box pt="3px">
                         <Skeleton
                           width="2.3rem"
@@ -1467,7 +1510,7 @@ const SupplyModal = ({
                   </Text>
                 </Text>
               </Card>
-              {depositAmount > 0 && depositAmount <= walletBalance ? (
+              {depositAmount > 0 && depositAmount <= walletBalance && (depositAmount>0 && depositAmount>=minimumDepositAmount) &&(depositAmount<=maximumDepositAmount) ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (

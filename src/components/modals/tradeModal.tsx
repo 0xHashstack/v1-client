@@ -26,6 +26,8 @@ import {
 
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
+import { getMinimumDepositAmount,getMaximumDepositAmount } from "@/Blockchain/scripts/Rewards";
+
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
@@ -53,6 +55,8 @@ import {
   selectOraclePrices,
   selectJediSwapPoolsSupported,
   selectMySwapPoolsSupported,
+  selectMaximumLoanAmounts,
+  selectMinimumLoanAmounts,
 } from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
@@ -112,7 +116,7 @@ import {
   getUSDValue,
 } from "@/Blockchain/scripts/l3interaction";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { getSupportedPools } from "@/Blockchain/scripts/Rewards";
+import { getMaximumLoanAmount, getMinimumLoanAmount, getSupportedPools } from "@/Blockchain/scripts/Rewards";
 const TradeModal = ({
   buttonText,
   coin,
@@ -206,16 +210,7 @@ const TradeModal = ({
     rETH: useBalanceOf(tokenAddressMap["rETH"]),
     rDAI: useBalanceOf(tokenAddressMap["rDAI"]),
   };
-  const [walletBalance, setwalletBalance] = useState<any>(
-    walletBalances[coin?.name]?.statusBalanceOf === "success"
-      ? parseAmount(
-        uint256.uint256ToBN(
-          walletBalances[coin?.name]?.dataBalanceOf?.balance
-        ),
-        tokenDecimalsMap[coin?.name]
-      )
-      : 0
-  );
+  const [walletBalance, setwalletBalance] = useState(0)
   useEffect(() => {
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
@@ -404,6 +399,30 @@ const TradeModal = ({
   };
   const poolsPairs=useSelector(selectJediSwapPoolsSupported);
   const mySwapPoolPairs=useSelector(selectMySwapPoolsSupported);
+  const [myswapPools, setmyswapPools] = useState([]);
+  useEffect(()=>{
+    function findSideForMember(array:any, token:any) {
+      const data:any=[];
+      for (const obj of array) {
+          const keyvalue = obj.keyvalue;
+          const [tokenA, tokenB] = keyvalue.split('/');
+          
+          if (tokenA === token) {
+            console.log(tokenB,"tokenB");
+              data.push(tokenB)
+          } else if (tokenB === token) {
+            console.log(tokenA,"tokenA")
+              data.push(tokenA);
+          }
+      }
+      setmyswapPools(data);
+       // Token not found in any "keyvalue" pairs
+  }
+  if(mySwapPoolPairs){
+    findSideForMember(mySwapPoolPairs,currentBorrowCoin);
+  }
+  },[currentBorrowCoin,mySwapPoolPairs])
+
   // const [poolsPairs,setPoolPairs] = useState<any>([
   //   {
   //     address: "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e",
@@ -488,6 +507,9 @@ const TradeModal = ({
     setLoanMarket(coin ? coin.name : "BTC")
     setCollateralMarket(coin ? coin.name : "BTC")
   }, [coin])
+  useEffect(()=>{
+    setCurrentPoolCoin('Select a pool')
+  },[currentDapp])
   const resetStates = () => {
     setSliderValue(0);
     setsliderValue2(0);
@@ -538,6 +560,7 @@ const TradeModal = ({
     setLoanAmount(0);
     // setLoanAmount(0);
     setsliderValue2(0);
+    setCurrentPoolCoin("Select a pool");
     // setHealthFactor(undefined)
   }, [currentBorrowCoin]);
 
@@ -647,7 +670,22 @@ const TradeModal = ({
     currentCollateralCoin,
     rTokenAmount,
   ]);
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
 
+  // useEffect(()=>{
+  //   const fetchMinDeposit=async()=>{
+  //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
+  //     setMinimumDepositAmount(data);
+  //   }
+  //   const fetchMaxDeposit=async()=>{
+  //     const data=await getMaximumDepositAmount("r"+currentCollateralCoin);
+  //     setmaximumDepositAmount(data);
+  //   }
+  //   fetchMaxDeposit();
+  //   fetchMinDeposit();
+  //   // setMinimumDepositAmount(2)
+  // },[currentCollateralCoin])
   const handleBorrowAndSpend = async () => {
     try {
       if (currentCollateralCoin[0] != "r") {
@@ -899,7 +937,27 @@ const TradeModal = ({
   const [currentSplit, setCurrentSplit] = useState<
     Number[] | undefined | null
   >();
-
+  const [minimumLoanAmount, setMinimumLoanAmount] = useState<any>(0)
+  const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0)
+  const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
+  const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
+  console.log(minLoanAmounts)
+  useEffect(()=>{
+    setMinimumLoanAmount(minLoanAmounts["d"+currentBorrowCoin])
+    setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
+  },[currentBorrowCoin,maxLoanAmounts,minLoanAmounts])
+  // useEffect(()=>{
+  //   const fetchMinLoanAmount=async()=>{
+  //     const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
+  //     setMinimumLoanAmount(data);
+  //   }
+  //   const fetchMaxLoanAmount=async()=>{
+  //     const data=await getMaximumLoanAmount("d"+currentBorrowCoin);
+  //     setMaximumLoanAmount(data);
+  //   }
+  //   fetchMaxLoanAmount();
+  //   fetchMinLoanAmount();
+  // },[currentBorrowCoin])
   useEffect(() => {
     // console.log(
     //   "toMarketSplitConsole",
@@ -1389,7 +1447,7 @@ const TradeModal = ({
                                             ?.balance
                                         ),
                                         tokenDecimalsMap[coin]
-                                      ).toFixed(2)
+                                      )
                                       : 0
                                   );
                                 }}
@@ -1483,6 +1541,9 @@ const TradeModal = ({
                             ? "1px solid #CF222E"
                             : isNaN(inputCollateralAmount)
                               ? "1px solid #CF222E"
+                              :inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount)
+                              ? "1px solid #CF222E"
+                              
                               : inputCollateralAmount > 0 &&
                                 inputCollateralAmount <= walletBalance
                                 ? "1px solid #00D395"
@@ -1514,6 +1575,9 @@ const TradeModal = ({
                                 ? "#CF222E"
                                 : inputCollateralAmount < 0
                                   ? "#CF222E"
+                          :(inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount) && inputCollateralAmount>0
+                                  ? "#CF222E"
+                                  
                                   : inputCollateralAmount == 0
                                     ? "white"
                                     : "#00D395"
@@ -1538,6 +1602,9 @@ const TradeModal = ({
                             ? "#CF222E"
                             : isNaN(inputCollateralAmount)
                               ? "#CF222E"
+                        :(inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount) && inputCollateralAmount>0
+                        ? "#CF222E"
+
                               : inputCollateralAmount < 0
                                 ? "#CF222E"
                                 : inputCollateralAmount == 0
@@ -1562,6 +1629,7 @@ const TradeModal = ({
                     </Box>
                     {inputCollateralAmount > walletBalance ||
                       inputCollateralAmount < 0 ||
+                      ((inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount)&& inputCollateralAmount>0) ||
                       isNaN(inputCollateralAmount) ? (
                       <Text
                         display="flex"
@@ -1580,6 +1648,11 @@ const TradeModal = ({
                           <Text ml="0.3rem">
                             {inputCollateralAmount > walletBalance
                               ? "Amount exceeds balance"
+                              :inputCollateralAmount <minimumDepositAmount 
+                              ? `less than min amount`
+                              :inputCollateralAmount>maximumDepositAmount
+                              ?'more than max amount'
+                              //do max 1209
                               : "Invalid Input"}
                           </Text>
                         </Text>
@@ -1588,7 +1661,9 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Wallet Balance: {numberFormatter(walletBalance)}
+                          Wallet Balance: {" "}                      {walletBalance?.toFixed(5).replace(/\.?0+$/, "").length > 5
+                        ? numberFormatter(walletBalance)
+                        : numberFormatter(walletBalance)}
                           <Text color="#676D9A" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
@@ -1605,7 +1680,9 @@ const TradeModal = ({
                         fontStyle="normal"
                         fontFamily="Inter"
                       >
-                        Wallet Balance: {numberFormatter(walletBalance)}
+                        Wallet Balance: {" "}                      {walletBalance?.toFixed(5).replace(/\.?0+$/, "").length > 5
+                        ? numberFormatter(walletBalance)
+                        : numberFormatter(walletBalance)}
                         <Text color="#676D9A" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>
@@ -1624,11 +1701,18 @@ const TradeModal = ({
                             setRTokenAmount(walletBalance);
                           } else {
                             var ans = (val / 100) * walletBalance;
-                            ans = Math.round(ans * 100) / 100;
-                            dispatch(setInputTradeModalCollateralAmount(ans));
-                            setinputCollateralAmount(ans);
-                            setCollateralAmount(ans);
-                            setRTokenAmount(ans);
+                            if(ans<10){
+                              dispatch(setInputTradeModalCollateralAmount(ans));
+                              setinputCollateralAmount(ans);
+                              setCollateralAmount(ans);
+                              setRTokenAmount(ans);
+                            }else{
+                              ans = Math.round(ans * 100) / 100;
+                              dispatch(setInputTradeModalCollateralAmount(ans));
+                              setinputCollateralAmount(ans);
+                              setCollateralAmount(ans);
+                              setRTokenAmount(ans);
+                            }
                           }
                         }}
                         isDisabled={transactionStarted == true}
@@ -1971,6 +2055,10 @@ const TradeModal = ({
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
                             ? "1px solid #CF222E"
+                            :inputBorrowAmount<minimumLoanAmount && inputBorrowAmount>0
+                            ? "1px solid #CF222E"
+                            :inputBorrowAmount>maximumLoanAmount 
+                            ? "1px solid #CF222E"
                             : isNaN(inputBorrowAmount)
                               ? "1px solid #CF222E"
                               : inputBorrowAmount > 0
@@ -2007,6 +2095,10 @@ const TradeModal = ({
                                 : inputBorrowAmount < 0 ||
                                   inputBorrowAmount > currentAvailableReserves
                                   ? "#CF222E"
+                                  :inputBorrowAmount<minimumLoanAmount &&inputBorrowAmount>0
+                                  ? "#CF222E"
+                                  :inputBorrowAmount>maximumLoanAmount 
+                                  ?"#CF222E"
                                   : inputBorrowAmount == 0
                                     ? "white"
                                     : "#00D395"
@@ -2036,6 +2128,10 @@ const TradeModal = ({
                               : inputBorrowAmount < 0 ||
                                 inputBorrowAmount > currentAvailableReserves
                                 ? "#CF222E"
+                                :inputBorrowAmount<minimumLoanAmount && inputBorrowAmount>0
+                                ?"#CF222E"
+                                :inputBorrowAmount>maximumLoanAmount
+                                ?"#CF222E"
                                 : inputBorrowAmount == 0
                                   ? "#0969DA"
                                   : "#00D395"
@@ -2091,6 +2187,8 @@ const TradeModal = ({
                       </Button>
                     </Box>
                     {inputBorrowAmount > currentAvailableReserves ||
+                    inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount ||
+                    inputBorrowAmount>maximumLoanAmount ||
                       (inputBorrowAmount > 0 &&
                         inputCollateralAmountUSD &&
                         inputBorrowAmountUSD >
@@ -2114,6 +2212,10 @@ const TradeModal = ({
                           <Text ml="0.3rem">
                             {inputBorrowAmount > currentAvailableReserves
                               ? "Amount exceeds balance"
+                              :inputBorrowAmount< minimumLoanAmount
+                              ? "Less than min amount"
+                              : inputBorrowAmount>maximumLoanAmount
+                              ? "More than max amount"
                               : inputBorrowAmountUSD >
                                 4.9999 * inputCollateralAmountUSD
                                 ? "Debt higher than permitted"
@@ -2144,7 +2246,7 @@ const TradeModal = ({
                         fontFamily="Inter"
                       >
                         Available reserves:{" "}
-                        {currentAvailableReserves ? (
+                        {currentAvailableReserves!=null ? (
                           numberFormatter(currentAvailableReserves)
                         ) : (
                           <Skeleton
@@ -2200,10 +2302,16 @@ const TradeModal = ({
                             } else {
                               var ans = (val / 100) * currentAvailableReserves;
                             }
-                            ans = Math.round(ans * 100) / 100;
-                            dispatch(setInputTradeModalBorrowAmount(ans));
-                            setinputBorrowAmount(ans);
-                            setLoanAmount(ans);
+                            if(ans<10){
+                              dispatch(setInputTradeModalBorrowAmount(ans));
+                              setinputBorrowAmount(ans);
+                              setLoanAmount(ans);
+                            }else{
+                              ans = Math.round(ans * 100) / 100;
+                              dispatch(setInputTradeModalBorrowAmount(ans));
+                              setinputBorrowAmount(ans);
+                              setLoanAmount(ans);
+                            }
                           }
                         }}
                         isDisabled={
@@ -2629,7 +2737,8 @@ const TradeModal = ({
                           boxShadow="dark-lg"
                         >
                           {coins?.map((coin: NativeToken, index: number) => {
-                            if (coin == currentBorrowCoin) {
+                            const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
+                            if (coin == currentBorrowCoin || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentDapp=="mySwap" &&!matchingPair)) {
                               return null;
                             }
                             return (
@@ -2924,7 +3033,7 @@ const TradeModal = ({
                       {TransactionFees.spend}%
                     </Text>
                   </Box>
-
+{/* 
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
                       <Text color="#676D9A" fontSize="xs">
@@ -2953,7 +3062,7 @@ const TradeModal = ({
                     <Text color="#676D9A" fontSize="xs">
                       $0.91
                     </Text>
-                  </Box>
+                  </Box> */}
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
                       <Text color="#676D9A" fontSize="xs">
@@ -3161,8 +3270,12 @@ const TradeModal = ({
                 </Box>
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
                   (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
+                  inputBorrowAmount>=minimumLoanAmount &&
+                  inputBorrowAmount<=maximumLoanAmount &&
                   inputBorrowAmount <= currentAvailableReserves &&
                   inputBorrowAmount > 0 &&
+                  inputCollateralAmount >= minimumDepositAmount &&
+                  inputCollateralAmount<=maximumDepositAmount &&
                   inputCollateralAmount <= walletBalance &&
                   inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD &&
                   currentDapp != "Select a dapp" &&
