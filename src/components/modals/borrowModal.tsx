@@ -772,7 +772,6 @@ const BorrowModal = ({
   const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
   const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
-  console.log(minLoanAmounts)
   useEffect(()=>{
     setMinimumLoanAmount(minLoanAmounts["d"+currentBorrowCoin])
     setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])

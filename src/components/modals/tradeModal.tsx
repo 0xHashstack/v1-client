@@ -57,6 +57,8 @@ import {
   selectMySwapPoolsSupported,
   selectMaximumLoanAmounts,
   selectMinimumLoanAmounts,
+  selectMaximumDepositAmounts,
+  selectMinimumDepositAmounts,
 } from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
@@ -672,7 +674,12 @@ const TradeModal = ({
   ]);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
-
+  const minAmounts=useSelector(selectMinimumDepositAmounts);
+  const maxAmounts=useSelector(selectMaximumDepositAmounts);
+  useEffect(()=>{
+    setMinimumDepositAmount(minAmounts["r"+currentCollateralCoin])
+    setmaximumDepositAmount(maxAmounts["r"+currentCollateralCoin])
+  },[currentCollateralCoin,minAmounts,maxAmounts])
   // useEffect(()=>{
   //   const fetchMinDeposit=async()=>{
   //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
@@ -941,7 +948,6 @@ const TradeModal = ({
   const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0)
   const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
   const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
-  console.log(minLoanAmounts)
   useEffect(()=>{
     setMinimumLoanAmount(minLoanAmounts["d"+currentBorrowCoin])
     setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
