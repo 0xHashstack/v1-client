@@ -1379,9 +1379,9 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenAmount < 0
                               ? "1px solid #CF222E"
-                              : (rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )
+                              : (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )
                               ? "1px solid #CF222E"
-                              : (rtokenWalletBalance==0 && (depositAmount>0&& depositAmount>maximumDepositAmount) )
+                              : (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rtokenWalletBalance==0 && (depositAmount>0&& depositAmount>maximumDepositAmount) )
                               ? "1px solid #CF222E"
                               //do max 1209
                               : (rtokenWalletBalance==0 && rTokenAmount <= walletBalance &&rTokenAmount>0)
@@ -1420,11 +1420,11 @@ const StakeUnstakeModal = ({
                                     Number(
                                       getBalance(currentSelectedStakeCoin)
                                     )) ||
-                                ((rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) ))
+                                ((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) ))
                                   ? "#CF222E"
                                   : rTokenAmount < 0
                                   ? "#CF222E"
-                                  : ((rtokenWalletBalance==0 && (depositAmount>0&& depositAmount>maximumDepositAmount) ))
+                                  : ((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount>maximumDepositAmount) ))
                                   ? "#CF222E"
                                   : rTokenAmount == 0
                                   ? "white"
@@ -1458,9 +1458,9 @@ const StakeUnstakeModal = ({
                                 : rTokenAmount < 0
 
                                 ? "#CF222E"
-                                :((rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )) 
+                                :((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) )) 
                                 ? "#CF222E"
-                                :((rtokenWalletBalance==0 && (depositAmount>0&& depositAmount>maximumDepositAmount) )) 
+                                :((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount>maximumDepositAmount) )) 
                                 ? "#CF222E"
                                 : rTokenAmount == 0
                                 ? "#0969DA"
@@ -1491,8 +1491,8 @@ const StakeUnstakeModal = ({
                             Number(getBalance(currentSelectedStakeCoin))) ||
                         (rtokenWalletBalance == 0 &&
                           rTokenAmount > walletBalance) ||
-                          (rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )||
-                          ( rtokenWalletBalance==0 && (depositAmount>0 && depositAmount>maximumDepositAmount))||
+                          (rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) )||
+                          ( rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0 && depositAmount>maximumDepositAmount))||
                         rTokenAmount < 0 ? (
                           <Text
                             display="flex"
@@ -1513,9 +1513,9 @@ const StakeUnstakeModal = ({
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount > walletBalance)
                                   ? "Amount exceeds balance"
-                                  :(rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )
+                                  :(rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) )
                                   ? `Less than min amount`
-                                  :(rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount >maximumDepositAmount) 
+                                  :(rtokenWalletBalance==0 && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && rTokenAmount >maximumDepositAmount) 
                                   ? `More than max amount`
                                   : "Invalid Input"}{" "}
                               </Text>
@@ -2035,7 +2035,7 @@ const StakeUnstakeModal = ({
                             }`}
                           </Button>
                         )
-                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance && rTokenAmount>=minimumDepositAmount &&rTokenAmount<=maximumDepositAmount ? (
+                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance && (process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||rTokenAmount>=minimumDepositAmount) &&(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||rTokenAmount<=maximumDepositAmount) ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (

@@ -729,9 +729,9 @@
           "name": "rDAI",
           "symbol": "rDAI",
           "decimals": 18,
-          "underlying_asset": "0x0da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+          "underlying_asset": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
           "address": "0x19c981ec23aa9cbac1cc1eb7f92cf09ea2816db9cbd932e251c86a2e8fb725f",
-          "NETWORK_TOKEN_ADDRESS": "0x0da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3"
+          "NETWORK_TOKEN_ADDRESS": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3"
         }
       ],
       "dTOKENS": [
