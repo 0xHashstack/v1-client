@@ -1753,7 +1753,7 @@ const BorrowModal = ({
                             inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
                           ?"#CF222E"
                           : inputBorrowAmount>maximumLoanAmount
-                          ? "CF222E"
+                          ? "#CF222E"
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
                           ? "#CF222E"
