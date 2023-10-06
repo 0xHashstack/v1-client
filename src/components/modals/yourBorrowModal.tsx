@@ -547,12 +547,13 @@ const YourBorrowModal = ({
 
   const [walletBalance2, setwalletBalance2] = useState(
     walletBalances[collateralAsset]?.statusBalanceOf === "success"
-      ? parseAmount(
+      ? Number(
+        BNtoNum(
         uint256.uint256ToBN(
           walletBalances[collateralAsset]?.dataBalanceOf?.balance
         ),
         tokenDecimalsMap[collateralAsset]
-      )
+      ))
       : 0
   );
   useEffect(() => {
@@ -3484,7 +3485,7 @@ const YourBorrowModal = ({
                                   display="flex"
                                   justifyContent="flex-end"
                                 >
-                                  Wallet Balance: {walletBalance1}
+                                  Wallet Balance: {numberFormatter(walletBalance1)}
                                   <Text color="#6E7781" ml="0.2rem">
                                     {` ${currentBorrowMarketCoin1.slice(1)}`}
                                   </Text>
@@ -3501,7 +3502,7 @@ const YourBorrowModal = ({
                                 fontStyle="normal"
                                 fontFamily="Inter"
                               >
-                                Wallet Balance: {walletBalance1}
+                                Wallet Balance: {numberFormatter(walletBalance1)}
                                 <Text color="#6E7781" ml="0.2rem">
                                   {` ${currentBorrowMarketCoin1.slice(1)}`}
                                 </Text>
@@ -5127,12 +5128,12 @@ const YourBorrowModal = ({
                           >
                             Wallet Balance:{" "}
                             {currentTokenSelected == "Native Token"
-                              ? walletBalance2
-                              : userDeposit?.find(
+                              ?numberFormatter(walletBalance2)
+                              :numberFormatter(userDeposit?.find(
                                 (item: any) =>
                                   item?.rToken ==
                                   collateralBalance.substring(spaceIndex + 1)
-                              )?.rTokenFreeParsed}
+                              )?.rTokenFreeParsed)}
                             <Text color="#6E7781" ml="0.2rem">
                               {currentTokenSelected == "Native Token"
                                 ? collateralAsset
@@ -5152,12 +5153,12 @@ const YourBorrowModal = ({
                         >
                           Wallet Balance:{" "}
                           {currentTokenSelected == "Native Token"
-                            ? walletBalance2
-                            : userDeposit?.find(
+                            ? numberFormatter(walletBalance2)
+                            : numberFormatter(userDeposit?.find(
                               (item: any) =>
                                 item?.rToken ==
                                 collateralBalance.substring(spaceIndex + 1)
-                            )?.rTokenFreeParsed}
+                            )?.rTokenFreeParsed)}
                           <Text color="#6E7781" ml="0.2rem">
                             {currentTokenSelected == "Native Token"
                               ? collateralAsset
