@@ -1219,7 +1219,7 @@ const BorrowModal = ({
                       ? "#CF222E"
                       : rTokenAmount < 0
                       ? "#CF222E"
-                      :(rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount))
+                      :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount))
                       ? "#CF222E"
 
                       : rTokenAmount == 0
@@ -1231,7 +1231,7 @@ const BorrowModal = ({
                       ? "1px solid #CF222E"
                       : rTokenAmount < 0
                       ? "1px solid #CF222E"
-                      :rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount)
+                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount)
                       ? "1px solid #CF222E"
                       // DO MAX CHECK 1209
                       : rTokenAmount > 0 && rTokenAmount <= walletBalance
@@ -1277,7 +1277,7 @@ const BorrowModal = ({
                         ? "#CF222E"
                         : rTokenAmount < 0
                         ? "#CF222E"
-                        :rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount)
+                        :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount)
                         ? "#CF222E"
 
                         : rTokenAmount == 0
@@ -1301,7 +1301,7 @@ const BorrowModal = ({
                     MAX
                   </Button>
                 </Box>
-                {rTokenAmount > walletBalance || rTokenAmount < 0 || (rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount))? (
+                {rTokenAmount > walletBalance || rTokenAmount < 0 || (rTokenAmount>0 && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&(rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount))? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -1319,9 +1319,9 @@ const BorrowModal = ({
                       <Text ml="0.3rem">
                         {rTokenAmount > walletBalance
                           ? "Amount exceeds balance"
-                          :rTokenAmount <minimumDepositAmount 
+                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount <minimumDepositAmount 
                           ? `less than min amount`
-                          :rTokenAmount>maximumDepositAmount
+                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>maximumDepositAmount
                           ?'more than max amount'
                           : "Invalid"}
                       </Text>
@@ -1715,9 +1715,9 @@ const BorrowModal = ({
                       : inputBorrowAmountUSD < 0 ||
                         inputBorrowAmount > currentAvailableReserves
                       ? "1px solid #CF222E"
-                      :inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
+                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
                       ?"1px solid #CF222E"
-                      : inputBorrowAmount>maximumLoanAmount 
+                      : process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount 
                       ?"1px solid #CF222E"
                       : isNaN(amount)
                       ? "1px solid #CF222E"
@@ -1750,9 +1750,9 @@ const BorrowModal = ({
                           ? "#CF222E"
                           : isNaN(amount)
                           ? "#CF222E":
-                            inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
+                          process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
                           ?"#CF222E"
-                          : inputBorrowAmount>maximumLoanAmount
+                          : process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount
                           ? "#CF222E"
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
@@ -1786,9 +1786,9 @@ const BorrowModal = ({
                         ? "#CF222E"
                         : isNaN(amount)
                         ? "#CF222E":
-                        inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
+                        process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
                       ?"#CF222E"
-                      :inputBorrowAmount>maximumLoanAmount ?
+                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount ?
                       "#CF222E"
                         : inputBorrowAmount < 0 ||
                           inputBorrowAmount > currentAvailableReserves
@@ -1847,7 +1847,7 @@ const BorrowModal = ({
                   </Button>
                 </Box>
                 {amount > currentAvailableReserves ||
-                (inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount) ||
+                (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount) ||
                 inputBorrowAmount>maximumLoanAmount ||
                 (amount > 0 &&
                   inputCollateralAmountUSD &&
@@ -1869,9 +1869,9 @@ const BorrowModal = ({
                       <Text ml="0.3rem">
                         {amount > currentAvailableReserves
                           ? "Amount exceeds balance"
-                          :inputBorrowAmount<minimumLoanAmount ?
+                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount<minimumLoanAmount ?
                           "Less than min Amount"
-                          :inputBorrowAmount>maximumLoanAmount?
+                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount?
                           "More than max Amount"
                           : inputBorrowAmountUSD >
                             4.9999 * inputCollateralAmountUSD
@@ -2422,11 +2422,11 @@ const BorrowModal = ({
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 &&
-            inputBorrowAmount>=minimumLoanAmount &&
-            inputBorrowAmount<maximumLoanAmount &&
+           (process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||( inputBorrowAmount>=minimumLoanAmount &&
+            inputBorrowAmount<maximumLoanAmount ))&&
             rTokenAmount <= walletBalance &&
             // rTokenAmount<
-            (rTokenAmount>0 && rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount) &&
+            (rTokenAmount>0 && (process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||(rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount))) &&
             // do max 1209
             inputBorrowAmount <= currentAvailableReserves &&
             inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD ? (
