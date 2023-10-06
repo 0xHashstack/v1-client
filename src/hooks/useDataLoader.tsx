@@ -1348,11 +1348,11 @@ const useDataLoader = () => {
             dDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
           }
           const maxdata={
-            dBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00074,
-            dETH: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0.012,
-            dUSDT: val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 20,
-            dUSDC: val?.[8]?.status == "fulfilled" ? val?.[8]?.value : 20,
-            dDAI: val?.[9]?.status == "fulfilled" ? val?.[9]?.value : 20,
+            dBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00148,
+            dETH: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0.024,
+            dUSDT: val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 40,
+            dUSDC: val?.[8]?.status == "fulfilled" ? val?.[8]?.value : 40,
+            dDAI: val?.[9]?.status == "fulfilled" ? val?.[9]?.value : 40,
           }
           if (data?.dBTC == null) return;
           if (maxdata?.dBTC == null) return;

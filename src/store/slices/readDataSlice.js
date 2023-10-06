@@ -64,11 +64,11 @@ const initialState = {
     rDAI: null,
   },
   maxDepositAmounts:{
-    rBTC: null,
-    rETH: null,
-    rUSDT: null,
-    rUSDC: null,
-    rDAI: null,
+    rBTC: 0.00074,
+    rETH: 0.012,
+    rUSDT: 20,
+    rUSDC: 20,
+    rDAI: 20,
   },
   minLoanAmounts:{
     dBTC: null,
@@ -78,11 +78,11 @@ const initialState = {
     dDAI: null,
   },
   maxLoanAmounts:{
-    dBTC: null,
-    dETH: null,
-    dUSDT: null,
-    dUSDC: null,
-    dDAI: null,
+    dBTC: 0.00148,
+    dETH: 0.024,
+    dUSDT: 40,
+    dUSDC: 40,
+    dDAI: 40,
   }
 
   
