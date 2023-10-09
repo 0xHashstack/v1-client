@@ -40,8 +40,8 @@ jobs:
           echo 'NEXT_PUBLIC_GOOGLE_PRIVATE_KEY=${{secrets.NEXT_PUBLIC_GOOGLE_PRIVATE_KEY_DEV}}' >> .env
           echo 'NEXT_PUBLIC_AWS_ACCESS_KEY_ID=${{secrets.NEXT_PUBLIC_AWS_ACCESS_KEY_ID_DEV}}' >> .env
           echo 'NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY=${{secrets.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY_DEV}}' >> .env
-          echo 'NEXT_PUBLIC_INFURA_MAINNET=${{secrets.NEXT_PUBLIC_INFURA_MAINNET_DEV}}' >> .env
-          echo 'NEXT_PUBLIC_INFURA_TESTNET=${{secrets.NEXT_PUBLIC_INFURA_TESTNET_DEV}}' >> .env
+          echo 'NEXT_PUBLIC_INFURA_MAINNET=${{secrets.NEXT_PUBLIC_INFURA_MAINNET}}' >> .env
+          echo 'NEXT_PUBLIC_INFURA_TESTNET=${{secrets.NEXT_PUBLIC_INFURA_TESTNET}}' >> .env
 
       - name: Build
         run: yarn build
