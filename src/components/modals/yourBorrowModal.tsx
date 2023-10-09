@@ -73,6 +73,8 @@ import {
   selectEffectiveApr,
   selectHealthFactor,
   selectJediSwapPoolsSupported,
+  selectMaximumDepositAmounts,
+  selectMinimumDepositAmounts,
   selectMySwapPoolsSupported,
   selectOraclePrices,
   selectProtocolStats,
@@ -161,6 +163,8 @@ const YourBorrowModal = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
   const [sliderValue1, setSliderValue1] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [inputAmount1, setinputAmount1] = useState(0);
@@ -524,6 +528,13 @@ const YourBorrowModal = ({
       )
       : 0
   );
+  const minAmounts=useSelector(selectMinimumDepositAmounts);
+  const maxAmounts=useSelector(selectMaximumDepositAmounts);
+  useEffect(()=>{
+    setMinimumDepositAmount(minAmounts["r"+collateralAsset])
+    setmaximumDepositAmount(maxAmounts["r"+collateralAsset])
+
+  },[collateralAsset,minAmounts,maxAmounts])
   useEffect(() => {
     setwalletBalance1(
       walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
@@ -547,12 +558,13 @@ const YourBorrowModal = ({
 
   const [walletBalance2, setwalletBalance2] = useState(
     walletBalances[collateralAsset]?.statusBalanceOf === "success"
-      ? parseAmount(
+      ? Number(
+        BNtoNum(
         uint256.uint256ToBN(
           walletBalances[collateralAsset]?.dataBalanceOf?.balance
         ),
         tokenDecimalsMap[collateralAsset]
-      )
+      ))
       : 0
   );
   useEffect(() => {
@@ -3484,7 +3496,7 @@ const YourBorrowModal = ({
                                   display="flex"
                                   justifyContent="flex-end"
                                 >
-                                  Wallet Balance: {walletBalance1}
+                                  Wallet Balance: {numberFormatter(walletBalance1)}
                                   <Text color="#6E7781" ml="0.2rem">
                                     {` ${currentBorrowMarketCoin1.slice(1)}`}
                                   </Text>
@@ -3501,7 +3513,7 @@ const YourBorrowModal = ({
                                 fontStyle="normal"
                                 fontFamily="Inter"
                               >
-                                Wallet Balance: {walletBalance1}
+                                Wallet Balance: {numberFormatter(walletBalance1)}
                                 <Text color="#6E7781" ml="0.2rem">
                                   {` ${currentBorrowMarketCoin1.slice(1)}`}
                                 </Text>
@@ -4957,6 +4969,8 @@ const YourBorrowModal = ({
                             ? "1px solid #CF222E"
                             : inputCollateralAmount < 0
                               ? "1px solid #CF222E"
+                              :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount>maximumDepositAmount))
+                              ? "1px solid #CF222E"
                               : inputCollateralAmount > 0 &&
                                 inputAmount <= walletBalance2
                                 ? "1px solid #00D395"
@@ -4988,6 +5002,9 @@ const YourBorrowModal = ({
                               ? "#CF222E"
                               : inputCollateralAmount < 0
                                 ? "#CF222E"
+                                :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount>maximumDepositAmount))
+                                ? "#CF222E"
+
                                 : inputCollateralAmount == 0
                                   ? "white"
                                   : "#00D395"
@@ -5032,6 +5049,8 @@ const YourBorrowModal = ({
                                 )?.rTokenFreeParsed)
                               ? "#CF222E"
                               : inputCollateralAmount < 0
+                                ? "#CF222E"
+                                :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount>maximumDepositAmount))
                                 ? "#CF222E"
                                 : inputCollateralAmount == 0
                                   ? "#0969DA"
@@ -5083,6 +5102,7 @@ const YourBorrowModal = ({
                               item?.rToken ==
                               collateralBalance.substring(spaceIndex + 1)
                           )?.rTokenFreeParsed) ||
+                          (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount>maximumDepositAmount)) ||
                         inputCollateralAmount < 0 ? (
                         <Text
                           display="flex"
@@ -5100,7 +5120,11 @@ const YourBorrowModal = ({
                               <SmallErrorIcon />{" "}
                             </Text>
                             <Text ml="0.3rem">
-                              {inputCollateralAmount >
+                              { (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 &&  ( inputCollateralAmount<minimumDepositAmount))
+                                ? "less than min amount"
+                                :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && ( inputCollateralAmount>maximumDepositAmount))
+                              ?"more than max amount"
+                              :inputCollateralAmount >
                                 (currentTokenSelected == "Native Token"
                                   ? walletBalance2
                                   : userDeposit?.find(
@@ -5117,6 +5141,7 @@ const YourBorrowModal = ({
                                     collateralBalance.substring(spaceIndex + 1)
                                 )?.rTokenFreeParsed
                                 ? "Amount exceeds balance"
+                               
                                 : "Invalid Input"}{" "}
                             </Text>
                           </Text>
@@ -5127,12 +5152,12 @@ const YourBorrowModal = ({
                           >
                             Wallet Balance:{" "}
                             {currentTokenSelected == "Native Token"
-                              ? walletBalance2
-                              : userDeposit?.find(
+                              ?numberFormatter(walletBalance2)
+                              :numberFormatter(userDeposit?.find(
                                 (item: any) =>
                                   item?.rToken ==
                                   collateralBalance.substring(spaceIndex + 1)
-                              )?.rTokenFreeParsed}
+                              )?.rTokenFreeParsed)}
                             <Text color="#6E7781" ml="0.2rem">
                               {currentTokenSelected == "Native Token"
                                 ? collateralAsset
@@ -5152,12 +5177,12 @@ const YourBorrowModal = ({
                         >
                           Wallet Balance:{" "}
                           {currentTokenSelected == "Native Token"
-                            ? walletBalance2
-                            : userDeposit?.find(
+                            ? numberFormatter(walletBalance2)
+                            : numberFormatter(userDeposit?.find(
                               (item: any) =>
                                 item?.rToken ==
                                 collateralBalance.substring(spaceIndex + 1)
-                            )?.rTokenFreeParsed}
+                            )?.rTokenFreeParsed)}
                           <Text color="#6E7781" ml="0.2rem">
                             {currentTokenSelected == "Native Token"
                               ? collateralAsset
@@ -5680,6 +5705,8 @@ const YourBorrowModal = ({
                       </Text>
                     </Card>
                     {inputCollateralAmount > 0 &&
+                      (process.env.NEXT_PUBLIC_NODE_ENV=="testnet" || currentTokenSelected=="Native Token" &&
+                      ( inputCollateralAmount>0 && (inputCollateralAmount>=minimumDepositAmount && inputCollateralAmount<=maximumDepositAmount)))&&
                       (currentTokenSelected == "Native Token"
                         ? inputCollateralAmount <= walletBalance2
                         : inputCollateralAmount <=
