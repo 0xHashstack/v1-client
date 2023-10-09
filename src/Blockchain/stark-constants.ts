@@ -23,12 +23,12 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
     contractsEnv.TOKENS[i].address
   );
 }
-
+console.log(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? process.env.NEXT_PUBLIC_INFURA_TESTNET:process.env.NEXT_PUBLIC_INFURA_MAINNET,"provider")
 export const getProvider = () => {
   if (contractsEnv == DeployDetailsProd.goerli) {
     const provider = new Provider({
       rpc: {
-        nodeUrl: `https://starknet-goerli.infura.io/v3/${process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? process.env.NEXT_PUBLIC_INFURA_TESTNET:process.env.NEXT_PUBLIC_INFURA_MAINNET}S`,
+        nodeUrl: `https://starknet-goerli.infura.io/v3/${process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? process.env.NEXT_PUBLIC_INFURA_TESTNET:process.env.NEXT_PUBLIC_INFURA_MAINNET}`,
         blockIdentifier: "pending",
         retries: 3,
       }
