@@ -28,7 +28,7 @@ export const getProvider = () => {
   if (contractsEnv == DeployDetailsProd.goerli) {
     const provider = new Provider({
       rpc: {
-        nodeUrl: "https://starknet-goerli.infura.io/v3/21d249f2a74e447c9e54efedf768dcb5",
+        nodeUrl: `https://starknet-goerli.infura.io/v3/${process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? process.env.NEXT_PUBLIC_INFURA_TESTNET:process.env.NEXT_PUBLIC_INFURA_MAINNET}S`,
         blockIdentifier: "pending",
         retries: 3,
       }
@@ -37,7 +37,7 @@ export const getProvider = () => {
   } else if(contractsEnv == DeployDetailsProd.goerli_2){
     const provider = new Provider({
       rpc: {
-        nodeUrl: "https://starknet-goerli2.infura.io/v3/21d249f2a74e447c9e54efedf768dcb5",
+        nodeUrl: `https://starknet-goerli2.infura.io/v3/${process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? process.env.NEXT_PUBLIC_INFURA_TESTNET:process.env.NEXT_PUBLIC_INFURA_MAINNET}`,
         blockIdentifier: "pending",
         retries: 3,
       }
@@ -46,7 +46,7 @@ export const getProvider = () => {
   } else {
     const provider = new Provider({
       rpc: {
-        nodeUrl: "https://starknet-mainnet.infura.io/v3/21d249f2a74e447c9e54efedf768dcb5",
+        nodeUrl: `https://starknet-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? process.env.NEXT_PUBLIC_INFURA_TESTNET:process.env.NEXT_PUBLIC_INFURA_MAINNET}`,
         blockIdentifier: "pending",
         retries: 3,
       }
