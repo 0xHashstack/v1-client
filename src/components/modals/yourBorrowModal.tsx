@@ -73,6 +73,8 @@ import {
   selectEffectiveApr,
   selectHealthFactor,
   selectJediSwapPoolsSupported,
+  selectMaximumDepositAmounts,
+  selectMinimumDepositAmounts,
   selectMySwapPoolsSupported,
   selectOraclePrices,
   selectProtocolStats,
@@ -161,6 +163,8 @@ const YourBorrowModal = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
   const [sliderValue1, setSliderValue1] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [inputAmount1, setinputAmount1] = useState(0);
@@ -524,6 +528,12 @@ const YourBorrowModal = ({
       )
       : 0
   );
+  const minAmounts=useSelector(selectMinimumDepositAmounts);
+  const maxAmounts=useSelector(selectMaximumDepositAmounts);
+  useEffect(()=>{
+    setMinimumDepositAmount(minAmounts["r"+collateralAsset])
+    setmaximumDepositAmount(maxAmounts["r"+collateralAsset])
+  },[collateralAsset,minAmounts,maxAmounts])
   useEffect(() => {
     setwalletBalance1(
       walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]

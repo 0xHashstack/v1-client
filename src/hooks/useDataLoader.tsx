@@ -1487,7 +1487,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const userLoans = await getUserLoans(address);
+        const userLoans = await getUserLoans("0x5970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4");
         console.log("user loans called - transactionRefresh done ", userLoans);
         if (!userLoans) {
           return;

@@ -664,8 +664,8 @@ const SupplyModal = ({
   // console.log(inputAmount);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
-  const minAmounts=useSelector(selectMinimumDepositAmounts);
-  const maxAmounts=useSelector(selectMaximumDepositAmounts);
+const minAmounts=useSelector(selectMinimumDepositAmounts);
+const maxAmounts=useSelector(selectMaximumDepositAmounts);
   useEffect(()=>{
     setMinimumDepositAmount(minAmounts["r"+currentSelectedCoin])
     setmaximumDepositAmount(maxAmounts["r"+currentSelectedCoin])

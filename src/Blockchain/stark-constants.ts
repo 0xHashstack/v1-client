@@ -24,71 +24,71 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   );
 }
 
-// export const getProvider = () => {
-//   if (contractsEnv == DeployDetailsProd.goerli) {
-//     const provider = new Provider({
-//       rpc: {
-//         nodeUrl: "https://starknet-goerli.infura.io/v3/b496d6ea1c414d3eb6be4a7d6c5f4b05",
-//         blockIdentifier: "pending",
-//         retries: 3,
-//       }
-//     });
-//     return provider;
-//   } else if(contractsEnv == DeployDetailsProd.goerli_2){
-//     const provider = new Provider({
-//       rpc: {
-//         nodeUrl: "https://starknet-goerli2.infura.io/v3/b496d6ea1c414d3eb6be4a7d6c5f4b05",
-//         blockIdentifier: "pending",
-//         retries: 3,
-//       }
-//     });
-//     return provider;
-//   } else {
-//     const provider = new Provider({
-//       rpc: {
-//         nodeUrl: "https://starknet-mainnet.infura.io/v3/b496d6ea1c414d3eb6be4a7d6c5f4b05",
-//         blockIdentifier: "pending",
-//         retries: 3,
-//       }
-//     });
-//     return provider;
-//   }
-// }
-
 export const getProvider = () => {
   if (contractsEnv == DeployDetailsProd.goerli) {
     const provider = new Provider({
-      sequencer: {
-        baseUrl: "https://alpha4.starknet.io",
-        // baseUrl: "http://127.0.0.1:5050/",
-        feederGatewayUrl: "feeder_gateway",
-        gatewayUrl: "gateway",
+      rpc: {
+        nodeUrl: "https://starknet-goerli.infura.io/v3/21d249f2a74e447c9e54efedf768dcb5",
         blockIdentifier: "pending",
-      },
+        retries: 3,
+      }
     });
     return provider;
-  } else if (contractsEnv == DeployDetailsProd.goerli_2) {
+  } else if(contractsEnv == DeployDetailsProd.goerli_2){
     const provider = new Provider({
-      sequencer: {
-        baseUrl: "https://alpha4-2.starknet.io",
-        feederGatewayUrl: "feeder_gateway",
-        gatewayUrl: "gateway",
+      rpc: {
+        nodeUrl: "https://starknet-goerli2.infura.io/v3/21d249f2a74e447c9e54efedf768dcb5",
         blockIdentifier: "pending",
-      },
+        retries: 3,
+      }
     });
     return provider;
   } else {
     const provider = new Provider({
-      sequencer: {
-        baseUrl: "https://alpha-mainnet.starknet.io",
-        feederGatewayUrl: "feeder_gateway",
-        gatewayUrl: "gateway",
+      rpc: {
+        nodeUrl: "https://starknet-mainnet.infura.io/v3/21d249f2a74e447c9e54efedf768dcb5",
         blockIdentifier: "pending",
-      },
+        retries: 3,
+      }
     });
     return provider;
   }
-};
+}
+
+// export const getProvider = () => {
+//   if (contractsEnv == DeployDetailsProd.goerli) {
+//     const provider = new Provider({
+//       sequencer: {
+//         baseUrl: "https://alpha4.starknet.io",
+//         // baseUrl: "http://127.0.0.1:5050/",
+//         feederGatewayUrl: "feeder_gateway",
+//         gatewayUrl: "gateway",
+//         blockIdentifier: "pending",
+//       },
+//     });
+//     return provider;
+//   } else if (contractsEnv == DeployDetailsProd.goerli_2) {
+//     const provider = new Provider({
+//       sequencer: {
+//         baseUrl: "https://alpha4-2.starknet.io",
+//         feederGatewayUrl: "feeder_gateway",
+//         gatewayUrl: "gateway",
+//         blockIdentifier: "pending",
+//       },
+//     });
+//     return provider;
+//   } else {
+//     const provider = new Provider({
+//       sequencer: {
+//         baseUrl: "https://alpha-mainnet.starknet.io",
+//         feederGatewayUrl: "feeder_gateway",
+//         gatewayUrl: "gateway",
+//         blockIdentifier: "pending",
+//       },
+//     });
+//     return provider;
+//   }
+// };
 
 export function isTransactionLoading(receipt: UseWaitForTransactionResult) {
   // if(receipt.loading)
