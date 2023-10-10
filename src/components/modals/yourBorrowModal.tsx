@@ -1284,7 +1284,8 @@ const YourBorrowModal = ({
 
             borderRadius="6px"
             p="1rem"
-            border="1px solid #2B2F35"
+             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
             mt="1.5rem"
             mb="1.5rem"
           >
@@ -1309,8 +1310,8 @@ const YourBorrowModal = ({
                     fontWeight={"thin"}
                     borderRadius={"lg"}
                     padding={"2"}
-                    border="1px solid"
-                    borderColor="#2B2F35"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
                   >
@@ -1366,8 +1367,8 @@ const YourBorrowModal = ({
                       fontWeight={"thin"}
                       borderRadius={"lg"}
                       padding={"2"}
-                      border="1px solid"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                       arrowShadowColor="#2B2F35"
                       maxW="222px"
                     >
@@ -1455,8 +1456,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1494,8 +1495,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1547,8 +1548,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1586,8 +1587,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="292px"
                 // mt='20px'
@@ -1641,8 +1642,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1684,8 +1685,9 @@ const YourBorrowModal = ({
           <Box
             p="1rem"
             borderRadius="md"
-            border="1px"
-            borderColor="#2B2F35"
+                               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+            
             background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
             my="6"
@@ -1710,8 +1712,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1819,8 +1821,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1858,8 +1860,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1886,8 +1888,8 @@ const YourBorrowModal = ({
           <Box
             p="1rem"
             borderRadius="md"
-            border="1px"
-            borderColor="#2B2F35"
+            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
             background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
             my="6"
@@ -1907,8 +1909,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1941,8 +1943,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2020,8 +2022,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2049,8 +2051,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2075,7 +2077,8 @@ const YourBorrowModal = ({
 
             borderRadius="6px"
             p="1rem"
-            border="1px solid #2B2F35"
+             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
             mt="1.5rem"
             mb="1.5rem"
           >
@@ -2147,8 +2150,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2186,8 +2189,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2215,6 +2218,7 @@ const YourBorrowModal = ({
             p="1rem"
             borderRadius="md"
             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
             background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
             my="6"
@@ -2239,8 +2243,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2348,8 +2352,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2387,8 +2391,8 @@ const YourBorrowModal = ({
                   fontWeight={"thin"}
                   borderRadius={"lg"}
                   padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2839,7 +2843,8 @@ const YourBorrowModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                       borderLeftRadius="md"
                       fontWeight="normal"
                       opacity="100%"
@@ -2860,7 +2865,8 @@ const YourBorrowModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                       borderRightRadius="md"
                       fontWeight="normal"
                       opacity="100%"
@@ -2902,7 +2908,8 @@ const YourBorrowModal = ({
                       display="flex"
                       flexDirection="column"
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                       p="5"
                       // my="4"
                       borderRadius="md"
@@ -2958,8 +2965,7 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -2970,8 +2976,7 @@ const YourBorrowModal = ({
                         </Box>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -3084,8 +3089,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -3097,8 +3102,9 @@ const YourBorrowModal = ({
                         {currentAction == "Convert to borrow market" ? (
                           <Box
                             display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
+                                               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                            
                             justifyContent="space-between"
                             py="2"
                             pl="3"
@@ -3114,8 +3120,8 @@ const YourBorrowModal = ({
                         ) : (
                           <Box
                             display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             justifyContent="space-between"
                             py="2"
                             pl="3"
@@ -3236,8 +3242,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -3248,8 +3254,9 @@ const YourBorrowModal = ({
                         </Box>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                                             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                          
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -3361,8 +3368,8 @@ const YourBorrowModal = ({
                                 fontWeight={"thin"}
                                 borderRadius={"lg"}
                                 padding={"2"}
-                                border="1px solid"
-                                borderColor="#2B2F35"
+                                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                                 arrowShadowColor="#2B2F35"
                                 maxW="222px"
                               >
@@ -3386,7 +3393,8 @@ const YourBorrowModal = ({
                                       : repayAmount > 0 &&
                                         repayAmount <= walletBalance1
                                         ? "1px solid #00D395"
-                                        : "1px solid #2B2F35 "
+                                        :              "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                                 }`}
                             >
                               <NumberInput
@@ -3657,8 +3665,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -3680,7 +3688,7 @@ const YourBorrowModal = ({
                             <Stack spacing={4} direction="row">
                               <Radio
                                 value="1"
-                                borderColor="#2B2F35"
+                                
                                 colorScheme="customPurple"
                                 _focus={{ boxShadow: "none", outline: "0" }}
                                 isDisabled={
@@ -3694,7 +3702,7 @@ const YourBorrowModal = ({
                               <Radio
                                 fontSize="sm"
                                 value="2"
-                                borderColor="#2B2F35"
+                                
                                 colorScheme="customPurple"
                                 _focus={{ boxShadow: "none", outline: "0" }}
                                 isDisabled={
@@ -3716,8 +3724,8 @@ const YourBorrowModal = ({
                         flexDirection="column"
                         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
-                        border="1px"
-                        borderColor="#2B2F35"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                         p="3"
                         // my="4"
                         borderRadius="md"
@@ -3738,8 +3746,8 @@ const YourBorrowModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="222px"
                             >
@@ -3750,8 +3758,8 @@ const YourBorrowModal = ({
                           </Box>
                           <Box
                             display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             justifyContent="space-between"
                             py="2"
                             pl="3"
@@ -3876,8 +3884,9 @@ const YourBorrowModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                                               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                              
                               arrowShadowColor="#2B2F35"
                               maxW="222px"
                             >
@@ -3888,8 +3897,9 @@ const YourBorrowModal = ({
                           </Box>
                           <Box
                             display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
+                                               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                            
                             justifyContent="space-between"
                             py="2"
                             pl="3"
@@ -4082,7 +4092,8 @@ const YourBorrowModal = ({
                         size="sm"
                         width="100%"
                         mb="2rem"
-                        border="1px solid #2B2F35"
+                         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                         _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                       >
                         Select action
@@ -4166,7 +4177,8 @@ const YourBorrowModal = ({
                           size="sm"
                           width="100%"
                           mb="2rem"
-                          border="1px solid #2B2F35"
+                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           _hover={{
                             bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                           }}
@@ -4247,7 +4259,8 @@ const YourBorrowModal = ({
                           size="sm"
                           width="100%"
                           mb="2rem"
-                          border="1px solid #2B2F35"
+                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           _hover={{
                             bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                           }}
@@ -4384,7 +4397,8 @@ const YourBorrowModal = ({
                           size="sm"
                           width="100%"
                           mb="2rem"
-                          border="1px solid #2B2F35"
+                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           _hover={{
                             bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                           }}
@@ -4402,7 +4416,8 @@ const YourBorrowModal = ({
                       display="flex"
                       flexDirection="column"
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10));"
-                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                       p="5"
                       // my="4"
                       borderRadius="md"
@@ -4432,8 +4447,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -4444,8 +4459,9 @@ const YourBorrowModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                                             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                          
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -4563,8 +4579,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -4575,8 +4591,9 @@ const YourBorrowModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                                             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                          
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -4694,8 +4711,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -4706,8 +4723,9 @@ const YourBorrowModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                                             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                          
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -4895,9 +4913,8 @@ const YourBorrowModal = ({
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
-                          border="1px solid"
-                          borderColor="#2B2F35"
-                          arrowShadowColor="#2B2F35"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           maxW="222px"
                         >
                           <Box>
@@ -4911,7 +4928,8 @@ const YourBorrowModal = ({
                         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
                         py="2"
-                        border="1px solid #2B2F35"
+                         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                         borderRadius="6px"
                         mt="-0.5rem"
                       >
@@ -4938,8 +4956,8 @@ const YourBorrowModal = ({
                           fontWeight={"thin"}
                           borderRadius={"lg"}
                           padding={"2"}
-                          border="1px solid"
-                          borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           arrowShadowColor="#2B2F35"
                           maxW="222px"
                         >
@@ -4974,7 +4992,8 @@ const YourBorrowModal = ({
                                       collateralBalance.substring(spaceIndex + 1)
                                   )?.rTokenFreeParsed
                                   ? "1px solid #CF22E"
-                                  : "1px solid #2B2F35 "
+                                  :              "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           }`}
                         borderRadius="6px"
                         display="flex"
@@ -5364,7 +5383,8 @@ const YourBorrowModal = ({
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10));"
                       mt="2rem"
                       p="1rem"
-                      border="1px solid #2B2F35"
+                       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                     >
                       <Text
                         display="flex"
@@ -5393,8 +5413,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5437,8 +5457,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5476,8 +5496,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5515,8 +5535,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5571,8 +5591,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5610,8 +5630,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5666,8 +5686,8 @@ const YourBorrowModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5777,7 +5797,8 @@ const YourBorrowModal = ({
                         width="100%"
                         mt="1.5rem"
                         mb="1.5rem"
-                        border="1px solid #2B2F35"
+                         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                         _hover={{
                           bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                         }}

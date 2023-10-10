@@ -831,8 +831,8 @@ const YourSupplyModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
                             // mt="15px"
@@ -1000,8 +1000,8 @@ const YourSupplyModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -1021,6 +1021,7 @@ const YourSupplyModal = ({
                               : inputSupplyAmount > 0 &&
                                 inputSupplyAmount <= walletBalance
                               ? "1px solid #00D395"
+                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
@@ -1265,7 +1266,8 @@ const YourSupplyModal = ({
                           defaultChecked
                           mb="auto"
                           mt="1.2rem"
-                          borderColor="#2B2F35"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           isDisabled={transactionStarted == true}
                           _disabled={{
                             cursor: "pointer",
@@ -1322,8 +1324,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
                             >
@@ -1361,8 +1363,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
                             >
@@ -1399,8 +1401,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
                               // mb="16px"
@@ -1579,8 +1581,8 @@ const YourSupplyModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
                           >
@@ -1728,8 +1730,8 @@ const YourSupplyModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -1751,6 +1753,7 @@ const YourSupplyModal = ({
                               : inputWithdrawlAmount > 0 &&
                                 inputWithdrawlAmount <= withdrawWalletBalance
                               ? "1px solid #00D395"
+                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
@@ -2022,8 +2025,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="247px"
                               // mt="15px"
@@ -2172,8 +2175,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="222px"
                             >
@@ -2212,8 +2215,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="292px"
                               // mb="15px"
