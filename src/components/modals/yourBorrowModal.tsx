@@ -2214,8 +2214,7 @@ const YourBorrowModal = ({
           <Box
             p="1rem"
             borderRadius="md"
-            border="1px"
-            borderColor="#2B2F35"
+            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
             background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
             my="6"
@@ -2840,14 +2839,13 @@ const YourBorrowModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderLeftRadius="md"
                       fontWeight="normal"
                       opacity="100%"
                       _selected={{
                         color: "white",
-                        bg: "#0969DA",
+                        bg: "#4D59E8",
                         border: "none",
                       }}
                       isDisabled={collateralTransactionStarted == true}
@@ -2862,14 +2860,13 @@ const YourBorrowModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderRightRadius="md"
                       fontWeight="normal"
                       opacity="100%"
                       _selected={{
                         color: "white",
-                        bg: "#0969DA",
+                        bg: "#4D59E8",
                         border: "none",
                       }}
                       isDisabled={transactionStarted == true}
@@ -2905,8 +2902,7 @@ const YourBorrowModal = ({
                       display="flex"
                       flexDirection="column"
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       p="5"
                       // my="4"
                       borderRadius="md"
@@ -4406,8 +4402,7 @@ const YourBorrowModal = ({
                       display="flex"
                       flexDirection="column"
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10));"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       p="5"
                       // my="4"
                       borderRadius="md"

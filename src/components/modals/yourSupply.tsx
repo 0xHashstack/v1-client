@@ -769,8 +769,7 @@ const YourSupplyModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderLeftRadius="md"
                       fontWeight="normal"
                       _selected={{
@@ -787,8 +786,7 @@ const YourSupplyModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderRightRadius="md"
                       fontWeight="normal"
                       _selected={{
@@ -846,8 +844,7 @@ const YourSupplyModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -887,6 +884,7 @@ const YourSupplyModal = ({
                               w="full"
                               left="0"
                               bg="#03060B"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               py="2"
                               className="dropdown-container"
                               boxShadow="dark-lg"
@@ -1023,7 +1021,7 @@ const YourSupplyModal = ({
                               : inputSupplyAmount > 0 &&
                                 inputSupplyAmount <= walletBalance
                               ? "1px solid #00D395"
-                              : "1px solid #2B2F35 "
+                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
                           display="flex"
@@ -1593,8 +1591,7 @@ const YourSupplyModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -1634,6 +1631,7 @@ const YourSupplyModal = ({
                               w="full"
                               left="0"
                               bg="#03060B"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               py="2"
                               className="dropdown-container"
                               boxShadow="dark-lg"
@@ -1753,7 +1751,7 @@ const YourSupplyModal = ({
                               : inputWithdrawlAmount > 0 &&
                                 inputWithdrawlAmount <= withdrawWalletBalance
                               ? "1px solid #00D395"
-                              : "1px solid #2B2F35 "
+                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
                           display="flex"

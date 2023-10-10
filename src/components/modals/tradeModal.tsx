@@ -1174,11 +1174,11 @@ const TradeModal = ({
             pos="relative"
           >
             <Text color="black" mb="1.5rem"></Text>
-            <Text pos="absolute" top="8" left="8">
+            <Text pos="absolute" top="10" left="8">
               Trade
             </Text>
           </ModalHeader>
-          <ModalCloseButton color="white" mt="1.1rem" mr="1rem" />
+          <ModalCloseButton color="white" mt="1.3rem" mr="1rem" />
           {/* <ModalCloseButton mt="1rem" mr="1rem" color="white" /> */}
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalBody color={"#E6EDF3"}>

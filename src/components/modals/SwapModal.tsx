@@ -596,8 +596,7 @@ const SwapModal = ({
               </Text>
               <Box
                 display="flex"
-                border="1px"
-                borderColor="#2B2F35"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 justifyContent="space-between"
                 py="2"
                 pl="3"
@@ -637,6 +636,7 @@ const SwapModal = ({
                     w="full"
                     left="0"
                     bg="#03060B"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                     py="2"
                     className="dropdown-container"
                     boxShadow="dark-lg"
@@ -717,8 +717,7 @@ const SwapModal = ({
               </Text>
               <Box
                 display="flex"
-                border="1px"
-                borderColor="#2B2F35"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 justifyContent="space-between"
                 py="2"
                 pl="3"
@@ -751,6 +750,7 @@ const SwapModal = ({
                     w="full"
                     left="0"
                     bg="#03060B"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                     py="2"
                     className="dropdown-container"
                     boxShadow="dark-lg"
@@ -846,8 +846,7 @@ const SwapModal = ({
               </Text>
               <Box
                 display="flex"
-                border="1px"
-                borderColor="#2B2F35"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 justifyContent="space-between"
                 py="2"
                 pl="3"
