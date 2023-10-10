@@ -462,11 +462,13 @@ const Navbar = ({ validRTokens }: any) => {
           {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID  ?"":          <GetTokensModal
             buttonText="Get Tokens"
             height={"2rem"}
-            fontSize={"12px"}
+            fontSize={"14px"}
+            lineHeight="14px"
             padding="6px 12px"
-            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+            border="1px solid #676D9A"
             // borderColor="#B1B05"
-            bgColor="#101216"
+            // bgColor="#101216"
+            bgColor="transparent"
             _hover={{ bg: "white", color: "black" }}
             borderRadius={"6px"}
             color="#E6EDF3"
@@ -986,6 +988,7 @@ const Navbar = ({ validRTokens }: any) => {
                 background="var(--Base_surface, #02010F)"
                 border="1px solid rgba(103, 109, 154, 0.30)"
                 padding="0.7rem 0.6rem"
+                pb="1.5rem"
                 // backgroundColor: "red",
                 className="dropdown-container"
               >
@@ -999,7 +1002,7 @@ const Navbar = ({ validRTokens }: any) => {
                   }}
                   gap="8px"
                   padding="0.5rem 0.7rem"
-                  color="#6E7681"
+                  color="#B1B0B5"
                 >
                   <Image
                     src={arrowNavLeft}

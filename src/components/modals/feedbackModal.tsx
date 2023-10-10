@@ -356,6 +356,8 @@ const FeedbackModal = ({
           fontStyle="normal"
           fontWeight="500"
           lineHeight="20px"
+          borderBottomRightRadius="0px"
+          borderBottomLeftRadius="0px"
           transform="rotate(-90deg)"
           _hover={{ backgroundColor: "#4D59E8" }}
           transformOrigin="bottom right"
@@ -762,7 +764,7 @@ const FeedbackModal = ({
                           Tell us what&apos;s broken
                         </Text>
                         <Input
-                          mt="0.4rem"
+                          mt="1.4rem"
                           placeholder="Add a title"
                           color="white"
                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
@@ -795,7 +797,7 @@ const FeedbackModal = ({
                       >
                         <Box
                           onClick={handleCaptureClick}
-                          mt="0.4rem"
+                          mt="1rem"
                           bg="none"
                           cursor="pointer"
                           display="flex"
@@ -806,7 +808,7 @@ const FeedbackModal = ({
 
                         <Box>
                           <Box
-                            mt="0.4rem"
+                            mt="1rem"
                             bg="none"
                             cursor="pointer"
                             display="flex"
@@ -951,7 +953,7 @@ const FeedbackModal = ({
                       Tell us how we can improve
                     </Text>
                     <Input
-                      mt="0.4rem"
+                      mt="1.4rem"
                       placeholder="Add a title"
                       color="white"
                       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
@@ -985,7 +987,7 @@ const FeedbackModal = ({
                     >
                       <Box
                         onClick={handleCaptureClickSuggestions}
-                        mt="0.4rem"
+                        mt="1rem"
                         bg="none"
                         cursor="pointer"
                         display="flex"

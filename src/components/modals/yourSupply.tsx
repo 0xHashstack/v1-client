@@ -769,8 +769,7 @@ const YourSupplyModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderLeftRadius="md"
                       fontWeight="normal"
                       _selected={{
@@ -787,8 +786,7 @@ const YourSupplyModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderRightRadius="md"
                       fontWeight="normal"
                       _selected={{
@@ -833,8 +831,8 @@ const YourSupplyModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
                             // mt="15px"
@@ -846,8 +844,7 @@ const YourSupplyModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -887,6 +884,7 @@ const YourSupplyModal = ({
                               w="full"
                               left="0"
                               bg="#03060B"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               py="2"
                               className="dropdown-container"
                               boxShadow="dark-lg"
@@ -1002,8 +1000,8 @@ const YourSupplyModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -1023,7 +1021,7 @@ const YourSupplyModal = ({
                               : inputSupplyAmount > 0 &&
                                 inputSupplyAmount <= walletBalance
                               ? "1px solid #00D395"
-                              : "1px solid #2B2F35 "
+                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
                           display="flex"
@@ -1076,7 +1074,7 @@ const YourSupplyModal = ({
                                 : inputSupplyAmount < 0
                                 ? "#CF222E"
                                 : inputSupplyAmount == 0
-                                ? "#0969DA"
+                                ? "#4D59E8"
                                 : "#00D395"
                             }`}
                             _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
@@ -1263,11 +1261,12 @@ const YourSupplyModal = ({
                       <Box display="flex" gap="2">
                         <Checkbox
                           size="md"
-                          colorScheme="customBlue"
+                          colorScheme="customPurple"
                           defaultChecked
                           mb="auto"
-                          mt="1.2rem"
-                          borderColor="#2B2F35"
+                          mt="1rem"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           isDisabled={transactionStarted == true}
                           _disabled={{
                             cursor: "pointer",
@@ -1324,8 +1323,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
                             >
@@ -1363,8 +1362,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
                             >
@@ -1401,8 +1400,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
                               // mb="16px"
@@ -1581,8 +1580,8 @@ const YourSupplyModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
                           >
@@ -1634,6 +1633,7 @@ const YourSupplyModal = ({
                               w="full"
                               left="0"
                               bg="#03060B"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               py="2"
                               className="dropdown-container"
                               boxShadow="dark-lg"
@@ -1730,8 +1730,8 @@ const YourSupplyModal = ({
                             fontWeight={"thin"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -1753,7 +1753,7 @@ const YourSupplyModal = ({
                               : inputWithdrawlAmount > 0 &&
                                 inputWithdrawlAmount <= withdrawWalletBalance
                               ? "1px solid #00D395"
-                              : "1px solid #2B2F35 "
+                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
                           display="flex"
@@ -1808,7 +1808,7 @@ const YourSupplyModal = ({
                                 : inputWithdrawlAmount < 0
                                 ? "#CF222E"
                                 : inputWithdrawlAmount == 0
-                                ? "#0969DA"
+                                ? "#4D59E8"
                                 : "#00D395"
                             }`}
                             _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
@@ -2024,8 +2024,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="247px"
                               // mt="15px"
@@ -2174,8 +2174,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="222px"
                             >
@@ -2214,8 +2214,8 @@ const YourSupplyModal = ({
                               fontWeight={"thin"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="292px"
                               // mb="15px"
