@@ -1076,8 +1076,7 @@ const StakeUnstakeModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderLeftRadius="md"
                       fontWeight="normal"
                       _selected={{
@@ -1097,8 +1096,7 @@ const StakeUnstakeModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderRightRadius="md"
                       fontWeight="normal"
                       _selected={{
@@ -1195,8 +1193,7 @@ const StakeUnstakeModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -1232,6 +1229,7 @@ const StakeUnstakeModal = ({
                               w="full"
                               left="0"
                               bg="#03060B"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               py="2"
                               className="dropdown-container"
                               boxShadow="dark-lg"
@@ -1393,7 +1391,7 @@ const StakeUnstakeModal = ({
                                   ) ||
                                   rTokenAmount <= walletBalance))
                               ? "1px solid #00D395"
-                              : "1px solid #2B2F35"
+                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
                           display="flex"
@@ -1463,7 +1461,7 @@ const StakeUnstakeModal = ({
                                 :((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount>maximumDepositAmount) )) 
                                 ? "#CF222E"
                                 : rTokenAmount == 0
-                                ? "#0969DA"
+                                ? "#4D59E8"
                                 : "#00D395"
                             }`}
                             _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
@@ -2169,8 +2167,7 @@ const StakeUnstakeModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -2207,6 +2204,7 @@ const StakeUnstakeModal = ({
                             <Box
                               w="full"
                               left="0"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               bg="#03060B"
                               py="2"
                               className="dropdown-container"
@@ -2327,6 +2325,7 @@ const StakeUnstakeModal = ({
                         <Box
                           width="100%"
                           color="white"
+                          mt="0.2rem"
                           border={`${
                             rTokenToWithdraw > unstakeWalletBalance
                               ? "1px solid #CF222E"
@@ -2335,7 +2334,7 @@ const StakeUnstakeModal = ({
                               : rTokenToWithdraw > 0 &&
                                 rTokenToWithdraw <= unstakeWalletBalance
                               ? "1px solid #00D395"
-                              : "1px solid #2B2F35 "
+                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
                           display="flex"
@@ -2389,7 +2388,7 @@ const StakeUnstakeModal = ({
                                 : rTokenToWithdraw < 0
                                 ? "#CF222E"
                                 : rTokenToWithdraw == 0
-                                ? "#0969DA"
+                                ? "#4D59E8"
                                 : "#00D395"
                             }`}
                             _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}

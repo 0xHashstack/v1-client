@@ -34,6 +34,9 @@ const theme = extendTheme({
     customBlue: {
       500: "#0969DA",
     },
+    customPurple:{
+      500:"#4D59E8",
+    }
   },
   fonts: {
     body: "Inter, sans-serif",

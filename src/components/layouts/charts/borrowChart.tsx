@@ -489,9 +489,15 @@ const BorrowChart = () => {
       annotations: {
         xaxis: [
           {
-            x: 0,
+            x: xAxisCategories[0],
             strokeDashArray: 0,
-            borderColor: "grey",
+            borderColor: "#292D30",
+            borderWidth: 1,
+          },
+          {
+            x: xAxisCategories[xAxisCategories.length - 1], // End position for the box
+            strokeDashArray: 0,
+            borderColor: "#292D30",
             borderWidth: 1,
           },
         ],
@@ -514,7 +520,7 @@ const BorrowChart = () => {
         flexDirection="column"
         alignItems="flex-start"
         height="72px"
-        border="1px solid #2B2F35"
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         color="#E6EDF3"
         // padding="24px 24px 16px"
         px="24px"
@@ -534,12 +540,12 @@ const BorrowChart = () => {
           <Box mt="auto">Borrow :</Box>
           <Box display="flex" gap="2">
             <Button
-              color="#2B2F35"
+              color="#3E415C"
               size="sm"
               border={
                 liquidityProviderChartPeriod === 0
                   ? "none"
-                  : "1px solid #2B2F35"
+                  : "1px solid #3E415C"
               }
               variant={liquidityProviderChartPeriod === 0 ? "solid" : "outline"}
               onClick={() => {
@@ -549,12 +555,12 @@ const BorrowChart = () => {
               1D
             </Button>
             <Button
-              color="#2B2F35"
+              color="#3E415C"
               size="sm"
               border={
                 liquidityProviderChartPeriod === 1
                   ? "none"
-                  : "1px solid #2B2F35"
+                  : "1px solid #3E415C"
               }
               variant={liquidityProviderChartPeriod === 1 ? "solid" : "outline"}
               onClick={() => {
@@ -563,23 +569,23 @@ const BorrowChart = () => {
               isDisabled={false}
               _disabled={{
                 cursor: "pointer",
-                color: "#2B2F35",
+                color: "#3E415C",
                 border: `${
                   liquidityProviderChartPeriod === 2
                     ? "none"
-                    : "1px solid #2B2F35"
+                    : "1px solid #3E415C"
                 }`,
               }}
             >
               1W
             </Button>
             <Button
-              color="#2B2F35"
+              color="#3E415C"
               size="sm"
               border={
                 liquidityProviderChartPeriod === 2
                   ? "none"
-                  : "1px solid #2B2F35"
+                  : "1px solid #3E415C"
               }
               variant={liquidityProviderChartPeriod === 2 ? "solid" : "outline"}
               onClick={() => {
@@ -588,11 +594,11 @@ const BorrowChart = () => {
               isDisabled={false}
               _disabled={{
                 cursor: "pointer",
-                color: "#2B2F35",
+                color: "#3E415C",
                 border: `${
                   liquidityProviderChartPeriod === 2
                     ? "none"
-                    : "1px solid #2B2F35"
+                    : "1px solid #3E415C"
                 }`,
               }}
             >
@@ -600,12 +606,12 @@ const BorrowChart = () => {
             </Button>
 
             <Button
-              color="#2B2F35"
+              color="#3E415C"
               size="sm"
               border={
                 liquidityProviderChartPeriod === 3
                   ? "none"
-                  : "1px solid #2B2F35"
+                  : "1px solid #3E415C"
               }
               variant={liquidityProviderChartPeriod === 3 ? "solid" : "outline"}
               onClick={() => {
@@ -614,11 +620,11 @@ const BorrowChart = () => {
               isDisabled={true}
               _disabled={{
                 cursor: "pointer",
-                color: "#2B2F35",
+                color: "#3E415C",
                 border: `${
                   liquidityProviderChartPeriod === 3
                     ? "none"
-                    : "1px solid #2B2F35"
+                    : "1px solid #3E415C"
                 }`,
               }}
             >
@@ -628,7 +634,7 @@ const BorrowChart = () => {
         </Box>
       </Box>
       <Box
-        border="1px solid #2B2F35"
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         borderRadius="6px"
         padding="16px 24px 40px"
       >

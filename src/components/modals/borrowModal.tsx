@@ -985,6 +985,7 @@ const BorrowModal = ({
                     <Box
                       w="full"
                       left="0"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       bg="#03060B"
                       py="2"
                       className="dropdown-container"
@@ -1281,7 +1282,7 @@ const BorrowModal = ({
                         ? "#CF222E"
 
                         : rTokenAmount == 0
-                        ? "#0969DA"
+                        ? "#4D59E8"
                         : "#00D395"
                     }`}
                     _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
@@ -1593,6 +1594,7 @@ const BorrowModal = ({
                       w="full"
                       left="0"
                       bg="#03060B"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       py="2"
                       className="dropdown-container"
                       boxShadow="dark-lg"
@@ -1794,7 +1796,7 @@ const BorrowModal = ({
                           inputBorrowAmount > currentAvailableReserves
                         ? "#CF222E"
                         : inputBorrowAmountUSD == 0
-                        ? "#0969DA"
+                        ? "#4D59E8"
                         : "#00D395"
                     }`}
                     _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}

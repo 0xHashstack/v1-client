@@ -173,8 +173,8 @@ const YourMetricsSupplyBorrow = ({
           flexDirection="column"
           alignItems="flex-start"
           height="72px"
-          border="1px solid #2B2F35"
-          color="#E6EDF3"
+          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+          color={totalSupply!==0 ?"#E6EDF3":"#3E415C"}
           padding="24px 24px 16px"
           fontSize="20px"
           fontStyle="normal"
@@ -242,14 +242,14 @@ const YourMetricsSupplyBorrow = ({
                   series={series1[currentMarketCoin]}
         /> */}
       </Box>
-      <Box display="flex" flexDirection="column" gap="8px" width="100%">
+      <Box display="flex" flexDirection="column" gap="8px" width="100%" >
         <Box
           display="flex"
           flexDirection="column"
           alignItems="flex-start"
           height="72px"
-          border="1px solid #2B2F35"
-          color="#E6EDF3"
+          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+          color={totalBorrow!==0 ?"#E6EDF3":"#3E415C"}
           padding="24px 24px 16px"
           fontSize="20px"
           fontStyle="normal"
@@ -262,7 +262,7 @@ const YourMetricsSupplyBorrow = ({
         {totalBorrow !== 0 ? (
           <YourMetricsBorrow color={"#4c60ee"} />
         ) : (
-          <Box w="full" h="full" pos="relative" height="423px">
+          <Box w="full" h="full" pos="relative" height="423px" >
             <Image
               height={100}
               width={100}
@@ -272,6 +272,7 @@ const YourMetricsSupplyBorrow = ({
             />
             <Box
               pos="absolute"
+              
               top="36"
               left="0"
               w="full"
