@@ -2949,7 +2949,7 @@ const YourBorrowModal = ({
                         )}
                       <Box display="flex" flexDirection="column" gap="1">
                         <Box display="flex">
-                          <Text fontSize="xs" color="#676D9A">
+                          <Text fontSize="xs"  color="#676D9A">
                             Action
                           </Text>
                           <Tooltip
@@ -3335,9 +3335,9 @@ const YourBorrowModal = ({
                         {currentAction == "Convert to borrow market" ? (
                           ""
                         ) : (
-                          <Text textAlign="right" fontSize="xs" mt="0.2rem">
+                          <Text textAlign="right" fontFamily={'Inter'} fontSize="xs" mt="0.2rem">
                             Borrow Balance: {borrowAmount}
-                            <Text as="span" color="#676D9A" ml="0.2rem">
+                            <Text as="span" fontFamily={'Inter'} color="#676D9A" ml="0.2rem">
                               {currentBorrowMarketCoin1}
                             </Text>
                           </Text>
@@ -3445,7 +3445,7 @@ const YourBorrowModal = ({
                                       : repayAmount < 0
                                         ? "#CF222E"
                                         : repayAmount == 0
-                                          ? "#0969DA"
+                                          ? "#4D59E8"
                                           : "#00D395"
                                   }`}
                                 _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
@@ -4604,7 +4604,7 @@ const YourBorrowModal = ({
                         >
                           <Box display="flex" gap="1">
                             <Box p="1">{getCoin(currentBorrowMarketCoin2)}</Box>
-                            <Text color="white" mt="0.12rem">
+                            <Text fontFamily="Avenir" color="white" mt="0.12rem">
                               {currentBorrowMarketCoin2}
                             </Text>
                           </Box>
@@ -5053,7 +5053,7 @@ const YourBorrowModal = ({
                                 :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount>maximumDepositAmount))
                                 ? "#CF222E"
                                 : inputCollateralAmount == 0
-                                  ? "#0969DA"
+                                  ? "#4D59E8"
                                   : "#00D395"
                             }`}
                           _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}

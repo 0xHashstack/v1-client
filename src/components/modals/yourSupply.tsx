@@ -1076,7 +1076,7 @@ const YourSupplyModal = ({
                                 : inputSupplyAmount < 0
                                 ? "#CF222E"
                                 : inputSupplyAmount == 0
-                                ? "#0969DA"
+                                ? "#4D59E8"
                                 : "#00D395"
                             }`}
                             _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
@@ -1808,7 +1808,7 @@ const YourSupplyModal = ({
                                 : inputWithdrawlAmount < 0
                                 ? "#CF222E"
                                 : inputWithdrawlAmount == 0
-                                ? "#0969DA"
+                                ? "#4D59E8"
                                 : "#00D395"
                             }`}
                             _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}

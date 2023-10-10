@@ -412,6 +412,11 @@ const BorrowChart = () => {
     series: chartData,
     options: {
       chart: {
+        // width:"full",
+        // height:"100",
+
+
+       
         toolbar: {
           show: false,
         },
@@ -476,12 +481,21 @@ const BorrowChart = () => {
         },
       },
       legend: {
+      
+        // offsetY:20,
+      
         fontSize: "12px",
         fontWeight: "400",
         labels: {
           colors: "#fff",
+
           // Set the color of the legend texts to white
         },
+        // itemMargin: {
+           
+        //   vertical: 18
+        // }
+        
       },
       fill: {
         type: "solid",
@@ -505,6 +519,10 @@ const BorrowChart = () => {
     //   curve: "smooth",
     // },
     colors: splineColor,
+    // padding:{
+    //   top:10,
+    //   bottom:10
+    // },
     // colors: ["#804D0F", "#3B48A8","#136B5","#1A2683","#996B22"],
   };
   return (
