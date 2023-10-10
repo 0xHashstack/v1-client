@@ -1022,7 +1022,6 @@ const YourSupplyModal = ({
                                 inputSupplyAmount <= walletBalance
                               ? "1px solid #00D395"
                               : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
                           display="flex"
@@ -1262,10 +1261,10 @@ const YourSupplyModal = ({
                       <Box display="flex" gap="2">
                         <Checkbox
                           size="md"
-                          colorScheme="customBlue"
+                          colorScheme="customPurple"
                           defaultChecked
                           mb="auto"
-                          mt="1.2rem"
+                          mt="1rem"
                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
 
                           isDisabled={transactionStarted == true}
@@ -1593,7 +1592,8 @@ const YourSupplyModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                          border="1px"
+                          borderColor="#2B2F35"
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -1753,7 +1753,6 @@ const YourSupplyModal = ({
                               : inputWithdrawlAmount > 0 &&
                                 inputWithdrawlAmount <= withdrawWalletBalance
                               ? "1px solid #00D395"
-                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
