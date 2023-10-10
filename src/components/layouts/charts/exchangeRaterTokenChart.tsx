@@ -719,9 +719,15 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
       annotations: {
         xaxis: [
           {
-            x: 0,
+            x: xAxisCategories[0],
             strokeDashArray: 0,
-            borderColor: "grey",
+            borderColor: "#292D30",
+            borderWidth: 1,
+          },
+          {
+            x: xAxisCategories[xAxisCategories.length - 1], // End position for the box
+            strokeDashArray: 0,
+            borderColor: "#292D30",
             borderWidth: 1,
           },
         ],
@@ -789,7 +795,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         flexDirection="column"
         alignItems="flex-start"
         height="72px"
-        border="1px solid #2B2F35"
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         color="#E6EDF3"
         // padding="24px 24px 16px"
         px="24px"
@@ -809,9 +815,9 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           <Box mt="auto">Exchange rate: rToken</Box>
           <Box display="flex" gap="2">
             <Button
-              color="#2B2F35"
+              color="#3E415C"
               size="sm"
-              border={aprByMarket === 0 ? "none" : "1px solid #2B2F35"}
+              border={aprByMarket === 0 ? "none" : "1px solid #3E415C"}
               variant={aprByMarket === 0 ? "solid" : "outline"}
               onClick={() => {
                 setAPRByMarket(0);
@@ -820,9 +826,9 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               1D
             </Button>
             <Button
-              color="#2B2F35"
+              color="#3E415C"
               size="sm"
-              border={aprByMarket === 1 ? "none" : "1px solid #2B2F35"}
+              border={aprByMarket === 1 ? "none" : "1px solid #3E415C"}
               variant={aprByMarket === 1 ? "solid" : "outline"}
               onClick={() => {
                 setAPRByMarket(1);
@@ -830,16 +836,16 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               isDisabled={false}
               _disabled={{
                 cursor: "pointer",
-                color: "#2B2F35",
-                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
+                color: "#3E415C",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #3E415C"}`,
               }}
             >
               1W
             </Button>
             <Button
-              color="#2B2F35"
+              color="#3E415C"
               size="sm"
-              border={aprByMarket === 2 ? "none" : "1px solid #2B2F35"}
+              border={aprByMarket === 2 ? "none" : "1px solid #3E415C"}
               variant={aprByMarket === 2 ? "solid" : "outline"}
               onClick={() => {
                 setAPRByMarket(2);
@@ -847,17 +853,17 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               isDisabled={false}
               _disabled={{
                 cursor: "pointer",
-                color: "#2B2F35",
-                border: `${aprByMarket === 2 ? "none" : "1px solid #2B2F35"}`,
+                color: "#3E415C",
+                border: `${aprByMarket === 2 ? "none" : "1px solid #3E415C"}`,
               }}
             >
               1M
             </Button>
 
             <Button
-              color="#2B2F35"
+              color="#3E415C"
               size="sm"
-              border={aprByMarket === 3 ? "none" : "1px solid #2B2F35"}
+              border={aprByMarket === 3 ? "none" : "1px solid #3E415C"}
               variant={aprByMarket === 3 ? "solid" : "outline"}
               onClick={() => {
                 setAPRByMarket(3);
@@ -865,8 +871,8 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               isDisabled={true}
               _disabled={{
                 cursor: "pointer",
-                color: "#2B2F35",
-                border: `${aprByMarket === 3 ? "none" : "1px solid #2B2F35"}`,
+                color: "#3E415C",
+                border: `${aprByMarket === 3 ? "none" : "1px solid #3E415C"}`,
               }}
             >
               ALL
@@ -875,7 +881,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
         </Box>
       </Box>
       <Box
-        border="1px solid #2B2F35"
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         borderRadius="6px"
         padding="16px 24px 40px"
       >
@@ -974,14 +980,15 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             </Box>
           )}
         </Box> */}
-        <Box display="flex" gap="4" mb="1.1rem" mt="0.3rem" fontWeight={500}>
+
+<Box display="flex" gap="4" mb="1.1rem" mt="0.3rem">
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 0 ? "inherit" : "#19191C"}
+            bg={currentSelectedCoin === 0 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 0 ? "white" : "#2B2F35"}
+            borderColor={currentSelectedCoin === 0 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
             // p="1"
             onClick={() => setCurrentSelectedCoin(0)}
             cursor="pointer"
@@ -993,9 +1000,9 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             <Text
               my="auto"
               color="white"
-              fontSize="xs"
-              fontWeight="bold"
-              textColor={currentSelectedCoin === 0 ? "white" : "#2B2F35"}
+              fontSize="12px"
+              fontWeight="500"
+              textColor={currentSelectedCoin === 0 ? "white" : "#3E415C"}
             >
               BTC
             </Text>
@@ -1003,10 +1010,10 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 3 ? "inherit" : "#19191C"}
+            bg={currentSelectedCoin === 3 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 3 ? "white" : "#2B2F35"}
+            borderColor={currentSelectedCoin === 3 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
             // p="1"
             onClick={() => setCurrentSelectedCoin(3)}
             cursor="pointer"
@@ -1018,8 +1025,9 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             <Text
               my="auto"
               color="white"
-              fontSize="xs"
-              textColor={currentSelectedCoin === 3 ? "white" : "#2B2F35"}
+              fontSize="12px"
+              fontWeight="500"
+              textColor={currentSelectedCoin === 3 ? "white" : "#3E415C"}
             >
               ETH
             </Text>
@@ -1027,10 +1035,10 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 1 ? "inherit" : "#19191C"}
+            bg={currentSelectedCoin === 1 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 1 ? "white" : "#2B2F35"}
+            borderColor={currentSelectedCoin === 1 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
             // p="1"
             onClick={() => setCurrentSelectedCoin(1)}
             cursor="pointer"
@@ -1042,8 +1050,9 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             <Text
               my="auto"
               color="white"
-              fontSize="xs"
-              textColor={currentSelectedCoin === 1 ? "white" : "#2B2F35"}
+              fontSize="12px"
+              fontWeight="500"
+              textColor={currentSelectedCoin === 1 ? "white" : "#3E415C"}
             >
               USDT
             </Text>
@@ -1051,10 +1060,10 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 2 ? "inherit" : "#19191C"}
+            bg={currentSelectedCoin === 2 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 2 ? "white" : "#2B2F35"}
+            borderColor={currentSelectedCoin === 2 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
             // p="1"
             onClick={() => setCurrentSelectedCoin(2)}
             cursor="pointer"
@@ -1066,8 +1075,9 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             <Text
               my="auto"
               color="white"
-              fontSize="xs"
-              textColor={currentSelectedCoin === 2 ? "white" : "#2B2F35"}
+              fontSize="12px"
+              fontWeight="500"
+              textColor={currentSelectedCoin === 2 ? "white" : "#3E415C"}
             >
               USDC
             </Text>
@@ -1075,10 +1085,10 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 4 ? "inherit" : "#19191C"}
+            bg={currentSelectedCoin === 4 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 4 ? "white" : "#2B2F35"}
+            borderColor={currentSelectedCoin === 4 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
             // p="1"
             onClick={() => setCurrentSelectedCoin(4)}
             cursor="pointer"
@@ -1090,8 +1100,9 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
             <Text
               my="auto"
               color="white"
-              fontSize="xs"
-              textColor={currentSelectedCoin === 4 ? "white" : "#2B2F35"}
+              fontSize="12px"
+              fontWeight="500"
+              textColor={currentSelectedCoin === 4 ? "white" : "#3E415C"}
             >
               DAI
             </Text>

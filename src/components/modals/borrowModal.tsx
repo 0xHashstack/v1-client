@@ -985,6 +985,7 @@ const BorrowModal = ({
                     <Box
                       w="full"
                       left="0"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       bg="#03060B"
                       py="2"
                       className="dropdown-container"
@@ -1593,6 +1594,7 @@ const BorrowModal = ({
                       w="full"
                       left="0"
                       bg="#03060B"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       py="2"
                       className="dropdown-container"
                       boxShadow="dark-lg"

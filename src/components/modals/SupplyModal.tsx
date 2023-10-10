@@ -900,7 +900,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                       w="full"
                       left="0"
                       bg="#03060B"
-                      border="1px solid #30363D"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       py="2"
                       className="dropdown-container"
                       boxShadow="dark-lg"
@@ -1109,10 +1109,10 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                         : depositAmount < 0
                         ? "#CF222E"
                         : depositAmount == 0
-                        ? "#0969DA"
+                        ? "#4D59E8"
                         : "#00D395"
                     }`}
-                    // color="#0969DA"
+                    // color="#4D59E8"
                     _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                     onClick={() => {
                       setDepositAmount(walletBalance);
@@ -1326,7 +1326,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
               <Box display="flex" gap="2">
                 <Checkbox
                   size="md"
-                  colorScheme="customBlue"
+                  colorScheme="customPurple"
                   defaultChecked
                   mb="auto"
                   mt="0.7rem"
@@ -1334,8 +1334,8 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                   isDisabled={transactionStarted == true}
                   _disabled={{
                     cursor: "pointer",
-                    iconColor: "blue.400",
-                    bg: "blue",
+                    iconColor: "white.400",
+                    bg: "customPurple",
                   }}
                   onChange={() => {
                     setIsChecked(!ischecked);

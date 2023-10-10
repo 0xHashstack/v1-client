@@ -3684,9 +3684,8 @@ const YourBorrowModal = ({
                             <Stack spacing={4} direction="row">
                               <Radio
                                 value="1"
-                                bg="#2B2F35"
-                                border="none"
-                                colorScheme="customBlue"
+                                borderColor="#2B2F35"
+                                colorScheme="customPurple"
                                 _focus={{ boxShadow: "none", outline: "0" }}
                                 isDisabled={
                                   currentAction === "Spend Borrow" &&
@@ -3699,9 +3698,8 @@ const YourBorrowModal = ({
                               <Radio
                                 fontSize="sm"
                                 value="2"
-                                bg="#2B2F35"
-                                border="none"
-                                colorScheme="customBlue"
+                                borderColor="#2B2F35"
+                                colorScheme="customPurple"
                                 _focus={{ boxShadow: "none", outline: "0" }}
                                 isDisabled={
                                   currentAction === "Spend Borrow" &&

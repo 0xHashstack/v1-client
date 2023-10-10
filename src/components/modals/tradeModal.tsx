@@ -1238,8 +1238,7 @@ const TradeModal = ({
                     </Box>
                     <Box
                       display="flex"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       justifyContent="space-between"
                       py="2"
                       pl="3"
@@ -1341,6 +1340,7 @@ const TradeModal = ({
                         <Box
                           w="full"
                           left="0"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           bg="#03060B"
                           py="2"
                           className="dropdown-container"
@@ -1553,7 +1553,7 @@ const TradeModal = ({
                               : inputCollateralAmount > 0 &&
                                 inputCollateralAmount <= walletBalance
                                 ? "1px solid #00D395"
-                                : "1px solid #2B2F35 "
+                                : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
                         }`}
                       borderRadius="6px"
                       display="flex"
@@ -1614,7 +1614,7 @@ const TradeModal = ({
                               : inputCollateralAmount < 0
                                 ? "#CF222E"
                                 : inputCollateralAmount == 0
-                                  ? "#0969DA"
+                                  ? "#4D59E8"
                                   : "#00D395"
                           }`}
                         _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
@@ -1855,8 +1855,7 @@ const TradeModal = ({
                     </Box>
                     <Box
                       display="flex"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       justifyContent="space-between"
                       py="2"
                       pl="2"
@@ -1943,6 +1942,7 @@ const TradeModal = ({
                           w="full"
                           left="0"
                           bg="#03060B"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           py="2"
                           className="dropdown-container"
                           boxShadow="dark-lg"
@@ -2069,7 +2069,7 @@ const TradeModal = ({
                               ? "1px solid #CF222E"
                               : inputBorrowAmount > 0
                                 ? "1px solid #00D395"
-                                : "1px solid #2B2F35 "
+                                : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
                         }`}
                       borderRadius="6px"
                       display="flex"
@@ -2139,7 +2139,7 @@ const TradeModal = ({
                                 :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount
                                 ?"#CF222E"
                                 : inputBorrowAmount == 0
-                                  ? "#0969DA"
+                                  ? "#4D59E8"
                                   : "#00D395"
                           }`}
                         _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
@@ -2428,9 +2428,8 @@ const TradeModal = ({
                       <Stack spacing={4} direction="row">
                         <Radio
                           value="1"
-                          bg="#2B2F35"
-                          border="none"
-                          colorScheme="customBlue"
+                          borderColor="#2B2F35"
+                          colorScheme="customPurple"
                           _focus={{ boxShadow: "none", outline: "0" }}
                         // onClick={() => {
                         //   setMethod("ADD_LIQUIDITY");
@@ -2441,9 +2440,9 @@ const TradeModal = ({
                         <Radio
                           fontSize="sm"
                           value="2"
-                          bg="#2B2F35"
-                          border="none"
-                          colorScheme="customBlue"
+                          // bg="#2B2F35"
+                          borderColor="#2B2F35"
+                          colorScheme="customPurple"
                           _focus={{ boxShadow: "none", outline: "0" }}
                         // onClick={() => {
                         //   setMethod("SWAP");
@@ -2493,8 +2492,7 @@ const TradeModal = ({
                     </Box>
                     <Box
                       display="flex"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       justifyContent="space-between"
                       py="2"
                       pl="3"
@@ -2530,6 +2528,7 @@ const TradeModal = ({
                           w="full"
                           left="0"
                           bg="#03060B"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           py="2"
                           className="dropdown-container"
                           boxShadow="dark-lg"
@@ -2631,8 +2630,7 @@ const TradeModal = ({
                     </Box>
                     <Box
                       display="flex"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       justifyContent="space-between"
                       py="2"
                       pl="3"
@@ -2677,6 +2675,7 @@ const TradeModal = ({
                           w="full"
                           left="0"
                           bg="#03060B"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           py="2"
                           className="dropdown-container"
                           boxShadow="dark-lg"
