@@ -1339,6 +1339,8 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     iconColor: "white.400",
                     bg: "customPurple",
                   }}
+                  
+                  
                   onChange={() => {
                     setIsChecked(!ischecked);
                   }}
