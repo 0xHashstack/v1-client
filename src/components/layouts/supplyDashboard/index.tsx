@@ -866,13 +866,14 @@ const SupplyDashboard = ({
             fontStyle="normal"
             fontWeight="400"
             borderRadius="6px"
+            border="1px solid #3841AA"
             // textAlign="center"
-            color="#B1B0B5"
+            color="#F0F0F5"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
             </Box>
-            Your do not have active supply.
+            You do not have active supply.
             <Box
               // ml="1"
               mr="1"

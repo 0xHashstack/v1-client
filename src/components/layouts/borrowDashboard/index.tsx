@@ -1172,13 +1172,14 @@ const BorrowDashboard = ({
             fontStyle="normal"
             fontWeight="400"
             borderRadius="6px"
-            color="#B1B0B5"
+            border="1px solid #3841AA"
+            color="#F0F0F5"
             // textAlign="center"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
             </Box>
-            Your do not have active borrow.
+            You do not have active borrow.
             <Box
               // ml="1"
               mr="1"

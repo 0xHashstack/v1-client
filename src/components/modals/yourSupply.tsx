@@ -769,8 +769,7 @@ const YourSupplyModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderLeftRadius="md"
                       fontWeight="normal"
                       _selected={{
@@ -787,8 +786,7 @@ const YourSupplyModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderRightRadius="md"
                       fontWeight="normal"
                       _selected={{
@@ -848,7 +846,6 @@ const YourSupplyModal = ({
                         <Box
                           display="flex"
                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -888,6 +885,7 @@ const YourSupplyModal = ({
                               w="full"
                               left="0"
                               bg="#03060B"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               py="2"
                               className="dropdown-container"
                               boxShadow="dark-lg"
@@ -1265,10 +1263,10 @@ const YourSupplyModal = ({
                       <Box display="flex" gap="2">
                         <Checkbox
                           size="md"
-                          colorScheme="customBlue"
+                          colorScheme="customPurple"
                           defaultChecked
                           mb="auto"
-                          mt="1.2rem"
+                          mt="1rem"
                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
 
                           isDisabled={transactionStarted == true}
@@ -1449,16 +1447,16 @@ const YourSupplyModal = ({
                           // height="64px"
                           display="flex"
                           alignItems="center"
-                          mt="2rem"
+                          mt="1rem"
                           mb="1rem"
                         >
                           <Box
                             display="flex"
-                            bg="#0C425C"
-                            color="white"
+                            bg="#222766"
+                            color="#F0F0F5"
                             fontSize="12px"
                             p="4"
-                            border="1px solid rgba(84, 174, 255, 0.4)"
+                            border="1px solid #3841AA"
                             fontStyle="normal"
                             fontWeight="400"
                             lineHeight="18px"
@@ -1600,8 +1598,8 @@ const YourSupplyModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-
+                          border="1px"
+                          borderColor="#2B2F35"
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -1641,6 +1639,7 @@ const YourSupplyModal = ({
                               w="full"
                               left="0"
                               bg="#03060B"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               py="2"
                               className="dropdown-container"
                               boxShadow="dark-lg"

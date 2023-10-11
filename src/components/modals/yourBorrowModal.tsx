@@ -2891,7 +2891,7 @@ const YourBorrowModal = ({
                       opacity="100%"
                       _selected={{
                         color: "white",
-                        bg: "#0969DA",
+                        bg: "#4D59E8",
                         border: "none",
                       }}
                       isDisabled={collateralTransactionStarted == true}
@@ -2913,7 +2913,7 @@ const YourBorrowModal = ({
                       opacity="100%"
                       _selected={{
                         color: "white",
-                        bg: "#0969DA",
+                        bg: "#4D59E8",
                         border: "none",
                       }}
                       isDisabled={transactionStarted == true}
