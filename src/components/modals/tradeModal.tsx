@@ -2424,12 +2424,14 @@ const TradeModal = ({
               <Box w="48%">
                 <Box display="flex" flexDir="column" p="3" gap="1">
                   <Box>
-                    <RadioGroup onChange={setRadioValue} value={radioValue}>
+                    <RadioGroup  onChange={setRadioValue} value={radioValue}>
                       <Stack spacing={4} direction="row">
                         <Radio
                           value="1"
+                        
                           borderColor="#2B2F35"
                           colorScheme="customPurple"
+                        
                           _focus={{ boxShadow: "none", outline: "0" }}
                         // onClick={() => {
                         //   setMethod("ADD_LIQUIDITY");
@@ -2438,6 +2440,7 @@ const TradeModal = ({
                           Liquidity provisioning
                         </Radio>
                         <Radio
+                        // style={control:{}}
                           fontSize="sm"
                           value="2"
                           // bg="#2B2F35"
