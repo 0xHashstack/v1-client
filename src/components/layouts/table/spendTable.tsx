@@ -343,9 +343,10 @@ const SpendTable = () => {
             p="4"
             fontStyle="normal"
             fontWeight="400"
+            border="1px solid #3841AA"
             borderRadius="6px"
             // textAlign="center"
-            color="#B1B0B5"
+            color="#F0F0F5"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
