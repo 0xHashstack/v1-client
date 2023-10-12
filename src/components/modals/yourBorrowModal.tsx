@@ -3744,7 +3744,15 @@ const YourBorrowModal = ({
                               <Radio
                                 value="1"
                                 
+                                borderColor="#2B2F35"
                                 colorScheme="customPurple"
+                                // bg="black"
+                                _checked={{
+                                  bg: "black",
+                                  color: "white",
+      borderWidth:'5px',
+                                    borderColor:"#4D59E8",
+                                }}
                                 _focus={{ boxShadow: "none", outline: "0" }}
                                 isDisabled={
                                   currentAction === "Spend Borrow" &&
@@ -3758,7 +3766,15 @@ const YourBorrowModal = ({
                                 fontSize="sm"
                                 value="2"
                                 
+                                borderColor="#2B2F35"
                                 colorScheme="customPurple"
+                                // bg="black"
+                                _checked={{
+                                  bg: "black",
+                                  color: "white",
+      borderWidth:'5px',
+                                    borderColor:"#4D59E8",
+                                }}
                                 _focus={{ boxShadow: "none", outline: "0" }}
                                 isDisabled={
                                   currentAction === "Spend Borrow" &&

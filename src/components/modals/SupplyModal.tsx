@@ -1334,13 +1334,14 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                   mt="0.7rem"
                   borderColor="#2B2F35"
                   isDisabled={transactionStarted == true}
-                  _disabled={{
-                    cursor: "pointer",
-                    iconColor: "white.400",
-                    bg: "customPurple",
-                  }}
-                  
-                  
+                  // disabledColor="red"
+                
+                  // _disabled={{
+                  //   colorScheme:"black",
+                  //   cursor: "pointer",
+                  //   iconColor: "black",
+                  //   bg: "black",
+                  // }}
                   onChange={() => {
                     setIsChecked(!ischecked);
                   }}
