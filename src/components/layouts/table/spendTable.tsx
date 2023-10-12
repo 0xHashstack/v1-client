@@ -455,13 +455,14 @@ const SpendTable = () => {
                         }
                         rounded="md"
                         boxShadow="dark-lg"
-                        bg="#010409"
+                        bg="#02010F"
                         fontSize={"13px"}
-                        fontWeight={"thin"}
+                        fontWeight={"400"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        color="#F0F0F5"
                         border="1px solid"
-                        borderColor="#676D9A4D"
+                        borderColor="#23233D"
                         arrowShadowColor="#676D9A4D"
                         // maxW="222px"
                         // mt="28px"

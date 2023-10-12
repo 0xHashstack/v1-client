@@ -590,13 +590,14 @@ const BorrowDashboard = ({
                     }
                     rounded="md"
                     boxShadow="dark-lg"
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     // cursor="context-menu"
                     // marginRight={idx1 === 1 ? "52px" : ""}

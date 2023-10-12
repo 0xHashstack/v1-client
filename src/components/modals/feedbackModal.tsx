@@ -259,7 +259,7 @@ const FeedbackModal = ({
 
     axios
       .post(
-        "https://5c8l45vyxb.execute-api.ap-southeast-1.amazonaws.com/api/feedback/rating",
+        `${process.env.NEXT_PUBLIC_FEEDBACK_API}/api/feedback/rating`,
         { starRating, address }
       )
       .then((response) => {
@@ -288,7 +288,7 @@ const FeedbackModal = ({
     }
     axios
       .post(
-        "https://5c8l45vyxb.execute-api.ap-southeast-1.amazonaws.com/api/feedback/bug",
+        `${process.env.NEXT_PUBLIC_FEEDBACK_API}/api/feedback/bug`,
         {
           address: address,
           title: titleBugFeedback,
@@ -322,7 +322,7 @@ const FeedbackModal = ({
     }
     axios
       .post(
-        "https://5c8l45vyxb.execute-api.ap-southeast-1.amazonaws.com/api/feedback/suggestion",
+        `${process.env.NEXT_PUBLIC_FEEDBACK_API}/api/feedback/suggestion`,
         {
           address: address,
           title: titleSuggestions,
