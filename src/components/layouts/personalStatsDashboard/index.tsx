@@ -48,9 +48,9 @@ const tenure = ["Day","Week","Month"];
 const modalDropdowns = useSelector(selectModalDropDowns);
 const tooltips = [
     "Number of traders you have referred",
-    "How much liquidity your referees hold with us",
+    "Liquidity provided by traders you have referred",
     "Points earned for rewards",
-    "Estimated token earning with us ",
+    "Estimated $HASH earned",
   ];
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true

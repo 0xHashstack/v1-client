@@ -64,26 +64,26 @@ const Campaign = () => {
     "Wallet",
     "Referees Liquidity",
     "Points earned",
-    "Est.token earning \n $STRK (i)"
+    "Est.token earning \n $STRK"
   ];
   const columnItemsLeaderBoardReferalCampaign = [
     "Rank",
     "Wallet",
     "Liquidity Provided (in $)",
     "Points earned",
-    "Est.token earning \n $HASH (i)"
+    "Est.token earning \n $HASH"
   ];
   const columnItemsPersonalStats = [
     "Liquidity Provided",
     "Referees liquidity (in $)",
     "Points earned",
-    "Est.token earning \n $STRK (i)"
+    "Est.token earning \n $STRK"
   ];
   const columnItemsPersonalStatsReferalCampaign = [
     "Traders Referred",
     "Referees liquidity (in $)",
     "Points earned",
-    "Est.token earning \n $HASH (i)"
+    "Est.token earning \n $HASH"
   ];
   const sampleDate = [{
     id:0,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
@@ -191,7 +191,7 @@ const Campaign = () => {
   // }, [account, UserLoans]);
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
-  const [campaignSelected, setCampaignSelected] = useState(1);
+  const [campaignSelected, setCampaignSelected] = useState(2);
   const [tabValue, setTabValue] = useState(1);
 
   return (
@@ -208,7 +208,7 @@ const Campaign = () => {
         zIndex="1"
       >
         <HStack>
-          <Button
+          {/* <Button
             bg="transparent"
             fontStyle="normal"
             fontWeight="600"
@@ -225,7 +225,7 @@ const Campaign = () => {
             onClick={()=>{setCampaignSelected(1)}}
           >
             Liquidity mining campaign
-          </Button>
+          </Button> */}
           <Button
             bg="transparent"
             fontStyle="normal"
@@ -311,7 +311,7 @@ const Campaign = () => {
                     hasArrow
                     label="Estimated Tokens Earned"
                     // arrowPadding={-5420}
-                    placement="right"
+                    placement="bottom"
                     boxShadow="dark-lg"
                     bg="#010409"
                     fontSize={"13px"}
@@ -400,7 +400,27 @@ const Campaign = () => {
               // p="13px 25px"
             >
               <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+              <Tooltip
+                    hasArrow
+                    label="Liquidity provided by traders you have referred"
+                    // arrowPadding={-5420}
+                    placement="bottom"
+                    boxShadow="dark-lg"
+                    bg="#010409"
+                    fontSize={"13px"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    // cursor="context-menu"
+                    // marginRight={idx1 === 1 ? "52px" : ""}
+                    // maxW="222px"
+                    // mt="28px"
+                  >
               Referees liquidity
+                  </Tooltip>
               </Text>
                 <Text color="#e6edf3" fontSize="20px">
                 $5,3100.00
