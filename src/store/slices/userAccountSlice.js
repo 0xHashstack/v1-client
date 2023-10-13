@@ -69,6 +69,7 @@ const initialState = {
   mySwapPoolsSupportedCount:-1,
   minMaxDepositCount:-1,
   minMaxLoanCount:-1,
+  feesCount:-1,
   transactionCheck: [],
   lightModeSelected:false,
 
@@ -275,6 +276,9 @@ export const userAccountSlice = createSlice({
     setMinMaxLoanCount(state,action){
       state.minMaxLoanCount=action.payload;
     },
+  setFeesCount(state,action){
+    state.feesCount=action.payload;
+  },
     setLightModeSelected(state,action){
       state.lightModeSelected=action.payload;
     },
@@ -349,6 +353,7 @@ export const {
   setMySwapPoolsSupportedCount,
   setMinMaxDepositCount,
   setMinMaxLoanCount,
+  setFeesCount,
   setTransactionCheck,
   setLightModeSelected
 } = userAccountSlice.actions;
@@ -455,6 +460,8 @@ export const selectMinMaxDepositCount=(state)=>
   state.user_account.minMaxDepositCount;
   export const selectMinMaxLoanCount=(state)=>
   state.user_account.minMaxLoanCount;
+export const selectFeesCount=(state)=>
+  state.user_account.feesCount;
 export const selectTransactionCheck = (state) =>
   state.user_account.transactionCheck;
 export const selectLightModeSelected=(state)=>

@@ -27,6 +27,7 @@ import {
   selectAprsAndHealthCount,
   selectAvgBorrowAprCount,
   selectAvgSupplyAprCount,
+  selectFeesCount,
   selectHealthFactorCount,
   selectHourlyDataCount,
   selectJediSwapPoolsSupportedCount,
@@ -53,6 +54,7 @@ import {
   setAvgBorrowAprCount,
   setAvgSupplyAPR,
   setAvgSupplyAprCount,
+  setFeesCount,
   setHealthFactorCount,
   setHourlyDataCount,
   setJediSwapPoolsSupportedCount,
@@ -116,6 +118,7 @@ import {
   setMaximumDepositAmounts,
   setMinimumLoanAmounts,
   setMaximumLoanAmounts,
+  setFees,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -142,6 +145,7 @@ import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
 import {
+  getFees,
   getMaximumDepositAmount,
   getMaximumLoanAmount,
   getMinimumDepositAmount,
@@ -195,6 +199,7 @@ const useDataLoader = () => {
   const allDataCount=useSelector(selectAllDataCount);
   // const stakingShares = useSelector(selectStakingShares);
   const stakingSharesCount = useSelector(selectStakingSharesCount);
+  const feesCount=useSelector(selectFeesCount);
   const minMaxCount=useSelector(selectMinMaxDepositCount);
   const minMaxLoanCount=useSelector(selectMinMaxLoanCount)
   const jediSwapPoolsSupportedCount = useSelector(selectJediSwapPoolsSupportedCount);
@@ -1085,6 +1090,44 @@ const useDataLoader = () => {
     }
   }, [address, transactionRefresh]);
 
+  useEffect(()=>{
+    try{
+      const fetchFees=async()=>{
+        const promises=[
+          getFees("get_deposit_request_fee"),
+          getFees("get_staking_fee"),
+          getFees("get_unstaking_fee"),
+          getFees("get_withdraw_deposit_fee"),
+          getFees("get_loan_request_fee"),
+          getFees("get_l3_interaction_fee"),
+          getFees("get_loan_repay_fee")
+        ]
+        Promise.allSettled([...promises]).then((val)=>{
+          const data={
+            supply:val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
+            stake:val?.[1]?.status == "fulfilled" ? val?.[1]?.value : 0,
+            unstake:val?.[2]?.status == "fulfilled" ? val?.[2]?.value : 0,
+            withdrawSupply:val?.[3]?.status == "fulfilled" ? val?.[3]?.value : 0,
+            borrow:val?.[4]?.status == "fulfilled" ? val?.[4]?.value : 0,
+            borrowTrade:0.1,
+            l3interaction:val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0,
+            repayLoan:val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0
+          }
+          if(data?.supply==null){
+            return;
+          }
+          dispatch(setFees(data));
+          const count = getTransactionCount();
+          dispatch(setFeesCount(count));
+        })
+      }
+      if(feesCount<transactionRefresh){
+        fetchFees();
+      }
+    }catch(err){
+      console.log(err,"err in fetchFees")
+    }
+  },[transactionRefresh])
   useEffect(() => {
     try {
       const fetchProtocolStats = async () => {

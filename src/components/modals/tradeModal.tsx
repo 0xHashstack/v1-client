@@ -59,6 +59,7 @@ import {
   selectMinimumLoanAmounts,
   selectMaximumDepositAmounts,
   selectMinimumDepositAmounts,
+  selectFees,
 } from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
@@ -316,6 +317,8 @@ const TradeModal = ({
         break;
     }
   };
+
+  const fees=useSelector(selectFees)
 
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
@@ -3062,7 +3065,7 @@ borderWidth:'5px',
                       </Tooltip>
                     </Box>
                     <Text color="#676D9A" fontSize="xs">
-                      {TransactionFees.spend}%
+                      {fees.borrowTrade}%
                     </Text>
                   </Box>
 {/* 

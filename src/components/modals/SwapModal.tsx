@@ -46,6 +46,7 @@ import {
 import {
   selectAprAndHealthFactor,
   selectEffectiveApr,
+  selectFees,
   selectHealthFactor,
   selectMySwapPoolsSupported,
   selectUserLoans,
@@ -401,6 +402,7 @@ const SwapModal = ({
   }, [currentSelectedCoin]);
   const mySwapPoolPairs=useSelector(selectMySwapPoolsSupported);
   const [myswapPools, setmyswapPools] = useState([]);
+  const fees=useSelector(selectFees)
   useEffect(()=>{
     function findSideForMember(array:any, token:any) {
       const data:any=[];
@@ -1072,7 +1074,7 @@ const SwapModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  {TransactionFees.spend}%
+                  {fees.l3interaction}%
                 </Text>
               </Box>
               {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">

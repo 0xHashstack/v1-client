@@ -58,6 +58,7 @@ import {
 } from "@/store/slices/userAccountSlice";
 import {
   selectAprAndHealthFactor,
+  selectFees,
   selectHealthFactor,
   selectJediSwapPoolsSupported,
   selectMySwapPoolsSupported,
@@ -347,7 +348,7 @@ const LiquidityProvisionModal = ({
   //     }
   //   },
   // });
-
+  const fees=useSelector(selectFees);
   const handleLiquidity = async () => {
     try {
       if (currentSwap == "Jediswap") {
@@ -1341,7 +1342,7 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    {TransactionFees.spend}%
+                    {fees.l3interaction}%
                   </Text>
                 </Box>
                 {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">

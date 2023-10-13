@@ -6,6 +6,7 @@ import { Contract, number, uint256 } from "starknet";
 import stakingAbi from "../abis_mainnet/staking_abi.json";
 import supplyABI from "../abis_mainnet/supply_abi.json";
 import governorAbi from "../abis_mainnet/governor_abi.json";
+import comptrollerAbi from "../abis_mainnet/comptroller_abi.json";
 import {
   diamondAddress,
   getProvider,
@@ -114,7 +115,23 @@ export async function getEstrTokens(rToken: any, amount: any) {
     console.log(err, "err in est rtokens staking");
   }
 }
-
+export async function getFees(modalFees:any){
+  try{
+    const provider=getProvider();
+    const governorContract=new Contract(
+      comptrollerAbi,
+      diamondAddress,
+      provider
+    )
+    const result = await governorContract.call(
+      modalFees
+    );
+    const res = result?.fees;
+   return Number(res.toString())/100;
+  }catch(err){
+    console.log(err,"err in getFees")
+  }
+}
 
 export async function getSupportedPools(
   poolPairAddress: any,

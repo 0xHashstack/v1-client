@@ -71,6 +71,7 @@ import {
 import {
   selectAprAndHealthFactor,
   selectEffectiveApr,
+  selectFees,
   selectHealthFactor,
   selectJediSwapPoolsSupported,
   selectMaximumDepositAmounts,
@@ -766,6 +767,7 @@ const YourBorrowModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
+  const fees=useSelector(selectFees);
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -1478,7 +1480,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.spend}%
+                {fees.l3interaction}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -1854,7 +1856,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.repay}%
+                {fees.repayLoan}%
               </Text>
             </Box>
             {/* <Box display="flex" justifyContent="space-between">
@@ -2059,7 +2061,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text color="#676D9A" fontSize="xs">
-                {TransactionFees.repay}%
+                {fees.repayLoan}%
               </Text>
             </Box>
             {/* <Box display="flex" justifyContent="space-between">
@@ -2197,7 +2199,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.convertToBorrowMarket}%
+                {fees.l3interaction}%
               </Text>
             </Box>
             {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -2407,7 +2409,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.repay}%
+                {fees.repayLoan}%
               </Text>
             </Box>
             {/* <Box display="flex" justifyContent="space-between">
@@ -5605,7 +5607,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#676D9A">0.1%</Text>
+                        <Text color="#676D9A">{fees.supply}%</Text>
                       </Text>
                       <Text
                         color="#676D9A"

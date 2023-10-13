@@ -83,6 +83,16 @@ const initialState = {
     dUSDT: 40,
     dUSDC: 40,
     dDAI: 40,
+  },
+  fees:{
+    supply: 0,
+    stake: 0,
+    unstake: 0,
+    withdrawSupply: 0,
+    borrow: 0,
+    borrowAndTrade: 0.1,  
+    l3interaction:0.1,
+    repayLoan:0,
   }
 
   
@@ -231,6 +241,9 @@ export const readDataSlice = createSlice({
     setMySwapPoolsSupported(state,action){
       state.mySwapPoolsSupported=action.payload;
     },
+    setFees(state,action){
+      state.fees=action.payload;
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -290,7 +303,8 @@ export const {
   setMinimumLoanAmounts,
   setMaximumLoanAmounts,
   setJediSwapPoolsSupported,
-  setMySwapPoolsSupported
+  setMySwapPoolsSupported,
+  setFees
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -344,4 +358,5 @@ export const selectMinimumLoanAmounts=(state)=>state.read_data.minLoanAmounts;
 export const selectMaximumLoanAmounts=(state)=>state.read_data.maxLoanAmounts;
 export const selectJediSwapPoolsSupported = (state) => state.read_data.jediSwapPoolsSupported;
 export const selectMySwapPoolsSupported = (state) => state.read_data.mySwapPoolsSupported;
+export const selectFees=(state)=>state.read_data.fees;
 export default readDataSlice.reducer;

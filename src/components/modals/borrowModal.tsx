@@ -52,6 +52,7 @@ import {
   selectMaximumDepositAmounts,
   selectMinimumLoanAmounts,
   selectMaximumLoanAmounts,
+  selectFees,
 } from "@/store/slices/readDataSlice";
 import {
   setModalDropdown,
@@ -401,6 +402,8 @@ const BorrowModal = ({
   useEffect(() => {
     fetchParsedUSDValueCollateral();
   }, [collateralAmount, currentCollateralCoin, rToken, rTokenAmount]);
+
+  const fees=useSelector(selectFees);
 
   const fetchParsedUSDValueBorrow = async () => {
     try {
@@ -2089,7 +2092,7 @@ const BorrowModal = ({
 
             <Card               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" mt="1.5rem" p="1rem" >
-              {/* <Text
+              <Text
                 color="#8B949E"
                 display="flex"
                 justifyContent="space-between"
@@ -2104,13 +2107,13 @@ const BorrowModal = ({
                     font-size="14px"
                     color="#676D9A"
                   >
-                    Gas estimate:
+                    Fees:
                   </Text>
                   <Tooltip
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Estimation of resources & costs for blockchain transactions."
+                    label="Cost incurred during transactions."
                     bg="#010409"
                     fontSize={"13px"}
                     fontWeight={"thin"}
@@ -2133,9 +2136,9 @@ const BorrowModal = ({
                   font-size="14px"
                   color="#676D9A"
                 >
-                  $ 0.91
+                  {fees?.borrow}%
                 </Text>
-              </Text> */}
+              </Text>
               <Text
                 display="flex"
                 justifyContent="space-between"
