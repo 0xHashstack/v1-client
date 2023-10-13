@@ -14,7 +14,7 @@ import { useConnectors } from "@starknet-react/core";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@chakra-ui/react";
-import { selectYourBorrow, selectNetAPR } from "@/store/slices/readDataSlice";
+import { selectYourBorrow, selectNetAPR ,selectnetAprLoans} from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
 import { selectUserUnspentLoans } from "@/store/slices/userAccountSlice";
@@ -24,7 +24,7 @@ const SpendBorrow = () => {
     useConnectors();
   useDataLoader();
   const totalBorrow = useSelector(selectYourBorrow);
-  const netAPR = useSelector(selectNetAPR);
+  const netAPR = useSelector(selectnetAprLoans);
   const userLoans = useSelector(selectUserUnspentLoans);
   // console.log(totalBorrow, "total borrow spend borrow");
   // console.log(netAPR, "netapr in spend borrow");
