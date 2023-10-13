@@ -3468,7 +3468,7 @@ const YourBorrowModal = ({
                                 _disabled={{ cursor: "pointer" }}
                               >
                                 <NumberInputField
-                                                    placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowMarketCoin1.slice(1)}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentBorrowMarketCoin1}`}
+                                                    placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowMarketCoin1.slice(1)}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentBorrowMarketCoin1.slice()}`}
                                   color={`${repayAmount > walletBalance1
                                       ? "#CF222E"
                                       : isNaN(repayAmount)
@@ -5126,7 +5126,12 @@ const YourBorrowModal = ({
                           _disabled={{ cursor: "pointer" }}
                         >
                           <NumberInputField
-                            placeholder={`0.01536 ${currentSelectedCoin}`}
+                    placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentTokenSelected == "Native Token"
+                    ? collateralAsset
+                    : `r${collateralAsset}`}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentTokenSelected == "Native Token"
+                    ? collateralAsset
+                    : `r${collateralAsset}`}`}
+
                             border="0px"
                             _placeholder={{
                               color: "#393D4F",
