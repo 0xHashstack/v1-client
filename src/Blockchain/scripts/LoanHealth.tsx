@@ -31,7 +31,8 @@ export async function getExistingLoanHealth(loanId: string) {
     //   parseAmount(res?.factor, 5)
     // );
     // console.log(BNtoNum())
-    return BNtoNum(res?.factor, 6);
+    console.log(res,"health fac")
+    return BNtoNum(res?.factor, 5);
   } catch (error) {
     console.log("health factor error: ", error);
   }
