@@ -13,7 +13,7 @@ import YourSupplyModal from "@/components/modals/yourSupply";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
 import { useAccount, useConnectors } from "@starknet-react/core";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
-import { selectYourSupply, selectNetAPR } from "@/store/slices/readDataSlice";
+import { selectYourSupply, selectNetAPR, selectnetAprDeposits } from "@/store/slices/readDataSlice";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import { useSelector } from "react-redux";
@@ -56,7 +56,7 @@ const YourSupply = () => {
   //   getSupply();
   // }, []);
   const totalSupply = useSelector(selectYourSupply);
-  const netAPR = useSelector(selectNetAPR);
+  const netAPR = useSelector(selectnetAprDeposits);
 
   return (
     <PageCard pt="6.5rem">

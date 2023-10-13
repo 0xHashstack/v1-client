@@ -37,6 +37,8 @@ const initialState = {
   yourSupply: null,
   yourBorrow: null,
   netAPR: null,
+  netAPRDeposits:null,
+  netAPRLoans:null,
   activeTransactions: [],
   transactionRefresh: 0,
   avgSupplyAPR: null,
@@ -131,6 +133,12 @@ export const readDataSlice = createSlice({
     },
     setNetAPR(state, action) {
       state.netAPR = action.payload;
+    },
+    setNetAprDeposits(state,action){
+      state.netAPRDeposits=action.payload;
+    },
+    setNetAprLoans(state,action){
+      state.netAPRLoans=action.payload;
     },
     setActiveTransactions(state, action) {
       state.activeTransactions = action.payload;
@@ -268,6 +276,8 @@ export const {
   setYourSupply,
   setYourBorrow,
   setNetAPR,
+  setNetAprDeposits,
+  setNetAprLoans,
   setActiveTransactions,
   setTransactionRefresh,
   setBlock,
@@ -319,6 +329,8 @@ export const selectYourSupply = (state) => state.read_data.yourSupply;
 export const selectYourBorrow = (state) => state.read_data.yourBorrow;
 export const selectNetWorth = (state) => state.read_data.netWorth;
 export const selectNetAPR = (state) => state.read_data.netAPR;
+export const selectnetAprDeposits=(state)=> state.read_data.netAPRDeposits;
+export const selectnetAprLoans=(state)=>state.read_data.netAPRLoans;
 export const selectActiveTransactions = (state) =>
   state.read_data.activeTransactions;
 export const selectTransactionRefresh = (state) =>
