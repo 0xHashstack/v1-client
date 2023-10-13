@@ -3468,7 +3468,7 @@ const YourBorrowModal = ({
                                 _disabled={{ cursor: "pointer" }}
                               >
                                 <NumberInputField
-                                                    placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowMarketCoin1}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentBorrowMarketCoin1}`}
+                                                    placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowMarketCoin1.slice(1)}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentBorrowMarketCoin1}`}
                                   color={`${repayAmount > walletBalance1
                                       ? "#CF222E"
                                       : isNaN(repayAmount)

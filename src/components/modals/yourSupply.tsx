@@ -2055,7 +2055,7 @@ const YourSupplyModal = ({
                               ml={2}
                             />
                           ) : (
-                            <Text color="#676D9A">$ {estSupply}</Text>
+                            <Text color="#676D9A"> {estSupply}</Text>
                           )}
                         </Text>
                         {/* <Text
