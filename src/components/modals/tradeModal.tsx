@@ -1579,7 +1579,7 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                          placeholder={`0.01536 ${currentCollateralCoin}`}
+                            placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentCollateralCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentCollateralCoin}`}
                           color={`${inputCollateralAmount > walletBalance
                               ? "#CF222E"
                               : isNaN(inputCollateralAmount)
@@ -2098,7 +2098,7 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                          placeholder={`0.01536 ${currentBorrowCoin}`}
+                      placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowCoin}`:`min ${minimumLoanAmount==null ?0:minimumLoanAmount} ${currentBorrowCoin}`}
                           color={`${inputCollateralAmountUSD &&
                               inputBorrowAmountUSD >
                               4.9999 * inputCollateralAmountUSD

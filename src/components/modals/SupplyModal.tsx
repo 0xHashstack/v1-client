@@ -1069,7 +1069,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentSelectedCoin}`:`min ${minimumDepositAmount} ${currentSelectedCoin}`}
+     placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentSelectedCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentSelectedCoin}`}
                       color={`${
                         depositAmount > walletBalance
                           ? "#CF222E"

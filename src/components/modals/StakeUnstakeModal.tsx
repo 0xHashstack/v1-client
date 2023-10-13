@@ -1415,7 +1415,7 @@ const StakeUnstakeModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`0.01536 ${currentSelectedStakeCoin}`}
+                               placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentSelectedStakeCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentSelectedStakeCoin}`}
                               color={`${
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount >
