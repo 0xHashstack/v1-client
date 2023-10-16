@@ -480,7 +480,7 @@ const BorrowDashboard = ({
     "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
     "Collateral are the tokens held as security for borrowed amount.",
     "Shows if borrowed amount was used in other pools or dapps within the protocol.",
-    "Extra interest rate added to account for risk in supply and borrow.",
+    "Loan risk metric comparing collateral value to borrowed amount to check potential liquidation.",
   ];
 
   // console.log("Borrows", loading, Borrows);
