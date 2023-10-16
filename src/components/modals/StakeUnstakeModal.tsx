@@ -66,6 +66,7 @@ import {
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import {
+  selectFees,
   selectMaximumDepositAmounts,
   selectMinimumDepositAmounts,
   selectProtocolStats,
@@ -791,6 +792,7 @@ const StakeUnstakeModal = ({
       ?.rTokenFreeParsed
   );
   // console.log(rtokenWalletBalance,"rtoken wallet ")
+  const fees=useSelector(selectFees);
   const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
     stakingShares[
       currentSelectedUnstakeCoin[0] == "r"
@@ -1413,7 +1415,7 @@ const StakeUnstakeModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`0.01536 ${currentSelectedStakeCoin}`}
+                               placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentSelectedStakeCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentSelectedStakeCoin}`}
                               color={`${
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount >
@@ -1907,7 +1909,7 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#676D9A">{TransactionFees.stake}%</Text>
+                          <Text color="#676D9A">{fees.stake}%</Text>
                         </Text>
                       </Card>
 
@@ -2757,7 +2759,7 @@ const StakeUnstakeModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">
-                            {TransactionFees.unstake}%
+                            {fees.unstake}%
                           </Text>
                         </Text>
                       </Card>

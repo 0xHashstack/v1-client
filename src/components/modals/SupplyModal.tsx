@@ -93,8 +93,8 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
-import { getMaximumDepositAmount, getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
+import { getFees, getMaximumDepositAmount, getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
 import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
@@ -211,6 +211,8 @@ const SupplyModal = ({
   });
   // const walletBalances = useSelector(selectAssetWalletBalance);
   // const transactionRefresh=useSelector(selectTransactionRefresh);
+
+  const fees=useSelector(selectFees);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? parseAmount(
@@ -1067,7 +1069,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={`0.01536 ${currentSelectedCoin}`}
+     placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentSelectedCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentSelectedCoin}`}
                       color={`${
                         depositAmount > walletBalance
                           ? "#CF222E"
@@ -1334,13 +1336,14 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                   mt="0.7rem"
                   borderColor="#2B2F35"
                   isDisabled={transactionStarted == true}
-                  _disabled={{
-                    cursor: "pointer",
-                    iconColor: "white.400",
-                    bg: "customPurple",
-                  }}
-                  
-                  
+                  // disabledColor="red"
+                
+                  // _disabled={{
+                  //   colorScheme:"black",
+                  //   cursor: "pointer",
+                  //   iconColor: "black",
+                  //   bg: "black",
+                  // }}
                   onChange={() => {
                     setIsChecked(!ischecked);
                   }}
@@ -1402,8 +1405,9 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     font-size="12px"
                     color="#676D9A"
                   >
-                    {TransactionFees.supply}%
+                    {fees?.supply}%
                   </Text>
+
                 </Text>
                 {/* <Text
                   color="#8B949E"

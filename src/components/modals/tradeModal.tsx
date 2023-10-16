@@ -59,6 +59,7 @@ import {
   selectMinimumLoanAmounts,
   selectMaximumDepositAmounts,
   selectMinimumDepositAmounts,
+  selectFees,
 } from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
@@ -316,6 +317,8 @@ const TradeModal = ({
         break;
     }
   };
+
+  const fees=useSelector(selectFees)
 
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
@@ -1576,7 +1579,7 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                          placeholder={`0.01536 ${currentCollateralCoin}`}
+                            placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentCollateralCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentCollateralCoin}`}
                           color={`${inputCollateralAmount > walletBalance
                               ? "#CF222E"
                               : isNaN(inputCollateralAmount)
@@ -2095,7 +2098,7 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                          placeholder={`0.01536 ${currentBorrowCoin}`}
+                      placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowCoin}`:`min ${minimumLoanAmount==null ?0:minimumLoanAmount} ${currentBorrowCoin}`}
                           color={`${inputCollateralAmountUSD &&
                               inputBorrowAmountUSD >
                               4.9999 * inputCollateralAmountUSD
@@ -2431,10 +2434,19 @@ const TradeModal = ({
                     <RadioGroup  onChange={setRadioValue} value={radioValue}>
                       <Stack spacing={4} direction="row">
                         <Radio
+                                  // variant="primary"
                           value="1"
+                          // border
                         
                           borderColor="#2B2F35"
                           colorScheme="customPurple"
+                          // bg="black"
+                          _checked={{
+                            bg: "black",
+                            color: "white",
+borderWidth:'5px',
+                              borderColor:"#4D59E8",
+                          }}
                         
                           _focus={{ boxShadow: "none", outline: "0" }}
                         // onClick={() => {
@@ -2444,12 +2456,19 @@ const TradeModal = ({
                           Liquidity provisioning
                         </Radio>
                         <Radio
-                        // style={control:{}}
+                     
                           fontSize="sm"
                           value="2"
                           // bg="#2B2F35"
                           borderColor="#2B2F35"
                           colorScheme="customPurple"
+                          // bg="black"
+                          _checked={{
+                            bg: "black",
+                            color: "white",
+borderWidth:'5px',
+                              borderColor:"#4D59E8",
+                          }}
                           _focus={{ boxShadow: "none", outline: "0" }}
                         // onClick={() => {
                         //   setMethod("SWAP");
@@ -3046,7 +3065,7 @@ const TradeModal = ({
                       </Tooltip>
                     </Box>
                     <Text color="#676D9A" fontSize="xs">
-                      {TransactionFees.spend}%
+                      {fees.borrowTrade}%
                     </Text>
                   </Box>
 {/* 

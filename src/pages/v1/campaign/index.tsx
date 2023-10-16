@@ -64,26 +64,26 @@ const Campaign = () => {
     "Wallet",
     "Referees Liquidity",
     "Points earned",
-    "Est.token earning \n $STRK (i)"
+    "Est.token earning \n $STRK"
   ];
   const columnItemsLeaderBoardReferalCampaign = [
     "Rank",
     "Wallet",
-    "Liquidity Provided",
+    "Liquidity Provided (in $)",
     "Points earned",
-    "Est.token earning \n $HASH (i)"
+    "Est.token earning \n $HASH"
   ];
   const columnItemsPersonalStats = [
     "Liquidity Provided",
     "Referees liquidity (in $)",
     "Points earned",
-    "Est.token earning \n $STRK (i)"
+    "Est.token earning \n $STRK"
   ];
   const columnItemsPersonalStatsReferalCampaign = [
     "Traders Referred",
     "Referees liquidity (in $)",
     "Points earned",
-    "Est.token earning \n $HASH (i)"
+    "Est.token earning \n $HASH"
   ];
   const sampleDate = [{
     id:0,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
@@ -105,23 +105,23 @@ const Campaign = () => {
     id:8,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
   }]
   const sampleDataLeaderBoard = [{
-    id:0,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+    id:0,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   },{
-    id:1,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+    id:1,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   },{
-    id:2,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+    id:2,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   },{
-    id:3,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+    id:3,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   },{
-    id:4,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+    id:4,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   },{
-    id:5,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+    id:5,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   },{
-    id:6,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+    id:6,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   },{
-    id:7,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+    id:7,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   },{
-    id:8,start:"1 Mar",end:"1 April",rank:28,wallet:"Bravoos",liq:500,pts:100,est:232
+    id:8,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   }]
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
@@ -191,7 +191,7 @@ const Campaign = () => {
   // }, [account, UserLoans]);
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
-  const [campaignSelected, setCampaignSelected] = useState(1);
+  const [campaignSelected, setCampaignSelected] = useState(2);
   const [tabValue, setTabValue] = useState(1);
 
   return (
@@ -208,7 +208,7 @@ const Campaign = () => {
         zIndex="1"
       >
         <HStack>
-          <Button
+          {/* <Button
             bg="transparent"
             fontStyle="normal"
             fontWeight="600"
@@ -225,7 +225,7 @@ const Campaign = () => {
             onClick={()=>{setCampaignSelected(1)}}
           >
             Liquidity mining campaign
-          </Button>
+          </Button> */}
           <Button
             bg="transparent"
             fontStyle="normal"
@@ -251,15 +251,15 @@ const Campaign = () => {
               Liquidity mining campaign -
             </Text>
             <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-              {` 99 days 11 hours left`}
+                &nbsp;99 days 11 hours left
             </Text>
           </Box>:
                     <Box display="flex">
                     <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
-                      Referal campaign -
+                      Referal campaign - 
                     </Text>
                     <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                      {` 99 days 11 hours left`}
+                      &nbsp;99 days 11 hours left
                     </Text>
                   </Box>
           }
@@ -294,10 +294,10 @@ const Campaign = () => {
                       // p="13px 25px"
                     >
                       <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                      Points Accured
+                      Points Accrued
                       </Text>
                         <Text color="#e6edf3" fontSize="20px">
-                        $5,536.83
+                        5,536.83
                         </Text>
                     </VStack>
                     <VStack
@@ -307,8 +307,29 @@ const Campaign = () => {
                       // p="13px 25px"
                     >
                       <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+                      <Tooltip
+                    hasArrow
+                    label="Estimated Tokens Earned"
+                    // arrowPadding={-5420}
+                    placement="bottom"
+                    boxShadow="dark-lg"
+                    bg="#010409"
+                    fontSize={"13px"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    // cursor="context-menu"
+                    // marginRight={idx1 === 1 ? "52px" : ""}
+                    // maxW="222px"
+                    // mt="28px"
+                  >
                       est.tokens earned
+                  </Tooltip>
                       </Text>
+
                         <Text color="#e6edf3" fontSize="20px">
                         536.83 STRK
                         </Text>
@@ -379,7 +400,27 @@ const Campaign = () => {
               // p="13px 25px"
             >
               <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+              <Tooltip
+                    hasArrow
+                    label="Liquidity provided by traders you have referred"
+                    // arrowPadding={-5420}
+                    placement="bottom"
+                    boxShadow="dark-lg"
+                    bg="#010409"
+                    fontSize={"13px"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    border="1px solid"
+                    borderColor="#2B2F35"
+                    arrowShadowColor="#2B2F35"
+                    // cursor="context-menu"
+                    // marginRight={idx1 === 1 ? "52px" : ""}
+                    // maxW="222px"
+                    // mt="28px"
+                  >
               Referees liquidity
+                  </Tooltip>
               </Text>
                 <Text color="#e6edf3" fontSize="20px">
                 $5,3100.00

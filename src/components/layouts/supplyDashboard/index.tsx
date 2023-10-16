@@ -323,9 +323,9 @@ const SupplyDashboard = ({
 
   const tooltips = [
     "Allocated quantity of rTokens for a market after supplying funds to the protocol.",
-    "Conversion rate for exchanging assets within a protocol.",
+    "Conversion rate of rTokens to underlying assets.",
     "Annual interest rate earned on supplied tokens.",
-    "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
+    " Annualised interest rate depending on the staked, unstaked and locked supply quantities .",
     "Track the borrowed amount's progress and key details within the protocol.",
   ];
 

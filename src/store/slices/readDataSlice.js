@@ -37,6 +37,8 @@ const initialState = {
   yourSupply: null,
   yourBorrow: null,
   netAPR: null,
+  netAPRDeposits:null,
+  netAPRLoans:null,
   activeTransactions: [],
   transactionRefresh: 0,
   avgSupplyAPR: null,
@@ -83,6 +85,16 @@ const initialState = {
     dUSDT: 40,
     dUSDC: 40,
     dDAI: 40,
+  },
+  fees:{
+    supply: 0,
+    stake: 0,
+    unstake: 0,
+    withdrawSupply: 0,
+    borrow: 0,
+    borrowAndTrade: 0.1,  
+    l3interaction:0.1,
+    repayLoan:0,
   }
 
   
@@ -121,6 +133,12 @@ export const readDataSlice = createSlice({
     },
     setNetAPR(state, action) {
       state.netAPR = action.payload;
+    },
+    setNetAprDeposits(state,action){
+      state.netAPRDeposits=action.payload;
+    },
+    setNetAprLoans(state,action){
+      state.netAPRLoans=action.payload;
     },
     setActiveTransactions(state, action) {
       state.activeTransactions = action.payload;
@@ -231,6 +249,9 @@ export const readDataSlice = createSlice({
     setMySwapPoolsSupported(state,action){
       state.mySwapPoolsSupported=action.payload;
     },
+    setFees(state,action){
+      state.fees=action.payload;
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -255,6 +276,8 @@ export const {
   setYourSupply,
   setYourBorrow,
   setNetAPR,
+  setNetAprDeposits,
+  setNetAprLoans,
   setActiveTransactions,
   setTransactionRefresh,
   setBlock,
@@ -290,7 +313,8 @@ export const {
   setMinimumLoanAmounts,
   setMaximumLoanAmounts,
   setJediSwapPoolsSupported,
-  setMySwapPoolsSupported
+  setMySwapPoolsSupported,
+  setFees
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -305,6 +329,8 @@ export const selectYourSupply = (state) => state.read_data.yourSupply;
 export const selectYourBorrow = (state) => state.read_data.yourBorrow;
 export const selectNetWorth = (state) => state.read_data.netWorth;
 export const selectNetAPR = (state) => state.read_data.netAPR;
+export const selectnetAprDeposits=(state)=> state.read_data.netAPRDeposits;
+export const selectnetAprLoans=(state)=>state.read_data.netAPRLoans;
 export const selectActiveTransactions = (state) =>
   state.read_data.activeTransactions;
 export const selectTransactionRefresh = (state) =>
@@ -344,4 +370,5 @@ export const selectMinimumLoanAmounts=(state)=>state.read_data.minLoanAmounts;
 export const selectMaximumLoanAmounts=(state)=>state.read_data.maxLoanAmounts;
 export const selectJediSwapPoolsSupported = (state) => state.read_data.jediSwapPoolsSupported;
 export const selectMySwapPoolsSupported = (state) => state.read_data.mySwapPoolsSupported;
+export const selectFees=(state)=>state.read_data.fees;
 export default readDataSlice.reducer;

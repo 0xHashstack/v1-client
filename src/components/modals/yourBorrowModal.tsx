@@ -71,6 +71,7 @@ import {
 import {
   selectAprAndHealthFactor,
   selectEffectiveApr,
+  selectFees,
   selectHealthFactor,
   selectJediSwapPoolsSupported,
   selectMaximumDepositAmounts,
@@ -766,6 +767,7 @@ const YourBorrowModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
+  const fees=useSelector(selectFees);
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -1478,7 +1480,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.spend}%
+                {fees.l3interaction}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -1854,7 +1856,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.repay}%
+                {fees.repayLoan}%
               </Text>
             </Box>
             {/* <Box display="flex" justifyContent="space-between">
@@ -2059,7 +2061,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text color="#676D9A" fontSize="xs">
-                {TransactionFees.repay}%
+                {fees.repayLoan}%
               </Text>
             </Box>
             {/* <Box display="flex" justifyContent="space-between">
@@ -2197,7 +2199,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.convertToBorrowMarket}%
+                {fees.l3interaction}%
               </Text>
             </Box>
             {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -2407,7 +2409,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.repay}%
+                {fees.repayLoan}%
               </Text>
             </Box>
             {/* <Box display="flex" justifyContent="space-between">
@@ -3466,7 +3468,7 @@ const YourBorrowModal = ({
                                 _disabled={{ cursor: "pointer" }}
                               >
                                 <NumberInputField
-                                  placeholder={`0.01536 ${currentBorrowMarketCoin1}`}
+                                                    placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowMarketCoin1.slice(1)}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentBorrowMarketCoin1.slice()}`}
                                   color={`${repayAmount > walletBalance1
                                       ? "#CF222E"
                                       : isNaN(repayAmount)
@@ -3744,7 +3746,15 @@ const YourBorrowModal = ({
                               <Radio
                                 value="1"
                                 
+                                borderColor="#2B2F35"
                                 colorScheme="customPurple"
+                                // bg="black"
+                                _checked={{
+                                  bg: "black",
+                                  color: "white",
+      borderWidth:'5px',
+                                    borderColor:"#4D59E8",
+                                }}
                                 _focus={{ boxShadow: "none", outline: "0" }}
                                 isDisabled={
                                   currentAction === "Spend Borrow" &&
@@ -3758,7 +3768,15 @@ const YourBorrowModal = ({
                                 fontSize="sm"
                                 value="2"
                                 
+                                borderColor="#2B2F35"
                                 colorScheme="customPurple"
+                                // bg="black"
+                                _checked={{
+                                  bg: "black",
+                                  color: "white",
+      borderWidth:'5px',
+                                    borderColor:"#4D59E8",
+                                }}
                                 _focus={{ boxShadow: "none", outline: "0" }}
                                 isDisabled={
                                   currentAction === "Spend Borrow" &&
@@ -5108,7 +5126,12 @@ const YourBorrowModal = ({
                           _disabled={{ cursor: "pointer" }}
                         >
                           <NumberInputField
-                            placeholder={`0.01536 ${currentSelectedCoin}`}
+                    placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentTokenSelected == "Native Token"
+                    ? collateralAsset
+                    : `r${collateralAsset}`}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentTokenSelected == "Native Token"
+                    ? collateralAsset
+                    : `r${collateralAsset}`}`}
+
                             border="0px"
                             _placeholder={{
                               color: "#393D4F",
@@ -5589,7 +5612,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#676D9A">0.1%</Text>
+                        <Text color="#676D9A">{fees.supply}%</Text>
                       </Text>
                       <Text
                         color="#676D9A"

@@ -92,7 +92,7 @@ import {
 import CopyToClipboard from "react-copy-to-clipboard";
 import mixpanel from "mixpanel-browser";
 import { getSupplyunlocked } from "@/Blockchain/scripts/Rewards";
-import { selectUserDeposits } from "@/store/slices/readDataSlice";
+import { selectFees, selectUserDeposits } from "@/store/slices/readDataSlice";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const YourSupplyModal = ({
@@ -391,6 +391,8 @@ const YourSupplyModal = ({
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
+
+  const fees=useSelector(selectFees);
 
   useEffect(() => {
     setinputSupplyAmount(0);
@@ -1336,7 +1338,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#676D9A">{TransactionFees.stake}%</Text>
+                          <Text color="#676D9A">{fees.supply}%</Text>
                         </Text>
                         {/* <Text
                           color="#676D9A"
@@ -2053,7 +2055,7 @@ const YourSupplyModal = ({
                               ml={2}
                             />
                           ) : (
-                            <Text color="#676D9A">$ {estSupply}</Text>
+                            <Text color="#676D9A"> {estSupply}</Text>
                           )}
                         </Text>
                         {/* <Text
@@ -2193,7 +2195,7 @@ const YourSupplyModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">
-                            {TransactionFees.withdrawSupply}%
+                            {fees.withdrawSupply}%
                           </Text>
                         </Text>
                         {/* <Text
