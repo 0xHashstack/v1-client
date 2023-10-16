@@ -323,9 +323,9 @@ const SupplyDashboard = ({
 
   const tooltips = [
     "Allocated quantity of rTokens for a market after supplying funds to the protocol.",
-    "Conversion rate for exchanging assets within a protocol.",
+    "Conversion rate of rTokens to underlying assets.",
     "Annual interest rate earned on supplied tokens.",
-    "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
+    " Annualised interest rate depending on the staked, unstaked and locked supply quantities .",
     "Track the borrowed amount's progress and key details within the protocol.",
   ];
 
@@ -429,13 +429,14 @@ const SupplyDashboard = ({
                       }
                       rounded="md"
                       boxShadow="dark-lg"
-                      bg="#010409"
+                      bg="#02010F"
                       fontSize={"13px"}
-                      fontWeight={"thin"}
+                      fontWeight={"400"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      color="#F0F0F5"
                       border="1px solid"
-                      borderColor="#2B2F35"
+                      borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
                       // maxW="222px"
                       // mt="28px"
@@ -585,7 +586,7 @@ const SupplyDashboard = ({
                           Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
-                                return stat.supplyRate;
+                                return stat?.supplyRate;
                             })?.supplyRate
                           )?.toFixed(3) + "%"
                         )}
@@ -866,13 +867,14 @@ const SupplyDashboard = ({
             fontStyle="normal"
             fontWeight="400"
             borderRadius="6px"
+            border="1px solid #3841AA"
             // textAlign="center"
-            color="#B1B0B5"
+            color="#F0F0F5"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
             </Box>
-            Your do not have active supply.
+            You do not have active supply.
             <Box
               // ml="1"
               mr="1"

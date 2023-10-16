@@ -33,7 +33,7 @@ import {
 } from "@/store/slices/readDataSlice";
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
-import { getJediEstimatedLiqALiqBfromLp } from "@/Blockchain/scripts/l3interaction";
+import { getJediEstimatedLiqALiqBfromLp, getMySwapEstimatedLiqALiqBfromLp } from "@/Blockchain/scripts/l3interaction";
 import {
   getTokenFromAddress,
   tokenAddressMap,
@@ -309,14 +309,33 @@ const BorrowDashboard = ({
           Borrows[i]?.currentLoanMarketAddress,
           Borrows[i]?.loanMarket
         );
+        // if(Borrows[i]?.l3App=="J"){
 
-        const data = getJediEstimatedLiqALiqBfromLp(
-          Borrows[i]?.currentLoanAmount,
-          Borrows[i]?.loanId,
-          Borrows[i]?.currentLoanMarketAddress,
-          Borrows[i]?.loanMarket
-        );
-        promises.push(data);
+        // }
+        // if(Borrows[i]?.l3App){
+
+        // }
+        console.log(Borrows[i]?.l3App,"app")
+        if(Borrows[i]?.l3App=="JEDI_SWAP"){
+          const data = getJediEstimatedLiqALiqBfromLp(
+            Borrows[i]?.currentLoanAmount,
+            Borrows[i]?.loanId,
+            Borrows[i]?.currentLoanMarketAddress,
+            Borrows[i]?.loanMarket
+          );
+          promises.push(data);
+          console.log("split data", data, "loanId", Borrows[i]?.loanId);
+        }else if(Borrows[i]?.l3App=="MY_SWAP"){
+          const data = getMySwapEstimatedLiqALiqBfromLp(
+            Borrows[i]?.currentLoanAmount,
+            Borrows[i]?.loanId,
+            Borrows[i]?.currentLoanMarketAddress,
+            Borrows[i]?.loanMarket
+          );
+          promises.push(data);
+          console.log("split data", data, "loanId", Borrows[i]?.loanId);
+        }
+
         // console.log(
         //   getTokenFromAddress(processAddress(data?.tokenAAddress)),
         //   "all split amount - ",
@@ -327,7 +346,7 @@ const BorrowDashboard = ({
         //   " res -",
         //   data
         // );
-        console.log("split data", data, "loanId", Borrows[i]?.loanId);
+        
 
         // if (data) {
         //   temp.push({
@@ -464,7 +483,6 @@ const BorrowDashboard = ({
   ];
 
   // console.log("Borrows", loading, Borrows);
-  console.log(Borrows,"Borrows in dashboard")
   return loading ? (
     <>
       <Box
@@ -572,13 +590,14 @@ const BorrowDashboard = ({
                     }
                     rounded="md"
                     boxShadow="dark-lg"
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     // cursor="context-menu"
                     // marginRight={idx1 === 1 ? "52px" : ""}
@@ -1154,13 +1173,14 @@ const BorrowDashboard = ({
             fontStyle="normal"
             fontWeight="400"
             borderRadius="6px"
-            color="#B1B0B5"
+            border="1px solid #3841AA"
+            color="#F0F0F5"
             // textAlign="center"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
             </Box>
-            Your do not have active borrow.
+            You do not have active borrow.
             <Box
               // ml="1"
               mr="1"

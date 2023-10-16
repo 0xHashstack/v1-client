@@ -92,7 +92,7 @@ import {
 import CopyToClipboard from "react-copy-to-clipboard";
 import mixpanel from "mixpanel-browser";
 import { getSupplyunlocked } from "@/Blockchain/scripts/Rewards";
-import { selectUserDeposits } from "@/store/slices/readDataSlice";
+import { selectFees, selectUserDeposits } from "@/store/slices/readDataSlice";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const YourSupplyModal = ({
@@ -391,6 +391,8 @@ const YourSupplyModal = ({
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
+
+  const fees=useSelector(selectFees);
 
   useEffect(() => {
     setinputSupplyAmount(0);
@@ -769,8 +771,7 @@ const YourSupplyModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderLeftRadius="md"
                       fontWeight="normal"
                       _selected={{
@@ -787,8 +788,7 @@ const YourSupplyModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       borderRightRadius="md"
                       fontWeight="normal"
                       _selected={{
@@ -828,13 +828,14 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="The tokens selected to supply on the protocol."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
-                            padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                          padding={"2"}
+    border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
                             // mt="15px"
@@ -846,8 +847,7 @@ const YourSupplyModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -887,6 +887,7 @@ const YourSupplyModal = ({
                               w="full"
                               left="0"
                               bg="#03060B"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               py="2"
                               className="dropdown-container"
                               boxShadow="dark-lg"
@@ -997,13 +998,14 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="The unit of tokens being supplied."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
-                            padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                          padding={"2"}
+    border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -1023,7 +1025,7 @@ const YourSupplyModal = ({
                               : inputSupplyAmount > 0 &&
                                 inputSupplyAmount <= walletBalance
                               ? "1px solid #00D395"
-                              : "1px solid #2B2F35 "
+                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
                           display="flex"
@@ -1076,7 +1078,7 @@ const YourSupplyModal = ({
                                 : inputSupplyAmount < 0
                                 ? "#CF222E"
                                 : inputSupplyAmount == 0
-                                ? "#0969DA"
+                                ? "#4D59E8"
                                 : "#00D395"
                             }`}
                             _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
@@ -1154,10 +1156,15 @@ const YourSupplyModal = ({
                                 setinputSupplyAmount(walletBalance);
                                 setDepositAmount(walletBalance);
                               } else {
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputSupplyAmount(ans);
-                                setDepositAmount(ans);
+                                if(ans<10){
+                                  setinputSupplyAmount(ans);
+                                  setDepositAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputSupplyAmount(ans);
+                                  setDepositAmount(ans);
+                                }
                               }
                             }}
                             isDisabled={transactionStarted == true}
@@ -1258,11 +1265,12 @@ const YourSupplyModal = ({
                       <Box display="flex" gap="2">
                         <Checkbox
                           size="md"
-                          colorScheme="customBlue"
+                          colorScheme="customPurple"
                           defaultChecked
                           mb="auto"
-                          mt="1.2rem"
-                          borderColor="#2B2F35"
+                          mt="1rem"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           isDisabled={transactionStarted == true}
                           _disabled={{
                             cursor: "pointer",
@@ -1274,14 +1282,14 @@ const YourSupplyModal = ({
                           }}
                         />
                         <Text
-                          fontSize="12px"
+                          fontSize="14px"
                           fontWeight="400"
                           color="#B1B0B5"
                           mt="1rem"
+                          width="100%"
                           lineHeight="20px"
                         >
-                          Ticking would stake the received rTokens. unchecking
-                          wouldn&apos;t stake rTokens
+                          I would like to stake the rTokens.
                         </Text>
                       </Box>
 
@@ -1314,13 +1322,14 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Cost incurred during transactions."
-                              bg="#010409"
+                                bg="#02010F"
                               fontSize={"13px"}
-                              fontWeight={"thin"}
+                                         fontWeight={"400"}
                               borderRadius={"lg"}
-                              padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                            padding={"2"}
+    border="1px solid"
+                    borderColor="#23233D"
+
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
                             >
@@ -1329,9 +1338,9 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#676D9A">{TransactionFees.stake}%</Text>
+                          <Text color="#676D9A">{fees.supply}%</Text>
                         </Text>
-                        <Text
+                        {/* <Text
                           color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
@@ -1353,13 +1362,14 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Estimation of resources & costs for blockchain transactions."
-                              bg="#010409"
+                                bg="#02010F"
                               fontSize={"13px"}
-                              fontWeight={"thin"}
+                                         fontWeight={"400"}
                               borderRadius={"lg"}
-                              padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                            padding={"2"}
+    border="1px solid"
+                    borderColor="#23233D"
+
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
                             >
@@ -1369,7 +1379,7 @@ const YourSupplyModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">$ 0.91</Text>
-                        </Text>
+                        </Text> */}
                         <Text
                           color="#676D9A"
                           display="flex"
@@ -1391,13 +1401,14 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Annual interest rate earned on supplied tokens."
-                              bg="#010409"
+                                bg="#02010F"
                               fontSize={"13px"}
-                              fontWeight={"thin"}
+                                         fontWeight={"400"}
                               borderRadius={"lg"}
-                              padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                            padding={"2"}
+    border="1px solid"
+                    borderColor="#23233D"
+
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
                               // mb="16px"
@@ -1438,16 +1449,16 @@ const YourSupplyModal = ({
                           // height="64px"
                           display="flex"
                           alignItems="center"
-                          mt="2rem"
+                          mt="1rem"
                           mb="1rem"
                         >
                           <Box
                             display="flex"
-                            bg="#0C425C"
-                            color="white"
+                            bg="#222766"
+                            color="#F0F0F5"
                             fontSize="12px"
                             p="4"
-                            border="1px solid rgba(84, 174, 255, 0.4)"
+                            border="1px solid #3841AA"
                             fontStyle="normal"
                             fontWeight="400"
                             lineHeight="18px"
@@ -1571,13 +1582,14 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="The tokens selected to supply on the protocol."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
-                            padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                          padding={"2"}
+    border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
                           >
@@ -1629,6 +1641,7 @@ const YourSupplyModal = ({
                               w="full"
                               left="0"
                               bg="#03060B"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                               py="2"
                               className="dropdown-container"
                               boxShadow="dark-lg"
@@ -1720,13 +1733,14 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="Unit of tokens to be withdrawn."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
-                            padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+                          padding={"2"}
+    border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -1748,7 +1762,7 @@ const YourSupplyModal = ({
                               : inputWithdrawlAmount > 0 &&
                                 inputWithdrawlAmount <= withdrawWalletBalance
                               ? "1px solid #00D395"
-                              : "1px solid #2B2F35 "
+                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           }`}
                           borderRadius="6px"
                           display="flex"
@@ -1803,7 +1817,7 @@ const YourSupplyModal = ({
                                 : inputWithdrawlAmount < 0
                                 ? "#CF222E"
                                 : inputWithdrawlAmount == 0
-                                ? "#0969DA"
+                                ? "#4D59E8"
                                 : "#00D395"
                             }`}
                             _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
@@ -1880,9 +1894,13 @@ const YourSupplyModal = ({
                                 setinputWithdrawlAmount(withdrawWalletBalance);
                               } else {
                                 var ans = (val / 100) * withdrawWalletBalance;
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputWithdrawlAmount(ans);
+                                if(ans<10){
+                                  setinputWithdrawlAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputWithdrawlAmount(ans);
+                                }
                               }
                             }}
                             focusThumbOnChange={false}
@@ -2010,13 +2028,14 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Estimated amount available for withdrawal from the deposited tokens."
-                              bg="#010409"
+                                bg="#02010F"
                               fontSize={"13px"}
-                              fontWeight={"thin"}
+                                         fontWeight={"400"}
                               borderRadius={"lg"}
                               padding={"2"}
                               border="1px solid"
-                              borderColor="#2B2F35"
+                              borderColor="#23233D"
+
                               arrowShadowColor="#2B2F35"
                               maxW="247px"
                               // mt="15px"
@@ -2036,7 +2055,7 @@ const YourSupplyModal = ({
                               ml={2}
                             />
                           ) : (
-                            <Text color="#676D9A">$ {estSupply}</Text>
+                            <Text color="#676D9A"> {estSupply}</Text>
                           )}
                         </Text>
                         {/* <Text
@@ -2160,13 +2179,13 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Cost incurred during transactions."
-                              bg="#010409"
+                                bg="#02010F"
                               fontSize={"13px"}
-                              fontWeight={"thin"}
+                                         fontWeight={"400"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                               arrowShadowColor="#2B2F35"
                               maxW="222px"
                             >
@@ -2176,10 +2195,10 @@ const YourSupplyModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">
-                            {TransactionFees.withdrawSupply}%
+                            {fees.withdrawSupply}%
                           </Text>
                         </Text>
-                        <Text
+                        {/* <Text
                           color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
@@ -2200,13 +2219,14 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Estimation of resources & costs for blockchain transactions."
-                              bg="#010409"
+                                bg="#02010F"
                               fontSize={"13px"}
-                              fontWeight={"thin"}
+                                         fontWeight={"400"}
                               borderRadius={"lg"}
-                              padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                            padding={"2"}
+    border="1px solid"
+                    borderColor="#23233D"
+
                               arrowShadowColor="#2B2F35"
                               maxW="292px"
                               // mb="15px"
@@ -2217,7 +2237,7 @@ const YourSupplyModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">$ 0.91</Text>
-                        </Text>
+                        </Text> */}
                       </Card>
                       {inputWithdrawlAmount > 0 &&
                       inputWithdrawlAmount <= withdrawWalletBalance ? (

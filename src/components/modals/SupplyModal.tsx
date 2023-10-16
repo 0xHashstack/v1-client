@@ -93,7 +93,9 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
+import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
+import { getFees, getMaximumDepositAmount, getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -113,7 +115,6 @@ const SupplyModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [toastId, setToastId] = useState<any>();
   const [uniqueID, setUniqueID] = useState(0);
-
   const {
     depositAmount,
     setDepositAmount,
@@ -210,6 +211,8 @@ const SupplyModal = ({
   });
   // const walletBalances = useSelector(selectAssetWalletBalance);
   // const transactionRefresh=useSelector(selectTransactionRefresh);
+
+  const fees=useSelector(selectFees);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? parseAmount(
@@ -661,6 +664,25 @@ const SupplyModal = ({
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
   // }, [])
   // console.log(inputAmount);
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+const minAmounts=useSelector(selectMinimumDepositAmounts);
+const maxAmounts=useSelector(selectMaximumDepositAmounts);
+  useEffect(()=>{
+    setMinimumDepositAmount(minAmounts["r"+currentSelectedCoin])
+    setmaximumDepositAmount(maxAmounts["r"+currentSelectedCoin])
+  },[currentSelectedCoin,minAmounts,maxAmounts])
+  
+  // useEffect(()=>{
+  //     const data=useSelector(selectMinimumDepositAmounts);
+  //     setMinimumDepositAmount(data(currentSelectedCoin));
+  //   const fetchMaxDeposit=async()=>{
+  //     const data=await getMaximumDepositAmount("r"+currentSelectedCoin);
+  //     setmaximumDepositAmount(data);
+  //   }
+  //   fetchMaxDeposit();
+
+  // },[currentSelectedCoin])
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -833,13 +855,14 @@ const SupplyModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="The tokens selected to supply on the protocol."
-                      bg="#010409"
-                      fontSize="13px"
-                      fontWeight={"thin"}
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      color="#F0F0F5"
                       border="1px solid"
-                      borderColor="#2B2F35"
+                      borderColor="#23233D"
                     >
                       <Box>
                         <InfoIcon />
@@ -880,7 +903,7 @@ const SupplyModal = ({
                       w="full"
                       left="0"
                       bg="#03060B"
-                      border="1px solid #30363D"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       py="2"
                       className="dropdown-container"
                       boxShadow="dark-lg"
@@ -994,13 +1017,14 @@ const SupplyModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="The unit of tokens being supplied."
-                    bg="#010409"
-                    fontSize="13px"
-                    fontWeight={"thin"}
+                    bg="#02010F"
+                    fontSize={"13px"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     // maxW="222px"
                   >
@@ -1015,9 +1039,13 @@ const SupplyModal = ({
                   border={`${
                     depositAmount > walletBalance
                       ? "1px solid #CF222E"
-                      : depositAmount < 0
+                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& depositAmount> maximumDepositAmount ?
+                      "1px solid #CF222E"
+                      : depositAmount < 0 
                       ? "1px solid #CF222E"
                       : isNaN(depositAmount)
+                      ? "1px solid #CF222E"
+                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount && depositAmount>0
                       ? "1px solid #CF222E"
                       : depositAmount > 0 && depositAmount <= walletBalance
                       ? "1px solid #00D395"
@@ -1041,11 +1069,15 @@ const SupplyModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                      placeholder={`0.01536 ${currentSelectedCoin}`}
+     placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentSelectedCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentSelectedCoin}`}
                       color={`${
                         depositAmount > walletBalance
                           ? "#CF222E"
+                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount> maximumDepositAmount ?
+                            "#CF222E"
                           : isNaN(depositAmount)
+                          ? "#CF222E"
+                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount && depositAmount>0
                           ? "#CF222E"
                           : depositAmount < 0
                           ? "#CF222E"
@@ -1072,15 +1104,19 @@ const SupplyModal = ({
                     color={`${
                       depositAmount > walletBalance
                         ? "#CF222E"
+                        :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount> maximumDepositAmount ?
+                          "#CF222E"
                         : isNaN(depositAmount)
+                        ? "#CF222E"
+                        :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount && depositAmount>0
                         ? "#CF222E"
                         : depositAmount < 0
                         ? "#CF222E"
                         : depositAmount == 0
-                        ? "#0969DA"
+                        ? "#4D59E8"
                         : "#00D395"
                     }`}
-                    // color="#0969DA"
+                    // color="#4D59E8"
                     _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                     onClick={() => {
                       setDepositAmount(walletBalance);
@@ -1094,8 +1130,8 @@ const SupplyModal = ({
                     MAX
                   </Button>
                 </Box>
-                {depositAmount > walletBalance ||
-                depositAmount < 0 ||
+                {depositAmount > walletBalance || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>maximumDepositAmount) ||
+                depositAmount < 0 ||                       (depositAmount<minimumDepositAmount && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0) ||
                 isNaN(depositAmount) ? (
                   <Text
                     display="flex"
@@ -1115,7 +1151,12 @@ const SupplyModal = ({
                       <Text ml="0.3rem">
                         {depositAmount > walletBalance
                           ? "Amount exceeds balance"
-                          : "Invalid Input"}
+                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>maximumDepositAmount 
+                          ? "More than max amount"
+                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount
+                          ?"Less than min amount":
+                          ""
+                        }
                       </Text>
                     </Text>
                     <Text
@@ -1176,12 +1217,19 @@ const SupplyModal = ({
                         setDepositAmount(walletBalance);
                         setinputAmount(walletBalance);
                       } else {
-                        ans = Math.round(ans * 100) / 100;
+                        // ans = Math.round(ans * 100) / 100;
+                        if(ans<10){
+                          setDepositAmount(ans);
+                          setinputAmount(ans);
+                        }else{
+                          ans = Math.round(ans * 100) / 100;
+                          setDepositAmount(ans);
+                          setinputAmount(ans);
+                        }
 
                         // console.log(ans)
                         // dispatch(setInputSupplyAmount(ans));
-                        setDepositAmount(ans);
-                        setinputAmount(ans);
+
                       }
                     }}
                     isDisabled={transactionStarted == true}
@@ -1282,30 +1330,33 @@ const SupplyModal = ({
               <Box display="flex" gap="2">
                 <Checkbox
                   size="md"
-                  colorScheme="customBlue"
+                  colorScheme="customPurple"
                   defaultChecked
                   mb="auto"
-                  mt="1.2rem"
+                  mt="0.7rem"
                   borderColor="#2B2F35"
                   isDisabled={transactionStarted == true}
-                  _disabled={{
-                    cursor: "pointer",
-                    iconColor: "blue.400",
-                    bg: "blue",
-                  }}
+                  // disabledColor="red"
+                
+                  // _disabled={{
+                  //   colorScheme:"black",
+                  //   cursor: "pointer",
+                  //   iconColor: "black",
+                  //   bg: "black",
+                  // }}
                   onChange={() => {
                     setIsChecked(!ischecked);
                   }}
                 />
                 <Text
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight="400"
                   color="#B1B0B5"
-                  mt="1rem"
-                  lineHeight="20px"
+                  mt="0.5rem"
+                  lineHeight="22px"
+                  width="100%"
                 >
-                  Ticking would stake the received rTokens. unchecking
-                  wouldn&apos;t stake rTokens
+                  I would like to stake the rTokens.
                 </Text>
               </Box>
 
@@ -1332,14 +1383,14 @@ const SupplyModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="Cost incurred during transactions."
-                      bg="#010409"
+                      bg="#02010F"
                       fontSize={"13px"}
-                      fontWeight={"thin"}
+                      fontWeight={"400"}
                       borderRadius={"lg"}
                       padding={"2"}
-                      color="#fff"
+                      color="#F0F0F5"
                       border="1px solid"
-                      borderColor="#2B2F35"
+                      borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
                       maxW="222px"
                     >
@@ -1354,10 +1405,11 @@ const SupplyModal = ({
                     font-size="12px"
                     color="#676D9A"
                   >
-                    {TransactionFees.supply}%
+                    {fees?.supply}%
                   </Text>
+
                 </Text>
-                <Text
+                {/* <Text
                   color="#8B949E"
                   display="flex"
                   justifyContent="space-between"
@@ -1373,7 +1425,6 @@ const SupplyModal = ({
                       color="#676D9A"
                     >
                       Gas estimate:
-                      {/* <SpinnerLoader/> */}
                     </Text>
                     <Tooltip
                       hasArrow
@@ -1403,7 +1454,7 @@ const SupplyModal = ({
                   >
                     $ 0.90
                   </Text>
-                </Text>
+                </Text> */}
                 <Text
                   color="#8B949E"
                   display="flex"
@@ -1425,13 +1476,14 @@ const SupplyModal = ({
                       placement="right-end"
                       boxShadow="dark-lg"
                       label="Annual interest rate earned on supplied tokens."
-                      bg="#010409"
+                      bg="#02010F"
                       fontSize={"13px"}
-                      fontWeight={"thin"}
+                      fontWeight={"400"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      color="#F0F0F5"
                       border="1px solid"
-                      borderColor="#2B2F35"
+                      borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
                       // arrowPadding={2}
                       maxW="222px"
@@ -1450,7 +1502,7 @@ const SupplyModal = ({
                   >
                     {!supplyAPRs ||
                     supplyAPRs.length === 0 ||
-                    !supplyAPRs[currentSupplyAPR] ? (
+                    supplyAPRs[currentSupplyAPR] ==null ? (
                       <Box pt="3px">
                         <Skeleton
                           width="2.3rem"
@@ -1467,7 +1519,7 @@ const SupplyModal = ({
                   </Text>
                 </Text>
               </Card>
-              {depositAmount > 0 && depositAmount <= walletBalance ? (
+              {depositAmount > 0 && depositAmount <= walletBalance && ((depositAmount>0 && depositAmount>=minimumDepositAmount)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||depositAmount<=maximumDepositAmount) ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (

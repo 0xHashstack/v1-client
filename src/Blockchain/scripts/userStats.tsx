@@ -5,10 +5,10 @@ import {
   IMarketInfo,
   IUserStats,
 } from "../interfaces/interfaces";
-import metricsAbi from "../abis/metrics_abi.json";
 // import borrowTokenAbi from "../abis/dToken_abi.json";
 // import borrowTokenAbi from "../abi_new/dToken_abi.json";
-import borrowTokenAbi from "../abis_upgrade/dToken_abi.json";
+// import borrowTokenAbi from "../abis_upgrade/dToken_abi.json";
+import borrowTokenAbi from "../abis_mainnet/dToken_abi.json";
 import {
   getProvider,
   getRTokenFromAddress,
@@ -144,7 +144,73 @@ export async function getNetworth(
 
   return netWorth;
 }
+export async function getNetAprDeposits(
+  deposits: IDeposit[],
+  oraclePrices: OraclePrice[],
+  marketInfos: IMarketInfo[]
+) {
+  let totalSupply = 0,
+    netSupplyInterest = 0;
+  for (let deposit of deposits) {
+    const oraclePrice = oraclePrices?.find(
+      (oraclePrice) => oraclePrice?.address === deposit?.tokenAddress
+    );
+    let market_info = marketInfos.find(
+      (market_info) => market_info?.tokenAddress === deposit?.tokenAddress
+    );
+    if (oraclePrice && market_info) {
+      let depositAmountUsd =
+        deposit.underlyingAssetAmountParsed * oraclePrice.price;
+      totalSupply += depositAmountUsd;
+      netSupplyInterest += depositAmountUsd * market_info.supplyRate;
+    }
+  }
 
+  let netApr =
+    (netSupplyInterest != 0 && totalSupply != 0
+      ? netSupplyInterest / totalSupply
+      : 0) 
+
+
+  return netApr.toFixed(2);
+}
+export async function getNetAprLoans(
+  loans: ILoan[],
+  oraclePrices: OraclePrice[],
+  marketInfos: IMarketInfo[]
+) {
+  
+  let totalBorrow = 0,
+    netBorrowInterest = 0;
+  for (let loan of loans) {
+    if (
+      loan.loanState === "REPAID" ||
+      loan.loanState === "LIQUIDATED" ||
+      loan.loanState === null
+    )
+      continue;
+
+    const oraclePrice = oraclePrices.find(
+      (oraclePrice) => oraclePrice.address === loan.underlyingMarketAddress
+    );
+    let market_info = marketInfos.find(
+      (marketInfo) => marketInfo.tokenAddress === loan.underlyingMarketAddress
+    );
+    if (oraclePrice && market_info) {
+      let loanAmountUnderlying =
+        loan.loanAmountParsed * market_info.exchangeRateDTokenToUnderlying;
+      let loanAmountUsd = loanAmountUnderlying * oraclePrice.price;
+
+      totalBorrow += loanAmountUsd;
+      netBorrowInterest += loanAmountUsd * market_info.borrowRate;
+    }
+  }
+  let netApr =
+    (netBorrowInterest != 0 && totalBorrow != 0
+      ? netBorrowInterest / totalBorrow
+      : 0);
+  return netApr.toFixed(2);
+}
 export async function getNetApr(
   deposits: IDeposit[],
   loans: ILoan[],

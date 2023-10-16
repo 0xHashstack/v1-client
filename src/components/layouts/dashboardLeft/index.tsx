@@ -60,6 +60,7 @@ const DashboardLeft = ({
   // gap: string;
   // rowItems: any;
 }) => {
+  // console.log(totalSupplies,"total supply");
   // console.log(oraclePrices)
   const coinPrices = Coins.map((coin) => {
     const matchingCoin = oraclePrices?.find(
@@ -67,7 +68,8 @@ const DashboardLeft = ({
         c?.name?.toLowerCase() === coin?.name.toLowerCase()
     );
     if (matchingCoin) {
-      const formattedPrice = matchingCoin?.price.toFixed(3); // Format price to 3 decimal places
+      const formattedPrice = matchingCoin?.price.toFixed(3);
+      // console.log("coinprice",matchingCoin) // Format price to 3 decimal places
       return { name: coin?.name, price: formattedPrice };
     }
     return null;
@@ -244,13 +246,14 @@ const DashboardLeft = ({
                     }
                     rounded="md"
                     boxShadow="dark-lg"
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     // maxW="222px"
                     // mt="28px"
@@ -364,7 +367,7 @@ const DashboardLeft = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!coinPrices[idx] ? (
+                    {coinPrices[idx]===null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -373,7 +376,7 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      numberFormatter(coinPrices[idx]?.price)
+                      (coinPrices[idx]?.price)==0?0:numberFormatter(coinPrices[idx]?.price)
                     )}
                     {/* 0000.00 */}
                   </Box>
@@ -396,7 +399,7 @@ const DashboardLeft = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!totalSupplies[idx] ? (
+                    {totalSupplies[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -405,7 +408,7 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      numberFormatter(totalSupplies[idx])
+                       numberFormatter(totalSupplies[idx])
                     )}
                   </Box>
                 </Td>
@@ -427,7 +430,7 @@ const DashboardLeft = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!supplyAPRs[idx] ? (
+                    {supplyAPRs[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"

@@ -58,6 +58,7 @@ import {
 } from "@/store/slices/userAccountSlice";
 import {
   selectAprAndHealthFactor,
+  selectFees,
   selectHealthFactor,
   selectJediSwapPoolsSupported,
   selectMySwapPoolsSupported,
@@ -347,7 +348,7 @@ const LiquidityProvisionModal = ({
   //     }
   //   },
   // });
-
+  const fees=useSelector(selectFees);
   const handleLiquidity = async () => {
     try {
       if (currentSwap == "Jediswap") {
@@ -602,7 +603,7 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
+      console.log("getMySwapEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     }
   };
@@ -772,13 +773,14 @@ const LiquidityProvisionModal = ({
                     placement="right-start"
                     boxShadow="dark-lg"
                     label="Choose a liquidity pool for trading, providing liquidity, or accessing DeFi services within the protocol."
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="257px"
                     // mt="48px"
@@ -790,8 +792,7 @@ const LiquidityProvisionModal = ({
                 </Text>
                 <Box
                   display="flex"
-                  border="1px"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                   justifyContent="space-between"
                   py="2"
                   pl="3"
@@ -832,6 +833,7 @@ const LiquidityProvisionModal = ({
                       w="full"
                       left="0"
                       bg="#03060B"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       py="2"
                       className="dropdown-container"
                       boxShadow="dark-lg"
@@ -896,13 +898,14 @@ const LiquidityProvisionModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="A unique ID number assigned to a specific borrow within the protocol"
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
                   >
@@ -913,8 +916,7 @@ const LiquidityProvisionModal = ({
                 </Text>
                 <Box
                   display="flex"
-                  border="1px"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                   justifyContent="space-between"
                   py="2"
                   pl="3"
@@ -947,6 +949,7 @@ const LiquidityProvisionModal = ({
                       w="full"
                       left="0"
                       bg="#03060B"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                       py="2"
                       className="dropdown-container"
                       boxShadow="dark-lg"
@@ -1025,13 +1028,14 @@ const LiquidityProvisionModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="The unit of tokens you have borrowed from the protocol."
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
                   >
@@ -1042,12 +1046,11 @@ const LiquidityProvisionModal = ({
                 </Text>
                 <Box
                   display="flex"
-                  border="1px"
-                  borderColor="#2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                   justifyContent="space-between"
                   py="2"
                   pl="3"
-                  pr="3"
+                pr="3"
                   mt="0.2rem"
                   borderRadius="md"
                   className="navbar"
@@ -1109,13 +1112,14 @@ const LiquidityProvisionModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="Refers to the app where loan should be spent."
-                      bg="#010409"
+                      bg="#02010F"
                       fontSize={"13px"}
-                      fontWeight={"thin"}
+                      fontWeight={"400"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      color="#F0F0F5"
                       border="1px solid"
-                      borderColor="#2B2F35"
+                      borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
                       maxW="222px"
                     >
@@ -1166,13 +1170,14 @@ const LiquidityProvisionModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="Estimated Liquidity Provider Tokens Received: Estimate of LP tokens received by providing liquidity to a pool."
-                        bg="#010409"
+                        bg="#02010F"
                         fontSize={"13px"}
-                        fontWeight={"thin"}
+                        fontWeight={"400"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        color="#F0F0F5"
                         border="1px solid"
-                        borderColor="#2B2F35"
+                        borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                         maxW="222px"
                       >
@@ -1225,13 +1230,14 @@ const LiquidityProvisionModal = ({
                         placement="right"
                         boxShadow="dark-lg"
                         label="The fee for reallocating liquidity across assets within a protocol."
-                        bg="#010409"
+                        bg="#02010F"
                         fontSize={"13px"}
-                        fontWeight={"thin"}
+                        fontWeight={"400"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        color="#F0F0F5"
                         border="1px solid"
-                        borderColor="#2B2F35"
+                        borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                         maxW="222px"
                       >
@@ -1314,13 +1320,14 @@ const LiquidityProvisionModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="Cost incurred during transactions."
-                      bg="#010409"
+                      bg="#02010F"
                       fontSize={"13px"}
-                      fontWeight={"thin"}
+                      fontWeight={"400"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      color="#F0F0F5"
                       border="1px solid"
-                      borderColor="#2B2F35"
+                      borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
                       maxW="222px"
                     >
@@ -1335,10 +1342,10 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    {TransactionFees.spend}%
+                    {fees.l3interaction}%
                   </Text>
                 </Box>
-                <Box display="flex" justifyContent="space-between" mb="0.3rem">
+                {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                   <Box display="flex">
                     <Text
                       color="#676D9A"
@@ -1376,7 +1383,7 @@ const LiquidityProvisionModal = ({
                   >
                     $ 0.91
                   </Text>
-                </Box>
+                </Box> */}
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
                   <Box display="flex">
                     <Text
@@ -1392,13 +1399,14 @@ const LiquidityProvisionModal = ({
                       placement="right"
                       boxShadow="dark-lg"
                       label="The annual interest rate charged on borrowed funds from the protocol."
-                      bg="#010409"
+                      bg="#02010F"
                       fontSize={"13px"}
-                      fontWeight={"thin"}
+                      fontWeight={"400"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      color="#F0F0F5"
                       border="1px solid"
-                      borderColor="#2B2F35"
+                      borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
                       maxW="222px"
                     >
@@ -1449,13 +1457,14 @@ const LiquidityProvisionModal = ({
                       placement="right-end"
                       boxShadow="dark-lg"
                       label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
-                      bg="#010409"
+                      bg="#02010F"
                       fontSize={"13px"}
-                      fontWeight={"thin"}
+                      fontWeight={"400"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      color="#F0F0F5"
                       border="1px solid"
-                      borderColor="#2B2F35"
+                      borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
                       maxW="252px"
                       // mt="56px"
@@ -1504,13 +1513,14 @@ const LiquidityProvisionModal = ({
                       placement="right-end"
                       boxShadow="dark-lg"
                       label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
-                      bg="#010409"
+                      bg="#02010F"
                       fontSize={"13px"}
-                      fontWeight={"thin"}
+                      fontWeight={"400"}
                       borderRadius={"lg"}
                       padding={"2"}
+                      color="#F0F0F5"
                       border="1px solid"
-                      borderColor="#2B2F35"
+                      borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
                       maxW="262px"
                     >

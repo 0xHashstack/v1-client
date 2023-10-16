@@ -4,9 +4,8 @@ import {
   getProvider,
   getRTokenFromAddress,
 } from "../stark-constants";
-// import routerAbi from "@/Blockchain/abis/router_abi.json";
-// import routerAbi from "@/Blockchain/abi_new/router_abi.json";
-import routerAbi from "@/Blockchain/abis_upgrade/router_abi.json";
+// import routerAbi from "@/Blockchain/abis_upgrade/router_abi.json";
+import routerAbi from "@/Blockchain/abis_mainnet/router_abi.json";
 import { BNtoNum, parseAmount } from "../utils/utils";
 import { IMarketInfo, NativeToken, RToken } from "../interfaces/interfaces";
 import { OraclePrice } from "./getOraclePrices";
@@ -32,7 +31,8 @@ export async function getExistingLoanHealth(loanId: string) {
     //   parseAmount(res?.factor, 5)
     // );
     // console.log(BNtoNum())
-    return BNtoNum(res?.factor, 6);
+    console.log(res,"health fac")
+    return BNtoNum(res?.factor, 5);
   } catch (error) {
     console.log("health factor error: ", error);
   }

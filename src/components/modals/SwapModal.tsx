@@ -46,7 +46,9 @@ import {
 import {
   selectAprAndHealthFactor,
   selectEffectiveApr,
+  selectFees,
   selectHealthFactor,
+  selectMySwapPoolsSupported,
   selectUserLoans,
 } from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -398,6 +400,29 @@ const SwapModal = ({
   useEffect(() => {
     setToMarket(currentSelectedCoin);
   }, [currentSelectedCoin]);
+  const mySwapPoolPairs=useSelector(selectMySwapPoolsSupported);
+  const [myswapPools, setmyswapPools] = useState([]);
+  const fees=useSelector(selectFees)
+  useEffect(()=>{
+    function findSideForMember(array:any, token:any) {
+      const data:any=[];
+      for (const obj of array) {
+          const keyvalue = obj.keyvalue;
+          const [tokenA, tokenB] = keyvalue.split('/');
+          
+          if (tokenA === token) {
+            console.log(tokenB,"tokenB");
+              data.push(tokenB)
+          } else if (tokenB === token) {
+            console.log(tokenA,"tokenA")
+              data.push(tokenA);
+          }
+      }
+      setmyswapPools(data);
+       // Token not found in any "keyvalue" pairs
+  }
+  findSideForMember(mySwapPoolPairs,currentBorrowMarketCoin);
+  },[currentBorrowMarketCoin])
 
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const resetStates = () => {
@@ -556,13 +581,14 @@ const SwapModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="The token selected to swap on the protocol."
-                  bg="#010409"
+                  bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                  fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
+                  color="#F0F0F5"
                   border="1px solid"
-                  borderColor="#2B2F35"
+                  borderColor="#23233D"
                   arrowShadowColor="#2B2F35"
                   maxW="252px"
                 >
@@ -573,8 +599,7 @@ const SwapModal = ({
               </Text>
               <Box
                 display="flex"
-                border="1px"
-                borderColor="#2B2F35"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 justifyContent="space-between"
                 py="2"
                 pl="3"
@@ -614,12 +639,14 @@ const SwapModal = ({
                     w="full"
                     left="0"
                     bg="#03060B"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                     py="2"
                     className="dropdown-container"
                     boxShadow="dark-lg"
                   >
                     {coins?.map((coin: string, index: number) => {
-                      if (coin === currentBorrowMarketCoin) {
+                      const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
+                      if (coin === currentBorrowMarketCoin || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentSwap == "MySwap" &&!matchingPair)) {
                         return null;
                       }
                       return (
@@ -676,13 +703,14 @@ const SwapModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="A unique ID number assigned to a specific borrow within the protocol."
-                  bg="#010409"
+                  bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                  fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
+                  color="#F0F0F5"
                   border="1px solid"
-                  borderColor="#2B2F35"
+                  borderColor="#23233D"
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -693,8 +721,7 @@ const SwapModal = ({
               </Text>
               <Box
                 display="flex"
-                border="1px"
-                borderColor="#2B2F35"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 justifyContent="space-between"
                 py="2"
                 pl="3"
@@ -727,6 +754,7 @@ const SwapModal = ({
                     w="full"
                     left="0"
                     bg="#03060B"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                     py="2"
                     className="dropdown-container"
                     boxShadow="dark-lg"
@@ -805,13 +833,14 @@ const SwapModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="The unit of tokens you have borrowed from the protocol."
-                  bg="#010409"
+                  bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                  fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
+                  color="#F0F0F5"
                   border="1px solid"
-                  borderColor="#2B2F35"
+                  borderColor="#23233D"
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -822,8 +851,7 @@ const SwapModal = ({
               </Text>
               <Box
                 display="flex"
-                border="1px"
-                borderColor="#2B2F35"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 justifyContent="space-between"
                 py="2"
                 pl="3"
@@ -865,7 +893,7 @@ const SwapModal = ({
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -877,13 +905,14 @@ const SwapModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Application where the loan was spent."
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
                   >
@@ -903,7 +932,7 @@ const SwapModal = ({
                     />
                   </Box>
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -916,7 +945,7 @@ const SwapModal = ({
                 <Box display="flex">
                   <Box display="flex" gap="3px">
                     <Text
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -927,7 +956,7 @@ const SwapModal = ({
                       <SmallEth />
                     </Box>
                     <Box
-                      color="#6A737D"
+                      color="#676D9A"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
@@ -952,7 +981,7 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -963,7 +992,7 @@ const SwapModal = ({
               {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -989,7 +1018,7 @@ const SwapModal = ({
                 <Box
                   display="flex"
                   gap="2"
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1011,7 +1040,7 @@ const SwapModal = ({
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1023,13 +1052,14 @@ const SwapModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="Cost incurred during transactions."
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
                   >
@@ -1039,18 +1069,18 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  {TransactionFees.spend}%
+                  {fees.l3interaction}%
                 </Text>
               </Box>
-              <Box display="flex" justifyContent="space-between" mb="0.3rem">
+              {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1078,18 +1108,18 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
                 >
                   $ 0.91
                 </Text>
-              </Box>
+              </Box> */}
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1101,13 +1131,14 @@ const SwapModal = ({
                     placement="right"
                     boxShadow="dark-lg"
                     label="The annual interest rate charged on borrowed funds from the protocol."
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
                   >
@@ -1117,7 +1148,7 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1143,7 +1174,7 @@ const SwapModal = ({
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1155,13 +1186,14 @@ const SwapModal = ({
                     placement="right-end"
                     boxShadow="dark-lg"
                     label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="272px"
                   >
@@ -1171,7 +1203,7 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1197,7 +1229,7 @@ const SwapModal = ({
               <Box display="flex" justifyContent="space-between">
                 <Box display="flex">
                   <Text
-                    color="#6A737D"
+                    color="#676D9A"
                     fontSize="12px"
                     fontWeight="400"
                     fontStyle="normal"
@@ -1209,13 +1241,14 @@ const SwapModal = ({
                     placement="right-end"
                     boxShadow="dark-lg"
                     label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
                   >
@@ -1225,7 +1258,7 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#6A737D"
+                  color="#676D9A"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"

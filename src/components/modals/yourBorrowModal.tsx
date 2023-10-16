@@ -71,8 +71,11 @@ import {
 import {
   selectAprAndHealthFactor,
   selectEffectiveApr,
+  selectFees,
   selectHealthFactor,
   selectJediSwapPoolsSupported,
+  selectMaximumDepositAmounts,
+  selectMinimumDepositAmounts,
   selectMySwapPoolsSupported,
   selectOraclePrices,
   selectProtocolStats,
@@ -161,6 +164,8 @@ const YourBorrowModal = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
   const [sliderValue1, setSliderValue1] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [inputAmount1, setinputAmount1] = useState(0);
@@ -524,6 +529,13 @@ const YourBorrowModal = ({
       )
       : 0
   );
+  const minAmounts=useSelector(selectMinimumDepositAmounts);
+  const maxAmounts=useSelector(selectMaximumDepositAmounts);
+  useEffect(()=>{
+    setMinimumDepositAmount(minAmounts["r"+collateralAsset])
+    setmaximumDepositAmount(maxAmounts["r"+collateralAsset])
+
+  },[collateralAsset,minAmounts,maxAmounts])
   useEffect(() => {
     setwalletBalance1(
       walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
@@ -547,12 +559,13 @@ const YourBorrowModal = ({
 
   const [walletBalance2, setwalletBalance2] = useState(
     walletBalances[collateralAsset]?.statusBalanceOf === "success"
-      ? parseAmount(
+      ? Number(
+        BNtoNum(
         uint256.uint256ToBN(
           walletBalances[collateralAsset]?.dataBalanceOf?.balance
         ),
         tokenDecimalsMap[collateralAsset]
-      )
+      ))
       : 0
   );
   useEffect(() => {
@@ -754,6 +767,7 @@ const YourBorrowModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
+  const fees=useSelector(selectFees);
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -1272,7 +1286,8 @@ const YourBorrowModal = ({
 
             borderRadius="6px"
             p="1rem"
-            border="1px solid #2B2F35"
+             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
             mt="1.5rem"
             mb="1.5rem"
           >
@@ -1292,13 +1307,15 @@ const YourBorrowModal = ({
                     placement="right-start"
                     boxShadow="dark-lg"
                     label="Estimated Liquidity Provider Tokens Received: Estimate of LP tokens received by providing liquidity to a pool."
-                    bg="#010409"
+                    rounded="md"
+                      bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
                   >
@@ -1349,15 +1366,18 @@ const YourBorrowModal = ({
                       placement="right-start"
                       boxShadow="dark-lg"
                       label="Fee for adjusting liquidity allocation across assets within the protocol."
-                      bg="#010409"
-                      fontSize={"13px"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                      border="1px solid"
-                      borderColor="#2B2F35"
-                      arrowShadowColor="#2B2F35"
+               bg="#02010F"
+                    fontSize={"13px"}
+                    fontWeight={"400"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    color="#F0F0F5"
+                    border="1px solid"
+                    borderColor="#23233D"
+                    arrowShadowColor="#2B2F35"
                       maxW="222px"
+
+                      
                     >
                       <Box ml="0.1rem" mt="0.3rem">
                         <InfoIcon />
@@ -1438,14 +1458,15 @@ const YourBorrowModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="Cost incurred during transactions."
-                  bg="#010409"
-                  fontSize={"13px"}
-                  fontWeight={"thin"}
-                  borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
-                  arrowShadowColor="#2B2F35"
+                bg="#02010F"
+                    fontSize={"13px"}
+                    fontWeight={"400"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    color="#F0F0F5"
+                    border="1px solid"
+                    borderColor="#23233D"
+                    arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
                   <Box ml="0.1rem" mt="0.3rem">
@@ -1459,7 +1480,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.spend}%
+                {fees.l3interaction}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -1477,13 +1498,15 @@ const YourBorrowModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="The annual interest rate charged on borrowed funds from the protocol."
-                  bg="#010409"
+                  rounded="md"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                  fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
+                  color="#F0F0F5"
                   border="1px solid"
-                  borderColor="#2B2F35"
+                  borderColor="#23233D"
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1515,7 +1538,7 @@ const YourBorrowModal = ({
                 )}
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+            {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -1530,13 +1553,14 @@ const YourBorrowModal = ({
                   placement="right"
                   boxShadow="dark-lg"
                   label="Estimation of resources & costs for blockchain transactions."
-                  bg="#010409"
+                      bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1553,7 +1577,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -1569,13 +1593,14 @@ const YourBorrowModal = ({
                   placement="right-end"
                   boxShadow="dark-lg"
                   label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                  fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
+                  color="#F0F0F5"
                   border="1px solid"
-                  borderColor="#2B2F35"
+                  borderColor="#23233D"
                   arrowShadowColor="#2B2F35"
                   maxW="292px"
                 // mt='20px'
@@ -1624,13 +1649,14 @@ const YourBorrowModal = ({
                   placement="right-end"
                   boxShadow="dark-lg"
                   label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                  fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
+                  color="#F0F0F5"
                   border="1px solid"
-                  borderColor="#2B2F35"
+                  borderColor="#23233D"
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1672,8 +1698,9 @@ const YourBorrowModal = ({
           <Box
             p="1rem"
             borderRadius="md"
-            border="1px"
-            borderColor="#2B2F35"
+                               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+            
             background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
             my="6"
@@ -1689,17 +1716,19 @@ const YourBorrowModal = ({
                   Borrowed market:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="The token borrowed from the protocol."
-                  bg="#010409"
+                      bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1728,13 +1757,14 @@ const YourBorrowModal = ({
                   rTokens unlocked:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
                   fontSize={"smaller"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
                 >
@@ -1763,13 +1793,14 @@ const YourBorrowModal = ({
                   Est collateral value:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
                   fontSize={"smaller"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
                 >
@@ -1798,17 +1829,19 @@ const YourBorrowModal = ({
                   Fees:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Cost incurred during transactions."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1823,10 +1856,10 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.repay}%
+                {fees.repayLoan}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -1837,17 +1870,19 @@ const YourBorrowModal = ({
                   Gas estimate:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-end"
                   boxShadow="dark-lg"
                   label="Estimation of resources & costs for blockchain transactions."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1864,7 +1899,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -1874,8 +1909,8 @@ const YourBorrowModal = ({
           <Box
             p="1rem"
             borderRadius="md"
-            border="1px"
-            borderColor="#2B2F35"
+            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
             background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
             my="6"
@@ -1886,17 +1921,18 @@ const YourBorrowModal = ({
                   Dapp:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Application where the loan was spent."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1920,17 +1956,19 @@ const YourBorrowModal = ({
                   Borrow amount:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="The unit of tokens you have borrowed from the protocol."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -1949,13 +1987,14 @@ const YourBorrowModal = ({
                   rTokens unlocked:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
                   fontSize={"smaller"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
                 >
@@ -1974,13 +2013,14 @@ const YourBorrowModal = ({
                   Est collateral value:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
                   fontSize={"smaller"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
                 >
@@ -1999,17 +2039,19 @@ const YourBorrowModal = ({
                   Fees:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Cost incurred during transactions."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2019,26 +2061,28 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text color="#676D9A" fontSize="xs">
-                {TransactionFees.repay}%
+                {fees.repayLoan}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#676D9A" fontSize="xs">
                   Gas estimate:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-end"
                   boxShadow="dark-lg"
                   label="Estimation of resources & costs for blockchain transactions."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2050,7 +2094,7 @@ const YourBorrowModal = ({
               <Text color="#676D9A" fontSize="xs">
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -2063,7 +2107,8 @@ const YourBorrowModal = ({
 
             borderRadius="6px"
             p="1rem"
-            border="1px solid #2B2F35"
+             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
             mt="1.5rem"
             mb="1.5rem"
           >
@@ -2078,13 +2123,14 @@ const YourBorrowModal = ({
                   est conversion:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
                   fontSize={"smaller"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
                 >
@@ -2126,17 +2172,19 @@ const YourBorrowModal = ({
                   Fees:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Cost incurred during transactions."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2151,10 +2199,10 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.convertToBorrowMarket}%
+                {fees.l3interaction}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+            {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -2165,17 +2213,19 @@ const YourBorrowModal = ({
                   Gas estimate:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-end"
                   boxShadow="dark-lg"
                   label="Estimation of resources & costs for blockchain transactions."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2192,7 +2242,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -2202,8 +2252,8 @@ const YourBorrowModal = ({
           <Box
             p="1rem"
             borderRadius="md"
-            border="1px"
-            borderColor="#2B2F35"
+            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
             background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
             my="6"
@@ -2219,17 +2269,19 @@ const YourBorrowModal = ({
                   Borrowed market:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="The token borrowed from the protocol."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2258,13 +2310,14 @@ const YourBorrowModal = ({
                   rTokens unlocked:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="rTokens unlocked"
                   bg="#24292F"
                   fontSize={"smaller"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
                 >
@@ -2293,13 +2346,14 @@ const YourBorrowModal = ({
                   Est collateral value:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
                   fontSize={"smaller"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
                   padding={"2"}
                 >
@@ -2328,17 +2382,19 @@ const YourBorrowModal = ({
                   Fees:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Cost incurred during transactions."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2353,10 +2409,10 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {TransactionFees.repay}%
+                {fees.repayLoan}%
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -2367,17 +2423,19 @@ const YourBorrowModal = ({
                   Gas estimate:{" "}
                 </Text>
                 <Tooltip
+    color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
                   label="Estimation of resources & costs for blockchain transactions."
-                  bg="#010409"
+                    bg="#02010F"
                   fontSize={"13px"}
-                  fontWeight={"thin"}
+                             fontWeight={"400"}
                   borderRadius={"lg"}
-                  padding={"2"}
-                  border="1px solid"
-                  borderColor="#2B2F35"
+                        padding={"2"}
+              border="1px solid"
+                    borderColor="#23233D"
+
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
@@ -2394,7 +2452,7 @@ const YourBorrowModal = ({
               >
                 $ 0.91
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -2575,6 +2633,9 @@ const YourBorrowModal = ({
   const [tabValue, setTabValue] = useState(1);
   const [currentTokenSelected, setcurrentTokenSelected] = useState("rToken");
   const tokensArray = ["rToken", "Native Token"];
+  useEffect(()=>{
+    setCurrentPoolCoin('Select a pool')
+  },[currentDapp])
   const resetStates = () => {
     try {
       setRadioValue("1");
@@ -2691,7 +2752,29 @@ const YourBorrowModal = ({
       setCurrentSplit(split);
     }
   };
-
+  const [myswapPools, setmyswapPools] = useState([]);
+  useEffect(()=>{
+    function findSideForMember(array:any, token:any) {
+      const data:any=[];
+      for (const obj of array) {
+          const keyvalue = obj.keyvalue;
+          const [tokenA, tokenB] = keyvalue.split('/');
+          
+          if (tokenA === token) {
+            console.log(tokenB,"tokenB");
+              data.push(tokenB)
+          } else if (tokenB === token) {
+            console.log(tokenA,"tokenA")
+              data.push(tokenA);
+          }
+      }
+      setmyswapPools(data);
+       // Token not found in any "keyvalue" pairs
+  }
+  if(mySwapPoolPairs){
+    findSideForMember(mySwapPoolPairs,currentBorrowMarketCoin1.slice(1));
+  }
+  },[currentBorrowMarketCoin1,mySwapPoolPairs])
   const fetchLPAmount = async () => {
     if (
       spendType !== "UNSPENT" ||
@@ -2803,14 +2886,14 @@ const YourBorrowModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                       borderLeftRadius="md"
                       fontWeight="normal"
                       opacity="100%"
                       _selected={{
                         color: "white",
-                        bg: "#0969DA",
+                        bg: "#4D59E8",
                         border: "none",
                       }}
                       isDisabled={collateralTransactionStarted == true}
@@ -2825,14 +2908,14 @@ const YourBorrowModal = ({
                       px="3"
                       color="#676D9A"
                       fontSize="sm"
-                      border="1px"
-                      borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                       borderRightRadius="md"
                       fontWeight="normal"
                       opacity="100%"
                       _selected={{
                         color: "white",
-                        bg: "#0969DA",
+                        bg: "#4D59E8",
                         border: "none",
                       }}
                       isDisabled={transactionStarted == true}
@@ -2868,8 +2951,8 @@ const YourBorrowModal = ({
                       display="flex"
                       flexDirection="column"
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                      border="1px"
-                      borderColor="#2B2F35"
+                                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                       p="5"
                       // my="4"
                       borderRadius="md"
@@ -2912,21 +2995,22 @@ const YourBorrowModal = ({
                         )}
                       <Box display="flex" flexDirection="column" gap="1">
                         <Box display="flex">
-                          <Text fontSize="xs" color="#676D9A">
+                          <Text fontSize="xs"  color="#676D9A">
                             Action
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Dropdown menu for loan-related operations within protocol."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
                             border="1px solid"
-                            borderColor="#2B2F35"
+                            borderColor="#23233D"
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -2937,8 +3021,7 @@ const YourBorrowModal = ({
                         </Box>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -3042,17 +3125,20 @@ const YourBorrowModal = ({
                             Borrow ID
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="A unique ID number assigned to a specific borrow within the protocol."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -3064,8 +3150,9 @@ const YourBorrowModal = ({
                         {currentAction == "Convert to borrow market" ? (
                           <Box
                             display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
+                                               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                            
                             justifyContent="space-between"
                             py="2"
                             pl="3"
@@ -3081,8 +3168,8 @@ const YourBorrowModal = ({
                         ) : (
                           <Box
                             display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             justifyContent="space-between"
                             py="2"
                             pl="3"
@@ -3194,17 +3281,20 @@ const YourBorrowModal = ({
                             Borrow Market
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="The token borrowed from the protocol."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -3215,8 +3305,9 @@ const YourBorrowModal = ({
                         </Box>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                                             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                          
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -3298,9 +3389,9 @@ const YourBorrowModal = ({
                         {currentAction == "Convert to borrow market" ? (
                           ""
                         ) : (
-                          <Text textAlign="right" fontSize="xs" mt="0.2rem">
+                          <Text textAlign="right" fontFamily={'Inter'} fontSize="xs" mt="0.2rem">
                             Borrow Balance: {borrowAmount}
-                            <Text as="span" color="#676D9A" ml="0.2rem">
+                            <Text as="span" fontFamily={'Inter'} color="#676D9A" ml="0.2rem">
                               {currentBorrowMarketCoin1}
                             </Text>
                           </Text>
@@ -3319,17 +3410,20 @@ const YourBorrowModal = ({
                                 Repay Amount
                               </Text>
                               <Tooltip
+    color="#F0F0F5"
                                 hasArrow
                                 placement="right-start"
                                 boxShadow="dark-lg"
                                 label="The amount to repay for a loan within protocol."
-                                bg="#010409"
+                                  bg="#02010F"
                                 fontSize={"13px"}
-                                fontWeight={"thin"}
+                                           fontWeight={"400"}
                                 borderRadius={"lg"}
                                 padding={"2"}
-                                border="1px solid"
-                                borderColor="#2B2F35"
+        
+              border="1px solid"
+                    borderColor="#23233D"
+
                                 arrowShadowColor="#2B2F35"
                                 maxW="222px"
                               >
@@ -3352,8 +3446,9 @@ const YourBorrowModal = ({
                                       ? "1px solid #CF222E"
                                       : repayAmount > 0 &&
                                         repayAmount <= walletBalance1
-                                        ? "1px solid #1A7F37"
-                                        : "1px solid #2B2F35 "
+                                        ? "1px solid #00D395"
+                                        :              "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                                 }`}
                             >
                               <NumberInput
@@ -3373,7 +3468,7 @@ const YourBorrowModal = ({
                                 _disabled={{ cursor: "pointer" }}
                               >
                                 <NumberInputField
-                                  placeholder={`0.01536 ${currentBorrowMarketCoin1}`}
+                                                    placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowMarketCoin1.slice(1)}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentBorrowMarketCoin1.slice(1)}`}
                                   color={`${repayAmount > walletBalance1
                                       ? "#CF222E"
                                       : isNaN(repayAmount)
@@ -3382,10 +3477,10 @@ const YourBorrowModal = ({
                                           ? "#CF222E"
                                           : repayAmount == 0
                                             ? "white"
-                                            : "#1A7F37"
+                                            : "#00D395"
                                     }`}
                                   border="0px"
-                                  _disabled={{ color: "#1A7F37" }}
+                                  _disabled={{ color: "#00D395" }}
                                   _placeholder={{
                                     color: "#393D4F",
                                     fontSize: ".89rem",
@@ -3408,8 +3503,8 @@ const YourBorrowModal = ({
                                       : repayAmount < 0
                                         ? "#CF222E"
                                         : repayAmount == 0
-                                          ? "#0969DA"
-                                          : "#1A7F37"
+                                          ? "#4D59E8"
+                                          : "#00D395"
                                   }`}
                                 _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                                 onClick={() => {
@@ -3459,7 +3554,7 @@ const YourBorrowModal = ({
                                   display="flex"
                                   justifyContent="flex-end"
                                 >
-                                  Wallet Balance: {walletBalance1}
+                                  Wallet Balance: {numberFormatter(walletBalance1)}
                                   <Text color="#6E7781" ml="0.2rem">
                                     {` ${currentBorrowMarketCoin1.slice(1)}`}
                                   </Text>
@@ -3476,7 +3571,7 @@ const YourBorrowModal = ({
                                 fontStyle="normal"
                                 fontFamily="Inter"
                               >
-                                Wallet Balance: {walletBalance1}
+                                Wallet Balance: {numberFormatter(walletBalance1)}
                                 <Text color="#6E7781" ml="0.2rem">
                                   {` ${currentBorrowMarketCoin1.slice(1)}`}
                                 </Text>
@@ -3495,11 +3590,18 @@ const YourBorrowModal = ({
                                 if(val==100){
                                   setRepayAmount(walletBalance1)
                                 }else{
-                                  ans = Math.round(ans * 100) / 100;
-                                  dispatch(
-                                    setInputYourBorrowModalRepayAmount(ans)
-                                  );
-                                  setRepayAmount(ans);
+                                  if(ans<10){
+                                    dispatch(
+                                      setInputYourBorrowModalRepayAmount(ans)
+                                    );
+                                    setRepayAmount(ans);
+                                  }else{
+                                    ans = Math.round(ans * 100) / 100;
+                                    dispatch(
+                                      setInputYourBorrowModalRepayAmount(ans)
+                                    );
+                                    setRepayAmount(ans);
+                                  }
                                 }
                               }}
                               isDisabled={
@@ -3608,17 +3710,20 @@ const YourBorrowModal = ({
                             Purpose
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Borrow purpose refers to the options given to spend loans which is borrowed from the protocol."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -3640,9 +3745,16 @@ const YourBorrowModal = ({
                             <Stack spacing={4} direction="row">
                               <Radio
                                 value="1"
-                                bg="#2B2F35"
-                                border="none"
-                                colorScheme="customBlue"
+                                
+                                borderColor="#2B2F35"
+                                colorScheme="customPurple"
+                                // bg="black"
+                                _checked={{
+                                  bg: "black",
+                                  color: "white",
+      borderWidth:'5px',
+                                    borderColor:"#4D59E8",
+                                }}
                                 _focus={{ boxShadow: "none", outline: "0" }}
                                 isDisabled={
                                   currentAction === "Spend Borrow" &&
@@ -3655,9 +3767,16 @@ const YourBorrowModal = ({
                               <Radio
                                 fontSize="sm"
                                 value="2"
-                                bg="#2B2F35"
-                                border="none"
-                                colorScheme="customBlue"
+                                
+                                borderColor="#2B2F35"
+                                colorScheme="customPurple"
+                                // bg="black"
+                                _checked={{
+                                  bg: "black",
+                                  color: "white",
+      borderWidth:'5px',
+                                    borderColor:"#4D59E8",
+                                }}
                                 _focus={{ boxShadow: "none", outline: "0" }}
                                 isDisabled={
                                   currentAction === "Spend Borrow" &&
@@ -3678,8 +3797,8 @@ const YourBorrowModal = ({
                         flexDirection="column"
                         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
-                        border="1px"
-                        borderColor="#2B2F35"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                         p="3"
                         // my="4"
                         borderRadius="md"
@@ -3691,17 +3810,20 @@ const YourBorrowModal = ({
                               Dapp
                             </Text>
                             <Tooltip
+    color="#F0F0F5"
                               hasArrow
                               placement="right-start"
                               boxShadow="dark-lg"
                               label="Choose a decentralized application to spend the borrowed tokens on the protocol."
-                              bg="#010409"
+                                bg="#02010F"
                               fontSize={"13px"}
-                              fontWeight={"thin"}
+                                         fontWeight={"400"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+      
+              border="1px solid"
+                    borderColor="#23233D"
+
                               arrowShadowColor="#2B2F35"
                               maxW="222px"
                             >
@@ -3712,8 +3834,8 @@ const YourBorrowModal = ({
                           </Box>
                           <Box
                             display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                             justifyContent="space-between"
                             py="2"
                             pl="3"
@@ -3829,17 +3951,21 @@ const YourBorrowModal = ({
                               Select Pool
                             </Text>
                             <Tooltip
+    color="#F0F0F5"
                               hasArrow
                               placement="right-start"
                               boxShadow="dark-lg"
                               label="Choose a specific liquidity pool within the protocol."
-                              bg="#010409"
+                                bg="#02010F"
                               fontSize={"13px"}
-                              fontWeight={"thin"}
+                                         fontWeight={"400"}
                               borderRadius={"lg"}
                               padding={"2"}
-                              border="1px solid"
-                              borderColor="#2B2F35"
+                       
+              border="1px solid"
+                    borderColor="#23233D"
+
+                              
                               arrowShadowColor="#2B2F35"
                               maxW="222px"
                             >
@@ -3850,8 +3976,9 @@ const YourBorrowModal = ({
                           </Box>
                           <Box
                             display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
+                                               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                            
                             justifyContent="space-between"
                             py="2"
                             pl="3"
@@ -3978,8 +4105,10 @@ const YourBorrowModal = ({
                                 boxShadow="dark-lg"
                               >
                                 {coins?.map((coin: string, index: number) => {
+                                  const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
                                   if (
                                     coin === currentBorrowMarketCoin1.slice(1)
+                                    || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& currentDapp=="mySwap" &&!matchingPair)
                                   ) {
                                     return;
                                   }
@@ -4042,7 +4171,8 @@ const YourBorrowModal = ({
                         size="sm"
                         width="100%"
                         mb="2rem"
-                        border="1px solid #2B2F35"
+                         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                         _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                       >
                         Select action
@@ -4126,7 +4256,8 @@ const YourBorrowModal = ({
                           size="sm"
                           width="100%"
                           mb="2rem"
-                          border="1px solid #2B2F35"
+                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           _hover={{
                             bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                           }}
@@ -4207,7 +4338,8 @@ const YourBorrowModal = ({
                           size="sm"
                           width="100%"
                           mb="2rem"
-                          border="1px solid #2B2F35"
+                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           _hover={{
                             bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                           }}
@@ -4344,7 +4476,8 @@ const YourBorrowModal = ({
                           size="sm"
                           width="100%"
                           mb="2rem"
-                          border="1px solid #2B2F35"
+                           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           _hover={{
                             bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                           }}
@@ -4362,8 +4495,8 @@ const YourBorrowModal = ({
                       display="flex"
                       flexDirection="column"
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10));"
-                      border="1px"
-                      borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                       p="5"
                       // my="4"
                       borderRadius="md"
@@ -4384,17 +4517,20 @@ const YourBorrowModal = ({
                             Borrow ID
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="A unique ID number assigned to a specific borrow within the protocol."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -4405,8 +4541,9 @@ const YourBorrowModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                                             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                          
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -4515,17 +4652,20 @@ const YourBorrowModal = ({
                             Borrow Market
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="The token borrowed from the protocol."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -4536,8 +4676,9 @@ const YourBorrowModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                                             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                          
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -4558,7 +4699,7 @@ const YourBorrowModal = ({
                         >
                           <Box display="flex" gap="1">
                             <Box p="1">{getCoin(currentBorrowMarketCoin2)}</Box>
-                            <Text color="white" mt="0.12rem">
+                            <Text fontFamily="Avenir" color="white" mt="0.12rem">
                               {currentBorrowMarketCoin2}
                             </Text>
                           </Box>
@@ -4646,17 +4787,20 @@ const YourBorrowModal = ({
                             Select Token
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Select from which token you want to add collateral."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -4667,8 +4811,9 @@ const YourBorrowModal = ({
                         </Text>
                         <Box
                           display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
+                                             border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
+                          
                           justifyContent="space-between"
                           py="2"
                           pl="3"
@@ -4845,20 +4990,22 @@ const YourBorrowModal = ({
                           Collateral Balance
                         </Text>
                         <Tooltip
+    color="#F0F0F5"
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
                           label="Hashstack self liquidates your collateral
                             & debt positions to repay the borrow.
                             The balance will be updated into rTokens."
-                          bg="#010409"
+                            bg="#02010F"
                           fontSize={"13px"}
-                          fontWeight={"thin"}
+                                     fontWeight={"400"}
                           borderRadius={"lg"}
                           padding={"2"}
-                          border="1px solid"
-                          borderColor="#2B2F35"
-                          arrowShadowColor="#2B2F35"
+  
+              border="1px solid"
+                    borderColor="#23233D"
+
                           maxW="222px"
                         >
                           <Box>
@@ -4872,7 +5019,8 @@ const YourBorrowModal = ({
                         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
 
                         py="2"
-                        border="1px solid #2B2F35"
+                         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                         borderRadius="6px"
                         mt="-0.5rem"
                       >
@@ -4890,17 +5038,18 @@ const YourBorrowModal = ({
                           Collateral Amount
                         </Text>
                         <Tooltip
+    color="#F0F0F5"
                           hasArrow
                           placement="bottom-start"
                           boxShadow="dark-lg"
                           label="The amount of tokens used as security for borrowed funds."
-                          bg="#010409"
+                            bg="#02010F"
                           fontSize={"13px"}
-                          fontWeight={"thin"}
+                                     fontWeight={"400"}
                           borderRadius={"lg"}
                           padding={"2"}
-                          border="1px solid"
-                          borderColor="#2B2F35"
+  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           arrowShadowColor="#2B2F35"
                           maxW="222px"
                         >
@@ -4923,9 +5072,11 @@ const YourBorrowModal = ({
                             ? "1px solid #CF222E"
                             : inputCollateralAmount < 0
                               ? "1px solid #CF222E"
+                              :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount>maximumDepositAmount))
+                              ? "1px solid #CF222E"
                               : inputCollateralAmount > 0 &&
                                 inputAmount <= walletBalance2
-                                ? "1px solid #1A7F37"
+                                ? "1px solid #00D395"
                                 : inputCollateralAmount >
                                   userDeposit?.find(
                                     (item: any) =>
@@ -4933,7 +5084,8 @@ const YourBorrowModal = ({
                                       collateralBalance.substring(spaceIndex + 1)
                                   )?.rTokenFreeParsed
                                   ? "1px solid #CF22E"
-                                  : "1px solid #2B2F35 "
+                                  :              "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                           }`}
                         borderRadius="6px"
                         display="flex"
@@ -4954,9 +5106,12 @@ const YourBorrowModal = ({
                               ? "#CF222E"
                               : inputCollateralAmount < 0
                                 ? "#CF222E"
+                                :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount>maximumDepositAmount))
+                                ? "#CF222E"
+
                                 : inputCollateralAmount == 0
                                   ? "white"
-                                  : "#1A7F37"
+                                  : "#00D395"
                             }`}
                           keepWithinRange={true}
                           onChange={handleCollateralChange}
@@ -4971,7 +5126,12 @@ const YourBorrowModal = ({
                           _disabled={{ cursor: "pointer" }}
                         >
                           <NumberInputField
-                            placeholder={`0.01536 ${currentSelectedCoin}`}
+                    placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentTokenSelected == "Native Token"
+                    ? collateralAsset
+                    : `r${collateralAsset}`}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentTokenSelected == "Native Token"
+                    ? collateralAsset
+                    : `r${collateralAsset}`}`}
+
                             border="0px"
                             _placeholder={{
                               color: "#393D4F",
@@ -4979,7 +5139,7 @@ const YourBorrowModal = ({
                               fontWeight: "600",
                               outline: "none",
                             }}
-                            _disabled={{ color: "#1A7F37" }}
+                            _disabled={{ color: "#00D395" }}
                             _focus={{
                               outline: "0",
                               boxShadow: "none",
@@ -4999,9 +5159,11 @@ const YourBorrowModal = ({
                               ? "#CF222E"
                               : inputCollateralAmount < 0
                                 ? "#CF222E"
+                                :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount>maximumDepositAmount))
+                                ? "#CF222E"
                                 : inputCollateralAmount == 0
-                                  ? "#0969DA"
-                                  : "#1A7F37"
+                                  ? "#4D59E8"
+                                  : "#00D395"
                             }`}
                           _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                           onClick={() => {
@@ -5049,6 +5211,7 @@ const YourBorrowModal = ({
                               item?.rToken ==
                               collateralBalance.substring(spaceIndex + 1)
                           )?.rTokenFreeParsed) ||
+                          (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount>maximumDepositAmount)) ||
                         inputCollateralAmount < 0 ? (
                         <Text
                           display="flex"
@@ -5066,7 +5229,11 @@ const YourBorrowModal = ({
                               <SmallErrorIcon />{" "}
                             </Text>
                             <Text ml="0.3rem">
-                              {inputCollateralAmount >
+                              { (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 &&  ( inputCollateralAmount<minimumDepositAmount))
+                                ? "less than min amount"
+                                :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentTokenSelected=="Native Token" && inputCollateralAmount>0 && ( inputCollateralAmount>maximumDepositAmount))
+                              ?"more than max amount"
+                              :inputCollateralAmount >
                                 (currentTokenSelected == "Native Token"
                                   ? walletBalance2
                                   : userDeposit?.find(
@@ -5083,6 +5250,7 @@ const YourBorrowModal = ({
                                     collateralBalance.substring(spaceIndex + 1)
                                 )?.rTokenFreeParsed
                                 ? "Amount exceeds balance"
+                               
                                 : "Invalid Input"}{" "}
                             </Text>
                           </Text>
@@ -5093,12 +5261,12 @@ const YourBorrowModal = ({
                           >
                             Wallet Balance:{" "}
                             {currentTokenSelected == "Native Token"
-                              ? walletBalance2
-                              : userDeposit?.find(
+                              ?numberFormatter(walletBalance2)
+                              :numberFormatter(userDeposit?.find(
                                 (item: any) =>
                                   item?.rToken ==
                                   collateralBalance.substring(spaceIndex + 1)
-                              )?.rTokenFreeParsed}
+                              )?.rTokenFreeParsed)}
                             <Text color="#6E7781" ml="0.2rem">
                               {currentTokenSelected == "Native Token"
                                 ? collateralAsset
@@ -5118,12 +5286,12 @@ const YourBorrowModal = ({
                         >
                           Wallet Balance:{" "}
                           {currentTokenSelected == "Native Token"
-                            ? walletBalance2
-                            : userDeposit?.find(
+                            ? numberFormatter(walletBalance2)
+                            : numberFormatter(userDeposit?.find(
                               (item: any) =>
                                 item?.rToken ==
                                 collateralBalance.substring(spaceIndex + 1)
-                            )?.rTokenFreeParsed}
+                            )?.rTokenFreeParsed)}
                           <Text color="#6E7781" ml="0.2rem">
                             {currentTokenSelected == "Native Token"
                               ? collateralAsset
@@ -5145,11 +5313,17 @@ const YourBorrowModal = ({
                                 setCollateralAmount(walletBalance2);
                                 setRTokenAmount(walletBalance2);
                               } else {
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputCollateralAmount(ans);
-                                setCollateralAmount(ans);
-                                setRTokenAmount(ans);
+                                if(ans<10){
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }
                               }
                             } else {
                               var ans =
@@ -5188,11 +5362,17 @@ const YourBorrowModal = ({
                                   )?.rTokenFreeParsed
                                 );
                               } else {
-                                ans = Math.round(ans * 100) / 100;
-                                // dispatch(setInputSupplyAmount(ans))
-                                setinputCollateralAmount(ans);
-                                setCollateralAmount(ans);
-                                setRTokenAmount(ans);
+                                if(ans<10){
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }else{
+                                  ans = Math.round(ans * 100) / 100;
+                                  // dispatch(setInputSupplyAmount(ans))
+                                  setinputCollateralAmount(ans);
+                                  setCollateralAmount(ans);
+                                  setRTokenAmount(ans);
+                                }
                               }
                             }
                             // ans = Math.round(ans * 100) / 100;
@@ -5300,7 +5480,8 @@ const YourBorrowModal = ({
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10));"
                       mt="2rem"
                       p="1rem"
-                      border="1px solid #2B2F35"
+                       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                     >
                       <Text
                         display="flex"
@@ -5320,17 +5501,20 @@ const YourBorrowModal = ({
                             Borrow amount:
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="The quantity of tokens you want to borrow from the protocol."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5361,6 +5545,7 @@ const YourBorrowModal = ({
                             est rTokens minted:
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
@@ -5368,13 +5553,15 @@ const YourBorrowModal = ({
                              r tokens.
                             These tokens will accrue supply apr
                             and remain locked till the debt is repaid."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5403,17 +5590,20 @@ const YourBorrowModal = ({
                             Fees:
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Cost incurred during transactions."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5422,7 +5612,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#676D9A">0.1%</Text>
+                        <Text color="#676D9A">{fees.supply}%</Text>
                       </Text>
                       <Text
                         color="#676D9A"
@@ -5442,17 +5632,20 @@ const YourBorrowModal = ({
                             Borrow apr:
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="The annual interest rate charged on borrowed funds from the protocol."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5480,7 +5673,7 @@ const YourBorrowModal = ({
                           )}
                         </Text>
                       </Text>
-                      <Text
+                      {/* <Text
                         display="flex"
                         justifyContent="space-between"
                         fontSize="12px"
@@ -5498,17 +5691,20 @@ const YourBorrowModal = ({
                             Gas estimate:
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Estimation of resources & costs for blockchain transactions."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5518,7 +5714,7 @@ const YourBorrowModal = ({
                           </Tooltip>
                         </Text>
                         <Text color="#676D9A">$ 0.91</Text>
-                      </Text>
+                      </Text> */}
                       <Text
                         display="flex"
                         justifyContent="space-between"
@@ -5537,17 +5733,20 @@ const YourBorrowModal = ({
                             Effective apr:
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
-                            bg="#010409"
+                              bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5593,17 +5792,20 @@ const YourBorrowModal = ({
                             Health factor
                           </Text>
                           <Tooltip
+    color="#F0F0F5"
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
                             label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
-                            bg="#010409"
+                                bg="#02010F"
                             fontSize={"13px"}
-                            fontWeight={"thin"}
+                                       fontWeight={"400"}
                             borderRadius={"lg"}
                             padding={"2"}
-                            border="1px solid"
-                            borderColor="#2B2F35"
+    
+              border="1px solid"
+                    borderColor="#23233D"
+
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
                           >
@@ -5634,6 +5836,8 @@ const YourBorrowModal = ({
                       </Text>
                     </Card>
                     {inputCollateralAmount > 0 &&
+                      (process.env.NEXT_PUBLIC_NODE_ENV=="testnet" || currentTokenSelected=="Native Token" &&
+                      ( inputCollateralAmount>0 && (inputCollateralAmount>=minimumDepositAmount && inputCollateralAmount<=maximumDepositAmount)))&&
                       (currentTokenSelected == "Native Token"
                         ? inputCollateralAmount <= walletBalance2
                         : inputCollateralAmount <=
@@ -5711,7 +5915,8 @@ const YourBorrowModal = ({
                         width="100%"
                         mt="1.5rem"
                         mb="1.5rem"
-                        border="1px solid #2B2F35"
+                         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+
                         _hover={{
                           bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                         }}

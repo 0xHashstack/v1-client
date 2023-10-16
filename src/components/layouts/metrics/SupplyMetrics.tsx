@@ -62,7 +62,7 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
           />
         </Box> */}
       </Box>
-      <Box display="flex" gap="30px" w="full">
+      <Box display="flex" gap="30px" w="full" mb="2rem">
         <ExchangeRaterToken/>
         <ExchangeRatedToken/>
         {/* <Box display="flex" flexDirection="column" gap="8px" width="50%">

@@ -519,7 +519,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     {TransactionFees.supply}%
                   </Text>
                 </Text>
-                <Text
+                {/* <Text
                   color="#8B949E"
                   display="flex"
                   justifyContent="space-between"
@@ -535,7 +535,6 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                       color="#6A737D"
                     >
                       Gas estimate:
-                      {/* <SpinnerLoader/> */}
                     </Text>
                     <Tooltip
                       hasArrow
@@ -561,7 +560,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   >
                     $ 0.50
                   </Text>
-                </Text>
+                </Text> */}
                 <Text
                   color="#8B949E"
                   display="flex"

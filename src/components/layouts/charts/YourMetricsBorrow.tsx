@@ -10,6 +10,7 @@ import {
 } from "@/store/slices/readDataSlice";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import ProtocolMetrics from "@/pages/v1/protocol-metrics";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -117,7 +118,7 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
         formatter: formatter
           ? formatter
           : function (value: any) {
-              return "$" + (value / 1000).toFixed(1) + "k";
+            return "$" + numberFormatter(value);;
             },
         style: {
           colors: "#6E7681",
@@ -188,7 +189,7 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
   ];
 
   return (
-    <Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px">
+    <Box border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" borderRadius="6px" padding="16px 24px 40px">
       <ApexCharts
         options={chartOptions}
         series={chartSeries}

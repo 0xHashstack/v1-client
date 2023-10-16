@@ -5,8 +5,9 @@ import {
   getTokenFromAddress,
   metricsContractAddress,
 } from "../stark-constants";
-import metricsAbi from "../abis_upgrade/metrics_abi.json";
+// import metricsAbi from "../abis_upgrade/metrics_abi.json";
 // import metricsAbi from "../abi_new/metrics_abi.json";
+import metricsAbi from "../abis_mainnet/metrics_abi.json";
 import {
   IMarketInfo,
   IProtocolReserves,

@@ -45,15 +45,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const classes = [];
   const { account, address, status, isConnected } = useAccount();
   const extendedAccount = account as ExtendedAccountInterface;
-  const [isMounted, setIsMounted] = useState(false);
-  const dispatch = useDispatch();
 
   const { available, disconnect, connect, connectors } = useConnectors();
   if (className) classes.push(className);
   const router = useRouter();
 
-  const toastTransactionStarted = useSelector(selectToastTransactionStarted);
-  let activeTransactions = useSelector(selectActiveTransactions);
   useTransactionHandler();
   // const handleRouteChange = () => {
   //   if (!_account) {
@@ -165,20 +161,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   }
   // }, [address]);
   // const dispatch=useDispatch();
-  interface assetB {
-    USDT: any;
-    USDC: any;
-    BTC: any;
-    ETH: any;
-    DAI: any;
-  }
-  const assetBalance: assetB = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"]),
-    USDC: useBalanceOf(tokenAddressMap["USDC"]),
-    BTC: useBalanceOf(tokenAddressMap["BTC"]),
-    ETH: useBalanceOf(tokenAddressMap["ETH"]),
-    DAI: useBalanceOf(tokenAddressMap["DAI"]),
-  };
 
   // useEffect(() => {
   //   const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -199,7 +181,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
       const network=process.env.NEXT_PUBLIC_NODE_ENV;
-      console.log()
+      
       if (walletConnected == "braavos") {
         if(network=="testnet"){
           return (
@@ -445,9 +427,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           `}  position={'fixed'} zIndex={3} >
           <Navbar  validRTokens={validRTokens} />
           </Box>
-          {/* <Box position={'fixed'} zIndex={0.5}>
-            <FeedbackModal />
-          </Box> */}
+               <Box position={'fixed'} zIndex={0.5}>
+                <FeedbackModal />
+            </Box> 
           <Stack
          zIndex={1}
           
@@ -456,8 +438,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             
             pt="8rem"
             background={`
-            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
-            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.15), transparent) top left,
+            radial-gradient(circle 1300px at bottom right, rgba(115, 49, 234, 0.15), transparent) bottom right,
             black
           `}
             pb={isLargerThan1280 ? "7rem" : "0rem"}
@@ -529,7 +511,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             <Box>
               <Text color="white" fontSize="25px">
-                Please switch to Starknet Goerli and refresh
+                Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"Goerli":"Mainnet"} and refresh
               </Text>
             </Box>
           </Stack>

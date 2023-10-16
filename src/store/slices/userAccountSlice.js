@@ -67,6 +67,9 @@ const initialState = {
   stakingSharesCount: -1,
   jediSwapPoolsSupportedCount:-1,
   mySwapPoolsSupportedCount:-1,
+  minMaxDepositCount:-1,
+  minMaxLoanCount:-1,
+  feesCount:-1,
   transactionCheck: [],
   lightModeSelected:false,
 
@@ -267,6 +270,15 @@ export const userAccountSlice = createSlice({
     setMySwapPoolsSupportedCount(state,action){
       state.mySwapPoolsSupportedCount=action.payload;
     },
+    setMinMaxDepositCount(state,action){
+      state.minMaxDepositCount=action.payload;
+    },
+    setMinMaxLoanCount(state,action){
+      state.minMaxLoanCount=action.payload;
+    },
+  setFeesCount(state,action){
+    state.feesCount=action.payload;
+  },
     setLightModeSelected(state,action){
       state.lightModeSelected=action.payload;
     },
@@ -339,6 +351,9 @@ export const {
   setStakingSharesCount,
   setJediSwapPoolsSupportedCount,
   setMySwapPoolsSupportedCount,
+  setMinMaxDepositCount,
+  setMinMaxLoanCount,
+  setFeesCount,
   setTransactionCheck,
   setLightModeSelected
 } = userAccountSlice.actions;
@@ -441,6 +456,12 @@ export const selectStakingSharesCount = (state) =>
   state.user_account.jediSwapPoolsSupportedCount;
   export const selectMySwapPoolsSupportedCount = (state) =>
   state.user_account.mySwapPoolsSupportedCount;
+export const selectMinMaxDepositCount=(state)=>
+  state.user_account.minMaxDepositCount;
+  export const selectMinMaxLoanCount=(state)=>
+  state.user_account.minMaxLoanCount;
+export const selectFeesCount=(state)=>
+  state.user_account.feesCount;
 export const selectTransactionCheck = (state) =>
   state.user_account.transactionCheck;
 export const selectLightModeSelected=(state)=>

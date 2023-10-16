@@ -85,6 +85,11 @@ const SpendTable = () => {
   ];
   const { account, address, isConnected } = useAccount();
   const userLoans = useSelector(selectUserUnspentLoans);
+  
+  // console.log(getTokenFromAddress(
+  //   getDTokenFromAddress(number.toHex(loanData?.market))
+  //     ?.underlying_asset || ""
+  // )?.name)
   // const userLoans = null;
   // const [userLoans, setUserLoans] = useState<any>(null);
   // let userLoansRedux = useSelector(selectUserLoans);
@@ -338,9 +343,10 @@ const SpendTable = () => {
             p="4"
             fontStyle="normal"
             fontWeight="400"
+            border="1px solid #3841AA"
             borderRadius="6px"
             // textAlign="center"
-            color="#B1B0B5"
+            color="#F0F0F5"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
@@ -449,13 +455,14 @@ const SpendTable = () => {
                         }
                         rounded="md"
                         boxShadow="dark-lg"
-                        bg="#010409"
+                        bg="#02010F"
                         fontSize={"13px"}
-                        fontWeight={"thin"}
+                        fontWeight={"400"}
                         borderRadius={"lg"}
                         padding={"2"}
+                        color="#F0F0F5"
                         border="1px solid"
-                        borderColor="#676D9A4D"
+                        borderColor="#23233D"
                         arrowShadowColor="#676D9A4D"
                         // maxW="222px"
                         // mt="28px"

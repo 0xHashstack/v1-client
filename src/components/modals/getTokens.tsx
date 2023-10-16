@@ -226,7 +226,7 @@ const GetTokensModal = ({
         >
           <ModalOverlay bg={backGroundOverLay} mt="3.8rem" />
           <ModalContent
-            bg="#010409"
+            background="var(--Base_surface, #02010F)"
             color="white"
             borderRadius="md"
             maxW="462px"
@@ -258,8 +258,8 @@ const GetTokensModal = ({
                 gap="20px"
               >
                 <Button
-                  bg="#101216"
-                  color="#6E7681"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                color="#6E7681"
                   size="sm"
                   width="100%"
                   mt="1.5rem"
@@ -276,8 +276,8 @@ const GetTokensModal = ({
                   wBTC
                 </Button>
                 <Button
-                  bg="#101216"
-                  color="#6E7681"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                color="#6E7681"
                   size="sm"
                   width="100%"
                   mt="1.5rem"
@@ -294,8 +294,8 @@ const GetTokensModal = ({
                   wETH
                 </Button>
                 <Button
-                  bg="#101216"
-                  color="#6E7681"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                color="#6E7681"
                   size="sm"
                   width="100%"
                   mt="1.5rem"
@@ -313,8 +313,8 @@ const GetTokensModal = ({
                 </Button>
 
                 <Button
-                  bg="#101216"
-                  color="#6E7681"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                color="#6E7681"
                   size="sm"
                   width="100%"
                   mt="1.5rem"
@@ -332,8 +332,8 @@ const GetTokensModal = ({
                 </Button>
 
                 <Button
-                  bg="#101216"
-                  color="#6E7681"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                color="#6E7681"
                   size="sm"
                   width="100%"
                   mt="1.5rem"
@@ -356,7 +356,7 @@ const GetTokensModal = ({
                 alignItems="center"
                 mt="0.5rem"
                 mb="2rem"
-                bg="#101216"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                 padding="8px"
                 border="1px solid #101216"
                 borderRadius="6px"

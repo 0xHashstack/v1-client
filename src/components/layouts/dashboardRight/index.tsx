@@ -158,13 +158,14 @@ const DashboardRight = ({
                     }
                     rounded="md"
                     boxShadow="dark-lg"
-                    bg="#010409"
+                    bg="#02010F"
                     fontSize={"13px"}
-                    fontWeight={"thin"}
+                    fontWeight={"400"}
                     borderRadius={"lg"}
                     padding={"2"}
+                    color="#F0F0F5"
                     border="1px solid"
-                    borderColor="#2B2F35"
+                    borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     // maxW="222px"
                     // mt="28px"
@@ -232,7 +233,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!coinPrices[idx] ? (
+                    {coinPrices[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -263,7 +264,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!totalBorrows[idx] ? (
+                    {totalBorrows[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -294,7 +295,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!utilization[idx] ? (
+                    {utilization[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -325,7 +326,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!borrowAPRs[idx] ? (
+                    {borrowAPRs[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"

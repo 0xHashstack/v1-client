@@ -339,7 +339,7 @@ const Navbar = ({ validRTokens }: any) => {
             validRTokens={validRTokens}
           />
         </Box>
-        {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
+        {/* {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
@@ -379,7 +379,7 @@ const Navbar = ({ validRTokens }: any) => {
 
               <Text fontSize="14px" >Campaign</Text>
             </Box>
-        </Box>:""}
+        </Box>:""} */}
 
         {/* <Box
           style={{
@@ -462,13 +462,16 @@ const Navbar = ({ validRTokens }: any) => {
           {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID  ?"":          <GetTokensModal
             buttonText="Get Tokens"
             height={"2rem"}
-            fontSize={"12px"}
+            fontSize={"14px"}
+            lineHeight="14px"
             padding="6px 12px"
-            border="1px solid white"
-            bgColor="#101216"
+            border="1px solid #676D9A"
+            // borderColor="#B1B05"
+            // bgColor="#101216"
+            bgColor="transparent"
             _hover={{ bg: "white", color: "black" }}
             borderRadius={"6px"}
-            color="white"
+            color="#E6EDF3"
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />}
 
@@ -665,6 +668,8 @@ const Navbar = ({ validRTokens }: any) => {
                 padding="0.5rem 0"
                 boxShadow="1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409"
                 borderRadius="6px"
+                background="var(--Base_surface, #02010F)"
+                border="1px solid rgba(103, 109, 154, 0.30)"
                 className="dropdown-container"
               >
                 {account ? (
@@ -676,6 +681,7 @@ const Navbar = ({ validRTokens }: any) => {
                       padding="4px 11px"
                       marginRight="8px"
                       borderRadius="6px"
+                      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                       border="1px solid #2B2F35"
                       onClick={() => {
                         dispatch(resetState(null));
@@ -696,6 +702,7 @@ const Navbar = ({ validRTokens }: any) => {
                       marginRight="8px"
                       borderRadius="6px"
                       border="1px solid #2B2F35"
+                      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                       onClick={() => {
                         dispatch(setNavDropdown(""));
                         switchWallet();
@@ -714,6 +721,7 @@ const Navbar = ({ validRTokens }: any) => {
                     marginRight="8px"
                     borderRadius="6px"
                     border="1px solid #2B2F35"
+                    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                     onClick={() => {
                       // alert("hey");
                       // const walletConnected =
@@ -793,6 +801,7 @@ const Navbar = ({ validRTokens }: any) => {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
+            
             gap="8px"
             flexGrow="1"
             className="button navbar"
@@ -849,12 +858,14 @@ const Navbar = ({ validRTokens }: any) => {
                 justifyContent="center"
                 flexDirection="column"
                 alignItems="flex-start"
-                gap="7px"
+                gap="5px"
                 padding="0.5rem 0"
                 boxShadow="1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409"
                 borderRadius="6px"
+                background="var(--Base_surface, #02010F)"
+                border="1px solid rgba(103, 109, 154, 0.30)"
                 right="0px"
-                top="140%"
+                top="150%"
                 className="dropdown-container"
                 // bgColor="white"
               >
@@ -973,8 +984,11 @@ const Navbar = ({ validRTokens }: any) => {
                 boxShadow="1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409"
                 borderRadius="6px"
                 right="0px"
-                top="140%"
+                top="150%"
+                background="var(--Base_surface, #02010F)"
+                border="1px solid rgba(103, 109, 154, 0.30)"
                 padding="0.7rem 0.6rem"
+                pb="1.5rem"
                 // backgroundColor: "red",
                 className="dropdown-container"
               >
@@ -988,7 +1002,7 @@ const Navbar = ({ validRTokens }: any) => {
                   }}
                   gap="8px"
                   padding="0.5rem 0.7rem"
-                  color="#6E7681"
+                  color="#B1B0B5"
                 >
                   <Image
                     src={arrowNavLeft}
