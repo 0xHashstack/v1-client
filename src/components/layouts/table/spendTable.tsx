@@ -618,25 +618,66 @@ const SpendTable = () => {
                             pr="40px"
                             // pl="30px"
                           >
-                            <Text
-                              width="40%"
-                              fontSize="14px"
-                              fontWeight="400"
-                              fontStyle="normal"
-                              lineHeight="22px"
-                              color="#E6EDF3"
-                              textAlign="right"
-                            >
-                              {avgsLoneHealth?.find(
+                      <Box
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        {avgsLoneHealth?.find(
                                 (item: any) => item?.loanId == borrow?.loanId
                               )?.loanHealth
-                                ? avgsLoneHealth?.find(
-                                    (item: any) =>
-                                      item?.loanId == borrow?.loanId
-                                  )?.loanHealth
-                                : "2.5"}
-                              %
-                            </Text>
+                                ?
+                          (avgsLoneHealth?.find(
+                            (item: any) =>
+                              item?.loanId == borrow?.loanId
+                          )?.loanHealth) > 1.5      ?                   
+                        <Box
+                          width="68px"
+                          height="18px"
+                          padding="6px 12px"
+                          // pl="45%"
+                          fontWeight="400"
+                          borderRadius="100px"
+                          background="linear-gradient(90deg, #00D395 78.68%, #D97008 389.71%, #CF222E 498.53%)"
+                        >
+                          {/* {checkGap(idx1, idx2)} */}
+                        </Box>
+                        :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.2 &&
+                        avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.5) ?
+                        <Box
+                        width="68px"
+                        height="18px"
+                        padding="6px 12px"
+                        // pl="45%"
+                        fontWeight="400"
+                        borderRadius="100px"
+                        background="linear-gradient(90deg, #00D395 -614.07%, #D97008 44.96%, #CF222E 498.06%)"
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+
+                      </Box>
+                      :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.2 ) ?
+                      <Box
+                      width="68px"
+                      height="18px"
+                      padding="6px 12px"
+                      // pl="45%"
+                      fontWeight="400"
+                      borderRadius="100px"
+                      background=" linear-gradient(90deg, #00D395 -690.14%, #D97008 -278.32%, #CF222E 4.82%)"
+                    >
+                      {/* {checkGap(idx1, idx2)} */}
+
+                    </Box>
+                        :"":<Skeleton
+                        width="6rem"
+                        height="1.2rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />}
+                      </Box>
                           </Box>
                         </Td>
                       </Tr>

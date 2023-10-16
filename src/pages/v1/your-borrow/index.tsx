@@ -29,7 +29,7 @@ const YourBorrow = () => {
     "Effective APR",
     "Collateral",
     "Spend status",
-    "Risk premium",
+    "Health Factor",
     "",
   ];
   const { available, disconnect, connect, connectors, refresh } =
