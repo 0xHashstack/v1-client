@@ -1226,7 +1226,7 @@ const SwapModal = ({
                   %
                 </Text>
               </Box>
-              <Box display="flex" justifyContent="space-between">
+              {/* <Box display="flex" justifyContent="space-between">
                 <Box display="flex">
                   <Text
                     color="#676D9A"
@@ -1280,7 +1280,7 @@ const SwapModal = ({
                     : "2.5"}
                   %
                 </Text>
-              </Box>
+              </Box> */}
             </Box>
             {currentSelectedCoin != "Select a market" &&
             currentBorrowMarketCoin != currentSelectedCoin ? (

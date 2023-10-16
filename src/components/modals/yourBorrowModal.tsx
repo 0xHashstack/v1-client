@@ -1634,7 +1634,7 @@ const YourBorrowModal = ({
                 %
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#676D9A"
@@ -1688,7 +1688,7 @@ const YourBorrowModal = ({
                   : "2.5"}
                 %
               </Text>
-            </Box>
+            </Box> */}
           </Box>
         );
         break;
@@ -5775,7 +5775,7 @@ const YourBorrowModal = ({
                           %
                         </Text>
                       </Text>
-                      <Text
+                      {/* <Text
                         display="flex"
                         justifyContent="space-between"
                         fontSize="12px"
@@ -5833,7 +5833,7 @@ const YourBorrowModal = ({
                             : "2.5"}
                           %
                         </Text>
-                      </Text>
+                      </Text> */}
                     </Card>
                     {inputCollateralAmount > 0 &&
                       (process.env.NEXT_PUBLIC_NODE_ENV=="testnet" || currentTokenSelected=="Native Token" &&

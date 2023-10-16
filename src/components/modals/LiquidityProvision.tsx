@@ -1498,7 +1498,7 @@ const LiquidityProvisionModal = ({
                     %
                   </Text>
                 </Box>
-                <Box display="flex" justifyContent="space-between">
+                {/* <Box display="flex" justifyContent="space-between">
                   <Box display="flex">
                     <Text
                       color="#676D9A"
@@ -1552,7 +1552,7 @@ const LiquidityProvisionModal = ({
                       : "2.5"}
                     %
                   </Text>
-                </Box>
+                </Box> */}
               </Box>
               {currentPool != "Select a pool" ? (
                 <Box
