@@ -193,6 +193,8 @@ const BorrowDashboard = ({
   const [currentLoanAmount, setCurrentLoanAmount] = useState("");
   const [currentLoanMarket, setCurrentLoanMarket] = useState("");
   const [allSplit, setAllSplit] = useState<any>([]);
+
+
   const [currentSplitIndex, setCurrentSplitIndex] = useState(0);
   // const avgs = useSelector(selectAprAndHealthFactor);
   const [showEmptyNotification, setShowEmptyNotification] = useState(true);
@@ -416,9 +418,15 @@ const BorrowDashboard = ({
   }, [Borrows]);
 
   const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
-
+  const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
   const stats = useSelector(selectProtocolStats);
+  const handleStatusHover = (idx: string) => {
+    setStatusHoverIndex(idx);
+  };
 
+  const handleStatusHoverLeave = () => {
+    setStatusHoverIndex("-1");
+  };
   useEffect(() => {
     fetchProtocolStats();
   }, [stats]);
@@ -620,7 +628,7 @@ const BorrowDashboard = ({
         >
           {Borrows?.slice(lower_bound, upper_bound + 1).map(
             (borrow: any, idx: any) => {
-              // console.log("faisal coin check", coin);
+              console.log("faisal coin check", borrow.l3App);
               // borrowIDCoinMap.push([coin.id, coin?.name]);
               return (
                 <>
@@ -671,7 +679,7 @@ const BorrowDashboard = ({
                     >
                       <Box
                         width="100%"
-                        pl="20%"
+                        // pl="20%"
                         height="100%"
                         display="flex"
                         alignItems="center"
@@ -684,26 +692,46 @@ const BorrowDashboard = ({
                           // gap="3px"
                           width="100%"
                           display="flex"
-                          justifyContent="center"
+                          justifyContent="begin"
                           alignItems="flex-start"
-                          height="2.5rem"
+                          // height="100%"
                           // bgColor="red"
                           // p={2}
                         >
                           <HStack
-                            height="2rem"
-                            width="2rem"
+                            onMouseEnter={() => handleStatusHover("4" + idx)}
+                            onMouseLeave={() => handleStatusHoverLeave()}
+                          _hover={{ cursor: "pointer" }}
+                            
+                            height="100%"
+                            // width="100%"
                             alignItems="center"
                             justifyContent="center"
-                            pl={4}
+                            // pl={4}
                           >
-                            <Image
-                              // src={`./BTC.svg`}
-                              src={`/${borrow?.loanMarket.slice(1)}.svg`}
+                           
+                                         {statusHoverIndex != "4" + idx ? (
+                              <Box minWidth={"16px"}>
+                              <Image
+                                src={`/${borrow?.loanMarket.slice(1)}.svg`}
+                                alt="Picture of the author"
+                                width="16"
+                                height="16"
+                              />
+                            </Box>
+                            ) : (
+                              <Box>
+                              <Image
+                              src={`/${borrow?.loanMarket.slice(1)}_EXP.svg`}
+                              // src={`/JEDI_SWAP_EXP.svg`}
+
                               alt="Picture of the author"
-                              width="32"
-                              height="32"
+                              width="93"
+                              height="24"
+                              // height="null"
                             />
+                            </Box>
+                            )}
                             <Text
                               fontSize="14px"
                               fontWeight="400"
@@ -818,17 +846,43 @@ const BorrowDashboard = ({
                         // bgColor="red"
                       >
                         <HStack
-                          height="2rem"
-                          width="2rem"
+                          height="100%"
+                          // width="2rem"
                           alignItems="center"
                           justifyContent="center"
+                          onMouseEnter={() => handleStatusHover("5" + idx)}
+                          onMouseLeave={() => handleStatusHoverLeave()}
+                          _hover={{ cursor: "pointer" }}
                         >
-                          <Image
+                          {/* <Image
                             src={`/${borrow?.collateralMarket.slice(1)}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
-                          />
+                          /> */}
+                           {statusHoverIndex != "5" + idx ? (
+                              <Box minWidth={"16px"}>
+                              <Image
+                                src={`/${borrow?.collateralMarket.slice(1)}.svg`}
+                                alt="Picture of the author"
+                                width="16"
+                                height="16"
+                              />
+                            </Box>
+                            ) : (
+                              <Box>
+                              <Image
+                              src={`/${borrow?.collateralMarket.slice(1)}_EXP.svg`}
+                              // src={`/JEDI_SWAP_EXP.svg`}
+
+                              alt="Picture of the author"
+                              width="93"
+                              height="24"
+                              // height="null"
+                            />
+                            </Box>
+                            )}
+                          
                           <Text fontSize="14px" fontWeight="400">
                             {borrow?.collateralMarket}
                           </Text>
@@ -899,10 +953,14 @@ const BorrowDashboard = ({
                             height="50%"
                             width="100%"
                             alignItems="center"
+                            onMouseEnter={() => handleStatusHover("0" + idx)}
+                            onMouseLeave={() => handleStatusHoverLeave()}
+                            _hover={{ cursor: "pointer" }}
                             justifyContent="center"
                             // gap={0.2}
                           >
-                            <Box minWidth={"16px"}>
+                               {statusHoverIndex != "0" + idx ? (
+                              <Box minWidth={"16px"}>
                               <Image
                                 src={`/${borrow.l3App}.svg`}
                                 alt="Picture of the author"
@@ -910,6 +968,20 @@ const BorrowDashboard = ({
                                 height="16"
                               />
                             </Box>
+                            ) : (
+                              <Box>
+                              <Image
+                              src={`/${borrow.l3App}_EXP.svg`}
+                              // src={`/JEDI_SWAP_EXP.svg`}
+
+                              alt="Picture of the author"
+                              width="93"
+                              height="24"
+                              // height="null"
+                            />
+                            </Box>
+                            )}
+                            
                             <Text fontSize="14px" fontWeight="400">
                               {borrow.spendType}
                             </Text>
@@ -932,48 +1004,106 @@ const BorrowDashboard = ({
                                 allSplit?.[lower_bound + idx]?.tokenB && (
                                   <>
                                     <Box
+                                                                onMouseEnter={() => handleStatusHover("1" + idx)}
+                                                                onMouseLeave={() => handleStatusHoverLeave()}
                                       display="flex"
                                       gap={0.5}
+                          _hover={{ cursor: "pointer" }}
+
                                       minWidth={"16px"}
                                     >
-                                      <Image
-                                        src={`/${
-                                          allSplit?.[lower_bound + idx]?.tokenA
-                                        }.svg`}
-                                        alt="Picture of the author"
-                                        width="16"
-                                        height="16"
-                                      />
+                                     
+                                          {statusHoverIndex != "1" + idx ? (
+                              <Box minWidth={"16px"}>
+                              <Image src={`/${allSplit?.[lower_bound + idx]?.tokenA}.svg`}
+                                alt="Picture of the author"
+                                width="16"
+                                height="16"
+                              />
+                            </Box>
+                            ) : (
+                              <Box>
+                              <Image src={`/${ allSplit?.[lower_bound + idx]?.tokenA}_EXP.svg`}
+                              // src={`/JEDI_SWAP_EXP.svg`}
+
+                              alt="Picture of the author"
+                              width="93"
+                              height="24"
+                              // height="null"
+                            />
+                            </Box>
+                            )}
                                     </Box>
                                     <Box
+                                                                onMouseEnter={() => handleStatusHover("2" + idx)}
+                                                                onMouseLeave={() => handleStatusHoverLeave()}
                                       display="flex"
                                       gap={0.5}
+                          _hover={{ cursor: "pointer" }}
+
                                       minWidth={"16px"}
                                     >
-                                      <Image
-                                        src={`/${
+                                      
+                                                           {statusHoverIndex != "2" + idx ? (
+                              <Box minWidth={"16px"}>
+                              <Image src={`/${
                                           allSplit?.[lower_bound + idx]?.tokenB
                                         }.svg`}
-                                        alt="Picture of the author"
-                                        width="16"
-                                        height="16"
-                                      />
+                                alt="Picture of the author"
+                                width="16"
+                                height="16"
+                              />
+                            </Box>
+                            ) : (
+                              <Box>
+                              <Image src={`/${
+                                          allSplit?.[lower_bound + idx]?.tokenB
+                                        }_EXP.svg`}
+                              // src={`/JEDI_SWAP_EXP.svg`}
+
+                              alt="Picture of the author"
+                              width="93"
+                              height="24"
+                              // height="null"
+                            />
+                            </Box>
+                            )}
                                     </Box>
                                   </>
                                 )
                               ) : (
                                 <Box
+                                onMouseEnter={() => handleStatusHover("3" + idx)}
+                                onMouseLeave={() => handleStatusHoverLeave()}
+                            _hover={{ cursor: "pointer" }}
+
                                   display="flex"
                                   gap={0.5}
                                   minWidth={"16px"}
                                   // bgColor={"blue"}
                                 >
-                                  <Image
-                                    src={`/${borrow.currentLoanMarket}.svg`}
-                                    alt="Picture of the author"
-                                    width="16"
-                                    height="16"
-                                  />
+                                  {statusHoverIndex != "3" + idx ? (
+                              <Box minWidth={"16px"}>
+                              <Image
+                                src={`/${borrow.currentLoanMarket}.svg`}
+                                alt="Picture of the author"
+                                width="16"
+                                height="16"
+                              />
+                            </Box>
+                            ) : (
+                              <Box>
+                              <Image
+                              src={`/${borrow.currentLoanMarket}_EXP.svg`}
+                              // src={`/JEDI_SWAP_EXP.svg`}
+
+                              alt="Picture of the author"
+                              width="93"
+                              height="24"
+                              // height="null"
+                            />
+                            </Box>
+                            )}
                                 </Box>
                               )}
                               {/* <Box
