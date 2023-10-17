@@ -514,7 +514,8 @@ const SupplyDashboard = ({
                             color="#F7BB5B"
                           >
                             {numberFormatter(
-                              supply?.underlyingAssetAmountParsed
+                              supply?.rTokenAmountParsed+ supply?.rTokenStakedParsed
+
                               // supply?.rTokenLockedParsed
                             )}
                           </Text>

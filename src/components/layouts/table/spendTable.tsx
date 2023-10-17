@@ -633,7 +633,7 @@ const SpendTable = () => {
                               item?.loanId == borrow?.loanId
                           )?.loanHealth) > 1.5      ?                   
                         <Box
-                          width="68px"
+                          width="48px"
                           height="18px"
                           padding="6px 12px"
                           // pl="45%"
@@ -646,7 +646,7 @@ const SpendTable = () => {
                         :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.2 &&
                         avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.5) ?
                         <Box
-                        width="68px"
+                        width="48px"
                         height="18px"
                         padding="6px 12px"
                         // pl="45%"
@@ -659,7 +659,7 @@ const SpendTable = () => {
                       </Box>
                       :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.2 ) ?
                       <Box
-                      width="68px"
+                      width="48px"
                       height="18px"
                       padding="6px 12px"
                       // pl="45%"
