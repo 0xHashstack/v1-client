@@ -49,6 +49,8 @@ import numberFormatterPercentage from "@/utils/functions/numberFormatterPercenta
 import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { useAccount } from "@starknet-react/core";
+import ExpandedCoinIcon from "@/assets/expanded/ExpandedCoins";
+import ExpandedMarketIcon from "@/assets/expanded/ExpandedMarket";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -420,13 +422,20 @@ const BorrowDashboard = ({
 
   const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
   const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
+  
   const stats = useSelector(selectProtocolStats);
   const handleStatusHover = (idx: string) => {
+
+    
     setStatusHoverIndex(idx);
+
+
   };
 
   const handleStatusHoverLeave = () => {
     setStatusHoverIndex("-1");
+
+    // setStatusHoverIndex("-1");
   };
   useEffect(() => {
     fetchProtocolStats();
@@ -642,7 +651,7 @@ const BorrowDashboard = ({
                     position="relative"
                     p={0}
                   >
-                    <Td
+                     <Td
                       width={"12.5%"}
                       // maxWidth={`${gap[idx1][idx2]}%`}
                       fontSize={"14px"}
@@ -659,7 +668,7 @@ const BorrowDashboard = ({
                         fontWeight="400"
                         fontSize="14px"
                         color="#E6EDF3"
-                      // bgColor={"blue"}
+                        // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         {`Borrow ID${
@@ -676,63 +685,43 @@ const BorrowDashboard = ({
                       fontWeight={400}
                       overflow={"hidden"}
                       textAlign={"center"}
-                    // bgColor={"green"}
+                      // bgColor={"green"}
                     >
                       <Box
                         width="100%"
-                        // pl="20%"
+                        pl="20%"
                         height="100%"
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
                         textAlign="center"
-                      // bgColor={"blue"}
+                        // bgColor={"blue"}
                       >
                         <VStack
                           // gap="3px"
                           width="100%"
                           display="flex"
-                          justifyContent="begin"
+                          justifyContent="center"
                           alignItems="flex-start"
-                          // height="100%"
+                          height="2.5rem"
                           // bgColor="red"
                           // p={2}
                         >
                           <HStack
-                            onMouseEnter={() => handleStatusHover("4" + idx)}
-                            onMouseLeave={() => handleStatusHoverLeave()}
-                          _hover={{ cursor: "pointer" }}
-                            
-                            height="100%"
-                            // width="100%"
+                            height="2rem"
+                            width="2rem"
                             alignItems="center"
                             justifyContent="center"
-                            // pl={4}
+                            pl={4}
                           >
-                           
-                                         {statusHoverIndex != "4" + idx ? (
-                              <Box minWidth={"16px"}>
-                              <Image
-                                src={`/${borrow?.loanMarket.slice(1)}.svg`}
-                                alt="Picture of the author"
-                                width="16"
-                                height="16"
-                              />
-                            </Box>
-                            ) : (
-                              <Box>
-                              <Image
-                              src={`/${borrow?.loanMarket.slice(1)}_EXP.svg`}
-                              // src={`/JEDI_SWAP_EXP.svg`}
-
+                            <Image
+                              // src={`./BTC.svg`}
+                              src={`/${borrow?.loanMarket.slice(1)}.svg`}
                               alt="Picture of the author"
-                              width="93"
-                              height="24"
-                              // height="null"
+                              width="32"
+                              height="32"
                             />
-                            </Box>
-                            )}
                             <Text
                               fontSize="14px"
                               fontWeight="400"
@@ -772,12 +761,12 @@ const BorrowDashboard = ({
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                      // bgColor={"blue"}
+                        // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         {!borrowAPRs ||
-                          borrowAPRs.length === 0 ||
-                          !getBorrowAPR(borrow.loanMarket.slice(1)) ? (
+                        borrowAPRs.length === 0 ||
+                        !getBorrowAPR(borrow.loanMarket.slice(1)) ? (
                           <Skeleton
                             width="6rem"
                             height="1.4rem"
@@ -807,7 +796,7 @@ const BorrowDashboard = ({
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                      // bgColor={"blue"}
+                        // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         {avgs?.find(
@@ -844,46 +833,20 @@ const BorrowDashboard = ({
                         // justifyContent="flex-start"
                         alignItems="center"
                         height="2.5rem"
-                      // bgColor="red"
+                        // bgColor="red"
                       >
                         <HStack
-                          height="100%"
-                          // width="2rem"
+                          height="2rem"
+                          width="2rem"
                           alignItems="center"
                           justifyContent="center"
-                          onMouseEnter={() => handleStatusHover("5" + idx)}
-                          onMouseLeave={() => handleStatusHoverLeave()}
-                          _hover={{ cursor: "pointer" }}
                         >
-                          {/* <Image
+                          <Image
                             src={`/${borrow?.collateralMarket.slice(1)}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
-                          /> */}
-                           {statusHoverIndex != "5" + idx ? (
-                              <Box minWidth={"16px"}>
-                              <Image
-                                src={`/${borrow?.collateralMarket.slice(1)}.svg`}
-                                alt="Picture of the author"
-                                width="16"
-                                height="16"
-                              />
-                            </Box>
-                            ) : (
-                              <Box>
-                              <Image
-                              src={`/${borrow?.collateralMarket.slice(1)}_EXP.svg`}
-                              // src={`/JEDI_SWAP_EXP.svg`}
-
-                              alt="Picture of the author"
-                              width="93"
-                              height="24"
-                              // height="null"
-                            />
-                            </Box>
-                            )}
-                          
+                          />
                           <Text fontSize="14px" fontWeight="400">
                             {borrow?.collateralMarket}
                           </Text>
@@ -953,6 +916,7 @@ const BorrowDashboard = ({
                           <HStack
                             height="50%"
                             width="100%"
+
                             alignItems="center"
                             onMouseEnter={() => handleStatusHover("0" + idx)}
                             onMouseLeave={() => handleStatusHoverLeave()}
@@ -961,26 +925,17 @@ const BorrowDashboard = ({
                           // gap={0.2}
                           >
                                {statusHoverIndex != "0" + idx ? (
-                              <Box minWidth={"16px"}>
+                              // <Box minWidth={"16px"}  maxHeight="16">
                               <Image
                                 src={`/${borrow.l3App}.svg`}
                                 alt="Picture of the author"
                                 width="16"
                                 height="16"
                               />
-                            </Box>
+                            // </Box>
                             ) : (
-                              <Box>
-                              <Image
-                              src={`/${borrow.l3App}_EXP.svg`}
-                              // src={`/JEDI_SWAP_EXP.svg`}
+                          < ExpandedMarketIcon asset={borrow.l3App}  />
 
-                              alt="Picture of the author"
-                              width="93"
-                              height="24"
-                              // height="null"
-                            />
-                            </Box>
                             )}
                             
                             <Text fontSize="14px" fontWeight="400">
@@ -1006,33 +961,24 @@ const BorrowDashboard = ({
                                   <>
                                     <Box
                                                                 onMouseEnter={() => handleStatusHover("1" + idx)}
-                                                                onMouseLeave={() => handleStatusHoverLeave()}
+                                                                // onMouseLeave={() => handleStatusHoverLeave()}
                                       display="flex"
                                       gap={0.5}
                           _hover={{ cursor: "pointer" }}
-
+                          maxHeight="16px"
                                       minWidth={"16px"}
                                     >
                                      
                                           {statusHoverIndex != "1" + idx ? (
-                              <Box minWidth={"16px"}>
+                              // <Box minWidth={"16px"}  maxHeight="16px">
                               <Image src={`/${allSplit?.[lower_bound + idx]?.tokenA}.svg`}
                                 alt="Picture of the author"
                                 width="16"
                                 height="16"
                               />
-                            </Box>
+                            // </Box>
                             ) : (
-                              <Box>
-                              <Image src={`/${ allSplit?.[lower_bound + idx]?.tokenA}_EXP.svg`}
-                              // src={`/JEDI_SWAP_EXP.svg`}
-
-                              alt="Picture of the author"
-                              width="93"
-                              height="24"
-                              // height="null"
-                            />
-                            </Box>
+                              <ExpandedCoinIcon asset={allSplit?.[lower_bound + idx]?.tokenA}/>
                             )}
                                     </Box>
                                     <Box
@@ -1046,7 +992,7 @@ const BorrowDashboard = ({
                                     >
                                       
                                                            {statusHoverIndex != "2" + idx ? (
-                              <Box minWidth={"16px"}>
+                              // <Box minWidth={"16px"}>
                               <Image src={`/${
                                           allSplit?.[lower_bound + idx]?.tokenB
                                         }.svg`}
@@ -1054,20 +1000,9 @@ const BorrowDashboard = ({
                                 width="16"
                                 height="16"
                               />
-                            </Box>
+                            // </Box>
                             ) : (
-                              <Box>
-                              <Image src={`/${
-                                          allSplit?.[lower_bound + idx]?.tokenB
-                                        }_EXP.svg`}
-                              // src={`/JEDI_SWAP_EXP.svg`}
-
-                              alt="Picture of the author"
-                              width="93"
-                              height="24"
-                              // height="null"
-                            />
-                            </Box>
+                      <ExpandedCoinIcon asset={  allSplit?.[lower_bound + idx]?.tokenB}/>
                             )}
                                     </Box>
                                   </>
@@ -1084,26 +1019,16 @@ const BorrowDashboard = ({
                                 // bgColor={"blue"}
                                 >
                                   {statusHoverIndex != "3" + idx ? (
-                              <Box minWidth={"16px"}>
+                              // <Box minWidth={"16px"}>
                               <Image
                                 src={`/${borrow.currentLoanMarket}.svg`}
                                 alt="Picture of the author"
                                 width="16"
                                 height="16"
                               />
-                            </Box>
+                            // </Box>
                             ) : (
-                              <Box>
-                              <Image
-                              src={`/${borrow.currentLoanMarket}_EXP.svg`}
-                              // src={`/JEDI_SWAP_EXP.svg`}
-
-                              alt="Picture of the author"
-                              width="93"
-                              height="24"
-                              // height="null"
-                            />
-                            </Box>
+                    <ExpandedCoinIcon asset={borrow.currentLoanMarket}/>
                             )}
                                 </Box>
                               )}

@@ -494,39 +494,16 @@ const SupplyDashboard = ({
                           height="2.5rem"
                         >
                           <HStack
-                                height="50%"
-                                width="100%"
-                            onMouseEnter={() => handleStatusHover("4" + idx)}
-                            onMouseLeave={() => handleStatusHoverLeave()}
-                            _hover={{ cursor: "pointer" }}
+                            height="2rem"
+                            width="2rem"
                             alignItems="center"
                           >
-                            {/* <Image
+                            <Image
                               src={`/${supply?.rToken?.slice(1)}.svg`}
                               alt="Picture of the author"
                               width="32"
                               height="32"
-                            /> */}
-                                             {statusHoverIndex != "4" + idx ? (
-                              <Box minWidth={"16px"}>
-                              <Image src={`/${supply?.rToken?.slice(1)}.svg`}
-                                alt="Picture of the author"
-                                width="16"
-                                height="16"
-                              />
-                            </Box>
-                            ) : (
-                              <Box>
-                              <Image src={`/${ supply?.rToken?.slice(1)}_EXP.svg`}
-                              // src={`/JEDI_SWAP_EXP.svg`}
-
-                              alt="Picture of the author"
-                              width="77"
-                              height="16"
-                              // height="null"
                             />
-                            </Box>
-                            )}
                             <Text fontSize="14px" fontWeight="400">
                               {supply?.rToken}
                             </Text>
