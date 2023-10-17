@@ -1186,7 +1186,7 @@ const BorrowDashboard = ({
                               item?.loanId == borrow?.loanId
                           )?.loanHealth) > 1.5      ?                   
                         <Box
-                          width="68px"
+                          width="48px"
                           height="18px"
                           padding="6px 12px"
                           // pl="45%"
@@ -1199,7 +1199,7 @@ const BorrowDashboard = ({
                         :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.2 &&
                         avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.5) ?
                         <Box
-                        width="68px"
+                        width="48px"
                         height="18px"
                         padding="6px 12px"
                         // pl="45%"
@@ -1212,7 +1212,7 @@ const BorrowDashboard = ({
                       </Box>
                       :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.2 ) ?
                       <Box
-                      width="68px"
+                      width="48px"
                       height="18px"
                       padding="6px 12px"
                       // pl="45%"
