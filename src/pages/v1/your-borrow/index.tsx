@@ -29,6 +29,7 @@ const YourBorrow = () => {
     "Effective APR",
     "Collateral",
     "Spend status",
+    "ROE",
     "Health Factor",
     "",
   ];

@@ -505,6 +505,7 @@ const BorrowDashboard = ({
     "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
     "Collateral are the tokens held as security for borrowed amount.",
     "Shows if borrowed amount was used in other pools or dapps within the protocol.",
+    "Return on Equity",
     "Loan risk metric comparing collateral value to borrowed amount to check potential liquidation.",
   ];
 
@@ -1131,6 +1132,21 @@ const BorrowDashboard = ({
                         </Box>
                       )}
                     </Td>
+                    <Td>      <Box
+                          // gap="3px"
+                          width="100%"
+                          display="flex"
+                          flexDirection="column"
+                          justifyContent="center"
+                          alignItems="center"
+                          height="3rem"
+                        // bgColor="red"
+                        // pl="3.4rem"
+                        >
+                            ${numberFormatter(borrow.loanAmountParsed-borrow.currentLoanAmountParsed)}
+
+                          {/* ${} */}
+                        </Box></Td>
                     <Td
                       width={"12.5%"}
                       maxWidth={"3rem"}
