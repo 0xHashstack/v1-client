@@ -15,6 +15,8 @@ import {
   Spinner,
   Skeleton,
   Tooltip,
+  Button,
+  Radio,
 } from "@chakra-ui/react";
 
 import Image from "next/image";
@@ -51,6 +53,11 @@ import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { useAccount } from "@starknet-react/core";
 import ExpandedCoinIcon from "@/assets/expanded/ExpandedCoins";
 import ExpandedMarketIcon from "@/assets/expanded/ExpandedMarket";
+import LowhealthFactor from "@/assets/icons/lowhealthFactor";
+import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
+import dollarConvertor from "@/utils/functions/dollarConvertor";
+import DollarActiveRadioButton from "@/assets/icons/dollarActiveRadioButton";
+import DollarNonActiveRadioButton from "@/assets/icons/dollarNonActiveRadioButton";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -269,7 +276,7 @@ const BorrowDashboard = ({
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
 
   // const reduxProtocolStats = useSelector(selectProtocolStats);
-  // const oraclePrices = useSelector(selectOraclePrices);
+  const oraclePrices = useSelector(selectOraclePrices);
 
   // useEffect(() => {
   //   const fetchAprs = async () => {
@@ -422,11 +429,11 @@ const BorrowDashboard = ({
 
   const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
   const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
-  
+
   const stats = useSelector(selectProtocolStats);
   const handleStatusHover = (idx: string) => {
 
-    
+
     setStatusHoverIndex(idx);
 
 
@@ -452,6 +459,7 @@ const BorrowDashboard = ({
   // }, []);
 
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<Number>(2);
+  const [dollarConversions, setDollarConversions] = useState(false)
   const fetchProtocolStats = async () => {
     try {
       // console.log("fetchprotocolstats", stats); //23014
@@ -558,10 +566,39 @@ const BorrowDashboard = ({
       overflowX="hidden"
     // mt={"3rem"}
     >
+      <Box
+        position="fixed"
+        right="40"
+        display="flex"
+      >
+        <Box
+        mr="0.3rem"
+        mt="0.05rem"
+        cursor="pointer"
+        onClick={()=>{
+          setDollarConversions(!dollarConversions)
+        }}
+        >
+          {dollarConversions ==true ?<DollarActiveRadioButton/>:<DollarNonActiveRadioButton/>}
+        
+        </Box>
+        <Text
+          color="#F0F0F5"
+          fontSize="14px"
+          fontStyle='normal'
+          fontWeight="400"
+          lineHeight="20px"
+          letterSpacing="-0.15px"
+        >
+          Convert to Dollar value
+        </Text>
+      </Box>
       <Table
         variant="unstyled"
         width="100%"
         height="100%"
+        mt="0.5rem"
+        mb="0.5rem"
       // bgColor={"blue"}
       // p={0}
       >
@@ -651,7 +688,7 @@ const BorrowDashboard = ({
                     position="relative"
                     p={0}
                   >
-                     <Td
+                    <Td
                       width={"12.5%"}
                       // maxWidth={`${gap[idx1][idx2]}%`}
                       fontSize={"14px"}
@@ -668,14 +705,13 @@ const BorrowDashboard = ({
                         fontWeight="400"
                         fontSize="14px"
                         color="#E6EDF3"
-                        // bgColor={"blue"}
+                      // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        {`Borrow ID${
-                          borrow?.loanId < 10
+                        {`Borrow ID${borrow?.loanId < 10
                             ? "0" + borrow?.loanId
                             : borrow?.loanId
-                        }`}{" "}
+                          }`}{" "}
                       </Text>
                     </Td>
                     <Td
@@ -685,7 +721,7 @@ const BorrowDashboard = ({
                       fontWeight={400}
                       overflow={"hidden"}
                       textAlign={"center"}
-                      // bgColor={"green"}
+                    // bgColor={"green"}
                     >
                       <Box
                         width="100%"
@@ -696,7 +732,7 @@ const BorrowDashboard = ({
                         justifyContent="center"
                         fontWeight="400"
                         textAlign="center"
-                        // bgColor={"blue"}
+                      // bgColor={"blue"}
                       >
                         <VStack
                           // gap="3px"
@@ -705,8 +741,8 @@ const BorrowDashboard = ({
                           justifyContent="center"
                           alignItems="flex-start"
                           height="2.5rem"
-                          // bgColor="red"
-                          // p={2}
+                        // bgColor="red"
+                        // p={2}
                         >
                           <HStack
                             height="2rem"
@@ -738,7 +774,8 @@ const BorrowDashboard = ({
                               width="4.6rem"
                             >
                               <Text textAlign="left">
-                                {numberFormatter(borrow?.loanAmountParsed)}
+                                {dollarConversions==true ?numberFormatter(dollarConvertor(borrow?.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)):numberFormatter(borrow?.loanAmountParsed)}
+                                {/* {numberFormatter(borrow?.loanAmountParsed)} */}
                                 {/* 0.04534 */}
                               </Text>
                             </Text>
@@ -761,12 +798,12 @@ const BorrowDashboard = ({
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                        // bgColor={"blue"}
+                      // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         {!borrowAPRs ||
-                        borrowAPRs.length === 0 ||
-                        !getBorrowAPR(borrow.loanMarket.slice(1)) ? (
+                          borrowAPRs.length === 0 ||
+                          !getBorrowAPR(borrow.loanMarket.slice(1)) ? (
                           <Skeleton
                             width="6rem"
                             height="1.4rem"
@@ -796,7 +833,7 @@ const BorrowDashboard = ({
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                        // bgColor={"blue"}
+                      // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         {avgs?.find(
@@ -833,7 +870,7 @@ const BorrowDashboard = ({
                         // justifyContent="flex-start"
                         alignItems="center"
                         height="2.5rem"
-                        // bgColor="red"
+                      // bgColor="red"
                       >
                         <HStack
                           height="2rem"
@@ -858,7 +895,7 @@ const BorrowDashboard = ({
                           width="4.6rem"
                         >
                           <Text>
-                            {numberFormatter(borrow?.collateralAmountParsed)}
+                            {dollarConversions==true ? numberFormatter(dollarConvertor(borrow?.collateralAmountParsed,borrow?.collateralMarket.slice(1),oraclePrices)):numberFormatter(borrow?.collateralAmountParsed)}
                             {/* 10,000 */}
                           </Text>
                         </Text>
@@ -924,7 +961,7 @@ const BorrowDashboard = ({
                             justifyContent="center"
                           // gap={0.2}
                           >
-                               {statusHoverIndex != "0" + idx ? (
+                            {statusHoverIndex != "0" + idx ? (
                               // <Box minWidth={"16px"}  maxHeight="16">
                               <Image
                                 src={`/${borrow.l3App}.svg`}
@@ -932,12 +969,12 @@ const BorrowDashboard = ({
                                 width="16"
                                 height="16"
                               />
-                            // </Box>
+                              // </Box>
                             ) : (
-                          < ExpandedMarketIcon asset={borrow.l3App}  />
+                              < ExpandedMarketIcon asset={borrow.l3App} />
 
                             )}
-                            
+
                             <Text fontSize="14px" fontWeight="400">
                               {borrow.spendType}
                             </Text>
@@ -960,58 +997,57 @@ const BorrowDashboard = ({
                                 allSplit?.[lower_bound + idx]?.tokenB && (
                                   <>
                                     <Box
-                                                                onMouseEnter={() => handleStatusHover("1" + idx)}
-                                                                // onMouseLeave={() => handleStatusHoverLeave()}
+                                      onMouseEnter={() => handleStatusHover("1" + idx)}
+                                      // onMouseLeave={() => handleStatusHoverLeave()}
                                       display="flex"
                                       gap={0.5}
-                          _hover={{ cursor: "pointer" }}
-                          maxHeight="16px"
+                                      _hover={{ cursor: "pointer" }}
+                                      maxHeight="16px"
                                       minWidth={"16px"}
                                     >
-                                     
-                                          {statusHoverIndex != "1" + idx ? (
-                              // <Box minWidth={"16px"}  maxHeight="16px">
-                              <Image src={`/${allSplit?.[lower_bound + idx]?.tokenA}.svg`}
-                                alt="Picture of the author"
-                                width="16"
-                                height="16"
-                              />
-                            // </Box>
-                            ) : (
-                              <ExpandedCoinIcon asset={allSplit?.[lower_bound + idx]?.tokenA}/>
-                            )}
+
+                                      {statusHoverIndex != "1" + idx ? (
+                                        // <Box minWidth={"16px"}  maxHeight="16px">
+                                        <Image src={`/${allSplit?.[lower_bound + idx]?.tokenA}.svg`}
+                                          alt="Picture of the author"
+                                          width="16"
+                                          height="16"
+                                        />
+                                        // </Box>
+                                      ) : (
+                                        <ExpandedCoinIcon asset={allSplit?.[lower_bound + idx]?.tokenA} />
+                                      )}
                                     </Box>
                                     <Box
-                                                                onMouseEnter={() => handleStatusHover("2" + idx)}
-                                                                onMouseLeave={() => handleStatusHoverLeave()}
+                                      onMouseEnter={() => handleStatusHover("2" + idx)}
+                                      onMouseLeave={() => handleStatusHoverLeave()}
                                       display="flex"
                                       gap={0.5}
-                          _hover={{ cursor: "pointer" }}
+                                      _hover={{ cursor: "pointer" }}
 
                                       minWidth={"16px"}
                                     >
-                                      
-                                                           {statusHoverIndex != "2" + idx ? (
-                              // <Box minWidth={"16px"}>
-                              <Image src={`/${
-                                          allSplit?.[lower_bound + idx]?.tokenB
-                                        }.svg`}
-                                alt="Picture of the author"
-                                width="16"
-                                height="16"
-                              />
-                            // </Box>
-                            ) : (
-                      <ExpandedCoinIcon asset={  allSplit?.[lower_bound + idx]?.tokenB}/>
-                            )}
+
+                                      {statusHoverIndex != "2" + idx ? (
+                                        // <Box minWidth={"16px"}>
+                                        <Image src={`/${allSplit?.[lower_bound + idx]?.tokenB
+                                          }.svg`}
+                                          alt="Picture of the author"
+                                          width="16"
+                                          height="16"
+                                        />
+                                        // </Box>
+                                      ) : (
+                                        <ExpandedCoinIcon asset={allSplit?.[lower_bound + idx]?.tokenB} />
+                                      )}
                                     </Box>
                                   </>
                                 )
                               ) : (
                                 <Box
-                                onMouseEnter={() => handleStatusHover("3" + idx)}
-                                onMouseLeave={() => handleStatusHoverLeave()}
-                            _hover={{ cursor: "pointer" }}
+                                  onMouseEnter={() => handleStatusHover("3" + idx)}
+                                  onMouseLeave={() => handleStatusHoverLeave()}
+                                  _hover={{ cursor: "pointer" }}
 
                                   display="flex"
                                   gap={0.5}
@@ -1019,17 +1055,17 @@ const BorrowDashboard = ({
                                 // bgColor={"blue"}
                                 >
                                   {statusHoverIndex != "3" + idx ? (
-                              // <Box minWidth={"16px"}>
-                              <Image
-                                src={`/${borrow.currentLoanMarket}.svg`}
-                                alt="Picture of the author"
-                                width="16"
-                                height="16"
-                              />
-                            // </Box>
-                            ) : (
-                    <ExpandedCoinIcon asset={borrow.currentLoanMarket}/>
-                            )}
+                                    // <Box minWidth={"16px"}>
+                                    <Image
+                                      src={`/${borrow.currentLoanMarket}.svg`}
+                                      alt="Picture of the author"
+                                      width="16"
+                                      height="16"
+                                    />
+                                    // </Box>
+                                  ) : (
+                                    <ExpandedCoinIcon asset={borrow.currentLoanMarket} />
+                                  )}
                                 </Box>
                               )}
                               {/* <Box
@@ -1072,15 +1108,22 @@ const BorrowDashboard = ({
                                 ) : allSplit[lower_bound + idx] === "empty" ? (
                                   "-"
                                 ) : (
+                                  dollarConversions==true ?
+                                  numberFormatter(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenA,oraclePrices))
+                                  +
+                                  "/" +
+                                  numberFormatter(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenB,oraclePrices))
+                                  :
                                   numberFormatter(
                                     allSplit?.[lower_bound + idx]?.amountA
                                   ) +
-                                  "/" +
-                                  numberFormatter(
+                                  "/" + numberFormatter(
                                     allSplit[lower_bound + idx]?.amountB
                                   )
+
                                 )
                               ) : (
+                                dollarConversions==true ? numberFormatter(dollarConvertor(borrow?.currentLoanAmountParsed,borrow.currentLoanMarket,oraclePrices)):
                                 numberFormatter(borrow?.currentLoanAmountParsed)
                               )}
                             </Text>
@@ -1103,58 +1146,35 @@ const BorrowDashboard = ({
                         justifyContent="center"
                       >
                         {avgsLoneHealth?.find(
-                                (item: any) => item?.loanId == borrow?.loanId
-                              )?.loanHealth
-                                ?
+                          (item: any) => item?.loanId == borrow?.loanId
+                        )?.loanHealth
+                          ?
                           (avgsLoneHealth?.find(
                             (item: any) =>
                               item?.loanId == borrow?.loanId
-                          )?.loanHealth) > 1.5      ?                   
-                        <Box
-                          width="48px"
-                          height="18px"
-                          padding="6px 12px"
-                          // pl="45%"
-                          fontWeight="400"
-                          borderRadius="100px"
-                          background="linear-gradient(90deg, #00D395 78.68%, #D97008 389.71%, #CF222E 498.53%)"
-                        >
-                          {/* {checkGap(idx1, idx2)} */}
-                        </Box>
-                        :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.2 &&
-                        avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.5) ?
-                        <Box
-                        width="48px"
-                        height="18px"
-                        padding="6px 12px"
-                        // pl="45%"
-                        fontWeight="400"
-                        borderRadius="100px"
-                        background="linear-gradient(90deg, #00D395 -614.07%, #D97008 44.96%, #CF222E 498.06%)"
-                      >
-                        {/* {checkGap(idx1, idx2)} */}
-
-                      </Box>
-                      :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.2 ) ?
-                      <Box
-                      width="48px"
-                      height="18px"
-                      padding="6px 12px"
-                      // pl="45%"
-                      fontWeight="400"
-                      borderRadius="100px"
-                      background=" linear-gradient(90deg, #00D395 -690.14%, #D97008 -278.32%, #CF222E 4.82%)"
-                    >
-                      {/* {checkGap(idx1, idx2)} */}
-
-                    </Box>
-                        :"":<Skeleton
-                        width="6rem"
-                        height="1.2rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />}
+                          )?.loanHealth) > 1.5 ?
+                            <Box
+                              width="68px"
+                              height="10px"
+                              // pl="45%"
+                              fontWeight="400"
+                              borderRadius="100px"
+                              background="linear-gradient(90deg, #00D395 78.68%, #D97008 389.71%, #CF222E 498.53%)"
+                            >
+                              {/* {checkGap(idx1, idx2)} */}
+                            </Box>
+                            : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.2 &&
+                              avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.5) ?
+                              <MediumHeathFactor />
+                              : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.2) ?
+                                <LowhealthFactor />
+                                : "" : <Skeleton
+                            width="6rem"
+                            height="1.2rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />}
                       </Box>
                     </Td>
                     <Td
