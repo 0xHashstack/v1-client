@@ -1,39 +1,46 @@
+
+import Image from "next/image";
 import BorrowDashboard from "@/components/layouts/borrowDashboard";
 import MarketDashboard from "@/components/layouts/marketDashboard";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-  Button,
-  Tooltip,
-  Box,
-  Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Td,
-  TableContainer,
-  TabList,
-  Tab,
-  TabPanel,
-  Tabs,
-  TabPanels,
-  RadioGroup,
-  Radio,
-  NumberInput,
-  Slider,
-  SliderMark,
-  SliderTrack,
-  SliderThumb,
-  SliderFilledTrack,
-  NumberInputField,
-  Card,
-  ModalHeader,
-  Skeleton,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
+    Button,
+    Tooltip,
+    Box,
+    Text,
+    Table,
+    Thead,
+    Tbody,
+    Tr,
+    Td,
+    TableContainer,
+    TabList,
+    Tab,
+    TabPanel,
+    Tabs,
+    TabPanels,
+    RadioGroup,
+    Radio,
+    NumberInput,
+    Slider,
+    SliderMark,
+    SliderTrack,
+    SliderThumb,
+    SliderFilledTrack,
+    NumberInputField,
+
+    Card,
+    ModalHeader,
+    Skeleton,
+    InputGroup,
+    InputLeftAddon,
+    Input,
+    Flex,
 } from "@chakra-ui/react";
 import NavButtons from "@/components/layouts/navButtons";
 import Navbar from "@/components/layouts/navbar/Navbar";
@@ -301,66 +308,77 @@ const Referal = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const loan = async () => {
-  //     try {
-  //       const loans = await getUserLoans(address || "");
-  //       // console.log(loans,"Loans from your borrow index page")
+    // useEffect(() => {
+    //   const loan = async () => {
+    //     try {
+    //       const loans = await getUserLoans(address || "");
+    //       // console.log(loans,"Loans from your borrow index page")
 
-  //       // loans.filter(
-  //       //   (loan) =>
-  //       //     loan.collateralAmountParsed &&
-  //       //     loan.collateralAmountParsed > 0 &&
-  //       //     loan.loanAmountParsed &&
-  //       //     loan.loanAmountParsed > 0
-  //       // );
-  //       if (loans) {
-  //         setuserLoans(
-  //           loans.filter(
-  //             (loan) =>
-  //               loan?.collateralAmountParsed &&
-  //               loan?.collateralAmountParsed > 0 &&
-  //               loan?.loanAmountParsed &&
-  //               loan?.loanAmountParsed > 0
-  //           )
-  //         );
-  //       }
-  //       dispatch(setUserLoans(loans.filter(
-  //         (loan) =>
-  //           loan.collateralAmountParsed &&
-  //           loan.collateralAmountParsed > 0 &&
-  //           loan.loanAmountParsed &&
-  //           loan.loanAmountParsed > 0
-  //       )));
-  //     } catch (err) {
-  //       console.log("your-borrow : unable to fetch user loans");
-  //     }
-  //     // console.log("loans", loans);
-  //   };
-  //   if (account) {
-  //     loan();
-  //   }
-  // }, [account, UserLoans]);
-  const totalBorrow = useSelector(selectYourBorrow);
-  const netAPR = useSelector(selectNetAPR);
-  const [campaignSelected, setCampaignSelected] = useState(2);
-  const [tabValue, setTabValue] = useState(1);
+    //       // loans.filter(
+    //       //   (loan) =>
+    //       //     loan.collateralAmountParsed &&
+    //       //     loan.collateralAmountParsed > 0 &&
+    //       //     loan.loanAmountParsed &&
+    //       //     loan.loanAmountParsed > 0
+    //       // );
+    //       if (loans) {
+    //         setuserLoans(
+    //           loans.filter(
+    //             (loan) =>
+    //               loan?.collateralAmountParsed &&
+    //               loan?.collateralAmountParsed > 0 &&
+    //               loan?.loanAmountParsed &&
+    //               loan?.loanAmountParsed > 0
+    //           )
+    //         );
+    //       }
+    //       dispatch(setUserLoans(loans.filter(
+    //         (loan) =>
+    //           loan.collateralAmountParsed &&
+    //           loan.collateralAmountParsed > 0 &&
+    //           loan.loanAmountParsed &&
+    //           loan.loanAmountParsed > 0
+    //       )));
+    //     } catch (err) {
+    //       console.log("your-borrow : unable to fetch user loans");
+    //     }
+    //     // console.log("loans", loans);
+    //   };
+    //   if (account) {
+    //     loan();
+    //   }
+    // }, [account, UserLoans]);
+    const totalBorrow = useSelector(selectYourBorrow);
+    const netAPR = useSelector(selectNetAPR);
+    const [campaignSelected, setCampaignSelected] = useState(2);
+    const [tabValue, setTabValue] = useState(1);
+    const [refferal, setRefferal] = useState("xyz")
+    const handleChange=(e:any)=>{
+        setRefferal(e.target.value);
+    }
 
-  return (
-    <PageCard pt="6.5rem">
-      {/* <StatsBoard /> */}
-      <HStack
-        display="flex"
-        justifyContent="space-between"
-        alignItems="flex-start"
-        flexDirection="column"
-        width="95%"
-        pr="3rem"
-        mb="1rem"
-        zIndex="1"
-      >
-        <HStack>
-          {/* <Button
+    const handleCopyClick = async () => {
+      try {
+        await navigator.clipboard.writeText("https://app.hashatack.finance/r/"+refferal);
+      } catch (error) {
+        console.error('Failed to copy text: ', error);
+      }
+    };
+    return (
+        <PageCard pt="6.5rem">
+            {/* <StatsBoard /> */}
+            <HStack
+                display="flex"
+                justifyContent="space-between"
+                alignItems="flex-start"
+                flexDirection="column"
+                width="95%"
+                pr="3rem"
+                mb="1rem"
+                zIndex="1"
+            >
+                <HStack>
+                    {/* <Button
             bg="transparent"
             fontStyle="normal"
             fontWeight="600"
