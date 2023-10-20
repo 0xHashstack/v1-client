@@ -313,6 +313,7 @@ const BorrowModal = ({
     protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
       ?.availableReserves * 0.895
   );
+  console.log(rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount,minimumDepositAmount,maximumDepositAmount,"chal ja")
   const fetchProtocolStats = async () => {
     // const stats = await getProtocolStats();
     const stats = protocolStatsRedux;
@@ -2436,11 +2437,11 @@ const BorrowModal = ({
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 &&
-           (process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||( inputBorrowAmount>=minimumLoanAmount &&
-            inputBorrowAmount<maximumLoanAmount ))&&
+           (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"?( inputBorrowAmount>=minimumLoanAmount &&
+            inputBorrowAmount<maximumLoanAmount ):true)&&
             rTokenAmount <= walletBalance &&
             // rTokenAmount<
-            (rTokenAmount>0 && (process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||(rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount))) &&
+            (rTokenAmount>0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" &&tokenTypeSelected == "Native" ?(rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount):true)) &&
             // do max 1209
             inputBorrowAmount <= currentAvailableReserves &&
             inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD ? (
