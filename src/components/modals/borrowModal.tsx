@@ -391,7 +391,7 @@ const BorrowModal = ({
 
   const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0);
   const availableReserves = protocolStats?.find(
-    (stat: any) => stat?.token === currentBorrowCoin
+    (stat: any) => stat?.token === currentBorrowCoin  
   )?.availableReserves;
   const [inputCollateralAmountUSD, setInputCollateralAmountUSD] =
     useState<any>(0);
