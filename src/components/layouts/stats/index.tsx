@@ -2,6 +2,7 @@ import React from "react";
 import { HStack, VStack, Text, Box, Skeleton } from "@chakra-ui/react";
 import Image from "next/image";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { useRouter } from "next/router";
 const Stats = ({
   header,
   onclick,
@@ -14,6 +15,9 @@ const Stats = ({
   arrowHide: boolean;
 }) => {
   const gap: number = 100 / (header.length + 1);
+  const router=useRouter();
+  const { pathname } = router;
+  const keys = Object.keys(statsData);
   return (
     <HStack
       w="49%"
@@ -32,6 +36,7 @@ const Stats = ({
       //   marginBottom="3resm"
     >
       {Object?.entries(statsData).map(([key, value], idx) => {
+        const isLast = idx === keys.length - 1;
         return (
           <VStack
             key={key}
@@ -76,7 +81,7 @@ const Stats = ({
                 <Box color="#e6edf3" fontSize="20px">
                   {value !== null ? (
                     value ? (
-                      "$" + numberFormatter(value)
+                      pathname!="/v1/referal"? "$" + numberFormatter(value):!isLast ? value:"$" +numberFormatter(value)  
                     ) : (
                       "NA"
                     )
