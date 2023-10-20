@@ -63,250 +63,254 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
 import LeaderboardDashboard from "@/components/layouts/leaderboardDashboard";
 import PersonalStatsDashboard from "@/components/layouts/personalStatsDashboard";
+import CopyToClipboard from "react-copy-to-clipboard";
+import CopyIcon from "@/assets/icons/copyIcon";
+import Stats from "@/components/layouts/stats";
+import { toast } from "react-toastify";
 const Referal = () => {
-  const [currentPagination, setCurrentPagination] = useState<number>(1);
-  const columnItems = [
-    "User Action",
-    "direct user",
-    "If Referred (U1)",
-    "If Referred (U2)",
-  ];
-  const tooltips = [
-    "Available markets.",
-    "Market value of the token",
-    "The number of tokens that currently exists in the protocol.",
-    "Annual interest rate earned on supplied funds.",
-  ];
-  const columnItemsLeaderBoard = [
-    "Rank",
-    "Wallet",
-    "Referees Liquidity",
-    "Points earned",
-    "Est.token earning \n $STRK",
-  ];
-  const columnItemsLeaderBoardReferalCampaign = [
-    "Rank",
-    "Wallet",
-    "Liquidity Provided (in $)",
-    "Points earned",
-    "Est.token earning \n $HASH",
-  ];
-  const columnItemsPersonalStats = [
-    "Liquidity Provided",
-    "Referees liquidity (in $)",
-    "Points earned",
-    "Est.token earning \n $STRK",
-  ];
-  const columnItemsPersonalStatsReferalCampaign = [
-    "Traders Referred",
-    "Referees liquidity (in $)",
-    "Points earned",
-    "Est.token earning \n $HASH",
-  ];
-  const data = [
-    { action: "Borrow", directUser: 1, u1: 0.2, referredLiq: 300000 },
-  ];
-  const sampleDate = [
-    {
-      id: 0,
-      start: "1 Mar",
-      end: "1 April",
-      ref: 28,
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 1,
-      start: "1 Mar",
-      end: "1 April",
-      ref: 28,
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 2,
-      start: "1 Mar",
-      end: "1 April",
-      ref: 28,
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 3,
-      start: "1 Mar",
-      end: "1 April",
-      ref: 28,
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 4,
-      start: "1 Mar",
-      end: "1 April",
-      ref: 28,
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 5,
-      start: "1 Mar",
-      end: "1 April",
-      ref: 28,
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 6,
-      start: "1 Mar",
-      end: "1 April",
-      ref: 28,
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 7,
-      start: "1 Mar",
-      end: "1 April",
-      ref: 28,
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 8,
-      start: "1 Mar",
-      end: "1 April",
-      ref: 28,
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-  ];
-  const sampleDataLeaderBoard = [
-    {
-      id: 0,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      wallet: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 1,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      wallet: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 2,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      wallet: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 3,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      wallet: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 4,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      wallet: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 5,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      wallet: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 6,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      wallet: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 7,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      wallet: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 8,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      wallet: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-  ];
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
+    const [currentPagination, setCurrentPagination] = useState<number>(1);
+    const columnItems = [
+        "User Action",
+        "direct user",
+        "If Referred (U1)",
+        "If Referred (U2)",
+    ];
+    const tooltips = [
+        "Available markets.",
+        "Market value of the token",
+        "The number of tokens that currently exists in the protocol.",
+        "Annual interest rate earned on supplied funds.",
+    ];
+    const columnItemsLeaderBoard = [
+        "Rank",
+        "Wallet",
+        "Referees Liquidity",
+        "Points earned",
+        "Est.token earning \n $STRK",
+    ];
+    const columnItemsLeaderBoardReferalCampaign = [
+        "Rank",
+        "Wallet",
+        "Liquidity Provided (in $)",
+        "Points earned",
+        "Est.token earning \n $HASH",
+    ];
+    const columnItemsPersonalStats = [
+        "Liquidity Provided",
+        "Referees liquidity (in $)",
+        "Points earned",
+        "Est.token earning \n $STRK",
+    ];
+    const columnItemsPersonalStatsReferalCampaign = [
+        "Traders Referred",
+        "Referees liquidity (in $)",
+        "Points earned",
+        "Est.token earning \n $HASH",
+    ];
+    const data = [
+        { action: "Borrow", directUser: 1, u1: 0.2, referredLiq: 300000 },
+    ];
+    const sampleDate = [
+        {
+            id: 0,
+            start: "1 Mar",
+            end: "1 April",
+            ref: 28,
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 1,
+            start: "1 Mar",
+            end: "1 April",
+            ref: 28,
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 2,
+            start: "1 Mar",
+            end: "1 April",
+            ref: 28,
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 3,
+            start: "1 Mar",
+            end: "1 April",
+            ref: 28,
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 4,
+            start: "1 Mar",
+            end: "1 April",
+            ref: 28,
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 5,
+            start: "1 Mar",
+            end: "1 April",
+            ref: 28,
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 6,
+            start: "1 Mar",
+            end: "1 April",
+            ref: 28,
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 7,
+            start: "1 Mar",
+            end: "1 April",
+            ref: 28,
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 8,
+            start: "1 Mar",
+            end: "1 April",
+            ref: 28,
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+    ];
+    const sampleDataLeaderBoard = [
+        {
+            id: 0,
+            start: "1 Mar",
+            end: "1 April",
+            rank: 28,
+            wallet: "Braavos",
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 1,
+            start: "1 Mar",
+            end: "1 April",
+            rank: 28,
+            wallet: "Braavos",
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 2,
+            start: "1 Mar",
+            end: "1 April",
+            rank: 28,
+            wallet: "Braavos",
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 3,
+            start: "1 Mar",
+            end: "1 April",
+            rank: 28,
+            wallet: "Braavos",
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 4,
+            start: "1 Mar",
+            end: "1 April",
+            rank: 28,
+            wallet: "Braavos",
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 5,
+            start: "1 Mar",
+            end: "1 April",
+            rank: 28,
+            wallet: "Braavos",
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 6,
+            start: "1 Mar",
+            end: "1 April",
+            rank: 28,
+            wallet: "Braavos",
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 7,
+            start: "1 Mar",
+            end: "1 April",
+            rank: 28,
+            wallet: "Braavos",
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+        {
+            id: 8,
+            start: "1 Mar",
+            end: "1 April",
+            rank: 28,
+            wallet: "Braavos",
+            liq: 500,
+            pts: 100,
+            est: 232,
+        },
+    ];
+    const { available, disconnect, connect, connectors, refresh } =
+        useConnectors();
 
-  const dispatch = useDispatch();
-  const { account, address } = useAccount();
-  useDataLoader();
+    const dispatch = useDispatch();
+    const { account, address } = useAccount();
+    useDataLoader();
 
-  const UserLoans = useSelector(selectUserLoans);
-  useEffect(() => {
-    // if (UserLoans) {
-    //   if (UserLoans?.length <= (currentPagination - 1) * 6) {
-    //     console.log("pagination", Pagination, UserLoans);
-    //     if (currentPagination > 1) {
-    //       setCurrentPagination(currentPagination - 1);
-    //     }
-    //   }
-    // }
-    if (sampleDate) {
-      if (sampleDate.length <= (currentPagination - 1) * 6) {
-        console.log("pagination", Pagination, sampleDate);
-        if (currentPagination > 1) {
-          setCurrentPagination(currentPagination - 1);
+    const UserLoans = useSelector(selectUserLoans);
+    useEffect(() => {
+        // if (UserLoans) {
+        //   if (UserLoans?.length <= (currentPagination - 1) * 6) {
+        //     console.log("pagination", Pagination, UserLoans);
+        //     if (currentPagination > 1) {
+        //       setCurrentPagination(currentPagination - 1);
+        //     }
+        //   }
+        // }
+        if (sampleDate) {
+            if (sampleDate.length <= (currentPagination - 1) * 6) {
+                console.log("pagination", Pagination, sampleDate);
+                if (currentPagination > 1) {
+                    setCurrentPagination(currentPagination - 1);
+                }
+            }
         }
-      }
-    }
-  }, []);
+    }, []);
 
     // useEffect(() => {
     //   const loan = async () => {
@@ -353,16 +357,16 @@ const Referal = () => {
     const [campaignSelected, setCampaignSelected] = useState(2);
     const [tabValue, setTabValue] = useState(1);
     const [refferal, setRefferal] = useState("xyz")
-    const handleChange=(e:any)=>{
+    const handleChange = (e: any) => {
         setRefferal(e.target.value);
     }
 
     const handleCopyClick = async () => {
-      try {
-        await navigator.clipboard.writeText("https://app.hashatack.finance/r/"+refferal);
-      } catch (error) {
-        console.error('Failed to copy text: ', error);
-      }
+        try {
+            await navigator.clipboard.writeText("https://app.hashatack.finance/r/" + refferal);
+        } catch (error) {
+            console.error('Failed to copy text: ', error);
+        }
     };
     return (
         <PageCard pt="6.5rem">
@@ -396,717 +400,511 @@ const Referal = () => {
           >
             Liquidity mining campaign
           </Button> */}
-          <Button
-            bg="transparent"
-            fontStyle="normal"
-            fontWeight="600"
-            fontSize="14px"
-            lineHeight="20px"
-            alignItems="center"
-            letterSpacing="-0.15px"
-            padding="1.125rem 0.4rem"
-            margin="2px"
-            color={campaignSelected == 2 ? "#fff" : "#676D9A"}
-            borderBottom={campaignSelected == 2 ? "2px solid #4D59E8" : ""}
-            borderRadius="0px"
-            _hover={{ bg: "transparent", color: "#E6EDF3" }}
-            onClick={() => {
-              setCampaignSelected(2);
-            }}
-          >
-            Referal mining Campign
-          </Button>
-        </HStack>
-        <HStack
-          mt="2.5rem"
-          display="flex"
-          flexDirection="column"
-          alignItems="flex-start"
-          width="100%"
-        >
-          {campaignSelected == 1 ? (
-            <Box display="flex">
-              <Text
-                color="#B1B0B5"
-                fontSize="16px"
-                fontWeight="400"
-                lineHeight="20px"
-                fontStyle="normal"
-              >
-                Liquidity mining campaign -
-              </Text>
-              <Text
-                color="#00D395"
-                fontSize="16px"
-                fontStyle="normal"
-                fontWeight="400"
-                lineHeight="20px"
-              >
-                &nbsp;99 days 11 hours left
-              </Text>
-            </Box>
-          ) : (
-            <Box display="flex">
-              <Text
-                color="#B1B0B5"
-                fontSize="16px"
-                fontWeight="400"
-                lineHeight="20px"
-                fontStyle="normal"
-              >
-                Referal campaign -
-              </Text>
-              <Text
-                color="#00D395"
-                fontSize="16px"
-                fontStyle="normal"
-                fontWeight="400"
-                lineHeight="20px"
-              >
-                &nbsp;99 days 11 hours left
-              </Text>
-            </Box>
-          )}
-          <HStack display="flex" justifyContent="space-between" width="100%">
-            <HStack
-              // width="13.5rem"
-              display="flex"
-              // bgColor="yellow"
-              // flexGrow={1}
-              p="25px 32px"
-              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-              borderRadius="8px"
-              gap="7rem"
-            >
-              <VStack
-                display="flex"
-                justifyContent="center"
-                alignItems="flex-start"
-                gap={"6px"}
-              >
-                <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                  Pool Reward
-                </Text>
-                <Text color="#e6edf3" fontSize="20px">
-                  8,932.14 STRK
-                </Text>
-              </VStack>
-              <VStack
-                gap={"6px"}
-                justifyContent="flex-start"
-                alignItems="flex-start"
-                // p="13px 25px"
-              >
-                <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                  Points Accrued
-                </Text>
-                <Text color="#e6edf3" fontSize="20px">
-                  5,536.83
-                </Text>
-              </VStack>
-              <VStack
-                gap={"6px"}
-                justifyContent="flex-start"
-                alignItems="flex-start"
-                // p="13px 25px"
-              >
-                <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                  <Tooltip
-                    hasArrow
-                    label="Estimated Tokens Earned"
-                    // arrowPadding={-5420}
-                    placement="bottom"
-                    boxShadow="dark-lg"
-                    bg="#010409"
-                    fontSize={"13px"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                    border="1px solid"
-                    borderColor="#2B2F35"
-                    arrowShadowColor="#2B2F35"
-                    // cursor="context-menu"
-                    // marginRight={idx1 === 1 ? "52px" : ""}
-                    // maxW="222px"
-                    // mt="28px"
-                  >
-                    est.tokens earned
-                  </Tooltip>
-                </Text>
-
-                <Text color="#e6edf3" fontSize="20px">
-                  536.83 STRK
-                </Text>
-              </VStack>
+                    <Button
+                        bg="transparent"
+                        fontStyle="normal"
+                        fontWeight="600"
+                        fontSize="14px"
+                        lineHeight="20px"
+                        alignItems="center"
+                        letterSpacing="-0.15px"
+                        padding="1.125rem 0.4rem"
+                        margin="2px"
+                        color={campaignSelected == 2 ? "#fff" : "#676D9A"}
+                        borderBottom={campaignSelected == 2 ? "2px solid #4D59E8" : ""}
+                        borderRadius="0px"
+                        _hover={{ bg: "transparent", color: "#E6EDF3" }}
+                        onClick={() => { setCampaignSelected(2) }}
+                    >
+                        Referrals
+                    </Button>
+                    
+                </HStack>
+                <Box mt="3rem" display="flex" flexDirection="column">
+                    <Box display="flex" mt="0">
+                    <InputGroup size='sm'mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="4rem" >
+                        <InputLeftAddon children='https://app.hashatack.finance/r/' height="60px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0" />
+                        <Input  height="60px" border="none" color="#F0F0F5" value={refferal} paddingInlineStart="0" _focus={{
+                        outline: "0",
+                        boxShadow: "none",
+                      }}
+                      onChange={handleChange}
+                      />
+                    </InputGroup>
+                    <Box cursor="pointer" onClick={()=>{
+                        handleCopyClick();
+                        toast.success("Copied",{
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                        })
+                    }}>
+                        <CopyToClipboard text="Kaisi ho">
+                            <CopyIcon/>
+                        </CopyToClipboard>
+                    </Box>
+                    </Box>
+                    <Box color="#676D9A" fontSize="14px" fontStyle="normal" fontWeight="500" lineHeight="20px" letterSpacing="-0.15px" mt="0.3rem">
+                    You can edit your link only once
+                    </Box>
+                </Box>
             </HStack>
-            {campaignSelected == 1 ? (
-              <HStack
-                // width="13.5rem"
+            <Flex
+                      display="flex"
+                      flexDirection="column"
+                      // mt="2rem"
+                      h="6.4rem"
+                      w="95%"
+                      flexWrap="wrap"
+                      mt="2rem"
+                      marginBottom="4rem"
+                >
+                <HStack
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        w="100%"
+                        h="100%"
+                        // bg="#101216"
+                        flexWrap="wrap">          
+                <Stats
+          header={[
+            "Referred",
+            "Points earned",
+            "Rewards Claimed",
+          ]}
+          statsData={[15,15,200]}
+          onclick={() => {
+            console.log("hi")
+          }}
+          arrowHide={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?false:true}
+        />
+                        <Stats
+          header={[
+            "Overall refered by community",
+            "Rewards claimed by community"
+          ]}
+          statsData={[400,3200]}
+          onclick={() => {
+            // handleRouteChange("/v1/protocol-metrics");
+          }}
+          arrowHide={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?false:true}
+        />
+                </HStack>
+            </Flex>
+            <HStack
                 display="flex"
-                // bgColor="yellow"
-                // flexGrow={1}
-                gap="5rem"
-              >
-                <VStack
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="flex-start"
-                  gap={"6px"}
-                  p="13px 25px"
-                >
-                  <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                    Total $ of tokens staked
-                  </Text>
-                  <Text color="#e6edf3" fontSize="20px">
-                    5,3100.00
-                  </Text>
-                </VStack>
-                <VStack
-                  gap={"6px"}
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                  // p="13px 25px"
-                >
-                  <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                    Total $ of tokens borrowed
-                  </Text>
-                  <Text color="#e6edf3" fontSize="20px">
-                    5,3100.00
-                  </Text>
-                </VStack>
-              </HStack>
-            ) : (
-              <HStack
-                // width="13.5rem"
-                display="flex"
-                // bgColor="yellow"
-                // flexGrow={1}
-                gap="5rem"
-              >
-                <VStack
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="flex-start"
-                  gap={"6px"}
-                  p="13px 25px"
-                >
-                  <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                    Traders referred
-                  </Text>
-                  <Text color="#e6edf3" fontSize="20px">
-                    5,310
-                  </Text>
-                </VStack>
-                <VStack
-                  gap={"6px"}
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                  // p="13px 25px"
-                >
-                  <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                    <Tooltip
-                      hasArrow
-                      label="Liquidity provided by traders you have referred"
-                      // arrowPadding={-5420}
-                      placement="bottom"
-                      boxShadow="dark-lg"
-                      bg="#010409"
-                      fontSize={"13px"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                      border="1px solid"
-                      borderColor="#2B2F35"
-                      arrowShadowColor="#2B2F35"
-                      // cursor="context-menu"
-                      // marginRight={idx1 === 1 ? "52px" : ""}
-                      // maxW="222px"
-                      // mt="28px"
-                    >
-                      Referees liquidity
-                    </Tooltip>
-                  </Text>
-                  <Text color="#e6edf3" fontSize="20px">
-                    $5,3100.00
-                  </Text>
-                </VStack>
-                <VStack
-                  gap={"6px"}
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                  // p="13px 25px"
-                >
-                  <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                    User slab
-                  </Text>
-                  <Text color="#e6edf3" fontSize="20px">
-                    1
-                  </Text>
-                </VStack>
-              </HStack>
-            )}
-          </HStack>
-        </HStack>
-      </HStack>
-
-      <HStack
-        display="flex"
-        justifyContent="space-between"
-        alignItems="flex-start"
-        flexDirection="row"
-        width="95%"
-        // pr="3rem"
-        mb="1rem"
-        // zIndex="1"
-      >
-        <HStack width="53%" mt="2rem">
-          <Text
-            color="#B1B0B5"
-            fontFamily="Inter"
-            fontSize="14px"
-            fontStyle="normal"
-            fontWeight="400"
-            lineHeight="20px"
-          >
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus 
-            PageMaker including versions of Lorem Ipsum. <br/><br/>dummy text ever since
-            the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only
-            five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.dummy text ever since
-            the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only
-            five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like
-          </Text>
-        </HStack>
-        <HStack width="47%">
-          <VStack width={"100%"}>
-            <Text
-              color=" var(--white, #FFF)"
-              font-family="Inter"
-              font-size=" 14px"
-              font-style=" normal"
-              font-weight=" 700"
-              line-height=" 20px"
-              letter-spacing=" -0.15px"
+                justifyContent="space-between"
+                alignItems="flex-start"
+                flexDirection="row"
+                width="95%"
+                // pr="3rem"
+                mb="1rem"
+            // zIndex="1"
             >
-              points system: Per $1 liquidity
-            </Text>
-
-            <TableContainer
-      // background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-      bg="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-
-      color="white"
-      borderRadius="md"
-      width="100%"
-      display="flex"
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      // bgColor={"red"}
-      // height={"100%"}
-      height={"17rem"}
-      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
-
-      padding={"1rem 2rem 0rem"}
-      overflowX="hidden"
-    // mt={"3rem"}
-    >
-            <Table
-              variant="unstyled"
-              width="100%"
-              height="100%"
-              mt="0.5rem"
-              mb="0.5rem"
-              // bgColor={"blue"}
-              // p={0}
-            >
-              <Thead width={"100%"} height={"5rem"}>
-                <Tr width={"100%"} height="2rem">
-                  {" "}
-                  {columnItems.map((val: any, idx1: any) => (
-                    <Td
-                      key={idx1}
-                      width={idx1<=2? "15%":"55%"}
-                      // maxWidth={`${gap[idx1][idx2]}%`}
-                      fontSize={"12px"}
-                      fontWeight={400}
-                      // textAlign={"left"}
-                      p={0}
-                      // bgColor={"pink"}
-                      // border="1px solid red"
+                <HStack width="53%" mt="2rem">
+                    <Text
+                        color="#B1B0B5"
+                        fontFamily="Inter"
+                        fontSize="14px"
+                        fontStyle="normal"
+                        fontWeight="400"
+                        lineHeight="20px"
                     >
-                      <Text
-                        whiteSpace="pre-wrap"
-                        // overflowWrap="break-word"
-                        width={"100%"}
-                        height={"2rem"}
-                        fontSize="12px"
-                        textAlign={
-                          idx1 == 0 || idx1 == 1
-                            ? "left"
-                            : idx1 == columnItems?.length - 1
-                              ? "center"
-                              : "center"
-                        }
-                        // textAlign={"center"}
-                        // pl={idx1 == 0 ? 2 : idx1 == 1 ? "24%  " : 0}
-                        pr={idx1 == columnItems.length - 1 ? 5 : 0}
-                        color={"#BDBFC1"}
-                        cursor="context-menu"
-                      >
-                        <Tooltip
-                          hasArrow
-                          label={tooltips[idx1]}
-                          // arrowPadding={-5420}
-                          placement={
-                            (idx1 === 0 && "bottom-start") ||
-                            (idx1 === columnItems.length - 1 && "bottom-end") ||
-                            "bottom"
-                          }
-                          rounded="md"
-                          boxShadow="dark-lg"
-                          bg="#02010F"
-                          fontSize={"13px"}
-                          fontWeight={"400"}
-                          borderRadius={"lg"}
-                          padding={"2"}
-                          color="#F0F0F5"
-                          border="1px solid"
-                          borderColor="#23233D"
-                          arrowShadowColor="#2B2F35"
-                          // cursor="context-menu"
-                          // marginRight={idx1 === 1 ? "52px" : ""}
-                          // maxW="222px"
-                          // mt="28px"
+                        Lorem Ipsum is simply dummy text of the printing and typesetting
+                        industry. Lorem Ipsum has been the industry's standard dummy text
+                        ever since the 1500s, when an unknown printer took a galley of type
+                        and scrambled it to make a type specimen book. It has survived not
+                        only five centuries, but also the leap into electronic typesetting,
+                        remaining essentially unchanged. It was popularised in the 1960s
+                        with the release of Letraset sheets containing Lorem Ipsum passages,
+                        and more recently with desktop publishing software like Aldus
+                        PageMaker including versions of Lorem Ipsum. <br /><br />dummy text ever since
+                        the 1500s, when an unknown printer took a galley of type and
+                        scrambled it to make a type specimen book. It has survived not only
+                        five centuries, but also the leap into electronic typesetting,
+                        remaining essentially unchanged. It was popularised in the 1960s
+                        with the release of Letraset sheets containing Lorem Ipsum passages,
+                        and more recently with desktop publishing software like Aldus
+                        PageMaker including versions of Lorem Ipsum.dummy text ever since
+                        the 1500s, when an unknown printer took a galley of type and
+                        scrambled it to make a type specimen book. It has survived not only
+                        five centuries, but also the leap into electronic typesetting,
+                        remaining essentially unchanged. It was popularised in the 1960s
+                        with the release of Letraset sheets containing Lorem Ipsum passages,
+                        and more recently with desktop publishing software like
+                    </Text>
+                </HStack>
+                <HStack width="47%">
+                    <VStack width={"100%"}>
+                        <Text
+                            color=" var(--white, #FFF)"
+                            font-family="Inter"
+                            font-size=" 14px"
+                            font-style=" normal"
+                            font-weight=" 700"
+                            line-height=" 20px"
+                            letter-spacing=" -0.15px"
                         >
-                          {val}
-                        </Tooltip>
-                      </Text>
-                    </Td>
-                  ))}
-                </Tr>{" "}
-              </Thead>
-              <Tbody
-          position="relative"
-          overflowX="hidden"
-        //   display="flex"
-        //   flexDirection="column"
-        //   gap={"1rem"}
-        >
-              <Tr width={"100%"} position='relative'>
-              <Td
-                  
-                      width={"15%"}
-                      // maxWidth={`${gap[idx1][idx2]}%`}
-                      fontSize={"12px"}
-                      fontWeight={400}
-                      // textAlign={"left"}
-                      p={0}
-                      // bgColor={"pink"}
-                      // border="1px solid red"
-                    >
-                      <Text
+                            points system: Per $1 liquidity
+                        </Text>
+
+                        <TableContainer
+                            // background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                            bg="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+
+                            color="white"
+                            borderRadius="md"
                             width="100%"
-                            height="100%"
                             display="flex"
-                            alignItems="center"
                             justifyContent="flex-start"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                      >
-                   Supply
-                   
-                      </Text>
-                    </Td>
+                            alignItems="flex-start"
+                            // bgColor={"red"}
+                            // height={"100%"}
+                            height={"17rem"}
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
 
-                    <Td
-                  
-                  width={"15%"}
-                  // maxWidth={`${gap[idx1][idx2]}%`}
-                  fontSize={"12px"}
-                  fontWeight={400}
-                  // textAlign={"left"}
-                  p={0}
-                  // bgColor={"pink"}
-                  // border="1px solid red"
-                >
-                  <Text
-                    width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3" width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                  >
-               1 point
-               
-                  </Text>
-                </Td>
+                            padding={"1rem 2rem 0rem"}
+                            overflowX="hidden"
+                        // mt={"3rem"}
+                        >
+                            <Table
+                                variant="unstyled"
+                                width="100%"
+                                height="100%"
+                                mt="0.5rem"
+                                mb="0.5rem"
+                            // bgColor={"blue"}
+                            // p={0}
+                            >
+                                <Thead width={"100%"} height={"5rem"}>
+                                    <Tr width={"100%"} height="2rem">
+                                        {" "}
+                                        {columnItems.map((val: any, idx1: any) => (
+                                            <Td
+                                                key={idx1}
+                                                width={idx1 <= 2 ? "15%" : "55%"}
+                                                // maxWidth={`${gap[idx1][idx2]}%`}
+                                                fontSize={"12px"}
+                                                fontWeight={400}
+                                                // textAlign={"left"}
+                                                p={0}
+                                            // bgColor={"pink"}
+                                            // border="1px solid red"
+                                            >
+                                                <Text
+                                                    whiteSpace="pre-wrap"
+                                                    // overflowWrap="break-word"
+                                                    width={"100%"}
+                                                    height={"2rem"}
+                                                    fontSize="12px"
+                                                    textAlign={
+                                                        idx1 == 0 || idx1 == 1
+                                                            ? "left"
+                                                            : idx1 == columnItems?.length - 1
+                                                                ? "center"
+                                                                : "center"
+                                                    }
+                                                    // textAlign={"center"}
+                                                    // pl={idx1 == 0 ? 2 : idx1 == 1 ? "24%  " : 0}
+                                                    pr={idx1 == columnItems.length - 1 ? 5 : 0}
+                                                    color={"#BDBFC1"}
+                                                    cursor="context-menu"
+                                                >
+                                                    <Tooltip
+                                                        hasArrow
+                                                        label={tooltips[idx1]}
+                                                        // arrowPadding={-5420}
+                                                        placement={
+                                                            (idx1 === 0 && "bottom-start") ||
+                                                            (idx1 === columnItems.length - 1 && "bottom-end") ||
+                                                            "bottom"
+                                                        }
+                                                        rounded="md"
+                                                        boxShadow="dark-lg"
+                                                        bg="#02010F"
+                                                        fontSize={"13px"}
+                                                        fontWeight={"400"}
+                                                        borderRadius={"lg"}
+                                                        padding={"2"}
+                                                        color="#F0F0F5"
+                                                        border="1px solid"
+                                                        borderColor="#23233D"
+                                                        arrowShadowColor="#2B2F35"
+                                                    // cursor="context-menu"
+                                                    // marginRight={idx1 === 1 ? "52px" : ""}
+                                                    // maxW="222px"
+                                                    // mt="28px"
+                                                    >
+                                                        {val}
+                                                    </Tooltip>
+                                                </Text>
+                                            </Td>
+                                        ))}
+                                    </Tr>{" "}
+                                </Thead>
+                                <Tbody
+                                    position="relative"
+                                    overflowX="hidden"
+                                //   display="flex"
+                                //   flexDirection="column"
+                                //   gap={"1rem"}
+                                >
+                                    <Tr width={"100%"} position='relative'>
+                                        <Td
 
-                <Td
-                  
-                  width={"15%"}
-                  // maxWidth={`${gap[idx1][idx2]}%`}
-                  fontSize={"12px"}
-                  fontWeight={400}
-                  // textAlign={"left"}
-                  p={0}
-                  // bgColor={"pink"}
-                  // border="1px solid red"
-                >
-                  <Text
-                    width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3" width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                               justifyContent="center"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                  >
-               0.2
-               
-                  </Text>
-                </Td>
+                                            width={"15%"}
+                                            // maxWidth={`${gap[idx1][idx2]}%`}
+                                            fontSize={"12px"}
+                                            fontWeight={400}
+                                            // textAlign={"left"}
+                                            p={0}
+                                        // bgColor={"pink"}
+                                        // border="1px solid red"
+                                        >
+                                            <Text
+                                                width="100%"
+                                                height="100%"
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="flex-start"
+                                                fontWeight="400"
+                                                fontSize="14px"
+                                                color="#E6EDF3"
+                                            >
+                                                Supply
 
-                <Td
-                  
-                  width={"55%"}
-                  // maxWidth={`${gap[idx1][idx2]}%`}
-                  fontSize={"12px"}
-                  fontWeight={400}
-                  // textAlign={"left"}
-                  p={0}
-                  // bgColor={"pink"}
-                  // border="1px solid red"
-                >
-                  <Text
-                    width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3" width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-end"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                  >
-             - 0.1 point if total referred liquidity is ≤$250,000. <br/>
-- 0.2 point if total referred liquidity is >$250,000.
-               
-                  </Text>
-                </Td>
-              </Tr>
+                                            </Text>
+                                        </Td>
 
-              <Tr
-                    style={{
-                      position: "absolute",
-                      // left: "0%",
-                      width: "100%",
-                      height: "1px",
-                      borderBottom: "1px solid #2b2f35",
-                      display: `${"block"}`,
-                    }}
-                  />
+                                        <Td
+
+                                            width={"15%"}
+                                            // maxWidth={`${gap[idx1][idx2]}%`}
+                                            fontSize={"12px"}
+                                            fontWeight={400}
+                                            // textAlign={"left"}
+                                            p={0}
+                                        // bgColor={"pink"}
+                                        // border="1px solid red"
+                                        >
+                                            <Text
+                                                width="100%"
+                                                height="100%"
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="flex-start"
+                                                fontWeight="400"
+                                                fontSize="14px"
+                                                color="#E6EDF3"
+                                            >
+                                                1 point
+
+                                            </Text>
+                                        </Td>
+
+                                        <Td
+
+                                            width={"15%"}
+                                            // maxWidth={`${gap[idx1][idx2]}%`}
+                                            fontSize={"12px"}
+                                            fontWeight={400}
+                                            // textAlign={"left"}
+                                            p={0}
+                                        // bgColor={"pink"}
+                                        // border="1px solid red"
+                                        >
+                                            <Text
+                                                width="100%"
+                                                height="100%"
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="flex-start"
+                                                fontWeight="400"
+                                                fontSize="14px"
+                                                color="#E6EDF3"
+                                            >
+                                                0.2
+
+                                            </Text>
+                                        </Td>
+
+                                        <Td
+
+                                            width={"55%"}
+                                            // maxWidth={`${gap[idx1][idx2]}%`}
+                                            fontSize={"12px"}
+                                            fontWeight={400}
+                                            // textAlign={"left"}
+                                            p={0}
+                                        // bgColor={"pink"}
+                                        // border="1px solid red"
+                                        >
+                                            <Text
+                                                width="100%"
+                                                height="100%"
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="flex-start"
+                                                fontWeight="400"
+                                                fontSize="14px"
+                                                color="#E6EDF3"
+                                            >
+                                                - 0.1 point if total referred liquidity is ≤$250,000. <br />
+                                                - 0.2 point if total referred liquidity is $250,000.
+
+                                            </Text>
+                                        </Td>
+                                    </Tr>
+
+                                    <Tr
+                                        style={{
+                                            position: "absolute",
+                                            // left: "0%",
+                                            width: "100%",
+                                            height: "1px",
+                                            borderBottom: "1px solid #2b2f35",
+                                            display: `${"block"}`,
+                                        }}
+                                    />
 
 
-              <Tr width={"100%"} position='relative'>
-              <Td
-                  
-                      width={"15%"}
-                      // maxWidth={`${gap[idx1][idx2]}%`}
-                      fontSize={"12px"}
-                      fontWeight={400}
-                      // textAlign={"left"}
-                      p={0}
-                      // bgColor={"pink"}
-                      // border="1px solid red"
-                    >
-                      <Text
-                            width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                      >
-                   Supply
-                   
-                      </Text>
-                    </Td>
+                                    <Tr width={"100%"} position='relative'>
+                                        <Td
 
-                    <Td
-                  
-                  width={"15%"}
-                  // maxWidth={`${gap[idx1][idx2]}%`}
-                  fontSize={"12px"}
-                  fontWeight={400}
-                  // textAlign={"left"}
-                  p={0}
-                  // bgColor={"pink"}
-                  // border="1px solid red"
-                >
-                  <Text
-                    width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3" width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                  >
-               1 point
-               
-                  </Text>
-                </Td>
+                                            width={"15%"}
+                                            // maxWidth={`${gap[idx1][idx2]}%`}
+                                            fontSize={"12px"}
+                                            fontWeight={400}
+                                            // textAlign={"left"}
+                                            p={0}
+                                        // bgColor={"pink"}
+                                        // border="1px solid red"
+                                        >
+                                            <Text
+                                                width="100%"
+                                                height="100%"
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="flex-start"
+                                                fontWeight="400"
+                                                fontSize="14px"
+                                                color="#E6EDF3"
+                                            >
+                                                Supply
 
-                <Td
-                  
-                  width={"15%"}
-                  // maxWidth={`${gap[idx1][idx2]}%`}
-                  fontSize={"12px"}
-                  fontWeight={400}
-                  // textAlign={"left"}
-                  p={0}
-                  // bgColor={"pink"}
-                  // border="1px solid red"
-                >
-                  <Text
-                    width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3" width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            textAlign={"center"}
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                  >
-               0.2
-               
-                  </Text>
-                </Td>
+                                            </Text>
+                                        </Td>
 
-                <Td
-                  
-                  width={"55%"}
-                  // maxWidth={`${gap[idx1][idx2]}%`}
-                  fontSize={"12px"}
-                  fontWeight={400}
-                  // textAlign={"left"}
-                  p={0}
-                  // bgColor={"pink"}
-                  // border="1px solid red"
-                >
-                  <Text
-                    width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3" width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-end"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                  >
-             - 0.1 point if total referred liquidity is ≤$250,000. <br/>
-- 0.2 point if total referred liquidity is >$250,000.
-               
-                  </Text>
-                </Td>
-              </Tr>
-              </Tbody>
-            </Table>
-            </TableContainer>
-          </VStack>
-        </HStack>
-      </HStack>
-      
-      <HStack
-        display="flex"
-        justifyContent="space-between"
-        alignItems="flex-start"
-        flexDirection="row"
-        width="95%"
-        // pr="3rem"
-        mb="1rem"
-        mt='2rem'
-        // zIndex="1"
-      >
-        <Text color= "#B1B0B5"
+                                        <Td
 
-font-family= "Inter"
-font-size= "14px"
-font-style= "normal"
-font-weight= "400"
-line-height= "20px" >
+                                            width={"15%"}
+                                            // maxWidth={`${gap[idx1][idx2]}%`}
+                                            fontSize={"12px"}
+                                            fontWeight={400}
+                                            // textAlign={"left"}
+                                            p={0}
+                                        // bgColor={"pink"}
+                                        // border="1px solid red"
+                                        >
+                                            <Text
+                                                width="100%"
+                                                height="100%"
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="flex-start"
+                                                fontWeight="400"
+                                                fontSize="14px"
+                                                color="#E6EDF3"
+                                            >
+                                                1 point
 
-Terms and conditions <br/>
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-</Text>
-        </HStack>
-    </PageCard>
-  );
+                                            </Text>
+                                        </Td>
+
+                                        <Td
+
+                                            width={"15%"}
+                                            // maxWidth={`${gap[idx1][idx2]}%`}
+                                            fontSize={"12px"}
+                                            fontWeight={400}
+                                            // textAlign={"left"}
+                                            p={0}
+                                        // bgColor={"pink"}
+                                        // border="1px solid red"
+                                        >
+                                            <Text
+                                                height="100%"
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="flex-start"
+                                                fontWeight="400"
+                                                fontSize="14px"
+                                                color="#E6EDF3"
+                                                width="100%"
+                                            >
+                                                0.2
+
+                                            </Text>
+                                        </Td>
+
+                                        <Td
+
+                                            width={"55%"}
+                                            // maxWidth={`${gap[idx1][idx2]}%`}
+                                            fontSize={"12px"}
+                                            fontWeight={400}
+                                            // textAlign={"left"}
+                                            p={0}
+                                        // bgColor={"pink"}
+                                        // border="1px solid red"
+                                        >
+                                            <Text
+                                                height="100%"
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="flex-start"
+                                                fontWeight="400"
+                                                fontSize="14px"
+                                                color="#E6EDF3"
+                                                width="100%"
+                                            >
+                                                - 0.1 point if total referred liquidity is ≤$250,000. <br />
+                                                - 0.2 point if total referred liquidity is $250,000.
+
+                                            </Text>
+                                        </Td>
+                                    </Tr>
+                                </Tbody>
+                            </Table>
+                        </TableContainer>
+                    </VStack>
+                </HStack>
+            </HStack>
+
+            <HStack
+                display="flex"
+                justifyContent="space-between"
+                alignItems="flex-start"
+                flexDirection="row"
+                width="95%"
+                // pr="3rem"
+                mb="1rem"
+                mt='2rem'
+            // zIndex="1"
+            >
+                <Text color="#B1B0B5"
+
+                    font-family="Inter"
+                    font-size="14px"
+                    font-style="normal"
+                    font-weight="400"
+                    line-height="20px" >
+
+                    Terms and conditions <br />
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </Text>
+            </HStack>
+        </PageCard>
+    );
 };
 
 export default Referal;
