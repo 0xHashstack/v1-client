@@ -63,6 +63,8 @@ import LeaderboardDashboard from "@/components/layouts/leaderboardDashboard";
 import PersonalStatsDashboard from "@/components/layouts/personalStatsDashboard";
 import CopyIcon from "@/assets/icons/copyIcon";
 import Stats from "@/components/layouts/stats";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { toast } from "react-toastify";
 const Referal = () => {
     const [currentPagination, setCurrentPagination] = useState<number>(1);
     const columnItemsLeaderBoard = [
@@ -204,6 +206,13 @@ const Referal = () => {
         setRefferal(e.target.value);
     }
 
+    const handleCopyClick = async () => {
+      try {
+        await navigator.clipboard.writeText("https://app.hashatack.finance/r/"+refferal);
+      } catch (error) {
+        console.error('Failed to copy text: ', error);
+      }
+    };
     return (
         <PageCard pt="6.5rem">
             {/* <StatsBoard /> */}
@@ -258,7 +267,7 @@ const Referal = () => {
                 <Box mt="3rem" display="flex" flexDirection="column">
                     <Box display="flex" mt="0">
                     <InputGroup size='sm'mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="4rem">
-                        <InputLeftAddon children='https//app.hashatack.finance/r/' height="60px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0" />
+                        <InputLeftAddon children='https://app.hashatack.finance/r/' height="60px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0" />
                         <Input  height="60px" border="none" color="#F0F0F5" value={refferal} paddingInlineStart="0" _focus={{
                         outline: "0",
                         boxShadow: "none",
@@ -266,8 +275,15 @@ const Referal = () => {
                       onChange={handleChange}
                       />
                     </InputGroup>
-                    <Box cursor="pointer">
-                        <CopyIcon/>
+                    <Box cursor="pointer" onClick={()=>{
+                        handleCopyClick();
+                        toast.success("Copied",{
+                            position: toast.POSITION.BOTTOM_RIGHT,
+                        })
+                    }}>
+                        <CopyToClipboard text="Kaisi ho">
+                            <CopyIcon/>
+                        </CopyToClipboard>
                     </Box>
                     </Box>
                     <Box color="#676D9A" fontSize="14px" fontStyle="normal" fontWeight="500" lineHeight="20px" letterSpacing="-0.15px" mt="0.3rem">
