@@ -775,7 +775,7 @@ const BorrowDashboard = ({
                               width="4.6rem"
                             >
                               <Text textAlign="left">
-                                {dollarConversions==true ?numberFormatter(dollarConvertor(borrow?.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)):numberFormatter(borrow?.loanAmountParsed)}
+                                {dollarConversions==true ?"$"+ numberFormatter(dollarConvertor(borrow?.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)):numberFormatter(borrow?.loanAmountParsed)}
                                 {/* {numberFormatter(borrow?.loanAmountParsed)} */}
                                 {/* 0.04534 */}
                               </Text>
@@ -896,7 +896,7 @@ const BorrowDashboard = ({
                           width="4.6rem"
                         >
                           <Text>
-                            {dollarConversions==true ? numberFormatter(dollarConvertor(borrow?.collateralAmountParsed,borrow?.collateralMarket.slice(1),oraclePrices)):numberFormatter(borrow?.collateralAmountParsed)}
+                            {dollarConversions==true ?"$"+  numberFormatter(dollarConvertor(borrow?.collateralAmountParsed,borrow?.collateralMarket.slice(1),oraclePrices)):numberFormatter(borrow?.collateralAmountParsed)}
                             {/* 10,000 */}
                           </Text>
                         </Text>
@@ -1109,7 +1109,7 @@ const BorrowDashboard = ({
                                 ) : allSplit[lower_bound + idx] === "empty" ? (
                                   "-"
                                 ) : (
-                                  dollarConversions==true ?
+                                  dollarConversions==true ?"$"+ 
                                   numberFormatter(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenA,oraclePrices))
                                   +
                                   "/" +
@@ -1124,7 +1124,7 @@ const BorrowDashboard = ({
 
                                 )
                               ) : (
-                                dollarConversions==true ? numberFormatter(dollarConvertor(borrow?.currentLoanAmountParsed,borrow.currentLoanMarket,oraclePrices)):
+                                dollarConversions==true ?"$"+ numberFormatter(dollarConvertor(borrow?.currentLoanAmountParsed,borrow.currentLoanMarket,oraclePrices)):
                                 numberFormatter(borrow?.currentLoanAmountParsed)
                               )}
                             </Text>
@@ -1143,7 +1143,8 @@ const BorrowDashboard = ({
                         // bgColor="red"
                         // pl="3.4rem"
                         >
-                            ${numberFormatter(borrow.loanAmountParsed-borrow.currentLoanAmountParsed)}
+                                { `${borrow.loanAmountParsed-borrow.currentLoanAmountParsed >0 ? "$":"-$"}` +numberFormatter(dollarConvertor(Math.abs(borrow.loanAmountParsed-borrow.currentLoanAmountParsed),borrow?.loanMarket.slice(1),oraclePrices))}
+
 
                           {/* ${} */}
                         </Box></Td>
