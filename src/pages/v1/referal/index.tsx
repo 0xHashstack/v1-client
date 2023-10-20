@@ -76,10 +76,10 @@ const Referal = () => {
         "If Referred (U2)",
     ];
     const tooltips = [
-        "Available markets.",
-        "Market value of the token",
-        "The number of tokens that currently exists in the protocol.",
-        "Annual interest rate earned on supplied funds.",
+        "User Action.",
+        "Direct User",
+        "U1 refer ",
+        "U2 refer",
     ];
     const columnItemsLeaderBoard = [
         "Rank",
@@ -423,7 +423,10 @@ const Referal = () => {
                 <Box mt="3rem" display="flex" flexDirection="column">
                     <Box display="flex" mt="0">
                     <InputGroup size='sm'mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="4rem" >
-                        <InputLeftAddon children='https://app.hashatack.finance/r/' height="60px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0" />
+                    <InputLeftAddon height="60px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
+    https://app.hashtack.finance/r/
+</InputLeftAddon>
+
                         <Input  height="60px" border="none" color="#F0F0F5" value={refferal} paddingInlineStart="0" _focus={{
                         outline: "0",
                         boxShadow: "none",
@@ -500,7 +503,7 @@ const Referal = () => {
                 mb="1rem"
             // zIndex="1"
             >
-                <HStack width="53%" mt="2rem">
+                <HStack width="53%" mt="2rem" mr="1rem">
                     <Text
                         color="#B1B0B5"
                         fontFamily="Inter"
@@ -510,7 +513,7 @@ const Referal = () => {
                         lineHeight="20px"
                     >
                         Lorem Ipsum is simply dummy text of the printing and typesetting
-                        industry. Lorem Ipsum has been the industry's standard dummy text
+                        industry. Lorem Ipsum has been the industrys standard dummy text
                         ever since the 1500s, when an unknown printer took a galley of type
                         and scrambled it to make a type specimen book. It has survived not
                         only five centuries, but also the leap into electronic typesetting,
@@ -533,19 +536,34 @@ const Referal = () => {
                         and more recently with desktop publishing software like
                     </Text>
                 </HStack>
-                <HStack width="47%">
+                <HStack width="47%" ml="1rem" >
                     <VStack width={"100%"}>
-                        <Text
-                            color=" var(--white, #FFF)"
-                            font-family="Inter"
-                            font-size=" 14px"
-                            font-style=" normal"
-                            font-weight=" 700"
-                            line-height=" 20px"
-                            letter-spacing=" -0.15px"
-                        >
-                            points system: Per $1 liquidity
-                        </Text>
+                      
+            <HStack
+ display={"flex"}
+          width="100%"
+                alignItems="flex-start"
+                flexDirection="row"
+                justifyContent="space-between"
+                // pr="3rem"
+                mb="1rem"
+               
+            // zIndex="1"
+            >
+            <Text
+            textAlign={'left'}
+            alignItems="flex-start"
+
+            
+                color=" var(--white, #FFF)"
+                fontFamily="Inter"
+                fontSize=" 14px"
+                fontStyle=" normal"
+                fontWeight=" 700"
+                lineHeight=" 20px"
+                letterSpacing=" -0.15px"
+            >points system: Per $1 liquidity
+            </Text></HStack>
 
                         <TableContainer
                             // background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
@@ -575,7 +593,7 @@ const Referal = () => {
                             // bgColor={"blue"}
                             // p={0}
                             >
-                                <Thead width={"100%"} height={"5rem"}>
+                                <Thead width={"100%"} height={"3rem"}>
                                     <Tr width={"100%"} height="2rem">
                                         {" "}
                                         {columnItems.map((val: any, idx1: any) => (
@@ -717,7 +735,7 @@ const Referal = () => {
                                                 height="100%"
                                                 display="flex"
                                                 alignItems="center"
-                                                justifyContent="flex-start"
+                                                justifyContent="center"
                                                 fontWeight="400"
                                                 fontSize="14px"
                                                 color="#E6EDF3"
@@ -743,7 +761,7 @@ const Referal = () => {
                                                 height="100%"
                                                 display="flex"
                                                 alignItems="center"
-                                                justifyContent="flex-start"
+                                                justifyContent="flex-end"
                                                 fontWeight="400"
                                                 fontSize="14px"
                                                 color="#E6EDF3"
@@ -835,7 +853,7 @@ const Referal = () => {
                                                 height="100%"
                                                 display="flex"
                                                 alignItems="center"
-                                                justifyContent="flex-start"
+                                                justifyContent="center"
                                                 fontWeight="400"
                                                 fontSize="14px"
                                                 color="#E6EDF3"
@@ -861,7 +879,7 @@ const Referal = () => {
                                                 height="100%"
                                                 display="flex"
                                                 alignItems="center"
-                                                justifyContent="flex-start"
+                                                justifyContent="flex-end"
                                                 fontWeight="400"
                                                 fontSize="14px"
                                                 color="#E6EDF3"
@@ -900,7 +918,7 @@ const Referal = () => {
                     line-height="20px" >
 
                     Terms and conditions <br />
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                 </Text>
             </HStack>
         </PageCard>

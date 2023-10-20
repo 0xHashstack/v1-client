@@ -1143,7 +1143,7 @@ const BorrowDashboard = ({
                         // bgColor="red"
                         // pl="3.4rem"
                         >
-                                { `${borrow.loanAmountParsed-borrow.currentLoanAmountParsed >0 ? "$":"-$"}` +numberFormatter(dollarConvertor(Math.abs(borrow.loanAmountParsed-borrow.currentLoanAmountParsed),borrow?.loanMarket.slice(1),oraclePrices))}
+                                { `${borrow.loanAmountParsed-borrow.currentLoanAmountParsed >=0 ? "$":"-$"}` +numberFormatter(dollarConvertor(Math.abs(borrow.loanAmountParsed-borrow.currentLoanAmountParsed),borrow?.loanMarket.slice(1),oraclePrices))}
 
 
                           {/* ${} */}
