@@ -7,6 +7,7 @@ import stakingAbi from "../abis_mainnet/staking_abi.json";
 import supplyABI from "../abis_mainnet/supply_abi.json";
 import governorAbi from "../abis_mainnet/governor_abi.json";
 import comptrollerAbi from "../abis_mainnet/comptroller_abi.json";
+import nftAbi from "../abis_mainnet/nft_soul_abi.json";
 import {
   diamondAddress,
   getProvider,
@@ -132,7 +133,28 @@ export async function getFees(modalFees:any){
     console.log(err,"err in getFees")
   }
 }
-
+export async function getNFTBalance(address:string){
+  try{
+    const provider=getProvider();
+    const nftContract=new Contract(
+      nftAbi,
+      "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      provider
+    )
+    const result=await nftContract.call(
+      "balanceOf",
+      [address],
+      { blockIdentifier: "pending" }
+    )
+    const res = parseAmount(
+      uint256.uint256ToBN(result?.balance).toString(),
+      0
+    );
+    console.log(res,"nft")
+  }catch(err){
+    console.log(err,"err in getNFTBalance")
+  }
+}
 export async function getSupportedPools(
   poolPairAddress: any,
   dapp:any

@@ -255,12 +255,14 @@ const Navbar = ({ validRTokens }: any) => {
           onMouseEnter={() => setContibutionHover(true)}
           onMouseLeave={() => setContibutionHover(false)}
         >
-          <Link href="https://hashstack.crew3.xyz/questboard" target="_blank">
             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
               gap={"8px"}
+              onClick={()=>{
+                router.push('/v1/referal')
+              }}
             >
               {contibutionHover ? (
                 <Image
@@ -280,9 +282,8 @@ const Navbar = ({ validRTokens }: any) => {
                 />
               )}
 
-              <Text fontSize="14px" color="#676D9A">Contribute-2-Earn</Text>
+              <Text fontSize="14px" color="#676D9A">Referal</Text>
             </Box>
-          </Link>
         </Box>
         <Box
           padding="16px 12px"
