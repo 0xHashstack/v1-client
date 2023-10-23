@@ -1113,7 +1113,7 @@ const BorrowDashboard = ({
                                   numberFormatter(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenA,oraclePrices))
                                   +
                                   "/" +
-                                  numberFormatter(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenB,oraclePrices))
+                                  numberFormatter(dollarConvertor(allSplit?.[lower_bound + idx]?.amountB,allSplit?.[lower_bound + idx]?.tokenB,oraclePrices))
                                   :
                                   numberFormatter(
                                     allSplit?.[lower_bound + idx]?.amountA

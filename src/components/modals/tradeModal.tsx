@@ -3312,8 +3312,8 @@ borderWidth:'5px',
                   inputBorrowAmount<=maximumLoanAmount )||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
                   inputBorrowAmount <= currentAvailableReserves &&
                   inputBorrowAmount > 0 &&
-                ((  inputCollateralAmount >= minimumDepositAmount &&
-                  inputCollateralAmount<=maximumDepositAmount)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
+                (( tokenTypeSelected=="Native" ?  inputCollateralAmount >= minimumDepositAmount &&
+                  inputCollateralAmount<=maximumDepositAmount:true)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
                   inputCollateralAmount <= walletBalance &&
                   inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD &&
                   currentDapp != "Select a dapp" &&

@@ -1342,11 +1342,11 @@ const useDataLoader = () => {
         ]
         Promise.allSettled([...promises]).then((val) => {
           const data = {
-            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
-            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
-            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
-            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
-            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : 0.00037,
+            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : 0.006,
+            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : 10,
+            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : 10,
+            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : 10,
           }
           const maxdata = {
             rBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00074,
@@ -1388,11 +1388,11 @@ const useDataLoader = () => {
         ]
         Promise.allSettled([...promises]).then((val) => {
           const data = {
-            dBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
-            dETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
-            dUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
-            dUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
-            dDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+            dBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : 0.001,
+            dETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : 0.018,
+            dUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : 30,
+            dUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : 30,
+            dDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : 30,
           }
           const maxdata = {
             dBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00148,
