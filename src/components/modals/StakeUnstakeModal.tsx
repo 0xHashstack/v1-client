@@ -1590,9 +1590,9 @@ const StakeUnstakeModal = ({
                                 }
                               } else {
                                 if(ans<10){
-                                  setRTokenAmount(ans);
-                                  setInputStakeAmount(ans);
-                                  setDepositAmount(ans);
+                                  setRTokenAmount(parseFloat(ans.toFixed(7)));
+                                  setInputStakeAmount(parseFloat(ans.toFixed(7)));
+                                  setDepositAmount(parseFloat(ans.toFixed(7)));
                                 }else{
                                   ans = Math.round(ans * 100) / 100;
                                   setRTokenAmount(ans);
@@ -2509,7 +2509,7 @@ const StakeUnstakeModal = ({
                               } else {
                                 var ans = (val / 100) * unstakeWalletBalance;
                                 if(ans<10){
-                                  setRTokenToWithdraw(ans);
+                                  setRTokenToWithdraw(parseFloat(ans.toFixed(7)));
                                 }else{
                                   ans = Math.round(ans * 100) / 100;
                                   // dispatch(setInputSupplyAmount(ans))

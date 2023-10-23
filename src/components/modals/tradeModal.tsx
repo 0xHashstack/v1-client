@@ -1713,10 +1713,10 @@ const TradeModal = ({
                           } else {
                             var ans = (val / 100) * walletBalance;
                             if(ans<10){
-                              dispatch(setInputTradeModalCollateralAmount(ans));
-                              setinputCollateralAmount(ans);
-                              setCollateralAmount(ans);
-                              setRTokenAmount(ans);
+                              dispatch(setInputTradeModalCollateralAmount(parseFloat(ans.toFixed(7))));
+                              setinputCollateralAmount(parseFloat(ans.toFixed(7)));
+                              setCollateralAmount(parseFloat(ans.toFixed(7)));
+                              setRTokenAmount(parseFloat(ans.toFixed(7)));
                             }else{
                               ans = Math.round(ans * 100) / 100;
                               dispatch(setInputTradeModalCollateralAmount(ans));
@@ -2316,9 +2316,9 @@ const TradeModal = ({
                               var ans = (val / 100) * currentAvailableReserves;
                             }
                             if(ans<10){
-                              dispatch(setInputTradeModalBorrowAmount(ans));
-                              setinputBorrowAmount(ans);
-                              setLoanAmount(ans);
+                              dispatch(setInputTradeModalBorrowAmount(parseFloat(ans.toFixed(7))));
+                              setinputBorrowAmount(parseFloat(ans.toFixed(7)));
+                              setLoanAmount(parseFloat(ans.toFixed(7)));
                             }else{
                               ans = Math.round(ans * 100) / 100;
                               dispatch(setInputTradeModalBorrowAmount(ans));
