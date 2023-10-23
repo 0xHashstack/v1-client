@@ -1390,8 +1390,8 @@ const BorrowModal = ({
                           dispatch(setInputBorrowModalCollateralAmount(ans));
                           // setRTokenAmount(ans);
                           // setAmount(ans);
-                          setCollateralAmount(ans);
-                          setRTokenAmount(ans);
+                          setCollateralAmount(parseFloat(ans.toFixed(7)));
+                          setRTokenAmount(parseFloat(ans.toFixed(7)));
                         }else{
                           ans = Math.round(ans * 100) / 100;
                           dispatch(setInputBorrowModalCollateralAmount(ans));
@@ -1983,8 +1983,8 @@ const BorrowModal = ({
                       } else {
                         if(ans<10){
                           dispatch(setInputBorrowModalBorrowAmount(ans));
-                          setAmount(ans);
-                          setinputBorrowAmount(ans);
+                          setAmount(parseFloat(ans.toFixed(7)));
+                          setinputBorrowAmount(parseFloat(ans.toFixed(7)));
                         }else{
                           ans = Math.round(ans * 100) / 100;
                           dispatch(setInputBorrowModalBorrowAmount(ans));

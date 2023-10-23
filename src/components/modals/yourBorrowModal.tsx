@@ -3592,9 +3592,9 @@ const YourBorrowModal = ({
                                 }else{
                                   if(ans<10){
                                     dispatch(
-                                      setInputYourBorrowModalRepayAmount(ans)
+                                      setInputYourBorrowModalRepayAmount(parseFloat(ans.toFixed(7)))
                                     );
-                                    setRepayAmount(ans);
+                                    setRepayAmount(parseFloat(ans.toFixed(7)));
                                   }else{
                                     ans = Math.round(ans * 100) / 100;
                                     dispatch(
@@ -5314,9 +5314,9 @@ const YourBorrowModal = ({
                                 setRTokenAmount(walletBalance2);
                               } else {
                                 if(ans<10){
-                                  setinputCollateralAmount(ans);
-                                  setCollateralAmount(ans);
-                                  setRTokenAmount(ans);
+                                  setinputCollateralAmount(parseFloat(ans.toFixed(7)));
+                                  setCollateralAmount(parseFloat(ans.toFixed(7)));
+                                  setRTokenAmount(parseFloat(ans.toFixed(7)));
                                 }else{
                                   ans = Math.round(ans * 100) / 100;
                                   // dispatch(setInputSupplyAmount(ans))

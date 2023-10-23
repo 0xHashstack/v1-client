@@ -1219,8 +1219,8 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                       } else {
                         // ans = Math.round(ans * 100) / 100;
                         if(ans<10){
-                          setDepositAmount(ans);
-                          setinputAmount(ans);
+                          setDepositAmount(parseFloat(ans.toFixed(7)));
+                          setinputAmount(parseFloat(ans.toFixed(7)));
                         }else{
                           ans = Math.round(ans * 100) / 100;
                           setDepositAmount(ans);

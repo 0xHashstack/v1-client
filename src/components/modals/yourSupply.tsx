@@ -1157,8 +1157,8 @@ const YourSupplyModal = ({
                                 setDepositAmount(walletBalance);
                               } else {
                                 if(ans<10){
-                                  setinputSupplyAmount(ans);
-                                  setDepositAmount(ans);
+                                  setinputSupplyAmount(parseFloat(ans.toFixed(7)));
+                                  setDepositAmount(parseFloat(ans.toFixed(7)));
                                 }else{
                                   ans = Math.round(ans * 100) / 100;
                                   // dispatch(setInputSupplyAmount(ans))
@@ -1895,7 +1895,7 @@ const YourSupplyModal = ({
                               } else {
                                 var ans = (val / 100) * withdrawWalletBalance;
                                 if(ans<10){
-                                  setinputWithdrawlAmount(ans);
+                                  setinputWithdrawlAmount(parseFloat(ans.toFixed(7)));
                                 }else{
                                   ans = Math.round(ans * 100) / 100;
                                   // dispatch(setInputSupplyAmount(ans))
