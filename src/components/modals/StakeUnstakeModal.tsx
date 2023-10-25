@@ -107,6 +107,7 @@ const StakeUnstakeModal = ({
   buttonText,
   coin,
   nav,
+  isCorrectNetwork,
   stakeHover,
   setStakeHover,
   validRTokens,
@@ -941,6 +942,8 @@ const StakeUnstakeModal = ({
     <Box>
       {nav ? (
         <Box
+        cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
+
           display="flex"
           justifyContent="space-between"
           alignItems="center"
@@ -955,7 +958,7 @@ const StakeUnstakeModal = ({
               localStorage.setItem("transactionCheck", JSON.stringify(data));
             }
 
-            onOpen();
+           { isCorrectNetwork&& onOpen()}
           }}
           color={router.pathname != "/waitlist" && stakeHover ? "gray" : ""}
         >
@@ -965,7 +968,8 @@ const StakeUnstakeModal = ({
               alt="Picture of the author"
               width="16"
               height="16"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+
             />
           ) : (
             <Image
@@ -973,7 +977,8 @@ const StakeUnstakeModal = ({
               alt="Picture of the author"
               width="16"
               height="16"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+
             />
           )}
           <Box fontSize="14px">
