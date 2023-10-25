@@ -52,6 +52,11 @@ import {
   selectCurrentNetwork,
 
 } from "@/store/slices/readDataSlice";
+interface ExtendedAccountInterface extends AccountInterface {
+  provider?: {
+    chainId: string;
+  };
+}
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -153,6 +158,55 @@ const Navbar = ({ validRTokens }: any) => {
       router.push("/v1/market");
     }
   };
+  const extendedAccount = account as ExtendedAccountInterface;
+  const [isCorrectNetwork, setisCorrectNetwork] = useState(true);
+
+  useEffect(() => {
+    function isCorrectNetwork() {
+      const walletConnected = localStorage.getItem("lastUsedConnector");
+      const network=process.env.NEXT_PUBLIC_NODE_ENV;
+      
+      if (walletConnected == "braavos") {
+        if(network=="testnet"){
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_TESTNET_CHAINID
+          );
+        }else{
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID
+          );
+        }
+      } else if (walletConnected == "argentX") {
+        // Your code here
+        if(network=="testnet"){
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+  
+            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID
+          );
+        }else{
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+  
+            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_MAINNET_CHAINID
+          );
+        }
+      }
+      // console.log("starknetAccount", account?.provider?.chainId);
+    }
+    if ((account && !isCorrectNetwork())) {
+      console.log("Account",account)
+      setisCorrectNetwork(false);
+    } else {
+      setisCorrectNetwork(true);
+    }
+  }, [account]);
   return (
     <HStack
       zIndex="100"
@@ -243,11 +297,11 @@ const Navbar = ({ validRTokens }: any) => {
             <Text fontSize="14px">Dashboard</Text>
           </Box>
         </Box>
-        <Box
+       <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
-          cursor="pointer"
+          cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
           marginBottom="0px"
           // className="button"
           // backgroundColor={"blue"}
@@ -270,7 +324,8 @@ const Navbar = ({ validRTokens }: any) => {
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+
                 />
               ) : (
                 <Image
@@ -278,18 +333,19 @@ const Navbar = ({ validRTokens }: any) => {
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+
                 />
               )}
 
               <Text fontSize="14px" color="#676D9A">Referal</Text>
             </Box>
         </Box>
-        <Box
+   {     <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
-          cursor="pointer"
+          cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
           marginBottom="0px"
           // className="button"
           _hover={{
@@ -334,12 +390,13 @@ const Navbar = ({ validRTokens }: any) => {
           </Box> */}
           <StakeUnstakeModal
             coin={Coins}
+            isCorrectNetwork={isCorrectNetwork}
             nav={true}
             stakeHover={stakeHover}
             setStakeHover={setStakeHover}
             validRTokens={validRTokens}
           />
-        </Box>
+        </Box>}
         {/* {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
           padding="16px 12px"
           fontSize="12px"
@@ -460,7 +517,7 @@ const Navbar = ({ validRTokens }: any) => {
           alignItems="center"
           marginRight="1.2rem"
         >
-          {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID  ?"":          <GetTokensModal
+          {process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" ?"":          <GetTokensModal
             buttonText="Get Tokens"
             height={"2rem"}
             fontSize={"14px"}
@@ -478,7 +535,7 @@ const Navbar = ({ validRTokens }: any) => {
 
           <Box
             borderRadius="6px"
-            cursor="pointer"
+            cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
             margin="0"
             height="2rem"
             border="1px solid #676D9A"
@@ -515,7 +572,8 @@ const Navbar = ({ validRTokens }: any) => {
                 alt="Picture of the author"
                 width="20"
                 height="20"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+
               />
               {/* {router.pathname == "/waitlist" || !transferDepositHover ? (
                 <Image
