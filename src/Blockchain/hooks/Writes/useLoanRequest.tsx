@@ -12,6 +12,8 @@ import { ERC20Abi, diamondAddress } from "../../stark-constants";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
+import { useSelector } from "react-redux";
+import { selectNftBalance } from "@/store/slices/readDataSlice";
 
 const useLoanRequest = () => {
   const { address: account } = useAccount();
@@ -23,12 +25,18 @@ const useLoanRequest = () => {
   // Collateral - rToken
   const [rToken, setRToken] = useState<RToken>("rBTC");
   const [rTokenAmount, setRTokenAmount] = useState<number>(0);
+  const balance=useSelector(selectNftBalance);
 
   // Collateral - native token Market
   const [collateralMarket, setCollateralMarket] = useState<NativeToken>("BTC");
   const [collateralAmount, setCollateralAmount] = useState<number>(0);
 
   const [transLoanRequestHash, setIsLoanRequestHash] = useState("");
+  const [messagehash, setMessageHash] = useState("0x414620902fb859afc50b3fdc61b0de3220835a56c9c78166f57403b715b01aa");
+  const [signature, setSignature] = useState<any>( [
+      '2424746983344360558782209678398788868430455506784152241462455820721485810985',
+      '350876922535438032489743797824407964259448734563995516217243112214147331531'
+    ])
   // const loanRequestTransactionReceipt = useWaitForTransaction({
   //   hash: transLoanRequestHash,
   //   watch: true,
@@ -57,7 +65,7 @@ const useLoanRequest = () => {
     isSuccess: isSuccessLoanRequest,
     status: statusLoanRequest,
   } = useContractWrite({
-    calls: [
+    calls: process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0? [
       {
         contractAddress: tokenAddressMap[collateralMarket] || "",
         entrypoint: "approve",
@@ -80,7 +88,38 @@ const useLoanRequest = () => {
           account,
         ],
       },
-    ],
+      {
+        contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+        entrypoint: "claim_soul_brand",
+        calldata: [
+          messagehash,
+          signature,
+        ],
+      },
+    ]:[
+      {
+        contractAddress: tokenAddressMap[collateralMarket] || "",
+        entrypoint: "approve",
+        calldata: [
+          diamondAddress,
+          etherToWeiBN(collateralAmount, collateralMarket).toString(),
+          "0",
+        ],
+      },
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "loan_request",
+        calldata: [
+          tokenAddressMap[market] || "",
+          etherToWeiBN(amount as number, market).toString(),
+          0,
+          tokenAddressMap[collateralMarket] || "",
+          etherToWeiBN(collateralAmount as number, collateralMarket).toString(),
+          0,
+          account,
+        ],
+      },
+    ]
   });
 
   const {
@@ -95,7 +134,29 @@ const useLoanRequest = () => {
     isSuccess: isSuccessLoanRequestrToken,
     status: statusLoanRequestrToken,
   } = useContractWrite({
-    calls: [
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0? [
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "loan_request_with_rToken",
+        calldata: [
+          tokenAddressMap[market] || "",
+          etherToWeiBN(amount, market).toString(),
+          0,
+          tokenAddressMap[rToken] || "",
+          etherToWeiBN(rTokenAmount, rToken).toString(),
+          0,
+          account,
+        ],
+      },
+      {
+        contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+        entrypoint: "claim_soul_brand",
+        calldata: [
+          messagehash,
+          signature,
+        ],
+      },
+    ]:[
       {
         contractAddress: diamondAddress,
         entrypoint: "loan_request_with_rToken",

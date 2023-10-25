@@ -1915,7 +1915,7 @@ const YourBorrowModal = ({
 
             my="6"
           >
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#676D9A" fontSize="xs">
                   Dapp:{" "}
@@ -1949,7 +1949,7 @@ const YourBorrowModal = ({
                   <Text>Jediswap</Text>
                 </Box>
               </Box>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#676D9A" fontSize="xs">

@@ -67,7 +67,8 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import CopyIcon from "@/assets/icons/copyIcon";
 import Stats from "@/components/layouts/stats";
 import { toast } from "react-toastify";
-const Referal = () => {
+import axios from "axios";
+const Referral = () => {
     const [currentPagination, setCurrentPagination] = useState<number>(1);
     const columnItems = [
         "User Action",
@@ -361,9 +362,20 @@ const Referal = () => {
         setRefferal(e.target.value);
     }
 
-    const handleCopyClick = async () => {
-        try {
-            await navigator.clipboard.writeText("https://app.hashatack.finance/r/" + refferal);
+    const handleCopyClick =  async () => {
+        try {   
+            const a="0x05970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4"
+            await navigator.clipboard.writeText("http://13.229.210.84/" + refferal);
+            axios.post('http://13.229.210.84/shorten', { pseudo_name:refferal,address: a })
+            .then((response) => {
+              console.log(response, "response"); // Log the response from the backend.
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+            toast.success("Copied",{
+                position: toast.POSITION.BOTTOM_RIGHT,
+            })
         } catch (error) {
             console.error('Failed to copy text: ', error);
         }
@@ -424,9 +436,8 @@ const Referal = () => {
                     <Box display="flex" mt="0">
                     <InputGroup size='sm'mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="4rem" >
                     <InputLeftAddon height="60px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
-    https://app.hashtack.finance/r/
-</InputLeftAddon>
-
+                    http://13.229.210.84/
+                    </InputLeftAddon>
                         <Input  height="60px" border="none" color="#F0F0F5" value={refferal} paddingInlineStart="0" _focus={{
                         outline: "0",
                         boxShadow: "none",
@@ -436,9 +447,7 @@ const Referal = () => {
                     </InputGroup>
                     <Box cursor="pointer" onClick={()=>{
                         handleCopyClick();
-                        toast.success("Copied",{
-                            position: toast.POSITION.BOTTOM_RIGHT,
-                        })
+
                     }}>
                         <CopyToClipboard text="Kaisi ho">
                             <CopyIcon/>
@@ -925,4 +934,4 @@ const Referal = () => {
     );
 };
 
-export default Referal;
+export default Referral;

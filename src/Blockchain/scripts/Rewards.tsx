@@ -150,7 +150,7 @@ export async function getNFTBalance(address:string){
       uint256.uint256ToBN(result?.balance).toString(),
       0
     );
-    console.log(res,"nft")
+    return res;
   }catch(err){
     console.log(err,"err in getNFTBalance")
   }

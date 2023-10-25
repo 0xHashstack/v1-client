@@ -11,6 +11,8 @@ import { diamondAddress } from "@/Blockchain/stark-constants";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
 import { L3App } from "../../interfaces/interfaces";
 import { constants } from "@/Blockchain/utils/constants";
+import { useSelector } from "react-redux";
+import { selectNftBalance } from "@/store/slices/readDataSlice";
 
 const useBorrowAndSpend = () => {
   const [loanMarket, setLoanMarket] = useState<NativeToken>("USDT"); // asset
@@ -31,6 +33,12 @@ const useBorrowAndSpend = () => {
 
   const [toMarketLiqA, setToMarketLiqA] = useState<NativeToken>("BTC");
   const [toMarketLiqB, setToMarketLiqB] = useState<NativeToken>("DAI");
+  const balance=useSelector(selectNftBalance);
+  const [messagehash, setMessageHash] = useState("0x414620902fb859afc50b3fdc61b0de3220835a56c9c78166f57403b715b01aa");
+  const [signature, setSignature] = useState<any>( [
+      '2424746983344360558782209678398788868430455506784152241462455820721485810985',
+      '350876922535438032489743797824407964259448734563995516217243112214147331531'
+    ])
 
   // -------------------------- Types --------------------------- //
 
@@ -92,7 +100,41 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpend,
     status: statusBorrowAndSpend,
   } = useContractWrite({
-    calls: [
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0 ? [
+      {
+        contractAddress: tokenAddressMap[collateralMarket],
+        entrypoint: "approve",
+        calldata: [
+          diamondAddress,
+          etherToWeiBN(collateralAmount, collateralMarket).toString(),
+          "0",
+        ],
+      },
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "borrow_and_spend",
+        calldata: [
+          tokenAddressMap[loanMarket],
+          etherToWeiBN(loanAmount, loanMarket).toString(),
+          "0",
+
+          tokenAddressMap[collateralMarket],
+          etherToWeiBN(collateralAmount, collateralMarket).toString(),
+          "0",
+
+          recipient,
+          ...generateCalldata(),
+        ],
+      },
+      {
+        contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+        entrypoint: "claim_soul_brand",
+        calldata: [
+          messagehash,
+          signature,
+        ],
+      },
+    ]:[
       {
         contractAddress: tokenAddressMap[collateralMarket],
         entrypoint: "approve",
@@ -132,7 +174,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpendRToken,
     status: statusBorrowAndSpendRToken,
   } = useContractWrite({
-    calls: {
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0 ?[ {
       contractAddress: diamondAddress,
       entrypoint: "borrow_and_spend_with_rToken",
       calldata: [
@@ -147,6 +189,30 @@ const useBorrowAndSpend = () => {
         ...generateCalldata(),
       ],
     },
+    {
+      contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      entrypoint: "claim_soul_brand",
+      calldata: [
+        messagehash,
+        signature,
+      ],
+    },]:[
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "borrow_and_spend_with_rToken",
+        calldata: [
+          tokenAddressMap[loanMarket],
+          etherToWeiBN(loanAmount, loanMarket).toString(),
+          "0",
+  
+          tokenAddressMap[rToken],
+          etherToWeiBN(rTokenAmount, rToken).toString(),
+          "0",
+          recipient,
+          ...generateCalldata(),
+        ],
+      }
+    ]
   });
 
   return {

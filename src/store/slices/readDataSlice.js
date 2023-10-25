@@ -51,6 +51,8 @@ const initialState = {
   yourMetricsBorrow: null,
   jediSwapPoolsSupported:null,
   mySwapPoolsSupported:null,
+  nftBalance:null,
+  referral:null,
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -249,6 +251,12 @@ export const readDataSlice = createSlice({
     setMySwapPoolsSupported(state,action){
       state.mySwapPoolsSupported=action.payload;
     },
+    setNftBalance(state,action){
+      state.nftBalance=action.payload;
+    },
+    setReferral(state,action){
+      state.referral=action.payload;
+    },
     setFees(state,action){
       state.fees=action.payload;
     },
@@ -312,6 +320,8 @@ export const {
   setMaximumDepositAmounts,
   setMinimumLoanAmounts,
   setMaximumLoanAmounts,
+  setNftBalance,
+  setReferral,
   setJediSwapPoolsSupported,
   setMySwapPoolsSupported,
   setFees
@@ -371,4 +381,6 @@ export const selectMaximumLoanAmounts=(state)=>state.read_data.maxLoanAmounts;
 export const selectJediSwapPoolsSupported = (state) => state.read_data.jediSwapPoolsSupported;
 export const selectMySwapPoolsSupported = (state) => state.read_data.mySwapPoolsSupported;
 export const selectFees=(state)=>state.read_data.fees;
+export const selectNftBalance=(state)=>state.read_data.nftBalance;
+export const selectreferral=(state)=>state.read_data.referral;
 export default readDataSlice.reducer;

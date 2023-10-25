@@ -123,6 +123,7 @@ import {
   setFees,
   setNetAprDeposits,
   setNetAprLoans,
+  setNftBalance,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -154,6 +155,7 @@ import {
   getMaximumLoanAmount,
   getMinimumDepositAmount,
   getMinimumLoanAmount,
+  getNFTBalance,
   getSupportedPools,
   getUserStakingShares,
 } from "@/Blockchain/scripts/Rewards";
@@ -1097,6 +1099,9 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchFees = async () => {
+        if(!address){
+          return;
+        }
         const promises = [
           getFees("get_deposit_request_fee"),
           getFees("get_staking_fee"),
@@ -1104,7 +1109,8 @@ const useDataLoader = () => {
           getFees("get_withdraw_deposit_fee"),
           getFees("get_loan_request_fee"),
           getFees("get_l3_interaction_fee"),
-          getFees("get_loan_repay_fee")
+          getFees("get_loan_repay_fee"),
+          getNFTBalance(address || ""),
         ]
         Promise.allSettled([...promises]).then((val) => {
           const data = {
@@ -1117,9 +1123,12 @@ const useDataLoader = () => {
             l3interaction: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0,
             repayLoan: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0
           }
+          const nft=val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 0;
+          console.log(nft,"nft")
           if (data?.supply == null) {
             return;
           }
+          dispatch(setNftBalance(nft));
           dispatch(setFees(data));
           const count = getTransactionCount();
           dispatch(setFeesCount(count));
@@ -1131,7 +1140,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log(err, "err in fetchFees")
     }
-  }, [transactionRefresh])
+  }, [transactionRefresh,address])
   useEffect(() => {
     try {
       const fetchProtocolStats = async () => {

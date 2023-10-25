@@ -50,6 +50,7 @@ import mixpanel from "mixpanel-browser";
 import {
   resetState,
   selectCurrentNetwork,
+  selectNftBalance,
 
 } from "@/store/slices/readDataSlice";
 const Navbar = ({ validRTokens }: any) => {
@@ -97,7 +98,7 @@ const Navbar = ({ validRTokens }: any) => {
   });
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
-
+  const nftBalance:any=useSelector(selectNftBalance);
   // useEffect(() => {
   //   if(address && address!=accountAddress)
   //   {
@@ -204,7 +205,7 @@ const Navbar = ({ validRTokens }: any) => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
-          color={`${pathname != "/v1/campaign" ? "#00D395" : "#676D9A"}`}
+          color={pathname !== "/v1/campaign" && pathname !== "/v1/referral" ? "#00D395" : "#676D9A"}
           // _hover={{
           //   color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
           // }}
@@ -222,7 +223,7 @@ const Navbar = ({ validRTokens }: any) => {
             alignItems="center"
             gap={"8px"}
           >
-            {router.pathname == "/v1/campaign" ? (
+            {router.pathname == "/v1/campaign" || router.pathname=="/v1/referral" ? (
                 <Image
                   src={hoverDashboardIcon}
                   alt="Picture of the author"
@@ -260,13 +261,16 @@ const Navbar = ({ validRTokens }: any) => {
               justifyContent="space-between"
               alignItems="center"
               gap={"8px"}
+              color={`${pathname == "/v1/referral" ? "#00D395" : "#676D9A"}`}
               onClick={()=>{
-                router.push('/v1/referal')
+                if(nftBalance!=0){
+                  router.push('/v1/referral')
+                }
               }}
             >
-              {contibutionHover ? (
+              {pathname=="/v1/referral" ? (
                 <Image
-                  src={"/contributeEarnIcon.svg"}
+                  src={hoverContributeEarnIcon}
                   alt="Picture of the author"
                   width="16"
                   height="16"
@@ -282,7 +286,7 @@ const Navbar = ({ validRTokens }: any) => {
                 />
               )}
 
-              <Text fontSize="14px" color="#676D9A">Referal</Text>
+              <Text fontSize="14px">Referral</Text>
             </Box>
         </Box>
         <Box
