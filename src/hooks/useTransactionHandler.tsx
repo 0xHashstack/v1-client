@@ -59,7 +59,7 @@ const useTransactionHandler = () => {
       }
       const transaction_hxh = activeTransactions[idx]?.transaction_hash;
       if (
-        transaction_status == "PENDING" ||
+       
         transaction_status == "ACCEPTED_ON_L2"
       ) {
         if (!toastHash.includes(transaction_hxh)) {
@@ -105,7 +105,7 @@ const useTransactionHandler = () => {
         toastHash.push(transaction_hash);
       }
       if (
-        transaction_status == "PENDING" ||
+ 
         transaction_status == "ACCEPTED_ON_L2" ||
         transaction_status == "ACCEPTED_ON_L1" ||
         transaction_status == "REJECTED"

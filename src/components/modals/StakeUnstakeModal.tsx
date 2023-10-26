@@ -67,8 +67,8 @@ import {
 } from "@/store/slices/userAccountSlice";
 import {
   selectFees,
-  selectMaximumDepositAmounts,
-  selectMinimumDepositAmounts,
+
+  
   selectProtocolStats,
   selectStakingShares,
   selectUserDeposits,
@@ -86,7 +86,6 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { getMinimumDepositAmount,getMaximumDepositAmount } from "@/Blockchain/scripts/Rewards";
 
 import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
@@ -108,6 +107,7 @@ const StakeUnstakeModal = ({
   buttonText,
   coin,
   nav,
+  isCorrectNetwork,
   stakeHover,
   setStakeHover,
   validRTokens,
@@ -745,15 +745,8 @@ const StakeUnstakeModal = ({
   const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] = useState(
     !nav ? rcoinValue : "rUSDT"
   );
-  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
-  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
-  const minAmounts=useSelector(selectMinimumDepositAmounts);
-  const maxAmounts=useSelector(selectMaximumDepositAmounts);
-  
-  useEffect(()=>{
-    setMinimumDepositAmount(minAmounts[currentSelectedStakeCoin])
-    setmaximumDepositAmount(maxAmounts[currentSelectedStakeCoin])
-  },[currentSelectedStakeCoin])
+
+
 
   const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] = useState(
     !nav ? rcoinValue : "rUSDT"
@@ -949,6 +942,8 @@ const StakeUnstakeModal = ({
     <Box>
       {nav ? (
         <Box
+        cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
+
           display="flex"
           justifyContent="space-between"
           alignItems="center"
@@ -963,7 +958,7 @@ const StakeUnstakeModal = ({
               localStorage.setItem("transactionCheck", JSON.stringify(data));
             }
 
-            onOpen();
+           { isCorrectNetwork&& onOpen()}
           }}
           color={router.pathname != "/waitlist" && stakeHover ? "gray" : ""}
         >
@@ -973,7 +968,8 @@ const StakeUnstakeModal = ({
               alt="Picture of the author"
               width="16"
               height="16"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+
             />
           ) : (
             <Image
@@ -981,7 +977,8 @@ const StakeUnstakeModal = ({
               alt="Picture of the author"
               width="16"
               height="16"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+
             />
           )}
           <Box fontSize="14px">
@@ -1381,10 +1378,7 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenAmount < 0
                               ? "1px solid #CF222E"
-                              : (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )
-                              ? "1px solid #CF222E"
-                              : (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rtokenWalletBalance==0 && (depositAmount>0&& depositAmount>maximumDepositAmount) )
-                              ? "1px solid #CF222E"
+                     
                               //do max 1209
                               : (rtokenWalletBalance==0 && rTokenAmount <= walletBalance &&rTokenAmount>0)
                               ?"1px solid #00D395"
@@ -1415,19 +1409,17 @@ const StakeUnstakeModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                               placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentSelectedStakeCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentSelectedStakeCoin}`}
+                               placeholder={ `0.01536 ${currentSelectedStakeCoin}`}
                               color={`${
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount >
                                     Number(
                                       getBalance(currentSelectedStakeCoin)
                                     )) ||
-                                ((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) ))
+ 
+                                  rTokenAmount < 0
                                   ? "#CF222E"
-                                  : rTokenAmount < 0
-                                  ? "#CF222E"
-                                  : ((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount>maximumDepositAmount) ))
-                                  ? "#CF222E"
+
                                   : rTokenAmount == 0
                                   ? "white"
                                   : "#00D395"
@@ -1460,10 +1452,7 @@ const StakeUnstakeModal = ({
                                 : rTokenAmount < 0
 
                                 ? "#CF222E"
-                                :((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) )) 
-                                ? "#CF222E"
-                                :((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount>maximumDepositAmount) )) 
-                                ? "#CF222E"
+                         
                                 : rTokenAmount == 0
                                 ? "#4D59E8"
                                 : "#00D395"
@@ -1493,8 +1482,8 @@ const StakeUnstakeModal = ({
                             Number(getBalance(currentSelectedStakeCoin))) ||
                         (rtokenWalletBalance == 0 &&
                           rTokenAmount > walletBalance) ||
-                          (rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) )||
-                          ( rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0 && depositAmount>maximumDepositAmount))||
+
+
                         rTokenAmount < 0 ? (
                           <Text
                             display="flex"
@@ -1515,10 +1504,7 @@ const StakeUnstakeModal = ({
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount > walletBalance)
                                   ? "Amount exceeds balance"
-                                  :(rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) )
-                                  ? `Less than min amount`
-                                  :(rtokenWalletBalance==0 && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && rTokenAmount >maximumDepositAmount) 
-                                  ? `More than max amount`
+                           
                                   : "Invalid Input"}{" "}
                               </Text>
                             </Text>
@@ -1609,9 +1595,9 @@ const StakeUnstakeModal = ({
                                 }
                               } else {
                                 if(ans<10){
-                                  setRTokenAmount(ans);
-                                  setInputStakeAmount(ans);
-                                  setDepositAmount(ans);
+                                  setRTokenAmount(parseFloat(ans.toFixed(7)));
+                                  setInputStakeAmount(parseFloat(ans.toFixed(7)));
+                                  setDepositAmount(parseFloat(ans.toFixed(7)));
                                 }else{
                                   ans = Math.round(ans * 100) / 100;
                                   setRTokenAmount(ans);
@@ -2039,7 +2025,7 @@ const StakeUnstakeModal = ({
                             }`}
                           </Button>
                         )
-                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance && (process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||rTokenAmount>=minimumDepositAmount) &&(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||rTokenAmount<=maximumDepositAmount) ? (
+                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (
@@ -2528,7 +2514,7 @@ const StakeUnstakeModal = ({
                               } else {
                                 var ans = (val / 100) * unstakeWalletBalance;
                                 if(ans<10){
-                                  setRTokenToWithdraw(ans);
+                                  setRTokenToWithdraw(parseFloat(ans.toFixed(7)));
                                 }else{
                                   ans = Math.round(ans * 100) / 100;
                                   // dispatch(setInputSupplyAmount(ans))

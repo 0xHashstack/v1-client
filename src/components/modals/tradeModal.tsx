@@ -1713,10 +1713,10 @@ const TradeModal = ({
                           } else {
                             var ans = (val / 100) * walletBalance;
                             if(ans<10){
-                              dispatch(setInputTradeModalCollateralAmount(ans));
-                              setinputCollateralAmount(ans);
-                              setCollateralAmount(ans);
-                              setRTokenAmount(ans);
+                              dispatch(setInputTradeModalCollateralAmount(parseFloat(ans.toFixed(7))));
+                              setinputCollateralAmount(parseFloat(ans.toFixed(7)));
+                              setCollateralAmount(parseFloat(ans.toFixed(7)));
+                              setRTokenAmount(parseFloat(ans.toFixed(7)));
                             }else{
                               ans = Math.round(ans * 100) / 100;
                               dispatch(setInputTradeModalCollateralAmount(ans));
@@ -2316,9 +2316,9 @@ const TradeModal = ({
                               var ans = (val / 100) * currentAvailableReserves;
                             }
                             if(ans<10){
-                              dispatch(setInputTradeModalBorrowAmount(ans));
-                              setinputBorrowAmount(ans);
-                              setLoanAmount(ans);
+                              dispatch(setInputTradeModalBorrowAmount(parseFloat(ans.toFixed(7))));
+                              setinputBorrowAmount(parseFloat(ans.toFixed(7)));
+                              setLoanAmount(parseFloat(ans.toFixed(7)));
                             }else{
                               ans = Math.round(ans * 100) / 100;
                               dispatch(setInputTradeModalBorrowAmount(ans));
@@ -3312,8 +3312,8 @@ borderWidth:'5px',
                   inputBorrowAmount<=maximumLoanAmount )||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
                   inputBorrowAmount <= currentAvailableReserves &&
                   inputBorrowAmount > 0 &&
-                ((  inputCollateralAmount >= minimumDepositAmount &&
-                  inputCollateralAmount<=maximumDepositAmount)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
+                (( tokenTypeSelected=="Native" ?  inputCollateralAmount >= minimumDepositAmount &&
+                  inputCollateralAmount<=maximumDepositAmount:true)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
                   inputCollateralAmount <= walletBalance &&
                   inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD &&
                   currentDapp != "Select a dapp" &&

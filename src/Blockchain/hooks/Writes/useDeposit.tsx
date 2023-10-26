@@ -10,11 +10,24 @@ import { ERC20Abi, diamondAddress } from "../../stark-constants";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
+import { getNFTBalance } from "@/Blockchain/scripts/Rewards";
+import { selectMessageHash, selectNftBalance, selectSignature, selectUserType, setBlock } from "@/store/slices/readDataSlice";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const useDeposit = () => {
   const { address: account } = useAccount();
   const [depositAmount, setDepositAmount] = useState<number>(0);
   const [asset, setAsset] = useState<Token | any>("USDT");
+  const balance=useSelector(selectNftBalance)
+  const user=useSelector(selectUserType);
+  // const getdata=async()=>{
+  //   const balance=getNFTBalance(account || "");
+  //   setbalance(balance);
+  // }
+
+  const messagehash=useSelector(selectMessageHash)
+  const signature=useSelector(selectSignature)
   //   const [depositTransHash, setDepositTransHash] = useState("");
 
   //   const recieptData = useWaitForTransaction({ hash: depositTransHash });
@@ -31,7 +44,7 @@ const useDeposit = () => {
     isSuccess: isSuccessDeposit,
     status: statusDeposit,
   } = useContractWrite({
-    calls: [
+    calls:  balance==0 && user=="U1" ?[
       {
         contractAddress: tokenAddressMap[asset] || "",
         entrypoint: "approve",
@@ -51,7 +64,36 @@ const useDeposit = () => {
           account,
         ],
       },
-    ],
+      {
+        contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+        entrypoint: "claim_soul_brand",
+        calldata: [
+          messagehash,
+          signature,
+        ],
+      },
+    ]:[
+      {
+        contractAddress: tokenAddressMap[asset] || "",
+        entrypoint: "approve",
+        calldata: [
+          diamondAddress,
+          etherToWeiBN(depositAmount, asset).toString(),
+          "0",
+        ],
+      },
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "deposit",
+        calldata: [
+          tokenAddressMap[asset],
+          etherToWeiBN(depositAmount, asset).toString(),
+          0,
+          account,
+        ],
+      },
+      
+    ]
   });
 
   const {
@@ -66,7 +108,7 @@ const useDeposit = () => {
     isSuccess: isSuccessDepositStake,
     status: statusDepositStake,
   } = useContractWrite({
-    calls: [
+    calls: balance==0 && user=="U1" ?[
       {
         contractAddress: tokenAddressMap[asset] || "",
         entrypoint: "approve",
@@ -86,7 +128,35 @@ const useDeposit = () => {
           account,
         ],
       },
-    ],
+      {
+        contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+        entrypoint: "claim_soul_brand",
+        calldata: [
+          messagehash,
+          signature,
+        ],
+      },
+    ]:[
+      {
+        contractAddress: tokenAddressMap[asset] || "",
+        entrypoint: "approve",
+        calldata: [
+          diamondAddress,
+          etherToWeiBN(depositAmount, asset).toString(),
+          "0",
+        ],
+      },
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "deposit_and_stake",
+        calldata: [
+          tokenAddressMap[asset],
+          etherToWeiBN(depositAmount, asset).toString(),
+          "0",
+          account,
+        ],
+      },
+    ]
   });
 
 

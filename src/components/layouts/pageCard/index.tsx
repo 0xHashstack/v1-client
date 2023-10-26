@@ -14,6 +14,10 @@ import {
   selectOraclePrices,
   selectProtocolReserves,
   selectNetWorth,
+  selectreferral,
+  setMessageHash,
+  setSignature,
+  selectUserType,
 } from "@/store/slices/readDataSlice";
 import {
   selectUserLoans,
@@ -30,6 +34,7 @@ import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { AccountInterface } from "starknet";
 import FeedbackModal from "@/components/modals/feedbackModal";
 import InfoIcon from "@/assets/icons/infoIcon";
+import axios from "axios";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -120,6 +125,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     }
   }, [account]);
   const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
+  const ref=useSelector(selectreferral)
   // useEffect(() => {
   //   const loan = async () => {
   //     try {
@@ -177,19 +183,24 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //     }
   //   }
   // }, []);
+  const [whitelisted, setWhitelisted] = useState(true)
+  const [uniqueToken, setUniqueToken] = useState("")
+  const [referralLinked, setRefferalLinked] = useState(false)
+  const userType=useSelector(selectUserType)
+  const dispatch=useDispatch();
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
-      const network=process.env.NEXT_PUBLIC_NODE_ENV;
-      
+      const network = process.env.NEXT_PUBLIC_NODE_ENV;
+
       if (walletConnected == "braavos") {
-        if(network=="testnet"){
+        if (network == "testnet") {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
             extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_TESTNET_CHAINID
           );
-        }else{
+        } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
@@ -198,31 +209,93 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         }
       } else if (walletConnected == "argentX") {
         // Your code here
-        if(network=="testnet"){
+        if (network == "testnet") {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-  
+
             extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID
           );
-        }else{
+        } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-  
+
             extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_MAINNET_CHAINID
           );
         }
       }
       // console.log("starknetAccount", account?.provider?.chainId);
     }
-    if ((account && !isCorrectNetwork())) {
-      console.log("Account",account)
-      setRender(false);
-    } else {
-      setRender(true);
+    const isWhiteListed = async () => {
+      try {
+        if (!address) {
+          return;
+        }
+        const url = `http://13.229.210.84/is-whitelisted/${address}`;
+        const response = await axios.get(url);
+        if(response){
+          setWhitelisted(response.data?.isWhitelisted);
+          if(userType=="U1"){
+            axios.post('http://13.229.210.84/nft-sign', { address: address })
+            .then((response) => {
+              if(response){
+                if(response){
+                  dispatch(setMessageHash(response?.data?.msg_hash))
+                  dispatch(setSignature(response?.data?.signature))
+                }
+              }
+              console.log(response, "hash"); // Log the response from the backend.
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+          }
+        }
+      } catch (err) {
+        console.log(err, "err in whitelist")
+      }
     }
-  }, [account]);
+    isWhiteListed()
+    
+    const referal=async()=>{
+      try{
+        if(ref){
+          const response=await axios.get(`http://13.229.210.84/get_token/${ref}`);
+          console.log(response?.data,"refer")
+          if(response){
+            axios.post('http://13.229.210.84/link-referral', { address: address },{
+              headers:{
+                "reftoken":response.data
+              }
+            })
+            .then((response) => {
+              setRefferalLinked(response?.data?.success)
+              console.log(response, "linked"); // Log the response from the backend.
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+          }
+          console.log(response.data,"token")
+          setUniqueToken(response.data);
+        }
+      }catch(err){
+        console.log(err,"err in token")
+      }
+
+    }
+    referal();
+    if ((account && !isCorrectNetwork())) {
+        setRender(false);
+    } else {
+      if( !whitelisted){
+        setRender(false);
+      }else{
+        setRender(true);
+      }
+    }
+  }, [account,whitelisted,referralLinked]);
 
   const [validRTokens, setValidRTokens] = useState([]);
   const userDepositsRedux = useSelector(selectUserDeposits);
@@ -420,22 +493,22 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     <>
       {render ? (
         <>
-        <Box   background={`
+          <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
             radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
             black
-          `}  position={'fixed'} zIndex={3} >
-          <Navbar  validRTokens={validRTokens} />
+          `} position={'fixed'} zIndex={3} >
+            <Navbar validRTokens={validRTokens} />
           </Box>
-               <Box position={'fixed'} zIndex={0.5}>
-                <FeedbackModal />
-            </Box> 
+          <Box position={'fixed'} zIndex={0.5}>
+            <FeedbackModal />
+          </Box>
           <Stack
-         zIndex={1}
-          
+            zIndex={1}
+
             alignItems="center"
             minHeight={"100vh"}
-            
+
             pt="8rem"
             background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.15), transparent) top left,
@@ -493,12 +566,12 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         </>
       ) : (
         <>
-        <Box   background={`
+          <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
             radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
             black
-          `}  position={'fixed'} zIndex={3} >
-          <Navbar  validRTokens={validRTokens} />
+          `} position={'fixed'} zIndex={3} >
+            <Navbar validRTokens={validRTokens} />
           </Box>
           <Stack
             alignItems="center"
@@ -510,9 +583,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             {...rest}
           >
             <Box>
-              <Text color="white" fontSize="25px">
-                Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"Goerli":"Mainnet"} and refresh
-              </Text>
+              {(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" &&!whitelisted)
+                ? <Text color="white" fontSize="25px">
+                  You are successfully added to our waitlist
+                </Text> : <Text color="white" fontSize="25px">
+                  Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Goerli" : "Mainnet"} and refresh
+                </Text>
+              }
+
             </Box>
           </Stack>
         </>

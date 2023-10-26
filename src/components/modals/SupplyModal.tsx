@@ -93,8 +93,8 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
-import { getFees, getMaximumDepositAmount, getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectNftBalance, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
+import { getFees, getMaximumDepositAmount, getMinimumDepositAmount, getNFTBalance } from "@/Blockchain/scripts/Rewards";
 import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
@@ -672,7 +672,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
     setMinimumDepositAmount(minAmounts["r"+currentSelectedCoin])
     setmaximumDepositAmount(maxAmounts["r"+currentSelectedCoin])
   },[currentSelectedCoin,minAmounts,maxAmounts])
-  
+  // console.log(nft,"nft")
   // useEffect(()=>{
   //     const data=useSelector(selectMinimumDepositAmounts);
   //     setMinimumDepositAmount(data(currentSelectedCoin));
@@ -1219,8 +1219,8 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                       } else {
                         // ans = Math.round(ans * 100) / 100;
                         if(ans<10){
-                          setDepositAmount(ans);
-                          setinputAmount(ans);
+                          setDepositAmount(parseFloat(ans.toFixed(7)));
+                          setinputAmount(parseFloat(ans.toFixed(7)));
                         }else{
                           ans = Math.round(ans * 100) / 100;
                           setDepositAmount(ans);

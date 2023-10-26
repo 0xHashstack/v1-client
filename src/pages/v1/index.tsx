@@ -28,7 +28,7 @@ import {
   selectWalletBalance,
   setAccount,
 } from "@/store/slices/userAccountSlice";
-import { setTransactionRefresh } from "@/store/slices/readDataSlice";
+import { setReferral, setTransactionRefresh } from "@/store/slices/readDataSlice";
 import Banner from "@/components/uiElements/loaders/Banner";
 import Banner2 from "@/components/uiElements/loaders/Banner2";
 import useTransactionRefresh from "@/hooks/useTransactionRefresh";
@@ -118,6 +118,10 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem("connected", "");
   }, []);
+  const { ref } = router.query;
+    if(ref){
+      dispatch(setReferral(ref));
+    }
   useEffect(() => {
     // alert(status)
     // const storedAccount = localStorage.getItem("account");

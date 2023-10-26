@@ -123,6 +123,9 @@ import {
   setFees,
   setNetAprDeposits,
   setNetAprLoans,
+  setNftBalance,
+  setUserType,
+  setExisitingLink,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -154,6 +157,7 @@ import {
   getMaximumLoanAmount,
   getMinimumDepositAmount,
   getMinimumLoanAmount,
+  getNFTBalance,
   getSupportedPools,
   getUserStakingShares,
 } from "@/Blockchain/scripts/Rewards";
@@ -1097,6 +1101,9 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchFees = async () => {
+        if(!address){
+          return;
+        }
         const promises = [
           getFees("get_deposit_request_fee"),
           getFees("get_staking_fee"),
@@ -1104,7 +1111,8 @@ const useDataLoader = () => {
           getFees("get_withdraw_deposit_fee"),
           getFees("get_loan_request_fee"),
           getFees("get_l3_interaction_fee"),
-          getFees("get_loan_repay_fee")
+          getFees("get_loan_repay_fee"),
+          getNFTBalance(address || ""),
         ]
         Promise.allSettled([...promises]).then((val) => {
           const data = {
@@ -1117,13 +1125,24 @@ const useDataLoader = () => {
             l3interaction: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0,
             repayLoan: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0
           }
+          const nft=val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 0;
+          console.log(nft,"nft")
           if (data?.supply == null) {
             return;
           }
+          dispatch(setNftBalance(nft));
           dispatch(setFees(data));
           const count = getTransactionCount();
           dispatch(setFeesCount(count));
         })
+        const dataUserType=await axios.get(`http://13.229.210.84/get-user-type/${address}`);
+        const dataExisitingLink=await axios.get(`http://13.229.210.84/get-ref-link/${address}`)
+        if(dataUserType){
+          dispatch(setUserType(dataUserType?.data?.user_type))
+        }
+        if(dataExisitingLink){
+          dispatch(setExisitingLink(dataExisitingLink?.data?.ref))
+        }
       }
       if (feesCount < transactionRefresh) {
         fetchFees();
@@ -1131,7 +1150,7 @@ const useDataLoader = () => {
     } catch (err) {
       console.log(err, "err in fetchFees")
     }
-  }, [transactionRefresh])
+  }, [transactionRefresh,address])
   useEffect(() => {
     try {
       const fetchProtocolStats = async () => {
@@ -1342,11 +1361,11 @@ const useDataLoader = () => {
         ]
         Promise.allSettled([...promises]).then((val) => {
           const data = {
-            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
-            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
-            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
-            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
-            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+            rBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : 0.00037,
+            rETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : 0.006,
+            rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : 10,
+            rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : 10,
+            rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : 10,
           }
           const maxdata = {
             rBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00074,
@@ -1388,11 +1407,11 @@ const useDataLoader = () => {
         ]
         Promise.allSettled([...promises]).then((val) => {
           const data = {
-            dBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : null,
-            dETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : null,
-            dUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
-            dUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
-            dDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+            dBTC: val?.[0]?.status == "fulfilled" ? val?.[0]?.value : 0.001,
+            dETH: val?.[1]?.status == "fulfilled" ? val?.[1]?.value : 0.018,
+            dUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : 30,
+            dUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : 30,
+            dDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : 30,
           }
           const maxdata = {
             dBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00148,

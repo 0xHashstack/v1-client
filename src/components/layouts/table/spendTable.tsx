@@ -64,6 +64,8 @@ import AlertTrade from "@/assets/icons/alertTrade";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import LowhealthFactor from "@/assets/icons/lowhealthFactor";
+import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -633,9 +635,8 @@ const SpendTable = () => {
                               item?.loanId == borrow?.loanId
                           )?.loanHealth) > 1.5      ?                   
                         <Box
-                          width="48px"
-                          height="18px"
-                          padding="6px 12px"
+                          width="68px"
+                          height="10px"
                           // pl="45%"
                           fontWeight="400"
                           borderRadius="100px"
@@ -645,31 +646,9 @@ const SpendTable = () => {
                         </Box>
                         :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.2 &&
                         avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.5) ?
-                        <Box
-                        width="48px"
-                        height="18px"
-                        padding="6px 12px"
-                        // pl="45%"
-                        fontWeight="400"
-                        borderRadius="100px"
-                        background="linear-gradient(90deg, #00D395 -614.07%, #D97008 44.96%, #CF222E 498.06%)"
-                      >
-                        {/* {checkGap(idx1, idx2)} */}
-
-                      </Box>
+                        <MediumHeathFactor/>
                       :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.2 ) ?
-                      <Box
-                      width="48px"
-                      height="18px"
-                      padding="6px 12px"
-                      // pl="45%"
-                      fontWeight="400"
-                      borderRadius="100px"
-                      background=" linear-gradient(90deg, #00D395 -690.14%, #D97008 -278.32%, #CF222E 4.82%)"
-                    >
-                      {/* {checkGap(idx1, idx2)} */}
-
-                    </Box>
+                      <LowhealthFactor/>
                         :"":<Skeleton
                         width="6rem"
                         height="1.2rem"

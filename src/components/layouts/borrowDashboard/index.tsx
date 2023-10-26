@@ -275,7 +275,7 @@ const BorrowDashboard = ({
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
 
-  // const reduxProtocolStats = useSelector(selectProtocolStats);
+  const reduxProtocolStats = useSelector(selectProtocolStats);
   const oraclePrices = useSelector(selectOraclePrices);
 
   // useEffect(() => {
@@ -569,19 +569,18 @@ const BorrowDashboard = ({
     >
       <Box
         position="fixed"
-        right="40"
+        right="20"
         display="flex"
       >
         <Box
         mr="0.3rem"
-        mt="0.05rem"
+        mt="0.09rem"
         cursor="pointer"
         onClick={()=>{
           setDollarConversions(!dollarConversions)
         }}
         >
           {dollarConversions ==true ?<DollarActiveRadioButton/>:<DollarNonActiveRadioButton/>}
-        
         </Box>
         <Text
           color="#F0F0F5"
@@ -676,7 +675,6 @@ const BorrowDashboard = ({
         >
           {Borrows?.slice(lower_bound, upper_bound + 1).map(
             (borrow: any, idx: any) => {
-              console.log("faisal coin check", borrow.l3App);
               // borrowIDCoinMap.push([coin.id, coin?.name]);
               return (
                 <>
@@ -1143,10 +1141,15 @@ const BorrowDashboard = ({
                         // bgColor="red"
                         // pl="3.4rem"
                         >
-                                { `${borrow.loanAmountParsed-borrow.currentLoanAmountParsed >0 ? "$":"-$"}` +numberFormatter(dollarConvertor(Math.abs(borrow.loanAmountParsed-borrow.currentLoanAmountParsed),borrow?.loanMarket.slice(1),oraclePrices))}
+                          {borrow.loanAmountParsed-borrow.currentLoanAmountParsed >=0 ? "$":"-$"}
+                          {borrow.spendType=="UNSPENT" ?numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)-
+                          (reduxProtocolStats.find(
+                            (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                          )?.exchangeRateDTokenToUnderlying*
+                          dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)))): borrow.spendType == "LIQUIDITY" ? numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)-(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenA,oraclePrices)+dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenB,oraclePrices)))):numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)-dollarConvertor(borrow.currentLoanAmountParsed,borrow?.currentLoanMarket,oraclePrices)))}
 
-
-                          {/* ${} */}
+                                 {/* { `${borrow.loanAmountParsed-borrow.currentLoanAmountParsed >=0 ? "$":"-$"}` +borrow.spendType == "LIQUIDITY" ?:numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)-dollarConvertor(borrow.currentLoanAmountParsed,borrow?.currentLoanMarket,oraclePrices)))}
+                        </Box></Td> */}
                         </Box></Td>
                     <Td
                       width={"12.5%"}
@@ -1211,7 +1214,7 @@ const BorrowDashboard = ({
                         alignItems="center"
                         justifyContent="flex-end"
                         fontWeight="400"
-                        pr={6}
+                        // pr={6}
                         onClick={() => {
                           setCurrentBorrowId1("ID - " + borrow.loanId);
                           setCurrentBorrowMarketCoin1(borrow.loanMarket);
