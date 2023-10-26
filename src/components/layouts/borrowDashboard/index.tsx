@@ -548,29 +548,24 @@ const BorrowDashboard = ({
       </Box>
     </>
   ) : upper_bound >= lower_bound && Borrows && Borrows?.length > 0 ? (
-    <TableContainer
-      // background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-      bg="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-
-      color="white"
-      borderRadius="md"
-      w={width}
-      display="flex"
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      // bgColor={"red"}
-      // height={"100%"}
-      height={"37rem"}
-      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
-
-      padding={"1rem 2rem 0rem"}
-      overflowX="hidden"
-    // mt={"3rem"}
+    <Box
+    bg="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+    color="white"
+    borderRadius="md"
+    w={width}
+    display="flex"
+    flexDirection="column"
+    // bgColor={"red"}
+    // height={"100%"}
+    height={"40rem"}
+    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
+    padding={"1rem 2rem 0rem"}
+    overflowX="hidden"
     >
-      <Box
-        position="fixed"
-        right="20"
+            <Box
+        width="100%"
         display="flex"
+        justifyContent="flex-end"
       >
         <Box
         mr="0.3rem"
@@ -593,11 +588,30 @@ const BorrowDashboard = ({
           Convert to Dollar value
         </Text>
       </Box>
+
+    <TableContainer
+      // background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+      // bg="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+    bg="transparent"
+      color="white"
+      borderRadius="md"
+      w="100%"
+      display="flex"
+      justifyContent="flex-start"
+      alignItems="flex-start"
+      // bgColor={"red"}
+      // height={"100%"}
+      height={"37rem"}
+      // border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
+      // padding={"1rem 2rem 0rem"}
+
+      overflow="none"
+    // mt={"3rem"}
+    >
       <Table
         variant="unstyled"
         width="100%"
         height="100%"
-        mt="0.5rem"
         mb="0.5rem"
       // bgColor={"blue"}
       // p={0}
@@ -1305,6 +1319,7 @@ const BorrowDashboard = ({
         </Tbody>
       </Table>
     </TableContainer>
+    </Box>
   ) : (
     <>
       {showEmptyNotification && (
