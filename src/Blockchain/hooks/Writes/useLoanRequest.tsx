@@ -13,7 +13,7 @@ import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { useSelector } from "react-redux";
-import { selectNftBalance } from "@/store/slices/readDataSlice";
+import { selectMessageHash, selectNftBalance, selectSignature, selectUserType } from "@/store/slices/readDataSlice";
 
 const useLoanRequest = () => {
   const { address: account } = useAccount();
@@ -32,11 +32,9 @@ const useLoanRequest = () => {
   const [collateralAmount, setCollateralAmount] = useState<number>(0);
 
   const [transLoanRequestHash, setIsLoanRequestHash] = useState("");
-  const [messagehash, setMessageHash] = useState("0x414620902fb859afc50b3fdc61b0de3220835a56c9c78166f57403b715b01aa");
-  const [signature, setSignature] = useState<any>( [
-      '2424746983344360558782209678398788868430455506784152241462455820721485810985',
-      '350876922535438032489743797824407964259448734563995516217243112214147331531'
-    ])
+  const user=useSelector(selectUserType)
+  const messagehash=useSelector(selectMessageHash)
+  const signature=useSelector(selectSignature)
   // const loanRequestTransactionReceipt = useWaitForTransaction({
   //   hash: transLoanRequestHash,
   //   watch: true,
@@ -65,7 +63,7 @@ const useLoanRequest = () => {
     isSuccess: isSuccessLoanRequest,
     status: statusLoanRequest,
   } = useContractWrite({
-    calls: process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0? [
+    calls: process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0 &&user=="U1"? [
       {
         contractAddress: tokenAddressMap[collateralMarket] || "",
         entrypoint: "approve",
@@ -134,7 +132,7 @@ const useLoanRequest = () => {
     isSuccess: isSuccessLoanRequestrToken,
     status: statusLoanRequestrToken,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0? [
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0 && user=="U1"? [
       {
         contractAddress: diamondAddress,
         entrypoint: "loan_request_with_rToken",

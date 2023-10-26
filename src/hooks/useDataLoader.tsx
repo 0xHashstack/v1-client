@@ -124,6 +124,8 @@ import {
   setNetAprDeposits,
   setNetAprLoans,
   setNftBalance,
+  setUserType,
+  setExisitingLink,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -1133,6 +1135,14 @@ const useDataLoader = () => {
           const count = getTransactionCount();
           dispatch(setFeesCount(count));
         })
+        const dataUserType=await axios.get(`http://13.229.210.84/get-user-type/${address}`);
+        const dataExisitingLink=await axios.get(`http://13.229.210.84/get-ref-link/${address}`)
+        if(dataUserType){
+          dispatch(setUserType(dataUserType?.data?.user_type))
+        }
+        if(dataExisitingLink){
+          dispatch(setExisitingLink(dataExisitingLink?.data?.ref))
+        }
       }
       if (feesCount < transactionRefresh) {
         fetchFees();

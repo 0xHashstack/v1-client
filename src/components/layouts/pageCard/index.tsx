@@ -15,6 +15,9 @@ import {
   selectProtocolReserves,
   selectNetWorth,
   selectreferral,
+  setMessageHash,
+  setSignature,
+  selectUserType,
 } from "@/store/slices/readDataSlice";
 import {
   selectUserLoans,
@@ -183,6 +186,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const [whitelisted, setWhitelisted] = useState(true)
   const [uniqueToken, setUniqueToken] = useState("")
   const [referralLinked, setRefferalLinked] = useState(false)
+  const userType=useSelector(selectUserType)
+  const dispatch=useDispatch();
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -231,6 +236,21 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         const response = await axios.get(url);
         if(response){
           setWhitelisted(response.data?.isWhitelisted);
+          if(userType=="U1"){
+            axios.post('http://13.229.210.84/nft-sign', { address: address })
+            .then((response) => {
+              if(response){
+                if(response){
+                  dispatch(setMessageHash(response?.data?.msg_hash))
+                  dispatch(setSignature(response?.data?.signature))
+                }
+              }
+              console.log(response, "hash"); // Log the response from the backend.
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+          }
         }
       } catch (err) {
         console.log(err, "err in whitelist")
@@ -269,7 +289,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if ((account && !isCorrectNetwork())) {
         setRender(false);
     } else {
-      if(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && !whitelisted){
+      if( !whitelisted){
         setRender(false);
       }else{
         setRender(true);
@@ -563,9 +583,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             {...rest}
           >
             <Box>
-              {(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && !whitelisted)
+              {(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" &&!whitelisted)
                 ? <Text color="white" fontSize="25px">
-                  You are not whitelisted
+                  You are successfully added to our waitlist
                 </Text> : <Text color="white" fontSize="25px">
                   Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Goerli" : "Mainnet"} and refresh
                 </Text>

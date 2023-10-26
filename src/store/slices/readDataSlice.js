@@ -53,6 +53,10 @@ const initialState = {
   mySwapPoolsSupported:null,
   nftBalance:null,
   referral:null,
+  userType:null,
+  existingLink:null,
+  messageHash:null,
+  signature:null,
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -257,6 +261,18 @@ export const readDataSlice = createSlice({
     setReferral(state,action){
       state.referral=action.payload;
     },
+    setUserType(state,action){
+      state.userType=action.payload;
+    },
+    setExisitingLink(state,action){
+      state.existingLink=action.payload;
+    },
+    setMessageHash(state,action){
+      state.messageHash=action.payload;
+    },
+    setSignature(state,action){
+      state.signature=action.payload;
+    },
     setFees(state,action){
       state.fees=action.payload;
     },
@@ -322,6 +338,10 @@ export const {
   setMaximumLoanAmounts,
   setNftBalance,
   setReferral,
+  setUserType,
+  setExisitingLink,
+  setMessageHash,
+  setSignature,
   setJediSwapPoolsSupported,
   setMySwapPoolsSupported,
   setFees
@@ -383,4 +403,8 @@ export const selectMySwapPoolsSupported = (state) => state.read_data.mySwapPools
 export const selectFees=(state)=>state.read_data.fees;
 export const selectNftBalance=(state)=>state.read_data.nftBalance;
 export const selectreferral=(state)=>state.read_data.referral;
+export const selectUserType=(state)=>state.read_data.userType;
+export const selectExistingLink=(state)=>state.read_data.existingLink;
+export const selectMessageHash=(state)=>state.read_data.messageHash;
+export const selectSignature=(state)=>state.read_data.signature;
 export default readDataSlice.reducer;

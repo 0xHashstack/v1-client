@@ -53,6 +53,7 @@ import {
   selectNftBalance,
 
 } from "@/store/slices/readDataSlice";
+import { AccountInterface } from "starknet";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
@@ -317,9 +318,9 @@ const Navbar = ({ validRTokens }: any) => {
               gap={"8px"}
               color={`${pathname == "/v1/referral" ? "#00D395" : "#676D9A"}`}
               onClick={()=>{
-                if(nftBalance!=0){
-                  router.push('/v1/referral')
-                }
+                  if(isCorrectNetwork){
+                    router.push('/v1/referral')
+                  }
               }}
             >
               {pathname=="/v1/referral" ? (
@@ -328,7 +329,7 @@ const Navbar = ({ validRTokens }: any) => {
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+                  style={{ cursor: isCorrectNetwork ? "pointer" :"not-allowed"}}
 
                 />
               ) : (
@@ -337,7 +338,7 @@ const Navbar = ({ validRTokens }: any) => {
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+                  style={{ cursor: isCorrectNetwork ? "pointer" :"not-allowed"}}
 
                 />
               )}

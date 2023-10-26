@@ -55,7 +55,7 @@ import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount, useConnectors } from "@starknet-react/core";
-import { selectYourBorrow, selectNetAPR } from "@/store/slices/readDataSlice";
+import { selectYourBorrow, selectNetAPR, selectExistingLink } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
@@ -357,26 +357,37 @@ const Referral = () => {
     const netAPR = useSelector(selectNetAPR);
     const [campaignSelected, setCampaignSelected] = useState(2);
     const [tabValue, setTabValue] = useState(1);
-    const [refferal, setRefferal] = useState("xyz")
-    const handleChange = (e: any) => {
-        setRefferal(e.target.value);
+    const [refferal, setRefferal] = useState("xyz");
+    const exisitingLink=useSelector(selectExistingLink);
+    const handleChange = async(e: any) => {
+        if(exisitingLink!=null){
+            
+        }
+        else{
+            setRefferal(e.target.value);
+        }
     }
-
     const handleCopyClick =  async () => {
-        try {   
-            const a="0x05970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4"
-            await navigator.clipboard.writeText("http://13.229.210.84/" + refferal);
-            axios.post('http://13.229.210.84/shorten', { pseudo_name:refferal,address: a })
-            .then((response) => {
-              console.log(response, "response"); // Log the response from the backend.
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            });
+        try {
+            if(exisitingLink){
+                await navigator.clipboard.writeText("http://13.229.210.84/" + exisitingLink);
+            }else{
+                await navigator.clipboard.writeText("http://13.229.210.84/" + refferal);
+                axios.post('http://13.229.210.84/shorten', { pseudo_name:refferal,address: address })
+                .then((response) => {
+                  console.log(response, "response refer link"); // Log the response from the backend.
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+            }
             toast.success("Copied",{
                 position: toast.POSITION.BOTTOM_RIGHT,
             })
-        } catch (error) {
+        } catch (error:any) {
+            toast.error(error,{
+                position: toast.POSITION.BOTTOM_RIGHT,
+            })
             console.error('Failed to copy text: ', error);
         }
     };
@@ -438,12 +449,20 @@ const Referral = () => {
                     <InputLeftAddon height="60px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
                     http://13.229.210.84/
                     </InputLeftAddon>
-                        <Input  height="60px" border="none" color="#F0F0F5" value={refferal} paddingInlineStart="0" _focus={{
+                    {exisitingLink ?
+                    <Input  height="60px" border="none" color="#F0F0F5" value={exisitingLink} paddingInlineStart="0" _focus={{
+                        outline: "0",
+                        boxShadow: "none",
+                      }}
+                      onChange={handleChange}
+                      />:<Input  height="60px" border="none" color="#F0F0F5" value={refferal} paddingInlineStart="0" _focus={{
                         outline: "0",
                         boxShadow: "none",
                       }}
                       onChange={handleChange}
                       />
+                }
+                        
                     </InputGroup>
                     <Box cursor="pointer" onClick={()=>{
                         handleCopyClick();
