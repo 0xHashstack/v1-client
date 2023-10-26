@@ -5855,7 +5855,7 @@ const YourBorrowModal = ({
                     </Card>
                     {inputCollateralAmount > 0 &&
                     //123456
-                    (!process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ||
+                    (process.env.NEXT_PUBLIC_NODE_ENV != "testnet" ||
                       (currentTokenSelected == "Native Token" &&
                         inputCollateralAmount > 0 &&
                         inputCollateralAmount >= minimumDepositAmount &&
