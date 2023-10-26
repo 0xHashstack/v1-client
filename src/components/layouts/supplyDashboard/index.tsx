@@ -307,19 +307,22 @@ const SupplyDashboard = ({
       let indexes: any = [2, 3, 0, 1, 4];
 
       indexes.forEach((index: number) => {
-        
-        if(((index==0||index==1 ) && (
-          supply?.[index]?.rTokenAmountParsed >0.000001 ||
-          supply?.[index]?.rTokenFreeParsed >0.000001 ||
-          supply?.[index]?.rTokenLockedParsed >0.000001 ||
-          supply?.[index]?.rTokenStakedParsed >0.000001
-        )) || ((index>1 && (
+        if(
           supply?.[index]?.rTokenAmountParsed !== 0 ||
           supply?.[index]?.rTokenFreeParsed !== 0 ||
           supply?.[index]?.rTokenLockedParsed !== 0 ||
           supply?.[index]?.rTokenStakedParsed !== 0
-        )))){
-          data[index] = supply[index];
+        ){
+          if(index==2 || index==3){
+            if( supply?.[index]?.rTokenAmountParsed >0.000001 ||
+              supply?.[index]?.rTokenFreeParsed >0.000001 ||
+              supply?.[index]?.rTokenLockedParsed >0.000001 ||
+              supply?.[index]?.rTokenStakedParsed >0.000001){
+                data[index] = supply[index];
+              }
+          }else{
+            data[index] = supply[index];
+          }
 
         }
       });
