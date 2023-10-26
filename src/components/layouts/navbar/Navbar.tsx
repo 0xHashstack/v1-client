@@ -54,7 +54,6 @@ import {
 
 } from "@/store/slices/readDataSlice";
 import { AccountInterface, ProviderInterface } from "starknet";
-import { AccountInterface } from "starknet";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
