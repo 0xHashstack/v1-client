@@ -53,6 +53,7 @@ import {
   selectNftBalance,
 
 } from "@/store/slices/readDataSlice";
+import { AccountInterface, ProviderInterface } from "starknet";
 import { AccountInterface } from "starknet";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
@@ -314,13 +315,12 @@ const Navbar = ({ validRTokens }: any) => {
             <Box
               display="flex"
               justifyContent="space-between"
+              cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
               alignItems="center"
               gap={"8px"}
               color={`${pathname == "/v1/referral" ? "#00D395" : "#676D9A"}`}
               onClick={()=>{
-                  if(isCorrectNetwork){
-                    router.push('/v1/referral')
-                  }
+                isCorrectNetwork && router.push('/v1/referal')
               }}
             >
               {pathname=="/v1/referral" ? (

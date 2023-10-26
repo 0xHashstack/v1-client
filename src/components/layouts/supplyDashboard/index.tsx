@@ -307,13 +307,21 @@ const SupplyDashboard = ({
       let indexes: any = [2, 3, 0, 1, 4];
 
       indexes.forEach((index: number) => {
-        if (
+        
+        if(((index==0||index==1 ) && (
+          supply?.[index]?.rTokenAmountParsed >0.000001 ||
+          supply?.[index]?.rTokenFreeParsed >0.000001 ||
+          supply?.[index]?.rTokenLockedParsed >0.000001 ||
+          supply?.[index]?.rTokenStakedParsed >0.000001
+        )) || ((index>1 && (
           supply?.[index]?.rTokenAmountParsed !== 0 ||
           supply?.[index]?.rTokenFreeParsed !== 0 ||
           supply?.[index]?.rTokenLockedParsed !== 0 ||
           supply?.[index]?.rTokenStakedParsed !== 0
-        )
+        )))){
           data[index] = supply[index];
+
+        }
       });
       setSupplies(data);
       console.log(data, "loading - ", userDeposits);
