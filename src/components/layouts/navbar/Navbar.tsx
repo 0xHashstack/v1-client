@@ -319,7 +319,7 @@ const Navbar = ({ validRTokens }: any) => {
               gap={"8px"}
               color={`${pathname == "/v1/referral" ? "#00D395" : "#676D9A"}`}
               onClick={()=>{
-                isCorrectNetwork && router.push('/v1/referal')
+                isCorrectNetwork && router.push('/v1/referral')
               }}
             >
               {pathname=="/v1/referral" ? (
