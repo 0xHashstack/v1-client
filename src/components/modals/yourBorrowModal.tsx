@@ -5122,7 +5122,7 @@ const YourBorrowModal = ({
                                       ? collateralAsset
                                       : `r${collateralAsset}`
                                   }`
-                                : `min ${
+                                :currentTokenSelected == "Native Token" ? `min ${
                                     minimumDepositAmount == null
                                       ? 0
                                       : minimumDepositAmount
@@ -5130,7 +5130,12 @@ const YourBorrowModal = ({
                                     currentTokenSelected == "Native Token"
                                       ? collateralAsset
                                       : `r${collateralAsset}`
+                                  }`:`0.01536 ${
+                                    currentTokenSelected == "Native Token"
+                                      ? collateralAsset
+                                      : `r${collateralAsset}`
                                   }`
+
                             }
                             border="0px"
                             _placeholder={{
@@ -5855,11 +5860,11 @@ const YourBorrowModal = ({
                     </Card>
                     {inputCollateralAmount > 0 &&
                     //123456
-                    (process.env.NEXT_PUBLIC_NODE_ENV != "testnet" ||
-                      (currentTokenSelected == "Native Token" &&
+                    (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ?
+                      (currentTokenSelected == "Native Token" ?
                         inputCollateralAmount > 0 &&
                         inputCollateralAmount >= minimumDepositAmount &&
-                        inputCollateralAmount <= maximumDepositAmount)) &&
+                        inputCollateralAmount <= maximumDepositAmount:inputCollateralAmount > 0):true) &&
                     (currentTokenSelected == "Native Token"
                       ? inputCollateralAmount <= walletBalance2
                       : inputCollateralAmount <=
