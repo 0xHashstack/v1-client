@@ -52,6 +52,7 @@ import {
   selectCurrentNetwork,
 
 } from "@/store/slices/readDataSlice";
+import { AccountInterface, ProviderInterface } from "starknet";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
@@ -312,10 +313,11 @@ const Navbar = ({ validRTokens }: any) => {
             <Box
               display="flex"
               justifyContent="space-between"
+              cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
               alignItems="center"
               gap={"8px"}
               onClick={()=>{
-                router.push('/v1/referal')
+                isCorrectNetwork && router.push('/v1/referal')
               }}
             >
               {contibutionHover ? (
