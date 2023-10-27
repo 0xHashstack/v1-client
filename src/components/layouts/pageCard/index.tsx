@@ -287,7 +287,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if ((account && !isCorrectNetwork())) {
         setRender(false);
     } else {
-      if( !whitelisted){
+      if(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && !whitelisted){
         setRender(false);
       }else{
         setRender(true);
