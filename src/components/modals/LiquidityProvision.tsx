@@ -354,7 +354,6 @@ const LiquidityProvisionModal = ({
       if (currentSwap == "Jediswap") {
         const liquidity = await writeAsyncJediSwap_addLiquidity();
         if (liquidity?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
             `Transaction pending`,
@@ -404,7 +403,6 @@ const LiquidityProvisionModal = ({
       } else if (currentSwap == "MySwap") {
         const liquidity = await writeAsyncmySwap_addLiquidity();
         if (liquidity?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
             `Transaction pending`,
@@ -555,9 +553,7 @@ const LiquidityProvisionModal = ({
     Number[] | undefined | null
   >();
 
-  useEffect(() => {
-    console.log("liquidity borrow coin", currentBorrowMarketCoin);
-  }, [currentBorrowMarketCoin]);
+
 
   useEffect(() => {
     // console.log(
@@ -590,7 +586,6 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     } else if (currentSwap === "MySwap") {
       const split = await getMySwapEstimateLiquiditySplit(
@@ -603,7 +598,6 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getMySwapEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     }
   };
@@ -621,7 +615,6 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("toMarketSplitLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     } else if (currentSwap === "MySwap") {
       const lp_tokon = await getMySwapEstimatedLpAmountOut(
@@ -634,7 +627,6 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("toMarketSplitLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     }
   };

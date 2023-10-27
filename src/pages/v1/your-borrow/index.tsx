@@ -43,7 +43,6 @@ const YourBorrow = () => {
   useEffect(() => {
     if (UserLoans) {
       if (UserLoans?.length <= (currentPagination - 1) * 6) {
-        console.log("pagination", Pagination, UserLoans);
         if (currentPagination > 1) {
           setCurrentPagination(currentPagination - 1);
         }
@@ -93,7 +92,6 @@ const YourBorrow = () => {
   // }, [account, UserLoans]);
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectnetAprLoans);
-  console.log(netAPR,"apr loans")
 
   return (
     <PageCard pt="6.5rem">

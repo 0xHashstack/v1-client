@@ -413,10 +413,8 @@ const TradeModal = ({
           const [tokenA, tokenB] = keyvalue.split('/');
           
           if (tokenA === token) {
-            console.log(tokenB,"tokenB");
               data.push(tokenB)
           } else if (tokenB === token) {
-            console.log(tokenA,"tokenA")
               data.push(tokenA);
           }
       }
@@ -702,7 +700,6 @@ const TradeModal = ({
         const borrowAndSpend = await writeAsyncBorrowAndSpend();
         setDepositTransHash(borrowAndSpend?.transaction_hash);
         if (borrowAndSpend?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
             `Transaction pending`,
@@ -744,7 +741,6 @@ const TradeModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log("borrowAndSpend Success");
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -755,7 +751,6 @@ const TradeModal = ({
         const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
         setDepositTransHash(borrowAndSpendR?.transaction_hash);
         if (borrowAndSpendR?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
             `Transaction pending`,
@@ -797,7 +792,6 @@ const TradeModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log("borrowAndSpend R Success");
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -1022,7 +1016,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     } else if (currentDapp === "mySwap") {
       const split = await getMySwapEstimateLiquiditySplit(
@@ -1038,7 +1031,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     }
   };
@@ -1068,7 +1060,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("toMarketSplitLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     } else if (currentDapp === "mySwap") {
       const lp_tokon = await getMySwapEstimatedLpAmountOut(
@@ -1084,7 +1075,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("toMarketSplitLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     }
   };

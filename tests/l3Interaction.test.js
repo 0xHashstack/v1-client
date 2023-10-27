@@ -106,7 +106,6 @@ describe("Get l3 interaction function values", () => {
 
     const provider = getProvider();
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
-    console.log("split before calling");
     const res = await l3Contract.call(
       "get_jedi_estimated_liqA_liqB_from_lp",
       // [liquidity, pairAddress],

@@ -336,7 +336,6 @@ const BorrowDashboard = ({
             Borrows[i]?.loanMarket
           );
           promises.push(data);
-          console.log("split data", data, "loanId", Borrows[i]?.loanId);
         } else if (Borrows[i]?.l3App == "MY_SWAP") {
           const data = getMySwapEstimatedLiqALiqBfromLp(
             Borrows[i]?.currentLoanAmount,
@@ -345,7 +344,6 @@ const BorrowDashboard = ({
             Borrows[i]?.loanMarket
           );
           promises.push(data);
-          console.log("split data", data, "loanId", Borrows[i]?.loanId);
         }
 
         // console.log(
@@ -396,7 +394,6 @@ const BorrowDashboard = ({
         }
       });
       // console.log("promises heree ", promises);
-      console.log("all splits", temp);
       setAllSplit(temp);
     });
     // const currentSplit = await getJediEstimatedLiqALiqBfromLp(

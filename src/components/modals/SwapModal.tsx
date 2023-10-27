@@ -241,7 +241,6 @@ const SwapModal = ({
         console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
         if (swap?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait, your transaction is running in background`,
             `Transaction pending`,
@@ -291,7 +290,6 @@ const SwapModal = ({
         console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
         if (swap?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait, your transaction is running in background`,
             `Transaction pending`,
@@ -411,10 +409,8 @@ const SwapModal = ({
           const [tokenA, tokenB] = keyvalue.split('/');
           
           if (tokenA === token) {
-            console.log(tokenB,"tokenB");
               data.push(tokenB)
           } else if (tokenB === token) {
-            console.log(tokenA,"tokenA")
               data.push(tokenA);
           }
       }

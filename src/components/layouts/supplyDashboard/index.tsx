@@ -241,7 +241,6 @@ const SupplyDashboard = ({
 
         // const stats = await getProtocolStats();
         if (stats) {
-          console.log("se3nding", stats);
           // dispatch(setProtocolStats(stats));
         }
         // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014

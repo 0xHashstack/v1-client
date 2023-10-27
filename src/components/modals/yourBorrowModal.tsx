@@ -284,9 +284,7 @@ const YourBorrowModal = ({
     // selfLiquidateTransactionReceipt,
     setIsSelfLiquidateHash,
   } = useRepay(loan);
-  useEffect(() => {
-    console.log("current loan", loan);
-  }, [loan]);
+
 
   const {
     swapLoanId,
@@ -439,7 +437,6 @@ const YourBorrowModal = ({
       const revert = await writeAsyncRevertInteractWithL3();
       setDepositTransHash(revert?.transaction_hash);
       if (revert?.transaction_hash) {
-        console.log("toast here");
         const toastid = toast.info(`Transaction pending`, {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: false,
@@ -457,7 +454,7 @@ const YourBorrowModal = ({
         const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: revert?.transaction_hash.toString(),
-          message: `You have successfully revert spent for Loan ID : ${revertLoanId}`,
+          message: `You have successfully revert spent for Loan ID : ${currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()}`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
           uniqueID: uqID,
@@ -820,7 +817,6 @@ const YourBorrowModal = ({
       const zeroRepay = await writeAsyncSelfLiquidate();
       setDepositTransHash(zeroRepay?.transaction_hash);
       if (zeroRepay?.transaction_hash) {
-        console.log("toast here");
         const toastid = toast.info(`Transaction pending `, {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: false,
@@ -860,7 +856,6 @@ const YourBorrowModal = ({
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("success"));
       }
-      console.log("zero repay success");
     } catch (err: any) {
       console.log("zero repay failed - ", err);
       const uqID = getUniqueId();
@@ -895,7 +890,6 @@ const YourBorrowModal = ({
         const trade = await writeAsyncJediSwap_swap();
         setDepositTransHash(trade?.transaction_hash);
         if (trade?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(`Transaction pending`, {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -941,7 +935,6 @@ const YourBorrowModal = ({
         const tradeMySwap = await writeAsyncmySwap_swap();
         setDepositTransHash(tradeMySwap?.transaction_hash);
         if (tradeMySwap?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(`Transaction pending`, {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -1018,7 +1011,6 @@ const YourBorrowModal = ({
         const liquidity = await writeAsyncJediSwap_addLiquidity();
         setDepositTransHash(liquidity?.transaction_hash);
         if (liquidity?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(`Transaction pending`, {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -1067,7 +1059,6 @@ const YourBorrowModal = ({
         console.log(mySwapLiquidity);
         setDepositTransHash(mySwapLiquidity?.transaction_hash);
         if (mySwapLiquidity?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(`Transaction pending`, {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -1141,10 +1132,8 @@ const YourBorrowModal = ({
       if (currentTokenSelected == "rToken") {
         const addCollateral = await writeAsyncAddCollateralRToken();
         if (addCollateral?.transaction_hash) {
-          console.log("addCollateral", addCollateral.transaction_hash);
           setDepositTransHash(addCollateral?.transaction_hash);
           if (addCollateral?.transaction_hash) {
-            console.log("toast here");
             const toastid = toast.info(`Transaction pending`, {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -1181,7 +1170,6 @@ const YourBorrowModal = ({
           }
         }
 
-        console.log("add collateral - ", addCollateral);
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -1191,13 +1179,10 @@ const YourBorrowModal = ({
       } else {
         const addCollateral = await writeAsyncAddCollateral();
         if (addCollateral?.transaction_hash) {
-          console.log("addCollateral", addCollateral.transaction_hash);
           setDepositTransHash(addCollateral?.transaction_hash);
           if (addCollateral?.transaction_hash) {
-            console.log("addCollateral", addCollateral.transaction_hash);
             setDepositTransHash(addCollateral?.transaction_hash);
             if (addCollateral?.transaction_hash) {
-              console.log("toast here");
               const toastid = toast.info(`Transaction pending`, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: false,
@@ -1235,7 +1220,6 @@ const YourBorrowModal = ({
           }
         }
 
-        console.log("add collateral - ", addCollateral);
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -1244,7 +1228,7 @@ const YourBorrowModal = ({
         }
       }
     } catch (err: any) {
-      console.log("add collateral error");
+      console.log("add collateral error",err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -2685,7 +2669,6 @@ const YourBorrowModal = ({
   }, [toMarketA, currentBorrowId1, toMarketB, currentPool, currentDapp]);
 
   useEffect(() => {
-    console.log("useeffect called fetch");
     setCurrentLPTokenAmount(null);
     fetchLPAmount();
   }, [toMarketA, currentBorrowId1, toMarketB, currentPool, currentDapp]);
@@ -2713,7 +2696,6 @@ const YourBorrowModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("liquiditySplitJedi", split);
       setCurrentSplit(split);
     } else if (currentDapp === "mySwap") {
       const split = await getMySwapEstimateLiquiditySplit(
@@ -2726,7 +2708,6 @@ const YourBorrowModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("liquiditySplitMySwap", split);
       setCurrentSplit(split);
     }
   };
@@ -2739,10 +2720,8 @@ const YourBorrowModal = ({
         const [tokenA, tokenB] = keyvalue.split("/");
 
         if (tokenA === token) {
-          console.log(tokenB, "tokenB");
           data.push(tokenB);
         } else if (tokenB === token) {
-          console.log(tokenA, "tokenA");
           data.push(tokenA);
         }
       }
@@ -2775,7 +2754,6 @@ const YourBorrowModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("liquiditySplitJediLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     } else if (currentDapp === "mySwap") {
       const lp_tokon = await getMySwapEstimatedLpAmountOut(
@@ -2788,7 +2766,6 @@ const YourBorrowModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("liquiditySplitMySwapLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     }
   };
@@ -2798,7 +2775,6 @@ const YourBorrowModal = ({
         collateralBalance.substring(spaceIndex + 1),
         inputCollateralAmount
       );
-      console.log(data, "data in your borrow for est");
       // console.log(data, "data in your borrow");
       setEstrTokensMinted(data);
     };
@@ -4190,7 +4166,6 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            console.log("user address ", address);
                             mixpanel.track(
                               "Spend Borrow Button Clicked Your Borrow",
                               {

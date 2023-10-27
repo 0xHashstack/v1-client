@@ -305,7 +305,6 @@ const Referral = () => {
         // }
         if (sampleDate) {
             if (sampleDate.length <= (currentPagination - 1) * 6) {
-                console.log("pagination", Pagination, sampleDate);
                 if (currentPagination > 1) {
                     setCurrentPagination(currentPagination - 1);
                 }

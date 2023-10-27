@@ -98,7 +98,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if (!account) {
       if (walletConnected == "braavos") {
         localStorage.setItem("connected", "braavos");
-        console.log("change", account);
         disconnect();
         connect(connectors[0]);
       } else if (walletConnected == "argentX") {
@@ -108,7 +107,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       } else {
         if (connected == "braavos") {
           localStorage.setItem("lastUsedConnector", "braavos");
-          console.log("change", account);
           disconnect();
           connect(connectors[0]);
         } else if (connected == "argentX") {

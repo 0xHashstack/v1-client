@@ -468,7 +468,6 @@ const YourSupplyModal = ({
       const withdraw = await writeAsyncWithdrawDeposit();
       if (withdraw?.transaction_hash) {
         setDepositTransHash(withdraw?.transaction_hash);
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your withdraw transaction is running in background : ${inputWithdrawlAmount}r${asset}`,
           `Transaction pending`,
@@ -553,8 +552,7 @@ const YourSupplyModal = ({
         console.log(addSupplyAndStake);
         setDepositTransHash(addSupplyAndStake?.transaction_hash);
         if (addSupplyAndStake?.transaction_hash) {
-          console.log("trans transaction hash created");
-          console.log("toast here");
+        
           const toastid = toast.info(
             // `Please wait your transaction is running in background for supply and stake : ${depositAmount} ${supplyAsset} `,
             `Transaction pending`,
@@ -597,13 +595,11 @@ const YourSupplyModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-        console.log("addSupply", addSupplyAndStake);
       } else {
         const addSupply = await writeAsyncDeposit();
         // setDepositTransHash(addSupply?.transaction_hash);
         if (addSupply?.transaction_hash) {
-          console.log("trans transaction hash created");
-          console.log("toast here");
+
           const toastid = toast.info(
             // `Please wait your transaction is running in background for adding supply : ${depositAmount} ${supplyAsset} `,
             `Transaction pending`,
@@ -646,7 +642,6 @@ const YourSupplyModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-        console.log("addSupply", addSupply);
       }
     } catch (err) {
       console.log("Unable to add supply ", err);

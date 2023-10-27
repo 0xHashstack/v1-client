@@ -313,7 +313,6 @@ const BorrowModal = ({
     protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
       ?.availableReserves * 0.895
   );
-  console.log(rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount,minimumDepositAmount,maximumDepositAmount,"chal ja")
   const fetchProtocolStats = async () => {
     // const stats = await getProtocolStats();
     const stats = protocolStatsRedux;
@@ -409,7 +408,6 @@ const BorrowModal = ({
   const fetchParsedUSDValueBorrow = async () => {
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
-        console.log("got parsed zero borrow");
         setInputBorrowAmountUSD(0);
         return;
       }
@@ -519,7 +517,6 @@ const BorrowModal = ({
           // setShowToast("true");
           // console.log();
           // if (showToast == "true") {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
             `Transaction pending`,
@@ -570,7 +567,6 @@ const BorrowModal = ({
         if (borrow?.transaction_hash) {
           // setShowToast("true");
           if (showToast == "true") {
-            console.log("toast here");
             const toastid = toast.info(
               // `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
               `Transaction pending`,
@@ -742,7 +738,7 @@ const BorrowModal = ({
 
   const handleBorrowChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
-    console.log(inputCollateralAmountUSD, "amount");
+    // console.log(inputCollateralAmountUSD, "amount");
     if (inputCollateralAmountUSD > 0) {
       var percentage =
         (newValue * 100) /

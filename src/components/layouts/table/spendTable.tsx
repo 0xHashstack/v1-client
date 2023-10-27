@@ -214,9 +214,7 @@ const SpendTable = () => {
   const avgs = useSelector(selectEffectiveApr);
   const avgsLoneHealth = useSelector(selectHealthFactor);
   const [ltv, setLtv] = useState<any>([]);
-  useEffect(() => {
-    console.log("avgsLoneHealth", avgsLoneHealth);
-  }, [avgsLoneHealth]);
+
   // useEffect(() => {
   //   const fetchAprs = async () => {
   //     if (avgs?.length == 0) {

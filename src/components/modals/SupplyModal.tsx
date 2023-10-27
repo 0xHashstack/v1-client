@@ -464,8 +464,7 @@ const SupplyModal = ({
         });
         const depositStake = await writeAsyncDepositStake();
         if (depositStake?.transaction_hash) {
-          console.log("trans transaction hash created");
-          console.log("toast here");
+     
           const toastid = toast.info(
             // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
             `Transaction pending`,
@@ -522,7 +521,6 @@ const SupplyModal = ({
             "trans transaction hash created ",
             deposit?.transaction_hash
           );
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
             `Transaction pending`,
@@ -556,7 +554,6 @@ const SupplyModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         // const deposit = await writeAsyncDepositStake();
-        console.log("Supply Modal - deposit ", deposit);
         mixpanel.track("Supply Market Status", {
           Status: "Success",
           Token: currentSelectedCoin,

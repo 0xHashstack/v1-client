@@ -381,7 +381,6 @@ const StakeUnstakeModal = ({
       const stake = await writeAsyncStakeRequest();
       setDepositTransHash(stake?.transaction_hash);
       if (stake?.transaction_hash) {
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your transaction is running in background :  ${inputStakeAmount} ${currentSelectedStakeCoin} `,
           `Transaction pending`,
@@ -465,8 +464,6 @@ const StakeUnstakeModal = ({
       });
       const depositStake = await writeAsyncDepositStake();
       if (depositStake?.transaction_hash) {
-        console.log("trans transaction hash created");
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
           `Transaction pending`,
@@ -558,7 +555,6 @@ const StakeUnstakeModal = ({
       const unstake = await writeAsyncWithdrawStake();
       setDepositTransHash(unstake?.transaction_hash);
       if (unstake?.transaction_hash) {
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your transaction is running in background : ${inputStakeAmount} ${currentSelectedStakeCoin} `,
           `Transaction pending`,

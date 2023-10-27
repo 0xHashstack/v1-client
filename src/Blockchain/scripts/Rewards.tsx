@@ -53,7 +53,6 @@ export async function getrTokensMinted(rToken: any, amount: any) {
     //     )
     // );
     const ans = data.toFixed(2);
-    console.log("getRtokensmintedAns", ans);
     return ans;
   } catch (err) {
     console.log(err,"err in rewards");

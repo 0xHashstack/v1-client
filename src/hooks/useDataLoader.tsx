@@ -416,7 +416,6 @@ const useDataLoader = () => {
   // }, [transactionStatus]);
 
   useEffect(() => {
-    console.log("fetchHourlyData called ", oraclePrices);
     const fetchHourlyData = async () => {
       try {
         // console.log("HIII")
@@ -437,7 +436,6 @@ const useDataLoader = () => {
           OffchainAPI.httpGet(`/api/metrics/urm_platform/daily`),
         ];
         Promise.allSettled([...promises]).then((val) => {
-          console.log("backend data ", val);
           val.map((response, idx) => {
             const res = response?.status != "rejected" ? response?.value : "0";
           });
@@ -1024,7 +1022,6 @@ const useDataLoader = () => {
               };
               // console.log(dates,"monthly dates")
               // console.log("backend looping 2 -", data);
-              console.log(data, "data in data loader")
               // console.log(btcData,"Data gone")
               if (j == 0) {
                 dispatch(setAllDAIData(data));
@@ -1056,8 +1053,7 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {
-        console.log("oracle prices - transactionRefresh called");
-        let data = await getOraclePrices();
+          let data = await getOraclePrices();
         if (!data || data?.length < 5) {
           return;
         }
@@ -1076,7 +1072,6 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchProtocolReserves = async () => {
-        console.log("protocol reserves called - transactionRefresh");
         const reserves = await getProtocolReserves();
         // dispatch(
         //   setProtocolReserves({
@@ -1088,7 +1083,6 @@ const useDataLoader = () => {
         dispatch(setProtocolReserves(reserves));
         const count = getTransactionCount();
         dispatch(setProtocolReservesCount(count));
-        console.log("protocol reserves - transactionRefresh done", reserves);
       };
       if (protocolReservesCount < transactionRefresh) {
         fetchProtocolReserves();
@@ -1126,7 +1120,6 @@ const useDataLoader = () => {
             repayLoan: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0
           }
           const nft=val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 0;
-          console.log(nft,"nft")
           if (data?.supply == null) {
             return;
           }
@@ -1154,7 +1147,6 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchProtocolStats = async () => {
-        console.log("protocol stats called - transactionRefresh");
         const dataStats = await getProtocolStats();
         console.log("protocol stats - transactionRefresh done", dataStats);
         if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 5)) {
@@ -1179,9 +1171,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        console.log("user deposits called - transactionRefresh");
         const data = await getUserDeposits(address);
-        console.log("user deposits - transactionRefresh done", data);
         if (!data) {
           return;
         }
@@ -1330,7 +1320,6 @@ const useDataLoader = () => {
             rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
           };
           if (data?.rBTC == null) return;
-          console.log("shares ", address, val, data);
           dispatch(setStakingShares(data));
           const count = getTransactionCount();
           dispatch(setStakingSharesCount(count));
@@ -1376,7 +1365,6 @@ const useDataLoader = () => {
           }
           if (data?.rBTC == null) return;
           if (maxdata?.rBTC == null) return;
-          console.log(data, maxdata, "min max deposit")
           dispatch(setMinimumDepositAmounts(data));
           dispatch(setMaximumDepositAmounts(maxdata));
           const count = getTransactionCount();
@@ -1422,7 +1410,6 @@ const useDataLoader = () => {
           }
           if (data?.dBTC == null) return;
           if (maxdata?.dBTC == null) return;
-          console.log(data, maxdata, "min max deposit")
           dispatch(setMinimumLoanAmounts(data));
           dispatch(setMaximumLoanAmounts(maxdata));
           const count = getTransactionCount();
@@ -1443,7 +1430,6 @@ const useDataLoader = () => {
           return effectivAPRLoan(val, protocolStats, dataOraclePrices);
         });
         Promise.all([...promises]).then((val: any) => {
-          console.log("fetchEffectiveApr ", val);
           const avgs = val.map((avg: any, idx: number) => {
             return { avg: avg, loanId: userLoans[idx]?.loanId };
           });
@@ -1471,7 +1457,6 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchHealthFactor = async () => {
-        console.log("fetchHealthFactor - transactionRefresh called");
         const promises = userLoans?.map((val: any) => {
           return getExistingLoanHealth(val?.loanId);
         });
@@ -1479,7 +1464,6 @@ const useDataLoader = () => {
           const avgs = val.map((loneHealth: any, idx: number) => {
             return { loanHealth: loneHealth, loanId: userLoans[idx]?.loanId };
           });
-          console.log("fetchHealthFactor - transactionRefresh done", avgs);
           dispatch(setHealthFactor(avgs));
           const count = getTransactionCount();
           dispatch(setHealthFactorCount(count));
@@ -1554,7 +1538,6 @@ const useDataLoader = () => {
           return;
         }
         const userLoans = await getUserLoans(address);
-        console.log("user loans called - transactionRefresh done ", userLoans);
         if (!userLoans) {
           return;
         }
@@ -1610,26 +1593,7 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchUserSupply = async () => {
-        // console.log(getUserDeposits(address),"deposits in pagecard")
-
-        // const dataMarket=await getProtocolStats();
-        // const dataOraclePrices=await getOraclePrices();
-        // console.log(dataMarket,"data market page")
-        console.log("user info called - transactionRefresh");
-        console.log(dataDeposit, "dataDeposit is here");
-        console.log(dataOraclePrices, "dataOraclePrices is here");
-        console.log(userLoans, "userLoans is here");
-        console.log(protocolStats, "protocolStats is here");
-        console.log(aprsAndHealth, "aprs and health is here");
-        console.log(
-          "transaction refresh counts",
-          userDepositsCount,
-          protocolStatsCount,
-          userLoansCount,
-          dataOraclePrices,
-          userInfoCount,
-          transactionRefresh
-        );
+      
         if (
           dataDeposit &&
           protocolStats &&
@@ -1640,7 +1604,6 @@ const useDataLoader = () => {
           dataOraclePrices &&
           userInfoCount < transactionRefresh
         ) {
-          console.log("user info called inside - transactionRefresh");
           // const dataNetApr = await getNetApr(
           //   dataDeposit,
           //   userLoans,
@@ -1659,7 +1622,6 @@ const useDataLoader = () => {
           // if (data != null) {
           //   dispatch(setYourSupply(data));
           // }
-          console.log(data, "total supply pagecard");
 
           const dataBorrow = await getTotalBorrow(
             userLoans,
@@ -1675,7 +1637,6 @@ const useDataLoader = () => {
             dataTotalBorrow,
             dataBorrow?.totalCurrentAmount
           );
-          console.log(dataNetWorth, "networth");
           dispatch(setNetWorth(dataNetWorth));
           const count = getTransactionCount();
           dispatch(setUserInfoCount(count));
