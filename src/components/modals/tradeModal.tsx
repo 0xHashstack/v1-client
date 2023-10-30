@@ -2464,7 +2464,7 @@ borderWidth:'5px',
                         //   setMethod("SWAP");
                         // }}
                         >
-                          Trade
+                          {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"Trade":"Swap"}
                         </Radio>
                       </Stack>
                     </RadioGroup>

@@ -962,7 +962,7 @@ const BorrowDashboard = ({
                         >
                           <HStack
                             height="50%"
-                            width="100%"
+                            width="150%"
 
                             alignItems="center"
                             onMouseEnter={() => handleStatusHover("0" + idx)}
@@ -1183,7 +1183,7 @@ const BorrowDashboard = ({
                           (avgsLoneHealth?.find(
                             (item: any) =>
                               item?.loanId == borrow?.loanId
-                          )?.loanHealth) > 1.5 ?
+                          )?.loanHealth) > 1.15 ?
                             <Box
                               width="68px"
                               height="10px"
@@ -1194,10 +1194,10 @@ const BorrowDashboard = ({
                             >
                               {/* {checkGap(idx1, idx2)} */}
                             </Box>
-                            : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.2 &&
-                              avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.5) ?
+                            : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.09 &&
+                              avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.15) ?
                               <MediumHeathFactor />
-                              : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.2) ?
+                              : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.09) ?
                                 <LowhealthFactor />
                                 : "" : <Skeleton
                             width="6rem"

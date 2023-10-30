@@ -631,7 +631,7 @@ const SpendTable = () => {
                           (avgsLoneHealth?.find(
                             (item: any) =>
                               item?.loanId == borrow?.loanId
-                          )?.loanHealth) > 1.5      ?                   
+                          )?.loanHealth) > 1.15      ?                   
                         <Box
                           width="68px"
                           height="10px"
@@ -642,10 +642,10 @@ const SpendTable = () => {
                         >
                           {/* {checkGap(idx1, idx2)} */}
                         </Box>
-                        :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.2 &&
-                        avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.5) ?
+                        :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.09 &&
+                        avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.15) ?
                         <MediumHeathFactor/>
-                      :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.2 ) ?
+                      :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.09 ) ?
                       <LowhealthFactor/>
                         :"":<Skeleton
                         width="6rem"
@@ -766,7 +766,7 @@ const SpendTable = () => {
                   isDisabled={selectedDapp == ""}
                   // isDisabled={selectedDapp == ""}
                 >
-                  swap
+                  Swap
                 </Tab>
                 <Tab
                   // padding="0px 16px"
@@ -789,7 +789,7 @@ const SpendTable = () => {
                   onClick={() => setTradeNote(true)}
                   isDisabled={selectedDapp == ""}
                 >
-                  stake
+                  Stake
                 </Tab>
 
                 <Tab

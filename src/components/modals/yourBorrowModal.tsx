@@ -3545,14 +3545,13 @@ const YourBorrowModal = ({
                                 </Text>
                               </Text>
                             )}
-                            <Slider
+                            {currentAction === "Repay Borrow" &&                            <Slider
                               mt="9"
                               mb="2"
                               aria-label="slider-ex-6"
                               defaultValue={sliderValue}
                               value={sliderValue}
                               onChange={(val) => {
-                                if (currentAction === "Zero Repay") return;
                                 setSliderValue(val);
                                 var ans = (val / 100) * walletBalance1;
                                 if (val == 100) {
@@ -3575,8 +3574,8 @@ const YourBorrowModal = ({
                                 }
                               }}
                               isDisabled={
-                                transactionStarted == true ||
-                                currentAction === "Select action"
+                                transactionStarted == true 
+                                
                               }
                               _disabled={{ cursor: "pointer" }}
                               focusThumbOnChange={false}
@@ -3669,7 +3668,8 @@ const YourBorrowModal = ({
                                 />
                               </SliderTrack>
                               <SliderThumb />
-                            </Slider>
+                            </Slider>}
+
                           </Box>
                         )}
                     </Box>
@@ -3750,7 +3750,7 @@ const YourBorrowModal = ({
                                 }
                                 cursor="pointer"
                               >
-                                Trade
+                                {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"Trade":"Swap"}
                               </Radio>
                             </Stack>
                           </RadioGroup>
