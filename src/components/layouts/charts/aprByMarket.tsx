@@ -1184,7 +1184,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               fontWeight="500"
               textColor={currentSelectedCoin === 0 ? "white" : "#3E415C"}
             >
-              BTC
+              wBTC
             </Text>
           </Box>
           <Box
@@ -1206,10 +1206,10 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               my="auto"
               color="white"
               fontSize="12px"
-              fontWeight="500"
+            fontWeight="500"
               textColor={currentSelectedCoin === 3 ? "white" : "#3E415C"}
             >
-              ETH
+              wETH
             </Text>
           </Box>
           <Box

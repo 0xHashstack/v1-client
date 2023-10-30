@@ -867,7 +867,7 @@ const YourSupplyModal = ({
                               {getCoin(currentSelectedSupplyCoin)}
                             </Box>
                             <Text color="white" mt="0.15rem">
-                              {currentSelectedSupplyCoin}
+                              {(currentSelectedSupplyCoin=="BTC" || currentSelectedSupplyCoin=='ETH')? "w"+currentSelectedSupplyCoin:currentSelectedSupplyCoin}
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
@@ -939,8 +939,8 @@ const YourSupplyModal = ({
                                         <Box p="1">
                                           {getCoin(coin.substring(1))}
                                         </Box>
-                                        <Text color="white">
-                                          {coin.substring(1)}
+                                        <Text color="white" mt="0.5">
+                                          {(coin.substring(1)=="BTC" || coin.substring(1)=='ETH') ?"w"+coin.substring(1):coin.substring(1)}
                                         </Text>
                                       </Box>
                                       <Box
@@ -1464,10 +1464,10 @@ const YourSupplyModal = ({
                               <BlueInfoIcon />
                             </Box>
                             You have changed your market from{" "}
-                            {currentActionMarket.slice(1)} to{" "}
-                            {currentSelectedSupplyCoin}. your supplied{" "}
-                            {currentSelectedSupplyCoin} will be added in{" "}
-                            {currentSelectedSupplyCoin} market.
+                            {currentActionMarket.slice(1)=="BTC" || currentActionMarket.slice(1)=="ETH"?"w"+currentActionMarket.slice(1):currentActionMarket.slice(1)} to{" "}
+                            {currentSelectedSupplyCoin=="BTC" ||currentSelectedSupplyCoin=="ETH" ?"w"+currentSelectedSupplyCoin:currentSelectedSupplyCoin}. your supplied{" "}
+                            {currentSelectedSupplyCoin=="BTC" ||currentSelectedSupplyCoin=="ETH" ?"w"+currentSelectedSupplyCoin:currentSelectedSupplyCoin} will be added in{" "}
+                            {currentSelectedSupplyCoin=="BTC" ||currentSelectedSupplyCoin=="ETH" ?"w"+currentSelectedSupplyCoin:currentSelectedSupplyCoin} market.
                             {/* <Box
                                 py="1"
                                 pl="4"

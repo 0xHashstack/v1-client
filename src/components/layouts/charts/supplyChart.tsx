@@ -92,11 +92,11 @@ const SupplyChart = () => {
         daiData?.supplyAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: btcData?.supplyAmounts,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: ethData?.supplyAmounts,
               },
               {
@@ -170,12 +170,12 @@ const SupplyChart = () => {
         weeklyDaiData?.supplyAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: weeklyBtcData?.supplyAmounts,
                 // color: "#fffff",
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: weeklyEthData.supplyAmounts,
               },
               {
@@ -249,12 +249,12 @@ const SupplyChart = () => {
         monthlyDaiData?.supplyAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: monthlyBtcData?.supplyAmounts,
                 // color: "#fffff",
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: monthlyEthData.supplyAmounts,
               },
               {
@@ -332,12 +332,12 @@ const SupplyChart = () => {
         allDaiData?.supplyAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: allBtcData?.supplyAmounts,
                 // color: "#fffff",
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: allEthData.supplyAmounts,
               },
               {
