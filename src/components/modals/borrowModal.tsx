@@ -289,7 +289,7 @@ const BorrowModal = ({
   useEffect(()=>{
     setMinimumDepositAmount(minAmounts["r"+currentCollateralCoin])
     setmaximumDepositAmount(maxAmounts["r"+currentCollateralCoin])
-  },[currentCollateralCoin])
+  },[currentCollateralCoin,minAmounts,maxAmounts])
   // useEffect(()=>{
   //   const fetchMinDeposit=async()=>{
   //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
