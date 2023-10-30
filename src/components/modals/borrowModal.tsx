@@ -289,7 +289,7 @@ const BorrowModal = ({
   useEffect(()=>{
     setMinimumDepositAmount(minAmounts["r"+currentCollateralCoin])
     setmaximumDepositAmount(maxAmounts["r"+currentCollateralCoin])
-  },[currentCollateralCoin])
+  },[currentCollateralCoin,minAmounts,maxAmounts])
   // useEffect(()=>{
   //   const fetchMinDeposit=async()=>{
   //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
@@ -973,7 +973,7 @@ const BorrowModal = ({
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentCollateralCoin)}</Box>
-                    <Text>{currentCollateralCoin}</Text>
+                    <Text>{(currentCollateralCoin=="BTC"|| currentCollateralCoin=="ETH")? "w"+currentCollateralCoin:currentCollateralCoin}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
                     {activeModal == "borrowModalCollateralMarketDropdown" ? (
@@ -1150,7 +1150,7 @@ const BorrowModal = ({
                             >
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
-                                <Text color="white">{coin}</Text>
+                                <Text color="white">{(coin=="BTC" || coin=="ETH")? "w"+coin:coin}</Text>
                               </Box>
                               <Box
                                 fontSize="9px"
@@ -1585,7 +1585,7 @@ const BorrowModal = ({
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentBorrowCoin)}</Box>
-                    <Text>{currentBorrowCoin}</Text>
+                    <Text>{(currentBorrowCoin=="BTC"|| currentBorrowCoin=="ETH" ?"w"+currentBorrowCoin:currentBorrowCoin)}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
                     {activeModal == "borrowModalBorrowMarketDropdown" ? (
@@ -1654,7 +1654,7 @@ const BorrowModal = ({
                             >
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
-                                <Text color="white">{coin}</Text>
+                                <Text color="white">{(coin=="BTC" || coin=="ETH")? "w"+coin:coin}</Text>
                               </Box>
                               <Box
                                 fontSize="9px"

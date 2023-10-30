@@ -4660,7 +4660,6 @@ const YourBorrowModal = ({
                           <Box display="flex" gap="1">
                             <Box p="1">{getCoin(currentBorrowMarketCoin2)}</Box>
                             <Text
-                              fontFamily="Avenir"
                               color="white"
                               mt="0.12rem"
                             >

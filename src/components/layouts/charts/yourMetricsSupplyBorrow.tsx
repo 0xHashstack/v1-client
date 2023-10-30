@@ -14,7 +14,7 @@ const YourMetricsSupplyBorrow = ({
   totalBorrow,
 }: any) => {
   const series1: any = {
-    BTC: [
+    wBTC: [
       {
         name: "Series 1",
         data: [30000, 40000, 60000, 80000, 35000, 50000, 49000],
@@ -32,7 +32,7 @@ const YourMetricsSupplyBorrow = ({
         data: [12300, 40000, 35000, 55000, 49000, 64340, 80000],
       },
     ],
-    ETH: [
+    wETH: [
       {
         name: "Series 1",
         data: [30000, 40000, 15000, 50000, 12300, 60000, 80000],

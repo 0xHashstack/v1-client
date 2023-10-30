@@ -620,7 +620,7 @@ const SwapModal = ({
                     ""
                   )}
 
-                  <Text color="white">{currentSelectedCoin}</Text>
+                  <Text color="white">{(currentSelectedCoin=="BTC" ||currentSelectedCoin=='ETH')?"w"+currentSelectedCoin:currentSelectedCoin}</Text>
                 </Box>
 
                 <Box pt="1" className="navbar-button">
@@ -682,7 +682,7 @@ const SwapModal = ({
                             borderRadius="md"
                           >
                             <Box p="1">{getCoin(coin)}</Box>
-                            <Text color="white">{coin}</Text>
+                            <Text color="white">{(coin=='BTC'|| coin=="ETH")?"w"+coin:coin}</Text>
                           </Box>
                         </Box>
                       );

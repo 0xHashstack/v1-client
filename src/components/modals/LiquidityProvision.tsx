@@ -811,7 +811,7 @@ const LiquidityProvisionModal = ({
                       ""
                     )}
 
-                    <Text mt="0.1rem">{currentPool}</Text>
+                    <Text mt="0.1rem">{(currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH") &&((currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH"))  ?"w"+currentPool.split("/")[0]+"/w"+currentPool.split("/")[1]:(currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH")  ?"w"+currentPool.split("/")[0]+"/"+currentPool.split("/")[1]:(currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH")  ?currentPool.split("/")[0]+"/w"+currentPool.split("/")[1] :currentPool}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
                     {activeModal == "liquidityProvisionPoolDropDown" ? (
@@ -873,7 +873,7 @@ const LiquidityProvisionModal = ({
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(pool)}</Box>
-                              <Text>{pool}</Text>
+                              <Text>{(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH") &&((pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH"))  ?"w"+pool.split("/")[0]+"/w"+pool.split("/")[1]:(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH")  ?"w"+pool.split("/")[0]+"/"+pool.split("/")[1]:(pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH")  ?pool.split("/")[0]+"/w"+pool.split("/")[1] :pool}</Text>
                             </Box>
                           </Box>
                         );

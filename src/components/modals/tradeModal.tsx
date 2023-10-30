@@ -1253,7 +1253,7 @@ const TradeModal = ({
                     >
                       <Box display="flex" gap="1">
                         <Box p="1">{getCoin(currentCollateralCoin)}</Box>
-                        <Text>{currentCollateralCoin}</Text>
+                        <Text>{(currentCollateralCoin=="BTC" || currentCollateralCoin=='ETH') ? "w"+currentCollateralCoin:currentCollateralCoin}</Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
                         {activeModal == "tradeModalCollateralMarketDropdown" ? (
@@ -1477,7 +1477,7 @@ const TradeModal = ({
                                 >
                                   <Box display="flex">
                                     <Box p="1">{getCoin(coin)}</Box>
-                                    <Text color="white">{coin}</Text>
+                                    <Text color="white">{(coin=="BTC" || coin=="ETH")?"w"+coin:coin}</Text>
                                   </Box>
                                   <Box
                                     fontSize="9px"
@@ -1870,7 +1870,7 @@ const TradeModal = ({
                     >
                       <Box display="flex" gap="1">
                         <Box p="1">{getCoin(currentBorrowCoin)}</Box>
-                        <Text>{currentBorrowCoin}</Text>
+                        <Text>{(currentBorrowCoin=="BTC"|| currentBorrowCoin=='ETH')? "w"+currentBorrowCoin:currentBorrowCoin}</Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
                         {activeModal == "tradeModalBorrowMarketDropdown" ? (
@@ -1989,7 +1989,7 @@ const TradeModal = ({
                                 >
                                   <Box display="flex">
                                     <Box p="1">{getCoin(coin)}</Box>
-                                    <Text color="white">{coin}</Text>
+                                    <Text color="white">{(coin=="BTC" || coin=='ETH'?"w"+coin:coin)}</Text>
                                   </Box>
                                   <Box
                                     fontSize="9px"
@@ -2676,7 +2676,7 @@ borderWidth:'5px',
                           ""
                         )}
                         <Text>
-                          {radioValue === "1" ? currentPool : currentPoolCoin}
+                          {radioValue === "1" ? (currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH") &&((currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH"))  ?"w"+currentPool.split("/")[0]+"/w"+currentPool.split("/")[1]:(currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH")  ?"w"+currentPool.split("/")[0]+"/"+currentPool.split("/")[1]:(currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH")  ?currentPool.split("/")[0]+"/w"+currentPool.split("/")[1] :currentPool : (currentPoolCoin=="BTC" || currentPoolCoin=='ETH') ?"w"+currentPoolCoin:currentPoolCoin}
                         </Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
@@ -2742,7 +2742,7 @@ borderWidth:'5px',
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(pool)}</Box>
-                                  <Text>{pool}</Text>
+                                  <Text>{(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH") &&((pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH"))  ?"w"+pool.split("/")[0]+"/w"+pool.split("/")[1]:(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH")  ?"w"+pool.split("/")[0]+"/"+pool.split("/")[1]:(pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH")  ?pool.split("/")[0]+"/w"+pool.split("/")[1] :pool}</Text>
                                 </Box>
                               </Box>
                             );
@@ -2798,7 +2798,7 @@ borderWidth:'5px',
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
-                                  <Text>{coin}</Text>
+                                  <Text>{(coin=="BTC"|| coin=="ETH")?"w"+coin:coin}</Text>
                                 </Box>
                               </Box>
                             );

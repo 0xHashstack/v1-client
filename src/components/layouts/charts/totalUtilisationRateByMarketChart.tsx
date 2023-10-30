@@ -94,11 +94,11 @@ const TotalUtilisationRateByMarketChart = () => {
         daiData?.utilRates
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: btcData?.utilRates,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: ethData?.utilRates,
               },
               {
@@ -167,11 +167,11 @@ const TotalUtilisationRateByMarketChart = () => {
         weeklyDaiData?.utilRates
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: weeklyBtcData?.utilRates,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: weeklyEthData?.utilRates,
               },
               {
@@ -245,11 +245,11 @@ const TotalUtilisationRateByMarketChart = () => {
         monthlyDaiData?.utilRates
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: monthlyBtcData?.utilRates,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: monthlyEthData?.utilRates,
               },
               {
@@ -327,11 +327,11 @@ const TotalUtilisationRateByMarketChart = () => {
         allDaiData?.utilRates
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: allBtcData?.utilRates,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: allEthData?.utilRates,
               },
               {

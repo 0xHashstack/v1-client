@@ -314,7 +314,7 @@ const DashboardLeft = ({
                       pt="3px"
                     >
                       <Text fontSize="14px" fontWeight="400">
-                        {coin?.name}
+                        {(coin?.name =="BTC" || coin?.name=="ETH") ?"w"+coin?.name:coin?.name}
                       </Text>
                       {!assetBalance[coin?.name]?.dataBalanceOf ? (
                         // <Skeleton

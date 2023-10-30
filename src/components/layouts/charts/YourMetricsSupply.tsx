@@ -81,7 +81,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
       },
       categories: categories
         ? categories
-        : ["BTC", "ETH", "USDT", "USDC", "DAI"],
+        : ["wBTC", "wETH", "USDT", "USDC", "DAI"],
     },
     plotOptions: {
       bar: {
@@ -147,12 +147,12 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   // ];
   const chartSeries = [
     {
-      name: "BTC",
+      name: "wBTC",
       data: supplyData ? [supplyData?.[0], 0, 0, 0, 0] : [44000, 0, 0, 0, 0],
       color: "#4D3C03",
     },
     {
-      name: "ETH",
+      name: "wETH",
       data: supplyData ? [0, supplyData?.[1], 0, 0, 0] : [0, 55000, 0, 0, 0],
       color: "#4D59E8",
     },
