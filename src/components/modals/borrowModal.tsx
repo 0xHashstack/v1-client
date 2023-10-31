@@ -2110,20 +2110,20 @@ const BorrowModal = ({
                     Fees:
                   </Text>
                   <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="Cost incurred during transactions."
-                    bg="#010409"
-                    fontSize={"13px"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                    border="1px solid"
-                    borderColor="#2B2F35"
-                    arrowShadowColor="#2B2F35"
-                    maxW="300px"
-                    // mt="12px"
+                        hasArrow
+                        placement="right"
+                        boxShadow="dark-lg"
+                        label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                        maxW="222px"
                   >
                     <Box>
                       <InfoIcon />

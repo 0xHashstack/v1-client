@@ -1164,10 +1164,10 @@ const BorrowDashboard = ({
                           )?.exchangeRateDTokenToUnderlying*
                           dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)))): borrow.spendType == "LIQUIDITY" ? numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)*reduxProtocolStats.find(
                             (val: any) => val?.token == borrow?.loanMarket.slice(1)
-                          )?.exchangeRateDTokenToUnderlying-(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenA,oraclePrices)+dollarConvertor(allSplit?.[lower_bound + idx]?.amountB,allSplit?.[lower_bound + idx]?.tokenB,oraclePrices)))):numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)*reduxProtocolStats.find(
+                          )?.exchangeRateDTokenToUnderlying-(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenA,oraclePrices)+dollarConvertor(allSplit?.[lower_bound + idx]?.amountB,allSplit?.[lower_bound + idx]?.tokenB,oraclePrices)))):borrow.spendType == "SWAP" ?numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)*reduxProtocolStats.find(
                             (val: any) => val?.token == borrow?.loanMarket.slice(1)
-                          )?.exchangeRateDTokenToUnderlying*-dollarConvertor(borrow.currentLoanAmountParsed,borrow?.currentLoanMarket,oraclePrices)))}
-
+                          )?.exchangeRateDTokenToUnderlying-dollarConvertor(borrow.currentLoanAmountParsed,borrow?.currentLoanMarket,oraclePrices))):""}
+{}
                                  {/* { `${borrow.loanAmountParsed-borrow.currentLoanAmountParsed >=0 ? "$":"-$"}` +borrow.spendType == "LIQUIDITY" ?:numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)-dollarConvertor(borrow.currentLoanAmountParsed,borrow?.currentLoanMarket,oraclePrices)))}
                         </Box></Td> */}
                         </Box></Td>

@@ -1335,7 +1335,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Cost incurred during transactions."
+                              label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                               bg="#02010F"
                               fontSize={"13px"}
                               fontWeight={"400"}
@@ -2256,7 +2256,7 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Cost incurred during transactions."
+                              label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                               bg="#02010F"
                               fontSize={"13px"}
                               fontWeight={"400"}
