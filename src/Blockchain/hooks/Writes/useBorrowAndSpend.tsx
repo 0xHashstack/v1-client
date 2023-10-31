@@ -12,7 +12,7 @@ import { etherToWeiBN } from "@/Blockchain/utils/utils";
 import { L3App } from "../../interfaces/interfaces";
 import { constants } from "@/Blockchain/utils/constants";
 import { useSelector } from "react-redux";
-import { selectMessageHash, selectNftBalance, selectSignature, selectUserType } from "@/store/slices/readDataSlice";
+import { selectMessageHash, selectNftBalance, selectSignature, selectUserType, selectYourSupply } from "@/store/slices/readDataSlice";
 
 const useBorrowAndSpend = () => {
   const [loanMarket, setLoanMarket] = useState<NativeToken>("USDT"); // asset
@@ -37,6 +37,7 @@ const useBorrowAndSpend = () => {
   const user=useSelector(selectUserType)
   const messagehash=useSelector(selectMessageHash)
   const signature=useSelector(selectSignature)
+  const totalSupply=useSelector(selectYourSupply)
 
   // -------------------------- Types --------------------------- //
 
@@ -98,7 +99,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpend,
     status: statusBorrowAndSpend,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0 &&user=="U1" ? [
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 &&user=="U1" && (totalSupply>=20 || collateralAmount>20) ? [
       {
         contractAddress: tokenAddressMap[collateralMarket],
         entrypoint: "approve",
@@ -172,7 +173,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpendRToken,
     status: statusBorrowAndSpendRToken,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0 && user=="U1" ?[ {
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1"&& (totalSupply>=20 || collateralAmount>20) ?[ {
       contractAddress: diamondAddress,
       entrypoint: "borrow_and_spend_with_rToken",
       calldata: [

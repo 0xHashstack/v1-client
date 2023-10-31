@@ -3218,7 +3218,7 @@ borderWidth:'5px',
                                       stat?.token === currentCollateralCoin
                                   )?.supplyRate) /
                                 inputBorrowAmountUSD
-                              ).toFixed(2)}
+                              ).toFixed(2)}%
                             </Text>
                           )
                         ) : // protocolStats.length === 0 ||
@@ -3250,7 +3250,7 @@ borderWidth:'5px',
                                       stat?.token === rToken.slice(1)
                                   )?.supplyRate) /
                                 inputBorrowAmountUSD
-                              ).toFixed(2)}
+                              ).toFixed(2)}%
                               {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin

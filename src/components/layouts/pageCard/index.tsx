@@ -232,18 +232,17 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         }
         const url = `http://13.229.210.84/is-whitelisted/${address}`;
         const response = await axios.get(url);
-        if(response){
+        if(response.data){
           setWhitelisted(response.data?.isWhitelisted);
           if(userType=="U1"){
-            axios.post('http://13.229.210.84/nft-sign', { address: address })
+            await axios.post('http://13.229.210.84/nft-sign', { address: address })
             .then((response) => {
+              console.log(response, "hash");
               if(response){
-                if(response){
                   dispatch(setMessageHash(response?.data?.msg_hash))
                   dispatch(setSignature(response?.data?.signature))
-                }
               }
-              console.log(response, "hash"); // Log the response from the backend.
+               // Log the response from the backend.
             })
             .catch((error) => {
               console.error('Error:', error);
@@ -293,7 +292,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         setRender(true);
       }
     }
-  }, [account,whitelisted,referralLinked]);
+  }, [account,whitelisted,referralLinked,userType]);
 
   const [validRTokens, setValidRTokens] = useState([]);
   const userDepositsRedux = useSelector(selectUserDeposits);

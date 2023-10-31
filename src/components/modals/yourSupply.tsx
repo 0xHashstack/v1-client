@@ -1492,20 +1492,20 @@ const YourSupplyModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#676D9A">
-                            {protocolStats?.find(
+                            +{protocolStats?.find(
                               (stat: any) =>
                                 stat.token ==
                                 (currentSelectedSupplyCoin[0] == "r"
                                   ? currentSelectedSupplyCoin.slice(1)
                                   : currentSelectedSupplyCoin)
                             )?.stakingRate
-                              ? protocolStats?.find(
+                              ? ((protocolStats?.find(
                                 (stat: any) =>
                                   stat.token ==
                                   (currentSelectedSupplyCoin[0] == "r"
                                     ? currentSelectedSupplyCoin.slice(1)
                                     : currentSelectedSupplyCoin)
-                              )?.stakingRate
+                              )?.stakingRate)-getBorrowAPR(currentSelectedSupplyCoin)).toFixed(2)
                               : "1.2"}
                             %
                             {/* {protocolStats?.[0]?.stakingRate ? (

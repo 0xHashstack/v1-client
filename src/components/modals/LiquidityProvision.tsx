@@ -1427,7 +1427,7 @@ const LiquidityProvisionModal = ({
                         />
                       </Box>
                     ) : getBorrowAPR(currentBorrowMarketCoin) ? (
-                      getBorrowAPR(currentBorrowMarketCoin)
+                      getBorrowAPR(currentBorrowMarketCoin)+ "%"
                     ) : (
                       getBorrowAPR(currentBorrowMarketCoin.slice(1)) + "%"
                     )}

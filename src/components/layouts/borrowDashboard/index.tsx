@@ -502,7 +502,7 @@ const BorrowDashboard = ({
     "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
     "Collateral are the tokens held as security for borrowed amount.",
     "Shows if borrowed amount was used in other pools or dapps within the protocol.",
-    "Return on Equity",
+    "Current debt value - Repay Debt value",
     "Loan risk metric comparing collateral value to borrowed amount to check potential liquidation.",
   ];
 
@@ -718,7 +718,7 @@ const BorrowDashboard = ({
                       // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        {`Borrow ID${borrow?.loanId < 10
+                        {`ID ${borrow?.loanId < 10
                             ? "0" + borrow?.loanId
                             : borrow?.loanId
                           }`}{" "}
@@ -784,7 +784,9 @@ const BorrowDashboard = ({
                               width="4.6rem"
                             >
                               <Text textAlign="left">
-                                {dollarConversions==true ?"$"+ numberFormatter(dollarConvertor(borrow?.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)):numberFormatter(borrow?.loanAmountParsed)}
+                                {dollarConversions==true ?"$"+ numberFormatter(dollarConvertor(borrow?.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)*reduxProtocolStats.find(
+                            (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                          )?.exchangeRateDTokenToUnderlying):numberFormatter(borrow?.loanAmountParsed)}
                                 {/* {numberFormatter(borrow?.loanAmountParsed)} */}
                                 {/* 0.04534 */}
                               </Text>
@@ -905,7 +907,10 @@ const BorrowDashboard = ({
                           width="4.6rem"
                         >
                           <Text>
-                            {dollarConversions==true ?"$"+  numberFormatter(dollarConvertor(borrow?.collateralAmountParsed,borrow?.collateralMarket.slice(1),oraclePrices)):numberFormatter(borrow?.collateralAmountParsed)}
+                            {dollarConversions==true ?"$"+  numberFormatter(dollarConvertor(borrow?.collateralAmountParsed,borrow?.collateralMarket.slice(1),oraclePrices)*reduxProtocolStats.find(
+                            (val: any) => val?.token == borrow?.collateralMarket.slice(1)
+                          )?.exchangeRateRtokenToUnderlying
+                          ):numberFormatter(borrow?.collateralAmountParsed)}
                             {/* 10,000 */}
                           </Text>
                         </Text>
@@ -1157,7 +1162,11 @@ const BorrowDashboard = ({
                           (reduxProtocolStats.find(
                             (val: any) => val?.token == borrow?.loanMarket.slice(1)
                           )?.exchangeRateDTokenToUnderlying*
-                          dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)))): borrow.spendType == "LIQUIDITY" ? numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)-(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenA,oraclePrices)+dollarConvertor(allSplit?.[lower_bound + idx]?.amountB,allSplit?.[lower_bound + idx]?.tokenB,oraclePrices)))):numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)-dollarConvertor(borrow.currentLoanAmountParsed,borrow?.currentLoanMarket,oraclePrices)))}
+                          dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)))): borrow.spendType == "LIQUIDITY" ? numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)*reduxProtocolStats.find(
+                            (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                          )?.exchangeRateDTokenToUnderlying-(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA,allSplit?.[lower_bound + idx]?.tokenA,oraclePrices)+dollarConvertor(allSplit?.[lower_bound + idx]?.amountB,allSplit?.[lower_bound + idx]?.tokenB,oraclePrices)))):numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)*reduxProtocolStats.find(
+                            (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                          )?.exchangeRateDTokenToUnderlying*-dollarConvertor(borrow.currentLoanAmountParsed,borrow?.currentLoanMarket,oraclePrices)))}
 
                                  {/* { `${borrow.loanAmountParsed-borrow.currentLoanAmountParsed >=0 ? "$":"-$"}` +borrow.spendType == "LIQUIDITY" ?:numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)-dollarConvertor(borrow.currentLoanAmountParsed,borrow?.currentLoanMarket,oraclePrices)))}
                         </Box></Td> */}

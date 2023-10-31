@@ -918,7 +918,7 @@ const SpendTable = () => {
                     </Box>
                     <Box p="6px 2px" display="flex">
                       <Text fontSize="sm" color="#F0F0F5">
-                        We are evaluating few promising DEXes to integrate.
+                        We are evaluating few promising DApps to integrate.
                         Please check back at a late time.
                       </Text>
                       <Box
@@ -1004,7 +1004,7 @@ const SpendTable = () => {
                     </Box>
                     <Box p="6px 2px" display="flex">
                       <Text fontSize="sm" color="#F0F0F5">
-                        We are evaluating few promising DEXes to integrate.
+                        We are evaluating few promising DApps to integrate.
                         Please check back at a late time.
                       </Text>
                       <Box

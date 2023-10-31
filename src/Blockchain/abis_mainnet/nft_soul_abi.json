@@ -166,6 +166,18 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "get_max_nft_amount",
+        "outputs": [
+            {
+                "name": "number",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "name": "tokenId",
@@ -305,6 +317,17 @@
             }
         ],
         "name": "set_public_key",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "number",
+                "type": "felt"
+            }
+        ],
+        "name": "set_max_nft_amount",
         "outputs": [],
         "type": "function"
     }

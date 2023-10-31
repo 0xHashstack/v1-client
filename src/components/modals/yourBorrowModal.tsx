@@ -3359,8 +3359,7 @@ const YourBorrowModal = ({
                           </Text>
                         )}
                       </Box>
-                      {currentAction !== "Spend Borrow" &&
-                        currentAction != "Convert to borrow market" && (
+                      {currentAction =='Repay Borrow' &&
                           <Box
                             display="flex"
                             flexDirection="column"
@@ -3418,8 +3417,6 @@ const YourBorrowModal = ({
                                 onChange={handleChange}
                                 value={repayAmount ? repayAmount : ""}
                                 isDisabled={
-                                  currentAction === "Zero Repay" ||
-                                  currentAction === "Select action" ||
                                   transactionStarted == true
                                 }
                                 step={parseFloat(
@@ -3474,7 +3471,6 @@ const YourBorrowModal = ({
                                   bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
                                 }}
                                 onClick={() => {
-                                  if (currentAction === "Zero Repay") return;
                                   setRepayAmount(walletBalance1);
                                   setSliderValue(100);
                                   dispatch(
@@ -3484,8 +3480,7 @@ const YourBorrowModal = ({
                                   );
                                 }}
                                 isDisabled={
-                                  transactionStarted == true ||
-                                  currentAction === "Select action"
+                                  transactionStarted == true 
                                 }
                                 _disabled={{ cursor: "pointer" }}
                               >
@@ -3671,7 +3666,7 @@ const YourBorrowModal = ({
                             </Slider>}
 
                           </Box>
-                        )}
+                        }
                     </Box>
                     {currentAction === "Spend Borrow" && (
                       <Box display="flex" flexDir="column" p="3" gap="1">

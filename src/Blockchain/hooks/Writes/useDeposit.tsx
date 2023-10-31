@@ -11,7 +11,7 @@ import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 import { getNFTBalance } from "@/Blockchain/scripts/Rewards";
-import { selectMessageHash, selectNftBalance, selectSignature, selectUserType, setBlock } from "@/store/slices/readDataSlice";
+import { selectMessageHash, selectNftBalance, selectSignature, selectUserType, selectYourSupply, setBlock } from "@/store/slices/readDataSlice";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
@@ -21,6 +21,7 @@ const useDeposit = () => {
   const [asset, setAsset] = useState<Token | any>("USDT");
   const balance=useSelector(selectNftBalance)
   const user=useSelector(selectUserType);
+  const totalSupply=useSelector(selectYourSupply);
   // const getdata=async()=>{
   //   const balance=getNFTBalance(account || "");
   //   setbalance(balance);
@@ -44,7 +45,7 @@ const useDeposit = () => {
     isSuccess: isSuccessDeposit,
     status: statusDeposit,
   } = useContractWrite({
-    calls:  balance==0 && user=="U1" ?[
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" &&  balance==0 && user=="U1" && (totalSupply>=20 || depositAmount>20)  ?[
       {
         contractAddress: tokenAddressMap[asset] || "",
         entrypoint: "approve",
@@ -108,7 +109,7 @@ const useDeposit = () => {
     isSuccess: isSuccessDepositStake,
     status: statusDepositStake,
   } = useContractWrite({
-    calls: balance==0 && user=="U1" ?[
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1" && (totalSupply>=20 || depositAmount>20) ?[
       {
         contractAddress: tokenAddressMap[asset] || "",
         entrypoint: "approve",

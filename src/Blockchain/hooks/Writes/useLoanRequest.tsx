@@ -13,7 +13,7 @@ import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { useSelector } from "react-redux";
-import { selectMessageHash, selectNftBalance, selectSignature, selectUserType } from "@/store/slices/readDataSlice";
+import { selectMessageHash, selectNftBalance, selectSignature, selectUserType, selectYourSupply } from "@/store/slices/readDataSlice";
 
 const useLoanRequest = () => {
   const { address: account } = useAccount();
@@ -35,6 +35,7 @@ const useLoanRequest = () => {
   const user=useSelector(selectUserType)
   const messagehash=useSelector(selectMessageHash)
   const signature=useSelector(selectSignature)
+  const totalSupply=useSelector(selectYourSupply)
   // const loanRequestTransactionReceipt = useWaitForTransaction({
   //   hash: transLoanRequestHash,
   //   watch: true,
@@ -63,7 +64,7 @@ const useLoanRequest = () => {
     isSuccess: isSuccessLoanRequest,
     status: statusLoanRequest,
   } = useContractWrite({
-    calls: process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0 &&user=="U1"? [
+    calls: process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 &&user=="U1" && (totalSupply>=20 || collateralAmount>20)? [
       {
         contractAddress: tokenAddressMap[collateralMarket] || "",
         entrypoint: "approve",
@@ -132,7 +133,7 @@ const useLoanRequest = () => {
     isSuccess: isSuccessLoanRequestrToken,
     status: statusLoanRequestrToken,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0 && user=="U1"? [
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1" && (totalSupply>=20 || collateralAmount>20)? [
       {
         contractAddress: diamondAddress,
         entrypoint: "loan_request_with_rToken",

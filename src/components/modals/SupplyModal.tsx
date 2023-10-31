@@ -94,7 +94,7 @@ import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectNftBalance, selectProtocolStats, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
-import { getFees, getMaximumDepositAmount, getMinimumDepositAmount, getNFTBalance } from "@/Blockchain/scripts/Rewards";
+import { getFees, getMaximumDepositAmount, getMinimumDepositAmount, getNFTBalance, getNFTMaxAmount } from "@/Blockchain/scripts/Rewards";
 import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
@@ -1551,20 +1551,20 @@ const SupplyModal = ({
                     </Tooltip>
                   </Text>
                   <Text color="#676D9A">
-                    {protocolStats?.find(
+                    +{protocolStats?.find(
                       (stat: any) =>
                         stat.token ==
                         (currentSelectedCoin[0] == "r"
                           ? currentSelectedCoin.slice(1)
                           : currentSelectedCoin)
                     )?.stakingRate
-                      ? protocolStats?.find(
+                      ? ((protocolStats?.find(
                         (stat: any) =>
                           stat.token ==
                           (currentSelectedCoin[0] == "r"
                             ? currentSelectedCoin.slice(1)
                             : currentSelectedCoin)
-                      )?.stakingRate
+                      )?.stakingRate)-supplyAPRs[currentSupplyAPR]).toFixed(2)
                       : "1.2"}
                     %
                     {/* {protocolStats?.[0]?.stakingRate ? (
