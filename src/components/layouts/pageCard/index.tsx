@@ -1,5 +1,5 @@
 import Navbar from "@/components/layouts/navbar/Navbar";
-import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, StackProps, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
+import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, Stack, StackProps, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -50,7 +50,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const classes = [];
   const { account, address, status, isConnected } = useAccount();
   const extendedAccount = account as ExtendedAccountInterface;
-
+  const [loading, setLoading] = useState(true);
   const { available, disconnect, connect, connectors } = useConnectors();
   if (className) classes.push(className);
   const router = useRouter();
@@ -123,7 +123,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     }
   }, [account]);
   const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
-  const ref=useSelector(selectreferral)
+  const ref = useSelector(selectreferral)
   // useEffect(() => {
   //   const loan = async () => {
   //     try {
@@ -184,8 +184,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const [whitelisted, setWhitelisted] = useState(true)
   const [uniqueToken, setUniqueToken] = useState("")
   const [referralLinked, setRefferalLinked] = useState(false)
-  const userType=useSelector(selectUserType)
-  const dispatch=useDispatch();
+  const userType = useSelector(selectUserType)
+  const dispatch = useDispatch();
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -232,67 +232,68 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         }
         const url = `http://13.229.210.84/is-whitelisted/${address}`;
         const response = await axios.get(url);
-        if(response.data){
+        if (response.data) {
           setWhitelisted(response.data?.isWhitelisted);
-          if(userType=="U1"){
+          if (userType == "U1") {
             await axios.post('http://13.229.210.84/nft-sign', { address: address })
-            .then((response) => {
-              console.log(response, "hash");
-              if(response){
+              .then((response) => {
+                console.log(response, "hash");
+                if (response) {
                   dispatch(setMessageHash(response?.data?.msg_hash))
                   dispatch(setSignature(response?.data?.signature))
-              }
-               // Log the response from the backend.
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            });
+                }
+                // Log the response from the backend.
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
           }
         }
+        setLoading(false)
       } catch (err) {
         console.log(err, "err in whitelist")
       }
     }
     isWhiteListed()
-    
-    const referal=async()=>{
-      try{
-        if(ref){
-          const response=await axios.get(`http://13.229.210.84/get_token/${ref}`);
-          console.log(response?.data,"refer")
-          if(response){
-            axios.post('http://13.229.210.84/link-referral', { address: address },{
-              headers:{
-                "reftoken":response.data
+
+    const referal = async () => {
+      try {
+        if (ref) {
+          const response = await axios.get(`http://13.229.210.84/get_token/${ref}`);
+          console.log(response?.data, "refer")
+          if (response) {
+            axios.post('http://13.229.210.84/link-referral', { address: address }, {
+              headers: {
+                "reftoken": response.data
               }
             })
-            .then((response) => {
-              setRefferalLinked(response?.data?.success)
-              console.log(response, "linked"); // Log the response from the backend.
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            });
+              .then((response) => {
+                setRefferalLinked(response?.data?.success)
+                console.log(response, "linked"); // Log the response from the backend.
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
           }
-          console.log(response.data,"token")
+          console.log(response.data, "token")
           setUniqueToken(response.data);
         }
-      }catch(err){
-        console.log(err,"err in token")
+      } catch (err) {
+        console.log(err, "err in token")
       }
 
     }
     referal();
     if ((account && !isCorrectNetwork())) {
-        setRender(false);
+      setRender(false);
     } else {
-      if(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && !whitelisted){
+      if (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && !whitelisted) {
         setRender(false);
-      }else{
+      } else {
         setRender(true);
       }
     }
-  }, [account,whitelisted,referralLinked,userType]);
+  }, [account, whitelisted, referralLinked, userType]);
 
   const [validRTokens, setValidRTokens] = useState([]);
   const userDepositsRedux = useSelector(selectUserDeposits);
@@ -486,39 +487,84 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   }
   // }, [transactions]);
 
-  return (
-    <>
-      {render ? (
-        <>
-          <Box background={`
+  return loading ?
+    (
+      <>
+        <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
             radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
             black
           `} position={'fixed'} zIndex={3} >
-            <Navbar validRTokens={validRTokens} />
-          </Box>
-          <Box position={'fixed'} zIndex={0.5}>
-            <FeedbackModal />
-          </Box>
-          <Stack
-            zIndex={1}
+          <Navbar validRTokens={validRTokens} />
+        </Box>
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          minHeight={"100vh"}
+          pt="8rem"
+          backgroundColor="#010409"
+          pb={isLargerThan1280 ? "7rem" : "0rem"}
+          className={classes.join(" ")}
+          {...rest}
+        >
 
-            alignItems="center"
-            minHeight={"100vh"}
+          {/* <Text color="#FFFFFF" fontSize="20px">
+          Loading...
+        </Text> */}
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="#010409"
+            size="xl"
+          />
+          {/* <YourBorrowModal
+          buttonText="Borrow assets"
+          variant="link"
+          fontSize="16px"
+          fontWeight="400"
+          display="inline"
+          color="#0969DA"
+          cursor="pointer"
+          ml="0.4rem"
+          lineHeight="24px"
+        /> */}
+        </Stack>
+      </>
+    )
+    : (
+      <>
+        {render && process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && whitelisted ? (
+          <>
+            <Box background={`
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
+            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            black
+          `} position={'fixed'} zIndex={3} >
+              <Navbar validRTokens={validRTokens} />
+            </Box>
+            <Box position={'fixed'} zIndex={0.5}>
+              <FeedbackModal />
+            </Box>
+            <Stack
+              zIndex={1}
 
-            pt="8rem"
-            background={`
+              alignItems="center"
+              minHeight={"100vh"}
+
+              pt="8rem"
+              background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.15), transparent) top left,
             radial-gradient(circle 1300px at bottom right, rgba(115, 49, 234, 0.15), transparent) bottom right,
             black
           `}
-            pb={isLargerThan1280 ? "7rem" : "0rem"}
-            className={classes.join(" ")}
-            {...rest}
-          >
-            {children}
-          </Stack>
-          {/* <Box
+              pb={isLargerThan1280 ? "7rem" : "0rem"}
+              className={classes.join(" ")}
+              {...rest}
+            >
+              {children}
+            </Stack>
+            {/* <Box
             bgColor="red"
             display={toastTransactionStarted ? "block" : "none"}
           >
@@ -558,42 +604,42 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               Supply
             </AnimatedButton>
           </Box> */}
-          {/* <ToastContainer theme="dark" /> */}
-          <Footer />
-        </>
-      ) : (
-        <>
-          <Box background={`
+            {/* <ToastContainer theme="dark" /> */}
+            <Footer />
+          </>
+        ) : (
+          <>
+            <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
             radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
             black
           `} position={'fixed'} zIndex={3} >
-            <Navbar validRTokens={validRTokens} />
-          </Box>
-          <Stack
-            alignItems="center"
-            minHeight={"100vh"}
-            pt="8rem"
-            backgroundColor="#010409"
-            pb={isLargerThan1280 ? "7rem" : "0rem"}
-            className={classes.join(" ")}
-            {...rest}
-          >
-            <Box>
-              {(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" &&!whitelisted)
-                ? <Text color="white" fontSize="25px">
-                  You are successfully added to our waitlist
-                </Text> : <Text color="white" fontSize="25px">
-                  Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Goerli" : "Mainnet"} and refresh
-                </Text>
-              }
-
+              <Navbar validRTokens={validRTokens} />
             </Box>
-          </Stack>
-        </>
-      )}
-    </>
-  );
+            <Stack
+              alignItems="center"
+              minHeight={"100vh"}
+              pt="8rem"
+              backgroundColor="#010409"
+              pb={isLargerThan1280 ? "7rem" : "0rem"}
+              className={classes.join(" ")}
+              {...rest}
+            >
+              <Box>
+                {(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && !whitelisted)
+                  ? <Text color="white" fontSize="25px">
+                    You are successfully added to our waitlist
+                  </Text> : <Text color="white" fontSize="25px">
+                    Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Goerli" : "Mainnet"} and refresh
+                  </Text>
+                }
+
+              </Box>
+            </Stack>
+          </>
+        )}
+      </>
+    );
 };
 
 export default PageCard;
