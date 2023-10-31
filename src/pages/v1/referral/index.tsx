@@ -369,10 +369,10 @@ const Referral = () => {
     const handleCopyClick =  async () => {
         try {
             if(exisitingLink){
-                await navigator.clipboard.writeText("http://13.229.210.84/" + exisitingLink);
+                await navigator.clipboard.writeText("https://hstk.fi/" + exisitingLink);
             }else{
-                await navigator.clipboard.writeText("http://13.229.210.84/" + refferal);
-                axios.post('http://13.229.210.84/shorten', { pseudo_name:refferal,address: address })
+                await navigator.clipboard.writeText("https://hstk.fi/" + refferal);
+                axios.post('https://hstk.fi/shorten', { pseudo_name:refferal,address: address })
                 .then((response) => {
                   console.log(response, "response refer link"); // Log the response from the backend.
                 })
@@ -446,7 +446,7 @@ const Referral = () => {
                     <Box display="flex" mt="0">
                     <InputGroup size='sm'mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="4rem" >
                     <InputLeftAddon height="60px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
-                    http://13.229.210.84/
+                    https://hstk.fi/
                     </InputLeftAddon>
                     {exisitingLink ?
                     <Input  height="60px" border="none" color="#F0F0F5" value={exisitingLink} paddingInlineStart="0" _focus={{

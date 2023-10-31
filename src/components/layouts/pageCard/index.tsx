@@ -230,12 +230,12 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         if (!address) {
           return;
         }
-        const url = `http://13.229.210.84/is-whitelisted/${address}`;
+        const url = `https://hstk.fi/is-whitelisted/${address}`;
         const response = await axios.get(url);
         if (response.data) {
           setWhitelisted(response.data?.isWhitelisted);
           if (userType == "U1") {
-            await axios.post('http://13.229.210.84/nft-sign', { address: address })
+            await axios.post('https://hstk.fi/nft-sign', { address: address })
               .then((response) => {
                 console.log(response, "hash");
                 if (response) {
@@ -259,10 +259,10 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     const referal = async () => {
       try {
         if (ref) {
-          const response = await axios.get(`http://13.229.210.84/get_token/${ref}`);
+          const response = await axios.get(`https://hstk.fi/get_token/${ref}`);
           console.log(response?.data, "refer")
           if (response) {
-            axios.post('http://13.229.210.84/link-referral', { address: address }, {
+            axios.post('https://hstk.fi/link-referral', { address: address }, {
               headers: {
                 "reftoken": response.data
               }

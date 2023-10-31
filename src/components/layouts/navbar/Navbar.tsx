@@ -214,7 +214,7 @@ const [Render, setRender] = useState(true);
         if (!address) {
           return;
         }
-        const url = `http://13.229.210.84/is-whitelisted/${address}`;
+        const url = `https://hstk.fi/is-whitelisted/${address}`;
         const response = await axios.get(url);
         setWhitelisted(response.data?.isWhitelisted);
 

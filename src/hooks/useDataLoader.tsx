@@ -1128,8 +1128,8 @@ const useDataLoader = () => {
           const count = getTransactionCount();
           dispatch(setFeesCount(count));
         })
-        const dataUserType=await axios.get(`http://13.229.210.84/get-user-type/${address}`);
-        const dataExisitingLink=await axios.get(`http://13.229.210.84/get-ref-link/${address}`)
+        const dataUserType=await axios.get(`https://hstk.fi/get-user-type/${address}`);
+        const dataExisitingLink=await axios.get(`https://hstk.fi/get-ref-link/${address}`)
         if(dataUserType){
           dispatch(setUserType(dataUserType?.data?.user_type))
         }
