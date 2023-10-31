@@ -325,7 +325,7 @@ const [Render, setRender] = useState(true);
             <Text fontSize="14px">Dashboard</Text>
           </Box>
         </Box>
-       <Box
+       {/* <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
@@ -370,7 +370,7 @@ const [Render, setRender] = useState(true);
 
               <Text fontSize="14px">Referral</Text>
             </Box>
-        </Box>
+        </Box> */}
    {     <Box
           padding="16px 12px"
           fontSize="12px"
