@@ -1249,67 +1249,67 @@ const BorrowDashboard = ({
                           alignItems="center"
                           justifyContent="center"
                         >
-                                                      <Tooltip
-                              hasArrow
-                              label={
-                                <Box>
-                                  Health Factor : {avgsLoneHealth?.find(
-                            (item: any) => item?.loanId == borrow?.loanId
-                          )?.loanHealth}
-                          <br/>
-                          Liquidates below : 1.06
-                                </Box>
-                              }
-                              // arrowPadding={-5420}
-                              placement="bottom"
-                              rounded="md"
-                              boxShadow="dark-lg"
-                              bg="#02010F"
-                              fontSize={"13px"}
-                              fontWeight={"400"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                              color="#F0F0F5"
-                              border="1px solid"
-                              borderColor="#23233D"
-                              arrowShadowColor="#2B2F35"
-                            // cursor="context-menu"
-                            // marginRight={idx1 === 1 ? "52px" : ""}
-                            // maxW="222px"
-                            // mt="28px"
-                            >
-
-                          {avgsLoneHealth?.find(
-                            (item: any) => item?.loanId == borrow?.loanId
-                          )?.loanHealth
-                            ?
-                            (avgsLoneHealth?.find(
-                              (item: any) =>
-                                item?.loanId == borrow?.loanId
-                            )?.loanHealth) > 1.15 ?
-                              <Box
-                                width="68px"
-                                height="10px"
-                                // pl="45%"
-                                fontWeight="400"
-                                borderRadius="100px"
-                                background="linear-gradient(90deg, #00D395 78.68%, #D97008 389.71%, #CF222E 498.53%)"
-                              >
-                                {/* {checkGap(idx1, idx2)} */}
+                          <Tooltip
+                            hasArrow
+                            label={
+                              <Box>
+                                Health Factor : {avgsLoneHealth?.find(
+                                  (item: any) => item?.loanId == borrow?.loanId
+                                )?.loanHealth}
+                                <br />
+                                Liquidates below : 1.06
                               </Box>
-                              : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.09 &&
-                                avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.15) ?
-                                <MediumHeathFactor />
-                                : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.09) ?
-                                  <LowhealthFactor />
-                                  : "" : <Skeleton
-                              width="6rem"
-                              height="1.2rem"
-                              startColor="#101216"
-                              endColor="#2B2F35"
-                              borderRadius="6px"
+                            }
+                            // arrowPadding={-5420}
+                            placement="bottom"
+                            rounded="md"
+                            boxShadow="dark-lg"
+                            bg="#02010F"
+                            fontSize={"13px"}
+                            fontWeight={"400"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                          // cursor="context-menu"
+                          // marginRight={idx1 === 1 ? "52px" : ""}
+                          // maxW="222px"
+                          // mt="28px"
+                          >
+
+                            {avgsLoneHealth?.find(
+                              (item: any) => item?.loanId == borrow?.loanId
+                            )?.loanHealth
+                              ?
+                              (avgsLoneHealth?.find(
+                                (item: any) =>
+                                  item?.loanId == borrow?.loanId
+                              )?.loanHealth) > 1.15 ?
+                                <Box
+                                  width="68px"
+                                  height="10px"
+                                  // pl="45%"
+                                  fontWeight="400"
+                                  borderRadius="100px"
+                                  background="linear-gradient(90deg, #00D395 78.68%, #D97008 389.71%, #CF222E 498.53%)"
+                                >
+                                  {/* {checkGap(idx1, idx2)} */}
+                                </Box>
+                                : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.09 &&
+                                  avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.15) ?
+                                  <MediumHeathFactor />
+                                  : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.09) ?
+                                    <LowhealthFactor />
+                                    : "" : <Skeleton
+                                width="6rem"
+                                height="1.2rem"
+                                startColor="#101216"
+                                endColor="#2B2F35"
+                                borderRadius="6px"
                               />}
-                            </Tooltip>
+                          </Tooltip>
                         </Box>
                       </Td>
                       <Td

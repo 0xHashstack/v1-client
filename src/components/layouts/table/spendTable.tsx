@@ -624,6 +624,36 @@ const SpendTable = () => {
                         alignItems="center"
                         justifyContent="center"
                       >
+                        <Tooltip
+                              hasArrow
+                              label={
+                                <Box>
+                                  Health Factor : {avgsLoneHealth?.find(
+                            (item: any) => item?.loanId == borrow?.loanId
+                          )?.loanHealth}
+                          <br/>
+                          Liquidates below : 1.06
+                                </Box>
+                              }
+                              // arrowPadding={-5420}
+                              placement="bottom"
+                              rounded="md"
+                              boxShadow="dark-lg"
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                            // cursor="context-menu"
+                            // marginRight={idx1 === 1 ? "52px" : ""}
+                            // maxW="222px"
+                            // mt="28px"
+                            >
+
                         {avgsLoneHealth?.find(
                                 (item: any) => item?.loanId == borrow?.loanId
                               )?.loanHealth
@@ -654,6 +684,7 @@ const SpendTable = () => {
                         endColor="#2B2F35"
                         borderRadius="6px"
                       />}
+                            </Tooltip>
                       </Box>
                           </Box>
                         </Td>
