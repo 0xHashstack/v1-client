@@ -54,6 +54,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const { available, disconnect, connect, connectors } = useConnectors();
   if (className) classes.push(className);
   const router = useRouter();
+  const {pathname}=router;
 
   useTransactionHandler();
   // const handleRouteChange = () => {
@@ -487,7 +488,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   }
   // }, [transactions]);
 
-  return loading ?
+  return loading && pathname=="/v1/market" ?
     (
       <>
         <Box background={`

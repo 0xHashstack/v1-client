@@ -126,6 +126,7 @@ import {
   setNftBalance,
   setUserType,
   setExisitingLink,
+  setNftMaxAmount,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -158,6 +159,7 @@ import {
   getMinimumDepositAmount,
   getMinimumLoanAmount,
   getNFTBalance,
+  getNFTMaxAmount,
   getSupportedPools,
   getUserStakingShares,
 } from "@/Blockchain/scripts/Rewards";
@@ -1107,6 +1109,7 @@ const useDataLoader = () => {
           getFees("get_l3_interaction_fee"),
           getFees("get_loan_repay_fee"),
           getNFTBalance(address || ""),
+          getNFTMaxAmount()
         ]
         Promise.allSettled([...promises]).then((val) => {
           const data = {
@@ -1120,11 +1123,13 @@ const useDataLoader = () => {
             repayLoan: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0
           }
           const nft=val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 0;
+          const nftMaxAmount=val[8]?.status=="fulfilled"?val?.[8]?.value:0;
           if (data?.supply == null) {
             return;
           }
           dispatch(setNftBalance(nft));
           dispatch(setFees(data));
+          dispatch(setNftMaxAmount(nftMaxAmount));
           const count = getTransactionCount();
           dispatch(setFeesCount(count));
         })

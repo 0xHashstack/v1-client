@@ -784,11 +784,36 @@ const BorrowDashboard = ({
                               width="4.6rem"
                             >
                               <Text textAlign="left">
+                          <Tooltip
+                            hasArrow
+                            label={`
+                            Underlying Amount: ${(reduxProtocolStats.find(
+                              (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                            )?.exchangeRateDTokenToUnderlying * (borrow?.loanAmountParsed)).toFixed(4)} ${borrow?.loanMarket.slice(1)}`}
+                            // arrowPadding={-5420}
+                            placement="right"
+                            rounded="md"
+                            boxShadow="dark-lg"
+                            bg="#02010F"
+                            fontSize={"13px"}
+                            fontWeight={"400"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                          // cursor="context-menu"
+                          // marginRight={idx1 === 1 ? "52px" : ""}
+                          // maxW="222px"
+                          // mt="28px"
+                          >
                                 {dollarConversions==true ?"$"+ numberFormatter(dollarConvertor(borrow?.loanAmountParsed,borrow?.loanMarket.slice(1),oraclePrices)*reduxProtocolStats.find(
                             (val: any) => val?.token == borrow?.loanMarket.slice(1)
                           )?.exchangeRateDTokenToUnderlying):numberFormatter(borrow?.loanAmountParsed)}
                                 {/* {numberFormatter(borrow?.loanAmountParsed)} */}
                                 {/* 0.04534 */}
+                          </Tooltip>
                               </Text>
                             </Text>
                           </HStack>

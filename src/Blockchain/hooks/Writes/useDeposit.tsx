@@ -11,7 +11,7 @@ import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 import { getNFTBalance } from "@/Blockchain/scripts/Rewards";
-import { selectMessageHash, selectNftBalance, selectSignature, selectUserType, selectYourSupply, setBlock } from "@/store/slices/readDataSlice";
+import { selectMessageHash, selectNftBalance, selectNftMaxAmount, selectSignature, selectUserType, selectYourSupply, setBlock } from "@/store/slices/readDataSlice";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
@@ -22,6 +22,7 @@ const useDeposit = () => {
   const balance=useSelector(selectNftBalance)
   const user=useSelector(selectUserType);
   const totalSupply=useSelector(selectYourSupply);
+  const nftMaxAmount=useSelector(selectNftMaxAmount);
   // const getdata=async()=>{
   //   const balance=getNFTBalance(account || "");
   //   setbalance(balance);
