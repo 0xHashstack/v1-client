@@ -790,7 +790,7 @@ const BorrowDashboard = ({
                                       <Box>
                                         Exchange rate: {(reduxProtocolStats.find(
                                           (val: any) => val?.token == borrow?.loanMarket.slice(1)
-                                        )?.exchangeRateDTokenToUnderlying).toFixed(4)} {borrow?.loanMarket} /{borrow?.loanMarket.slice(1)}
+                                        )?.exchangeRateDTokenToUnderlying).toFixed(4)} {borrow?.loanMarket.slice(1)} /{borrow?.loanMarket}
                                         <br />
                                         Underlying Amount: {(reduxProtocolStats.find(
                                           (val: any) => val?.token == borrow?.loanMarket.slice(1)
