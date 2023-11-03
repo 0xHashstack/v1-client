@@ -943,7 +943,7 @@ const BorrowDashboard = ({
                               label={
                                 <Box>
                                   Exchange rate: {(reduxProtocolStats.find(
-                                    (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                                    (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                                   )?.exchangeRateRtokenToUnderlying).toFixed(4)} {borrow?.collateralMarket.slice(1)} /{borrow?.collateralMarket}
                                   <br />
                                   Underlying Amount: {(reduxProtocolStats.find(
@@ -1190,7 +1190,7 @@ const BorrowDashboard = ({
                                     dollarConversions == true ? "$" +
                                       numberFormatter(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA, allSplit?.[lower_bound + idx]?.tokenA, oraclePrices))
                                       +
-                                      "/" +
+                                      "/$" +
                                       numberFormatter(dollarConvertor(allSplit?.[lower_bound + idx]?.amountB, allSplit?.[lower_bound + idx]?.tokenB, oraclePrices))
                                       :
                                       numberFormatter(

@@ -235,6 +235,16 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         const response = await axios.get(url);
         if (response.data) {
           setWhitelisted(response.data?.isWhitelisted);
+          if(response.data?.isWhitelisted==false){
+            await axios.post('https://hstk.fi/add-address', { address: address })
+            .then((response) => {
+              console.log(response, "added to db");
+              // Log the response from the backend.
+            })
+            .catch((error) => {
+              console.error('Error in adding address:', error);
+            });
+          }
           if (userType == "U1") {
             await axios.post('https://hstk.fi/nft-sign', { address: address })
               .then((response) => {
@@ -271,11 +281,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               .then((response) => {
                 setRefferalLinked(response?.data?.success)
                 console.log(response, "linked"); // Log the response from the backend.
+                isWhiteListed();
               })
               .catch((error) => {
                 console.error('Error:', error);
               });
           }
+          console.log("hi")
           console.log(response.data, "token")
           setUniqueToken(response.data);
         }
