@@ -140,7 +140,6 @@ export async function getNetworth(
   // );
 
   const netWorth = totalSupply + totalCurrentAmount - totalBorrow;
-  console.log("total networth", netWorth);
 
   return netWorth;
 }

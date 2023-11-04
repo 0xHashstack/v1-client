@@ -289,7 +289,7 @@ const BorrowModal = ({
   useEffect(()=>{
     setMinimumDepositAmount(minAmounts["r"+currentCollateralCoin])
     setmaximumDepositAmount(maxAmounts["r"+currentCollateralCoin])
-  },[currentCollateralCoin])
+  },[currentCollateralCoin,minAmounts,maxAmounts])
   // useEffect(()=>{
   //   const fetchMinDeposit=async()=>{
   //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
@@ -313,7 +313,6 @@ const BorrowModal = ({
     protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
       ?.availableReserves * 0.895
   );
-  console.log(rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount,minimumDepositAmount,maximumDepositAmount,"chal ja")
   const fetchProtocolStats = async () => {
     // const stats = await getProtocolStats();
     const stats = protocolStatsRedux;
@@ -409,7 +408,6 @@ const BorrowModal = ({
   const fetchParsedUSDValueBorrow = async () => {
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
-        console.log("got parsed zero borrow");
         setInputBorrowAmountUSD(0);
         return;
       }
@@ -519,7 +517,6 @@ const BorrowModal = ({
           // setShowToast("true");
           // console.log();
           // if (showToast == "true") {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
             `Transaction pending`,
@@ -570,7 +567,6 @@ const BorrowModal = ({
         if (borrow?.transaction_hash) {
           // setShowToast("true");
           if (showToast == "true") {
-            console.log("toast here");
             const toastid = toast.info(
               // `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
               `Transaction pending`,
@@ -742,7 +738,7 @@ const BorrowModal = ({
 
   const handleBorrowChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
-    console.log(inputCollateralAmountUSD, "amount");
+    // console.log(inputCollateralAmountUSD, "amount");
     if (inputCollateralAmountUSD > 0) {
       var percentage =
         (newValue * 100) /
@@ -977,7 +973,7 @@ const BorrowModal = ({
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentCollateralCoin)}</Box>
-                    <Text>{currentCollateralCoin}</Text>
+                    <Text>{(currentCollateralCoin=="BTC"|| currentCollateralCoin=="ETH")? "w"+currentCollateralCoin:currentCollateralCoin}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
                     {activeModal == "borrowModalCollateralMarketDropdown" ? (
@@ -1154,7 +1150,7 @@ const BorrowModal = ({
                             >
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
-                                <Text color="white">{coin}</Text>
+                                <Text color="white">{(coin=="BTC" || coin=="ETH")? "w"+coin:coin}</Text>
                               </Box>
                               <Box
                                 fontSize="9px"
@@ -1226,7 +1222,8 @@ const BorrowModal = ({
                       ? "#CF222E"
                       : rTokenAmount < 0
                       ? "#CF222E"
-                      :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount))
+                      :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>
+                        maximumDepositAmount))
                       ? "#CF222E"
 
                       : rTokenAmount == 0
@@ -1238,7 +1235,8 @@ const BorrowModal = ({
                       ? "1px solid #CF222E"
                       : rTokenAmount < 0
                       ? "1px solid #CF222E"
-                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount)
+                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>
+                        maximumDepositAmount)
                       ? "1px solid #CF222E"
                       // DO MAX CHECK 1209
                       : rTokenAmount > 0 && rTokenAmount <= walletBalance
@@ -1587,7 +1585,7 @@ const BorrowModal = ({
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentBorrowCoin)}</Box>
-                    <Text>{currentBorrowCoin}</Text>
+                    <Text>{(currentBorrowCoin=="BTC"|| currentBorrowCoin=="ETH" ?"w"+currentBorrowCoin:currentBorrowCoin)}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
                     {activeModal == "borrowModalBorrowMarketDropdown" ? (
@@ -1656,7 +1654,7 @@ const BorrowModal = ({
                             >
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
-                                <Text color="white">{coin}</Text>
+                                <Text color="white">{(coin=="BTC" || coin=="ETH")? "w"+coin:coin}</Text>
                               </Box>
                               <Box
                                 fontSize="9px"
@@ -1858,8 +1856,8 @@ const BorrowModal = ({
                   </Button>
                 </Box>
                 {amount > currentAvailableReserves ||
-                (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount) ||
-                inputBorrowAmount>maximumLoanAmount ||
+                (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>0 && (inputBorrowAmount<minimumLoanAmount||
+                inputBorrowAmount>maximumLoanAmount) )||
                 (amount > 0 &&
                   inputCollateralAmountUSD &&
                   inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD) ? (
@@ -2112,20 +2110,20 @@ const BorrowModal = ({
                     Fees:
                   </Text>
                   <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="Cost incurred during transactions."
-                    bg="#010409"
-                    fontSize={"13px"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                    border="1px solid"
-                    borderColor="#2B2F35"
-                    arrowShadowColor="#2B2F35"
-                    maxW="300px"
-                    // mt="12px"
+                        hasArrow
+                        placement="right"
+                        boxShadow="dark-lg"
+                        label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                        maxW="222px"
                   >
                     <Box>
                       <InfoIcon />
@@ -2286,7 +2284,7 @@ const BorrowModal = ({
                                     stat?.token === currentCollateralCoin
                                 )?.supplyRate) /
                               inputBorrowAmountUSD
-                          ).toFixed(2)}
+                          ).toFixed(2)}%
                         </Text>
                       )
                     ) : // protocolStats.length === 0 ||
@@ -2316,7 +2314,7 @@ const BorrowModal = ({
                                 (stat: any) => stat?.token === rToken.slice(1)
                               )?.supplyRate) /
                           inputBorrowAmountUSD
-                        ).toFixed(2)}
+                        ).toFixed(2)}%
                         {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin
@@ -2438,7 +2436,7 @@ const BorrowModal = ({
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 &&
            (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"?( inputBorrowAmount>=minimumLoanAmount &&
-            inputBorrowAmount<maximumLoanAmount ):true)&&
+            inputBorrowAmount<=maximumLoanAmount ):true)&&
             rTokenAmount <= walletBalance &&
             // rTokenAmount<
             (rTokenAmount>0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" &&tokenTypeSelected == "Native" ?(rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount):true)) &&

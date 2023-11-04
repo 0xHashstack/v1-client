@@ -69,6 +69,12 @@ import {
   selectFees,
 
   
+  selectMaximumDepositAmounts,
+
+  
+  selectMinimumDepositAmounts,
+
+  
   selectProtocolStats,
   selectStakingShares,
   selectUserDeposits,
@@ -288,6 +294,7 @@ const StakeUnstakeModal = ({
     persistence: "localStorage",
   });
 
+
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -381,7 +388,6 @@ const StakeUnstakeModal = ({
       const stake = await writeAsyncStakeRequest();
       setDepositTransHash(stake?.transaction_hash);
       if (stake?.transaction_hash) {
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your transaction is running in background :  ${inputStakeAmount} ${currentSelectedStakeCoin} `,
           `Transaction pending`,
@@ -457,7 +463,6 @@ const StakeUnstakeModal = ({
       });
     }
   };
-
   const hanldeStakeAndSupplyTransaction = async () => {
     try {
       mixpanel.track("Action Selected", {
@@ -465,8 +470,6 @@ const StakeUnstakeModal = ({
       });
       const depositStake = await writeAsyncDepositStake();
       if (depositStake?.transaction_hash) {
-        console.log("trans transaction hash created");
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
           `Transaction pending`,
@@ -558,7 +561,6 @@ const StakeUnstakeModal = ({
       const unstake = await writeAsyncWithdrawStake();
       setDepositTransHash(unstake?.transaction_hash);
       if (unstake?.transaction_hash) {
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your transaction is running in background : ${inputStakeAmount} ${currentSelectedStakeCoin} `,
           `Transaction pending`,
@@ -911,6 +913,14 @@ const StakeUnstakeModal = ({
   // useEffect(() => {
   //   console.log("protocolStats", protocolStats);
   // }, [protocolStats]);
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  const minAmounts = useSelector(selectMinimumDepositAmounts);
+  const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  useEffect(() => {
+    setMinimumDepositAmount(minAmounts[ currentSelectedStakeCoin])
+    setmaximumDepositAmount(maxAmounts[ currentSelectedStakeCoin])
+  }, [currentSelectedStakeCoin, minAmounts, maxAmounts])
   useEffect(() => {
     const fetchestrTokens = async () => {
       // console.log(
@@ -1378,7 +1388,10 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenAmount < 0
                               ? "1px solid #CF222E"
-                     
+                              :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount<minimumDepositAmount)
+                              ?"1px solid #CF222E"
+                              :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount>maximumDepositAmount)
+                              ?"1px solid #CF222E"
                               //do max 1209
                               : (rtokenWalletBalance==0 && rTokenAmount <= walletBalance &&rTokenAmount>0)
                               ?"1px solid #00D395"
@@ -1409,7 +1422,7 @@ const StakeUnstakeModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                               placeholder={ `0.01536 ${currentSelectedStakeCoin}`}
+                               placeholder={(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& rtokenWalletBalance==0) ? `min ${minimumDepositAmount == null ? 0 : minimumDepositAmount} ${currentSelectedStakeCoin}`:  `0.01536 ${currentSelectedStakeCoin}`}
                               color={`${
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount >
@@ -1419,7 +1432,10 @@ const StakeUnstakeModal = ({
  
                                   rTokenAmount < 0
                                   ? "#CF222E"
-
+                                  :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount<minimumDepositAmount)
+                                  ?"#CF222E"
+                                  :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount>maximumDepositAmount)
+                                  ?"#CF222E"
                                   : rTokenAmount == 0
                                   ? "white"
                                   : "#00D395"
@@ -1452,7 +1468,10 @@ const StakeUnstakeModal = ({
                                 : rTokenAmount < 0
 
                                 ? "#CF222E"
-                         
+                                :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount<minimumDepositAmount)
+                                ?"#CF222E"
+                                :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount>maximumDepositAmount)
+                                ?"#CF222E"
                                 : rTokenAmount == 0
                                 ? "#4D59E8"
                                 : "#00D395"
@@ -1484,7 +1503,7 @@ const StakeUnstakeModal = ({
                           rTokenAmount > walletBalance) ||
 
 
-                        rTokenAmount < 0 ? (
+                        rTokenAmount < 0 || (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount<minimumDepositAmount) || (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount>maximumDepositAmount) ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -1504,7 +1523,10 @@ const StakeUnstakeModal = ({
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount > walletBalance)
                                   ? "Amount exceeds balance"
-                           
+                           :(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount<minimumDepositAmount) ?
+                           "Less than min amount"
+                           :(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount>maximumDepositAmount) ?
+                           "More than max amount"
                                   : "Invalid Input"}{" "}
                               </Text>
                             </Text>
@@ -1878,7 +1900,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Cost incurred during transactions."
+                              label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                               bg="#02010F"
                               fontSize={"13px"}
                               fontWeight={"400"}
@@ -2025,7 +2047,7 @@ const StakeUnstakeModal = ({
                             }`}
                           </Button>
                         )
-                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance ? (
+                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance && (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ?rtokenWalletBalance==0  && rTokenAmount>minimumDepositAmount:true) &&(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ?rtokenWalletBalance==0  && rTokenAmount<maximumDepositAmount:true) ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (
@@ -2727,7 +2749,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Cost incurred during transactions."
+                              label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                               bg="#02010F"
                               fontSize={"13px"}
                               fontWeight={"400"}

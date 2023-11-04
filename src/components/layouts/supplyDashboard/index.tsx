@@ -241,7 +241,6 @@ const SupplyDashboard = ({
 
         // const stats = await getProtocolStats();
         if (stats) {
-          console.log("se3nding", stats);
           // dispatch(setProtocolStats(stats));
         }
         // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
@@ -307,19 +306,22 @@ const SupplyDashboard = ({
       let indexes: any = [2, 3, 0, 1, 4];
 
       indexes.forEach((index: number) => {
-        
-        if(((index==0||index==1 ) && (
-          supply?.[index]?.rTokenAmountParsed >0.000001 ||
-          supply?.[index]?.rTokenFreeParsed >0.000001 ||
-          supply?.[index]?.rTokenLockedParsed >0.000001 ||
-          supply?.[index]?.rTokenStakedParsed >0.000001
-        )) || ((index>1 && (
+        if (
           supply?.[index]?.rTokenAmountParsed !== 0 ||
           supply?.[index]?.rTokenFreeParsed !== 0 ||
           supply?.[index]?.rTokenLockedParsed !== 0 ||
           supply?.[index]?.rTokenStakedParsed !== 0
-        )))){
-          data[index] = supply[index];
+        ) {
+          if (index == 2 || index == 3) {
+            if (supply?.[index]?.rTokenAmountParsed > 0.000001 ||
+              supply?.[index]?.rTokenFreeParsed > 0.000001 ||
+              supply?.[index]?.rTokenLockedParsed > 0.000001 ||
+              supply?.[index]?.rTokenStakedParsed > 0.000001) {
+              data[index] = supply[index];
+            }
+          } else {
+            data[index] = supply[index];
+          }
 
         }
       });
@@ -392,9 +394,9 @@ const SupplyDashboard = ({
         // height={"100%"}
         padding={"1rem 1.5rem"}
         overflowX="hidden"
-        // m={0}
-        // mt={"3rem"}
-        // style={{ marginTop: "0.8rem" }}
+      // m={0}
+      // mt={"3rem"}
+      // style={{ marginTop: "0.8rem" }}
       >
         <Table variant="unstyled" width="100%" height="100%">
           <Thead width={"100%"} height={"5rem"}>
@@ -410,12 +412,12 @@ const SupplyDashboard = ({
                     idx1 == 0
                       ? "left"
                       : idx1 == columnItems.length - 1
-                      ? "right"
-                      : "center"
+                        ? "right"
+                        : "center"
                   }
                   pl={idx1 == 0 ? 22 : 0}
                   pr={idx1 == columnItems.length - 1 ? 12 : 0}
-                  // border="1px solid blue"
+                // border="1px solid blue"
                 >
                   <Text
                     whiteSpace="pre-wrap"
@@ -446,8 +448,8 @@ const SupplyDashboard = ({
                       border="1px solid"
                       borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
-                      // maxW="222px"
-                      // mt="28px"
+                    // maxW="222px"
+                    // mt="28px"
                     >
                       {val}
                     </Tooltip>
@@ -459,9 +461,9 @@ const SupplyDashboard = ({
           <Tbody
             position="relative"
             overflowX="hidden"
-            //   display="flex"
-            //   flexDirection="column"
-            //   gap={"1rem"}
+          //   display="flex"
+          //   flexDirection="column"
+          //   gap={"1rem"}
           >
             {supplies
               ?.slice(lower_bound, upper_bound + 1)
@@ -516,17 +518,40 @@ const SupplyDashboard = ({
                               {supply?.rToken}
                             </Text>
                           </HStack>
-                          <Text
-                            fontSize="14px"
-                            fontWeight="500"
-                            color="#F7BB5B"
+                          <Tooltip
+                            hasArrow
+                            label={`Underlying Amount: ${(reduxProtocolStats.find(
+                              (val: any) => val?.token == supply?.rToken.slice(1)
+                            )?.exchangeRateRtokenToUnderlying * (supply?.rTokenAmountParsed + supply?.rTokenStakedParsed)).toFixed(4)} ${supply?.rToken.slice(1)}`}
+                            // arrowPadding={-5420}
+                            placement="right"
+                            rounded="md"
+                            boxShadow="dark-lg"
+                            bg="#02010F"
+                            fontSize={"13px"}
+                            fontWeight={"400"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                          // cursor="context-menu"
+                          // marginRight={idx1 === 1 ? "52px" : ""}
+                          // maxW="222px"
+                          // mt="28px"
                           >
-                            {numberFormatter(
-                              supply?.rTokenAmountParsed+ supply?.rTokenStakedParsed
-
-                              // supply?.rTokenLockedParsed
-                            )}
-                          </Text>
+                            <Text
+                              fontSize="14px"
+                              fontWeight="500"
+                              color="#F7BB5B"
+                            >
+                              {numberFormatter(
+                                supply?.rTokenAmountParsed + supply?.rTokenStakedParsed
+                                // supply?.rTokenLockedParsed
+                              )}
+                            </Text>
+                          </Tooltip>
                         </VStack>
                       </Box>
                     </Td>
@@ -668,18 +693,18 @@ const SupplyDashboard = ({
                         <HStack
                           // bgColor="red"
                           justifyContent="flex-start"
-                          // display={
-                          //   supply?.rTokenStakedParsed > 0 ||
-                          //   supply?.rTokenFreeParsed > 0
-                          //     ? "flex"
-                          //     : "none"
-                          // }
-                          // mx={
-                          //   supply?.rTokenStakedParsed <= 0 ||
-                          //   supply?.rTokenFreeParsed <= 0
-                          //     ? "30%"
-                          //     : "0"
-                          // }
+                        // display={
+                        //   supply?.rTokenStakedParsed > 0 ||
+                        //   supply?.rTokenFreeParsed > 0
+                        //     ? "flex"
+                        //     : "none"
+                        // }
+                        // mx={
+                        //   supply?.rTokenStakedParsed <= 0 ||
+                        //   supply?.rTokenFreeParsed <= 0
+                        //     ? "30%"
+                        //     : "0"
+                        // }
                         >
                           <HStack
                             onMouseEnter={() => handleStatusHover("0" + idx)}

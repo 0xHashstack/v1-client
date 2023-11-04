@@ -178,7 +178,6 @@ const FeedbackModal = ({
       //   new Blob([atob(screenshotDataUrl)], { type: 'image/png' })
       // );
       // setScreenshotDataLocalhostUrl(localURL);
-      console.log("bug  url(capture):-=", screenshotDataUrl);
 
       const objectURL = window.URL.createObjectURL(
         new Blob([atob(screenshotDataUrl.split(",")[1])], {
@@ -196,7 +195,6 @@ const FeedbackModal = ({
       const timestamp = new Date().getTime();
       const filename = `screenshot_${timestamp}.png`;
       setSuggestionScreenshotFilename(filename);
-      console.log("sugg  url(capture):-=", screenshotDataUrl);
 
       // Now you have the screenshot in a data URL format
       // You can send it to the backend using an HTTP request.
@@ -252,7 +250,6 @@ const FeedbackModal = ({
       if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
         // Rating feature is disabled, so don't make the API call
         setRatingDisabled(true);
-        console.log("Rating feature is disabled for 24 hours.");
         return;
       }
     }
@@ -282,7 +279,6 @@ const FeedbackModal = ({
       if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
         // Rating feature is disabled, so don't make the API call
         setBugFeedbackDisabled(true);
-        console.log("Bug reporting is disabled for 72 hours.");
         return;
       }
     }
@@ -316,7 +312,6 @@ const FeedbackModal = ({
       if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
         // Rating feature is disabled, so don't make the API call
         setSuggestionFeedbackDisabled(true);
-        console.log("Suggestion reporting is disabled for 96 hours.");
         return;
       }
     }

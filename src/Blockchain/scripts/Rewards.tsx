@@ -53,7 +53,6 @@ export async function getrTokensMinted(rToken: any, amount: any) {
     //     )
     // );
     const ans = data.toFixed(2);
-    console.log("getRtokensmintedAns", ans);
     return ans;
   } catch (err) {
     console.log(err,"err in rewards");
@@ -133,11 +132,49 @@ export async function getFees(modalFees:any){
     console.log(err,"err in getFees")
   }
 }
+export async function getNFTMaxAmount(){
+  try{
+    const provider=getProvider();
+    const nftContract=new Contract(
+      nftAbi?.abi,
+      "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      provider
+    )
+    const result=await nftContract.call(
+      "get_max_nft_amount",
+    )
+    
+    const res = (result?.number).toString()
+    return res;
+  }catch(err){
+    console.log(err,"err in getNFTMaxAmount")
+  }
+}
+export async function getCurrentNftAmount(){
+  try{
+    const provider=getProvider();
+    const nftContract=new Contract(
+      nftAbi?.abi,
+      "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      provider
+    )
+    const result=await nftContract.call(
+      "get_current_nft_minted",
+    )
+    const res = parseAmount(
+      uint256.uint256ToBN(result?.number).toString(),
+      0
+      );
+    return res;
+  }catch(err){
+    console.log(err,"err in getNFTCurrentAmount")
+  }
+}
 export async function getNFTBalance(address:string){
   try{
     const provider=getProvider();
     const nftContract=new Contract(
-      nftAbi,
+      nftAbi?.abi,
       "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
       provider
     )

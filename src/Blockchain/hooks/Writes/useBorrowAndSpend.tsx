@@ -12,7 +12,7 @@ import { etherToWeiBN } from "@/Blockchain/utils/utils";
 import { L3App } from "../../interfaces/interfaces";
 import { constants } from "@/Blockchain/utils/constants";
 import { useSelector } from "react-redux";
-import { selectMessageHash, selectNftBalance, selectSignature, selectUserType } from "@/store/slices/readDataSlice";
+import { selectMessageHash, selectNftBalance, selectNftCurrentAmount, selectNftMaxAmount, selectSignature, selectUserType, selectYourBorrow, selectYourSupply } from "@/store/slices/readDataSlice";
 
 const useBorrowAndSpend = () => {
   const [loanMarket, setLoanMarket] = useState<NativeToken>("USDT"); // asset
@@ -37,6 +37,10 @@ const useBorrowAndSpend = () => {
   const user=useSelector(selectUserType)
   const messagehash=useSelector(selectMessageHash)
   const signature=useSelector(selectSignature)
+  const totalSupply=useSelector(selectYourSupply)
+  const totalBorrow=useSelector(selectYourBorrow)
+  const nftMaxAmount=useSelector(selectNftMaxAmount);
+  const nftCurrentAmount=useSelector(selectNftCurrentAmount);
 
   // -------------------------- Types --------------------------- //
 
@@ -98,7 +102,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpend,
     status: statusBorrowAndSpend,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0 &&user=="U1" ? [
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 &&user=="U1" && (totalSupply>=20 || collateralAmount>20 || totalSupply+collateralAmount>=20 || totalBorrow>=20 || loanAmount>=20 || loanAmount+totalBorrow>=20) && nftCurrentAmount<nftMaxAmount ? [
       {
         contractAddress: tokenAddressMap[collateralMarket],
         entrypoint: "approve",
@@ -126,10 +130,13 @@ const useBorrowAndSpend = () => {
       },
       {
         contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
-        entrypoint: "claim_soul_brand",
+        entrypoint: "claim_nft",
         calldata: [
           messagehash,
-          signature,
+          "2",
+          signature?.[0],
+          signature?.[1],
+          0
         ],
       },
     ]:[
@@ -172,7 +179,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpendRToken,
     status: statusBorrowAndSpendRToken,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && balance==0 && user=="U1" ?[ {
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1"&& (totalSupply>=20 || rTokenAmount>20 || totalSupply+rTokenAmount>=20 || totalBorrow>=20 || loanAmount>=20 || loanAmount+totalBorrow>=20) && nftCurrentAmount<nftMaxAmount ?[ {
       contractAddress: diamondAddress,
       entrypoint: "borrow_and_spend_with_rToken",
       calldata: [
@@ -189,10 +196,13 @@ const useBorrowAndSpend = () => {
     },
     {
       contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
-      entrypoint: "claim_soul_brand",
+      entrypoint: "claim_nft",
       calldata: [
         messagehash,
-        signature,
+        "2",
+        signature?.[0],
+        signature?.[1],
+        0
       ],
     },]:[
       {

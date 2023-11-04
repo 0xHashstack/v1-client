@@ -212,7 +212,7 @@ const DashboardRight = ({
                         height="32"
                       />
                     </Box>
-                    <Text fontSize="14px">{coin?.name}</Text>
+                    <Text fontSize="14px">{(coin?.name =="BTC" || coin?.name=="ETH") ?"w"+coin?.name:coin?.name}</Text>
                   </HStack>
                 </Td>
                 <Td

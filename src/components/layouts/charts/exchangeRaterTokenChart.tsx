@@ -1004,7 +1004,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               fontWeight="500"
               textColor={currentSelectedCoin === 0 ? "white" : "#3E415C"}
             >
-              BTC
+              wBTC
             </Text>
           </Box>
           <Box
@@ -1029,7 +1029,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               fontWeight="500"
               textColor={currentSelectedCoin === 3 ? "white" : "#3E415C"}
             >
-              ETH
+              wETH
             </Text>
           </Box>
           <Box

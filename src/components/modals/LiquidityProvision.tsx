@@ -354,7 +354,6 @@ const LiquidityProvisionModal = ({
       if (currentSwap == "Jediswap") {
         const liquidity = await writeAsyncJediSwap_addLiquidity();
         if (liquidity?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
             `Transaction pending`,
@@ -404,7 +403,6 @@ const LiquidityProvisionModal = ({
       } else if (currentSwap == "MySwap") {
         const liquidity = await writeAsyncmySwap_addLiquidity();
         if (liquidity?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
             `Transaction pending`,
@@ -555,9 +553,7 @@ const LiquidityProvisionModal = ({
     Number[] | undefined | null
   >();
 
-  useEffect(() => {
-    console.log("liquidity borrow coin", currentBorrowMarketCoin);
-  }, [currentBorrowMarketCoin]);
+
 
   useEffect(() => {
     // console.log(
@@ -590,7 +586,6 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     } else if (currentSwap === "MySwap") {
       const split = await getMySwapEstimateLiquiditySplit(
@@ -603,7 +598,6 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getMySwapEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     }
   };
@@ -621,7 +615,6 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("toMarketSplitLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     } else if (currentSwap === "MySwap") {
       const lp_tokon = await getMySwapEstimatedLpAmountOut(
@@ -634,7 +627,6 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("toMarketSplitLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     }
   };
@@ -819,7 +811,7 @@ const LiquidityProvisionModal = ({
                       ""
                     )}
 
-                    <Text mt="0.1rem">{currentPool}</Text>
+                    <Text mt="0.1rem">{(currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH") &&((currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH"))  ?"w"+currentPool.split("/")[0]+"/w"+currentPool.split("/")[1]:(currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH")  ?"w"+currentPool.split("/")[0]+"/"+currentPool.split("/")[1]:(currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH")  ?currentPool.split("/")[0]+"/w"+currentPool.split("/")[1] :currentPool}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
                     {activeModal == "liquidityProvisionPoolDropDown" ? (
@@ -881,7 +873,7 @@ const LiquidityProvisionModal = ({
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(pool)}</Box>
-                              <Text>{pool}</Text>
+                              <Text>{(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH") &&((pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH"))  ?"w"+pool.split("/")[0]+"/w"+pool.split("/")[1]:(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH")  ?"w"+pool.split("/")[0]+"/"+pool.split("/")[1]:(pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH")  ?pool.split("/")[0]+"/w"+pool.split("/")[1] :pool}</Text>
                             </Box>
                           </Box>
                         );
@@ -1319,7 +1311,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Cost incurred during transactions."
+                      label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                       bg="#02010F"
                       fontSize={"13px"}
                       fontWeight={"400"}
@@ -1435,7 +1427,7 @@ const LiquidityProvisionModal = ({
                         />
                       </Box>
                     ) : getBorrowAPR(currentBorrowMarketCoin) ? (
-                      getBorrowAPR(currentBorrowMarketCoin)
+                      getBorrowAPR(currentBorrowMarketCoin)+ "%"
                     ) : (
                       getBorrowAPR(currentBorrowMarketCoin.slice(1)) + "%"
                     )}

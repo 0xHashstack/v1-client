@@ -413,10 +413,8 @@ const TradeModal = ({
           const [tokenA, tokenB] = keyvalue.split('/');
           
           if (tokenA === token) {
-            console.log(tokenB,"tokenB");
               data.push(tokenB)
           } else if (tokenB === token) {
-            console.log(tokenA,"tokenA")
               data.push(tokenA);
           }
       }
@@ -702,7 +700,6 @@ const TradeModal = ({
         const borrowAndSpend = await writeAsyncBorrowAndSpend();
         setDepositTransHash(borrowAndSpend?.transaction_hash);
         if (borrowAndSpend?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
             `Transaction pending`,
@@ -744,7 +741,6 @@ const TradeModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log("borrowAndSpend Success");
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -755,7 +751,6 @@ const TradeModal = ({
         const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
         setDepositTransHash(borrowAndSpendR?.transaction_hash);
         if (borrowAndSpendR?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
             `Transaction pending`,
@@ -797,7 +792,6 @@ const TradeModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log("borrowAndSpend R Success");
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -1022,7 +1016,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     } else if (currentDapp === "mySwap") {
       const split = await getMySwapEstimateLiquiditySplit(
@@ -1038,7 +1031,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     }
   };
@@ -1068,7 +1060,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("toMarketSplitLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     } else if (currentDapp === "mySwap") {
       const lp_tokon = await getMySwapEstimatedLpAmountOut(
@@ -1084,7 +1075,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("toMarketSplitLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     }
   };
@@ -1263,7 +1253,7 @@ const TradeModal = ({
                     >
                       <Box display="flex" gap="1">
                         <Box p="1">{getCoin(currentCollateralCoin)}</Box>
-                        <Text>{currentCollateralCoin}</Text>
+                        <Text>{(currentCollateralCoin=="BTC" || currentCollateralCoin=='ETH') ? "w"+currentCollateralCoin:currentCollateralCoin}</Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
                         {activeModal == "tradeModalCollateralMarketDropdown" ? (
@@ -1487,7 +1477,7 @@ const TradeModal = ({
                                 >
                                   <Box display="flex">
                                     <Box p="1">{getCoin(coin)}</Box>
-                                    <Text color="white">{coin}</Text>
+                                    <Text color="white">{(coin=="BTC" || coin=="ETH")?"w"+coin:coin}</Text>
                                   </Box>
                                   <Box
                                     fontSize="9px"
@@ -1880,7 +1870,7 @@ const TradeModal = ({
                     >
                       <Box display="flex" gap="1">
                         <Box p="1">{getCoin(currentBorrowCoin)}</Box>
-                        <Text>{currentBorrowCoin}</Text>
+                        <Text>{(currentBorrowCoin=="BTC"|| currentBorrowCoin=='ETH')? "w"+currentBorrowCoin:currentBorrowCoin}</Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
                         {activeModal == "tradeModalBorrowMarketDropdown" ? (
@@ -1999,7 +1989,7 @@ const TradeModal = ({
                                 >
                                   <Box display="flex">
                                     <Box p="1">{getCoin(coin)}</Box>
-                                    <Text color="white">{coin}</Text>
+                                    <Text color="white">{(coin=="BTC" || coin=='ETH'?"w"+coin:coin)}</Text>
                                   </Box>
                                   <Box
                                     fontSize="9px"
@@ -2474,7 +2464,7 @@ borderWidth:'5px',
                         //   setMethod("SWAP");
                         // }}
                         >
-                          Trade
+                          {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"Trade":"Swap"}
                         </Radio>
                       </Stack>
                     </RadioGroup>
@@ -2686,7 +2676,7 @@ borderWidth:'5px',
                           ""
                         )}
                         <Text>
-                          {radioValue === "1" ? currentPool : currentPoolCoin}
+                          {radioValue === "1" ? (currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH") &&((currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH"))  ?"w"+currentPool.split("/")[0]+"/w"+currentPool.split("/")[1]:(currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH")  ?"w"+currentPool.split("/")[0]+"/"+currentPool.split("/")[1]:(currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH")  ?currentPool.split("/")[0]+"/w"+currentPool.split("/")[1] :currentPool : (currentPoolCoin=="BTC" || currentPoolCoin=='ETH') ?"w"+currentPoolCoin:currentPoolCoin}
                         </Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
@@ -2752,7 +2742,7 @@ borderWidth:'5px',
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(pool)}</Box>
-                                  <Text>{pool}</Text>
+                                  <Text>{(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH") &&((pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH"))  ?"w"+pool.split("/")[0]+"/w"+pool.split("/")[1]:(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH")  ?"w"+pool.split("/")[0]+"/"+pool.split("/")[1]:(pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH")  ?pool.split("/")[0]+"/w"+pool.split("/")[1] :pool}</Text>
                                 </Box>
                               </Box>
                             );
@@ -2808,7 +2798,7 @@ borderWidth:'5px',
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
-                                  <Text>{coin}</Text>
+                                  <Text>{(coin=="BTC"|| coin=="ETH")?"w"+coin:coin}</Text>
                                 </Box>
                               </Box>
                             );
@@ -3047,7 +3037,7 @@ borderWidth:'5px',
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Cost incurred during transactions."
+                        label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                         bg="#02010F"
                         fontSize={"13px"}
                         fontWeight={"400"}
@@ -3228,7 +3218,7 @@ borderWidth:'5px',
                                       stat?.token === currentCollateralCoin
                                   )?.supplyRate) /
                                 inputBorrowAmountUSD
-                              ).toFixed(2)}
+                              ).toFixed(2)}%
                             </Text>
                           )
                         ) : // protocolStats.length === 0 ||
@@ -3260,7 +3250,7 @@ borderWidth:'5px',
                                       stat?.token === rToken.slice(1)
                                   )?.supplyRate) /
                                 inputBorrowAmountUSD
-                              ).toFixed(2)}
+                              ).toFixed(2)}%
                               {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin

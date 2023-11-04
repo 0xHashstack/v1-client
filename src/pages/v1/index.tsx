@@ -64,10 +64,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const walletBalance = useSelector(selectWalletBalance);
   // mixpanel.identify("13793");
-  const refreshCallWrapper = () => {
-    console.log("refresh called");
-    refresh();
-  };
+ 
 
   useEffect(() => {
     const interval = setInterval(refresh, 200);

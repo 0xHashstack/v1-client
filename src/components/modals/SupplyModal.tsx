@@ -93,8 +93,8 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectNftBalance, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
-import { getFees, getMaximumDepositAmount, getMinimumDepositAmount, getNFTBalance } from "@/Blockchain/scripts/Rewards";
+import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectNftBalance, selectProtocolStats, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
+import { getFees, getMaximumDepositAmount, getMinimumDepositAmount, getNFTBalance, getNFTMaxAmount } from "@/Blockchain/scripts/Rewards";
 import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
@@ -212,15 +212,15 @@ const SupplyModal = ({
   // const walletBalances = useSelector(selectAssetWalletBalance);
   // const transactionRefresh=useSelector(selectTransactionRefresh);
 
-  const fees=useSelector(selectFees);
+  const fees = useSelector(selectFees);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? parseAmount(
-          uint256.uint256ToBN(
-            walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
-          tokenDecimalsMap[coin?.name]
-        )
+        uint256.uint256ToBN(
+          walletBalances[coin?.name]?.dataBalanceOf?.balance
+        ),
+        tokenDecimalsMap[coin?.name]
+      )
       : 0
   );
   // useEffect(()=>{
@@ -237,11 +237,11 @@ const SupplyModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
-              walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
-            tokenDecimalsMap[coin?.name]
-          )
+          uint256.uint256ToBN(
+            walletBalances[coin?.name]?.dataBalanceOf?.balance
+          ),
+          tokenDecimalsMap[coin?.name]
+        )
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
@@ -455,7 +455,7 @@ const SupplyModal = ({
   // });
   // const { hashes, addTransaction } = useTransactionManager();
   // const transactionStartedAndModalClosed=useSelector(selectTransactionStartedAndModalClosed);
-
+  let protocolStats = useSelector(selectProtocolStats);
   const handleTransaction = async () => {
     try {
       if (ischecked) {
@@ -464,8 +464,7 @@ const SupplyModal = ({
         });
         const depositStake = await writeAsyncDepositStake();
         if (depositStake?.transaction_hash) {
-          console.log("trans transaction hash created");
-          console.log("toast here");
+
           const toastid = toast.info(
             // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
             `Transaction pending`,
@@ -522,7 +521,6 @@ const SupplyModal = ({
             "trans transaction hash created ",
             deposit?.transaction_hash
           );
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
             `Transaction pending`,
@@ -556,7 +554,6 @@ const SupplyModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         // const deposit = await writeAsyncDepositStake();
-        console.log("Supply Modal - deposit ", deposit);
         mixpanel.track("Supply Market Status", {
           Status: "Success",
           Token: currentSelectedCoin,
@@ -666,12 +663,12 @@ const SupplyModal = ({
   // console.log(inputAmount);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
-const minAmounts=useSelector(selectMinimumDepositAmounts);
-const maxAmounts=useSelector(selectMaximumDepositAmounts);
-  useEffect(()=>{
-    setMinimumDepositAmount(minAmounts["r"+currentSelectedCoin])
-    setmaximumDepositAmount(maxAmounts["r"+currentSelectedCoin])
-  },[currentSelectedCoin,minAmounts,maxAmounts])
+  const minAmounts = useSelector(selectMinimumDepositAmounts);
+  const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  useEffect(() => {
+    setMinimumDepositAmount(minAmounts["r" + currentSelectedCoin])
+    setmaximumDepositAmount(maxAmounts["r" + currentSelectedCoin])
+  }, [currentSelectedCoin, minAmounts, maxAmounts])
   // console.log(nft,"nft")
   // useEffect(()=>{
   //     const data=useSelector(selectMinimumDepositAmounts);
@@ -735,11 +732,11 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
-              walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
-            tokenDecimalsMap[coin?.name]
-          )
+          uint256.uint256ToBN(
+            walletBalances[coin?.name]?.dataBalanceOf?.balance
+          ),
+          tokenDecimalsMap[coin?.name]
+        )
         : 0
     );
 
@@ -833,8 +830,8 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
             />
             <ModalBody>
               <Card
-               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 mb="0.5rem"
                 p="1rem"
                 mt="-1.5"
@@ -892,7 +889,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
-                    <Text color="white">{currentSelectedCoin}</Text>
+                    <Text color="white">{(currentSelectedCoin=="BTC" || currentSelectedCoin=="ETH")? "w"+currentSelectedCoin:currentSelectedCoin}</Text>
                   </Box>
 
                   <Box pt="1" className="navbar-button">
@@ -935,14 +932,14 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"
                                   ? Number(
-                                      BNtoNum(
-                                        uint256.uint256ToBN(
-                                          walletBalances[coin]?.dataBalanceOf
-                                            ?.balance
-                                        ),
-                                        tokenDecimalsMap[coin]
-                                      )
+                                    BNtoNum(
+                                      uint256.uint256ToBN(
+                                        walletBalances[coin]?.dataBalanceOf
+                                          ?.balance
+                                      ),
+                                      tokenDecimalsMap[coin]
                                     )
+                                  )
                                   : 0
                               );
                               dispatch(setCoinSelectedSupplyModal(coin));
@@ -964,16 +961,15 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                               pr="6px"
                               gap="1"
                               justifyContent="space-between"
-                              bg={`${
-                                coin === currentSelectedCoin
+                              bg={`${coin === currentSelectedCoin
                                   ? "#4D59E8"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                             >
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
-                                <Text color="white">{coin}</Text>
+                                <Text color="white">{(coin=="BTC" || coin=="ETH")? "w"+coin:coin}</Text>
                               </Box>
                               <Box
                                 fontSize="9px"
@@ -984,16 +980,16 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                                 Wallet Balance:{" "}
                                 {assetBalance[coin]?.dataBalanceOf?.balance
                                   ? numberFormatter(
-                                      Number(
-                                        BNtoNum(
-                                          uint256.uint256ToBN(
-                                            assetBalance[coin]?.dataBalanceOf
-                                              ?.balance
-                                          ),
-                                          tokenDecimalsMap[coin]
-                                        )
+                                    Number(
+                                      BNtoNum(
+                                        uint256.uint256ToBN(
+                                          assetBalance[coin]?.dataBalanceOf
+                                            ?.balance
+                                        ),
+                                        tokenDecimalsMap[coin]
                                       )
                                     )
+                                  )
                                   : "-"}
                               </Box>
                             </Box>
@@ -1026,7 +1022,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     border="1px solid"
                     borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
-                    // maxW="222px"
+                  // maxW="222px"
                   >
                     <Box>
                       <InfoIcon />
@@ -1036,21 +1032,20 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                 <Box
                   width="100%"
                   color="white"
-                  border={`${
-                    depositAmount > walletBalance
+                  border={`${depositAmount > walletBalance
                       ? "1px solid #CF222E"
-                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& depositAmount> maximumDepositAmount ?
-                      "1px solid #CF222E"
-                      : depositAmount < 0 
-                      ? "1px solid #CF222E"
-                      : isNaN(depositAmount)
-                      ? "1px solid #CF222E"
-                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount && depositAmount>0
-                      ? "1px solid #CF222E"
-                      : depositAmount > 0 && depositAmount <= walletBalance
-                      ? "1px solid #00D395"
-                      : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                  }`}
+                      : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount ?
+                        "1px solid #CF222E"
+                        : depositAmount < 0
+                          ? "1px solid #CF222E"
+                          : isNaN(depositAmount)
+                            ? "1px solid #CF222E"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount && depositAmount > 0
+                              ? "1px solid #CF222E"
+                              : depositAmount > 0 && depositAmount <= walletBalance
+                                ? "1px solid #00D395"
+                                : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                    }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -1069,22 +1064,21 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-     placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentSelectedCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentSelectedCoin}`}
-                      color={`${
-                        depositAmount > walletBalance
+                      placeholder={process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? `0.01536 ${currentSelectedCoin}` : `min ${minimumDepositAmount == null ? 0 : minimumDepositAmount} ${currentSelectedCoin}`}
+                      color={`${depositAmount > walletBalance
                           ? "#CF222E"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount> maximumDepositAmount ?
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount ?
                             "#CF222E"
-                          : isNaN(depositAmount)
-                          ? "#CF222E"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount && depositAmount>0
-                          ? "#CF222E"
-                          : depositAmount < 0
-                          ? "#CF222E"
-                          : depositAmount == 0
-                          ? "white"
-                          : "#00D395"
-                      }`}
+                            : isNaN(depositAmount)
+                              ? "#CF222E"
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount && depositAmount > 0
+                                ? "#CF222E"
+                                : depositAmount < 0
+                                  ? "#CF222E"
+                                  : depositAmount == 0
+                                    ? "white"
+                                    : "#00D395"
+                        }`}
                       _disabled={{ color: "#00D395" }}
                       border="0px"
                       _placeholder={{
@@ -1101,21 +1095,20 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color={`${
-                      depositAmount > walletBalance
+                    color={`${depositAmount > walletBalance
                         ? "#CF222E"
-                        :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount> maximumDepositAmount ?
+                        : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount ?
                           "#CF222E"
-                        : isNaN(depositAmount)
-                        ? "#CF222E"
-                        :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount && depositAmount>0
-                        ? "#CF222E"
-                        : depositAmount < 0
-                        ? "#CF222E"
-                        : depositAmount == 0
-                        ? "#4D59E8"
-                        : "#00D395"
-                    }`}
+                          : isNaN(depositAmount)
+                            ? "#CF222E"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount && depositAmount > 0
+                              ? "#CF222E"
+                              : depositAmount < 0
+                                ? "#CF222E"
+                                : depositAmount == 0
+                                  ? "#4D59E8"
+                                  : "#00D395"
+                      }`}
                     // color="#4D59E8"
                     _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                     onClick={() => {
@@ -1130,9 +1123,9 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     MAX
                   </Button>
                 </Box>
-                {depositAmount > walletBalance || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>maximumDepositAmount) ||
-                depositAmount < 0 ||                       (depositAmount<minimumDepositAmount && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0) ||
-                isNaN(depositAmount) ? (
+                {depositAmount > walletBalance || (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount) ||
+                  depositAmount < 0 || (depositAmount < minimumDepositAmount && process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > 0) ||
+                  isNaN(depositAmount) ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -1151,11 +1144,11 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                       <Text ml="0.3rem">
                         {depositAmount > walletBalance
                           ? "Amount exceeds balance"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>maximumDepositAmount 
-                          ? "More than max amount"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount
-                          ?"Less than min amount":
-                          ""
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount
+                            ? "More than max amount"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount
+                              ? "Less than min amount" :
+                              ""
                         }
                       </Text>
                     </Text>
@@ -1218,10 +1211,10 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                         setinputAmount(walletBalance);
                       } else {
                         // ans = Math.round(ans * 100) / 100;
-                        if(ans<10){
+                        if (ans < 10) {
                           setDepositAmount(parseFloat(ans.toFixed(7)));
                           setinputAmount(parseFloat(ans.toFixed(7)));
-                        }else{
+                        } else {
                           ans = Math.round(ans * 100) / 100;
                           setDepositAmount(ans);
                           setinputAmount(ans);
@@ -1337,7 +1330,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                   borderColor="#2B2F35"
                   isDisabled={transactionStarted == true}
                   // disabledColor="red"
-                
+
                   // _disabled={{
                   //   colorScheme:"black",
                   //   cursor: "pointer",
@@ -1382,7 +1375,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Cost incurred during transactions."
+                      label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                       bg="#02010F"
                       fontSize={"13px"}
                       fontWeight={"400"}
@@ -1460,6 +1453,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                   display="flex"
                   justifyContent="space-between"
                   fontSize="12px"
+                  mb={ischecked ?"0.4rem":"0rem"}
                 >
                   <Text display="flex" alignItems="center">
                     <Text
@@ -1487,7 +1481,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                       arrowShadowColor="#2B2F35"
                       // arrowPadding={2}
                       maxW="222px"
-                      // marginTop={20}
+                    // marginTop={20}
                     >
                       <Box>
                         <InfoIcon />
@@ -1501,8 +1495,8 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     color="#676D9A"
                   >
                     {!supplyAPRs ||
-                    supplyAPRs.length === 0 ||
-                    supplyAPRs[currentSupplyAPR] ==null ? (
+                      supplyAPRs.length === 0 ||
+                      supplyAPRs[currentSupplyAPR] == null ? (
                       <Box pt="3px">
                         <Skeleton
                           width="2.3rem"
@@ -1518,8 +1512,77 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     {/* 5.566% */}
                   </Text>
                 </Text>
+                {ischecked &&                <Text
+                  color="#8B949E"
+                  display="flex"
+                  justifyContent="space-between"
+                  fontSize="12px"
+
+                >
+                  <Text display="flex" alignItems="center">
+                    <Text
+                      mr="0.2rem"
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="12px"
+                      color="#676D9A"
+                    >
+                      Staking rewards:
+                    </Text>
+                    <Tooltip
+                      hasArrow
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label="Rewards earned in staking activities within the protocol."
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                      arrowShadowColor="#2B2F35"
+                      maxW="282px"
+                    >
+                      <Box>
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Text>
+                  <Text color="#676D9A">
+                    +{protocolStats?.find(
+                      (stat: any) =>
+                        stat.token ==
+                        (currentSelectedCoin[0] == "r"
+                          ? currentSelectedCoin.slice(1)
+                          : currentSelectedCoin)
+                    )?.stakingRate
+                      ? ((protocolStats?.find(
+                        (stat: any) =>
+                          stat.token ==
+                          (currentSelectedCoin[0] == "r"
+                            ? currentSelectedCoin.slice(1)
+                            : currentSelectedCoin)
+                      )?.stakingRate)-supplyAPRs[currentSupplyAPR]).toFixed(2)
+                      : "1.2"}
+                    %
+                    {/* {protocolStats?.[0]?.stakingRate ? (
+                              protocolStats?.[0]?.stakingRate
+                            ) : (
+                              <Skeleton
+                                width="6rem"
+                                height="1.4rem"
+                                startColor="#101216"
+                                endColor="#2B2F35"
+                                borderRadius="6px"
+                              />
+                            )} */}
+                  </Text>
+                </Text>}
+
               </Card>
-              {depositAmount > 0 && depositAmount <= walletBalance && ((depositAmount>0 && depositAmount>=minimumDepositAmount)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||depositAmount<=maximumDepositAmount) ? (
+              {depositAmount > 0 && depositAmount <= walletBalance && ((depositAmount > 0 && depositAmount >= minimumDepositAmount) || process.env.NEXT_PUBLIC_NODE_ENV == "testnet") && (process.env.NEXT_PUBLIC_NODE_ENV == "testnet" || depositAmount <= maximumDepositAmount) ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (
@@ -1588,7 +1651,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                 )
               ) : (
                 <Button
-                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                   color="#6E7681"
                   size="sm"
                   width="100%"

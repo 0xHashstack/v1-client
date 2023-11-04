@@ -88,11 +88,11 @@ const BorrowChart = () => {
         daiData?.borrowAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: btcData?.borrowAmounts,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: ethData?.borrowAmounts,
               },
               {
@@ -166,11 +166,11 @@ const BorrowChart = () => {
         weeklyDaiData?.borrowAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: weeklyBtcData?.borrowAmounts,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: weeklyEthData?.borrowAmounts,
               },
               {
@@ -244,11 +244,11 @@ const BorrowChart = () => {
         monthlyDaiData?.borrowAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: monthlyBtcData?.borrowAmounts,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: monthlyEthData?.borrowAmounts,
               },
               {
@@ -326,11 +326,11 @@ const BorrowChart = () => {
         allDaiData?.borrowAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: allBtcData?.borrowAmounts,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: allEthData?.borrowAmounts,
               },
               {

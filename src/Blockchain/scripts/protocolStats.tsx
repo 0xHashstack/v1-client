@@ -17,7 +17,6 @@ import {
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
-  console.log("decimals ", decimal);
   let marketInfo: IMarketInfo = {
     borrowRate: parseAmount(
       uint256.uint256ToBN(marketData?.borrow_rate).toString(),
@@ -97,7 +96,6 @@ export async function getProtocolStats() {
     for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
       const token = contractsEnv.TOKENS[i];
 
-      console.log("get_protocol_stat for token: ", token.name);
       const res = metricsContract.call("get_protocol_stats", [token.address], {
         blockIdentifier: "pending",
       });

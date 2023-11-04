@@ -241,7 +241,6 @@ const SwapModal = ({
         console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
         if (swap?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait, your transaction is running in background`,
             `Transaction pending`,
@@ -291,7 +290,6 @@ const SwapModal = ({
         console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
         if (swap?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait, your transaction is running in background`,
             `Transaction pending`,
@@ -411,10 +409,8 @@ const SwapModal = ({
           const [tokenA, tokenB] = keyvalue.split('/');
           
           if (tokenA === token) {
-            console.log(tokenB,"tokenB");
               data.push(tokenB)
           } else if (tokenB === token) {
-            console.log(tokenA,"tokenA")
               data.push(tokenA);
           }
       }
@@ -624,7 +620,7 @@ const SwapModal = ({
                     ""
                   )}
 
-                  <Text color="white">{currentSelectedCoin}</Text>
+                  <Text color="white">{(currentSelectedCoin=="BTC" ||currentSelectedCoin=='ETH')?"w"+currentSelectedCoin:currentSelectedCoin}</Text>
                 </Box>
 
                 <Box pt="1" className="navbar-button">
@@ -686,7 +682,7 @@ const SwapModal = ({
                             borderRadius="md"
                           >
                             <Box p="1">{getCoin(coin)}</Box>
-                            <Text color="white">{coin}</Text>
+                            <Text color="white">{(coin=='BTC'|| coin=="ETH")?"w"+coin:coin}</Text>
                           </Box>
                         </Box>
                       );
@@ -1051,7 +1047,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Cost incurred during transactions."
+                    label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                     bg="#02010F"
                     fontSize={"13px"}
                     fontWeight={"400"}

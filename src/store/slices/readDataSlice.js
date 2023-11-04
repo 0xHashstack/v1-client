@@ -57,6 +57,9 @@ const initialState = {
   existingLink:null,
   messageHash:null,
   signature:null,
+  nftMaxAmount:null,
+  nftCurrentAmount:null,
+  whitelisted:null,
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -276,6 +279,15 @@ export const readDataSlice = createSlice({
     setFees(state,action){
       state.fees=action.payload;
     },
+    setNftMaxAmount(state,action){
+      state.nftMaxAmount=action.payload;
+    },
+    setNftCurrentAmount(state,action){
+      state.nftCurrentAmount=action.payload;
+    },
+    setWhiteListed(state,action){
+      state.whitelisted=action.payload;
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -344,7 +356,10 @@ export const {
   setSignature,
   setJediSwapPoolsSupported,
   setMySwapPoolsSupported,
-  setFees
+  setFees,
+  setNftMaxAmount,
+  setNftCurrentAmount,
+  setWhiteListed
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -407,4 +422,7 @@ export const selectUserType=(state)=>state.read_data.userType;
 export const selectExistingLink=(state)=>state.read_data.existingLink;
 export const selectMessageHash=(state)=>state.read_data.messageHash;
 export const selectSignature=(state)=>state.read_data.signature;
+export const selectNftMaxAmount=(state)=>state.read_data.nftMaxAmount;
+export const selectNftCurrentAmount=(state)=>state.read_data.nftCurrentAmount;
+export const selectWhiteListed=(state)=>state.read_data.whitelisted;
 export default readDataSlice.reducer;

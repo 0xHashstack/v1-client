@@ -214,9 +214,7 @@ const SpendTable = () => {
   const avgs = useSelector(selectEffectiveApr);
   const avgsLoneHealth = useSelector(selectHealthFactor);
   const [ltv, setLtv] = useState<any>([]);
-  useEffect(() => {
-    console.log("avgsLoneHealth", avgsLoneHealth);
-  }, [avgsLoneHealth]);
+
   // useEffect(() => {
   //   const fetchAprs = async () => {
   //     if (avgs?.length == 0) {
@@ -626,6 +624,36 @@ const SpendTable = () => {
                         alignItems="center"
                         justifyContent="center"
                       >
+                        <Tooltip
+                              hasArrow
+                              label={
+                                <Box>
+                                  Health Factor : {avgsLoneHealth?.find(
+                            (item: any) => item?.loanId == borrow?.loanId
+                          )?.loanHealth}
+                          <br/>
+                          Liquidates below : 1.06
+                                </Box>
+                              }
+                              // arrowPadding={-5420}
+                              placement="bottom"
+                              rounded="md"
+                              boxShadow="dark-lg"
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                            // cursor="context-menu"
+                            // marginRight={idx1 === 1 ? "52px" : ""}
+                            // maxW="222px"
+                            // mt="28px"
+                            >
+
                         {avgsLoneHealth?.find(
                                 (item: any) => item?.loanId == borrow?.loanId
                               )?.loanHealth
@@ -633,7 +661,7 @@ const SpendTable = () => {
                           (avgsLoneHealth?.find(
                             (item: any) =>
                               item?.loanId == borrow?.loanId
-                          )?.loanHealth) > 1.5      ?                   
+                          )?.loanHealth) > 1.15      ?                   
                         <Box
                           width="68px"
                           height="10px"
@@ -644,10 +672,10 @@ const SpendTable = () => {
                         >
                           {/* {checkGap(idx1, idx2)} */}
                         </Box>
-                        :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.2 &&
-                        avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.5) ?
+                        :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.09 &&
+                        avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.15) ?
                         <MediumHeathFactor/>
-                      :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.2 ) ?
+                      :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.09 ) ?
                       <LowhealthFactor/>
                         :"":<Skeleton
                         width="6rem"
@@ -656,6 +684,7 @@ const SpendTable = () => {
                         endColor="#2B2F35"
                         borderRadius="6px"
                       />}
+                            </Tooltip>
                       </Box>
                           </Box>
                         </Td>
@@ -768,7 +797,7 @@ const SpendTable = () => {
                   isDisabled={selectedDapp == ""}
                   // isDisabled={selectedDapp == ""}
                 >
-                  swap
+                  Swap
                 </Tab>
                 <Tab
                   // padding="0px 16px"
@@ -791,7 +820,7 @@ const SpendTable = () => {
                   onClick={() => setTradeNote(true)}
                   isDisabled={selectedDapp == ""}
                 >
-                  stake
+                  Stake
                 </Tab>
 
                 <Tab
@@ -920,7 +949,7 @@ const SpendTable = () => {
                     </Box>
                     <Box p="6px 2px" display="flex">
                       <Text fontSize="sm" color="#F0F0F5">
-                        We are evaluating few promising DEXes to integrate.
+                        We are evaluating few promising DApps to integrate.
                         Please check back at a late time.
                       </Text>
                       <Box
@@ -1006,7 +1035,7 @@ const SpendTable = () => {
                     </Box>
                     <Box p="6px 2px" display="flex">
                       <Text fontSize="sm" color="#F0F0F5">
-                        We are evaluating few promising DEXes to integrate.
+                        We are evaluating few promising DApps to integrate.
                         Please check back at a late time.
                       </Text>
                       <Box

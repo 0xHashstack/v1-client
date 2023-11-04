@@ -63,7 +63,6 @@ function parseDeposits(deposits: any): IDeposit[] {
 }
 
 const parseDeposit = (deposit: any) => {
-  console.log("supplies deposit ", deposit);
   let depositData = deposit;
 
   let tokenAddress = number.toHex(depositData?.asset_address);

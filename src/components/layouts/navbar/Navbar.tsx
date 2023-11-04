@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 
 // import "./navbar.css";
 
@@ -51,6 +52,9 @@ import {
   resetState,
   selectCurrentNetwork,
   selectNftBalance,
+  selectUserType,
+  selectYourBorrow,
+  selectYourSupply,
 
 } from "@/store/slices/readDataSlice";
 import { AccountInterface, ProviderInterface } from "starknet";
@@ -91,6 +95,8 @@ const Navbar = ({ validRTokens }: any) => {
       justifyContent === "flex-start" ? "flex-end" : "flex-start"
     );
   };
+  const totalBorrow=useSelector(selectYourBorrow);
+  const totalSupply=useSelector(selectYourSupply)
   
 
   const { connector } = useAccount();
@@ -162,20 +168,26 @@ const Navbar = ({ validRTokens }: any) => {
   };
   const extendedAccount = account as ExtendedAccountInterface;
   const [isCorrectNetwork, setisCorrectNetwork] = useState(true);
+  const {  address, status, isConnected } = useAccount();
 
+  const [whitelisted, setWhitelisted] = useState(true)
+  const [uniqueToken, setUniqueToken] = useState("")
+  const [referralLinked, setRefferalLinked] = useState(false)
+  const userType=useSelector(selectUserType)
+const [Render, setRender] = useState(true);
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
-      const network=process.env.NEXT_PUBLIC_NODE_ENV;
-      
+      const network = process.env.NEXT_PUBLIC_NODE_ENV;
+
       if (walletConnected == "braavos") {
-        if(network=="testnet"){
+        if (network == "testnet") {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
             extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_TESTNET_CHAINID
           );
-        }else{
+        } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
@@ -184,31 +196,51 @@ const Navbar = ({ validRTokens }: any) => {
         }
       } else if (walletConnected == "argentX") {
         // Your code here
-        if(network=="testnet"){
+        if (network == "testnet") {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-  
+
             extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID
           );
-        }else{
+        } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-  
+
             extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_MAINNET_CHAINID
           );
         }
       }
       // console.log("starknetAccount", account?.provider?.chainId);
     }
-    if ((account && !isCorrectNetwork())) {
-      console.log("Account",account)
-      setisCorrectNetwork(false);
-    } else {
-      setisCorrectNetwork(true);
+
+    const isWhiteListed = async () => {
+      try {
+        if (!address) {
+          return;
+        }
+        const url = `https://hstk.fi/is-whitelisted/${address}`;
+        const response = await axios.get(url);
+        setWhitelisted(response.data?.isWhitelisted);
+
+      } catch (err) {
+        console.log(err, "err in whitelist")
+      }
     }
-  }, [account]);
+    isWhiteListed()
+    
+   
+    if ((account && !isCorrectNetwork())) {
+        setRender(false);
+    } else {
+      if(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && !whitelisted){
+        setRender(false);
+      }else{
+        setRender(true);
+      }
+    }
+  }, [account,whitelisted,referralLinked]);
   return (
     <HStack
       zIndex="100"
@@ -299,11 +331,12 @@ const Navbar = ({ validRTokens }: any) => {
             <Text fontSize="14px">Dashboard</Text>
           </Box>
         </Box>
+        {userType=="U1" ?
        <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
-          cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
+          cursor={Render ? "pointer" :"not-allowed"}
           marginBottom="0px"
           // className="button"
           // backgroundColor={"blue"}
@@ -314,12 +347,12 @@ const Navbar = ({ validRTokens }: any) => {
             <Box
               display="flex"
               justifyContent="space-between"
-              cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
+              cursor={Render ? "pointer" :"not-allowed"}
               alignItems="center"
               gap={"8px"}
               color={`${pathname == "/v1/referral" ? "#00D395" : "#676D9A"}`}
               onClick={()=>{
-                isCorrectNetwork && router.push('/v1/referral')
+                Render && router.push('/v1/referral')
               }}
             >
               {pathname=="/v1/referral" ? (
@@ -328,7 +361,7 @@ const Navbar = ({ validRTokens }: any) => {
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: isCorrectNetwork ? "pointer" :"not-allowed"}}
+                  style={{ cursor: Render ? "pointer" :"not-allowed"}}
 
                 />
               ) : (
@@ -337,7 +370,7 @@ const Navbar = ({ validRTokens }: any) => {
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: isCorrectNetwork ? "pointer" :"not-allowed"}}
+                  style={{ cursor: Render ? "pointer" :"not-allowed"}}
 
                 />
               )}
@@ -345,11 +378,60 @@ const Navbar = ({ validRTokens }: any) => {
               <Text fontSize="14px">Referral</Text>
             </Box>
         </Box>
+        :
+        (totalBorrow>0 || totalSupply>0) ?
+        <Box
+        padding="16px 12px"
+        fontSize="12px"
+        borderRadius="5px"
+        cursor={Render ? "pointer" :"not-allowed"}
+        marginBottom="0px"
+        // className="button"
+        // backgroundColor={"blue"}
+        _hover={{ color: "#6e7681" }}
+        onMouseEnter={() => setContibutionHover(true)}
+        onMouseLeave={() => setContibutionHover(false)}
+      >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            cursor={Render ? "pointer" :"not-allowed"}
+            alignItems="center"
+            gap={"8px"}
+            color={`${pathname == "/v1/referral" ? "#00D395" : "#676D9A"}`}
+            onClick={()=>{
+              Render && router.push('/v1/referral')
+            }}
+          >
+            {pathname=="/v1/referral" ? (
+              <Image
+                src={hoverContributeEarnIcon}
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: Render ? "pointer" :"not-allowed"}}
+
+              />
+            ) : (
+              <Image
+                src={"/contributeEarnIcon.svg"}
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: Render ? "pointer" :"not-allowed"}}
+
+              />
+            )}
+
+            <Text fontSize="14px">Referral</Text>
+          </Box>
+      </Box>:<></>
+        }
    {     <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
-          cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
+          cursor={Render ? "pointer" :"not-allowed"}
           marginBottom="0px"
           // className="button"
           _hover={{
@@ -394,7 +476,7 @@ const Navbar = ({ validRTokens }: any) => {
           </Box> */}
           <StakeUnstakeModal
             coin={Coins}
-            isCorrectNetwork={isCorrectNetwork}
+            isCorrectNetwork={Render}
             nav={true}
             stakeHover={stakeHover}
             setStakeHover={setStakeHover}
@@ -539,7 +621,7 @@ const Navbar = ({ validRTokens }: any) => {
 
           <Box
             borderRadius="6px"
-            cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
+            cursor={Render ? "pointer" :"not-allowed"}
             margin="0"
             height="2rem"
             border="1px solid #676D9A"
@@ -576,7 +658,7 @@ const Navbar = ({ validRTokens }: any) => {
                 alt="Picture of the author"
                 width="20"
                 height="20"
-                style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+                style={{ cursor: Render ? "pointer" : "not-allowed" }}
 
               />
               {/* {router.pathname == "/waitlist" || !transferDepositHover ? (
