@@ -127,6 +127,7 @@ import {
   setUserType,
   setExisitingLink,
   setNftMaxAmount,
+  setNftCurrentAmount,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -153,6 +154,7 @@ import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
 import { metrics_api } from "@/utils/keys/metricsApi";
 import {
+  getCurrentNftAmount,
   getFees,
   getMaximumDepositAmount,
   getMaximumLoanAmount,
@@ -1109,7 +1111,8 @@ const useDataLoader = () => {
           getFees("get_l3_interaction_fee"),
           getFees("get_loan_repay_fee"),
           getNFTBalance(address || ""),
-          getNFTMaxAmount()
+          getNFTMaxAmount(),
+          getCurrentNftAmount()
         ]
         Promise.allSettled([...promises]).then((val) => {
           const data = {
@@ -1124,17 +1127,19 @@ const useDataLoader = () => {
           }
           const nft=val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 0;
           const nftMaxAmount=val[8]?.status=="fulfilled"?val?.[8]?.value:0;
+          const nftCurrentAmount=val[9]?.status=="fulfilled"?val?.[9]?.value:0;
           if (data?.supply == null) {
             return;
           }
+          dispatch(setNftCurrentAmount(nftCurrentAmount));
           dispatch(setNftBalance(nft));
           dispatch(setFees(data));
           dispatch(setNftMaxAmount(nftMaxAmount));
           const count = getTransactionCount();
           dispatch(setFeesCount(count));
         })
-        const dataUserType=await axios.get(`https://hstk.fi/get-user-type/${address}`);
-        const dataExisitingLink=await axios.get(`https://hstk.fi/get-ref-link/${address}`)
+        const dataUserType=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/get-user-type/${address}`:`https://hstk.fi/get-user-type/${address}`);
+        const dataExisitingLink=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/get-ref-link/${address}`:`https://hstk.fi/get-ref-link/${address}`)
         if(dataUserType){
           dispatch(setUserType(dataUserType?.data?.user_type))
         }

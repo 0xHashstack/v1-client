@@ -52,6 +52,9 @@ import {
   resetState,
   selectCurrentNetwork,
   selectNftBalance,
+  selectUserType,
+  selectYourBorrow,
+  selectYourSupply,
 
 } from "@/store/slices/readDataSlice";
 import { AccountInterface, ProviderInterface } from "starknet";
@@ -92,6 +95,8 @@ const Navbar = ({ validRTokens }: any) => {
       justifyContent === "flex-start" ? "flex-end" : "flex-start"
     );
   };
+  const totalBorrow=useSelector(selectYourBorrow);
+  const totalSupply=useSelector(selectYourSupply)
   
 
   const { connector } = useAccount();
@@ -168,6 +173,7 @@ const Navbar = ({ validRTokens }: any) => {
   const [whitelisted, setWhitelisted] = useState(true)
   const [uniqueToken, setUniqueToken] = useState("")
   const [referralLinked, setRefferalLinked] = useState(false)
+  const userType=useSelector(selectUserType)
 const [Render, setRender] = useState(true);
   useEffect(() => {
     function isCorrectNetwork() {
@@ -325,7 +331,8 @@ const [Render, setRender] = useState(true);
             <Text fontSize="14px">Dashboard</Text>
           </Box>
         </Box>
-       {/* <Box
+        {userType=="U1" ?
+       <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
@@ -370,7 +377,56 @@ const [Render, setRender] = useState(true);
 
               <Text fontSize="14px">Referral</Text>
             </Box>
-        </Box> */}
+        </Box>
+        :
+        (totalBorrow>0 || totalSupply>0) ?
+        <Box
+        padding="16px 12px"
+        fontSize="12px"
+        borderRadius="5px"
+        cursor={Render ? "pointer" :"not-allowed"}
+        marginBottom="0px"
+        // className="button"
+        // backgroundColor={"blue"}
+        _hover={{ color: "#6e7681" }}
+        onMouseEnter={() => setContibutionHover(true)}
+        onMouseLeave={() => setContibutionHover(false)}
+      >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            cursor={Render ? "pointer" :"not-allowed"}
+            alignItems="center"
+            gap={"8px"}
+            color={`${pathname == "/v1/referral" ? "#00D395" : "#676D9A"}`}
+            onClick={()=>{
+              Render && router.push('/v1/referral')
+            }}
+          >
+            {pathname=="/v1/referral" ? (
+              <Image
+                src={hoverContributeEarnIcon}
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: Render ? "pointer" :"not-allowed"}}
+
+              />
+            ) : (
+              <Image
+                src={"/contributeEarnIcon.svg"}
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: Render ? "pointer" :"not-allowed"}}
+
+              />
+            )}
+
+            <Text fontSize="14px">Referral</Text>
+          </Box>
+      </Box>:<></>
+        }
    {     <Box
           padding="16px 12px"
           fontSize="12px"

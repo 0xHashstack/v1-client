@@ -11,7 +11,7 @@ import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 import { getNFTBalance } from "@/Blockchain/scripts/Rewards";
-import { selectMessageHash, selectNftBalance, selectNftMaxAmount, selectSignature, selectUserType, selectYourSupply, setBlock } from "@/store/slices/readDataSlice";
+import { selectMessageHash, selectNftBalance, selectNftCurrentAmount, selectNftMaxAmount, selectSignature, selectUserType, selectYourSupply, setBlock } from "@/store/slices/readDataSlice";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
@@ -23,6 +23,7 @@ const useDeposit = () => {
   const user=useSelector(selectUserType);
   const totalSupply=useSelector(selectYourSupply);
   const nftMaxAmount=useSelector(selectNftMaxAmount);
+  const nftCurrentAmount=useSelector(selectNftCurrentAmount);
   // const getdata=async()=>{
   //   const balance=getNFTBalance(account || "");
   //   setbalance(balance);
@@ -46,7 +47,7 @@ const useDeposit = () => {
     isSuccess: isSuccessDeposit,
     status: statusDeposit,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" &&  balance==0 && user=="U1" && (totalSupply>=20 || depositAmount>20)  ?[
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0   && user=="U1" && (totalSupply>=20 || depositAmount>20 || totalSupply+depositAmount>=20) && nftCurrentAmount<nftMaxAmount ?[
       {
         contractAddress: tokenAddressMap[asset] || "",
         entrypoint: "approve",
@@ -68,10 +69,13 @@ const useDeposit = () => {
       },
       {
         contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
-        entrypoint: "claim_soul_brand",
+        entrypoint: "claim_nft",
         calldata: [
           messagehash,
-          signature,
+          "2",
+          signature?.[0],
+          signature?.[1],
+          tokenAddressMap["r"+asset]
         ],
       },
     ]:[
@@ -110,7 +114,7 @@ const useDeposit = () => {
     isSuccess: isSuccessDepositStake,
     status: statusDepositStake,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1" && (totalSupply>=20 || depositAmount>20) ?[
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1" && (totalSupply>=20 || depositAmount>20 || totalSupply+depositAmount>=20) && nftCurrentAmount<nftMaxAmount ?[
       {
         contractAddress: tokenAddressMap[asset] || "",
         entrypoint: "approve",
@@ -132,10 +136,13 @@ const useDeposit = () => {
       },
       {
         contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
-        entrypoint: "claim_soul_brand",
+        entrypoint: "claim_nft",
         calldata: [
           messagehash,
-          signature,
+          "2",
+          signature?.[0],
+          signature?.[1],
+          tokenAddressMap["r"+asset]
         ],
       },
     ]:[
