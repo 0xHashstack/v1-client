@@ -7,7 +7,7 @@ import {
 } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import { Abi, uint256 } from "starknet";
-import { ERC20Abi, diamondAddress } from "../../stark-constants";
+import { ERC20Abi, diamondAddress,nftAddress } from "../../stark-constants";
 // import { TxToastManager } from "../../tx-ToastManager";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
@@ -91,7 +91,7 @@ const useLoanRequest = () => {
         ],
       },
       {
-        contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+        contractAddress: nftAddress,
         entrypoint: "claim_nft",
         calldata: [
           messagehash,
@@ -154,7 +154,7 @@ const useLoanRequest = () => {
         ],
       },
       {
-        contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+        contractAddress: nftAddress,
         entrypoint: "claim_nft",
         calldata: [
           messagehash,

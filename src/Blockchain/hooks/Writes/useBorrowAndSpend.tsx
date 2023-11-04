@@ -7,7 +7,7 @@ import {
   
 } from "@/Blockchain/interfaces/interfaces";
 import { useState } from "react";
-import { diamondAddress } from "@/Blockchain/stark-constants";
+import { diamondAddress,nftAddress } from "@/Blockchain/stark-constants";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
 import { L3App } from "../../interfaces/interfaces";
 import { constants } from "@/Blockchain/utils/constants";
@@ -129,7 +129,7 @@ const useBorrowAndSpend = () => {
         ],
       },
       {
-        contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+        contractAddress: nftAddress,
         entrypoint: "claim_nft",
         calldata: [
           messagehash,
@@ -195,7 +195,7 @@ const useBorrowAndSpend = () => {
       ],
     },
     {
-      contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      contractAddress: nftAddress,
       entrypoint: "claim_nft",
       calldata: [
         messagehash,
