@@ -291,8 +291,45 @@ const Referral = () => {
 
     const dispatch = useDispatch();
     const { account, address } = useAccount();
+    const [dataCommunity, setDataCommunity] = useState([])
+    const [dataUser, setDataUser] = useState([0,0,0])
     useDataLoader();
+    useEffect(()=>{
+        const fetchData=async()=>{
+            try{
+                const array:any=[];
+                const res=await axios.get('https://testnet.hstk.fi/api/get-community-stats');
+                if(res?.data){
+                    array.push(res?.data?.overall_referred_liq);
+                    array.push(res?.data?.rewards_claimed);
+                }
+                setDataCommunity(array)
+            }catch(err){
+                console.log(err);
+            }
 
+        }
+        const fetchUserData=async()=>{
+            try{
+                if(!address){
+                    return;
+                }
+                const array:any=[];
+                const res=await axios.get(`https://testnet.hstk.fi/api/get-user-stats/${address}`);
+                if(res?.data){
+                    array.push(res?.data?.referred_points);
+                    array.push(res?.data?.points_earned);
+                    array.push(res?.data?.rewards_claimed)
+                }
+                setDataUser(array);
+                console.log(res,"user")
+            }catch(err){
+                console.log(err)
+            }
+        }
+        fetchUserData();
+        fetchData()
+    },[address])
     const UserLoans = useSelector(selectUserLoans);
     useEffect(() => {
         // if (UserLoans) {
@@ -501,7 +538,7 @@ const Referral = () => {
             "Points earned",
             "Rewards Claimed",
           ]}
-          statsData={[15,15,200]}
+          statsData={dataUser}
           onclick={() => {
             console.log("hi")
           }}
@@ -512,7 +549,7 @@ const Referral = () => {
             "Overall refered by community",
             "Rewards claimed by community"
           ]}
-          statsData={[400,3200]}
+          statsData={dataCommunity}
           onclick={() => {
             // handleRouteChange("/v1/protocol-metrics");
           }}
