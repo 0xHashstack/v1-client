@@ -53,6 +53,7 @@ import {
   selectCurrentNetwork,
   selectNftBalance,
   selectUserType,
+  selectWhiteListed,
   selectYourBorrow,
   selectYourSupply,
 
@@ -175,6 +176,8 @@ const Navbar = ({ validRTokens }: any) => {
   const [referralLinked, setRefferalLinked] = useState(false)
   const userType=useSelector(selectUserType)
 const [Render, setRender] = useState(true);
+const userWhitelisted=useSelector(selectWhiteListed);
+console.log(userWhitelisted,"white")
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -234,13 +237,13 @@ const [Render, setRender] = useState(true);
     if ((account && !isCorrectNetwork())) {
         setRender(false);
     } else {
-      if( !whitelisted){
+      if(!userWhitelisted){
         setRender(false);
       }else{
         setRender(true);
       }
     }
-  }, [account,whitelisted,referralLinked]);
+  }, [account,whitelisted,userWhitelisted,referralLinked]);
   return (
     <HStack
       zIndex="100"

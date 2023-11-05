@@ -18,6 +18,7 @@ import {
   setMessageHash,
   setSignature,
   selectUserType,
+  setUserWhiteListed,
 } from "@/store/slices/readDataSlice";
 import {
   selectUserLoans,
@@ -235,6 +236,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         const response = await axios.get(url);
         if (response.data) {
           setWhitelisted(response.data?.isWhitelisted);
+          dispatch(setUserWhiteListed(response.data?.isWhitelisted))
           if(response.data?.isWhitelisted==false){
             await axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/add-address':'https://hstk.fi/add-address'), { address: address })
             .then((response) => {
@@ -300,7 +302,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if ((account && !isCorrectNetwork())) {
       setRender(false);
     } else {
-      if ( !whitelisted) {
+      if (!whitelisted) {
         setRender(false);
       } else {
         setRender(true);

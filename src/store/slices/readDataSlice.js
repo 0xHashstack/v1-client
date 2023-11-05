@@ -59,7 +59,7 @@ const initialState = {
   signature:null,
   nftMaxAmount:null,
   nftCurrentAmount:null,
-  whitelisted:null,
+  whitelisted:false,
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -285,7 +285,7 @@ export const readDataSlice = createSlice({
     setNftCurrentAmount(state,action){
       state.nftCurrentAmount=action.payload;
     },
-    setWhiteListed(state,action){
+    setUserWhiteListed(state,action){
       state.whitelisted=action.payload;
     },
 
@@ -359,7 +359,7 @@ export const {
   setFees,
   setNftMaxAmount,
   setNftCurrentAmount,
-  setWhiteListed
+  setUserWhiteListed
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
