@@ -7,7 +7,7 @@ import {
   
 } from "@/Blockchain/interfaces/interfaces";
 import { useState } from "react";
-import { diamondAddress } from "@/Blockchain/stark-constants";
+import { diamondAddress,nftAddress } from "@/Blockchain/stark-constants";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
 import { L3App } from "../../interfaces/interfaces";
 import { constants } from "@/Blockchain/utils/constants";
@@ -102,7 +102,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpend,
     status: statusBorrowAndSpend,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 &&user=="U1" && (totalSupply>=20 || collateralAmount>20 || totalSupply+collateralAmount>=20 || totalBorrow>=20 || loanAmount>=20 || loanAmount+totalBorrow>=20) && nftCurrentAmount<nftMaxAmount ? [
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 &&user=="U1" && ( loanAmount>50) && nftCurrentAmount<nftMaxAmount ? [
       {
         contractAddress: tokenAddressMap[collateralMarket],
         entrypoint: "approve",
@@ -129,7 +129,7 @@ const useBorrowAndSpend = () => {
         ],
       },
       {
-        contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+        contractAddress: nftAddress,
         entrypoint: "claim_nft",
         calldata: [
           messagehash,
@@ -179,7 +179,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpendRToken,
     status: statusBorrowAndSpendRToken,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1"&& (totalSupply>=20 || rTokenAmount>20 || totalSupply+rTokenAmount>=20 || totalBorrow>=20 || loanAmount>=20 || loanAmount+totalBorrow>=20) && nftCurrentAmount<nftMaxAmount ?[ {
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1"&& ( loanAmount>50) && nftCurrentAmount<nftMaxAmount ?[ {
       contractAddress: diamondAddress,
       entrypoint: "borrow_and_spend_with_rToken",
       calldata: [
@@ -195,7 +195,7 @@ const useBorrowAndSpend = () => {
       ],
     },
     {
-      contractAddress: "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      contractAddress: nftAddress,
       entrypoint: "claim_nft",
       calldata: [
         messagehash,

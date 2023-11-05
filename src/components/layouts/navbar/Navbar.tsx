@@ -234,7 +234,7 @@ const [Render, setRender] = useState(true);
     if ((account && !isCorrectNetwork())) {
         setRender(false);
     } else {
-      if(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && !whitelisted){
+      if( !whitelisted){
         setRender(false);
       }else{
         setRender(true);

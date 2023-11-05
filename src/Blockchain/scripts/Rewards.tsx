@@ -12,6 +12,7 @@ import {
   diamondAddress,
   getProvider,
   stakingContractAddress,
+  nftAddress
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount } from "../utils/utils";
@@ -137,7 +138,7 @@ export async function getNFTMaxAmount(){
     const provider=getProvider();
     const nftContract=new Contract(
       nftAbi?.abi,
-      "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      nftAddress,
       provider
     )
     const result=await nftContract.call(
@@ -155,7 +156,7 @@ export async function getCurrentNftAmount(){
     const provider=getProvider();
     const nftContract=new Contract(
       nftAbi?.abi,
-      "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      nftAddress,
       provider
     )
     const result=await nftContract.call(
@@ -175,7 +176,7 @@ export async function getNFTBalance(address:string){
     const provider=getProvider();
     const nftContract=new Contract(
       nftAbi?.abi,
-      "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      nftAddress,
       provider
     )
     const result=await nftContract.call(
