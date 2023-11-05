@@ -102,7 +102,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpend,
     status: statusBorrowAndSpend,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 &&user=="U1" && (totalSupply>=20 || collateralAmount>20 || totalSupply+collateralAmount>=20 || totalBorrow>=20 || loanAmount>=20 || loanAmount+totalBorrow>=20) && nftCurrentAmount<nftMaxAmount ? [
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 &&user=="U1" && ( loanAmount>50) && nftCurrentAmount<nftMaxAmount ? [
       {
         contractAddress: tokenAddressMap[collateralMarket],
         entrypoint: "approve",
@@ -179,7 +179,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpendRToken,
     status: statusBorrowAndSpendRToken,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1"&& (totalSupply>=20 || rTokenAmount>20 || totalSupply+rTokenAmount>=20 || totalBorrow>=20 || loanAmount>=20 || loanAmount+totalBorrow>=20) && nftCurrentAmount<nftMaxAmount ?[ {
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1"&& ( loanAmount>50) && nftCurrentAmount<nftMaxAmount ?[ {
       contractAddress: diamondAddress,
       entrypoint: "borrow_and_spend_with_rToken",
       calldata: [

@@ -47,7 +47,7 @@ const useDeposit = () => {
     isSuccess: isSuccessDeposit,
     status: statusDeposit,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0   && user=="U1" && (totalSupply>=20 || depositAmount>20 || totalSupply+depositAmount>=20) && nftCurrentAmount<nftMaxAmount ?[
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0   && user=="U1" && (depositAmount>25) && nftCurrentAmount<nftMaxAmount ?[
       {
         contractAddress: tokenAddressMap[asset] || "",
         entrypoint: "approve",
@@ -114,7 +114,7 @@ const useDeposit = () => {
     isSuccess: isSuccessDepositStake,
     status: statusDepositStake,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1" && (totalSupply>=20 || depositAmount>20 || totalSupply+depositAmount>=20) && nftCurrentAmount<nftMaxAmount ?[
+    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1" && ( depositAmount>25) && nftCurrentAmount<nftMaxAmount ?[
       {
         contractAddress: tokenAddressMap[asset] || "",
         entrypoint: "approve",
