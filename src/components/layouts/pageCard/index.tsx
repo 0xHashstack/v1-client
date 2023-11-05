@@ -18,6 +18,7 @@ import {
   setMessageHash,
   setSignature,
   selectUserType,
+  setUserWhiteListed,
 } from "@/store/slices/readDataSlice";
 import {
   selectUserLoans,
@@ -231,12 +232,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         if (!address) {
           return;
         }
-        const url = `https://hstk.fi/is-whitelisted/${address}`;
+        const url = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/is-whitelisted/${address}`:`https://hstk.fi/is-whitelisted/${address}`;
         const response = await axios.get(url);
         if (response.data) {
           setWhitelisted(response.data?.isWhitelisted);
+          dispatch(setUserWhiteListed(response.data?.isWhitelisted))
           if(response.data?.isWhitelisted==false){
-            await axios.post('https://hstk.fi/add-address', { address: address })
+            await axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/add-address':'https://hstk.fi/add-address'), { address: address })
             .then((response) => {
               console.log(response, "added to db");
               // Log the response from the backend.
@@ -246,7 +248,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             });
           }
           if (userType == "U1") {
-            await axios.post('https://hstk.fi/nft-sign', { address: address })
+            await axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/nft-sign':'https://hstk.fi/nft-sign'), { address: address })
               .then((response) => {
                 console.log(response, "hash");
                 if (response) {
@@ -270,10 +272,10 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     const referal = async () => {
       try {
         if (ref) {
-          const response = await axios.get(`https://hstk.fi/get_token/${ref}`);
+          const response = await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/get_token/${ref}`:`https://hstk.fi/get_token/${ref}`);
           console.log(response?.data, "refer")
           if (response) {
-            axios.post('https://hstk.fi/link-referral', { address: address }, {
+            axios.post(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/link-referral':'https://hstk.fi/link-referral', { address: address }, {
               headers: {
                 "reftoken": response.data
               }
@@ -300,7 +302,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if ((account && !isCorrectNetwork())) {
       setRender(false);
     } else {
-      if (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && !whitelisted) {
+      if (!whitelisted) {
         setRender(false);
       } else {
         setRender(true);
@@ -547,7 +549,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     )
     : (
       <>
-        {render && process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && whitelisted ? (
+        {render && whitelisted ? (
           <>
             <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
@@ -639,7 +641,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               {...rest}
             >
               <Box>
-                {(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && !whitelisted)
+                {(!whitelisted)
                   ? <Text color="white" fontSize="25px">
                     You are successfully added to our waitlist
                   </Text> : <Text color="white" fontSize="25px">

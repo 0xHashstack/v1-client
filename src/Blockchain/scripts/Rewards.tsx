@@ -12,6 +12,7 @@ import {
   diamondAddress,
   getProvider,
   stakingContractAddress,
+  nftAddress
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount } from "../utils/utils";
@@ -136,8 +137,8 @@ export async function getNFTMaxAmount(){
   try{
     const provider=getProvider();
     const nftContract=new Contract(
-      nftAbi,
-      "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      nftAbi?.abi,
+      nftAddress,
       provider
     )
     const result=await nftContract.call(
@@ -150,12 +151,32 @@ export async function getNFTMaxAmount(){
     console.log(err,"err in getNFTMaxAmount")
   }
 }
+export async function getCurrentNftAmount(){
+  try{
+    const provider=getProvider();
+    const nftContract=new Contract(
+      nftAbi?.abi,
+      nftAddress,
+      provider
+    )
+    const result=await nftContract.call(
+      "get_current_nft_minted",
+    )
+    const res = parseAmount(
+      uint256.uint256ToBN(result?.number).toString(),
+      0
+      );
+    return res;
+  }catch(err){
+    console.log(err,"err in getNFTCurrentAmount")
+  }
+}
 export async function getNFTBalance(address:string){
   try{
     const provider=getProvider();
     const nftContract=new Contract(
-      nftAbi,
-      "0x0457f6078fd9c9a9b5595c163a7009de1d20cad7a9b71a49c199ddc2ac0f284b",
+      nftAbi?.abi,
+      nftAddress,
       provider
     )
     const result=await nftContract.call(

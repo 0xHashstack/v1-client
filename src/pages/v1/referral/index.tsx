@@ -291,8 +291,45 @@ const Referral = () => {
 
     const dispatch = useDispatch();
     const { account, address } = useAccount();
+    const [dataCommunity, setDataCommunity] = useState([])
+    const [dataUser, setDataUser] = useState([0,0,0])
     useDataLoader();
+    useEffect(()=>{
+        const fetchData=async()=>{
+            try{
+                const array:any=[];
+                const res=await axios.get('https://testnet.hstk.fi/api/get-community-stats');
+                if(res?.data){
+                    array.push(res?.data?.overall_referred_liq);
+                    array.push(res?.data?.rewards_claimed);
+                }
+                setDataCommunity(array)
+            }catch(err){
+                console.log(err);
+            }
 
+        }
+        const fetchUserData=async()=>{
+            try{
+                if(!address){
+                    return;
+                }
+                const array:any=[];
+                const res=await axios.get(`https://testnet.hstk.fi/api/get-user-stats/${address}`);
+                if(res?.data){
+                    array.push(res?.data?.referred_points);
+                    array.push(res?.data?.points_earned);
+                    array.push(res?.data?.rewards_claimed)
+                }
+                setDataUser(array);
+                console.log(res,"user")
+            }catch(err){
+                console.log(err)
+            }
+        }
+        fetchUserData();
+        fetchData()
+    },[address])
     const UserLoans = useSelector(selectUserLoans);
     useEffect(() => {
         // if (UserLoans) {
@@ -369,10 +406,10 @@ const Referral = () => {
     const handleCopyClick =  async () => {
         try {
             if(exisitingLink){
-                await navigator.clipboard.writeText("https://hstk.fi/" + exisitingLink);
+                await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/":"https://hstk.fi/") + exisitingLink);
             }else{
-                await navigator.clipboard.writeText("https://hstk.fi/" + refferal);
-                axios.post('https://hstk.fi/shorten', { pseudo_name:refferal,address: address })
+                await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/":"https://hstk.fi/") + refferal);
+                axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/shorten":'https://hstk.fi/shorten'), { pseudo_name:refferal,address: address })
                 .then((response) => {
                   console.log(response, "response refer link"); // Log the response from the backend.
                 })
@@ -446,7 +483,7 @@ const Referral = () => {
                     <Box display="flex" mt="0">
                     <InputGroup size='sm'mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="4rem" >
                     <InputLeftAddon height="60px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
-                    https://hstk.fi/
+                    {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/":"https://hstk.fi/"}
                     </InputLeftAddon>
                     {exisitingLink ?
                     <Input  height="60px" border="none" color="#F0F0F5" value={exisitingLink} paddingInlineStart="0" _focus={{
@@ -501,7 +538,7 @@ const Referral = () => {
             "Points earned",
             "Rewards Claimed",
           ]}
-          statsData={[15,15,200]}
+          statsData={process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? dataUser:[0,0,0]}
           onclick={() => {
             console.log("hi")
           }}
@@ -512,7 +549,7 @@ const Referral = () => {
             "Overall refered by community",
             "Rewards claimed by community"
           ]}
-          statsData={[400,3200]}
+          statsData={process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?dataCommunity:[0,0]}
           onclick={() => {
             // handleRouteChange("/v1/protocol-metrics");
           }}
@@ -520,7 +557,7 @@ const Referral = () => {
         />
                 </HStack>
             </Flex>
-            <HStack
+            {/* <HStack
                 display="flex"
                 justifyContent="space-between"
                 alignItems="flex-start"
@@ -923,9 +960,9 @@ const Referral = () => {
                         </TableContainer>
                     </VStack>
                 </HStack>
-            </HStack>
+            </HStack> */}
 
-            <HStack
+            {/* <HStack
                 display="flex"
                 justifyContent="space-between"
                 alignItems="flex-start"
@@ -947,7 +984,7 @@ const Referral = () => {
                     Terms and conditions <br />
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                 </Text>
-            </HStack>
+            </HStack> */}
         </PageCard>
     );
 };

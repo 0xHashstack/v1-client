@@ -109,6 +109,8 @@ export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 
 export const faucetAddress: string =  contractsEnv.FAUCET_ADDRESS;
 
+export const nftAddress:string=contractsEnv.NFT_CONTRACT_ADDRESS;
+
 export const getTokenFromAddress = (address: string) => {
   return contractsEnv.TOKENS.find((item:any) => item?.address === address);
 };
