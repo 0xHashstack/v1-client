@@ -177,7 +177,6 @@ const Navbar = ({ validRTokens }: any) => {
   const userType=useSelector(selectUserType)
 const [Render, setRender] = useState(true);
 const userWhitelisted=useSelector(selectWhiteListed);
-console.log(userWhitelisted,"white")
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");

@@ -102,7 +102,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpend,
     status: statusBorrowAndSpend,
   } = useContractWrite({
-    calls: balance==0 &&user=="U1" && ( loanAmount>50) && nftCurrentAmount<nftMaxAmount ? [
+    calls: balance==0 &&user=="U1" && ( loanAmount>100) && nftCurrentAmount<nftMaxAmount ? [
       {
         contractAddress: tokenAddressMap[collateralMarket],
         entrypoint: "approve",
@@ -179,7 +179,7 @@ const useBorrowAndSpend = () => {
     isSuccess: isSuccessBorrowAndSpendRToken,
     status: statusBorrowAndSpendRToken,
   } = useContractWrite({
-    calls: balance==0 && user=="U1"&& ( loanAmount>50) && nftCurrentAmount<nftMaxAmount ?[ {
+    calls: balance==0 && user=="U1"&& ( loanAmount>100) && nftCurrentAmount<nftMaxAmount ?[ {
       contractAddress: diamondAddress,
       entrypoint: "borrow_and_spend_with_rToken",
       calldata: [

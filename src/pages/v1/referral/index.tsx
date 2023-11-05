@@ -538,7 +538,7 @@ const Referral = () => {
             "Points earned",
             "Rewards Claimed",
           ]}
-          statsData={dataUser}
+          statsData={process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? dataUser:[0,0,0]}
           onclick={() => {
             console.log("hi")
           }}
@@ -549,7 +549,7 @@ const Referral = () => {
             "Overall refered by community",
             "Rewards claimed by community"
           ]}
-          statsData={dataCommunity}
+          statsData={process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?dataCommunity:[0,0]}
           onclick={() => {
             // handleRouteChange("/v1/protocol-metrics");
           }}
