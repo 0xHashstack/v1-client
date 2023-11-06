@@ -54,7 +54,7 @@ const ContributorsChart = ({
     };
 
     return (
-        <Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px" background="rgba(103, 109, 154, 0.10)">
+        <Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px" background="rgba(103, 109, 154, 0.10)" maxWidth="1800px">
             <Box
                 ml="8rem"
                 pt="4rem"

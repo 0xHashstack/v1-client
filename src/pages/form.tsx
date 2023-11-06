@@ -1,8 +1,9 @@
 import Navbar from '@/components/Navbar'
 import ContributorsChart from '@/components/charts/ContributorsChart'
-import { Box,Text } from '@chakra-ui/react'
+import { Box,Text, useMediaQuery } from '@chakra-ui/react'
 import React from 'react'
 const form = () => {
+  const [isLargerThan2000] = useMediaQuery('(min-width: 2000px)')
   return (
     <Box>
       <Box background="rgba(103, 109, 154, 0.10)"
@@ -20,8 +21,9 @@ const form = () => {
         zIndex={1}
         padding="0"
         pr="2rem"
-        pl="2rem"
-        alignItems="center"
+        pl={isLargerThan2000 ?"6rem":"2rem"} 
+        display="flex"
+        flexDirection="column"
         minHeight={"100vh"}
         pt="8rem"
       >
