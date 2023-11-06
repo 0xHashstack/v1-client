@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <HStack
     padding="10px"
-    width="50vw"
+    width="100vw"
     display="flex"
       justifyContent="space-between"
       alignItems="center"
