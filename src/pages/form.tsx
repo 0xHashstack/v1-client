@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar'
-import { Box } from '@chakra-ui/react'
+import ContributorsChart from '@/components/charts/ContributorsChart'
+import { Box,Text } from '@chakra-ui/react'
 import React from 'react'
 const form = () => {
   return (
@@ -18,12 +19,16 @@ const form = () => {
         color="white"
         zIndex={1}
         padding="0"
-
+        pr="2rem"
+        pl="2rem"
         alignItems="center"
         minHeight={"100vh"}
         pt="8rem"
       >
-        Form
+        <Text color="white" mb="1rem">
+          Tokenomics
+        </Text>
+        <ContributorsChart/>
       </Box>
     </Box>
   )

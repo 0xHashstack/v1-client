@@ -1,5 +1,6 @@
 import HashstackLogo from '@/assets/hashstacklogo'
-import { HStack,Text } from '@chakra-ui/react'
+import SettingsLogo from '@/assets/settingsLogo'
+import { HStack,Text,Box } from '@chakra-ui/react'
 import React from 'react'
 
 const Navbar = () => {
@@ -13,13 +14,15 @@ const Navbar = () => {
       color="#fff"
       height="3.8125rem"
     >
+      <Box  ml="1rem">
         <HashstackLogo/>
-        <HStack color="white">
+      </Box>
+        <HStack color="white" mr="1rem">
             <Text color="white">
                 Connect Wallet
             </Text>
             <Text color="white">
-                Settings
+                <SettingsLogo/>
             </Text>
         </HStack>
     </HStack>
