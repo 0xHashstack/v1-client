@@ -1,7 +1,8 @@
 import Navbar from '@/components/Navbar'
 import ContributorsChart from '@/components/charts/ContributorsChart'
-import { Box,Text } from '@chakra-ui/react'
+import { Box,HStack,Text } from '@chakra-ui/react'
 import React from 'react'
+import DetailsForm from '@/components/Form/DetailsForm'
 const form = () => {
   return (
     <Box>
@@ -26,10 +27,30 @@ const form = () => {
         pt="8rem"
       >
         <Text color="white" mb="1rem">
+          Presale form
+        </Text>
+        {/* <ContributorsChart/> */}
+        <HStack
+      w="95%"
+      h="30%"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="flex-start"
+    >
+        <DetailsForm/>
+        {/* <DetailsForm/> */}
+
+
+      </HStack>
+   
+        <Text color="white" mb="1rem">
           Tokenomics
         </Text>
         <ContributorsChart/>
-      </Box>
+
+        
+        </Box>
+    
     </Box>
   )
 }
