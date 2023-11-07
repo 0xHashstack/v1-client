@@ -1,7 +1,8 @@
 import Navbar from '@/components/Navbar'
 import ContributorsChart from '@/components/charts/ContributorsChart'
-import { Box,Text, useMediaQuery } from '@chakra-ui/react'
+import { Box,HStack,Text, useMediaQuery } from '@chakra-ui/react'
 import React from 'react'
+import DetailsForm from '@/components/Form/DetailsForm'
 const form = () => {
   const [isLargerThan2000] = useMediaQuery('(min-width: 2000px)')
   return (
@@ -28,10 +29,30 @@ const form = () => {
         pt="8rem"
       >
         <Text color="white" mb="1rem">
+          Presale form
+        </Text>
+        {/* <ContributorsChart/> */}
+        <HStack
+      w="95%"
+      h="30%"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="flex-start"
+    >
+        <DetailsForm/>
+        {/* <DetailsForm/> */}
+
+
+      </HStack>
+   
+        <Text color="white" mb="1rem">
           Tokenomics
         </Text>
         <ContributorsChart/>
-      </Box>
+
+        
+        </Box>
+    
     </Box>
   )
 }
