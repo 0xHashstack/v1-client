@@ -42,8 +42,10 @@ const DetailsForm = ({ handler }: any) => {
   const [BookAmt, setBookAmt] = useState();
   const [checked, setChecked] = useState(false)
   const [FundName, setFundName] = useState()
+  const [investorcommit, setInvestorcommit] = useState()
   const [DecisionTime, setDecisionTime] = useState()
   const [url, setUrl] = useState()
+
 
   const handleWalletChange = (e: any) => {
     setWallet(e.target.value);
@@ -62,6 +64,9 @@ const DetailsForm = ({ handler }: any) => {
   };
   const handleFundNameChange = (e: any) => {
     setFundName(e.target.value);
+  };
+  const handleInvestorCommitChange = (e: any) => {
+    setInvestorcommit(e.target.value);
   };
   const handleDecisionTimeChange = (e: any) => {
     setDecisionTime(e.target.value);
@@ -430,7 +435,7 @@ const DetailsForm = ({ handler }: any) => {
         <Box w="80%" display="flex" flexDirection="column" gap="1" mt="0">
           <Box display="flex">
             <Text fontSize="xs" color="#676D9A">
-              Booking Amount
+              Commitment Intrest
             </Text>
             <Tooltip
               color="#F0F0F5"
@@ -471,8 +476,8 @@ const DetailsForm = ({ handler }: any) => {
             <Input
               type="number"
               border="0px"
-              value={BookAmt}
-              onChange={handleBookAmtCHnage}
+              value={investorcommit}
+              onChange={handleInvestorCommitChange}
               placeholder="$50"
               _placeholder={{
                 color: "rgba(240, 240, 245, 0.50)",
@@ -601,7 +606,8 @@ const DetailsForm = ({ handler }: any) => {
         </Box>
         }
         <Button display=" flex"
-          width=" 540px"
+        mt="2rem"
+          width="80%"
           height=" 40px"
           flexDirection="column"
           justifyContent=" center"
