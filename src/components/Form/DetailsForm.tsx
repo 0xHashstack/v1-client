@@ -88,7 +88,13 @@ const DetailsForm = ({ handler }: any) => {
       >
         <Box w="80%" display="flex" flexDirection="column" gap="1" mt="0">
           <Box display="flex">
-            <Text fontSize="xs" color="#676D9A">
+            <Text color=" var(--neutral, #676D9A)"
+font-family=" Inter"
+font-size=" 12px"
+font-style=" normal"
+font-weight=" 400"
+line-height=" 12px" /* 100% */
+letter-spacing=" -0.15px"  >
               Wallet Address
             </Text>
             <Tooltip
@@ -132,11 +138,14 @@ const DetailsForm = ({ handler }: any) => {
               value={wallet}
               onChange={handleWalletChange}
               placeholder="rioguLSDnvSL:?DgjbsBHNB.XBMD>XBM;DLFBJ"
-              _placeholder={{
+          _placeholder={{
                 color: "rgba(240, 240, 245, 0.50)",
+                fontFamily: "Inter",
                 fontSize: "14px",
+                fontStyle: "normal",
                 fontWeight: "500",
-                fontFamily: 'Inter'
+                lineHeight: "20px" ,
+                letterSpacing: "-0.15px"
 
               }}
             ></Input>
@@ -145,7 +154,13 @@ const DetailsForm = ({ handler }: any) => {
 
         <Box w="80%" display="flex" flexDirection="column" gap="1" mt="0">
           <Box display="flex">
-            <Text fontSize="xs" color="#676D9A">
+        <Text color=" var(--neutral, #676D9A)"
+font-family=" Inter"
+font-size=" 12px"
+font-style=" normal"
+font-weight=" 400"
+line-height=" 12px" /* 100% */
+letter-spacing=" -0.15px"  >
               Discord
             </Text>
             <Tooltip
@@ -193,7 +208,13 @@ const DetailsForm = ({ handler }: any) => {
         </Box>
         <Box w="80%" display="flex" flexDirection="column" gap="1" mt="0">
           <Box display="flex">
-            <Text fontSize="xs" color="#676D9A">
+        <Text color=" var(--neutral, #676D9A)"
+font-family=" Inter"
+font-size=" 12px"
+font-style=" normal"
+font-weight=" 400"
+line-height=" 12px" /* 100% */
+letter-spacing=" -0.15px"  >
               Twitter handle
             </Text>
             <Tooltip
@@ -241,7 +262,13 @@ const DetailsForm = ({ handler }: any) => {
         </Box>
         <Box w="80%" display="flex" flexDirection="column" gap="1" mt="0">
           <Box display="flex">
-            <Text fontSize="xs" color="#676D9A">
+        <Text color=" var(--neutral, #676D9A)"
+font-family=" Inter"
+font-size=" 12px"
+font-style=" normal"
+font-weight=" 400"
+line-height=" 12px" /* 100% */
+letter-spacing=" -0.15px"  >
               Commitment interest
             </Text>
             <Tooltip
@@ -282,11 +309,14 @@ const DetailsForm = ({ handler }: any) => {
           >
             <Input
               placeholder="minimum $500 & maximum $2500"
-              _placeholder={{
+          _placeholder={{
                 color: "rgba(240, 240, 245, 0.50)",
+                fontFamily: "Inter",
                 fontSize: "14px",
+                fontStyle: "normal",
                 fontWeight: "500",
-                fontFamily: 'Inter'
+                lineHeight: "20px" ,
+                letterSpacing: "-0.15px"
 
               }}
               type="number"
@@ -299,7 +329,13 @@ const DetailsForm = ({ handler }: any) => {
 
         <Box w="80%" display="flex" flexDirection="column" gap="1" mt="0">
           <Box display="flex">
-            <Text fontSize="xs" color="#676D9A">
+        <Text color=" var(--neutral, #676D9A)"
+font-family=" Inter"
+font-size=" 12px"
+font-style=" normal"
+font-weight=" 400"
+line-height=" 12px" /* 100% */
+letter-spacing=" -0.15px"  >
               Booking Amount
             </Text>
             <Tooltip
@@ -344,11 +380,14 @@ const DetailsForm = ({ handler }: any) => {
               value={BookAmt}
               onChange={handleBookAmtCHnage}
               placeholder="$50"
-              _placeholder={{
+          _placeholder={{
                 color: "rgba(240, 240, 245, 0.50)",
+                fontFamily: "Inter",
                 fontSize: "14px",
+                fontStyle: "normal",
                 fontWeight: "500",
-                fontFamily: 'Inter'
+                lineHeight: "20px" ,
+                letterSpacing: "-0.15px"
 
               }}
             ></Input>
@@ -358,7 +397,7 @@ const DetailsForm = ({ handler }: any) => {
         <Checkbox
           isChecked={checked}
           color=" var(--neutral-light, #B1B0B5)"
-          font-family=" Inter"
+          fontFamily=" Inter"
           mt={"3rem"}
           mb={"2rem"}
 
@@ -377,7 +416,13 @@ const DetailsForm = ({ handler }: any) => {
         >
                   <Box w="80%" display="flex" flexDirection="column" gap="1" mt="0">
           <Box display="flex">
-            <Text fontSize="xs" color="#676D9A">
+        <Text color=" var(--neutral, #676D9A)"
+font-family=" Inter"
+font-size=" 12px"
+font-style=" normal"
+font-weight=" 400"
+line-height=" 12px" /* 100% */
+letter-spacing=" -0.15px"  >
               Fund Name
             </Text>
             <Tooltip
@@ -422,11 +467,14 @@ const DetailsForm = ({ handler }: any) => {
               value={FundName}
               onChange={handleFundNameChange}
               placeholder="rioguLSDnvSL:?DgjbsBHNB.XBMD>XBM;DLFBJ"
-              _placeholder={{
+          _placeholder={{
                 color: "rgba(240, 240, 245, 0.50)",
+                fontFamily: "Inter",
                 fontSize: "14px",
+                fontStyle: "normal",
                 fontWeight: "500",
-                fontFamily: 'Inter'
+                lineHeight: "20px" ,
+                letterSpacing: "-0.15px"
 
               }}
             ></Input>
@@ -434,7 +482,13 @@ const DetailsForm = ({ handler }: any) => {
         </Box>
         <Box w="80%" display="flex" flexDirection="column" gap="1" mt="0">
           <Box display="flex">
-            <Text fontSize="xs" color="#676D9A">
+        <Text color=" var(--neutral, #676D9A)"
+font-family=" Inter"
+font-size=" 12px"
+font-style=" normal"
+font-weight=" 400"
+line-height=" 12px" /* 100% */
+letter-spacing=" -0.15px"  >
               Commitment Intrest
             </Text>
             <Tooltip
@@ -479,11 +533,14 @@ const DetailsForm = ({ handler }: any) => {
               value={investorcommit}
               onChange={handleInvestorCommitChange}
               placeholder="$50"
-              _placeholder={{
+          _placeholder={{
                 color: "rgba(240, 240, 245, 0.50)",
+                fontFamily: "Inter",
                 fontSize: "14px",
+                fontStyle: "normal",
                 fontWeight: "500",
-                fontFamily: 'Inter'
+                lineHeight: "20px" ,
+                letterSpacing: "-0.15px"
 
               }}
             ></Input>
@@ -491,7 +548,13 @@ const DetailsForm = ({ handler }: any) => {
         </Box>
         <Box w="80%" display="flex" flexDirection="column" gap="1" mt="0">
           <Box display="flex">
-            <Text fontSize="xs" color="#676D9A">
+        <Text color=" var(--neutral, #676D9A)"
+font-family=" Inter"
+font-size=" 12px"
+font-style=" normal"
+font-weight=" 400"
+line-height=" 12px" /* 100% */
+letter-spacing=" -0.15px"  >
               Time to Decision
             </Text>
             <Tooltip
@@ -538,9 +601,12 @@ const DetailsForm = ({ handler }: any) => {
               placeholder="$50"
               _placeholder={{
                 color: "rgba(240, 240, 245, 0.50)",
+                fontFamily: "Inter",
                 fontSize: "14px",
+                fontStyle: "normal",
                 fontWeight: "500",
-                fontFamily: 'Inter'
+                lineHeight: "20px", /* 142.857% */
+                letterSpacing: "-0.15px"
 
               }}
             ></Input>
@@ -548,7 +614,13 @@ const DetailsForm = ({ handler }: any) => {
         </Box>
         <Box w="80%" display="flex" flexDirection="column" gap="1" mt="0">
           <Box display="flex">
-            <Text fontSize="xs" color="#676D9A">
+        <Text color=" var(--neutral, #676D9A)"
+font-family=" Inter"
+font-size=" 12px"
+font-style=" normal"
+font-weight=" 400"
+line-height=" 12px" /* 100% */
+letter-spacing=" -0.15px"  >
               URL
             </Text>
             <Tooltip
@@ -593,11 +665,14 @@ const DetailsForm = ({ handler }: any) => {
               value={url}
               onChange={handleUrlChange}
               placeholder="$50"
-              _placeholder={{
+          _placeholder={{
                 color: "rgba(240, 240, 245, 0.50)",
+                fontFamily: "Inter",
                 fontSize: "14px",
+                fontStyle: "normal",
                 fontWeight: "500",
-                fontFamily: 'Inter'
+                lineHeight: "20px" ,
+                letterSpacing: "-0.15px"
 
               }}
             ></Input>
