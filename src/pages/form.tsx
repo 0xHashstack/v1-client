@@ -23,6 +23,8 @@ const form = () => {
         color="white"
         zIndex={1}
         padding="0"
+        // mb="4rem"
+      
         pr="2rem"
         pl={isLargerThan2000 ?"6rem":"2rem"} 
         display="flex"
@@ -30,7 +32,7 @@ const form = () => {
         minHeight={"100vh"}
         pt="8rem"
       >
-        <Text color="white" mb="1rem">
+        <Text    color="white" mb="4rem">
           Presale form
         </Text>
         {/* <ContributorsChart/> */}
@@ -47,7 +49,7 @@ const form = () => {
 
       </HStack>
    
-        <Text color="white" mb="1rem">
+        <Text color="white" mt="3rem" mb="2rem">
           Tokenomics
         </Text>
         <ContributorsChart/>
