@@ -9,6 +9,8 @@ const Navbar = () => {
     padding="10px"
     width="100vw"
     display="flex"
+    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+      boxShadow="rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px"
       justifyContent="space-between"
       alignItems="center"
       color="#fff"

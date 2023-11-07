@@ -7,11 +7,13 @@ const form = () => {
   const [isLargerThan2000] = useMediaQuery('(min-width: 2000px)')
   return (
     <Box>
-      <Box background="rgba(103, 109, 154, 0.10)"
-        position={'fixed'} zIndex={3}
-      >
-        <Navbar/>
-      </Box>
+        <Box background={`
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
+            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            black
+          `} position={'fixed'} zIndex={3} >
+          <Navbar />
+        </Box>
       <Box
         background={`
                 radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.15), transparent) top left,
