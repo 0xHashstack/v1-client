@@ -37,7 +37,7 @@ const form = () => {
         </Text>
         {/* <ContributorsChart/> */}
         <HStack
-      w="95%"
+      w="100%"
       h="30%"
       display="flex"
       justifyContent="space-between"

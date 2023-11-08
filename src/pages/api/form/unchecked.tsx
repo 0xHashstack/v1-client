@@ -17,13 +17,8 @@ export default async function handler(
       if (!wallet || !discord || !twitter || !commit || !bookamt ) {
         // If starRating is not provided in the request body, send an error response.
         res.status(400).json({ error: "Data error" });
-      } else if(check) {
-        res.status(400).json({ error: "Data error. Called Unchecked on checked data" });
-        
-      }else{
-
+      } else{
         const response = {data:`DATA recieved :-Wallet - ${wallet},Dsicord - ${discord},Twitter - ${twitter},Commit amount-${commit},Bookamt-${bookamt}`};
-
         // Here, you can handle the rating data and save it to your backend or database.
         // Example: Save the rating to a database.
         res.status(200).json({
