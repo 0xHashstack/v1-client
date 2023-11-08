@@ -243,6 +243,15 @@ const userWhitelisted=useSelector(selectWhiteListed);
       }
     }
   }, [account,whitelisted,userWhitelisted,referralLinked]);
+  const [allowedReferral, setAllowedReferral] = useState(false)
+  useEffect(()=>{
+    const fetchUsers=async()=>{
+      const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
+      const fetched=res?.data.includes(address);
+      setAllowedReferral(fetched)
+    }
+    fetchUsers();
+  },[address])
   return (
     <HStack
       zIndex="100"
@@ -381,7 +390,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             </Box>
         </Box>
         :
-        (totalBorrow>0 || totalSupply>0) ?
+        (allowedReferral) ?
         <Box
         padding="16px 12px"
         fontSize="12px"

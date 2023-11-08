@@ -525,8 +525,8 @@ const useDataLoader = () => {
                 );
                 totalTransactions?.push(response?.[i]?.totalTransactions);
                 totalAccounts?.push(response?.[i]?.totalAccounts);
-                aprs?.push(responseApr?.[i]?.APR);
-                apys?.push(responseApr?.[i]?.APY);
+                aprs?.push(responseApr?.[i]?.APY);
+                apys?.push(responseApr?.[i]?.APR);
                 totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
@@ -686,8 +686,8 @@ const useDataLoader = () => {
                 );
                 totalTransactions?.push(response?.[i]?.totalTransactions);
                 totalAccounts?.push(response?.[i]?.totalAccounts);
-                aprs?.push(responseApr?.[i]?.APR);
-                apys?.push(responseApr?.[i]?.APY);
+                aprs?.push(responseApr?.[i]?.APY);
+                apys?.push(responseApr?.[i]?.APR);
                 totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
@@ -843,8 +843,8 @@ const useDataLoader = () => {
                 );
                 totalTransactions?.push(response?.[i]?.totalTransactions);
                 totalAccounts?.push(response?.[i]?.totalAccounts);
-                aprs?.push(responseApr?.[i]?.APR);
-                apys?.push(responseApr?.[i]?.APY);
+                aprs?.push(responseApr?.[i]?.APY);
+                apys?.push(responseApr?.[i]?.APR);
                 totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")
@@ -1001,8 +1001,8 @@ const useDataLoader = () => {
                 );
                 totalTransactions?.push(response?.[i]?.totalTransactions);
                 totalAccounts?.push(response?.[i]?.totalAccounts);
-                aprs?.push(responseApr?.[i]?.APR);
-                apys?.push(responseApr?.[i]?.APY);
+                aprs?.push(responseApr?.[i]?.APY);
+                apys?.push(responseApr?.[i]?.APR);
                 totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
               // console.log(dates,"Dates")

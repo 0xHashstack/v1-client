@@ -874,6 +874,11 @@ const BorrowDashboard = ({
                           width="100%"
                           height="100%"
                           display="flex"
+                          color={Number(
+                            avgs?.find(
+                              (item: any) => item?.loanId == borrow?.loanId
+                            )?.avg
+                          )>0 ? "#D0272C":"#00D395"}
                           alignItems="center"
                           justifyContent="center"
                           fontWeight="400"

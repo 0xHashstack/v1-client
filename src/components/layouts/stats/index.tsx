@@ -60,7 +60,7 @@ const Stats = ({
                 />
               ) : header[idx] == "Net APR" ||
                 header[idx] == "Avg. asset utillization" ? (
-                <Box color="#e6edf3" fontSize="20px">
+                <Box color={header[idx] == "Net APR" ? value >0 ?"#D0272C":"#CF222E":"#e6edf3"} fontSize="20px">
                   {value !== null ? (
                     value ? (
                       `${value}%`

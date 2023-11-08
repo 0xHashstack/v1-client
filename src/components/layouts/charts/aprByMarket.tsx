@@ -95,9 +95,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const allUsdtData = useSelector(selectAllUSDTData);
   const allUsdcData = useSelector(selectAllUSDCData);
   const allDaiData = useSelector(selectAllDAIData);
-  // console.log(weeklyUsdtData?.aprs,"aprs")
   const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
-  // console.log(usdcData,"usdc data")
+  // console.log(ethData,"usdc data")
   // useEffect(()=>{
 
   // },[])
