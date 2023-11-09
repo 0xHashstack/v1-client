@@ -176,7 +176,8 @@ export async function getNetAprDeposits(
 export async function getNetAprLoans(
   loans: ILoan[],
   oraclePrices: OraclePrice[],
-  marketInfos: IMarketInfo[]
+  marketInfos: IMarketInfo[],
+  avgs:any
 ) {
   
   let totalBorrow = 0,
@@ -195,13 +196,16 @@ export async function getNetAprLoans(
     let market_info = marketInfos.find(
       (marketInfo) => marketInfo.tokenAddress === loan.underlyingMarketAddress
     );
+    let avgs_info = avgs?.find(
+      (avgs:any) => avgs?.loanId === loan.loanId
+    );
     if (oraclePrice && market_info) {
       let loanAmountUnderlying =
         loan.loanAmountParsed * market_info.exchangeRateDTokenToUnderlying;
       let loanAmountUsd = loanAmountUnderlying * oraclePrice.price;
 
       totalBorrow += loanAmountUsd;
-      netBorrowInterest += loanAmountUsd * market_info.borrowRate;
+      netBorrowInterest += loanAmountUsd * avgs_info?.avg;
     }
   }
   let netApr =

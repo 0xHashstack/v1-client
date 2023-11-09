@@ -1702,6 +1702,7 @@ const useDataLoader = () => {
           userLoansCount == transactionRefresh &&
           dataOraclePrices &&
           netAprCount < transactionRefresh
+          && effectiveApr
         ) {
           console.log("user info called inside - transactionRefresh");
           const dataNetApr = await getNetApr(
@@ -1715,10 +1716,12 @@ const useDataLoader = () => {
             dataOraclePrices,
             protocolStats,
           )
+
           const dataNetAprLoans = await getNetAprLoans(
             userLoans,
             dataOraclePrices,
-            protocolStats
+            protocolStats,
+            effectiveApr
           )
           //@ts-ignore
           if (isNaN(dataNetAprLoans)) {
@@ -1758,7 +1761,8 @@ const useDataLoader = () => {
     userLoansCount,
     dataOraclePrices,
     protocolStatsCount,
-    transactionRefresh,
+    transactionRefresh,,
+    effectiveApr
   ]);
 
   useEffect(() => {

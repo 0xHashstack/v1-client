@@ -1037,7 +1037,6 @@ const BorrowDashboard = ({
                             <HStack
                               height="50%"
                               width="150%"
-
                               alignItems="center"
                               onMouseEnter={() => handleStatusHover("0" + idx)}
                               onMouseLeave={() => handleStatusHoverLeave()}
