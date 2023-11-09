@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-
+import { WagmiConfig, createConfig } from "wagmi";
+import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 
 import Head from "next/head";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
@@ -44,27 +45,27 @@ const theme = extendTheme({
     //     }
     //   }
     // }
-       Checkbox: {
+    Checkbox: {
       baseStyle: {
-// {color:'black',}
+        // {color:'black',}
         icon: {
           // color: 'white',
           bg: '#4D59E8',
-          color:'white',
-          borderWidth:'0px',
-          
+          color: 'white',
+          borderWidth: '0px',
+
 
           // borderColor: '#4D59E8',
           _disabled: {
-          borderWidth:'0px',
-          padding:'0px',
-            color:'#4D59E8',
-          bg: '#4D59E8',
-            colorScheme:"#4D59E8",
+            borderWidth: '0px',
+            padding: '0px',
+            color: '#4D59E8',
+            bg: '#4D59E8',
+            colorScheme: "#4D59E8",
             // iconColor:'white.800'
             // borderColor: '#4D59E8',
             // bg: 'red.800',
-            
+
           },
 
 
@@ -75,16 +76,16 @@ const theme = extendTheme({
           borderRadius: 'base',
           _disabled: {
             borderWidth: '0px',
-            padding:'0px',
-            color:'black',
-          bg: '#4D59E8',
+            padding: '0px',
+            color: 'black',
+            bg: '#4D59E8',
 
 
-              // borderColor: '#4D59E8',
+            // borderColor: '#4D59E8',
             // bg: '#4D59E8',
           },
         },
-        
+
       },
     },
     // Radio: {
@@ -94,7 +95,7 @@ const theme = extendTheme({
     //       bg:"red.800"
     //     },
     //   },
-      
+
     // },
     // Radio: {
     //       bg:'red.800',
@@ -104,8 +105,8 @@ const theme = extendTheme({
     //           bg:`black`,
     //         },
     //       },
-    
-    
+
+
     // },
   },
 
@@ -114,8 +115,8 @@ const theme = extendTheme({
     customBlue: {
       500: "#0969DA",
     },
-    customPurple:{
-      500:"#4D59E8",
+    customPurple: {
+      500: "#4D59E8",
     }
   },
   fonts: {
@@ -133,6 +134,22 @@ export default function App({ Component, pageProps }: AppProps) {
     new InjectedConnector({ options: { id: "braavos" } }),
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
+
+  const config = createConfig(
+    getDefaultConfig({
+      // Required API Keys
+      infuraId: "4a19ed2b046c486084368bc58093928e", // or infuraId
+      walletConnectProjectId: "ecd60d8bde49411e2963bd0b7ca594fd",
+
+      // Required
+      appName: "Presale",
+
+      // Optional
+      appDescription: "Your App Description",
+      appUrl: "https://family.co", // your app's url
+      appIcon: "https://family.co/logo.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
+    }),
+  );
   const [feedback, setFeedback] = useState(false);
   // loadSpace(spaceApiKey)
   //   .then((api) => {
@@ -157,11 +174,16 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <link rel="shortcut icon" href="/favicon-32x32.png" />
       </Head>
-        <ChakraProvider theme={theme}>
-          <StarknetConfig autoConnect={true} connectors={connectors}>
-                <Component {...pageProps} />
-          </StarknetConfig>
-        </ChakraProvider>
+      <ChakraProvider theme={theme}>
+        <StarknetConfig autoConnect={true} connectors={connectors}>
+          <WagmiConfig config={config}>
+            <ConnectKitProvider>
+              <Component {...pageProps} />
+            </ConnectKitProvider>
+          </WagmiConfig>
+
+        </StarknetConfig>
+      </ChakraProvider>
     </>
   );
 }
