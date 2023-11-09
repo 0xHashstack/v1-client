@@ -11,7 +11,7 @@ export default async function handler(
     console.log(req.body);
     console.log("========================");
 
-    const {check,wallet,discord,twitter,commit,bookamt } = req.body;
+    const {wallet,discord,twitter,commit,bookamt } = req.body;
     const Datetime = new Date();
     try {
       if (!wallet || !discord || !twitter || !commit || !bookamt ) {

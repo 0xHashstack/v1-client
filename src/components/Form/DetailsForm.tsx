@@ -10,6 +10,7 @@ import {
   VStack,
   Checkbox,
 } from "@chakra-ui/react";
+import axios from "axios";
 const DetailsForm = ({ handler }: any) => {
   const [wallet, setWallet] = useState("");
   const [discord, setdiscord] = useState("");
@@ -21,6 +22,7 @@ const DetailsForm = ({ handler }: any) => {
   const [investorcommit, setInvestorcommit] = useState(0)
   const [DecisionTime, setDecisionTime] = useState(0)
   const [url, setUrl] = useState("")
+  const [formSubmitted, setFormSubmitted] = useState(false)
 
 
   const handleWalletChange = (e: any) => {
@@ -50,7 +52,33 @@ const DetailsForm = ({ handler }: any) => {
   const handleUrlChange = (e: any) => {
     setUrl(e.target.value);
   };
-  console.log((discord!="" && Twitter!="" && ( Commit>50 && Commit<2500) && (BookAmt>50)))
+
+  const handleSubmit=async()=>{
+    try{
+      axios.post('/api/form/unchecked', { wallet:"ass",discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt },)
+        .then((response) => {
+          console.log(response, "linked"); // Log the response from the backend.
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }catch(err){
+      console.log(err);
+    }
+  }
+  const handleInvestorSubmit=async()=>{
+    try{
+      axios.post('/api/form/checked', { wallet:"ass",discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt,fundname:FundName,Fundcommit:investorcommit,decisiontime:DecisionTime,url:url },)
+        .then((response) => {
+          console.log(response, "linked"); // Log the response from the backend.
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }catch(err){
+      console.log(err);
+    }
+  }
 
 
   return (
@@ -73,26 +101,6 @@ const DetailsForm = ({ handler }: any) => {
               letter-spacing=" -0.15px"  >
               Wallet Address
             </Text>
-            <Tooltip
-              color="#F0F0F5"
-              hasArrow
-              placement="right-start"
-              boxShadow="dark-lg"
-              label="Enter your wallet address"
-              bg="#02010F"
-              fontSize={"13px"}
-              fontWeight={"400"}
-              borderRadius={"lg"}
-              padding={"2"}
-              border="1px solid"
-              borderColor="#23233D"
-              arrowShadowColor="#2B2F35"
-            // maxW="222px"
-            >
-              <Box p="1">
-                <InfoIcon />
-              </Box>
-            </Tooltip>
           </Box>
           <Box
             width="100%"
@@ -139,26 +147,6 @@ const DetailsForm = ({ handler }: any) => {
               letter-spacing=" -0.15px"  >
               Discord
             </Text>
-            <Tooltip
-              color="#F0F0F5"
-              hasArrow
-              placement="right-start"
-              boxShadow="dark-lg"
-              label="Enter your Discord Id"
-              bg="#02010F"
-              fontSize={"13px"}
-              fontWeight={"400"}
-              borderRadius={"lg"}
-              padding={"2"}
-              border="1px solid"
-              borderColor="#23233D"
-              arrowShadowColor="#2B2F35"
-            // maxW="222px"
-            >
-              <Box p="1">
-                <InfoIcon />
-              </Box>
-            </Tooltip>
           </Box>
           <Box
             width="100%"
@@ -193,26 +181,6 @@ const DetailsForm = ({ handler }: any) => {
               letter-spacing=" -0.15px"  >
               Twitter handle
             </Text>
-            <Tooltip
-              color="#F0F0F5"
-              hasArrow
-              placement="right-start"
-              boxShadow="dark-lg"
-              label="Enter your Twitter Id"
-              bg="#02010F"
-              fontSize={"13px"}
-              fontWeight={"400"}
-              borderRadius={"lg"}
-              padding={"2"}
-              border="1px solid"
-              borderColor="#23233D"
-              arrowShadowColor="#2B2F35"
-            // maxW="222px"
-            >
-              <Box p="1">
-                <InfoIcon />
-              </Box>
-            </Tooltip>
           </Box>
           <Box
             width="100%"
@@ -252,7 +220,7 @@ const DetailsForm = ({ handler }: any) => {
               hasArrow
               placement="right-start"
               boxShadow="dark-lg"
-              label="Enter your Commitment Interest"
+              label="Amount of money that buyers are willing to pay in advance to secure their allocation of tokens during the pre-sale."
               bg="#02010F"
               fontSize={"13px"}
               fontWeight={"400"}
@@ -263,7 +231,7 @@ const DetailsForm = ({ handler }: any) => {
               arrowShadowColor="#2B2F35"
             // maxW="222px"
             >
-              <Box p="1">
+              <Box p="1" mt="0.5">
                 <InfoIcon />
               </Box>
             </Tooltip>
@@ -273,7 +241,7 @@ const DetailsForm = ({ handler }: any) => {
             borderRadius="6px"
             display="flex"
             justifyContent="space-between"
-            border={(Commit >0 ?(Commit<50 || Commit>2500):false) ?"1px solid #CF222E":"1px solid #676D9A"}
+            border={(Commit >0 ?(Commit<500 || Commit>2500):false) ?"1px solid #CF222E":"1px solid #676D9A"}
             background=" var(--surface-of-10, rgba(103, 109, 154, 0.10))"
             color="rgba(240, 240, 245, 0.50)"
             fontFamily=" Inter"
@@ -324,7 +292,7 @@ const DetailsForm = ({ handler }: any) => {
               hasArrow
               placement="right-start"
               boxShadow="dark-lg"
-              label="Enter your Booking amount"
+              label="The upfront payment required from potential buyers to secure their spot on the “interested buyers list” for the tokens."
               bg="#02010F"
               fontSize={"13px"}
               fontWeight={"400"}
@@ -335,7 +303,7 @@ const DetailsForm = ({ handler }: any) => {
               arrowShadowColor="#2B2F35"
             // maxW="222px"
             >
-              <Box p="1">
+              <Box p="1" mt="0.5">
                 <InfoIcon />
               </Box>
             </Tooltip>
@@ -415,7 +383,7 @@ const DetailsForm = ({ handler }: any) => {
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Enter your Booking amount"
+                  label="Name of the investment group."
                   bg="#02010F"
                   fontSize={"13px"}
                   fontWeight={"400"}
@@ -426,7 +394,7 @@ const DetailsForm = ({ handler }: any) => {
                   arrowShadowColor="#2B2F35"
                 // maxW="222px"
                 >
-                  <Box p="1">
+                  <Box p="1" mt="0.5">
                     <InfoIcon />
                   </Box>
                 </Tooltip>
@@ -481,7 +449,7 @@ const DetailsForm = ({ handler }: any) => {
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Enter your Booking amount"
+                  label="Amount of money that buyers are willing to pay in advance to secure their allocation of tokens during the pre-sale."
                   bg="#02010F"
                   fontSize={"13px"}
                   fontWeight={"400"}
@@ -492,7 +460,7 @@ const DetailsForm = ({ handler }: any) => {
                   arrowShadowColor="#2B2F35"
                 // maxW="222px"
                 >
-                  <Box p="1">
+                  <Box p="1" mt="0.5">
                     <InfoIcon />
                   </Box>
                 </Tooltip>
@@ -547,7 +515,7 @@ const DetailsForm = ({ handler }: any) => {
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Enter your Booking amount"
+                  label="The time required for potential buyers to coordinate and purchase pre-sale tokens in bulk."
                   bg="#02010F"
                   fontSize={"13px"}
                   fontWeight={"400"}
@@ -558,7 +526,7 @@ const DetailsForm = ({ handler }: any) => {
                   arrowShadowColor="#2B2F35"
                 // maxW="222px"
                 >
-                  <Box p="1">
+                  <Box p="1" mt="0.5">
                     <InfoIcon />
                   </Box>
                 </Tooltip>
@@ -606,14 +574,14 @@ const DetailsForm = ({ handler }: any) => {
                   font-weight=" 400"
                   line-height=" 12px" /* 100% */
                   letter-spacing=" -0.15px"  >
-                  URL
+                  Website
                 </Text>
                 <Tooltip
                   color="#F0F0F5"
                   hasArrow
                   placement="right-start"
                   boxShadow="dark-lg"
-                  label="Enter your Booking amount"
+                  label="Website of the investment fund"
                   bg="#02010F"
                   fontSize={"13px"}
                   fontWeight={"400"}
@@ -624,7 +592,7 @@ const DetailsForm = ({ handler }: any) => {
                   arrowShadowColor="#2B2F35"
                 // maxW="222px"
                 >
-                  <Box p="1">
+                  <Box p="1" mt="0.5">
                     <InfoIcon />
                   </Box>
                 </Tooltip>
@@ -678,8 +646,22 @@ const DetailsForm = ({ handler }: any) => {
           background=" #0969DA"
           color='white'
           boxShadow=" 0px 1px 0px 0px rgba(27, 31, 35, 0.04)"
-          isDisabled={!checked ? !(discord!="" && Twitter!="" && ( Commit>50 && Commit<2500) && (BookAmt>50)):!(discord!="" && Twitter!="" && ( Commit>50 && Commit<2500) && (BookAmt>50) && FundName!="" && investorcommit>0 && DecisionTime>0 && url!=""  )}
-        >Submit</Button>
+          onClick={()=>{
+            if(checked){
+              if(formSubmitted==false){
+                handleInvestorSubmit();
+              }
+              setFormSubmitted(true)
+            }else{
+              if(formSubmitted==false){
+                handleSubmit();
+              }
+              setFormSubmitted(true)
+            }
+          }}
+          isDisabled={formSubmitted ?true: !checked ? !(discord!="" && Twitter!="" && ( Commit>=500 && Commit<=2500) && (BookAmt>50)):!(discord!="" && Twitter!="" && ( Commit>=500 && Commit<=2500) && (BookAmt>50) && FundName!="" && investorcommit>0 && DecisionTime>0 && url!=""  )}
+        >Submit
+        </Button>
 
       </VStack>
       <HStack
