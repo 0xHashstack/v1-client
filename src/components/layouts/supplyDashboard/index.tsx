@@ -581,13 +581,15 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
+                          
                           Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
-                                return stat.supplyRate;
+                                return stat;
                             })?.exchangeRateRtokenToUnderlying
                           )?.toFixed(3)
                         )}
+                        
                       </Text>
                     </Td>
                     <Td
@@ -620,7 +622,7 @@ const SupplyDashboard = ({
                           Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
-                                return stat?.supplyRate;
+                                return stat;
                             })?.supplyRate
                           )?.toFixed(3) + "%"
                         )}

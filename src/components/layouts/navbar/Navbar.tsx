@@ -390,7 +390,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             </Box>
         </Box>
         :
-        (allowedReferral) ?
+        (totalBorrow>0 || totalSupply>0) ?
         <Box
         padding="16px 12px"
         fontSize="12px"
@@ -630,7 +630,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />}
 
-          <Box
+          {/* <Box
             borderRadius="6px"
             cursor={Render ? "pointer" :"not-allowed"}
             margin="0"
@@ -657,7 +657,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             // onMouseEnter={() => setTransferDepositHover(true)}
             // onMouseLeave={() => setTransferDepositHover(false)}
           >
-            <Box
+            {/* <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -689,11 +689,11 @@ const userWhitelisted=useSelector(selectWhiteListed);
                   style={{ cursor: "pointer" }}
                 />
               )} */}
-              <Text fontSize="14px" lineHeight="14px" color="#676D9A">
+              {/* <Text fontSize="14px" lineHeight="14px" color="#676D9A">
                 {"Transfer Deposit"}
               </Text>
-            </Box>
-          </Box>
+            </Box>  */}
+          {/* </Box>  */}
 
           <Box
             fontSize="12px"
