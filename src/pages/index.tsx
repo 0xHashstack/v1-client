@@ -3,120 +3,136 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Navbar from '@/components/Navbar'
-import { Box,Text,Card, Skeleton, Button } from '@chakra-ui/react'
+import { Box, Text, Card, Skeleton, Button } from '@chakra-ui/react'
 import Link from 'next/link'
 // import 
 import { useEffect, useState } from 'react'
-import {  useConnectors } from '@starknet-react/core'
+import { useConnectors } from '@starknet-react/core'
 import BravosIcon from '@/assets/bravosIcon'
 import { useRouter } from 'next/router'
-import { ConnectKitButton,useModal } from 'connectkit'
-import { useAccount } from "wagmi";
+import { ConnectKitButton, useModal } from 'connectkit'
+import { useAccount, useConnect } from "wagmi";
+import WalletConnectIcon from '@/assets/walletConnectIcon'
+import MetamaskIcon from '@/assets/metamaskIcon'
+import CoinbaseIcon from '@/assets/coinbaseIcon'
+import BlueInfoIcon from '@/assets/blueinfoIcon'
 const inter = Inter({ subsets: ['latin'] })
-import { ethers,JsonRpcProvider,BrowserProvider } from 'ethers'
+import { ethers,JsonRpcProvider,JsonRpcApiProvider,BrowserProvider, InfuraProvider } from 'ethers'
 
 export default function Home() {
-    const [availableDataLoading, setAvailableDataLoading] = useState(true);
-    const [currentAccount, setCurrentAccount] = useState("")
-    const { address, isConnecting, isDisconnected } = useAccount();
-    const {open,setOpen}=useModal()
-    const [provider, setProvider] = useState({})
+  const [availableDataLoading, setAvailableDataLoading] = useState(true);
+  const { address, isConnecting, isDisconnected } = useAccount();
+  const { connect, connectors, error, isLoading, pendingConnector } =
+    useConnect()
+  console.log("dd",address)
+  const [currentAccount, setCurrentAccount] = useState("")
 
-    // useEffect(() => {
-    //   if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
-    //     // let provider =;
-    //     setProvider( new JsonRpcProvider(window.ethereum));
-    //     // other stuff using provider here
+  const { open, setOpen } = useModal()
+  // useEffect(()=>{
+  //   setOpen(true)
+  // },[])
+  const router = useRouter();
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setAvailableDataLoading(false);
+    }, 600);
+
+    return () => clearTimeout(timeout);
+  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(refresh, 200);
+  //   return () => clearInterval(interval);
+  // }, [refresh]);
+  useEffect(()=>{
+    const connectWallet=async()=>{
+      console.log("Address is ",address,"");
+
+      if (address) {
+      
+        console.log("ll",address);
+        let provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_JSONRPC_WALLET,'mainnet');
+        let balance=await provider.getBalance(address)
+        console.log("balance s",balance>50)
+        if(balance>0.0048){
+          router.push("/form");
+        }
+      }
+      
+    }
+    if(address ){
+      connectWallet()
+    }
+  },[address])
+  useEffect(() => {
+    // const connectWallet=async()=>{
+    //   console.log("Address is ",address,";");
+    //   if (address) {
+    //     // const accounts: string[] = await window.ethereum.request({
+    //     //   method: "eth_requestAccounts",
+    //     // });
+    //     // setCurrentAccount(accounts[0]);
+    //     console.log(currentAccount,accounts);
+
+    //     let balance=await provider.getBalance(address)
+    //     console.log("balance s",balance>50)
+    //     if(balance>0.0048){
+    //       router.push("/form");
+    //     }
+    //   }
     // }
-    // }, []);
-    // useEffect(()=>{
-    //   setOpen(true)
-    // },[])
-    // console.log(address,"address")
+    // alert(status)
+    // const storedAccount = localStorage.getItem("account");
+    const hasVisited = localStorage.getItem("visited");
+    const walletConnected = localStorage.getItem("lastUsedConnector");
+    localStorage.setItem("transactionCheck", JSON.stringify([]));
+    console.log(walletConnected);
+    if (walletConnected == "braavos") {
+      // disconnect();
+      // connect(connectors[0]);
+      if (!address) {
+        return;
+      } else {
+        router.replace("/form");
+      }
+      // dispatch(setTransactionRefresh("reset"));
+    } else if (walletConnected == "argentX") {
+      // disconnect();
+      // connect(connectors[1]);
+      if (!address) {
+        return;
+      } else {
+        router.replace("/form");
+      }
+      // dispatch(setTransactionRefresh("reset"));
+    } else {
+      // connectWallet();
+      return
+    }
+    if (walletConnected) {
+      // connectWallet()
+      localStorage.setItem("connected", walletConnected);
+    }
+    if (!hasVisited) {
+      // Set a local storage item to indicate the user has visited
+      localStorage.setItem("visited", "true");
+    }
+    // if (storedAccount) {
+    //   router.push('./market')
+    // }
 
-    const router=useRouter();
-    const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-          setAvailableDataLoading(false);
-        }, 600);
-    
-        return () => clearTimeout(timeout);
-      }, []);
-      useEffect(() => {
-        const interval = setInterval(refresh, 200);
-        return () => clearInterval(interval);
-      }, [refresh]);
-      useEffect(() => {
-        const connectWallet=async()=>{
-          if ((window.ethereum )) {
-            const accounts: string[] = await window.ethereum.request({
-              method: "eth_requestAccounts",
-            });
-            setCurrentAccount(accounts[0]);
-            console.log(currentAccount,accounts);
-            const provider = new BrowserProvider(window.ethereum);
-            let balance=await provider.getBalance(accounts[0])
-            console.log("balance s",balance)
 
-          }
-          
-        }
-        // alert(status)
-        // const storedAccount = localStorage.getItem("account");
-        const hasVisited = localStorage.getItem("visited");
-        const walletConnected = localStorage.getItem("lastUsedConnector");
-        localStorage.setItem("transactionCheck", JSON.stringify([]));
-        if (walletConnected == "braavos") {
-            disconnect();
-            connect(connectors[0]);
-          if(!address){
-            return;
-          }else{
-            router.replace("/form");
-          }
-          // dispatch(setTransactionRefresh("reset"));
-        } else if (walletConnected == "argentX") {
-            disconnect();
-            connect(connectors[1]);
-          if(!address){
-            return;
-          }else{
-              router.replace("/form");
-          }
-          // dispatch(setTransactionRefresh("reset"));
-        }else{
-         
-          connectWallet();
-        
-          return;
-        }
-        
-        if (walletConnected) {
-          localStorage.setItem("connected", walletConnected);
-        }
-        if (!hasVisited) {
-          // Set a local storage item to indicate the user has visited
-          localStorage.setItem("visited", "true");
-        }
-        // if (storedAccount) {
-        //   router.push('./market')
-        // }
 
-          
-    
-          // if (!isWhiteListed) {
-          //   router.replace(whitelistHref);
-          // } else if (isWaitListed) {
-          //   router.replace(waitlistHref);
-          // }
-          // {
-          //   router.replace(marketHref2);
-          // }
-        
-        // console.log("account home", address, status);
-      }, []);
+    // if (!isWhiteListed) {
+    //   router.replace(whitelistHref);
+    // } else if (isWaitListed) {
+    //   router.replace(waitlistHref);
+    // }
+    // {
+    //   router.replace(marketHref2);
+    // }
+
+    // console.log("account home", address, status);
+  }, []);
   return (
     <Box
       display="flex"
@@ -142,7 +158,7 @@ export default function Home() {
         // height="567px"
         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         borderRadius="8px"
-        // bgColor="red"
+      // bgColor="red"
       >
         <Text color="#fff">Connect a wallet</Text>
         <Card
@@ -152,34 +168,82 @@ export default function Home() {
           width="400px"
           mt="8px"
         >
-              <ConnectKitButton.Custom>
-      {({ isConnected, isConnecting, show, hide, address, ensName, chain }) => {
-        return (
-          <Button onClick={show} 
-          w="full"
+                          <Box
+                  // display="flex"
+                  // justifyContent="left"
+                  w="100%"
+                  // pb="4"
+                  height="64px"
+                  display="flex"
+                  alignItems="center"
+                  mb="1rem"
+                >
+                  <Box
+                    display="flex"
+                    bg="#222766"
+                    color="#F0F0F5"
+                    fontSize="12px"
+                    p="4"
+                    border="1px solid #3841AA"
+                    fontStyle="normal"
+                    fontWeight="400"
+                    lineHeight="18px"
+                    borderRadius="6px"
+                    // textAlign="center"
+                  >
+                    <Box pr="3" mt="0.5" cursor="pointer">
+                      <BlueInfoIcon />
+                    </Box>
+                    Your wallet should have more than $50 as balance in ethereum.
+                    {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                  </Box>
+                </Box>
+          {connectors.map((connector: any) => (
+            <Box
+              w="full"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               py="2"
-              background="transparent"
               borderRadius="6px"
               gap="3px"
               display="flex"
-              color="white"
-              fontStyle="normal"
-              fontWeight="300"
               justifyContent="space-between"
               cursor="pointer"
-              _active={{
-                background:"transparent"
-              }}
-              _hover={{
-                background:"transparent"
-              }}
-          >
-            {isConnected ? address : "Connect Wallet"}
-          </Button>
-        );
-      }}
-    </ConnectKitButton.Custom>
+              mb="16px"
+              // onClick={() => router.push("/market")}
+              key={connector.id}
+              onClick={() => connect({ connector })}
+            >
+              <Box ml="1rem" color="white">
+                {availableDataLoading ? (
+                  <Skeleton
+                    width="6rem"
+                    height="1.4rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                  />
+                ) : connector.id == "metaMask" ?
+                  "MetaMask"
+                  : (
+                    connector.id == "coinbaseWallet" ?
+                      "Coinbase" : "Wallet Connect"
+                  )}
+              </Box>
+              <Box p="1" mr="16px">
+                {connector.id == "metaMask"
+                  ? <MetamaskIcon /> : connector.id == "coinbaseWallet" ? <CoinbaseIcon /> : <WalletConnectIcon />
+                }
+
+              </Box>
+            </Box>
+          ))}
         </Card>
         <Box
           display="flex"
@@ -215,8 +279,8 @@ export default function Home() {
           mt="16px"
           display="flex"
           flexDirection="column"
-          // pb="32px"
-          // bgColor="blue"
+        // pb="32px"
+        // bgColor="blue"
         >
           <Text
             fontSize="12px"
