@@ -5,12 +5,9 @@ import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 
 import Head from "next/head";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-
-import {
-  StarknetConfig,
-  InjectedConnector,
-  StarknetProviderProps,
-} from "@starknet-react/core";
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 const theme = extendTheme({
   components: {
     Tabs: {
@@ -130,16 +127,27 @@ const lightTheme = extendTheme({
 import { useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const connectors = [
-    new InjectedConnector({ options: { id: "braavos" } }),
-    new InjectedConnector({ options: { id: "argentX" } }),
-  ];
 
   const config = createConfig(
-    getDefaultConfig({
+    getDefaultConfig(
+      {
       // Required API Keys
       infuraId: "4a19ed2b046c486084368bc58093928e", // or infuraId
       walletConnectProjectId: "ecd60d8bde49411e2963bd0b7ca594fd",
+      connectors:[
+        new MetaMaskConnector(
+        ),
+      new CoinbaseWalletConnector({
+      options: {
+        appName: 'wagmi',
+      },
+    }),
+    new WalletConnectConnector({
+      options: {
+        projectId: 'ecd60d8bde49411e2963bd0b7ca594fd',
+      },
+    }),
+      ],
 
       // Required
       appName: "Presale",
@@ -175,14 +183,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="shortcut icon" href="/favicon-32x32.png" />
       </Head>
       <ChakraProvider theme={theme}>
-        <StarknetConfig autoConnect={true} connectors={connectors}>
           <WagmiConfig config={config}>
             <ConnectKitProvider>
               <Component {...pageProps} />
             </ConnectKitProvider>
           </WagmiConfig>
-
-        </StarknetConfig>
       </ChakraProvider>
     </>
   );
