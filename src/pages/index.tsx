@@ -5,6 +5,7 @@ import styles from '@/styles/Home.module.css'
 import Navbar from '@/components/Navbar'
 import { Box,Text,Card, Skeleton, Button } from '@chakra-ui/react'
 import Link from 'next/link'
+// import 
 import { useEffect, useState } from 'react'
 import {  useConnectors } from '@starknet-react/core'
 import BravosIcon from '@/assets/bravosIcon'
@@ -12,15 +13,27 @@ import { useRouter } from 'next/router'
 import { ConnectKitButton,useModal } from 'connectkit'
 import { useAccount } from "wagmi";
 const inter = Inter({ subsets: ['latin'] })
+import { ethers,JsonRpcProvider,BrowserProvider } from 'ethers'
 
 export default function Home() {
     const [availableDataLoading, setAvailableDataLoading] = useState(true);
+    const [currentAccount, setCurrentAccount] = useState("")
     const { address, isConnecting, isDisconnected } = useAccount();
     const {open,setOpen}=useModal()
+    const [provider, setProvider] = useState({})
+
+    // useEffect(() => {
+    //   if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
+    //     // let provider =;
+    //     setProvider( new JsonRpcProvider(window.ethereum));
+    //     // other stuff using provider here
+    // }
+    // }, []);
     // useEffect(()=>{
     //   setOpen(true)
     // },[])
-    console.log(address,"address")
+    // console.log(address,"address")
+
     const router=useRouter();
     const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
@@ -36,6 +49,20 @@ export default function Home() {
         return () => clearInterval(interval);
       }, [refresh]);
       useEffect(() => {
+        const connectWallet=async()=>{
+          if ((window.ethereum )) {
+            const accounts: string[] = await window.ethereum.request({
+              method: "eth_requestAccounts",
+            });
+            setCurrentAccount(accounts[0]);
+            console.log(currentAccount,accounts);
+            const provider = new BrowserProvider(window.ethereum);
+            let balance=await provider.getBalance(accounts[0])
+            console.log("balance s",balance)
+
+          }
+          
+        }
         // alert(status)
         // const storedAccount = localStorage.getItem("account");
         const hasVisited = localStorage.getItem("visited");
@@ -60,8 +87,12 @@ export default function Home() {
           }
           // dispatch(setTransactionRefresh("reset"));
         }else{
-          return
+         
+          connectWallet();
+        
+          return;
         }
+        
         if (walletConnected) {
           localStorage.setItem("connected", walletConnected);
         }
