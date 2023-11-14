@@ -361,7 +361,7 @@ const DetailsForm = ({ handler }: any) => {
           letterSpacing=" -0.15px"
           onChange={(e) => setChecked(e.target.checked)}
         >
-          I have access to an investor network interested in making an investment.
+          I have access to an investor network interested in making an investment. 
         </Checkbox>
         {checked &&
           <Box

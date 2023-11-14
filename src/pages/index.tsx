@@ -5,7 +5,7 @@ import styles from '@/styles/Home.module.css'
 import Navbar from '@/components/Navbar'
 import { Box, Text, Card, Skeleton, Button } from '@chakra-ui/react'
 import Link from 'next/link'
-// import 
+import contr from "../abi/ERC20.json"
 import { useEffect, useState } from 'react'
 import { useConnectors } from '@starknet-react/core'
 import BravosIcon from '@/assets/bravosIcon'
@@ -43,6 +43,7 @@ export default function Home() {
   //   const interval = setInterval(refresh, 200);
   //   return () => clearInterval(interval);
   // }, [refresh]);
+  const tokenContractAddress="0xdAC17F958D2ee523a2206206994597C13D831ec7"
   useEffect(()=>{
     const connectWallet=async()=>{
       console.log("Address is ",address,"");
@@ -52,9 +53,14 @@ export default function Home() {
         console.log("ll",address);
         let provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_JSONRPC_WALLET,'mainnet');
         let balance=await provider.getBalance(address)
-        console.log("balance s",balance>50)
-        if(balance>0.0048){
-          router.push("/form");
+        const contract = new ethers.Contract(tokenContractAddress, contr.genericErc20Abi, provider);
+        const balance2 = await contract.balanceOf(address)
+        console.log("balance s",balance>50,"usdt",ethers.formatUnits(balance, 6) 
+        )
+        
+        if(balance && balance>0.0048){
+          console.log("prob",balance)
+          // router.push("/form");
         }
       }
       
@@ -86,28 +92,32 @@ export default function Home() {
     const walletConnected = localStorage.getItem("lastUsedConnector");
     localStorage.setItem("transactionCheck", JSON.stringify([]));
     console.log(walletConnected);
-    if (walletConnected == "braavos") {
-      // disconnect();
-      // connect(connectors[0]);
-      if (!address) {
-        return;
-      } else {
-        router.replace("/form");
-      }
-      // dispatch(setTransactionRefresh("reset"));
-    } else if (walletConnected == "argentX") {
-      // disconnect();
-      // connect(connectors[1]);
-      if (!address) {
-        return;
-      } else {
-        router.replace("/form");
-      }
-      // dispatch(setTransactionRefresh("reset"));
-    } else {
-      // connectWallet();
-      return
-    }
+    // if (walletConnected == "braavos") {
+    //   // disconnect();
+    //   // connect(connectors[0]);
+    //   if (!address) {
+    //     return;
+    //   } else {
+    //     console.log("prob braav",walletConnected)
+
+    //     // router.replace("/form");
+    //   }
+    //   // dispatch(setTransactionRefresh("reset"));
+    // } else if (walletConnected == "argentX") {
+    //   // disconnect();
+    //   // connect(connectors[1]);
+    //   if (!address) {
+    //     return;
+    //   } else {
+    //     console.log("prob argent",walletConnected)
+
+    //     // router.replace("/form");
+    //   }
+    //   // dispatch(setTransactionRefresh("reset"));
+    // } else {
+    //   // connectWallet();
+    //   return
+    // }
     if (walletConnected) {
       // connectWallet()
       localStorage.setItem("connected", walletConnected);
