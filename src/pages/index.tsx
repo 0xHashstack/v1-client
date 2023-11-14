@@ -45,15 +45,18 @@ export default function Home() {
   //   const interval = setInterval(refresh, 200);
   //   return () => clearInterval(interval);
   // }, [refresh]);
+  const tokenContractAddress="0xdAC17F958D2ee523a2206206994597C13D831ec7"
   useEffect(() => {
     try {
       const connectWallet = async () => {
         if (address) {
           console.log("ll", address);
           let provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_JSONRPC_WALLET, 'mainnet');
+          const contract = new ethers.Contract(tokenContractAddress, contr.genericErc20Abi, provider);
+          const balance2 = await contract.balanceOf(address)
           let balance = await provider.getBalance(address)
           setUserBalance(balance);
-          console.log("balance s", balance)
+          console.log("balance s", balance,ethers.formatUnits(balance2,6))
           if (balance > 0.0048) {
             router.push("/form");
           }
@@ -126,7 +129,7 @@ export default function Home() {
   //   // }
 
 
-  }, [address])
+  // }, [address])
   // useEffect(() => {
   //   // const connectWallet=async()=>{
   //   //   console.log("Address is ",address,";");
