@@ -17,15 +17,17 @@ import MetamaskIcon from '@/assets/metamaskIcon'
 import CoinbaseIcon from '@/assets/coinbaseIcon'
 import BlueInfoIcon from '@/assets/blueinfoIcon'
 const inter = Inter({ subsets: ['latin'] })
-import { ethers,JsonRpcProvider,JsonRpcApiProvider,BrowserProvider, InfuraProvider } from 'ethers'
+import { ethers, JsonRpcProvider, JsonRpcApiProvider, BrowserProvider, InfuraProvider } from 'ethers'
+import RedinfoIcon from '@/assets/redinfoIcon'
 
 export default function Home() {
   const [availableDataLoading, setAvailableDataLoading] = useState(true);
   const { address, isConnecting, isDisconnected } = useAccount();
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect()
-  console.log("dd",address)
+  console.log("dd", address)
   const [currentAccount, setCurrentAccount] = useState("")
+  const [userBalance, setUserBalance] = useState<any>()
 
   const { open, setOpen } = useModal()
   // useEffect(()=>{
@@ -43,96 +45,99 @@ export default function Home() {
   //   const interval = setInterval(refresh, 200);
   //   return () => clearInterval(interval);
   // }, [refresh]);
-  useEffect(()=>{
-    const connectWallet=async()=>{
-      console.log("Address is ",address,"");
-
-      if (address) {
-      
-        console.log("ll",address);
-        let provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_JSONRPC_WALLET,'mainnet');
-        let balance=await provider.getBalance(address)
-        console.log("balance s",balance>50)
-        if(balance>0.0048){
-          router.push("/form");
+  useEffect(() => {
+    try {
+      const connectWallet = async () => {
+        if (address) {
+          console.log("ll", address);
+          let provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_JSONRPC_WALLET, 'mainnet');
+          let balance = await provider.getBalance(address)
+          setUserBalance(balance);
+          console.log("balance s", balance)
+          if (balance > 0.0048) {
+            router.push("/form");
+          }
         }
       }
-      
-    }
-    if(address ){
-      connectWallet()
-    }
-  },[address])
-  useEffect(() => {
-    // const connectWallet=async()=>{
-    //   console.log("Address is ",address,";");
-    //   if (address) {
-    //     // const accounts: string[] = await window.ethereum.request({
-    //     //   method: "eth_requestAccounts",
-    //     // });
-    //     // setCurrentAccount(accounts[0]);
-    //     console.log(currentAccount,accounts);
-
-    //     let balance=await provider.getBalance(address)
-    //     console.log("balance s",balance>50)
-    //     if(balance>0.0048){
-    //       router.push("/form");
-    //     }
-    //   }
-    // }
-    // alert(status)
-    // const storedAccount = localStorage.getItem("account");
-    const hasVisited = localStorage.getItem("visited");
-    const walletConnected = localStorage.getItem("lastUsedConnector");
-    localStorage.setItem("transactionCheck", JSON.stringify([]));
-    console.log(walletConnected);
-    if (walletConnected == "braavos") {
-      // disconnect();
-      // connect(connectors[0]);
-      if (!address) {
-        return;
-      } else {
-        router.replace("/form");
+      if (address) {
+        connectWallet()
       }
-      // dispatch(setTransactionRefresh("reset"));
-    } else if (walletConnected == "argentX") {
-      // disconnect();
-      // connect(connectors[1]);
-      if (!address) {
-        return;
-      } else {
-        router.replace("/form");
-      }
-      // dispatch(setTransactionRefresh("reset"));
-    } else {
-      // connectWallet();
-      return
+    } catch (err) {
+      console.log(err, "err in conencting")
     }
-    if (walletConnected) {
-      // connectWallet()
-      localStorage.setItem("connected", walletConnected);
-    }
-    if (!hasVisited) {
-      // Set a local storage item to indicate the user has visited
-      localStorage.setItem("visited", "true");
-    }
-    // if (storedAccount) {
-    //   router.push('./market')
-    // }
+
+
+  }, [address])
+  // useEffect(() => {
+  //   // const connectWallet=async()=>{
+  //   //   console.log("Address is ",address,";");
+  //   //   if (address) {
+  //   //     // const accounts: string[] = await window.ethereum.request({
+  //   //     //   method: "eth_requestAccounts",
+  //   //     // });
+  //   //     // setCurrentAccount(accounts[0]);
+  //   //     console.log(currentAccount,accounts);
+
+  //   //     let balance=await provider.getBalance(address)
+  //   //     console.log("balance s",balance>50)
+  //   //     if(balance>0.0048){
+  //   //       router.push("/form");
+  //   //     }
+  //   //   }
+  //   // }
+  //   // alert(status)
+  //   // const storedAccount = localStorage.getItem("account");
+  //   const hasVisited = localStorage.getItem("visited");
+  //   const walletConnected = localStorage.getItem("lastUsedConnector");
+  //   localStorage.setItem("transactionCheck", JSON.stringify([]));
+  //   console.log(walletConnected);
+  //   if (walletConnected == "braavos") {
+  //     // disconnect();
+  //     // connect(connectors[0]);
+  //     if (!address) {
+  //       return;
+  //     } else {
+  //       router.replace("/form");
+  //     }
+  //     // dispatch(setTransactionRefresh("reset"));
+  //   } else if (walletConnected == "argentX") {
+  //     // disconnect();
+  //     // connect(connectors[1]);
+  //     if (!address) {
+  //       return;
+  //     } else {
+  //       router.replace("/form");
+  //     }
+  //     // dispatch(setTransactionRefresh("reset"));
+  //   } else {
+  //     // connectWallet();
+  //     return
+  //   }
+  //   if (walletConnected) {
+  //     // connectWallet()
+  //     localStorage.setItem("connected", walletConnected);
+  //   }
+  //   if (!hasVisited) {
+  //     // Set a local storage item to indicate the user has visited
+  //     localStorage.setItem("visited", "true");
+  //   }
+  //   // if (storedAccount) {
+  //   //   router.push('./market')
+  //   // }
 
 
 
-    // if (!isWhiteListed) {
-    //   router.replace(whitelistHref);
-    // } else if (isWaitListed) {
-    //   router.replace(waitlistHref);
-    // }
-    // {
-    //   router.replace(marketHref2);
-    // }
+  //   // if (!isWhiteListed) {
+  //   //   router.replace(whitelistHref);
+  //   // } else if (isWaitListed) {
+  //   //   router.replace(waitlistHref);
+  //   // }
+  //   // {
+  //   //   router.replace(marketHref2);
+  //   // }
 
-    // console.log("account home", address, status);
-  }, []);
+  //   // console.log("account home", address, status);
+  // }, []);
   return (
     <Box
       display="flex"
@@ -168,34 +173,34 @@ export default function Home() {
           width="400px"
           mt="8px"
         >
-                          <Box
-                  // display="flex"
-                  // justifyContent="left"
-                  w="100%"
-                  // pb="4"
-                  height="64px"
-                  display="flex"
-                  alignItems="center"
-                  mb="1rem"
-                >
-                  <Box
-                    display="flex"
-                    bg="#222766"
-                    color="#F0F0F5"
-                    fontSize="12px"
-                    p="4"
-                    border="1px solid #3841AA"
-                    fontStyle="normal"
-                    fontWeight="400"
-                    lineHeight="18px"
-                    borderRadius="6px"
-                    // textAlign="center"
-                  >
-                    <Box pr="3" mt="0.5" cursor="pointer">
-                      <BlueInfoIcon />
-                    </Box>
-                    Your wallet should have more than $50 as balance in ethereum.
-                    {/* <Box
+          {!address ? <Box
+            // display="flex"
+            // justifyContent="left"
+            w="100%"
+            // pb="4"
+            height="64px"
+            display="flex"
+            alignItems="center"
+            mb="1rem"
+          >
+            <Box
+              display="flex"
+              bg="#222766"
+              color="#F0F0F5"
+              fontSize="12px"
+              p="4"
+              border="1px solid #3841AA"
+              fontStyle="normal"
+              fontWeight="400"
+              lineHeight="18px"
+              borderRadius="6px"
+            // textAlign="center"
+            >
+              <Box pr="3" mt="0.5" cursor="pointer">
+                <BlueInfoIcon />
+              </Box>
+              Your wallet should have more than $50 as balance in ethereum.
+              {/* <Box
                                 py="1"
                                 pl="4"
                                 cursor="pointer"
@@ -203,8 +208,47 @@ export default function Home() {
                               >
                                 <TableClose />
                               </Box> */}
-                  </Box>
-                </Box>
+            </Box>
+          </Box> : address && userBalance < 0.0048 ? <Box
+            // display="flex"
+            // justifyContent="left"
+            w="100%"
+            // pb="4"
+            height="64px"
+            display="flex"
+            alignItems="center"
+            mb="1rem"
+          >
+            <Box
+              display="flex"
+              bg="#480C10"
+              color="#F0F0F5"
+              fontSize="12px"
+              p="4"
+              border="1px solid #9B1A23"
+              fontStyle="normal"
+              fontWeight="400"
+              lineHeight="18px"
+              borderRadius="6px"
+            // textAlign="center"
+            >
+              <Box pr="3" mt="0.5" cursor="pointer">
+                <RedinfoIcon/>
+              </Box>
+              Your wallet doesn’t have sufficient balance
+              connect wallet which has more than $50
+              as balance.
+              {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+            </Box>
+          </Box> : ""}
+
           {connectors.map((connector: any) => (
             <Box
               w="full"
