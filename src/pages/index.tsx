@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-import Navbar from '@/components/Navbar'
 import { Box, Text, Card, Skeleton, Button } from '@chakra-ui/react'
 import Link from 'next/link'
 import contr from "../abi/ERC20.json"
@@ -11,7 +9,7 @@ import { useConnectors } from '@starknet-react/core'
 import BravosIcon from '@/assets/bravosIcon'
 import { useRouter } from 'next/router'
 import { ConnectKitButton, useModal } from 'connectkit'
-import { useAccount, useConnect } from "wagmi";
+import { useAccount, useBalance, useConnect } from "wagmi";
 import WalletConnectIcon from '@/assets/walletConnectIcon'
 import MetamaskIcon from '@/assets/metamaskIcon'
 import CoinbaseIcon from '@/assets/coinbaseIcon'
@@ -19,7 +17,7 @@ import BlueInfoIcon from '@/assets/blueinfoIcon'
 const inter = Inter({ subsets: ['latin'] })
 import { ethers, JsonRpcProvider, JsonRpcApiProvider, BrowserProvider, InfuraProvider } from 'ethers'
 import RedinfoIcon from '@/assets/redinfoIcon'
-
+import {presale} from '../blockchain/scripts/rewards'
 export default function Home() {
   const [availableDataLoading, setAvailableDataLoading] = useState(true);
   const { address, isConnecting, isDisconnected } = useAccount();
@@ -28,12 +26,21 @@ export default function Home() {
   console.log("dd", address)
   const [currentAccount, setCurrentAccount] = useState("")
   const [userBalance, setUserBalance] = useState<any>()
+  const usdtBalance = useBalance({
+    address: address,
+    token:"0xdAC17F958D2ee523a2206206994597C13D831ec7"
+  })
+  const usdcBalance=useBalance({
+    address: address,
+    token:"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+  })
 
   const { open, setOpen } = useModal()
   // useEffect(()=>{
   //   setOpen(true)
   // },[])
   const router = useRouter();
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     const timeout = setTimeout(() => {
       setAvailableDataLoading(false);
@@ -41,23 +48,25 @@ export default function Home() {
 
     return () => clearTimeout(timeout);
   }, []);
+  useEffect(()=>{
+    if(address){
+      setLoading(false);
+    }
+  },[address])
+  // useEffect(()=>{
+  //   presale()
+  // },[])
   // useEffect(() => {
   //   const interval = setInterval(refresh, 200);
   //   return () => clearInterval(interval);
   // }, [refresh]);
   const tokenContractAddress="0xdAC17F958D2ee523a2206206994597C13D831ec7"
+  console.log(Number(usdtBalance?.data?.formatted) > 50 || Number(usdcBalance?.data?.formatted) > 50)
   useEffect(() => {
     try {
       const connectWallet = async () => {
         if (address) {
-          console.log("ll", address);
-          let provider = new JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_JSONRPC_WALLET, 'mainnet');
-          const contract = new ethers.Contract(tokenContractAddress, contr.genericErc20Abi, provider);
-          const balance2 = await contract.balanceOf(address)
-          let balance = await provider.getBalance(address)
-          setUserBalance(balance);
-          console.log("balance s", balance,ethers.formatUnits(balance2,6))
-          if (balance > 0.0048) {
+          if (Number(usdtBalance?.data?.formatted) > 50 || Number(usdcBalance?.data?.formatted) > 50) {
             router.push("/form");
           }
         }
@@ -186,7 +195,7 @@ export default function Home() {
           width="400px"
           mt="8px"
         >
-          {!address ? <Box
+          {(usdcBalance|| usdtBalance) && loading  ? <Box
             // display="flex"
             // justifyContent="left"
             w="100%"
@@ -222,7 +231,7 @@ export default function Home() {
                                 <TableClose />
                               </Box> */}
             </Box>
-          </Box> : address && userBalance < 0.0048 ? <Box
+          </Box> : address && Number(usdtBalance?.data?.formatted) < 50 || Number(usdcBalance?.data?.formatted) < 50 ? <Box
             // display="flex"
             // justifyContent="left"
             w="100%"
