@@ -24,16 +24,16 @@ export async function getExistingLoanHealth(loanId: string) {
     const res = await routerContract.call("get_health_factor", [loanId], {
       blockIdentifier: "pending",
     });
-    // console.log(
+    ////console.log(
     //   "health factor for loanId",
     //   loanId,
     //   "is",
     //   parseAmount(res?.factor, 5)
     // );
-    // console.log(BNtoNum())
+    ////console.log(BNtoNum())
     return BNtoNum(res?.factor, 5);
   } catch (error) {
-    console.log("health factor error: ", error);
+   //console.log("health factor error: ", error);
   }
 }
 
@@ -76,7 +76,7 @@ export async function getLoanHealth_RTokenCollateral(
   const collateralMarketAddress: RToken = getRTokenFromAddress(
     tokenAddressMap[rToken]
   )?.underlying_asset as RToken;
-  // console.log(collateralMarket,"market in loan")
+  ////console.log(collateralMarket,"market in loan")
   // let collateralMarketAddress = tokenAddressMap[collateralMarket];
 
   const oraclePriceLoanMarket = oraclePrices.find(
@@ -89,7 +89,7 @@ export async function getLoanHealth_RTokenCollateral(
     (marketInfo) => marketInfo.tokenAddress === collateralMarketAddress
   );
 
-  // console.log(oraclePriceCollateralMarket,"data loan health")
+  ////console.log(oraclePriceCollateralMarket,"data loan health")
 
   if (
     oraclePriceCollateralMarket &&

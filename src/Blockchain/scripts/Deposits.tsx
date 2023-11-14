@@ -14,7 +14,7 @@ import { weiToEtherNumber } from "../utils/utils";
 
 function parseDeposits(deposits: any): IDeposit[] {
   const parsedDeposits: IDeposit[] = [];
-  // console.log("deposits - ", deposits);
+  ////console.log("deposits - ", deposits);
   for (let i = 0; i < deposits?.length; ++i) {
     let depositData = deposits[i];
 
@@ -58,7 +58,7 @@ function parseDeposits(deposits: any): IDeposit[] {
     };
     parsedDeposits.push(JSON.parse(JSON.stringify(deposit)));
   }
-  // console.log("supplies parsed: ", parsedDeposits);
+  ////console.log("supplies parsed: ", parsedDeposits);
   return parsedDeposits;
 }
 
@@ -66,7 +66,7 @@ const parseDeposit = (deposit: any) => {
   let depositData = deposit;
 
   let tokenAddress = number.toHex(depositData?.asset_address);
-  // console.log("supplies deposit token ", tokenAddress);
+  ////console.log("supplies deposit token ", tokenAddress);
   let token = getTokenFromAddress(tokenAddress)?.name as NativeToken;
 
   let rTokenFreeParsed = weiToEtherNumber(
@@ -119,7 +119,7 @@ export async function getUserDeposits(account: string) {
     provider
   );
   if (!account) return;
-  // console.log(
+  ////console.log(
   //   "supplies callling with:",
   //   account,
   //   "on address: ",
@@ -152,7 +152,7 @@ export async function getUserDeposits(account: string) {
               return parseDeposit(deposit?.value?.deposit);
             else return {};
           });
-        console.log("supplies result: ", results);
+       //console.log("supplies result: ", results);
         resolve(results);
       });
     });

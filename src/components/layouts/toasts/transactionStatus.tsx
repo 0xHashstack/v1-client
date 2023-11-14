@@ -12,12 +12,12 @@ export const useFetchToastStatus = (transaction: any) => {
     hash: transaction?.transaction_hash,
     watch: true,
     onReceived: () => {
-      console.log("trans received");
+     //console.log("trans received");
     },
     onPending: () => {
       // setCurrentTransactionStatus(true);
       toast.dismiss(transaction?.toastId);
-      console.log("trans pending");
+     //console.log("trans pending");
       // if (isToastDisplayed == false) {
       toast.success(transaction?.message || `You have successfully supplied`, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -28,7 +28,7 @@ export const useFetchToastStatus = (transaction: any) => {
     onRejected: (result: any) => {
       toast.dismiss(transaction?.toastId);
       // if (!failureToastDisplayed) {
-      console.log("treans rejected", result);
+     //console.log("treans rejected", result);
       // dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
@@ -46,7 +46,7 @@ export const useFetchToastStatus = (transaction: any) => {
     },
     onAcceptedOnL1: (result: any) => {
       // setCurrentTransactionStatus(true);
-      console.log("trans onAcceptedOnL1");
+     //console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2: (result: any) => {
       toast.dismiss(transaction?.toastId);
@@ -57,7 +57,7 @@ export const useFetchToastStatus = (transaction: any) => {
       });
       // setToastDisplayed(true);
       // }
-      console.log("trans onAcceptedOnL2 - ", result);
+     //console.log("trans onAcceptedOnL2 - ", result);
     },
   });
   return data;

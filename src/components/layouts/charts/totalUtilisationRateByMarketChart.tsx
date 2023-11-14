@@ -77,7 +77,7 @@ const TotalUtilisationRateByMarketChart = () => {
   const allUsdtData = useSelector(selectAllUSDTData);
   const allUsdcData = useSelector(selectAllUSDCData);
   const allDaiData = useSelector(selectAllDAIData);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option

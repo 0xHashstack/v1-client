@@ -90,7 +90,7 @@ const YourMetricsSupplyBorrow = ({
         if (stats) {
           // dispatch(setProtocolStats(stats));
         }
-        // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
+        ////console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
         setSupplyAPRs([
           stats?.[2].supplyRate,
@@ -107,7 +107,7 @@ const YourMetricsSupplyBorrow = ({
           stats?.[4].borrowRate,
         ]);
       } catch (error) {
-        console.log("error on getting protocol stats");
+       //console.log("error on getting protocol stats");
       }
     };
     getMarketData();

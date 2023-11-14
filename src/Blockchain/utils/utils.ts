@@ -35,10 +35,10 @@ export const GetErrorText = (err: any) => {
   if (err.code === Logger.errors.CALL_EXCEPTION)
     return `Transaction failed! \n ${err.transactionHash}`;
   if (err.data) {
-    // console.log(1);
+    ////console.log(1);
     return err.data.message;
   } else if (err.message) {
-    // console.log("Erro: ", err.message);
+    ////console.log("Erro: ", err.message);
     return err.message;
   } else if (typeof err == "string") {
     return err;
@@ -129,7 +129,7 @@ export const etherToWeiBN = (amount: number, tokenName: Token) => {
   if (!decimals) {
     return 0;
   }
-  // console.log("amount", amount);
+  ////console.log("amount", amount);
   // try {
   const factor = 1000_000;
   const amountBN = number.toBN(amount * factor)

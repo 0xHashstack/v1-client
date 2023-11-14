@@ -71,7 +71,7 @@ const BorrowChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option

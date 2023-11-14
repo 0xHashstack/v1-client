@@ -17,7 +17,7 @@ const useTransactionHandler = () => {
   const dispatch = useDispatch();
   const toastHash = [""];
   useEffect(() => {
-    // console.log("trans activeTransactions useEffect called");
+    ////console.log("trans activeTransactions useEffect called");
     if (activeTransactions) {
       const data = activeTransactions.map(
         (transaction: any) => transaction?.transaction_hash
@@ -36,12 +36,12 @@ const useTransactionHandler = () => {
     watch: true,
   });
   // // const data = useTransaction()
-  // console.log("trans toastHash", toastHash);
-  // console.log("transaction results - ", results);
+  ////console.log("trans toastHash", toastHash);
+  ////console.log("transaction results - ", results);
   useEffect(() => {
-    // console.log("transaction active transactions ", activeTransactions);
-    // console.log("transaction transactions ", transactions);
-    // console.log("transaction results ", results);
+    ////console.log("transaction active transactions ", activeTransactions);
+    ////console.log("transaction transactions ", transactions);
+    ////console.log("transaction results ", results);
     let data = localStorage.getItem("transactionCheck");
     data = data ? JSON.parse(data) : [];
 
@@ -80,7 +80,7 @@ const useTransactionHandler = () => {
         toastHash.push(activeTransactions[idx]?.transaction_hash);
         toastHash.push(transaction_hash);
       } else if (transaction_status == "REJECTED") {
-        console.log("treans rejected", transaction_error);
+       //console.log("treans rejected", transaction_error);
         const toastContent = (
           <div>
             Transaction failed{" "}

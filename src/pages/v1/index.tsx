@@ -42,7 +42,7 @@ export default function Home() {
   // const { data, isLoading, error, refetch } = useBalance({
   //   address
   // })
-  // console.log(data);
+  ////console.log(data);
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
   const [render, setRender] = useState(true);
@@ -110,8 +110,8 @@ export default function Home() {
         break;
     }
   };
-  // console.log(account ,"index page")
-  // console.log("Index reload check",account);
+  ////console.log(account ,"index page")
+  ////console.log("Index reload check",account);
   useEffect(() => {
     localStorage.setItem("connected", "");
   }, []);
@@ -189,7 +189,7 @@ export default function Home() {
       //   router.replace(marketHref2);
       // }
     }
-    // console.log("account home", address, status);
+    ////console.log("account home", address, status);
   }, [status, isConnected]);
   return (
     <Box

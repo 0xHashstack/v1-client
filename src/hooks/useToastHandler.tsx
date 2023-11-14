@@ -12,12 +12,12 @@ export const useToastHandler = (transaction: any) => {
     hash: transaction?.transaction_hash,
     watch: true,
     onReceived: () => {
-      console.log("trans received");
+     //console.log("trans received");
     },
     onPending: () => {
       // setCurrentTransactionStatus(true);
       toast.dismiss(transaction?.toastId);
-      console.log("trans pending");
+     //console.log("trans pending");
       // if (isToastDisplayed == false) {
       // toast.success(transaction?.message || `You have successfully supplied`, {
       toast.success(transaction?.message || `You have successfully supplied`, {
@@ -29,7 +29,7 @@ export const useToastHandler = (transaction: any) => {
     onRejected(transaction: any) {
       toast.dismiss(transaction?.toastId);
       // if (!failureToastDisplayed) {
-      console.log("treans rejected", transaction);
+     //console.log("treans rejected", transaction);
       // dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
@@ -47,7 +47,7 @@ export const useToastHandler = (transaction: any) => {
     },
     onAcceptedOnL1: (result: any) => {
       // setCurrentTransactionStatus(true);
-      console.log("trans onAcceptedOnL1");
+     //console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(result: any) {
       toast.dismiss(transaction?.toastId);
@@ -58,7 +58,7 @@ export const useToastHandler = (transaction: any) => {
       });
       // setToastDisplayed(true);
       // }
-      console.log("trans onAcceptedOnL2 - ", result);
+     //console.log("trans onAcceptedOnL2 - ", result);
     },
   });
   return data;

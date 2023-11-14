@@ -54,7 +54,7 @@ const YourBorrow = () => {
   //   const loan = async () => {
   //     try {
   //       const loans = await getUserLoans(address || "");
-  //       // console.log(loans,"Loans from your borrow index page")
+  //       ////console.log(loans,"Loans from your borrow index page")
 
   //       // loans.filter(
   //       //   (loan) =>
@@ -82,9 +82,9 @@ const YourBorrow = () => {
   //           loan.loanAmountParsed > 0
   //       )));
   //     } catch (err) {
-  //       console.log("your-borrow : unable to fetch user loans");
+  //      //console.log("your-borrow : unable to fetch user loans");
   //     }
-  //     // console.log("loans", loans);
+  //     ////console.log("loans", loans);
   //   };
   //   if (account) {
   //     loan();

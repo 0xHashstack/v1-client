@@ -14,7 +14,7 @@ import { Spinner } from "reactstrap";
 //     const hash = receipt.data?.transaction_hash;
 //     if (!hash) return;
 //     let hasToast = this.txToastMap[hash];
-//     // console.log("handleTxToast", hash, {
+//     ////console.log("handleTxToast", hash, {
 //     //   hash,
 //     //   hasToast,
 //     //   data: receipt.data,
@@ -78,7 +78,7 @@ import { Spinner } from "reactstrap";
 //     timeout = 10000,
 //     progress = 1
 //   ) {
-//     // console.log("_showToast", {
+//     ////console.log("_showToast", {
 //     //   hash,
 //     //   existingId,
 //     //   message,
@@ -114,7 +114,7 @@ import { Spinner } from "reactstrap";
 
 //       // if(timeout) // had to add bcz above logic wasnt auto dismissing
 //       //   setTimeout(() => {
-//       //     console.log('dismising toast', hash, existingId.id)
+//       //    //console.log('dismising toast', hash, existingId.id)
 //       //     toast.dismiss(hash)
 //       //   }, timeout)
 //       this.txToastMap[hash].stage = status;

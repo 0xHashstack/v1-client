@@ -12,7 +12,7 @@ export interface OraclePrice {
 
 export async function getOraclePrices(): Promise<OraclePrice[]> {
   const MEDIAN_AGGREGATION_MODE = shortString.encodeShortString("MEDIAN");
-  // console.log('Using aggregation mode:', MEDIAN_AGGREGATION_MODE);
+  ////console.log('Using aggregation mode:', MEDIAN_AGGREGATION_MODE);
   const prices: OraclePrice[] = [];
   const provider = getProvider();
   try {
@@ -50,7 +50,7 @@ export async function getOraclePrices(): Promise<OraclePrice[]> {
     }
     return prices;
   } catch (e) {
-    // console.log("getOraclePrices failed: ", e);
+    ////console.log("getOraclePrices failed: ", e);
     return prices;
   }
 }

@@ -305,7 +305,7 @@ const Referral = () => {
                 }
                 setDataCommunity(array)
             }catch(err){
-                console.log(err);
+               //console.log(err);
             }
 
         }
@@ -322,9 +322,9 @@ const Referral = () => {
                     array.push(res?.data?.rewards_claimed)
                 }
                 setDataUser(array);
-                console.log(res,"user")
+               //console.log(res,"user")
             }catch(err){
-                console.log(err)
+               //console.log(err)
             }
         }
         fetchUserData();
@@ -334,7 +334,7 @@ const Referral = () => {
     useEffect(() => {
         // if (UserLoans) {
         //   if (UserLoans?.length <= (currentPagination - 1) * 6) {
-        //     console.log("pagination", Pagination, UserLoans);
+        //    //console.log("pagination", Pagination, UserLoans);
         //     if (currentPagination > 1) {
         //       setCurrentPagination(currentPagination - 1);
         //     }
@@ -353,7 +353,7 @@ const Referral = () => {
     //   const loan = async () => {
     //     try {
     //       const loans = await getUserLoans(address || "");
-    //       // console.log(loans,"Loans from your borrow index page")
+    //       ////console.log(loans,"Loans from your borrow index page")
 
     //       // loans.filter(
     //       //   (loan) =>
@@ -381,9 +381,9 @@ const Referral = () => {
     //           loan.loanAmountParsed > 0
     //       )));
     //     } catch (err) {
-    //       console.log("your-borrow : unable to fetch user loans");
+    //      //console.log("your-borrow : unable to fetch user loans");
     //     }
-    //     // console.log("loans", loans);
+    //     ////console.log("loans", loans);
     //   };
     //   if (account) {
     //     loan();
@@ -411,7 +411,7 @@ const Referral = () => {
                 await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/":"https://hstk.fi/") + refferal);
                 axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/shorten":'https://hstk.fi/shorten'), { pseudo_name:refferal,address: address })
                 .then((response) => {
-                  console.log(response, "response refer link"); // Log the response from the backend.
+                 //console.log(response, "response refer link"); // Log the response from the backend.
                 })
                 .catch((error) => {
                   console.error('Error:', error);
@@ -540,7 +540,7 @@ const Referral = () => {
           ]}
           statsData={process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? dataUser:[0,0,0]}
           onclick={() => {
-            console.log("hi")
+           //console.log("hi")
           }}
           arrowHide={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?false:true}
         />

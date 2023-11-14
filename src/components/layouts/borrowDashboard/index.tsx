@@ -182,7 +182,7 @@ const BorrowDashboard = ({
     // gap: string;
     // rowItems: any;
   }) => {
-  // console.log(Borrows, "Borrow loans in borrow dashboard");
+  ////console.log(Borrows, "Borrow loans in borrow dashboard");
   const Borrows = useSelector(selectUserLoans);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
@@ -245,7 +245,7 @@ const BorrowDashboard = ({
       if (!account || userDeposits?.length <= 0) return;
       // const reserves = await getUserDeposits(address as string);
       const reserves = userDeposits;
-      // console.log("got reservers", reserves);
+      ////console.log("got reservers", reserves);
 
       const rTokens: any = [];
       if (reserves) {
@@ -258,13 +258,13 @@ const BorrowDashboard = ({
           }
         });
       }
-      // console.log("rtokens", rTokens);
+      ////console.log("rtokens", rTokens);
       if (rTokens.length === 0) return;
       setValidRTokens(rTokens);
-      // console.log("valid rtoken", validRTokens);
-      // console.log("market page -user supply", reserves);
+      ////console.log("valid rtoken", validRTokens);
+      ////console.log("market page -user supply", reserves);
     } catch (err) {
-      // console.log("Error fetching protocol reserves", err);
+      ////console.log("Error fetching protocol reserves", err);
     }
   };
   useEffect(() => {
@@ -304,7 +304,7 @@ const BorrowDashboard = ({
   //     }
   //   };
   //   if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
-  //   console.log("running");
+  //  //console.log("running");
   // }, [oraclePrices, reduxProtocolStats, userLoans]);
   const avgsLoneHealth = useSelector(selectHealthFactor);
   const getSplit = async () => {
@@ -312,22 +312,14 @@ const BorrowDashboard = ({
     const promises = [];
     for (let i = 0; i < Borrows?.length; i++) {
       if (Borrows[i]?.spendType === "LIQUIDITY") {
-        console.log(
-          "split index",
-          i,
-          ":",
-          Borrows[i]?.currentLoanAmount,
-          Borrows[i]?.loanId,
-          Borrows[i]?.currentLoanMarketAddress,
-          Borrows[i]?.loanMarket
-        );
+      
         // if(Borrows[i]?.l3App=="J"){
 
         // }
         // if(Borrows[i]?.l3App){
 
         // }
-        console.log(Borrows[i]?.l3App, "app")
+       //console.log(Borrows[i]?.l3App, "app")
         if (Borrows[i]?.l3App == "JEDI_SWAP") {
           const data = getJediEstimatedLiqALiqBfromLp(
             Borrows[i]?.currentLoanAmount,
@@ -346,7 +338,7 @@ const BorrowDashboard = ({
           promises.push(data);
         }
 
-        // console.log(
+        ////console.log(
         //   getTokenFromAddress(processAddress(data?.tokenAAddress)),
         //   "all split amount - ",
         //   // parseInt(Borrows[i]?.currentLoanAmount),
@@ -376,7 +368,7 @@ const BorrowDashboard = ({
       }
     }
     Promise.allSettled([...promises]).then((val) => {
-      // console.log("promises here ", val);
+      ////console.log("promises here ", val);
       temp = val.map((data, i) => {
         if (data && data?.status == "fulfilled" && data?.value) {
           return {
@@ -393,14 +385,14 @@ const BorrowDashboard = ({
           return "empty";
         }
       });
-      // console.log("promises heree ", promises);
+      ////console.log("promises heree ", promises);
       setAllSplit(temp);
     });
     // const currentSplit = await getJediEstimatedLiqALiqBfromLp(
     //   liquidity,
     //   pairAddress
     // );
-    // console.log("liquidity split - ", currentSplit);
+    ////console.log("liquidity split - ", currentSplit);
     // return "Pending";
   };
 
@@ -418,7 +410,7 @@ const BorrowDashboard = ({
   }, [Borrows]);
 
   useEffect(() => {
-    // console.log("Borrows here - ", Borrows);
+    ////console.log("Borrows here - ", Borrows);
     if (Borrows || Borrows?.length > 0) {
       setLoading(false);
     }
@@ -449,7 +441,7 @@ const BorrowDashboard = ({
   //   try {
   //     const fetchJediEstimatedLiqALiqBfromLp = async () => {
   //       const data = await getJediEstimatedLiqALiqBfromLp(0.95946, "USDC");
-  //       console.log("fetchJediEstimatedLiqALiqBfromLp ", data);
+  //      //console.log("fetchJediEstimatedLiqALiqBfromLp ", data);
   //     };
   //     fetchJediEstimatedLiqALiqBfromLp();
   //   } catch (err) {}
@@ -459,7 +451,7 @@ const BorrowDashboard = ({
   const [dollarConversions, setDollarConversions] = useState(false)
   const fetchProtocolStats = async () => {
     try {
-      // console.log("fetchprotocolstats", stats); //23014
+      ////console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
         stats?.[2].borrowRate,
         stats?.[3].borrowRate,
@@ -468,7 +460,7 @@ const BorrowDashboard = ({
         stats?.[4].borrowRate,
       ]);
     } catch (error) {
-      console.log("error on getting protocol stats");
+     //console.log("error on getting protocol stats");
     }
   };
 
@@ -506,7 +498,7 @@ const BorrowDashboard = ({
     "Loan risk metric comparing collateral value to borrowed amount to check potential liquidation.",
   ];
 
-  // console.log("Borrows", loading, Borrows);
+  ////console.log("Borrows", loading, Borrows);
   return loading ? (
     <>
       <Box

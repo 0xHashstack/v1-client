@@ -71,14 +71,14 @@ const Navbar = ({ validRTokens }: any) => {
   const currentDropdown = useSelector(selectCurrentDropdown);
   const { account } = useAccount();
   const currentChainId = useSelector(selectCurrentNetwork);
-  // console.log(account, "Navbar");
+  ////console.log(account, "Navbar");
   // useEffect(() => {
   //   const storedAccount = localStorage.getItem("account");
   //   if (storedAccount) {
   //     setParsedAccount(JSON.parse(storedAccount));
   //   }
-  //   // console.log("Sahitya account",typeof account.address)
-  //   console.log("Sahitya", parsedAccount);
+  //   ////console.log("Sahitya account",typeof account.address)
+  //  //console.log("Sahitya", parsedAccount);
   // }, []);
   const [dashboardHover, setDashboardHover] = useState(false);
   const [campaignHover, setCampaignHover] = useState(false);
@@ -150,7 +150,7 @@ const Navbar = ({ validRTokens }: any) => {
 
   const switchWallet = () => {
     // const walletConnected = localStorage.getItem("lastUsedConnector");
-    // console.log(connector);
+    ////console.log(connector);
     if (connector?.options?.id == "braavos") {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
@@ -214,7 +214,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
           );
         }
       }
-      // console.log("starknetAccount", account?.provider?.chainId);
+      ////console.log("starknetAccount", account?.provider?.chainId);
     }
 
     const isWhiteListed = async () => {
@@ -227,7 +227,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
         setWhitelisted(response.data?.isWhitelisted);
 
       } catch (err) {
-        console.log(err, "err in whitelist")
+       //console.log(err, "err in whitelist")
       }
     }
     isWhiteListed()
@@ -889,7 +889,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
                         disconnect();
                         connect(connectors[0]);
                       }
-                      // console.log("navbar", account);
+                      ////console.log("navbar", account);
                       // localStorage.setItem("account", JSON.stringify(account));
                     }}
                   >
