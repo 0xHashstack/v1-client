@@ -298,7 +298,7 @@ const Referral = () => {
         const fetchData=async()=>{
             try{
                 const array:any=[];
-                const res=await axios.get('https://testnet.hstk.fi/api/get-community-stats');
+                const res=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/api/get-community-stats':'https://hstk.fi/api/get-community-stats');
                 if(res?.data){
                     array.push(res?.data?.overall_referred_liq);
                     array.push(res?.data?.rewards_claimed);
@@ -315,9 +315,9 @@ const Referral = () => {
                     return;
                 }
                 const array:any=[];
-                const res=await axios.get(`https://testnet.hstk.fi/api/get-user-stats/${address}`);
+                const res=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/api/get-user-stats/${address}`:`https://hstk.fi/api/get-user-stats/${address}`);
                 if(res?.data){
-                    array.push(res?.data?.referred_points);
+                    array.push(res?.data?.referred_points ?res?.data?.referred_points:0);
                     array.push(res?.data?.points_earned);
                     array.push(res?.data?.rewards_claimed)
                 }
@@ -538,7 +538,7 @@ const Referral = () => {
             "Points earned",
             "Rewards Claimed",
           ]}
-          statsData={process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? dataUser:[0,0,0]}
+          statsData={dataUser}
           onclick={() => {
             console.log("hi")
           }}
@@ -549,7 +549,7 @@ const Referral = () => {
             "Overall refered by community",
             "Rewards claimed by community"
           ]}
-          statsData={process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?dataCommunity:[0,0]}
+          statsData={dataCommunity}
           onclick={() => {
             // handleRouteChange("/v1/protocol-metrics");
           }}

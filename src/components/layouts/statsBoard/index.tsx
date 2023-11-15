@@ -113,7 +113,7 @@ const StatsBoard = () => {
           onclick={() => {
             handleRouteChange("/v1/protocol-metrics");
           }}
-          arrowHide={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?false:true}
+          arrowHide={false}
         />
       </HStack>
     </Flex>

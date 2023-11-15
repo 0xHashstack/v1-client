@@ -85,25 +85,7 @@ const Campaign = () => {
     "Points earned",
     "Est.token earning \n $HASH"
   ];
-  const sampleDate = [{
-    id:0,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:1,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:2,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:3,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:4,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:5,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:6,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:7,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:8,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  }]
+  const sampleDate:any = []
   const sampleDataLeaderBoard = [{
     id:0,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   },{

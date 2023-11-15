@@ -58,7 +58,7 @@ import {
   selectYourSupply,
 
 } from "@/store/slices/readDataSlice";
-import { AccountInterface, ProviderInterface } from "starknet";
+import { AccountInterface, ProviderInterface, number } from "starknet";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
@@ -247,7 +247,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
   useEffect(()=>{
     const fetchUsers=async()=>{
       const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
-      const fetched=res?.data.includes(address);
+      const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
       setAllowedReferral(fetched)
     }
     fetchUsers();
