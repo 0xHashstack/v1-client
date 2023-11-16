@@ -51,11 +51,13 @@ import mixpanel from "mixpanel-browser";
 import {
   resetState,
   selectCurrentNetwork,
+  selectInteractedAddress,
   selectNftBalance,
   selectUserType,
   selectWhiteListed,
   selectYourBorrow,
   selectYourSupply,
+  setInteractedAddress,
 
 } from "@/store/slices/readDataSlice";
 import { AccountInterface, ProviderInterface, number } from "starknet";
@@ -244,11 +246,22 @@ const userWhitelisted=useSelector(selectWhiteListed);
     }
   }, [account,whitelisted,userWhitelisted,referralLinked]);
   const [allowedReferral, setAllowedReferral] = useState(false)
+  const interactedAddress=useSelector(selectInteractedAddress)
   useEffect(()=>{
     const fetchUsers=async()=>{
-      const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
-      const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
-      setAllowedReferral(fetched)
+      if(!address){
+        return;
+      }else{
+        if(interactedAddress==true){
+          return;
+        }else{
+          const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
+          console.log(number.toHex(number.toBN(number.toFelt(address))).toLowerCase(),"address")
+          const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
+          dispatch(setInteractedAddress(fetched))
+          setAllowedReferral(fetched)
+        }
+      }
     }
     fetchUsers();
   },[address])
@@ -390,7 +403,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             </Box>
         </Box>
         :
-        (totalBorrow>0 || totalSupply>0) ?
+        (interactedAddress) ?
         <Box
         padding="16px 12px"
         fontSize="12px"

@@ -60,6 +60,7 @@ const initialState = {
   nftMaxAmount:null,
   nftCurrentAmount:null,
   whitelisted:false,
+  interactedAddress:false,
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -288,6 +289,9 @@ export const readDataSlice = createSlice({
     setUserWhiteListed(state,action){
       state.whitelisted=action.payload;
     },
+    setInteractedAddress(state,action){
+      state.interactedAddress=action.payload;
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -359,7 +363,8 @@ export const {
   setFees,
   setNftMaxAmount,
   setNftCurrentAmount,
-  setUserWhiteListed
+  setUserWhiteListed,
+  setInteractedAddress
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -425,4 +430,5 @@ export const selectSignature=(state)=>state.read_data.signature;
 export const selectNftMaxAmount=(state)=>state.read_data.nftMaxAmount;
 export const selectNftCurrentAmount=(state)=>state.read_data.nftCurrentAmount;
 export const selectWhiteListed=(state)=>state.read_data.whitelisted;
+export const selectInteractedAddress=(state)=>state.read_data.interactedAddress;
 export default readDataSlice.reducer;
