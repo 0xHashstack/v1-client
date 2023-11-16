@@ -129,7 +129,7 @@ const TradeModal = ({
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
+  //  //console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
 
   const {
     loanMarket,
@@ -225,7 +225,7 @@ const TradeModal = ({
         )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   const dapps = [
     { name: "Jediswap", status: "enable" },
@@ -467,7 +467,7 @@ const TradeModal = ({
   // useEffect(()=>{
   //   const fetchPools=async()=>{
   //     const data=await getSupportedPools("0x3d58a2767ebb27cf36b5fa1d0da6566b6042bd1a9a051c40129bad48edb147b","30814223327519088")
-  //     console.log(data,"check");
+  //    //console.log(data,"check");
   //   }
   //   fetchPools();
   // },[])
@@ -475,9 +475,9 @@ const TradeModal = ({
   useEffect(() => {
     try {
       fetchProtocolStats();
-      // console.log("protocolStats", protocolStats);
+      ////console.log("protocolStats", protocolStats);
     } catch (err: any) {
-      console.log("borrow modal : error fetching protocolStats");
+     //console.log("borrow modal : error fetching protocolStats");
     }
   }, [stats]);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
@@ -485,14 +485,14 @@ const TradeModal = ({
       ?.availableReserves * 0.895
   );
   useEffect(() => {
-    // console.log("currentAvailableReserve", currentAvailableReserves);
+    ////console.log("currentAvailableReserve", currentAvailableReserves);
   }, [currentAvailableReserves]);
 
   useEffect(() => {
     setCurrentAvailableReserves(
       protocolStats[coins.indexOf(currentBorrowCoin)]?.availableReserves * 0.895
     );
-    // console.log(coins.indexOf(currentBorrowCoin));
+    ////console.log(coins.indexOf(currentBorrowCoin));
   }, [protocolStats, currentBorrowCoin]);
 
   const [radioValue, setRadioValue] = useState("1");
@@ -503,7 +503,7 @@ const TradeModal = ({
     } else if (radioValue === "2") {
       setMethod("SWAP");
     }
-    // console.log("radio value", radioValue, method);
+    ////console.log("radio value", radioValue, method);
   }, [radioValue]);
   const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
   useEffect(() => {
@@ -585,12 +585,12 @@ const TradeModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully spend the loan `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -602,15 +602,15 @@ const TradeModal = ({
   //     setCurrentTransactionStatus("failed");
   //     dispatch(setTransactionStatus("failed"));
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully supplied spend the loan `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -648,7 +648,7 @@ const TradeModal = ({
             currentBorrowCoin &&
             currentCollateralCoin
           ) {
-            // console.log("trade",inputBorrowAmount,rTokenAmount,currentBorrowCoin,currentCollateralCoin,marketInfo)
+            ////console.log("trade",inputBorrowAmount,rTokenAmount,currentBorrowCoin,currentCollateralCoin,marketInfo)
             const data = await getLoanHealth_RTokenCollateral(
               inputBorrowAmount,
               currentBorrowCoin,
@@ -657,14 +657,14 @@ const TradeModal = ({
               oraclePrices,
               marketInfo
             );
-            // console.log(data,"data in trade")
+            ////console.log(data,"data in trade")
             setHealthFactor(data);
           }
         }
       };
       fetchHealthFactor();
     } catch (err) {
-      console.log(err);
+     //console.log(err);
     }
   }, [
     inputBorrowAmount,
@@ -800,7 +800,7 @@ const TradeModal = ({
         }
       }
     } catch (err: any) {
-      console.log(err);
+     //console.log(err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -843,7 +843,7 @@ const TradeModal = ({
   const fetchParsedUSDValueBorrow = async () => {
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
-        // console.log("got parsed zero borrow");
+        ////console.log("got parsed zero borrow");
         setInputBorrowAmountUSD(0);
         return;
       }
@@ -855,9 +855,9 @@ const TradeModal = ({
       //   currentBorrowCoin,
       //   inputBorrowAmount
       // );
-      // console.log("got parsed usdt borrow", parsedBorrowAmount);
+      ////console.log("got parsed usdt borrow", parsedBorrowAmount);
       setInputBorrowAmountUSD(parsedBorrowAmount);
-      // console.log(
+      ////console.log(
       //   "effective apr values : ",
       //   "loan_usd_value",
       //   parsedBorrowAmount,
@@ -874,7 +874,7 @@ const TradeModal = ({
       //   parsedBorrowAmount
       // );
     } catch (error) {
-      console.log(error);
+     //console.log(error);
     }
   };
 
@@ -882,7 +882,7 @@ const TradeModal = ({
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
         setInputCollateralAmountUSD(0);
-        // console.log("got parsed zero collateral");
+        ////console.log("got parsed zero collateral");
 
         return;
       }
@@ -895,7 +895,7 @@ const TradeModal = ({
         //   currentBorrowCoin,
         //   inputBorrowAmount
         // );
-        // console.log(
+        ////console.log(
         //   "got parsed usdt collateral",
         //   parsedBorrowAmount,
         //   " max should be",
@@ -903,7 +903,7 @@ const TradeModal = ({
         // );
         setInputCollateralAmountUSD(parsedBorrowAmount);
       } else if (tokenTypeSelected === "rToken") {
-        // console.log(
+        ////console.log(
         //   "rToken parsing",
         //   rToken,
         //   rTokenAmount,
@@ -923,7 +923,7 @@ const TradeModal = ({
         //   currentBorrowCoin,
         //   inputBorrowAmount
         // );
-        // console.log(
+        ////console.log(
         //   "got parsed usdt collateral",
         //   parsedBorrowAmount,
         //   " max should be",
@@ -932,7 +932,7 @@ const TradeModal = ({
         setInputCollateralAmountUSD(parsedBorrowAmount);
       }
     } catch (error) {
-      console.log(error);
+     //console.log(error);
     }
   };
   const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
@@ -962,7 +962,7 @@ const TradeModal = ({
   //   fetchMinLoanAmount();
   // },[currentBorrowCoin])
   useEffect(() => {
-    // console.log(
+    ////console.log(
     //   "toMarketSplitConsole",
     //   currentBorrowCoin,
     //   inputBorrowAmount,
@@ -1045,7 +1045,7 @@ const TradeModal = ({
       currentPool === "Select a pool"
     )
       return;
-    // console.log("inputBorrowAmount", Number(inputBorrowAmount));
+    ////console.log("inputBorrowAmount", Number(inputBorrowAmount));
     if (currentDapp === "Jediswap") {
       const lp_tokon = await getJediEstimatedLpAmountOut(
         currentBorrowCoin,
@@ -1085,8 +1085,8 @@ const TradeModal = ({
   //       collateralBalance.substring(spaceIndex + 1),
   //       inputCollateralAmount
   //     );
-  //     console.log(data, "data in your borrow for est");
-  //     // console.log(data, "data in your borrow");
+  //    //console.log(data, "data in your borrow for est");
+  //     ////console.log(data, "data in your borrow");
   //     setEstrTokensMinted(data);
   //   };
   //   fetchEstrTokens();
@@ -1139,7 +1139,7 @@ const TradeModal = ({
           const uqID = getUniqueId();
           let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
-          // console.log(uqID, "data here", data);
+          ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
             data = data.filter((val: any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -3312,7 +3312,7 @@ borderWidth:'5px',
                   <Box
                     onClick={() => {
                       setTransactionStarted(true);
-                      // console.log(
+                      ////console.log(
                       //   "trade clicked",
                       //   "rToken",
                       //   rToken,

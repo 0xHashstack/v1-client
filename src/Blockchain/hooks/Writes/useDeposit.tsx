@@ -34,7 +34,7 @@ const useDeposit = () => {
   //   const [depositTransHash, setDepositTransHash] = useState("");
 
   //   const recieptData = useWaitForTransaction({ hash: depositTransHash });
-  //   console.log("useDeposit", depositAmount, asset);
+  //  //console.log("useDeposit", depositAmount, asset);
   const {
     data: dataDeposit,
     error: errorDeposit,

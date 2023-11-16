@@ -12,18 +12,18 @@ const useTransactionRefresh = () => {
   const { address } = useAccount();
   // useEffect(() => {
   //   const fetchUserLoans = async () => {
-  //     console.log("fetch called");
+  //    //console.log("fetch called");
   //     if (!address) {
   //       return;
   //     }
   //     const userLoans = await getUserLoans(address);
-  //     console.log("user loan is - ", userLoans);
+  //    //console.log("user loan is - ", userLoans);
   //   };
   //   fetchUserLoans();
   // }, [address]);
   useEffect(() => {
     if (transactionRefresh != -1) {
-      console.log("transactionRefresh");
+     //console.log("transactionRefresh");
     }
   }, [transactionRefresh]);
 };

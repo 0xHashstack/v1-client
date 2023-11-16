@@ -115,7 +115,7 @@ const Campaign = () => {
   useEffect(() => {
     // if (UserLoans) {
     //   if (UserLoans?.length <= (currentPagination - 1) * 6) {
-    //     console.log("pagination", Pagination, UserLoans);
+    //    //console.log("pagination", Pagination, UserLoans);
     //     if (currentPagination > 1) {
     //       setCurrentPagination(currentPagination - 1);
     //     }
@@ -134,7 +134,7 @@ const Campaign = () => {
   //   const loan = async () => {
   //     try {
   //       const loans = await getUserLoans(address || "");
-  //       // console.log(loans,"Loans from your borrow index page")
+  //       ////console.log(loans,"Loans from your borrow index page")
 
   //       // loans.filter(
   //       //   (loan) =>
@@ -162,9 +162,9 @@ const Campaign = () => {
   //           loan.loanAmountParsed > 0
   //       )));
   //     } catch (err) {
-  //       console.log("your-borrow : unable to fetch user loans");
+  //      //console.log("your-borrow : unable to fetch user loans");
   //     }
-  //     // console.log("loans", loans);
+  //     ////console.log("loans", loans);
   //   };
   //   if (account) {
   //     loan();

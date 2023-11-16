@@ -29,7 +29,7 @@ const useAddCollateral = () => {
   //     isSuccess: isSuccessLoanRequest,
   //     status: statusLoanRequest,
 
-  // console.log(
+  ////console.log(
   //   "addCollateral",
   //   loanId,
   //   collateralAsset,

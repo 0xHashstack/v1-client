@@ -174,7 +174,7 @@ const tooltips = [
                             pr="2"
                             onClick={() => {
                               setcurrentSelectedTenure(coin);
-                              // console.log(coin,"coin in supply modal")
+                              ////console.log(coin,"coin in supply modal")
                             }}
                           >
                             {coin === currentSelectedTenure && (
@@ -279,7 +279,7 @@ const tooltips = [
           {leaderBoardData
             ?.slice(lower_bound, upper_bound + 1)
             .map((member: any, idx: any) => {
-              // console.log("faisal coin check", coin);
+              ////console.log("faisal coin check", coin);
               // borrowIDCoinMap.push([coin.id, coin?.name]);
               return (
                 <>

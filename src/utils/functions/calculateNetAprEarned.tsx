@@ -10,6 +10,6 @@
 //       }
 //     });
 //   }
-//   // console.log("net apr earned", sum);
+//   ////console.log("net apr earned", sum);
 //   return sum;
 // };

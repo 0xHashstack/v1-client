@@ -81,7 +81,7 @@ const DashboardRight = ({
   //   const element:any = document.getElementById('buttonclick');
   //   html2canvas(element).then((canvas) => {
   //     const screenshotDataUrl = canvas.toDataURL('image/png');
-  //     console.log(screenshotDataUrl,"url")
+  //    //console.log(screenshotDataUrl,"url")
       
   //     // Now you have the screenshot in a data URL format
   //     // You can send it to the backend using an HTTP request.
@@ -96,7 +96,7 @@ const DashboardRight = ({
   
 
   useEffect(() => {
-    // console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
+    ////console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
   }, [currentBorrowMarketCoin]);
   const tooltips = [
     "Available markets.",

@@ -124,7 +124,7 @@
 //   const transactionStatus = useSelector(selectTransactionStatus);
 //   const [toastTransactionStatus, setToastTransactionStatus] = useState("");
 //   const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
-//   // console.log(transactionStatus,"transaction from button");
+//   ////console.log(transactionStatus,"transaction from button");
 
 //   useEffect(() => {
 //     if (
@@ -194,7 +194,7 @@
 //   }, [currentStringIndex]);
 
 //   // const handleClick = () => {
-//   //   // console.log("clicked");
+//   //   ////console.log("clicked");
 //   //   if (!isAnimationStarted && currentStringIndex != labelSuccessArray.length - 1) {
 //   //     setIsAnimationStarted(true);
 //   //     setCurrentStringIndex(-1);

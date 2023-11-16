@@ -31,14 +31,14 @@ const WhitelistModal = () => {
         email,
         name
       );
-      // console.log("whitelistSuccess?", result);
+      ////console.log("whitelistSuccess?", result);
       if (result !== false) {
-        // console.log("Is function entered");
+        ////console.log("Is function entered");
         router.push("/waitlist");
         setClicked(true);
       }
     } catch (err) {
-      console.log("whitelist", err);
+     //console.log("whitelist", err);
     }
   };
 

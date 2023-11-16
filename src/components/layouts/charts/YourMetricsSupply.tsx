@@ -14,7 +14,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   // const userDeposits = useSelector(selectUserDeposits);
   // const oraclePrices = useSelector(selectOraclePrices);
   const supplyData = useSelector(selectYourMetricsSupply);
-  // console.log("supplyData your metrics ", supplyData);
+  ////console.log("supplyData your metrics ", supplyData);
   // useEffect(() => {
   //   try {
   //     const fetchSupplyData = async () => {
@@ -32,7 +32,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   //       if (data && data?.length > 0) {
   //         setSupplyData(data);
   //       }
-  //       console.log("supplyData", data);
+  //      //console.log("supplyData", data);
   //     };
   //     if (
   //       userDeposits &&
@@ -43,7 +43,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   //       fetchSupplyData();
   //     }
   //   } catch (err) {
-  //     console.log("your metrics supply err ", err);
+  //    //console.log("your metrics supply err ", err);
   //   }
   // }, [userDeposits, oraclePrices]);
 

@@ -102,11 +102,11 @@ const LiquidityProvisionModal = ({
   setCurrentLoanMarket,
   borrowAPRs,
 }: any) => {
-  // console.log("liquidity found map: ", borrowIDCoinMap);
-  // console.log("liquidity found borrow ids: ", borrowIds);
-  // console.log("liquidity found coins: ", coins);
-  // console.log("liquidity found current coin: ", currentId);
-  // console.log("liquidity found current id: ", currentMarketCoin);
+  ////console.log("liquidity found map: ", borrowIDCoinMap);
+  ////console.log("liquidity found borrow ids: ", borrowIds);
+  ////console.log("liquidity found coins: ", coins);
+  ////console.log("liquidity found current coin: ", currentId);
+  ////console.log("liquidity found current id: ", currentMarketCoin);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -159,17 +159,17 @@ const LiquidityProvisionModal = ({
   const avgs = useSelector(selectHealthFactor);
 
   // useEffect(() => {
-  //   console.log("liquidity user loans", userLoans);
+  //  //console.log("liquidity user loans", userLoans);
   // }, [userLoans]);
-  // console.log(userLoans)
-  // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
+  ////console.log(userLoans)
+  ////console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
   useEffect(() => {
     const result = userLoans?.find(
       (item: any) =>
         item?.loanId == currentId?.slice(currentId?.indexOf("-") + 1)?.trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
-    // console.log(borrowAmount)
+    ////console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentId]);
   useEffect(() => {
@@ -191,7 +191,7 @@ const LiquidityProvisionModal = ({
           currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
       )?.currentLoanMarket
     );
-    // console.log(
+    ////console.log(
     //   "loanAmount",
     //   currentLoanAmount,
     //   ", loanMarket",
@@ -314,7 +314,7 @@ const LiquidityProvisionModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully supplied `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -325,21 +325,21 @@ const LiquidityProvisionModal = ({
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //   },
   //   onRejected(transaction) {
   //     setCurrentTransactionStatus("failed");
   //     dispatch(setTransactionStatus("failed"));
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully supplied `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -392,7 +392,7 @@ const LiquidityProvisionModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log(liquidity);
+       //console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
@@ -441,7 +441,7 @@ const LiquidityProvisionModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log(liquidity);
+       //console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
@@ -451,7 +451,7 @@ const LiquidityProvisionModal = ({
         }
       }
     } catch (err: any) {
-      console.log(err);
+     //console.log(err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -501,7 +501,7 @@ const LiquidityProvisionModal = ({
   }, [currentId, currentMarketCoin]);
 
   const handleBorrowMarketCoinChange = (id: string) => {
-    // console.log("got id", id);
+    ////console.log("got id", id);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].id === id) {
         setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name);
@@ -513,7 +513,7 @@ const LiquidityProvisionModal = ({
     (key) => modalDropdowns[key] === true
   );
   const handleBorrowMarketIDChange = (coin: string) => {
-    // console.log("got coin", coin);
+    ////console.log("got coin", coin);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].name === coin) {
         setCurrentBorrowId(borrowIDCoinMap[i].id);
@@ -556,7 +556,7 @@ const LiquidityProvisionModal = ({
 
 
   useEffect(() => {
-    // console.log(
+    ////console.log(
     //   "toMarketSplitConsole",
     //   currentLoanMarket,
     //   currentLoanAmount,
@@ -637,7 +637,7 @@ const LiquidityProvisionModal = ({
           cursor="pointer"
           onClick={() => {
             if (selectedDapp == "") {
-              // console.log("hi");
+              ////console.log("hi");
             } else {
               mixpanel.track("Liquidity Modal Selected", {
                 Clicked: true,
@@ -655,7 +655,7 @@ const LiquidityProvisionModal = ({
           cursor="pointer"
           onClick={() => {
             if (selectedDapp == "") {
-              // console.log("hi");
+              ////console.log("hi");
             } else {
               const uqID = Math.random();
               setUniqueID(uqID);
@@ -681,7 +681,7 @@ const LiquidityProvisionModal = ({
           cursor="pointer"
           onClick={() => {
             if (selectedDapp == "") {
-              // console.log("hi");
+              ////console.log("hi");
             } else {
               const uqID = Math.random();
               setUniqueID(uqID);
@@ -715,7 +715,7 @@ const LiquidityProvisionModal = ({
             const uqID = getUniqueId();
             let data: any = localStorage.getItem("transactionCheck");
             data = data ? JSON.parse(data) : [];
-            // console.log(uqID, "data here", data);
+            ////console.log(uqID, "data here", data);
             if (data && data.includes(uqID)) {
               data = data.filter((val: any) => val != uqID);
               localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -848,7 +848,7 @@ const LiquidityProvisionModal = ({
                             pr="2"
                             onClick={() => {
                               setCurrentPool(pool);
-                              // console.log(pool)
+                              ////console.log(pool)
                               setToMarketA(pool.split("/")[0]);
                               setToMarketB(pool.split("/")[1]);
                             }}
@@ -961,7 +961,7 @@ const LiquidityProvisionModal = ({
                             onClick={() => {
                               setCurrentBorrowId("ID - " + coin);
                               handleBorrowMarketCoinChange(coin);
-                              // console.log(typeof coin,"coin")
+                              ////console.log(typeof coin,"coin")
                               const borrowIdString = String(coin);
                               const result = userLoans.find(
                                 (item: { loanId: string }): any =>
@@ -970,7 +970,7 @@ const LiquidityProvisionModal = ({
                                     .slice(borrowIdString.indexOf("-") + 1)
                                     .trim()
                               );
-                              // console.log(result)
+                              ////console.log(result)
                               setBorrowAmount(result?.loanAmountParsed);
                             }}
                           >

@@ -9,7 +9,7 @@ const useStakeRequest = () => {
   const [rToken, setRToken] = useState<RToken>("rBTC");
   const [rTokenAmount, setRTokenAmount] = useState<number>(0);
   const { address: owner } = useAccount();
-  // console.log("rToken stake request - ", rToken);
+  ////console.log("rToken stake request - ", rToken);
 
   const {
     data: dataStakeRequest,
