@@ -256,7 +256,6 @@ const userWhitelisted=useSelector(selectWhiteListed);
           return;
         }else{
           const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
-          console.log(number.toHex(number.toBN(number.toFelt(address))).toLowerCase(),"address")
           const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
           dispatch(setInteractedAddress(fetched))
           setAllowedReferral(fetched)
