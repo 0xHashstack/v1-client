@@ -1217,7 +1217,7 @@ const BorrowDashboard = ({
                       // bgColor="red"
                       // pl="3.4rem"
                       >
-                        {borrow.loanAmountParsed - borrow.currentLoanAmountParsed >= 0 ? "$" : "-$"}
+                        {borrow.currentLoanAmountParsed-borrow.loanAmountParsed   >= 0 ? "$" : "-$"}
                         {borrow.spendType == "UNSPENT" ? numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) -
                           (reduxProtocolStats.find(
                             (val: any) => val?.token == borrow?.loanMarket.slice(1)
