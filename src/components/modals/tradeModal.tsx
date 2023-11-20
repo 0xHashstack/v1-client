@@ -674,13 +674,13 @@ const TradeModal = ({
     rTokenAmount,
   ]);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
-  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  // const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
   const minAmounts=useSelector(selectMinimumDepositAmounts);
-  const maxAmounts=useSelector(selectMaximumDepositAmounts);
+  // const maxAmounts=useSelector(selectMaximumDepositAmounts);
   useEffect(()=>{
     setMinimumDepositAmount(minAmounts["r"+currentCollateralCoin])
-    setmaximumDepositAmount(maxAmounts["r"+currentCollateralCoin])
-  },[currentCollateralCoin,minAmounts,maxAmounts])
+    // setmaximumDepositAmount(maxAmounts["r"+currentCollateralCoin])
+  },[currentCollateralCoin,minAmounts])
   // useEffect(()=>{
   //   const fetchMinDeposit=async()=>{
   //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
@@ -942,13 +942,13 @@ const TradeModal = ({
     Number[] | undefined | null
   >();
   const [minimumLoanAmount, setMinimumLoanAmount] = useState<any>(0)
-  const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0)
+  // const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0)
   const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
-  const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
+  // const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
   useEffect(()=>{
     setMinimumLoanAmount(minLoanAmounts["d"+currentBorrowCoin])
-    setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
-  },[currentBorrowCoin,maxLoanAmounts,minLoanAmounts])
+    // setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
+  },[currentBorrowCoin,minLoanAmounts])
   // useEffect(()=>{
   //   const fetchMinLoanAmount=async()=>{
   //     const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
@@ -1542,7 +1542,7 @@ const TradeModal = ({
                             ? "1px solid #CF222E"
                             : isNaN(inputCollateralAmount)
                               ? "1px solid #CF222E"
-                              :inputCollateralAmount>0 &&process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount)
+                              :inputCollateralAmount>0 &&process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& inputCollateralAmount<minimumDepositAmount 
                               ? "1px solid #CF222E"
                               
                               : inputCollateralAmount > 0 &&
@@ -1576,7 +1576,7 @@ const TradeModal = ({
                                 ? "#CF222E"
                                 : inputCollateralAmount < 0
                                   ? "#CF222E"
-                          :((process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount<minimumDepositAmount) || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount > maximumDepositAmount)) && inputCollateralAmount>0
+                          :((process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount<minimumDepositAmount) ) && inputCollateralAmount>0
                                   ? "#CF222E"
                                   
                                   : inputCollateralAmount == 0
@@ -1603,7 +1603,7 @@ const TradeModal = ({
                             ? "#CF222E"
                             : isNaN(inputCollateralAmount)
                               ? "#CF222E"
-                        :(inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount) && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount>0
+                        :(inputCollateralAmount<minimumDepositAmount ) && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount>0
                         ? "#CF222E"
 
                               : inputCollateralAmount < 0
@@ -1630,7 +1630,7 @@ const TradeModal = ({
                     </Box>
                     {inputCollateralAmount > walletBalance ||
                       inputCollateralAmount < 0 ||
-                      ((inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount)&& process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount>0) ||
+                      ((inputCollateralAmount<minimumDepositAmount )&& process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount>0) ||
                       isNaN(inputCollateralAmount) ? (
                       <Text
                         display="flex"
@@ -1651,8 +1651,7 @@ const TradeModal = ({
                               ? "Amount exceeds balance"
                               :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount <minimumDepositAmount 
                               ? `less than min amount`
-                              :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount>maximumDepositAmount
-                              ?'more than max amount'
+                        
                               //do max 1209
                               : "Invalid Input"}
                           </Text>
@@ -2060,8 +2059,7 @@ const TradeModal = ({
                             ? "1px solid #CF222E"
                             :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount<minimumLoanAmount && inputBorrowAmount>0
                             ? "1px solid #CF222E"
-                            :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount 
-                            ? "1px solid #CF222E"
+                      
                             : isNaN(inputBorrowAmount)
                               ? "1px solid #CF222E"
                               : inputBorrowAmount > 0
@@ -2100,8 +2098,7 @@ const TradeModal = ({
                                   ? "#CF222E"
                                   :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount<minimumLoanAmount &&inputBorrowAmount>0
                                   ? "#CF222E"
-                                  :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount 
-                                  ?"#CF222E"
+                            
                                   : inputBorrowAmount == 0
                                     ? "white"
                                     : "#00D395"
@@ -2133,8 +2130,7 @@ const TradeModal = ({
                                 ? "#CF222E"
                                 :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount<minimumLoanAmount && inputBorrowAmount>0
                                 ?"#CF222E"
-                                :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount
-                                ?"#CF222E"
+                             
                                 : inputBorrowAmount == 0
                                   ? "#4D59E8"
                                   : "#00D395"
@@ -2190,8 +2186,7 @@ const TradeModal = ({
                       </Button>
                     </Box>
                     {inputBorrowAmount > currentAvailableReserves ||
-                    inputBorrowAmount>0 &&process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& inputBorrowAmount<minimumLoanAmount ||
-                    inputBorrowAmount>maximumLoanAmount ||
+                    inputBorrowAmount>0 &&process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& inputBorrowAmount<minimumLoanAmount||
                       (inputBorrowAmount > 0 &&
                         inputCollateralAmountUSD &&
                         inputBorrowAmountUSD >
@@ -2217,8 +2212,7 @@ const TradeModal = ({
                               ? "Amount exceeds balance"
                               :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount< minimumLoanAmount
                               ? "Less than min amount"
-                              :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& inputBorrowAmount>maximumLoanAmount
-                              ? "More than max amount"
+                           
                               : inputBorrowAmountUSD >
                                 4.9999 * inputCollateralAmountUSD
                                 ? "Debt higher than permitted"
@@ -3298,12 +3292,10 @@ borderWidth:'5px',
                 </Box>
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
                   (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
-               ((   inputBorrowAmount>=minimumLoanAmount &&
-                  inputBorrowAmount<=maximumLoanAmount )||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
+               ((   inputBorrowAmount>=minimumLoanAmount  )||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
                   inputBorrowAmount <= currentAvailableReserves &&
                   inputBorrowAmount > 0 &&
-                (( tokenTypeSelected=="Native" ?  inputCollateralAmount >= minimumDepositAmount &&
-                  inputCollateralAmount<=maximumDepositAmount:true)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
+                (( tokenTypeSelected=="Native" ?  inputCollateralAmount >= minimumDepositAmount :true)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
                   inputCollateralAmount <= walletBalance &&
                   inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD &&
                   currentDapp != "Select a dapp" &&

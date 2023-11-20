@@ -165,7 +165,7 @@ const YourBorrowModal = ({
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0);
-  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0);
+  // const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0);
   const [sliderValue1, setSliderValue1] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [inputAmount1, setinputAmount1] = useState(0);
@@ -527,11 +527,11 @@ const YourBorrowModal = ({
       : 0
   );
   const minAmounts = useSelector(selectMinimumDepositAmounts);
-  const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  // const maxAmounts = useSelector(selectMaximumDepositAmounts);
   useEffect(() => {
     setMinimumDepositAmount(minAmounts["r" + collateralAsset]);
-    setmaximumDepositAmount(maxAmounts["r" + collateralAsset]);
-  }, [collateralAsset, minAmounts, maxAmounts]);
+    // setmaximumDepositAmount(maxAmounts["r" + collateralAsset]);
+  }, [collateralAsset, minAmounts]);
   useEffect(() => {
     setwalletBalance1(
       walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
@@ -5023,8 +5023,7 @@ const YourBorrowModal = ({
                             : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
                               currentTokenSelected == "Native Token" &&
                               inputCollateralAmount > 0 &&
-                              (inputCollateralAmount < minimumDepositAmount ||
-                                inputCollateralAmount > maximumDepositAmount)
+                              (inputCollateralAmount < minimumDepositAmount)
                             ? "1px solid #CF222E"
                             : inputCollateralAmount > 0 &&
                               inputAmount <= walletBalance2
@@ -5061,8 +5060,7 @@ const YourBorrowModal = ({
                               : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
                                 currentTokenSelected == "Native Token" &&
                                 inputCollateralAmount > 0 &&
-                                (inputCollateralAmount < minimumDepositAmount ||
-                                  inputCollateralAmount > maximumDepositAmount)
+                                (inputCollateralAmount < minimumDepositAmount)
                               ? "#CF222E"
                               : inputCollateralAmount == 0
                               ? "white"
@@ -5134,8 +5132,7 @@ const YourBorrowModal = ({
                               : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
                                 currentTokenSelected == "Native Token" &&
                                 inputCollateralAmount > 0 &&
-                                (inputCollateralAmount < minimumDepositAmount ||
-                                  inputCollateralAmount > maximumDepositAmount)
+                                (inputCollateralAmount < minimumDepositAmount )
                               ? "#CF222E"
                               : inputCollateralAmount == 0
                               ? "#4D59E8"
@@ -5192,8 +5189,7 @@ const YourBorrowModal = ({
                       (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
                         currentTokenSelected == "Native Token" &&
                         inputCollateralAmount > 0 &&
-                        (inputCollateralAmount < minimumDepositAmount ||
-                          inputCollateralAmount > maximumDepositAmount)) ||
+                        (inputCollateralAmount < minimumDepositAmount )) ||
                       inputCollateralAmount < 0 ? (
                         <Text
                           display="flex"
@@ -5216,12 +5212,7 @@ const YourBorrowModal = ({
                               inputCollateralAmount > 0 &&
                               inputCollateralAmount < minimumDepositAmount
                                 ? "less than min amount"
-                                : process.env.NEXT_PUBLIC_NODE_ENV ==
-                                    "mainnet" &&
-                                  currentTokenSelected == "Native Token" &&
-                                  inputCollateralAmount > 0 &&
-                                  inputCollateralAmount > maximumDepositAmount
-                                ? "more than max amount"
+                               
                                 : inputCollateralAmount >
                                     (currentTokenSelected == "Native Token"
                                       ? walletBalance2
@@ -5829,8 +5820,7 @@ const YourBorrowModal = ({
                     (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ?
                       (currentTokenSelected == "Native Token" ?
                         inputCollateralAmount > 0 &&
-                        inputCollateralAmount >= minimumDepositAmount &&
-                        inputCollateralAmount <= maximumDepositAmount:inputCollateralAmount > 0):true) &&
+                        inputCollateralAmount >= minimumDepositAmount:inputCollateralAmount > 0):true) &&
                     (currentTokenSelected == "Native Token"
                       ? inputCollateralAmount <= walletBalance2
                       : inputCollateralAmount <=
