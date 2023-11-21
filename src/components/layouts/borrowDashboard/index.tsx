@@ -986,19 +986,102 @@ const BorrowDashboard = ({
                         textAlign={"center"}
                       >
                         {borrow.loanState == "ACTIVE" ? (
-                          <Box
-                            // gap="3px"
-                            width="100%"
-                            display="flex"
-                            flexDirection="column"
-                            justifyContent="center"
-                            alignItems="center"
-                            height="3rem"
-                          // bgColor="red"
-                          // pl="3.4rem"
-                          >
+                        <Box
+                        // gap="3px"
+                        width="100%"
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        height="3rem"
+                      // bgColor="red"
+                      // pl="3.4rem"
+                      >
+                        <HStack
+                          height="50%"
+                          width="150%"
+                          alignItems="center"
+                          onMouseEnter={() => handleStatusHover("0" + idx)}
+                          onMouseLeave={() => handleStatusHoverLeave()}
+                          _hover={{ cursor: "pointer" }}
+                          justifyContent="center"
+                        // gap={0.2}
+                        >
+                          <Text fontSize="14px" fontWeight="400">
                             {borrow.spendType}
+                          </Text>
+                        </HStack>
+                        <HStack
+                          height="50%"
+                          width="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                        // bgColor={"red"}
+                        >
+                          <Box
+                            display="flex"
+                          // gap={0.5}
+                          // bgColor={"blue"}
+                          >
+                            {/* <Text>{idx}</Text> */}
+                              <Box
+                                onMouseEnter={() => handleStatusHover("3" + idx)}
+                                onMouseLeave={() => handleStatusHoverLeave()}
+                                _hover={{ cursor: "pointer" }}
+
+                                display="flex"
+                                gap={0.5}
+                                minWidth={"16px"}
+                              // bgColor={"blue"}
+                              >
+                                {statusHoverIndex != "3" + idx ? (
+                                  // <Box minWidth={"16px"}>
+                                  <Image
+                                    src={`/${borrow.currentLoanMarket}.svg`}
+                                    alt="Picture of the author"
+                                    width="16"
+                                    height="16"
+                                  />
+                                  // </Box>
+                                ) : (
+                                  <ExpandedCoinIcon asset={borrow.currentLoanMarket} />
+                                )}
+                              </Box>
+                            {/* <Box
+                            display="flex"
+                            gap={0.5}
+                            minWidth={"16px"}
+                            // bgColor={"blue"}
+                          >
+                            <Image
+                              src={`/${borrow.underlyingMarket}.svg`}
+                              alt="Picture of the author"
+                              width="16"
+                              height="16"
+                            />
                           </Box>
+                          <Box
+                            display="flex"
+                            gap={0.5}
+                            minWidth={"16px"}
+                            // bgColor={"blue"}
+                          >
+                            <Image
+                              src={`/${borrow.currentLoanMarket}.svg`}
+                              alt="Picture of the author"
+                              width="16"
+                              height="16"
+                            />
+                          </Box> */}
+                          </Box>
+                          <Text fontSize="14px" fontWeight="400">
+                              {dollarConversions == true ? "$" + numberFormatter(dollarConvertor(borrow?.currentLoanAmountParsed, borrow.currentLoanMarket, oraclePrices)) :
+                                numberFormatter(borrow?.currentLoanAmountParsed)
+                            }
+                          </Text>
+                        </HStack>
+                      </Box>
+                          
                         ) : borrow.loanState == "REPAID" ||
                           borrow.loanState == "LIQUIDATED" ? (
                           <Box
@@ -1217,8 +1300,18 @@ const BorrowDashboard = ({
                       // bgColor="red"
                       // pl="3.4rem"
                       >
-                        {borrow.currentLoanAmountParsed-borrow.loanAmountParsed   >= 0 ? "$" : "-$"}
-                        {borrow.spendType == "UNSPENT" ? numberFormatter(Math.abs(dollarConvertor(borrow.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) -
+                        {borrow.spendType == "UNSPENT" ? dollarConvertor(borrow.currentLoanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) -
+                          (reduxProtocolStats.find(
+                            (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                          )?.exchangeRateDTokenToUnderlying *
+                            dollarConvertor(borrow.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices))  >= 0 ? "$" : "-$":
+                            borrow.spendType == "LIQUIDITY" ?(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA, allSplit?.[lower_bound + idx]?.tokenA, oraclePrices) + dollarConvertor(allSplit?.[lower_bound + idx]?.amountB, allSplit?.[lower_bound + idx]?.tokenB, oraclePrices)) - dollarConvertor(borrow.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) * reduxProtocolStats.find(
+                              (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                            )?.exchangeRateDTokenToUnderlying >=0 ? "$" : "-$":
+                            borrow.spendType == "SWAP" ? dollarConvertor(borrow.currentLoanAmountParsed, borrow?.currentLoanMarket, oraclePrices)-dollarConvertor(borrow.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) * reduxProtocolStats.find(
+                              (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                            )?.exchangeRateDTokenToUnderlying >=0 ?"$" : "-$":""}
+                        {borrow.spendType == "UNSPENT" ? numberFormatter(Math.abs(dollarConvertor(borrow.currentLoanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) -
                           (reduxProtocolStats.find(
                             (val: any) => val?.token == borrow?.loanMarket.slice(1)
                           )?.exchangeRateDTokenToUnderlying *
@@ -1250,8 +1343,9 @@ const BorrowDashboard = ({
                             label={
                               <Box>
                                 Health Factor : {avgsLoneHealth?.find(
-                                  (item: any) => item?.loanId == borrow?.loanId
-                                )?.loanHealth}
+                                (item: any) =>
+                                  item?.loanId == borrow?.loanId
+                              )?.loanHealth}
                                 <br />
                                 Liquidates below : 1.06
                               </Box>
@@ -1274,7 +1368,6 @@ const BorrowDashboard = ({
                           // maxW="222px"
                           // mt="28px"
                           >
-
                             {avgsLoneHealth?.find(
                               (item: any) => item?.loanId == borrow?.loanId
                             )?.loanHealth
@@ -1295,10 +1388,14 @@ const BorrowDashboard = ({
                                 </Box>
                                 : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.09 &&
                                   avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.15) ?
-                                  <MediumHeathFactor />
-                                  : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.09) ?
+                                  <Box>
+                                    <MediumHeathFactor />
+                                  </Box>
+                                  : 
+                                  <Box>
                                     <LowhealthFactor />
-                                    : "" : <Skeleton
+                                  </Box>
+                                     : <Skeleton
                                 width="6rem"
                                 height="1.2rem"
                                 startColor="#101216"
