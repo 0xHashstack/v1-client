@@ -11,8 +11,11 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useAccount } from "wagmi";
 const DetailsForm = ({ handler }: any) => {
-  const [wallet, setWallet] = useState("");
+  const { address, isConnecting, isDisconnected } = useAccount();
+
+  const [wallet, setWallet] = useState(address?address:"");
   const [discord, setdiscord] = useState("");
   const [Twitter, setTwitter] = useState("");
   const [Commit, setCommit] = useState(0);
@@ -26,7 +29,7 @@ const DetailsForm = ({ handler }: any) => {
 
 
   const handleWalletChange = (e: any) => {
-    setWallet(e.target.value);
+    // setWallet(e.target.value);
   };
   const handleDiscordChange = (e: any) => {
     setdiscord(e.target.value);
@@ -55,7 +58,7 @@ const DetailsForm = ({ handler }: any) => {
 
   const handleSubmit=async()=>{
     try{
-      axios.post('/api/form/unchecked', { wallet:"ass",discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt },)
+      axios.post('/api/form/unchecked', { wallet:address,discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt },)
         .then((response) => {
           console.log(response, "linked"); // Log the response from the backend.
         })
@@ -68,7 +71,7 @@ const DetailsForm = ({ handler }: any) => {
   }
   const handleInvestorSubmit=async()=>{
     try{
-      axios.post('/api/form/checked', { wallet:"ass",discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt,fundname:FundName,Fundcommit:investorcommit,decisiontime:DecisionTime,url:url },)
+      axios.post('/api/form/checked', { wallet:address,discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt,fundname:FundName,Fundcommit:investorcommit,decisiontime:DecisionTime,url:url },)
         .then((response) => {
           console.log(response, "linked"); // Log the response from the backend.
         })
@@ -103,6 +106,7 @@ const DetailsForm = ({ handler }: any) => {
             </Text>
           </Box>
           <Box
+          cursor={'not-allowed'}
             width="100%"
             borderRadius="6px"
             display="flex"
@@ -118,6 +122,8 @@ const DetailsForm = ({ handler }: any) => {
             letterSpacing=" -0.15px"
           >
             <Input
+             cursor={'not-allowed'}
+             
               border="0px"
               value={wallet}
               onChange={handleWalletChange}
