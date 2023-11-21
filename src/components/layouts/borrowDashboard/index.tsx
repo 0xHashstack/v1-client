@@ -307,7 +307,6 @@ const BorrowDashboard = ({
   //  //console.log("running");
   // }, [oraclePrices, reduxProtocolStats, userLoans]);
   const avgsLoneHealth = useSelector(selectHealthFactor);
-  console.log(avgsLoneHealth,"h")
   const getSplit = async () => {
     let temp: any = [];
     const promises = [];
