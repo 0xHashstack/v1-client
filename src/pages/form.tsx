@@ -17,19 +17,18 @@ const form = () => {
     address: address,
     token:"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
   })
-  const [loading, setLoading] = useState<Boolean>(true);
+  const [loading, setLoading] = useState<Boolean>(false);
   useEffect(()=>{
     if(address && (Number(usdtBalance?.data?.formatted) > 50 || Number(usdcBalance?.data?.formatted) > 50)){
       setLoading(false);
     }
-
     else{
       router.push('/');
     }
   },[address])
 
   return (
-   loading ?<Box></Box> : <Box>
+ <Box>
         <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
             radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
