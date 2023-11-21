@@ -1376,7 +1376,7 @@ const useDataLoader = () => {
           if (data?.rBTC == null) return;
           if (maxdata?.rBTC == null) return;
           dispatch(setMinimumDepositAmounts(data));
-          dispatch(setMaximumDepositAmounts(100000000000));
+          dispatch(setMaximumDepositAmounts(maxdata));
           const count = getTransactionCount();
           dispatch(setMinMaxDepositCount(count));
         })
@@ -1421,7 +1421,7 @@ const useDataLoader = () => {
           if (data?.dBTC == null) return;
           if (maxdata?.dBTC == null) return;
           dispatch(setMinimumLoanAmounts(data));
-          dispatch(setMaximumLoanAmounts(10000000000000000));
+          dispatch(setMaximumLoanAmounts(maxdata));
           const count = getTransactionCount();
           dispatch(setMinMaxLoanCount(count));
         })

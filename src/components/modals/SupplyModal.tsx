@@ -659,13 +659,13 @@ const SupplyModal = ({
   // }, [])
   ////console.log(inputAmount);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
-  // const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
   const minAmounts = useSelector(selectMinimumDepositAmounts);
-  // const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  const maxAmounts = useSelector(selectMaximumDepositAmounts);
   useEffect(() => {
     setMinimumDepositAmount(minAmounts["r" + currentSelectedCoin])
-    // setmaximumDepositAmount(maxAmounts["r" + currentSelectedCoin])
-  }, [currentSelectedCoin, minAmounts])
+    setmaximumDepositAmount(maxAmounts["r" + currentSelectedCoin])
+  }, [currentSelectedCoin, minAmounts, maxAmounts])
   ////console.log(nft,"nft")
   // useEffect(()=>{
   //     const data=useSelector(selectMinimumDepositAmounts);
@@ -1031,7 +1031,8 @@ const SupplyModal = ({
                   color="white"
                   border={`${depositAmount > walletBalance
                       ? "1px solid #CF222E"
-                
+                      : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount ?
+                        "1px solid #CF222E"
                         : depositAmount < 0
                           ? "1px solid #CF222E"
                           : isNaN(depositAmount)
@@ -1063,7 +1064,8 @@ const SupplyModal = ({
                       placeholder={process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? `0.01536 ${currentSelectedCoin}` : `min ${minimumDepositAmount == null ? 0 : minimumDepositAmount} ${currentSelectedCoin}`}
                       color={`${depositAmount > walletBalance
                           ? "#CF222E"
-             
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount ?
+                            "#CF222E"
                             : isNaN(depositAmount)
                               ? "#CF222E"
                               : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount && depositAmount > 0
@@ -1092,7 +1094,8 @@ const SupplyModal = ({
                     variant="ghost"
                     color={`${depositAmount > walletBalance
                         ? "#CF222E"
-                 
+                        : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount ?
+                          "#CF222E"
                           : isNaN(depositAmount)
                             ? "#CF222E"
                             : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount && depositAmount > 0
@@ -1117,7 +1120,7 @@ const SupplyModal = ({
                     MAX
                   </Button>
                 </Box>
-                {depositAmount > walletBalance  ||
+                {depositAmount > walletBalance || (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount) ||
                   depositAmount < 0 || (depositAmount < minimumDepositAmount && process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > 0) ||
                   isNaN(depositAmount) ? (
                   <Text
@@ -1138,7 +1141,8 @@ const SupplyModal = ({
                       <Text ml="0.3rem">
                         {depositAmount > walletBalance
                           ? "Amount exceeds balance"
-                       
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount
+                            ? "More than max amount"
                             : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount
                               ? "Less than min amount" :
                               ""
@@ -1575,7 +1579,7 @@ const SupplyModal = ({
                 </Text>}
 
               </Card>
-              {depositAmount > 0 && depositAmount <= walletBalance && ((depositAmount > 0 && depositAmount >= minimumDepositAmount) || process.env.NEXT_PUBLIC_NODE_ENV == "testnet") ? (
+              {depositAmount > 0 && depositAmount <= walletBalance && ((depositAmount > 0 && depositAmount >= minimumDepositAmount) || process.env.NEXT_PUBLIC_NODE_ENV == "testnet") && (process.env.NEXT_PUBLIC_NODE_ENV == "testnet" || depositAmount <= maximumDepositAmount) ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (

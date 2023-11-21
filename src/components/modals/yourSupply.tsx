@@ -677,14 +677,13 @@ const YourSupplyModal = ({
     }
   }, [currentSelectedSupplyCoin]);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
-  // const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
   const minAmounts = useSelector(selectMinimumDepositAmounts);
-  // const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  const maxAmounts = useSelector(selectMaximumDepositAmounts);
   useEffect(() => {
     setMinimumDepositAmount(minAmounts["r" + currentSelectedSupplyCoin])
-    // setmaximumDepositAmount(maxAmounts["r" + currentSelectedSupplyCoin])
-  }, [currentSelectedSupplyCoin,minAmounts
-  ])
+    setmaximumDepositAmount(maxAmounts["r" + currentSelectedSupplyCoin])
+  }, [currentSelectedSupplyCoin,minAmounts,maxAmounts])
   
   const getBorrowAPR = (borrowMarket: string) => {
     switch (borrowMarket) {
@@ -1021,7 +1020,8 @@ const YourSupplyModal = ({
                           color="white"
                           border={`${inputSupplyAmount > walletBalance
                               ? "1px solid #CF222E"
-                            
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount>maximumDepositAmount ?
+                              "1px solid #CF222E"
                               : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount<minimumDepositAmount ?
                               "1px solid #CF222E"
                               : inputSupplyAmount < 0
@@ -1053,7 +1053,8 @@ const YourSupplyModal = ({
                               placeholder={process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? `0.01536 ${currentSelectedSupplyCoin}` : `min ${minimumDepositAmount == null ? 0 : minimumDepositAmount} ${currentSelectedSupplyCoin}`}
                               color={`${inputSupplyAmount > walletBalance
                                   ? "#CF222E"
-                                
+                                  : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>maximumDepositAmount ?
+                                  "#CF222E"
                                   : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount<minimumDepositAmount ?
                                   "#CF222E"
                                   : inputSupplyAmount < 0
@@ -1080,7 +1081,8 @@ const YourSupplyModal = ({
                             variant="ghost"
                             color={`${inputSupplyAmount > walletBalance
                                 ? "#CF222E"
-                              
+                                : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount>maximumDepositAmount ?
+                                "#CF222E"
                                 : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount<minimumDepositAmount ?
                                 "#CF222E"
                                 : inputSupplyAmount < 0
@@ -1102,7 +1104,7 @@ const YourSupplyModal = ({
                             MAX
                           </Button>
                         </Box>
-                        {inputSupplyAmount > walletBalance  ||
+                        {inputSupplyAmount > walletBalance ||(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount > maximumDepositAmount) ||
                           (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount < minimumDepositAmount)|| inputSupplyAmount < 0 ? (
                           <Text
                             display="flex"
@@ -1121,7 +1123,8 @@ const YourSupplyModal = ({
                               <Text ml="0.3rem">
                                 {inputSupplyAmount > walletBalance
                                   ? "Amount exceeds amount"
-                                  
+                                  : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount > maximumDepositAmount
+                            ? "More than max amount"
                             : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount < minimumDepositAmount
                               ? "Less than min amount" 
                                   : "Invalid Input"}
@@ -1564,7 +1567,7 @@ const YourSupplyModal = ({
                             </Box>
                           </Box>
                         )}
-                      {inputSupplyAmount > 0 &&((inputSupplyAmount > 0 && inputSupplyAmount >= minimumDepositAmount) || process.env.NEXT_PUBLIC_NODE_ENV == "testnet")&&
+                      {inputSupplyAmount > 0 &&((inputSupplyAmount > 0 && inputSupplyAmount >= minimumDepositAmount) || process.env.NEXT_PUBLIC_NODE_ENV == "testnet") && (process.env.NEXT_PUBLIC_NODE_ENV == "testnet" || inputSupplyAmount <= maximumDepositAmount)&&
                         inputSupplyAmount <= walletBalance ? (
                         <Box
                           onClick={() => {
