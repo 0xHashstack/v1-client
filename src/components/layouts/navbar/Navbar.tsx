@@ -51,14 +51,16 @@ import mixpanel from "mixpanel-browser";
 import {
   resetState,
   selectCurrentNetwork,
+  selectInteractedAddress,
   selectNftBalance,
   selectUserType,
   selectWhiteListed,
   selectYourBorrow,
   selectYourSupply,
+  setInteractedAddress,
 
 } from "@/store/slices/readDataSlice";
-import { AccountInterface, ProviderInterface } from "starknet";
+import { AccountInterface, ProviderInterface, number } from "starknet";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
@@ -71,14 +73,14 @@ const Navbar = ({ validRTokens }: any) => {
   const currentDropdown = useSelector(selectCurrentDropdown);
   const { account } = useAccount();
   const currentChainId = useSelector(selectCurrentNetwork);
-  // console.log(account, "Navbar");
+  ////console.log(account, "Navbar");
   // useEffect(() => {
   //   const storedAccount = localStorage.getItem("account");
   //   if (storedAccount) {
   //     setParsedAccount(JSON.parse(storedAccount));
   //   }
-  //   // console.log("Sahitya account",typeof account.address)
-  //   console.log("Sahitya", parsedAccount);
+  //   ////console.log("Sahitya account",typeof account.address)
+  //  //console.log("Sahitya", parsedAccount);
   // }, []);
   const [dashboardHover, setDashboardHover] = useState(false);
   const [campaignHover, setCampaignHover] = useState(false);
@@ -150,7 +152,7 @@ const Navbar = ({ validRTokens }: any) => {
 
   const switchWallet = () => {
     // const walletConnected = localStorage.getItem("lastUsedConnector");
-    // console.log(connector);
+    ////console.log(connector);
     if (connector?.options?.id == "braavos") {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
@@ -214,7 +216,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
           );
         }
       }
-      // console.log("starknetAccount", account?.provider?.chainId);
+      ////console.log("starknetAccount", account?.provider?.chainId);
     }
 
     const isWhiteListed = async () => {
@@ -227,7 +229,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
         setWhitelisted(response.data?.isWhitelisted);
 
       } catch (err) {
-        console.log(err, "err in whitelist")
+       //console.log(err, "err in whitelist")
       }
     }
     isWhiteListed()
@@ -243,6 +245,25 @@ const userWhitelisted=useSelector(selectWhiteListed);
       }
     }
   }, [account,whitelisted,userWhitelisted,referralLinked]);
+  const [allowedReferral, setAllowedReferral] = useState(false)
+  const interactedAddress=useSelector(selectInteractedAddress)
+  useEffect(()=>{
+    const fetchUsers=async()=>{
+      if(!address){
+        return;
+      }else{
+        if(interactedAddress==true){
+          return;
+        }else{
+          const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
+          const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
+          dispatch(setInteractedAddress(fetched))
+          setAllowedReferral(fetched)
+        }
+      }
+    }
+    fetchUsers();
+  },[address])
   return (
     <HStack
       zIndex="100"
@@ -381,7 +402,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             </Box>
         </Box>
         :
-        (totalBorrow>0 || totalSupply>0) ?
+        (interactedAddress) ?
         <Box
         padding="16px 12px"
         fontSize="12px"
@@ -621,7 +642,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />}
 
-          <Box
+          {/* <Box
             borderRadius="6px"
             cursor={Render ? "pointer" :"not-allowed"}
             margin="0"
@@ -648,7 +669,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             // onMouseEnter={() => setTransferDepositHover(true)}
             // onMouseLeave={() => setTransferDepositHover(false)}
           >
-            <Box
+            {/* <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -680,11 +701,11 @@ const userWhitelisted=useSelector(selectWhiteListed);
                   style={{ cursor: "pointer" }}
                 />
               )} */}
-              <Text fontSize="14px" lineHeight="14px" color="#676D9A">
+              {/* <Text fontSize="14px" lineHeight="14px" color="#676D9A">
                 {"Transfer Deposit"}
               </Text>
-            </Box>
-          </Box>
+            </Box>  */}
+          {/* </Box>  */}
 
           <Box
             fontSize="12px"
@@ -880,7 +901,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
                         disconnect();
                         connect(connectors[0]);
                       }
-                      // console.log("navbar", account);
+                      ////console.log("navbar", account);
                       // localStorage.setItem("account", JSON.stringify(account));
                     }}
                   >

@@ -144,15 +144,15 @@ const SupplyDashboard = ({
       if (!userDeposits || !reduxProtocolStats) {
         return;
       }
-      // console.log("all deposits calling started");
-      // console.log("all deposits calling started");
+      ////console.log("all deposits calling started");
+      ////console.log("all deposits calling started");
       try {
         const supply = userDeposits;
-        // console.log("users deposits - ", userDeposits);
+        ////console.log("users deposits - ", userDeposits);
 
         // const supply = await getUserDeposits(address);
 
-        // console.log("supply in supply dash: ", supply);
+        ////console.log("supply in supply dash: ", supply);
         if (!supply) return;
         // let data: any = [];
         // let indexes: any = [2, 3, 0, 1, 4];
@@ -177,15 +177,15 @@ const SupplyDashboard = ({
         //     temp.push(currSupply);
         // });
         // setSupplies(data);
-        // console.log(supplies,"supply dash");
-        // console.log(reduxProtocolStats,"supply stats")
+        ////console.log(supplies,"supply dash");
+        ////console.log(reduxProtocolStats,"supply stats")
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
             const avg = await effectiveAprDeposit(
               supply[i],
               reduxProtocolStats
             );
-            // console.log(avg, "avg in supply dash");
+            ////console.log(avg, "avg in supply dash");
             const data = {
               token: supply[i].token,
               avg: avg?.toFixed(2),
@@ -196,11 +196,11 @@ const SupplyDashboard = ({
           }
           setAvgs(avgsData);
         }
-        // console.log(avgs, "avgs in supply");
+        ////console.log(avgs, "avgs in supply");
 
         // dispatch(setUserDeposits(supply));
       } catch (err) {
-        console.log("supplies", err);
+       //console.log("supplies", err);
       }
     };
     getSupply();
@@ -223,11 +223,11 @@ const SupplyDashboard = ({
   //         setAvgs(avgsData);
   //       }
   //     }catch(err){
-  //       console.log(err);
+  //      //console.log(err);
   //     }
 
   //     fetchEffectiveApr();
-  //     console.log(avgs,"avgs in suppply")
+  //    //console.log(avgs,"avgs in suppply")
   //   }
   // },[userDeposits])
   const [protocolStats, setProtocolStats]: any = useState([]);
@@ -243,7 +243,7 @@ const SupplyDashboard = ({
         if (stats) {
           // dispatch(setProtocolStats(stats));
         }
-        // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
+        ////console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
         setProtocolStats([
           stats?.[2],
@@ -260,12 +260,12 @@ const SupplyDashboard = ({
           stats?.[4].supplyRate,
         ]);
       } catch (error) {
-        console.log("error on getting protocol stats");
+       //console.log("error on getting protocol stats");
       }
     };
     getMarketData();
   }, [reduxProtocolStats]);
-  // console.log(protocolStats,"data protocol stats in supply")
+  ////console.log(protocolStats,"data protocol stats in supply")
 
   useEffect(() => {
     let temp: any = [];
@@ -278,17 +278,17 @@ const SupplyDashboard = ({
   }, [supplies]);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
-  // console.log(userDeposits?.length,"length supply");
+  ////console.log(userDeposits?.length,"length supply");
   upper_bound = Math.min(userDeposits?.length - 1, upper_bound);
   // useEffect(() => {
   //   try {
   //     const supply = async () => {
   //       const userSupply = await getUserDeposits(address || "");
-  //       // console.log("userDeposits", userSupply);
+  //       ////console.log("userDeposits", userSupply);
   //     };
   //     // supply();
   //   } catch (err) {
-  //     console.log("userDeposits", err);
+  //    //console.log("userDeposits", err);
   //   }
   // }, []);
   const [loading, setLoading] = useState(true);
@@ -296,11 +296,11 @@ const SupplyDashboard = ({
   useEffect(() => {
     if (userDeposits) {
       const supply = userDeposits;
-      // console.log("users deposits - ", userDeposits);
+      ////console.log("users deposits - ", userDeposits);
 
       // const supply = await getUserDeposits(address);
 
-      // console.log("supply in supply dash: ", supply);
+      ////console.log("supply in supply dash: ", supply);
       if (!supply) return;
       let data: any = [];
       let indexes: any = [2, 3, 0, 1, 4];
@@ -326,7 +326,7 @@ const SupplyDashboard = ({
         }
       });
       setSupplies(data);
-      console.log(data, "loading - ", userDeposits);
+     //console.log(data, "loading - ", userDeposits);
       setLoading(false);
     }
   }, [userDeposits]);
@@ -581,13 +581,15 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
+                          
                           Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
-                                return stat.supplyRate;
+                                return stat;
                             })?.exchangeRateRtokenToUnderlying
                           )?.toFixed(3)
                         )}
+                        
                       </Text>
                     </Td>
                     <Td
@@ -620,7 +622,7 @@ const SupplyDashboard = ({
                           Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
-                                return stat?.supplyRate;
+                                return stat;
                             })?.supplyRate
                           )?.toFixed(3) + "%"
                         )}

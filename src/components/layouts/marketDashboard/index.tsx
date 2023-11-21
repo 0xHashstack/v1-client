@@ -30,7 +30,7 @@ const MarketDashboard = () => {
   const { account, address } = useAccount();
   const userDeposits = useSelector(selectUserDeposits);
   const oraclePrices = useSelector(selectOraclePrices);
-  // console.log(account,"Market Page")
+  ////console.log(account,"Market Page")
 
   // useEffect(()=>{
   //   fetchUserLoans();
@@ -48,7 +48,7 @@ const MarketDashboard = () => {
       if (!account || userDeposits?.length <= 0) return;
       // const reserves = await getUserDeposits(address as string);
       const reserves = userDeposits;
-      // console.log("got reservers", reserves);
+      ////console.log("got reservers", reserves);
 
       const rTokens: any = [];
       if (reserves) {
@@ -61,21 +61,21 @@ const MarketDashboard = () => {
           }
         });
       }
-      // console.log("rtokens", rTokens);
+      ////console.log("rtokens", rTokens);
       if (rTokens.length === 0) return;
       setValidRTokens(rTokens);
-      // console.log("valid rtoken", validRTokens);
-      // console.log("market page -user supply", reserves);
+      ////console.log("valid rtoken", validRTokens);
+      ////console.log("market page -user supply", reserves);
     } catch (err) {
-      // console.log("Error fetching protocol reserves", err);
+      ////console.log("Error fetching protocol reserves", err);
     }
   };
   // const fetchUserReserves = async () => {
   //   try {
   //     const reserves = await getUserReserves();
-  //     console.log(reserves, "market page -user supply");
+  //    //console.log(reserves, "market page -user supply");
   //   } catch (err) {
-  //     console.log("Error fetching protocol reserves", err);
+  //    //console.log("Error fetching protocol reserves", err);
   //   }
   // };
 
@@ -86,7 +86,7 @@ const MarketDashboard = () => {
   //       dispatch(setOraclePrices(prices));
   //     }
 
-  //     console.log("oracleprices", prices);
+  //    //console.log("oracleprices", prices);
   //     setOraclePrices(prices);
   //   } catch (error) {
   //     console.error("Error fetching Oracle prices:", error);
@@ -104,7 +104,7 @@ const MarketDashboard = () => {
   }, [stats]);
   const fetchProtocolStats = async () => {
     try {
-      // console.log("fetchprotocolstats", stats); //23014
+      ////console.log("fetchprotocolstats", stats); //23014
       // const temp: any = ;
       setProtocolStats([
         stats?.[2],
@@ -141,7 +141,7 @@ const MarketDashboard = () => {
           stats?.[1].borrowRate +
           stats?.[0].borrowRate) /
         5;
-      // console.log(avg,"avg borrow")
+      ////console.log(avg,"avg borrow")
       // dispatch(setAvgBorrowAPR(avg));
       setSupplyAPRs([
         stats?.[2].supplyRate,
@@ -160,7 +160,7 @@ const MarketDashboard = () => {
         stats?.[4].utilisationPerMarket,
       ]);
     } catch (error) {
-      // console.log("error on getting protocol stats");
+      ////console.log("error on getting protocol stats");
     }
   };
 

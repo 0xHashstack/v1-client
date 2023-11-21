@@ -12,7 +12,7 @@
 
 // const useTransfer = (asset: Token) => {
 //   const { address: accountAddress } = useAccount();
-//   console.log("account use Transfer", accountAddress, asset);
+//  //console.log("account use Transfer", accountAddress, asset);
 //   const {
 //     data: dataTransfer,
 //     write: writeTransfer,
@@ -33,9 +33,9 @@
 //   const handleTransfer = async () => {
 //     try {
 //       const result = await writeAsyncTransfer();
-//       console.log("account result", result);
+//      //console.log("account result", result);
 //     } catch (e) {
-//       console.log("account result error", e);
+//      //console.log("account result error", e);
 //     }
 //   };
 

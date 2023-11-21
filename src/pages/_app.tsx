@@ -145,7 +145,7 @@ export default function App({ Component, pageProps }: AppProps) {
   //       setFeedback(true);
   //     }
   //   })
-  //   .catch((err) => console.log(err));
+  //   .catch((err) =>//console.log(err));
 
   return (
     <>

@@ -45,12 +45,12 @@ const YourSupply = () => {
   // const [userDeposits, setUserDeposits] = useState<IDeposit[]>([]);
   // useEffect(() => {
   //   const getSupply = async () => {
-  //     console.log("all deposits calling started");
+  //    //console.log("all deposits calling started");
   //     try {
   //       const supply = await getUserDeposits(address || "");
   //       setUserDeposits(supply);
   //     } catch (err) {
-  //       console.log("supplies", err);
+  //      //console.log("supplies", err);
   //     }
   //   };
   //   getSupply();

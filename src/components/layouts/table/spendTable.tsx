@@ -88,7 +88,7 @@ const SpendTable = () => {
   const { account, address, isConnected } = useAccount();
   const userLoans = useSelector(selectUserUnspentLoans);
   
-  // console.log(getTokenFromAddress(
+  ////console.log(getTokenFromAddress(
   //   getDTokenFromAddress(number.toHex(loanData?.market))
   //     ?.underlying_asset || ""
   // )?.name)
@@ -108,7 +108,7 @@ const SpendTable = () => {
   //       }
   //       const loans = userLoansRedux;
   //       // const loans = await getUserLoans(address);
-  //       console.log(loans, "Loans from your borrow index page");
+  //      //console.log(loans, "Loans from your borrow index page");
 
   //       // loans.filter(
   //       //   (loan) =>
@@ -128,9 +128,9 @@ const SpendTable = () => {
   //         );
   //       }
   //     } catch (err) {
-  //       console.log("spendtable : unable to fetch user loans");
+  //      //console.log("spendtable : unable to fetch user loans");
   //     }
-  //     // console.log("loans", loans);
+  //     ////console.log("loans", loans);
   //   };
   //   // if (address && address != "") {
   //   // callWithRetries(loan, [], 3);
@@ -141,7 +141,7 @@ const SpendTable = () => {
   // .filter(
   //   (borrow: any) => borrow.spendType === "UNSPENT"
   // );
-  // console.log(userLoans, "user loans in spend table");
+  ////console.log(userLoans, "user loans in spend table");
   const rows: any[] = [];
 
   const dispatch = useDispatch();
@@ -169,7 +169,7 @@ const SpendTable = () => {
 
   const [currentLoanAmount, setCurrentLoanAmount] = useState("");
   const [currentLoanMarket, setCurrentLoanMarket] = useState("");
-  // console.log("userLoans ", userLoans);
+  ////console.log("userLoans ", userLoans);
   useEffect(() => {
     if (userLoans) {
       let temp1: any = [];
@@ -200,7 +200,7 @@ const SpendTable = () => {
       ) {
         setCurrentPagination(currentPagination - 1);
       }
-      // console.log("faisal coin mapping", borrowIDCoinMap);
+      ////console.log("faisal coin mapping", borrowIDCoinMap);
     }
   }, [userLoans]);
 
@@ -241,9 +241,9 @@ const SpendTable = () => {
   //     }
   //   };
   //   if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
-  //   console.log("running");
+  //  //console.log("running");
   // }, [oraclePrices, reduxProtocolStats, userLoans]);
-  // console.log(avgs,"avgs in borrow")
+  ////console.log(avgs,"avgs in borrow")
 
   // useEffect(()=>{
 
@@ -256,7 +256,7 @@ const SpendTable = () => {
   const fetchProtocolStats = async () => {
     try {
       const stats = reduxProtocolStats;
-      // console.log("fetchprotocolstats", stats); //23014
+      ////console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
         stats?.[2]?.borrowRate,
         stats?.[3]?.borrowRate,
@@ -265,7 +265,7 @@ const SpendTable = () => {
         stats?.[4]?.borrowRate,
       ]);
     } catch (error) {
-      console.log("error on getting protocol stats");
+     //console.log("error on getting protocol stats");
     }
   };
 
@@ -294,7 +294,7 @@ const SpendTable = () => {
         ]);
       }
       setLtv(ltv_ratio);
-      // console.log("spendtable ltv ", ltv);
+      ////console.log("spendtable ltv ", ltv);
     }
   }, [userLoans, oraclePrices]);
 

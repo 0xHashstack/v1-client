@@ -298,14 +298,14 @@ const Referral = () => {
         const fetchData=async()=>{
             try{
                 const array:any=[];
-                const res=await axios.get('https://testnet.hstk.fi/api/get-community-stats');
+                const res=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/api/get-community-stats':'https://hstk.fi/api/get-community-stats');
                 if(res?.data){
                     array.push(res?.data?.overall_referred_liq);
                     array.push(res?.data?.rewards_claimed);
                 }
                 setDataCommunity(array)
             }catch(err){
-                console.log(err);
+               //console.log(err);
             }
 
         }
@@ -315,16 +315,16 @@ const Referral = () => {
                     return;
                 }
                 const array:any=[];
-                const res=await axios.get(`https://testnet.hstk.fi/api/get-user-stats/${address}`);
+                const res=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/api/get-user-stats/${address}`:`https://hstk.fi/api/get-user-stats/${address}`);
                 if(res?.data){
-                    array.push(res?.data?.referred_points);
+                    array.push(res?.data?.referred_points ?res?.data?.referred_points:0);
                     array.push(res?.data?.points_earned);
                     array.push(res?.data?.rewards_claimed)
                 }
                 setDataUser(array);
-                console.log(res,"user")
+               //console.log(res,"user")
             }catch(err){
-                console.log(err)
+               //console.log(err)
             }
         }
         fetchUserData();
@@ -334,7 +334,7 @@ const Referral = () => {
     useEffect(() => {
         // if (UserLoans) {
         //   if (UserLoans?.length <= (currentPagination - 1) * 6) {
-        //     console.log("pagination", Pagination, UserLoans);
+        //    //console.log("pagination", Pagination, UserLoans);
         //     if (currentPagination > 1) {
         //       setCurrentPagination(currentPagination - 1);
         //     }
@@ -353,7 +353,7 @@ const Referral = () => {
     //   const loan = async () => {
     //     try {
     //       const loans = await getUserLoans(address || "");
-    //       // console.log(loans,"Loans from your borrow index page")
+    //       ////console.log(loans,"Loans from your borrow index page")
 
     //       // loans.filter(
     //       //   (loan) =>
@@ -381,9 +381,9 @@ const Referral = () => {
     //           loan.loanAmountParsed > 0
     //       )));
     //     } catch (err) {
-    //       console.log("your-borrow : unable to fetch user loans");
+    //      //console.log("your-borrow : unable to fetch user loans");
     //     }
-    //     // console.log("loans", loans);
+    //     ////console.log("loans", loans);
     //   };
     //   if (account) {
     //     loan();
@@ -411,7 +411,7 @@ const Referral = () => {
                 await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/":"https://hstk.fi/") + refferal);
                 axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/shorten":'https://hstk.fi/shorten'), { pseudo_name:refferal,address: address })
                 .then((response) => {
-                  console.log(response, "response refer link"); // Log the response from the backend.
+                 //console.log(response, "response refer link"); // Log the response from the backend.
                 })
                 .catch((error) => {
                   console.error('Error:', error);
@@ -538,9 +538,9 @@ const Referral = () => {
             "Points earned",
             "Rewards Claimed",
           ]}
-          statsData={process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? dataUser:[0,0,0]}
+          statsData={dataUser}
           onclick={() => {
-            console.log("hi")
+           //console.log("hi")
           }}
           arrowHide={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?false:true}
         />
@@ -549,7 +549,7 @@ const Referral = () => {
             "Overall refered by community",
             "Rewards claimed by community"
           ]}
-          statsData={process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?dataCommunity:[0,0]}
+          statsData={dataCommunity}
           onclick={() => {
             // handleRouteChange("/v1/protocol-metrics");
           }}

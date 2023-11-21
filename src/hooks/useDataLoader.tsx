@@ -385,9 +385,9 @@ const useDataLoader = () => {
   const [btcData, setBtcData] = useState<any>();
 
   const avgsData: any = [];
-  // console.log("address", address);
+  ////console.log("address", address);
   // useEffect(() => {
-  //   console.log("switched to market");
+  //  //console.log("switched to market");
   // }, []);
   const getTransactionCount = () => {
     return transactionRefresh;
@@ -407,22 +407,22 @@ const useDataLoader = () => {
   //         dateTime: dateTime,
   //       };
 
-  //       console.log("dataArray ", data);
+  //      //console.log("dataArray ", data);
   //       setSeriesData(dataArray);
   //     };
   //     fetchData();
   //   } catch (err) {
-  //     console.log("error fetching aprByMarket data ", err);
+  //    //console.log("error fetching aprByMarket data ", err);
   //   }
   // }, []);
   // useEffect(() => {
-  //   console.log("your supply catch transactionStatus ", transactionStatus);
+  //  //console.log("your supply catch transactionStatus ", transactionStatus);
   // }, [transactionStatus]);
 
   useEffect(() => {
     const fetchHourlyData = async () => {
       try {
-        // console.log("HIII")
+        ////console.log("HIII")
         // if(hourlyBTCData!=null){
         //   return;
         // }
@@ -444,7 +444,7 @@ const useDataLoader = () => {
             const res = response?.status != "rejected" ? response?.value : "0";
           });
           for (var j = 0; j < 5; j++) {
-            // console.log(j,"for loop")
+            ////console.log(j,"for loop")
             const responseA = val?.[j] ? val?.[j] : null;
             const responseB = val?.[j + 5] ? val?.[j + 5] : null;
             const responseC = val?.[10] ? val?.[10] : null;
@@ -459,7 +459,7 @@ const useDataLoader = () => {
               responseA?.status != "rejected" ? responseA?.value : null;
             const responseApr =
               responseB?.status != "rejected" ? responseB?.value : null;
-            // console.log(val, response, "response data", responseApr);
+            ////console.log(val, response, "response data", responseApr);
             // if (!response) {
             //   return;
             // }
@@ -482,7 +482,7 @@ const useDataLoader = () => {
               const apys: any = [];
               const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
-                // console.log(i,"inside loop")
+                ////console.log(i,"inside loop")
                 const token = response?.[i]?.tokenName;
                 const supplyAmount: number =
                   (Number(response?.[i]?.supplyAmount) /
@@ -502,10 +502,10 @@ const useDataLoader = () => {
                   oraclePrices?.find(
                     (oraclePrice: OraclePrice) => oraclePrice?.name == token
                   )?.price;
-                // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
-                // console.log(response?.[i].tokenName)
+                ////console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
+                ////console.log(response?.[i].tokenName)
                 // const supplyAmount1=etherToWeiBN(amount,token)
-                // console.log(supplyAmount1,"aamount")
+                ////console.log(supplyAmount1,"aamount")
                 amounts?.push(supplyAmount);
                 borrowAmounts?.push(borrowAmount);
                 // tvlAmounts?.push(tvlAmount);
@@ -525,11 +525,11 @@ const useDataLoader = () => {
                 );
                 totalTransactions?.push(response?.[i]?.totalTransactions);
                 totalAccounts?.push(response?.[i]?.totalAccounts);
-                aprs?.push(responseApr?.[i]?.APR);
-                apys?.push(responseApr?.[i]?.APY);
+                aprs?.push(responseApr?.[i]?.APY);
+                apys?.push(responseApr?.[i]?.APR);
                 totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
-              // console.log(dates,"Dates")
+              ////console.log(dates,"Dates")
               const data = {
                 dates: dates,
                 supplyAmounts: amounts,
@@ -548,13 +548,13 @@ const useDataLoader = () => {
                 apys: apys,
                 totalUrm: totalUrm,
               };
-              // console.log(
+              ////console.log(
               //   "backend loop daily - ",
               //   response?.[0]?.tokenName,
               //   data
               // );
-              // console.log(data,"data in data loader")
-              // console.log(btcData,"Data gone")
+              ////console.log(data,"data in data loader")
+              ////console.log(btcData,"Data gone")
               if (j == 0) {
                 dispatch(setHourlyDAIData(data));
               } else if (j == 1) {
@@ -575,7 +575,7 @@ const useDataLoader = () => {
         // const count = getTransactionCount();
         // dispatch(setHourlyDataCount(count));
       } catch (err) {
-        console.log(err, "err in hourly data");
+       //console.log(err, "err in hourly data");
       }
     };
     if (hourlyDataCount < transactionRefresh && oraclePrices) {
@@ -585,7 +585,7 @@ const useDataLoader = () => {
   useEffect(() => {
     const fetchDailyData = async () => {
       try {
-        // console.log("HIII")
+        ////console.log("HIII")
         // if(hourlyBTCData!=null){
         //   return;
         // }
@@ -603,12 +603,12 @@ const useDataLoader = () => {
           OffchainAPI.httpGet(`/api/metrics/urm_platform/weekly`),
         ];
         Promise.allSettled([...promises]).then((val) => {
-          // console.log("backend data weekly - ", val);
+          ////console.log("backend data weekly - ", val);
           val.map((response, idx) => {
             const res = response?.status != "rejected" ? response?.value : "0";
           });
           for (var j = 0; j < 5; j++) {
-            // console.log(j,"for loop")
+            ////console.log(j,"for loop")
             const responseA = val?.[j] ? val?.[j] : null;
             const responseB = val?.[j + 5] ? val?.[j + 5] : null;
             const responseC = val?.[10] ? val?.[10] : null;
@@ -623,7 +623,7 @@ const useDataLoader = () => {
               responseA?.status != "rejected" ? responseA?.value : null;
             const responseApr =
               responseB?.status != "rejected" ? responseB?.value : null;
-            // console.log(val, response, "response data", responseApr);
+            ////console.log(val, response, "response data", responseApr);
             // if (!response) {
             //   return;
             // }
@@ -646,7 +646,7 @@ const useDataLoader = () => {
               const apys: any = [];
               const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
-                // console.log(i,"inside loop")
+                ////console.log(i,"inside loop")
                 const token = response?.[i]?.tokenName;
                 const supplyAmount: number =
                   (Number(response?.[i]?.supplyAmount) /
@@ -663,10 +663,10 @@ const useDataLoader = () => {
                 const tvlAmount: number =
                   Number(response?.[i].tvlAmount) /
                   Math.pow(10, tokenDecimalsMap[token]);
-                // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
-                // console.log(response?.[i].tokenName)
+                ////console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
+                ////console.log(response?.[i].tokenName)
                 // const supplyAmount1=etherToWeiBN(amount,token)
-                // console.log(supplyAmount1,"aamount")
+                ////console.log(supplyAmount1,"aamount")
                 amounts?.push(supplyAmount);
                 borrowAmounts?.push(borrowAmount);
                 // tvlAmounts?.push(tvlAmount);
@@ -686,11 +686,11 @@ const useDataLoader = () => {
                 );
                 totalTransactions?.push(response?.[i]?.totalTransactions);
                 totalAccounts?.push(response?.[i]?.totalAccounts);
-                aprs?.push(responseApr?.[i]?.APR);
-                apys?.push(responseApr?.[i]?.APY);
+                aprs?.push(responseApr?.[i]?.APY);
+                apys?.push(responseApr?.[i]?.APR);
                 totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
-              // console.log(dates,"Dates")
+              ////console.log(dates,"Dates")
               const data = {
                 dates: dates,
                 supplyAmounts: amounts,
@@ -709,9 +709,9 @@ const useDataLoader = () => {
                 apys: apys,
                 totalUrm: totalUrm,
               };
-              // console.log("backend looping 2 -", data);
-              // console.log(data,"data in data loader")
-              // console.log(btcData,"Data gone")
+              ////console.log("backend looping 2 -", data);
+              ////console.log(data,"data in data loader")
+              ////console.log(btcData,"Data gone")
               if (j == 0) {
                 dispatch(setDailyDAIData(data));
               } else if (j == 1) {
@@ -732,7 +732,7 @@ const useDataLoader = () => {
         // const count = getTransactionCount();
         // dispatch(setHourlyDataCount(count));
       } catch (err) {
-        console.log(err, "err in hourly data");
+       //console.log(err, "err in hourly data");
       }
     };
     if (weeklyDataCount < transactionRefresh && oraclePrices) {
@@ -742,7 +742,7 @@ const useDataLoader = () => {
   useEffect(() => {
     const fetchMonthlyData = async () => {
       try {
-        // console.log("HIII")
+        ////console.log("HIII")
         // if(hourlyBTCData!=null){
         //   return;
         // }
@@ -760,12 +760,12 @@ const useDataLoader = () => {
           OffchainAPI.httpGet(`/api/metrics/urm_platform/monthly`),
         ];
         Promise.allSettled([...promises]).then((val) => {
-          // console.log("backend data weekly - ", val);
+          ////console.log("backend data weekly - ", val);
           val.map((response, idx) => {
             const res = response?.status != "rejected" ? response?.value : "0";
           });
           for (var j = 0; j < 5; j++) {
-            // console.log(j,"for loop")
+            ////console.log(j,"for loop")
             const responseA = val?.[j] ? val?.[j] : null;
             const responseB = val?.[j + 5] ? val?.[j + 5] : null;
             const responseC = val?.[10] ? val?.[10] : null;
@@ -780,7 +780,7 @@ const useDataLoader = () => {
               responseA?.status != "rejected" ? responseA?.value : null;
             const responseApr =
               responseB?.status != "rejected" ? responseB?.value : null;
-            // console.log(val, response, "response data", responseApr);
+            ////console.log(val, response, "response data", responseApr);
             // if (!response) {
             //   return;
             // }
@@ -803,7 +803,7 @@ const useDataLoader = () => {
               const apys: any = [];
               const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
-                // console.log(i,"inside loop")
+                ////console.log(i,"inside loop")
                 const token = response?.[i]?.tokenName;
                 const supplyAmount: number =
                   (Number(response?.[i]?.supplyAmount) /
@@ -820,10 +820,10 @@ const useDataLoader = () => {
                 const tvlAmount: number =
                   Number(response?.[i].tvlAmount) /
                   Math.pow(10, tokenDecimalsMap[token]);
-                // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
-                // console.log(response?.[i].tokenName)
+                ////console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
+                ////console.log(response?.[i].tokenName)
                 // const supplyAmount1=etherToWeiBN(amount,token)
-                // console.log(supplyAmount1,"aamount")
+                ////console.log(supplyAmount1,"aamount")
                 amounts?.push(supplyAmount);
                 borrowAmounts?.push(borrowAmount);
                 // tvlAmounts?.push(tvlAmount);
@@ -843,11 +843,11 @@ const useDataLoader = () => {
                 );
                 totalTransactions?.push(response?.[i]?.totalTransactions);
                 totalAccounts?.push(response?.[i]?.totalAccounts);
-                aprs?.push(responseApr?.[i]?.APR);
-                apys?.push(responseApr?.[i]?.APY);
+                aprs?.push(responseApr?.[i]?.APY);
+                apys?.push(responseApr?.[i]?.APR);
                 totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
-              // console.log(dates,"Dates")
+              ////console.log(dates,"Dates")
               const data = {
                 dates: dates,
                 supplyAmounts: amounts,
@@ -866,10 +866,10 @@ const useDataLoader = () => {
                 apys: apys,
                 totalUrm: totalUrm,
               };
-              // console.log(dates,"monthly dates")
-              // console.log("backend looping 2 -", data);
-              // console.log(data,"data in data loader")
-              // console.log(btcData,"Data gone")
+              ////console.log(dates,"monthly dates")
+              ////console.log("backend looping 2 -", data);
+              ////console.log(data,"data in data loader")
+              ////console.log(btcData,"Data gone")
               if (j == 0) {
                 dispatch(setMonthlyDAIData(data));
               } else if (j == 1) {
@@ -890,7 +890,7 @@ const useDataLoader = () => {
         // const count = getTransactionCount();
         // dispatch(setHourlyDataCount(count));
       } catch (err) {
-        console.log(err, "err in hourly data");
+       //console.log(err, "err in hourly data");
       }
     };
     if (monthlyDataCount < transactionRefresh && oraclePrices) {
@@ -900,7 +900,7 @@ const useDataLoader = () => {
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        // console.log("HIII")
+        ////console.log("HIII")
         // if(hourlyBTCData!=null){
         //   return;
         // }
@@ -918,12 +918,12 @@ const useDataLoader = () => {
           OffchainAPI.httpGet(`/api/metrics/urm_platform/all`),
         ];
         Promise.allSettled([...promises]).then((val) => {
-          // console.log("backend data weekly - ", val);
+          ////console.log("backend data weekly - ", val);
           val.map((response, idx) => {
             const res = response?.status != "rejected" ? response?.value : "0";
           });
           for (var j = 0; j < 5; j++) {
-            // console.log(j,"for loop")
+            ////console.log(j,"for loop")
             const responseA = val?.[j] ? val?.[j] : null;
             const responseB = val?.[j + 5] ? val?.[j + 5] : null;
             const responseC = val?.[10] ? val?.[10] : null;
@@ -938,7 +938,7 @@ const useDataLoader = () => {
               responseA?.status != "rejected" ? responseA?.value : null;
             const responseApr =
               responseB?.status != "rejected" ? responseB?.value : null;
-            // console.log(val, response, "response data", responseApr);
+            ////console.log(val, response, "response data", responseApr);
             // if (!response) {
             //   return;
             // }
@@ -961,7 +961,7 @@ const useDataLoader = () => {
               const apys: any = [];
               const totalUrm: any = [];
               for (var i = 0; i < response?.length; i++) {
-                // console.log(i,"inside loop")
+                ////console.log(i,"inside loop")
                 const token = response?.[i]?.tokenName;
                 const supplyAmount: number =
                   (Number(response?.[i]?.supplyAmount) /
@@ -978,10 +978,10 @@ const useDataLoader = () => {
                 const tvlAmount: number =
                   Number(response?.[i].tvlAmount) /
                   Math.pow(10, tokenDecimalsMap[token]);
-                // console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
-                // console.log(response?.[i].tokenName)
+                ////console.log(supplyAmount,token,response?.[i].supplyAmount,"amount and token")
+                ////console.log(response?.[i].tokenName)
                 // const supplyAmount1=etherToWeiBN(amount,token)
-                // console.log(supplyAmount1,"aamount")
+                ////console.log(supplyAmount1,"aamount")
                 amounts?.push(supplyAmount);
                 borrowAmounts?.push(borrowAmount);
                 // tvlAmounts?.push(tvlAmount);
@@ -1001,11 +1001,11 @@ const useDataLoader = () => {
                 );
                 totalTransactions?.push(response?.[i]?.totalTransactions);
                 totalAccounts?.push(response?.[i]?.totalAccounts);
-                aprs?.push(responseApr?.[i]?.APR);
-                apys?.push(responseApr?.[i]?.APY);
+                aprs?.push(responseApr?.[i]?.APY);
+                apys?.push(responseApr?.[i]?.APR);
                 totalUrm?.push(responseTotal?.[i]?.totalPlatformURM / 100);
               }
-              // console.log(dates,"Dates")
+              ////console.log(dates,"Dates")
               const data = {
                 dates: dates,
                 supplyAmounts: amounts,
@@ -1024,9 +1024,9 @@ const useDataLoader = () => {
                 apys: apys,
                 totalUrm: totalUrm,
               };
-              // console.log(dates,"monthly dates")
-              // console.log("backend looping 2 -", data);
-              // console.log(btcData,"Data gone")
+              ////console.log(dates,"monthly dates")
+              ////console.log("backend looping 2 -", data);
+              ////console.log(btcData,"Data gone")
               if (j == 0) {
                 dispatch(setAllDAIData(data));
               } else if (j == 1) {
@@ -1047,7 +1047,7 @@ const useDataLoader = () => {
         // const count = getTransactionCount();
         // dispatch(setHourlyDataCount(count));
       } catch (err) {
-        console.log(err, "err in hourly data");
+       //console.log(err, "err in hourly data");
       }
     };
     if (allDataCount < transactionRefresh && oraclePrices) {
@@ -1063,13 +1063,13 @@ const useDataLoader = () => {
         }
         dispatch(setOraclePrices(data));
         dispatch(setOraclePricesCount(0));
-        console.log("oracle prices - transactionRefresh done ", data);
+       //console.log("oracle prices - transactionRefresh done ", data);
       };
       if (oraclePricesCount < 0) {
         fetchOraclePrices();
       }
     } catch (err) {
-      console.log("oracle prices - transactionRefresh error ", err);
+     //console.log("oracle prices - transactionRefresh error ", err);
     }
   }, [address, transactionRefresh]);
 
@@ -1092,7 +1092,7 @@ const useDataLoader = () => {
         fetchProtocolReserves();
       }
     } catch (err) {
-      console.log("error fetching protocol reserves ", err);
+     //console.log("error fetching protocol reserves ", err);
     }
   }, [address, transactionRefresh]);
 
@@ -1151,18 +1151,18 @@ const useDataLoader = () => {
         fetchFees();
       }
     } catch (err) {
-      console.log(err, "err in fetchFees")
+     //console.log(err, "err in fetchFees")
     }
   }, [transactionRefresh,address])
   useEffect(() => {
     try {
       const fetchProtocolStats = async () => {
         const dataStats = await getProtocolStats();
-        console.log("protocol stats - transactionRefresh done", dataStats);
+       //console.log("protocol stats - transactionRefresh done", dataStats);
         if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 5)) {
           return;
         }
-        // console.log(dataStats,"data market in pagecard")
+        ////console.log(dataStats,"data market in pagecard")
         dispatch(setProtocolStats(dataStats));
         const count = getTransactionCount();
         dispatch(setProtocolStatsCount(count));
@@ -1171,7 +1171,7 @@ const useDataLoader = () => {
         fetchProtocolStats();
       }
     } catch (err) {
-      console.log("protocol stats - transactionRefresh error ", err);
+     //console.log("protocol stats - transactionRefresh error ", err);
     }
   }, [address, transactionRefresh]);
 
@@ -1185,8 +1185,8 @@ const useDataLoader = () => {
         if (!data) {
           return;
         }
-        // console.log(data,"data deposit useffect")
-        // console.log(data.length,"data length")
+        ////console.log(data,"data deposit useffect")
+        ////console.log(data.length,"data length")
         if (data) {
           dispatch(setUserDeposits(data));
           const count = getTransactionCount();
@@ -1197,7 +1197,7 @@ const useDataLoader = () => {
         fetchUserDeposits();
       }
     } catch (err) {
-      console.log("user deposits - transactionRefresh error", err);
+     //console.log("user deposits - transactionRefresh error", err);
     }
   }, [address, transactionRefresh]);
   useEffect(() => {
@@ -1230,7 +1230,7 @@ const useDataLoader = () => {
             }
             Poolsdata.push(data);
           });
-          console.log(Poolsdata, "val")
+         //console.log(Poolsdata, "val")
           dispatch(setJediSwapPoolsSupported(Poolsdata));
           const count = getTransactionCount();
           dispatch(setJediSwapPoolsSupportedCount(count));
@@ -1250,13 +1250,13 @@ const useDataLoader = () => {
         //     setPoolPairs(updatedPoolsPairs);
         //   }
         // }
-        // console.log(data, "data");
+        ////console.log(data, "data");
       };
       if (jediSwapPoolsSupportedCount < transactionRefresh) {
         fetchPools();
       }
     } catch (err) {
-      console.log(err);
+     //console.log(err);
     }
     // fetchPools("0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e")
     // fetchPools("0x129c74ca4274e3dbf7ab83f5916bebf087ce7af7495b3c648f1d2f2ab302330")
@@ -1268,7 +1268,7 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchMySwapPools = async () => {
-        console.log(process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? mySwapPoolPairs[4]?.address : mySwapPoolPairsMainnet[4]?.address, "address passed")
+       //console.log(process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? mySwapPoolPairs[4]?.address : mySwapPoolPairsMainnet[4]?.address, "address passed")
         const promises = [
           getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? mySwapPoolPairs[0]?.address : mySwapPoolPairsMainnet[0]?.address, constants?.MY_SWAP),
           getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? mySwapPoolPairs[1]?.address : mySwapPoolPairsMainnet[1]?.address, constants?.MY_SWAP),
@@ -1296,7 +1296,7 @@ const useDataLoader = () => {
             }
             Poolsdata.push(data);
           });
-          console.log(Poolsdata, "myswap val")
+         //console.log(Poolsdata, "myswap val")
           dispatch(setMySwapPoolsSupported(Poolsdata));
           const count = getTransactionCount();
           dispatch(setMySwapPoolsSupportedCount(count));
@@ -1306,7 +1306,7 @@ const useDataLoader = () => {
         fetchMySwapPools();
       }
     } catch (err) {
-      console.log(err);
+     //console.log(err);
     }
 
   }, [transactionRefresh]);
@@ -1339,7 +1339,7 @@ const useDataLoader = () => {
         getStakingShares();
       }
     } catch (err) {
-      console.log("getStakingShares error ", err);
+     //console.log("getStakingShares error ", err);
     }
   }, [address, transactionRefresh]);
 
@@ -1385,7 +1385,7 @@ const useDataLoader = () => {
         getMinDeposit();
       }
     } catch (err) {
-      console.log(err, "err in get min max deposits");
+     //console.log(err, "err in get min max deposits");
     }
   }, [transactionRefresh])
   useEffect(() => {
@@ -1430,7 +1430,7 @@ const useDataLoader = () => {
         getMinDeposit();
       }
     } catch (err) {
-      console.log(err, "err in get min max deposits");
+     //console.log(err, "err in get min max deposits");
     }
   }, [transactionRefresh])
   useEffect(() => {
@@ -1447,7 +1447,7 @@ const useDataLoader = () => {
           const count = getTransactionCount();
           dispatch(setAprCount(count));
         });
-        // console.log("promises",promises)
+        ////console.log("promises",promises)
       };
       if (
         dataOraclePrices &&
@@ -1460,7 +1460,7 @@ const useDataLoader = () => {
         fetchEffectiveApr();
       }
     } catch (err) {
-      console.log("fetchEffectiveApr ", err);
+     //console.log("fetchEffectiveApr ", err);
     }
   }, [userLoans, protocolStats, oraclePrices, transactionRefresh]);
 
@@ -1487,7 +1487,7 @@ const useDataLoader = () => {
         fetchHealthFactor();
       }
     } catch (err) {
-      console.log("fetchHealthFactor ", err);
+     //console.log("fetchHealthFactor ", err);
     }
   }, [userLoansCount, transactionRefresh]);
 
@@ -1516,19 +1516,19 @@ const useDataLoader = () => {
   //             avg: avg,
   //             loanHealth: healthFactor,
   //           };
-  //           // console.log(data,"data in aprs")
+  //           ////console.log(data,"data in aprs")
   //           // avgs.push(data)
   //           avgsData?.push(data);
   //           // avgs.push()
   //         }
   //         //cc
-  //         // console.log(avgsData,"avgs in Data")
+  //         ////console.log(avgsData,"avgs in Data")
   //         setAvgs(avgsData);
   //         dispatch(setAprAndHealthFactor(avgsData));
   //         dispatch(setAprsAndHealthCount(""));
   //       }
   //     } catch (err) {
-  //       console.log(err, "err in aprs and health factor");
+  //      //console.log(err, "err in aprs and health factor");
   //     }
   //   };
   //   if (aprsAndHealthCount < transactionRefresh) {
@@ -1539,16 +1539,12 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchUserLoans = async () => {
-        console.log(
-          "user loans called - transactionRefresh",
-          userLoansCount,
-          transactionRefresh
-        );
+     
         if (!address) {
           return;
         }
         const userLoans = await getUserLoans(address);
-        console.log(userLoans,"data user loans")
+       //console.log(userLoans,"data user loans")
         if (!userLoans) {
           return;
         }
@@ -1571,14 +1567,14 @@ const useDataLoader = () => {
           );
         }
         const count = getTransactionCount();
-        console.log("getTransactionCount", count);
+       //console.log("getTransactionCount", count);
         dispatch(setUserLoansCount(count));
       };
       if (userLoansCount < transactionRefresh) {
         fetchUserLoans();
       }
     } catch (err) {
-      console.log("user loans called - transactionRefresh error ", err);
+     //console.log("user loans called - transactionRefresh error ", err);
     }
   }, [address, transactionRefresh]);
   useEffect(() => {
@@ -1597,7 +1593,7 @@ const useDataLoader = () => {
       };
       fetchYourSupply();
     } catch (err) {
-      console.log(err, "error in your supply count");
+     //console.log(err, "error in your supply count");
     }
   }, [userDepositsCount, dataOraclePrices]);
 
@@ -1621,7 +1617,7 @@ const useDataLoader = () => {
           //   dataOraclePrices,
           //   protocolStats
           // );
-          // console.log("netApr", dataNetApr);
+          ////console.log("netApr", dataNetApr);
           // //@ts-ignore
           // if (isNaN(dataNetApr)) {
           //   dispatch(setNetAPR(0));
@@ -1640,9 +1636,9 @@ const useDataLoader = () => {
             protocolStats
           );
           const dataTotalBorrow = dataBorrow?.totalBorrow;
-          console.log(dataBorrow, "data data borrow");
+         //console.log(dataBorrow, "data data borrow");
           dispatch(setYourBorrow(dataTotalBorrow));
-          console.log(dataDeposit, "data deposit pagecard");
+         //console.log(dataDeposit, "data deposit pagecard");
           const dataNetWorth = await getNetworth(
             data,
             dataTotalBorrow,
@@ -1654,12 +1650,12 @@ const useDataLoader = () => {
         }
       };
 
-      // console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+      ////console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
       if (userInfoCount < transactionRefresh) {
         fetchUserSupply();
       }
     } catch (err) {
-      console.log(err, "error in user info");
+     //console.log(err, "error in user info");
     }
   }, [
     userDepositsCount,
@@ -1674,7 +1670,7 @@ const useDataLoader = () => {
   //       tokenAddressMap["rBTC"],
   //       "BTC"
   //     );
-  //     console.log("fetchMinimumDepositAmount ", data);
+  //    //console.log("fetchMinimumDepositAmount ", data);
   //   };
   //   fetchMinimumDepositAmount();
   // }, []);
@@ -1682,17 +1678,17 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchNetApr = async () => {
-        // console.log(getUserDeposits(address),"deposits in pagecard")
+        ////console.log(getUserDeposits(address),"deposits in pagecard")
 
         // const dataMarket=await getProtocolStats();
         // const dataOraclePrices=await getOraclePrices();
-        // console.log(dataMarket,"data market page")
-        // console.log("user info called - transactionRefresh");
-        // console.log(dataDeposit, "dataDeposit is here");
-        // console.log(dataOraclePrices, "dataOraclePrices is here");
-        // console.log(userLoans, "userLoans is here");
-        // console.log(protocolStats, "protocolStats is here");
-        // console.log(aprsAndHealth, "aprs and health is here");
+        ////console.log(dataMarket,"data market page")
+        ////console.log("user info called - transactionRefresh");
+        ////console.log(dataDeposit, "dataDeposit is here");
+        ////console.log(dataOraclePrices, "dataOraclePrices is here");
+        ////console.log(userLoans, "userLoans is here");
+        ////console.log(protocolStats, "protocolStats is here");
+        ////console.log(aprsAndHealth, "aprs and health is here");
         if (
           dataDeposit &&
           userLoans &&
@@ -1702,8 +1698,9 @@ const useDataLoader = () => {
           userLoansCount == transactionRefresh &&
           dataOraclePrices &&
           netAprCount < transactionRefresh
+          && effectiveApr
         ) {
-          console.log("user info called inside - transactionRefresh");
+         //console.log("user info called inside - transactionRefresh");
           const dataNetApr = await getNetApr(
             dataDeposit,
             userLoans,
@@ -1715,28 +1712,30 @@ const useDataLoader = () => {
             dataOraclePrices,
             protocolStats,
           )
+
           const dataNetAprLoans = await getNetAprLoans(
             userLoans,
             dataOraclePrices,
-            protocolStats
+            protocolStats,
+            effectiveApr
           )
           //@ts-ignore
           if (isNaN(dataNetAprLoans)) {
-            // console.log("netApr", dataNetApr);
+            ////console.log("netApr", dataNetApr);
             dispatch(setNetAprLoans(0));
           } else {
             dispatch(setNetAprLoans(dataNetAprLoans));
           }
           //@ts-ignore
           if (isNaN(dataNetAprDeposit)) {
-            // console.log("netApr", dataNetApr);
+            ////console.log("netApr", dataNetApr);
             dispatch(setNetAprDeposits(0));
           } else {
             dispatch(setNetAprDeposits(dataNetAprDeposit));
           }
           //@ts-ignore
           if (isNaN(dataNetApr)) {
-            // console.log("netApr", dataNetApr);
+            ////console.log("netApr", dataNetApr);
             dispatch(setNetAPR(0));
           } else {
             dispatch(setNetAPR(dataNetApr));
@@ -1746,19 +1745,20 @@ const useDataLoader = () => {
         }
       };
 
-      // console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+      ////console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
       if (netAprCount < transactionRefresh) {
         fetchNetApr();
       }
     } catch (err) {
-      console.log(err, "error in user info");
+     //console.log(err, "error in user info");
     }
   }, [
     userDepositsCount,
     userLoansCount,
     dataOraclePrices,
     protocolStatsCount,
-    transactionRefresh,
+    transactionRefresh,,
+    effectiveApr
   ]);
 
   useEffect(() => {
@@ -1817,7 +1817,7 @@ const useDataLoader = () => {
         //   dataDeposit[0],
         //   protocolStats
         // );
-        // console.log(
+        ////console.log(
         //   avgSupplyApr,
         //   "data avg supply apr useEffect",
         //   (aprA ? 1 : 0) +
@@ -1843,7 +1843,7 @@ const useDataLoader = () => {
         // //   protocolStats,
         // //   dataOraclePrices
         // // );
-        // console.log(avgBorrowApr, "data avg borrow apr pagecard");
+        ////console.log(avgBorrowApr, "data avg borrow apr pagecard");
 
         // dispatch(setAvgBorrowAPR(avgBorrowApr));
         // const count = getTransactionCount();
@@ -1860,7 +1860,7 @@ const useDataLoader = () => {
         fetchAvgSupplyAPRCount();
       }
     } catch (err) {
-      console.log(err, "error in user info");
+     //console.log(err, "error in user info");
     }
   }, [protocolStatsCount, transactionRefresh, userDepositsCount]);
   useEffect(() => {
@@ -1904,7 +1904,7 @@ const useDataLoader = () => {
         //   protocolStats,
         //   dataOraclePrices
         // );
-        // console.log(avgBorrowApr, "data avg borrow apr useEffect", loanCheck);
+        ////console.log(avgBorrowApr, "data avg borrow apr useEffect", loanCheck);
         if (avgBorrowApr != null) {
           dispatch(setAvgBorrowAPR(avgBorrowApr));
           const count = getTransactionCount();
@@ -1922,7 +1922,7 @@ const useDataLoader = () => {
         fetchAvgBorrowAPRCount();
       }
     } catch (err) {
-      console.log(err, "error in user info");
+     //console.log(err, "error in user info");
     }
   }, [protocolStatsCount, transactionRefresh, userLoansCount]);
 
@@ -1946,7 +1946,7 @@ const useDataLoader = () => {
           const count = getTransactionCount();
           dispatch(setYourMetricsSupplyCount(count));
         }
-        console.log("supplyData", data);
+       //console.log("supplyData", data);
       };
       if (
         dataDeposit &&
@@ -1959,7 +1959,7 @@ const useDataLoader = () => {
         fetchSupplyData();
       }
     } catch (err) {
-      console.log("your metrics supply err ", err);
+     //console.log("your metrics supply err ", err);
     }
   }, [userDepositsCount, oraclePrices, transactionRefresh]);
 
@@ -2003,7 +2003,7 @@ const useDataLoader = () => {
           const count = getTransactionCount();
           dispatch(setYourMetricsBorrowCount(count));
         }
-        console.log("totalBorrow ", borrow);
+       //console.log("totalBorrow ", borrow);
       };
       if (
         userLoans &&
@@ -2016,24 +2016,24 @@ const useDataLoader = () => {
         fetchBorrowData();
       }
     } catch (err) {
-      console.log("err fetchBorrowData ", err);
+     //console.log("err fetchBorrowData ", err);
     }
   }, [userLoansCount, protocolStatsCount, oraclePrices, transactionRefresh]);
 
   // useEffect(() => {
   //   try {
   //     const fetchNetApr = async () => {
-  //       // console.log(getUserDeposits(address),"deposits in pagecard")
+  //       ////console.log(getUserDeposits(address),"deposits in pagecard")
 
   //       // const dataMarket=await getProtocolStats();
   //       // const dataOraclePrices=await getOraclePrices();
-  //       // console.log(dataMarket,"data market page")
-  //       // console.log("user info called - transactionRefresh");
-  //       // console.log(dataDeposit, "dataDeposit is here");
-  //       // console.log(dataOraclePrices, "dataOraclePrices is here");
-  //       // console.log(userLoans, "userLoans is here");
-  //       // console.log(protocolStats, "protocolStats is here");
-  //       // console.log(aprsAndHealth, "aprs and health is here");
+  //       ////console.log(dataMarket,"data market page")
+  //       ////console.log("user info called - transactionRefresh");
+  //       ////console.log(dataDeposit, "dataDeposit is here");
+  //       ////console.log(dataOraclePrices, "dataOraclePrices is here");
+  //       ////console.log(userLoans, "userLoans is here");
+  //       ////console.log(protocolStats, "protocolStats is here");
+  //       ////console.log(aprsAndHealth, "aprs and health is here");
   //       if (
   //         userDepositsCount == transactionRefresh &&
   //         protocolStatsCount == transactionRefresh &&
@@ -2041,14 +2041,14 @@ const useDataLoader = () => {
   //         dataOraclePrices &&
   //         userInfoCount < transactionRefresh
   //       ) {
-  //         console.log("user info called inside - transactionRefresh");
+  //        //console.log("user info called inside - transactionRefresh");
   //         const dataNetApr = await getNetApr(
   //           dataDeposit,
   //           userLoans,
   //           dataOraclePrices,
   //           protocolStats
   //         );
-  //         console.log("netApr", dataNetApr);
+  //        //console.log("netApr", dataNetApr);
   //         //@ts-ignore
   //         if (isNaN(dataNetApr)) {
   //           dispatch(setNetAPR(0));
@@ -2060,12 +2060,12 @@ const useDataLoader = () => {
   //       }
   //     };
 
-  //     console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+  //    //console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
   //     if (netAprCount < transactionRefresh) {
   //       fetchNetApr();
   //     }
   //   } catch (err) {
-  //     console.log(err, "error in user info");
+  //    //console.log(err, "error in user info");
   //   }
   // }, [
   //   dataDeposit,
@@ -2074,46 +2074,7 @@ const useDataLoader = () => {
   //   protocolStats,
   //   transactionRefresh,
   // ]);
-  useEffect(() => {
-    console.log(
-      "transaction refresh counts - ",
-      "transactionRefresh,protocolStatsCount,protocolReservesCount,userDepositsCount,userLoansCount,oraclePricesCount,userInfoCount,effectiveAprCount,healthFactorCount,hourlyDataCount,netAprCount,avgBorrowAPRCount,yourMetricsSupplyCount,yourMetricsBorrowCount,stakingSharesCount ",
-      transactionRefresh,
-      protocolStatsCount,
-      protocolReservesCount,
-      userDepositsCount,
-      userLoansCount,
-      oraclePricesCount,
-      userInfoCount,
-      effectiveAprCount,
-      healthFactorCount,
-      hourlyDataCount,
-      netAprCount,
-      avgBorrowAPRCount,
-      yourMetricsSupplyCount,
-      yourMetricsBorrowCount,
-      stakingSharesCount,
-      jediSwapPoolsSupportedCount
-    );
-  }, [
-    transactionRefresh,
-    protocolStatsCount,
-    protocolReservesCount,
-    userDepositsCount,
-    userLoansCount,
-    oraclePricesCount,
-    userInfoCount,
-    // aprsAndHealthCount
-    effectiveAprCount,
-    healthFactorCount,
-    hourlyDataCount,
-    netAprCount,
-    avgBorrowAPRCount,
-    yourMetricsSupplyCount,
-    yourMetricsBorrowCount,
-    stakingSharesCount,
-    jediSwapPoolsSupportedCount
-  ]);
+
 };
 
 export default useDataLoader;

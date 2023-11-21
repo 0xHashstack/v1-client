@@ -34,7 +34,7 @@ const LiquidityProviderChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option

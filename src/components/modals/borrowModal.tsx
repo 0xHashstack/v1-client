@@ -137,7 +137,7 @@ const BorrowModal = ({
 
 
   useEffect(() => {
-    // console.log(
+    ////console.log(
     //   "coin here - ",
     //   coin,
     //   walletBalances[coin?.name]?.statusBalanceOf
@@ -152,7 +152,7 @@ const BorrowModal = ({
           )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf]);
   const {
     market,
@@ -219,12 +219,12 @@ const BorrowModal = ({
   //   hash: borrowTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin}`,
@@ -239,9 +239,9 @@ const BorrowModal = ({
   //     setCurrentTransactionStatus("failed");
   //     // dispatch(setTransactionStatus("failed"));
   //     // toast.dismiss(toastId);
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //     dispatch(setTransactionStatus("failed"));
-  //     console.log("handle borrow", transaction?.status);
+  //    //console.log("handle borrow", transaction?.status);
   //     const toastContent = (
   //       <div>
   //         Transaction failed{" "}
@@ -258,7 +258,7 @@ const BorrowModal = ({
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
 
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
@@ -271,7 +271,7 @@ const BorrowModal = ({
   //     //   );
   //     //   setToastDisplayed(true);
   //     // }
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //   },
   // });
   let activeTransactions = useSelector(selectActiveTransactions);
@@ -293,7 +293,7 @@ const BorrowModal = ({
   // useEffect(()=>{
   //   const fetchMinDeposit=async()=>{
   //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
-  //     console.log("minimum value",data)
+  //    //console.log("minimum value",data)
   //     setMinimumDepositAmount(data);
   //   }
   //   const fetchMaxDeposit=async()=>{
@@ -316,7 +316,7 @@ const BorrowModal = ({
   const fetchProtocolStats = async () => {
     // const stats = await getProtocolStats();
     const stats = protocolStatsRedux;
-    // console.log("stats in your borrow", stats);
+    ////console.log("stats in your borrow", stats);
 
     if (stats)
       setProtocolStats([
@@ -330,13 +330,13 @@ const BorrowModal = ({
   useEffect(() => {
     try {
       fetchProtocolStats();
-      // console.log("protocolStats", protocolStats);
+      ////console.log("protocolStats", protocolStats);
     } catch (err: any) {
-      console.log("borrow modal : error fetching protocolStats");
+     //console.log("borrow modal : error fetching protocolStats");
     }
   }, [protocolStatsRedux]);
   // useEffect(() => {
-  //   console.log("currentAvailableReserve", currentAvailableReserves);
+  //  //console.log("currentAvailableReserve", currentAvailableReserves);
   // }, [currentAvailableReserves]);
   const oraclePrices = useSelector(selectOraclePrices);
   const marketInfo = useSelector(selectProtocolStats);
@@ -378,7 +378,7 @@ const BorrowModal = ({
       };
       fetchHealthFactor();
     } catch (err) {
-      console.log(err);
+     //console.log(err);
     }
   }, [
     amount,
@@ -419,9 +419,9 @@ const BorrowModal = ({
       //   currentBorrowCoin,
       //   inputBorrowAmount
       // );
-      // console.log("got parsed usdt borrow", parsedBorrowAmount);
+      ////console.log("got parsed usdt borrow", parsedBorrowAmount);
       setInputBorrowAmountUSD(parsedBorrowAmount);
-      // console.log(
+      ////console.log(
       //   "effective apr values : ",
       //   "loan_usd_value",
       //   parsedBorrowAmount,
@@ -438,7 +438,7 @@ const BorrowModal = ({
       //   parsedBorrowAmount
       // );
     } catch (error) {
-      console.log(error);
+     //console.log(error);
     }
   };
 
@@ -446,7 +446,7 @@ const BorrowModal = ({
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
         setInputCollateralAmountUSD(0);
-        // console.log("got parsed zero collateral");
+        ////console.log("got parsed zero collateral");
 
         return;
       }
@@ -459,7 +459,7 @@ const BorrowModal = ({
         //   currentBorrowCoin,
         //   inputBorrowAmount
         // );
-        // console.log(
+        ////console.log(
         //   "got parsed usdt collateral",
         //   parsedBorrowAmount,
         //   " max should be",
@@ -467,15 +467,7 @@ const BorrowModal = ({
         // );
         setInputCollateralAmountUSD(parsedBorrowAmount);
       } else if (tokenTypeSelected === "rToken") {
-        console.log(
-          "rToken parsing",
-          rToken,
-          rTokenAmount,
-          oraclePrices.find((curr: any) => curr.name === rToken.slice(1))
-            ?.price,
-          protocolStats.find((curr: any) => curr.token === rToken.slice(1))
-            ?.exchangeRateRtokenToUnderlying
-        );
+      
 
         const parsedBorrowAmount =
           oraclePrices.find((curr: any) => curr.name === rToken.slice(1))
@@ -487,7 +479,7 @@ const BorrowModal = ({
         //   currentBorrowCoin,
         //   inputBorrowAmount
         // );
-        // console.log(
+        ////console.log(
         //   "got parsed usdt collateral",
         //   parsedBorrowAmount,
         //   " max should be",
@@ -496,7 +488,7 @@ const BorrowModal = ({
         setInputCollateralAmountUSD(parsedBorrowAmount);
       }
     } catch (error) {
-      console.log(error);
+     //console.log(error);
     }
   };
 
@@ -505,17 +497,17 @@ const BorrowModal = ({
       protocolStats[coinAlign?.indexOf(currentBorrowCoin)]?.availableReserves *
         0.895
     );
-    // console.log(coinAlign?.indexOf(currentBorrowCoin));
+    ////console.log(coinAlign?.indexOf(currentBorrowCoin));
   }, [protocolStats, currentBorrowCoin]);
 
   const handleBorrow = async () => {
     try {
-      // console.log("borrowing", amount, market, rToken, rTokenAmount);
+      ////console.log("borrowing", amount, market, rToken, rTokenAmount);
       if (currentCollateralCoin[0] === "r") {
         const borrow = await writeAsyncLoanRequestrToken();
         if (borrow?.transaction_hash) {
           // setShowToast("true");
-          // console.log();
+          ////console.log();
           // if (showToast == "true") {
           const toastid = toast.info(
             // `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
@@ -623,7 +615,7 @@ const BorrowModal = ({
         // dispatch(setTransactionStatus("failed"));
         setTransactionStarted(false);
       }
-      console.log("handle borrow", err);
+     //console.log("handle borrow", err);
       mixpanel.track("Borrow Market Status", {
         Status: "Failure",
       });
@@ -665,7 +657,7 @@ const BorrowModal = ({
   //   rToken,
   //   setRToken, } = useLoanRequest();
 
-  // console.log("loadingg", isLoadingLoanRequest);
+  ////console.log("loadingg", isLoadingLoanRequest);
 
   const [buttonId, setButtonId] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
@@ -715,7 +707,7 @@ const BorrowModal = ({
     if (newValue > 9_000_000_000) return;
     // newValue = Math.round((newValue * 1000_000) / 1000_000);
     // const =parseFloat(newValue)
-    // console.log(typeof a,"new val")
+    ////console.log(typeof a,"new val")
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -738,7 +730,7 @@ const BorrowModal = ({
 
   const handleBorrowChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
-    // console.log(inputCollateralAmountUSD, "amount");
+    ////console.log(inputCollateralAmountUSD, "amount");
     if (inputCollateralAmountUSD > 0) {
       var percentage =
         (newValue * 100) /
@@ -749,7 +741,7 @@ const BorrowModal = ({
       var percentage = (newValue * 100) / currentAvailableReserves;
     }
     percentage = Math.max(0, percentage);
-    // console.log(percentage,"percent")
+    ////console.log(percentage,"percent")
     if (percentage > 100) {
       setsliderValue2(100);
       setAmount(newValue);
@@ -835,14 +827,14 @@ const BorrowModal = ({
     setsliderValue2(0);
     setinputBorrowAmount(0);
   }, [currentBorrowCoin]);
-  // console.log(currentCollateralCoin,"collateral coin")
+  ////console.log(currentCollateralCoin,"collateral coin")
   // useEffect(() => {
   //   setCollateralMarket("DAI");
   //   setCollateralAmount("4000");
   // }, []);
   const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
-  // console.log(amount < 5 * inputCollateralAmountUSD, typeof collateralAmount, collateralAmount, "amount")
-  // console.log(inputBorrowAmountUSD, inputCollateralAmountUSD, "coins");
+  ////console.log(amount < 5 * inputCollateralAmountUSD, typeof collateralAmount, collateralAmount, "amount")
+  ////console.log(inputBorrowAmountUSD, inputCollateralAmountUSD, "coins");
   const rTokens: RToken[] = ["rBTC", "rUSDT", "rETH"];
   return (
     <Box>
@@ -880,7 +872,7 @@ const BorrowModal = ({
           const uqID = getUniqueId();
           let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
-          // console.log(uqID, "data here", data);
+          ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
             data = data.filter((val: any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));

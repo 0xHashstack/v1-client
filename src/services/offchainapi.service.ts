@@ -9,7 +9,7 @@ export default class OffchainAPI {
   static async httpGet(route: string) {
     try {
       let url = `${OffchainAPI.ENDPOINT}${route}`;
-      // console.log("offchain url", url);
+      ////console.log("offchain url", url);
       let data = await axios.get(url);
       return data.data;
     } catch (err) {
@@ -34,7 +34,7 @@ export default class OffchainAPI {
       });
       return res.data;
     } catch (err) {
-      // console.log(err);
+      ////console.log(err);
     }
   }
 
@@ -60,7 +60,7 @@ export default class OffchainAPI {
       //     position: toast.POSITION.BOTTOM_RIGHT,
       //     closeOnClick: true,
       //   });
-      //   console.log(err);
+      //  //console.log(err);
       alert("error in whitelisting");
       return false;
     }

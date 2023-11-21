@@ -36,8 +36,8 @@ const Footer = () => {
       dispatch(setBlock(block));
     }
   }, [block]);
-  // console.log(extendedAccount?.provider?.chainId,"footer")
-  // console.log(walletConnected);
+  ////console.log(extendedAccount?.provider?.chainId,"footer")
+  ////console.log(walletConnected);
   useEffect(() => {
     if (connector?.options?.id == "braavos") {
       if (account && extendedAccount.provider?.chainId && extendedAccount.provider?.chainId != currentChainId) {

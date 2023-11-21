@@ -35,7 +35,7 @@ const SupplyChartChart = () => {
   const weeklyBtcData=useSelector(selectDailyBTCData);
   const monthlyBtcData=useSelector(selectMonthlyBTCData);
   const allBtcData=useSelector(selectAllBTCData);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option

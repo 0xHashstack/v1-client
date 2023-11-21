@@ -85,25 +85,7 @@ const Campaign = () => {
     "Points earned",
     "Est.token earning \n $HASH"
   ];
-  const sampleDate = [{
-    id:0,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:1,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:2,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:3,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:4,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:5,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:6,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:7,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  },{
-    id:8,start:"1 Mar",end:"1 April",ref:28,liq:500,pts:100,est:232
-  }]
+  const sampleDate:any = []
   const sampleDataLeaderBoard = [{
     id:0,start:"1 Mar",end:"1 April",rank:28,wallet:"Braavos",liq:500,pts:100,est:232
   },{
@@ -133,7 +115,7 @@ const Campaign = () => {
   useEffect(() => {
     // if (UserLoans) {
     //   if (UserLoans?.length <= (currentPagination - 1) * 6) {
-    //     console.log("pagination", Pagination, UserLoans);
+    //    //console.log("pagination", Pagination, UserLoans);
     //     if (currentPagination > 1) {
     //       setCurrentPagination(currentPagination - 1);
     //     }
@@ -152,7 +134,7 @@ const Campaign = () => {
   //   const loan = async () => {
   //     try {
   //       const loans = await getUserLoans(address || "");
-  //       // console.log(loans,"Loans from your borrow index page")
+  //       ////console.log(loans,"Loans from your borrow index page")
 
   //       // loans.filter(
   //       //   (loan) =>
@@ -180,9 +162,9 @@ const Campaign = () => {
   //           loan.loanAmountParsed > 0
   //       )));
   //     } catch (err) {
-  //       console.log("your-borrow : unable to fetch user loans");
+  //      //console.log("your-borrow : unable to fetch user loans");
   //     }
-  //     // console.log("loans", loans);
+  //     ////console.log("loans", loans);
   //   };
   //   if (account) {
   //     loan();

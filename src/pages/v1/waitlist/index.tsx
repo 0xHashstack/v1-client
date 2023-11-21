@@ -26,7 +26,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function WaitList() {
   // const account = JSON.parse(useSelector(selectAccount));
-  // console.log(account ,"waitlist")
+  ////console.log(account ,"waitlist")
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
 

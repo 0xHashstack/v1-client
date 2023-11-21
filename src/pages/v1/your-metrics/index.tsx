@@ -87,7 +87,7 @@ const YourMetrics = () => {
     } catch (err: any) {}
   }, [protocolStatsRedux]);
   // useEffect(() => {
-  //   console.log("avgBorrowApr ", avgBorrowApr);
+  //  //console.log("avgBorrowApr ", avgBorrowApr);
   // }, [avgBorrowApr]);
   const [loading, setLoading] = useState(true);
   const yourMetricsSupply = useSelector(selectYourMetricsSupply);

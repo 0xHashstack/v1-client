@@ -119,8 +119,8 @@ const StakeUnstakeModal = ({
   validRTokens,
   ...restProps
 }: any) => {
-  // console.log(validRTokens, "tokens stake modal");
-  // console.log("coin - ", coin);
+  ////console.log(validRTokens, "tokens stake modal");
+  ////console.log("coin - ", coin);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -142,7 +142,7 @@ const StakeUnstakeModal = ({
   let protocolStats = useSelector(selectProtocolStats);
   let activeTransactions = useSelector(selectActiveTransactions);
   let stakingShares = useSelector(selectStakingShares);
-  // console.log(stakingShares,"staking shares")
+  ////console.log(stakingShares,"staking shares")
 
   const [uniqueID, setUniqueID] = useState(0);
   const getUniqueId = () => uniqueID;
@@ -276,14 +276,14 @@ const StakeUnstakeModal = ({
         break;
     }
   };
-  // console.log(validRTokens, "valid");
+  ////console.log(validRTokens, "valid");
   const getBalance = (coin: string) => {
     const amount = validRTokens?.find(({ rToken, rTokenAmount }: any) => {
       if (rToken == coin) return rTokenAmount;
     });
     return amount ? amount.rTokenAmount : 0;
   };
-  // console.log(getBalance,"bal")
+  ////console.log(getBalance,"bal")
   const [depositTransHash, setDepositTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
@@ -299,12 +299,12 @@ const StakeUnstakeModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`,
@@ -319,15 +319,15 @@ const StakeUnstakeModal = ({
   //     toast.dismiss(toastId);
   //     setCurrentTransactionStatus("failed");
   //     dispatch(setTransactionStatus("failed"));
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`,
@@ -364,7 +364,7 @@ const StakeUnstakeModal = ({
   //           rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
   //           rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
   //         };
-  //         console.log("shares ", val, data);
+  //        //console.log("shares ", val, data);
   //         setStakingShares(data);
   //       });
   //       const data = await getUserStakingShares(address, "rUSDT");
@@ -374,14 +374,14 @@ const StakeUnstakeModal = ({
   //     };
   //     getStakingShares();
   //   } catch (err) {
-  //     console.log("getStakingShares error ", err);
+  //    //console.log("getStakingShares error ", err);
   //   }
   // }, [address]);
 
 
   const handleStakeTransaction = async () => {
     try {
-      // console.log("staking", rToken, rTokenAmount);
+      ////console.log("staking", rToken, rTokenAmount);
       mixpanel.track("Action Selected", {
         Actions: "Stake",
       });
@@ -433,7 +433,7 @@ const StakeUnstakeModal = ({
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("success"));
       }
-      // console.log(
+      ////console.log(
       //   "Staking Modal-stake transaction check",
       //   recieptData?.data?.status == "ACCEPTED_ON_L2"
       // );
@@ -445,7 +445,7 @@ const StakeUnstakeModal = ({
         // dispatch(setTransactionStatus("failed"));
         setTransactionStarted(false);
       }
-      console.log(uqID, "transaction check stake transaction failed : ", err);
+     //console.log(uqID, "transaction check stake transaction failed : ", err);
       const toastContent = (
         <div>
           Transaction declined{" "}
@@ -514,8 +514,8 @@ const StakeUnstakeModal = ({
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("success"));
       }
-      // console.log("Status transaction", deposit);
-      console.log(isSuccessDeposit, "success ?");
+      ////console.log("Status transaction", deposit);
+     //console.log(isSuccessDeposit, "success ?");
     } catch (err: any) {
       mixpanel.track("Stake Market Status", {
         Status: "Failure",
@@ -539,23 +539,23 @@ const StakeUnstakeModal = ({
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
       });
-      console.log("stake and supply", err);
+     //console.log("stake and supply", err);
     }
   };
 
   // const hanldest=async()=>{
   //   try{
   //     const data=await writeAsyncStakeRequest1();
-  //     console.log(data,"data in est rtokens");
+  //    //console.log(data,"data in est rtokens");
   //   }catch(err){
-  //     console.log(err,"err in stakunstake");
+  //    //console.log(err,"err in stakunstake");
 
   //   }
   // }
   // useEffect(()=>{
   //   hanldest();
   // },[])
-  // console.log(rTokenAmount,"rtoken amount")
+  ////console.log(rTokenAmount,"rtoken amount")
   const hanldeUnstakeTransaction = async () => {
     try {
       const unstake = await writeAsyncWithdrawStake();
@@ -604,7 +604,7 @@ const StakeUnstakeModal = ({
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("success"));
       }
-      console.log(unstake);
+     //console.log(unstake);
     } catch (err: any) {
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
@@ -613,7 +613,7 @@ const StakeUnstakeModal = ({
         // dispatch(setTransactionStatus("failed"));
         setUnstakeTransactionStarted(false);
       }
-      console.log("Unstake transaction failed : ", err);
+     //console.log("Unstake transaction failed : ", err);
       const toastContent = (
         <div>
           Transaction declined{" "}
@@ -656,7 +656,7 @@ const StakeUnstakeModal = ({
         setInputStakeAmount(newValue);
         setDepositAmount(newValue);
       }
-      // console.log(typeof rTokenAmount)
+      ////console.log(typeof rTokenAmount)
       // dispatch(setInputSupplyAmount(newValue));
     }
   };
@@ -754,7 +754,7 @@ const StakeUnstakeModal = ({
     !nav ? rcoinValue : "rUSDT"
   );
   const userDeposit = useSelector(selectUserDeposits);
-  // console.log(coin,"coin stake")
+  ////console.log(coin,"coin stake")
   const [walletBalance, setWalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? Number(
@@ -786,7 +786,7 @@ const StakeUnstakeModal = ({
     userDeposit?.find((item: any) => item?.rToken == currentSelectedStakeCoin)
       ?.rTokenFreeParsed
   );
-  // console.log(rtokenWalletBalance,"rtoken wallet ")
+  ////console.log(rtokenWalletBalance,"rtoken wallet ")
   const fees=useSelector(selectFees);
   const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
     stakingShares[
@@ -809,7 +809,7 @@ const StakeUnstakeModal = ({
     setRToken(currentSelectedStakeCoin);
   }, [currentSelectedStakeCoin, userDeposit]);
   // useEffect(() => {
-  //   console.log("stake userDeposit", userDeposit);
+  //  //console.log("stake userDeposit", userDeposit);
   // }, [userDeposit]);
   useEffect(() => {
     setUnstakeWalletBalance(
@@ -872,8 +872,8 @@ const StakeUnstakeModal = ({
     setCurrentTransactionStatus("");
     setDepositTransHash("");
   };
-  // console.log("testing isopen: ", isOpen);
-  // console.log("testing custom isopen: ", isOpenCustom);
+  ////console.log("testing isopen: ", isOpen);
+  ////console.log("testing custom isopen: ", isOpenCustom);
 
   // useEffect(() => {
   //   setIsOpenCustom(false);
@@ -881,7 +881,7 @@ const StakeUnstakeModal = ({
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
-  // console.log(activeModal);
+  ////console.log(activeModal);
 
   // useEffect(()=>{
   //   const fetchrTokens=async()=>{
@@ -911,7 +911,7 @@ const StakeUnstakeModal = ({
   const [estrTokens, setEstrTokens] = useState<any>(0);
 
   // useEffect(() => {
-  //   console.log("protocolStats", protocolStats);
+  //  //console.log("protocolStats", protocolStats);
   // }, [protocolStats]);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
@@ -923,7 +923,7 @@ const StakeUnstakeModal = ({
   }, [currentSelectedStakeCoin, minAmounts, maxAmounts])
   useEffect(() => {
     const fetchestrTokens = async () => {
-      // console.log(
+      ////console.log(
       //   "getEstrTokens ",
       //   currentSelectedUnstakeCoin,
       //   rTokenToWithdraw
@@ -932,9 +932,9 @@ const StakeUnstakeModal = ({
         currentSelectedUnstakeCoin,
         rTokenToWithdraw
       );
-      // console.log("getEstrTokens ", data);
+      ////console.log("getEstrTokens ", data);
       setEstrTokens(data);
-      // console.log(data, "estr token");
+      ////console.log(data, "estr token");
     };
     fetchestrTokens();
   }, [rTokenToWithdraw]);
@@ -946,7 +946,7 @@ const StakeUnstakeModal = ({
   //   );
   // }, [currentSelectedStakeCoin]);
   // useEffect(() => {
-  //   console.log("transactionCheck uniqueID", uniqueID);
+  //  //console.log("transactionCheck uniqueID", uniqueID);
   // }, [uniqueID]);
   return (
     <Box>
@@ -1045,7 +1045,7 @@ const StakeUnstakeModal = ({
           const uqID = getUniqueId();
           let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
-          // console.log(uqID, "data here", data);
+          ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
             data = data.filter((val: any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));

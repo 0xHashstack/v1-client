@@ -192,12 +192,12 @@ const SwapModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully supplied `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -209,15 +209,15 @@ const SwapModal = ({
   //     setCurrentTransactionStatus("failed");
   //     dispatch(setTransactionStatus("failed"));
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully supplied `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -238,7 +238,7 @@ const SwapModal = ({
     try {
       if (currentSwap == "Jediswap") {
         const swap = await writeAsyncJediSwap_swap();
-        console.log(swap);
+       //console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
         if (swap?.transaction_hash) {
           const toastid = toast.info(
@@ -287,7 +287,7 @@ const SwapModal = ({
         }
       } else if (currentSwap == "MySwap") {
         const swap = await writeAsyncmySwap_swap();
-        console.log(swap);
+       //console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
         if (swap?.transaction_hash) {
           const toastid = toast.info(
@@ -336,7 +336,7 @@ const SwapModal = ({
         }
       }
     } catch (err: any) {
-      console.log(err);
+     //console.log(err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -385,7 +385,7 @@ const SwapModal = ({
         item?.loanId == currentId?.slice(currentId.indexOf("-") + 1)?.trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
-    // console.log(borrowAmount)
+    ////console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentId]);
   useEffect(() => {
@@ -394,7 +394,7 @@ const SwapModal = ({
     );
     setCurrentSelectedCoin("Select a market");
   }, [currentBorrowId]);
-  // console.log(onOpen)
+  ////console.log(onOpen)
   useEffect(() => {
     setToMarket(currentSelectedCoin);
   }, [currentSelectedCoin]);
@@ -446,7 +446,7 @@ const SwapModal = ({
   }, [currentId]);
 
   const handleBorrowMarketCoinChange = (id: string) => {
-    // console.log("got id", id);
+    ////console.log("got id", id);
     for (let i = 0; i < borrowIDCoinMap?.length; i++) {
       if (borrowIDCoinMap?.[i]?.id === id) {
         setCurrentBorrowMarketCoin(borrowIDCoinMap?.[i]?.name?.slice(1));
@@ -456,7 +456,7 @@ const SwapModal = ({
   };
 
   const handleBorrowMarketIDChange = (coin: string) => {
-    // console.log("got coin", coin);
+    ////console.log("got coin", coin);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap?.[i]?.name === coin) {
         setCurrentBorrowId(borrowIDCoinMap?.[i]?.id);
@@ -531,7 +531,7 @@ const SwapModal = ({
           const uqID = getUniqueId();
           let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
-          // console.log(uqID, "data here", data);
+          ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
             data = data.filter((val: any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -779,7 +779,7 @@ const SwapModal = ({
                                   .slice(borrowIdString.indexOf("-") + 1)
                                   .trim()
                             );
-                            // console.log(result)
+                            ////console.log(result)
                             setBorrowAmount(result?.loanAmountParsed);
                           }}
                         >

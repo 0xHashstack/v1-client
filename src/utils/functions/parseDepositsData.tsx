@@ -17,7 +17,7 @@
 // } from "../../Blockchain/stark-constants";
 // import { BNtoNum, GetErrorText, NumToBN } from "../../blockchain/utils";
 // function parseDepositsData(depositsData: any[], yieldRecord: any) {
-//   console.log("parseDeposisDatat", depositsData);
+//  //console.log("parseDeposisDatat", depositsData);
 //   let deposits: any[] = [];
 //   let deposit;
 //   for (let i = 0; i < depositsData?.length; i++) {
@@ -56,9 +56,9 @@
 //     deposits.push(JSON.parse(myDepString));
 //   }
 //   let nonZeroDeposits = deposits.filter(function (el) {
-//     console.log("amount parse deposit", el.amount);
+//    //console.log("amount parse deposit", el.amount);
 //     return el.amount !== "0";
 //   });
-//   console.log("parsed deposit data", deposits);
+//  //console.log("parsed deposit data", deposits);
 //   return nonZeroDeposits;
 // }

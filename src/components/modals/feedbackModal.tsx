@@ -128,19 +128,19 @@ const FeedbackModal = ({
 
   let activeTransactions = useSelector(selectActiveTransactions);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  // console.log(suggestionUrl,"url")
+  ////console.log(suggestionUrl,"url")
   const handleImageUploadBug = (e: any) => {
     const file = e.target.files[0];
 
     if (file) {
-      console.log(file.name, "file name");
+     //console.log(file.name, "file name");
       setBugScreenshotFilename(file.name);
       // Read the selected image file as a base64 string
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event?.target?.result) {
           setBugScreenshoturl(event.target.result as string);
-          // console.log("bug  url(upload):-=",event.target.result);
+          ////console.log("bug  url(upload):-=",event.target.result);
         }
       };
       reader.readAsDataURL(file);
@@ -158,8 +158,8 @@ const FeedbackModal = ({
         if (event?.target?.result) {
           setSuggestionUrl(event.target.result as string);
 
-          //     console.log("base64:-",event.target.result);
-          // console.log("sugg  url(upload):-=",event.target.result)
+          //    //console.log("base64:-",event.target.result);
+          ////console.log("sugg  url(upload):-=",event.target.result)
         }
       };
       reader.readAsDataURL(file);
@@ -210,7 +210,7 @@ const FeedbackModal = ({
   //   });
   // const avgs=useSelector(selectAprAndHealthFactor)
 
-  // console.log(onOpen)
+  ////console.log(onOpen)
 
   const deleteBugScreenshot = () => {
     setBugScreenshoturl("");
@@ -265,7 +265,7 @@ const FeedbackModal = ({
           const currentTime = new Date();
           localStorage.setItem("RatingTime", currentTime.toISOString());
         }
-        console.log(response, "response"); // Log the response from the backend.
+       //console.log(response, "response"); // Log the response from the backend.
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -297,11 +297,11 @@ const FeedbackModal = ({
           setBugFeedbackSubmitted(true);
           const currentTime = new Date();
           localStorage.setItem("BugTime", currentTime.toISOString());
-          console.log(response, "res");
+         //console.log(response, "res");
         }
       })
       .catch((error) => {
-        console.log(error);
+       //console.log(error);
       });
   };
   const handleSuggestionFeedback = async () => {
@@ -330,11 +330,11 @@ const FeedbackModal = ({
           setsuggestionFeedbackSubmitted(true);
           const currentTime = new Date();
           localStorage.setItem("SuggestionTime", currentTime.toISOString());
-          console.log(response, "res");
+         //console.log(response, "res");
         }
       })
       .catch((error) => {
-        console.log(error);
+       //console.log(error);
       });
   };
   return (

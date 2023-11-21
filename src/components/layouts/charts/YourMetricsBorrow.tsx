@@ -69,13 +69,13 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
   //         }
   //       }
   //       setTotalBorrow(borrow);
-  //       console.log("totalBorrow ", totalBorrow);
+  //      //console.log("totalBorrow ", totalBorrow);
   //     };
   //     if (userLoans && protocolStats && oraclePrices) {
   //       fetchBorrowData();
   //     }
   //   } catch (err) {
-  //     console.log("err fetchBorrowData ", err);
+  //    //console.log("err fetchBorrowData ", err);
   //   }
   // }, [userLoans, protocolStats, oraclePrices]);
   const chartOptions = {
