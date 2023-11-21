@@ -307,6 +307,7 @@ const BorrowDashboard = ({
   //  //console.log("running");
   // }, [oraclePrices, reduxProtocolStats, userLoans]);
   const avgsLoneHealth = useSelector(selectHealthFactor);
+  console.log(avgsLoneHealth,"h")
   const getSplit = async () => {
     let temp: any = [];
     const promises = [];
@@ -1343,8 +1344,9 @@ const BorrowDashboard = ({
                             label={
                               <Box>
                                 Health Factor : {avgsLoneHealth?.find(
-                                  (item: any) => item?.loanId == borrow?.loanId
-                                )?.loanHealth}
+                                (item: any) =>
+                                  item?.loanId == borrow?.loanId
+                              )?.loanHealth}
                                 <br />
                                 Liquidates below : 1.06
                               </Box>
@@ -1367,7 +1369,6 @@ const BorrowDashboard = ({
                           // maxW="222px"
                           // mt="28px"
                           >
-
                             {avgsLoneHealth?.find(
                               (item: any) => item?.loanId == borrow?.loanId
                             )?.loanHealth
@@ -1388,10 +1389,14 @@ const BorrowDashboard = ({
                                 </Box>
                                 : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.09 &&
                                   avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.15) ?
-                                  <MediumHeathFactor />
-                                  : (avgsLoneHealth?.find((item: any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.09) ?
+                                  <Box>
+                                    <MediumHeathFactor />
+                                  </Box>
+                                  : 
+                                  <Box>
                                     <LowhealthFactor />
-                                    : "" : <Skeleton
+                                  </Box>
+                                     : <Skeleton
                                 width="6rem"
                                 height="1.2rem"
                                 startColor="#101216"
