@@ -29,7 +29,7 @@ const form = () => {
   // },[address])
 
   return (
-   loading ?<Box></Box> : <Box>
+ <Box>
         <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
             radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,

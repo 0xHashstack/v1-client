@@ -106,7 +106,7 @@ const DetailsForm = ({ handler }: any) => {
             </Text>
           </Box>
           <Box
-          cursor={'not-allowed'}
+          cursor={"pointer"}
             width="100%"
             borderRadius="6px"
             display="flex"
@@ -122,7 +122,7 @@ const DetailsForm = ({ handler }: any) => {
             letterSpacing=" -0.15px"
           >
             <Input
-             cursor={'not-allowed'}
+             cursor={"pointer"}
              
               border="0px"
               value={wallet}
