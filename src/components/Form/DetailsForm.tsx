@@ -13,6 +13,8 @@ import {
 import axios from "axios";
 import { useAccount, useContractWrite } from "wagmi";
 import contr from '../../abi/PresaleFormABI.json'
+import { mainnet, sepolia,goerli, polygon, optimism } from '@wagmi/core/chains'
+
 const DetailsForm = ({ handler }: any) => {
   const { address, isConnecting, isDisconnected } = useAccount();
 
@@ -72,7 +74,7 @@ const DetailsForm = ({ handler }: any) => {
       0,
     ""
     ]],
-    chainId:5
+    chainId:goerli.id
   })
   const handleSubmit=async()=>{
     try{
