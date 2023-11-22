@@ -9,7 +9,7 @@ import { useConnectors } from '@starknet-react/core'
 import BravosIcon from '@/assets/bravosIcon'
 import { useRouter } from 'next/router'
 import { ConnectKitButton, useModal } from 'connectkit'
-import { useAccount, useBalance, useConnect } from "wagmi";
+import { useAccount, useBalance, useConnect, useContractRead, useNetwork } from "wagmi";
 import WalletConnectIcon from '@/assets/walletConnectIcon'
 import MetamaskIcon from '@/assets/metamaskIcon'
 import CoinbaseIcon from '@/assets/coinbaseIcon'
@@ -25,15 +25,33 @@ export default function Home() {
     useConnect()
   console.log("dd", connectors)
   const [currentAccount, setCurrentAccount] = useState("")
+  const { chain, chains } = useNetwork()
   const [userBalance, setUserBalance] = useState<any>()
   const usdtBalance = useBalance({
     address: address,
-    token:"0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    token:"0xdAC17F958D2ee523a2206206994597C13D831ec7",
   })
   const usdcBalance=useBalance({
     address: address,
-    token:"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    token:"0x9FD21bE27A2B059a288229361E2fA632D8D2d074",
+    chainId:5,
   })
+  const { data: accessTokenBalance } = useContractRead({
+    address: "0x9FD21bE27A2B059a288229361E2fA632D8D2d074",
+    abi: [
+      {
+        inputs: [{ internalType: "address", name: "owner", type: "address" }],
+        name: "balanceOf",
+        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+      },
+    ],
+    functionName: "balanceOf",
+    args: [address],
+  });
+
+  console.log(accessTokenBalance,"balance")
 
   const { open, setOpen } = useModal()
   // useEffect(()=>{

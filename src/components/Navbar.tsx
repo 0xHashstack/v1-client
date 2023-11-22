@@ -1,18 +1,24 @@
 import HashstackLogo from '@/assets/hashstacklogo'
 import SettingsLogo from '@/assets/settingsLogo'
-import { HStack,Text,Box } from '@chakra-ui/react'
+import { HStack,Text,Box, Skeleton } from '@chakra-ui/react'
   import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Router } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAccount, useDisconnect } from 'wagmi'
 // import "./Navbar.css";
 
 const Navbar = () => {
   const [NavDropdown, setNavDropdown] = useState(false)
+  const [addressFetched, setaddressFetched] = useState(false)
   const{address}=useAccount();
   const {disconnect} = useDisconnect();
   const router = useRouter()
+  useEffect(()=>{
+    if(address){
+      setaddressFetched(true)
+    }
+  },[address])
   // co
   return (
     <HStack
@@ -68,7 +74,7 @@ const Navbar = () => {
                 setNavDropdown(!NavDropdown);
               }}
             >
-              {address ? (
+              {addressFetched && address ? (
                 <Box
                   // bgColor="red"
                   width="100%"
@@ -79,7 +85,7 @@ const Navbar = () => {
                   // pl={5}
                   gap={2.5}
                 >
-                  <Image
+                  {/* <Image
                     // onClick={() => {
                     //   setConnectWallet(false);
                     // }}
@@ -88,7 +94,7 @@ const Navbar = () => {
                     width="16"
                     height="16"
                     style={{ cursor: "pointer" }}
-                  />
+                  /> */}
                   <Text
                     fontSize="14px"
                     fontWeight="500"
@@ -114,7 +120,7 @@ const Navbar = () => {
                 </Box>
               ) : (
                 <>
-                 
+                  <Skeleton width="7rem" height="100%" borderRadius="2px" />
                 </>
               )}
               <Box  right="0.7rem">

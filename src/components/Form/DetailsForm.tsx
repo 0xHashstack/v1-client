@@ -58,7 +58,7 @@ const DetailsForm = ({ handler }: any) => {
 
   const handleSubmit=async()=>{
     try{
-      axios.post('/api/form/unchecked', { wallet:address,discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt },)
+      axios.post('/api/form/unchecked', { wallet:address,discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt,hasInvestor:checked },)
         .then((response) => {
           console.log(response, "linked"); // Log the response from the backend.
         })
@@ -71,7 +71,7 @@ const DetailsForm = ({ handler }: any) => {
   }
   const handleInvestorSubmit=async()=>{
     try{
-      axios.post('/api/form/checked', { wallet:address,discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt,fundname:FundName,Fundcommit:investorcommit,decisiontime:DecisionTime,url:url },)
+      axios.post('/api/form/checked', { wallet:address,discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt,hasInvestor:checked,fundname:FundName,Fundcommit:investorcommit,decisiontime:DecisionTime,url:url },)
         .then((response) => {
           console.log(response, "linked"); // Log the response from the backend.
         })

@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { WagmiConfig, createConfig, mainnet} from "wagmi";
+import { WagmiConfig, configureChains, createConfig, mainnet} from "wagmi";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 
 import Head from "next/head";
@@ -8,6 +8,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { publicProvider } from 'wagmi/providers/public'
 const theme = extendTheme({
   components: {
     Tabs: {
@@ -128,7 +129,10 @@ import { useState } from "react";
 import { goerli } from "viem/chains";
 
 export default function App({ Component, pageProps }: AppProps) {
-
+  const { chains, publicClient } = configureChains(
+    [mainnet,goerli],
+    [publicProvider()],
+  )
   const config = createConfig(
     getDefaultConfig(
       {
@@ -137,7 +141,7 @@ export default function App({ Component, pageProps }: AppProps) {
       walletConnectProjectId: "ecd60d8bde49411e2963bd0b7ca594fd",
       connectors:[
         new MetaMaskConnector({
-          chains: [mainnet, goerli],
+          chains: chains,
       }),
       new CoinbaseWalletConnector({
       options: {
