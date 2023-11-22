@@ -1,3 +1,4 @@
+import { google } from "googleapis";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -12,7 +13,7 @@ export default async function handler(
     console.log("========================");
 
     const {
-      checked,
+      hasInvestor,
       wallet,
       discord,
       twitter,
@@ -39,9 +40,33 @@ export default async function handler(
         // If starRating is not provided in the request body, send an error response.
         res.status(400).json({ error: "Data error" });
       } else {
-        const response = {
-          data: `DATA recieved :-Wallet - ${wallet},Dsicord - ${discord},Twitter - ${twitter},Commit amount-${commit},Bookamt-${bookamt},Fundname:- ${fundname},Commitment fund :- ${Fundcommit},Decision time:- ${decisiontime}`,
-        };
+        const auth=new google.auth.GoogleAuth({
+          credentials:{
+            client_email:process.env.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL,
+            private_key:process.env.NEXT_PUBLIC_GOOGLE_PRIVATE_KEY?.replace(/\\n/g,"\n")
+          },
+          scopes:[
+            'https://www.googleapis.com/auth/drive',
+            'https://www.googleapis.com/auth/drive.file',
+            'https://www.googleapis.com/auth/spreadsheets'
+          ]
+         })
+         const sheets=google.sheets({
+          auth,
+          version:'v4'
+         })
+         const response=await sheets.spreadsheets.values.append({
+          spreadsheetId:process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID,
+          range:'A1:J1',
+          valueInputOption:'USER_ENTERED',
+          requestBody:{
+            values:[
+              [
+                wallet,discord,twitter,commit,bookamt,hasInvestor,fundname,Fundcommit,decisiontime,url
+              ]
+            ]
+          }
+       })
 
         // Here, you can handle the rating data and save it to your backend or database.
         // Example: Save the rating to a database.

@@ -56,7 +56,7 @@ const form = () => {
         pt="8rem"
       >
         <Text    color="white" mb="4rem">
-          Presale form
+          Presale Interest form
         </Text>
         {/* <ContributorsChart/> */}
         <HStack
@@ -68,8 +68,6 @@ const form = () => {
     >
         <DetailsForm/>
         {/* <DetailsForm/> */}
-
-
       </HStack>
    
         <Text color="white" mt="3rem" mb="2rem">

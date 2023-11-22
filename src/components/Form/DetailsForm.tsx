@@ -19,14 +19,14 @@ const DetailsForm = ({ handler }: any) => {
   const [wallet, setWallet] = useState(address?address:"");
   const [discord, setdiscord] = useState("");
   const [Twitter, setTwitter] = useState("");
-  const [Commit, setCommit] = useState(0);
-  const [BookAmt, setBookAmt] = useState(0);
-  const [checked, setChecked] = useState(false)
+  const [Commit, setCommit] = useState<number>(0);
+  const [BookAmt, setBookAmt] = useState<number>(0);
+  const [checked, setChecked] = useState<boolean>(false)
   const [FundName, setFundName] = useState()
-  const [investorcommit, setInvestorcommit] = useState(0)
-  const [DecisionTime, setDecisionTime] = useState(0)
+  const [investorcommit, setInvestorcommit] = useState<number>(0)
+  const [DecisionTime, setDecisionTime] = useState<number>(0)
   const [url, setUrl] = useState("")
-  const [formSubmitted, setFormSubmitted] = useState(false)
+  const [formSubmitted, setFormSubmitted] = useState<boolean>(false)
 
 
   const handleWalletChange = (e: any) => {
@@ -93,7 +93,7 @@ const DetailsForm = ({ handler }: any) => {
   }
   const handleInvestorSubmit=async()=>{
     try{
-      axios.post('/api/form/checked', { wallet:address,discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt,fundname:FundName,Fundcommit:investorcommit,decisiontime:DecisionTime,url:url },)
+      axios.post('/api/form/checked', { wallet:address,discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt,hasInvestor:checked,fundname:FundName,Fundcommit:investorcommit,decisiontime:DecisionTime,url:url },)
         .then((response) => {
           console.log(response, "linked"); // Log the response from the backend.
         })
@@ -145,10 +145,15 @@ const DetailsForm = ({ handler }: any) => {
           >
             <Input
              cursor={"pointer"}
-             
               border="0px"
               value={wallet}
-              onChange={handleWalletChange}
+              isDisabled={true}
+              _disabled={
+                {
+                  cursor:"pointer"
+                }
+              }
+              // onChange={handleWalletChange}
               placeholder="rioguLSDnvSL:?DgjbsBHNB.XBMD>XBM;DLFBJ"
               _placeholder={{
                 color: "rgba(240, 240, 245, 0.50)",
@@ -192,7 +197,19 @@ const DetailsForm = ({ handler }: any) => {
             letterSpacing=" -0.15px"
           >
             <Input
+            color="white"
               border="0px"
+              placeholder="Aprillyto#7879"
+              _placeholder={{
+                color: "rgba(240, 240, 245, 0.50)",
+                fontFamily: "Inter",
+                fontSize: "14px",
+                fontStyle: "normal",
+                fontWeight: "500",
+                lineHeight: "20px",
+                letterSpacing: "-0.15px"
+
+              }}
               value={discord}
               onChange={handleDiscordChange}
             ></Input>
@@ -706,7 +723,25 @@ const DetailsForm = ({ handler }: any) => {
           borderRadius={"8px"}
           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30));"
           background=" var(--surface-of-10, rgba(103, 109, 154, 0.10));"
-        ></Box>
+          padding="33px 42px"
+          font-size=" 18px"
+          fontWeight="400"
+          lineHeight="30px"
+          letterSpacing="-0.15px"
+        >
+          <Text>
+            Hash Tokens
+          </Text>
+          <Text mt="2rem">
+          The HASH token is a key catalyst in the Hashstack ecosystem, and will serve 3 primary objectives. <br/>
+          1. Store of authority(Governance): To enable decentralised governance. <br/>
+          2. Store of value(Utility): For payment of in-dapp transaction fees, compensating partner projects, KOLs, and community participants who help secure/further the Hashstack ecosystem. <br/>
+          3. Unlock liquidator role: Liquidators on Hashstack take the responsibility of repaying the bad debt to the Hashstack protocol, in-exchange for acquiring them at a discount. 
+          </Text>
+          <Text mt="3rem">
+          HASH tokens total supply is hard capped to 9,000,000,000 (9 billion). For TGE, Hashstack has partnered with the Industry leading launchpad - Tokensoft that helped launch Ava (Avalanche token), GRAPH (The Graph token) among other notable projects. Leave a place holder to fit 4 bullet points (2 lines each) for Disclaimers
+          </Text>
+        </Box>
       </HStack>
     </>
   );

@@ -7,11 +7,10 @@ import Link from 'next/link'
 import contr from "../abi/ERC20.json"
 import { useEffect, useState } from 'react'
 import { useConnectors } from '@starknet-react/core'
-import { useContractRead } from 'wagmi'
 import BravosIcon from '@/assets/bravosIcon'
 import { useRouter } from 'next/router'
 import { ConnectKitButton, useModal } from 'connectkit'
-import { useAccount, useBalance, useConnect } from "wagmi";
+import { useAccount, useBalance, useConnect, useContractRead, useNetwork } from "wagmi";
 import WalletConnectIcon from '@/assets/walletConnectIcon'
 import MetamaskIcon from '@/assets/metamaskIcon'
 import CoinbaseIcon from '@/assets/coinbaseIcon'
@@ -32,6 +31,7 @@ export default function Home() {
     const chainId = 11155111;
   console.log("dd", address)
   const [currentAccount, setCurrentAccount] = useState("")
+  const { chain, chains } = useNetwork()
   const [userBalance, setUserBalance] = useState<any>()
   // const usdtBalance = useContractRead({
   //   address:`0x${'65e2fe35c30ec218b46266f89847c63c2eda7dc7'}`,
@@ -58,6 +58,22 @@ export default function Home() {
    
 
   })
+  const { data: accessTokenBalance } = useContractRead({
+    address: "0x9FD21bE27A2B059a288229361E2fA632D8D2d074",
+    abi: [
+      {
+        inputs: [{ internalType: "address", name: "owner", type: "address" }],
+        name: "balanceOf",
+        outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+        stateMutability: "view",
+        type: "function",
+      },
+    ],
+    functionName: "balanceOf",
+    args: [address],
+  });
+
+  console.log(accessTokenBalance,"balance")
 
   console.log("balances",usdcBalance?.data?.formatted,usdtBalance?.data?.formatted)
 
