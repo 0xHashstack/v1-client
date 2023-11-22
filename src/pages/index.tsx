@@ -23,7 +23,7 @@ export default function Home() {
   const { address, isConnecting, isDisconnected } = useAccount();
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect()
-  console.log("dd", address)
+  console.log("dd", connectors)
   const [currentAccount, setCurrentAccount] = useState("")
   const [userBalance, setUserBalance] = useState<any>()
   const usdtBalance = useBalance({

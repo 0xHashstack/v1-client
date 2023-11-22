@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { WagmiConfig, createConfig } from "wagmi";
+import { WagmiConfig, createConfig, mainnet} from "wagmi";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 
 import Head from "next/head";
@@ -125,6 +125,7 @@ const lightTheme = extendTheme({
 });
 
 import { useState } from "react";
+import { goerli } from "viem/chains";
 
 export default function App({ Component, pageProps }: AppProps) {
 
@@ -135,8 +136,9 @@ export default function App({ Component, pageProps }: AppProps) {
       infuraId: "4a19ed2b046c486084368bc58093928e", // or infuraId
       walletConnectProjectId: "ecd60d8bde49411e2963bd0b7ca594fd",
       connectors:[
-        new MetaMaskConnector(
-        ),
+        new MetaMaskConnector({
+          chains: [mainnet, goerli],
+      }),
       new CoinbaseWalletConnector({
       options: {
         appName: 'wagmi',

@@ -18,14 +18,14 @@ const DetailsForm = ({ handler }: any) => {
   const [wallet, setWallet] = useState(address?address:"");
   const [discord, setdiscord] = useState("");
   const [Twitter, setTwitter] = useState("");
-  const [Commit, setCommit] = useState(0);
-  const [BookAmt, setBookAmt] = useState(0);
-  const [checked, setChecked] = useState(false)
+  const [Commit, setCommit] = useState<number>(0);
+  const [BookAmt, setBookAmt] = useState<number>(0);
+  const [checked, setChecked] = useState<boolean>(false)
   const [FundName, setFundName] = useState()
-  const [investorcommit, setInvestorcommit] = useState(0)
-  const [DecisionTime, setDecisionTime] = useState(0)
+  const [investorcommit, setInvestorcommit] = useState<number>(0)
+  const [DecisionTime, setDecisionTime] = useState<number>(0)
   const [url, setUrl] = useState("")
-  const [formSubmitted, setFormSubmitted] = useState(false)
+  const [formSubmitted, setFormSubmitted] = useState<boolean>(false)
 
 
   const handleWalletChange = (e: any) => {
@@ -123,10 +123,15 @@ const DetailsForm = ({ handler }: any) => {
           >
             <Input
              cursor={"pointer"}
-             
               border="0px"
               value={wallet}
-              onChange={handleWalletChange}
+              isDisabled={true}
+              _disabled={
+                {
+                  cursor:"pointer"
+                }
+              }
+              // onChange={handleWalletChange}
               placeholder="rioguLSDnvSL:?DgjbsBHNB.XBMD>XBM;DLFBJ"
               _placeholder={{
                 color: "rgba(240, 240, 245, 0.50)",
@@ -170,6 +175,7 @@ const DetailsForm = ({ handler }: any) => {
             letterSpacing=" -0.15px"
           >
             <Input
+            color="white"
               border="0px"
               value={discord}
               onChange={handleDiscordChange}
