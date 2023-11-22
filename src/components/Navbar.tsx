@@ -33,7 +33,7 @@ const Navbar = () => {
             {/* <Text color="white">
                 Connect Wallet
             </Text> */}
-              <Box
+            {address &&  <Box
               position={'relative'}
             fontSize="12px"
             color="#FFF"
@@ -46,7 +46,6 @@ const Navbar = () => {
             justifyContent="center"
             gap="1px"
             flexGrow="1"
-            className="button navbar"
             // ref={ref2}
           >
             <Box
@@ -63,12 +62,11 @@ const Navbar = () => {
               width="100%"
               height="100%"
               // bgColor="blue"
-              className="navbar-button"
               onClick={() => {
                 setNavDropdown(!NavDropdown);
               }}
             >
-              {address ? (
+              {address && (
                 <Box
                   // bgColor="red"
                   width="100%"
@@ -112,11 +110,7 @@ const Navbar = () => {
                     )}`}{" "}
                   </Text>
                 </Box>
-              ) : (
-                <>
-                 
-                </>
-              )}
+              ) }
               <Box  right="0.7rem">
                 {!NavDropdown ? (
                   <Image
@@ -158,7 +152,6 @@ const Navbar = () => {
                 borderRadius="6px"
                 background="var(--Base_surface, #02010F)"
                 border="1px solid rgba(103, 109, 154, 0.30)"
-                className="dropdown-container"
               >
                 {address ? (
                   // walletConnectionDropdown.map((val, idx) => {
@@ -212,7 +205,7 @@ const Navbar = () => {
      
               </Box>
             )}
-          </Box>
+          </Box>}
             <Text color="white">
                 <SettingsLogo/>
             </Text>

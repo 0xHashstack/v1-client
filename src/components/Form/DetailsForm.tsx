@@ -11,7 +11,8 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useAccount } from "wagmi";
+import { useAccount, useContractWrite } from "wagmi";
+import contr from '../../abi/PresaleFormABI.json'
 const DetailsForm = ({ handler }: any) => {
   const { address, isConnecting, isDisconnected } = useAccount();
 
@@ -55,16 +56,37 @@ const DetailsForm = ({ handler }: any) => {
   const handleUrlChange = (e: any) => {
     setUrl(e.target.value);
   };
-
+//   struct InvestorDetails {
+//     String fund_name;
+//     Number commitment_interest;
+//     uint256 time_to_decision;
+//     string website_url;
+// }
+  const { data, isLoading, isSuccess, write } =useContractWrite({
+    address: '0x30ecb549849e722c5ef8e37890ce24b4f10dae2b',
+    abi: contr.abi,
+    functionName: 'preBokking',
+    args: [BookAmt,'0xdAC17F958D2ee523a2206206994597C13D831ec7',discord,Twitter,Commit,false,      [
+      "",
+     0,
+      0,
+    ""
+    ]],
+    chainId:5
+  })
   const handleSubmit=async()=>{
     try{
-      axios.post('/api/form/unchecked', { wallet:address,discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt },)
-        .then((response) => {
-          console.log(response, "linked"); // Log the response from the backend.
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+      // axios.post('/api/form/unchecked', { wallet:address,discord:discord,twitter:Twitter,commit:Commit,bookamt:BookAmt },)
+      //   .then((response) => {
+      //     console.log(response, "linked"); // Log the response from the backend.
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error:', error);
+      //   });
+      write()
+      // if(write?.status=="success"){
+
+      // }
     }catch(err){
       console.log(err);
     }

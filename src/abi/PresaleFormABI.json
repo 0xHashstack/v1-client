@@ -1,0 +1,785 @@
+{"abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "version",
+          "type": "uint8"
+        }
+      ],
+      "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "PresalePaused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "PresaleUnpaused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "purchaseToken",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amountBooked",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "TokensPreBooked",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "TokensPreBookedRefunded",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "USDTInterface",
+      "outputs": [
+        {
+          "internalType": "contract IERC20Upgradeable",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "booked_users",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "bookingId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "booking_market",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "booking_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "discord_handle",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "twitter_handle",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "commitment_interest",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "has_investor",
+          "type": "bool"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "fund_name",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "commitment_interest",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "time_to_decision",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "website_url",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct TokenPreSaleBooking.InvestorDetails",
+          "name": "investor_details",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bool",
+          "name": "havePreBooked",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "bookingTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "isAllowed",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "bookingId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "bookingRefund",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getPreBookedUsers",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "bookingId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "booking_market",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "booking_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "discord_handle",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "twitter_handle",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "commitment_interest",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "has_investor",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "fund_name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "commitment_interest",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "time_to_decision",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "string",
+                  "name": "website_url",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct TokenPreSaleBooking.InvestorDetails",
+              "name": "investor_details",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bool",
+              "name": "havePreBooked",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bookingTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isAllowed",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct TokenPreSaleBooking.UserPreBookDetails[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getUserBookingDetails",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "bookingId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "booking_market",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "booking_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "discord_handle",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "twitter_handle",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "commitment_interest",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "has_investor",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "fund_name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "commitment_interest",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "time_to_decision",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "string",
+                  "name": "website_url",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct TokenPreSaleBooking.InvestorDetails",
+              "name": "investor_details",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bool",
+              "name": "havePreBooked",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bookingTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isAllowed",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct TokenPreSaleBooking.UserPreBookDetails",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "hasUserPreBooked",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_usdt",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_startTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_endTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_min_purchases_in_usd",
+          "type": "uint256"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "pausePresale",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "market",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "discord_handle",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "twitter_handle",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "commitment_interest",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "has_investor",
+          "type": "bool"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "fund_name",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "commitment_interest",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "time_to_decision",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "website_url",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct TokenPreSaleBooking.InvestorDetails",
+          "name": "investorDetails",
+          "type": "tuple"
+        }
+      ],
+      "name": "preBokking",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "presale",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "startTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "endTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "min_purchases_in_usd",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "presaleId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "unPausePresale",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "userPreBookDetails",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "bookingId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "booking_market",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "booking_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "discord_handle",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "twitter_handle",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "commitment_interest",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "has_investor",
+          "type": "bool"
+        },
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "fund_name",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "commitment_interest",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "time_to_decision",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "website_url",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct TokenPreSaleBooking.InvestorDetails",
+          "name": "investor_details",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bool",
+          "name": "havePreBooked",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "bookingTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "isAllowed",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]}
+
+  

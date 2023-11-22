@@ -1,13 +1,16 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { WagmiConfig, createConfig } from "wagmi";
+import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
-
+import { publicProvider } from '@wagmi/core/providers/public'
 import Head from "next/head";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { useState } from "react";
+import { InjectedConnector } from '@wagmi/core/connectors/injected'
+import { mainnet, sepolia,goerli, polygon, optimism } from '@wagmi/core/chains'
 const theme = extendTheme({
   components: {
     Tabs: {
@@ -124,19 +127,24 @@ const lightTheme = extendTheme({
   // Add your light theme styles here
 });
 
-import { useState } from "react";
+
 
 export default function App({ Component, pageProps }: AppProps) {
-
+  const { chains, publicClient } = configureChains(
+    [mainnet,goerli,sepolia],
+    [publicProvider()],
+  )
   const config = createConfig(
     getDefaultConfig(
       {
+        publicClient:publicClient,
       // Required API Keys
       infuraId: "4a19ed2b046c486084368bc58093928e", // or infuraId
       walletConnectProjectId: "ecd60d8bde49411e2963bd0b7ca594fd",
       connectors:[
-        new MetaMaskConnector(
-        ),
+        new MetaMaskConnector({
+          chains: chains,
+      }),
       new CoinbaseWalletConnector({
       options: {
         appName: 'wagmi',

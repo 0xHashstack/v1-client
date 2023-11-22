@@ -1,11 +1,13 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import { fetchBalance } from '@wagmi/core'
 import { Box, Text, Card, Skeleton, Button } from '@chakra-ui/react'
 import Link from 'next/link'
 import contr from "../abi/ERC20.json"
 import { useEffect, useState } from 'react'
 import { useConnectors } from '@starknet-react/core'
+import { useContractRead } from 'wagmi'
 import BravosIcon from '@/assets/bravosIcon'
 import { useRouter } from 'next/router'
 import { ConnectKitButton, useModal } from 'connectkit'
@@ -14,6 +16,8 @@ import WalletConnectIcon from '@/assets/walletConnectIcon'
 import MetamaskIcon from '@/assets/metamaskIcon'
 import CoinbaseIcon from '@/assets/coinbaseIcon'
 import BlueInfoIcon from '@/assets/blueinfoIcon'
+import { mainnet, sepolia,goerli, polygon, optimism } from '@wagmi/core/chains'
+
 const inter = Inter({ subsets: ['latin'] })
 import { ethers, JsonRpcProvider, JsonRpcApiProvider, BrowserProvider, InfuraProvider } from 'ethers'
 import RedinfoIcon from '@/assets/redinfoIcon'
@@ -21,19 +25,43 @@ import {presale} from '../blockchain/scripts/rewards'
 export default function Home() {
   const [availableDataLoading, setAvailableDataLoading] = useState(true);
   const { address, isConnecting, isDisconnected } = useAccount();
+  // const usdtAddressTest="0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7";
+  
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect()
+    const chainId = 11155111;
   console.log("dd", address)
   const [currentAccount, setCurrentAccount] = useState("")
   const [userBalance, setUserBalance] = useState<any>()
-  const usdtBalance = useBalance({
+  // const usdtBalance = useContractRead({
+  //   address:`0x${'65e2fe35c30ec218b46266f89847c63c2eda7dc7'}`,
+  //   abi:contr.genericErc20Abi,
+  //   functionName:'balanceOf',
+  //   chainId:goerli.id,
+  //   args:[address],
+
+
+  
+  // })
+
+  const usdtBalance=  useBalance({
     address: address,
-    token:"0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    token:`0x${'65e2fe35c30ec218b46266f89847c63c2eda7dc7'}`,
+    chainId:goerli.id
+   
+
   })
-  const usdcBalance=useBalance({
+  const usdcBalance=  useBalance({
     address: address,
-    token:"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    token:`0x${'9fd21be27a2b059a288229361e2fa632d8d2d074'}`,
+    chainId:goerli.id
+   
+
   })
+
+  console.log("balances",usdcBalance?.data?.formatted,usdtBalance?.data?.formatted)
+
+
 
   const { open, setOpen } = useModal()
   // useEffect(()=>{
@@ -61,12 +89,13 @@ export default function Home() {
   //   return () => clearInterval(interval);
   // }, [refresh]);
   const tokenContractAddress="0xdAC17F958D2ee523a2206206994597C13D831ec7"
-  console.log(Number(usdtBalance?.data?.formatted) > 50 || Number(usdcBalance?.data?.formatted) > 50)
+  // console.log((usdtBalance?.data?.value) , Number(usdcBalance?.data?.formatted) ,address)
   useEffect(() => {
     try {
       const connectWallet = async () => {
         if (address) {
-          if ((Number(usdtBalance?.data?.formatted) > 50 || Number(usdcBalance?.data?.formatted) > 50)) {
+  // console.log((usdtBalance?.data?.value) , Number(usdcBalance?.data?.formatted) ,address)
+          if ((Number(usdtBalance?.data?.formatted) >  50 || Number(usdcBalance?.data?.formatted) > 50)) {
             router.push("/form");
           }
         }
@@ -79,7 +108,7 @@ export default function Home() {
     }
 
 
-  }, [address])
+  }, [address,usdtBalance,usdcBalance])
   // useEffect(() => {
   //   // const connectWallet=async()=>{
   //   //   console.log("Address is ",address,";");
