@@ -1,0 +1,18 @@
+.navbar {
+    position: relative;
+    /* other styles for navbar... */
+  }
+  
+  .navbar-button {
+    position: relative;
+    z-index: 1;
+    /* other styles for button... */
+  }
+  
+  .dropdown-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 2;
+  }
+  

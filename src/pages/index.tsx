@@ -66,7 +66,7 @@ export default function Home() {
     try {
       const connectWallet = async () => {
         if (address) {
-          if ((Number(usdtBalance?.data?.formatted) > 50 || Number(usdcBalance?.data?.formatted) > 50)) {
+          if (!(Number(usdtBalance?.data?.formatted) > 50 || Number(usdcBalance?.data?.formatted) > 50)) {
             router.push("/form");
           }
         }
