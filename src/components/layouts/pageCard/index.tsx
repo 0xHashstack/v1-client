@@ -649,10 +649,12 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
                   <Text color="white" fontSize="25px">
                     You are successfully added to our waitlist
                   </Text> 
-                  <Text color="#B1B0B5" fontSize="14px" textAlign="center" mt="1.5rem" cursor="pointer" textDecoration="underline">
-                    <Link href="https://discord.gg/hashstack" target="_blank">                    
-                    Alternatively, Join our community discord to get an instant access.
+                  <Text color="#B1B0B5" fontSize="14px" textAlign="center" mt="1.5rem" >
+                  Alternatively, Join our {` `}
+                    <Link href="https://discord.gg/hashstack" target="_blank" style={{textDecoration:"underline"}}>     
+                      discord community               
                     </Link>
+                    {` `}to get an instant access.
                   </Text>
                     </Box>
                   : <Text color="white" fontSize="25px">
