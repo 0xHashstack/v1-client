@@ -18,15 +18,15 @@ const form = () => {
     token:"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
   })
   const [loading, setLoading] = useState<Boolean>(false);
-  useEffect(()=>{
-    if(address && (Number(usdtBalance?.data?.formatted) > 50 || Number(usdcBalance?.data?.formatted) > 50)){
-      setLoading(false);
-    }
+  // useEffect(()=>{
+  //   if(address && (Number(usdtBalance?.data?.formatted) > 50 || Number(usdcBalance?.data?.formatted) > 50)){
+  //     setLoading(false);
+  //   }
 
-    else{
-      router.push('/');
-    }
-  },[address])
+  //   else{
+  //     router.push('/');
+  //   }
+  // },[address])
 
   return (
  <Box>
@@ -56,7 +56,7 @@ const form = () => {
         pt="8rem"
       >
         <Text    color="white" mb="4rem">
-          Presale form
+          Presale Interest form
         </Text>
         {/* <ContributorsChart/> */}
         <HStack
@@ -68,8 +68,6 @@ const form = () => {
     >
         <DetailsForm/>
         {/* <DetailsForm/> */}
-
-
       </HStack>
    
         <Text color="white" mt="3rem" mb="2rem">
