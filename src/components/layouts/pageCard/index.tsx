@@ -36,6 +36,7 @@ import { AccountInterface } from "starknet";
 import FeedbackModal from "@/components/modals/feedbackModal";
 import InfoIcon from "@/assets/icons/infoIcon";
 import axios from "axios";
+import Link from "next/link";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -642,9 +643,19 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             >
               <Box>
                 {(!whitelisted)
-                  ? <Text color="white" fontSize="25px">
+
+                  ? 
+                  <Box>
+                  <Text color="white" fontSize="25px">
                     You are successfully added to our waitlist
-                  </Text> : <Text color="white" fontSize="25px">
+                  </Text> 
+                  <Text color="#B1B0B5" fontSize="14px" textAlign="center" mt="1.5rem" cursor="pointer" textDecoration="underline">
+                    <Link href="https://discord.gg/hashstack" target="_blank">                    
+                    Alternatively, Join our community discord to get an instant access.
+                    </Link>
+                  </Text>
+                    </Box>
+                  : <Text color="white" fontSize="25px">
                     Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Goerli" : "Mainnet"} and refresh
                   </Text>
                 }
