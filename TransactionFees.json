@@ -1,0 +1,13 @@
+{
+  "supply": 0.1,
+  "supplyAndStake": 0.1,
+  "stake": 0.1,
+  "withdrawSupply": 0.1,
+  "unstake": 0.1,
+  "borrow": 0.1,
+  "borrowAndTrade": 0.1,  
+  "spend": 0.1,
+  "convertToBorrowMarket": 0.1,
+  "repay": 0.1,
+  "addCollateral": 0.1
+} 

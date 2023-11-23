@@ -1,16 +1,16 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { WagmiConfig, createConfig, configureChains } from "wagmi";
-import { ConnectKitProvider, getDefaultConfig } from "connectkit";
-import { publicProvider } from '@wagmi/core/providers/public'
+
+
 import Head from "next/head";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { useState } from "react";
-import { InjectedConnector } from '@wagmi/core/connectors/injected'
-import { mainnet, sepolia,goerli, polygon, optimism } from '@wagmi/core/chains'
+
+
+import {
+  StarknetConfig,
+  InjectedConnector,
+  StarknetProvider,
+} from "@starknet-react/core";
 const theme = extendTheme({
   components: {
     Tabs: {
@@ -45,27 +45,27 @@ const theme = extendTheme({
     //     }
     //   }
     // }
-    Checkbox: {
+       Checkbox: {
       baseStyle: {
-        // {color:'black',}
+// {color:'black',}
         icon: {
           // color: 'white',
           bg: '#4D59E8',
-          color: 'white',
-          borderWidth: '0px',
-
+          color:'white',
+          borderWidth:'0px',
+          
 
           // borderColor: '#4D59E8',
           _disabled: {
-            borderWidth: '0px',
-            padding: '0px',
-            color: '#4D59E8',
-            bg: '#4D59E8',
-            colorScheme: "#4D59E8",
+          borderWidth:'0px',
+          padding:'0px',
+            color:'#4D59E8',
+          bg: '#4D59E8',
+            colorScheme:"#4D59E8",
             // iconColor:'white.800'
             // borderColor: '#4D59E8',
             // bg: 'red.800',
-
+            
           },
 
 
@@ -76,16 +76,16 @@ const theme = extendTheme({
           borderRadius: 'base',
           _disabled: {
             borderWidth: '0px',
-            padding: '0px',
-            color: 'black',
-            bg: '#4D59E8',
+            padding:'0px',
+            color:'black',
+          bg: '#4D59E8',
 
 
-            // borderColor: '#4D59E8',
+              // borderColor: '#4D59E8',
             // bg: '#4D59E8',
           },
         },
-
+        
       },
     },
     // Radio: {
@@ -95,7 +95,7 @@ const theme = extendTheme({
     //       bg:"red.800"
     //     },
     //   },
-
+      
     // },
     // Radio: {
     //       bg:'red.800',
@@ -105,8 +105,8 @@ const theme = extendTheme({
     //           bg:`black`,
     //         },
     //       },
-
-
+    
+    
     // },
   },
 
@@ -115,8 +115,8 @@ const theme = extendTheme({
     customBlue: {
       500: "#0969DA",
     },
-    customPurple: {
-      500: "#4D59E8",
+    customPurple:{
+      500:"#4D59E8",
     }
   },
   fonts: {
@@ -126,46 +126,16 @@ const theme = extendTheme({
 const lightTheme = extendTheme({
   // Add your light theme styles here
 });
-
-
+import { UserbackProvider } from "@userback/react";
+import Layout from "@/components/layouts/toasts";
+import spaceApiKey from "@/utils/constants/keys";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { chains, publicClient } = configureChains(
-    [mainnet,goerli,sepolia],
-    [publicProvider()],
-  )
-  const config = createConfig(
-    getDefaultConfig(
-      {
-        publicClient:publicClient,
-      // Required API Keys
-      infuraId: "4a19ed2b046c486084368bc58093928e", // or infuraId
-      walletConnectProjectId: "ecd60d8bde49411e2963bd0b7ca594fd",
-      connectors:[
-        new MetaMaskConnector({
-          chains: chains,
-      }),
-      new CoinbaseWalletConnector({
-      options: {
-        appName: 'wagmi',
-      },
-    }),
-    new WalletConnectConnector({
-      options: {
-        projectId: 'ecd60d8bde49411e2963bd0b7ca594fd',
-      },
-    }),
-      ],
-
-      // Required
-      appName: "Presale",
-
-      // Optional
-      appDescription: "Your App Description",
-      appUrl: "https://family.co", // your app's url
-      appIcon: "https://family.co/logo.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
-    }),
-  );
+  const connectors = [
+    new InjectedConnector({ options: { id: "braavos" } }),
+    new InjectedConnector({ options: { id: "argentX" } }),
+  ];
   const [feedback, setFeedback] = useState(false);
   // loadSpace(spaceApiKey)
   //   .then((api) => {
@@ -174,7 +144,7 @@ export default function App({ Component, pageProps }: AppProps) {
   //       setFeedback(true);
   //     }
   //   })
-  //   .catch((err) => console.log(err));
+  //   .catch((err) =>//console.log(err));
 
   return (
     <>
@@ -190,13 +160,17 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <link rel="shortcut icon" href="/favicon-32x32.png" />
       </Head>
-      <ChakraProvider theme={theme}>
-          <WagmiConfig config={config}>
-            <ConnectKitProvider>
-              <Component {...pageProps} />
-            </ConnectKitProvider>
-          </WagmiConfig>
-      </ChakraProvider>
+      <UserbackProvider token="41130|83179|yuKUdxxi1Q2T4EFo0Sg7Zbmbz">
+        <ChakraProvider theme={theme}>
+          <StarknetProvider autoConnect={true} connectors={connectors}>
+         
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+           
+          </StarknetProvider>
+        </ChakraProvider>
+      </UserbackProvider>
     </>
   );
 }
