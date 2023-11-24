@@ -494,7 +494,7 @@ const PersonalStatsDashboard = ({
                                 <Box>
                                   HASH Allocated: {member.hashAllocated ? member?.hashAllocated:0}
                                   <br />
-                                  HASH Estimated: {member.estimatedHashTokensUser ? member?.estimatedHashTokensUser :0}
+                                  HASH Estimated: {member.est ? member?.est :0}
                                 </Box>
                               }
                               // arrowPadding={-5420}
