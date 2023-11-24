@@ -315,7 +315,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
           cursor="pointer"
           marginBottom="0px"
           className="button"
-          color={pathname !== "/v1/campaign" && pathname !== "/v1/referral" ? "#00D395" : "#676D9A"}
+          color={pathname !== "/v1/airdrop_leaderboard" && pathname !== "/v1/referral" ? "#00D395" : "#676D9A"}
           // _hover={{
           //   color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
           // }}
@@ -333,7 +333,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             alignItems="center"
             gap={"8px"}
           >
-            {router.pathname == "/v1/campaign" || router.pathname=="/v1/referral" ? (
+            {router.pathname == "/v1/airdrop_leaderboard" || router.pathname=="/v1/referral" ? (
                 <Image
                   src={hoverDashboardIcon}
                   alt="Picture of the author"
@@ -458,11 +458,11 @@ const userWhitelisted=useSelector(selectWhiteListed);
           marginBottom="0px"
           // className="button"
           // backgroundColor={"blue"}
-          color={`${pathname == "/v1/campaign" ? "#00D395" : "#676D9A"}`}
+          color={`${pathname == "/v1/airdrop_leaderboard" ? "#00D395" : "#676D9A"}`}
           // _hover={{ color: "#6e7681" }}
           onMouseEnter={() => setCampaignHover(true)}
           onMouseLeave={() => setCampaignHover(false)}
-          onClick={()=>{router.push('/v1/campaign')}}
+          onClick={()=>{router.push('/v1/airdrop_leaderboard')}}
         >
             <Box
               display="flex"
@@ -470,7 +470,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
               alignItems="center"
               gap={"8px"}
             >
-              {pathname == "/v1/campaign" ? (
+              {pathname == "/v1/airdrop_leaderboard" ? (
                 <Image
                   src={hoverContributeEarnIcon}
                   alt="Picture of the author"
@@ -488,7 +488,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
                 />
               )}
 
-              <Text fontSize="14px" >Campaign</Text>
+              <Text fontSize="14px" >Airdrop</Text>
             </Box>
         </Box>:""}
         {     <Box
