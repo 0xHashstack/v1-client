@@ -51,7 +51,7 @@ const LeaderboardDashboard = ({
   const tooltips = [
     "",
     "",
-    "Liquidity (Supply,Borrow,Referrals)",
+    "Liquidity (Supply/Borrow,Referrals)",
     "Points earned for rewards",
     "Estimated $HASH earned",
 
@@ -276,7 +276,7 @@ const LeaderboardDashboard = ({
                             color="#E6EDF3"
                           // bgColor={"blue"}
                           >
-                            
+
                             <Tooltip
                               hasArrow
                               label={
@@ -305,8 +305,7 @@ const LeaderboardDashboard = ({
                             // mt="28px"
                             >
                               <Text>
-                              {numberFormatter(Number(member.selfValue) + Number(member.referralValue))}
-
+                                {numberFormatter(Number(member.selfValue) + Number(member.referralValue))}
                               </Text>
                             </Tooltip>
                           </Text>
@@ -319,7 +318,7 @@ const LeaderboardDashboard = ({
                           padding={2}
                           textAlign="center"
                         >
-                          
+
                           <Text
                             width="100%"
                             height="100%"
@@ -331,7 +330,37 @@ const LeaderboardDashboard = ({
                             color="#E6EDF3"
                           // bgColor={"blue"}
                           >
-                            {member.netPoints}
+                            <Tooltip
+                              hasArrow
+                              label={
+                                <Box>
+                                  Points Allocated: {member.pointsAllocated ? member?.pointsAllocated : 0}
+                                  <br />
+                                  Points Estimated: {member.pointsEstimated ? member?.pointsEstimated : 0}
+                                </Box>
+                              }
+                              // arrowPadding={-5420}
+                              placement="right"
+                              rounded="md"
+                              boxShadow="dark-lg"
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                            // cursor="context-menu"
+                            // marginRight={idx1 === 1 ? "52px" : ""}
+                            // maxW="222px"
+                            // mt="28px"
+                            >
+                              <Text>
+                                {member.netPoints}
+                              </Text>
+                            </Tooltip>
                           </Text>
                         </Td>
                         <Td
@@ -355,7 +384,35 @@ const LeaderboardDashboard = ({
 
                           // bgColor={"blue"}
                           >
+                            <Tooltip
+                              hasArrow
+                              label={
+                                <Box>
+                                  HASH Allocated: {member.hashAllocated ? member?.hashAllocated:0}
+                                  <br />
+                                  HASH Estimated: {member.estimatedHash ? member?.estimatedHash :0}
+                                </Box>
+                              }
+                              // arrowPadding={-5420}
+                              placement="right"
+                              rounded="md"
+                              boxShadow="dark-lg"
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                            // cursor="context-menu"
+                            // marginRight={idx1 === 1 ? "52px" : ""}
+                            // maxW="222px"
+                            // mt="28px"
+                            >
                             {numberFormatter(member.estimatedHash)}
+                            </Tooltip>
                           </Text>
                         </Td>
                       </Tr>

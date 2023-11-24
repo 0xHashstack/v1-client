@@ -87,8 +87,6 @@ const Campaign = () => {
     "HASH Earned"
   ];
   const columnItemsPersonalStatsReferalCampaign = [
-    "Period",
-    "Epoch",
     "Traders Referred",
     "Liquidity generated in ($)",
     "Points earned",
@@ -176,6 +174,7 @@ const Campaign = () => {
     const fetchDetails=async()=>{
       if(address){
         const res=await axios.get(`https://hstk.fi/api/temp-allocation/${address}`)
+        console.log(res?.data)
         setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
         setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
         let arr:any=[];
@@ -279,7 +278,7 @@ const Campaign = () => {
       console.error('Failed to copy text: ', error);
     }
   };
-  const startDate = new Date('2023-11-24'); 
+  const startDate = new Date('2023-11-25'); 
 const endDate = new Date(startDate);
 endDate.setDate(startDate.getDate() + 56); 
 
@@ -312,45 +311,47 @@ useEffect(()=>{
         mb="1rem"
         zIndex="1"
       >
-        <HStack display='flex' justifyContent="space-between" width="100%" alignItems="flex-start">
-        <Box mt="3rem" display="flex" flexDirection="column">
+        <HStack display='flex'  width="100%" alignItems="flex-start" justifyContent="space-between">
+        <Box mt="2.5rem" display="flex" flexDirection="column">
+                    <Text color="#F0F0F5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal" mb="0.8rem">
+                  Your Referral Link
+                </Text>
                     <Box display="flex" mt="0">
-                    <InputGroup size='lg'mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="4rem" >
-                    <InputLeftAddon height="60px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
+                    <InputGroup width="550px" mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="5.3rem" >
+                    <InputLeftAddon height="80px" fontSize="20px"  border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
                     {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/":"https://hstk.fi/"}
                     </InputLeftAddon>
                     {exisitingLink ?
-                    <Input  height="60px" border="none" color="#F0F0F5" value={exisitingLink} paddingInlineStart="0" _focus={{
+                    <Input fontSize="20px"   height="80px" border="none" color="#F0F0F5" value={exisitingLink} paddingInlineStart="0" _focus={{
                         outline: "0",
                         boxShadow: "none",
                       }}
                       onChange={handleChange}
-                      />:<Input  height="60px" border="none" color="#F0F0F5" value={refferal} paddingInlineStart="0" _focus={{
+                      />:<Input fontSize="20px"   height="80px" border="none" color="#F0F0F5" value={refferal} paddingInlineStart="0" _focus={{
                         outline: "0",
                         boxShadow: "none",
                       }}
                       onChange={handleChange}
                       />
                 }
-                        
                     </InputGroup>
                     <Box cursor="pointer" onClick={()=>{
                         handleCopyClick();
 
                     }}>
-                        <CopyToClipboard text="Kaisi ho">
+                        <CopyToClipboard text="Works">
                             <CopyIcon/>
                         </CopyToClipboard>
                     </Box>
                     </Box>
                     <Box color="#676D9A" fontSize="14px" fontStyle="normal" fontWeight="500" lineHeight="20px" letterSpacing="-0.15px" mt="0.3rem">
-                    You can edit your link only once
+                    You can change this link only once
                     </Box>
                 </Box>
                 <HStack mt="2.5rem" display="flex" flexDirection="column" alignItems="flex-start" >
                   <Box>
-                  <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
-                  Community Stats
+                  <Text color="#F0F0F5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal" mb="0.2rem">
+                  Overall campaign stats
                 </Text>
                   </Box>
           <HStack display="flex" justifyContent="space-between" >
@@ -359,7 +360,7 @@ useEffect(()=>{
               display="flex"
               // bgColor="yellow"
               // flexGrow={1}
-              p="25px 32px"
+              p="14px 20px"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               borderRadius="8px"
               gap="7rem"
@@ -374,7 +375,7 @@ useEffect(()=>{
                   Pool Reward
                 </Text>
                <Text color="#e6edf3" fontSize="20px">
-                    36.000M
+                    36M HASH
                 </Text>
               </VStack>
               <VStack
@@ -432,7 +433,7 @@ useEffect(()=>{
                         endColor="#2B2F35"
                         borderRadius="6px"
                       />:                <Text color="#e6edf3" fontSize="20px">
-                      {numberFormatter(communityHash)}
+                      {numberFormatter(communityHash).substring(0,1)}{numberFormatter(communityHash).substring(5,)} HASH
                       </Text>}
 
               </VStack>
@@ -543,45 +544,9 @@ useEffect(()=>{
                 </VStack>
               </HStack>} */}
           </HStack>
-          {campaignSelected == 1 ? <Box display="flex">
-            <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
-              Liquidity mining campaign -
-            </Text>
-            <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-              &nbsp;99 days 11 hours left
-            </Text>
-
-          </Box> :
-            <Box display="flex" gap="4.5rem">
-              <Box display="flex">
-                <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
-                  Airdrop campaign -
-                </Text>
-                <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                  &nbsp;{daysLeft} days left
-                </Text>
-              </Box>
-              <Box display="flex">
-              <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
-                Epoch -
-              </Text>
-              <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                &nbsp;1/4
-              </Text>
-              </Box>
-              <Box display="flex">
-              <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
-                Snapshot -
-              </Text>
-              <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                &nbsp;0/6
-              </Text>
-              </Box>
-            </Box>
-          }
         </HStack>
         </HStack>
-        <HStack>
+        <HStack display="flex" width="100%" justifyContent="space-between">
           {/* <Button
             bg="transparent"
             fontStyle="normal"
@@ -610,15 +575,50 @@ useEffect(()=>{
             letterSpacing="-0.15px"
             padding="1.125rem 0.4rem"
             margin="2px"
-            mt="1rem"
+            mt="4rem"
             color={campaignSelected == 2 ? "#fff" : "#676D9A"}
             borderBottom={campaignSelected == 2 ? "2px solid #4D59E8" : ""}
             borderRadius="0px"
             _hover={{ bg: "transparent", color: "#E6EDF3" }}
             onClick={() => { setCampaignSelected(2) }}
           >
-            Airdrop campaign
+            Airdrop campaign details
           </Button>
+          {campaignSelected == 1 ? <Box display="flex" >
+            <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
+              Liquidity mining campaign -
+            </Text>
+            <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
+              &nbsp;99 days 11 hours left
+            </Text>
+          </Box> :
+            <Box display="flex" gap="4.5rem" mt="5rem">
+              <Box display="flex">
+                <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
+                  Airdrop campaign -
+                </Text>
+                <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
+                  &nbsp;{daysLeft} days left
+                </Text>
+              </Box>
+              <Box display="flex">
+              <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
+                Epoch -
+              </Text>
+              <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
+                &nbsp;1/4
+              </Text>
+              </Box>
+              <Box display="flex">
+              <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
+                Snapshot -
+              </Text>
+              <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
+                &nbsp;0/6
+              </Text>
+              </Box>
+            </Box>
+          }
         </HStack>
 
         <Box borderRadius={'lg'} width={'100%'}

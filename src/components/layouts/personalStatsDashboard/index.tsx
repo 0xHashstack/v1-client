@@ -48,10 +48,8 @@ const PersonalStatsDashboard = ({
   const tenure = ["Day", "Week", "Month"];
   const modalDropdowns = useSelector(selectModalDropDowns);
   const tooltips = [
-    "",
-    "",
     "Number of traders you have referred",
-    "Liquidity (Supply,Borrow,Referrals)",
+    "Liquidity (Supply/Borrow,Referrals)",
     "Points earned for rewards",
     "Estimated $HASH earned",
   ];
@@ -297,7 +295,7 @@ const PersonalStatsDashboard = ({
                         position="relative"
                         p={0}
                       >
-                        <Td
+                        {/* <Td
                           width={"16.6%"}
                           // maxWidth={`${gap[idx1][idx2]}%`}
                           fontSize={"14px"}
@@ -318,8 +316,8 @@ const PersonalStatsDashboard = ({
                           >
                             {member.start} - {member.end}
                           </Text>
-                        </Td>
-                        <Td
+                        </Td> */}
+                        {/* <Td
                           width={"16.6%"}
                           // maxWidth={`${gap[idx1][idx2]}%`}
                           fontSize={"14px"}
@@ -340,7 +338,7 @@ const PersonalStatsDashboard = ({
                           >
                             {member.epoch}
                           </Text>
-                        </Td>
+                        </Td> */}
                         <Td
                           width={"16.6%"}
                           // maxWidth={`${gap[idx1][idx2]}%`}
@@ -354,9 +352,10 @@ const PersonalStatsDashboard = ({
                             height="100%"
                             display="flex"
                             alignItems="center"
-                            justifyContent="center"
+                            // justifyContent="center"
                             fontWeight="400"
                             fontSize="14px"
+                            ml="10"
                             color="#E6EDF3"
                           // bgColor={"blue"}
                           >
@@ -489,7 +488,37 @@ const PersonalStatsDashboard = ({
                             pr="10"
                           // bgColor={"blue"}
                           >
+                                                        <Tooltip
+                              hasArrow
+                              label={
+                                <Box>
+                                  HASH Allocated: {member.hashAllocated ? member?.hashAllocated:0}
+                                  <br />
+                                  HASH Estimated: {member.estimatedHashTokensUser ? member?.estimatedHashTokensUser :0}
+                                </Box>
+                              }
+                              // arrowPadding={-5420}
+                              placement="right"
+                              rounded="md"
+                              boxShadow="dark-lg"
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                            // cursor="context-menu"
+                            // marginRight={idx1 === 1 ? "52px" : ""}
+                            // maxW="222px"
+                            // mt="28px"
+                            >
+                              <Text>
                             {numberFormatter(member.est)}
+                              </Text>
+                            </Tooltip>
                           </Text>
                         </Td>
                       </Tr>
@@ -499,7 +528,7 @@ const PersonalStatsDashboard = ({
                           // left: "0%",
                           width: "100%",
                           height: "1px",
-                          borderBottom: "1px solid #2b2f35",
+                          borderBottom: "1px solid rgba(103, 109, 154, 0.30)",
                           display: `${member.id == 5 ? "none" : "block"}`,
                         }}
                       />
