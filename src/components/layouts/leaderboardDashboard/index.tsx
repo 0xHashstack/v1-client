@@ -281,9 +281,9 @@ const LeaderboardDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  Self-Liquidity: ${member.selfValue}
+                                  Supply/Borrow: ${member.selfValue}
                                   <br />
-                                  Referred-Liqudity: ${member.referralValue}
+                                  Referrals: ${member.referralValue}
                                 </Box>
                               }
                               // arrowPadding={-5420}
@@ -390,7 +390,7 @@ const LeaderboardDashboard = ({
                                 <Box>
                                   HASH Allocated: {member.hashAllocated ? member?.hashAllocated:0}
                                   <br />
-                                  HASH Estimated: {member.estimatedHash ? member?.estimatedHash :0}
+                                  HASH Estimated: {member.estimatedHash ? numberFormatter(member?.estimatedHash) :0}
                                 </Box>
                               }
                               // arrowPadding={-5420}

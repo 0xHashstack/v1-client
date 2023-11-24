@@ -385,11 +385,9 @@ const PersonalStatsDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  Supply-Liquidity: ${member.supplyliq}
+                                  Supply/Borrow: ${member.supplyliq+member.borrowliq}
                                   <br />
-                                  Borrowed-Liquidity: ${member.borrowliq}
-                                  <br />
-                                  Referred-Liqudity: ${member.referredliq}
+                                  Referrals: ${member.referredliq}
                                 </Box>
                               }
                               // arrowPadding={-5420}
@@ -439,9 +437,9 @@ const PersonalStatsDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  User-Points: {member.selfpts}
+                                  Points Allocated: 0
                                   <br />
-                                  Referred-Points: {member.referredpts}
+                                  Points Estimated: {member.pts}
                                 </Box>
                               }
                               // arrowPadding={-5420}
@@ -494,7 +492,7 @@ const PersonalStatsDashboard = ({
                                 <Box>
                                   HASH Allocated: {member.hashAllocated ? member?.hashAllocated:0}
                                   <br />
-                                  HASH Estimated: {member.est ? member?.est :0}
+                                  HASH Estimated: {member.est ? numberFormatter(member?.est) :0}
                                 </Box>
                               }
                               // arrowPadding={-5420}
