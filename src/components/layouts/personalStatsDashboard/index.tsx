@@ -409,7 +409,7 @@ const PersonalStatsDashboard = ({
                             // mt="28px"
                             >
                               <Text>
-                                {numberFormatter(member.liq)}
+                                {numberFormatter(Number(member.liq)+Number(member.referredliq))}
                               </Text>
                             </Tooltip>
                           </Text>
