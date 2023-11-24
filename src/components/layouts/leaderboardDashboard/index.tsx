@@ -16,6 +16,7 @@ import { selectModalDropDowns, setModalDropdown } from '@/store/slices/dropdowns
 import { useDispatch, useSelector } from 'react-redux';
 import ArrowUp from '@/assets/icons/arrowup';
 import DropdownUp from '@/assets/icons/dropdownUpIcon';
+import numberFormatter from "@/utils/functions/numberFormatter";
 const LeaderboardDashboard = ({
   width,
   currentPagination,
@@ -280,9 +281,9 @@ const LeaderboardDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  Self-Liquidity: {member.selfValue}
+                                  Self-Liquidity: ${member.selfValue}
                                   <br />
-                                  Referred-Liqudity: {member.referralValue}
+                                  Referred-Liqudity: ${member.referralValue}
                                 </Box>
                               }
                               // arrowPadding={-5420}
@@ -304,7 +305,7 @@ const LeaderboardDashboard = ({
                             // mt="28px"
                             >
                               <Text>
-                              {Number(member.selfValue) + Number(member.referralValue)}
+                              {numberFormatter(Number(member.selfValue) + Number(member.referralValue))}
 
                               </Text>
                             </Tooltip>
@@ -354,7 +355,7 @@ const LeaderboardDashboard = ({
 
                           // bgColor={"blue"}
                           >
-                            {member.estimatedHash}
+                            {numberFormatter(member.estimatedHash)}
                           </Text>
                         </Td>
                       </Tr>

@@ -15,6 +15,7 @@ import { selectModalDropDowns, setModalDropdown } from '@/store/slices/dropdowns
 import { useDispatch, useSelector } from 'react-redux';
 import ArrowUp from '@/assets/icons/arrowup';
 import DropdownUp from '@/assets/icons/dropdownUpIcon';
+import numberFormatter from "@/utils/functions/numberFormatter";
 const PersonalStatsDashboard = ({
   width,
   currentPagination,
@@ -385,11 +386,11 @@ const PersonalStatsDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  Self-Liquidity: {member.supplyliq}
+                                  Self-Liquidity: ${member.supplyliq}
                                   <br />
-                                  Borrowed-Liquidity: {member.borrowliq}
+                                  Borrowed-Liquidity: ${member.borrowliq}
                                   <br />
-                                  Referred-Liqudity: {member.referredliq}
+                                  Referred-Liqudity: ${member.referredliq}
                                 </Box>
                               }
                               // arrowPadding={-5420}
@@ -411,7 +412,7 @@ const PersonalStatsDashboard = ({
                             // mt="28px"
                             >
                               <Text>
-                                {member.liq}
+                                {numberFormatter(member.liq)}
                               </Text>
                             </Tooltip>
                           </Text>
@@ -488,7 +489,7 @@ const PersonalStatsDashboard = ({
                             pr="10"
                           // bgColor={"blue"}
                           >
-                            {member.est}
+                            {numberFormatter(member.est)}
                           </Text>
                         </Td>
                       </Tr>
