@@ -386,7 +386,7 @@ const PersonalStatsDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  Self-Liquidity: ${member.supplyliq}
+                                  Supply-Liquidity: ${member.supplyliq}
                                   <br />
                                   Borrowed-Liquidity: ${member.borrowliq}
                                   <br />

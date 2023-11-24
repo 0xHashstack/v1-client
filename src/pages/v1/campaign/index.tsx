@@ -279,6 +279,23 @@ const Campaign = () => {
       console.error('Failed to copy text: ', error);
     }
   };
+  const startDate = new Date('2023-11-24'); 
+const endDate = new Date(startDate);
+endDate.setDate(startDate.getDate() + 56); 
+
+// Function to update the days left
+const [daysLeft, setDaysLeft] = useState<number>(56)
+function updateDaysLeft() {
+  const now = new Date();
+  const timeDiff = endDate.getTime() - now.getTime();
+  const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+  setDaysLeft(daysLeft);
+}
+useEffect(()=>{
+  updateDaysLeft();
+},[])
+
+// Update days left on page load and start an interval to update it daily
   useEffect(()=>{
     setCurrentPagination(1);
   },[tabValue])
@@ -541,7 +558,7 @@ const Campaign = () => {
                   Airdrop campaign -
                 </Text>
                 <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                  &nbsp;56 days left
+                  &nbsp;{daysLeft} days left
                 </Text>
               </Box>
               <Box display="flex">
