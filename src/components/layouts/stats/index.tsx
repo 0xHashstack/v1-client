@@ -81,7 +81,7 @@ const Stats = ({
                 <Box color="#e6edf3" fontSize="20px">
                   {value !== null ? (
                     value ? (
-                      pathname!="/v1/referal"? "$" + numberFormatter(value):!isLast ? value:"$" +numberFormatter(value)  
+                      pathname!="/v1/referral"? "$" + numberFormatter(value):!isLast ? value:numberFormatter(value)  
                     ) : (
                       "NA"
                     )

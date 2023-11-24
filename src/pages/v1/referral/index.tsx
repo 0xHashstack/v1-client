@@ -298,10 +298,10 @@ const Referral = () => {
         const fetchData=async()=>{
             try{
                 const array:any=[];
-                const res=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/api/get-community-stats':'https://hstk.fi/api/get-community-stats');
+                const res=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/api/get-community-stats':`https://hstk.fi/api/temp-allocation/${address}`);
                 if(res?.data){
-                    array.push(res?.data?.overall_referred_liq);
-                    array.push(res?.data?.rewards_claimed);
+                    array.push(res?.data?.totalUserPool);
+                    array.push(0);
                 }
                 setDataCommunity(array)
             }catch(err){
@@ -315,11 +315,12 @@ const Referral = () => {
                     return;
                 }
                 const array:any=[];
-                const res=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/api/get-user-stats/${address}`:`https://hstk.fi/api/get-user-stats/${address}`);
-                if(res?.data){
-                    array.push(res?.data?.referred_points ?res?.data?.referred_points:0);
-                    array.push(res?.data?.points_earned);
-                    array.push(res?.data?.rewards_claimed)
+                const referredResponse=await axios.get(`https://hstk.fi/api/get-referred-users/${address}`);
+                const res=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/api/get-user-stats/${address}`:`https://hstk.fi/api/temp-allocation/${address}`);
+                if(res?.data && referredResponse?.data){
+                    array.push(referredResponse?.data?.length);
+                    array.push(res?.data?.pointsAllocated);
+                    array.push(0)
                 }
                 setDataUser(array);
                //console.log(res,"user")
