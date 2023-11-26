@@ -45,7 +45,7 @@ export const getProvider = () => {
   } else {
     const provider = new Provider({
       rpc: {
-        nodeUrl: `https://starknet-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? process.env.NEXT_PUBLIC_INFURA_TESTNET:process.env.NEXT_PUBLIC_INFURA_MAINNET}`,
+        nodeUrl: `https://starknet-mainnet.g.alchemy.com/v2/PlZc5RkouWXZU7prMEZm2KZeDeF33Dc0`,
         blockIdentifier: "pending",
         retries: 3,
       }
