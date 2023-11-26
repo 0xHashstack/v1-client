@@ -51,7 +51,7 @@ const PersonalStatsDashboard = ({
     "Number of traders you have referred",
     "Liquidity (Supply/Borrow,Referrals)",
     "Points earned for rewards",
-    "Estimated $HASH earned",
+    "Estimated $HASH",
   ];
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -234,7 +234,7 @@ const PersonalStatsDashboard = ({
                         idx1 == columnItems?.length - 1 ? "right" : idx1 == 0 ? "left" : "center"
                       }
                       pl={idx1 == 0 ? 2 : 0}
-                      pr={idx1 == columnItems.length - 1 ? 8 : 0}
+                      pr={idx1 == columnItems.length - 1 ? 10 : 0}
                       color={"#BDBFC1"}
                       cursor="context-menu"
                     >
