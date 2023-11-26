@@ -70,7 +70,7 @@ const Campaign = () => {
     "Rank",
     "Account",
     "Referees Liquidity",
-    "Points earned",
+    "Points",
     "Est.token earning \n $STRK"
   ];
   const columnItemsLeaderBoardReferalCampaign = [
@@ -78,19 +78,19 @@ const Campaign = () => {
     "Account",
     "Liquidity generated in ($)",
     "Points",
-    "HASH Earned"
+    "HASH"
   ];
   const columnItemsPersonalStats = [
     "Liquidity Provided",
     "Liquidity generated in ($)",
-    "Points earned",
-    "HASH Earned"
+    "Points",
+    "HASH"
   ];
   const columnItemsPersonalStatsReferalCampaign = [
     "Traders Referred",
     "Liquidity generated in ($)",
-    "Points earned",
-    "HASH Earned"
+    "Points",
+    "HASH"
   ];
   const sampleDate: any = [{
     id: 0, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
@@ -278,7 +278,7 @@ const Campaign = () => {
       console.error('Failed to copy text: ', error);
     }
   };
-  const startDate = new Date('2023-11-25'); 
+  const startDate = new Date('2023-11-26'); 
 const endDate = new Date(startDate);
 endDate.setDate(startDate.getDate() + 56); 
 
@@ -360,10 +360,10 @@ useEffect(()=>{
               display="flex"
               // bgColor="yellow"
               // flexGrow={1}
-              p="14px 20px"
+              p="18px 26px"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               borderRadius="8px"
-              gap="7rem"
+              gap="8.5rem"
             >
               <VStack
                 display="flex"
@@ -372,7 +372,7 @@ useEffect(()=>{
                 gap={"6px"}
               >
                 <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                  Pool Reward
+                Campaign pool
                 </Text>
                <Text color="#e6edf3" fontSize="20px">
                     36M HASH
@@ -423,7 +423,7 @@ useEffect(()=>{
                   // maxW="222px"
                   // mt="28px"
                   >
-                    est.tokens earned
+                    est.tokens 
                   </Tooltip>
                 </Text>
                     {!communityHash ? <Skeleton
@@ -603,7 +603,7 @@ useEffect(()=>{
               </Box>
               <Box display="flex">
               <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
-                Epoch -
+                Epoch pool -
               </Text>
               <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
                 &nbsp;1/4
