@@ -145,7 +145,7 @@ const LeaderboardDashboard = ({
                         idx1 == 0 ? "left" : idx1 == columnItems?.length - 1 ? "right" : "center"
                       }
                       pl={idx1 == 0 ? 2 : 0}
-                      pr={idx1 == columnItems.length - 1 ? 14 : 0}
+                      pr={idx1 == columnItems.length - 1 ? 10 : 0}
                       color={"#BDBFC1"}
                       cursor="context-menu"
                     >

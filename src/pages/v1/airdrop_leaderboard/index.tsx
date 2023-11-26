@@ -78,19 +78,19 @@ const Campaign = () => {
     "Account",
     "Liquidity generated in ($)",
     "Points",
-    "HASH"
+    "HASH (est)"
   ];
   const columnItemsPersonalStats = [
     "Liquidity Provided",
     "Liquidity generated in ($)",
     "Points",
-    "HASH"
+    "HASH (est)"
   ];
   const columnItemsPersonalStatsReferalCampaign = [
     "Traders Referred",
     "Liquidity generated in ($)",
     "Points",
-    "HASH"
+    "HASH (est)"
   ];
   const sampleDate: any = [{
     id: 0, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
@@ -363,7 +363,7 @@ useEffect(()=>{
               p="18px 26px"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               borderRadius="8px"
-              gap="8.5rem"
+              gap="7.3rem"
             >
               <VStack
                 display="flex"
@@ -423,7 +423,7 @@ useEffect(()=>{
                   // maxW="222px"
                   // mt="28px"
                   >
-                    est.tokens 
+                    Epoch Pool 
                   </Tooltip>
                 </Text>
                     {!communityHash ? <Skeleton
@@ -603,7 +603,7 @@ useEffect(()=>{
               </Box>
               <Box display="flex">
               <Text color="#B1B0B5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal">
-                Epoch pool -
+                Epoch -
               </Text>
               <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
                 &nbsp;1/4
@@ -677,7 +677,7 @@ useEffect(()=>{
                       setTabValue(2);
                     }}
                   >
-                    Personal Stats
+                    Your Stats
                   </Tab>
                 </Box>
               </TabList>
