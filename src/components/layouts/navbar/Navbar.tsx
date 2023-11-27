@@ -247,6 +247,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
   }, [account,whitelisted,userWhitelisted,referralLinked]);
   const [allowedReferral, setAllowedReferral] = useState(false)
   const interactedAddress=useSelector(selectInteractedAddress)
+  
   useEffect(()=>{
     const fetchUsers=async()=>{
       if(!address){

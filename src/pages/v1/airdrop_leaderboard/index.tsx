@@ -52,7 +52,7 @@ import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount, useConnectors } from "@starknet-react/core";
-import { selectYourBorrow, selectNetAPR, selectExistingLink, selectInteractedAddress } from "@/store/slices/readDataSlice";
+import { selectYourBorrow, selectNetAPR, selectExistingLink, selectInteractedAddress, selectYourSupply } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
@@ -64,6 +64,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import CopyIcon from "@/assets/icons/copyIcon";
+import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 const Campaign = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItemsLeaderBoard = [
@@ -241,6 +242,8 @@ const Campaign = () => {
   //   }
   // }, [account, UserLoans]);
   const totalBorrow = useSelector(selectYourBorrow);
+  const totalSupply=useSelector(selectYourSupply);
+  console.log(totalBorrow,totalSupply,"it")
   const netAPR = useSelector(selectNetAPR);
   const [campaignSelected, setCampaignSelected] = useState(2);
   const [tabValue, setTabValue] = useState(1);
@@ -251,26 +254,34 @@ const Campaign = () => {
 
     }
     else {
-      setRefferal(e.target.value);
+      if(totalBorrow==0 && totalSupply==0){
+        return;
+      }else{
+        setRefferal(e.target.value);
+      }
     }
   }
+  console.log(interactedAddress,"it")
   const handleCopyClick = async () => {
     try {
       if (exisitingLink) {
         await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + exisitingLink);
       } else {
-        await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + refferal);
-        axios.post((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/shorten" : 'https://hstk.fi/shorten'), { pseudo_name: refferal, address: address })
-          .then((response) => {
-            //console.log(response, "response refer link"); // Log the response from the backend.
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
+        if(totalBorrow>0 || totalSupply>0){
+          await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + refferal);
+          axios.post((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/shorten" : 'https://hstk.fi/shorten'), { pseudo_name: refferal, address: address })
+            .then((response) => {
+              //console.log(response, "response refer link"); // Log the response from the backend.
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+            toast.success("Copied", {
+              position: toast.POSITION.BOTTOM_RIGHT,
+            })
+        }
       }
-      toast.success("Copied", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      })
+
     } catch (error: any) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -278,7 +289,7 @@ const Campaign = () => {
       console.error('Failed to copy text: ', error);
     }
   };
-  const startDate = new Date('2023-11-26'); 
+  const startDate = new Date('2023-11-27'); 
 const endDate = new Date(startDate);
 endDate.setDate(startDate.getDate() + 56); 
 
@@ -317,8 +328,8 @@ useEffect(()=>{
                   Your Referral Link
                 </Text>
                     <Box display="flex" mt="0">
-                    <InputGroup width="550px" mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="5.3rem" >
-                    <InputLeftAddon height="80px" fontSize="20px"  border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
+                    <InputGroup  width="550px" mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="5.3rem" >
+                    <InputLeftAddon  height="80px" fontSize="20px"  border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
                     {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/":"https://hstk.fi/"}
                     </InputLeftAddon>
                     {exisitingLink ?
@@ -327,11 +338,12 @@ useEffect(()=>{
                         boxShadow: "none",
                       }}
                       onChange={handleChange}
-                      />:<Input fontSize="20px"   height="80px" border="none" color="#F0F0F5" value={refferal} paddingInlineStart="0" _focus={{
+                      />:<Input fontSize="20px"   height="80px" border="none" color="#F0F0F5" value={totalBorrow==0 && totalSupply==0 ? "****": refferal} paddingInlineStart="0" _focus={{
                         outline: "0",
                         boxShadow: "none",
                       }}
                       onChange={handleChange}
+                      
                       />
                 }
                     </InputGroup>
@@ -344,9 +356,37 @@ useEffect(()=>{
                         </CopyToClipboard>
                     </Box>
                     </Box>
+                    {(totalBorrow==0 && totalSupply==0) ?
+                    <Box
+                    display="flex"
+                    bg="#222766"
+                    p="4"
+                    border="1px solid #3841AA"
+                    fontStyle="normal"
+                    fontWeight="400"
+                    lineHeight="18px"
+                    borderRadius="6px"
+                    color="#B1B0B5" fontSize="14px" letterSpacing="-0.15px" mt="0.3rem"
+                    // textAlign="center"
+                  >
+                    <Box pr="3" mt="0.5" cursor="pointer">
+                      <BlueInfoIcon />
+                    </Box>
+                    To generate your referral link, you must supply a min of $25, or borrow $100.
+                    {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                  </Box>
+                    :
                     <Box color="#676D9A" fontSize="14px" fontStyle="normal" fontWeight="500" lineHeight="20px" letterSpacing="-0.15px" mt="0.3rem">
                     You can change this link only once
                     </Box>
+                  }
                 </Box>
                 <HStack mt="2.5rem" display="flex" flexDirection="column" alignItems="flex-start" >
                   <Box>
