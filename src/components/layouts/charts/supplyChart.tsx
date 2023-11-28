@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Skeleton } from "@chakra-ui/react";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 import { useSelector } from "react-redux";
 import {
@@ -24,6 +24,7 @@ import {
   selectMonthlyETHData,
   selectMonthlyUSDCData,
   selectMonthlyUSDTData,
+  selectProtocolReserves,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dynamic from "next/dynamic";
@@ -73,6 +74,7 @@ const SupplyChart = () => {
   const allUsdtData = useSelector(selectAllUSDTData);
   const allUsdcData = useSelector(selectAllUSDCData);
   const allDaiData = useSelector(selectAllDAIData);
+  const protocolReserves = useSelector(selectProtocolReserves);
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   ////console.log(daiData?.supplyAmounts, "data protocol");
   //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
@@ -555,7 +557,21 @@ const SupplyChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Supply :</Box>
+          <Box mt="auto" display="flex">Supply : $
+          {protocolReserves?.totalReserves ? (
+                  numberFormatter(protocolReserves?.totalReserves)
+                ) : (
+                  <Skeleton
+                    width="6rem"
+                    height="1.4rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                    my={1}
+                    mx={2}
+                  />
+                )}
+          </Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"

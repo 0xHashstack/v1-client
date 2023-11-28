@@ -289,7 +289,7 @@ const Campaign = () => {
   };
   const startDate = new Date('2023-11-27'); 
 const endDate = new Date(startDate);
-endDate.setDate(startDate.getDate() + 56); 
+endDate.setDate(startDate.getDate() + 55); 
 
 // Function to update the days left
 const [daysLeft, setDaysLeft] = useState<number>(56)

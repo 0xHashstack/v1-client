@@ -317,7 +317,7 @@ const TotalTransactionChart = ({ color, curveColor, series }: any) => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Total Transactions:</Box>
+          <Box mt="auto">Total Transactions: {btcData?.totalTransactions[btcData?.totalTransactions.length-1]}</Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"

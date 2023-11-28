@@ -434,47 +434,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
           </Box>
       </Box>:<></>
         } */}
-        {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
-          padding="16px 12px"
-          fontSize="12px"
-          borderRadius="5px"
-          cursor="pointer"
-          marginBottom="0px"
-          // className="button"
-          // backgroundColor={"blue"}
-          color={`${pathname == "/v1/airdrop_leaderboard" ? "#00D395" : "#676D9A"}`}
-          // _hover={{ color: "#6e7681" }}
-          onMouseEnter={() => setCampaignHover(true)}
-          onMouseLeave={() => setCampaignHover(false)}
-          onClick={()=>{router.push('/v1/airdrop_leaderboard')}}
-        >
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              gap={"8px"}
-            >
-              {pathname == "/v1/airdrop_leaderboard" ? (
-                <Image
-                  src={hoverContributeEarnIcon}
-                  alt="Picture of the author"
-                  width="16"
-                  height="16"
-                  style={{ cursor: "pointer" }}
-                />
-              ) : (
-                <Image
-                  src={"/contributeEarnIcon.svg"}
-                  alt="Picture of the author"
-                  width="16"
-                  height="16"
-                  style={{ cursor: "pointer" }}
-                />
-              )}
 
-              <Text fontSize="14px" >Airdrop</Text>
-            </Box>
-        </Box>:""}
         {     <Box
           padding="16px 12px"
           fontSize="12px"
@@ -531,7 +491,48 @@ const userWhitelisted=useSelector(selectWhiteListed);
             validRTokens={validRTokens}
           />
         </Box>}
+        {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
+          padding="16px 12px"
+          fontSize="12px"
+          borderRadius="5px"
+          cursor="pointer"
+          marginBottom="0px"
+          // className="button"
+          // backgroundColor={"blue"}
+          color={`${pathname == "/v1/airdrop_leaderboard" ? "#00D395" : "#676D9A"}`}
+          // _hover={{ color: "#6e7681" }}
+          onMouseEnter={() => setCampaignHover(true)}
+          onMouseLeave={() => setCampaignHover(false)}
+          onClick={()=>{router.push('/v1/airdrop_leaderboard')}}
+        >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={"8px"}
+            >
+              {pathname == "/v1/airdrop_leaderboard" ? (
+                <Image
+                  src={hoverContributeEarnIcon}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer",marginBottom:"0.3rem" }}
+                />
+              ) : (
+                <Image
+                  src={"/contributeEarnIcon.svg"}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                
+                  style={{ cursor: "pointer",marginBottom:"0.3rem" }}
+                />
+              )}
 
+              <Text fontSize="14px" >Airdrop</Text>
+            </Box>
+        </Box>:""}
         {/* <Box
           style={{
             padding: "3px 0px",
