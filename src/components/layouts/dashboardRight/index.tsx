@@ -39,6 +39,7 @@ const DashboardRight = ({
   oraclePrices,
   utilization,
   totalBorrows,
+  availableReserves,
   borrowAPRs,
   supplyAPRs,
   validRTokens,
@@ -48,6 +49,7 @@ const DashboardRight = ({
   oraclePrices: any;
   utilization: any;
   totalBorrows: any;
+  availableReserves:any;
   borrowAPRs: any;
   validRTokens: any;
   supplyAPRs: any;
@@ -58,8 +60,8 @@ const DashboardRight = ({
 }) => {
   const columnItems = [
     "Market",
-    "Price",
     "Total borrow",
+    "Available",
     "Utillization",
     "Borrow APR",
     "",
@@ -100,8 +102,8 @@ const DashboardRight = ({
   }, [currentBorrowMarketCoin]);
   const tooltips = [
     "Available markets.",
-    "Market value of the token.",
     "The number of tokens that are currently borrowed from the protocol.",
+    "The number of tokens that can be borrowed from the protocol.",
     "Represents how much of a pool has been borrowed",
     "The annual interest rate charged on borrowed funds from the protocol.",
   ];
@@ -233,7 +235,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coinPrices[idx]==null ? (
+                    {totalBorrows[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -242,7 +244,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      numberFormatter(coinPrices[idx]?.price)
+                      numberFormatter(totalBorrows[idx])
                     )}
                   </Box>
                 </Td>
@@ -264,7 +266,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {totalBorrows[idx]==null ? (
+                    {availableReserves[idx]==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -273,7 +275,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      numberFormatter(totalBorrows[idx])
+                      numberFormatter(availableReserves[idx])
                     )}
                   </Box>
                 </Td>
@@ -372,7 +374,7 @@ const DashboardRight = ({
                       fontSize={"12px"}
                       padding="6px 12px"
                       border="1px solid #BDBFC1"
-                      bgColor="#101216"
+                      bgColor="transparent"
                       _hover={{ bg: "white", color: "black" }}
                       borderRadius={"6px"}
                       color="#BDBFC1;"
