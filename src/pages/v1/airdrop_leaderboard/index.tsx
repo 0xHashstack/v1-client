@@ -170,13 +170,18 @@ const Campaign = () => {
   const [communityHash, setCommunityHash] = useState()
   const [communityPoints, setCommunityPoints] = useState()
   const [personalData, setPersonalData] = useState([])
+  const [epoch, setepoch] = useState(1)
+  const [snapshotNumber, setSnapshotNumber] = useState(0)
   const interactedAddress=useSelector(selectInteractedAddress)
   useEffect(()=>{
     const fetchDetails=async()=>{
       if(address){
         const res=await axios.get(`https://hstk.fi/api/temp-allocation/${address}`)
+        console.log(res?.data,"data")
         setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
         setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
+        setepoch(res?.data?.communityInfo?.latestEpoch);
+        setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber)
         let arr:any=[];
         arr.push({
           id: 0, start: "25th Nov", end: "8th Dec",epoch:res?.data?.userInfo?.epoch, tradders: res?.data?.userInfo?.totalReferredAddresses, liq: res?.data?.userInfo?.selfValue,supplyliq:res?.data?.userInfo?.supplyValue,borrowliq:res?.data?.userInfo?.borrowValue,referredliq:res?.data?.userInfo?.referralValue,
@@ -644,7 +649,7 @@ useEffect(()=>{
                 Epoch -
               </Text>
               <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                &nbsp;1/4
+                &nbsp;{epoch}/4
               </Text>
               </Box>
               <Box display="flex">
@@ -652,7 +657,7 @@ useEffect(()=>{
                 Snapshot -
               </Text>
               <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                &nbsp;0/6
+                &nbsp;{snapshotNumber}/6
               </Text>
               </Box>
             </Box>
