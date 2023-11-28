@@ -248,23 +248,6 @@ const userWhitelisted=useSelector(selectWhiteListed);
   const [allowedReferral, setAllowedReferral] = useState(false)
   const interactedAddress=useSelector(selectInteractedAddress)
   
-  useEffect(()=>{
-    const fetchUsers=async()=>{
-      if(!address){
-        return;
-      }else{
-        if(interactedAddress==true){
-          return;
-        }else{
-          const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
-          const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
-          dispatch(setInteractedAddress(fetched))
-          setAllowedReferral(fetched)
-        }
-      }
-    }
-    fetchUsers();
-  },[address])
   return (
     <HStack
       zIndex="100"

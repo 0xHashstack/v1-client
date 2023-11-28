@@ -175,7 +175,6 @@ const Campaign = () => {
     const fetchDetails=async()=>{
       if(address){
         const res=await axios.get(`https://hstk.fi/api/temp-allocation/${address}`)
-        console.log(res?.data)
         setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
         setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
         let arr:any=[];
@@ -261,7 +260,6 @@ const Campaign = () => {
       }
     }
   }
-  console.log(interactedAddress,"it")
   const handleCopyClick = async () => {
     try {
       if (exisitingLink) {
@@ -276,11 +274,11 @@ const Campaign = () => {
             .catch((error) => {
               console.error('Error:', error);
             });
-            toast.success("Copied", {
-              position: toast.POSITION.BOTTOM_RIGHT,
-            })
+          }
         }
-      }
+        toast.success("Copied", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        })
 
     } catch (error: any) {
       toast.error(error, {
