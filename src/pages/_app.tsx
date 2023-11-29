@@ -6,11 +6,15 @@ import { store } from "../store/store";
 import Head from "next/head";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { loadSpace } from "@usersnap/browser";
-
+import { goerli, mainnet } from "@starknet-react/chains";
 import {
   StarknetConfig,
   InjectedConnector,
-  StarknetProvider,
+  useInjectedConnectors,
+  argent,
+  braavos,
+  publicProvider,
+  infuraProvider,
 } from "@starknet-react/core";
 const theme = extendTheme({
   components: {
@@ -133,10 +137,20 @@ import spaceApiKey from "@/utils/constants/keys";
 import { useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const connectors = [
-    new InjectedConnector({ options: { id: "braavos" } }),
-    new InjectedConnector({ options: { id: "argentX" } }),
-  ];
+  const apikey:string= process.env.NEXT_PUBLIC_INFURA_MAINNET as string
+  
+  const provider = infuraProvider({ apiKey:apikey});
+  const { connectors } = useInjectedConnectors({
+    // Show these connectors if the user has no connector installed.
+    recommended: [
+      argent(),
+      braavos(),
+    ],
+    // Hide recommended connectors if the user has any connector installed.
+    includeRecommended: "onlyIfNoConnectors",
+    // Randomize the order of the connectors.
+    order: "random"
+  });
   const [feedback, setFeedback] = useState(false);
   // loadSpace(spaceApiKey)
   //   .then((api) => {
@@ -163,13 +177,17 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <UserbackProvider token="41130|83179|yuKUdxxi1Q2T4EFo0Sg7Zbmbz">
         <ChakraProvider theme={theme}>
-          <StarknetProvider autoConnect={true} connectors={connectors}>
+        <StarknetConfig
+      chains={ [mainnet, goerli]}
+      provider={provider}
+      connectors={connectors}
+    >
             <Provider store={store}>
               <Layout>
                 <Component {...pageProps} />
               </Layout>
             </Provider>
-          </StarknetProvider>
+          </StarknetConfig>
         </ChakraProvider>
       </UserbackProvider>
     </>

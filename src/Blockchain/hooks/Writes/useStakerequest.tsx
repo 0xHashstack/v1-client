@@ -19,7 +19,6 @@ const useStakeRequest = () => {
     writeAsync: writeAsyncStakeRequest,
     isError: isErrorStakeRequest,
     isIdle: isIdleStakeRequest,
-    isLoading: isLoadingStakeRequest,
     isSuccess: isSuccessStakeRequest,
     status: statusStakeRequest,
   } = useContractWrite({
@@ -58,7 +57,6 @@ const useStakeRequest = () => {
     writeAsyncStakeRequest,
     isErrorStakeRequest,
     isIdleStakeRequest,
-    isLoadingStakeRequest,
     isSuccessStakeRequest,
     statusStakeRequest,
   };

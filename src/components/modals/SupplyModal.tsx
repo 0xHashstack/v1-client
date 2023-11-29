@@ -65,7 +65,6 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import {
   useAccount,
   useBalance,
-  useTransactionManager,
   useWaitForTransaction,
 } from "@starknet-react/core";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
@@ -130,7 +129,6 @@ const SupplyModal = ({
 
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
@@ -216,9 +214,9 @@ const SupplyModal = ({
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? parseAmount(
-        uint256.uint256ToBN(
+        String(uint256.uint256ToBN(
           walletBalances[coin?.name]?.dataBalanceOf?.balance
-        ),
+        )),
         tokenDecimalsMap[coin?.name]
       )
       : 0
@@ -237,9 +235,9 @@ const SupplyModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[coin?.name]
         )
         : 0
@@ -729,9 +727,9 @@ const SupplyModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[coin?.name]
         )
         : 0
@@ -928,14 +926,12 @@ const SupplyModal = ({
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"
-                                  ? Number(
-                                    BNtoNum(
-                                      uint256.uint256ToBN(
+                                  ? parseAmount(
+                                      String(uint256.uint256ToBN(
                                         walletBalances[coin]?.dataBalanceOf
                                           ?.balance
-                                      ),
+                                      )),
                                       tokenDecimalsMap[coin]
-                                    )
                                   )
                                   : 0
                               );
@@ -977,14 +973,12 @@ const SupplyModal = ({
                                 Wallet Balance:{" "}
                                 {assetBalance[coin]?.dataBalanceOf?.balance
                                   ? numberFormatter(
-                                    Number(
-                                      BNtoNum(
-                                        uint256.uint256ToBN(
+                                    parseAmount(
+                                        String(uint256.uint256ToBN(
                                           assetBalance[coin]?.dataBalanceOf
                                             ?.balance
-                                        ),
+                                        )),
                                         tokenDecimalsMap[coin]
-                                      )
                                     )
                                   )
                                   : "-"}

@@ -22,6 +22,9 @@ const MarketDashboard = () => {
   const [totalBorrows, setTotalBorrows]: any = useState<(undefined | number)[]>(
     []
   );
+  const [availableReserves, setAvailableReserves]: any = useState<(undefined | number)[]>(
+    []
+  );
   const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([]);
   const [borrowAPRs, setBorrowAPRs]: any = useState<(undefined | number)[]>([]);
   const [utilization, setUtilizations]: any = useState<(undefined | number)[]>(
@@ -134,6 +137,13 @@ const MarketDashboard = () => {
         stats?.[1].borrowRate,
         stats?.[4].borrowRate,
       ]);
+      setAvailableReserves([
+        stats?.[2].availableReserves,
+        stats?.[3].availableReserves,
+        stats?.[0].availableReserves,
+        stats?.[1].availableReserves,
+        stats?.[4].availableReserves,
+      ])
       const avg =
         (stats?.[4].borrowRate +
           stats?.[3].borrowRate +
@@ -187,6 +197,7 @@ const MarketDashboard = () => {
         oraclePrices={oraclePrices}
         borrowAPRs={borrowAPRs}
         totalBorrows={totalBorrows}
+        availableReserves={availableReserves}
         utilization={utilization}
         supplyAPRs={supplyAPRs}
         validRTokens={validRTokens}

@@ -3,7 +3,7 @@ import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHea
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount, useConnect, useDisconnect, useNetwork, useWaitForTransaction} from "@starknet-react/core";
 import {
   selectToastTransactionStarted,
   selectActiveTransactions,
@@ -53,7 +53,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const { account, address, status, isConnected } = useAccount();
   const extendedAccount = account as ExtendedAccountInterface;
   const [loading, setLoading] = useState(true);
-  const { available, disconnect, connect, connectors } = useConnectors();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   if (className) classes.push(className);
   const router = useRouter();
   const {pathname}=router;
@@ -101,21 +102,41 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if (!account) {
       if (walletConnected == "braavos") {
         localStorage.setItem("connected", "braavos");
-        disconnect();
-        connect(connectors[0]);
+        // disconnect();
+        connectors.map((connector:any)=>{
+          if(connector.id=="braavos"){
+            console.log('working bravoos no account')
+            connect({connector});
+          }
+        })
       } else if (walletConnected == "argentX") {
         localStorage.setItem("connected", "argentX");
-        disconnect();
-        connect(connectors[1]);
+        // disconnect();
+        connectors.map((connector)=>{
+          if(connector.id=="argentX"){
+            console.log('working')
+            connect({connector});
+          }
+        })
       } else {
         if (connected == "braavos") {
           localStorage.setItem("lastUsedConnector", "braavos");
-          disconnect();
-          connect(connectors[0]);
+          // disconnect();
+          connectors.map((connector:any)=>{
+            if(connector.id=="braavos"){
+              console.log('working bravoos')
+              connect({connector});
+            }
+          })
         } else if (connected == "argentX") {
           localStorage.setItem("lastUsedConnector", "argentX");
-          disconnect();
-          connect(connectors[1]);
+          // disconnect();
+          connectors.map((connector)=>{
+            if(connector.id=="argentX"){
+              console.log('working')
+              connect({connector});
+            }
+          })
         } else {
           router.push("/v1");
         }
@@ -189,6 +210,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const [referralLinked, setRefferalLinked] = useState(false)
   const userType = useSelector(selectUserType)
   const dispatch = useDispatch();
+  const {chain}=useNetwork();
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -199,13 +221,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_TESTNET_CHAINID
+            chain.network!="mainnet"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID
+            chain.network!="goerli"
           );
         }
       } else if (walletConnected == "argentX") {
@@ -215,14 +237,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
 
-            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID
+            chain.network!="mainnet"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-
-            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_MAINNET_CHAINID
+            chain?.network!="goerli"
           );
         }
       }
@@ -465,7 +486,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //       // },
   //       // onAcceptedOnL2(result: any) {
   //       //   toast.dismiss(transaction?.toastId);
-  //       //   // setCurrentTransactionStatus(true);
+//       //   // setCurrentTransactionStatus(true);
   //       //   // if (!isToastDisplayed) {
   //       //   toast.success(
   //       //     transaction?.message || `You have successfully supplied`,

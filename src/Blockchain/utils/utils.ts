@@ -1,5 +1,5 @@
 import { BigNumber } from "bignumber.js";
-import { number } from "starknet";
+import { number,num } from "starknet";
 import { utils } from "ethers";
 import { Logger } from "ethers/lib/utils";
 import { getTokenFromAddress } from "../stark-constants";
@@ -131,10 +131,10 @@ export const etherToWeiBN = (amount: number, tokenName: Token) => {
   }
   ////console.log("amount", amount);
   // try {
-  const factor = 1000_000;
-  const amountBN = number.toBN(amount * factor)
-    .mul(number.toBN(10).pow(number.toBN(decimals)))
-    .div(number.toBN(factor));
+    const factor = new BigNumber(1000000);
+  const amountBN = new BigNumber(amount).times(factor)
+    .times(new BigNumber(10).exponentiatedBy(decimals))
+    .dividedBy(new BigNumber(factor));
   return amountBN;
   // }
   // catch(e) {
@@ -148,12 +148,11 @@ export const weiToEtherNumber = (amount: string, tokenName: Token) => {
   if (!decimals) {
     return 0;
   } // @todo should avoid using 18 default
-  const factor = 1000_000;
-  const amountBN = number
-    .toBN(amount)
-    .mul(number.toBN(factor))
-    .div(number.toBN(10).pow(number.toBN(decimals)));
-  return amountBN / factor;
+  const factor = new BigNumber(1000000);
+  const amountBN = new BigNumber(amount)
+    .times(factor)
+    .dividedBy(new BigNumber(10).exponentiatedBy(decimals));
+  return amountBN.toNumber() / factor.toNumber();
 };
 
 export const parseAmount = (amount: string, decimals = 18) => {

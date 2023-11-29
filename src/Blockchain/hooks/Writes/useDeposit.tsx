@@ -43,7 +43,6 @@ const useDeposit = () => {
     writeAsync: writeAsyncDeposit,
     isError: isErrorDeposit,
     isIdle: isIdleDeposit,
-    isLoading: isLoadingDeposit,
     isSuccess: isSuccessDeposit,
     status: statusDeposit,
   } = useContractWrite({
@@ -110,7 +109,6 @@ const useDeposit = () => {
     writeAsync: writeAsyncDepositStake,
     isError: isErrorDepositStake,
     isIdle: isIdleDepositStake,
-    isLoading: isLoadingDepositStake,
     isSuccess: isSuccessDepositStake,
     status: statusDepositStake,
   } = useContractWrite({
@@ -181,7 +179,6 @@ const useDeposit = () => {
     writeAsyncDepositStake,
     isErrorDepositStake,
     isIdleDepositStake,
-    isLoadingDepositStake,
     isSuccessDepositStake,
     statusDepositStake,
 
@@ -193,7 +190,6 @@ const useDeposit = () => {
     writeAsyncDeposit,
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   };

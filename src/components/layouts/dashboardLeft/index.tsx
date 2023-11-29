@@ -20,7 +20,7 @@ import SupplyModal from "@/components/modals/SupplyModal";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { uint256 } from "starknet";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 
 import numberFormatter from "@/utils/functions/numberFormatter";
 import {
@@ -332,15 +332,11 @@ const DashboardLeft = ({
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}
                           {numberFormatter(
-                            Number(
-                              // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
-                              BNtoNum(
-                                uint256.uint256ToBN(
-                                  assetBalance[coin?.name]?.dataBalanceOf
-                                    ?.balance
-                                ),
+                              parseAmount(
+                                String(uint256.uint256ToBN(
+                                  assetBalance[coin?.name]?.dataBalanceOf?.balance
+                                )),
                                 tokenDecimalsMap[coin?.name]
-                              )
                             )
                           )}
                           {/* )} */}
@@ -472,7 +468,7 @@ const DashboardLeft = ({
                       fontSize={"12px"}
                       padding="6px 12px"
                       border="1px solid #BDBFC1"
-                      bgColor="#101216"
+                      bgColor="transparent"
                       _hover={{ bg: "white", color: "black" }}
                       borderRadius={"6px"}
                       color="#BDBFC1;"

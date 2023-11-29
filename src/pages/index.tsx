@@ -11,7 +11,6 @@ import PageCard from "@/components/layouts/pageCard";
 import {
   useAccount,
   useBlockNumber,
-  useConnectors,
   // useBalance,
 } from "@starknet-react/core";
 import { useDispatch, useSelector } from "react-redux";

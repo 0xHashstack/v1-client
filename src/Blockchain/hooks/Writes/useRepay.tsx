@@ -72,7 +72,6 @@ const useRepay = (loanParam: any) => {
     writeAsync: writeAsyncRepay,
     isError: isErrorRepay,
     isIdle: isIdleRepay,
-    isLoading: isLoadingRepay,
     isSuccess: isSuccessRepay,
     status: statusRepay,
   } = useContractWrite({
@@ -112,7 +111,6 @@ const useRepay = (loanParam: any) => {
     writeAsync: writeAsyncSelfLiquidate,
     isError: isErrorSelfLiquidate,
     isIdle: isIdleSelfLiquidate,
-    isLoading: isLoadingSelfLiquidate,
     isSuccess: isSuccessSelfLiquidate,
     status: statusSelfLiquidate,
   } = useContractWrite({
@@ -138,13 +136,11 @@ const useRepay = (loanParam: any) => {
     transRepayHash,
     setTransRepayHash,
     // repayTransactionReceipt,
-    isLoadingRepay,
     errorRepay,
     // handleRepayBorrow,
 
     //SelfLiquidate - Repay with 0 amount
     writeAsyncSelfLiquidate,
-    isLoadingSelfLiquidate,
     errorSelfLiquidate,
     // selfLiquidateTransactionReceipt,
     setIsSelfLiquidateHash,

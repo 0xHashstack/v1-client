@@ -39,18 +39,6 @@ import {
   useBalance,
   useWaitForTransaction,
 } from "@starknet-react/core";
-import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
-import SliderPointer from "@/assets/icons/sliderPointer";
-import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
-import { useToast } from "@chakra-ui/react";
-import { BNtoNum } from "@/Blockchain/utils/utils";
-import { uint256 } from "starknet";
-import { getUserLoans } from "@/Blockchain/scripts/Loans";
-import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
-import SuccessToast from "../uiElements/toasts/SuccessToast";
-import SuccessTick from "@/assets/icons/successTick";
-import CancelIcon from "@/assets/icons/cancelIcon";
-import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
 import Link from "next/link";
 import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 import { useDispatch, useSelector } from "react-redux";
@@ -121,7 +109,6 @@ const GetTokensModal = ({
     writeAsyncGetTokens,
     isErrorGetTokens,
     isIdleGetTokens,
-    isLoadingGetTokens,
     isSuccessGetTokens,
     statusGetTokens,
   } = useGetTokens(currentSelectedCoin);

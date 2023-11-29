@@ -21,6 +21,9 @@ import { useState } from "react";
 import { RToken } from "../interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
 // const { address } = useAccount();
+interface ResultObject{
+  [key: string]: any;
+}
 export async function getrTokensMinted(rToken: any, amount: any) {
   ////console.log("getRtokensminted", rToken, amount);
 
@@ -35,9 +38,9 @@ export async function getrTokensMinted(rToken: any, amount: any) {
     ////console.log(supplyContract,"suppply contract")
     const parsedAmount = etherToWeiBN(amount, rToken).toString();
     ////console.log(parsedAmount, "parsed amount");
-    const res = await supplyContract.call(
+    const res:any = await supplyContract.call(
       "preview_deposit",
-      [[parsedAmount, 0]],
+      [uint256.bnToUint256(parsedAmount)],
       {
         blockIdentifier: "pending",
       }
@@ -59,6 +62,7 @@ export async function getrTokensMinted(rToken: any, amount: any) {
    //console.log(err,"err in rewards");
   }
 }
+
 export async function getSupplyunlocked(rToken: any, amount: any) {
   try {
     const provider = getProvider();
@@ -68,9 +72,9 @@ export async function getSupplyunlocked(rToken: any, amount: any) {
       provider
     );
     const parsedAmount = etherToWeiBN(amount, rToken).toString();
-    const res = await supplyContract.call(
+    const res :any = await supplyContract.call(
       "preview_redeem",
-      [[parsedAmount, 0]],
+      [uint256.bnToUint256(parsedAmount)],
       {
         blockIdentifier: "pending",
       }
@@ -99,9 +103,9 @@ export async function getEstrTokens(rToken: any, amount: any) {
     ////console.log(stakingContract, "staking contract")
     const parsedAmount = etherToWeiBN(amount, rToken).toString();
     ////console.log(parsedAmount,"amount in staking")
-    const res = await stakingContract.call(
+    const res:any = await stakingContract.call(
       "preview_redeem",
-      [tokenAddressMap[rToken], [parsedAmount, 0]],
+      [tokenAddressMap[rToken], uint256.bnToUint256(parsedAmount)],
       {
         blockIdentifier: "pending",
       }
@@ -124,7 +128,7 @@ export async function getFees(modalFees:any){
       diamondAddress,
       provider
     )
-    const result = await governorContract.call(
+    const result :any= await governorContract.call(
       modalFees
     );
     const res = result?.fees;
@@ -141,7 +145,7 @@ export async function getNFTMaxAmount(){
       nftAddress,
       provider
     )
-    const result=await nftContract.call(
+    const result:any=await nftContract.call(
       "get_max_nft_amount",
     )
     
@@ -159,7 +163,7 @@ export async function getCurrentNftAmount(){
       nftAddress,
       provider
     )
-    const result=await nftContract.call(
+    const result:any=await nftContract.call(
       "get_current_nft_minted",
     )
     const res = parseAmount(
@@ -179,12 +183,12 @@ export async function getNFTBalance(address:string){
       nftAddress,
       provider
     )
-    const result=await nftContract.call(
+    const result:any=await nftContract.call(
       "balanceOf",
       [address],
       { blockIdentifier: "pending" }
     )
-    const res = parseAmount(
+    const res= parseAmount(
       uint256.uint256ToBN(result?.balance).toString(),
       0
     );
@@ -205,7 +209,7 @@ export async function getSupportedPools(
       diamondAddress,
       provider
     );
-    const result = await governorContract.call(
+    const result:any = await governorContract.call(
       "get_secondary_market_support",
       [poolPairAddress,dapp],
       { blockIdentifier: "pending" }
@@ -228,7 +232,7 @@ export async function getMinimumDepositAmount(
       diamondAddress,
       provider
     );
-    const result = await governorContract.call(
+    const result:any = await governorContract.call(
       "get_minimum_deposit_amount",
       [tokenAddressMap[rToken]],
       { blockIdentifier: "pending" }
@@ -254,12 +258,12 @@ export async function getMaximumDepositAmount(
       diamondAddress,
       provider
     );
-    const result = await governorContract.call(
+    const result:any = await governorContract.call(
       "get_maximum_deposit_amount",
       [tokenAddressMap[rToken]],
       { blockIdentifier: "pending" }
     );
-    const res = parseAmount(
+    const res= parseAmount(
       uint256.uint256ToBN(result?._get_maximum_deposit_amount).toString(),
       tokenDecimalsMap[rToken]
     );
@@ -280,7 +284,7 @@ export async function getMaximumLoanAmount(
       diamondAddress,
       provider
     );
-    const result = await governorContract.call(
+    const result:any = await governorContract.call(
       "get_maximum_loan_amount",
       [tokenAddressMap[dToken]],
       { blockIdentifier: "pending" }
@@ -306,12 +310,12 @@ export async function getMinimumLoanAmount(
       diamondAddress,
       provider
     );
-    const result = await governorContract.call(
+    const result:any = await governorContract.call(
       "get_minimum_loan_amount",
       [tokenAddressMap[dToken]],
       { blockIdentifier: "pending" }
     );
-    const res = parseAmount(
+    const res= parseAmount(
       uint256.uint256ToBN(result?._get_minimum_loan_amount).toString(),
       tokenDecimalsMap[dToken]
     );
@@ -330,7 +334,7 @@ export async function getUserStakingShares(address: string, tokenName: RToken) {
       stakingContractAddress,
       provider
     );
-    const result = await stakingContract.call("get_user_staking_shares", [
+    const result:any = await stakingContract.call("get_user_staking_shares", [
       address,
       tokenAddressMap[tokenName],
     ]);

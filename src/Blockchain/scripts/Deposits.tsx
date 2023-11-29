@@ -47,9 +47,9 @@ function parseDeposits(deposits: any): IDeposit[] {
       rTokenLockedParsed,
       rTokenStakedParsed,
       rTokenAmountParsed: rTokenFreeParsed + rTokenLockedParsed,
-      underlyingAssetAmount: uint256.uint256ToBN(
+      underlyingAssetAmount:Number (uint256.uint256ToBN(
         depositData?.underlying_asset_amount
-      ),
+      )),
       underlyingAssetAmountParsed: weiToEtherNumber(
         uint256.uint256ToBN(depositData?.underlying_asset_amount).toString(),
         getTokenFromAddress(number.toHex(depositData?.asset_addr))
@@ -99,9 +99,9 @@ const parseDeposit = (deposit: any) => {
       uint256.uint256ToBN(depositData?.rToken_amount).toString(),
       token
     ),
-    underlyingAssetAmount: uint256
+    underlyingAssetAmount:Number( uint256
       .uint256ToBN(depositData?.supply_asset_amount)
-      .toString(),
+      .toString()),
     underlyingAssetAmountParsed: weiToEtherNumber(
       uint256.uint256ToBN(depositData?.supply_asset_amount).toString(),
       getTokenFromAddress(number.toHex(depositData?.asset_address))

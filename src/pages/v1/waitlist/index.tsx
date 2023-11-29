@@ -8,8 +8,6 @@ import PageCard from "@/components/layouts/pageCard";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
 import {
   useAccount,
-  useConnectors,
-  useStarknet,
   useBlock,
 } from "@starknet-react/core";
 import { useContract } from "@starknet-react/core";
@@ -27,8 +25,6 @@ const inter = Inter({ subsets: ["latin"] });
 export default function WaitList() {
   // const account = JSON.parse(useSelector(selectAccount));
   ////console.log(account ,"waitlist")
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
 
   const { account: _account } = useAccount();
   // useEffect(() => {

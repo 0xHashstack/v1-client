@@ -33,11 +33,11 @@ export async function getUSDValue(market: string, amount: number) {
   const provider = getProvider();
   try {
     const pricerContract = new Contract(pricerAbi, diamondAddress, provider);
-    const res = await pricerContract.call(
+    const res:any = await pricerContract.call(
       "get_asset_usd_value",
       [
         tokenAddressMap[market],
-        [amount * Math.pow(10, tokenDecimalsMap[market]), 0],
+        uint256.bnToUint256(amount * Math.pow(10, tokenDecimalsMap[market])),
       ],
       {
         blockIdentifier: "pending",
@@ -81,12 +81,12 @@ export async function getJediEstimateLiquiditySplit(
   try {
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
 
-    const res = await l3Contract.call(
+    const res:any = await l3Contract.call(
       "get_jedi_estimate_liquidity_split",
       // [loanId, tokenAAddress, tokenBAddress],
       [
         tokenAddressMap[loanMarket],
-        [currentAmount, 0],
+        uint256.bnToUint256(currentAmount),
         tokenAddressMap[tokenA],
         tokenAddressMap[tokenB],
       ],
@@ -119,12 +119,12 @@ export async function getJediEstimatedLpAmountOut(
   const provider = getProvider();
   try {
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
-    const res = await l3Contract.call(
+    const res:any = await l3Contract.call(
       "get_jedi_estimated_lp_amount_out",
       // [loanId, tokenAAddress, tokenBAddress],
       [
         tokenAddressMap[loanMarket],
-        [currentAmount, 0],
+        uint256.bnToUint256(currentAmount),
         tokenAddressMap[tokenA],
         tokenAddressMap[tokenB],
       ],
@@ -133,7 +133,7 @@ export async function getJediEstimatedLpAmountOut(
       }
     );
   
-    return parseAmount(uint256.uint256ToBN(res?.lp_amount_out), 18);
+    return parseAmount(String(uint256.uint256ToBN(res?.lp_amount_out)), 18);
   } catch (error) {
    //console.log("error in getJediEstimatedLpAmountOut: ", error);
   }
@@ -158,17 +158,17 @@ export async function getJediEstimatedLiqALiqBfromLp(
 
   try {
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
-   //console.log("split before calling");
-    const res = await l3Contract.call(
+  //  console.log("split before calling",l3Contract,liquidity,pairAddress);
+    const res:any = await l3Contract.call(
       "get_jedi_estimated_liqA_liqB_from_lp",
       // [liquidity, pairAddress],
-      [[liquidity, 0], pairAddress],
+      [uint256.bnToUint256(liquidity), pairAddress],
       {
         blockIdentifier: "pending",
       }
     );
-   //console.log("split after calling");
-   //console.log("split res", loanId, res);
+  //  console.log("split after calling");
+  //  console.log("split res", loanId, res);
 
     ////console.log("res jedi", res);
     ////console.log(
@@ -197,14 +197,14 @@ export async function getJediEstimatedLiqALiqBfromLp(
 
     return {
       amountA: parseAmount(
-        uint256.uint256ToBN(res?.amountA).toString(),
+        String(uint256.uint256ToBN(res?.amountA)),
         tokenDecimalsMap[tokenA as Token]
       ),
       tokenAAddress: res?.token0,
       tokenA: getTokenFromAddress(res?.token0)?.name as NativeToken,
 
       amountB: parseAmount(
-        uint256.uint256ToBN(res?.amountB).toString(),
+        String(uint256.uint256ToBN(res?.amountB)),
         tokenDecimalsMap[tokenB as Token]
       ),
       tokenBAddress: res?.token1,
@@ -226,12 +226,12 @@ export async function getMySwapEstimateLiquiditySplit(
   try {
     const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
 
-    const res = await l3Contract.call(
+    const res:any = await l3Contract.call(
       "get_myswap_estimate_liquidity_split",
       // [loanId, tokenAAddress, tokenBAddress],
       [
         tokenAddressMap[loanMarket],
-        [currentAmount, 0],
+        uint256.bnToUint256(currentAmount),
         tokenAddressMap[tokenA],
         tokenAddressMap[tokenB],
       ],
@@ -264,12 +264,12 @@ export async function getMySwapEstimatedLpAmountOut(
   const provider = getProvider();
   try {
     const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
-    const res = await l3Contract.call(
+    const res:any = await l3Contract.call(
       "get_myswap_estimated_lp_amount_out",
       // [loanId, tokenAAddress, tokenBAddress],
       [
         tokenAddressMap[loanMarket],
-        [currentAmount, 0],
+        uint256.bnToUint256(currentAmount),
         tokenAddressMap[tokenA],
         tokenAddressMap[tokenB],
       ],
@@ -282,7 +282,7 @@ export async function getMySwapEstimatedLpAmountOut(
     //   " is: ",
     //   parseAmount(uint256.uint256ToBN(res?.lp_amount_out))
     // );
-    return parseAmount(uint256.uint256ToBN(res?.lp_amount_out), 18);
+    return parseAmount(String(uint256.uint256ToBN(res?.lp_amount_out)), 18);
   } catch (error) {
    //console.log("error in getJediEstimatedLpAmountOut: ", error);
   }
@@ -308,10 +308,10 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
   try {
     const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
    //console.log("split before calling");
-    const res = await l3Contract.call(
+    const res:any = await l3Contract.call(
       "get_myswap_estimated_liqA_liqB_from_lp",
       // [liquidity, pairAddress],
-      [[liquidity, 0], pairAddress],
+      [uint256.bnToUint256(liquidity), pairAddress],
       {
         blockIdentifier: "pending",
       }
@@ -368,7 +368,7 @@ export async function getSupportedPoolsJediSwap() {
   const provider = getProvider();
   try {
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
-    const res = await l3Contract.call("get_supported_pools_jedi_swap", [], {
+    const res:any = await l3Contract.call("get_supported_pools_jedi_swap", [], {
       blockIdentifier: "pending",
     });
     ////console.log("supported pools for Jediswap: ", res);
@@ -381,7 +381,7 @@ export async function getSupportedPoolsMyswap() {
   const provider = getProvider();
   try {
     const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
-    const res = await l3Contract.call("get_supported_pools_myswap", [], {
+    const res:any = await l3Contract.call("get_supported_pools_myswap", [], {
       blockIdentifier: "pending",
     });
     ////console.log("supported pools for Myswap is: ", res);

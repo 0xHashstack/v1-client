@@ -98,7 +98,6 @@ const useBorrowAndSpend = () => {
     writeAsync: writeAsyncBorrowAndSpend,
     isError: isErrorBorrowAndSpend,
     isIdle: isIdleBorrowAndSpend,
-    isLoading: isLoadingBorrowAndSpend,
     isSuccess: isSuccessBorrowAndSpend,
     status: statusBorrowAndSpend,
   } = useContractWrite({
@@ -175,7 +174,6 @@ const useBorrowAndSpend = () => {
     writeAsync: writeAsyncBorrowAndSpendRToken,
     isError: isErrorBorrowAndSpendRToken,
     isIdle: isIdleBorrowAndSpendRToken,
-    isLoading: isLoadingBorrowAndSpendRToken,
     isSuccess: isSuccessBorrowAndSpendRToken,
     status: statusBorrowAndSpendRToken,
   } = useContractWrite({
@@ -255,7 +253,6 @@ const useBorrowAndSpend = () => {
     writeAsyncBorrowAndSpend,
     isErrorBorrowAndSpend,
     isIdleBorrowAndSpend,
-    isLoadingBorrowAndSpend,
     isSuccessBorrowAndSpend,
     statusBorrowAndSpend,
 
@@ -265,7 +262,6 @@ const useBorrowAndSpend = () => {
     writeAsyncBorrowAndSpendRToken,
     isErrorBorrowAndSpendRToken,
     isIdleBorrowAndSpendRToken,
-    isLoadingBorrowAndSpendRToken,
     isSuccessBorrowAndSpendRToken,
     statusBorrowAndSpendRToken,
   };

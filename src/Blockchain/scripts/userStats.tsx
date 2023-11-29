@@ -119,7 +119,7 @@ export async function getL3USDTValue(
 
   const provider = getProvider();
   const borrowToken = new Contract(borrowTokenAbi, loanMarketAddress, provider);
-  const res = await borrowToken.call("get_l3_usdt_value", [loanId], {
+  const res:any = await borrowToken.call("get_l3_usdt_value", [loanId], {
     blockIdentifier: "pending",
   });
   ////console.log("l3 usdt value: ", res, res?.value);

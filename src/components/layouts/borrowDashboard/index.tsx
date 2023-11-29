@@ -204,7 +204,6 @@ const BorrowDashboard = ({
   const [currentLoanMarket, setCurrentLoanMarket] = useState("");
   const [allSplit, setAllSplit] = useState<any>([]);
 
-
   const [currentSplitIndex, setCurrentSplitIndex] = useState(0);
   // const avgs = useSelector(selectAprAndHealthFactor);
   const [showEmptyNotification, setShowEmptyNotification] = useState(true);
@@ -321,15 +320,16 @@ const BorrowDashboard = ({
         // }
        //console.log(Borrows[i]?.l3App, "app")
         if (Borrows[i]?.l3App == "JEDI_SWAP") {
-          const data = getJediEstimatedLiqALiqBfromLp(
+          const data = await getJediEstimatedLiqALiqBfromLp(
             Borrows[i]?.currentLoanAmount,
             Borrows[i]?.loanId,
             Borrows[i]?.currentLoanMarketAddress,
             Borrows[i]?.loanMarket
           );
+          console.log(data,"split data jedi")
           promises.push(data);
         } else if (Borrows[i]?.l3App == "MY_SWAP") {
-          const data = getMySwapEstimatedLiqALiqBfromLp(
+          const data = await getMySwapEstimatedLiqALiqBfromLp(
             Borrows[i]?.currentLoanAmount,
             Borrows[i]?.loanId,
             Borrows[i]?.currentLoanMarketAddress,

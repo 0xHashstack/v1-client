@@ -123,16 +123,12 @@ const LiquidityProvisionModal = ({
     writeJediSwap_addLiquidity,
     writeAsyncJediSwap_addLiquidity,
     isIdleJediSwap_addLiquidity,
-    isLoadingJediSwap_addLiquidity,
-    statusJediSwap_addLiquidity,
 
     datamySwap_addLiquidity,
     errormySwap_addLiquidity,
     writemySwap_addLiquidity,
     writeAsyncmySwap_addLiquidity,
     isIdlemySwap_addLiquidity,
-    isLoadingmySwap_addLiquidity,
-    statusmySwap_addLiquidity,
   } = useLiquidity();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
@@ -657,15 +653,15 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               ////console.log("hi");
             } else {
-              const uqID = Math.random();
-              setUniqueID(uqID);
-              let data: any = localStorage.getItem("transactionCheck");
-              data = data ? JSON.parse(data) : [];
-              if (data && !data.includes(uqID)) {
-                data.push(uqID);
-                localStorage.setItem("transactionCheck", JSON.stringify(data));
-              }
-              onOpen();
+              // const uqID = Math.random();
+              // setUniqueID(uqID);
+              // let data: any = localStorage.getItem("transactionCheck");
+              // data = data ? JSON.parse(data) : [];
+              // if (data && !data.includes(uqID)) {
+              //   data.push(uqID);
+              //   localStorage.setItem("transactionCheck", JSON.stringify(data));
+              // }
+              // onOpen();
               mixpanel.track("Liquidity Modal Selected", {
                 Clicked: true,
                 "Dapp Selected": currentSwap,
@@ -674,7 +670,7 @@ const LiquidityProvisionModal = ({
           }}
         >
           <Box onClick={() => setCurrentSwap("MySwap")}>
-            {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
+          <TableMySwapDull />
           </Box>
         </Box>
         <Box

@@ -8,7 +8,6 @@ const useBalanceOf = (asset: string) => {
       data: dataBalanceOf,
 
       error: errorBalanceOf,
-      isIdle: isIdleBalanceOf,
 
       isLoading: isLoadingBalanceOf,
       isSuccess: isSuccessBalanceOf,
@@ -16,10 +15,10 @@ const useBalanceOf = (asset: string) => {
       refetch: refetchBalanceOf,
       status: statusBalanceOf,
     } = useContractRead({
+      functionName: "balanceOf",
+      args: [accountAddress as string],
       address: asset,
       abi: ERC20Abi,
-      functionName: "balanceOf",
-      args: [accountAddress],
       watch: false,
     })
 

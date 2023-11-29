@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { Coins } from "@/utils/constants/coin";
 import YourSupplyModal from "@/components/modals/yourSupply";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { selectYourSupply, selectNetAPR, selectnetAprDeposits } from "@/store/slices/readDataSlice";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
@@ -30,8 +30,6 @@ const YourSupply = () => {
     "Status",
     "",
   ];
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
   const { account, address } = useAccount();
   useDataLoader();
   // useEffect(()=>{

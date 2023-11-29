@@ -23,11 +23,10 @@ const useWithdrawDeposit = () => {
     writeAsync: writeAsyncWithdrawDeposit,
     isError: isErrorWithdrawDeposit,
     isIdle: isIdleWithdrawDeposit,
-    isLoading: isLoadingWithdrawDeposit,
     isSuccess: isSuccessWithdrawDeposit,
     status: statusWithdrawDeposit,
   } = useContractWrite({
-    calls: {
+    calls: [{
       contractAddress: diamondAddress,
       entrypoint: "withdraw_deposit",
       calldata: [
@@ -37,7 +36,7 @@ const useWithdrawDeposit = () => {
         owner,
         owner,
       ],
-    },
+    }],
   });
 
   return {
@@ -53,7 +52,6 @@ const useWithdrawDeposit = () => {
     writeAsyncWithdrawDeposit,
     isErrorWithdrawDeposit,
     isIdleWithdrawDeposit,
-    isLoadingWithdrawDeposit,
     isSuccessWithdrawDeposit,
     statusWithdrawDeposit,
   };

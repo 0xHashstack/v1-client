@@ -38,8 +38,7 @@ import {
   setLanguage,
 } from "@/store/slices/userAccountSlice";
 import {
-  useAccount,
-  useConnectors,
+  useAccount, useConnect, useDisconnect,
 } from "@starknet-react/core";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
@@ -87,7 +86,8 @@ const Navbar = ({ validRTokens }: any) => {
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
   const [stakeHover, setStakeHover] = useState(false);
-  const { available, disconnect, connect, connectors } = useConnectors();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName));
   };
@@ -153,19 +153,27 @@ const Navbar = ({ validRTokens }: any) => {
   const switchWallet = () => {
     // const walletConnected = localStorage.getItem("lastUsedConnector");
     ////console.log(connector);
-    if (connector?.options?.id == "braavos") {
+    if (connectors[0]?.id == "braavos") {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "argentX");
       localStorage.setItem("connected", "argentX");
-      connect(connectors[1]);
+      connectors.map((connector)=>{
+        if(connector.id=="argentX"){
+          connect({connector});
+        }
+      })
       router.push("/v1/market");
     } else {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "braavos");
       localStorage.setItem("connected", "braavos");
-      connect(connectors[0]);
+      connectors.map((connector:any)=>{
+        if(connector.id=="braavos"){
+          connect({connector});
+        }
+      })
       router.push("/v1/market");
     }
   };
@@ -247,23 +255,23 @@ const userWhitelisted=useSelector(selectWhiteListed);
   }, [account,whitelisted,userWhitelisted,referralLinked]);
   const [allowedReferral, setAllowedReferral] = useState(false)
   const interactedAddress=useSelector(selectInteractedAddress)
-  useEffect(()=>{
-    const fetchUsers=async()=>{
-      if(!address){
-        return;
-      }else{
-        if(interactedAddress==true){
-          return;
-        }else{
-          const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
-          const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
-          dispatch(setInteractedAddress(fetched))
-          setAllowedReferral(fetched)
-        }
-      }
-    }
-    fetchUsers();
-  },[address])
+  // useEffect(()=>{
+  //   const fetchUsers=async()=>{
+  //     if(!address){
+  //       return;
+  //     }else{
+  //       if(interactedAddress==true){
+  //         return;
+  //       }else{
+  //         const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
+  //         // const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
+  //         dispatch(setInteractedAddress(fetched))
+  //         setAllowedReferral(fetched)
+  //       }
+  //     }
+  //   }
+  //   fetchUsers();
+  // },[address])
   return (
     <HStack
       zIndex="100"
@@ -894,12 +902,20 @@ const userWhitelisted=useSelector(selectWhiteListed);
                       // alert("hey");
                       // const walletConnected =
                       //   localStorage.getItem("lastUsedConnector");
-                      if (connector?.options?.id == "braavos") {
+                      if (connectors[0]?.id == "braavos") {
                         disconnect();
-                        connect(connectors[1]);
+                        connectors.map((connector:any)=>{
+                          if(connector.id=="braavos"){
+                            connect(connector);
+                          }
+                        })
                       } else {
                         disconnect();
-                        connect(connectors[0]);
+                        connectors.map((connector)=>{
+                          if(connector.id=="argentX"){
+                            connect({connector});
+                          }
+                        })
                       }
                       ////console.log("navbar", account);
                       // localStorage.setItem("account", JSON.stringify(account));

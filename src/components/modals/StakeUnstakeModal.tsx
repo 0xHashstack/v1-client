@@ -159,7 +159,6 @@ const StakeUnstakeModal = ({
     writeAsyncStakeRequest,
     isErrorStakeRequest,
     isIdleStakeRequest,
-    isLoadingStakeRequest,
     isSuccessStakeRequest,
     statusStakeRequest,
   } = useStakeRequest();
@@ -195,7 +194,6 @@ const StakeUnstakeModal = ({
 
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
@@ -211,7 +209,6 @@ const StakeUnstakeModal = ({
     writeAsyncWithdrawStake,
     isErrorWithdrawStake,
     isIdleWithdrawStake,
-    isLoadingWithdrawStake,
     isSuccessWithdrawStake,
     statusWithdrawStake,
   } = useWithdrawStake();
@@ -757,27 +754,24 @@ const StakeUnstakeModal = ({
   ////console.log(coin,"coin stake")
   const [walletBalance, setWalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
+      ?   parseAmount(
+        String(
             uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[coin?.name]
           )
-        )
+        
       : 0
   );
-
   useEffect(() => {
     setWalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
-              uint256.uint256ToBN(
+        ? parseAmount(
+              String(uint256.uint256ToBN(
                 walletBalances[coin?.name]?.dataBalanceOf?.balance
-              ),
+              )),
               tokenDecimalsMap[coin?.name]
-            )
           )
         : 0
     );
@@ -860,9 +854,9 @@ const StakeUnstakeModal = ({
     setWalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
+            String(uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[coin?.name]
           )
         : 0
@@ -1262,10 +1256,10 @@ const StakeUnstakeModal = ({
                                         walletBalances[_coin?.slice(1)]
                                           ?.statusBalanceOf === "success"
                                           ? parseAmount(
-                                              uint256.uint256ToBN(
+                                              String(uint256.uint256ToBN(
                                                 walletBalances[_coin?.slice(1)]
                                                   ?.dataBalanceOf?.balance
-                                              ),
+                                              )),
                                               tokenDecimalsMap[_coin?.slice(1)]
                                             )
                                           : 0

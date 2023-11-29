@@ -163,7 +163,6 @@ const TradeModal = ({
     writeAsyncBorrowAndSpend,
     isErrorBorrowAndSpend,
     isIdleBorrowAndSpend,
-    isLoadingBorrowAndSpend,
     isSuccessBorrowAndSpend,
     statusBorrowAndSpend,
 
@@ -173,7 +172,6 @@ const TradeModal = ({
     writeAsyncBorrowAndSpendRToken,
     isErrorBorrowAndSpendRToken,
     isIdleBorrowAndSpendRToken,
-    isLoadingBorrowAndSpendRToken,
     isSuccessBorrowAndSpendRToken,
     statusBorrowAndSpendRToken,
   } = useBorrowAndSpend();
@@ -218,9 +216,9 @@ const TradeModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[coin?.name]
         )
         : 0
@@ -229,7 +227,7 @@ const TradeModal = ({
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   const dapps = [
     { name: "Jediswap", status: "enable" },
-    { name: "mySwap", status: "enable" },
+    // { name: "mySwap", status: "disable" },
   ];
 
   const pools = [
@@ -536,9 +534,9 @@ const TradeModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[coin?.name]
         )
         : 0
@@ -1442,10 +1440,10 @@ const TradeModal = ({
                                     walletBalances[coin]?.statusBalanceOf ===
                                       "success"
                                       ? parseAmount(
-                                        uint256.uint256ToBN(
+                                        String(uint256.uint256ToBN(
                                           walletBalances[coin]?.dataBalanceOf
                                             ?.balance
-                                        ),
+                                        )),
                                         tokenDecimalsMap[coin]
                                       )
                                       : 0
@@ -1490,10 +1488,10 @@ const TradeModal = ({
                                       ?.balance
                                       ? numberFormatter(
                                         parseAmount(
-                                          uint256.uint256ToBN(
+                                          String(uint256.uint256ToBN(
                                             walletBalances[coin]
                                               ?.dataBalanceOf?.balance
-                                          ),
+                                          )),
                                           tokenDecimalsMap[coin]
                                         )
                                       )

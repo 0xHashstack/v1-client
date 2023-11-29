@@ -249,8 +249,6 @@ const YourBorrowModal = ({
     writeAsyncAddCollateral,
     isErrorAddCollateral,
     isIdleAddCollateral,
-    isLoadingAddCollateral,
-    isSuccessAddCollateral,
     statusAddCollateral,
 
     dataAddCollateralRToken,
@@ -260,8 +258,6 @@ const YourBorrowModal = ({
     writeAsyncAddCollateralRToken,
     isErrorAddCollateralRToken,
     isIdleAddCollateralRToken,
-    isLoadingAddCollateralRToken,
-    isSuccessAddCollateralRToken,
     statusAddCollateralRToken,
   } = useAddCollateral();
 
@@ -274,14 +270,9 @@ const YourBorrowModal = ({
     transRepayHash,
     setTransRepayHash,
     // repayTransactionReceipt,
-    isLoadingRepay,
-    errorRepay,
 
     //SelfLiquidate - Repay with 0 amount
     writeAsyncSelfLiquidate,
-    isLoadingSelfLiquidate,
-    errorSelfLiquidate,
-    // selfLiquidateTransactionReceipt,
     setIsSelfLiquidateHash,
   } = useRepay(loan);
 
@@ -297,7 +288,6 @@ const YourBorrowModal = ({
     writeJediSwap_swap,
     writeAsyncJediSwap_swap,
     isIdleJediSwap_swap,
-    isLoadingJediSwap_swap,
     statusJediSwap_swap,
 
     datamySwap_swap,
@@ -305,7 +295,6 @@ const YourBorrowModal = ({
     writemySwap_swap,
     writeAsyncmySwap_swap,
     isIdlemySwap_swap,
-    isLoadingmySwap_swap,
     statusmySwap_swap,
   } = useSwap();
 
@@ -323,7 +312,6 @@ const YourBorrowModal = ({
     writeJediSwap_addLiquidity,
     writeAsyncJediSwap_addLiquidity,
     isIdleJediSwap_addLiquidity,
-    isLoadingJediSwap_addLiquidity,
     statusJediSwap_addLiquidity,
 
     datamySwap_addLiquidity,
@@ -331,7 +319,6 @@ const YourBorrowModal = ({
     writemySwap_addLiquidity,
     writeAsyncmySwap_addLiquidity,
     isIdlemySwap_addLiquidity,
-    isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
   } = useLiquidity();
   const {
@@ -343,7 +330,6 @@ const YourBorrowModal = ({
     writeRevertInteractWithL3,
     errorRevertInteractWithL3,
     isIdleRevertInteractWithL3,
-    isLoadingRevertInteractWithL3,
   } = useRevertInteractWithL3();
   const poolsPairs = useSelector(selectJediSwapPoolsSupported);
   const mySwapPoolPairs = useSelector(selectMySwapPoolsSupported);
@@ -515,14 +501,12 @@ const YourBorrowModal = ({
   const [walletBalance1, setwalletBalance1] = useState(
     walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
       ?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
-            uint256.uint256ToBN(
+      ? parseAmount(
+            String(uint256.uint256ToBN(
               walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
                 ?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[currentBorrowMarketCoin1.slice(1) as NativeToken]
-          )
         )
       : 0
   );
@@ -537,10 +521,10 @@ const YourBorrowModal = ({
       walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
         ?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
+            String(uint256.uint256ToBN(
               walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
                 ?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[currentBorrowMarketCoin1.slice(1) as NativeToken]
           )
         : 0
@@ -555,13 +539,12 @@ const YourBorrowModal = ({
 
   const [walletBalance2, setwalletBalance2] = useState(
     walletBalances[collateralAsset]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
+      ? parseAmount(
+        String(
             uint256.uint256ToBN(
               walletBalances[collateralAsset]?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[collateralAsset]
-          )
         )
       : 0
   );
@@ -569,9 +552,9 @@ const YourBorrowModal = ({
     setwalletBalance2(
       walletBalances[collateralAsset]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
+            String(uint256.uint256ToBN(
               walletBalances[collateralAsset]?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[collateralAsset]
           )
         : 0
@@ -2444,7 +2427,7 @@ const YourBorrowModal = ({
 
   const dapps = [
     { name: "Jediswap", status: "enable" },
-    { name: "mySwap", status: "enable" },
+    // { name: "mySwap", status: "enable" },
   ];
 
   const pools = [

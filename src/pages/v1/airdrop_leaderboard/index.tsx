@@ -51,7 +51,7 @@ import { HStack, VStack } from "@chakra-ui/react";
 import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { selectYourBorrow, selectNetAPR, selectExistingLink, selectInteractedAddress } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
@@ -140,8 +140,6 @@ const Campaign = () => {
   }, {
     id: 6, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
   },]
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
 
   const dispatch = useDispatch();
   const { account, address } = useAccount();
@@ -196,7 +194,7 @@ const Campaign = () => {
       fetchLeaderBoardData();
     }catch(err){
       console.log(err);
-    }
+  }
 
   },[])
 
@@ -259,14 +257,20 @@ const Campaign = () => {
       if (exisitingLink) {
         await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + exisitingLink);
       } else {
-        await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + refferal);
-        axios.post((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/shorten" : 'https://hstk.fi/shorten'), { pseudo_name: refferal, address: address })
-          .then((response) => {
-            //console.log(response, "response refer link"); // Log the response from the backend.
+        if(interactedAddress==true){
+          await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + refferal);
+          axios.post((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/shorten" : 'https://hstk.fi/shorten'), { pseudo_name: refferal, address: address })
+            .then((response) => {
+              //console.log(response, "response refer link"); // Log the response from the backend.
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+        }else{
+          toast.error('Perform a transaction to be able to generate referral link',{
+            position: toast.POSITION.BOTTOM_RIGHT,
           })
-          .catch((error) => {
-            console.error('Error:', error);
-          });
+        }
       }
       toast.success("Copied", {
         position: toast.POSITION.BOTTOM_RIGHT,
