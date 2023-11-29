@@ -2444,7 +2444,7 @@ const YourBorrowModal = ({
 
   const dapps = [
     { name: "Jediswap", status: "enable" },
-    { name: "mySwap", status: "enable" },
+    // { name: "mySwap", status: "enable" },
   ];
 
   const pools = [
