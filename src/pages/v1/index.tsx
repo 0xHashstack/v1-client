@@ -58,29 +58,7 @@ export default function Home() {
   // ];
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
-  console.log(account,"acc in index")
-  const getTokens=async(modalFees:any)=>{
-    try{
-      const provider = getProvider();
-      const governorContract=new Contract(
-        comptrollerAbi,
-        "0x1b862c518939339b950d0d21a3d4cc8ead102d6270850ac8544636e558fab68",
-        provider
-      )
-      const result = await governorContract.call(
-        modalFees
-      );
-      console.log(result)
 
-      ////console.log(parseAmount(uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),8),"parsed")
-
-    }catch(err){
-      console.log(err)
-    }
-  }
-  useEffect(()=>{
-    getTokens("get_withdraw_deposit_fee")
-  },[])
   // const { available, refresh } =
   //   useConnectors();
   const [render, setRender] = useState(true);

@@ -114,8 +114,8 @@ const GetTokensModal = ({
   } = useGetTokens(currentSelectedCoin);
 
   useEffect(() => {
-    setCurrentSelectedCoin(token);
-  }, [token, currentSelectedCoin]);
+    setToken(currentSelectedCoin);
+  }, [ currentSelectedCoin]);
   const dispatch = useDispatch();
   const { address } = useAccount();
   const [toastId, setToastId] = useState<any>();
@@ -128,6 +128,7 @@ const GetTokensModal = ({
   const handleGetToken = async (coin: any) => {
     try {
      //console.log(token);
+     setToken(coin)
       const getTokens = await writeAsyncGetTokens();
       mixpanel.track("Get Tokens", {
         "Token Selected": coin,
@@ -255,9 +256,9 @@ const GetTokensModal = ({
                   _hover={{ bgColor: "white", color: "black" }}
                   _active={{ border: "3px solid grey" }}
                   onClick={() => {
-                    setCurrentSelectedCoin("wBTC");
+                    setCurrentSelectedCoin("BTC");
                     setToken("BTC");
-                    handleGetToken("wBTC");
+                    handleGetToken("BTC");
                   }}
                 >
                   wBTC
@@ -273,9 +274,9 @@ const GetTokensModal = ({
                   _hover={{ bgColor: "white", color: "black" }}
                   _active={{ border: "3px solid grey" }}
                   onClick={() => {
-                    setCurrentSelectedCoin("wETH");
+                    setCurrentSelectedCoin("ETH");
                     setToken("ETH");
-                    handleGetToken("wETH");
+                    handleGetToken("ETH");
                   }}
                 >
                   wETH

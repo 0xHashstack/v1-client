@@ -324,7 +324,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if ((account && !isCorrectNetwork())) {
       setRender(false);
     } else {
-      if (!whitelisted) {
+      if (!whitelisted && process.env.NEXT_PUBLIC_NODE_ENV == "mainnet") {
         setRender(false);
       } else {
         setRender(true);
@@ -571,7 +571,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     )
     : (
       <>
-        {render && whitelisted ? (
+        {render && (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet "?whitelisted:true) ? (
           <>
             <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
@@ -663,7 +663,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               {...rest}
             >
               <Box>
-                {(!whitelisted)
+                {(!whitelisted &&process.env.NEXT_PUBLIC_NODE_ENV == "mainnet")
 
                   ? 
                   <Box>
