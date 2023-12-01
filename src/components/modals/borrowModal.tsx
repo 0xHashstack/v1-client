@@ -734,7 +734,7 @@ const BorrowModal = ({
     if (inputCollateralAmountUSD > 0) {
       var percentage =
         (newValue * 100) /
-        ((4.9999 * inputCollateralAmountUSD) /
+        ((4.98 * inputCollateralAmountUSD) /
           oraclePrices.find((curr: any) => curr.name === currentBorrowCoin)
             ?.price);
     } else {
@@ -1710,7 +1710,7 @@ const BorrowModal = ({
                   color="white"
                   border={`${
                     inputCollateralAmountUSD &&
-                    inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
+                    inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                       ? "1px solid #CF222E"
                       : inputBorrowAmountUSD < 0 ||
                         inputBorrowAmount > currentAvailableReserves
@@ -1747,7 +1747,7 @@ const BorrowModal = ({
 
                       color={`${
                         inputCollateralAmountUSD &&
-                        inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
+                        inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                           ? "#CF222E"
                           : isNaN(amount)
                           ? "#CF222E":
@@ -1783,7 +1783,7 @@ const BorrowModal = ({
                     variant="ghost"
                     color={`${
                       inputCollateralAmountUSD &&
-                      inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
+                      inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                         ? "#CF222E"
                         : isNaN(amount)
                         ? "#CF222E":
@@ -1802,7 +1802,7 @@ const BorrowModal = ({
                     onClick={() => {
                       if (inputCollateralAmountUSD > 0) {
                         if (
-                          (4.9999 * inputCollateralAmountUSD) /
+                          (4.98 * inputCollateralAmountUSD) /
                             oraclePrices.find(
                               (curr: any) => curr.name === currentBorrowCoin
                             )?.price >
@@ -1813,13 +1813,13 @@ const BorrowModal = ({
                           setinputBorrowAmount(currentAvailableReserves);
                         } else {
                           setAmount(
-                            (4.9999 * inputCollateralAmountUSD) /
+                            (4.98 * inputCollateralAmountUSD) /
                               oraclePrices.find(
                                 (curr: any) => curr.name === currentBorrowCoin
                               )?.price
                           );
                           setinputBorrowAmount(
-                            (4.9999 * inputCollateralAmountUSD) /
+                            (4.98 * inputCollateralAmountUSD) /
                               oraclePrices.find(
                                 (curr: any) => curr.name === currentBorrowCoin
                               )?.price
@@ -1852,7 +1852,7 @@ const BorrowModal = ({
                 inputBorrowAmount>maximumLoanAmount) )||
                 (amount > 0 &&
                   inputCollateralAmountUSD &&
-                  inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD) ? (
+                  inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD) ? (
                   <Box
                     display="flex"
                     justifyContent="space-between"
@@ -1875,7 +1875,7 @@ const BorrowModal = ({
                           :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount?
                           "More than max Amount"
                           : inputBorrowAmountUSD >
-                            4.9999 * inputCollateralAmountUSD
+                            4.98 * inputCollateralAmountUSD
                           ? "Debt higher than permitted"
                           : ""}
                       </Text>
@@ -1945,7 +1945,7 @@ const BorrowModal = ({
                       if (inputCollateralAmountUSD > 0) {
                         var ans =
                           (val / 100) *
-                          ((4.9999 * inputCollateralAmountUSD) /
+                          ((4.98 * inputCollateralAmountUSD) /
                             oraclePrices.find(
                               (curr: any) => curr.name === currentBorrowCoin
                             )?.price);
@@ -1955,13 +1955,13 @@ const BorrowModal = ({
                       if (val == 100) {
                         if (inputCollateralAmountUSD > 0) {
                           setAmount(
-                            (4.9999 * inputCollateralAmountUSD) /
+                            (4.98 * inputCollateralAmountUSD) /
                               oraclePrices.find(
                                 (curr: any) => curr.name === currentBorrowCoin
                               )?.price
                           );
                           setinputBorrowAmount(
-                            (4.9999 * inputCollateralAmountUSD) /
+                            (4.98 * inputCollateralAmountUSD) /
                               oraclePrices.find(
                                 (curr: any) => curr.name === currentBorrowCoin
                               )?.price
@@ -2434,7 +2434,7 @@ const BorrowModal = ({
             (rTokenAmount>0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" &&tokenTypeSelected == "Native" ?(rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount):true)) &&
             // do max 1209
             inputBorrowAmount <= currentAvailableReserves &&
-            inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD ? (
+            inputBorrowAmountUSD <= 4.98 * inputCollateralAmountUSD ? (
               // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
               // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&
               // inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (

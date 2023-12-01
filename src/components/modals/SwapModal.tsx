@@ -477,20 +477,20 @@ const SwapModal = ({
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
-              const uqID = Math.random();
-              setUniqueID(uqID);
-              let data: any = localStorage.getItem("transactionCheck");
-              data = data ? JSON.parse(data) : [];
-              if (data && !data.includes(uqID)) {
-                data.push(uqID);
-                localStorage.setItem("transactionCheck", JSON.stringify(data));
-              }
-              onOpen();
+              // const uqID = Math.random();
+              // setUniqueID(uqID);
+              // let data: any = localStorage.getItem("transactionCheck");
+              // data = data ? JSON.parse(data) : [];
+              // if (data && !data.includes(uqID)) {
+              //   data.push(uqID);
+              //   localStorage.setItem("transactionCheck", JSON.stringify(data));
+              // }
+              // onOpen();
             }
           }}
         >
           <Box onClick={() => setCurrentSwap("MySwap")}>
-            {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
+           <TableMySwapDull />
           </Box>
         </Box>
         <Box

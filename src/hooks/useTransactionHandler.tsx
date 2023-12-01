@@ -35,7 +35,6 @@ const useTransactionHandler = () => {
     hashes: [...transactions],
     watch: true,
   });
-  console.log(results,"rres")
   // // const data = useTransaction()
   ////console.log("trans toastHash", toastHash);
   ////console.log("transaction results - ", results);
