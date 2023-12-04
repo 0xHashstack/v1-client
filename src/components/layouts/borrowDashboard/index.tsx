@@ -927,14 +927,14 @@ const BorrowDashboard = ({
                             label={
                               <Box display="flex" flexDirection="column" justifyContent="space-between">
                                 <Box display="flex" justifyContent="space-between" gap="10px">
-                                Borrow APR:
+                                Borrow:
                                 <Text>  
                                 +{getBorrowAPR(borrow?.loanMarket.slice(1))}%
                                   </Text> 
                                 </Box>
                                 <Box display="flex" justifyContent="space-between" >
                                   <Text>
-                                Pool APR: 
+                                Pool: 
                                   </Text>
                                 <Text>
                                 -{getAprByPool(poolAprs,allSplit?.[lower_bound + idx]?.tokenA+"/"+allSplit?.[lower_bound + idx]?.tokenB).toFixed(2)}%
@@ -942,7 +942,7 @@ const BorrowDashboard = ({
                                 </Box>
                                 <Box display="flex" justifyContent="space-between" mb="2">
                                   <Text>
-                                Collateral APR: 
+                                Collateral: 
                                   </Text>
                                 <Text>
                                 -{
