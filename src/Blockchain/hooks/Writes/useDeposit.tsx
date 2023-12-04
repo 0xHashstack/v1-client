@@ -34,7 +34,7 @@ const useDeposit = () => {
   //   const [depositTransHash, setDepositTransHash] = useState("");
 
   //   const recieptData = useWaitForTransaction({ hash: depositTransHash });
-  //   console.log("useDeposit", depositAmount, asset);
+  //  //console.log("useDeposit", depositAmount, asset);
   const {
     data: dataDeposit,
     error: errorDeposit,
@@ -43,11 +43,10 @@ const useDeposit = () => {
     writeAsync: writeAsyncDeposit,
     isError: isErrorDeposit,
     isIdle: isIdleDeposit,
-    isLoading: isLoadingDeposit,
     isSuccess: isSuccessDeposit,
     status: statusDeposit,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0   && user=="U1" && (depositAmount>25) && nftCurrentAmount<nftMaxAmount ?[
+    calls: balance==0   && user=="U1" && (depositAmount>25) && nftCurrentAmount<nftMaxAmount ?[
       {
         contractAddress: tokenAddressMap[asset] || "",
         entrypoint: "approve",
@@ -110,11 +109,10 @@ const useDeposit = () => {
     writeAsync: writeAsyncDepositStake,
     isError: isErrorDepositStake,
     isIdle: isIdleDepositStake,
-    isLoading: isLoadingDepositStake,
     isSuccess: isSuccessDepositStake,
     status: statusDepositStake,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1" && ( depositAmount>25) && nftCurrentAmount<nftMaxAmount ?[
+    calls: balance==0 && user=="U1" && ( depositAmount>25) && nftCurrentAmount<nftMaxAmount ?[
       {
         contractAddress: tokenAddressMap[asset] || "",
         entrypoint: "approve",
@@ -181,7 +179,6 @@ const useDeposit = () => {
     writeAsyncDepositStake,
     isErrorDepositStake,
     isIdleDepositStake,
-    isLoadingDepositStake,
     isSuccessDepositStake,
     statusDepositStake,
 
@@ -193,7 +190,6 @@ const useDeposit = () => {
     writeAsyncDeposit,
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   };

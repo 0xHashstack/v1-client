@@ -65,7 +65,6 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import {
   useAccount,
   useBalance,
-  useTransactionManager,
   useWaitForTransaction,
 } from "@starknet-react/core";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
@@ -109,7 +108,7 @@ const SupplyModal = ({
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const toastHandler = () => {
-  //   console.log("toast called");
+  //  //console.log("toast called");
   // };
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [transactionStarted, setTransactionStarted] = useState(false);
@@ -130,7 +129,6 @@ const SupplyModal = ({
 
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
@@ -141,8 +139,8 @@ const SupplyModal = ({
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
     coin ? coin?.name : "BTC"
   );
-  // console.log("wallet balance",typeof Number(walletBalance))
-  // console.log("deposit amount", typeof depositAmount);
+  ////console.log("wallet balance",typeof Number(walletBalance))
+  ////console.log("deposit amount", typeof depositAmount);
   const [inputAmount, setinputAmount] = useState<number>(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -160,7 +158,7 @@ const SupplyModal = ({
   //   // setCurrentSupplyAPR(
   //   //   coinIndex.map(({ curr }: any) => curr?.token === currentSelectedCoin)?.idx
   //   // );
-  //   // console.log("currentSupplyAPR", currentSupplyAPR);
+  //   ////console.log("currentSupplyAPR", currentSupplyAPR);
   // }, [currentSupplyAPR]);
 
   const getUniqueId = () => uniqueID;
@@ -187,14 +185,14 @@ const SupplyModal = ({
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
   };
-  // console.log(walletBalances,"wallet balances in supply modal")
+  ////console.log(walletBalances,"wallet balances in supply modal")
 
   // const transactionStarted = useSelector(selectTransactionStarted);
   // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
 
   // const [transactionStarted, setTransactionStarted] = useState(false);
   // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
-  // console.log(Number(
+  ////console.log(Number(
   //   BNtoNum(
   //     uint256.uint256ToBN(
   //       walletBalances["ETH"]?.dataBalanceOf?.balance
@@ -216,15 +214,15 @@ const SupplyModal = ({
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? parseAmount(
-        uint256.uint256ToBN(
+        String(uint256.uint256ToBN(
           walletBalances[coin?.name]?.dataBalanceOf?.balance
-        ),
+        )),
         tokenDecimalsMap[coin?.name]
       )
       : 0
   );
   // useEffect(()=>{
-  //   console.log(
+  //  //console.log(
   //     Number(parseAmount(
   //       uint256.uint256ToBN(
   //         walletBalances[coin?.name]?.dataBalanceOf?.balance
@@ -237,19 +235,19 @@ const SupplyModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[coin?.name]
         )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf]);
   // useEffect(()=>{
 
   // },[currentSelectedCoin])
-  // console.log(walletBalances['BTC']);
+  ////console.log(walletBalances['BTC']);
   // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
   // const [transactionFailed, setTransactionFailed] = useState(false);
 
@@ -272,19 +270,19 @@ const SupplyModal = ({
   let activeTransactions = useSelector(selectActiveTransactions);
   // useEffect(() => {
   //   if (activeTransactions)
-  //     console.log("activeTransactions ", activeTransactions);
+  //    //console.log("activeTransactions ", activeTransactions);
   // }, [activeTransactions]);
   // const [toastId, setToastId] = useState<any>();
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus(true);
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
@@ -297,11 +295,11 @@ const SupplyModal = ({
   //   },
   //   onRejected(transaction) {
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected", transaction);
+  //    //console.log("treans rejected", transaction);
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus(true);
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus(true);
@@ -314,16 +312,16 @@ const SupplyModal = ({
   //       );
   //       setToastDisplayed(true);
   //     }
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //   },
   // });
   // useEffect(() => {
   //   // const status = recieptData?.data?.status;
-  //   console.log("trans supply modal ", recieptData?.data?.status);
+  //  //console.log("trans supply modal ", recieptData?.data?.status);
   //   if (recieptData?.data?.status == "PENDING") {
   //     setCurrentTransactionStatus(true);
   //     toast.dismiss(toastId);
-  //     console.log("trans pending - - -");
+  //    //console.log("trans pending - - -");
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
@@ -334,10 +332,10 @@ const SupplyModal = ({
   //       setToastDisplayed(true);
   //     }
   //   } else if (recieptData?.data?.status == "RECEIVED") {
-  //     console.log("trans received - - -");
+  //    //console.log("trans received - - -");
   //   } else if (recieptData?.data?.status == "REJECTED") {
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected - - -");
+  //    //console.log("treans rejected - - -");
   //   } else if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
   //     setCurrentTransactionStatus(true);
   //     if (!isToastDisplayed) {
@@ -349,23 +347,23 @@ const SupplyModal = ({
   //       );
   //       setToastDisplayed(true);
   //     }
-  //     console.log("trans onAcceptedOnL2 - - -");
+  //    //console.log("trans onAcceptedOnL2 - - -");
   //   } else if (status == "ACCEPTED_ON_L1") {
   //     setCurrentTransactionStatus(true);
-  //     console.log("trans onAcceptedOnL1 - - -");
+  //    //console.log("trans onAcceptedOnL1 - - -");
   //   }
   // }, [recieptData?.data?.status]);
-  // setInterval(() => console.log("recieptData", recieptData), 5000);
+  // setInterval(() =>//console.log("recieptData", recieptData), 5000);
 
   // const recieptData2 = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus(true);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (isToastDisplayed==false) {
   //       toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
   //         position: toast.POSITION.BOTTOM_RIGHT
@@ -374,11 +372,11 @@ const SupplyModal = ({
   //     }
   //   },
   //   onRejected(transaction) {
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus(true);
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus(true);
@@ -388,7 +386,7 @@ const SupplyModal = ({
   //       });
   //       setToastDisplayed(true);
   //     }
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //   },
   // });
 
@@ -397,12 +395,12 @@ const SupplyModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
@@ -417,7 +415,7 @@ const SupplyModal = ({
   //     setCurrentTransactionStatus("Failed");
   //     toast.dismiss(toastId);
   //     if (!failureToastDisplayed) {
-  //       console.log("treans rejected", transaction);
+  //      //console.log("treans rejected", transaction);
   //       dispatch(setTransactionStatus("failed"));
   //       const toastContent = (
   //         <div>
@@ -436,7 +434,7 @@ const SupplyModal = ({
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction: any) {
   //     toast.dismiss(toastId);
@@ -450,7 +448,7 @@ const SupplyModal = ({
   //       );
   //       setToastDisplayed(true);
   //     }
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //   },
   // });
   // const { hashes, addTransaction } = useTransactionManager();
@@ -509,18 +507,15 @@ const SupplyModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-        // console.log("Status transaction", deposit);
-        console.log(isSuccessDeposit, "success ?");
+        ////console.log("Status transaction", deposit);
+       //console.log(isSuccessDeposit, "success ?");
       } else {
         mixpanel.track("Action Selected", {
           Action: "Deposit",
         });
         const deposit = await writeAsyncDeposit();
         if (deposit?.transaction_hash) {
-          console.log(
-            "trans transaction hash created ",
-            deposit?.transaction_hash
-          );
+     
           const toastid = toast.info(
             // `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
             `Transaction pending`,
@@ -568,8 +563,8 @@ const SupplyModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-        // console.log("Status transaction", deposit);
-        console.log(isSuccessDeposit, "success ?");
+        ////console.log("Status transaction", deposit);
+       //console.log(isSuccessDeposit, "success ?");
       }
     } catch (err: any) {
       // setTransactionFailed(true);
@@ -583,7 +578,7 @@ const SupplyModal = ({
         setTransactionStarted(false);
         // dispatch(setTransactionStatus("failed"));
       }
-      console.log(uqID, "transaction check supply transaction failed : ", err);
+     //console.log(uqID, "transaction check supply transaction failed : ", err);
 
       const toastContent = (
         <div>
@@ -597,7 +592,7 @@ const SupplyModal = ({
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
       });
-      console.log("supply", err);
+     //console.log("supply", err);
       // toast({
       //   description: "An error occurred while handling the transaction. " + err,
       //   variant: "subtle",
@@ -660,7 +655,7 @@ const SupplyModal = ({
   // useEffect(() => {
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
   // }, [])
-  // console.log(inputAmount);
+  ////console.log(inputAmount);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
   const minAmounts = useSelector(selectMinimumDepositAmounts);
@@ -669,7 +664,7 @@ const SupplyModal = ({
     setMinimumDepositAmount(minAmounts["r" + currentSelectedCoin])
     setmaximumDepositAmount(maxAmounts["r" + currentSelectedCoin])
   }, [currentSelectedCoin, minAmounts, maxAmounts])
-  // console.log(nft,"nft")
+  ////console.log(nft,"nft")
   // useEffect(()=>{
   //     const data=useSelector(selectMinimumDepositAmounts);
   //     setMinimumDepositAmount(data(currentSelectedCoin));
@@ -689,7 +684,7 @@ const SupplyModal = ({
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
-  // console.log(activeModal)
+  ////console.log(activeModal)
 
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
@@ -732,9 +727,9 @@ const SupplyModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[coin?.name]
         )
         : 0
@@ -790,7 +785,7 @@ const SupplyModal = ({
             const uqID = getUniqueId();
             let data: any = localStorage.getItem("transactionCheck");
             data = data ? JSON.parse(data) : [];
-            // console.log(uqID, "data here", data);
+            ////console.log(uqID, "data here", data);
             if (data && data.includes(uqID)) {
               data = data.filter((val: any) => val != uqID);
               localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -927,18 +922,16 @@ const SupplyModal = ({
                                   (curr: any) => curr?.token === coin
                                 )?.idx
                               );
-                              // console.log(coin,"coin in supply modal")
+                              ////console.log(coin,"coin in supply modal")
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"
-                                  ? Number(
-                                    BNtoNum(
-                                      uint256.uint256ToBN(
+                                  ? parseAmount(
+                                      String(uint256.uint256ToBN(
                                         walletBalances[coin]?.dataBalanceOf
                                           ?.balance
-                                      ),
+                                      )),
                                       tokenDecimalsMap[coin]
-                                    )
                                   )
                                   : 0
                               );
@@ -980,14 +973,12 @@ const SupplyModal = ({
                                 Wallet Balance:{" "}
                                 {assetBalance[coin]?.dataBalanceOf?.balance
                                   ? numberFormatter(
-                                    Number(
-                                      BNtoNum(
-                                        uint256.uint256ToBN(
+                                    parseAmount(
+                                        String(uint256.uint256ToBN(
                                           assetBalance[coin]?.dataBalanceOf
                                             ?.balance
-                                        ),
+                                        )),
                                         tokenDecimalsMap[coin]
-                                      )
                                     )
                                   )
                                   : "-"}
@@ -1205,7 +1196,7 @@ const SupplyModal = ({
                     onChange={(val) => {
                       setSliderValue(val);
                       var ans = (val / 100) * walletBalance;
-                      // console.log(ans);
+                      ////console.log(ans);
                       if (val == 100) {
                         setDepositAmount(walletBalance);
                         setinputAmount(walletBalance);
@@ -1220,7 +1211,7 @@ const SupplyModal = ({
                           setinputAmount(ans);
                         }
 
-                        // console.log(ans)
+                        ////console.log(ans)
                         // dispatch(setInputSupplyAmount(ans));
 
                       }
@@ -1605,7 +1596,7 @@ const SupplyModal = ({
                       // if(transactionStarted){
                       //   return;
                       // }
-                      // console.log(isSuccessDeposit, "status deposit")
+                      ////console.log(isSuccessDeposit, "status deposit")
                     }}
                   >
                     <AnimatedButton

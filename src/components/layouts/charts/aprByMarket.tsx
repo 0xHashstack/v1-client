@@ -95,15 +95,14 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const allUsdtData = useSelector(selectAllUSDTData);
   const allUsdcData = useSelector(selectAllUSDCData);
   const allDaiData = useSelector(selectAllDAIData);
-  // console.log(weeklyUsdtData?.aprs,"aprs")
   const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
-  // console.log(usdcData,"usdc data")
+  ////console.log(ethData,"usdc data")
   // useEffect(()=>{
 
   // },[])
   const splineColor = ["#00C7F2", "#846ED4", "#136B51", "#1A2683", "#996B22"];
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
-  // console.log(btcData, "btc")
+  ////console.log(btcData, "btc")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -118,9 +117,9 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
     };
 
     fetchData();
-    // console.log(coinsData[currentSelectedCoin],"coin apr")
+    ////console.log(coinsData[currentSelectedCoin],"coin apr")
   }, [aprByMarket, currentSelectedCoin]);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number, option2: number) => {
     // Simulating API call or data update based on option
@@ -1123,7 +1122,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                       //     (curr: any) => curr?.token === coin
                       //   )?.idx
                       // );
-                      // console.log(coin,"coin in supply modal")
+                      ////console.log(coin,"coin in supply modal")
 
                       dispatch(setCoinSelectedExchangeRateRToken(coin));
                     }}

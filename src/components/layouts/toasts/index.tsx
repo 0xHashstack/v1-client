@@ -1,5 +1,4 @@
 import {
-  UseWaitForTransactionArgs,
   useWaitForTransaction,
 } from "@starknet-react/core";
 import { ReactNode } from "react";
@@ -23,12 +22,7 @@ export const useFetchToastStatus = ({
   return useWaitForTransaction({
     hash,
     watch: true,
-    onReceived,
-    onPending,
     // onNotReceived,
-    onRejected,
-    onAcceptedOnL1,
-    onAcceptedOnL2,
   });
 };
 

@@ -18,11 +18,10 @@ const useWithdrawStake = () => {
     writeAsync: writeAsyncWithdrawStake,
     isError: isErrorWithdrawStake,
     isIdle: isIdleWithdrawStake,
-    isLoading: isLoadingWithdrawStake,
     isSuccess: isSuccessWithdrawStake,
     status: statusWithdrawStake,
   } = useContractWrite({
-    calls: {
+    calls: [{
       contractAddress: diamondAddress,
       entrypoint: "withdraw_stake",
       calldata: [
@@ -31,7 +30,7 @@ const useWithdrawStake = () => {
         etherToWeiBN(rTokenToWithdraw, unstakeRToken).toString(),
         "0",
       ],
-    },
+    }],
   });
 
   return {
@@ -46,7 +45,6 @@ const useWithdrawStake = () => {
     writeAsyncWithdrawStake,
     isErrorWithdrawStake,
     isIdleWithdrawStake,
-    isLoadingWithdrawStake,
     isSuccessWithdrawStake,
     statusWithdrawStake,
   };

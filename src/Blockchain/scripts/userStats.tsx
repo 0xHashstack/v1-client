@@ -82,7 +82,7 @@ export async function getTotalBorrow(
     if (oraclePrice && exchangeRate) {
       let loanAmoungUnderlying = loan.loanAmountParsed * exchangeRate;
       totalBorrow += loanAmoungUnderlying * oraclePrice.price;
-      // console.log(
+      ////console.log(
       //   "total borrow loan ID ",
       //   loan?.loanId,
       //   " is ",
@@ -99,7 +99,7 @@ export async function getTotalBorrow(
           );
           totalCurrentAmount += l3UsdtValue;
         } catch (e) {
-          console.log("error getting l3 usdt value: ", e);
+         //console.log("error getting l3 usdt value: ", e);
         }
       }
     }
@@ -115,14 +115,14 @@ export async function getL3USDTValue(
   loanId: number,
   loanMarketAddress: string
 ) {
-  // console.log("calling getL3USDTValue with: ", loanId, loanMarketAddress);
+  ////console.log("calling getL3USDTValue with: ", loanId, loanMarketAddress);
 
   const provider = getProvider();
   const borrowToken = new Contract(borrowTokenAbi, loanMarketAddress, provider);
-  const res = await borrowToken.call("get_l3_usdt_value", [loanId], {
+  const res:any = await borrowToken.call("get_l3_usdt_value", [loanId], {
     blockIdentifier: "pending",
   });
-  // console.log("l3 usdt value: ", res, res?.value);
+  ////console.log("l3 usdt value: ", res, res?.value);
   let usdValue = parseAmount(uint256.uint256ToBN(res?.value).toString(), 6);
   return usdValue;
 }
@@ -132,7 +132,7 @@ export async function getNetworth(
   totalBorrow: number,
   totalCurrentAmount: number
 ) {
-  // console.log(
+  ////console.log(
   //   "getNetworth calling",
   //   totalSupply,
   //   totalBorrow,
@@ -176,7 +176,8 @@ export async function getNetAprDeposits(
 export async function getNetAprLoans(
   loans: ILoan[],
   oraclePrices: OraclePrice[],
-  marketInfos: IMarketInfo[]
+  marketInfos: IMarketInfo[],
+  avgs:any
 ) {
   
   let totalBorrow = 0,
@@ -195,13 +196,16 @@ export async function getNetAprLoans(
     let market_info = marketInfos.find(
       (marketInfo) => marketInfo.tokenAddress === loan.underlyingMarketAddress
     );
+    let avgs_info = avgs?.find(
+      (avgs:any) => avgs?.loanId === loan.loanId
+    );
     if (oraclePrice && market_info) {
       let loanAmountUnderlying =
         loan.loanAmountParsed * market_info.exchangeRateDTokenToUnderlying;
       let loanAmountUsd = loanAmountUnderlying * oraclePrice.price;
 
       totalBorrow += loanAmountUsd;
-      netBorrowInterest += loanAmountUsd * market_info.borrowRate;
+      netBorrowInterest += loanAmountUsd * avgs_info?.avg;
     }
   }
   let netApr =
@@ -265,14 +269,7 @@ export async function getNetApr(
     (netBorrowInterest != 0 && totalBorrow != 0
       ? netBorrowInterest / totalBorrow
       : 0);
-  console.log(
-    "net aprs ",
-    netSupplyInterest,
-    totalSupply,
-    netBorrowInterest,
-    totalBorrow,
-    netApr
-  );
+
 
   return netApr.toFixed(2);
 }

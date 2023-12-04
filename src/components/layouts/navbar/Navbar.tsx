@@ -38,8 +38,7 @@ import {
   setLanguage,
 } from "@/store/slices/userAccountSlice";
 import {
-  useAccount,
-  useConnectors,
+  useAccount, useConnect, useDisconnect,
 } from "@starknet-react/core";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
@@ -51,13 +50,16 @@ import mixpanel from "mixpanel-browser";
 import {
   resetState,
   selectCurrentNetwork,
+  selectInteractedAddress,
   selectNftBalance,
   selectUserType,
+  selectWhiteListed,
   selectYourBorrow,
   selectYourSupply,
+  setInteractedAddress,
 
 } from "@/store/slices/readDataSlice";
-import { AccountInterface, ProviderInterface } from "starknet";
+import { AccountInterface, ProviderInterface, number } from "starknet";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
@@ -70,21 +72,22 @@ const Navbar = ({ validRTokens }: any) => {
   const currentDropdown = useSelector(selectCurrentDropdown);
   const { account } = useAccount();
   const currentChainId = useSelector(selectCurrentNetwork);
-  // console.log(account, "Navbar");
+  ////console.log(account, "Navbar");
   // useEffect(() => {
   //   const storedAccount = localStorage.getItem("account");
   //   if (storedAccount) {
   //     setParsedAccount(JSON.parse(storedAccount));
   //   }
-  //   // console.log("Sahitya account",typeof account.address)
-  //   console.log("Sahitya", parsedAccount);
+  //   ////console.log("Sahitya account",typeof account.address)
+  //  //console.log("Sahitya", parsedAccount);
   // }, []);
   const [dashboardHover, setDashboardHover] = useState(false);
   const [campaignHover, setCampaignHover] = useState(false);
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
   const [stakeHover, setStakeHover] = useState(false);
-  const { available, disconnect, connect, connectors } = useConnectors();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName));
   };
@@ -149,20 +152,28 @@ const Navbar = ({ validRTokens }: any) => {
 
   const switchWallet = () => {
     // const walletConnected = localStorage.getItem("lastUsedConnector");
-    // console.log(connector);
-    if (connector?.options?.id == "braavos") {
+    ////console.log(connector);
+    if (connectors[0]?.id == "braavos") {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "argentX");
       localStorage.setItem("connected", "argentX");
-      connect(connectors[1]);
+      connectors.map((connector)=>{
+        if(connector.id=="argentX"){
+          connect({connector});
+        }
+      })
       router.push("/v1/market");
     } else {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "braavos");
       localStorage.setItem("connected", "braavos");
-      connect(connectors[0]);
+      connectors.map((connector:any)=>{
+        if(connector.id=="braavos"){
+          connect({connector});
+        }
+      })
       router.push("/v1/market");
     }
   };
@@ -175,6 +186,7 @@ const Navbar = ({ validRTokens }: any) => {
   const [referralLinked, setRefferalLinked] = useState(false)
   const userType=useSelector(selectUserType)
 const [Render, setRender] = useState(true);
+const userWhitelisted=useSelector(selectWhiteListed);
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -212,7 +224,7 @@ const [Render, setRender] = useState(true);
           );
         }
       }
-      // console.log("starknetAccount", account?.provider?.chainId);
+      ////console.log("starknetAccount", account?.provider?.chainId);
     }
 
     const isWhiteListed = async () => {
@@ -225,7 +237,7 @@ const [Render, setRender] = useState(true);
         setWhitelisted(response.data?.isWhitelisted);
 
       } catch (err) {
-        console.log(err, "err in whitelist")
+       //console.log(err, "err in whitelist")
       }
     }
     isWhiteListed()
@@ -234,13 +246,32 @@ const [Render, setRender] = useState(true);
     if ((account && !isCorrectNetwork())) {
         setRender(false);
     } else {
-      if( !whitelisted){
+      if(!userWhitelisted){
         setRender(false);
       }else{
         setRender(true);
       }
     }
-  }, [account,whitelisted,referralLinked]);
+  }, [account,whitelisted,userWhitelisted,referralLinked]);
+  const [allowedReferral, setAllowedReferral] = useState(false)
+  const interactedAddress=useSelector(selectInteractedAddress)
+  // useEffect(()=>{
+  //   const fetchUsers=async()=>{
+  //     if(!address){
+  //       return;
+  //     }else{
+  //       if(interactedAddress==true){
+  //         return;
+  //       }else{
+  //         const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
+  //         // const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
+  //         dispatch(setInteractedAddress(fetched))
+  //         setAllowedReferral(fetched)
+  //       }
+  //     }
+  //   }
+  //   fetchUsers();
+  // },[address])
   return (
     <HStack
       zIndex="100"
@@ -292,7 +323,7 @@ const [Render, setRender] = useState(true);
           cursor="pointer"
           marginBottom="0px"
           className="button"
-          color={pathname !== "/v1/campaign" && pathname !== "/v1/referral" ? "#00D395" : "#676D9A"}
+          color={pathname !== "/v1/airdrop_leaderboard" && pathname !== "/v1/referral" ? "#00D395" : "#676D9A"}
           // _hover={{
           //   color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
           // }}
@@ -310,7 +341,7 @@ const [Render, setRender] = useState(true);
             alignItems="center"
             gap={"8px"}
           >
-            {router.pathname == "/v1/campaign" || router.pathname=="/v1/referral" ? (
+            {router.pathname == "/v1/airdrop_leaderboard" || router.pathname=="/v1/referral" ? (
                 <Image
                   src={hoverDashboardIcon}
                   alt="Picture of the author"
@@ -331,7 +362,7 @@ const [Render, setRender] = useState(true);
             <Text fontSize="14px">Dashboard</Text>
           </Box>
         </Box>
-        {userType=="U1" ?
+        {/* {userType=="U1" ?
        <Box
           padding="16px 12px"
           fontSize="12px"
@@ -379,7 +410,7 @@ const [Render, setRender] = useState(true);
             </Box>
         </Box>
         :
-        (totalBorrow>0 || totalSupply>0) ?
+        (interactedAddress) ?
         <Box
         padding="16px 12px"
         fontSize="12px"
@@ -426,8 +457,49 @@ const [Render, setRender] = useState(true);
             <Text fontSize="14px">Referral</Text>
           </Box>
       </Box>:<></>
-        }
-   {     <Box
+        } */}
+        {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
+          padding="16px 12px"
+          fontSize="12px"
+          borderRadius="5px"
+          cursor="pointer"
+          marginBottom="0px"
+          // className="button"
+          // backgroundColor={"blue"}
+          color={`${pathname == "/v1/airdrop_leaderboard" ? "#00D395" : "#676D9A"}`}
+          // _hover={{ color: "#6e7681" }}
+          onMouseEnter={() => setCampaignHover(true)}
+          onMouseLeave={() => setCampaignHover(false)}
+          onClick={()=>{router.push('/v1/airdrop_leaderboard')}}
+        >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={"8px"}
+            >
+              {pathname == "/v1/airdrop_leaderboard" ? (
+                <Image
+                  src={hoverContributeEarnIcon}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <Image
+                  src={"/contributeEarnIcon.svg"}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              )}
+
+              <Text fontSize="14px" >Airdrop</Text>
+            </Box>
+        </Box>:""}
+        {     <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
@@ -483,47 +555,6 @@ const [Render, setRender] = useState(true);
             validRTokens={validRTokens}
           />
         </Box>}
-        {/* {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
-          padding="16px 12px"
-          fontSize="12px"
-          borderRadius="5px"
-          cursor="pointer"
-          marginBottom="0px"
-          // className="button"
-          // backgroundColor={"blue"}
-          color={`${pathname == "/v1/campaign" ? "#00D395" : "#676D9A"}`}
-          _hover={{ color: "#6e7681" }}
-          onMouseEnter={() => setCampaignHover(true)}
-          onMouseLeave={() => setCampaignHover(false)}
-          onClick={()=>{router.push('/v1/campaign')}}
-        >
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              gap={"8px"}
-            >
-              {pathname == "/v1/campaign" ? (
-                <Image
-                  src={hoverStake}
-                  alt="Picture of the author"
-                  width="16"
-                  height="16"
-                  style={{ cursor: "pointer" }}
-                />
-              ) : (
-                <Image
-                  src={"/stake.svg"}
-                  alt="Picture of the author"
-                  width="16"
-                  height="16"
-                  style={{ cursor: "pointer" }}
-                />
-              )}
-
-              <Text fontSize="14px" >Campaign</Text>
-            </Box>
-        </Box>:""} */}
 
         {/* <Box
           style={{
@@ -619,7 +650,7 @@ const [Render, setRender] = useState(true);
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />}
 
-          <Box
+          {/* <Box
             borderRadius="6px"
             cursor={Render ? "pointer" :"not-allowed"}
             margin="0"
@@ -646,7 +677,7 @@ const [Render, setRender] = useState(true);
             // onMouseEnter={() => setTransferDepositHover(true)}
             // onMouseLeave={() => setTransferDepositHover(false)}
           >
-            <Box
+            {/* <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -678,11 +709,11 @@ const [Render, setRender] = useState(true);
                   style={{ cursor: "pointer" }}
                 />
               )} */}
-              <Text fontSize="14px" lineHeight="14px" color="#676D9A">
+              {/* <Text fontSize="14px" lineHeight="14px" color="#676D9A">
                 {"Transfer Deposit"}
               </Text>
-            </Box>
-          </Box>
+            </Box>  */}
+          {/* </Box>  */}
 
           <Box
             fontSize="12px"
@@ -871,14 +902,22 @@ const [Render, setRender] = useState(true);
                       // alert("hey");
                       // const walletConnected =
                       //   localStorage.getItem("lastUsedConnector");
-                      if (connector?.options?.id == "braavos") {
+                      if (connectors[0]?.id == "braavos") {
                         disconnect();
-                        connect(connectors[1]);
+                        connectors.map((connector:any)=>{
+                          if(connector.id=="braavos"){
+                            connect(connector);
+                          }
+                        })
                       } else {
                         disconnect();
-                        connect(connectors[0]);
+                        connectors.map((connector)=>{
+                          if(connector.id=="argentX"){
+                            connect({connector});
+                          }
+                        })
                       }
-                      // console.log("navbar", account);
+                      ////console.log("navbar", account);
                       // localStorage.setItem("account", JSON.stringify(account));
                     }}
                   >

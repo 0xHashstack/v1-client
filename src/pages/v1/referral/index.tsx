@@ -54,7 +54,7 @@ import { HStack, VStack } from "@chakra-ui/react";
 import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { selectYourBorrow, selectNetAPR, selectExistingLink } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
@@ -286,8 +286,6 @@ const Referral = () => {
             est: 232,
         },
     ];
-    const { available, disconnect, connect, connectors, refresh } =
-        useConnectors();
 
     const dispatch = useDispatch();
     const { account, address } = useAccount();
@@ -298,14 +296,14 @@ const Referral = () => {
         const fetchData=async()=>{
             try{
                 const array:any=[];
-                const res=await axios.get('https://testnet.hstk.fi/api/get-community-stats');
+                const res=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/api/get-community-stats':`https://hstk.fi/api/temp-allocation/${address}`);
                 if(res?.data){
-                    array.push(res?.data?.overall_referred_liq);
-                    array.push(res?.data?.rewards_claimed);
+                    array.push(res?.data?.totalUserPool);
+                    array.push(0);
                 }
                 setDataCommunity(array)
             }catch(err){
-                console.log(err);
+               //console.log(err);
             }
 
         }
@@ -315,16 +313,17 @@ const Referral = () => {
                     return;
                 }
                 const array:any=[];
-                const res=await axios.get(`https://testnet.hstk.fi/api/get-user-stats/${address}`);
-                if(res?.data){
-                    array.push(res?.data?.referred_points);
-                    array.push(res?.data?.points_earned);
-                    array.push(res?.data?.rewards_claimed)
+                const referredResponse=await axios.get(`https://hstk.fi/api/get-referred-users/${address}`);
+                const res=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/api/get-user-stats/${address}`:`https://hstk.fi/api/temp-allocation/${address}`);
+                if(res?.data && referredResponse?.data){
+                    array.push(referredResponse?.data?.length);
+                    array.push(res?.data?.pointsAllocated);
+                    array.push(0)
                 }
                 setDataUser(array);
-                console.log(res,"user")
+               //console.log(res,"user")
             }catch(err){
-                console.log(err)
+               //console.log(err)
             }
         }
         fetchUserData();
@@ -334,7 +333,7 @@ const Referral = () => {
     useEffect(() => {
         // if (UserLoans) {
         //   if (UserLoans?.length <= (currentPagination - 1) * 6) {
-        //     console.log("pagination", Pagination, UserLoans);
+        //    //console.log("pagination", Pagination, UserLoans);
         //     if (currentPagination > 1) {
         //       setCurrentPagination(currentPagination - 1);
         //     }
@@ -353,7 +352,7 @@ const Referral = () => {
     //   const loan = async () => {
     //     try {
     //       const loans = await getUserLoans(address || "");
-    //       // console.log(loans,"Loans from your borrow index page")
+    //       ////console.log(loans,"Loans from your borrow index page")
 
     //       // loans.filter(
     //       //   (loan) =>
@@ -381,9 +380,9 @@ const Referral = () => {
     //           loan.loanAmountParsed > 0
     //       )));
     //     } catch (err) {
-    //       console.log("your-borrow : unable to fetch user loans");
+    //      //console.log("your-borrow : unable to fetch user loans");
     //     }
-    //     // console.log("loans", loans);
+    //     ////console.log("loans", loans);
     //   };
     //   if (account) {
     //     loan();
@@ -411,7 +410,7 @@ const Referral = () => {
                 await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/":"https://hstk.fi/") + refferal);
                 axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/shorten":'https://hstk.fi/shorten'), { pseudo_name:refferal,address: address })
                 .then((response) => {
-                  console.log(response, "response refer link"); // Log the response from the backend.
+                 //console.log(response, "response refer link"); // Log the response from the backend.
                 })
                 .catch((error) => {
                   console.error('Error:', error);
@@ -540,7 +539,7 @@ const Referral = () => {
           ]}
           statsData={dataUser}
           onclick={() => {
-            console.log("hi")
+           //console.log("hi")
           }}
           arrowHide={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?false:true}
         />

@@ -1,5 +1,4 @@
 import {
-  AddressFromStarkNameArgs,
   useAccount,
   useContractRead,
   useContractWrite,
@@ -43,7 +42,7 @@ const useLoanRequest = () => {
   //   hash: transLoanRequestHash,
   //   watch: true,
   // });
-  //   console.log(
+  //  //console.log(
   //     "useLoanRequest - ",
   //     market,
   //     amount,
@@ -63,11 +62,10 @@ const useLoanRequest = () => {
     writeAsync: writeAsyncLoanRequest,
     isError: isErrorLoanRequest,
     isIdle: isIdleLoanRequest,
-    isLoading: isLoadingLoanRequest,
     isSuccess: isSuccessLoanRequest,
     status: statusLoanRequest,
   } = useContractWrite({
-    calls: process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0  &&user=="U1" && ( amount>50 ) && nftCurrentAmount<nftMaxAmount ? [
+    calls:  balance==0  &&user=="U1" && ( amount>100 ) && nftCurrentAmount<nftMaxAmount ? [
       {
         contractAddress: tokenAddressMap[collateralMarket] || "",
         entrypoint: "approve",
@@ -135,11 +133,10 @@ const useLoanRequest = () => {
     writeAsync: writeAsyncLoanRequestrToken,
     isError: isErrorLoanRequestrToken,
     isIdle: isIdleLoanRequestrToken,
-    isLoading: isLoadingLoanRequestrToken,
     isSuccess: isSuccessLoanRequestrToken,
     status: statusLoanRequestrToken,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1" && (amount>50) && nftCurrentAmount<nftMaxAmount? [
+    calls:balance==0 && user=="U1" && (amount>100) && nftCurrentAmount<nftMaxAmount? [
       {
         contractAddress: diamondAddress,
         entrypoint: "loan_request_with_rToken",
@@ -206,7 +203,6 @@ const useLoanRequest = () => {
     writeAsyncLoanRequestrToken,
     isErrorLoanRequestrToken,
     isIdleLoanRequestrToken,
-    isLoadingLoanRequestrToken,
     statusLoanRequestrToken,
 
     dataLoanRequest,
@@ -216,7 +212,6 @@ const useLoanRequest = () => {
     writeAsyncLoanRequest,
     isErrorLoanRequest,
     isIdleLoanRequest,
-    isLoadingLoanRequest,
     statusLoanRequest,
   };
 };

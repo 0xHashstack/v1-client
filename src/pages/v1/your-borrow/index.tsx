@@ -12,7 +12,7 @@ import { HStack, VStack, Text, Box } from "@chakra-ui/react";
 import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { selectYourBorrow, selectNetAPR, selectnetAprLoans } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
@@ -33,8 +33,6 @@ const YourBorrow = () => {
     "Health Factor",
     "",
   ];
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
 
   const dispatch = useDispatch();
   const { account, address } = useAccount();
@@ -54,7 +52,7 @@ const YourBorrow = () => {
   //   const loan = async () => {
   //     try {
   //       const loans = await getUserLoans(address || "");
-  //       // console.log(loans,"Loans from your borrow index page")
+  //       ////console.log(loans,"Loans from your borrow index page")
 
   //       // loans.filter(
   //       //   (loan) =>
@@ -82,9 +80,9 @@ const YourBorrow = () => {
   //           loan.loanAmountParsed > 0
   //       )));
   //     } catch (err) {
-  //       console.log("your-borrow : unable to fetch user loans");
+  //      //console.log("your-borrow : unable to fetch user loans");
   //     }
-  //     // console.log("loans", loans);
+  //     ////console.log("loans", loans);
   //   };
   //   if (account) {
   //     loan();

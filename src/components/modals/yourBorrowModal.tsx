@@ -155,11 +155,11 @@ const YourBorrowModal = ({
   ...restProps
 }: any) => {
   // useEffect(() => {}, []);
-  // console.log(currentBorrowId1);
-  // console.log(currentID)
-  // console.log(borrowIds);
-  // console.log("took map", borrowIDCoinMap, currentID, currentMarket);
-  // console.log();
+  ////console.log(currentBorrowId1);
+  ////console.log(currentID)
+  ////console.log(borrowIds);
+  ////console.log("took map", borrowIDCoinMap, currentID, currentMarket);
+  ////console.log();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const dispatch = useDispatch();
@@ -170,7 +170,7 @@ const YourBorrowModal = ({
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [inputAmount1, setinputAmount1] = useState(0);
   // const [currentBorrowId, setCurrentBorrowId] = useState(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
-  // console.log(currentBorrowId);
+  ////console.log(currentBorrowId);
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [collateralTransactionStarted, setCollateralTransactionStarted] =
     useState(false);
@@ -191,7 +191,7 @@ const YourBorrowModal = ({
     setCurrentPool("Select a pool");
     setCurrentDapp("Select a dapp");
     setCurrentPoolCoin("Select a pool");
-    // console.log(borrowAmount)
+    ////console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
   // const avgs = useSelector(selectAprAndHealthFactor);
@@ -227,7 +227,7 @@ const YourBorrowModal = ({
   //     }
   //   };
   //   if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
-  //   console.log("running");
+  //  //console.log("running");
   // }, [oraclePrices, reduxProtocolStats, userLoans]);
   const {
     loanId,
@@ -249,8 +249,6 @@ const YourBorrowModal = ({
     writeAsyncAddCollateral,
     isErrorAddCollateral,
     isIdleAddCollateral,
-    isLoadingAddCollateral,
-    isSuccessAddCollateral,
     statusAddCollateral,
 
     dataAddCollateralRToken,
@@ -260,8 +258,6 @@ const YourBorrowModal = ({
     writeAsyncAddCollateralRToken,
     isErrorAddCollateralRToken,
     isIdleAddCollateralRToken,
-    isLoadingAddCollateralRToken,
-    isSuccessAddCollateralRToken,
     statusAddCollateralRToken,
   } = useAddCollateral();
 
@@ -274,14 +270,9 @@ const YourBorrowModal = ({
     transRepayHash,
     setTransRepayHash,
     // repayTransactionReceipt,
-    isLoadingRepay,
-    errorRepay,
 
     //SelfLiquidate - Repay with 0 amount
     writeAsyncSelfLiquidate,
-    isLoadingSelfLiquidate,
-    errorSelfLiquidate,
-    // selfLiquidateTransactionReceipt,
     setIsSelfLiquidateHash,
   } = useRepay(loan);
 
@@ -297,7 +288,6 @@ const YourBorrowModal = ({
     writeJediSwap_swap,
     writeAsyncJediSwap_swap,
     isIdleJediSwap_swap,
-    isLoadingJediSwap_swap,
     statusJediSwap_swap,
 
     datamySwap_swap,
@@ -305,7 +295,6 @@ const YourBorrowModal = ({
     writemySwap_swap,
     writeAsyncmySwap_swap,
     isIdlemySwap_swap,
-    isLoadingmySwap_swap,
     statusmySwap_swap,
   } = useSwap();
 
@@ -323,7 +312,6 @@ const YourBorrowModal = ({
     writeJediSwap_addLiquidity,
     writeAsyncJediSwap_addLiquidity,
     isIdleJediSwap_addLiquidity,
-    isLoadingJediSwap_addLiquidity,
     statusJediSwap_addLiquidity,
 
     datamySwap_addLiquidity,
@@ -331,7 +319,6 @@ const YourBorrowModal = ({
     writemySwap_addLiquidity,
     writeAsyncmySwap_addLiquidity,
     isIdlemySwap_addLiquidity,
-    isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
   } = useLiquidity();
   const {
@@ -343,7 +330,6 @@ const YourBorrowModal = ({
     writeRevertInteractWithL3,
     errorRevertInteractWithL3,
     isIdleRevertInteractWithL3,
-    isLoadingRevertInteractWithL3,
   } = useRevertInteractWithL3();
   const poolsPairs = useSelector(selectJediSwapPoolsSupported);
   const mySwapPoolPairs = useSelector(selectMySwapPoolsSupported);
@@ -396,7 +382,7 @@ const YourBorrowModal = ({
         }
       }
     } catch (err: any) {
-      console.log(err, "err repay");
+     //console.log(err, "err repay");
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -469,7 +455,7 @@ const YourBorrowModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-      // console.log(revert);
+      ////console.log(revert);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -477,7 +463,7 @@ const YourBorrowModal = ({
         dispatch(setTransactionStatus("success"));
       }
     } catch (err) {
-      console.log(err);
+     //console.log(err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -515,14 +501,12 @@ const YourBorrowModal = ({
   const [walletBalance1, setwalletBalance1] = useState(
     walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
       ?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
-            uint256.uint256ToBN(
+      ? parseAmount(
+            String(uint256.uint256ToBN(
               walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
                 ?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[currentBorrowMarketCoin1.slice(1) as NativeToken]
-          )
         )
       : 0
   );
@@ -537,15 +521,15 @@ const YourBorrowModal = ({
       walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
         ?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
+            String(uint256.uint256ToBN(
               walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
                 ?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[currentBorrowMarketCoin1.slice(1) as NativeToken]
           )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [
     walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
       ?.statusBalanceOf,
@@ -555,13 +539,12 @@ const YourBorrowModal = ({
 
   const [walletBalance2, setwalletBalance2] = useState(
     walletBalances[collateralAsset]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
+      ? parseAmount(
+        String(
             uint256.uint256ToBN(
               walletBalances[collateralAsset]?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[collateralAsset]
-          )
         )
       : 0
   );
@@ -569,15 +552,15 @@ const YourBorrowModal = ({
     setwalletBalance2(
       walletBalances[collateralAsset]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
+            String(uint256.uint256ToBN(
               walletBalances[collateralAsset]?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[collateralAsset]
           )
         : 0
     );
 
-    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [
     walletBalances[collateralAsset]?.statusBalanceOf,
     collateralAsset,
@@ -609,11 +592,11 @@ const YourBorrowModal = ({
     );
     setLoan(result);
   }, [currentBorrowId1]);
-  // console.log(userLoans);
+  ////console.log(userLoans);
 
   useEffect(() => {
     setLoanId(currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim());
-    // console.log(currentBorrowMarketCoin2);
+    ////console.log(currentBorrowMarketCoin2);
     const result = userLoans.find(
       (item: any) =>
         item?.loanId ==
@@ -626,7 +609,7 @@ const YourBorrowModal = ({
     );
     setRToken(result?.collateralMarket);
 
-    // console.log(rToken);
+    ////console.log(rToken);
   }, [currentBorrowId2, currentBorrowMarketCoin2]);
 
   const getCoin = (CoinName: string) => {
@@ -754,8 +737,8 @@ const YourBorrowModal = ({
         break;
     }
   };
-  // console.log(currentDapp)
-  // console.log(currentPool.split('/')[0])
+  ////console.log(currentDapp)
+  ////console.log(currentPool.split('/')[0])
   const [estrTokensMinted, setEstrTokensMinted] = useState<any>();
   const spaceIndex = collateralBalance.indexOf(" ");
 
@@ -769,12 +752,12 @@ const YourBorrowModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully spend the loan `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -786,15 +769,15 @@ const YourBorrowModal = ({
   //     toast.dismiss(toastId);
   //     setCurrentTransactionStatus("failed");
   //     dispatch(setTransactionStatus("failed"));
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully supplied spend the loan `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -849,7 +832,7 @@ const YourBorrowModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-      // console.log(zeroRepay);
+      ////console.log(zeroRepay);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -857,7 +840,7 @@ const YourBorrowModal = ({
         dispatch(setTransactionStatus("success"));
       }
     } catch (err: any) {
-      console.log("zero repay failed - ", err);
+     //console.log("zero repay failed - ", err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -924,7 +907,7 @@ const YourBorrowModal = ({
           });
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log(trade);
+       //console.log(trade);
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -971,7 +954,7 @@ const YourBorrowModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log(tradeMySwap);
+       //console.log(tradeMySwap);
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -980,7 +963,7 @@ const YourBorrowModal = ({
         }
       }
     } catch (err: any) {
-      console.log(err);
+     //console.log(err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -1047,7 +1030,7 @@ const YourBorrowModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log(liquidity);
+       //console.log(liquidity);
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -1056,7 +1039,7 @@ const YourBorrowModal = ({
         }
       } else if (currentDapp == "mySwap") {
         const mySwapLiquidity = await writeAsyncmySwap_addLiquidity();
-        console.log(mySwapLiquidity);
+       //console.log(mySwapLiquidity);
         setDepositTransHash(mySwapLiquidity?.transaction_hash);
         if (mySwapLiquidity?.transaction_hash) {
           const toastid = toast.info(`Transaction pending`, {
@@ -1102,7 +1085,7 @@ const YourBorrowModal = ({
         }
       }
     } catch (err: any) {
-      console.log(err);
+     //console.log(err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -1228,7 +1211,7 @@ const YourBorrowModal = ({
         }
       }
     } catch (err: any) {
-      console.log("add collateral error",err);
+     //console.log("add collateral error",err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -1257,7 +1240,7 @@ const YourBorrowModal = ({
   // useEffect(() => {
   //   setToMarketA(currentPool.split("/")[0]);
   //   setToMarketB(currentPool.split("/")[1]);
-  //   console.log("marketsAB", toMarketA, toMarketB);
+  //  //console.log("marketsAB", toMarketA, toMarketB);
   // }, [currentPool]);
 
   const getContainer = (action: string) => {
@@ -2444,7 +2427,7 @@ const YourBorrowModal = ({
 
   const dapps = [
     { name: "Jediswap", status: "enable" },
-    { name: "mySwap", status: "enable" },
+    // { name: "mySwap", status: "enable" },
   ];
 
   const pools = [
@@ -2473,7 +2456,7 @@ const YourBorrowModal = ({
   // ];
 
   // useEffect(() => {
-  //   console.log("got", currentID, currentMarket);
+  //  //console.log("got", currentID, currentMarket);
   // }, [currentBorrowId1]);
 
   const [sliderValue, setSliderValue] = useState(0);
@@ -2503,7 +2486,7 @@ const YourBorrowModal = ({
       // dispatch((newValue));
     }
   };
-  // console.log(typeof walletBalance2, "balance borrow");
+  ////console.log(typeof walletBalance2, "balance borrow");
 
   const handleCollateralChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
@@ -2544,7 +2527,7 @@ const YourBorrowModal = ({
   };
 
   const handleBorrowMarketCoinChange1 = (id: string) => {
-    // console.log("got id", id);
+    ////console.log("got id", id);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].id === id) {
         setCurrentBorrowMarketCoin1(borrowIDCoinMap[i].name);
@@ -2556,7 +2539,7 @@ const YourBorrowModal = ({
   };
 
   const handleBorrowMarketCoinChange2 = (id: string) => {
-    // console.log("got id", id);
+    ////console.log("got id", id);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].id === id) {
         setCurrentBorrowMarketCoin2(borrowIDCoinMap[i].name);
@@ -2568,10 +2551,10 @@ const YourBorrowModal = ({
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
-  // console.log(activeModal)
+  ////console.log(activeModal)
 
   // const handleBorrowMarketIDChange1 = (coin: string) => {
-  //   // console.log("got coin", coin);
+  //   ////console.log("got coin", coin);
   //   for (let i = 0; i < borrowIDCoinMap.length; i++) {
   //     if (borrowIDCoinMap[i].name === coin) {
   //       setCurrentBorrowId1(`ID - ${borrowIDCoinMap[i].id}`);
@@ -2581,7 +2564,7 @@ const YourBorrowModal = ({
   // };
 
   // const handleBorrowMarketIDChange2 = (coin: string) => {
-  //   // console.log("got coin", coin);
+  //   ////console.log("got coin", coin);
   //   for (let i = 0; i < borrowIDCoinMap.length; i++) {
   //     if (borrowIDCoinMap[i].name === coin) {
   //       setCurrentBorrowId2(`ID - ${borrowIDCoinMap[i].id}`);
@@ -2623,7 +2606,7 @@ const YourBorrowModal = ({
       setcurrentTokenSelected("rToken");
       dispatch(setTransactionStatus(""));
     } catch (err) {
-      console.log("yourBorrowModal reset states - ", err);
+     //console.log("yourBorrowModal reset states - ", err);
     }
     setCurrentTransactionStatus("");
     setDepositTransHash("");
@@ -2636,7 +2619,7 @@ const YourBorrowModal = ({
 
   useEffect(() => {
     setToMarket(currentPoolCoin);
-    // console.log(toMarket);
+    ////console.log(toMarket);
   }, [currentPoolCoin]);
 
   useEffect(() => {
@@ -2645,7 +2628,7 @@ const YourBorrowModal = ({
   }, [currentTokenSelected]);
 
   // useEffect(() => {
-  //   console.log("spendType", spendType);
+  //  //console.log("spendType", spendType);
   // }, [spendType]);
 
   const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
@@ -2656,7 +2639,7 @@ const YourBorrowModal = ({
   >();
 
   useEffect(() => {
-    // console.log(
+    ////console.log(
     //   "toMarketSplitConsole",
     //   currentLoanMarket,
     //   currentLoanAmount,
@@ -2775,7 +2758,7 @@ const YourBorrowModal = ({
         collateralBalance.substring(spaceIndex + 1),
         inputCollateralAmount
       );
-      // console.log(data, "data in your borrow");
+      ////console.log(data, "data in your borrow");
       setEstrTokensMinted(data);
     };
     fetchEstrTokens();
@@ -2807,7 +2790,7 @@ const YourBorrowModal = ({
           const uqID = getUniqueId();
           let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
-          // console.log(uqID, "data here", data);
+          ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
             data = data.filter((val: any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -3176,16 +3159,13 @@ const YourBorrowModal = ({
                                         pr="2"
                                         onClick={() => {
                                           setCurrentBorrowId1("ID - " + coin);
-                                          console.log(
-                                            coin,
-                                            "coin in borrow id"
-                                          );
+                                        
                                           handleBorrowMarketCoinChange1(coin);
                                           setLoanId(coin);
                                           setSwapLoanId(coin);
-                                          // console.log(swapLoanId,"swap loan id")
+                                          ////console.log(swapLoanId,"swap loan id")
                                           setLiquidityLoanId(coin);
-                                          console.log(liquidityLoanId);
+                                         //console.log(liquidityLoanId);
                                         }}
                                       >
                                         {"ID - " + coin ===
@@ -4095,7 +4075,7 @@ const YourBorrowModal = ({
                                       onClick={() => {
                                         setCurrentPoolCoin(coin);
                                         setToMarket(coin);
-                                        // console.log(toMarket);
+                                        ////console.log(toMarket);
                                       }}
                                     >
                                       {coin === currentPoolCoin && (

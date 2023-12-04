@@ -39,18 +39,6 @@ import {
   useBalance,
   useWaitForTransaction,
 } from "@starknet-react/core";
-import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
-import SliderPointer from "@/assets/icons/sliderPointer";
-import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
-import { useToast } from "@chakra-ui/react";
-import { BNtoNum } from "@/Blockchain/utils/utils";
-import { uint256 } from "starknet";
-import { getUserLoans } from "@/Blockchain/scripts/Loans";
-import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
-import SuccessToast from "../uiElements/toasts/SuccessToast";
-import SuccessTick from "@/assets/icons/successTick";
-import CancelIcon from "@/assets/icons/cancelIcon";
-import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
 import Link from "next/link";
 import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 import { useDispatch, useSelector } from "react-redux";
@@ -96,11 +84,11 @@ const GetTokensModal = ({
   // useEffect(() => {
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
   // }, [])
-  // console.log(inputAmount);
+  ////console.log(inputAmount);
 
   //This Function handles the modalDropDowns
 
-  // console.log(activeModal)
+  ////console.log(activeModal)
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState<any>("");
@@ -121,14 +109,13 @@ const GetTokensModal = ({
     writeAsyncGetTokens,
     isErrorGetTokens,
     isIdleGetTokens,
-    isLoadingGetTokens,
     isSuccessGetTokens,
     statusGetTokens,
   } = useGetTokens(currentSelectedCoin);
 
   useEffect(() => {
-    setCurrentSelectedCoin(token);
-  }, [token, currentSelectedCoin]);
+    setToken(currentSelectedCoin);
+  }, [ currentSelectedCoin]);
   const dispatch = useDispatch();
   const { address } = useAccount();
   const [toastId, setToastId] = useState<any>();
@@ -140,7 +127,8 @@ const GetTokensModal = ({
 
   const handleGetToken = async (coin: any) => {
     try {
-      console.log(token);
+     //console.log(token);
+     setToken(coin)
       const getTokens = await writeAsyncGetTokens();
       mixpanel.track("Get Tokens", {
         "Token Selected": coin,
@@ -181,10 +169,10 @@ const GetTokensModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-      console.log(getTokens);
+     //console.log(getTokens);
       // dispatch(setTransactionStatus("success"));
     } catch (err: any) {
-      console.log(err);
+     //console.log(err);
       // dispatch(setTransactionStatus("failed"));
       mixpanel.track("Get Tokens Status", {
         Status: "Failure",
@@ -268,9 +256,9 @@ const GetTokensModal = ({
                   _hover={{ bgColor: "white", color: "black" }}
                   _active={{ border: "3px solid grey" }}
                   onClick={() => {
-                    setCurrentSelectedCoin("wBTC");
+                    setCurrentSelectedCoin("BTC");
                     setToken("BTC");
-                    handleGetToken("wBTC");
+                    handleGetToken("BTC");
                   }}
                 >
                   wBTC
@@ -286,9 +274,9 @@ const GetTokensModal = ({
                   _hover={{ bgColor: "white", color: "black" }}
                   _active={{ border: "3px solid grey" }}
                   onClick={() => {
-                    setCurrentSelectedCoin("wETH");
+                    setCurrentSelectedCoin("ETH");
                     setToken("ETH");
-                    handleGetToken("wETH");
+                    handleGetToken("ETH");
                   }}
                 >
                   wETH

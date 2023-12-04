@@ -59,7 +59,9 @@ const initialState = {
   signature:null,
   nftMaxAmount:null,
   nftCurrentAmount:null,
-  whitelisted:null,
+  whitelisted:false,
+  interactedAddress:false,
+  transactionsData:[],
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -285,8 +287,14 @@ export const readDataSlice = createSlice({
     setNftCurrentAmount(state,action){
       state.nftCurrentAmount=action.payload;
     },
-    setWhiteListed(state,action){
+    setUserWhiteListed(state,action){
       state.whitelisted=action.payload;
+    },
+    setInteractedAddress(state,action){
+      state.interactedAddress=action.payload;
+    },
+    setTransactionsData(state,action){
+      state.transactionsData=action.payload;
     },
 
     extraReducers: {
@@ -359,7 +367,9 @@ export const {
   setFees,
   setNftMaxAmount,
   setNftCurrentAmount,
-  setWhiteListed
+  setUserWhiteListed,
+  setInteractedAddress,
+  setTransactionsData,
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -425,4 +435,6 @@ export const selectSignature=(state)=>state.read_data.signature;
 export const selectNftMaxAmount=(state)=>state.read_data.nftMaxAmount;
 export const selectNftCurrentAmount=(state)=>state.read_data.nftCurrentAmount;
 export const selectWhiteListed=(state)=>state.read_data.whitelisted;
+export const selectInteractedAddress=(state)=>state.read_data.interactedAddress;
+export const selectTransactionsData=(state)=>state.read_data.transactionsData;
 export default readDataSlice.reducer;

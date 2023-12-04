@@ -15,6 +15,7 @@ import {
   Token,
 } from "../interfaces/interfaces";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
+import BigNumber from "bignumber.js";
 
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
   let marketInfo: IMarketInfo = {
@@ -47,9 +48,8 @@ function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
         ?.name as Token
     ),
     availableReserves: weiToEtherNumber(
-      uint256
-        .uint256ToBN(marketData?.total_supply)
-        .sub(uint256.uint256ToBN(marketData?.total_borrow))
+      new BigNumber(Number(uint256.uint256ToBN(marketData?.total_supply)))
+.minus(new BigNumber(Number(uint256.uint256ToBN(marketData?.total_borrow))))
         .toString(),
       getTokenFromAddress(number.toHex(marketData?.token_address))
         ?.name as Token
@@ -103,7 +103,7 @@ export async function getProtocolStats() {
     }
     return new Promise((resolve, reject) => {
       Promise.allSettled([...promises]).then((val) => {
-        console.log("protocol stats result - ", val);
+       //console.log("protocol stats result - ", val);
         const results = val.map((stat, idx) => {
           if (
             stat?.status == "fulfilled" &&
@@ -116,13 +116,13 @@ export async function getProtocolStats() {
             );
           else return marketStats;
         });
-        console.log("protocol stats result: ", results);
+       //console.log("protocol stats result: ", results);
         resolve(results);
       });
     });
-    // console.log(marketStats,"market Stats in protocol stats")
+    ////console.log(marketStats,"market Stats in protocol stats")
   } catch (e) {
-    console.log("get_protocol_stat failed for token: ", e);
+   //console.log("get_protocol_stat failed for token: ", e);
     return marketStats;
   }
 }
@@ -162,13 +162,13 @@ export async function getProtocolReserves() {
       metricsContractAddress,
       provider
     );
-    const res = await metricsContract.call("get_protocol_reserves", [], {
+    const res:any = await metricsContract.call("get_protocol_reserves", [], {
       blockIdentifier: "pending",
     });
     const protocolReserves = parseProtocolReserves(res?.protocol_reserves);
     return protocolReserves;
   } catch (e) {
-    console.log("get_protocol_reserves failed: ", e);
+   //console.log("get_protocol_reserves failed: ", e);
     return parseProtocolReserves({});
   }
 }

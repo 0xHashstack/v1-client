@@ -62,7 +62,7 @@ const TotalValueLockedMetrics = () => {
   const allUsdtData = useSelector(selectAllUSDTData);
   const allUsdcData = useSelector(selectAllUSDCData);
   const allDaiData = useSelector(selectAllDAIData);
-  // console.log(btcData,"data tvl")
+  ////console.log(btcData,"data tvl")
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -80,11 +80,11 @@ const TotalValueLockedMetrics = () => {
   const tvlAmountsWeekly: any = [];
   const tvlAmountsMonthly:any=[];
   const alltvlAmount:any=[];
-  // console.log(btcData?.tvlAmounts,"data btc")
-  // console.log(ethData?.tvlAmounts,"data eth")
-  // console.log(usdtData?.tvlAmounts,"data usdt")
-  // console.log(usdcData?.tvlAmounts,"data usdc")
-  // console.log(daiData?.tvlAmounts,"data dai")
+  ////console.log(btcData?.tvlAmounts,"data btc")
+  ////console.log(ethData?.tvlAmounts,"data eth")
+  ////console.log(usdtData?.tvlAmounts,"data usdt")
+  ////console.log(usdcData?.tvlAmounts,"data usdc")
+  ////console.log(daiData?.tvlAmounts,"data dai")
   for (let i = 0; i < btcData?.tvlAmounts?.length; i++) {
     var data =
       btcData?.tvlAmounts[i] +
@@ -121,8 +121,8 @@ const TotalValueLockedMetrics = () => {
       allDaiData?.tvlAmounts[i];
     alltvlAmount.push(data);
   }
-  // console.log(tvlamounts,"amounts");
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  ////console.log(tvlamounts,"amounts");
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option

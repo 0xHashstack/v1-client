@@ -28,7 +28,7 @@ const numberFormatter = (input: any) => {
   }
 
   // Format the number with the appropriate magnitude and suffix
-  // console.log(
+  ////console.log(
   //   "decimals ",
   //   5 - (Math.log10(96.95) + 1),
   //   Math.floor(Math.max(5 - Math.max(1, Math.log10(96.95) + 1), 0))
@@ -45,7 +45,7 @@ const numberFormatter = (input: any) => {
   // .replace(/\.?0+$/, ""); // Remove trailing zeros and decimal point if unnecessary
   return formattedNumber + suffixes[magnitude];
 };
-// console.log("hey");
-// console.log(formatNumber(2028222220.2222));
-// console.log(formatNumber(2022));
+////console.log("hey");
+////console.log(formatNumber(2028222220.2222));
+////console.log(formatNumber(2022));
 export default numberFormatter;

@@ -533,7 +533,7 @@ describe("Get total supply", () => {
       totalBorrow,
       totalCurrentAmount
     );
-    // console.log("getting the l3 value", net_worth);
+    ////console.log("getting the l3 value", net_worth);
     expect(net_worth).toEqual(expectedNetWorth);
   });
   it("displays the effective apr of loan", async () => {

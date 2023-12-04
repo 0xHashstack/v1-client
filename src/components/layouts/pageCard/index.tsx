@@ -3,7 +3,7 @@ import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHea
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount, useConnect, useDisconnect, useNetwork, useWaitForTransaction} from "@starknet-react/core";
 import {
   selectToastTransactionStarted,
   selectActiveTransactions,
@@ -18,6 +18,7 @@ import {
   setMessageHash,
   setSignature,
   selectUserType,
+  setUserWhiteListed,
 } from "@/store/slices/readDataSlice";
 import {
   selectUserLoans,
@@ -35,6 +36,7 @@ import { AccountInterface } from "starknet";
 import FeedbackModal from "@/components/modals/feedbackModal";
 import InfoIcon from "@/assets/icons/infoIcon";
 import axios from "axios";
+import Link from "next/link";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -51,7 +53,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const { account, address, status, isConnected } = useAccount();
   const extendedAccount = account as ExtendedAccountInterface;
   const [loading, setLoading] = useState(true);
-  const { available, disconnect, connect, connectors } = useConnectors();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   if (className) classes.push(className);
   const router = useRouter();
   const {pathname}=router;
@@ -78,7 +81,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   };
   // }, [handleRouteChange, router.events]);
   // connect(connectors[0])
-  // console.log(connectors)
+  ////console.log(connectors)
 
   // useEffect(() => {
   //   // if (status == "connected") {
@@ -99,21 +102,41 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if (!account) {
       if (walletConnected == "braavos") {
         localStorage.setItem("connected", "braavos");
-        disconnect();
-        connect(connectors[0]);
+        // disconnect();
+        connectors.map((connector:any)=>{
+          if(connector.id=="braavos"){
+            console.log('working bravoos no account')
+            connect({connector});
+          }
+        })
       } else if (walletConnected == "argentX") {
         localStorage.setItem("connected", "argentX");
-        disconnect();
-        connect(connectors[1]);
+        // disconnect();
+        connectors.map((connector)=>{
+          if(connector.id=="argentX"){
+            console.log('working')
+            connect({connector});
+          }
+        })
       } else {
         if (connected == "braavos") {
           localStorage.setItem("lastUsedConnector", "braavos");
-          disconnect();
-          connect(connectors[0]);
+          // disconnect();
+          connectors.map((connector:any)=>{
+            if(connector.id=="braavos"){
+              console.log('working bravoos')
+              connect({connector});
+            }
+          })
         } else if (connected == "argentX") {
           localStorage.setItem("lastUsedConnector", "argentX");
-          disconnect();
-          connect(connectors[1]);
+          // disconnect();
+          connectors.map((connector)=>{
+            if(connector.id=="argentX"){
+              console.log('working')
+              connect({connector});
+            }
+          })
         } else {
           router.push("/v1");
         }
@@ -132,7 +155,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //         return;
   //       }
   //       const loans = await getUserLoans(address);
-  //       // console.log(loans,"Loans from your borrow index page")
+  //       ////console.log(loans,"Loans from your borrow index page")
 
   //       // loans.filter(
   //       //   (loan) =>
@@ -156,9 +179,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //         )
   //       );
   //     } catch (err) {
-  //       console.log("your-borrow : unable to fetch user loans");
+  //      //console.log("your-borrow : unable to fetch user loans");
   //     }
-  //     // console.log("loans", loans);
+  //     ////console.log("loans", loans);
   //   };
   //   if (address && address != "") {
   //     // callWithRetries(loan, [], 3);
@@ -187,6 +210,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const [referralLinked, setRefferalLinked] = useState(false)
   const userType = useSelector(selectUserType)
   const dispatch = useDispatch();
+  const {chain}=useNetwork();
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -197,13 +221,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_TESTNET_CHAINID
+            chain.network!="mainnet"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID
+            chain.network!="goerli"
           );
         }
       } else if (walletConnected == "argentX") {
@@ -213,18 +237,17 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
 
-            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID
+            chain.network!="mainnet"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-
-            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_MAINNET_CHAINID
+            chain?.network!="goerli"
           );
         }
       }
-      // console.log("starknetAccount", account?.provider?.chainId);
+      ////console.log("starknetAccount", account?.provider?.chainId);
     }
     const isWhiteListed = async () => {
       try {
@@ -235,10 +258,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         const response = await axios.get(url);
         if (response.data) {
           setWhitelisted(response.data?.isWhitelisted);
+          dispatch(setUserWhiteListed(response.data?.isWhitelisted))
           if(response.data?.isWhitelisted==false){
             await axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/add-address':'https://hstk.fi/add-address'), { address: address })
             .then((response) => {
-              console.log(response, "added to db");
+             //console.log(response, "added to db");
               // Log the response from the backend.
             })
             .catch((error) => {
@@ -248,7 +272,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           if (userType == "U1") {
             await axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/nft-sign':'https://hstk.fi/nft-sign'), { address: address })
               .then((response) => {
-                console.log(response, "hash");
+               //console.log(response, "hash");
                 if (response) {
                   dispatch(setMessageHash(response?.data?.msg_hash))
                   dispatch(setSignature(response?.data?.signature))
@@ -262,7 +286,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         }
         setLoading(false)
       } catch (err) {
-        console.log(err, "err in whitelist")
+       //console.log(err, "err in whitelist")
       }
     }
     isWhiteListed()
@@ -271,7 +295,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       try {
         if (ref) {
           const response = await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/get_token/${ref}`:`https://hstk.fi/get_token/${ref}`);
-          console.log(response?.data, "refer")
+         //console.log(response?.data, "refer")
           if (response) {
             axios.post(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/link-referral':'https://hstk.fi/link-referral', { address: address }, {
               headers: {
@@ -280,19 +304,19 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             })
               .then((response) => {
                 setRefferalLinked(response?.data?.success)
-                console.log(response, "linked"); // Log the response from the backend.
+               //console.log(response, "linked"); // Log the response from the backend.
                 isWhiteListed();
               })
               .catch((error) => {
                 console.error('Error:', error);
               });
           }
-          console.log("hi")
-          console.log(response.data, "token")
+         //console.log("hi")
+         //console.log(response.data, "token")
           setUniqueToken(response.data);
         }
       } catch (err) {
-        console.log(err, "err in token")
+       //console.log(err, "err in token")
       }
 
     }
@@ -300,7 +324,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if ((account && !isCorrectNetwork())) {
       setRender(false);
     } else {
-      if ( !whitelisted) {
+      if (!whitelisted && process.env.NEXT_PUBLIC_NODE_ENV == "mainnet") {
         setRender(false);
       } else {
         setRender(true);
@@ -324,7 +348,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
       const reserves = userDepositsRedux;
       // setDataDeposit(reserves);
-      // console.log("got reservers page card", reserves);
+      ////console.log("got reservers page card", reserves);
       const rTokens: any = [];
       if (reserves) {
         reserves.map((reserve: any) => {
@@ -336,13 +360,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           }
         });
       }
-      // console.log("rtokens", rTokens);
+      ////console.log("rtokens", rTokens);
       if (rTokens.length === 0) return;
       setValidRTokens(rTokens);
-      // console.log("valid rtoken", validRTokens);
-      // console.log("market page -user supply", reserves);
+      ////console.log("valid rtoken", validRTokens);
+      ////console.log("market page -user supply", reserves);
     } catch (err) {
-      console.log("Error fetching protocol reserves", err);
+     //console.log("Error fetching protocol reserves", err);
     }
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -359,17 +383,17 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   // const netAPR = useSelector(selectNetAPR);
 
   // useEffect(()=>{
-  //   console.log(netAPR,"net apr in pagecard");
+  //  //console.log(netAPR,"net apr in pagecard");
   // },[netAPR])
   // useEffect(() => {
   //   try {
   //     const fetchTotalBorrow = async () => {
   //       const data = await getTotalBorrow();
-  //       console.log("getTotalBorrow", data);
+  //      //console.log("getTotalBorrow", data);
   //     };
   //     fetchTotalBorrow();
   //   } catch (err) {
-  //     console.log("getTotalBorrow error");
+  //    //console.log("getTotalBorrow error");
   //   }
   // }, [netWorth, yourSupply, yourBorrow, netWorth]);
 
@@ -389,7 +413,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   // }
   // async function processTransactions() {
   //   for (const transaction of activeTransactions) {
-  //     console.log("transactionData ", transaction);
+  //    //console.log("transactionData ", transaction);
   //     // if (!transaction || !transaction.transaction_hash) {
   //     //   continue;
   //     // }
@@ -400,7 +424,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //         watch: false,
   //       });
   //       // Process the transaction data here
-  //       // console.log("transactionData ", transactionData);
+  //       ////console.log("transactionData ", transactionData);
   //     } catch (error) {
   //       console.error("Error fetching transaction data:", error);
   //     }
@@ -413,7 +437,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   // }, [activeTransactions]);
   // if (activeTransactions) {
   //   for (const transaction of activeTransactions) {
-  //     console.log("transactionData ", transaction);
+  //    //console.log("transactionData ", transaction);
   //     if (!transaction || !transaction?.transaction_hash) {
   //       continue;
   //     }
@@ -421,12 +445,12 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //       hash: transaction?.transaction_hash,
   //       watch: false,
   //       // onReceived: () => {
-  //       //   console.log("trans received");
+  //       //  //console.log("trans received");
   //       // },
   //       // onPending: () => {
   //       //   // setCurrentTransactionStatus(true);
   //       //   toast.dismiss(transaction?.toastId);
-  //       //   console.log("trans pending");
+  //       //  //console.log("trans pending");
   //       //   // if (isToastDisplayed == false) {
   //       //   toast.success(
   //       //     transaction?.message || `You have successfully supplied`,
@@ -440,7 +464,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //       // onRejected(result: any) {
   //       //   toast.dismiss(transaction?.toastId);
   //       //   // if (!failureToastDisplayed) {
-  //       //   console.log("treans rejected", result);
+  //       //  //console.log("treans rejected", result);
   //       //   // dispatch(setTransactionStatus("failed"));
   //       //   const toastContent = (
   //       //     <div>
@@ -458,11 +482,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //       // },
   //       // onAcceptedOnL1: (result: any) => {
   //       //   // setCurrentTransactionStatus(true);
-  //       //   console.log("trans onAcceptedOnL1");
+  //       //  //console.log("trans onAcceptedOnL1");
   //       // },
   //       // onAcceptedOnL2(result: any) {
   //       //   toast.dismiss(transaction?.toastId);
-  //       //   // setCurrentTransactionStatus(true);
+//       //   // setCurrentTransactionStatus(true);
   //       //   // if (!isToastDisplayed) {
   //       //   toast.success(
   //       //     transaction?.message || `You have successfully supplied`,
@@ -472,10 +496,10 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //       //   );
   //       //   // setToastDisplayed(true);
   //       //   // }
-  //       //   console.log("trans onAcceptedOnL2 - ", result);
+  //       //  //console.log("trans onAcceptedOnL2 - ", result);
   //       // },
   //     });
-  //     // console.log("transactionData received ", transactionData);
+  //     ////console.log("transactionData received ", transactionData);
   //     // if (
   //     //   transactionData?.data?.status == "PENDING" ||
   //     //   transactionData?.data?.status == "ACCEPTED_ON_L2" ||
@@ -490,12 +514,12 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   }
   // }
   // useEffect(() => {
-  //   // console.log("trans activeTransactions useEffect called");
+  //   ////console.log("trans activeTransactions useEffect called");
   //   if (!activeTransactions || !transactions) {
   //     return;
   //   }
   //   if (activeTransactions?.length != transactions?.length) {
-  //     console.log("setActiveTransactions called");
+  //    //console.log("setActiveTransactions called");
   //     dispatch(setActiveTransactions(transactions));
   //   }
   // }, [transactions]);
@@ -547,7 +571,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     )
     : (
       <>
-        {render && whitelisted ? (
+        {render && (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet "?whitelisted:true) ? (
           <>
             <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
@@ -639,10 +663,22 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               {...rest}
             >
               <Box>
-                {(!whitelisted)
-                  ? <Text color="white" fontSize="25px">
+                {(!whitelisted &&process.env.NEXT_PUBLIC_NODE_ENV == "mainnet")
+
+                  ? 
+                  <Box>
+                  <Text color="white" fontSize="25px">
                     You are successfully added to our waitlist
-                  </Text> : <Text color="white" fontSize="25px">
+                  </Text> 
+                  <Text color="#B1B0B5" fontSize="14px" textAlign="center" mt="1.5rem" >
+                  Alternatively, Join our {` `}
+                    <Link href="https://discord.gg/hashstack" target="_blank" style={{textDecoration:"underline"}}>     
+                      discord community               
+                    </Link>
+                    {` `}to get an instant access.
+                  </Text>
+                    </Box>
+                  : <Text color="white" fontSize="25px">
                     Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Goerli" : "Mainnet"} and refresh
                   </Text>
                 }
@@ -668,16 +704,16 @@ export default PageCard;
 // }
 // const timeout = setTimeout(changeR, 3000);
 // function handleRouteChange(url: string) {
-//   console.log("hunny", _account, localStorage.getItem("lastUsedConnector"));
+//  //console.log("hunny", _account, localStorage.getItem("lastUsedConnector"));
 //   // if (!_account) {
 //   const walletConnected = localStorage.getItem("lastUsedConnector");
 //   if (walletConnected == "braavos") {
-//     console.log("hunny");
+//    //console.log("hunny");
 //     connect(connectors[0]);
 //   } else if (walletConnected == "argentx") {
 //     connect(connectors[1]);
 //   }
-//   console.log(status);
+//  //console.log(status);
 //   // }
 // }
 
@@ -696,7 +732,7 @@ export default PageCard;
 // connect(connectors[0]); // Replace this with your actual code
 // setInterval(
 //   () =>
-//     console.log(
+//    //console.log(
 //       "hunny",
 //       _account,
 //       status,

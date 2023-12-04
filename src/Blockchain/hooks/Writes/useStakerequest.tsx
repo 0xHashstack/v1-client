@@ -9,7 +9,7 @@ const useStakeRequest = () => {
   const [rToken, setRToken] = useState<RToken>("rBTC");
   const [rTokenAmount, setRTokenAmount] = useState<number>(0);
   const { address: owner } = useAccount();
-  // console.log("rToken stake request - ", rToken);
+  ////console.log("rToken stake request - ", rToken);
 
   const {
     data: dataStakeRequest,
@@ -19,7 +19,6 @@ const useStakeRequest = () => {
     writeAsync: writeAsyncStakeRequest,
     isError: isErrorStakeRequest,
     isIdle: isIdleStakeRequest,
-    isLoading: isLoadingStakeRequest,
     isSuccess: isSuccessStakeRequest,
     status: statusStakeRequest,
   } = useContractWrite({
@@ -58,7 +57,6 @@ const useStakeRequest = () => {
     writeAsyncStakeRequest,
     isErrorStakeRequest,
     isIdleStakeRequest,
-    isLoadingStakeRequest,
     isSuccessStakeRequest,
     statusStakeRequest,
   };

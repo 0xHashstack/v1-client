@@ -3,12 +3,11 @@ import { useAccount, useContractRead } from "@starknet-react/core";
 import { useState } from "react";
 const useBalanceOf = (asset: string) => {
     const { address: accountAddress } = useAccount();
-    // console.log("dataaaa balance of", asset, accountAddress)
+    ////console.log("dataaaa balance of", asset, accountAddress)
     const {
       data: dataBalanceOf,
 
       error: errorBalanceOf,
-      isIdle: isIdleBalanceOf,
 
       isLoading: isLoadingBalanceOf,
       isSuccess: isSuccessBalanceOf,
@@ -16,10 +15,10 @@ const useBalanceOf = (asset: string) => {
       refetch: refetchBalanceOf,
       status: statusBalanceOf,
     } = useContractRead({
+      functionName: "balanceOf",
+      args: [accountAddress as string],
       address: asset,
       abi: ERC20Abi,
-      functionName: "balanceOf",
-      args: [accountAddress],
       watch: false,
     })
 

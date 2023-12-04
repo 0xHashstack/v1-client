@@ -98,11 +98,10 @@ const useBorrowAndSpend = () => {
     writeAsync: writeAsyncBorrowAndSpend,
     isError: isErrorBorrowAndSpend,
     isIdle: isIdleBorrowAndSpend,
-    isLoading: isLoadingBorrowAndSpend,
     isSuccess: isSuccessBorrowAndSpend,
     status: statusBorrowAndSpend,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 &&user=="U1" && ( loanAmount>50) && nftCurrentAmount<nftMaxAmount ? [
+    calls: balance==0 &&user=="U1" && ( loanAmount>100) && nftCurrentAmount<nftMaxAmount ? [
       {
         contractAddress: tokenAddressMap[collateralMarket],
         entrypoint: "approve",
@@ -175,11 +174,10 @@ const useBorrowAndSpend = () => {
     writeAsync: writeAsyncBorrowAndSpendRToken,
     isError: isErrorBorrowAndSpendRToken,
     isIdle: isIdleBorrowAndSpendRToken,
-    isLoading: isLoadingBorrowAndSpendRToken,
     isSuccess: isSuccessBorrowAndSpendRToken,
     status: statusBorrowAndSpendRToken,
   } = useContractWrite({
-    calls:process.env.NEXT_PUBLIC_NODE_ENV=="testnet" && balance==0 && user=="U1"&& ( loanAmount>50) && nftCurrentAmount<nftMaxAmount ?[ {
+    calls: balance==0 && user=="U1"&& ( loanAmount>100) && nftCurrentAmount<nftMaxAmount ?[ {
       contractAddress: diamondAddress,
       entrypoint: "borrow_and_spend_with_rToken",
       calldata: [
@@ -255,7 +253,6 @@ const useBorrowAndSpend = () => {
     writeAsyncBorrowAndSpend,
     isErrorBorrowAndSpend,
     isIdleBorrowAndSpend,
-    isLoadingBorrowAndSpend,
     isSuccessBorrowAndSpend,
     statusBorrowAndSpend,
 
@@ -265,7 +262,6 @@ const useBorrowAndSpend = () => {
     writeAsyncBorrowAndSpendRToken,
     isErrorBorrowAndSpendRToken,
     isIdleBorrowAndSpendRToken,
-    isLoadingBorrowAndSpendRToken,
     isSuccessBorrowAndSpendRToken,
     statusBorrowAndSpendRToken,
   };

@@ -104,8 +104,8 @@ const YourSupplyModal = ({
   coins,
   protocolStats,
 }: any) => {
-  // console.log(coins,"coins in supply modal")
-  // console.log(currentSelectedSupplyCoin,"coin in your suppply");
+  ////console.log(coins,"coins in supply modal")
+  ////console.log(currentSelectedSupplyCoin,"coin in your suppply");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -142,18 +142,18 @@ const YourSupplyModal = ({
     rDAI: useBalanceOf(tokenAddressMap["rDAI"]),
   };
   const userDeposit = useSelector(selectUserDeposits);
-  // console.log(userDeposit,"user deposit your supply")
+  ////console.log(userDeposit,"user deposit your supply")
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
       ? parseAmount(
-        uint256.uint256ToBN(
+        String(uint256.uint256ToBN(
           walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
-        ),
+        )),
         tokenDecimalsMap[currentSelectedSupplyCoin]
       )
       : 0
   );
-  // console.log(currentSelectedWithdrawlCoin)
+  ////console.log(currentSelectedWithdrawlCoin)
   const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
     userDeposit?.find(
       (item: any) => item?.rToken == currentSelectedWithdrawlCoin
@@ -164,14 +164,14 @@ const YourSupplyModal = ({
     setwalletBalance(
       walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[currentSelectedSupplyCoin]
         )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf)
   }, [
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf,
     currentSelectedSupplyCoin,
@@ -182,7 +182,7 @@ const YourSupplyModal = ({
         (item: any) => item?.rToken == currentSelectedWithdrawlCoin
       )?.rTokenFreeParsed
     );
-    // console.log("supply modal status wallet balance",walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf)
   }, [currentSelectedWithdrawlCoin]);
 
   const [ischecked, setIsChecked] = useState(true);
@@ -200,7 +200,6 @@ const YourSupplyModal = ({
     writeAsyncDepositStake,
     isErrorDepositStake,
     isIdleDepositStake,
-    isLoadingDepositStake,
     isSuccessDepositStake,
     statusDepositStake,
 
@@ -212,7 +211,6 @@ const YourSupplyModal = ({
     writeAsyncDeposit,
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
@@ -229,7 +227,6 @@ const YourSupplyModal = ({
     writeAsyncWithdrawDeposit,
     isErrorWithdrawDeposit,
     isIdleWithdrawDeposit,
-    isLoadingWithdrawDeposit,
     isSuccessWithdrawDeposit,
     statusWithdrawDeposit,
   } = useWithdrawDeposit();
@@ -352,11 +349,11 @@ const YourSupplyModal = ({
             currentSelectedWithdrawlCoin,
             inputWithdrawlAmount
           );
-          // console.log(data, "data in your supply");
+          ////console.log(data, "data in your supply");
           setEstSupply(data);
         }
       } catch (err) {
-        console.log(err, "err in you supply");
+       //console.log(err, "err in you supply");
       }
     };
     fetchSupplyUnlocked();
@@ -422,12 +419,12 @@ const YourSupplyModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (!isToastDisplayed) {
   //       toast.success(
   //         `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
@@ -442,15 +439,15 @@ const YourSupplyModal = ({
   //     setCurrentTransactionStatus("failed");
   //     dispatch(setTransactionStatus("failed"));
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //     if (!isToastDisplayed) {
   //       toast.success(
   //         `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
@@ -513,9 +510,9 @@ const YourSupplyModal = ({
         dispatch(setTransactionStatus("success"));
       }
 
-      console.log(withdraw);
+     //console.log(withdraw);
     } catch (err: any) {
-      console.log("withraw", err);
+     //console.log("withraw", err);
       mixpanel.track("Withdraw Supply Status", {
         Status: "Failure",
       });
@@ -526,7 +523,7 @@ const YourSupplyModal = ({
         // dispatch(setTransactionStatus("failed"));
         setWithdrawTransactionStarted(false);
       }
-      console.log(uqID, "your supply catch", data);
+     //console.log(uqID, "your supply catch", data);
       const toastContent = (
         <div>
           Transaction declined{" "}
@@ -549,7 +546,7 @@ const YourSupplyModal = ({
           Clicked: true,
         });
         const addSupplyAndStake = await writeAsyncDepositStake();
-        console.log(addSupplyAndStake);
+       //console.log(addSupplyAndStake);
         setDepositTransHash(addSupplyAndStake?.transaction_hash);
         if (addSupplyAndStake?.transaction_hash) {
 
@@ -644,13 +641,13 @@ const YourSupplyModal = ({
         }
       }
     } catch (err) {
-      console.log("Unable to add supply ", err);
+     //console.log("Unable to add supply ", err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
-      console.log("data check", data);
+     //console.log("data check", data);
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        console.log(uqID, "your supply catch", data);
+       //console.log(uqID, "your supply catch", data);
         // dispatch(setTransactionStatus("failed"));
         setTransactionStarted(false);
       }
@@ -741,7 +738,7 @@ const YourSupplyModal = ({
           const uqID = getUniqueId();
           let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
-          // console.log(uqID, "data here", data);
+          ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
             data = data.filter((val: any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -959,18 +956,16 @@ const YourSupplyModal = ({
                                         {walletBalances[coin.substring(1)]
                                           ?.dataBalanceOf?.balance
                                           ? numberFormatter(
-                                            Number(
-                                              BNtoNum(
-                                                uint256.uint256ToBN(
+                                            parseAmount(
+                                                String(uint256.uint256ToBN(
                                                   walletBalances[
                                                     coin.substring(1)
                                                   ]?.dataBalanceOf?.balance
-                                                ),
+                                                )),
                                                 tokenDecimalsMap[
                                                 coin.substring(1)
                                                 ]
                                               )
-                                            )
                                           )
                                           : "-"}
                                       </Box>

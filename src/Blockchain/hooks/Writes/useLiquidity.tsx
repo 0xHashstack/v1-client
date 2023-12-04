@@ -16,10 +16,9 @@ const useLiquidity = () => {
     write: writeJediSwap_addLiquidity,
     writeAsync: writeAsyncJediSwap_addLiquidity,
     isIdle: isIdleJediSwap_addLiquidity,
-    isLoading: isLoadingJediSwap_addLiquidity,
     status: statusJediSwap_addLiquidity,
   } = useContractWrite({
-    calls: {
+    calls: [{
       contractAddress: diamondAddress,
       entrypoint: "interact_with_l3",
       calldata: [
@@ -30,7 +29,7 @@ const useLiquidity = () => {
         tokenAddressMap[toMarketA],
         tokenAddressMap[toMarketB],
       ],
-    },
+    }],
   });
 
   const {
@@ -39,10 +38,9 @@ const useLiquidity = () => {
     write: writemySwap_addLiquidity,
     writeAsync: writeAsyncmySwap_addLiquidity,
     isIdle: isIdlemySwap_addLiquidity,
-    isLoading: isLoadingmySwap_addLiquidity,
     status: statusmySwap_addLiquidity,
   } = useContractWrite({
-    calls: {
+    calls: [{
       contractAddress: diamondAddress,
       entrypoint: "interact_with_l3",
       calldata: [
@@ -53,7 +51,7 @@ const useLiquidity = () => {
         tokenAddressMap[toMarketA],
         tokenAddressMap[toMarketB],
       ],
-    },
+    }],
   });
 
   return {
@@ -70,7 +68,6 @@ const useLiquidity = () => {
     writeJediSwap_addLiquidity,
     writeAsyncJediSwap_addLiquidity,
     isIdleJediSwap_addLiquidity,
-    isLoadingJediSwap_addLiquidity,
     statusJediSwap_addLiquidity,
 
     datamySwap_addLiquidity,
@@ -78,7 +75,6 @@ const useLiquidity = () => {
     writemySwap_addLiquidity,
     writeAsyncmySwap_addLiquidity,
     isIdlemySwap_addLiquidity,
-    isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
   };
 };

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {
-    AddressFromStarkNameArgs,
     useAccount,
     useContractRead,
     useContractWrite,
@@ -20,7 +19,6 @@ const useMintNft = () => {
         writeAsync: writeAsyncNFT,
         isError: isErrorNFT,
         isIdle: isIdleNFT,
-        isLoading: isLoadingNFT,
         isSuccess: isSuccessNFT,
         status: statusNFT,
       } = useContractWrite({
@@ -47,7 +45,6 @@ const useMintNft = () => {
         writeAsyncNFT,
         isErrorNFT,
         isIdleNFT,
-        isLoadingNFT,
         isSuccessNFT,
         statusNFT,
       };
