@@ -369,7 +369,7 @@ const TradeModal = ({
     if (inputCollateralAmountUSD > 0) {
       var percentage =
         (newValue * 100) /
-        ((4.9999 * inputCollateralAmountUSD) /
+        ((4.98 * inputCollateralAmountUSD) /
           oraclePrices.find((curr: any) => curr.name === currentBorrowCoin)
             ?.price);
     }
@@ -2102,7 +2102,7 @@ const TradeModal = ({
                       width="100%"
                       color="white"
                       border={`${inputCollateralAmountUSD &&
-                          inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
+                          inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                           ? "1px solid #CF222E"
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
@@ -2140,7 +2140,7 @@ const TradeModal = ({
                       placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowCoin}`:`min ${minimumLoanAmount==null ?0:minimumLoanAmount} ${currentBorrowCoin}`}
                           color={`${inputCollateralAmountUSD &&
                               inputBorrowAmountUSD >
-                              4.9999 * inputCollateralAmountUSD
+                              4.98 * inputCollateralAmountUSD
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
                                 ? "#CF222E"
@@ -2173,7 +2173,7 @@ const TradeModal = ({
                         variant="ghost"
                         color={`${inputCollateralAmountUSD &&
                             inputBorrowAmountUSD >
-                            4.9999 * inputCollateralAmountUSD
+                            4.98 * inputCollateralAmountUSD
                             ? "#CF222E"
                             : isNaN(inputBorrowAmount)
                               ? "#CF222E"
@@ -2192,7 +2192,7 @@ const TradeModal = ({
                         onClick={() => {
                           if (inputCollateralAmountUSD > 0) {
                             if (
-                              (4.9999 * inputCollateralAmountUSD) /
+                              (4.98 * inputCollateralAmountUSD) /
                               oraclePrices.find(
                                 (curr: any) => curr.name === currentBorrowCoin
                               )?.price >
@@ -2203,14 +2203,14 @@ const TradeModal = ({
                               setsliderValue2(100);
                             } else {
                               setinputBorrowAmount(
-                                (4.9999 * inputCollateralAmountUSD) /
+                                (4.98 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
                                   (curr: any) =>
                                     curr.name === currentBorrowCoin
                                 )?.price
                               );
                               setLoanAmount(
-                                (4.9999 * inputCollateralAmountUSD) /
+                                (4.98 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
                                   (curr: any) =>
                                     curr.name === currentBorrowCoin
@@ -2244,7 +2244,7 @@ const TradeModal = ({
                       (inputBorrowAmount > 0 &&
                         inputCollateralAmountUSD &&
                         inputBorrowAmountUSD >
-                        4.9999 * inputCollateralAmountUSD) ||
+                        4.98 * inputCollateralAmountUSD) ||
                       isNaN(inputBorrowAmount) ? (
                       <Text
                         display="flex"
@@ -2269,7 +2269,7 @@ const TradeModal = ({
                               :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& inputBorrowAmount>maximumLoanAmount
                               ? "More than max amount"
                               : inputBorrowAmountUSD >
-                                4.9999 * inputCollateralAmountUSD
+                                4.98 * inputCollateralAmountUSD
                                 ? "Debt higher than permitted"
                                 : "Invalid Input"}
                           </Text>
@@ -2325,14 +2325,14 @@ const TradeModal = ({
                           if (val == 100) {
                             if (inputCollateralAmountUSD > 0) {
                               setinputBorrowAmount(
-                                (4.9999 * inputCollateralAmountUSD) /
+                                (4.98 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
                                   (curr: any) =>
                                     curr.name === currentBorrowCoin
                                 )?.price
                               );
                               setLoanAmount(
-                                (4.9999 * inputCollateralAmountUSD) /
+                                (4.98 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
                                   (curr: any) =>
                                     curr.name === currentBorrowCoin
@@ -2346,7 +2346,7 @@ const TradeModal = ({
                             if (inputCollateralAmountUSD > 0) {
                               var ans =
                                 (val / 100) *
-                                ((4.9999 * inputCollateralAmountUSD) /
+                                ((4.98 * inputCollateralAmountUSD) /
                                   oraclePrices.find(
                                     (curr: any) =>
                                       curr.name === currentBorrowCoin
@@ -3470,7 +3470,7 @@ borderWidth:'5px',
                 (( tokenTypeSelected=="Native" ?  inputCollateralAmount >= minimumDepositAmount &&
                   inputCollateralAmount<=maximumDepositAmount:true)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
                   inputCollateralAmount <= walletBalance &&
-                  inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD &&
+                  inputBorrowAmountUSD <= 4.98 * inputCollateralAmountUSD &&
                   currentDapp != "Select a dapp" &&
                   (currentPool != "Select a pool" ||
                     currentPoolCoin != "Select a pool") ? (
