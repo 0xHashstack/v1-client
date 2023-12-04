@@ -3,7 +3,7 @@ import {
   setActiveTransactions,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
-import { selectTransactionsData, setTransactionRefresh } from "@/store/slices/readDataSlice";
+import {  setTransactionRefresh } from "@/store/slices/readDataSlice";
 import { Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -18,7 +18,6 @@ const useTransactionHandler = () => {
   const [transactions, setTransactions] = useState([]);
   const dispatch = useDispatch();
   const toastHash = [""];
-  const transactionsData=useSelector(selectTransactionsData);
   // console.log(transactionsData,"redux")
   useEffect(() => {
     ////console.log("trans activeTransactions useEffect called");

@@ -128,6 +128,8 @@ import {
   setExisitingLink,
   setNftMaxAmount,
   setNftCurrentAmount,
+  setJediSwapPoolAprs,
+  selectJediswapPoolAprs,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -217,6 +219,7 @@ const useDataLoader = () => {
   const jediSwapPoolsSupportedCount = useSelector(selectJediSwapPoolsSupportedCount);
   const mySwapPoolsSupportedCount = useSelector(selectMySwapPoolsSupportedCount);
   const transactionStatus = useSelector(selectTransactionStatus);
+  const poolAprs=useSelector(selectJediswapPoolAprs);
   const [poolsPairs, setPoolPairs] = useState<any>([
     {
       address: "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e",
@@ -1235,6 +1238,15 @@ const useDataLoader = () => {
           const count = getTransactionCount();
           dispatch(setJediSwapPoolsSupportedCount(count));
         })
+        try{
+          const res=await axios.get('https://b1ibz9x1s9.execute-api.ap-southeast-1.amazonaws.com/api/amm-aprs');
+          if(res?.data){
+            dispatch(setJediSwapPoolAprs(res?.data));
+          }
+        }catch(err){
+          console.log(err,"err in pool aprs")
+        }
+
         // if (data === 0) {
         //   // Create a copy of the poolsPairs array
         //   const updatedPoolsPairs = [...poolsPairs];
@@ -1436,17 +1448,18 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchEffectiveApr = async () => {
-        const promises = userLoans?.map((val: any) => {
-          return effectivAPRLoan(val, protocolStats, dataOraclePrices);
-        });
-        Promise.all([...promises]).then((val: any) => {
-          const avgs = val.map((avg: any, idx: number) => {
-            return { avg: avg, loanId: userLoans[idx]?.loanId };
+          const promises = userLoans?.map((val: any) => {
+            return effectivAPRLoan(val, protocolStats, dataOraclePrices);
           });
-          dispatch(setEffectiveAPR(avgs));
-          const count = getTransactionCount();
-          dispatch(setAprCount(count));
-        });
+          Promise.all([...promises]).then((val: any) => {
+            const avgs = val.map((avg: any, idx: number) => {
+              return { avg: avg, loanId: userLoans[idx]?.loanId };
+            });
+            dispatch(setEffectiveAPR(avgs));
+            const count = getTransactionCount();
+            dispatch(setAprCount(count));
+          });
+        
         ////console.log("promises",promises)
       };
       if (
@@ -1544,7 +1557,7 @@ const useDataLoader = () => {
           return;
         }
         const userLoans = await getUserLoans(address);
-       //console.log(userLoans,"data user loans")
+      //  console.log(userLoans,"data user loans")
         if (!userLoans) {
           return;
         }
