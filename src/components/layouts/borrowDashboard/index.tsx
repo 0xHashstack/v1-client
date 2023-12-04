@@ -953,7 +953,7 @@ const BorrowDashboard = ({
                                 </Text>
                                 </Box>
                                 <hr/>
-                                <Box display="flex" mt="2" justifyContent="space-between" mb="2">
+                                <Box display="flex" mt="2" justifyContent="space-between" mb="2" gap="10px">
                                   <Text>
                                 Effective APR: 
                                   </Text>
@@ -1019,22 +1019,14 @@ const BorrowDashboard = ({
                             label={
                               <Box display="flex" flexDirection="column" justifyContent="space-between">
                                 <Box display="flex" justifyContent="space-between" gap="10px">
-                                Borrow APR:
+                                Borrow:
                                 <Text>  
                                 +{getBorrowAPR(borrow?.loanMarket.slice(1))}%
                                   </Text> 
                                 </Box>
-                                <Box display="flex" justifyContent="space-between" >
+                                <Box display="flex" justifyContent="space-between" mb="2" gap="10px">
                                   <Text>
-                                Pool APR: 
-                                  </Text>
-                                <Text>
-                                -{getAprByPool(poolAprs,allSplit?.[lower_bound + idx]?.tokenA+"/"+allSplit?.[lower_bound + idx]?.tokenB).toFixed(2)}%
-                                </Text>
-                                </Box>
-                                <Box display="flex" justifyContent="space-between" mb="2">
-                                  <Text>
-                                Collateral APR: 
+                                Collateral: 
                                   </Text>
                                 <Text>
                                 -{
@@ -1049,7 +1041,7 @@ const BorrowDashboard = ({
                                 </Text>
                                 </Box>
                                 <hr/>
-                                <Box display="flex" mt="2" justifyContent="space-between" mb="2">
+                                <Box display="flex" mt="2" justifyContent="space-between" mb="2" gap="10px">
                                   <Text>
                                 Effective APR: 
                                   </Text>
