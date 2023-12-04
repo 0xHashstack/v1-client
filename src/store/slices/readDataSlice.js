@@ -61,6 +61,7 @@ const initialState = {
   nftCurrentAmount:null,
   whitelisted:false,
   interactedAddress:false,
+  jediSwapPoolAprs:[],
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -292,6 +293,9 @@ export const readDataSlice = createSlice({
     setInteractedAddress(state,action){
       state.interactedAddress=action.payload;
     },
+    setJediSwapPoolAprs(state,action){
+      state.jediSwapPoolAprs=action.payload;
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -364,7 +368,8 @@ export const {
   setNftMaxAmount,
   setNftCurrentAmount,
   setUserWhiteListed,
-  setInteractedAddress
+  setInteractedAddress,
+  setJediSwapPoolAprs
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -431,4 +436,5 @@ export const selectNftMaxAmount=(state)=>state.read_data.nftMaxAmount;
 export const selectNftCurrentAmount=(state)=>state.read_data.nftCurrentAmount;
 export const selectWhiteListed=(state)=>state.read_data.whitelisted;
 export const selectInteractedAddress=(state)=>state.read_data.interactedAddress;
+export const selectJediswapPoolAprs=(state)=>state.read_data.jediSwapPoolAprs;
 export default readDataSlice.reducer;

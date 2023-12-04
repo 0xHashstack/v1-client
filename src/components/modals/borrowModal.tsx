@@ -23,7 +23,7 @@ import {
 
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
-import { getMinimumDepositAmount,getMaximumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { getMinimumDepositAmount,getMaximumDepositAmount, getMaximumDynamicLoanAmount } from "@/Blockchain/scripts/Rewards";
 
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
@@ -91,6 +91,9 @@ import {
 import { getUSDValue } from "@/Blockchain/scripts/l3interaction";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { getMaximumLoanAmount, getMinimumLoanAmount } from "@/Blockchain/scripts/Rewards";
+import BugIcon from "@/assets/icons/bugIcon";
+import RedinfoIcon from "@/assets/icons/redinfoicon";
+import dollarConvertor from "@/utils/functions/dollarConvertor";
 const BorrowModal = ({
   buttonText,
   coin,
@@ -765,9 +768,23 @@ const BorrowModal = ({
   const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
   const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
   useEffect(()=>{
+    const fecthLoanAmount=async()=>{
+      const dynamicdata=await getMaximumDynamicLoanAmount(amount,currentBorrowCoin,currentCollateralCoin[0]=="r" ? currentCollateralCoin.slice(1):currentCollateralCoin );
+      if(dynamicdata!=undefined){
+        const data=maxLoanAmounts["d"+currentBorrowCoin];
+        if(currentBorrowCoin==currentCollateralCoin){
+          setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
+        }else if(currentCollateralCoin[0]=="r" && currentCollateralCoin.slice(1)==currentBorrowCoin){
+          setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
+        }
+        else{
+          setMaximumLoanAmount(Math.min(dynamicdata,data));
+        }
+      }
+    }
+    fecthLoanAmount();
     setMinimumLoanAmount(minLoanAmounts["d"+currentBorrowCoin])
-    setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
-  },[currentBorrowCoin,maxLoanAmounts,minLoanAmounts])
+  },[currentBorrowCoin,maxLoanAmounts,minLoanAmounts,currentCollateralCoin])
   // useEffect(()=>{
   //   const fetchMinLoanAmount=async()=>{
   //     const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
@@ -2386,11 +2403,11 @@ const BorrowModal = ({
                 >
                   <Box
                     display="flex"
-                    bg="#222766"
+                    bg={dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?"#480C10":"#222766"} 
                     color="#F0F0F5"
                     fontSize="12px"
                     p="4"
-                    border="1px solid #3841AA"
+                    border={dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?"1px solid #9B1A23":"1px solid #3841AA"}
                     fontStyle="normal"
                     fontWeight="400"
                     lineHeight="18px"
@@ -2398,11 +2415,13 @@ const BorrowModal = ({
                     // textAlign="center"
                   >
                     <Box pr="3" mt="0.5" cursor="pointer">
-                      <BlueInfoIcon />
+                      {dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?<RedinfoIcon/>:<BlueInfoIcon />}
                     </Box>
-                    You have selected a native token as collateral which will be
-                    converted to rtokens 1r{currentCollateralCoin} ={" "}
-                    {(protocolStatsRedux.find(
+                    {dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?
+                  `The current collateral and borrowing market combination isn't allowed at this moment.`:  
+                    `You have selected a native token as collateral which will be
+                    converted to rtokens 1r${currentCollateralCoin} =
+                    ${(protocolStatsRedux.find(
                       (val: any) => val?.token == currentCollateralCoin.split(1)
                     )?.exchangeRateRtokenToUnderlying
                       ? numberFormatter(
@@ -2411,7 +2430,8 @@ const BorrowModal = ({
                               val?.token == currentCollateralCoin.split(1)
                           )?.exchangeRateRtokenToUnderlying
                         )
-                      : "") + currentCollateralCoin?.split(1)}
+                      : "") + currentCollateralCoin?.split(1)}`
+                  }
                     {/* <Box
                                 py="1"
                                 pl="4"
