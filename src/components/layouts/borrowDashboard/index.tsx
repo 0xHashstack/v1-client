@@ -929,7 +929,15 @@ const BorrowDashboard = ({
                                 <Box display="flex" justifyContent="space-between" gap="10px">
                                 Borrow:
                                 <Text>  
-                                +{getBorrowAPR(borrow?.loanMarket.slice(1))}%
+                                +{((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                      (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                    )?.exchangeRateDTokenToUnderlying) *
+                      ((reduxProtocolStats?.find(
+                        (stat: any) =>
+                          stat?.token === borrow?.loanMarket.slice(1)
+                      )?.borrowRate)))/dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * reduxProtocolStats.find(
+                        (val: any) => val?.token == borrow?.collateralMarket.slice(1)
+                      )?.exchangeRateRtokenToUnderlying).toFixed(2)}%
                                   </Text> 
                                 </Box>
                                 <Box display="flex" justifyContent="space-between" >
@@ -937,7 +945,9 @@ const BorrowDashboard = ({
                                 Pool: 
                                   </Text>
                                 <Text>
-                                -{getAprByPool(poolAprs,allSplit?.[lower_bound + idx]?.tokenA+"/"+allSplit?.[lower_bound + idx]?.tokenB).toFixed(2)}%
+                                -{(getAprByPool(poolAprs,allSplit?.[lower_bound + idx]?.tokenA+"/"+allSplit?.[lower_bound + idx]?.tokenB)*(dollarConvertor(allSplit?.[lower_bound + idx]?.amountA, allSplit?.[lower_bound + idx]?.tokenA, oraclePrices) + dollarConvertor(allSplit?.[lower_bound + idx]?.amountB, allSplit?.[lower_bound + idx]?.tokenB, oraclePrices))/dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * reduxProtocolStats.find(
+                              (val: any) => val?.token == borrow?.collateralMarket.slice(1)
+                            )?.exchangeRateRtokenToUnderlying).toFixed(2)}%
                                 </Text>
                                 </Box>
                                 <Box display="flex" justifyContent="space-between" mb="2">
