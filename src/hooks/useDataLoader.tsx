@@ -1184,7 +1184,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const data = await getUserDeposits(address);
+        const data = await getUserDeposits("0x35af3fdb8aa88658c6009c3feea9315feb81beb350e2e88dc5d1797aedd6485");
         if (!data) {
           return;
         }
@@ -1737,7 +1737,7 @@ const useDataLoader = () => {
             ////console.log("netApr", dataNetApr);
             dispatch(setNetAprLoans(0));
           } else {
-            dispatch(setNetAprLoans(dataNetAprLoans));
+            // dispatch(setNetAprLoans(dataNetAprLoans));
           }
           //@ts-ignore
           if (isNaN(dataNetAprDeposit)) {
