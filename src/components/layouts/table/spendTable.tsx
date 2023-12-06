@@ -152,6 +152,7 @@ const SpendTable = () => {
   }
 
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
+  const [currentBorrowData, setcurrentBorrowData] = useState()
   const [borrowIds, setBorrowIds] = useState([]);
   const [currentId, setCurrentId] = useState("");
   const [currentMarketCoin, setCurrentMarketCoin] = useState("");
@@ -497,6 +498,7 @@ const SpendTable = () => {
                         // bgColor="green"
                         onClick={() => {
                           setSelectedDapp("trade");
+                          setcurrentBorrowData(borrow)
                           setCurrentBorrow(borrow.loanId);
                           setBorrowAmount(borrow.currentLoanAmountParsed);
                           setCurrentId("ID - " + borrow.loanId);
@@ -861,6 +863,7 @@ const SpendTable = () => {
                     <LiquidityProvisionModal
                       borrowIDCoinMap={borrowIDCoinMap}
                       coins={coins}
+                      borrow={currentBorrowData}
                       borrowIds={borrowIds}
                       currentId={currentId}
                       currentMarketCoin={currentMarketCoin}

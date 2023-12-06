@@ -234,17 +234,17 @@ const TradeModal = ({
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   const dapps = [
     { name: "Jediswap", status: "enable" },
-    // { name: "mySwap", status: "enable" },
+    { name: "mySwap", status: "enable" },
   ];
-  const getAprByPool = (dataArray: any[], pool: string) => {
+  const getAprByPool = (dataArray: any[], pool: string,dapp:string) => {
     const matchedObject = dataArray.find(item => {
-      if (item.name === "USDT/USDC") {
-        return item.amm === "jedi" && ("USDC/USDT" === pool );
-      }else if(item.name === "ETH/DAI") {
-        return item.amm === "jedi" && ("DAI/ETH" === pool );
+      if (item.name === "USDT/USDC" ) {
+        return item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap") && ("USDC/USDT" === pool );
+      }else if(item.name === "ETH/DAI" ) {
+        return item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap") && ("DAI/ETH" === pool );
       }
       else {
-        return item.name === pool && item.amm === "jedi";
+        return item.name === pool && item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap");
       }
     });
   
@@ -2803,7 +2803,7 @@ borderWidth:'5px',
                                 mt="6px"
                                 fontWeight="thin"
                                     >
-                                    Pool APR: {numberFormatter(getAprByPool(poolAprs,pool))}%                                               
+                                    Pool APR: {numberFormatter(getAprByPool(poolAprs,pool,currentDapp))}%                                               
                                       </Box>
                                 </Box>
                               </Box>
@@ -3297,7 +3297,7 @@ borderWidth:'5px',
                                 (protocolStats?.find(
                                   (stat: any) =>
                                     stat?.token === currentBorrowCoin
-                                )?.borrowRate-getAprByPool(poolAprs,currentPool)) -
+                                )?.borrowRate-getAprByPool(poolAprs,currentPool,currentDapp)) -
                                 inputCollateralAmountUSD *
                                 protocolStats?.find(
                                   (stat: any) =>
@@ -3352,7 +3352,7 @@ borderWidth:'5px',
                                 (protocolStats?.find(
                                   (stat: any) =>
                                     stat?.token === currentBorrowCoin
-                                )?.borrowRate-getAprByPool(poolAprs,currentPool)) -
+                                )?.borrowRate-getAprByPool(poolAprs,currentPool,currentDapp)) -
                                 inputCollateralAmountUSD *
                                 protocolStats?.find(
                                   (stat: any) =>

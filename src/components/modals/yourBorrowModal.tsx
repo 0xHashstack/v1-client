@@ -807,18 +807,18 @@ const YourBorrowModal = ({
   //   },
   // });
   const poolAprs = useSelector(selectJediswapPoolAprs);
-  const getAprByPool = (dataArray: any[], pool: string) => {
+  const getAprByPool = (dataArray: any[], pool: string,dapp:string) => {
     const matchedObject = dataArray.find(item => {
-      if (item.name === "USDT/USDC") {
-        return item.amm === "jedi" && ("USDC/USDT" === pool);
-      } else if (item.name === "ETH/DAI") {
-        return item.amm === "jedi" && ("DAI/ETH" === pool);
+      if (item.name === "USDT/USDC" ) {
+        return item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap") && ("USDC/USDT" === pool );
+      }else if(item.name === "ETH/DAI" ) {
+        return item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap") && ("DAI/ETH" === pool );
       }
       else {
-        return item.name === pool && item.amm === "jedi";
+        return item.name === pool && item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap");
       }
     });
-
+  
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
   mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
@@ -1622,7 +1622,7 @@ const YourBorrowModal = ({
                       ((reduxProtocolStats?.find(
                         (stat: any) =>
                           stat?.token === currentBorrowMarketCoin1.slice(1)
-                      )?.borrowRate) - getAprByPool(poolAprs, currentPool)) -
+                      )?.borrowRate) - getAprByPool(poolAprs, currentPool,currentDapp)) -
                       dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                         (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                       )?.exchangeRateRtokenToUnderlying) *
@@ -2490,7 +2490,7 @@ const YourBorrowModal = ({
 
   const dapps = [
     { name: "Jediswap", status: "enable" },
-    // { name: "mySwap", status: "enable" },
+    { name: "mySwap", status: "enable" },
   ];
 
   const pools = [
@@ -4095,7 +4095,7 @@ const YourBorrowModal = ({
                                           fontWeight="thin"
                                         >
 
-                                          Pool APR: {numberFormatter(getAprByPool(poolAprs, pool))}%
+                                          Pool APR: {numberFormatter(getAprByPool(poolAprs, pool,currentDapp))}%
 
 
                                         </Box>
