@@ -520,10 +520,10 @@ const BorrowDashboard = ({
         )
         netApr = netApr + aprs;
       });
-      
+      console.log(netApr,"netapr")
       if (netApr != 0) {
         if(isNaN(netApr/Borrows?.length)){
-          dispatch(setNetAprLoans(0))
+          // dispatch(setNetAprLoans(0))
         }else{
           dispatch(setNetAprLoans((netApr / Borrows?.length).toFixed(2)))
         }
