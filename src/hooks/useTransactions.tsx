@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { useWaitForTransaction } from '@starknet-react/core';
 import useTransactionStatus from './useTransactionStatus';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectTransactionsData, setTransactionsData } from '@/store/slices/readDataSlice';
 
 const useTransactions = ({ hashes=[] }: { hashes?: string[] }) => {
     // const [status, setStatus] = useState([{}])
-    const transactionsData=useSelector(selectTransactionsData);
     const dispatch=useDispatch();
         const array=[];
         const status = [useTransactionStatus({ transactionHash:hashes[hashes.length-1] })]

@@ -20,6 +20,7 @@ import { etherToWeiBN, parseAmount } from "../utils/utils";
 import { useState } from "react";
 import { RToken } from "../interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
+import borrowTokenAbi from "../abis_mainnet/dToken_abi.json";
 // const { address } = useAccount();
 interface ResultObject{
   [key: string]: any;
@@ -60,6 +61,32 @@ export async function getrTokensMinted(rToken: any, amount: any) {
     return ans;
   } catch (err) {
    //console.log(err,"err in rewards");
+  }
+}
+export async function getMaximumDynamicLoanAmount(
+  amount:any,
+  collateralMarket:any,
+  borrowMarket:any,
+) {
+  ////console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  try {
+    const provider = getProvider();
+    const borrowToken = new Contract(borrowTokenAbi, tokenAddressMap[borrowMarket], provider);
+    const parsedAmount = etherToWeiBN(amount,collateralMarket).toString();
+    console.log(parsedAmount,"contracty")
+    const result:any = await borrowToken.call(
+      "max_loan_limit",
+      [uint256.bnToUint256(parsedAmount),tokenAddressMap[collateralMarket],tokenAddressMap[borrowMarket]],
+      { blockIdentifier: "pending" }
+    );
+    const res = parseAmount(
+      uint256.uint256ToBN(result?._get_maximum_loan_amount).toString(),
+      tokenDecimalsMap[borrowMarket]
+    );
+    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    return res;
+  } catch (err) {
+   console.log(err, "err in getMaximumDynamicDeposit");
   }
 }
 
