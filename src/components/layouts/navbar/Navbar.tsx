@@ -458,7 +458,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
           </Box>
       </Box>:<></>
         } */}
-        {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
+        {process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"  ?        <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
