@@ -1737,7 +1737,7 @@ const useDataLoader = () => {
             ////console.log("netApr", dataNetApr);
             dispatch(setNetAprLoans(0));
           } else {
-            dispatch(setNetAprLoans(dataNetAprLoans));
+            // dispatch(setNetAprLoans(dataNetAprLoans));
           }
           //@ts-ignore
           if (isNaN(dataNetAprDeposit)) {

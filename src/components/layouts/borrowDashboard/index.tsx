@@ -503,8 +503,8 @@ const BorrowDashboard = ({
     });
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
-  let netApr: number = 0;
   useEffect(() => {
+    let netApr: number = 0;
     if (Borrows?.length > 0) {
       Borrows.map((borrow: any, idx: any) => {
         let aprs = borrow?.spendType == "LIQUIDITY" ? (Number(
@@ -520,7 +520,6 @@ const BorrowDashboard = ({
         )
         netApr = netApr + aprs;
       });
-      console.log(netApr,"netapr")
       if (netApr != 0) {
         if(isNaN(netApr/Borrows?.length)){
           // dispatch(setNetAprLoans(0))
@@ -528,6 +527,8 @@ const BorrowDashboard = ({
           dispatch(setNetAprLoans((netApr / Borrows?.length).toFixed(2)))
         }
       }
+    }else {
+      dispatch(setNetAprLoans(0))
     }
   }, [avgs, poolAprs, Borrows])
   const tooltips = [
