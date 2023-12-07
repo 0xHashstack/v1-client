@@ -2235,7 +2235,7 @@ const BorrowModal = ({
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
+                      label="If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying."
                       bg="#02010F"
                       fontSize={"13px"}
                       fontWeight={"400"}
@@ -2273,7 +2273,20 @@ const BorrowModal = ({
                           />
                         </Box>
                       ) : (
-                        <Text>
+                        <Text
+                        color={Number(
+                          (-(inputBorrowAmountUSD *
+                            protocolStats?.find(
+                              (stat: any) => stat?.token === currentBorrowCoin
+                            )?.borrowRate) +
+                            inputCollateralAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) =>
+                                  stat?.token === currentCollateralCoin
+                              )?.supplyRate) /
+                            inputBorrowAmountUSD
+                        ) <0 ?"rgb(255 94 94)" : "#00D395"}
+                        >
                           {/* 5.56% */}
                           {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                           {}
@@ -2283,10 +2296,10 @@ const BorrowModal = ({
                           )?.supplyRate
                         } */}
                           {Number(
-                            (inputBorrowAmountUSD *
+                            (-(inputBorrowAmountUSD *
                               protocolStats?.find(
                                 (stat: any) => stat?.token === currentBorrowCoin
-                              )?.borrowRate -
+                              )?.borrowRate) +
                               inputCollateralAmountUSD *
                                 protocolStats?.find(
                                   (stat: any) =>
@@ -2310,14 +2323,26 @@ const BorrowModal = ({
                         />
                       </Box>
                     ) : (
-                      <Text>
+                      <Text
+                      color={(
+                        (-(inputBorrowAmountUSD *
+                          protocolStats?.find(
+                            (stat: any) => stat?.token === currentBorrowCoin
+                          )?.borrowRate) +
+                          inputCollateralAmountUSD *
+                            protocolStats?.find(
+                              (stat: any) => stat?.token === rToken.slice(1)
+                            )?.supplyRate) /
+                        inputBorrowAmountUSD
+                      )<0 ?"rgb(255 94 94)" : "#00D395"}
+                      >
                         {/* 5.56% */}
                         {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                         {(
-                          (inputBorrowAmountUSD *
+                          (-(inputBorrowAmountUSD *
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentBorrowCoin
-                            )?.borrowRate -
+                            )?.borrowRate) +
                             inputCollateralAmountUSD *
                               protocolStats?.find(
                                 (stat: any) => stat?.token === rToken.slice(1)

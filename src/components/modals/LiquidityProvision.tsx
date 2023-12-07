@@ -906,7 +906,7 @@ const LiquidityProvisionModal = ({
                                 mt="6px"
                                 fontWeight="thin"
                               >
-                                Pool APR: {numberFormatter(getAprByPool(poolApr, pool, currentSwap))}%
+                                Pool apr: {numberFormatter(getAprByPool(poolApr, pool, currentSwap))}%
                               </Box>
                             </Box>
                           </Box>
@@ -1480,7 +1480,7 @@ const LiquidityProvisionModal = ({
                       hasArrow
                       placement="right-end"
                       boxShadow="dark-lg"
-                      label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
+                      label="If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying."
                       bg="#02010F"
                       fontSize={"13px"}
                       fontWeight={"400"}
@@ -1501,19 +1501,33 @@ const LiquidityProvisionModal = ({
                   {currentPool != "Select a pool"
                     ?
                     <Text
-                      color="#676D9A"
+                      color={(((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                        (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                      )?.exchangeRateDTokenToUnderlying) *
+                        (-(reduxProtocolStats?.find(
+                          (stat: any) =>
+                            stat?.token === currentMarketCoin
+                        )?.borrowRate)) + getAprByPool(poolApr, currentPool,currentSwap)) +
+                        dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                          (val: any) => val?.token == borrow?.collateralMarket.slice(1)
+                        )?.exchangeRateRtokenToUnderlying) *
+                        reduxProtocolStats?.find(
+                          (stat: any) =>
+                            stat?.token === borrow?.collateralMarket.slice(1)
+                        )?.supplyRate) /
+                        dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices))<0 ?"rgb(255 94 94)" : "#00D395"}
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
                     >
                       {
-                    ((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                    (((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                       (val: any) => val?.token == borrow?.loanMarket.slice(1)
                     )?.exchangeRateDTokenToUnderlying) *
-                      ((reduxProtocolStats?.find(
+                      (-(reduxProtocolStats?.find(
                         (stat: any) =>
                           stat?.token === currentMarketCoin
-                      )?.borrowRate) - getAprByPool(poolApr, currentPool,currentSwap)) -
+                      )?.borrowRate)) + getAprByPool(poolApr, currentPool,currentSwap)) +
                       dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                         (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                       )?.exchangeRateRtokenToUnderlying) *
@@ -1526,7 +1540,13 @@ const LiquidityProvisionModal = ({
                       %
                     </Text> :
                     <Text
-                      color="#676D9A"
+                      color={avgs?.find(
+                        (item: any) =>
+                          item?.loanId ==
+                          currentBorrowId
+                            .slice(currentBorrowId?.indexOf("-") + 1)
+                            ?.trim()
+                      )?.avg<0 ?"rgb(255 94 94)" : "#00D395"}
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
