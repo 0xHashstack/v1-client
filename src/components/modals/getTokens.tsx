@@ -121,7 +121,6 @@ const GetTokensModal = ({
     writeAsyncGetTokens,
     isErrorGetTokens,
     isIdleGetTokens,
-    isLoadingGetTokens,
     isSuccessGetTokens,
     statusGetTokens,
   } = useGetTokens(currentSelectedCoin);
@@ -138,16 +137,12 @@ const GetTokensModal = ({
 
   useEffect(()=>{
     if(currentSelectedCoin){
-    console.log(currentSelectedCoin)
-
         handleGetToken(currentSelectedCoin);}
 
   },[currentSelectedCoin])
 
   const handleGetToken = async (coin: any) => {
     try {
-      
-      console.log(currentSelectedCoin, token,coin);
       const getTokens = await writeAsyncGetTokens();
       mixpanel.track("Get Tokens", {
         "Token Selected": coin,
