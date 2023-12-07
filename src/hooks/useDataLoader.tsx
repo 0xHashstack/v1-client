@@ -1184,7 +1184,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const data = await getUserDeposits("0x35af3fdb8aa88658c6009c3feea9315feb81beb350e2e88dc5d1797aedd6485");
+        const data = await getUserDeposits(address);
         if (!data) {
           return;
         }
