@@ -317,7 +317,7 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
       }
     );
    //console.log("split after calling");
-   //console.log("split res", loanId, res);
+  //  console.log("split res", loanId, res);
 
     ////console.log("res jedi", res);
     ////console.log(
@@ -360,7 +360,7 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
       tokenB: getTokenFromAddress(res?.token1)?.name as NativeToken,
     };
   } catch (error) {
-   
+   console.log(error,"error in myswapliquidity")
   }
 }
 

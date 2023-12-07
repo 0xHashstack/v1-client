@@ -125,9 +125,7 @@ const GetTokensModal = ({
     statusGetTokens,
   } = useGetTokens(currentSelectedCoin);
 
-  useEffect(() => {
-    setCurrentSelectedCoin(token);
-  }, [token, currentSelectedCoin]);
+  
   const dispatch = useDispatch();
   const { address } = useAccount();
   const [toastId, setToastId] = useState<any>();
@@ -137,9 +135,14 @@ const GetTokensModal = ({
     persistence: "localStorage",
   });
 
+  useEffect(()=>{
+    if(currentSelectedCoin){
+        handleGetToken(currentSelectedCoin);}
+
+  },[currentSelectedCoin])
+
   const handleGetToken = async (coin: any) => {
     try {
-      console.log(token);
       const getTokens = await writeAsyncGetTokens();
       mixpanel.track("Get Tokens", {
         "Token Selected": coin,
@@ -269,7 +272,6 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("wBTC");
                     setToken("BTC");
-                    handleGetToken("wBTC");
                   }}
                 >
                   wBTC
@@ -287,7 +289,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("wETH");
                     setToken("ETH");
-                    handleGetToken("wETH");
+                    // handleGetToken("wETH");
                   }}
                 >
                   wETH
@@ -305,7 +307,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("USDT");
                     setToken("USDT");
-                    handleGetToken("USDT");
+                    // handleGetToken("USDT");
                   }}
                 >
                   USDT
@@ -324,7 +326,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("USDC");
                     setToken("USDC");
-                    handleGetToken("USDC");
+                    // handleGetToken("USDC");
                   }}
                 >
                   USDC
@@ -343,7 +345,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("DAI");
                     setToken("DAI");
-                    handleGetToken("DAI");
+                    // handleGetToken("DAI");
                   }}
                 >
                   DAI
