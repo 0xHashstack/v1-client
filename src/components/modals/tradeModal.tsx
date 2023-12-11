@@ -130,6 +130,7 @@ const TradeModal = ({
   coin,
   borrowAPRs,
   currentBorrowAPR,
+  setCurrentBorrowAPR,
   validRTokens,
   ...restProps
 }: any) => {
@@ -713,6 +714,13 @@ const TradeModal = ({
   //   fetchMinDeposit();
   //   // setMinimumDepositAmount(2)
   // },[currentCollateralCoin])
+  const coinIndex: any = [
+    { token: "USDT", idx: 0 },
+    { token: "USDC", idx: 1 },
+    { token: "BTC", idx: 2 },
+    { token: "ETH", idx: 3 },
+    { token: "DAI", idx: 4 },
+  ];
   const handleBorrowAndSpend = async () => {
     try {
       if (currentCollateralCoin[0] != "r") {
@@ -2008,6 +2016,11 @@ const TradeModal = ({
                                     protocolStats?.[index]?.availableReserves *
                                     0.895
                                   );
+                                  setCurrentBorrowAPR(
+                                    coinIndex.find(
+                                      (curr: any) => curr?.token === coin
+                                    )?.idx
+                                  );
                                   setLoanMarket(coin);
                                   // setMarket(coin);
                                   // setMarket(coin);
@@ -2801,7 +2814,7 @@ borderWidth:'5px',
                                 fontSize="9px"
                                 color="#E6EDF3"
                                 mt="6px"
-                                fontWeight="thin"
+                                fontWeight="medium"
                                     >
                                     Pool apr: {numberFormatter(getAprByPool(poolAprs,pool,currentDapp))}%                                               
                                       </Box>
@@ -3191,7 +3204,7 @@ borderWidth:'5px',
                           />
                         </Box>
                       ) : (
-                        borrowAPRs[currentBorrowAPR] + "%"
+                        "-"+borrowAPRs[currentBorrowAPR] + "%"
                       )}
                       {/* 5.56% */}
                     </Text>

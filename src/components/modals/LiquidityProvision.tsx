@@ -904,7 +904,7 @@ const LiquidityProvisionModal = ({
                                 fontSize="9px"
                                 color="#E6EDF3"
                                 mt="6px"
-                                fontWeight="thin"
+                                fontWeight="medium"
                               >
                                 Pool apr: {numberFormatter(getAprByPool(poolApr, pool, currentSwap))}%
                               </Box>
@@ -1459,9 +1459,9 @@ const LiquidityProvisionModal = ({
                         />
                       </Box>
                     ) : getBorrowAPR(currentBorrowMarketCoin) ? (
-                      getBorrowAPR(currentBorrowMarketCoin) + "%"
+                      "-"+getBorrowAPR(currentBorrowMarketCoin) + "%"
                     ) : (
-                      getBorrowAPR(currentBorrowMarketCoin.slice(1)) + "%"
+                     "-"+ getBorrowAPR(currentBorrowMarketCoin.slice(1)) + "%"
                     )}
                     {/* 5.56% */}
                   </Text>

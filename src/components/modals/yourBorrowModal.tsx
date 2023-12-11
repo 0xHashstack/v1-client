@@ -1531,7 +1531,7 @@ const YourBorrowModal = ({
                     />
                   </Box>
                 ) : (
-                  getBorrowAPR(currentBorrowMarketCoin1.slice(1)) + "%"
+                  "-"+getBorrowAPR(currentBorrowMarketCoin1.slice(1)) + "%"
                 )}
               </Text>
             </Box>
@@ -4112,7 +4112,7 @@ const YourBorrowModal = ({
                                           fontSize="9px"
                                           color="#E6EDF3"
                                           mt="6px"
-                                          fontWeight="thin"
+                                          fontWeight="medium"
                                         >
 
                                           Pool apr: {numberFormatter(getAprByPool(poolAprs, pool,currentDapp))}%
@@ -5713,7 +5713,7 @@ const YourBorrowModal = ({
                               />
                             </Box>
                           ) : (
-                            getBorrowAPR(currentBorrowMarketCoin2.slice(1)) +
+                            "-"+getBorrowAPR(currentBorrowMarketCoin2.slice(1)) +
                             "%"
                           )}
                         </Text>

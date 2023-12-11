@@ -505,7 +505,7 @@ const BorrowDashboard = ({
   };
   useEffect(() => {
     let netApr: number = 0;
-    if (Borrows?.length > 0) {
+    if (Borrows?.length > 0 && avgs) {
       Borrows.map((borrow: any, idx: any) => {
         let aprs = borrow?.spendType == "LIQUIDITY" ? (Number(
           avgs?.find(
@@ -837,13 +837,17 @@ const BorrowDashboard = ({
                                     hasArrow
                                     label={
                                       <Box>
-                                        Exchange rate: {(reduxProtocolStats.find(
+                                        Exchange rate:  {reduxProtocolStats?.find(
                                           (val: any) => val?.token == borrow?.loanMarket.slice(1)
-                                        )?.exchangeRateDTokenToUnderlying).toFixed(4)} {borrow?.loanMarket.slice(1)} /{borrow?.loanMarket}
+                                        )?.exchangeRateDTokenToUnderlying ?(reduxProtocolStats?.find(
+                                          (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                                        )?.exchangeRateDTokenToUnderlying).toFixed(4):""} {borrow?.loanMarket.slice(1)} /{borrow?.loanMarket}
                                         <br />
-                                        Underlying Amount: {(reduxProtocolStats.find(
+                                        Underlying Amount: {reduxProtocolStats?.find(
                                           (val: any) => val?.token == borrow?.loanMarket.slice(1)
-                                        )?.exchangeRateDTokenToUnderlying * (borrow?.loanAmountParsed)).toFixed(4)} {borrow?.loanMarket.slice(1)}
+                                        )?.exchangeRateDTokenToUnderlying ? (reduxProtocolStats?.find(
+                                          (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                                        )?.exchangeRateDTokenToUnderlying * (borrow?.loanAmountParsed)).toFixed(4):""} {borrow?.loanMarket.slice(1)}
                                       </Box>
                                     }
                                     // arrowPadding={-5420}
@@ -1174,13 +1178,17 @@ const BorrowDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  Exchange rate: {(reduxProtocolStats.find(
+                                  Exchange rate: {reduxProtocolStats?.find(
                                     (val: any) => val?.token == borrow?.collateralMarket.slice(1)
-                                  )?.exchangeRateRtokenToUnderlying).toFixed(4)} {borrow?.collateralMarket.slice(1)} /{borrow?.collateralMarket}
+                                  )?.exchangeRateRtokenToUnderlying ?(reduxProtocolStats.find(
+                                    (val: any) => val?.token == borrow?.collateralMarket.slice(1)
+                                  )?.exchangeRateRtokenToUnderlying).toFixed(4):""} {borrow?.collateralMarket.slice(1)} /{borrow?.collateralMarket}
                                   <br />
-                                  Underlying Amount: {(reduxProtocolStats.find(
+                                  Underlying Amount: {reduxProtocolStats?.find(
                                     (val: any) => val?.token == borrow?.collateralMarket.slice(1)
-                                  )?.exchangeRateRtokenToUnderlying * borrow?.collateralAmountParsed).toFixed(4)} {borrow?.collateralMarket.slice(1)}
+                                  )?.exchangeRateRtokenToUnderlying ?(reduxProtocolStats.find(
+                                    (val: any) => val?.token == borrow?.collateralMarket.slice(1)
+                                  )?.exchangeRateRtokenToUnderlying * borrow?.collateralAmountParsed).toFixed(4):""} {borrow?.collateralMarket.slice(1)}
                                 </Box>
                               }
                               // arrowPadding={-5420}
@@ -1545,7 +1553,7 @@ const BorrowDashboard = ({
                                     (val: any) => val?.token == borrow?.loanMarket.slice(1)
                                   )?.exchangeRateDTokenToUnderlying *
                                     dollarConvertor(borrow.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)) >= 0 ? "$" : "-$" :
-                                  borrow.spendType == "LIQUIDITY" ? (dollarConvertor(allSplit?.[lower_bound + idx]?.amountA, allSplit?.[lower_bound + idx]?.tokenA, oraclePrices) + dollarConvertor(allSplit?.[lower_bound + idx]?.amountB, allSplit?.[lower_bound + idx]?.tokenB, oraclePrices)) - dollarConvertor(borrow.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) * reduxProtocolStats.find(
+                                  borrow.spendType == "LIQUIDITY" ? (dollarConvertor(allSplit?.[lower_bound + idx]?.amountA, allSplit?.[lower_bound + idx]?.tokenA, oraclePrices) + dollarConvertor(allSplit?.[lower_bound + idx]?.amountB, allSplit?.[lower_bound + idx]?.tokenB, oraclePrices)) - dollarConvertor(borrow.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) * reduxProtocolStats?.find(
                                     (val: any) => val?.token == borrow?.loanMarket.slice(1)
                                   )?.exchangeRateDTokenToUnderlying >= 0 ? "$" : "-$" :
                                     borrow.spendType == "SWAP" ? dollarConvertor(borrow.currentLoanAmountParsed, borrow?.currentLoanMarket, oraclePrices) - dollarConvertor(borrow.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) * reduxProtocolStats.find(

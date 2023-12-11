@@ -2204,7 +2204,7 @@ const BorrowModal = ({
                       />
                     </Box>
                   ) : (
-                    `${borrowAPRs[currentBorrowAPR]}%`
+                    `-${borrowAPRs[currentBorrowAPR]}%`
                   )}
                   {/* 5.56% */}
                 </Text>

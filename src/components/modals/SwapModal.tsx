@@ -1162,7 +1162,7 @@ const SwapModal = ({
                       />
                     </Box>
                   ) : (
-                    getBorrowAPR(currentBorrowMarketCoin) + "%"
+                    "-"+getBorrowAPR(currentBorrowMarketCoin) + "%"
                   )}
                   {/* 5.56% */}
                 </Text>
