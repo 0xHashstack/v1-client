@@ -246,7 +246,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
     if ((account && !isCorrectNetwork())) {
         setRender(false);
     } else {
-      if(!userWhitelisted){
+      if(!userWhitelisted && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"){
         setRender(false);
       }else{
         setRender(true);
