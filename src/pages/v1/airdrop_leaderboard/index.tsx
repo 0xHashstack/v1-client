@@ -177,7 +177,6 @@ const Campaign = () => {
     const fetchDetails=async()=>{
       if(address){
         const res=await axios.get(`https://hstk.fi/api/temp-allocation/${address}`)
-        console.log(res?.data,"data")
         setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
         setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
         setepoch(res?.data?.communityInfo?.latestEpoch);
@@ -247,7 +246,6 @@ const Campaign = () => {
   // }, [account, UserLoans]);
   const totalBorrow = useSelector(selectYourBorrow);
   const totalSupply=useSelector(selectYourSupply);
-  console.log(totalBorrow,totalSupply,"it")
   const netAPR = useSelector(selectNetAPR);
   const [campaignSelected, setCampaignSelected] = useState(2);
   const [tabValue, setTabValue] = useState(1);
