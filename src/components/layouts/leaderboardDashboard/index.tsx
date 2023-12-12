@@ -334,9 +334,9 @@ const LeaderboardDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  Points Allocated: {member.pointsAllocated ? member?.pointsAllocated : 0}
+                                  Points Allocated: {member.pointsAllocated ? numberFormatter(member?.pointsAllocated) : 0}
                                   <br />
-                                  Points Estimated: {member.pointsEstimated ? member?.pointsEstimated : 0}
+                                  Points Estimated: {member.pointsEstimated ? numberFormatter(member?.pointsEstimated) : 0}
                                 </Box>
                               }
                               // arrowPadding={-5420}
@@ -358,7 +358,7 @@ const LeaderboardDashboard = ({
                             // mt="28px"
                             >
                               <Text>
-                                {member.netPoints}
+                                {numberFormatter(member.netPoints)}
                               </Text>
                             </Tooltip>
                           </Text>
@@ -388,7 +388,7 @@ const LeaderboardDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  HASH Allocated: {member.hashAllocated ? member?.hashAllocated:0}
+                                  HASH Allocated: {member.hashAllocated ? numberFormatter(member?.hashAllocated):0}
                                   <br />
                                   HASH Estimated: {member.estimatedHash ? numberFormatter(member?.estimatedHash) :0}
                                 </Box>
