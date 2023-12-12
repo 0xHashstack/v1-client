@@ -179,7 +179,17 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   return (
     <div>
       <Button onClick={onOpen} {...restProps}>
-        {buttonText}
+      <Image
+                src={"/transferDepositDisabled.svg"}
+                alt="Picture of the author"
+                width="20"
+                height="20"
+                // style={{ cursor: Render ? "pointer" : "not-allowed" }}
+
+              />
+               <Text fontSize="14px" lineHeight="14px" color="#676D9A">
+                Transfer Deposit
+              </Text>
       </Button>
       <Portal>
         <Modal
@@ -341,6 +351,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                             fontWeight={400}
                             overflow={"hidden"}
                             textAlign={"center"}
+                            // paddingInline="0"
                           >
                             <Box
                               width="100%"
@@ -363,6 +374,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     ) : (
                       numberFormatter(totalBorrows[idx])
                     )} */}
+                    AAVE
                             </Box>
                           </Td>
                           <Td
@@ -394,6 +406,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     ) : (
                       numberFormatter(availableReserves[idx])
                     )} */}
+                    6.7%
                             </Box>
                           </Td>
                           <Td
@@ -425,6 +438,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     ) : (
                       numberFormatterPercentage(utilization[idx]) + "%"
                     )} */}
+                    9%
                             </Box>
                           </Td>
                           <Td
@@ -456,86 +470,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     ) : (
                       "-"+numberFormatterPercentage(borrowAPRs[idx]) + "%"
                     )} */}
-                            </Box>
-                          </Td>
-                          <Td
-                            width={"8%"}
-                            maxWidth={"5rem"}
-                            fontSize={"14px"}
-                            fontWeight={400}
-                            //   overflow={"hidden"}
-                            textAlign={"center"}
-                            // bgColor={"red"}
-                            // p="0 2 0 0"
-                            p={1.5}
-                          // pr={3}
-                          // pl={1}
-                          >
-                            <Box
-                              width="100%"
-                              height="100%"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              fontWeight="400"
-                              onClick={() => {
-                                setCurrentBorrowAPR(idx);
-                                setCurrentSupplyAPR(idx);
-                                setCurrentBorrowMarketCoin(coin?.name);
-                              }}
-                            // bgColor={"blue"}
-                            >
-                              {/* <BorrowModal
-                      buttonText="Borrow"
-                      height={"2rem"}
-                      fontSize={"12px"}
-                      padding="6px 12px"
-                      border="1px solid #BDBFC1"
-                      bgColor="transparent"
-                      _hover={{ bg: "white", color: "black" }}
-                      borderRadius={"6px"}
-                      color="#BDBFC1;"
-                      backGroundOverLay="rgba(244, 242, 255, 0.5)"
-                      coin={coin}
-                      borrowAPRs={borrowAPRs}
-                      currentBorrowAPR={currentBorrowAPR}
-                      setCurrentBorrowAPR={setCurrentBorrowAPR}
-                      validRTokens={validRTokens}
-                      currentBorrowMarketCoin={currentBorrowMarketCoin}
-                      protocolStats={protocolStats}
-                    /> */}
-                            </Box>
-                          </Td>
-                          <Td
-                            width={"8%"}
-                            //   maxWidth={"3rem"}
-                            fontSize={"14px"}
-                            fontWeight={400}
-                            //   overflow={"hidden"}
-                            textAlign={"center"}
-                            // bgColor={"green"}
-                            // p="0px 0px 12px 0px"
-                            p={0}
-                            pl={2}
-                          >
-                            <Box
-                              position="relative"
-                              display="inline-block"
-                              onClick={() => {
-                                setCurrentBorrowAPR(idx);
-                                setCurrentSupplyAPR(idx);
-                              }}
-                            >
-                              {/* <TradeModal
-                      coin={coin}
-                      borrowAPRs={borrowAPRs}
-                      currentBorrowAPR={currentBorrowAPR}
-                      supplyAPRs={supplyAPRs}
-                      currentSupplyAPR={currentSupplyAPR}
-                      setCurrentBorrowAPR={setCurrentBorrowAPR}
-                      validRTokens={validRTokens}
-                      currentBorrowMarketCoin={currentBorrowMarketCoin}
-                    /> */}
+                    
                             </Box>
                           </Td>
                         </Tr>

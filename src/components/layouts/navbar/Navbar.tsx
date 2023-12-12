@@ -628,33 +628,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />}
 
-           <Box
-            borderRadius="6px"
-            cursor={Render ? "pointer" :"not-allowed"}
-            margin="0"
-            height="2rem"
-            border="1px solid #676D9A"
-            // border={`0.5px solid ${
-            //   router.pathname != "/waitlist" && transferDepositHover
-            //     ? "#6e6e6e"
-            //     : "#FFF"
-            // }`}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            gap="3"
-            className="button"
-            // color="#6E6E6E"
-            color={
-              router.pathname != "/waitlist" && transferDepositHover
-                ? "#6e6e6e"
-                : "#FFF"
-            }
-            // _hover={{ color: "#010409", bgColor: "#f6f8fa" }}
-            // onMouseEnter={() => setTransferDepositHover(true)}
-            // onMouseLeave={() => setTransferDepositHover(false)}
-          >
+
              <Box
               display="flex"
               justifyContent="space-between"
@@ -662,20 +636,32 @@ const userWhitelisted=useSelector(selectWhiteListed);
               gap="8px"
               margin="6px 12px"
             >
-              <Image
-                src={"/transferDepositDisabled.svg"}
-                alt="Picture of the author"
-                width="20"
-                height="20"
-                style={{ cursor: Render ? "pointer" : "not-allowed" }}
-
+              <TransferDepositModal
+              background="transparent"
+              borderRadius="6px"
+              cursor={Render ? "pointer" :"not-allowed"}
+              margin="0"
+              height="2rem"
+              border="1px solid #676D9A"
+              // border={`0.5px solid ${
+              //   router.pathname != "/waitlist" && transferDepositHover
+              //     ? "#6e6e6e"
+              //     : "#FFF"
+              // }`}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap="3"
+              className="button"
+              // color="#6E6E6E"
+              color={
+                router.pathname != "/waitlist" && transferDepositHover
+                  ? "#6e6e6e"
+                  : "#FFF"
+              }
+              buttonText="Transfer Deposit"
               />
-               <Text fontSize="14px" lineHeight="14px" color="#676D9A">
-                {"Transfer Deposit"}
-              </Text>
-              <TransferDepositModal/>
             </Box> 
-           </Box>  
 
           <Box
             fontSize="12px"
