@@ -184,7 +184,7 @@ const Campaign = () => {
         let arr:any=[];
         arr.push({
           id: 0, start: "25th Nov", end: "8th Dec",epoch:res?.data?.userInfo?.epoch, tradders: res?.data?.userInfo?.totalReferredAddresses, liq: res?.data?.userInfo?.selfValue,supplyliq:res?.data?.userInfo?.supplyValue,borrowliq:res?.data?.userInfo?.borrowValue,referredliq:res?.data?.userInfo?.referralValue,
-          pts: res?.data?.userInfo?.totalPoints,selfpts: res?.data?.userInfo?.selfPoints,referredpts: res?.data?.userInfo?.referralPoints, est: res?.data?.userInfo?.estimatedHashTokensUser
+          pts: res?.data?.userInfo?.totalPoints,ptsAllocated:res?.data?.userInfo?.allocatedData?.pointsAllocated, selfpts: res?.data?.userInfo?.selfPoints,referredpts: res?.data?.userInfo?.referralPoints,hashAllocated:res?.data?.userInfo?.allocatedData?.hashAllocated,  est: res?.data?.userInfo?.estimatedHashTokensUser
         })
         setPersonalData(arr);
       }
