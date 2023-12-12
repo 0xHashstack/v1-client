@@ -1556,7 +1556,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const userLoans = await getUserLoans(address);
+        const userLoans = await getUserLoans("0x07ca18a73ff4f4a265d4600e4814847b4dbcfce75d346f245d906ae0838b85da");
       //  console.log(userLoans,"data user loans")
         if (!userLoans) {
           return;

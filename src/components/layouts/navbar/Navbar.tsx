@@ -61,6 +61,7 @@ import {
 
 } from "@/store/slices/readDataSlice";
 import { AccountInterface, ProviderInterface, number } from "starknet";
+import TransferDepositModal from "@/components/modals/TransferDepositModal";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
@@ -627,7 +628,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />}
 
-          {/* <Box
+           <Box
             borderRadius="6px"
             cursor={Render ? "pointer" :"not-allowed"}
             margin="0"
@@ -654,7 +655,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             // onMouseEnter={() => setTransferDepositHover(true)}
             // onMouseLeave={() => setTransferDepositHover(false)}
           >
-            {/* <Box
+             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -669,28 +670,12 @@ const userWhitelisted=useSelector(selectWhiteListed);
                 style={{ cursor: Render ? "pointer" : "not-allowed" }}
 
               />
-              {/* {router.pathname == "/waitlist" || !transferDepositHover ? (
-                <Image
-                  src={"/transferDeposit.svg"}
-                  alt="Picture of the author"
-                  width="20"
-                  height="20"
-                  style={{ cursor: "pointer" }}
-                />
-              ) : (
-                <Image
-                  src={"/transferDepositDull.svg"}
-                  alt="Picture of the author"
-                  width="20"
-                  height="20"
-                  style={{ cursor: "pointer" }}
-                />
-              )} */}
-              {/* <Text fontSize="14px" lineHeight="14px" color="#676D9A">
+               <Text fontSize="14px" lineHeight="14px" color="#676D9A">
                 {"Transfer Deposit"}
               </Text>
-            </Box>  */}
-          {/* </Box>  */}
+              <TransferDepositModal/>
+            </Box> 
+           </Box>  
 
           <Box
             fontSize="12px"
