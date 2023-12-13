@@ -1155,7 +1155,8 @@ const TradeModal = ({
         key="borrow-details"
         as="span"
         position="relative"
-        color="#4D59E8"
+        color="#B1B0B5"
+        borderBottom="1px solid #B1B0B5"
         fontSize="14px"
         width="100%"
         display="flex"
@@ -1169,9 +1170,9 @@ const TradeModal = ({
             position: "absolute",
             left: 0,
             bottom: "-0px",
-            width: "100%",
-            height: "1px",
-            backgroundColor: "#0969DA",
+            width: "0%",
+            height: "0px",
+            backgroundColor: "#B1B0B5",
           },
         }}
         onClick={() => {
@@ -1186,7 +1187,7 @@ const TradeModal = ({
           onOpen();
         }}
       >
-        Trade
+        Spend
       </Text>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
 

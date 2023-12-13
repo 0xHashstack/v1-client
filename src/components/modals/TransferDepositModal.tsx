@@ -22,6 +22,8 @@ import {
   HStack,
   useMediaQuery,
   Portal,
+  VStack,
+  Stack,
 } from "@chakra-ui/react";
 import TransactionFees from "../../../TransactionFees.json";
 import TickIcon from "@/assets/icons/tickIcon";
@@ -179,17 +181,17 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   return (
     <div>
       <Button onClick={onOpen} {...restProps}>
-      <Image
-                src={"/transferDepositDisabled.svg"}
-                alt="Picture of the author"
-                width="20"
-                height="20"
-                // style={{ cursor: Render ? "pointer" : "not-allowed" }}
+        <Image
+          src={"/transferDepositDisabled.svg"}
+          alt="Picture of the author"
+          width="20"
+          height="20"
+        // style={{ cursor: Render ? "pointer" : "not-allowed" }}
 
-              />
-               <Text fontSize="14px" lineHeight="14px" color="#676D9A">
-                Transfer Deposit
-              </Text>
+        />
+        <Text fontSize="14px" lineHeight="14px" color="#676D9A">
+          Transfer Deposit
+        </Text>
       </Button>
       <Portal>
         <Modal
@@ -228,13 +230,17 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                 mt="-1.5"
               >
                 <Text color="#F0F0F5" fontSize="14px" fontStyle="normal" fontWeight="400">
-                  You currently have active deposits on Dapp 1, Dapp 2, Dapp 3 equating to USD $ XXXX in cumulative value, earning a cumulative of x% in supply apr. When you migrate these deposits to Hashstack, you earn y% more yield on your supply and an additional 10% of supply apr as bonus. That’s not all, Hashstack will reward you x USDT. This will be deposited on your behalf into the protocol. Terms & conditions apply.
+                  You currently have active deposits on Dapp 1, Dapp 2, Dapp 3 
+                  equating to USD $ XXXX in cumulative value, earning a cumulative of x% in supply apr. 
+                  When you migrate these deposits to Hashstack, you earn y% more yield on your supply and an additional 10% of supply apr as bonus. 
+                  That’s not all, Hashstack will reward you x USDT. This will be deposited on your behalf into the protocol. 
+                  Terms & conditions apply.
                 </Text>
               </Box>
-              <Box width="100%" display="flex" alignItems="flex-end" justifyContent="flex-end" cursor="pointer" onClick={()=>{
+              <Box width="99%" display="flex"  justifyContent="flex-end" cursor="pointer"  onClick={() => {
                 seteditSelected(!editSelected)
               }}>
-                {!editSelected ?<PenIconDisabled/>:<PenIcon />}
+                {!editSelected ? <PenIconDisabled /> : <PenIcon />}
               </Box>
               <TableContainer
                 borderRadius="6px"
@@ -332,33 +338,60 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                             textAlign="left"
                           // bgColor={"red"}
                           >
-                            <HStack gap="10px">
-                              <Box height="32px" width="32px">
-                                <Image
-                                  src={`/${coin?.name}.svg`}
-                                  alt="Picture of the author"
-                                  width="32"
-                                  height="32"
-                                />
+
+                            <Stack display="flex" flexDirection="row" alignItems="">
+                              { editSelected &&<Checkbox
+                                size="md"
+                                colorScheme="customPurple"
+                                defaultChecked
+                                borderColor="#2B2F35"
+                              // isDisabled={transactionStarted == true}
+                              // // disabledColor="red"
+
+                              // // _disabled={{
+                              // //   colorScheme:"black",
+                              // //   cursor: "pointer",
+                              // //   iconColor: "black",
+                              // //   bg: "black",
+                              // // }}
+                              // onChange={() => {
+                              //   setIsChecked(!ischecked);
+                              // }}
+                              />}
+                              <Box display="flex" flexDirection="column">
+                                <Box height="18px" width="16px" display="flex" alignItems="center">
+                                  <Image
+                                    src={`/${coin?.name}.svg`}
+                                    alt="Picture of the author"
+                                    width="14"
+                                    height="14"
+                                  />
+                                  <Text fontSize="14px" ml="1" color="#F7BB5B" >
+                                    0.000
+                                  </Text>
+                                </Box>
+                                <Text fontSize="12px" ml="0.5">
+                                  Supply
+                                </Text>
                               </Box>
-                              <Text fontSize="14px">{(coin?.name == "BTC" || coin?.name == "ETH") ? "w" + coin?.name : coin?.name}</Text>
-                            </HStack>
+                            </Stack>
                           </Td>
                           <Td
                             width={"17%"}
                             maxWidth={"3rem"}
                             fontSize={"14px"}
+                            padding="0"
                             fontWeight={400}
                             overflow={"hidden"}
                             textAlign={"center"}
-                            // paddingInline="0"
+                          // paddingInline="0"
                           >
                             <Box
                               width="100%"
                               height="100%"
                               display="flex"
                               alignItems="center"
-                              justifyContent="center"
+                              justifyContent="flex-end"
                               fontWeight="400"
                             // bgColor={"blue"}
                             >
@@ -374,7 +407,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     ) : (
                       numberFormatter(totalBorrows[idx])
                     )} */}
-                    AAVE
+                              AAVE
                             </Box>
                           </Td>
                           <Td
@@ -383,6 +416,8 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                             fontSize={"14px"}
                             fontWeight={400}
                             overflow={"hidden"}
+                            padding="0"
+                            pr="1"
                             textAlign={"center"}
                           >
                             <Box
@@ -390,7 +425,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                               height="100%"
                               display="flex"
                               alignItems="center"
-                              justifyContent="center"
+                              justifyContent="flex-end"
                               fontWeight="400"
                             // bgColor={"blue"}
                             >
@@ -406,7 +441,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     ) : (
                       numberFormatter(availableReserves[idx])
                     )} */}
-                    6.7%
+                              6.7%
                             </Box>
                           </Td>
                           <Td
@@ -422,7 +457,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                               height="100%"
                               display="flex"
                               alignItems="center"
-                              justifyContent="center"
+                              justifyContent="flex-end"
                               fontWeight="400"
                             // bgColor={"blue"}
                             >
@@ -438,39 +473,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     ) : (
                       numberFormatterPercentage(utilization[idx]) + "%"
                     )} */}
-                    9%
-                            </Box>
-                          </Td>
-                          <Td
-                            width={"15%"}
-                            maxWidth={"3rem"}
-                            fontSize={"14px"}
-                            fontWeight={400}
-                            overflow={"hidden"}
-                            textAlign={"center"}
-                          >
-                            <Box
-                              width="100%"
-                              height="100%"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              fontWeight="400"
-                            // bgColor={"blue"}
-                            >
-                              {/* {checkGap(idx1, idx2)} */}
-                              {/* {borrowAPRs[idx]==null ? (
-                      <Skeleton
-                        width="6rem"
-                        height="1.4rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />
-                    ) : (
-                      "-"+numberFormatterPercentage(borrowAPRs[idx]) + "%"
-                    )} */}
-                    
+                              9%
                             </Box>
                           </Td>
                         </Tr>
@@ -479,7 +482,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                             position: "absolute",
                             height: "1px",
                             borderWidth: "0",
-                            backgroundColor: "#2b2f35",
+                            backgroundColor: "rgba(103, 109, 154, 0.30)",
                             width: "100%",
                             // left: "1.75%",
                             display: `${idx == Coins.length - 1 ? "none" : "block"}`,

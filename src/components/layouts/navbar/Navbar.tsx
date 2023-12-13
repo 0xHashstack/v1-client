@@ -532,6 +532,12 @@ const userWhitelisted=useSelector(selectWhiteListed);
               )}
 
               <Text fontSize="14px" >Airdrop</Text>
+              <Box bg="#F7BB5B" height="20px" width="50px" textAlign="center"  lineHeight="20px"
+              clipPath="polygon(100% 0%, 10% 0%, 0% 50%, 10% 100%, 100% 100%)" fontSize="14px" fontWeight="400" color="#000"
+              >
+                NEW
+              </Box>
+
             </Box>
         </Box>:""}
         {/* <Box
@@ -681,7 +687,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             <Box
               // backgroundColor="#2DA44E"
               display="flex"
-              border="1px solid var(--secondary, #00D395)"
+              border="1px solid #676D9A"
               borderRadius="6px"
               flexDirection="row"
               paddingY="6px"
