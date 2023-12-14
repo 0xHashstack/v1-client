@@ -3205,7 +3205,7 @@ borderWidth:'5px',
                           />
                         </Box>
                       ) : (
-                        "-"+borrowAPRs[currentBorrowAPR] + "%"
+                        borrowAPRs[currentBorrowAPR] + "%"
                       )}
                       {/* 5.56% */}
                     </Text>
