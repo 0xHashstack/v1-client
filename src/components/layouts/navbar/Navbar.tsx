@@ -532,8 +532,8 @@ const userWhitelisted=useSelector(selectWhiteListed);
               )}
 
               <Text fontSize="14px" >Airdrop</Text>
-              <Box bg="#F7BB5B" height="20px" width="50px" textAlign="center"  lineHeight="20px"
-              clipPath="polygon(100% 0%, 10% 0%, 0% 50%, 10% 100%, 100% 100%)" fontSize="14px" fontWeight="400" color="#000"
+              <Box bg="#F7BB5B" height="18px" width="45px" textAlign="center"  lineHeight="18px"
+              clipPath="polygon(110% 0%, 10% 0%, 0% 50%, 10% 100%, 110% 100%)" fontSize="12px" fontWeight="400" color="#000" borderRightRadius="4px"
               >
                 NEW
               </Box>
@@ -634,7 +634,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />}
 
-
+{/* 
              <Box
               display="flex"
               justifyContent="space-between"
@@ -667,7 +667,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
               }
               buttonText="Transfer Deposit"
               />
-            </Box> 
+            </Box>  */}
 
           <Box
             fontSize="12px"

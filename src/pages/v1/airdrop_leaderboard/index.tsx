@@ -177,7 +177,6 @@ const Campaign = () => {
     const fetchDetails=async()=>{
       if(address){
         const res=await axios.get(`https://hstk.fi/api/temp-allocation/${address}`)
-        console.log(res?.data,"data")
         setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
         setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
         setepoch(res?.data?.communityInfo?.latestEpoch);
@@ -185,7 +184,7 @@ const Campaign = () => {
         let arr:any=[];
         arr.push({
           id: 0, start: "25th Nov", end: "8th Dec",epoch:res?.data?.userInfo?.epoch, tradders: res?.data?.userInfo?.totalReferredAddresses, liq: res?.data?.userInfo?.selfValue,supplyliq:res?.data?.userInfo?.supplyValue,borrowliq:res?.data?.userInfo?.borrowValue,referredliq:res?.data?.userInfo?.referralValue,
-          pts: res?.data?.userInfo?.totalPoints,selfpts: res?.data?.userInfo?.selfPoints,referredpts: res?.data?.userInfo?.referralPoints, est: res?.data?.userInfo?.estimatedHashTokensUser
+          pts: res?.data?.userInfo?.totalPoints,ptsAllocated:res?.data?.userInfo?.allocatedData?.pointsAllocated, selfpts: res?.data?.userInfo?.selfPoints,referredpts: res?.data?.userInfo?.referralPoints,hashAllocated:res?.data?.userInfo?.allocatedData?.hashAllocated,  est: res?.data?.userInfo?.estimatedHashTokensUser
         })
         setPersonalData(arr);
       }
@@ -247,7 +246,6 @@ const Campaign = () => {
   // }, [account, UserLoans]);
   const totalBorrow = useSelector(selectYourBorrow);
   const totalSupply=useSelector(selectYourSupply);
-  console.log(totalBorrow,totalSupply,"it")
   const netAPR = useSelector(selectNetAPR);
   const [campaignSelected, setCampaignSelected] = useState(2);
   const [tabValue, setTabValue] = useState(1);
@@ -406,7 +404,7 @@ useEffect(()=>{
               p="18px 26px"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               borderRadius="8px"
-              gap="7.3rem"
+              gap="6.3rem"
             >
               <VStack
                 display="flex"
@@ -476,7 +474,8 @@ useEffect(()=>{
                         endColor="#2B2F35"
                         borderRadius="6px"
                       />:                <Text color="#e6edf3" fontSize="20px">
-                      {numberFormatter(communityHash).substring(0,1)}{numberFormatter(communityHash).substring(5,)} HASH
+                        11.25M HASH
+                      {/* {numberFormatter(communityHash).substring(0,1)}{numberFormatter(communityHash).substring(5,)} HASH */}
                       </Text>}
 
               </VStack>
