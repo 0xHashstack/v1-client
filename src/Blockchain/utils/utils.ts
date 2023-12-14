@@ -130,19 +130,18 @@ export const etherToWeiBN = (amount: number, tokenName: Token) => {
     return 0;
   }
   ////console.log("amount", amount);
-  // try {
-    const factor = new BigNumber(1000000);
+  try {
+    const factor = new BigNumber(10000000000000000000);
   const amountBN = new BigNumber(amount).times(factor)
     .times(new BigNumber(10).exponentiatedBy(decimals))
     .dividedBy(new BigNumber(factor));
   return amountBN;
-  // }
-  // catch(e) {
-  //   console.warn("etherToWeiBN fails with error: ", e);
-  //   return amount;
-  // }
+  }
+  catch(e) {
+    console.warn("etherToWeiBN fails with error: ", e);
+    return amount;
+  }
 };
-
 export const weiToEtherNumber = (amount: string, tokenName: Token) => {
   const decimals = tokenDecimalsMap[tokenName];
   if (!decimals) {

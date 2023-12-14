@@ -95,6 +95,7 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectNftBalance, selectProtocolStats, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
 import { getFees, getMaximumDepositAmount, getMinimumDepositAmount, getNFTBalance, getNFTMaxAmount } from "@/Blockchain/scripts/Rewards";
 import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
+import { get_user_holding_zklend } from "@/Blockchain/scripts/liquidityMigration";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -748,6 +749,13 @@ const SupplyModal = ({
     setinputAmount(0);
     setSliderValue(0);
   }, [currentSelectedCoin]);
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const data=await get_user_holding_zklend("0x05970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4")
+    }
+    fetchData()
+  },[])
 
   return (
     <div>

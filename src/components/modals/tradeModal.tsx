@@ -130,6 +130,7 @@ const TradeModal = ({
   coin,
   borrowAPRs,
   currentBorrowAPR,
+  setCurrentBorrowAPR,
   validRTokens,
   ...restProps
 }: any) => {
@@ -168,6 +169,7 @@ const TradeModal = ({
     writeAsyncBorrowAndSpend,
     isErrorBorrowAndSpend,
     isIdleBorrowAndSpend,
+    isSuccessBorrowAndSpend,
     statusBorrowAndSpend,
 
     dataBorrowAndSpendRToken,
@@ -176,6 +178,7 @@ const TradeModal = ({
     writeAsyncBorrowAndSpendRToken,
     isErrorBorrowAndSpendRToken,
     isIdleBorrowAndSpendRToken,
+    isSuccessBorrowAndSpendRToken,
     statusBorrowAndSpendRToken,
   } = useBorrowAndSpend();
 
@@ -709,6 +712,13 @@ const TradeModal = ({
   //   fetchMinDeposit();
   //   // setMinimumDepositAmount(2)
   // },[currentCollateralCoin])
+  const coinIndex: any = [
+    { token: "USDT", idx: 0 },
+    { token: "USDC", idx: 1 },
+    { token: "BTC", idx: 2 },
+    { token: "ETH", idx: 3 },
+    { token: "DAI", idx: 4 },
+  ];
   const handleBorrowAndSpend = async () => {
     try {
       if (currentCollateralCoin[0] != "r") {
@@ -1143,7 +1153,8 @@ const TradeModal = ({
         key="borrow-details"
         as="span"
         position="relative"
-        color="#4D59E8"
+        color="#B1B0B5"
+        borderBottom="1px solid #B1B0B5"
         fontSize="14px"
         width="100%"
         display="flex"
@@ -1157,9 +1168,9 @@ const TradeModal = ({
             position: "absolute",
             left: 0,
             bottom: "-0px",
-            width: "100%",
-            height: "1px",
-            backgroundColor: "#0969DA",
+            width: "0%",
+            height: "0px",
+            backgroundColor: "#B1B0B5",
           },
         }}
         onClick={() => {
@@ -1174,7 +1185,7 @@ const TradeModal = ({
           onOpen();
         }}
       >
-        Trade
+        Spend
       </Text>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
 
@@ -2004,6 +2015,11 @@ const TradeModal = ({
                                     protocolStats?.[index]?.availableReserves *
                                     0.895
                                   );
+                                  setCurrentBorrowAPR(
+                                    coinIndex.find(
+                                      (curr: any) => curr?.token === coin
+                                    )?.idx
+                                  );
                                   setLoanMarket(coin);
                                   // setMarket(coin);
                                   // setMarket(coin);
@@ -2797,9 +2813,9 @@ borderWidth:'5px',
                                 fontSize="9px"
                                 color="#E6EDF3"
                                 mt="6px"
-                                fontWeight="thin"
+                                fontWeight="medium"
                                     >
-                                    Pool APR: {numberFormatter(getAprByPool(poolAprs,pool,currentDapp))}%                                               
+                                    Pool apr: {numberFormatter(getAprByPool(poolAprs,pool,currentDapp))}%                                               
                                       </Box>
                                 </Box>
                               </Box>
@@ -3187,7 +3203,7 @@ borderWidth:'5px',
                           />
                         </Box>
                       ) : (
-                        borrowAPRs[currentBorrowAPR] + "%"
+                        "-"+borrowAPRs[currentBorrowAPR] + "%"
                       )}
                       {/* 5.56% */}
                     </Text>
@@ -3218,7 +3234,7 @@ borderWidth:'5px',
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
+                          label="If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying."
                           bg="#02010F"
                           fontSize={"13px"}
                           fontWeight={"400"}
@@ -3256,7 +3272,19 @@ borderWidth:'5px',
                             </Box>
                           ) : (
                             currentPool=="Select a pool" ?
-                            <Text color="#676D9A">
+                            <Text color={Number(
+                              (-(inputBorrowAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate) +
+                                inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentCollateralCoin
+                                )?.supplyRate) /
+                              inputBorrowAmountUSD
+                            )<0 ?"rgb(255 94 94)" : "#00D395"}>
                               {/* 5.56% */}
                               {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                               { }
@@ -3266,11 +3294,11 @@ borderWidth:'5px',
                           )?.supplyRate
                         } */}
                               {Number(
-                                (inputBorrowAmountUSD *
+                                (-(inputBorrowAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentBorrowCoin
-                                  )?.borrowRate -
+                                  )?.borrowRate) +
                                   inputCollateralAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
@@ -3279,7 +3307,19 @@ borderWidth:'5px',
                                 inputBorrowAmountUSD
                               ).toFixed(2)}%
                             </Text>
-                            :                            <Text color="#676D9A">
+                            :                            <Text color={Number(
+                              ((-(inputBorrowAmountUSD *
+                                (protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
+                                inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentCollateralCoin
+                                )?.supplyRate) /
+                              inputCollateralAmountUSD)
+                            )<0 ? "rgb(255 94 94)" : "#00D395"}>
                             {/* 5.56% */}
                             {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                             { }
@@ -3289,11 +3329,11 @@ borderWidth:'5px',
                         )?.supplyRate
                       } */}
                             {Number(
-                              ((inputBorrowAmountUSD *
+                              ((-(inputBorrowAmountUSD *
                                 (protocolStats?.find(
                                   (stat: any) =>
                                     stat?.token === currentBorrowCoin
-                                )?.borrowRate-getAprByPool(poolAprs,currentPool,currentDapp)) -
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
                                 inputCollateralAmountUSD *
                                 protocolStats?.find(
                                   (stat: any) =>
@@ -3318,15 +3358,27 @@ borderWidth:'5px',
                             </Box>
                           ) : (
                             currentPool=="Select a pool" ?
-                            <Text>
+                            <Text color={Number(
+                              (-(inputBorrowAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate) +
+                                inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === rToken.slice(1)
+                                )?.supplyRate) /
+                              inputBorrowAmountUSD
+                            )<0 ? "rgb(255 94 94)" : "#00D395"}>
                               {/* 5.56% */}
                               {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                               {Number(
-                                (inputBorrowAmountUSD *
+                                (-(inputBorrowAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentBorrowCoin
-                                  )?.borrowRate -
+                                  )?.borrowRate) +
                                   inputCollateralAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
@@ -3340,15 +3392,27 @@ borderWidth:'5px',
                             )?.supplyRate
                           } */}
                             </Text>
-                            : <Text>
+                            : <Text color={Number(
+                              ((inputBorrowAmountUSD *
+                                (-protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
+                                inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === rToken.slice(1)
+                                )?.supplyRate) /
+                              inputCollateralAmountUSD
+                            )<0 ?"rgb(255 94 94)" : "#00D395" }>
                             {/* 5.56% */}
                             {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                             {Number(
-                              (inputBorrowAmountUSD *
-                                (protocolStats?.find(
+                              ((inputBorrowAmountUSD *
+                                (-protocolStats?.find(
                                   (stat: any) =>
                                     stat?.token === currentBorrowCoin
-                                )?.borrowRate-getAprByPool(poolAprs,currentPool,currentDapp)) -
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
                                 inputCollateralAmountUSD *
                                 protocolStats?.find(
                                   (stat: any) =>

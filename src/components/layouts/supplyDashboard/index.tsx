@@ -520,7 +520,7 @@ const SupplyDashboard = ({
                           </HStack>
                           <Tooltip
                             hasArrow
-                            label={`Underlying Amount: ${(reduxProtocolStats.find(
+                            label={`Underlying Amount: ${(reduxProtocolStats?.find(
                               (val: any) => val?.token == supply?.rToken.slice(1)
                             )?.exchangeRateRtokenToUnderlying * (supply?.rTokenAmountParsed + supply?.rTokenStakedParsed)).toFixed(4)} ${supply?.rToken.slice(1)}`}
                             // arrowPadding={-5420}
