@@ -5,20 +5,25 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  Slider,
-  SliderMark,
-  SliderTrack,
-  SliderFilledTrack,
+
   ModalBody,
   ModalCloseButton,
   Card,
-  Text,
   Checkbox,
   Tooltip,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Td,
+  TableContainer,
+  Text,
   Box,
-  NumberInput,
-  NumberInputField,
+  HStack,
+  useMediaQuery,
   Portal,
+  VStack,
+  Stack,
 } from "@chakra-ui/react";
 import TransactionFees from "../../../TransactionFees.json";
 import TickIcon from "@/assets/icons/tickIcon";
@@ -40,6 +45,7 @@ import {
   setInputSupplyAmount,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
 import {
   setModalDropdown,
   selectModalDropDowns,
@@ -49,6 +55,23 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AaveLogo from "@/assets/icons/coins/aave";
 import CompoundLogo from "@/assets/icons/coins/compound";
 import { useRouter } from "next/router";
+import PenIcon from "@/assets/icons/penIcon";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import PenIconDisabled from "@/assets/icons/penIconDisabled";
+
+export interface ICoin {
+  name: string;
+  symbol: string;
+  icon: string;
+}
+
+export const Coins: ICoin[] = [
+  { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },
+  { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" },
+  { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
+  { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
+  { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
+];
 
 const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -65,7 +88,10 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const router = useRouter();
-
+  const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
+  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
+  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
+  const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -99,6 +125,14 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
         break;
     }
   };
+
+  const columnItems = [
+    "Market",
+    "Dapp",
+    "Current yield",
+    "Hashstack yield",
+  ];
+
   ////console.log(inputAmount);
 
   //This Function handles the modalDropDowns
@@ -106,7 +140,14 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
     dispatch(setModalDropdown(dropdownName));
   };
-
+  const tooltips = [
+    "Available markets.",
+    "The number of tokens that are currently borrowed from the protocol.",
+    "The number of tokens that can be borrowed from the protocol.",
+    "Represents how much of a pool has been borrowed",
+    "The annual interest rate charged on borrowed funds from the protocol.",
+  ];
+  const [editSelected, seteditSelected] = useState(false)
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
@@ -140,7 +181,17 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   return (
     <div>
       <Button onClick={onOpen} {...restProps}>
-        {buttonText}
+        <Image
+          src={"/transferDepositDisabled.svg"}
+          alt="Picture of the author"
+          width="20"
+          height="20"
+        // style={{ cursor: Render ? "pointer" : "not-allowed" }}
+
+        />
+        <Text fontSize="14px" lineHeight="14px" color="#676D9A">
+          Transfer Deposit
+        </Text>
       </Button>
       <Portal>
         <Modal
@@ -151,10 +202,11 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
           }}
           size={{ width: "700px", height: "100px" }}
           isCentered
+          scrollBehavior="inside"
         >
           <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
           <ModalContent
-            bg="#010409"
+            background="var(--Base_surface, #02010F)"
             color="white"
             borderRadius="md"
             maxW="462px"
@@ -173,560 +225,282 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
             </ModalHeader>
             <ModalCloseButton mt="1rem" mr="1rem" />
             <ModalBody>
-              <Card
-                bg="#101216"
+              <Box
                 mb="0.5rem"
-                p="1rem"
-                border="1px solid #2B2F35"
                 mt="-1.5"
               >
-                <Text color="#8B949E" display="flex" alignItems="center">
-                  <Text
-                    mr="0.3rem"
-                    fontSize="12px"
-                    fontStyle="normal"
-                    fontWeight="400"
-                  >
-                    Select Protocol
-                  </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="all the assets to the market"
-                    bg="#24292F"
-                    fontSize={"smaller"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
+                <Text color="#F0F0F5" fontSize="14px" fontStyle="normal" fontWeight="400">
+                  You currently have active deposits on Dapp 1, Dapp 2, Dapp 3 
+                  equating to USD $ XXXX in cumulative value, earning a cumulative of x% in supply apr. 
+                  When you migrate these deposits to Hashstack, you earn y% more yield on your supply and an additional 10% of supply apr as bonus. 
+                  That’s not all, Hashstack will reward you x USDT. This will be deposited on your behalf into the protocol. 
+                  Terms & conditions apply.
                 </Text>
-                <Box
-                  display="flex"
-                  border="1px"
-                  borderColor="#2B2F35"
-                  justifyContent="space-between"
-                  py="2"
-                  pl="3"
-                  pr="3"
-                  mb="1rem"
-                  mt="0.3rem"
-                  borderRadius="md"
-                  className="navbar"
-                  cursor="pointer"
-                  onClick={() =>
-                    handleDropdownClick("transferDepositProtocolDropdown")
-                  }
-                >
-                  <Box display="flex" gap="1">
-                    <Box p="1">{getCoin(currentProtocol)}</Box>
-                    <Text color="white">{currentProtocol}</Text>
-                  </Box>
-
-                  <Box pt="1" className="navbar-button">
-                    <DropdownUp />
-                  </Box>
-                  {modalDropdowns.transferDepositProtocolDropdown && (
-                    <Box
-                      w="full"
-                      left="0"
-                      bg="#03060B"
-                      py="2"
-                      className="dropdown-container"
-                      boxShadow="dark-lg"
-                    >
-                      {protocols.map((protocol, index) => {
-                        return (
-                          <Box
-                            key={index}
-                            as="button"
-                            w="full"
-                            display="flex"
-                            alignItems="center"
-                            gap="1"
-                            pr="2"
-                            onClick={() => {
-                              setcurrentProtocol(protocol);
-                              //   dispatch(setCoinSelectedSupplyModal(protocol));
-                            }}
-                          >
-                            {protocol === currentProtocol && (
-                              <Box
-                                w="3px"
-                                h="28px"
-                                bg="#0C6AD9"
-                                borderRightRadius="md"
-                              ></Box>
-                            )}
-                            <Box
-                              w="full"
-                              display="flex"
-                              py="5px"
-                              px={`${protocol === currentProtocol ? "1" : "5"}`}
-                              gap="1"
-                              bg={`${
-                                protocol === currentProtocol
-                                  ? "#0C6AD9"
-                                  : "inherit"
-                              }`}
-                              borderRadius="md"
-                            >
-                              <Box p="1">{getCoin(protocol)}</Box>
-                              <Text color="white">{protocol}</Text>
-                            </Box>
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                  )}
-                </Box>
-                <Text color="#8B949E" display="flex" alignItems="center">
-                  <Text
-                    mr="0.3rem"
-                    fontSize="12px"
-                    fontStyle="normal"
-                    fontWeight="400"
-                  >
-                    Supply Market
-                  </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="all the assets to the market"
-                    bg="#24292F"
-                    fontSize={"smaller"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
-                </Text>
-                <Box
-                  display="flex"
-                  border="1px"
-                  borderColor="#2B2F35"
-                  justifyContent="space-between"
-                  py="2"
-                  pl="3"
-                  pr="3"
-                  mb="1rem"
-                  mt="0.3rem"
-                  borderRadius="md"
-                  className="navbar"
-                  cursor="pointer"
-                  onClick={() =>
-                    handleDropdownClick("transferDepostMarketDropdown")
-                  }
-                >
-                  <Box display="flex" gap="1">
-                    <Box p="1">{getCoin(currentSelectedCoin)}</Box>
-                    <Text color="white">{currentSelectedCoin}</Text>
-                  </Box>
-
-                  <Box pt="1" className="navbar-button">
-                    <DropdownUp />
-                  </Box>
-                  {modalDropdowns.transferDepostMarketDropdown && (
-                    <Box
-                      w="full"
-                      left="0"
-                      bg="#03060B"
-                      py="2"
-                      className="dropdown-container"
-                      boxShadow="dark-lg"
-                    >
-                      {coins.map((coin: string, index: number) => {
-                        return (
-                          <Box
-                            key={index}
-                            as="button"
-                            w="full"
-                            display="flex"
-                            alignItems="center"
-                            gap="1"
-                            pr="2"
-                            onClick={() => {
-                              setCurrentSelectedCoin(coin);
-                              dispatch(setCoinSelectedSupplyModal(coin));
-                            }}
-                          >
-                            {coin === currentSelectedCoin && (
-                              <Box
-                                w="3px"
-                                h="28px"
-                                bg="#0C6AD9"
-                                borderRightRadius="md"
-                              ></Box>
-                            )}
-                            <Box
-                              w="full"
-                              display="flex"
-                              py="5px"
-                              px={`${coin === currentSelectedCoin ? "1" : "5"}`}
-                              gap="1"
-                              bg={`${
-                                coin === currentSelectedCoin
-                                  ? "#0C6AD9"
-                                  : "inherit"
-                              }`}
-                              borderRadius="md"
-                            >
-                              <Box p="1">{getCoin(coin)}</Box>
-                              <Text color="white">{coin}</Text>
-                            </Box>
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                  )}
-                </Box>
-                <Text color="#8B949E" display="flex" alignItems="center">
-                  <Text
-                    mr="0.3rem"
-                    fontSize="12px"
-                    fontStyle="normal"
-                    fontWeight="400"
-                  >
-                    Amount
-                  </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="all the assets to the market"
-                    bg="#24292F"
-                    fontSize={"smaller"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
-                </Text>
-                <Box
-                  width="100%"
-                  color="white"
-                  border={`${
-                    inputAmount > walletBalance
-                      ? "1px solid #CF222E"
-                      : inputAmount < 0
-                      ? "1px solid #CF222E"
-                      : isNaN(inputAmount)
-                      ? "1px solid #CF222E"
-                      : inputAmount > 0 && inputAmount <= walletBalance
-                      ? "1px solid #1A7F37"
-                      : "1px solid #2B2F35 "
-                  }`}
-                  borderRadius="6px"
-                  display="flex"
-                  justifyContent="space-between"
-                  mt="0.3rem"
-                >
-                  <NumberInput
-                    border="0px"
-                    min={0}
-                    keepWithinRange={true}
-                    onChange={handleChange}
-                    value={inputAmount ? inputAmount : ""}
-                    outline="none"
-                    precision={1}
-                    step={parseFloat(`${inputAmount <= 99999 ? 0.1 : 0}`)}
-                  >
-                    <NumberInputField
-                      placeholder={`0.01536 ${currentSelectedCoin}`}
-                      color={`${
-                        inputAmount > walletBalance
-                          ? "#CF222E"
-                          : isNaN(inputAmount)
-                          ? "#CF222E"
-                          : inputAmount < 0
-                          ? "#CF222E"
-                          : inputAmount == 0
-                          ? "white"
-                          : "#1A7F37"
-                      }`}
-                      border="0px"
-                      _placeholder={{
-                        color: "#393D4F",
-                        fontSize: ".89rem",
-                        fontWeight: "600",
-                        outline: "none",
-                      }}
-                      _focus={{
-                        outline: "0",
-                        boxShadow: "none",
-                      }}
-                    />
-                  </NumberInput>
-                  <Button
-                    variant="ghost"
-                    color="#0969DA"
-                    _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
-                    onClick={() => {
-                      setinputAmount(walletBalance);
-                      setSliderValue(100);
-                      dispatch(setInputSupplyAmount(walletBalance));
-                    }}
-                  >
-                    MAX
-                  </Button>
-                </Box>
-                {inputAmount > walletBalance ||
-                inputAmount < 0 ||
-                isNaN(inputAmount) ? (
-                  <Text
-                    display="flex"
-                    justifyContent="space-between"
-                    color="#E6EDF3"
-                    mt="0.4rem"
-                    fontSize="12px"
-                    fontWeight="500"
-                    fontStyle="normal"
-                    fontFamily="Inter"
-                  >
-                    <Text color="#CF222E" display="flex">
-                      <Text mt="0.2rem">
-                        <SmallErrorIcon />{" "}
-                      </Text>
-                      <Text ml="0.3rem">
-                        {inputAmount > walletBalance
-                          ? "Amount exceeds balance"
-                          : "Invalid Input"}
-                      </Text>
-                    </Text>
-                    <Text
-                      color="#E6EDF3"
-                      display="flex"
-                      justifyContent="flex-end"
-                    >
-                      Aave Balance: {walletBalance}
-                      <Text color="#6E7781" ml="0.2rem">
-                        {` ${currentSelectedCoin}`}
-                      </Text>
-                    </Text>
-                  </Text>
-                ) : (
-                  <Text
-                    color="#E6EDF3"
-                    display="flex"
-                    justifyContent="flex-end"
-                    mt="0.4rem"
-                    fontSize="12px"
-                    fontWeight="500"
-                    fontStyle="normal"
-                    fontFamily="Inter"
-                  >
-                    Aave Balance: {walletBalance}
-                    <Text color="#6E7781" ml="0.2rem">
-                      {` ${currentSelectedCoin}`}
-                    </Text>
-                  </Text>
-                )}
-                <Box pt={5} pb={2} mt="0.9rem">
-                  <Slider
-                    aria-label="slider-ex-6"
-                    defaultValue={sliderValue}
-                    value={sliderValue}
-                    onChange={(val) => {
-                      setSliderValue(val);
-                      var ans = (val / 100) * walletBalance;
-                      ans = Math.round(ans * 100) / 100;
-                      dispatch(setInputSupplyAmount(ans));
-                      setinputAmount(ans);
-                    }}
-                    focusThumbOnChange={false}
-                  >
-                    <SliderMark value={sliderValue}>
-                      <Box
-                        position="absolute"
-                        bottom="-8px"
-                        left="-11px"
-                        zIndex="1"
-                      >
-                        <SliderTooltip />
-                        <Text
-                          position="absolute"
-                          color="black"
-                          top="7px"
-                          left={
-                            sliderValue !== 100
-                              ? sliderValue >= 10
-                                ? "15%"
-                                : "25%"
-                              : "8%"
-                          }
-                          fontSize=".58rem"
-                          fontWeight="bold"
-                          textAlign="center"
-                        >
-                          {sliderValue}%
-                        </Text>
-                      </Box>
-                    </SliderMark>
-                    <SliderTrack bg="#3E415C">
-                      <SliderFilledTrack bg="white" w={`${sliderValue}`} />
-                    </SliderTrack>
-                  </Slider>
-                </Box>
-              </Card>
-              <Checkbox
-                defaultChecked
-                mt="0.7rem"
-                w="410px"
-                size="md"
-                iconSize="1rem"
-                _focus={{ boxShadow: "none" }}
-                borderColor="#2B2F35"
+              </Box>
+              <Box width="99%" display="flex"  justifyContent="flex-end" cursor="pointer"  onClick={() => {
+                seteditSelected(!editSelected)
+              }}>
+                {!editSelected ? <PenIconDisabled /> : <PenIcon />}
+              </Box>
+              <TableContainer
+                borderRadius="6px"
+                backgroundColor="rgba(103, 109, 154, 0.10)"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                color="white"
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                // bgColor={"yellow"}
+                height={"100%"}
+                paddingX={isLargerThan1280 ? "1rem" : "1rem"}
+                pt={"1.7rem"}
+                mt="1rem"
+                // pb={"0.5rem"}
+                overflowX="hidden"
               >
-                <Text
-                  fontSize="10.5px"
-                  color="#6E7681"
-                  fontStyle="normal"
-                  fontWeight="400"
-                  lineHeight="20px"
-                >
-                  Ticking would stake the received rTokens unchecking
-                  wouldn&apos;t stake rTokens
-                </Text>
-              </Checkbox>
+                <Table variant="unstyled" width="100%" height="100%">
+                  <Thead width={"100%"} height={"2.7rem"}>
+                    <Tr width={"100%"}>
+                      {columnItems.map((val, idx) => (
+                        <Td
+                          key={idx}
+                          // width={`${gap2[idx]}%`}
+                          // maxWidth={`${gap[idx1][idx2]}%`}
+                          fontSize={"12px"}
+                          fontWeight={400}
+                          // border="1px solid blue"
+                          padding={0}
+                        >
+                          <Text
+                            whiteSpace="pre-wrap"
+                            overflowWrap="break-word"
+                            //   bgColor={"red"}
+                            width={"100%"}
+                            height={"2rem"}
+                            // textAlign="center"
+                            textAlign={idx == 0 ? "left" : "center"}
+                            color={"#BDBFC1"}
+                            padding={0}
+                            pl={idx == 0 ? 0 : 14}
+                          >
+                            <Tooltip
+                              hasArrow
+                              label={tooltips[idx]}
+                              placement={
+                                (idx === 0 && "bottom-start") ||
+                                (idx === columnItems.length - 1 && "bottom-end") ||
+                                "bottom"
+                              }
+                              rounded="md"
+                              boxShadow="dark-lg"
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                            // maxW="222px"
+                            // mt="28px"
+                            >
+                              {val}
+                            </Tooltip>
+                          </Text>
+                        </Td>
+                      ))}
+                    </Tr>
+                  </Thead>
+                  <Tbody
+                    position="relative"
+                    overflowX="hidden"
+                  //   display="flex"
+                  //   flexDirection="column"
+                  //   gap={"1rem"}
+                  >
+                    {Coins?.map((coin, idx) => (
+                      <>
+                        <Tr
+                          key={idx}
+                          width={"100%"}
+                          height={"5rem"}
+                          // bgColor="blue"
+                          // borderBottom="1px solid #2b2f35"
+                          position="relative"
+                        >
+                          <Td
+                            width={"14%"}
+                            // maxWidth={`${gap[idx1][idx2]}%`}
+                            fontSize={"12px"}
+                            fontWeight={400}
+                            padding={0}
+                            textAlign="left"
+                          // bgColor={"red"}
+                          >
 
-              <Card bg="#101216" mt="1rem" p="1rem" border="1px solid #2B2F35">
-                <Text
-                  display="flex"
-                  justifyContent="space-between"
-                  fontSize="12px"
-                  mb="0.4rem"
-                >
-                  <Text display="flex" alignItems="center">
-                    <Text
-                      mr="0.2rem"
-                      font-style="normal"
-                      font-weight="400"
-                      font-size="12px"
-                      lineHeight="16px"
-                      color="#6A737D"
-                    >
-                      Fees:
-                    </Text>
-                    <Tooltip
-                      hasArrow
-                      placement="right"
-                      boxShadow="dark-lg"
-                      label="all the assets to the market"
-                      bg="#24292F"
-                      fontSize={"smaller"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                    >
-                      <Box>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  </Text>
-                  <Text
-                    font-style="normal"
-                    font-weight="400"
-                    font-size="12px"
-                    color="#6A737D"
-                  >
-                    {TransactionFees.convertToBorrowMarket}%
-                  </Text>
+                            <Stack display="flex" flexDirection="row" alignItems="">
+                              { editSelected &&<Checkbox
+                                size="md"
+                                colorScheme="customPurple"
+                                defaultChecked
+                                borderColor="#2B2F35"
+                              // isDisabled={transactionStarted == true}
+                              // // disabledColor="red"
+
+                              // // _disabled={{
+                              // //   colorScheme:"black",
+                              // //   cursor: "pointer",
+                              // //   iconColor: "black",
+                              // //   bg: "black",
+                              // // }}
+                              // onChange={() => {
+                              //   setIsChecked(!ischecked);
+                              // }}
+                              />}
+                              <Box display="flex" flexDirection="column">
+                                <Box height="18px" width="16px" display="flex" alignItems="center">
+                                  <Image
+                                    src={`/${coin?.name}.svg`}
+                                    alt="Picture of the author"
+                                    width="14"
+                                    height="14"
+                                  />
+                                  <Text fontSize="14px" ml="1" color="#F7BB5B" >
+                                    0.000
+                                  </Text>
+                                </Box>
+                                <Text fontSize="12px" ml="0.5">
+                                  Supply
+                                </Text>
+                              </Box>
+                            </Stack>
+                          </Td>
+                          <Td
+                            width={"17%"}
+                            maxWidth={"3rem"}
+                            fontSize={"14px"}
+                            padding="0"
+                            fontWeight={400}
+                            overflow={"hidden"}
+                            textAlign={"center"}
+                          // paddingInline="0"
+                          >
+                            <Box
+                              width="100%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="flex-end"
+                              fontWeight="400"
+                            // bgColor={"blue"}
+                            >
+                              {/* {checkGap(idx1, idx2)} */}
+                              {/* {totalBorrows[idx]==null ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.4rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      numberFormatter(totalBorrows[idx])
+                    )} */}
+                              AAVE
+                            </Box>
+                          </Td>
+                          <Td
+                            width={"17%"}
+                            maxWidth={"3rem"}
+                            fontSize={"14px"}
+                            fontWeight={400}
+                            overflow={"hidden"}
+                            padding="0"
+                            pr="1"
+                            textAlign={"center"}
+                          >
+                            <Box
+                              width="100%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="flex-end"
+                              fontWeight="400"
+                            // bgColor={"blue"}
+                            >
+                              {/* {checkGap(idx1, idx2)} */}
+                              {/* {availableReserves[idx]==null ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.4rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      numberFormatter(availableReserves[idx])
+                    )} */}
+                              6.7%
+                            </Box>
+                          </Td>
+                          <Td
+                            width={"15%"}
+                            maxWidth={"3rem"}
+                            fontSize={"14px"}
+                            fontWeight={400}
+                            overflow={"hidden"}
+                            textAlign={"center"}
+                          >
+                            <Box
+                              width="100%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="flex-end"
+                              fontWeight="400"
+                            // bgColor={"blue"}
+                            >
+                              {/* {checkGap(idx1, idx2)} */}
+                              {/* {utilization[idx]==null ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.4rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      numberFormatterPercentage(utilization[idx]) + "%"
+                    )} */}
+                              9%
+                            </Box>
+                          </Td>
+                        </Tr>
+                        <Tr
+                          style={{
+                            position: "absolute",
+                            height: "1px",
+                            borderWidth: "0",
+                            backgroundColor: "rgba(103, 109, 154, 0.30)",
+                            width: "100%",
+                            // left: "1.75%",
+                            display: `${idx == Coins.length - 1 ? "none" : "block"}`,
+                          }}
+                        />
+                      </>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+              <Box display="flex" mt="1rem">
+                <Text fontSize="14px" fontWeight="400" lineHeight="22px" color="#F0F0F5">
+                  Don’t see one of your positions?
                 </Text>
-                {/* <Text
-                  color="#8B949E"
-                  display="flex"
-                  justifyContent="space-between"
-                  fontSize="12px"
-                  mb="0.4rem"
-                >
-                  <Text display="flex" alignItems="center">
-                    <Text
-                      mr="0.2rem"
-                      font-style="normal"
-                      font-weight="400"
-                      font-size="12px"
-                      color="#6A737D"
-                    >
-                      Gas estimate:
-                    </Text>
-                    <Tooltip
-                      hasArrow
-                      placement="right"
-                      boxShadow="dark-lg"
-                      label="all the assets to the market"
-                      bg="#24292F"
-                      fontSize={"smaller"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                    >
-                      <Box>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  </Text>
-                  <Text
-                    font-style="normal"
-                    font-weight="400"
-                    font-size="12px"
-                    color="#6A737D"
-                  >
-                    $ 0.50
-                  </Text>
-                </Text> */}
-                <Text
-                  color="#8B949E"
-                  display="flex"
-                  justifyContent="space-between"
-                  fontSize="12px"
-                >
-                  <Text display="flex" alignItems="center">
-                    <Text
-                      mr="0.2rem"
-                      font-style="normal"
-                      font-weight="400"
-                      font-size="12px"
-                      color="#6A737D"
-                    >
-                      Supply apr:
-                    </Text>
-                    <Tooltip
-                      hasArrow
-                      placement="right"
-                      boxShadow="dark-lg"
-                      label="all the assets to the market"
-                      bg="#24292F"
-                      fontSize={"smaller"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                    >
-                      <Box>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  </Text>
-                  <Text
-                    font-style="normal"
-                    font-weight="400"
-                    font-size="12px"
-                    color="#6A737D"
-                  >
-                    5.56%
-                  </Text>
+                <Text fontSize="14px" fontWeight="400" lineHeight="22px" color="#4D59E8" ml="1" cursor="pointer">
+                  Get help.
                 </Text>
-              </Card>
+              </Box>
               {inputAmount > 0 && inputAmount <= walletBalance ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
@@ -734,15 +508,14 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                   <ErrorButton errorText="Copy error!" />
                 ) : (
                   <AnimatedButton
-                    bgColor="#101216"
-                    // bgColor="red"
-                    // p={0}
-                    color="#8B949E"
+                    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                    color="#6E7681"
                     size="sm"
                     width="100%"
                     mt="1.5rem"
                     mb="1.5rem"
-                    border="1px solid #8B949E"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                    _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                     labelSuccessArray={[
                       "Deposit Amount approved",
                       "Successfully transferred to Hashstacks supply vault.",
@@ -774,13 +547,13 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                 )
               ) : (
                 <Button
-                  bg="#101216"
-                  color="#6E7681"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                  color="#EDEEFC"
                   size="sm"
                   width="100%"
                   mt="1.5rem"
                   mb="1.5rem"
-                  border="1px solid #2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                   _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                 >
                   Transfer Deposit

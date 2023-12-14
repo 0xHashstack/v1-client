@@ -307,7 +307,6 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
 
   try {
     const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
-   //console.log("split before calling");
     const res = await l3Contract.call(
       "get_myswap_estimated_liqA_liqB_from_lp",
       // [liquidity, pairAddress],
@@ -317,7 +316,6 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
       }
     );
    //console.log("split after calling");
-   //console.log("split res", loanId, res);
 
     ////console.log("res jedi", res);
     ////console.log(
@@ -360,7 +358,7 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
       tokenB: getTokenFromAddress(res?.token1)?.name as NativeToken,
     };
   } catch (error) {
-   
+   console.log(error,"er in myswapsplit")
   }
 }
 

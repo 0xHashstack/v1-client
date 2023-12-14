@@ -61,6 +61,7 @@ import {
 
 } from "@/store/slices/readDataSlice";
 import { AccountInterface, ProviderInterface, number } from "starknet";
+import TransferDepositModal from "@/components/modals/TransferDepositModal";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
@@ -531,6 +532,12 @@ const userWhitelisted=useSelector(selectWhiteListed);
               )}
 
               <Text fontSize="14px" >Airdrop</Text>
+              <Box bg="#F7BB5B" height="18px" width="45px" textAlign="center"  lineHeight="18px"
+              clipPath="polygon(110% 0%, 10% 0%, 0% 50%, 10% 100%, 110% 100%)" fontSize="12px" fontWeight="400" color="#000" borderRightRadius="4px"
+              >
+                NEW
+              </Box>
+
             </Box>
         </Box>:""}
         {/* <Box
@@ -627,70 +634,40 @@ const userWhitelisted=useSelector(selectWhiteListed);
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />}
 
-          {/* <Box
-            borderRadius="6px"
-            cursor={Render ? "pointer" :"not-allowed"}
-            margin="0"
-            height="2rem"
-            border="1px solid #676D9A"
-            // border={`0.5px solid ${
-            //   router.pathname != "/waitlist" && transferDepositHover
-            //     ? "#6e6e6e"
-            //     : "#FFF"
-            // }`}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            gap="3"
-            className="button"
-            // color="#6E6E6E"
-            color={
-              router.pathname != "/waitlist" && transferDepositHover
-                ? "#6e6e6e"
-                : "#FFF"
-            }
-            // _hover={{ color: "#010409", bgColor: "#f6f8fa" }}
-            // onMouseEnter={() => setTransferDepositHover(true)}
-            // onMouseLeave={() => setTransferDepositHover(false)}
-          >
-            {/* <Box
+{/* 
+             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
               gap="8px"
               margin="6px 12px"
             >
-              <Image
-                src={"/transferDepositDisabled.svg"}
-                alt="Picture of the author"
-                width="20"
-                height="20"
-                style={{ cursor: Render ? "pointer" : "not-allowed" }}
-
+              <TransferDepositModal
+              background="transparent"
+              borderRadius="6px"
+              cursor={Render ? "pointer" :"not-allowed"}
+              margin="0"
+              height="2rem"
+              border="1px solid #676D9A"
+              // border={`0.5px solid ${
+              //   router.pathname != "/waitlist" && transferDepositHover
+              //     ? "#6e6e6e"
+              //     : "#FFF"
+              // }`}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap="3"
+              className="button"
+              // color="#6E6E6E"
+              color={
+                router.pathname != "/waitlist" && transferDepositHover
+                  ? "#6e6e6e"
+                  : "#FFF"
+              }
+              buttonText="Transfer Deposit"
               />
-              {/* {router.pathname == "/waitlist" || !transferDepositHover ? (
-                <Image
-                  src={"/transferDeposit.svg"}
-                  alt="Picture of the author"
-                  width="20"
-                  height="20"
-                  style={{ cursor: "pointer" }}
-                />
-              ) : (
-                <Image
-                  src={"/transferDepositDull.svg"}
-                  alt="Picture of the author"
-                  width="20"
-                  height="20"
-                  style={{ cursor: "pointer" }}
-                />
-              )} */}
-              {/* <Text fontSize="14px" lineHeight="14px" color="#676D9A">
-                {"Transfer Deposit"}
-              </Text>
             </Box>  */}
-          {/* </Box>  */}
 
           <Box
             fontSize="12px"
@@ -710,7 +687,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             <Box
               // backgroundColor="#2DA44E"
               display="flex"
-              border="1px solid var(--secondary, #00D395)"
+              border="1px solid #676D9A"
               borderRadius="6px"
               flexDirection="row"
               paddingY="6px"

@@ -1162,7 +1162,7 @@ const SwapModal = ({
                       />
                     </Box>
                   ) : (
-                    getBorrowAPR(currentBorrowMarketCoin) + "%"
+                    "-"+getBorrowAPR(currentBorrowMarketCoin) + "%"
                   )}
                   {/* 5.56% */}
                 </Text>
@@ -1181,7 +1181,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right-end"
                     boxShadow="dark-lg"
-                    label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
+                    label="If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying."
                     bg="#02010F"
                     fontSize={"13px"}
                     fontWeight={"400"}
@@ -1199,7 +1199,13 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#676D9A"
+                  color={avgs?.find(
+                    (item: any) =>
+                      item?.loanId ==
+                      currentBorrowId
+                        .slice(currentBorrowId?.indexOf("-") + 1)
+                        ?.trim()
+                  )?.avg<0 ?"rgb(255 94 94)" : "#00D395"}
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"

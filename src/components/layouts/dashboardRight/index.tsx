@@ -337,7 +337,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      numberFormatterPercentage(borrowAPRs[idx]) + "%"
+                      "-"+numberFormatterPercentage(borrowAPRs[idx]) + "%"
                     )}
                   </Box>
                 </Td>
@@ -415,6 +415,7 @@ const DashboardRight = ({
                       currentBorrowAPR={currentBorrowAPR}
                       supplyAPRs={supplyAPRs}
                       currentSupplyAPR={currentSupplyAPR}
+                      setCurrentBorrowAPR={setCurrentBorrowAPR}
                       validRTokens={validRTokens}
                       currentBorrowMarketCoin={currentBorrowMarketCoin}
                     />

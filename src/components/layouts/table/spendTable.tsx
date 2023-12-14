@@ -152,6 +152,7 @@ const SpendTable = () => {
   }
 
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
+  const [currentBorrowData, setcurrentBorrowData] = useState()
   const [borrowIds, setBorrowIds] = useState([]);
   const [currentId, setCurrentId] = useState("");
   const [currentMarketCoin, setCurrentMarketCoin] = useState("");
@@ -327,7 +328,7 @@ const SpendTable = () => {
   const tooltips = [
     "A unique ID number assigned to a specific borrow within the protocol.",
     "The token you had borrowed from the protocol.",
-    "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
+    "If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying.",
     "Loan-to-Value ratio is the proportion of loan amount to collateral value in protocol.",
     "Loan risk metric comparing collateral value to borrowed amount to check potential liquidation.",
   ];
@@ -497,6 +498,7 @@ const SpendTable = () => {
                         // bgColor="green"
                         onClick={() => {
                           setSelectedDapp("trade");
+                          setcurrentBorrowData(borrow)
                           setCurrentBorrow(borrow.loanId);
                           setBorrowAmount(borrow.currentLoanAmountParsed);
                           setCurrentId("ID - " + borrow.loanId);
@@ -861,6 +863,7 @@ const SpendTable = () => {
                     <LiquidityProvisionModal
                       borrowIDCoinMap={borrowIDCoinMap}
                       coins={coins}
+                      borrow={currentBorrowData}
                       borrowIds={borrowIds}
                       currentId={currentId}
                       currentMarketCoin={currentMarketCoin}

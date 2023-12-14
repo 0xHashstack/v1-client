@@ -404,7 +404,7 @@ useEffect(()=>{
               p="18px 26px"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               borderRadius="8px"
-              gap="7.3rem"
+              gap="6.3rem"
             >
               <VStack
                 display="flex"
@@ -474,7 +474,8 @@ useEffect(()=>{
                         endColor="#2B2F35"
                         borderRadius="6px"
                       />:                <Text color="#e6edf3" fontSize="20px">
-                      {numberFormatter(communityHash).substring(0,1)}{numberFormatter(communityHash).substring(5,)} HASH
+                        11.25M HASH
+                      {/* {numberFormatter(communityHash).substring(0,1)}{numberFormatter(communityHash).substring(5,)} HASH */}
                       </Text>}
 
               </VStack>
@@ -647,7 +648,7 @@ useEffect(()=>{
                 Epoch -
               </Text>
               <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                &nbsp;2/4
+                &nbsp;{epoch}/4
               </Text>
               </Box>
               <Box display="flex">
@@ -655,7 +656,7 @@ useEffect(()=>{
                 Snapshot -
               </Text>
               <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                &nbsp;0/6
+                &nbsp;{snapshotNumber}/6
               </Text>
               </Box>
             </Box>

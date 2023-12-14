@@ -321,7 +321,11 @@ export async function effectivAPRLoan(
     let collateralInterest =
       collateralAmountUsd * marketInfoCollateralMarket?.supplyRate;
 
-    let effectiveAPR = (borrowInterest - collateralInterest) / loanAmountUsd;
+    let effectiveAPR = (-borrowInterest + collateralInterest) / loanAmountUsd;
+    let effectiveAprPool=(-borrowInterest+collateralInterest)/collateralAmountUsd;
+    if(loan?.spendType=="LIQUIDITY"){
+      return effectiveAprPool?.toFixed(2);
+    }
     return effectiveAPR?.toFixed(2);
   }
 }

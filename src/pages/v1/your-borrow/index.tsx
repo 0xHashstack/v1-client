@@ -29,7 +29,7 @@ const YourBorrow = () => {
     "Effective APR",
     "Collateral",
     "Spend status",
-    "Return",
+    "Current ROE",
     "Health Factor",
     "",
   ];
@@ -157,7 +157,7 @@ const YourBorrow = () => {
                 borderRadius="6px"
               />
             ) : (
-              <Text color="#e6edf3" fontSize="20px">
+              <Text color={Number(netAPR)<0 ?"rgb(255 94 94)": Number(netAPR)==0 ?"white":"#00D395"} fontSize="20px">
                 {netAPR && !Number.isNaN(netAPR) ? `${netAPR}%` : "NA"}
               </Text>
             )}

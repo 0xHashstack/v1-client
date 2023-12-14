@@ -8,6 +8,7 @@ import supplyABI from "../abis_mainnet/supply_abi.json";
 import governorAbi from "../abis_mainnet/governor_abi.json";
 import comptrollerAbi from "../abis_mainnet/comptroller_abi.json";
 import nftAbi from "../abis_mainnet/nft_soul_abi.json";
+import borrowTokenAbi from "../abis_mainnet/dToken_abi.json";
 import {
   diamondAddress,
   getProvider,
@@ -293,6 +294,35 @@ export async function getMaximumLoanAmount(
     return res;
   } catch (err) {
    //console.log(err, "err in getMaximumDeposit");
+  }
+}
+export async function getMaximumDynamicLoanAmount(
+  amount:any,
+  borrowMarket:any,
+  collateralMarket:any,
+) {
+  ////console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  try {
+    const provider = getProvider();
+    const borrowToken = new Contract(borrowTokenAbi, tokenAddressMap["d"+borrowMarket], provider);
+    const parsedAmount = etherToWeiBN(amount,borrowMarket).toString();
+    const result = await borrowToken.call(
+      "max_loan_limit",
+      [[parsedAmount,0],tokenAddressMap[borrowMarket],tokenAddressMap[collateralMarket]],
+      { blockIdentifier: "pending" }
+    );
+    const res = parseAmount(
+      uint256.uint256ToBN(result?.max_loan_limit).toString(),
+      tokenDecimalsMap[borrowMarket]
+    );
+    // const res = parseAmount(
+    //   uint256.uint256ToBN(result?._get_maximum_loan_amount).toString(),
+    //   tokenDecimalsMap[dToken]
+    // );
+    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    return res;
+  } catch (err) {
+   console.log(err, "err in getMaximumDynamicDeposit");
   }
 }
 export async function getMinimumLoanAmount(
