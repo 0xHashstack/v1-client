@@ -51,8 +51,8 @@ import { HStack, VStack } from "@chakra-ui/react";
 import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
-import { useAccount } from "@starknet-react/core";
-import { selectYourBorrow, selectNetAPR, selectExistingLink, selectInteractedAddress } from "@/store/slices/readDataSlice";
+import { useAccount} from "@starknet-react/core";
+import { selectYourBorrow, selectNetAPR, selectExistingLink, selectInteractedAddress, selectYourSupply } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
@@ -64,6 +64,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import CopyIcon from "@/assets/icons/copyIcon";
+import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 const Campaign = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItemsLeaderBoard = [
@@ -167,18 +168,21 @@ const Campaign = () => {
   const [communityHash, setCommunityHash] = useState()
   const [communityPoints, setCommunityPoints] = useState()
   const [personalData, setPersonalData] = useState([])
+  const [epoch, setepoch] = useState(1)
+  const [snapshotNumber, setSnapshotNumber] = useState(0)
   const interactedAddress=useSelector(selectInteractedAddress)
   useEffect(()=>{
     const fetchDetails=async()=>{
       if(address){
         const res=await axios.get(`https://hstk.fi/api/temp-allocation/${address}`)
-        console.log(res?.data)
         setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
         setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
+        setepoch(res?.data?.communityInfo?.latestEpoch);
+        setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber)
         let arr:any=[];
         arr.push({
           id: 0, start: "25th Nov", end: "8th Dec",epoch:res?.data?.userInfo?.epoch, tradders: res?.data?.userInfo?.totalReferredAddresses, liq: res?.data?.userInfo?.selfValue,supplyliq:res?.data?.userInfo?.supplyValue,borrowliq:res?.data?.userInfo?.borrowValue,referredliq:res?.data?.userInfo?.referralValue,
-          pts: res?.data?.userInfo?.totalPoints,selfpts: res?.data?.userInfo?.selfPoints,referredpts: res?.data?.userInfo?.referralPoints, est: res?.data?.userInfo?.estimatedHashTokensUser
+          pts: res?.data?.userInfo?.totalPoints,ptsAllocated:res?.data?.userInfo?.allocatedData?.pointsAllocated, selfpts: res?.data?.userInfo?.selfPoints,referredpts: res?.data?.userInfo?.referralPoints,hashAllocated:res?.data?.userInfo?.allocatedData?.hashAllocated,  est: res?.data?.userInfo?.estimatedHashTokensUser
         })
         setPersonalData(arr);
       }
@@ -194,7 +198,7 @@ const Campaign = () => {
       fetchLeaderBoardData();
     }catch(err){
       console.log(err);
-  }
+    }
 
   },[])
 
@@ -239,6 +243,7 @@ const Campaign = () => {
   //   }
   // }, [account, UserLoans]);
   const totalBorrow = useSelector(selectYourBorrow);
+  const totalSupply=useSelector(selectYourSupply);
   const netAPR = useSelector(selectNetAPR);
   const [campaignSelected, setCampaignSelected] = useState(2);
   const [tabValue, setTabValue] = useState(1);
@@ -249,7 +254,11 @@ const Campaign = () => {
 
     }
     else {
-      setRefferal(e.target.value);
+      if(totalBorrow==0 && totalSupply==0){
+        return;
+      }else{
+        setRefferal(e.target.value);
+      }
     }
   }
   const handleCopyClick = async () => {
@@ -257,7 +266,7 @@ const Campaign = () => {
       if (exisitingLink) {
         await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + exisitingLink);
       } else {
-        if(interactedAddress==true){
+        if(totalBorrow>0 || totalSupply>0){
           await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + refferal);
           axios.post((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/shorten" : 'https://hstk.fi/shorten'), { pseudo_name: refferal, address: address })
             .then((response) => {
@@ -266,15 +275,12 @@ const Campaign = () => {
             .catch((error) => {
               console.error('Error:', error);
             });
-        }else{
-          toast.error('Perform a transaction to be able to generate referral link',{
-            position: toast.POSITION.BOTTOM_RIGHT,
-          })
+          }
         }
-      }
-      toast.success("Copied", {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      })
+        toast.success("Copied", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        })
+
     } catch (error: any) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -282,9 +288,9 @@ const Campaign = () => {
       console.error('Failed to copy text: ', error);
     }
   };
-  const startDate = new Date('2023-11-26'); 
+  const startDate = new Date('2023-11-27'); 
 const endDate = new Date(startDate);
-endDate.setDate(startDate.getDate() + 56); 
+endDate.setDate(startDate.getDate() + 55); 
 
 // Function to update the days left
 const [daysLeft, setDaysLeft] = useState<number>(56)
@@ -321,8 +327,8 @@ useEffect(()=>{
                   Your Referral Link
                 </Text>
                     <Box display="flex" mt="0">
-                    <InputGroup width="550px" mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="5.3rem" >
-                    <InputLeftAddon height="80px" fontSize="20px"  border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
+                    <InputGroup  width="550px" mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="5.3rem" >
+                    <InputLeftAddon  height="80px" fontSize="20px"  border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
                     {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"https://testnet.hstk.fi/":"https://hstk.fi/"}
                     </InputLeftAddon>
                     {exisitingLink ?
@@ -331,11 +337,12 @@ useEffect(()=>{
                         boxShadow: "none",
                       }}
                       onChange={handleChange}
-                      />:<Input fontSize="20px"   height="80px" border="none" color="#F0F0F5" value={refferal} paddingInlineStart="0" _focus={{
+                      />:<Input fontSize="20px"   height="80px" border="none" color="#F0F0F5" value={totalBorrow==0 && totalSupply==0 ? "****": refferal} paddingInlineStart="0" _focus={{
                         outline: "0",
                         boxShadow: "none",
                       }}
                       onChange={handleChange}
+                      
                       />
                 }
                     </InputGroup>
@@ -348,9 +355,37 @@ useEffect(()=>{
                         </CopyToClipboard>
                     </Box>
                     </Box>
+                    {(totalBorrow==0 && totalSupply==0) ?
+                    <Box
+                    display="flex"
+                    bg="#222766"
+                    p="4"
+                    border="1px solid #3841AA"
+                    fontStyle="normal"
+                    fontWeight="400"
+                    lineHeight="18px"
+                    borderRadius="6px"
+                    color="#B1B0B5" fontSize="14px" letterSpacing="-0.15px" mt="0.3rem"
+                    // textAlign="center"
+                  >
+                    <Box pr="3" mt="0.5" cursor="pointer">
+                      <BlueInfoIcon />
+                    </Box>
+                    To generate your referral link, you must supply a min of $25, or borrow $100.
+                    {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                  </Box>
+                    :
                     <Box color="#676D9A" fontSize="14px" fontStyle="normal" fontWeight="500" lineHeight="20px" letterSpacing="-0.15px" mt="0.3rem">
                     You can change this link only once
                     </Box>
+                  }
                 </Box>
                 <HStack mt="2.5rem" display="flex" flexDirection="column" alignItems="flex-start" >
                   <Box>
@@ -367,7 +402,7 @@ useEffect(()=>{
               p="18px 26px"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               borderRadius="8px"
-              gap="7.3rem"
+              gap="6.3rem"
             >
               <VStack
                 display="flex"
@@ -437,7 +472,8 @@ useEffect(()=>{
                         endColor="#2B2F35"
                         borderRadius="6px"
                       />:                <Text color="#e6edf3" fontSize="20px">
-                      {numberFormatter(communityHash).substring(0,1)}{numberFormatter(communityHash).substring(5,)} HASH
+                        11.25M HASH
+                      {/* {numberFormatter(communityHash).substring(0,1)}{numberFormatter(communityHash).substring(5,)} HASH */}
                       </Text>}
 
               </VStack>
@@ -610,7 +646,7 @@ useEffect(()=>{
                 Epoch -
               </Text>
               <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                &nbsp;1/4
+                &nbsp;{epoch}/4
               </Text>
               </Box>
               <Box display="flex">
@@ -618,7 +654,7 @@ useEffect(()=>{
                 Snapshot -
               </Text>
               <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                &nbsp;0/6
+                &nbsp;{snapshotNumber}/6
               </Text>
               </Box>
             </Box>

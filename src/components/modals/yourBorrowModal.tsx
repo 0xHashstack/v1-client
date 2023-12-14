@@ -296,12 +296,14 @@ const YourBorrowModal = ({
     writeJediSwap_swap,
     writeAsyncJediSwap_swap,
     isIdleJediSwap_swap,
+    statusJediSwap_swap,
 
     datamySwap_swap,
     errormySwap_swap,
     writemySwap_swap,
     writeAsyncmySwap_swap,
     isIdlemySwap_swap,
+    statusmySwap_swap,
   } = useSwap();
 
   const {
@@ -588,6 +590,9 @@ const YourBorrowModal = ({
       currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
     setLiquidityLoanId(
+      currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+    );
+    setRevertLoanId(
       currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
     const result = userLoans.find(
@@ -1516,7 +1521,7 @@ const YourBorrowModal = ({
                     />
                   </Box>
                 ) : (
-                  getBorrowAPR(currentBorrowMarketCoin1.slice(1)) + "%"
+                  "-"+getBorrowAPR(currentBorrowMarketCoin1.slice(1)) + "%"
                 )}
               </Text>
             </Box>
@@ -1574,7 +1579,7 @@ const YourBorrowModal = ({
                   hasArrow
                   placement="right-end"
                   boxShadow="dark-lg"
-                  label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
+                  label="If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying."
                   bg="#02010F"
                   fontSize={"13px"}
                   fontWeight={"400"}
@@ -1595,7 +1600,21 @@ const YourBorrowModal = ({
               {(radioValue == "1" && currentPool != "Select a pool")
                 ?
                 <Text
-                  color="#676D9A"
+                  color={((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                    (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                  )?.exchangeRateDTokenToUnderlying) *
+                    (-(reduxProtocolStats?.find(
+                      (stat: any) =>
+                        stat?.token === currentBorrowMarketCoin1.slice(1)
+                    )?.borrowRate) + getAprByPool(poolAprs, currentPool,currentDapp)) +
+                    dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                      (val: any) => val?.token == borrow?.collateralMarket.slice(1)
+                    )?.exchangeRateRtokenToUnderlying) *
+                    reduxProtocolStats?.find(
+                      (stat: any) =>
+                        stat?.token === borrow?.collateralMarket.slice(1)
+                    )?.supplyRate) /
+                    dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices))<0 ?"rgb(255 94 94)" : "#00D395"}
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1604,10 +1623,10 @@ const YourBorrowModal = ({
                     ((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                       (val: any) => val?.token == borrow?.loanMarket.slice(1)
                     )?.exchangeRateDTokenToUnderlying) *
-                      ((reduxProtocolStats?.find(
+                      (-(reduxProtocolStats?.find(
                         (stat: any) =>
                           stat?.token === currentBorrowMarketCoin1.slice(1)
-                      )?.borrowRate) - getAprByPool(poolAprs, currentPool,currentDapp)) -
+                      )?.borrowRate) + getAprByPool(poolAprs, currentPool,currentDapp)) +
                       dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                         (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                       )?.exchangeRateRtokenToUnderlying) *
@@ -1619,7 +1638,13 @@ const YourBorrowModal = ({
                   }%
                 </Text> :
                 <Text
-                  color="#676D9A"
+                  color={avgs?.find(
+                    (item: any) =>
+                      item?.loanId ==
+                      currentBorrowId1
+                        .slice(currentBorrowId1.indexOf("-") + 1)
+                        .trim()
+                  )?.avg<0 ?"rgb(255 94 94)" : "#00D395"}
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1953,7 +1978,7 @@ const YourBorrowModal = ({
                 </Box>
               </Box>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#676D9A" fontSize="xs">
                   Borrow amount:{" "}
@@ -1982,7 +2007,7 @@ const YourBorrowModal = ({
               <Text color="#676D9A" fontSize="xs">
                 {borrowAmount} {currentBorrowMarketCoin1}
               </Text>
-            </Box>
+            </Box> */}
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#676D9A" fontSize="xs">
@@ -4077,10 +4102,10 @@ const YourBorrowModal = ({
                                           fontSize="9px"
                                           color="#E6EDF3"
                                           mt="6px"
-                                          fontWeight="thin"
+                                          fontWeight="medium"
                                         >
 
-                                          Pool APR: {numberFormatter(getAprByPool(poolAprs, pool,currentDapp))}%
+                                          Pool apr: {numberFormatter(getAprByPool(poolAprs, pool,currentDapp))}%
 
 
                                         </Box>
@@ -5540,7 +5565,7 @@ const YourBorrowModal = ({
                           </Tooltip>
                         </Text>
                         <Text color="#676D9A">
-                          {borrowAmount} {currentBorrowMarketCoin2}
+                          {numberFormatter(borrowAmount)} {currentBorrowMarketCoin2}
                         </Text>
                       </Text>
                       <Text
@@ -5678,7 +5703,7 @@ const YourBorrowModal = ({
                               />
                             </Box>
                           ) : (
-                            getBorrowAPR(currentBorrowMarketCoin2.slice(1)) +
+                            "-"+getBorrowAPR(currentBorrowMarketCoin2.slice(1)) +
                             "%"
                           )}
                         </Text>
@@ -5747,7 +5772,7 @@ const YourBorrowModal = ({
                             hasArrow
                             placement="right-start"
                             boxShadow="dark-lg"
-                            label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
+                            label="If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying."
                             bg="#02010F"
                             fontSize={"13px"}
                             fontWeight={"400"}

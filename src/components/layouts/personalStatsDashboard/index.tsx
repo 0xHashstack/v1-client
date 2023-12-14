@@ -437,9 +437,9 @@ const PersonalStatsDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  Points Allocated: 0
+                                  Points Allocated: {numberFormatter(member.ptsAllocated)}
                                   <br />
-                                  Points Estimated: {member.pts}
+                                  Points Estimated: {numberFormatter(member.pts)}
                                 </Box>
                               }
                               // arrowPadding={-5420}
@@ -461,7 +461,7 @@ const PersonalStatsDashboard = ({
                             // mt="28px"
                             >
                               <Text>
-                                {member.pts}
+                                {numberFormatter(member.pts)}
                               </Text>
                             </Tooltip>
                           </Text>
@@ -490,7 +490,7 @@ const PersonalStatsDashboard = ({
                               hasArrow
                               label={
                                 <Box>
-                                  HASH Allocated: {member.hashAllocated ? member?.hashAllocated:0}
+                                  HASH Allocated: {member.hashAllocated ?numberFormatter(member?.hashAllocated):0}
                                   <br />
                                   HASH Estimated: {member.est ? numberFormatter(member?.est) :0}
                                 </Box>

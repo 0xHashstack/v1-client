@@ -996,7 +996,8 @@ const StakeUnstakeModal = ({
           key="borrow-details"
           as="span"
           position="relative"
-          color="#4D59E8"
+          color="#B1B0B5"
+          borderBottom="1px solid #B1B0B5"
           fontSize="14px"
           width="100%"
           display="flex"
@@ -1010,8 +1011,8 @@ const StakeUnstakeModal = ({
               position: "absolute",
               left: 0,
               bottom: "-0px",
-              width: "100%",
-              height: "1px",
+              width: "0%",
+              height: "0px",
               backgroundColor: "#0969DA",
             },
           }}
@@ -1027,7 +1028,7 @@ const StakeUnstakeModal = ({
             onOpen();
           }}
         >
-          Details
+          Stake
         </Text>
       )}
 
