@@ -648,7 +648,7 @@ useEffect(()=>{
                 Epoch -
               </Text>
               <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                &nbsp;2/4
+                &nbsp;{epoch}/4
               </Text>
               </Box>
               <Box display="flex">
@@ -656,7 +656,7 @@ useEffect(()=>{
                 Snapshot -
               </Text>
               <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                &nbsp;0/6
+                &nbsp;{snapshotNumber}/6
               </Text>
               </Box>
             </Box>
