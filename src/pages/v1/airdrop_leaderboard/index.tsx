@@ -416,7 +416,7 @@ useEffect(()=>{
                 Campaign pool
                 </Text>
                <Text color="#e6edf3" fontSize="20px">
-                    36M HASH
+                    45M HASH
                 </Text>
               </VStack>
               <VStack
