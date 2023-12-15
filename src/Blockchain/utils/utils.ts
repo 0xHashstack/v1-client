@@ -121,7 +121,7 @@ export const borrowInterestAccrued = (asset: any) => {
   //   return new BigNumber(0).toFixed(6);
 };
 
-export const etherToWeiBN = (amount: number, tokenName: Token) => {
+export const etherToWeiBN = (amount:any, tokenName:any) => {
   if (!amount) {
     return 0;
   }
@@ -129,15 +129,17 @@ export const etherToWeiBN = (amount: number, tokenName: Token) => {
   if (!decimals) {
     return 0;
   }
-  ////console.log("amount", amount);
   try {
-    const factor = new BigNumber(10000000000000000000);
-  const amountBN = new BigNumber(amount).times(factor)
-    .times(new BigNumber(10).exponentiatedBy(decimals))
-    .dividedBy(new BigNumber(factor));
-  return amountBN;
-  }
-  catch(e) {
+    const factor = new BigNumber(10).exponentiatedBy(18); // Wei in 1 Ether
+    const amountBN = new BigNumber(amount)
+      .times(factor)
+      .times(new BigNumber(10).exponentiatedBy(decimals))
+      .dividedBy(factor);
+
+    // Formatting the result to avoid exponential notation
+    const formattedAmount = amountBN.toFixed(); 
+    return formattedAmount;
+  } catch (e) {
     console.warn("etherToWeiBN fails with error: ", e);
     return amount;
   }

@@ -34,7 +34,6 @@ const useDeposit = () => {
   //   const [depositTransHash, setDepositTransHash] = useState("");
 
   //   const recieptData = useWaitForTransaction({ hash: depositTransHash });
-   console.log("useDeposit", etherToWeiBN(depositAmount, asset).toString());
   const {
     data: dataDeposit,
     error: errorDeposit,
