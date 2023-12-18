@@ -153,7 +153,9 @@ export const weiToEtherNumber = (amount: string, tokenName: Token) => {
   const amountBN = new BigNumber(amount)
     .times(factor)
     .dividedBy(new BigNumber(10).exponentiatedBy(decimals));
-  return amountBN.toNumber() / factor.toNumber();
+    const result = amountBN.dividedBy(factor).toNumber();
+    const truncatedResult = Math.trunc(result * 1e6) / 1e6; // Keep six digits after the decimal point without rounding
+    return truncatedResult;;
 };
 
 export const parseAmount = (amount: string, decimals = 18) => {
