@@ -267,21 +267,28 @@ const Campaign = () => {
     try {
       if (exisitingLink) {
         await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + exisitingLink);
+        toast.success("Copied", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        })
       } else {
         if(totalBorrow>0 || totalSupply>0){
           await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + refferal);
           axios.post((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/shorten" : 'https://hstk.fi/shorten'), { pseudo_name: refferal, address: address })
             .then((response) => {
               //console.log(response, "response refer link"); // Log the response from the backend.
+              toast.success("Copied", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+              })
             })
             .catch((error) => {
-              console.error('Error:', error);
+              toast.error(error?.response?.data?.error, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+              })
+              console.error('Error:', error?.response?.data?.error);
             });
           }
         }
-        toast.success("Copied", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        })
+
 
     } catch (error: any) {
       toast.error(error, {
@@ -416,7 +423,7 @@ useEffect(()=>{
                 Campaign pool
                 </Text>
                <Text color="#e6edf3" fontSize="20px">
-                    36M HASH
+                    45M HASH
                 </Text>
               </VStack>
               <VStack
