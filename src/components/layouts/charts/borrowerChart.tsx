@@ -288,7 +288,7 @@ const BorrowerChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Borrower:</Box>
+          <Box mt="auto">Borrower: {btcData?.borrowCounts[btcData?.borrowCounts.length-1]}</Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"
