@@ -287,7 +287,7 @@ const TotalAccountsChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Total Accounts:</Box>
+          <Box mt="auto">Total Accounts: {btcData?.totalAccounts[btcData?.totalAccounts.length-1]}</Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"

@@ -71,6 +71,7 @@ const BorrowChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
+  const totalBorrow=btcData?.borrowAmounts[btcData?.borrowAmounts.length-1]+ethData?.borrowAmounts[ethData?.borrowAmounts.length-1]+usdtData?.borrowAmounts[usdtData?.borrowAmounts.length-1]+usdcData?.borrowAmounts[usdcData?.borrowAmounts.length-1]+daiData?.borrowAmounts[daiData?.borrowAmounts.length-1];
   //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   const fetchDataBasedOnOption = async (option: number) => {
@@ -555,7 +556,7 @@ const BorrowChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Borrow :</Box>
+          <Box mt="auto">Borrow : ${numberFormatter(totalBorrow)}</Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"

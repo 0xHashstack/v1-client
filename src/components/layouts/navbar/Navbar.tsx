@@ -60,6 +60,7 @@ import {
 
 } from "@/store/slices/readDataSlice";
 import { AccountInterface, ProviderInterface, number } from "starknet";
+import TransferDepositModal from "@/components/modals/TransferDepositModal";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
@@ -458,47 +459,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
           </Box>
       </Box>:<></>
         } */}
-        {process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"  ?        <Box
-          padding="16px 12px"
-          fontSize="12px"
-          borderRadius="5px"
-          cursor="pointer"
-          marginBottom="0px"
-          // className="button"
-          // backgroundColor={"blue"}
-          color={`${pathname == "/v1/airdrop_leaderboard" ? "#00D395" : "#676D9A"}`}
-          // _hover={{ color: "#6e7681" }}
-          onMouseEnter={() => setCampaignHover(true)}
-          onMouseLeave={() => setCampaignHover(false)}
-          onClick={()=>{router.push('/v1/airdrop_leaderboard')}}
-        >
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              gap={"8px"}
-            >
-              {pathname == "/v1/airdrop_leaderboard" ? (
-                <Image
-                  src={hoverContributeEarnIcon}
-                  alt="Picture of the author"
-                  width="16"
-                  height="16"
-                  style={{ cursor: "pointer" }}
-                />
-              ) : (
-                <Image
-                  src={"/contributeEarnIcon.svg"}
-                  alt="Picture of the author"
-                  width="16"
-                  height="16"
-                  style={{ cursor: "pointer" }}
-                />
-              )}
 
-              <Text fontSize="14px" >Airdrop</Text>
-            </Box>
-        </Box>:""}
         {     <Box
           padding="16px 12px"
           fontSize="12px"
@@ -555,7 +516,52 @@ const userWhitelisted=useSelector(selectWhiteListed);
             validRTokens={validRTokens}
           />
         </Box>}
+        {process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"  ?        <Box
+          padding="16px 12px"
+          fontSize="12px"
+          borderRadius="5px"
+          cursor="pointer"
+          marginBottom="0px"
+          // className="button"
+          // backgroundColor={"blue"}
+          color={`${pathname == "/v1/airdrop_leaderboard" ? "#00D395" : "#676D9A"}`}
+          // _hover={{ color: "#6e7681" }}
+          onMouseEnter={() => setCampaignHover(true)}
+          onMouseLeave={() => setCampaignHover(false)}
+          onClick={()=>{router.push('/v1/airdrop_leaderboard')}}
+        >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={"8px"}
+            >
+              {pathname == "/v1/airdrop_leaderboard" ? (
+                <Image
+                  src={hoverContributeEarnIcon}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <Image
+                  src={"/contributeEarnIcon.svg"}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              )}
 
+              <Text fontSize="14px" >Airdrop</Text>
+              <Box bg="#F7BB5B" height="18px" width="45px" textAlign="center"  lineHeight="18px"
+              clipPath="polygon(110% 0%, 10% 0%, 0% 50%, 10% 100%, 110% 100%)" fontSize="12px" fontWeight="400" color="#000" borderRightRadius="4px"
+              >
+                NEW
+              </Box>
+            </Box>
+        </Box>:""}
         {/* <Box
           style={{
             padding: "3px 0px",
@@ -715,6 +721,39 @@ const userWhitelisted=useSelector(selectWhiteListed);
             </Box>  */}
           {/* </Box>  */}
 
+             {/* <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap="8px"
+              margin="6px 12px"
+            >
+              <TransferDepositModal
+              background="transparent"
+              borderRadius="6px"
+              cursor={Render ? "pointer" :"not-allowed"}
+              margin="0"
+              height="2rem"
+              border="1px solid #676D9A"
+              // border={`0.5px solid ${
+              //   router.pathname != "/waitlist" && transferDepositHover
+              //     ? "#6e6e6e"
+              //     : "#FFF"
+              // }`}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap="3"
+              className="button"
+              // color="#6E6E6E"
+              color={
+                router.pathname != "/waitlist" && transferDepositHover
+                  ? "#6e6e6e"
+                  : "#FFF"
+              }
+              buttonText="Transfer Deposit"
+              />
+            </Box>  */}
           <Box
             fontSize="12px"
             color="#FFF"
@@ -733,7 +772,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             <Box
               // backgroundColor="#2DA44E"
               display="flex"
-              border="1px solid var(--secondary, #00D395)"
+              border="1px solid #676D9A"
               borderRadius="6px"
               flexDirection="row"
               paddingY="6px"

@@ -1,4 +1,4 @@
-import { Contract, number, uint256 } from "starknet";
+import { Contract, num,  uint256 } from "starknet";
 import {
   contractsEnv,
   getProvider,
@@ -18,7 +18,7 @@ function parseDeposits(deposits: any): IDeposit[] {
   for (let i = 0; i < deposits?.length; ++i) {
     let depositData = deposits[i];
 
-    let tokenAddress = number.toHex(depositData?.asset_addr);
+    let tokenAddress = num.toHex(depositData?.asset_addr);
     let token = getTokenFromAddress(tokenAddress)?.name as NativeToken;
 
     let rTokenFreeParsed = weiToEtherNumber(
@@ -41,7 +41,7 @@ function parseDeposits(deposits: any): IDeposit[] {
       token,
       rTokenAddress: getTokenFromAddress(tokenAddress)?.rToken || "",
       rToken: getRTokenFromAddress(
-        getTokenFromAddress(number.toHex(depositData?.asset_addr))?.rToken || ""
+        getTokenFromAddress(num.toHex(depositData?.asset_addr))?.rToken || ""
       )?.name as RToken,
       rTokenFreeParsed,
       rTokenLockedParsed,
@@ -52,7 +52,7 @@ function parseDeposits(deposits: any): IDeposit[] {
       )),
       underlyingAssetAmountParsed: weiToEtherNumber(
         uint256.uint256ToBN(depositData?.underlying_asset_amount).toString(),
-        getTokenFromAddress(number.toHex(depositData?.asset_addr))
+        getTokenFromAddress(num.toHex(depositData?.asset_addr))
           ?.name as NativeToken
       ),
     };
@@ -65,7 +65,7 @@ function parseDeposits(deposits: any): IDeposit[] {
 const parseDeposit = (deposit: any) => {
   let depositData = deposit;
 
-  let tokenAddress = number.toHex(depositData?.asset_address);
+  let tokenAddress = num.toHex(depositData?.asset_address);
   ////console.log("supplies deposit token ", tokenAddress);
   let token = getTokenFromAddress(tokenAddress)?.name as NativeToken;
 
@@ -83,13 +83,12 @@ const parseDeposit = (deposit: any) => {
     uint256.uint256ToBN(depositData?.rToken_staked).toString(),
     token
   );
-
   let deposit_data: IDeposit = {
     tokenAddress,
     token,
     rTokenAddress: getTokenFromAddress(tokenAddress)?.rToken || "",
     rToken: getRTokenFromAddress(
-      getTokenFromAddress(number.toHex(depositData?.asset_address))?.rToken ||
+      getTokenFromAddress(num.toHex(depositData?.asset_address))?.rToken ||
         ""
     )?.name as RToken,
     rTokenFreeParsed,
@@ -104,9 +103,10 @@ const parseDeposit = (deposit: any) => {
       .toString()),
     underlyingAssetAmountParsed: weiToEtherNumber(
       uint256.uint256ToBN(depositData?.supply_asset_amount).toString(),
-      getTokenFromAddress(number.toHex(depositData?.asset_address))
+      getTokenFromAddress(num.toHex(depositData?.asset_address))
         ?.name as NativeToken
     ),
+    
   };
   return deposit_data;
 };

@@ -283,7 +283,7 @@ const LiquidityProviderChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Liquidity Provider:</Box>
+          <Box mt="auto">Liquidity Provider: {btcData?.supplyCounts[btcData?.supplyCounts.length-1]}</Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"

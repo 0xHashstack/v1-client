@@ -283,7 +283,10 @@ const UtilisationRateChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Utilisation</Box>
+          <Box mt="auto">
+            Utilisation: {btcData?.totalUrm[btcData?.totalUrm.length-1]}%
+          
+          </Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"
