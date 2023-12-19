@@ -133,7 +133,7 @@ export const etherToWeiBN = (amount:any, tokenName:any) => {
     const amountBN = new BigNumber(amount)
       .times(factor)
       .times(new BigNumber(10).exponentiatedBy(decimals))
-      .dividedBy(factor);
+      .dividedBy(factor).integerValue(BigNumber.ROUND_DOWN);;
 
     // Formatting the result to avoid exponential notation
     const formattedAmount = amountBN.toFixed(); 
