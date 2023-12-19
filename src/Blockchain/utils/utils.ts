@@ -1,5 +1,4 @@
 import { BigNumber } from "bignumber.js";
-import { number,num } from "starknet";
 import { utils } from "ethers";
 import { Logger } from "ethers/lib/utils";
 import { getTokenFromAddress } from "../stark-constants";
