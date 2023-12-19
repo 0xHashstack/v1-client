@@ -94,11 +94,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
   const {
-    zTokenAmount,
-    setzTokenAmount,
-    zTokenAddress,
-    setzTokenAddress,
-    dataZklendMigrate,
+  
     writeAsyncZklendMigrate,
     errorZklendMigrate
   }=useZklendMigrate();
