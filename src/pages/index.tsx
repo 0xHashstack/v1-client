@@ -1286,7 +1286,8 @@ const Dashboard = () => {
     return (
       starknetAccount?.baseUrl?.includes("alpha-mainnet.starknet.io") ||
       starknetAccount?.baseUrl?.includes("localhost") ||
-      starknetAccount?.provider?.baseUrl?.includes("alpha-mainnet.starknet.io")
+      starknetAccount?.provider?.baseUrl?.includes("alpha-mainnet.starknet.io") ||
+      starknetAccount?.provider?.chainId=="0x534e5f4d41494e"
     );
   }
   // console.log("starknet",starknetAccount);
