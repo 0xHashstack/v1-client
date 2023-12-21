@@ -130,7 +130,6 @@ const LiquidityProvisionModal = ({
     writeJediSwap_addLiquidity,
     writeAsyncJediSwap_addLiquidity,
     isIdleJediSwap_addLiquidity,
-    isLoadingJediSwap_addLiquidity,
     statusJediSwap_addLiquidity,
 
     datamySwap_addLiquidity,
@@ -138,7 +137,6 @@ const LiquidityProvisionModal = ({
     writemySwap_addLiquidity,
     writeAsyncmySwap_addLiquidity,
     isIdlemySwap_addLiquidity,
-    isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
   } = useLiquidity();
 

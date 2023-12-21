@@ -51,7 +51,7 @@ import { HStack, VStack } from "@chakra-ui/react";
 import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount} from "@starknet-react/core";
 import { selectYourBorrow, selectNetAPR, selectExistingLink, selectInteractedAddress, selectYourSupply } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
@@ -141,8 +141,6 @@ const Campaign = () => {
   }, {
     id: 6, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
   },]
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
 
   const dispatch = useDispatch();
   const { account, address } = useAccount();
@@ -276,19 +274,15 @@ const Campaign = () => {
           axios.post((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/shorten" : 'https://hstk.fi/shorten'), { pseudo_name: refferal, address: address })
             .then((response) => {
               //console.log(response, "response refer link"); // Log the response from the backend.
-              toast.success("Copied", {
-                position: toast.POSITION.BOTTOM_RIGHT,
-              })
             })
             .catch((error) => {
-              toast.error(error?.response?.data?.error, {
-                position: toast.POSITION.BOTTOM_RIGHT,
-              })
-              console.error('Error:', error?.response?.data?.error);
+              console.error('Error:', error);
             });
           }
         }
-
+        toast.success("Copied", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        })
 
     } catch (error: any) {
       toast.error(error, {

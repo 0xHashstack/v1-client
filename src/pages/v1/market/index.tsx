@@ -27,7 +27,7 @@ import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
 import { useRouter } from "next/router";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import {
@@ -54,8 +54,6 @@ export default function Market() {
   const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
   const [parsedAccount, setParsedAccount] = useState<any>();
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
   const { address, account } = useAccount();
   const [render, setRender] = useState(true);
   // useEffect(()=>{

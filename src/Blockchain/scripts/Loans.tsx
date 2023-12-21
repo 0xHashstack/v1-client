@@ -1,4 +1,4 @@
-import { Contract, number, uint256 } from "starknet";
+import { Contract, num, number, uint256 } from "starknet";
 import {
   diamondAddress,
   getDTokenFromAddress,
@@ -65,39 +65,39 @@ function parseLoansData(loansData: any, collateralsData: any): ILoan[] {
       createdAt: new Date(Number(loanData?.created_at)),
 
       loanState:
-        number.toBN(loanData?.state).toString() === "1"
+        num.toBigInt(loanData?.state).toString() === "1"
           ? "ACTIVE"
-          : number.toBN(loanData?.state).toString() === "2"
+          : num.toBigInt(loanData?.state).toString() === "2"
           ? "SPENT"
-          : number.toBN(loanData?.state).toString() === "3"
+          : num.toBigInt(loanData?.state).toString() === "3"
           ? "REPAID"
-          : number.toBN(loanData?.state).toString() === "4"
+          : num.toBigInt(loanData?.state).toString() === "4"
           ? "LIQUIDATED"
           : null,
 
       l3App:
-        number.toBN(loanData?.l3_integration).toString() ===
+        num.toBigInt(loanData?.l3_integration).toString() ===
         "1962660952167394271600"
           ? "JEDI_SWAP"
-          : number.toBN(loanData?.l3_integration, 0).toString() ===
+          : num.toBigInt(loanData?.l3_integration).toString() ===
             "30814223327519088"
           ? "MY_SWAP"
-          : number.toBN(loanData?.l3_integration, 0).toString() ===
+          : num.toBigInt(loanData?.l3_integration).toString() ===
             "30814223327519089"
           ? "YAGI"
           : "NONE",
       spendType:
-        number.toBN(loanData?.l3_category).toString() === "0"
+        num.toBigInt(loanData?.l3_category).toString() === "0"
           ? "UNSPENT"
-          : number.toBN(loanData?.l3_category).toString() === "1"
+          : num.toBigInt(loanData?.l3_category).toString() === "1"
           ? "SWAP"
-          : number.toBN(loanData?.l3_category).toString() === "2"
+          : num.toBigInt(loanData?.l3_category).toString() === "2"
           ? "LIQUIDITY"
           : null,
 
-      state: number.toBN(loanData?.state).toString(),
-      l3_integration: number.toBN(loanData?.l3_integration).toString(),
-      l3_category: number.toBN(loanData?.l3_category).toString(),
+      state: num.toBigInt(loanData?.state).toString(),
+      l3_integration: num.toBigInt(loanData?.l3_integration).toString(),
+      l3_category: num.toBigInt(loanData?.l3_category).toString(),
     };
     loans.push(JSON.parse(JSON.stringify(loan)));
   }
@@ -110,7 +110,7 @@ export async function getUserLoans(account: string) {
   try {
     ////console.log("loans params", diamondAddress, account);
     const routerContract = new Contract(routerAbi, diamondAddress, provider);
-    const res = await routerContract.call("get_user_loans", [account], {
+    const res:any = await routerContract.call("get_user_loans", [account], {
       blockIdentifier: "pending",
     });
     ////console.log(res, "loans called");

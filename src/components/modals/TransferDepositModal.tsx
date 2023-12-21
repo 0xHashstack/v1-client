@@ -6,6 +6,7 @@ import {
   ModalContent,
   ModalHeader,
 
+
   ModalBody,
   ModalCloseButton,
   Card,
@@ -58,6 +59,7 @@ import { useRouter } from "next/router";
 import PenIcon from "@/assets/icons/penIcon";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import PenIconDisabled from "@/assets/icons/penIconDisabled";
+import useZklendMigrate from "@/Blockchain/hooks/Writes/useZklendMigrate";
 
 export interface ICoin {
   name: string;
@@ -92,6 +94,11 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
+  const {
+  
+    writeAsyncZklendMigrate,
+    errorZklendMigrate
+  }=useZklendMigrate();
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -547,6 +554,9 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                 )
               ) : (
                 <Button
+                onClick={()=>{
+                  writeAsyncZklendMigrate();
+                }}
                   background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                   color="#EDEEFC"
                   size="sm"

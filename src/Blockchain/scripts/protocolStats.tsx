@@ -15,6 +15,7 @@ import {
   Token,
 } from "../interfaces/interfaces";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
+import BigNumber from "bignumber.js";
 
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
   let marketInfo: IMarketInfo = {
@@ -47,9 +48,8 @@ function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
         ?.name as Token
     ),
     availableReserves: weiToEtherNumber(
-      uint256
-        .uint256ToBN(marketData?.total_supply)
-        .sub(uint256.uint256ToBN(marketData?.total_borrow))
+      new BigNumber(Number(uint256.uint256ToBN(marketData?.total_supply)))
+.minus(new BigNumber(Number(uint256.uint256ToBN(marketData?.total_borrow))))
         .toString(),
       getTokenFromAddress(number.toHex(marketData?.token_address))
         ?.name as Token
@@ -162,7 +162,7 @@ export async function getProtocolReserves() {
       metricsContractAddress,
       provider
     );
-    const res = await metricsContract.call("get_protocol_reserves", [], {
+    const res:any = await metricsContract.call("get_protocol_reserves", [], {
       blockIdentifier: "pending",
     });
     const protocolReserves = parseProtocolReserves(res?.protocol_reserves);

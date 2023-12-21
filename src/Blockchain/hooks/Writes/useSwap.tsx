@@ -15,10 +15,9 @@ const useSwap = () => {
     write: writeJediSwap_swap,
     writeAsync: writeAsyncJediSwap_swap,
     isIdle: isIdleJediSwap_swap,
-    isLoading: isLoadingJediSwap_swap,
     status: statusJediSwap_swap,
   } = useContractWrite({
-    calls: {
+    calls: [{
       contractAddress: diamondAddress,
       entrypoint: "interact_with_l3",
       calldata: [
@@ -28,7 +27,7 @@ const useSwap = () => {
         constants.SWAP,
         tokenAddressMap[toMarket],
       ],
-    },
+    }],
   });
 
   const {
@@ -37,10 +36,9 @@ const useSwap = () => {
     write: writemySwap_swap,
     writeAsync: writeAsyncmySwap_swap,
     isIdle: isIdlemySwap_swap,
-    isLoading: isLoadingmySwap_swap,
     status: statusmySwap_swap,
   } = useContractWrite({
-    calls: {
+    calls: [{
       contractAddress: diamondAddress,
       entrypoint: "interact_with_l3",
       calldata: [
@@ -50,7 +48,7 @@ const useSwap = () => {
         constants.SWAP,
         tokenAddressMap[toMarket],
       ],
-    },
+    }],
   });
 
   return {
@@ -64,7 +62,6 @@ const useSwap = () => {
     writeJediSwap_swap,
     writeAsyncJediSwap_swap,
     isIdleJediSwap_swap,
-    isLoadingJediSwap_swap,
     statusJediSwap_swap,
 
     datamySwap_swap,
@@ -72,7 +69,6 @@ const useSwap = () => {
     writemySwap_swap,
     writeAsyncmySwap_swap,
     isIdlemySwap_swap,
-    isLoadingmySwap_swap,
     statusmySwap_swap,
   };
 };
