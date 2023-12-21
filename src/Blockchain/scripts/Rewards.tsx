@@ -21,7 +21,6 @@ import { etherToWeiBN, parseAmount } from "../utils/utils";
 import { useState } from "react";
 import { RToken } from "../interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
-import borrowTokenAbi from "../abis_mainnet/dToken_abi.json";
 // const { address } = useAccount();
 interface ResultObject{
   [key: string]: any;
@@ -62,32 +61,6 @@ export async function getrTokensMinted(rToken: any, amount: any) {
     return ans;
   } catch (err) {
    //console.log(err,"err in rewards");
-  }
-}
-export async function getMaximumDynamicLoanAmount(
-  amount:any,
-  borrowMarket:any,
-  collateralMarket:any,
-) {
-  ////console.log("getMinimumDepositAmount called - ", rTokenAddress);
-  try {
-    const provider = getProvider();
-    const borrowToken = new Contract(borrowTokenAbi, tokenAddressMap["d"+borrowMarket], provider);
-    const parsedAmount = etherToWeiBN(amount,borrowMarket).toString();
-    const result:any = await borrowToken.call(
-      "max_loan_limit",
-      [uint256.bnToUint256(30),tokenAddressMap[borrowMarket],tokenAddressMap[collateralMarket]],
-      { blockIdentifier: "pending" }
-    );
-    const res = parseAmount(
-      uint256.uint256ToBN(result?.max_loan_limit).toString(),
-      tokenDecimalsMap[borrowMarket]
-    );
-    console.log(res,collateralMarket,borrowMarket,"result for borrow max")
-    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
-    return res;
-  } catch (err) {
-   console.log(err, "err in getMaximumDynamicDeposit");
   }
 }
 
@@ -337,12 +310,12 @@ export async function getMaximumDynamicLoanAmount(
     const provider = getProvider();
     const borrowToken = new Contract(borrowTokenAbi, tokenAddressMap["d"+borrowMarket], provider);
     const parsedAmount = etherToWeiBN(amount,borrowMarket).toString();
-    const result = await borrowToken.call(
+    const result:any = await borrowToken.call(
       "max_loan_limit",
       [[parsedAmount,0],tokenAddressMap[borrowMarket],tokenAddressMap[collateralMarket]],
       { blockIdentifier: "pending" }
     );
-    const res = parseAmount(
+    const res:any = parseAmount(
       uint256.uint256ToBN(result?.max_loan_limit).toString(),
       tokenDecimalsMap[borrowMarket]
     );

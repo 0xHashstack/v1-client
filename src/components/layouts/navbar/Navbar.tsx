@@ -38,7 +38,7 @@ import {
   setLanguage,
 } from "@/store/slices/userAccountSlice";
 import {
-  useAccount, useConnect, useDisconnect,
+  useAccount,useDisconnect,useConnect
 } from "@starknet-react/core";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
@@ -60,7 +60,6 @@ import {
 
 } from "@/store/slices/readDataSlice";
 import { AccountInterface, ProviderInterface, number } from "starknet";
-import TransferDepositModal from "@/components/modals/TransferDepositModal";
 import TransferDepositModal from "@/components/modals/TransferDepositModal";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
@@ -160,7 +159,7 @@ const Navbar = ({ validRTokens }: any) => {
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "argentX");
       localStorage.setItem("connected", "argentX");
-      connectors.map((connector)=>{
+      connectors.map((connector:any)=>{
         if(connector.id=="argentX"){
           connect({connector});
         }
@@ -774,7 +773,6 @@ const userWhitelisted=useSelector(selectWhiteListed);
               // backgroundColor="#2DA44E"
               display="flex"
               border="1px solid #676D9A"
-              border="1px solid #676D9A"
               borderRadius="6px"
               flexDirection="row"
               paddingY="6px"
@@ -952,7 +950,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
                         })
                       } else {
                         disconnect();
-                        connectors.map((connector)=>{
+                        connectors.map((connector:any)=>{
                           if(connector.id=="argentX"){
                             connect({connector});
                           }

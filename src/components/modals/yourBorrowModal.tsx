@@ -75,7 +75,6 @@ import {
   selectHealthFactor,
   selectJediSwapPoolsSupported,
   selectJediswapPoolAprs,
-  selectJediswapPoolAprs,
   selectMaximumDepositAmounts,
   selectMinimumDepositAmounts,
   selectMySwapPoolsSupported,
