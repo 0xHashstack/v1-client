@@ -325,7 +325,7 @@ const YourMetrics = () => {
                         NA
                       </Text>
                     ) : (
-                      <Text color="#e6edf3" fontSize="20px">
+                      <Text color={netAPR<0 ?"rgb(255 94 94)":"#e6edf3"} fontSize="20px">
                         {netAPR}%
                       </Text>
                     )}

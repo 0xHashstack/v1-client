@@ -265,6 +265,9 @@ const Campaign = () => {
     try {
       if (exisitingLink) {
         await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + exisitingLink);
+        toast.success("Copied", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        })
       } else {
         if(totalBorrow>0 || totalSupply>0){
           await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + refferal);
@@ -414,7 +417,7 @@ useEffect(()=>{
                 Campaign pool
                 </Text>
                <Text color="#e6edf3" fontSize="20px">
-                    36M HASH
+                    45M HASH
                 </Text>
               </VStack>
               <VStack

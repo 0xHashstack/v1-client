@@ -61,6 +61,7 @@ import {
 } from "@/store/slices/readDataSlice";
 import { AccountInterface, ProviderInterface, number } from "starknet";
 import TransferDepositModal from "@/components/modals/TransferDepositModal";
+import TransferDepositModal from "@/components/modals/TransferDepositModal";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
@@ -460,6 +461,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
       </Box>:<></>
         } */}
 
+
         {     <Box
           padding="16px 12px"
           fontSize="12px"
@@ -719,7 +721,6 @@ const userWhitelisted=useSelector(selectWhiteListed);
                 {"Transfer Deposit"}
               </Text>
             </Box>  */}
-          {/* </Box>  */}
 
              {/* <Box
               display="flex"
@@ -772,6 +773,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             <Box
               // backgroundColor="#2DA44E"
               display="flex"
+              border="1px solid #676D9A"
               border="1px solid #676D9A"
               borderRadius="6px"
               flexDirection="row"
