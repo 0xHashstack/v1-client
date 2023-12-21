@@ -39,6 +39,7 @@ const DashboardRight = ({
   oraclePrices,
   utilization,
   totalBorrows,
+  availableReserves,
   borrowAPRs,
   supplyAPRs,
   validRTokens,
@@ -48,6 +49,7 @@ const DashboardRight = ({
   oraclePrices: any;
   utilization: any;
   totalBorrows: any;
+  availableReserves:any;
   borrowAPRs: any;
   validRTokens: any;
   supplyAPRs: any;
@@ -58,8 +60,8 @@ const DashboardRight = ({
 }) => {
   const columnItems = [
     "Market",
-    "Price",
     "Total borrow",
+    "Available",
     "Utillization",
     "Borrow APR",
     "",
@@ -81,7 +83,7 @@ const DashboardRight = ({
   //   const element:any = document.getElementById('buttonclick');
   //   html2canvas(element).then((canvas) => {
   //     const screenshotDataUrl = canvas.toDataURL('image/png');
-  //     console.log(screenshotDataUrl,"url")
+  //    //console.log(screenshotDataUrl,"url")
       
   //     // Now you have the screenshot in a data URL format
   //     // You can send it to the backend using an HTTP request.
@@ -96,12 +98,12 @@ const DashboardRight = ({
   
 
   useEffect(() => {
-    // console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
+    ////console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
   }, [currentBorrowMarketCoin]);
   const tooltips = [
     "Available markets.",
-    "Market value of the token.",
     "The number of tokens that are currently borrowed from the protocol.",
+    "The number of tokens that can be borrowed from the protocol.",
     "Represents how much of a pool has been borrowed",
     "The annual interest rate charged on borrowed funds from the protocol.",
   ];
@@ -212,39 +214,8 @@ const DashboardRight = ({
                         height="32"
                       />
                     </Box>
-                    <Text fontSize="14px">{coin?.name}</Text>
+                    <Text fontSize="14px">{(coin?.name =="BTC" || coin?.name=="ETH") ?"w"+coin?.name:coin?.name}</Text>
                   </HStack>
-                </Td>
-                <Td
-                  width={"17%"}
-                  maxWidth={"3rem"}
-                  fontSize={"14px"}
-                  fontWeight={400}
-                  overflow={"hidden"}
-                  textAlign={"center"}
-                >
-                  <Box
-                    width="100%"
-                    height="100%"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    fontWeight="400"
-                    // bgColor={"blue"}
-                  >
-                    {/* {checkGap(idx1, idx2)} */}
-                    {coinPrices[idx]==null ? (
-                      <Skeleton
-                        width="6rem"
-                        height="1.4rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />
-                    ) : (
-                      numberFormatter(coinPrices[idx]?.price)
-                    )}
-                  </Box>
                 </Td>
                 <Td
                   width={"17%"}
@@ -274,6 +245,37 @@ const DashboardRight = ({
                       />
                     ) : (
                       numberFormatter(totalBorrows[idx])
+                    )}
+                  </Box>
+                </Td>
+                <Td
+                  width={"17%"}
+                  maxWidth={"3rem"}
+                  fontSize={"14px"}
+                  fontWeight={400}
+                  overflow={"hidden"}
+                  textAlign={"center"}
+                >
+                  <Box
+                    width="100%"
+                    height="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    fontWeight="400"
+                    // bgColor={"blue"}
+                  >
+                    {/* {checkGap(idx1, idx2)} */}
+                    {availableReserves[idx]==null ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.4rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      numberFormatter(availableReserves[idx])
                     )}
                   </Box>
                 </Td>
@@ -372,7 +374,7 @@ const DashboardRight = ({
                       fontSize={"12px"}
                       padding="6px 12px"
                       border="1px solid #BDBFC1"
-                      bgColor="#101216"
+                      bgColor="transparent"
                       _hover={{ bg: "white", color: "black" }}
                       borderRadius={"6px"}
                       color="#BDBFC1;"
@@ -413,6 +415,7 @@ const DashboardRight = ({
                       currentBorrowAPR={currentBorrowAPR}
                       supplyAPRs={supplyAPRs}
                       currentSupplyAPR={currentSupplyAPR}
+                      setCurrentBorrowAPR={setCurrentBorrowAPR}
                       validRTokens={validRTokens}
                       currentBorrowMarketCoin={currentBorrowMarketCoin}
                     />

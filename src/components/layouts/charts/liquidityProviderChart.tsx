@@ -34,7 +34,7 @@ const LiquidityProviderChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option
@@ -283,7 +283,7 @@ const LiquidityProviderChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Liquidity Provider:</Box>
+          <Box mt="auto">Liquidity Provider: {btcData?.supplyCounts[btcData?.supplyCounts.length-1]}</Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"

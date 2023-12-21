@@ -26,7 +26,7 @@ import {
 
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
-import { getMinimumDepositAmount,getMaximumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { getMinimumDepositAmount,getMaximumDepositAmount, getMaximumDynamicLoanAmount } from "@/Blockchain/scripts/Rewards";
 
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
@@ -60,6 +60,7 @@ import {
   selectMaximumDepositAmounts,
   selectMinimumDepositAmounts,
   selectFees,
+  selectJediswapPoolAprs,
 } from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
@@ -120,16 +121,21 @@ import {
 } from "@/Blockchain/scripts/l3interaction";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { getMaximumLoanAmount, getMinimumLoanAmount, getSupportedPools } from "@/Blockchain/scripts/Rewards";
+import axios from "axios";
+import dollarConvertor from "@/utils/functions/dollarConvertor";
+import RedinfoIcon from "@/assets/icons/redinfoicon";
+import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 const TradeModal = ({
   buttonText,
   coin,
   borrowAPRs,
   currentBorrowAPR,
+  setCurrentBorrowAPR,
   validRTokens,
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
+  //  //console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
 
   const {
     loanMarket,
@@ -163,7 +169,6 @@ const TradeModal = ({
     writeAsyncBorrowAndSpend,
     isErrorBorrowAndSpend,
     isIdleBorrowAndSpend,
-    isLoadingBorrowAndSpend,
     isSuccessBorrowAndSpend,
     statusBorrowAndSpend,
 
@@ -173,7 +178,6 @@ const TradeModal = ({
     writeAsyncBorrowAndSpendRToken,
     isErrorBorrowAndSpendRToken,
     isIdleBorrowAndSpendRToken,
-    isLoadingBorrowAndSpendRToken,
     isSuccessBorrowAndSpendRToken,
     statusBorrowAndSpendRToken,
   } = useBorrowAndSpend();
@@ -218,20 +222,33 @@ const TradeModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[coin?.name]
         )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   const dapps = [
     { name: "Jediswap", status: "enable" },
     { name: "mySwap", status: "enable" },
   ];
-
+  const getAprByPool = (dataArray: any[], pool: string,dapp:string) => {
+    const matchedObject = dataArray.find(item => {
+      if (item.name === "USDT/USDC" ) {
+        return item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap") && ("USDC/USDT" === pool );
+      }else if(item.name === "ETH/DAI" ) {
+        return item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap") && ("DAI/ETH" === pool );
+      }
+      else {
+        return item.name === pool && item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap");
+      }
+    });
+  
+    return matchedObject ? matchedObject.apr * 100 : 0;
+  };
   const pools = [
     "ETH/USDT",
     "USDC/USDT",
@@ -351,7 +368,7 @@ const TradeModal = ({
     if (inputCollateralAmountUSD > 0) {
       var percentage =
         (newValue * 100) /
-        ((4.9999 * inputCollateralAmountUSD) /
+        ((4.98 * inputCollateralAmountUSD) /
           oraclePrices.find((curr: any) => curr.name === currentBorrowCoin)
             ?.price);
     }
@@ -413,10 +430,8 @@ const TradeModal = ({
           const [tokenA, tokenB] = keyvalue.split('/');
           
           if (tokenA === token) {
-            console.log(tokenB,"tokenB");
               data.push(tokenB)
           } else if (tokenB === token) {
-            console.log(tokenA,"tokenA")
               data.push(tokenA);
           }
       }
@@ -469,7 +484,7 @@ const TradeModal = ({
   // useEffect(()=>{
   //   const fetchPools=async()=>{
   //     const data=await getSupportedPools("0x3d58a2767ebb27cf36b5fa1d0da6566b6042bd1a9a051c40129bad48edb147b","30814223327519088")
-  //     console.log(data,"check");
+  //    //console.log(data,"check");
   //   }
   //   fetchPools();
   // },[])
@@ -477,9 +492,9 @@ const TradeModal = ({
   useEffect(() => {
     try {
       fetchProtocolStats();
-      // console.log("protocolStats", protocolStats);
+      ////console.log("protocolStats", protocolStats);
     } catch (err: any) {
-      console.log("borrow modal : error fetching protocolStats");
+     //console.log("borrow modal : error fetching protocolStats");
     }
   }, [stats]);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
@@ -487,14 +502,14 @@ const TradeModal = ({
       ?.availableReserves * 0.895
   );
   useEffect(() => {
-    // console.log("currentAvailableReserve", currentAvailableReserves);
+    ////console.log("currentAvailableReserve", currentAvailableReserves);
   }, [currentAvailableReserves]);
 
   useEffect(() => {
     setCurrentAvailableReserves(
       protocolStats[coins.indexOf(currentBorrowCoin)]?.availableReserves * 0.895
     );
-    // console.log(coins.indexOf(currentBorrowCoin));
+    ////console.log(coins.indexOf(currentBorrowCoin));
   }, [protocolStats, currentBorrowCoin]);
 
   const [radioValue, setRadioValue] = useState("1");
@@ -505,7 +520,7 @@ const TradeModal = ({
     } else if (radioValue === "2") {
       setMethod("SWAP");
     }
-    // console.log("radio value", radioValue, method);
+    ////console.log("radio value", radioValue, method);
   }, [radioValue]);
   const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
   useEffect(() => {
@@ -538,9 +553,9 @@ const TradeModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[coin?.name]
         )
         : 0
@@ -587,12 +602,12 @@ const TradeModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully spend the loan `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -604,15 +619,15 @@ const TradeModal = ({
   //     setCurrentTransactionStatus("failed");
   //     dispatch(setTransactionStatus("failed"));
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully supplied spend the loan `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -624,6 +639,7 @@ const TradeModal = ({
   const oraclePrices = useSelector(selectOraclePrices);
   const marketInfo = useSelector(selectProtocolStats);
   const [healthFactor, setHealthFactor] = useState<number>();
+
   useEffect(() => {
     try {
       const fetchHealthFactor = async () => {
@@ -650,7 +666,7 @@ const TradeModal = ({
             currentBorrowCoin &&
             currentCollateralCoin
           ) {
-            // console.log("trade",inputBorrowAmount,rTokenAmount,currentBorrowCoin,currentCollateralCoin,marketInfo)
+            ////console.log("trade",inputBorrowAmount,rTokenAmount,currentBorrowCoin,currentCollateralCoin,marketInfo)
             const data = await getLoanHealth_RTokenCollateral(
               inputBorrowAmount,
               currentBorrowCoin,
@@ -659,14 +675,14 @@ const TradeModal = ({
               oraclePrices,
               marketInfo
             );
-            // console.log(data,"data in trade")
+            ////console.log(data,"data in trade")
             setHealthFactor(data);
           }
         }
       };
       fetchHealthFactor();
     } catch (err) {
-      console.log(err);
+     //console.log(err);
     }
   }, [
     inputBorrowAmount,
@@ -696,13 +712,19 @@ const TradeModal = ({
   //   fetchMinDeposit();
   //   // setMinimumDepositAmount(2)
   // },[currentCollateralCoin])
+  const coinIndex: any = [
+    { token: "USDT", idx: 0 },
+    { token: "USDC", idx: 1 },
+    { token: "BTC", idx: 2 },
+    { token: "ETH", idx: 3 },
+    { token: "DAI", idx: 4 },
+  ];
   const handleBorrowAndSpend = async () => {
     try {
       if (currentCollateralCoin[0] != "r") {
         const borrowAndSpend = await writeAsyncBorrowAndSpend();
         setDepositTransHash(borrowAndSpend?.transaction_hash);
         if (borrowAndSpend?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
             `Transaction pending`,
@@ -744,7 +766,6 @@ const TradeModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log("borrowAndSpend Success");
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -755,7 +776,6 @@ const TradeModal = ({
         const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
         setDepositTransHash(borrowAndSpendR?.transaction_hash);
         if (borrowAndSpendR?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
             `Transaction pending`,
@@ -797,7 +817,6 @@ const TradeModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        console.log("borrowAndSpend R Success");
         const uqID = getUniqueId();
         let data: any = localStorage.getItem("transactionCheck");
         data = data ? JSON.parse(data) : [];
@@ -806,7 +825,7 @@ const TradeModal = ({
         }
       }
     } catch (err: any) {
-      console.log(err);
+     //console.log(err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -849,7 +868,7 @@ const TradeModal = ({
   const fetchParsedUSDValueBorrow = async () => {
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
-        // console.log("got parsed zero borrow");
+        ////console.log("got parsed zero borrow");
         setInputBorrowAmountUSD(0);
         return;
       }
@@ -861,9 +880,9 @@ const TradeModal = ({
       //   currentBorrowCoin,
       //   inputBorrowAmount
       // );
-      // console.log("got parsed usdt borrow", parsedBorrowAmount);
+      ////console.log("got parsed usdt borrow", parsedBorrowAmount);
       setInputBorrowAmountUSD(parsedBorrowAmount);
-      // console.log(
+      ////console.log(
       //   "effective apr values : ",
       //   "loan_usd_value",
       //   parsedBorrowAmount,
@@ -880,15 +899,32 @@ const TradeModal = ({
       //   parsedBorrowAmount
       // );
     } catch (error) {
-      console.log(error);
+     //console.log(error);
     }
   };
+  // const [poolAprs, setPoolAprs] = useState<any>([])
+  const poolAprs=useSelector(selectJediswapPoolAprs);
+  // useEffect(()=>{
+  //   try{
+  //       const fetchPoolData=async()=>{
+  //       const res=await axios.get('https://b1ibz9x1s9.execute-api.ap-southeast-1.amazonaws.com/api/amm-aprs');
+  //       if(res?.data){
+  //         setPoolAprs(res?.data)
+  //         // const filteredAmmData = poolAprs.filter((item: { amm: string; }):any => item.amm === 'jedi');
+  //         // setPoolAprs(filteredAmmData);
+  //       }
+  //     }
+  //     fetchPoolData()
+  //     }catch(err){
+  //       console.log(err,"err in pool apr")
+  //     }
+  // },[currentDapp])
 
   const fetchParsedUSDValueCollateral = async () => {
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
         setInputCollateralAmountUSD(0);
-        // console.log("got parsed zero collateral");
+        ////console.log("got parsed zero collateral");
 
         return;
       }
@@ -901,7 +937,7 @@ const TradeModal = ({
         //   currentBorrowCoin,
         //   inputBorrowAmount
         // );
-        // console.log(
+        ////console.log(
         //   "got parsed usdt collateral",
         //   parsedBorrowAmount,
         //   " max should be",
@@ -909,7 +945,7 @@ const TradeModal = ({
         // );
         setInputCollateralAmountUSD(parsedBorrowAmount);
       } else if (tokenTypeSelected === "rToken") {
-        // console.log(
+        ////console.log(
         //   "rToken parsing",
         //   rToken,
         //   rTokenAmount,
@@ -929,7 +965,7 @@ const TradeModal = ({
         //   currentBorrowCoin,
         //   inputBorrowAmount
         // );
-        // console.log(
+        ////console.log(
         //   "got parsed usdt collateral",
         //   parsedBorrowAmount,
         //   " max should be",
@@ -938,7 +974,7 @@ const TradeModal = ({
         setInputCollateralAmountUSD(parsedBorrowAmount);
       }
     } catch (error) {
-      console.log(error);
+     //console.log(error);
     }
   };
   const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
@@ -952,9 +988,23 @@ const TradeModal = ({
   const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
   const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
   useEffect(()=>{
+    const fecthLoanAmount=async()=>{
+      const dynamicdata=await getMaximumDynamicLoanAmount(collateralAmount,currentBorrowCoin,currentCollateralCoin[0]=="r" ? currentCollateralCoin.slice(1):currentCollateralCoin );
+      if(dynamicdata!=undefined){
+        const data=maxLoanAmounts["d"+currentBorrowCoin];
+        if(currentBorrowCoin==currentCollateralCoin){
+          setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
+        }else if(currentCollateralCoin[0]=="r" && currentCollateralCoin.slice(1)==currentBorrowCoin){
+          setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
+        }
+        else{
+          setMaximumLoanAmount(Math.min(dynamicdata,data));
+        }
+      }
+    }
+    fecthLoanAmount();
     setMinimumLoanAmount(minLoanAmounts["d"+currentBorrowCoin])
-    setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
-  },[currentBorrowCoin,maxLoanAmounts,minLoanAmounts])
+  },[currentBorrowCoin,maxLoanAmounts,minLoanAmounts,currentCollateralCoin])
   // useEffect(()=>{
   //   const fetchMinLoanAmount=async()=>{
   //     const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
@@ -968,7 +1018,7 @@ const TradeModal = ({
   //   fetchMinLoanAmount();
   // },[currentBorrowCoin])
   useEffect(() => {
-    // console.log(
+    ////console.log(
     //   "toMarketSplitConsole",
     //   currentBorrowCoin,
     //   inputBorrowAmount,
@@ -1022,7 +1072,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     } else if (currentDapp === "mySwap") {
       const split = await getMySwapEstimateLiquiditySplit(
@@ -1038,7 +1087,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
       setCurrentSplit(split);
     }
   };
@@ -1053,7 +1101,7 @@ const TradeModal = ({
       currentPool === "Select a pool"
     )
       return;
-    // console.log("inputBorrowAmount", Number(inputBorrowAmount));
+    ////console.log("inputBorrowAmount", Number(inputBorrowAmount));
     if (currentDapp === "Jediswap") {
       const lp_tokon = await getJediEstimatedLpAmountOut(
         currentBorrowCoin,
@@ -1068,7 +1116,6 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("toMarketSplitLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     } else if (currentDapp === "mySwap") {
       const lp_tokon = await getMySwapEstimatedLpAmountOut(
@@ -1084,19 +1131,17 @@ const TradeModal = ({
         // "ETH",
         // "USDT"
       );
-      console.log("toMarketSplitLP", lp_tokon);
       setCurrentLPTokenAmount(lp_tokon);
     }
   };
-
   // useEffect(() => {
   //   const fetchEstrTokens = async () => {
   //     const data = await getrTokensMinted(
   //       collateralBalance.substring(spaceIndex + 1),
   //       inputCollateralAmount
   //     );
-  //     console.log(data, "data in your borrow for est");
-  //     // console.log(data, "data in your borrow");
+  //    //console.log(data, "data in your borrow for est");
+  //     ////console.log(data, "data in your borrow");
   //     setEstrTokensMinted(data);
   //   };
   //   fetchEstrTokens();
@@ -1108,7 +1153,8 @@ const TradeModal = ({
         key="borrow-details"
         as="span"
         position="relative"
-        color="#4D59E8"
+        color="#B1B0B5"
+        borderBottom="1px solid #B1B0B5"
         fontSize="14px"
         width="100%"
         display="flex"
@@ -1122,9 +1168,9 @@ const TradeModal = ({
             position: "absolute",
             left: 0,
             bottom: "-0px",
-            width: "100%",
-            height: "1px",
-            backgroundColor: "#0969DA",
+            width: "0%",
+            height: "0px",
+            backgroundColor: "#B1B0B5",
           },
         }}
         onClick={() => {
@@ -1139,7 +1185,7 @@ const TradeModal = ({
           onOpen();
         }}
       >
-        Trade
+        Spend
       </Text>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
 
@@ -1149,7 +1195,7 @@ const TradeModal = ({
           const uqID = getUniqueId();
           let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
-          // console.log(uqID, "data here", data);
+          ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
             data = data.filter((val: any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -1263,7 +1309,7 @@ const TradeModal = ({
                     >
                       <Box display="flex" gap="1">
                         <Box p="1">{getCoin(currentCollateralCoin)}</Box>
-                        <Text>{currentCollateralCoin}</Text>
+                        <Text>{(currentCollateralCoin=="BTC" || currentCollateralCoin=='ETH') ? "w"+currentCollateralCoin:currentCollateralCoin}</Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
                         {activeModal == "tradeModalCollateralMarketDropdown" ? (
@@ -1452,10 +1498,10 @@ const TradeModal = ({
                                     walletBalances[coin]?.statusBalanceOf ===
                                       "success"
                                       ? parseAmount(
-                                        uint256.uint256ToBN(
+                                        String(uint256.uint256ToBN(
                                           walletBalances[coin]?.dataBalanceOf
                                             ?.balance
-                                        ),
+                                        )),
                                         tokenDecimalsMap[coin]
                                       )
                                       : 0
@@ -1487,7 +1533,7 @@ const TradeModal = ({
                                 >
                                   <Box display="flex">
                                     <Box p="1">{getCoin(coin)}</Box>
-                                    <Text color="white">{coin}</Text>
+                                    <Text color="white">{(coin=="BTC" || coin=="ETH")?"w"+coin:coin}</Text>
                                   </Box>
                                   <Box
                                     fontSize="9px"
@@ -1500,10 +1546,10 @@ const TradeModal = ({
                                       ?.balance
                                       ? numberFormatter(
                                         parseAmount(
-                                          uint256.uint256ToBN(
+                                          String(uint256.uint256ToBN(
                                             walletBalances[coin]
                                               ?.dataBalanceOf?.balance
-                                          ),
+                                          )),
                                           tokenDecimalsMap[coin]
                                         )
                                       )
@@ -1713,10 +1759,10 @@ const TradeModal = ({
                           } else {
                             var ans = (val / 100) * walletBalance;
                             if(ans<10){
-                              dispatch(setInputTradeModalCollateralAmount(ans));
-                              setinputCollateralAmount(ans);
-                              setCollateralAmount(ans);
-                              setRTokenAmount(ans);
+                              dispatch(setInputTradeModalCollateralAmount(parseFloat(ans.toFixed(7))));
+                              setinputCollateralAmount(parseFloat(ans.toFixed(7)));
+                              setCollateralAmount(parseFloat(ans.toFixed(7)));
+                              setRTokenAmount(parseFloat(ans.toFixed(7)));
                             }else{
                               ans = Math.round(ans * 100) / 100;
                               dispatch(setInputTradeModalCollateralAmount(ans));
@@ -1880,7 +1926,7 @@ const TradeModal = ({
                     >
                       <Box display="flex" gap="1">
                         <Box p="1">{getCoin(currentBorrowCoin)}</Box>
-                        <Text>{currentBorrowCoin}</Text>
+                        <Text>{(currentBorrowCoin=="BTC"|| currentBorrowCoin=='ETH')? "w"+currentBorrowCoin:currentBorrowCoin}</Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
                         {activeModal == "tradeModalBorrowMarketDropdown" ? (
@@ -1969,6 +2015,11 @@ const TradeModal = ({
                                     protocolStats?.[index]?.availableReserves *
                                     0.895
                                   );
+                                  setCurrentBorrowAPR(
+                                    coinIndex.find(
+                                      (curr: any) => curr?.token === coin
+                                    )?.idx
+                                  );
                                   setLoanMarket(coin);
                                   // setMarket(coin);
                                   // setMarket(coin);
@@ -1999,7 +2050,7 @@ const TradeModal = ({
                                 >
                                   <Box display="flex">
                                     <Box p="1">{getCoin(coin)}</Box>
-                                    <Text color="white">{coin}</Text>
+                                    <Text color="white">{(coin=="BTC" || coin=='ETH'?"w"+coin:coin)}</Text>
                                   </Box>
                                   <Box
                                     fontSize="9px"
@@ -2063,7 +2114,7 @@ const TradeModal = ({
                       width="100%"
                       color="white"
                       border={`${inputCollateralAmountUSD &&
-                          inputBorrowAmountUSD > 4.9999 * inputCollateralAmountUSD
+                          inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                           ? "1px solid #CF222E"
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
@@ -2101,7 +2152,7 @@ const TradeModal = ({
                       placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowCoin}`:`min ${minimumLoanAmount==null ?0:minimumLoanAmount} ${currentBorrowCoin}`}
                           color={`${inputCollateralAmountUSD &&
                               inputBorrowAmountUSD >
-                              4.9999 * inputCollateralAmountUSD
+                              4.98 * inputCollateralAmountUSD
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
                                 ? "#CF222E"
@@ -2134,7 +2185,7 @@ const TradeModal = ({
                         variant="ghost"
                         color={`${inputCollateralAmountUSD &&
                             inputBorrowAmountUSD >
-                            4.9999 * inputCollateralAmountUSD
+                            4.98 * inputCollateralAmountUSD
                             ? "#CF222E"
                             : isNaN(inputBorrowAmount)
                               ? "#CF222E"
@@ -2153,7 +2204,7 @@ const TradeModal = ({
                         onClick={() => {
                           if (inputCollateralAmountUSD > 0) {
                             if (
-                              (4.9999 * inputCollateralAmountUSD) /
+                              (4.98 * inputCollateralAmountUSD) /
                               oraclePrices.find(
                                 (curr: any) => curr.name === currentBorrowCoin
                               )?.price >
@@ -2164,14 +2215,14 @@ const TradeModal = ({
                               setsliderValue2(100);
                             } else {
                               setinputBorrowAmount(
-                                (4.9999 * inputCollateralAmountUSD) /
+                                (4.98 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
                                   (curr: any) =>
                                     curr.name === currentBorrowCoin
                                 )?.price
                               );
                               setLoanAmount(
-                                (4.9999 * inputCollateralAmountUSD) /
+                                (4.98 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
                                   (curr: any) =>
                                     curr.name === currentBorrowCoin
@@ -2205,7 +2256,7 @@ const TradeModal = ({
                       (inputBorrowAmount > 0 &&
                         inputCollateralAmountUSD &&
                         inputBorrowAmountUSD >
-                        4.9999 * inputCollateralAmountUSD) ||
+                        4.98 * inputCollateralAmountUSD) ||
                       isNaN(inputBorrowAmount) ? (
                       <Text
                         display="flex"
@@ -2230,7 +2281,7 @@ const TradeModal = ({
                               :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& inputBorrowAmount>maximumLoanAmount
                               ? "More than max amount"
                               : inputBorrowAmountUSD >
-                                4.9999 * inputCollateralAmountUSD
+                                4.98 * inputCollateralAmountUSD
                                 ? "Debt higher than permitted"
                                 : "Invalid Input"}
                           </Text>
@@ -2286,14 +2337,14 @@ const TradeModal = ({
                           if (val == 100) {
                             if (inputCollateralAmountUSD > 0) {
                               setinputBorrowAmount(
-                                (4.9999 * inputCollateralAmountUSD) /
+                                (4.98 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
                                   (curr: any) =>
                                     curr.name === currentBorrowCoin
                                 )?.price
                               );
                               setLoanAmount(
-                                (4.9999 * inputCollateralAmountUSD) /
+                                (4.98 * inputCollateralAmountUSD) /
                                 oraclePrices.find(
                                   (curr: any) =>
                                     curr.name === currentBorrowCoin
@@ -2307,7 +2358,7 @@ const TradeModal = ({
                             if (inputCollateralAmountUSD > 0) {
                               var ans =
                                 (val / 100) *
-                                ((4.9999 * inputCollateralAmountUSD) /
+                                ((4.98 * inputCollateralAmountUSD) /
                                   oraclePrices.find(
                                     (curr: any) =>
                                       curr.name === currentBorrowCoin
@@ -2316,9 +2367,9 @@ const TradeModal = ({
                               var ans = (val / 100) * currentAvailableReserves;
                             }
                             if(ans<10){
-                              dispatch(setInputTradeModalBorrowAmount(ans));
-                              setinputBorrowAmount(ans);
-                              setLoanAmount(ans);
+                              dispatch(setInputTradeModalBorrowAmount(parseFloat(ans.toFixed(7))));
+                              setinputBorrowAmount(parseFloat(ans.toFixed(7)));
+                              setLoanAmount(parseFloat(ans.toFixed(7)));
                             }else{
                               ans = Math.round(ans * 100) / 100;
                               dispatch(setInputTradeModalBorrowAmount(ans));
@@ -2474,7 +2525,7 @@ borderWidth:'5px',
                         //   setMethod("SWAP");
                         // }}
                         >
-                          Trade
+                          {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"Trade":"Swap"}
                         </Radio>
                       </Stack>
                     </RadioGroup>
@@ -2686,7 +2737,7 @@ borderWidth:'5px',
                           ""
                         )}
                         <Text>
-                          {radioValue === "1" ? currentPool : currentPoolCoin}
+                          {radioValue === "1" ? (currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH") &&((currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH"))  ?"w"+currentPool.split("/")[0]+"/w"+currentPool.split("/")[1]:(currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH")  ?"w"+currentPool.split("/")[0]+"/"+currentPool.split("/")[1]:(currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH")  ?currentPool.split("/")[0]+"/w"+currentPool.split("/")[1] :currentPool : (currentPoolCoin=="BTC" || currentPoolCoin=='ETH') ?"w"+currentPoolCoin:currentPoolCoin}
                         </Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
@@ -2744,15 +2795,28 @@ borderWidth:'5px',
                                 <Box
                                   w="full"
                                   display="flex"
+                                  justifyContent="space-between"
                                   py="5px"
-                                  px={`${pool === currentPool ? "1" : "5"}`}
+                                  pr="2"
+                                  pl={`${pool === currentPool ? "1" : "4"}`}
                                   gap="1"
                                   bg={`${pool === currentPool ? "#4D59E8" : "inherit"
                                     }`}
                                   borderRadius="md"
                                 >
+                                  <Box display="flex">
+
                                   <Box p="1">{getCoin(pool)}</Box>
-                                  <Text>{pool}</Text>
+                                  <Text>{(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH") &&((pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH"))  ?"w"+pool.split("/")[0]+"/w"+pool.split("/")[1]:(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH")  ?"w"+pool.split("/")[0]+"/"+pool.split("/")[1]:(pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH")  ?pool.split("/")[0]+"/w"+pool.split("/")[1] :pool}</Text>
+                                  </Box>
+                                    <Box
+                                fontSize="9px"
+                                color="#E6EDF3"
+                                mt="6px"
+                                fontWeight="medium"
+                                    >
+                                    Pool apr: {numberFormatter(getAprByPool(poolAprs,pool,currentDapp))}%                                               
+                                      </Box>
                                 </Box>
                               </Box>
                             );
@@ -2808,7 +2872,7 @@ borderWidth:'5px',
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
-                                  <Text>{coin}</Text>
+                                  <Text>{(coin=="BTC"|| coin=="ETH")?"w"+coin:coin}</Text>
                                 </Box>
                               </Box>
                             );
@@ -2827,7 +2891,7 @@ borderWidth:'5px',
                   background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                   my="4"
                 >
-                  {radioValue == "1" && currentPool !== "Select a pool" && (
+                  {radioValue == "1" && currentPool !== "Select a pool" &&collateralAmount > 0 && inputBorrowAmount > 0  && (
                     <Box display="flex" justifyContent="space-between" mb="1">
                       <Box display="flex">
                         <Text color="#676D9A" fontSize="xs">
@@ -2879,7 +2943,7 @@ borderWidth:'5px',
                       </Text>
                     </Box>
                   )}
-                  {radioValue == "1" && currentPool !== "Select a pool" && (
+                  {radioValue == "1" && currentPool !== "Select a pool" && collateralAmount > 0 && inputBorrowAmount > 0 && (
                     <Box
                       display="flex"
                       justifyContent="space-between"
@@ -3047,7 +3111,7 @@ borderWidth:'5px',
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="Cost incurred during transactions."
+                        label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                         bg="#02010F"
                         fontSize={"13px"}
                         fontWeight={"400"}
@@ -3139,7 +3203,7 @@ borderWidth:'5px',
                           />
                         </Box>
                       ) : (
-                        borrowAPRs[currentBorrowAPR] + "%"
+                        "-"+borrowAPRs[currentBorrowAPR] + "%"
                       )}
                       {/* 5.56% */}
                     </Text>
@@ -3170,7 +3234,7 @@ borderWidth:'5px',
                           hasArrow
                           placement="right"
                           boxShadow="dark-lg"
-                          label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
+                          label="If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying."
                           bg="#02010F"
                           fontSize={"13px"}
                           fontWeight={"400"}
@@ -3207,7 +3271,20 @@ borderWidth:'5px',
                               />
                             </Box>
                           ) : (
-                            <Text color="#676D9A">
+                            currentPool=="Select a pool" ?
+                            <Text color={Number(
+                              (-(inputBorrowAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate) +
+                                inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentCollateralCoin
+                                )?.supplyRate) /
+                              inputBorrowAmountUSD
+                            )<0 ?"rgb(255 94 94)" : "#00D395"}>
                               {/* 5.56% */}
                               {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                               { }
@@ -3217,19 +3294,54 @@ borderWidth:'5px',
                           )?.supplyRate
                         } */}
                               {Number(
-                                (inputBorrowAmountUSD *
+                                (-(inputBorrowAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentBorrowCoin
-                                  )?.borrowRate -
+                                  )?.borrowRate) +
                                   inputCollateralAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentCollateralCoin
                                   )?.supplyRate) /
                                 inputBorrowAmountUSD
-                              ).toFixed(2)}
+                              ).toFixed(2)}%
                             </Text>
+                            :                            <Text color={Number(
+                              ((-(inputBorrowAmountUSD *
+                                (protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
+                                inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentCollateralCoin
+                                )?.supplyRate) /
+                              inputCollateralAmountUSD)
+                            )<0 ? "rgb(255 94 94)" : "#00D395"}>
+                            {/* 5.56% */}
+                            {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                            { }
+                            {/* {
+                        protocolStats?.find(
+                          (stat: any) => stat?.token === currentCollateralCoin
+                        )?.supplyRate
+                      } */}
+                            {Number(
+                              ((-(inputBorrowAmountUSD *
+                                (protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
+                                inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentCollateralCoin
+                                )?.supplyRate) /
+                              inputCollateralAmountUSD)
+                            ).toFixed(2)}%
+                          </Text>
                           )
                         ) : // protocolStats.length === 0 ||
                           rTokenAmount === 0 ||
@@ -3245,28 +3357,75 @@ borderWidth:'5px',
                               />
                             </Box>
                           ) : (
-                            <Text>
+                            currentPool=="Select a pool" ?
+                            <Text color={Number(
+                              (-(inputBorrowAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate) +
+                                inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === rToken.slice(1)
+                                )?.supplyRate) /
+                              inputBorrowAmountUSD
+                            )<0 ? "rgb(255 94 94)" : "#00D395"}>
                               {/* 5.56% */}
                               {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                               {Number(
-                                (inputBorrowAmountUSD *
+                                (-(inputBorrowAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentBorrowCoin
-                                  )?.borrowRate -
+                                  )?.borrowRate) +
                                   inputCollateralAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === rToken.slice(1)
                                   )?.supplyRate) /
                                 inputBorrowAmountUSD
-                              ).toFixed(2)}
+                              ).toFixed(2)}%
                               {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin
                             )?.supplyRate
                           } */}
                             </Text>
+                            : <Text color={Number(
+                              ((inputBorrowAmountUSD *
+                                (-protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
+                                inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === rToken.slice(1)
+                                )?.supplyRate) /
+                              inputCollateralAmountUSD
+                            )<0 ?"rgb(255 94 94)" : "#00D395" }>
+                            {/* 5.56% */}
+                            {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                            {Number(
+                              ((inputBorrowAmountUSD *
+                                (-protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
+                                inputCollateralAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === rToken.slice(1)
+                                )?.supplyRate) /
+                              inputCollateralAmountUSD
+                            ).toFixed(2)}%
+                            {/* {
+                          protocolStats?.find(
+                            (stat: any) => stat?.token === currentCollateralCoin
+                          )?.supplyRate
+                        } */}
+                          </Text>
                           )}
                       </Text>
                     </Text>
@@ -3306,23 +3465,79 @@ borderWidth:'5px',
                     ""
                   )}
                 </Box>
+                {currentCollateralCoin &&
+              currentCollateralCoin[0] !== "r" &&
+              stats && (
+                <Box
+                  // display="flex"
+                  // justifyContent="left"
+                  w="100%"
+                  // pb="4"
+                  height="64px"
+                  display="flex"
+                  alignItems="center"
+                  mt="2rem"
+                  // mb="1rem"
+                >
+                  <Box
+                    display="flex"
+                    bg={dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?"#480C10":"#222766"} 
+                    color="#F0F0F5"
+                    fontSize="12px"
+                    p="4"
+                    border={dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?"1px solid #9B1A23":"1px solid #3841AA"}
+                    fontStyle="normal"
+                    fontWeight="400"
+                    lineHeight="18px"
+                    borderRadius="6px"
+                    // textAlign="center"
+                  >
+                    <Box pr="3" mt="0.5" cursor="pointer">
+                      {dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?<RedinfoIcon/>:<BlueInfoIcon />}
+                    </Box>
+                    {dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?
+                  `The current collateral and borrowing market combination isn't allowed at this moment.`:  
+                    `You have selected a native token as collateral which will be
+                    converted to rtokens 1r${currentCollateralCoin} =
+                    ${(stats.find(
+                      (val: any) => val?.token == currentCollateralCoin.split(1)
+                    )?.exchangeRateRtokenToUnderlying
+                      ? numberFormatter(
+                          stats.find(
+                            (val: any) =>
+                              val?.token == currentCollateralCoin.split(1)
+                          )?.exchangeRateRtokenToUnderlying
+                        )
+                      : "") + currentCollateralCoin?.split(1)}`
+                  }
+                    {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                  </Box>
+                </Box>
+              )}
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
                   (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
                ((   inputBorrowAmount>=minimumLoanAmount &&
                   inputBorrowAmount<=maximumLoanAmount )||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
                   inputBorrowAmount <= currentAvailableReserves &&
                   inputBorrowAmount > 0 &&
-                ((  inputCollateralAmount >= minimumDepositAmount &&
-                  inputCollateralAmount<=maximumDepositAmount)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
+                (( tokenTypeSelected=="Native" ?  inputCollateralAmount >= minimumDepositAmount &&
+                  inputCollateralAmount<=maximumDepositAmount:true)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
                   inputCollateralAmount <= walletBalance &&
-                  inputBorrowAmountUSD <= 4.9999 * inputCollateralAmountUSD &&
+                  inputBorrowAmountUSD <= 4.98 * inputCollateralAmountUSD &&
                   currentDapp != "Select a dapp" &&
                   (currentPool != "Select a pool" ||
                     currentPoolCoin != "Select a pool") ? (
                   <Box
                     onClick={() => {
                       setTransactionStarted(true);
-                      // console.log(
+                      ////console.log(
                       //   "trade clicked",
                       //   "rToken",
                       //   rToken,

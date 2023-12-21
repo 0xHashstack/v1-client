@@ -40,7 +40,7 @@ const SliderWithInput = () => {
     }
   };
   const currentSelectedCoin = useSelector(selectCoinSelectedSupplyModal);
-  // console.log(currentSelectedCoin);
+  ////console.log(currentSelectedCoin);
 
   return (
     <Box>

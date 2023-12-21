@@ -79,7 +79,7 @@
 //         item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
 //     );
 //     setBorrowAmount(result?.loanAmountParsed);
-//     // console.log(borrowAmount)
+//     ////console.log(borrowAmount)
 //     // Rest of your code using the 'result' variable
 //   }, [currentId]);
 
@@ -178,7 +178,7 @@
 //   }, [currentId, currentMarketCoin]);
 
 //   const handleBorrowMarketCoinChange = (id: string) => {
-//     // console.log("got id", id);
+//     ////console.log("got id", id);
 //     for (let i = 0; i < borrowIDCoinMap.length; i++) {
 //       if (borrowIDCoinMap[i].id === id) {
 //         setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name.slice(1));
@@ -188,7 +188,7 @@
 //   };
 
 //   const handleBorrowMarketIDChange = (coin: string) => {
-//     // console.log("got coin", coin);
+//     ////console.log("got coin", coin);
 //     for (let i = 0; i < borrowIDCoinMap.length; i++) {
 //       if (borrowIDCoinMap[i].name === coin) {
 //         setCurrentBorrowId(borrowIDCoinMap[i].id);
@@ -439,7 +439,7 @@
 //                                     .slice(borrowIdString.indexOf("-") + 1)
 //                                     .trim()
 //                               );
-//                               // console.log(result)
+//                               ////console.log(result)
 //                               setBorrowAmount(result?.loanAmountParsed);
 //                             }}
 //                           >

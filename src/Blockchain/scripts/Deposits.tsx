@@ -1,4 +1,4 @@
-import { Contract, number, uint256 } from "starknet";
+import { Contract, num,  uint256 } from "starknet";
 import {
   contractsEnv,
   getProvider,
@@ -14,11 +14,11 @@ import { weiToEtherNumber } from "../utils/utils";
 
 function parseDeposits(deposits: any): IDeposit[] {
   const parsedDeposits: IDeposit[] = [];
-  // console.log("deposits - ", deposits);
+  ////console.log("deposits - ", deposits);
   for (let i = 0; i < deposits?.length; ++i) {
     let depositData = deposits[i];
 
-    let tokenAddress = number.toHex(depositData?.asset_addr);
+    let tokenAddress = num.toHex(depositData?.asset_addr);
     let token = getTokenFromAddress(tokenAddress)?.name as NativeToken;
 
     let rTokenFreeParsed = weiToEtherNumber(
@@ -41,33 +41,32 @@ function parseDeposits(deposits: any): IDeposit[] {
       token,
       rTokenAddress: getTokenFromAddress(tokenAddress)?.rToken || "",
       rToken: getRTokenFromAddress(
-        getTokenFromAddress(number.toHex(depositData?.asset_addr))?.rToken || ""
+        getTokenFromAddress(num.toHex(depositData?.asset_addr))?.rToken || ""
       )?.name as RToken,
       rTokenFreeParsed,
       rTokenLockedParsed,
       rTokenStakedParsed,
       rTokenAmountParsed: rTokenFreeParsed + rTokenLockedParsed,
-      underlyingAssetAmount: uint256.uint256ToBN(
+      underlyingAssetAmount:Number (uint256.uint256ToBN(
         depositData?.underlying_asset_amount
-      ),
+      )),
       underlyingAssetAmountParsed: weiToEtherNumber(
         uint256.uint256ToBN(depositData?.underlying_asset_amount).toString(),
-        getTokenFromAddress(number.toHex(depositData?.asset_addr))
+        getTokenFromAddress(num.toHex(depositData?.asset_addr))
           ?.name as NativeToken
       ),
     };
     parsedDeposits.push(JSON.parse(JSON.stringify(deposit)));
   }
-  // console.log("supplies parsed: ", parsedDeposits);
+  ////console.log("supplies parsed: ", parsedDeposits);
   return parsedDeposits;
 }
 
 const parseDeposit = (deposit: any) => {
-  console.log("supplies deposit ", deposit);
   let depositData = deposit;
 
-  let tokenAddress = number.toHex(depositData?.asset_address);
-  // console.log("supplies deposit token ", tokenAddress);
+  let tokenAddress = num.toHex(depositData?.asset_address);
+  ////console.log("supplies deposit token ", tokenAddress);
   let token = getTokenFromAddress(tokenAddress)?.name as NativeToken;
 
   let rTokenFreeParsed = weiToEtherNumber(
@@ -84,13 +83,12 @@ const parseDeposit = (deposit: any) => {
     uint256.uint256ToBN(depositData?.rToken_staked).toString(),
     token
   );
-
   let deposit_data: IDeposit = {
     tokenAddress,
     token,
     rTokenAddress: getTokenFromAddress(tokenAddress)?.rToken || "",
     rToken: getRTokenFromAddress(
-      getTokenFromAddress(number.toHex(depositData?.asset_address))?.rToken ||
+      getTokenFromAddress(num.toHex(depositData?.asset_address))?.rToken ||
         ""
     )?.name as RToken,
     rTokenFreeParsed,
@@ -100,14 +98,15 @@ const parseDeposit = (deposit: any) => {
       uint256.uint256ToBN(depositData?.rToken_amount).toString(),
       token
     ),
-    underlyingAssetAmount: uint256
+    underlyingAssetAmount:Number( uint256
       .uint256ToBN(depositData?.supply_asset_amount)
-      .toString(),
+      .toString()),
     underlyingAssetAmountParsed: weiToEtherNumber(
       uint256.uint256ToBN(depositData?.supply_asset_amount).toString(),
-      getTokenFromAddress(number.toHex(depositData?.asset_address))
+      getTokenFromAddress(num.toHex(depositData?.asset_address))
         ?.name as NativeToken
     ),
+    
   };
   return deposit_data;
 };
@@ -120,7 +119,7 @@ export async function getUserDeposits(account: string) {
     provider
   );
   if (!account) return;
-  // console.log(
+  ////console.log(
   //   "supplies callling with:",
   //   account,
   //   "on address: ",
@@ -153,7 +152,7 @@ export async function getUserDeposits(account: string) {
               return parseDeposit(deposit?.value?.deposit);
             else return {};
           });
-        console.log("supplies result: ", results);
+       //console.log("supplies result: ", results);
         resolve(results);
       });
     });

@@ -32,7 +32,7 @@ const BorrowAPRChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option
@@ -278,7 +278,7 @@ const BorrowAPRChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Average Borrow APR:</Box>
+          <Box mt="auto">Average Borrow APR: {btcData?.borrowRates[btcData?.borrowRates.length-1]}%</Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"

@@ -18,7 +18,7 @@ import AssetMetrics from "@/components/layouts/metrics/AssetMetrics";
 import SupplyMetrics from "@/components/layouts/metrics/SupplyMetrics";
 import RiskMetrics from "@/components/layouts/metrics/RiskMetrics";
 import Link from "next/link";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import TotalValueLockedMetrics from "@/components/layouts/metrics/totalValueLockedMetrics";
 import MetricsTabs from "@/components/layouts/metrics/metricsTabs";
 import MarketMetrics from "@/components/layouts/metrics/borrowMetrics";
@@ -45,8 +45,6 @@ const ProtocolMetrics = () => {
     // alert(dropdownName);
     dispatch(setMetricsDropdown(dropdownName));
   };
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
   const { account: _account } = useAccount();
   useDataLoader();
   // useEffect(() => {

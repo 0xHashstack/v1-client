@@ -28,9 +28,9 @@ const StatsBoard = () => {
   const yourSupply = useSelector(selectYourSupply);
   const yourBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
-  // console.log(yourBorrow);
+  ////console.log(yourBorrow);
   // const netWorth= datanetWorth? datanetWorth:"-";
-  // console.log(netWorth,"net worth")
+  ////console.log(netWorth,"net worth")
 
   // const [userStats, setUserStats] = useState({
   //   netWorth: netWorth,// current values of loans - total borrow + total supply
@@ -43,24 +43,24 @@ const StatsBoard = () => {
   //   try {
   //     const fetchProtocolStats = async () => {
   //       const reserves = await getProtocolReserves();
-  //       console.log("protocol reserves", reserves);
+  //      //console.log("protocol reserves", reserves);
   //       setProtocolReserves(reserves);
   //     };
   //     fetchProtocolStats();
   //   } catch (err) {
-  //     console.log("error fetching protocol reserves ", err);
+  //    //console.log("error fetching protocol reserves ", err);
   //   }
   // }, []);
   // useEffect(() => {
   //   try {
   //     const fetchUserStats = async () => {
   //       const reserves = await getUserReserves(address);
-  //       console.log("user reserves", reserves);
+  //      //console.log("user reserves", reserves);
   //       setUserStats(reserves);
   //     };
   //     fetchUserStats();
   //   } catch (err) {
-  //     console.log("error fetching user stats ", err);
+  //    //console.log("error fetching user stats ", err);
   //   }
   // }, []);
 
@@ -113,7 +113,7 @@ const StatsBoard = () => {
           onclick={() => {
             handleRouteChange("/v1/protocol-metrics");
           }}
-          arrowHide={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"?false:true}
+          arrowHide={false}
         />
       </HStack>
     </Flex>

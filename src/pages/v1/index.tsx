@@ -19,8 +19,11 @@ import StarknetLogo from "@/assets/icons/coins/starknet";
 import BrowserWalletIcon from "@/assets/icons/wallets/browserwallet";
 import EthWalletLogo from "@/assets/icons/coins/ethwallet";
 import {
+  argent,
+  braavos,
   useAccount,
-  useConnectors,
+  useConnect,
+  useDisconnect,
   // useBalance,
 } from "@starknet-react/core";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,12 +31,18 @@ import {
   selectWalletBalance,
   setAccount,
 } from "@/store/slices/userAccountSlice";
-import { setTransactionRefresh } from "@/store/slices/readDataSlice";
+import { setReferral, setTransactionRefresh } from "@/store/slices/readDataSlice";
 import Banner from "@/components/uiElements/loaders/Banner";
 import Banner2 from "@/components/uiElements/loaders/Banner2";
 import useTransactionRefresh from "@/hooks/useTransactionRefresh";
 import mixpanel from "mixpanel-browser";
 import useDataLoader from "@/hooks/useDataLoader";
+import { diamondAddress, getProvider } from "@/Blockchain/stark-constants";
+import comptrollerAbi from "../../Blockchain/abis_mainnet/comptroller_abi.json";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { Contract, RpcProvider } from "starknet";
+import GetTokensModal from "@/components/modals/getTokens";
+import SupplyModal from "@/components/modals/SupplyModal";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -42,9 +51,16 @@ export default function Home() {
   // const { data, isLoading, error, refetch } = useBalance({
   //   address
   // })
-  // console.log(data);
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
+  ////console.log(data);
+  // const connectors = [
+  //   braavos(),
+  //   argent(),
+  // ];
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
+
+  // const { available, refresh } =
+  //   useConnectors();
   const [render, setRender] = useState(true);
   mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
     debug: true,
@@ -64,15 +80,13 @@ export default function Home() {
   const dispatch = useDispatch();
   const walletBalance = useSelector(selectWalletBalance);
   // mixpanel.identify("13793");
-  const refreshCallWrapper = () => {
-    console.log("refresh called");
-    refresh();
-  };
+ 
 
-  useEffect(() => {
-    const interval = setInterval(refresh, 200);
-    return () => clearInterval(interval);
-  }, [refresh]);
+  // useEffect(() => {
+  //   const interval = setInterval(refresh, 200);
+  //   return () => clearInterval(interval);
+  // }, [refresh]);
+
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const networks = [
     { name: "Starknet", status: "enable" },
@@ -113,22 +127,29 @@ export default function Home() {
         break;
     }
   };
-  // console.log(account ,"index page")
-  // console.log("Index reload check",account);
+  ////console.log(account ,"index page")
+  ////console.log("Index reload check",account);
   useEffect(() => {
     localStorage.setItem("connected", "");
   }, []);
+  const { ref } = router.query;
+    if(ref){
+      dispatch(setReferral(ref));
+    }
   useEffect(() => {
     // alert(status)
     // const storedAccount = localStorage.getItem("account");
     const hasVisited = localStorage.getItem("visited");
     const walletConnected = localStorage.getItem("lastUsedConnector");
     localStorage.setItem("transactionCheck", JSON.stringify([]));
-    console.log(1)
     if (walletConnected == "braavos") {
-      console.log(2999)
         disconnect();
-        connect(connectors[0]);
+        connectors.map((connector:any)=>{
+          if(connector.id=="braavos"){
+            connect(connector);
+          }
+        })
+        
       if(!account){
         return;
       }else{
@@ -141,7 +162,11 @@ export default function Home() {
       // dispatch(setTransactionRefresh("reset"));
     } else if (walletConnected == "argentX") {
         disconnect();
-        connect(connectors[1]);
+        connectors.map((connector)=>{
+          if(connector.id=="argentX"){
+            connect({connector});
+          }
+        })
       if(!account){
         return;
       }else{
@@ -190,7 +215,7 @@ export default function Home() {
       //   router.replace(marketHref2);
       // }
     }
-    // console.log("account home", address, status);
+    ////console.log("account home", address, status);
   }, [status, isConnected]);
   return (
     <Box
@@ -227,8 +252,8 @@ export default function Home() {
           width="400px"
           mt="8px"
         >
-          {available?.[0]?.options?.id == "braavos" ||
-          available?.[1]?.options?.id == "braavos" ? (
+          {connectors[0]?.id == "braavos" ||
+          connectors[1]?.id == "braavos" ? (
             <Box
               w="full"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
@@ -243,7 +268,11 @@ export default function Home() {
                 localStorage.setItem("lastUsedConnector", "braavos");
                 localStorage.setItem("connected", "braavos");
                 disconnect();
-                connect(connectors[0]);
+                connectors.map((connector)=>{
+                  if(connector.id=="braavos"){
+                    connect({connector});
+                  }
+                })
                 dispatch(setTransactionRefresh("reset"));
               }}
             >
@@ -256,8 +285,8 @@ export default function Home() {
                     endColor="#2B2F35"
                     borderRadius="6px"
                   />
-                ) : available?.[0]?.options?.id == "braavos" ||
-                  available?.[1]?.options?.id == "braavos" ? (
+                ) : connectors[0]?.id == "braavos" ||
+                  connectors[1]?.id == "braavos" ? (
                   // || availableDataLoading
                   "Braavos Wallet"
                 ) : (
@@ -293,8 +322,8 @@ export default function Home() {
                       endColor="#2B2F35"
                       borderRadius="6px"
                     />
-                  ) : available[0]?.options?.id == "braavos" ||
-                    available[1]?.options?.id == "braavos" ? (
+                  ) : connectors[0]?.id == "braavos" ||
+                  connectors[1]?.id == "braavos" ? (
                     // || availableDataLoading
                     "Braavos Wallet"
                   ) : (
@@ -308,8 +337,8 @@ export default function Home() {
             </Link>
           )}
 
-          {available[1]?.options.id == "argentX" ||
-          available[0]?.options.id == "argentX" ? (
+          {connectors[1]?.id == "argentX" ||
+          connectors[0]?.id == "argentX" ? (
             <Box
               w="full"
               py="2"
@@ -324,7 +353,11 @@ export default function Home() {
                 localStorage.setItem("lastUsedConnector", "argentX");
                 localStorage.setItem("connected", "argentX");
                 disconnect();
-                connect(connectors[1]);
+                connectors.map((connector)=>{
+                  if(connector.id=="argentX"){
+                    connect({connector});
+                  }
+                })
                 dispatch(setTransactionRefresh("reset"));
               }}
             >
@@ -337,8 +370,8 @@ export default function Home() {
                     endColor="#2B2F35"
                     borderRadius="6px"
                   />
-                ) : available[1]?.options.id == "argentX" ||
-                  available[0]?.options.id == "argentX" ? (
+                ) : connectors[0]?.id == "argentX" ||
+                connectors[1]?.id == "argentX" ? (
                   // || availableDataLoading
                   "Argent X Wallet"
                 ) : (
@@ -378,8 +411,8 @@ export default function Home() {
                       endColor="#2B2F35"
                       borderRadius="6px"
                     />
-                  ) : available[1]?.options.id == "argentX" ||
-                    available[0]?.options.id == "argentX" ? (
+                  ) : connectors[1]?.id == "argentX" ||
+                  connectors[0]?.id == "argentX" ? (
                     // || availableDataLoading
                     "Argent X Wallet"
                   ) : (

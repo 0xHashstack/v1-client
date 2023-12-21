@@ -11,10 +11,10 @@ const useWithdrawDeposit = () => {
   const { address: owner } = useAccount();
 
   useEffect(() => {
-    // console.log("withdrawing", asset, rTokenShares);
+    ////console.log("withdrawing", asset, rTokenShares);
   }, [asset, rTokenShares]);
 
-  // console.log(asset, rTokenShares);
+  ////console.log(asset, rTokenShares);
   const {
     data: dataWithdrawDeposit,
     error: errorWithdrawDeposit,
@@ -23,11 +23,10 @@ const useWithdrawDeposit = () => {
     writeAsync: writeAsyncWithdrawDeposit,
     isError: isErrorWithdrawDeposit,
     isIdle: isIdleWithdrawDeposit,
-    isLoading: isLoadingWithdrawDeposit,
     isSuccess: isSuccessWithdrawDeposit,
     status: statusWithdrawDeposit,
   } = useContractWrite({
-    calls: {
+    calls: [{
       contractAddress: diamondAddress,
       entrypoint: "withdraw_deposit",
       calldata: [
@@ -37,7 +36,7 @@ const useWithdrawDeposit = () => {
         owner,
         owner,
       ],
-    },
+    }],
   });
 
   return {
@@ -53,7 +52,6 @@ const useWithdrawDeposit = () => {
     writeAsyncWithdrawDeposit,
     isErrorWithdrawDeposit,
     isIdleWithdrawDeposit,
-    isLoadingWithdrawDeposit,
     isSuccessWithdrawDeposit,
     statusWithdrawDeposit,
   };

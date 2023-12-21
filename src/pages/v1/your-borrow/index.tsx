@@ -12,7 +12,7 @@ import { HStack, VStack, Text, Box } from "@chakra-ui/react";
 import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { selectYourBorrow, selectNetAPR, selectnetAprLoans } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
@@ -29,11 +29,10 @@ const YourBorrow = () => {
     "Effective APR",
     "Collateral",
     "Spend status",
-    "Risk premium",
+    "Current ROE",
+    "Health Factor",
     "",
   ];
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
 
   const dispatch = useDispatch();
   const { account, address } = useAccount();
@@ -42,7 +41,6 @@ const YourBorrow = () => {
   useEffect(() => {
     if (UserLoans) {
       if (UserLoans?.length <= (currentPagination - 1) * 6) {
-        console.log("pagination", Pagination, UserLoans);
         if (currentPagination > 1) {
           setCurrentPagination(currentPagination - 1);
         }
@@ -54,7 +52,7 @@ const YourBorrow = () => {
   //   const loan = async () => {
   //     try {
   //       const loans = await getUserLoans(address || "");
-  //       // console.log(loans,"Loans from your borrow index page")
+  //       ////console.log(loans,"Loans from your borrow index page")
 
   //       // loans.filter(
   //       //   (loan) =>
@@ -82,9 +80,9 @@ const YourBorrow = () => {
   //           loan.loanAmountParsed > 0
   //       )));
   //     } catch (err) {
-  //       console.log("your-borrow : unable to fetch user loans");
+  //      //console.log("your-borrow : unable to fetch user loans");
   //     }
-  //     // console.log("loans", loans);
+  //     ////console.log("loans", loans);
   //   };
   //   if (account) {
   //     loan();
@@ -92,7 +90,6 @@ const YourBorrow = () => {
   // }, [account, UserLoans]);
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectnetAprLoans);
-  console.log(netAPR,"apr loans")
 
   return (
     <PageCard pt="6.5rem">
@@ -158,7 +155,7 @@ const YourBorrow = () => {
                 borderRadius="6px"
               />
             ) : (
-              <Text color="#e6edf3" fontSize="20px">
+              <Text color={Number(netAPR)<0 ?"rgb(255 94 94)": Number(netAPR)==0 ?"white":"#00D395"} fontSize="20px">
                 {netAPR && !Number.isNaN(netAPR) ? `${netAPR}%` : "NA"}
               </Text>
             )}

@@ -7,10 +7,12 @@ import stakingAbi from "../abis_mainnet/staking_abi.json";
 import supplyABI from "../abis_mainnet/supply_abi.json";
 import governorAbi from "../abis_mainnet/governor_abi.json";
 import comptrollerAbi from "../abis_mainnet/comptroller_abi.json";
+import nftAbi from "../abis_mainnet/nft_soul_abi.json";
 import {
   diamondAddress,
   getProvider,
   stakingContractAddress,
+  nftAddress
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount } from "../utils/utils";
@@ -18,9 +20,13 @@ import { etherToWeiBN, parseAmount } from "../utils/utils";
 import { useState } from "react";
 import { RToken } from "../interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
+import borrowTokenAbi from "../abis_mainnet/dToken_abi.json";
 // const { address } = useAccount();
+interface ResultObject{
+  [key: string]: any;
+}
 export async function getrTokensMinted(rToken: any, amount: any) {
-  // console.log("getRtokensminted", rToken, amount);
+  ////console.log("getRtokensminted", rToken, amount);
 
   try {
     const provider = getProvider();
@@ -29,35 +35,61 @@ export async function getrTokensMinted(rToken: any, amount: any) {
       tokenAddressMap[rToken],
       provider
     );
-    // console.log("Called")
-    // console.log(supplyContract,"suppply contract")
+    ////console.log("Called")
+    ////console.log(supplyContract,"suppply contract")
     const parsedAmount = etherToWeiBN(amount, rToken).toString();
-    // console.log(parsedAmount, "parsed amount");
-    const res = await supplyContract.call(
+    ////console.log(parsedAmount, "parsed amount");
+    const res:any = await supplyContract.call(
       "preview_deposit",
-      [[parsedAmount, 0]],
+      [uint256.bnToUint256(parsedAmount)],
       {
         blockIdentifier: "pending",
       }
     );
-    // console.log(res, "data in rewards");
+    ////console.log(res, "data in rewards");
     const data = parseAmount(
       uint256.uint256ToBN(res?.shares).toString(),
       tokenDecimalsMap[rToken]
     );
-    // console.log(
+    ////console.log(
     //     parseAmount(
     //         uint256.uint256ToBN(res?.shares).toString(),
     //         tokenDecimalsMap[rToken]
     //     )
     // );
     const ans = data.toFixed(2);
-    console.log("getRtokensmintedAns", ans);
     return ans;
   } catch (err) {
-    console.log(err,"err in rewards");
+   //console.log(err,"err in rewards");
   }
 }
+export async function getMaximumDynamicLoanAmount(
+  amount:any,
+  borrowMarket:any,
+  collateralMarket:any,
+) {
+  ////console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  try {
+    const provider = getProvider();
+    const borrowToken = new Contract(borrowTokenAbi, tokenAddressMap["d"+borrowMarket], provider);
+    const parsedAmount = etherToWeiBN(amount,borrowMarket).toString();
+    const result:any = await borrowToken.call(
+      "max_loan_limit",
+      [uint256.bnToUint256(30),tokenAddressMap[borrowMarket],tokenAddressMap[collateralMarket]],
+      { blockIdentifier: "pending" }
+    );
+    const res = parseAmount(
+      uint256.uint256ToBN(result?.max_loan_limit).toString(),
+      tokenDecimalsMap[borrowMarket]
+    );
+    console.log(res,collateralMarket,borrowMarket,"result for borrow max")
+    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    return res;
+  } catch (err) {
+   console.log(err, "err in getMaximumDynamicDeposit");
+  }
+}
+
 export async function getSupplyunlocked(rToken: any, amount: any) {
   try {
     const provider = getProvider();
@@ -67,22 +99,22 @@ export async function getSupplyunlocked(rToken: any, amount: any) {
       provider
     );
     const parsedAmount = etherToWeiBN(amount, rToken).toString();
-    const res = await supplyContract.call(
+    const res :any = await supplyContract.call(
       "preview_redeem",
-      [[parsedAmount, 0]],
+      [uint256.bnToUint256(parsedAmount)],
       {
         blockIdentifier: "pending",
       }
     );
-    // console.log(res, "data in est supply");
+    ////console.log(res, "data in est supply");
     const data = parseAmount(
       uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),
       tokenDecimalsMap[rToken]
     );
-    // console.log(parseAmount(uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),8),"parsed")
+    ////console.log(parseAmount(uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),8),"parsed")
     return data.toFixed(2);
   } catch (err) {
-    console.log(err, "err in getSupplyUnlocked");
+   //console.log(err, "err in getSupplyUnlocked");
   }
 }
 export async function getEstrTokens(rToken: any, amount: any) {
@@ -94,13 +126,13 @@ export async function getEstrTokens(rToken: any, amount: any) {
       provider
     );
     // const parsedAmount=etherToWeiBN(amount,rToken).toString();
-    // console.log(amount,"stake amount")
-    // console.log(stakingContract, "staking contract")
+    ////console.log(amount,"stake amount")
+    ////console.log(stakingContract, "staking contract")
     const parsedAmount = etherToWeiBN(amount, rToken).toString();
-    // console.log(parsedAmount,"amount in staking")
-    const res = await stakingContract.call(
+    ////console.log(parsedAmount,"amount in staking")
+    const res:any = await stakingContract.call(
       "preview_redeem",
-      [tokenAddressMap[rToken], [parsedAmount, 0]],
+      [tokenAddressMap[rToken], uint256.bnToUint256(parsedAmount)],
       {
         blockIdentifier: "pending",
       }
@@ -109,10 +141,10 @@ export async function getEstrTokens(rToken: any, amount: any) {
       uint256.uint256ToBN(res?.rToken_amount_to_withdraw).toString(),
       tokenDecimalsMap[rToken]
     );
-    // console.log(data, "call in stake");
+    ////console.log(data, "call in stake");
     return data;
   } catch (err) {
-    console.log(err, "err in est rtokens staking");
+   //console.log(err, "err in est rtokens staking");
   }
 }
 export async function getFees(modalFees:any){
@@ -123,21 +155,80 @@ export async function getFees(modalFees:any){
       diamondAddress,
       provider
     )
-    const result = await governorContract.call(
+    const result :any= await governorContract.call(
       modalFees
     );
     const res = result?.fees;
    return Number(res.toString())/100;
   }catch(err){
-    console.log(err,"err in getFees")
+   //console.log(err,"err in getFees")
   }
 }
-
+export async function getNFTMaxAmount(){
+  try{
+    const provider=getProvider();
+    const nftContract=new Contract(
+      nftAbi?.abi,
+      nftAddress,
+      provider
+    )
+    const result:any=await nftContract.call(
+      "get_max_nft_amount",
+    )
+    
+    const res = (result?.number).toString()
+    return res;
+  }catch(err){
+   //console.log(err,"err in getNFTMaxAmount")
+  }
+}
+export async function getCurrentNftAmount(){
+  try{
+    const provider=getProvider();
+    const nftContract=new Contract(
+      nftAbi?.abi,
+      nftAddress,
+      provider
+    )
+    const result:any=await nftContract.call(
+      "get_current_nft_minted",
+    )
+    const res = parseAmount(
+      uint256.uint256ToBN(result?.number).toString(),
+      0
+      );
+    return res;
+  }catch(err){
+   //console.log(err,"err in getNFTCurrentAmount")
+  }
+}
+export async function getNFTBalance(address:string){
+  try{
+    const provider=getProvider();
+    const nftContract=new Contract(
+      nftAbi?.abi,
+      nftAddress,
+      provider
+    )
+    const result:any=await nftContract.call(
+      "balanceOf",
+      [address],
+      { blockIdentifier: "pending" }
+    )
+    const res= parseAmount(
+      uint256.uint256ToBN(result?.balance).toString(),
+      0
+    );
+    return res;
+  }catch(err){
+   //console.log(err,"err in getNFTBalance")
+  }
+}
 export async function getSupportedPools(
   poolPairAddress: any,
   dapp:any
 ) {
-  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  ////console.log("getMinimumDepositAmount called - ", rTokenAddress);
   try {
     const provider = getProvider();
     const governorContract = new Contract(
@@ -145,22 +236,22 @@ export async function getSupportedPools(
       diamondAddress,
       provider
     );
-    const result = await governorContract.call(
+    const result:any = await governorContract.call(
       "get_secondary_market_support",
       [poolPairAddress,dapp],
       { blockIdentifier: "pending" }
     );
     const data = result?.secondary_market?.supported.toString()
-    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
     return data;
   } catch (err) {
-    console.log(err, "err in getPoolsSupporte");
+   //console.log(err, "err in getPoolsSupporte");
   }
 }
 export async function getMinimumDepositAmount(
   rToken:any,
 ) {
-  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  ////console.log("getMinimumDepositAmount called - ", rTokenAddress);
   try {
     const provider = getProvider();
     const governorContract = new Contract(
@@ -168,7 +259,7 @@ export async function getMinimumDepositAmount(
       diamondAddress,
       provider
     );
-    const result = await governorContract.call(
+    const result:any = await governorContract.call(
       "get_minimum_deposit_amount",
       [tokenAddressMap[rToken]],
       { blockIdentifier: "pending" }
@@ -177,16 +268,16 @@ export async function getMinimumDepositAmount(
       uint256.uint256ToBN(result?._get_minimum_deposit_amount).toString(),
       tokenDecimalsMap[rToken]
     );
-    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
     return res;
   } catch (err) {
-    console.log(err, "err in getMinimumDeposit");
+   //console.log(err, "err in getMinimumDeposit");
   }
 }
 export async function getMaximumDepositAmount(
   rToken:any,
 ) {
-  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  ////console.log("getMinimumDepositAmount called - ", rTokenAddress);
   try {
     const provider = getProvider();
     const governorContract = new Contract(
@@ -194,25 +285,25 @@ export async function getMaximumDepositAmount(
       diamondAddress,
       provider
     );
-    const result = await governorContract.call(
+    const result:any = await governorContract.call(
       "get_maximum_deposit_amount",
       [tokenAddressMap[rToken]],
       { blockIdentifier: "pending" }
     );
-    const res = parseAmount(
+    const res= parseAmount(
       uint256.uint256ToBN(result?._get_maximum_deposit_amount).toString(),
       tokenDecimalsMap[rToken]
     );
-    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
     return res;
   } catch (err) {
-    console.log(err, "err in getMaximumDeposit");
+   //console.log(err, "err in getMaximumDeposit");
   }
 }
 export async function getMaximumLoanAmount(
   dToken:any,
 ) {
-  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  ////console.log("getMinimumDepositAmount called - ", rTokenAddress);
   try {
     const provider = getProvider();
     const governorContract = new Contract(
@@ -220,7 +311,7 @@ export async function getMaximumLoanAmount(
       diamondAddress,
       provider
     );
-    const result = await governorContract.call(
+    const result:any = await governorContract.call(
       "get_maximum_loan_amount",
       [tokenAddressMap[dToken]],
       { blockIdentifier: "pending" }
@@ -229,16 +320,16 @@ export async function getMaximumLoanAmount(
       uint256.uint256ToBN(result?._get_maximum_loan_amount).toString(),
       tokenDecimalsMap[dToken]
     );
-    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
     return res;
   } catch (err) {
-    console.log(err, "err in getMaximumDeposit");
+   //console.log(err, "err in getMaximumDeposit");
   }
 }
 export async function getMinimumLoanAmount(
   dToken:any,
 ) {
-  // console.log("getMinimumDepositAmount called - ", rTokenAddress);
+  ////console.log("getMinimumDepositAmount called - ", rTokenAddress);
   try {
     const provider = getProvider();
     const governorContract = new Contract(
@@ -246,19 +337,19 @@ export async function getMinimumLoanAmount(
       diamondAddress,
       provider
     );
-    const result = await governorContract.call(
+    const result:any = await governorContract.call(
       "get_minimum_loan_amount",
       [tokenAddressMap[dToken]],
       { blockIdentifier: "pending" }
     );
-    const res = parseAmount(
+    const res= parseAmount(
       uint256.uint256ToBN(result?._get_minimum_loan_amount).toString(),
       tokenDecimalsMap[dToken]
     );
-    // console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
+    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
     return res;
   } catch (err) {
-    console.log(err, "err in getMaximumDeposit");
+   //console.log(err, "err in getMaximumDeposit");
   }
 }
 
@@ -270,7 +361,7 @@ export async function getUserStakingShares(address: string, tokenName: RToken) {
       stakingContractAddress,
       provider
     );
-    const result = await stakingContract.call("get_user_staking_shares", [
+    const result:any = await stakingContract.call("get_user_staking_shares", [
       address,
       tokenAddressMap[tokenName],
     ]);
@@ -278,10 +369,10 @@ export async function getUserStakingShares(address: string, tokenName: RToken) {
       uint256.uint256ToBN(result?.user_staking_share).toString(),
       tokenDecimalsMap[tokenName]
     );
-    // console.log("getUserStakingShares ", res);
+    ////console.log("getUserStakingShares ", res);
     return res;
   } catch (err) {
-    console.log(err,"err in getUserStakingShares")
+   //console.log(err,"err in getUserStakingShares")
   }
 }
 
@@ -313,7 +404,7 @@ export async function getUserStakingShares(address: string, tokenName: RToken) {
 //                       },
 //                     ],
 //                   });
-//                 // console.log(dataStakeRequest1,"data estrtokens")
+//                 ////console.log(dataStakeRequest1,"data estrtokens")
 //                 return {
 //                     rToken1,
 //                     setRToken1,

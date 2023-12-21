@@ -67,8 +67,14 @@ import {
 } from "@/store/slices/userAccountSlice";
 import {
   selectFees,
+
+  
   selectMaximumDepositAmounts,
+
+  
   selectMinimumDepositAmounts,
+
+  
   selectProtocolStats,
   selectStakingShares,
   selectUserDeposits,
@@ -86,7 +92,6 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { getMinimumDepositAmount,getMaximumDepositAmount } from "@/Blockchain/scripts/Rewards";
 
 import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
@@ -108,13 +113,14 @@ const StakeUnstakeModal = ({
   buttonText,
   coin,
   nav,
+  isCorrectNetwork,
   stakeHover,
   setStakeHover,
   validRTokens,
   ...restProps
 }: any) => {
-  // console.log(validRTokens, "tokens stake modal");
-  // console.log("coin - ", coin);
+  ////console.log(validRTokens, "tokens stake modal");
+  ////console.log("coin - ", coin);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -136,7 +142,7 @@ const StakeUnstakeModal = ({
   let protocolStats = useSelector(selectProtocolStats);
   let activeTransactions = useSelector(selectActiveTransactions);
   let stakingShares = useSelector(selectStakingShares);
-  // console.log(stakingShares,"staking shares")
+  ////console.log(stakingShares,"staking shares")
 
   const [uniqueID, setUniqueID] = useState(0);
   const getUniqueId = () => uniqueID;
@@ -153,7 +159,6 @@ const StakeUnstakeModal = ({
     writeAsyncStakeRequest,
     isErrorStakeRequest,
     isIdleStakeRequest,
-    isLoadingStakeRequest,
     isSuccessStakeRequest,
     statusStakeRequest,
   } = useStakeRequest();
@@ -189,7 +194,6 @@ const StakeUnstakeModal = ({
 
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
@@ -205,7 +209,6 @@ const StakeUnstakeModal = ({
     writeAsyncWithdrawStake,
     isErrorWithdrawStake,
     isIdleWithdrawStake,
-    isLoadingWithdrawStake,
     isSuccessWithdrawStake,
     statusWithdrawStake,
   } = useWithdrawStake();
@@ -270,14 +273,14 @@ const StakeUnstakeModal = ({
         break;
     }
   };
-  // console.log(validRTokens, "valid");
+  ////console.log(validRTokens, "valid");
   const getBalance = (coin: string) => {
     const amount = validRTokens?.find(({ rToken, rTokenAmount }: any) => {
       if (rToken == coin) return rTokenAmount;
     });
     return amount ? amount.rTokenAmount : 0;
   };
-  // console.log(getBalance,"bal")
+  ////console.log(getBalance,"bal")
   const [depositTransHash, setDepositTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
@@ -288,16 +291,17 @@ const StakeUnstakeModal = ({
     persistence: "localStorage",
   });
 
+
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`,
@@ -312,15 +316,15 @@ const StakeUnstakeModal = ({
   //     toast.dismiss(toastId);
   //     setCurrentTransactionStatus("failed");
   //     dispatch(setTransactionStatus("failed"));
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`,
@@ -357,7 +361,7 @@ const StakeUnstakeModal = ({
   //           rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
   //           rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
   //         };
-  //         console.log("shares ", val, data);
+  //        //console.log("shares ", val, data);
   //         setStakingShares(data);
   //       });
   //       const data = await getUserStakingShares(address, "rUSDT");
@@ -367,21 +371,20 @@ const StakeUnstakeModal = ({
   //     };
   //     getStakingShares();
   //   } catch (err) {
-  //     console.log("getStakingShares error ", err);
+  //    //console.log("getStakingShares error ", err);
   //   }
   // }, [address]);
 
 
   const handleStakeTransaction = async () => {
     try {
-      // console.log("staking", rToken, rTokenAmount);
+      ////console.log("staking", rToken, rTokenAmount);
       mixpanel.track("Action Selected", {
         Actions: "Stake",
       });
       const stake = await writeAsyncStakeRequest();
       setDepositTransHash(stake?.transaction_hash);
       if (stake?.transaction_hash) {
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your transaction is running in background :  ${inputStakeAmount} ${currentSelectedStakeCoin} `,
           `Transaction pending`,
@@ -427,7 +430,7 @@ const StakeUnstakeModal = ({
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("success"));
       }
-      // console.log(
+      ////console.log(
       //   "Staking Modal-stake transaction check",
       //   recieptData?.data?.status == "ACCEPTED_ON_L2"
       // );
@@ -439,7 +442,7 @@ const StakeUnstakeModal = ({
         // dispatch(setTransactionStatus("failed"));
         setTransactionStarted(false);
       }
-      console.log(uqID, "transaction check stake transaction failed : ", err);
+     //console.log(uqID, "transaction check stake transaction failed : ", err);
       const toastContent = (
         <div>
           Transaction declined{" "}
@@ -457,7 +460,6 @@ const StakeUnstakeModal = ({
       });
     }
   };
-
   const hanldeStakeAndSupplyTransaction = async () => {
     try {
       mixpanel.track("Action Selected", {
@@ -465,8 +467,6 @@ const StakeUnstakeModal = ({
       });
       const depositStake = await writeAsyncDepositStake();
       if (depositStake?.transaction_hash) {
-        console.log("trans transaction hash created");
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
           `Transaction pending`,
@@ -511,8 +511,8 @@ const StakeUnstakeModal = ({
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("success"));
       }
-      // console.log("Status transaction", deposit);
-      console.log(isSuccessDeposit, "success ?");
+      ////console.log("Status transaction", deposit);
+     //console.log(isSuccessDeposit, "success ?");
     } catch (err: any) {
       mixpanel.track("Stake Market Status", {
         Status: "Failure",
@@ -536,29 +536,28 @@ const StakeUnstakeModal = ({
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
       });
-      console.log("stake and supply", err);
+     //console.log("stake and supply", err);
     }
   };
 
   // const hanldest=async()=>{
   //   try{
   //     const data=await writeAsyncStakeRequest1();
-  //     console.log(data,"data in est rtokens");
+  //    //console.log(data,"data in est rtokens");
   //   }catch(err){
-  //     console.log(err,"err in stakunstake");
+  //    //console.log(err,"err in stakunstake");
 
   //   }
   // }
   // useEffect(()=>{
   //   hanldest();
   // },[])
-  // console.log(rTokenAmount,"rtoken amount")
+  ////console.log(rTokenAmount,"rtoken amount")
   const hanldeUnstakeTransaction = async () => {
     try {
       const unstake = await writeAsyncWithdrawStake();
       setDepositTransHash(unstake?.transaction_hash);
       if (unstake?.transaction_hash) {
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your transaction is running in background : ${inputStakeAmount} ${currentSelectedStakeCoin} `,
           `Transaction pending`,
@@ -602,7 +601,7 @@ const StakeUnstakeModal = ({
       if (data && data.includes(uqID)) {
         dispatch(setTransactionStatus("success"));
       }
-      console.log(unstake);
+     //console.log(unstake);
     } catch (err: any) {
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
@@ -611,7 +610,7 @@ const StakeUnstakeModal = ({
         // dispatch(setTransactionStatus("failed"));
         setUnstakeTransactionStarted(false);
       }
-      console.log("Unstake transaction failed : ", err);
+     //console.log("Unstake transaction failed : ", err);
       const toastContent = (
         <div>
           Transaction declined{" "}
@@ -654,7 +653,7 @@ const StakeUnstakeModal = ({
         setInputStakeAmount(newValue);
         setDepositAmount(newValue);
       }
-      // console.log(typeof rTokenAmount)
+      ////console.log(typeof rTokenAmount)
       // dispatch(setInputSupplyAmount(newValue));
     }
   };
@@ -745,44 +744,34 @@ const StakeUnstakeModal = ({
   const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] = useState(
     !nav ? rcoinValue : "rUSDT"
   );
-  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
-  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
-  const minAmounts=useSelector(selectMinimumDepositAmounts);
-  const maxAmounts=useSelector(selectMaximumDepositAmounts);
-  
-  useEffect(()=>{
-    setMinimumDepositAmount(minAmounts[currentSelectedStakeCoin])
-    setmaximumDepositAmount(maxAmounts[currentSelectedStakeCoin])
-  },[currentSelectedStakeCoin])
+
+
 
   const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] = useState(
     !nav ? rcoinValue : "rUSDT"
   );
   const userDeposit = useSelector(selectUserDeposits);
-  // console.log(coin,"coin stake")
+  ////console.log(coin,"coin stake")
   const [walletBalance, setWalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
+      ?   parseAmount(
+        String(
             uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[coin?.name]
           )
-        )
+        
       : 0
   );
-
   useEffect(() => {
     setWalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
-              uint256.uint256ToBN(
+        ? parseAmount(
+              String(uint256.uint256ToBN(
                 walletBalances[coin?.name]?.dataBalanceOf?.balance
-              ),
+              )),
               tokenDecimalsMap[coin?.name]
-            )
           )
         : 0
     );
@@ -791,7 +780,7 @@ const StakeUnstakeModal = ({
     userDeposit?.find((item: any) => item?.rToken == currentSelectedStakeCoin)
       ?.rTokenFreeParsed
   );
-  // console.log(rtokenWalletBalance,"rtoken wallet ")
+  ////console.log(rtokenWalletBalance,"rtoken wallet ")
   const fees=useSelector(selectFees);
   const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
     stakingShares[
@@ -814,7 +803,7 @@ const StakeUnstakeModal = ({
     setRToken(currentSelectedStakeCoin);
   }, [currentSelectedStakeCoin, userDeposit]);
   // useEffect(() => {
-  //   console.log("stake userDeposit", userDeposit);
+  //  //console.log("stake userDeposit", userDeposit);
   // }, [userDeposit]);
   useEffect(() => {
     setUnstakeWalletBalance(
@@ -865,9 +854,9 @@ const StakeUnstakeModal = ({
     setWalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
+            String(uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[coin?.name]
           )
         : 0
@@ -877,8 +866,8 @@ const StakeUnstakeModal = ({
     setCurrentTransactionStatus("");
     setDepositTransHash("");
   };
-  // console.log("testing isopen: ", isOpen);
-  // console.log("testing custom isopen: ", isOpenCustom);
+  ////console.log("testing isopen: ", isOpen);
+  ////console.log("testing custom isopen: ", isOpenCustom);
 
   // useEffect(() => {
   //   setIsOpenCustom(false);
@@ -886,7 +875,7 @@ const StakeUnstakeModal = ({
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
-  // console.log(activeModal);
+  ////console.log(activeModal);
 
   // useEffect(()=>{
   //   const fetchrTokens=async()=>{
@@ -916,11 +905,19 @@ const StakeUnstakeModal = ({
   const [estrTokens, setEstrTokens] = useState<any>(0);
 
   // useEffect(() => {
-  //   console.log("protocolStats", protocolStats);
+  //  //console.log("protocolStats", protocolStats);
   // }, [protocolStats]);
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  const minAmounts = useSelector(selectMinimumDepositAmounts);
+  const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  useEffect(() => {
+    setMinimumDepositAmount(minAmounts[ currentSelectedStakeCoin])
+    setmaximumDepositAmount(maxAmounts[ currentSelectedStakeCoin])
+  }, [currentSelectedStakeCoin, minAmounts, maxAmounts])
   useEffect(() => {
     const fetchestrTokens = async () => {
-      // console.log(
+      ////console.log(
       //   "getEstrTokens ",
       //   currentSelectedUnstakeCoin,
       //   rTokenToWithdraw
@@ -929,9 +926,9 @@ const StakeUnstakeModal = ({
         currentSelectedUnstakeCoin,
         rTokenToWithdraw
       );
-      // console.log("getEstrTokens ", data);
+      ////console.log("getEstrTokens ", data);
       setEstrTokens(data);
-      // console.log(data, "estr token");
+      ////console.log(data, "estr token");
     };
     fetchestrTokens();
   }, [rTokenToWithdraw]);
@@ -943,12 +940,14 @@ const StakeUnstakeModal = ({
   //   );
   // }, [currentSelectedStakeCoin]);
   // useEffect(() => {
-  //   console.log("transactionCheck uniqueID", uniqueID);
+  //  //console.log("transactionCheck uniqueID", uniqueID);
   // }, [uniqueID]);
   return (
     <Box>
       {nav ? (
         <Box
+        cursor={isCorrectNetwork ? "pointer" :"not-allowed"}
+
           display="flex"
           justifyContent="space-between"
           alignItems="center"
@@ -963,7 +962,7 @@ const StakeUnstakeModal = ({
               localStorage.setItem("transactionCheck", JSON.stringify(data));
             }
 
-            onOpen();
+           { isCorrectNetwork&& onOpen()}
           }}
           color={router.pathname != "/waitlist" && stakeHover ? "gray" : ""}
         >
@@ -973,7 +972,8 @@ const StakeUnstakeModal = ({
               alt="Picture of the author"
               width="16"
               height="16"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+
             />
           ) : (
             <Image
@@ -981,7 +981,8 @@ const StakeUnstakeModal = ({
               alt="Picture of the author"
               width="16"
               height="16"
-              style={{ cursor: "pointer" }}
+              style={{ cursor: isCorrectNetwork ? "pointer" : "not-allowed" }}
+
             />
           )}
           <Box fontSize="14px">
@@ -995,7 +996,8 @@ const StakeUnstakeModal = ({
           key="borrow-details"
           as="span"
           position="relative"
-          color="#4D59E8"
+          color="#B1B0B5"
+          borderBottom="1px solid #B1B0B5"
           fontSize="14px"
           width="100%"
           display="flex"
@@ -1009,8 +1011,8 @@ const StakeUnstakeModal = ({
               position: "absolute",
               left: 0,
               bottom: "-0px",
-              width: "100%",
-              height: "1px",
+              width: "0%",
+              height: "0px",
               backgroundColor: "#0969DA",
             },
           }}
@@ -1026,7 +1028,7 @@ const StakeUnstakeModal = ({
             onOpen();
           }}
         >
-          Details
+          Stake
         </Text>
       )}
 
@@ -1038,7 +1040,7 @@ const StakeUnstakeModal = ({
           const uqID = getUniqueId();
           let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
-          // console.log(uqID, "data here", data);
+          ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
             data = data.filter((val: any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -1255,10 +1257,10 @@ const StakeUnstakeModal = ({
                                         walletBalances[_coin?.slice(1)]
                                           ?.statusBalanceOf === "success"
                                           ? parseAmount(
-                                              uint256.uint256ToBN(
+                                              String(uint256.uint256ToBN(
                                                 walletBalances[_coin?.slice(1)]
                                                   ?.dataBalanceOf?.balance
-                                              ),
+                                              )),
                                               tokenDecimalsMap[_coin?.slice(1)]
                                             )
                                           : 0
@@ -1381,10 +1383,10 @@ const StakeUnstakeModal = ({
                               ? "1px solid #CF222E"
                               : rTokenAmount < 0
                               ? "1px solid #CF222E"
-                              : (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rtokenWalletBalance==0 && (depositAmount>0&& depositAmount<minimumDepositAmount) )
-                              ? "1px solid #CF222E"
-                              : (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rtokenWalletBalance==0 && (depositAmount>0&& depositAmount>maximumDepositAmount) )
-                              ? "1px solid #CF222E"
+                              :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount<minimumDepositAmount)
+                              ?"1px solid #CF222E"
+                              :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount>maximumDepositAmount)
+                              ?"1px solid #CF222E"
                               //do max 1209
                               : (rtokenWalletBalance==0 && rTokenAmount <= walletBalance &&rTokenAmount>0)
                               ?"1px solid #00D395"
@@ -1415,19 +1417,20 @@ const StakeUnstakeModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                               placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentSelectedStakeCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentSelectedStakeCoin}`}
+                               placeholder={(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& rtokenWalletBalance==0) ? `min ${minimumDepositAmount == null ? 0 : minimumDepositAmount} ${currentSelectedStakeCoin}`:  `0.01536 ${currentSelectedStakeCoin}`}
                               color={`${
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount >
                                     Number(
                                       getBalance(currentSelectedStakeCoin)
                                     )) ||
-                                ((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) ))
+ 
+                                  rTokenAmount < 0
                                   ? "#CF222E"
-                                  : rTokenAmount < 0
-                                  ? "#CF222E"
-                                  : ((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount>maximumDepositAmount) ))
-                                  ? "#CF222E"
+                                  :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount<minimumDepositAmount)
+                                  ?"#CF222E"
+                                  :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount>maximumDepositAmount)
+                                  ?"#CF222E"
                                   : rTokenAmount == 0
                                   ? "white"
                                   : "#00D395"
@@ -1460,10 +1463,10 @@ const StakeUnstakeModal = ({
                                 : rTokenAmount < 0
 
                                 ? "#CF222E"
-                                :((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) )) 
-                                ? "#CF222E"
-                                :((rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount>maximumDepositAmount) )) 
-                                ? "#CF222E"
+                                :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount<minimumDepositAmount)
+                                ?"#CF222E"
+                                :process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount>maximumDepositAmount)
+                                ?"#CF222E"
                                 : rTokenAmount == 0
                                 ? "#4D59E8"
                                 : "#00D395"
@@ -1493,9 +1496,9 @@ const StakeUnstakeModal = ({
                             Number(getBalance(currentSelectedStakeCoin))) ||
                         (rtokenWalletBalance == 0 &&
                           rTokenAmount > walletBalance) ||
-                          (rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) )||
-                          ( rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0 && depositAmount>maximumDepositAmount))||
-                        rTokenAmount < 0 ? (
+
+
+                        rTokenAmount < 0 || (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount<minimumDepositAmount) || (rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount>maximumDepositAmount) ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -1515,10 +1518,10 @@ const StakeUnstakeModal = ({
                                 (rtokenWalletBalance != 0 &&
                                   rTokenAmount > walletBalance)
                                   ? "Amount exceeds balance"
-                                  :(rtokenWalletBalance==0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0&& depositAmount<minimumDepositAmount) )
-                                  ? `Less than min amount`
-                                  :(rtokenWalletBalance==0 && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && rTokenAmount >maximumDepositAmount) 
-                                  ? `More than max amount`
+                           :(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount<minimumDepositAmount) ?
+                           "Less than min amount"
+                           :(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet"&& rtokenWalletBalance==0 && rTokenAmount>0 && rTokenAmount>maximumDepositAmount) ?
+                           "More than max amount"
                                   : "Invalid Input"}{" "}
                               </Text>
                             </Text>
@@ -1609,9 +1612,9 @@ const StakeUnstakeModal = ({
                                 }
                               } else {
                                 if(ans<10){
-                                  setRTokenAmount(ans);
-                                  setInputStakeAmount(ans);
-                                  setDepositAmount(ans);
+                                  setRTokenAmount(parseFloat(ans.toFixed(7)));
+                                  setInputStakeAmount(parseFloat(ans.toFixed(7)));
+                                  setDepositAmount(parseFloat(ans.toFixed(7)));
                                 }else{
                                   ans = Math.round(ans * 100) / 100;
                                   setRTokenAmount(ans);
@@ -1892,7 +1895,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Cost incurred during transactions."
+                              label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                               bg="#02010F"
                               fontSize={"13px"}
                               fontWeight={"400"}
@@ -2039,7 +2042,7 @@ const StakeUnstakeModal = ({
                             }`}
                           </Button>
                         )
-                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance && (process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||rTokenAmount>=minimumDepositAmount) &&(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||rTokenAmount<=maximumDepositAmount) ? (
+                      ) :  rTokenAmount > 0  && rTokenAmount <= walletBalance && (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ?rtokenWalletBalance==0  && rTokenAmount>minimumDepositAmount:true) &&(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ?rtokenWalletBalance==0  && rTokenAmount<maximumDepositAmount:true) ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (
@@ -2528,7 +2531,7 @@ const StakeUnstakeModal = ({
                               } else {
                                 var ans = (val / 100) * unstakeWalletBalance;
                                 if(ans<10){
-                                  setRTokenToWithdraw(ans);
+                                  setRTokenToWithdraw(parseFloat(ans.toFixed(7)));
                                 }else{
                                   ans = Math.round(ans * 100) / 100;
                                   // dispatch(setInputSupplyAmount(ans))
@@ -2741,7 +2744,7 @@ const StakeUnstakeModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Cost incurred during transactions."
+                              label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                               bg="#02010F"
                               fontSize={"13px"}
                               fontWeight={"400"}

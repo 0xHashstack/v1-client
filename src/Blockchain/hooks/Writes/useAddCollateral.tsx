@@ -29,7 +29,7 @@ const useAddCollateral = () => {
   //     isSuccess: isSuccessLoanRequest,
   //     status: statusLoanRequest,
 
-  // console.log(
+  ////console.log(
   //   "addCollateral",
   //   loanId,
   //   collateralAsset,
@@ -45,7 +45,6 @@ const useAddCollateral = () => {
     writeAsync: writeAsyncAddCollateral,
     isError: isErrorAddCollateral,
     isIdle: isIdleAddCollateral,
-    isLoading: isLoadingAddCollateral,
     isSuccess: isSuccessAddCollateral,
     status: statusAddCollateral,
   } = useContractWrite({
@@ -80,7 +79,6 @@ const useAddCollateral = () => {
     writeAsync: writeAsyncAddCollateralRToken,
     isError: isErrorAddCollateralRToken,
     isIdle: isIdleAddCollateralRToken,
-    isLoading: isLoadingAddCollateralRToken,
     isSuccess: isSuccessAddCollateralRToken,
     status: statusAddCollateralRToken,
   } = useContractWrite({
@@ -118,7 +116,6 @@ const useAddCollateral = () => {
     writeAsyncAddCollateral,
     isErrorAddCollateral,
     isIdleAddCollateral,
-    isLoadingAddCollateral,
     isSuccessAddCollateral,
     statusAddCollateral,
 
@@ -129,7 +126,6 @@ const useAddCollateral = () => {
     writeAsyncAddCollateralRToken,
     isErrorAddCollateralRToken,
     isIdleAddCollateralRToken,
-    isLoadingAddCollateralRToken,
     isSuccessAddCollateralRToken,
     statusAddCollateralRToken,
   };

@@ -77,7 +77,7 @@ const TotalUtilisationRateByMarketChart = () => {
   const allUsdtData = useSelector(selectAllUSDTData);
   const allUsdcData = useSelector(selectAllUSDCData);
   const allDaiData = useSelector(selectAllDAIData);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option
@@ -94,11 +94,11 @@ const TotalUtilisationRateByMarketChart = () => {
         daiData?.utilRates
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: btcData?.utilRates,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: ethData?.utilRates,
               },
               {
@@ -167,11 +167,11 @@ const TotalUtilisationRateByMarketChart = () => {
         weeklyDaiData?.utilRates
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: weeklyBtcData?.utilRates,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: weeklyEthData?.utilRates,
               },
               {
@@ -245,11 +245,11 @@ const TotalUtilisationRateByMarketChart = () => {
         monthlyDaiData?.utilRates
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: monthlyBtcData?.utilRates,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: monthlyEthData?.utilRates,
               },
               {
@@ -327,11 +327,11 @@ const TotalUtilisationRateByMarketChart = () => {
         allDaiData?.utilRates
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: allBtcData?.utilRates,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: allEthData?.utilRates,
               },
               {

@@ -61,8 +61,8 @@
 //   const walletBalance = useSelector(selectWalletBalance);
 //   const { account, address, status } = useAccount();
 //   const { available, disconnect, connect, connectors } = useConnectors();
-//   // console.log(total_supply)
-//   // console.log(available_reserves)
+//   ////console.log(total_supply)
+//   ////console.log(available_reserves)
 
 //   useEffect(() => {
 //     // alert(status)

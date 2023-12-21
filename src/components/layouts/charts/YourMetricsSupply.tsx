@@ -14,7 +14,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   // const userDeposits = useSelector(selectUserDeposits);
   // const oraclePrices = useSelector(selectOraclePrices);
   const supplyData = useSelector(selectYourMetricsSupply);
-  // console.log("supplyData your metrics ", supplyData);
+  ////console.log("supplyData your metrics ", supplyData);
   // useEffect(() => {
   //   try {
   //     const fetchSupplyData = async () => {
@@ -32,7 +32,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   //       if (data && data?.length > 0) {
   //         setSupplyData(data);
   //       }
-  //       console.log("supplyData", data);
+  //      //console.log("supplyData", data);
   //     };
   //     if (
   //       userDeposits &&
@@ -43,7 +43,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   //       fetchSupplyData();
   //     }
   //   } catch (err) {
-  //     console.log("your metrics supply err ", err);
+  //    //console.log("your metrics supply err ", err);
   //   }
   // }, [userDeposits, oraclePrices]);
 
@@ -81,7 +81,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
       },
       categories: categories
         ? categories
-        : ["BTC", "ETH", "USDT", "USDC", "DAI"],
+        : ["wBTC", "wETH", "USDT", "USDC", "DAI"],
     },
     plotOptions: {
       bar: {
@@ -147,12 +147,12 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   // ];
   const chartSeries = [
     {
-      name: "BTC",
+      name: "wBTC",
       data: supplyData ? [supplyData?.[0], 0, 0, 0, 0] : [44000, 0, 0, 0, 0],
       color: "#4D3C03",
     },
     {
-      name: "ETH",
+      name: "wETH",
       data: supplyData ? [0, supplyData?.[1], 0, 0, 0] : [0, 55000, 0, 0, 0],
       color: "#4D59E8",
     },

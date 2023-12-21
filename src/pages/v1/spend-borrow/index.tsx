@@ -10,7 +10,6 @@ import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
 import Pagination from "@/components/uiElements/pagination";
-import { useConnectors } from "@starknet-react/core";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@chakra-ui/react";
@@ -20,14 +19,12 @@ import useDataLoader from "@/hooks/useDataLoader";
 import { selectUserUnspentLoans } from "@/store/slices/userAccountSlice";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
 const SpendBorrow = () => {
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
   useDataLoader();
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectnetAprLoans);
   const userLoans = useSelector(selectUserUnspentLoans);
-  // console.log(totalBorrow, "total borrow spend borrow");
-  // console.log(netAPR, "netapr in spend borrow");
+  ////console.log(totalBorrow, "total borrow spend borrow");
+  ////console.log(netAPR, "netapr in spend borrow");
   return (
     <PageCard pt="6.5rem">
       <HStack

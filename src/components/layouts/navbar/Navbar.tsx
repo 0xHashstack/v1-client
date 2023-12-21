@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 
 // import "./navbar.css";
 
@@ -37,8 +38,7 @@ import {
   setLanguage,
 } from "@/store/slices/userAccountSlice";
 import {
-  useAccount,
-  useConnectors,
+  useAccount, useConnect, useDisconnect,
 } from "@starknet-react/core";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
@@ -50,8 +50,22 @@ import mixpanel from "mixpanel-browser";
 import {
   resetState,
   selectCurrentNetwork,
+  selectInteractedAddress,
+  selectNftBalance,
+  selectUserType,
+  selectWhiteListed,
+  selectYourBorrow,
+  selectYourSupply,
+  setInteractedAddress,
 
 } from "@/store/slices/readDataSlice";
+import { AccountInterface, ProviderInterface, number } from "starknet";
+import TransferDepositModal from "@/components/modals/TransferDepositModal";
+interface ExtendedAccountInterface extends AccountInterface {
+  provider?: {
+    chainId: string;
+  };
+}
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -59,21 +73,22 @@ const Navbar = ({ validRTokens }: any) => {
   const currentDropdown = useSelector(selectCurrentDropdown);
   const { account } = useAccount();
   const currentChainId = useSelector(selectCurrentNetwork);
-  // console.log(account, "Navbar");
+  ////console.log(account, "Navbar");
   // useEffect(() => {
   //   const storedAccount = localStorage.getItem("account");
   //   if (storedAccount) {
   //     setParsedAccount(JSON.parse(storedAccount));
   //   }
-  //   // console.log("Sahitya account",typeof account.address)
-  //   console.log("Sahitya", parsedAccount);
+  //   ////console.log("Sahitya account",typeof account.address)
+  //  //console.log("Sahitya", parsedAccount);
   // }, []);
   const [dashboardHover, setDashboardHover] = useState(false);
   const [campaignHover, setCampaignHover] = useState(false);
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
   const [stakeHover, setStakeHover] = useState(false);
-  const { available, disconnect, connect, connectors } = useConnectors();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName));
   };
@@ -84,6 +99,8 @@ const Navbar = ({ validRTokens }: any) => {
       justifyContent === "flex-start" ? "flex-end" : "flex-start"
     );
   };
+  const totalBorrow=useSelector(selectYourBorrow);
+  const totalSupply=useSelector(selectYourSupply)
   
 
   const { connector } = useAccount();
@@ -97,7 +114,7 @@ const Navbar = ({ validRTokens }: any) => {
   });
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
-
+  const nftBalance:any=useSelector(selectNftBalance);
   // useEffect(() => {
   //   if(address && address!=accountAddress)
   //   {
@@ -136,23 +153,126 @@ const Navbar = ({ validRTokens }: any) => {
 
   const switchWallet = () => {
     // const walletConnected = localStorage.getItem("lastUsedConnector");
-    // console.log(connector);
-    if (connector?.options?.id == "braavos") {
+    ////console.log(connector);
+    if (connectors[0]?.id == "braavos") {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "argentX");
       localStorage.setItem("connected", "argentX");
-      connect(connectors[1]);
+      connectors.map((connector)=>{
+        if(connector.id=="argentX"){
+          connect({connector});
+        }
+      })
       router.push("/v1/market");
     } else {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "braavos");
       localStorage.setItem("connected", "braavos");
-      connect(connectors[0]);
+      connectors.map((connector:any)=>{
+        if(connector.id=="braavos"){
+          connect({connector});
+        }
+      })
       router.push("/v1/market");
     }
   };
+  const extendedAccount = account as ExtendedAccountInterface;
+  const [isCorrectNetwork, setisCorrectNetwork] = useState(true);
+  const {  address, status, isConnected } = useAccount();
+
+  const [whitelisted, setWhitelisted] = useState(true)
+  const [uniqueToken, setUniqueToken] = useState("")
+  const [referralLinked, setRefferalLinked] = useState(false)
+  const userType=useSelector(selectUserType)
+const [Render, setRender] = useState(true);
+const userWhitelisted=useSelector(selectWhiteListed);
+  useEffect(() => {
+    function isCorrectNetwork() {
+      const walletConnected = localStorage.getItem("lastUsedConnector");
+      const network = process.env.NEXT_PUBLIC_NODE_ENV;
+
+      if (walletConnected == "braavos") {
+        if (network == "testnet") {
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_TESTNET_CHAINID
+          );
+        } else {
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID
+          );
+        }
+      } else if (walletConnected == "argentX") {
+        // Your code here
+        if (network == "testnet") {
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+
+            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID
+          );
+        } else {
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+
+            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_MAINNET_CHAINID
+          );
+        }
+      }
+      ////console.log("starknetAccount", account?.provider?.chainId);
+    }
+
+    const isWhiteListed = async () => {
+      try {
+        if (!address) {
+          return;
+        }
+        const url = `https://hstk.fi/is-whitelisted/${address}`;
+        const response = await axios.get(url);
+        setWhitelisted(response.data?.isWhitelisted);
+
+      } catch (err) {
+       //console.log(err, "err in whitelist")
+      }
+    }
+    isWhiteListed()
+    
+   
+    if ((account && !isCorrectNetwork())) {
+        setRender(false);
+    } else {
+      if(!userWhitelisted && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"){
+        setRender(false);
+      }else{
+        setRender(true);
+      }
+    }
+  }, [account,whitelisted,userWhitelisted,referralLinked]);
+  const [allowedReferral, setAllowedReferral] = useState(false)
+  const interactedAddress=useSelector(selectInteractedAddress)
+  // useEffect(()=>{
+  //   const fetchUsers=async()=>{
+  //     if(!address){
+  //       return;
+  //     }else{
+  //       if(interactedAddress==true){
+  //         return;
+  //       }else{
+  //         const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
+  //         // const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
+  //         dispatch(setInteractedAddress(fetched))
+  //         setAllowedReferral(fetched)
+  //       }
+  //     }
+  //   }
+  //   fetchUsers();
+  // },[address])
   return (
     <HStack
       zIndex="100"
@@ -204,7 +324,7 @@ const Navbar = ({ validRTokens }: any) => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
-          color={`${pathname != "/v1/campaign" ? "#00D395" : "#676D9A"}`}
+          color={pathname !== "/v1/airdrop_leaderboard" && pathname !== "/v1/referral" ? "#00D395" : "#676D9A"}
           // _hover={{
           //   color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
           // }}
@@ -222,7 +342,7 @@ const Navbar = ({ validRTokens }: any) => {
             alignItems="center"
             gap={"8px"}
           >
-            {router.pathname == "/v1/campaign" ? (
+            {router.pathname == "/v1/airdrop_leaderboard" || router.pathname=="/v1/referral" ? (
                 <Image
                   src={hoverDashboardIcon}
                   alt="Picture of the author"
@@ -243,11 +363,12 @@ const Navbar = ({ validRTokens }: any) => {
             <Text fontSize="14px">Dashboard</Text>
           </Box>
         </Box>
-        <Box
+        {/* {userType=="U1" ?
+       <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
-          cursor="pointer"
+          cursor={Render ? "pointer" :"not-allowed"}
           marginBottom="0px"
           // className="button"
           // backgroundColor={"blue"}
@@ -255,20 +376,25 @@ const Navbar = ({ validRTokens }: any) => {
           onMouseEnter={() => setContibutionHover(true)}
           onMouseLeave={() => setContibutionHover(false)}
         >
-          <Link href="https://hashstack.crew3.xyz/questboard" target="_blank">
             <Box
               display="flex"
               justifyContent="space-between"
+              cursor={Render ? "pointer" :"not-allowed"}
               alignItems="center"
               gap={"8px"}
+              color={`${pathname == "/v1/referral" ? "#00D395" : "#676D9A"}`}
+              onClick={()=>{
+                Render && router.push('/v1/referral')
+              }}
             >
-              {contibutionHover ? (
+              {pathname=="/v1/referral" ? (
                 <Image
-                  src={"/contributeEarnIcon.svg"}
+                  src={hoverContributeEarnIcon}
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: Render ? "pointer" :"not-allowed"}}
+
                 />
               ) : (
                 <Image
@@ -276,19 +402,69 @@ const Navbar = ({ validRTokens }: any) => {
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: Render ? "pointer" :"not-allowed"}}
+
                 />
               )}
 
-              <Text fontSize="14px" color="#676D9A">Contribute-2-Earn</Text>
+              <Text fontSize="14px">Referral</Text>
             </Box>
-          </Link>
         </Box>
+        :
+        (interactedAddress) ?
         <Box
+        padding="16px 12px"
+        fontSize="12px"
+        borderRadius="5px"
+        cursor={Render ? "pointer" :"not-allowed"}
+        marginBottom="0px"
+        // className="button"
+        // backgroundColor={"blue"}
+        _hover={{ color: "#6e7681" }}
+        onMouseEnter={() => setContibutionHover(true)}
+        onMouseLeave={() => setContibutionHover(false)}
+      >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            cursor={Render ? "pointer" :"not-allowed"}
+            alignItems="center"
+            gap={"8px"}
+            color={`${pathname == "/v1/referral" ? "#00D395" : "#676D9A"}`}
+            onClick={()=>{
+              Render && router.push('/v1/referral')
+            }}
+          >
+            {pathname=="/v1/referral" ? (
+              <Image
+                src={hoverContributeEarnIcon}
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: Render ? "pointer" :"not-allowed"}}
+
+              />
+            ) : (
+              <Image
+                src={"/contributeEarnIcon.svg"}
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: Render ? "pointer" :"not-allowed"}}
+
+              />
+            )}
+
+            <Text fontSize="14px">Referral</Text>
+          </Box>
+      </Box>:<></>
+        } */}
+
+        {     <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
-          cursor="pointer"
+          cursor={Render ? "pointer" :"not-allowed"}
           marginBottom="0px"
           // className="button"
           _hover={{
@@ -333,13 +509,14 @@ const Navbar = ({ validRTokens }: any) => {
           </Box> */}
           <StakeUnstakeModal
             coin={Coins}
+            isCorrectNetwork={Render}
             nav={true}
             stakeHover={stakeHover}
             setStakeHover={setStakeHover}
             validRTokens={validRTokens}
           />
-        </Box>
-        {/* {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
+        </Box>}
+        {process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"  ?        <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
@@ -347,11 +524,11 @@ const Navbar = ({ validRTokens }: any) => {
           marginBottom="0px"
           // className="button"
           // backgroundColor={"blue"}
-          color={`${pathname == "/v1/campaign" ? "#00D395" : "#676D9A"}`}
-          _hover={{ color: "#6e7681" }}
+          color={`${pathname == "/v1/airdrop_leaderboard" ? "#00D395" : "#676D9A"}`}
+          // _hover={{ color: "#6e7681" }}
           onMouseEnter={() => setCampaignHover(true)}
           onMouseLeave={() => setCampaignHover(false)}
-          onClick={()=>{router.push('/v1/campaign')}}
+          onClick={()=>{router.push('/v1/airdrop_leaderboard')}}
         >
             <Box
               display="flex"
@@ -359,9 +536,9 @@ const Navbar = ({ validRTokens }: any) => {
               alignItems="center"
               gap={"8px"}
             >
-              {pathname == "/v1/campaign" ? (
+              {pathname == "/v1/airdrop_leaderboard" ? (
                 <Image
-                  src={hoverStake}
+                  src={hoverContributeEarnIcon}
                   alt="Picture of the author"
                   width="16"
                   height="16"
@@ -369,7 +546,7 @@ const Navbar = ({ validRTokens }: any) => {
                 />
               ) : (
                 <Image
-                  src={"/stake.svg"}
+                  src={"/contributeEarnIcon.svg"}
                   alt="Picture of the author"
                   width="16"
                   height="16"
@@ -377,10 +554,14 @@ const Navbar = ({ validRTokens }: any) => {
                 />
               )}
 
-              <Text fontSize="14px" >Campaign</Text>
+              <Text fontSize="14px" >Airdrop</Text>
+              <Box bg="#F7BB5B" height="18px" width="45px" textAlign="center"  lineHeight="18px"
+              clipPath="polygon(110% 0%, 10% 0%, 0% 50%, 10% 100%, 110% 100%)" fontSize="12px" fontWeight="400" color="#000" borderRightRadius="4px"
+              >
+                NEW
+              </Box>
             </Box>
-        </Box>:""} */}
-
+        </Box>:""}
         {/* <Box
           style={{
             padding: "3px 0px",
@@ -459,7 +640,7 @@ const Navbar = ({ validRTokens }: any) => {
           alignItems="center"
           marginRight="1.2rem"
         >
-          {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID  ?"":          <GetTokensModal
+          {process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" ?"":          <GetTokensModal
             buttonText="Get Tokens"
             height={"2rem"}
             fontSize={"14px"}
@@ -475,9 +656,9 @@ const Navbar = ({ validRTokens }: any) => {
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />}
 
-          <Box
+          {/* <Box
             borderRadius="6px"
-            cursor="pointer"
+            cursor={Render ? "pointer" :"not-allowed"}
             margin="0"
             height="2rem"
             border="1px solid #676D9A"
@@ -502,7 +683,7 @@ const Navbar = ({ validRTokens }: any) => {
             // onMouseEnter={() => setTransferDepositHover(true)}
             // onMouseLeave={() => setTransferDepositHover(false)}
           >
-            <Box
+            {/* <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -514,7 +695,8 @@ const Navbar = ({ validRTokens }: any) => {
                 alt="Picture of the author"
                 width="20"
                 height="20"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: Render ? "pointer" : "not-allowed" }}
+
               />
               {/* {router.pathname == "/waitlist" || !transferDepositHover ? (
                 <Image
@@ -533,12 +715,45 @@ const Navbar = ({ validRTokens }: any) => {
                   style={{ cursor: "pointer" }}
                 />
               )} */}
-              <Text fontSize="14px" lineHeight="14px" color="#676D9A">
+              {/* <Text fontSize="14px" lineHeight="14px" color="#676D9A">
                 {"Transfer Deposit"}
               </Text>
-            </Box>
-          </Box>
+            </Box>  */}
+          {/* </Box>  */}
 
+             {/* <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap="8px"
+              margin="6px 12px"
+            >
+              <TransferDepositModal
+              background="transparent"
+              borderRadius="6px"
+              cursor={Render ? "pointer" :"not-allowed"}
+              margin="0"
+              height="2rem"
+              border="1px solid #676D9A"
+              // border={`0.5px solid ${
+              //   router.pathname != "/waitlist" && transferDepositHover
+              //     ? "#6e6e6e"
+              //     : "#FFF"
+              // }`}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap="3"
+              className="button"
+              // color="#6E6E6E"
+              color={
+                router.pathname != "/waitlist" && transferDepositHover
+                  ? "#6e6e6e"
+                  : "#FFF"
+              }
+              buttonText="Transfer Deposit"
+              />
+            </Box>  */}
           <Box
             fontSize="12px"
             color="#FFF"
@@ -557,7 +772,7 @@ const Navbar = ({ validRTokens }: any) => {
             <Box
               // backgroundColor="#2DA44E"
               display="flex"
-              border="1px solid var(--secondary, #00D395)"
+              border="1px solid #676D9A"
               borderRadius="6px"
               flexDirection="row"
               paddingY="6px"
@@ -726,14 +941,22 @@ const Navbar = ({ validRTokens }: any) => {
                       // alert("hey");
                       // const walletConnected =
                       //   localStorage.getItem("lastUsedConnector");
-                      if (connector?.options?.id == "braavos") {
+                      if (connectors[0]?.id == "braavos") {
                         disconnect();
-                        connect(connectors[1]);
+                        connectors.map((connector:any)=>{
+                          if(connector.id=="braavos"){
+                            connect(connector);
+                          }
+                        })
                       } else {
                         disconnect();
-                        connect(connectors[0]);
+                        connectors.map((connector)=>{
+                          if(connector.id=="argentX"){
+                            connect({connector});
+                          }
+                        })
                       }
-                      // console.log("navbar", account);
+                      ////console.log("navbar", account);
                       // localStorage.setItem("account", JSON.stringify(account));
                     }}
                   >

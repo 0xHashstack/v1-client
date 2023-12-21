@@ -65,14 +65,13 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import {
   useAccount,
   useBalance,
-  useTransactionManager,
   useWaitForTransaction,
 } from "@starknet-react/core";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useToast } from "@chakra-ui/react";
-import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount, weiToEtherNumber } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
@@ -93,9 +92,10 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
-import { getFees, getMaximumDepositAmount, getMinimumDepositAmount } from "@/Blockchain/scripts/Rewards";
+import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectNftBalance, selectProtocolStats, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
+import { getFees, getMaximumDepositAmount, getMinimumDepositAmount, getNFTBalance, getNFTMaxAmount } from "@/Blockchain/scripts/Rewards";
 import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
+import { get_user_holding_zklend } from "@/Blockchain/scripts/liquidityMigration";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -109,7 +109,7 @@ const SupplyModal = ({
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const toastHandler = () => {
-  //   console.log("toast called");
+  //  //console.log("toast called");
   // };
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [transactionStarted, setTransactionStarted] = useState(false);
@@ -130,7 +130,6 @@ const SupplyModal = ({
 
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
@@ -141,8 +140,8 @@ const SupplyModal = ({
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
     coin ? coin?.name : "BTC"
   );
-  // console.log("wallet balance",typeof Number(walletBalance))
-  // console.log("deposit amount", typeof depositAmount);
+  ////console.log("wallet balance",typeof Number(walletBalance))
+  ////console.log("deposit amount", typeof depositAmount);
   const [inputAmount, setinputAmount] = useState<number>(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -160,7 +159,7 @@ const SupplyModal = ({
   //   // setCurrentSupplyAPR(
   //   //   coinIndex.map(({ curr }: any) => curr?.token === currentSelectedCoin)?.idx
   //   // );
-  //   // console.log("currentSupplyAPR", currentSupplyAPR);
+  //   ////console.log("currentSupplyAPR", currentSupplyAPR);
   // }, [currentSupplyAPR]);
 
   const getUniqueId = () => uniqueID;
@@ -187,14 +186,14 @@ const SupplyModal = ({
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
   };
-  // console.log(walletBalances,"wallet balances in supply modal")
+  ////console.log(walletBalances,"wallet balances in supply modal")
 
   // const transactionStarted = useSelector(selectTransactionStarted);
   // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
 
   // const [transactionStarted, setTransactionStarted] = useState(false);
   // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
-  // console.log(Number(
+  ////console.log(Number(
   //   BNtoNum(
   //     uint256.uint256ToBN(
   //       walletBalances["ETH"]?.dataBalanceOf?.balance
@@ -212,19 +211,19 @@ const SupplyModal = ({
   // const walletBalances = useSelector(selectAssetWalletBalance);
   // const transactionRefresh=useSelector(selectTransactionRefresh);
 
-  const fees=useSelector(selectFees);
+  const fees = useSelector(selectFees);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? parseAmount(
-          uint256.uint256ToBN(
-            walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
-          tokenDecimalsMap[coin?.name]
-        )
+        String(uint256.uint256ToBN(
+          walletBalances[coin?.name]?.dataBalanceOf?.balance
+        )),
+        tokenDecimalsMap[coin?.name]
+      )
       : 0
   );
   // useEffect(()=>{
-  //   console.log(
+  //  //console.log(
   //     Number(parseAmount(
   //       uint256.uint256ToBN(
   //         walletBalances[coin?.name]?.dataBalanceOf?.balance
@@ -237,19 +236,19 @@ const SupplyModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
-              walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
-            tokenDecimalsMap[coin?.name]
-          )
+          String(uint256.uint256ToBN(
+            walletBalances[coin?.name]?.dataBalanceOf?.balance
+          )),
+          tokenDecimalsMap[coin?.name]
+        )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf]);
   // useEffect(()=>{
 
   // },[currentSelectedCoin])
-  // console.log(walletBalances['BTC']);
+  ////console.log(walletBalances['BTC']);
   // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
   // const [transactionFailed, setTransactionFailed] = useState(false);
 
@@ -272,19 +271,19 @@ const SupplyModal = ({
   let activeTransactions = useSelector(selectActiveTransactions);
   // useEffect(() => {
   //   if (activeTransactions)
-  //     console.log("activeTransactions ", activeTransactions);
+  //    //console.log("activeTransactions ", activeTransactions);
   // }, [activeTransactions]);
   // const [toastId, setToastId] = useState<any>();
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus(true);
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
@@ -297,11 +296,11 @@ const SupplyModal = ({
   //   },
   //   onRejected(transaction) {
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected", transaction);
+  //    //console.log("treans rejected", transaction);
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus(true);
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus(true);
@@ -314,16 +313,16 @@ const SupplyModal = ({
   //       );
   //       setToastDisplayed(true);
   //     }
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //   },
   // });
   // useEffect(() => {
   //   // const status = recieptData?.data?.status;
-  //   console.log("trans supply modal ", recieptData?.data?.status);
+  //  //console.log("trans supply modal ", recieptData?.data?.status);
   //   if (recieptData?.data?.status == "PENDING") {
   //     setCurrentTransactionStatus(true);
   //     toast.dismiss(toastId);
-  //     console.log("trans pending - - -");
+  //    //console.log("trans pending - - -");
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
@@ -334,10 +333,10 @@ const SupplyModal = ({
   //       setToastDisplayed(true);
   //     }
   //   } else if (recieptData?.data?.status == "RECEIVED") {
-  //     console.log("trans received - - -");
+  //    //console.log("trans received - - -");
   //   } else if (recieptData?.data?.status == "REJECTED") {
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected - - -");
+  //    //console.log("treans rejected - - -");
   //   } else if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
   //     setCurrentTransactionStatus(true);
   //     if (!isToastDisplayed) {
@@ -349,23 +348,23 @@ const SupplyModal = ({
   //       );
   //       setToastDisplayed(true);
   //     }
-  //     console.log("trans onAcceptedOnL2 - - -");
+  //    //console.log("trans onAcceptedOnL2 - - -");
   //   } else if (status == "ACCEPTED_ON_L1") {
   //     setCurrentTransactionStatus(true);
-  //     console.log("trans onAcceptedOnL1 - - -");
+  //    //console.log("trans onAcceptedOnL1 - - -");
   //   }
   // }, [recieptData?.data?.status]);
-  // setInterval(() => console.log("recieptData", recieptData), 5000);
+  // setInterval(() =>//console.log("recieptData", recieptData), 5000);
 
   // const recieptData2 = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus(true);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (isToastDisplayed==false) {
   //       toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
   //         position: toast.POSITION.BOTTOM_RIGHT
@@ -374,11 +373,11 @@ const SupplyModal = ({
   //     }
   //   },
   //   onRejected(transaction) {
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus(true);
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus(true);
@@ -388,7 +387,7 @@ const SupplyModal = ({
   //       });
   //       setToastDisplayed(true);
   //     }
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //   },
   // });
 
@@ -397,12 +396,12 @@ const SupplyModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (isToastDisplayed == false) {
   //       toast.success(
   //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
@@ -417,7 +416,7 @@ const SupplyModal = ({
   //     setCurrentTransactionStatus("Failed");
   //     toast.dismiss(toastId);
   //     if (!failureToastDisplayed) {
-  //       console.log("treans rejected", transaction);
+  //      //console.log("treans rejected", transaction);
   //       dispatch(setTransactionStatus("failed"));
   //       const toastContent = (
   //         <div>
@@ -436,7 +435,7 @@ const SupplyModal = ({
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction: any) {
   //     toast.dismiss(toastId);
@@ -450,12 +449,12 @@ const SupplyModal = ({
   //       );
   //       setToastDisplayed(true);
   //     }
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //   },
   // });
   // const { hashes, addTransaction } = useTransactionManager();
   // const transactionStartedAndModalClosed=useSelector(selectTransactionStartedAndModalClosed);
-
+  let protocolStats = useSelector(selectProtocolStats);
   const handleTransaction = async () => {
     try {
       if (ischecked) {
@@ -464,8 +463,7 @@ const SupplyModal = ({
         });
         const depositStake = await writeAsyncDepositStake();
         if (depositStake?.transaction_hash) {
-          console.log("trans transaction hash created");
-          console.log("toast here");
+
           const toastid = toast.info(
             // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
             `Transaction pending`,
@@ -510,19 +508,15 @@ const SupplyModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-        // console.log("Status transaction", deposit);
-        console.log(isSuccessDeposit, "success ?");
+        ////console.log("Status transaction", deposit);
+       //console.log(isSuccessDeposit, "success ?");
       } else {
         mixpanel.track("Action Selected", {
           Action: "Deposit",
         });
         const deposit = await writeAsyncDeposit();
         if (deposit?.transaction_hash) {
-          console.log(
-            "trans transaction hash created ",
-            deposit?.transaction_hash
-          );
-          console.log("toast here");
+     
           const toastid = toast.info(
             // `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
             `Transaction pending`,
@@ -556,7 +550,6 @@ const SupplyModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         // const deposit = await writeAsyncDepositStake();
-        console.log("Supply Modal - deposit ", deposit);
         mixpanel.track("Supply Market Status", {
           Status: "Success",
           Token: currentSelectedCoin,
@@ -571,8 +564,8 @@ const SupplyModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-        // console.log("Status transaction", deposit);
-        console.log(isSuccessDeposit, "success ?");
+        ////console.log("Status transaction", deposit);
+       //console.log(isSuccessDeposit, "success ?");
       }
     } catch (err: any) {
       // setTransactionFailed(true);
@@ -586,7 +579,7 @@ const SupplyModal = ({
         setTransactionStarted(false);
         // dispatch(setTransactionStatus("failed"));
       }
-      console.log(uqID, "transaction check supply transaction failed : ", err);
+     //console.log(uqID, "transaction check supply transaction failed : ", err);
 
       const toastContent = (
         <div>
@@ -600,7 +593,7 @@ const SupplyModal = ({
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
       });
-      console.log("supply", err);
+     //console.log("supply", err);
       // toast({
       //   description: "An error occurred while handling the transaction. " + err,
       //   variant: "subtle",
@@ -663,16 +656,16 @@ const SupplyModal = ({
   // useEffect(() => {
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
   // }, [])
-  // console.log(inputAmount);
+  ////console.log(inputAmount);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
-const minAmounts=useSelector(selectMinimumDepositAmounts);
-const maxAmounts=useSelector(selectMaximumDepositAmounts);
-  useEffect(()=>{
-    setMinimumDepositAmount(minAmounts["r"+currentSelectedCoin])
-    setmaximumDepositAmount(maxAmounts["r"+currentSelectedCoin])
-  },[currentSelectedCoin,minAmounts,maxAmounts])
-  
+  const minAmounts = useSelector(selectMinimumDepositAmounts);
+  const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  useEffect(() => {
+    setMinimumDepositAmount(minAmounts["r" + currentSelectedCoin])
+    setmaximumDepositAmount(maxAmounts["r" + currentSelectedCoin])
+  }, [currentSelectedCoin, minAmounts, maxAmounts])
+  ////console.log(nft,"nft")
   // useEffect(()=>{
   //     const data=useSelector(selectMinimumDepositAmounts);
   //     setMinimumDepositAmount(data(currentSelectedCoin));
@@ -692,7 +685,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
-  // console.log(activeModal)
+  ////console.log(activeModal)
 
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
@@ -735,11 +728,11 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
-              walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
-            tokenDecimalsMap[coin?.name]
-          )
+          String(uint256.uint256ToBN(
+            walletBalances[coin?.name]?.dataBalanceOf?.balance
+          )),
+          tokenDecimalsMap[coin?.name]
+        )
         : 0
     );
 
@@ -756,6 +749,13 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
     setinputAmount(0);
     setSliderValue(0);
   }, [currentSelectedCoin]);
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const data=await get_user_holding_zklend("0x05970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4")
+    }
+    fetchData()
+  },[])
 
   return (
     <div>
@@ -793,7 +793,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
             const uqID = getUniqueId();
             let data: any = localStorage.getItem("transactionCheck");
             data = data ? JSON.parse(data) : [];
-            // console.log(uqID, "data here", data);
+            ////console.log(uqID, "data here", data);
             if (data && data.includes(uqID)) {
               data = data.filter((val: any) => val != uqID);
               localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -833,8 +833,8 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
             />
             <ModalBody>
               <Card
-               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 mb="0.5rem"
                 p="1rem"
                 mt="-1.5"
@@ -892,7 +892,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
-                    <Text color="white">{currentSelectedCoin}</Text>
+                    <Text color="white">{(currentSelectedCoin=="BTC" || currentSelectedCoin=="ETH")? "w"+currentSelectedCoin:currentSelectedCoin}</Text>
                   </Box>
 
                   <Box pt="1" className="navbar-button">
@@ -930,19 +930,17 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                                   (curr: any) => curr?.token === coin
                                 )?.idx
                               );
-                              // console.log(coin,"coin in supply modal")
+                              ////console.log(coin,"coin in supply modal")
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"
-                                  ? Number(
-                                      BNtoNum(
-                                        uint256.uint256ToBN(
-                                          walletBalances[coin]?.dataBalanceOf
-                                            ?.balance
-                                        ),
-                                        tokenDecimalsMap[coin]
-                                      )
-                                    )
+                                  ? parseAmount(
+                                      String(uint256.uint256ToBN(
+                                        walletBalances[coin]?.dataBalanceOf
+                                          ?.balance
+                                      )),
+                                      tokenDecimalsMap[coin]
+                                  )
                                   : 0
                               );
                               dispatch(setCoinSelectedSupplyModal(coin));
@@ -964,16 +962,15 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                               pr="6px"
                               gap="1"
                               justifyContent="space-between"
-                              bg={`${
-                                coin === currentSelectedCoin
+                              bg={`${coin === currentSelectedCoin
                                   ? "#4D59E8"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                             >
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
-                                <Text color="white">{coin}</Text>
+                                <Text color="white">{(coin=="BTC" || coin=="ETH")? "w"+coin:coin}</Text>
                               </Box>
                               <Box
                                 fontSize="9px"
@@ -984,16 +981,14 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                                 Wallet Balance:{" "}
                                 {assetBalance[coin]?.dataBalanceOf?.balance
                                   ? numberFormatter(
-                                      Number(
-                                        BNtoNum(
-                                          uint256.uint256ToBN(
-                                            assetBalance[coin]?.dataBalanceOf
-                                              ?.balance
-                                          ),
-                                          tokenDecimalsMap[coin]
-                                        )
-                                      )
+                                    parseAmount(
+                                        String(uint256.uint256ToBN(
+                                          assetBalance[coin]?.dataBalanceOf
+                                            ?.balance
+                                        )),
+                                        tokenDecimalsMap[coin]
                                     )
+                                  )
                                   : "-"}
                               </Box>
                             </Box>
@@ -1026,7 +1021,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     border="1px solid"
                     borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
-                    // maxW="222px"
+                  // maxW="222px"
                   >
                     <Box>
                       <InfoIcon />
@@ -1036,21 +1031,20 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                 <Box
                   width="100%"
                   color="white"
-                  border={`${
-                    depositAmount > walletBalance
+                  border={`${depositAmount > walletBalance
                       ? "1px solid #CF222E"
-                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& depositAmount> maximumDepositAmount ?
-                      "1px solid #CF222E"
-                      : depositAmount < 0 
-                      ? "1px solid #CF222E"
-                      : isNaN(depositAmount)
-                      ? "1px solid #CF222E"
-                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount && depositAmount>0
-                      ? "1px solid #CF222E"
-                      : depositAmount > 0 && depositAmount <= walletBalance
-                      ? "1px solid #00D395"
-                      : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                  }`}
+                      : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount ?
+                        "1px solid #CF222E"
+                        : depositAmount < 0
+                          ? "1px solid #CF222E"
+                          : isNaN(depositAmount)
+                            ? "1px solid #CF222E"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount && depositAmount > 0
+                              ? "1px solid #CF222E"
+                              : depositAmount > 0 && depositAmount <= walletBalance
+                                ? "1px solid #00D395"
+                                : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                    }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -1069,22 +1063,21 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-     placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentSelectedCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentSelectedCoin}`}
-                      color={`${
-                        depositAmount > walletBalance
+                      placeholder={process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? `0.01536 ${currentSelectedCoin}` : `min ${minimumDepositAmount == null ? 0 : minimumDepositAmount} ${currentSelectedCoin}`}
+                      color={`${depositAmount > walletBalance
                           ? "#CF222E"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount> maximumDepositAmount ?
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount ?
                             "#CF222E"
-                          : isNaN(depositAmount)
-                          ? "#CF222E"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount && depositAmount>0
-                          ? "#CF222E"
-                          : depositAmount < 0
-                          ? "#CF222E"
-                          : depositAmount == 0
-                          ? "white"
-                          : "#00D395"
-                      }`}
+                            : isNaN(depositAmount)
+                              ? "#CF222E"
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount && depositAmount > 0
+                                ? "#CF222E"
+                                : depositAmount < 0
+                                  ? "#CF222E"
+                                  : depositAmount == 0
+                                    ? "white"
+                                    : "#00D395"
+                        }`}
                       _disabled={{ color: "#00D395" }}
                       border="0px"
                       _placeholder={{
@@ -1101,21 +1094,20 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color={`${
-                      depositAmount > walletBalance
+                    color={`${depositAmount > walletBalance
                         ? "#CF222E"
-                        :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount> maximumDepositAmount ?
+                        : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount ?
                           "#CF222E"
-                        : isNaN(depositAmount)
-                        ? "#CF222E"
-                        :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount && depositAmount>0
-                        ? "#CF222E"
-                        : depositAmount < 0
-                        ? "#CF222E"
-                        : depositAmount == 0
-                        ? "#4D59E8"
-                        : "#00D395"
-                    }`}
+                          : isNaN(depositAmount)
+                            ? "#CF222E"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount && depositAmount > 0
+                              ? "#CF222E"
+                              : depositAmount < 0
+                                ? "#CF222E"
+                                : depositAmount == 0
+                                  ? "#4D59E8"
+                                  : "#00D395"
+                      }`}
                     // color="#4D59E8"
                     _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                     onClick={() => {
@@ -1130,9 +1122,9 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     MAX
                   </Button>
                 </Box>
-                {depositAmount > walletBalance || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>maximumDepositAmount) ||
-                depositAmount < 0 ||                       (depositAmount<minimumDepositAmount && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>0) ||
-                isNaN(depositAmount) ? (
+                {depositAmount > walletBalance || (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount) ||
+                  depositAmount < 0 || (depositAmount < minimumDepositAmount && process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > 0) ||
+                  isNaN(depositAmount) ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -1151,11 +1143,11 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                       <Text ml="0.3rem">
                         {depositAmount > walletBalance
                           ? "Amount exceeds balance"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount>maximumDepositAmount 
-                          ? "More than max amount"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&depositAmount<minimumDepositAmount
-                          ?"Less than min amount":
-                          ""
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount > maximumDepositAmount
+                            ? "More than max amount"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && depositAmount < minimumDepositAmount
+                              ? "Less than min amount" :
+                              ""
                         }
                       </Text>
                     </Text>
@@ -1212,22 +1204,22 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     onChange={(val) => {
                       setSliderValue(val);
                       var ans = (val / 100) * walletBalance;
-                      // console.log(ans);
+                      ////console.log(ans);
                       if (val == 100) {
                         setDepositAmount(walletBalance);
                         setinputAmount(walletBalance);
                       } else {
                         // ans = Math.round(ans * 100) / 100;
-                        if(ans<10){
-                          setDepositAmount(ans);
-                          setinputAmount(ans);
-                        }else{
+                        if (ans < 10) {
+                          setDepositAmount(parseFloat(ans.toFixed(7)));
+                          setinputAmount(parseFloat(ans.toFixed(7)));
+                        } else {
                           ans = Math.round(ans * 100) / 100;
                           setDepositAmount(ans);
                           setinputAmount(ans);
                         }
 
-                        // console.log(ans)
+                        ////console.log(ans)
                         // dispatch(setInputSupplyAmount(ans));
 
                       }
@@ -1337,7 +1329,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                   borderColor="#2B2F35"
                   isDisabled={transactionStarted == true}
                   // disabledColor="red"
-                
+
                   // _disabled={{
                   //   colorScheme:"black",
                   //   cursor: "pointer",
@@ -1382,7 +1374,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Cost incurred during transactions."
+                      label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                       bg="#02010F"
                       fontSize={"13px"}
                       fontWeight={"400"}
@@ -1460,6 +1452,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                   display="flex"
                   justifyContent="space-between"
                   fontSize="12px"
+                  mb={ischecked ?"0.4rem":"0rem"}
                 >
                   <Text display="flex" alignItems="center">
                     <Text
@@ -1487,7 +1480,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                       arrowShadowColor="#2B2F35"
                       // arrowPadding={2}
                       maxW="222px"
-                      // marginTop={20}
+                    // marginTop={20}
                     >
                       <Box>
                         <InfoIcon />
@@ -1501,8 +1494,8 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     color="#676D9A"
                   >
                     {!supplyAPRs ||
-                    supplyAPRs.length === 0 ||
-                    supplyAPRs[currentSupplyAPR] ==null ? (
+                      supplyAPRs.length === 0 ||
+                      supplyAPRs[currentSupplyAPR] == null ? (
                       <Box pt="3px">
                         <Skeleton
                           width="2.3rem"
@@ -1518,8 +1511,77 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                     {/* 5.566% */}
                   </Text>
                 </Text>
+                {ischecked &&                <Text
+                  color="#8B949E"
+                  display="flex"
+                  justifyContent="space-between"
+                  fontSize="12px"
+
+                >
+                  <Text display="flex" alignItems="center">
+                    <Text
+                      mr="0.2rem"
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="12px"
+                      color="#676D9A"
+                    >
+                      Staking rewards:
+                    </Text>
+                    <Tooltip
+                      hasArrow
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label="Rewards earned in staking activities within the protocol."
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                      arrowShadowColor="#2B2F35"
+                      maxW="282px"
+                    >
+                      <Box>
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Text>
+                  <Text color="#676D9A">
+                    +{protocolStats?.find(
+                      (stat: any) =>
+                        stat.token ==
+                        (currentSelectedCoin[0] == "r"
+                          ? currentSelectedCoin.slice(1)
+                          : currentSelectedCoin)
+                    )?.stakingRate
+                      ? ((protocolStats?.find(
+                        (stat: any) =>
+                          stat.token ==
+                          (currentSelectedCoin[0] == "r"
+                            ? currentSelectedCoin.slice(1)
+                            : currentSelectedCoin)
+                      )?.stakingRate)-supplyAPRs[currentSupplyAPR]).toFixed(2)
+                      : "1.2"}
+                    %
+                    {/* {protocolStats?.[0]?.stakingRate ? (
+                              protocolStats?.[0]?.stakingRate
+                            ) : (
+                              <Skeleton
+                                width="6rem"
+                                height="1.4rem"
+                                startColor="#101216"
+                                endColor="#2B2F35"
+                                borderRadius="6px"
+                              />
+                            )} */}
+                  </Text>
+                </Text>}
+
               </Card>
-              {depositAmount > 0 && depositAmount <= walletBalance && ((depositAmount>0 && depositAmount>=minimumDepositAmount)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"||depositAmount<=maximumDepositAmount) ? (
+              {depositAmount > 0 && depositAmount <= walletBalance && ((depositAmount > 0 && depositAmount >= minimumDepositAmount) || process.env.NEXT_PUBLIC_NODE_ENV == "testnet") && (process.env.NEXT_PUBLIC_NODE_ENV == "testnet" || depositAmount <= maximumDepositAmount) ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (
@@ -1542,7 +1604,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                       // if(transactionStarted){
                       //   return;
                       // }
-                      // console.log(isSuccessDeposit, "status deposit")
+                      ////console.log(isSuccessDeposit, "status deposit")
                     }}
                   >
                     <AnimatedButton
@@ -1588,7 +1650,7 @@ const maxAmounts=useSelector(selectMaximumDepositAmounts);
                 )
               ) : (
                 <Button
-                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                   color="#6E7681"
                   size="sm"
                   width="100%"

@@ -35,8 +35,7 @@ const SupplyChartChart = () => {
   const weeklyBtcData=useSelector(selectDailyBTCData);
   const monthlyBtcData=useSelector(selectMonthlyBTCData);
   const allBtcData=useSelector(selectAllBTCData);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
-
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option
     // Replace this with your actual implementation
@@ -279,7 +278,7 @@ const SupplyChartChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Average Supply APR:</Box>
+          <Box mt="auto">Average Supply APR: {btcData?.supplyRates[btcData?.supplyRates.length-1]}%</Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"

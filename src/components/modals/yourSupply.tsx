@@ -92,7 +92,7 @@ import {
 import CopyToClipboard from "react-copy-to-clipboard";
 import mixpanel from "mixpanel-browser";
 import { getSupplyunlocked } from "@/Blockchain/scripts/Rewards";
-import { selectFees, selectUserDeposits } from "@/store/slices/readDataSlice";
+import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectUserDeposits } from "@/store/slices/readDataSlice";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const YourSupplyModal = ({
@@ -104,8 +104,8 @@ const YourSupplyModal = ({
   coins,
   protocolStats,
 }: any) => {
-  // console.log(coins,"coins in supply modal")
-  // console.log(currentSelectedSupplyCoin,"coin in your suppply");
+  ////console.log(coins,"coins in supply modal")
+  ////console.log(currentSelectedSupplyCoin,"coin in your suppply");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -142,18 +142,18 @@ const YourSupplyModal = ({
     rDAI: useBalanceOf(tokenAddressMap["rDAI"]),
   };
   const userDeposit = useSelector(selectUserDeposits);
-  // console.log(userDeposit,"user deposit your supply")
+  ////console.log(userDeposit,"user deposit your supply")
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
       ? parseAmount(
-          uint256.uint256ToBN(
-            walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
-          ),
-          tokenDecimalsMap[currentSelectedSupplyCoin]
-        )
+        String(uint256.uint256ToBN(
+          walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
+        )),
+        tokenDecimalsMap[currentSelectedSupplyCoin]
+      )
       : 0
   );
-  // console.log(currentSelectedWithdrawlCoin)
+  ////console.log(currentSelectedWithdrawlCoin)
   const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
     userDeposit?.find(
       (item: any) => item?.rToken == currentSelectedWithdrawlCoin
@@ -164,14 +164,14 @@ const YourSupplyModal = ({
     setwalletBalance(
       walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
-              walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
-            ),
-            tokenDecimalsMap[currentSelectedSupplyCoin]
-          )
+          String(uint256.uint256ToBN(
+            walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
+          )),
+          tokenDecimalsMap[currentSelectedSupplyCoin]
+        )
         : 0
     );
-    // console.log("supply modal status wallet balance",walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf)
   }, [
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf,
     currentSelectedSupplyCoin,
@@ -182,7 +182,7 @@ const YourSupplyModal = ({
         (item: any) => item?.rToken == currentSelectedWithdrawlCoin
       )?.rTokenFreeParsed
     );
-    // console.log("supply modal status wallet balance",walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf)
+    ////console.log("supply modal status wallet balance",walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf)
   }, [currentSelectedWithdrawlCoin]);
 
   const [ischecked, setIsChecked] = useState(true);
@@ -200,7 +200,6 @@ const YourSupplyModal = ({
     writeAsyncDepositStake,
     isErrorDepositStake,
     isIdleDepositStake,
-    isLoadingDepositStake,
     isSuccessDepositStake,
     statusDepositStake,
 
@@ -212,7 +211,6 @@ const YourSupplyModal = ({
     writeAsyncDeposit,
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
@@ -229,7 +227,6 @@ const YourSupplyModal = ({
     writeAsyncWithdrawDeposit,
     isErrorWithdrawDeposit,
     isIdleWithdrawDeposit,
-    isLoadingWithdrawDeposit,
     isSuccessWithdrawDeposit,
     statusWithdrawDeposit,
   } = useWithdrawDeposit();
@@ -352,11 +349,11 @@ const YourSupplyModal = ({
             currentSelectedWithdrawlCoin,
             inputWithdrawlAmount
           );
-          // console.log(data, "data in your supply");
+          ////console.log(data, "data in your supply");
           setEstSupply(data);
         }
       } catch (err) {
-        console.log(err, "err in you supply");
+       //console.log(err, "err in you supply");
       }
     };
     fetchSupplyUnlocked();
@@ -392,7 +389,7 @@ const YourSupplyModal = ({
     (key) => modalDropdowns[key] === true
   );
 
-  const fees=useSelector(selectFees);
+  const fees = useSelector(selectFees);
 
   useEffect(() => {
     setinputSupplyAmount(0);
@@ -422,12 +419,12 @@ const YourSupplyModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (!isToastDisplayed) {
   //       toast.success(
   //         `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
@@ -442,15 +439,15 @@ const YourSupplyModal = ({
   //     setCurrentTransactionStatus("failed");
   //     dispatch(setTransactionStatus("failed"));
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //     if (!isToastDisplayed) {
   //       toast.success(
   //         `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
@@ -468,7 +465,6 @@ const YourSupplyModal = ({
       const withdraw = await writeAsyncWithdrawDeposit();
       if (withdraw?.transaction_hash) {
         setDepositTransHash(withdraw?.transaction_hash);
-        console.log("toast here");
         const toastid = toast.info(
           // `Please wait your withdraw transaction is running in background : ${inputWithdrawlAmount}r${asset}`,
           `Transaction pending`,
@@ -514,9 +510,9 @@ const YourSupplyModal = ({
         dispatch(setTransactionStatus("success"));
       }
 
-      console.log(withdraw);
+     //console.log(withdraw);
     } catch (err: any) {
-      console.log("withraw", err);
+     //console.log("withraw", err);
       mixpanel.track("Withdraw Supply Status", {
         Status: "Failure",
       });
@@ -527,7 +523,7 @@ const YourSupplyModal = ({
         // dispatch(setTransactionStatus("failed"));
         setWithdrawTransactionStarted(false);
       }
-      console.log(uqID, "your supply catch", data);
+     //console.log(uqID, "your supply catch", data);
       const toastContent = (
         <div>
           Transaction declined{" "}
@@ -550,11 +546,10 @@ const YourSupplyModal = ({
           Clicked: true,
         });
         const addSupplyAndStake = await writeAsyncDepositStake();
-        console.log(addSupplyAndStake);
+       //console.log(addSupplyAndStake);
         setDepositTransHash(addSupplyAndStake?.transaction_hash);
         if (addSupplyAndStake?.transaction_hash) {
-          console.log("trans transaction hash created");
-          console.log("toast here");
+
           const toastid = toast.info(
             // `Please wait your transaction is running in background for supply and stake : ${depositAmount} ${supplyAsset} `,
             `Transaction pending`,
@@ -597,13 +592,11 @@ const YourSupplyModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-        console.log("addSupply", addSupplyAndStake);
       } else {
         const addSupply = await writeAsyncDeposit();
         // setDepositTransHash(addSupply?.transaction_hash);
         if (addSupply?.transaction_hash) {
-          console.log("trans transaction hash created");
-          console.log("toast here");
+
           const toastid = toast.info(
             // `Please wait your transaction is running in background for adding supply : ${depositAmount} ${supplyAsset} `,
             `Transaction pending`,
@@ -646,16 +639,15 @@ const YourSupplyModal = ({
         if (data && data.includes(uqID)) {
           dispatch(setTransactionStatus("success"));
         }
-        console.log("addSupply", addSupply);
       }
     } catch (err) {
-      console.log("Unable to add supply ", err);
+     //console.log("Unable to add supply ", err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
-      console.log("data check", data);
+     //console.log("data check", data);
       data = data ? JSON.parse(data) : [];
       if (data && data.includes(uqID)) {
-        console.log(uqID, "your supply catch", data);
+       //console.log(uqID, "your supply catch", data);
         // dispatch(setTransactionStatus("failed"));
         setTransactionStarted(false);
       }
@@ -681,7 +673,15 @@ const YourSupplyModal = ({
       setSupplyAsset(currentSelectedSupplyCoin);
     }
   }, [currentSelectedSupplyCoin]);
-
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  const minAmounts = useSelector(selectMinimumDepositAmounts);
+  const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  useEffect(() => {
+    setMinimumDepositAmount(minAmounts["r" + currentSelectedSupplyCoin])
+    setmaximumDepositAmount(maxAmounts["r" + currentSelectedSupplyCoin])
+  }, [currentSelectedSupplyCoin,minAmounts,maxAmounts])
+  
   const getBorrowAPR = (borrowMarket: string) => {
     switch (borrowMarket) {
       case "USDT":
@@ -738,7 +738,7 @@ const YourSupplyModal = ({
           const uqID = getUniqueId();
           let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
-          // console.log(uqID, "data here", data);
+          ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
             data = data.filter((val: any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -761,7 +761,7 @@ const YourSupplyModal = ({
               display={"flex"}
               justifyContent={"space-between"}
               fontSize={"sm"}
-              // my={"2"}
+            // my={"2"}
             >
               <Box w="full">
                 <Tabs variant="unstyled">
@@ -828,17 +828,17 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="The tokens selected to supply on the protocol."
-                              bg="#02010F"
+                            bg="#02010F"
                             fontSize={"13px"}
-                                       fontWeight={"400"}
+                            fontWeight={"400"}
                             borderRadius={"lg"}
-                          padding={"2"}
-    border="1px solid"
-                    borderColor="#23233D"
+                            padding={"2"}
+                            border="1px solid"
+                            borderColor="#23233D"
 
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
-                            // mt="15px"
+                          // mt="15px"
                           >
                             <Box>
                               <InfoIcon />
@@ -872,7 +872,7 @@ const YourSupplyModal = ({
                               {getCoin(currentSelectedSupplyCoin)}
                             </Box>
                             <Text color="white" mt="0.15rem">
-                              {currentSelectedSupplyCoin}
+                              {(currentSelectedSupplyCoin == "BTC" || currentSelectedSupplyCoin == 'ETH') ? "w" + currentSelectedSupplyCoin : currentSelectedSupplyCoin}
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
@@ -912,31 +912,29 @@ const YourSupplyModal = ({
                                   >
                                     {coin.substring(1) ===
                                       currentSelectedSupplyCoin && (
-                                      <Box
-                                        w="3px"
-                                        h="28px"
-                                        bg="#4D59E8"
-                                        borderRightRadius="md"
-                                      ></Box>
-                                    )}
+                                        <Box
+                                          w="3px"
+                                          h="28px"
+                                          bg="#4D59E8"
+                                          borderRightRadius="md"
+                                        ></Box>
+                                      )}
                                     <Box
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      pl={`${
-                                        coin.substring(1) ===
-                                        currentSelectedSupplyCoin
+                                      pl={`${coin.substring(1) ===
+                                          currentSelectedSupplyCoin
                                           ? "1"
                                           : "5"
-                                      }`}
+                                        }`}
                                       pr="6px"
                                       gap="1"
-                                      bg={`${
-                                        coin.substring(1) ===
-                                        currentSelectedSupplyCoin
+                                      bg={`${coin.substring(1) ===
+                                          currentSelectedSupplyCoin
                                           ? "#4D59E8"
                                           : "inherit"
-                                      }`}
+                                        }`}
                                       borderRadius="md"
                                       justifyContent="space-between"
                                     >
@@ -944,8 +942,8 @@ const YourSupplyModal = ({
                                         <Box p="1">
                                           {getCoin(coin.substring(1))}
                                         </Box>
-                                        <Text color="white">
-                                          {coin.substring(1)}
+                                        <Text color="white" mt="0.5">
+                                          {(coin.substring(1) == "BTC" || coin.substring(1) == 'ETH') ? "w" + coin.substring(1) : coin.substring(1)}
                                         </Text>
                                       </Box>
                                       <Box
@@ -958,19 +956,17 @@ const YourSupplyModal = ({
                                         {walletBalances[coin.substring(1)]
                                           ?.dataBalanceOf?.balance
                                           ? numberFormatter(
-                                              Number(
-                                                BNtoNum(
-                                                  uint256.uint256ToBN(
-                                                    walletBalances[
-                                                      coin.substring(1)
-                                                    ]?.dataBalanceOf?.balance
-                                                  ),
-                                                  tokenDecimalsMap[
+                                            parseAmount(
+                                                String(uint256.uint256ToBN(
+                                                  walletBalances[
                                                     coin.substring(1)
-                                                  ]
-                                                )
+                                                  ]?.dataBalanceOf?.balance
+                                                )),
+                                                tokenDecimalsMap[
+                                                coin.substring(1)
+                                                ]
                                               )
-                                            )
+                                          )
                                           : "-"}
                                       </Box>
                                     </Box>
@@ -998,13 +994,13 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="The unit of tokens being supplied."
-                              bg="#02010F"
+                            bg="#02010F"
                             fontSize={"13px"}
-                                       fontWeight={"400"}
+                            fontWeight={"400"}
                             borderRadius={"lg"}
-                          padding={"2"}
-    border="1px solid"
-                    borderColor="#23233D"
+                            padding={"2"}
+                            border="1px solid"
+                            borderColor="#23233D"
 
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
@@ -1017,16 +1013,19 @@ const YourSupplyModal = ({
                         <Box
                           width="100%"
                           color="white"
-                          border={`${
-                            inputSupplyAmount > walletBalance
+                          border={`${inputSupplyAmount > walletBalance
                               ? "1px solid #CF222E"
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount>maximumDepositAmount ?
+                              "1px solid #CF222E"
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount<minimumDepositAmount ?
+                              "1px solid #CF222E"
                               : inputSupplyAmount < 0
-                              ? "1px solid #CF222E"
-                              : inputSupplyAmount > 0 &&
-                                inputSupplyAmount <= walletBalance
-                              ? "1px solid #00D395"
-                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          }`}
+                                ? "1px solid #CF222E"
+                                : inputSupplyAmount > 0 &&
+                                  inputSupplyAmount <= walletBalance
+                                  ? "1px solid #00D395"
+                                  : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            }`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -1046,16 +1045,19 @@ const YourSupplyModal = ({
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
-                              placeholder={`0.01536 ${currentSelectedSupplyCoin}`}
-                              color={`${
-                                inputSupplyAmount > walletBalance
+                              placeholder={process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? `0.01536 ${currentSelectedSupplyCoin}` : `min ${minimumDepositAmount == null ? 0 : minimumDepositAmount} ${currentSelectedSupplyCoin}`}
+                              color={`${inputSupplyAmount > walletBalance
                                   ? "#CF222E"
+                                  : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>maximumDepositAmount ?
+                                  "#CF222E"
+                                  : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount<minimumDepositAmount ?
+                                  "#CF222E"
                                   : inputSupplyAmount < 0
-                                  ? "#CF222E"
-                                  : inputSupplyAmount == 0
-                                  ? "white"
-                                  : "#00D395"
-                              }`}
+                                    ? "#CF222E"
+                                    : inputSupplyAmount == 0
+                                      ? "white"
+                                      : "#00D395"
+                                }`}
                               border="0px"
                               _disabled={{ color: "#00D395" }}
                               _placeholder={{
@@ -1072,15 +1074,18 @@ const YourSupplyModal = ({
                           </NumberInput>
                           <Button
                             variant="ghost"
-                            color={`${
-                              inputSupplyAmount > walletBalance
+                            color={`${inputSupplyAmount > walletBalance
                                 ? "#CF222E"
+                                : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount>maximumDepositAmount ?
+                                "#CF222E"
+                                : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount<minimumDepositAmount ?
+                                "#CF222E"
                                 : inputSupplyAmount < 0
-                                ? "#CF222E"
-                                : inputSupplyAmount == 0
-                                ? "#4D59E8"
-                                : "#00D395"
-                            }`}
+                                  ? "#CF222E"
+                                  : inputSupplyAmount == 0
+                                    ? "#4D59E8"
+                                    : "#00D395"
+                              }`}
                             _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                             onClick={() => {
                               setinputSupplyAmount(walletBalance);
@@ -1094,8 +1099,8 @@ const YourSupplyModal = ({
                             MAX
                           </Button>
                         </Box>
-                        {inputSupplyAmount > walletBalance ||
-                        inputSupplyAmount < 0 ? (
+                        {inputSupplyAmount > walletBalance ||(process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount > maximumDepositAmount) ||
+                          (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount>0 && inputSupplyAmount < minimumDepositAmount)|| inputSupplyAmount < 0 ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -1113,6 +1118,10 @@ const YourSupplyModal = ({
                               <Text ml="0.3rem">
                                 {inputSupplyAmount > walletBalance
                                   ? "Amount exceeds amount"
+                                  : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount > maximumDepositAmount
+                            ? "More than max amount"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputSupplyAmount < minimumDepositAmount
+                              ? "Less than min amount" 
                                   : "Invalid Input"}
                               </Text>
                             </Text>
@@ -1156,10 +1165,10 @@ const YourSupplyModal = ({
                                 setinputSupplyAmount(walletBalance);
                                 setDepositAmount(walletBalance);
                               } else {
-                                if(ans<10){
-                                  setinputSupplyAmount(ans);
-                                  setDepositAmount(ans);
-                                }else{
+                                if (ans < 10) {
+                                  setinputSupplyAmount(parseFloat(ans.toFixed(7)));
+                                  setDepositAmount(parseFloat(ans.toFixed(7)));
+                                } else {
                                   ans = Math.round(ans * 100) / 100;
                                   // dispatch(setInputSupplyAmount(ans))
                                   setinputSupplyAmount(ans);
@@ -1321,14 +1330,14 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Cost incurred during transactions."
-                                bg="#02010F"
+                              label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
+                              bg="#02010F"
                               fontSize={"13px"}
-                                         fontWeight={"400"}
+                              fontWeight={"400"}
                               borderRadius={"lg"}
-                            padding={"2"}
-    border="1px solid"
-                    borderColor="#23233D"
+                              padding={"2"}
+                              border="1px solid"
+                              borderColor="#23233D"
 
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
@@ -1385,6 +1394,7 @@ const YourSupplyModal = ({
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
+                          mb={ischecked ? "0.4rem" : "0rem"}
                         >
                           <Text display="flex" alignItems="center">
                             <Text
@@ -1401,17 +1411,17 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Annual interest rate earned on supplied tokens."
-                                bg="#02010F"
+                              bg="#02010F"
                               fontSize={"13px"}
-                                         fontWeight={"400"}
+                              fontWeight={"400"}
                               borderRadius={"lg"}
-                            padding={"2"}
-    border="1px solid"
-                    borderColor="#23233D"
+                              padding={"2"}
+                              border="1px solid"
+                              borderColor="#23233D"
 
                               arrowShadowColor="#2B2F35"
                               maxW="272px"
-                              // mb="16px"
+                            // mb="16px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -1420,8 +1430,8 @@ const YourSupplyModal = ({
                           </Text>
                           <Text color="#676D9A">
                             {!protocolStats ||
-                            protocolStats.length === 0 ||
-                            !getBorrowAPR(currentSelectedSupplyCoin) ? (
+                              protocolStats.length === 0 ||
+                              !getBorrowAPR(currentSelectedSupplyCoin) ? (
                               <Box pt="2px">
                                 <Skeleton
                                   width="2.3rem"
@@ -1438,42 +1448,110 @@ const YourSupplyModal = ({
                             {/* 7.75% */}
                           </Text>
                         </Text>
+                        {ischecked && <Text
+                          color="#8B949E"
+                          display="flex"
+                          justifyContent="space-between"
+                          fontSize="12px"
+
+                        >
+                          <Text display="flex" alignItems="center">
+                            <Text
+                              mr="0.2rem"
+                              font-style="normal"
+                              font-weight="400"
+                              font-size="12px"
+                              color="#676D9A"
+                            >
+                              Staking rewards:
+                            </Text>
+                            <Tooltip
+                              hasArrow
+                              placement="right"
+                              boxShadow="dark-lg"
+                              label="Rewards earned in staking activities within the protocol."
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                              maxW="282px"
+                            >
+                              <Box>
+                                <InfoIcon />
+                              </Box>
+                            </Tooltip>
+                          </Text>
+                          <Text color="#676D9A">
+                            +{protocolStats?.find(
+                              (stat: any) =>
+                                stat?.token ==
+                                (currentSelectedSupplyCoin[0] == "r"
+                                  ? currentSelectedSupplyCoin.slice(1)
+                                  : currentSelectedSupplyCoin)
+                            )?.stakingRate
+                              ? ((protocolStats?.find(
+                                (stat: any) =>
+                                  stat?.token ==
+                                  (currentSelectedSupplyCoin[0] == "r"
+                                    ? currentSelectedSupplyCoin.slice(1)
+                                    : currentSelectedSupplyCoin)
+                              )?.stakingRate)-getBorrowAPR(currentSelectedSupplyCoin)).toFixed(2)
+                              : "1.2"}
+                            %
+                            {/* {protocolStats?.[0]?.stakingRate ? (
+                              protocolStats?.[0]?.stakingRate
+                            ) : (
+                              <Skeleton
+                                width="6rem"
+                                height="1.4rem"
+                                startColor="#101216"
+                                endColor="#2B2F35"
+                                borderRadius="6px"
+                              />
+                            )} */}
+                          </Text>
+                        </Text>}
                       </Card>
                       {currentActionMarket.slice(1) !==
                         currentSelectedSupplyCoin && (
-                        <Box
-                          // display="flex"
-                          // justifyContent="left"
-                          w="100%"
-                          // pb="2rem"
-                          // height="64px"
-                          display="flex"
-                          alignItems="center"
-                          mt="1rem"
-                          mb="1rem"
-                        >
                           <Box
+                            // display="flex"
+                            // justifyContent="left"
+                            w="100%"
+                            // pb="2rem"
+                            // height="64px"
                             display="flex"
-                            bg="#222766"
-                            color="#F0F0F5"
-                            fontSize="12px"
-                            p="4"
-                            border="1px solid #3841AA"
-                            fontStyle="normal"
-                            fontWeight="400"
-                            lineHeight="18px"
-                            borderRadius="6px"
-                            // textAlign="center"
+                            alignItems="center"
+                            mt="1rem"
+                            mb="1rem"
                           >
-                            <Box pr="3" mt="0.5" cursor="pointer">
-                              <BlueInfoIcon />
-                            </Box>
-                            You have changed your market from{" "}
-                            {currentActionMarket.slice(1)} to{" "}
-                            {currentSelectedSupplyCoin}. your supplied{" "}
-                            {currentSelectedSupplyCoin} will be added in{" "}
-                            {currentSelectedSupplyCoin} market.
-                            {/* <Box
+                            <Box
+                              display="flex"
+                              bg="#222766"
+                              color="#F0F0F5"
+                              fontSize="12px"
+                              p="4"
+                              border="1px solid #3841AA"
+                              fontStyle="normal"
+                              fontWeight="400"
+                              lineHeight="18px"
+                              borderRadius="6px"
+                            // textAlign="center"
+                            >
+                              <Box pr="3" mt="0.5" cursor="pointer">
+                                <BlueInfoIcon />
+                              </Box>
+                              You have changed your market from{" "}
+                              {currentActionMarket.slice(1) == "BTC" || currentActionMarket.slice(1) == "ETH" ? "w" + currentActionMarket.slice(1) : currentActionMarket.slice(1)} to{" "}
+                              {currentSelectedSupplyCoin == "BTC" || currentSelectedSupplyCoin == "ETH" ? "w" + currentSelectedSupplyCoin : currentSelectedSupplyCoin}. your supplied{" "}
+                              {currentSelectedSupplyCoin == "BTC" || currentSelectedSupplyCoin == "ETH" ? "w" + currentSelectedSupplyCoin : currentSelectedSupplyCoin} will be added in{" "}
+                              {currentSelectedSupplyCoin == "BTC" || currentSelectedSupplyCoin == "ETH" ? "w" + currentSelectedSupplyCoin : currentSelectedSupplyCoin} market.
+                              {/* <Box
                                 py="1"
                                 pl="4"
                                 cursor="pointer"
@@ -1481,11 +1559,11 @@ const YourSupplyModal = ({
                               >
                                 <TableClose />
                               </Box> */}
+                            </Box>
                           </Box>
-                        </Box>
-                      )}
-                      {inputSupplyAmount > 0 &&
-                      inputSupplyAmount <= walletBalance ? (
+                        )}
+                      {inputSupplyAmount > 0 &&((inputSupplyAmount > 0 && inputSupplyAmount >= minimumDepositAmount) || process.env.NEXT_PUBLIC_NODE_ENV == "testnet") && (process.env.NEXT_PUBLIC_NODE_ENV == "testnet" || inputSupplyAmount <= maximumDepositAmount)&&
+                        inputSupplyAmount <= walletBalance ? (
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
@@ -1582,13 +1660,13 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="The tokens selected to supply on the protocol."
-                              bg="#02010F"
+                            bg="#02010F"
                             fontSize={"13px"}
-                                       fontWeight={"400"}
+                            fontWeight={"400"}
                             borderRadius={"lg"}
-                          padding={"2"}
-    border="1px solid"
-                    borderColor="#23233D"
+                            padding={"2"}
+                            border="1px solid"
+                            borderColor="#23233D"
 
                             arrowShadowColor="#2B2F35"
                             maxW="272px"
@@ -1676,18 +1754,16 @@ const YourSupplyModal = ({
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      pl={`${
-                                        coin === currentSelectedWithdrawlCoin
+                                      pl={`${coin === currentSelectedWithdrawlCoin
                                           ? "1"
                                           : "5"
-                                      }`}
+                                        }`}
                                       pr="6px"
                                       gap="1"
-                                      bg={`${
-                                        coin === currentSelectedWithdrawlCoin
+                                      bg={`${coin === currentSelectedWithdrawlCoin
                                           ? "#4D59E8"
                                           : "inherit"
-                                      }`}
+                                        }`}
                                       borderRadius="md"
                                       justifyContent="space-between"
                                     >
@@ -1733,13 +1809,13 @@ const YourSupplyModal = ({
                             placement="right"
                             boxShadow="dark-lg"
                             label="Unit of tokens to be withdrawn."
-                              bg="#02010F"
+                            bg="#02010F"
                             fontSize={"13px"}
-                                       fontWeight={"400"}
+                            fontWeight={"400"}
                             borderRadius={"lg"}
-                          padding={"2"}
-    border="1px solid"
-                    borderColor="#23233D"
+                            padding={"2"}
+                            border="1px solid"
+                            borderColor="#23233D"
 
                             arrowShadowColor="#2B2F35"
                             maxW="222px"
@@ -1752,18 +1828,17 @@ const YourSupplyModal = ({
                         <Box
                           width="100%"
                           color="white"
-                          border={`${
-                            inputWithdrawlAmount > withdrawWalletBalance
+                          border={`${inputWithdrawlAmount > withdrawWalletBalance
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount < 0
-                              ? "1px solid #CF222E"
-                              : inputWithdrawlAmount < 0
-                              ? "1px solid #CF222E"
-                              : inputWithdrawlAmount > 0 &&
-                                inputWithdrawlAmount <= withdrawWalletBalance
-                              ? "1px solid #00D395"
-                              : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          }`}
+                                ? "1px solid #CF222E"
+                                : inputWithdrawlAmount < 0
+                                  ? "1px solid #CF222E"
+                                  : inputWithdrawlAmount > 0 &&
+                                    inputWithdrawlAmount <= withdrawWalletBalance
+                                    ? "1px solid #00D395"
+                                    : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            }`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -1786,15 +1861,14 @@ const YourSupplyModal = ({
                           >
                             <NumberInputField
                               placeholder={`0.01536 ${currentSelectedWithdrawlCoin}`}
-                              color={`${
-                                inputWithdrawlAmount > withdrawWalletBalance
+                              color={`${inputWithdrawlAmount > withdrawWalletBalance
                                   ? "#CF222E"
                                   : inputWithdrawlAmount < 0
-                                  ? "#CF222E"
-                                  : inputWithdrawlAmount == 0
-                                  ? "white"
-                                  : "#00D395"
-                              }`}
+                                    ? "#CF222E"
+                                    : inputWithdrawlAmount == 0
+                                      ? "white"
+                                      : "#00D395"
+                                }`}
                               _disabled={{ color: "#00D395" }}
                               border="0px"
                               _placeholder={{
@@ -1811,15 +1885,14 @@ const YourSupplyModal = ({
                           </NumberInput>
                           <Button
                             variant="ghost"
-                            color={`${
-                              inputWithdrawlAmount > withdrawWalletBalance
+                            color={`${inputWithdrawlAmount > withdrawWalletBalance
                                 ? "#CF222E"
                                 : inputWithdrawlAmount < 0
-                                ? "#CF222E"
-                                : inputWithdrawlAmount == 0
-                                ? "#4D59E8"
-                                : "#00D395"
-                            }`}
+                                  ? "#CF222E"
+                                  : inputWithdrawlAmount == 0
+                                    ? "#4D59E8"
+                                    : "#00D395"
+                              }`}
                             _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                             onClick={() => {
                               setinputWithdrawlAmount(withdrawWalletBalance);
@@ -1832,7 +1905,7 @@ const YourSupplyModal = ({
                           </Button>
                         </Box>
                         {inputWithdrawlAmount > withdrawWalletBalance ||
-                        inputWithdrawlAmount < 0 ? (
+                          inputWithdrawlAmount < 0 ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -1894,9 +1967,9 @@ const YourSupplyModal = ({
                                 setinputWithdrawlAmount(withdrawWalletBalance);
                               } else {
                                 var ans = (val / 100) * withdrawWalletBalance;
-                                if(ans<10){
-                                  setinputWithdrawlAmount(ans);
-                                }else{
+                                if (ans < 10) {
+                                  setinputWithdrawlAmount(parseFloat(ans.toFixed(7)));
+                                } else {
                                   ans = Math.round(ans * 100) / 100;
                                   // dispatch(setInputSupplyAmount(ans))
                                   setinputWithdrawlAmount(ans);
@@ -2028,9 +2101,9 @@ const YourSupplyModal = ({
                               placement="right"
                               boxShadow="dark-lg"
                               label="Estimated amount available for withdrawal from the deposited tokens."
-                                bg="#02010F"
+                              bg="#02010F"
                               fontSize={"13px"}
-                                         fontWeight={"400"}
+                              fontWeight={"400"}
                               borderRadius={"lg"}
                               padding={"2"}
                               border="1px solid"
@@ -2038,7 +2111,7 @@ const YourSupplyModal = ({
 
                               arrowShadowColor="#2B2F35"
                               maxW="247px"
-                              // mt="15px"
+                            // mt="15px"
                             >
                               <Box>
                                 <InfoIcon />
@@ -2178,10 +2251,10 @@ const YourSupplyModal = ({
                               hasArrow
                               placement="right"
                               boxShadow="dark-lg"
-                              label="Cost incurred during transactions."
-                                bg="#02010F"
+                              label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
+                              bg="#02010F"
                               fontSize={"13px"}
-                                         fontWeight={"400"}
+                              fontWeight={"400"}
                               borderRadius={"lg"}
                               padding={"2"}
                               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
@@ -2240,7 +2313,7 @@ const YourSupplyModal = ({
                         </Text> */}
                       </Card>
                       {inputWithdrawlAmount > 0 &&
-                      inputWithdrawlAmount <= withdrawWalletBalance ? (
+                        inputWithdrawlAmount <= withdrawWalletBalance ? (
                         <Box
                           onClick={() => {
                             setWithdrawTransactionStarted(true);
@@ -2312,8 +2385,8 @@ const YourSupplyModal = ({
                             setCurrentTransactionStatus={
                               setCurrentTransactionStatus
                             }
-                            // _disabled={{ bgColor: "white", color: "black" }}
-                            // isDisabled={withdrawTransactionStarted == true}
+                          // _disabled={{ bgColor: "white", color: "black" }}
+                          // isDisabled={withdrawTransactionStarted == true}
                           >
                             Withdraw
                           </AnimatedButton>

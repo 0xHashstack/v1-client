@@ -103,7 +103,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   // },[])
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
-  //   console.log(btcData, "btc")
+  //  //console.log(btcData, "btc")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -118,9 +118,9 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
     };
 
     fetchData();
-    // console.log(coinsData[currentSelectedCoin],"coin apr")
+    ////console.log(coinsData[currentSelectedCoin],"coin apr")
   }, [aprByMarket, currentSelectedCoin]);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number, option2: number) => {
     // Simulating API call or data update based on option
@@ -1053,7 +1053,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
                       //     (curr: any) => curr?.token === coin
                       //   )?.idx
                       // );
-                      // console.log(coin,"coin in supply modal")
+                      ////console.log(coin,"coin in supply modal")
 
                       dispatch(setCoinSelectedSupplyModal(coin));
                     }}
@@ -1114,7 +1114,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               fontWeight="500"
               textColor={currentSelectedCoin === 0 ? "white" : "#3E415C"}
             >
-              BTC
+              wBTC
             </Text>
           </Box>
           <Box
@@ -1139,7 +1139,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
               fontWeight="500"
               textColor={currentSelectedCoin === 3 ? "white" : "#3E415C"}
             >
-              ETH
+              wETH
             </Text>
           </Box>
           <Box

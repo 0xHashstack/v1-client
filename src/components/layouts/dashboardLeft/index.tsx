@@ -20,7 +20,7 @@ import SupplyModal from "@/components/modals/SupplyModal";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { uint256 } from "starknet";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 
 import numberFormatter from "@/utils/functions/numberFormatter";
 import {
@@ -60,8 +60,8 @@ const DashboardLeft = ({
   // gap: string;
   // rowItems: any;
 }) => {
-  // console.log(totalSupplies,"total supply");
-  // console.log(oraclePrices)
+  ////console.log(totalSupplies,"total supply");
+  ////console.log(oraclePrices)
   const coinPrices = Coins.map((coin) => {
     const matchingCoin = oraclePrices?.find(
       (c: { name: string }) =>
@@ -69,17 +69,17 @@ const DashboardLeft = ({
     );
     if (matchingCoin) {
       const formattedPrice = matchingCoin?.price.toFixed(3);
-      // console.log("coinprice",matchingCoin) // Format price to 3 decimal places
+      ////console.log("coinprice",matchingCoin) // Format price to 3 decimal places
       return { name: coin?.name, price: formattedPrice };
     }
     return null;
   });
   // const { dataInterestRates } = useGetInterestRates();
   // const { dataUnderlyingAsset } = useGetUnderlyingAsset();
-  // console.log(dataUnderlyingAsset, "data underlying assets");
-  // console.log(dataInterestRates,"dataIntrestRates");
+  ////console.log(dataUnderlyingAsset, "data underlying assets");
+  ////console.log(dataInterestRates,"dataIntrestRates");
 
-  // console.log(coinPrices)
+  ////console.log(coinPrices)
 
   const columnItems = ["Market", "Price", "Total Supply", "Supply APR", "", ""];
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
@@ -104,11 +104,11 @@ const DashboardLeft = ({
   // );
   // useEffect(() => {
   //   if (errorBalanceOf || isFetchingBalanceOf) {
-  //     console.log("return", errorBalanceOf, statusBalanceOf);
+  //    //console.log("return", errorBalanceOf, statusBalanceOf);
   //     return;
   //   }
   //   if (dataBalanceOf) {
-  //     console.log(
+  //    //console.log(
   //       "return",
   //       dataBalanceOf,
   //       BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
@@ -124,7 +124,7 @@ const DashboardLeft = ({
   // } = useBalanceOf(
   //   "0x457f2ecab58ceb7ffd3ca658f8ce65820fda4fb9cd2878dd2e001d8d2753503"
   // );
-  // console.log(
+  ////console.log(
   //   "balance ret",
   //   dataBalanceOf,
   //   isFetchingBalanceOf,
@@ -157,7 +157,7 @@ const DashboardLeft = ({
   };
 
   useEffect(() => {
-    // console.log("supply apr", currentSupplyAPR);
+    ////console.log("supply apr", currentSupplyAPR);
   }, [supplyAPRs, currentSupplyAPR]);
 
   // useEffect(() => {
@@ -173,11 +173,11 @@ const DashboardLeft = ({
 
   // useEffect(() => {
   //   if (errorBalanceOf || isFetchingBalanceOf) {
-  //     console.log("return error", errorBalanceOf, statusBalanceOf);
+  //    //console.log("return error", errorBalanceOf, statusBalanceOf);
   //     return;
   //   }
   //   if (dataBalanceOf) {
-  //     // console.log(
+  //     ////console.log(
   //     //   "return",
   //     //   dataBalanceOf,
   //     //   JSON.stringify(dataBalanceOf),
@@ -314,7 +314,7 @@ const DashboardLeft = ({
                       pt="3px"
                     >
                       <Text fontSize="14px" fontWeight="400">
-                        {coin?.name}
+                        {(coin?.name =="BTC" || coin?.name=="ETH") ?"w"+coin?.name:coin?.name}
                       </Text>
                       {!assetBalance[coin?.name]?.dataBalanceOf ? (
                         // <Skeleton
@@ -332,15 +332,11 @@ const DashboardLeft = ({
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}
                           {numberFormatter(
-                            Number(
-                              // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
-                              BNtoNum(
-                                uint256.uint256ToBN(
-                                  assetBalance[coin?.name]?.dataBalanceOf
-                                    ?.balance
-                                ),
+                              parseAmount(
+                                String(uint256.uint256ToBN(
+                                  assetBalance[coin?.name]?.dataBalanceOf?.balance
+                                )),
                                 tokenDecimalsMap[coin?.name]
-                              )
                             )
                           )}
                           {/* )} */}
@@ -472,7 +468,7 @@ const DashboardLeft = ({
                       fontSize={"12px"}
                       padding="6px 12px"
                       border="1px solid #BDBFC1"
-                      bgColor="#101216"
+                      bgColor="transparent"
                       _hover={{ bg: "white", color: "black" }}
                       borderRadius={"6px"}
                       color="#BDBFC1;"

@@ -47,7 +47,7 @@ describe("Get l3 interaction function values", () => {
 
     const split1 = parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8).toFixed(1);
     const split2 = parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8).toFixed(1);
-    // console.log(split1,split2,"split amounts")
+    ////console.log(split1,split2,"split amounts")
     const liquiditySplit = [split1, split2];
 
     expect(liquiditySplit).toStrictEqual(expectedLiquiditySplit);
@@ -106,7 +106,6 @@ describe("Get l3 interaction function values", () => {
 
     const provider = getProvider();
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
-    console.log("split before calling");
     const res = await l3Contract.call(
       "get_jedi_estimated_liqA_liqB_from_lp",
       // [liquidity, pairAddress],

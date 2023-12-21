@@ -27,7 +27,7 @@ const UtilisationRateChart = () => {
   const monthlyBtcData=useSelector(selectMonthlyBTCData);
   const allBtcData=useSelector(selectAllBTCData);
 
-  console.log(allBtcData, "week data");
+ //console.log(allBtcData, "week data");
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
   const maxValue = Math.max(...chartData.flatMap((series) => series.data));
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
@@ -44,14 +44,14 @@ const UtilisationRateChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option
     // Replace this with your actual implementation
     let newData: any = [];
     let newCategories: any = [];
-    // console.log(btcData,"util rates")
+    ////console.log(btcData,"util rates")
 
     switch (liquidityProviderChartPeriod) {
       case 0:
@@ -283,7 +283,10 @@ const UtilisationRateChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Utilisation</Box>
+          <Box mt="auto">
+            Utilisation: {btcData?.totalUrm[btcData?.totalUrm.length-1]}%
+          
+          </Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"

@@ -51,6 +51,17 @@ const initialState = {
   yourMetricsBorrow: null,
   jediSwapPoolsSupported:null,
   mySwapPoolsSupported:null,
+  nftBalance:null,
+  referral:null,
+  userType:null,
+  existingLink:null,
+  messageHash:null,
+  signature:null,
+  nftMaxAmount:null,
+  nftCurrentAmount:null,
+  whitelisted:false,
+  interactedAddress:false,
+  jediSwapPoolAprs:[],
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -59,11 +70,11 @@ const initialState = {
     rDAI: null,
   },
   minDepositAmounts:{
-    rBTC: null,
-    rETH: null,
-    rUSDT: null,
-    rUSDC: null,
-    rDAI: null,
+    rBTC: 0.00037,
+    rETH: 0.006,
+    rUSDT: 10,
+    rUSDC: 10,
+    rDAI: 10,
   },
   maxDepositAmounts:{
     rBTC: 0.00074,
@@ -73,11 +84,11 @@ const initialState = {
     rDAI: 20,
   },
   minLoanAmounts:{
-    dBTC: null,
-    dETH: null,
-    dUSDT: null,
-    dUSDC: null,
-    dDAI: null,
+    dBTC: 0.001,
+    dETH: 0.018,
+    dUSDT: 30,
+    dUSDC: 30,
+    dDAI: 30,
   },
   maxLoanAmounts:{
     dBTC: 0.00148,
@@ -249,8 +260,41 @@ export const readDataSlice = createSlice({
     setMySwapPoolsSupported(state,action){
       state.mySwapPoolsSupported=action.payload;
     },
+    setNftBalance(state,action){
+      state.nftBalance=action.payload;
+    },
+    setReferral(state,action){
+      state.referral=action.payload;
+    },
+    setUserType(state,action){
+      state.userType=action.payload;
+    },
+    setExisitingLink(state,action){
+      state.existingLink=action.payload;
+    },
+    setMessageHash(state,action){
+      state.messageHash=action.payload;
+    },
+    setSignature(state,action){
+      state.signature=action.payload;
+    },
     setFees(state,action){
       state.fees=action.payload;
+    },
+    setNftMaxAmount(state,action){
+      state.nftMaxAmount=action.payload;
+    },
+    setNftCurrentAmount(state,action){
+      state.nftCurrentAmount=action.payload;
+    },
+    setUserWhiteListed(state,action){
+      state.whitelisted=action.payload;
+    },
+    setInteractedAddress(state,action){
+      state.interactedAddress=action.payload;
+    },
+    setJediSwapPoolAprs(state,action){
+      state.jediSwapPoolAprs=action.payload;
     },
 
     extraReducers: {
@@ -312,9 +356,20 @@ export const {
   setMaximumDepositAmounts,
   setMinimumLoanAmounts,
   setMaximumLoanAmounts,
+  setNftBalance,
+  setReferral,
+  setUserType,
+  setExisitingLink,
+  setMessageHash,
+  setSignature,
   setJediSwapPoolsSupported,
   setMySwapPoolsSupported,
-  setFees
+  setFees,
+  setNftMaxAmount,
+  setNftCurrentAmount,
+  setUserWhiteListed,
+  setInteractedAddress,
+  setJediSwapPoolAprs
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -371,4 +426,15 @@ export const selectMaximumLoanAmounts=(state)=>state.read_data.maxLoanAmounts;
 export const selectJediSwapPoolsSupported = (state) => state.read_data.jediSwapPoolsSupported;
 export const selectMySwapPoolsSupported = (state) => state.read_data.mySwapPoolsSupported;
 export const selectFees=(state)=>state.read_data.fees;
+export const selectNftBalance=(state)=>state.read_data.nftBalance;
+export const selectreferral=(state)=>state.read_data.referral;
+export const selectUserType=(state)=>state.read_data.userType;
+export const selectExistingLink=(state)=>state.read_data.existingLink;
+export const selectMessageHash=(state)=>state.read_data.messageHash;
+export const selectSignature=(state)=>state.read_data.signature;
+export const selectNftMaxAmount=(state)=>state.read_data.nftMaxAmount;
+export const selectNftCurrentAmount=(state)=>state.read_data.nftCurrentAmount;
+export const selectWhiteListed=(state)=>state.read_data.whitelisted;
+export const selectInteractedAddress=(state)=>state.read_data.interactedAddress;
+export const selectJediswapPoolAprs=(state)=>state.read_data.jediSwapPoolAprs;
 export default readDataSlice.reducer;

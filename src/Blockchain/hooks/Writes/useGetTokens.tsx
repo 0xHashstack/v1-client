@@ -15,15 +15,14 @@ const useGetTokens = (tokenParam: NativeToken = "BTC") => {
     writeAsync: writeAsyncGetTokens,
     isError: isErrorGetTokens,
     isIdle: isIdleGetTokens,
-    isLoading: isLoadingGetTokens,
     isSuccess: isSuccessGetTokens,
     status: statusGetTokens,
   } = useContractWrite({
-    calls: {
+    calls: [{
       contractAddress: faucetAddress,
       entrypoint: "get_tokens",
       calldata: [tokenAddressMap[token]],
-    },
+    }],
   });
 
   return {
@@ -37,7 +36,6 @@ const useGetTokens = (tokenParam: NativeToken = "BTC") => {
     writeAsyncGetTokens,
     isErrorGetTokens,
     isIdleGetTokens,
-    isLoadingGetTokens,
     isSuccessGetTokens,
     statusGetTokens,
   };

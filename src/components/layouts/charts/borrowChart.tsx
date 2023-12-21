@@ -71,7 +71,8 @@ const BorrowChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
-  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  const totalBorrow=btcData?.borrowAmounts[btcData?.borrowAmounts.length-1]+ethData?.borrowAmounts[ethData?.borrowAmounts.length-1]+usdtData?.borrowAmounts[usdtData?.borrowAmounts.length-1]+usdcData?.borrowAmounts[usdcData?.borrowAmounts.length-1]+daiData?.borrowAmounts[daiData?.borrowAmounts.length-1];
+  //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
   const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option
@@ -88,11 +89,11 @@ const BorrowChart = () => {
         daiData?.borrowAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: btcData?.borrowAmounts,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: ethData?.borrowAmounts,
               },
               {
@@ -166,11 +167,11 @@ const BorrowChart = () => {
         weeklyDaiData?.borrowAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: weeklyBtcData?.borrowAmounts,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: weeklyEthData?.borrowAmounts,
               },
               {
@@ -244,11 +245,11 @@ const BorrowChart = () => {
         monthlyDaiData?.borrowAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: monthlyBtcData?.borrowAmounts,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: monthlyEthData?.borrowAmounts,
               },
               {
@@ -326,11 +327,11 @@ const BorrowChart = () => {
         allDaiData?.borrowAmounts
           ? (newData = [
               {
-                name: "BTC",
+                name: "wBTC",
                 data: allBtcData?.borrowAmounts,
               },
               {
-                name: "ETH",
+                name: "wETH",
                 data: allEthData?.borrowAmounts,
               },
               {
@@ -555,7 +556,7 @@ const BorrowChart = () => {
           justifyContent="space-between"
           my="auto"
         >
-          <Box mt="auto">Borrow :</Box>
+          <Box mt="auto">Borrow : ${numberFormatter(totalBorrow)}</Box>
           <Box display="flex" gap="2">
             <Button
               color="#3E415C"

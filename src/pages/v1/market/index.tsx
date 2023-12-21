@@ -27,7 +27,7 @@ import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
 import { useRouter } from "next/router";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import {
@@ -54,14 +54,12 @@ export default function Market() {
   const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
   const [parsedAccount, setParsedAccount] = useState<any>();
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
   const { address, account } = useAccount();
   const [render, setRender] = useState(true);
   // useEffect(()=>{
   //   const fetchToken=async()=>{
   //     const data=await getrTokensMinted("rUSDT",30.0);
-  //     // console.log(parseAmount(uint256.uint256ToBN));
+  //     ////console.log(parseAmount(uint256.uint256ToBN));
   //   }
   //   const fetchSupply=async()=>{
   //     const data=await getSupplyunlocked("rUSDT",30.0);
@@ -71,22 +69,22 @@ export default function Market() {
   //   fetchToken();
   // },[])
   useDataLoader();
-  // console.log(account.address)
+  ////console.log(account.address)
   // const { dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, refetchBalanceOf, statusBalanceOf }=useBalanceOf("0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7");
-  // console.log(JSON.stringify(dataBalanceOf) ,"data")
+  ////console.log(JSON.stringify(dataBalanceOf) ,"data")
   // useEffect(()=>{
   //   const storedAccount = localStorage.getItem("account");
   //   if(!storedAccount){
   //     router.push('/')
   //   }
   // },[])
-  // // console.log("degug2", offchainCurrentBlock);
+  // ////console.log("degug2", offchainCurrentBlock);
   // useEffect(() => {
   //   const loans = async () => {
   //     // const reserves = await getProtocolReserves();
   //     // const reserves = await getProtocolStats();
   //     const reserves = await getProtocolStats();
-  //     console.log("reserves - ", reserves);
+  //    //console.log("reserves - ", reserves);
   //   };
   //   if (account) {
   //     loans();
@@ -126,21 +124,21 @@ export default function Market() {
 //   const getReserves = async () => {
 //     try {
 //       const res = await OffchainAPI.getReserves();
-//       // console.log("degug1", res);
+//       ////console.log("degug1", res);
 //       dispatch(setReserves(res?.reserves));
 //     } catch (error) {
-//       console.log("getReserves failed market page", error);
+//      //console.log("getReserves failed market page", error);
 //     }
 //   };
 //   getReserves();
 //   const getPrices = () => {
 //     OffchainAPI.getOraclePrices()
 //       .then((prices) => {
-//         // console.log("prices", prices);
+//         ////console.log("prices", prices);
 //         dispatch(setOracleAndFairPrices(prices));
 //       })
 //       .catch((error) => {
-//         console.log("oraclePrices failed market page", error);
+//        //console.log("oraclePrices failed market page", error);
 //       });
 //   };
 //   getPrices();
@@ -154,6 +152,6 @@ export default function Market() {
 //       }
 //     )
 //     .catch((error) => {
-//       console.log("getDashboardStats failed market page", error);
+//      //console.log("getDashboardStats failed market page", error);
 //     });
 // }, []);

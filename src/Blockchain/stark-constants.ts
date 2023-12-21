@@ -5,52 +5,34 @@ import DeployDetailsProd from "../../contract_addresses_2.json";
 // import ERC20Abi from "./abi_new/erc20_abi.json";
 // import ERC20Abi from "./abis_upgrade/erc20_abi.json";
 import ERC20Abi from "./abis_mainnet/erc20_abi.json";
-import { Provider, number } from "starknet";
+import { RpcProvider,num } from "starknet";
 import { UseWaitForTransactionResult } from "@starknet-react/core";
 
 export function processAddress(address: string) {
-  return number.toHex(number.toBN(number.toFelt(address)));
+  return num.toHex(num.toBigInt(address));
 }
-
 // let contractsEnv =
 //   process.env.NODE_ENV === "development"
 //     ? DeployDetailsDev.devn\et
 //     : DeployDetailsProd.goerli_2;
 let contractsEnv:any = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? DeployDetailsProd.goerli : DeployDetailsProd.mainnet;
-contractsEnv.DIAMOND_ADDRESS = processAddress(contractsEnv.DIAMOND_ADDRESS);
+contractsEnv.DIAMOND_ADDRESS = contractsEnv.DIAMOND_ADDRESS;
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(
     contractsEnv.TOKENS[i].address
   );
 }
 export const getProvider = () => {
+  const rpctestnetUrl='https://starknet-goerli.infura.io/v3/'+String(process.env.NEXT_PUBLIC_INFURA_TESTNET);
+  const rpcUrl='https://starknet-mainnet.infura.io/v3/'+String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
   if (contractsEnv == DeployDetailsProd.goerli) {
-    const provider = new Provider({
-      rpc: {
-        nodeUrl: `https://starknet-goerli.infura.io/v3/${process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? process.env.NEXT_PUBLIC_INFURA_TESTNET:process.env.NEXT_PUBLIC_INFURA_MAINNET}`,
-        blockIdentifier: "pending",
-        retries: 3,
-      }
-    });
+    const provider = new RpcProvider({ nodeUrl: rpctestnetUrl});
     return provider;
-  } else if(contractsEnv == DeployDetailsProd.goerli_2){
-    const provider = new Provider({
-      rpc: {
-        nodeUrl: `https://starknet-goerli2.infura.io/v3/${process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? process.env.NEXT_PUBLIC_INFURA_TESTNET:process.env.NEXT_PUBLIC_INFURA_MAINNET}`,
-        blockIdentifier: "pending",
-        retries: 3,
-      }
-    });
+  }
+  else {
+    const provider = new RpcProvider({ nodeUrl: rpcUrl});
     return provider;
-  } else {
-    const provider = new Provider({
-      rpc: {
-        nodeUrl: `https://starknet-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? process.env.NEXT_PUBLIC_INFURA_TESTNET:process.env.NEXT_PUBLIC_INFURA_MAINNET}`,
-        blockIdentifier: "pending",
-        retries: 3,
-      }
-    });
-    return provider;
+
   }
 }
 
@@ -108,6 +90,8 @@ export const stakingContractAddress: string =
 export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 
 export const faucetAddress: string =  contractsEnv.FAUCET_ADDRESS;
+
+export const nftAddress:string=contractsEnv.NFT_CONTRACT_ADDRESS;
 
 export const getTokenFromAddress = (address: string) => {
   return contractsEnv.TOKENS.find((item:any) => item?.address === address);

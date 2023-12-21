@@ -144,15 +144,15 @@ const SupplyDashboard = ({
       if (!userDeposits || !reduxProtocolStats) {
         return;
       }
-      // console.log("all deposits calling started");
-      // console.log("all deposits calling started");
+      ////console.log("all deposits calling started");
+      ////console.log("all deposits calling started");
       try {
         const supply = userDeposits;
-        // console.log("users deposits - ", userDeposits);
+        ////console.log("users deposits - ", userDeposits);
 
         // const supply = await getUserDeposits(address);
 
-        // console.log("supply in supply dash: ", supply);
+        ////console.log("supply in supply dash: ", supply);
         if (!supply) return;
         // let data: any = [];
         // let indexes: any = [2, 3, 0, 1, 4];
@@ -177,15 +177,15 @@ const SupplyDashboard = ({
         //     temp.push(currSupply);
         // });
         // setSupplies(data);
-        // console.log(supplies,"supply dash");
-        // console.log(reduxProtocolStats,"supply stats")
+        ////console.log(supplies,"supply dash");
+        ////console.log(reduxProtocolStats,"supply stats")
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
             const avg = await effectiveAprDeposit(
               supply[i],
               reduxProtocolStats
             );
-            // console.log(avg, "avg in supply dash");
+            ////console.log(avg, "avg in supply dash");
             const data = {
               token: supply[i].token,
               avg: avg?.toFixed(2),
@@ -196,11 +196,11 @@ const SupplyDashboard = ({
           }
           setAvgs(avgsData);
         }
-        // console.log(avgs, "avgs in supply");
+        ////console.log(avgs, "avgs in supply");
 
         // dispatch(setUserDeposits(supply));
       } catch (err) {
-        console.log("supplies", err);
+       //console.log("supplies", err);
       }
     };
     getSupply();
@@ -223,11 +223,11 @@ const SupplyDashboard = ({
   //         setAvgs(avgsData);
   //       }
   //     }catch(err){
-  //       console.log(err);
+  //      //console.log(err);
   //     }
 
   //     fetchEffectiveApr();
-  //     console.log(avgs,"avgs in suppply")
+  //    //console.log(avgs,"avgs in suppply")
   //   }
   // },[userDeposits])
   const [protocolStats, setProtocolStats]: any = useState([]);
@@ -241,10 +241,9 @@ const SupplyDashboard = ({
 
         // const stats = await getProtocolStats();
         if (stats) {
-          console.log("se3nding", stats);
           // dispatch(setProtocolStats(stats));
         }
-        // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
+        ////console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
         setProtocolStats([
           stats?.[2],
@@ -261,12 +260,12 @@ const SupplyDashboard = ({
           stats?.[4].supplyRate,
         ]);
       } catch (error) {
-        console.log("error on getting protocol stats");
+       //console.log("error on getting protocol stats");
       }
     };
     getMarketData();
   }, [reduxProtocolStats]);
-  // console.log(protocolStats,"data protocol stats in supply")
+  ////console.log(protocolStats,"data protocol stats in supply")
 
   useEffect(() => {
     let temp: any = [];
@@ -279,17 +278,17 @@ const SupplyDashboard = ({
   }, [supplies]);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
-  // console.log(userDeposits?.length,"length supply");
+  ////console.log(userDeposits?.length,"length supply");
   upper_bound = Math.min(userDeposits?.length - 1, upper_bound);
   // useEffect(() => {
   //   try {
   //     const supply = async () => {
   //       const userSupply = await getUserDeposits(address || "");
-  //       // console.log("userDeposits", userSupply);
+  //       ////console.log("userDeposits", userSupply);
   //     };
   //     // supply();
   //   } catch (err) {
-  //     console.log("userDeposits", err);
+  //    //console.log("userDeposits", err);
   //   }
   // }, []);
   const [loading, setLoading] = useState(true);
@@ -297,11 +296,11 @@ const SupplyDashboard = ({
   useEffect(() => {
     if (userDeposits) {
       const supply = userDeposits;
-      // console.log("users deposits - ", userDeposits);
+      ////console.log("users deposits - ", userDeposits);
 
       // const supply = await getUserDeposits(address);
 
-      // console.log("supply in supply dash: ", supply);
+      ////console.log("supply in supply dash: ", supply);
       if (!supply) return;
       let data: any = [];
       let indexes: any = [2, 3, 0, 1, 4];
@@ -312,11 +311,22 @@ const SupplyDashboard = ({
           supply?.[index]?.rTokenFreeParsed !== 0 ||
           supply?.[index]?.rTokenLockedParsed !== 0 ||
           supply?.[index]?.rTokenStakedParsed !== 0
-        )
-          data[index] = supply[index];
+        ) {
+          if (index == 2 || index == 3) {
+            if (supply?.[index]?.rTokenAmountParsed > 0.000001 ||
+              supply?.[index]?.rTokenFreeParsed > 0.000001 ||
+              supply?.[index]?.rTokenLockedParsed > 0.000001 ||
+              supply?.[index]?.rTokenStakedParsed > 0.000001) {
+              data[index] = supply[index];
+            }
+          } else {
+            data[index] = supply[index];
+          }
+
+        }
       });
       setSupplies(data);
-      console.log(data, "loading - ", userDeposits);
+     //console.log(data, "loading - ", userDeposits);
       setLoading(false);
     }
   }, [userDeposits]);
@@ -384,9 +394,9 @@ const SupplyDashboard = ({
         // height={"100%"}
         padding={"1rem 1.5rem"}
         overflowX="hidden"
-        // m={0}
-        // mt={"3rem"}
-        // style={{ marginTop: "0.8rem" }}
+      // m={0}
+      // mt={"3rem"}
+      // style={{ marginTop: "0.8rem" }}
       >
         <Table variant="unstyled" width="100%" height="100%">
           <Thead width={"100%"} height={"5rem"}>
@@ -402,12 +412,12 @@ const SupplyDashboard = ({
                     idx1 == 0
                       ? "left"
                       : idx1 == columnItems.length - 1
-                      ? "right"
-                      : "center"
+                        ? "right"
+                        : "center"
                   }
                   pl={idx1 == 0 ? 22 : 0}
                   pr={idx1 == columnItems.length - 1 ? 12 : 0}
-                  // border="1px solid blue"
+                // border="1px solid blue"
                 >
                   <Text
                     whiteSpace="pre-wrap"
@@ -438,8 +448,8 @@ const SupplyDashboard = ({
                       border="1px solid"
                       borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
-                      // maxW="222px"
-                      // mt="28px"
+                    // maxW="222px"
+                    // mt="28px"
                     >
                       {val}
                     </Tooltip>
@@ -451,9 +461,9 @@ const SupplyDashboard = ({
           <Tbody
             position="relative"
             overflowX="hidden"
-            //   display="flex"
-            //   flexDirection="column"
-            //   gap={"1rem"}
+          //   display="flex"
+          //   flexDirection="column"
+          //   gap={"1rem"}
           >
             {supplies
               ?.slice(lower_bound, upper_bound + 1)
@@ -508,16 +518,40 @@ const SupplyDashboard = ({
                               {supply?.rToken}
                             </Text>
                           </HStack>
-                          <Text
-                            fontSize="14px"
-                            fontWeight="500"
-                            color="#F7BB5B"
+                          <Tooltip
+                            hasArrow
+                            label={`Underlying Amount: ${(reduxProtocolStats?.find(
+                              (val: any) => val?.token == supply?.rToken.slice(1)
+                            )?.exchangeRateRtokenToUnderlying * (supply?.rTokenAmountParsed + supply?.rTokenStakedParsed)).toFixed(4)} ${supply?.rToken.slice(1)}`}
+                            // arrowPadding={-5420}
+                            placement="right"
+                            rounded="md"
+                            boxShadow="dark-lg"
+                            bg="#02010F"
+                            fontSize={"13px"}
+                            fontWeight={"400"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                          // cursor="context-menu"
+                          // marginRight={idx1 === 1 ? "52px" : ""}
+                          // maxW="222px"
+                          // mt="28px"
                           >
-                            {numberFormatter(
-                              supply?.underlyingAssetAmountParsed
-                              // supply?.rTokenLockedParsed
-                            )}
-                          </Text>
+                            <Text
+                              fontSize="14px"
+                              fontWeight="500"
+                              color="#F7BB5B"
+                            >
+                              {numberFormatter(
+                                supply?.rTokenAmountParsed + supply?.rTokenStakedParsed
+                                // supply?.rTokenLockedParsed
+                              )}
+                            </Text>
+                          </Tooltip>
                         </VStack>
                       </Box>
                     </Td>
@@ -547,13 +581,15 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
+                          
                           Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
-                                return stat.supplyRate;
+                                return stat;
                             })?.exchangeRateRtokenToUnderlying
                           )?.toFixed(3)
                         )}
+                        
                       </Text>
                     </Td>
                     <Td
@@ -586,7 +622,7 @@ const SupplyDashboard = ({
                           Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
-                                return stat?.supplyRate;
+                                return stat;
                             })?.supplyRate
                           )?.toFixed(3) + "%"
                         )}
@@ -659,18 +695,18 @@ const SupplyDashboard = ({
                         <HStack
                           // bgColor="red"
                           justifyContent="flex-start"
-                          // display={
-                          //   supply?.rTokenStakedParsed > 0 ||
-                          //   supply?.rTokenFreeParsed > 0
-                          //     ? "flex"
-                          //     : "none"
-                          // }
-                          // mx={
-                          //   supply?.rTokenStakedParsed <= 0 ||
-                          //   supply?.rTokenFreeParsed <= 0
-                          //     ? "30%"
-                          //     : "0"
-                          // }
+                        // display={
+                        //   supply?.rTokenStakedParsed > 0 ||
+                        //   supply?.rTokenFreeParsed > 0
+                        //     ? "flex"
+                        //     : "none"
+                        // }
+                        // mx={
+                        //   supply?.rTokenStakedParsed <= 0 ||
+                        //   supply?.rTokenFreeParsed <= 0
+                        //     ? "30%"
+                        //     : "0"
+                        // }
                         >
                           <HStack
                             onMouseEnter={() => handleStatusHover("0" + idx)}

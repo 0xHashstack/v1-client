@@ -7,10 +7,12 @@ import {
   
 } from "@/Blockchain/interfaces/interfaces";
 import { useState } from "react";
-import { diamondAddress } from "@/Blockchain/stark-constants";
+import { diamondAddress,nftAddress } from "@/Blockchain/stark-constants";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
 import { L3App } from "../../interfaces/interfaces";
 import { constants } from "@/Blockchain/utils/constants";
+import { useSelector } from "react-redux";
+import { selectMessageHash, selectNftBalance, selectNftCurrentAmount, selectNftMaxAmount, selectSignature, selectUserType, selectYourBorrow, selectYourSupply } from "@/store/slices/readDataSlice";
 
 const useBorrowAndSpend = () => {
   const [loanMarket, setLoanMarket] = useState<NativeToken>("USDT"); // asset
@@ -31,6 +33,14 @@ const useBorrowAndSpend = () => {
 
   const [toMarketLiqA, setToMarketLiqA] = useState<NativeToken>("BTC");
   const [toMarketLiqB, setToMarketLiqB] = useState<NativeToken>("DAI");
+  const balance=useSelector(selectNftBalance);
+  const user=useSelector(selectUserType)
+  const messagehash=useSelector(selectMessageHash)
+  const signature=useSelector(selectSignature)
+  const totalSupply=useSelector(selectYourSupply)
+  const totalBorrow=useSelector(selectYourBorrow)
+  const nftMaxAmount=useSelector(selectNftMaxAmount);
+  const nftCurrentAmount=useSelector(selectNftCurrentAmount);
 
   // -------------------------- Types --------------------------- //
 
@@ -88,11 +98,47 @@ const useBorrowAndSpend = () => {
     writeAsync: writeAsyncBorrowAndSpend,
     isError: isErrorBorrowAndSpend,
     isIdle: isIdleBorrowAndSpend,
-    isLoading: isLoadingBorrowAndSpend,
     isSuccess: isSuccessBorrowAndSpend,
     status: statusBorrowAndSpend,
   } = useContractWrite({
-    calls: [
+    calls: balance==0 &&user=="U1" && ( loanAmount>100) && nftCurrentAmount<nftMaxAmount ? [
+      {
+        contractAddress: tokenAddressMap[collateralMarket],
+        entrypoint: "approve",
+        calldata: [
+          diamondAddress,
+          etherToWeiBN(collateralAmount, collateralMarket).toString(),
+          "0",
+        ],
+      },
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "borrow_and_spend",
+        calldata: [
+          tokenAddressMap[loanMarket],
+          etherToWeiBN(loanAmount, loanMarket).toString(),
+          "0",
+
+          tokenAddressMap[collateralMarket],
+          etherToWeiBN(collateralAmount, collateralMarket).toString(),
+          "0",
+
+          recipient,
+          ...generateCalldata(),
+        ],
+      },
+      {
+        contractAddress: nftAddress,
+        entrypoint: "claim_nft",
+        calldata: [
+          messagehash,
+          "2",
+          signature?.[0],
+          signature?.[1],
+          0
+        ],
+      },
+    ]:[
       {
         contractAddress: tokenAddressMap[collateralMarket],
         entrypoint: "approve",
@@ -128,11 +174,10 @@ const useBorrowAndSpend = () => {
     writeAsync: writeAsyncBorrowAndSpendRToken,
     isError: isErrorBorrowAndSpendRToken,
     isIdle: isIdleBorrowAndSpendRToken,
-    isLoading: isLoadingBorrowAndSpendRToken,
     isSuccess: isSuccessBorrowAndSpendRToken,
     status: statusBorrowAndSpendRToken,
   } = useContractWrite({
-    calls: {
+    calls: balance==0 && user=="U1"&& ( loanAmount>100) && nftCurrentAmount<nftMaxAmount ?[ {
       contractAddress: diamondAddress,
       entrypoint: "borrow_and_spend_with_rToken",
       calldata: [
@@ -147,6 +192,33 @@ const useBorrowAndSpend = () => {
         ...generateCalldata(),
       ],
     },
+    {
+      contractAddress: nftAddress,
+      entrypoint: "claim_nft",
+      calldata: [
+        messagehash,
+        "2",
+        signature?.[0],
+        signature?.[1],
+        0
+      ],
+    },]:[
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "borrow_and_spend_with_rToken",
+        calldata: [
+          tokenAddressMap[loanMarket],
+          etherToWeiBN(loanAmount, loanMarket).toString(),
+          "0",
+  
+          tokenAddressMap[rToken],
+          etherToWeiBN(rTokenAmount, rToken).toString(),
+          "0",
+          recipient,
+          ...generateCalldata(),
+        ],
+      }
+    ]
   });
 
   return {
@@ -181,7 +253,6 @@ const useBorrowAndSpend = () => {
     writeAsyncBorrowAndSpend,
     isErrorBorrowAndSpend,
     isIdleBorrowAndSpend,
-    isLoadingBorrowAndSpend,
     isSuccessBorrowAndSpend,
     statusBorrowAndSpend,
 
@@ -191,7 +262,6 @@ const useBorrowAndSpend = () => {
     writeAsyncBorrowAndSpendRToken,
     isErrorBorrowAndSpendRToken,
     isIdleBorrowAndSpendRToken,
-    isLoadingBorrowAndSpendRToken,
     isSuccessBorrowAndSpendRToken,
     statusBorrowAndSpendRToken,
   };

@@ -11,25 +11,22 @@ const useRevertInteractWithL3 = () => {
     write: writeRevertInteractWithL3,
     writeAsync: writeAsyncRevertInteractWithL3,
     isIdle: isIdleRevertInteractWithL3,
-    isLoading: isLoadingRevertInteractWithL3,
   } = useContractWrite({
-    calls: {
+    calls: [{
       contractAddress: diamondAddress,
       entrypoint: "revert_interaction_with_l3",
       calldata: [revertLoanId],
-    },
+    }],
   });
 
   return {
     revertLoanId,
     setRevertLoanId,
-
     dataRevertInteractWithL3,
     writeAsyncRevertInteractWithL3,
     writeRevertInteractWithL3,
     errorRevertInteractWithL3,
     isIdleRevertInteractWithL3,
-    isLoadingRevertInteractWithL3,
   };
 };
 

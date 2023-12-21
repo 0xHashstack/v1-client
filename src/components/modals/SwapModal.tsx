@@ -89,7 +89,6 @@ const SwapModal = ({
     writeJediSwap_swap,
     writeAsyncJediSwap_swap,
     isIdleJediSwap_swap,
-    isLoadingJediSwap_swap,
     statusJediSwap_swap,
 
     datamySwap_swap,
@@ -97,7 +96,6 @@ const SwapModal = ({
     writemySwap_swap,
     writeAsyncmySwap_swap,
     isIdlemySwap_swap,
-    isLoadingmySwap_swap,
     statusmySwap_swap,
   } = useSwap();
 
@@ -192,12 +190,12 @@ const SwapModal = ({
   //   hash: depositTransHash,
   //   watch: true,
   //   onReceived: () => {
-  //     console.log("trans received");
+  //    //console.log("trans received");
   //   },
   //   onPending: () => {
   //     setCurrentTransactionStatus("success");
   //     toast.dismiss(toastId);
-  //     console.log("trans pending");
+  //    //console.log("trans pending");
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully supplied `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -209,15 +207,15 @@ const SwapModal = ({
   //     setCurrentTransactionStatus("failed");
   //     dispatch(setTransactionStatus("failed"));
   //     toast.dismiss(toastId);
-  //     console.log("treans rejected");
+  //    //console.log("treans rejected");
   //   },
   //   onAcceptedOnL1: () => {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL1");
+  //    //console.log("trans onAcceptedOnL1");
   //   },
   //   onAcceptedOnL2(transaction) {
   //     setCurrentTransactionStatus("success");
-  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //    //console.log("trans onAcceptedOnL2 - ", transaction);
   //     if (!isToastDisplayed) {
   //       toast.success(`You have successfully supplied `, {
   //         position: toast.POSITION.BOTTOM_RIGHT,
@@ -238,10 +236,9 @@ const SwapModal = ({
     try {
       if (currentSwap == "Jediswap") {
         const swap = await writeAsyncJediSwap_swap();
-        console.log(swap);
+       //console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
         if (swap?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait, your transaction is running in background`,
             `Transaction pending`,
@@ -288,10 +285,9 @@ const SwapModal = ({
         }
       } else if (currentSwap == "MySwap") {
         const swap = await writeAsyncmySwap_swap();
-        console.log(swap);
+       //console.log(swap);
         setDepositTransHash(swap?.transaction_hash);
         if (swap?.transaction_hash) {
-          console.log("toast here");
           const toastid = toast.info(
             // `Please wait, your transaction is running in background`,
             `Transaction pending`,
@@ -338,7 +334,7 @@ const SwapModal = ({
         }
       }
     } catch (err: any) {
-      console.log(err);
+     //console.log(err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -387,7 +383,7 @@ const SwapModal = ({
         item?.loanId == currentId?.slice(currentId.indexOf("-") + 1)?.trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
-    // console.log(borrowAmount)
+    ////console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentId]);
   useEffect(() => {
@@ -396,7 +392,7 @@ const SwapModal = ({
     );
     setCurrentSelectedCoin("Select a market");
   }, [currentBorrowId]);
-  // console.log(onOpen)
+  ////console.log(onOpen)
   useEffect(() => {
     setToMarket(currentSelectedCoin);
   }, [currentSelectedCoin]);
@@ -411,10 +407,8 @@ const SwapModal = ({
           const [tokenA, tokenB] = keyvalue.split('/');
           
           if (tokenA === token) {
-            console.log(tokenB,"tokenB");
               data.push(tokenB)
           } else if (tokenB === token) {
-            console.log(tokenA,"tokenA")
               data.push(tokenA);
           }
       }
@@ -450,7 +444,7 @@ const SwapModal = ({
   }, [currentId]);
 
   const handleBorrowMarketCoinChange = (id: string) => {
-    // console.log("got id", id);
+    ////console.log("got id", id);
     for (let i = 0; i < borrowIDCoinMap?.length; i++) {
       if (borrowIDCoinMap?.[i]?.id === id) {
         setCurrentBorrowMarketCoin(borrowIDCoinMap?.[i]?.name?.slice(1));
@@ -460,7 +454,7 @@ const SwapModal = ({
   };
 
   const handleBorrowMarketIDChange = (coin: string) => {
-    // console.log("got coin", coin);
+    ////console.log("got coin", coin);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap?.[i]?.name === coin) {
         setCurrentBorrowId(borrowIDCoinMap?.[i]?.id);
@@ -494,7 +488,7 @@ const SwapModal = ({
           }}
         >
           <Box onClick={() => setCurrentSwap("MySwap")}>
-            {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
+           {selectedDapp!="" ?<TableMySwap/>: <TableMySwapDull />}
           </Box>
         </Box>
         <Box
@@ -535,7 +529,7 @@ const SwapModal = ({
           const uqID = getUniqueId();
           let data: any = localStorage.getItem("transactionCheck");
           data = data ? JSON.parse(data) : [];
-          // console.log(uqID, "data here", data);
+          ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
             data = data.filter((val: any) => val != uqID);
             localStorage.setItem("transactionCheck", JSON.stringify(data));
@@ -624,7 +618,7 @@ const SwapModal = ({
                     ""
                   )}
 
-                  <Text color="white">{currentSelectedCoin}</Text>
+                  <Text color="white">{(currentSelectedCoin=="BTC" ||currentSelectedCoin=='ETH')?"w"+currentSelectedCoin:currentSelectedCoin}</Text>
                 </Box>
 
                 <Box pt="1" className="navbar-button">
@@ -686,7 +680,7 @@ const SwapModal = ({
                             borderRadius="md"
                           >
                             <Box p="1">{getCoin(coin)}</Box>
-                            <Text color="white">{coin}</Text>
+                            <Text color="white">{(coin=='BTC'|| coin=="ETH")?"w"+coin:coin}</Text>
                           </Box>
                         </Box>
                       );
@@ -783,7 +777,7 @@ const SwapModal = ({
                                   .slice(borrowIdString.indexOf("-") + 1)
                                   .trim()
                             );
-                            // console.log(result)
+                            ////console.log(result)
                             setBorrowAmount(result?.loanAmountParsed);
                           }}
                         >
@@ -1051,7 +1045,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Cost incurred during transactions."
+                    label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                     bg="#02010F"
                     fontSize={"13px"}
                     fontWeight={"400"}
@@ -1166,7 +1160,7 @@ const SwapModal = ({
                       />
                     </Box>
                   ) : (
-                    getBorrowAPR(currentBorrowMarketCoin) + "%"
+                    "-"+getBorrowAPR(currentBorrowMarketCoin) + "%"
                   )}
                   {/* 5.56% */}
                 </Text>
@@ -1185,7 +1179,7 @@ const SwapModal = ({
                     hasArrow
                     placement="right-end"
                     boxShadow="dark-lg"
-                    label="Annualized interest rate including fees and charges, reflecting total borrowing cost."
+                    label="If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying."
                     bg="#02010F"
                     fontSize={"13px"}
                     fontWeight={"400"}
@@ -1203,7 +1197,13 @@ const SwapModal = ({
                   </Tooltip>
                 </Box>
                 <Text
-                  color="#676D9A"
+                  color={avgs?.find(
+                    (item: any) =>
+                      item?.loanId ==
+                      currentBorrowId
+                        .slice(currentBorrowId?.indexOf("-") + 1)
+                        ?.trim()
+                  )?.avg<0 ?"rgb(255 94 94)" : "#00D395"}
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1226,7 +1226,7 @@ const SwapModal = ({
                   %
                 </Text>
               </Box>
-              <Box display="flex" justifyContent="space-between">
+              {/* <Box display="flex" justifyContent="space-between">
                 <Box display="flex">
                   <Text
                     color="#676D9A"
@@ -1280,7 +1280,7 @@ const SwapModal = ({
                     : "2.5"}
                   %
                 </Text>
-              </Box>
+              </Box> */}
             </Box>
             {currentSelectedCoin != "Select a market" &&
             currentBorrowMarketCoin != currentSelectedCoin ? (

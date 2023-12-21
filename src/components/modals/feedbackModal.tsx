@@ -128,19 +128,19 @@ const FeedbackModal = ({
 
   let activeTransactions = useSelector(selectActiveTransactions);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  // console.log(suggestionUrl,"url")
+  ////console.log(suggestionUrl,"url")
   const handleImageUploadBug = (e: any) => {
     const file = e.target.files[0];
 
     if (file) {
-      console.log(file.name, "file name");
+     //console.log(file.name, "file name");
       setBugScreenshotFilename(file.name);
       // Read the selected image file as a base64 string
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event?.target?.result) {
           setBugScreenshoturl(event.target.result as string);
-          // console.log("bug  url(upload):-=",event.target.result);
+          ////console.log("bug  url(upload):-=",event.target.result);
         }
       };
       reader.readAsDataURL(file);
@@ -158,8 +158,8 @@ const FeedbackModal = ({
         if (event?.target?.result) {
           setSuggestionUrl(event.target.result as string);
 
-          //     console.log("base64:-",event.target.result);
-          // console.log("sugg  url(upload):-=",event.target.result)
+          //    //console.log("base64:-",event.target.result);
+          ////console.log("sugg  url(upload):-=",event.target.result)
         }
       };
       reader.readAsDataURL(file);
@@ -178,7 +178,6 @@ const FeedbackModal = ({
       //   new Blob([atob(screenshotDataUrl)], { type: 'image/png' })
       // );
       // setScreenshotDataLocalhostUrl(localURL);
-      console.log("bug  url(capture):-=", screenshotDataUrl);
 
       const objectURL = window.URL.createObjectURL(
         new Blob([atob(screenshotDataUrl.split(",")[1])], {
@@ -196,7 +195,6 @@ const FeedbackModal = ({
       const timestamp = new Date().getTime();
       const filename = `screenshot_${timestamp}.png`;
       setSuggestionScreenshotFilename(filename);
-      console.log("sugg  url(capture):-=", screenshotDataUrl);
 
       // Now you have the screenshot in a data URL format
       // You can send it to the backend using an HTTP request.
@@ -212,7 +210,7 @@ const FeedbackModal = ({
   //   });
   // const avgs=useSelector(selectAprAndHealthFactor)
 
-  // console.log(onOpen)
+  ////console.log(onOpen)
 
   const deleteBugScreenshot = () => {
     setBugScreenshoturl("");
@@ -252,7 +250,6 @@ const FeedbackModal = ({
       if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
         // Rating feature is disabled, so don't make the API call
         setRatingDisabled(true);
-        console.log("Rating feature is disabled for 24 hours.");
         return;
       }
     }
@@ -268,7 +265,7 @@ const FeedbackModal = ({
           const currentTime = new Date();
           localStorage.setItem("RatingTime", currentTime.toISOString());
         }
-        console.log(response, "response"); // Log the response from the backend.
+       //console.log(response, "response"); // Log the response from the backend.
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -282,7 +279,6 @@ const FeedbackModal = ({
       if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
         // Rating feature is disabled, so don't make the API call
         setBugFeedbackDisabled(true);
-        console.log("Bug reporting is disabled for 72 hours.");
         return;
       }
     }
@@ -301,11 +297,11 @@ const FeedbackModal = ({
           setBugFeedbackSubmitted(true);
           const currentTime = new Date();
           localStorage.setItem("BugTime", currentTime.toISOString());
-          console.log(response, "res");
+         //console.log(response, "res");
         }
       })
       .catch((error) => {
-        console.log(error);
+       //console.log(error);
       });
   };
   const handleSuggestionFeedback = async () => {
@@ -316,7 +312,6 @@ const FeedbackModal = ({
       if (new Date(lastResponseTime) >= twentyFourHoursAgo) {
         // Rating feature is disabled, so don't make the API call
         setSuggestionFeedbackDisabled(true);
-        console.log("Suggestion reporting is disabled for 96 hours.");
         return;
       }
     }
@@ -335,11 +330,11 @@ const FeedbackModal = ({
           setsuggestionFeedbackSubmitted(true);
           const currentTime = new Date();
           localStorage.setItem("SuggestionTime", currentTime.toISOString());
-          console.log(response, "res");
+         //console.log(response, "res");
         }
       })
       .catch((error) => {
-        console.log(error);
+       //console.log(error);
       });
   };
   return (

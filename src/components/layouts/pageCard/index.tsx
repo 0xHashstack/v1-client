@@ -1,9 +1,9 @@
 import Navbar from "@/components/layouts/navbar/Navbar";
-import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, StackProps, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
+import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, Stack, StackProps, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount, useConnect, useDisconnect, useNetwork, useWaitForTransaction} from "@starknet-react/core";
 import {
   selectToastTransactionStarted,
   selectActiveTransactions,
@@ -14,6 +14,11 @@ import {
   selectOraclePrices,
   selectProtocolReserves,
   selectNetWorth,
+  selectreferral,
+  setMessageHash,
+  setSignature,
+  selectUserType,
+  setUserWhiteListed,
 } from "@/store/slices/readDataSlice";
 import {
   selectUserLoans,
@@ -30,6 +35,8 @@ import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { AccountInterface } from "starknet";
 import FeedbackModal from "@/components/modals/feedbackModal";
 import InfoIcon from "@/assets/icons/infoIcon";
+import axios from "axios";
+import Link from "next/link";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -45,10 +52,12 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const classes = [];
   const { account, address, status, isConnected } = useAccount();
   const extendedAccount = account as ExtendedAccountInterface;
-
-  const { available, disconnect, connect, connectors } = useConnectors();
+  const [loading, setLoading] = useState(true);
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   if (className) classes.push(className);
   const router = useRouter();
+  const {pathname}=router;
 
   useTransactionHandler();
   // const handleRouteChange = () => {
@@ -72,7 +81,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   };
   // }, [handleRouteChange, router.events]);
   // connect(connectors[0])
-  // console.log(connectors)
+  ////console.log(connectors)
 
   // useEffect(() => {
   //   // if (status == "connected") {
@@ -93,23 +102,41 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if (!account) {
       if (walletConnected == "braavos") {
         localStorage.setItem("connected", "braavos");
-        console.log("change", account);
-        disconnect();
-        connect(connectors[0]);
+        // disconnect();
+        connectors.map((connector:any)=>{
+          if(connector.id=="braavos"){
+            console.log('working bravoos no account')
+            connect({connector});
+          }
+        })
       } else if (walletConnected == "argentX") {
         localStorage.setItem("connected", "argentX");
-        disconnect();
-        connect(connectors[1]);
+        // disconnect();
+        connectors.map((connector)=>{
+          if(connector.id=="argentX"){
+            console.log('working')
+            connect({connector});
+          }
+        })
       } else {
         if (connected == "braavos") {
           localStorage.setItem("lastUsedConnector", "braavos");
-          console.log("change", account);
-          disconnect();
-          connect(connectors[0]);
+          // disconnect();
+          connectors.map((connector:any)=>{
+            if(connector.id=="braavos"){
+              console.log('working bravoos')
+              connect({connector});
+            }
+          })
         } else if (connected == "argentX") {
           localStorage.setItem("lastUsedConnector", "argentX");
-          disconnect();
-          connect(connectors[1]);
+          // disconnect();
+          connectors.map((connector)=>{
+            if(connector.id=="argentX"){
+              console.log('working')
+              connect({connector});
+            }
+          })
         } else {
           router.push("/v1");
         }
@@ -120,6 +147,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     }
   }, [account]);
   const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
+  const ref = useSelector(selectreferral)
   // useEffect(() => {
   //   const loan = async () => {
   //     try {
@@ -127,7 +155,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //         return;
   //       }
   //       const loans = await getUserLoans(address);
-  //       // console.log(loans,"Loans from your borrow index page")
+  //       ////console.log(loans,"Loans from your borrow index page")
 
   //       // loans.filter(
   //       //   (loan) =>
@@ -151,9 +179,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //         )
   //       );
   //     } catch (err) {
-  //       console.log("your-borrow : unable to fetch user loans");
+  //      //console.log("your-borrow : unable to fetch user loans");
   //     }
-  //     // console.log("loans", loans);
+  //     ////console.log("loans", loans);
   //   };
   //   if (address && address != "") {
   //     // callWithRetries(loan, [], 3);
@@ -177,52 +205,132 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //     }
   //   }
   // }, []);
+  const [whitelisted, setWhitelisted] = useState(true)
+  const [uniqueToken, setUniqueToken] = useState("")
+  const [referralLinked, setRefferalLinked] = useState(false)
+  const userType = useSelector(selectUserType)
+  const dispatch = useDispatch();
+  const {chain}=useNetwork();
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
-      const network=process.env.NEXT_PUBLIC_NODE_ENV;
-      
+      const network = process.env.NEXT_PUBLIC_NODE_ENV;
+
       if (walletConnected == "braavos") {
-        if(network=="testnet"){
+        if (network == "testnet") {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_TESTNET_CHAINID
+            chain.network!="mainnet"
           );
-        }else{
+        } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            extendedAccount.provider?.chainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID
+            chain.network!="goerli"
           );
         }
       } else if (walletConnected == "argentX") {
         // Your code here
-        if(network=="testnet"){
+        if (network == "testnet") {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-  
-            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID
+
+            chain.network!="mainnet"
           );
-        }else{
+        } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-  
-            extendedAccount.provider?.chainId === process.env.NEXT_PUBLIC_MAINNET_CHAINID
+            chain?.network!="goerli"
           );
         }
       }
-      // console.log("starknetAccount", account?.provider?.chainId);
+      ////console.log("starknetAccount", account?.provider?.chainId);
     }
+    const isWhiteListed = async () => {
+      try {
+        if (!address) {
+          return;
+        }
+        const url = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/is-whitelisted/${address}`:`https://hstk.fi/is-whitelisted/${address}`;
+        const response = await axios.get(url);
+        if (response.data) {
+          setWhitelisted(response.data?.isWhitelisted);
+          dispatch(setUserWhiteListed(response.data?.isWhitelisted))
+          if(response.data?.isWhitelisted==false){
+            await axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/add-address':'https://hstk.fi/add-address'), { address: address })
+            .then((response) => {
+             //console.log(response, "added to db");
+              // Log the response from the backend.
+            })
+            .catch((error) => {
+              console.error('Error in adding address:', error);
+            });
+          }
+          if (userType == "U1") {
+            await axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/nft-sign':'https://hstk.fi/nft-sign'), { address: address })
+              .then((response) => {
+               //console.log(response, "hash");
+                if (response) {
+                  dispatch(setMessageHash(response?.data?.msg_hash))
+                  dispatch(setSignature(response?.data?.signature))
+                }
+                // Log the response from the backend.
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+          }
+        }
+        setLoading(false)
+      } catch (err) {
+       //console.log(err, "err in whitelist")
+      }
+    }
+    isWhiteListed()
+
+    const referal = async () => {
+      try {
+        if (ref) {
+          const response = await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/get_token/${ref}`:`https://hstk.fi/get_token/${ref}`);
+         //console.log(response?.data, "refer")
+          if (response) {
+            axios.post(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/link-referral':'https://hstk.fi/link-referral', { address: address }, {
+              headers: {
+                "reftoken": response.data
+              }
+            })
+              .then((response) => {
+                setRefferalLinked(response?.data?.success)
+               //console.log(response, "linked"); // Log the response from the backend.
+                isWhiteListed();
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+          }
+         //console.log("hi")
+         //console.log(response.data, "token")
+          setUniqueToken(response.data);
+        }
+      } catch (err) {
+       //console.log(err, "err in token")
+      }
+
+    }
+    referal();
     if ((account && !isCorrectNetwork())) {
-      console.log("Account",account)
       setRender(false);
     } else {
-      setRender(true);
+      if (!whitelisted && process.env.NEXT_PUBLIC_NODE_ENV == "mainnet") {
+        setRender(false);
+      } else {
+        setRender(true);
+      }
     }
-  }, [account]);
+  }, [account, whitelisted, referralLinked, userType]);
 
   const [validRTokens, setValidRTokens] = useState([]);
   const userDepositsRedux = useSelector(selectUserDeposits);
@@ -240,7 +348,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
       const reserves = userDepositsRedux;
       // setDataDeposit(reserves);
-      // console.log("got reservers page card", reserves);
+      ////console.log("got reservers page card", reserves);
       const rTokens: any = [];
       if (reserves) {
         reserves.map((reserve: any) => {
@@ -252,13 +360,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           }
         });
       }
-      // console.log("rtokens", rTokens);
+      ////console.log("rtokens", rTokens);
       if (rTokens.length === 0) return;
       setValidRTokens(rTokens);
-      // console.log("valid rtoken", validRTokens);
-      // console.log("market page -user supply", reserves);
+      ////console.log("valid rtoken", validRTokens);
+      ////console.log("market page -user supply", reserves);
     } catch (err) {
-      console.log("Error fetching protocol reserves", err);
+     //console.log("Error fetching protocol reserves", err);
     }
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -275,17 +383,17 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   // const netAPR = useSelector(selectNetAPR);
 
   // useEffect(()=>{
-  //   console.log(netAPR,"net apr in pagecard");
+  //  //console.log(netAPR,"net apr in pagecard");
   // },[netAPR])
   // useEffect(() => {
   //   try {
   //     const fetchTotalBorrow = async () => {
   //       const data = await getTotalBorrow();
-  //       console.log("getTotalBorrow", data);
+  //      //console.log("getTotalBorrow", data);
   //     };
   //     fetchTotalBorrow();
   //   } catch (err) {
-  //     console.log("getTotalBorrow error");
+  //    //console.log("getTotalBorrow error");
   //   }
   // }, [netWorth, yourSupply, yourBorrow, netWorth]);
 
@@ -305,7 +413,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   // }
   // async function processTransactions() {
   //   for (const transaction of activeTransactions) {
-  //     console.log("transactionData ", transaction);
+  //    //console.log("transactionData ", transaction);
   //     // if (!transaction || !transaction.transaction_hash) {
   //     //   continue;
   //     // }
@@ -316,7 +424,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //         watch: false,
   //       });
   //       // Process the transaction data here
-  //       // console.log("transactionData ", transactionData);
+  //       ////console.log("transactionData ", transactionData);
   //     } catch (error) {
   //       console.error("Error fetching transaction data:", error);
   //     }
@@ -329,7 +437,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   // }, [activeTransactions]);
   // if (activeTransactions) {
   //   for (const transaction of activeTransactions) {
-  //     console.log("transactionData ", transaction);
+  //    //console.log("transactionData ", transaction);
   //     if (!transaction || !transaction?.transaction_hash) {
   //       continue;
   //     }
@@ -337,12 +445,12 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //       hash: transaction?.transaction_hash,
   //       watch: false,
   //       // onReceived: () => {
-  //       //   console.log("trans received");
+  //       //  //console.log("trans received");
   //       // },
   //       // onPending: () => {
   //       //   // setCurrentTransactionStatus(true);
   //       //   toast.dismiss(transaction?.toastId);
-  //       //   console.log("trans pending");
+  //       //  //console.log("trans pending");
   //       //   // if (isToastDisplayed == false) {
   //       //   toast.success(
   //       //     transaction?.message || `You have successfully supplied`,
@@ -356,7 +464,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //       // onRejected(result: any) {
   //       //   toast.dismiss(transaction?.toastId);
   //       //   // if (!failureToastDisplayed) {
-  //       //   console.log("treans rejected", result);
+  //       //  //console.log("treans rejected", result);
   //       //   // dispatch(setTransactionStatus("failed"));
   //       //   const toastContent = (
   //       //     <div>
@@ -374,11 +482,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //       // },
   //       // onAcceptedOnL1: (result: any) => {
   //       //   // setCurrentTransactionStatus(true);
-  //       //   console.log("trans onAcceptedOnL1");
+  //       //  //console.log("trans onAcceptedOnL1");
   //       // },
   //       // onAcceptedOnL2(result: any) {
   //       //   toast.dismiss(transaction?.toastId);
-  //       //   // setCurrentTransactionStatus(true);
+//       //   // setCurrentTransactionStatus(true);
   //       //   // if (!isToastDisplayed) {
   //       //   toast.success(
   //       //     transaction?.message || `You have successfully supplied`,
@@ -388,10 +496,10 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //       //   );
   //       //   // setToastDisplayed(true);
   //       //   // }
-  //       //   console.log("trans onAcceptedOnL2 - ", result);
+  //       //  //console.log("trans onAcceptedOnL2 - ", result);
   //       // },
   //     });
-  //     // console.log("transactionData received ", transactionData);
+  //     ////console.log("transactionData received ", transactionData);
   //     // if (
   //     //   transactionData?.data?.status == "PENDING" ||
   //     //   transactionData?.data?.status == "ACCEPTED_ON_L2" ||
@@ -406,49 +514,94 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   }
   // }
   // useEffect(() => {
-  //   // console.log("trans activeTransactions useEffect called");
+  //   ////console.log("trans activeTransactions useEffect called");
   //   if (!activeTransactions || !transactions) {
   //     return;
   //   }
   //   if (activeTransactions?.length != transactions?.length) {
-  //     console.log("setActiveTransactions called");
+  //    //console.log("setActiveTransactions called");
   //     dispatch(setActiveTransactions(transactions));
   //   }
   // }, [transactions]);
 
-  return (
-    <>
-      {render ? (
-        <>
-        <Box   background={`
+  return loading && pathname=="/v1/market" ?
+    (
+      <>
+        <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
             radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
             black
-          `}  position={'fixed'} zIndex={3} >
-          <Navbar  validRTokens={validRTokens} />
-          </Box>
-               <Box position={'fixed'} zIndex={0.5}>
-                <FeedbackModal />
-            </Box> 
-          <Stack
-         zIndex={1}
-          
-            alignItems="center"
-            minHeight={"100vh"}
-            
-            pt="8rem"
-            background={`
+          `} position={'fixed'} zIndex={3} >
+          <Navbar validRTokens={validRTokens} />
+        </Box>
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          minHeight={"100vh"}
+          pt="8rem"
+          backgroundColor="#010409"
+          pb={isLargerThan1280 ? "7rem" : "0rem"}
+          className={classes.join(" ")}
+          {...rest}
+        >
+
+          {/* <Text color="#FFFFFF" fontSize="20px">
+          Loading...
+        </Text> */}
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="#010409"
+            size="xl"
+          />
+          {/* <YourBorrowModal
+          buttonText="Borrow assets"
+          variant="link"
+          fontSize="16px"
+          fontWeight="400"
+          display="inline"
+          color="#0969DA"
+          cursor="pointer"
+          ml="0.4rem"
+          lineHeight="24px"
+        /> */}
+        </Stack>
+      </>
+    )
+    : (
+      <>
+        {render && (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet "?whitelisted:true) ? (
+          <>
+            <Box background={`
+            radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
+            radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
+            black
+          `} position={'fixed'} zIndex={3} >
+              <Navbar validRTokens={validRTokens} />
+            </Box>
+            <Box position={'fixed'} zIndex={0.5}>
+              <FeedbackModal />
+            </Box>
+            <Stack
+              zIndex={1}
+
+              alignItems="center"
+              minHeight={"100vh"}
+
+              pt="8rem"
+              background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.15), transparent) top left,
             radial-gradient(circle 1300px at bottom right, rgba(115, 49, 234, 0.15), transparent) bottom right,
             black
           `}
-            pb={isLargerThan1280 ? "7rem" : "0rem"}
-            className={classes.join(" ")}
-            {...rest}
-          >
-            {children}
-          </Stack>
-          {/* <Box
+              pb={isLargerThan1280 ? "7rem" : "0rem"}
+              className={classes.join(" ")}
+              {...rest}
+            >
+              {children}
+            </Stack>
+            {/* <Box
             bgColor="red"
             display={toastTransactionStarted ? "block" : "none"}
           >
@@ -488,37 +641,54 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               Supply
             </AnimatedButton>
           </Box> */}
-          {/* <ToastContainer theme="dark" /> */}
-          <Footer />
-        </>
-      ) : (
-        <>
-        <Box   background={`
+            {/* <ToastContainer theme="dark" /> */}
+            <Footer />
+          </>
+        ) : (
+          <>
+            <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
             radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
             black
-          `}  position={'fixed'} zIndex={3} >
-          <Navbar  validRTokens={validRTokens} />
-          </Box>
-          <Stack
-            alignItems="center"
-            minHeight={"100vh"}
-            pt="8rem"
-            backgroundColor="#010409"
-            pb={isLargerThan1280 ? "7rem" : "0rem"}
-            className={classes.join(" ")}
-            {...rest}
-          >
-            <Box>
-              <Text color="white" fontSize="25px">
-                Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"Goerli":"Mainnet"} and refresh
-              </Text>
+          `} position={'fixed'} zIndex={3} >
+              <Navbar validRTokens={validRTokens} />
             </Box>
-          </Stack>
-        </>
-      )}
-    </>
-  );
+            <Stack
+              alignItems="center"
+              minHeight={"100vh"}
+              pt="8rem"
+              backgroundColor="#010409"
+              pb={isLargerThan1280 ? "7rem" : "0rem"}
+              className={classes.join(" ")}
+              {...rest}
+            >
+              <Box>
+                {(!whitelisted &&process.env.NEXT_PUBLIC_NODE_ENV == "mainnet")
+
+                  ? 
+                  <Box>
+                  <Text color="white" fontSize="25px">
+                    You are successfully added to our waitlist
+                  </Text> 
+                  <Text color="#B1B0B5" fontSize="14px" textAlign="center" mt="1.5rem" >
+                  Alternatively, Join our {` `}
+                    <Link href="https://discord.gg/hashstack" target="_blank" style={{textDecoration:"underline"}}>     
+                      discord community               
+                    </Link>
+                    {` `}to get an instant access.
+                  </Text>
+                    </Box>
+                  : <Text color="white" fontSize="25px">
+                    Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Goerli" : "Mainnet"} and refresh
+                  </Text>
+                }
+
+              </Box>
+            </Stack>
+          </>
+        )}
+      </>
+    );
 };
 
 export default PageCard;
@@ -534,16 +704,16 @@ export default PageCard;
 // }
 // const timeout = setTimeout(changeR, 3000);
 // function handleRouteChange(url: string) {
-//   console.log("hunny", _account, localStorage.getItem("lastUsedConnector"));
+//  //console.log("hunny", _account, localStorage.getItem("lastUsedConnector"));
 //   // if (!_account) {
 //   const walletConnected = localStorage.getItem("lastUsedConnector");
 //   if (walletConnected == "braavos") {
-//     console.log("hunny");
+//    //console.log("hunny");
 //     connect(connectors[0]);
 //   } else if (walletConnected == "argentx") {
 //     connect(connectors[1]);
 //   }
-//   console.log(status);
+//  //console.log(status);
 //   // }
 // }
 
@@ -562,7 +732,7 @@ export default PageCard;
 // connect(connectors[0]); // Replace this with your actual code
 // setInterval(
 //   () =>
-//     console.log(
+//    //console.log(
 //       "hunny",
 //       _account,
 //       status,

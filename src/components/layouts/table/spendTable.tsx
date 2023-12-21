@@ -64,6 +64,8 @@ import AlertTrade from "@/assets/icons/alertTrade";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import LowhealthFactor from "@/assets/icons/lowhealthFactor";
+import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -86,7 +88,7 @@ const SpendTable = () => {
   const { account, address, isConnected } = useAccount();
   const userLoans = useSelector(selectUserUnspentLoans);
   
-  // console.log(getTokenFromAddress(
+  ////console.log(getTokenFromAddress(
   //   getDTokenFromAddress(number.toHex(loanData?.market))
   //     ?.underlying_asset || ""
   // )?.name)
@@ -106,7 +108,7 @@ const SpendTable = () => {
   //       }
   //       const loans = userLoansRedux;
   //       // const loans = await getUserLoans(address);
-  //       console.log(loans, "Loans from your borrow index page");
+  //      //console.log(loans, "Loans from your borrow index page");
 
   //       // loans.filter(
   //       //   (loan) =>
@@ -126,9 +128,9 @@ const SpendTable = () => {
   //         );
   //       }
   //     } catch (err) {
-  //       console.log("spendtable : unable to fetch user loans");
+  //      //console.log("spendtable : unable to fetch user loans");
   //     }
-  //     // console.log("loans", loans);
+  //     ////console.log("loans", loans);
   //   };
   //   // if (address && address != "") {
   //   // callWithRetries(loan, [], 3);
@@ -139,7 +141,7 @@ const SpendTable = () => {
   // .filter(
   //   (borrow: any) => borrow.spendType === "UNSPENT"
   // );
-  // console.log(userLoans, "user loans in spend table");
+  ////console.log(userLoans, "user loans in spend table");
   const rows: any[] = [];
 
   const dispatch = useDispatch();
@@ -150,6 +152,7 @@ const SpendTable = () => {
   }
 
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
+  const [currentBorrowData, setcurrentBorrowData] = useState()
   const [borrowIds, setBorrowIds] = useState([]);
   const [currentId, setCurrentId] = useState("");
   const [currentMarketCoin, setCurrentMarketCoin] = useState("");
@@ -167,7 +170,7 @@ const SpendTable = () => {
 
   const [currentLoanAmount, setCurrentLoanAmount] = useState("");
   const [currentLoanMarket, setCurrentLoanMarket] = useState("");
-  // console.log("userLoans ", userLoans);
+  ////console.log("userLoans ", userLoans);
   useEffect(() => {
     if (userLoans) {
       let temp1: any = [];
@@ -198,7 +201,7 @@ const SpendTable = () => {
       ) {
         setCurrentPagination(currentPagination - 1);
       }
-      // console.log("faisal coin mapping", borrowIDCoinMap);
+      ////console.log("faisal coin mapping", borrowIDCoinMap);
     }
   }, [userLoans]);
 
@@ -212,9 +215,7 @@ const SpendTable = () => {
   const avgs = useSelector(selectEffectiveApr);
   const avgsLoneHealth = useSelector(selectHealthFactor);
   const [ltv, setLtv] = useState<any>([]);
-  useEffect(() => {
-    console.log("avgsLoneHealth", avgsLoneHealth);
-  }, [avgsLoneHealth]);
+
   // useEffect(() => {
   //   const fetchAprs = async () => {
   //     if (avgs?.length == 0) {
@@ -241,9 +242,9 @@ const SpendTable = () => {
   //     }
   //   };
   //   if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
-  //   console.log("running");
+  //  //console.log("running");
   // }, [oraclePrices, reduxProtocolStats, userLoans]);
-  // console.log(avgs,"avgs in borrow")
+  ////console.log(avgs,"avgs in borrow")
 
   // useEffect(()=>{
 
@@ -256,7 +257,7 @@ const SpendTable = () => {
   const fetchProtocolStats = async () => {
     try {
       const stats = reduxProtocolStats;
-      // console.log("fetchprotocolstats", stats); //23014
+      ////console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
         stats?.[2]?.borrowRate,
         stats?.[3]?.borrowRate,
@@ -265,7 +266,7 @@ const SpendTable = () => {
         stats?.[4]?.borrowRate,
       ]);
     } catch (error) {
-      console.log("error on getting protocol stats");
+     //console.log("error on getting protocol stats");
     }
   };
 
@@ -294,7 +295,7 @@ const SpendTable = () => {
         ]);
       }
       setLtv(ltv_ratio);
-      // console.log("spendtable ltv ", ltv);
+      ////console.log("spendtable ltv ", ltv);
     }
   }, [userLoans, oraclePrices]);
 
@@ -497,6 +498,7 @@ const SpendTable = () => {
                         // bgColor="green"
                         onClick={() => {
                           setSelectedDapp("trade");
+                          setcurrentBorrowData(borrow)
                           setCurrentBorrow(borrow.loanId);
                           setBorrowAmount(borrow.currentLoanAmountParsed);
                           setCurrentId("ID - " + borrow.loanId);
@@ -618,25 +620,74 @@ const SpendTable = () => {
                             pr="40px"
                             // pl="30px"
                           >
-                            <Text
-                              width="40%"
-                              fontSize="14px"
-                              fontWeight="400"
-                              fontStyle="normal"
-                              lineHeight="22px"
-                              color="#E6EDF3"
-                              textAlign="right"
+                      <Box
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Tooltip
+                              hasArrow
+                              label={
+                                <Box>
+                                  Health Factor : {avgsLoneHealth?.find(
+                            (item: any) => item?.loanId == borrow?.loanId
+                          )?.loanHealth}
+                          <br/>
+                          Liquidates below : 1.06
+                                </Box>
+                              }
+                              // arrowPadding={-5420}
+                              placement="bottom"
+                              rounded="md"
+                              boxShadow="dark-lg"
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                            // cursor="context-menu"
+                            // marginRight={idx1 === 1 ? "52px" : ""}
+                            // maxW="222px"
+                            // mt="28px"
                             >
-                              {avgsLoneHealth?.find(
+
+                        {avgsLoneHealth?.find(
                                 (item: any) => item?.loanId == borrow?.loanId
                               )?.loanHealth
-                                ? avgsLoneHealth?.find(
-                                    (item: any) =>
-                                      item?.loanId == borrow?.loanId
-                                  )?.loanHealth
-                                : "2.5"}
-                              %
-                            </Text>
+                                ?
+                          (avgsLoneHealth?.find(
+                            (item: any) =>
+                              item?.loanId == borrow?.loanId
+                          )?.loanHealth) > 1.15      ?                   
+                        <Box
+                          width="68px"
+                          height="10px"
+                          // pl="45%"
+                          fontWeight="400"
+                          borderRadius="100px"
+                          background="linear-gradient(90deg, #00D395 78.68%, #D97008 389.71%, #CF222E 498.53%)"
+                        >
+                          {/* {checkGap(idx1, idx2)} */}
+                        </Box>
+                        :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.09 &&
+                        avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.15) ?
+                        <MediumHeathFactor/>
+                      :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.09 ) ?
+                      <LowhealthFactor/>
+                        :"":<Skeleton
+                        width="6rem"
+                        height="1.2rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />}
+                            </Tooltip>
+                      </Box>
                           </Box>
                         </Td>
                       </Tr>
@@ -748,7 +799,7 @@ const SpendTable = () => {
                   isDisabled={selectedDapp == ""}
                   // isDisabled={selectedDapp == ""}
                 >
-                  swap
+                  Swap
                 </Tab>
                 <Tab
                   // padding="0px 16px"
@@ -771,7 +822,7 @@ const SpendTable = () => {
                   onClick={() => setTradeNote(true)}
                   isDisabled={selectedDapp == ""}
                 >
-                  stake
+                  Stake
                 </Tab>
 
                 <Tab
@@ -812,6 +863,7 @@ const SpendTable = () => {
                     <LiquidityProvisionModal
                       borrowIDCoinMap={borrowIDCoinMap}
                       coins={coins}
+                      borrow={currentBorrowData}
                       borrowIds={borrowIds}
                       currentId={currentId}
                       currentMarketCoin={currentMarketCoin}
@@ -900,7 +952,7 @@ const SpendTable = () => {
                     </Box>
                     <Box p="6px 2px" display="flex">
                       <Text fontSize="sm" color="#F0F0F5">
-                        We are evaluating few promising DEXes to integrate.
+                        We are evaluating few promising DApps to integrate.
                         Please check back at a late time.
                       </Text>
                       <Box
@@ -986,7 +1038,7 @@ const SpendTable = () => {
                     </Box>
                     <Box p="6px 2px" display="flex">
                       <Text fontSize="sm" color="#F0F0F5">
-                        We are evaluating few promising DEXes to integrate.
+                        We are evaluating few promising DApps to integrate.
                         Please check back at a late time.
                       </Text>
                       <Box
