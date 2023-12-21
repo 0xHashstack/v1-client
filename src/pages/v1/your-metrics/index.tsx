@@ -22,7 +22,7 @@ import {
   setMetricsDropdown,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
-import { useAccount, useConnectors } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
 import Link from "next/link";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
@@ -48,8 +48,6 @@ const YourMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
   const dispatch = useDispatch();
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
   const { account: _account } = useAccount();
   useDataLoader();
   // useEffect(() => {

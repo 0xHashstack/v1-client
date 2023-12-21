@@ -2,8 +2,8 @@ import { Box, HStack, Skeleton, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { AccountInterface, ProviderInterface } from "starknet";
-import { useAccount, useBlockNumber } from "@starknet-react/core";
+import { AccountInterface, BlockNumber, ProviderInterface } from "starknet";
+import { useAccount, useBlockNumber, useNetwork } from "@starknet-react/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -19,9 +19,9 @@ interface ExtendedAccountInterface extends AccountInterface {
 }
 const Footer = () => {
   const { account, connector } = useAccount();
-  const { data: block } = useBlockNumber({
-    refetchInterval: 10000,
-  });
+  const { data:block, isLoading, isError } = useBlockNumber({
+    blockIdentifier: 'latest' as BlockNumber
+  })
   // const [walletConnected, setwalletConnected] = useState<any>()
   // useEffect(()=>{
   //   const walletConnected=localStorage.getItem('lastUsedConnector');
@@ -31,6 +31,7 @@ const Footer = () => {
   const currentBlock = useSelector(selectBlock);
   const currentChainId = useSelector(selectCurrentNetwork);
   const dispatch = useDispatch();
+  const { chain } = useNetwork()
   useEffect(() => {
     if (!currentBlock || currentBlock < (block ? block : -1)) {
       dispatch(setBlock(block));
@@ -38,21 +39,6 @@ const Footer = () => {
   }, [block]);
   ////console.log(extendedAccount?.provider?.chainId,"footer")
   ////console.log(walletConnected);
-  useEffect(() => {
-    if (connector?.options?.id == "braavos") {
-      if (account && extendedAccount.provider?.chainId && extendedAccount.provider?.chainId != currentChainId) {
-        dispatch(setCurrentNetwork(extendedAccount.provider?.chainId));
-      }
-    } else if (connector?.options?.id == "argentX") {
-      if (
-        extendedAccount &&
-        extendedAccount?.provider?.chainId &&
-        extendedAccount.provider?.chainId != currentChainId
-      ) {
-        dispatch(setCurrentNetwork(extendedAccount?.provider?.chainId));
-      }
-    }
-  }, [account?.chainId, extendedAccount?.provider?.chainId]);
   return (
     <HStack
       zIndex="14"
@@ -122,9 +108,9 @@ const Footer = () => {
       <HStack borderLeft="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Box color="#676D9A" fontSize="12px" display="flex">
             Network:
-            {currentChainId === process.env.NEXT_PUBLIC_TESTNET_CHAINID ? (
+            {chain?.network === "goerli" ? (
               " Starknet Goerli"
-            ) : currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ? (
+            ) : chain?.network==="mainnet" ? (
               " Starknet Mainnet"
             ) : (
               <Skeleton

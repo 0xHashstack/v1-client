@@ -16,6 +16,7 @@ import {
   stakingContractAddress,
   nftAddress
 } from "../stark-constants";
+import { parseAmount } from "../utils/utils";
 
 // import { useContractWrite } from "@starknet-react/core";
 
@@ -34,14 +35,16 @@ export async function get_user_holding_zklend(address:any) {
     ////console.log("Called")
     ////console.log(supplyContract,"suppply contract")
     ////console.log(parsedAmount, "parsed amount");
-    const res = await migrationContract.call(
+    // "0xc92a503b2979197bb5d671f70f50ca48f3d144eaa90bc0a831684313f6e683"
+    const res:any = await migrationContract.call(
       "get_user_holding_zkLend",
       [address],
       {
         blockIdentifier: "pending",
       }
     );
-    console.log(res,"data migration")
+    // console.log(res)
+    // console.log(parseAmount(res[0][0].toString(),18),"called")
     ////console.log(res, "data in rewards");
   } catch (err) {
    console.log(err,"err in migration");

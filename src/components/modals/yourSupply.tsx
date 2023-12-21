@@ -146,9 +146,9 @@ const YourSupplyModal = ({
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
       ? parseAmount(
-        uint256.uint256ToBN(
+        String(uint256.uint256ToBN(
           walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
-        ),
+        )),
         tokenDecimalsMap[currentSelectedSupplyCoin]
       )
       : 0
@@ -164,9 +164,9 @@ const YourSupplyModal = ({
     setwalletBalance(
       walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[currentSelectedSupplyCoin]
         )
         : 0
@@ -200,7 +200,6 @@ const YourSupplyModal = ({
     writeAsyncDepositStake,
     isErrorDepositStake,
     isIdleDepositStake,
-    isLoadingDepositStake,
     isSuccessDepositStake,
     statusDepositStake,
 
@@ -212,7 +211,6 @@ const YourSupplyModal = ({
     writeAsyncDeposit,
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
@@ -229,7 +227,6 @@ const YourSupplyModal = ({
     writeAsyncWithdrawDeposit,
     isErrorWithdrawDeposit,
     isIdleWithdrawDeposit,
-    isLoadingWithdrawDeposit,
     isSuccessWithdrawDeposit,
     statusWithdrawDeposit,
   } = useWithdrawDeposit();
@@ -959,18 +956,16 @@ const YourSupplyModal = ({
                                         {walletBalances[coin.substring(1)]
                                           ?.dataBalanceOf?.balance
                                           ? numberFormatter(
-                                            Number(
-                                              BNtoNum(
-                                                uint256.uint256ToBN(
+                                            parseAmount(
+                                                String(uint256.uint256ToBN(
                                                   walletBalances[
                                                     coin.substring(1)
                                                   ]?.dataBalanceOf?.balance
-                                                ),
+                                                )),
                                                 tokenDecimalsMap[
                                                 coin.substring(1)
                                                 ]
                                               )
-                                            )
                                           )
                                           : "-"}
                                       </Box>
@@ -1494,14 +1489,14 @@ const YourSupplyModal = ({
                           <Text color="#676D9A">
                             +{protocolStats?.find(
                               (stat: any) =>
-                                stat.token ==
+                                stat?.token ==
                                 (currentSelectedSupplyCoin[0] == "r"
                                   ? currentSelectedSupplyCoin.slice(1)
                                   : currentSelectedSupplyCoin)
                             )?.stakingRate
                               ? ((protocolStats?.find(
                                 (stat: any) =>
-                                  stat.token ==
+                                  stat?.token ==
                                   (currentSelectedSupplyCoin[0] == "r"
                                     ? currentSelectedSupplyCoin.slice(1)
                                     : currentSelectedSupplyCoin)

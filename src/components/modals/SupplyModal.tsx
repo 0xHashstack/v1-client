@@ -65,14 +65,13 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import {
   useAccount,
   useBalance,
-  useTransactionManager,
   useWaitForTransaction,
 } from "@starknet-react/core";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useToast } from "@chakra-ui/react";
-import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
+import { BNtoNum, parseAmount, weiToEtherNumber } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
@@ -131,7 +130,6 @@ const SupplyModal = ({
 
     isErrorDeposit,
     isIdleDeposit,
-    isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
@@ -217,9 +215,9 @@ const SupplyModal = ({
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? parseAmount(
-        uint256.uint256ToBN(
+        String(uint256.uint256ToBN(
           walletBalances[coin?.name]?.dataBalanceOf?.balance
-        ),
+        )),
         tokenDecimalsMap[coin?.name]
       )
       : 0
@@ -238,9 +236,9 @@ const SupplyModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[coin?.name]
         )
         : 0
@@ -730,9 +728,9 @@ const SupplyModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          uint256.uint256ToBN(
+          String(uint256.uint256ToBN(
             walletBalances[coin?.name]?.dataBalanceOf?.balance
-          ),
+          )),
           tokenDecimalsMap[coin?.name]
         )
         : 0
@@ -751,6 +749,13 @@ const SupplyModal = ({
     setinputAmount(0);
     setSliderValue(0);
   }, [currentSelectedCoin]);
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const data=await get_user_holding_zklend("0x05970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4")
+    }
+    fetchData()
+  },[])
 
   return (
     <div>
@@ -929,14 +934,12 @@ const SupplyModal = ({
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"
-                                  ? Number(
-                                    BNtoNum(
-                                      uint256.uint256ToBN(
+                                  ? parseAmount(
+                                      String(uint256.uint256ToBN(
                                         walletBalances[coin]?.dataBalanceOf
                                           ?.balance
-                                      ),
+                                      )),
                                       tokenDecimalsMap[coin]
-                                    )
                                   )
                                   : 0
                               );
@@ -978,14 +981,12 @@ const SupplyModal = ({
                                 Wallet Balance:{" "}
                                 {assetBalance[coin]?.dataBalanceOf?.balance
                                   ? numberFormatter(
-                                    Number(
-                                      BNtoNum(
-                                        uint256.uint256ToBN(
+                                    parseAmount(
+                                        String(uint256.uint256ToBN(
                                           assetBalance[coin]?.dataBalanceOf
                                             ?.balance
-                                        ),
+                                        )),
                                         tokenDecimalsMap[coin]
-                                      )
                                     )
                                   )
                                   : "-"}

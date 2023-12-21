@@ -148,9 +148,9 @@ const BorrowModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
+            String(uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[coin?.name]
           )
         : 0
@@ -182,8 +182,6 @@ const BorrowModal = ({
     writeAsyncLoanRequestrToken,
     isErrorLoanRequestrToken,
     isIdleLoanRequestrToken,
-    isLoadingLoanRequestrToken,
-    statusLoanRequestrToken,
 
     dataLoanRequest,
     errorLoanRequest,
@@ -192,8 +190,6 @@ const BorrowModal = ({
     writeAsyncLoanRequest,
     isErrorLoanRequest,
     isIdleLoanRequest,
-    isLoadingLoanRequest,
-    statusLoanRequest,
   } = useLoanRequest();
 
   useEffect(() => {
@@ -825,9 +821,9 @@ const BorrowModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-            uint256.uint256ToBN(
+            String(uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
-            ),
+            )),
             tokenDecimalsMap[coin?.name]
           )
         : 0
@@ -1122,10 +1118,10 @@ const BorrowModal = ({
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"
                                   ? parseAmount(
-                                      uint256.uint256ToBN(
+                                      String(uint256.uint256ToBN(
                                         walletBalances[coin]?.dataBalanceOf
                                           ?.balance
-                                      ),
+                                      )),
                                       tokenDecimalsMap[coin]
                                     )
                                   : 0
@@ -1172,10 +1168,10 @@ const BorrowModal = ({
                                   ?.balance ? (
                                   numberFormatter(
                                     parseAmount(
-                                      uint256.uint256ToBN(
+                                      String(uint256.uint256ToBN(
                                         walletBalances[coin]?.dataBalanceOf
                                           ?.balance
-                                      ),
+                                      )),
                                       tokenDecimalsMap[coin]
                                     )
                                   )
@@ -2204,7 +2200,7 @@ const BorrowModal = ({
                       />
                     </Box>
                   ) : (
-                    `${borrowAPRs[currentBorrowAPR]}%`
+                    `-${borrowAPRs[currentBorrowAPR]}%`
                   )}
                   {/* 5.56% */}
                 </Text>
@@ -2501,8 +2497,8 @@ const BorrowModal = ({
                   }}
                 >
                   <AnimatedButton
- border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
- background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                     // bgColor="red"
                     // p={0}
                     color="#8B949E"

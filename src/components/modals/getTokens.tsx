@@ -96,11 +96,11 @@ const GetTokensModal = ({
   // useEffect(() => {
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
   // }, [])
-  ////console.log(inputAmount);
+  // console.log(inputAmount);
 
   //This Function handles the modalDropDowns
 
-  ////console.log(activeModal)
+  // console.log(activeModal)
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState<any>("");
@@ -121,14 +121,11 @@ const GetTokensModal = ({
     writeAsyncGetTokens,
     isErrorGetTokens,
     isIdleGetTokens,
-    isLoadingGetTokens,
     isSuccessGetTokens,
     statusGetTokens,
   } = useGetTokens(currentSelectedCoin);
 
-  useEffect(() => {
-    setCurrentSelectedCoin(token);
-  }, [token, currentSelectedCoin]);
+  
   const dispatch = useDispatch();
   const { address } = useAccount();
   const [toastId, setToastId] = useState<any>();
@@ -138,9 +135,14 @@ const GetTokensModal = ({
     persistence: "localStorage",
   });
 
+  useEffect(()=>{
+    if(currentSelectedCoin){
+        handleGetToken(currentSelectedCoin);}
+
+  },[currentSelectedCoin])
+
   const handleGetToken = async (coin: any) => {
     try {
-     //console.log(token);
       const getTokens = await writeAsyncGetTokens();
       mixpanel.track("Get Tokens", {
         "Token Selected": coin,
@@ -181,10 +183,10 @@ const GetTokensModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-     //console.log(getTokens);
+      console.log(getTokens);
       // dispatch(setTransactionStatus("success"));
     } catch (err: any) {
-     //console.log(err);
+      console.log(err);
       // dispatch(setTransactionStatus("failed"));
       mixpanel.track("Get Tokens Status", {
         Status: "Failure",
@@ -270,7 +272,6 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("wBTC");
                     setToken("BTC");
-                    handleGetToken("wBTC");
                   }}
                 >
                   wBTC
@@ -288,7 +289,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("wETH");
                     setToken("ETH");
-                    handleGetToken("wETH");
+                    // handleGetToken("wETH");
                   }}
                 >
                   wETH
@@ -306,7 +307,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("USDT");
                     setToken("USDT");
-                    handleGetToken("USDT");
+                    // handleGetToken("USDT");
                   }}
                 >
                   USDT
@@ -325,7 +326,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("USDC");
                     setToken("USDC");
-                    handleGetToken("USDC");
+                    // handleGetToken("USDC");
                   }}
                 >
                   USDC
@@ -344,7 +345,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("DAI");
                     setToken("DAI");
-                    handleGetToken("DAI");
+                    // handleGetToken("DAI");
                   }}
                 >
                   DAI

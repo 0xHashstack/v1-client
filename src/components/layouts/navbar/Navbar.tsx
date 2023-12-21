@@ -38,8 +38,7 @@ import {
   setLanguage,
 } from "@/store/slices/userAccountSlice";
 import {
-  useAccount,
-  useConnectors,
+  useAccount,useDisconnect,useConnect
 } from "@starknet-react/core";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
@@ -88,7 +87,8 @@ const Navbar = ({ validRTokens }: any) => {
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
   const [stakeHover, setStakeHover] = useState(false);
-  const { available, disconnect, connect, connectors } = useConnectors();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName));
   };
@@ -154,19 +154,27 @@ const Navbar = ({ validRTokens }: any) => {
   const switchWallet = () => {
     // const walletConnected = localStorage.getItem("lastUsedConnector");
     ////console.log(connector);
-    if (connector?.options?.id == "braavos") {
+    if (connectors[0]?.id == "braavos") {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "argentX");
       localStorage.setItem("connected", "argentX");
-      connect(connectors[1]);
+      connectors.map((connector:any)=>{
+        if(connector.id=="argentX"){
+          connect({connector});
+        }
+      })
       router.push("/v1/market");
     } else {
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "braavos");
       localStorage.setItem("connected", "braavos");
-      connect(connectors[0]);
+      connectors.map((connector:any)=>{
+        if(connector.id=="braavos"){
+          connect({connector});
+        }
+      })
       router.push("/v1/market");
     }
   };
@@ -239,7 +247,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
     if ((account && !isCorrectNetwork())) {
         setRender(false);
     } else {
-      if(!userWhitelisted){
+      if(!userWhitelisted && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"){
         setRender(false);
       }else{
         setRender(true);
@@ -248,7 +256,23 @@ const userWhitelisted=useSelector(selectWhiteListed);
   }, [account,whitelisted,userWhitelisted,referralLinked]);
   const [allowedReferral, setAllowedReferral] = useState(false)
   const interactedAddress=useSelector(selectInteractedAddress)
-  
+  // useEffect(()=>{
+  //   const fetchUsers=async()=>{
+  //     if(!address){
+  //       return;
+  //     }else{
+  //       if(interactedAddress==true){
+  //         return;
+  //       }else{
+  //         const res=await axios.get('https://hstk.fi/api/get-interactive-addresses')
+  //         // const fetched=res?.data.includes(number.toHex(number.toBN(number.toFelt(address))).toLowerCase());
+  //         dispatch(setInteractedAddress(fetched))
+  //         setAllowedReferral(fetched)
+  //       }
+  //     }
+  //   }
+  //   fetchUsers();
+  // },[address])
   return (
     <HStack
       zIndex="100"
@@ -436,6 +460,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
       </Box>:<></>
         } */}
 
+
         {     <Box
           padding="16px 12px"
           fontSize="12px"
@@ -492,7 +517,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             validRTokens={validRTokens}
           />
         </Box>}
-        {currentChainId == process.env.NEXT_PUBLIC_MAINNET_CHAINID ?        <Box
+        {process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"  ?        <Box
           padding="16px 12px"
           fontSize="12px"
           borderRadius="5px"
@@ -518,7 +543,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: "pointer",marginBottom:"0.3rem" }}
+                  style={{ cursor: "pointer" }}
                 />
               ) : (
                 <Image
@@ -526,8 +551,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                
-                  style={{ cursor: "pointer",marginBottom:"0.3rem" }}
+                  style={{ cursor: "pointer" }}
                 />
               )}
 
@@ -537,7 +561,6 @@ const userWhitelisted=useSelector(selectWhiteListed);
               >
                 NEW
               </Box>
-
             </Box>
         </Box>:""}
         {/* <Box
@@ -634,8 +657,71 @@ const userWhitelisted=useSelector(selectWhiteListed);
             backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />}
 
-{/* 
-             <Box
+          {/* <Box
+            borderRadius="6px"
+            cursor={Render ? "pointer" :"not-allowed"}
+            margin="0"
+            height="2rem"
+            border="1px solid #676D9A"
+            // border={`0.5px solid ${
+            //   router.pathname != "/waitlist" && transferDepositHover
+            //     ? "#6e6e6e"
+            //     : "#FFF"
+            // }`}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            gap="3"
+            className="button"
+            // color="#6E6E6E"
+            color={
+              router.pathname != "/waitlist" && transferDepositHover
+                ? "#6e6e6e"
+                : "#FFF"
+            }
+            // _hover={{ color: "#010409", bgColor: "#f6f8fa" }}
+            // onMouseEnter={() => setTransferDepositHover(true)}
+            // onMouseLeave={() => setTransferDepositHover(false)}
+          >
+            {/* <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap="8px"
+              margin="6px 12px"
+            >
+              <Image
+                src={"/transferDepositDisabled.svg"}
+                alt="Picture of the author"
+                width="20"
+                height="20"
+                style={{ cursor: Render ? "pointer" : "not-allowed" }}
+
+              />
+              {/* {router.pathname == "/waitlist" || !transferDepositHover ? (
+                <Image
+                  src={"/transferDeposit.svg"}
+                  alt="Picture of the author"
+                  width="20"
+                  height="20"
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <Image
+                  src={"/transferDepositDull.svg"}
+                  alt="Picture of the author"
+                  width="20"
+                  height="20"
+                  style={{ cursor: "pointer" }}
+                />
+              )} */}
+              {/* <Text fontSize="14px" lineHeight="14px" color="#676D9A">
+                {"Transfer Deposit"}
+              </Text>
+            </Box>  */}
+
+             {/* <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -668,7 +754,6 @@ const userWhitelisted=useSelector(selectWhiteListed);
               buttonText="Transfer Deposit"
               />
             </Box>  */}
-
           <Box
             fontSize="12px"
             color="#FFF"
@@ -856,12 +941,20 @@ const userWhitelisted=useSelector(selectWhiteListed);
                       // alert("hey");
                       // const walletConnected =
                       //   localStorage.getItem("lastUsedConnector");
-                      if (connector?.options?.id == "braavos") {
+                      if (connectors[0]?.id == "braavos") {
                         disconnect();
-                        connect(connectors[1]);
+                        connectors.map((connector:any)=>{
+                          if(connector.id=="braavos"){
+                            connect(connector);
+                          }
+                        })
                       } else {
                         disconnect();
-                        connect(connectors[0]);
+                        connectors.map((connector:any)=>{
+                          if(connector.id=="argentX"){
+                            connect({connector});
+                          }
+                        })
                       }
                       ////console.log("navbar", account);
                       // localStorage.setItem("account", JSON.stringify(account));

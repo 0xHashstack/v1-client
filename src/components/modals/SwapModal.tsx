@@ -89,7 +89,6 @@ const SwapModal = ({
     writeJediSwap_swap,
     writeAsyncJediSwap_swap,
     isIdleJediSwap_swap,
-    isLoadingJediSwap_swap,
     statusJediSwap_swap,
 
     datamySwap_swap,
@@ -97,7 +96,6 @@ const SwapModal = ({
     writemySwap_swap,
     writeAsyncmySwap_swap,
     isIdlemySwap_swap,
-    isLoadingmySwap_swap,
     statusmySwap_swap,
   } = useSwap();
 

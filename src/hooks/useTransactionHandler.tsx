@@ -3,19 +3,22 @@ import {
   setActiveTransactions,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
-import { setTransactionRefresh } from "@/store/slices/readDataSlice";
+import {  setTransactionRefresh } from "@/store/slices/readDataSlice";
 import { Text } from "@chakra-ui/react";
-import { UseTransactionResult, useTransactions } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { useWaitForTransaction } from "@starknet-react/core";
+import useTransactions from "./useTransactions";
+import useTransactionStatus from "./useTransactionStatus";
 
 const useTransactionHandler = () => {
   let activeTransactions = useSelector(selectActiveTransactions);
   const [transactions, setTransactions] = useState([]);
   const dispatch = useDispatch();
   const toastHash = [""];
+  // console.log(transactionsData,"redux")
   useEffect(() => {
     ////console.log("trans activeTransactions useEffect called");
     if (activeTransactions) {
@@ -33,8 +36,16 @@ const useTransactionHandler = () => {
   // const { hashes, addTransaction } = useTransactionManager();
   const results = useTransactions({
     hashes: [...transactions],
-    watch: true,
   });
+
+  // useEffect(()=>{
+  //   if(transactions.length>0){
+  //     const data=useTransactionStatus(transactions[0])
+  //     console.log(data,"called data")
+  //   }
+  // },[transactions.length])
+  
+  // const results:any=[]
   // // const data = useTransaction()
   ////console.log("trans toastHash", toastHash);
   ////console.log("transaction results - ", results);
@@ -44,32 +55,31 @@ const useTransactionHandler = () => {
     ////console.log("transaction results ", results);
     let data = localStorage.getItem("transactionCheck");
     data = data ? JSON.parse(data) : [];
-
-    results?.forEach((transaction: UseTransactionResult, idx) => {
-      transaction.refetch();
+    
+    results?.forEach((transaction: any, idx) => {
+      // transaction.refetch();
       const transaction_hash =
         //@ts-ignore
         transaction?.data?.transaction?.transaction_hash;
       //@ts-ignore
-      const transaction_status = transaction?.data?.status;
+      const transaction_status = transaction?.data?.finality_status;
       //@ts-ignore
-      const transaction_error = transaction?.data?.error;
+      const transaction_error = transaction?.error;
       if (transaction_hash == "" || activeTransactions.transaction_hash == "") {
         return false;
       }
-      const transaction_hxh = activeTransactions[idx]?.transaction_hash;
+      const transaction_hxh = activeTransactions[transactions.length-1]?.transaction_hash;
       if (
-       
         transaction_status == "ACCEPTED_ON_L2"
       ) {
         if (!toastHash.includes(transaction_hxh)) {
-          if (data && data.includes(activeTransactions[idx]?.uniqueID)) {
+          if (data && data.includes(activeTransactions[transactions.length-1]?.uniqueID)) {
             dispatch(setTransactionStatus("success"));
-            activeTransactions[idx].setCurrentTransactionStatus("success");
+            activeTransactions[transactions.length-1].setCurrentTransactionStatus("success");
           }
           dispatch(setTransactionRefresh(""));
           toast.success(
-            activeTransactions?.[idx]?.message ||
+            activeTransactions?.[transactions.length-1]?.message ||
               `Your transaction is complete`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
@@ -77,7 +87,7 @@ const useTransactionHandler = () => {
           );
         }
         toastHash.push(transaction_hxh);
-        toastHash.push(activeTransactions[idx]?.transaction_hash);
+        toastHash.push(activeTransactions[transactions.length-1]?.transaction_hash);
         toastHash.push(transaction_hash);
       } else if (transaction_status == "REJECTED") {
        //console.log("treans rejected", transaction_error);
@@ -91,9 +101,9 @@ const useTransactionHandler = () => {
         );
         // setFailureToastDisplayed(true);
         if (!toastHash.includes(transaction_hxh)) {
-          if (data && data.includes(activeTransactions[idx]?.uniqueID)) {
+          if (data && data.includes(activeTransactions[transactions.length-1]?.uniqueID)) {
             dispatch(setTransactionStatus("failed"));
-            activeTransactions[idx].setCurrentTransactionStatus("failed");
+            activeTransactions[transactions.length-1].setCurrentTransactionStatus("failed");
           }
           toast.error(toastContent, {
             position: toast.POSITION.BOTTOM_RIGHT,
@@ -110,18 +120,18 @@ const useTransactionHandler = () => {
         transaction_status == "ACCEPTED_ON_L1" ||
         transaction_status == "REJECTED"
       ) {
-        if (activeTransactions[idx].transaction_hash == "") {
+        if (activeTransactions[transactions.length-1].transaction_hash == "") {
           return false;
         }
         toastHash.push(transaction_hxh);
         toastHash.push(activeTransactions?.transaction_hash);
         toastHash.push(transaction_hash);
         const newData = [...activeTransactions]; // Create a new array with the same values
-        newData[idx] = {
-          ...newData[idx],
+        newData[transactions.length-1] = {
+          ...newData[transactions.length-1],
           transaction_hash: "", // Modify the specific property with the new value
         };
-        toast.dismiss(activeTransactions?.[idx]?.toastId);
+        toast.dismiss(activeTransactions?.[transactions.length-1]?.toastId);
         dispatch(setActiveTransactions(newData));
         return false;
       } else {

@@ -21,7 +21,7 @@ export async function getExistingLoanHealth(loanId: string) {
   const provider = getProvider();
   try {
     const routerContract = new Contract(routerAbi, diamondAddress, provider);
-    const res = await routerContract.call("get_health_factor", [loanId], {
+    const res:any = await routerContract.call("get_health_factor", [loanId], {
       blockIdentifier: "pending",
     });
     ////console.log(

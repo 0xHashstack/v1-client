@@ -1,5 +1,4 @@
 import {
-  AddressFromStarkNameArgs,
   useAccount,
   useContractRead,
   useContractWrite,
@@ -63,7 +62,6 @@ const useLoanRequest = () => {
     writeAsync: writeAsyncLoanRequest,
     isError: isErrorLoanRequest,
     isIdle: isIdleLoanRequest,
-    isLoading: isLoadingLoanRequest,
     isSuccess: isSuccessLoanRequest,
     status: statusLoanRequest,
   } = useContractWrite({
@@ -135,7 +133,6 @@ const useLoanRequest = () => {
     writeAsync: writeAsyncLoanRequestrToken,
     isError: isErrorLoanRequestrToken,
     isIdle: isIdleLoanRequestrToken,
-    isLoading: isLoadingLoanRequestrToken,
     isSuccess: isSuccessLoanRequestrToken,
     status: statusLoanRequestrToken,
   } = useContractWrite({
@@ -206,7 +203,6 @@ const useLoanRequest = () => {
     writeAsyncLoanRequestrToken,
     isErrorLoanRequestrToken,
     isIdleLoanRequestrToken,
-    isLoadingLoanRequestrToken,
     statusLoanRequestrToken,
 
     dataLoanRequest,
@@ -216,7 +212,6 @@ const useLoanRequest = () => {
     writeAsyncLoanRequest,
     isErrorLoanRequest,
     isIdleLoanRequest,
-    isLoadingLoanRequest,
     statusLoanRequest,
   };
 };
