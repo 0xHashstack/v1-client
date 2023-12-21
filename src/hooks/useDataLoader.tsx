@@ -1161,7 +1161,7 @@ const useDataLoader = () => {
     try {
       const fetchProtocolStats = async () => {
         const dataStats = await getProtocolStats();
-       //console.log("protocol stats - transactionRefresh done", dataStats);
+      //  console.log("protocol stats - transactionRefresh done", dataStats);
         if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 5)) {
           return;
         }

@@ -2497,8 +2497,8 @@ const BorrowModal = ({
                   }}
                 >
                   <AnimatedButton
- border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
- background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                     // bgColor="red"
                     // p={0}
                     color="#8B949E"

@@ -38,7 +38,7 @@ import {
   setLanguage,
 } from "@/store/slices/userAccountSlice";
 import {
-  useAccount, useConnect, useDisconnect,
+  useAccount,useDisconnect,useConnect
 } from "@starknet-react/core";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
@@ -159,7 +159,7 @@ const Navbar = ({ validRTokens }: any) => {
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "argentX");
       localStorage.setItem("connected", "argentX");
-      connectors.map((connector)=>{
+      connectors.map((connector:any)=>{
         if(connector.id=="argentX"){
           connect({connector});
         }
@@ -460,6 +460,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
       </Box>:<></>
         } */}
 
+
         {     <Box
           padding="16px 12px"
           fontSize="12px"
@@ -719,7 +720,6 @@ const userWhitelisted=useSelector(selectWhiteListed);
                 {"Transfer Deposit"}
               </Text>
             </Box>  */}
-          {/* </Box>  */}
 
              {/* <Box
               display="flex"
@@ -950,7 +950,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
                         })
                       } else {
                         disconnect();
-                        connectors.map((connector)=>{
+                        connectors.map((connector:any)=>{
                           if(connector.id=="argentX"){
                             connect({connector});
                           }
