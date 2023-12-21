@@ -175,7 +175,6 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <link rel="shortcut icon" href="/favicon-32x32.png" />
       </Head>
-      <UserbackProvider token="41130|83179|yuKUdxxi1Q2T4EFo0Sg7Zbmbz">
         <ChakraProvider theme={theme}>
         <StarknetConfig
       chains={ [mainnet, goerli]}
@@ -189,7 +188,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </Provider>
           </StarknetConfig>
         </ChakraProvider>
-      </UserbackProvider>
+
     </>
   );
 }

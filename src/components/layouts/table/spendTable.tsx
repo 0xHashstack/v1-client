@@ -328,7 +328,7 @@ const SpendTable = () => {
   const tooltips = [
     "A unique ID number assigned to a specific borrow within the protocol.",
     "The token you had borrowed from the protocol.",
-    "Annualized interest rate including fees and charges, reflecting total borrowing cost.",
+    "If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying.",
     "Loan-to-Value ratio is the proportion of loan amount to collateral value in protocol.",
     "Loan risk metric comparing collateral value to borrowed amount to check potential liquidation.",
   ];
