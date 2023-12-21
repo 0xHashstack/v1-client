@@ -312,7 +312,7 @@ export async function getMaximumDynamicLoanAmount(
     const parsedAmount = etherToWeiBN(amount,borrowMarket).toString();
     const result:any = await borrowToken.call(
       "max_loan_limit",
-      [[parsedAmount,0],tokenAddressMap[borrowMarket],tokenAddressMap[collateralMarket]],
+      [uint256.bnToUint256(parsedAmount),tokenAddressMap[borrowMarket],tokenAddressMap[collateralMarket]],
       { blockIdentifier: "pending" }
     );
     const res:any = parseAmount(
