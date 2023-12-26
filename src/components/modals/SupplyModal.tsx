@@ -1348,7 +1348,7 @@ const SupplyModal = ({
                   lineHeight="22px"
                   width="100%"
                 >
-                  I would like to stake the rTokens.
+                  I would like to stake the rTokens. 
                 </Text>
               </Box>
 
@@ -1579,6 +1579,28 @@ const SupplyModal = ({
                             )} */}
                   </Text>
                 </Text>}
+                {ischecked && <Text
+                  display="flex"
+                  justifyContent="space-between"
+                  fontSize="12px"
+                  mt="0.5rem"
+                  // mb="0.4rem"
+                >
+                  <Text display="flex" alignItems="center">
+                    <Text
+                      mr="0.2rem"
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="12px"
+                      lineHeight="16px"
+                      color="#676D9A"
+                    >
+                      Note: Staked assets cannot be used as collateral
+                    </Text>
+                  </Text>
+
+                </Text>}
+                
 
               </Card>
               {depositAmount > 0 && depositAmount <= walletBalance && ((depositAmount > 0 && depositAmount >= minimumDepositAmount) || process.env.NEXT_PUBLIC_NODE_ENV == "testnet") && (process.env.NEXT_PUBLIC_NODE_ENV == "testnet" || depositAmount <= maximumDepositAmount) ? (

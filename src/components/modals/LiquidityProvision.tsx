@@ -93,6 +93,7 @@ import Image from "next/image";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -905,7 +906,7 @@ const LiquidityProvisionModal = ({
                                 mt="6px"
                                 fontWeight="medium"
                               >
-                                Pool apr: {numberFormatter(getAprByPool(poolApr, pool, currentSwap))}%
+                                Pool apr: {numberFormatterPercentage(getAprByPool(poolApr, pool, currentSwap))}%
                               </Box>
                             </Box>
                           </Box>
@@ -1505,7 +1506,7 @@ const LiquidityProvisionModal = ({
                       )?.exchangeRateDTokenToUnderlying) *
                         (-(reduxProtocolStats?.find(
                           (stat: any) =>
-                            stat?.token === currentMarketCoin
+                            stat?.token === borrow?.loanMarket.slice(1)
                         )?.borrowRate)) + getAprByPool(poolApr, currentPool,currentSwap)) +
                         dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                           (val: any) => val?.token == borrow?.collateralMarket.slice(1)
@@ -1519,14 +1520,14 @@ const LiquidityProvisionModal = ({
                       fontWeight="400"
                       fontStyle="normal"
                     >
-                      {
-                    (((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                  {
+                    ((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                       (val: any) => val?.token == borrow?.loanMarket.slice(1)
                     )?.exchangeRateDTokenToUnderlying) *
                       (-(reduxProtocolStats?.find(
                         (stat: any) =>
-                          stat?.token === currentMarketCoin
-                      )?.borrowRate)) + getAprByPool(poolApr, currentPool,currentSwap)) +
+                          stat?.token === borrow?.loanMarket.slice(1)
+                      )?.borrowRate) + getAprByPool(poolApr, currentPool,currentSwap)) +
                       dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                         (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                       )?.exchangeRateRtokenToUnderlying) *
@@ -1535,8 +1536,7 @@ const LiquidityProvisionModal = ({
                           stat?.token === borrow?.collateralMarket.slice(1)
                       )?.supplyRate) /
                       dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)).toFixed(2)
-                  }
-                      %
+                  }%
                     </Text> :
                     <Text
                       color={avgs?.find(
