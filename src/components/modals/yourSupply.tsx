@@ -1516,6 +1516,27 @@ const YourSupplyModal = ({
                             )} */}
                           </Text>
                         </Text>}
+                        {ischecked && <Text
+                  display="flex"
+                  justifyContent="space-between"
+                  fontSize="12px"
+                  mt="0.5rem"
+                  // mb="0.4rem"
+                >
+                  <Text display="flex" alignItems="center">
+                    <Text
+                      mr="0.2rem"
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="12px"
+                      lineHeight="16px"
+                      color="#676D9A"
+                    >
+                      Note: Staked assets cannot be used as collateral
+                    </Text>
+                  </Text>
+
+                </Text>}
                       </Card>
                       {currentActionMarket.slice(1) !==
                         currentSelectedSupplyCoin && (
@@ -1777,7 +1798,7 @@ const YourSupplyModal = ({
                                         mt="6px"
                                         fontWeight="thin"
                                       >
-                                        Wallet Balance:{" "}
+                                        Available:{" "}
                                         {
                                           userDeposit?.find(
                                             (item: any) => item?.rToken == coin
@@ -1931,7 +1952,7 @@ const YourSupplyModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              Wallet Balance:{" "}
+                              Available:{" "}
                               {numberFormatter(withdrawWalletBalance)}
                               <Text color="#676D9A" ml="0.2rem">
                                 {` ${currentSelectedWithdrawlCoin}`}
@@ -1949,7 +1970,7 @@ const YourSupplyModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Wallet Balance:{" "}
+                            Available:{" "}
                             {numberFormatter(withdrawWalletBalance)}
                             <Text color="#676D9A" ml="0.2rem">
                               {` ${currentSelectedWithdrawlCoin}`}

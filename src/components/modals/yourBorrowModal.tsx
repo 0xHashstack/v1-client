@@ -128,6 +128,7 @@ import { getrTokensMinted } from "@/Blockchain/scripts/Rewards";
 import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -4104,10 +4105,7 @@ const YourBorrowModal = ({
                                           mt="6px"
                                           fontWeight="medium"
                                         >
-
-                                          Pool apr: {numberFormatter(getAprByPool(poolAprs, pool,currentDapp))}%
-
-
+                                          Pool apr: {numberFormatterPercentage(getAprByPool(poolAprs, pool,currentDapp))}%
                                         </Box>
                                       </Box>
                                     </Box>
