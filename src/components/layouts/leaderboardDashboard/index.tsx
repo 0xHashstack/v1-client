@@ -411,7 +411,7 @@ const LeaderboardDashboard = ({
                             // maxW="222px"
                             // mt="28px"
                             >
-                            {numberFormatter(member.estimatedHash)}
+                            {numberFormatter(Number(member.estimatedHash)+member.hashAllocated)}
                             </Tooltip>
                           </Text>
                         </Td>
