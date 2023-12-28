@@ -37,12 +37,6 @@ jobs:
           echo 'NEXT_PUBLIC_INFURA_TESTNET=${{secrets.NEXT_PUBLIC_INFURA_TESTNET}}' >> .env
           echo 'NEXT_PUBLIC_FEEDBACK_API=${{secrets.NEXT_PUBLIC_FEEDBACK_API}}' >> .env
 
-      - name: Install dependencies
-        run: yarn
-        
-      - name: Build
-        run: yarn build
-
       - name: Accessing the cer
         run: |
           echo '${{secrets.AWS_ACCESS_KEY_CER}}' >> deployer.cer
@@ -65,7 +59,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i deployer.cer ubuntu@ec2-13-212-154-59.ap-southeast-1.compute.amazonaws.com 'unzip release.zip -d ./release'
           echo "Unzip done ✅"
-          ssh -o StrictHostKeyChecking=no -i deployer.cer ubuntu@ec2-13-212-154-59.ap-southeast-1.compute.amazonaws.com 'cd release && yarn'
+          ssh -o StrictHostKeyChecking=no -i deployer.cer ubuntu@ec2-13-212-154-59.ap-southeast-1.compute.amazonaws.com 'cd release && rm -rf node_modules && yarn && yarn build'
           echo "Dependencies Installed !!! ✅"
 
       - name: Running the service

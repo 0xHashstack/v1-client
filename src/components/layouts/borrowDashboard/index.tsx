@@ -1762,6 +1762,7 @@ const BorrowDashboard = ({
                                 setCurrentBorrowMarketCoin2
                               }
                               currentLoanAmount={currentLoanAmount}
+                              currentLoanAmountParsed={borrow?.currentLoanAmountParsed}
                               setCurrentLoanAmount={setCurrentLoanAmount}
                               currentLoanMarket={currentLoanMarket}
                               setCurrentLoanMarket={setCurrentLoanMarket}
@@ -1770,6 +1771,7 @@ const BorrowDashboard = ({
                               loan={borrow}
                               borrowIds={borrowIds}
                               BorrowBalance={borrowAmount}
+                              allSplit={allSplit}
                               buttonText="Actions"
                               height={"2rem"}
                               fontSize={"12px"}
