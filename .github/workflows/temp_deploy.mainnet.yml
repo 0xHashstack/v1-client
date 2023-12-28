@@ -37,12 +37,6 @@ jobs:
           echo 'NEXT_PUBLIC_INFURA_TESTNET=${{secrets.NEXT_PUBLIC_INFURA_TESTNET}}' >> .env
           echo 'NEXT_PUBLIC_FEEDBACK_API=${{secrets.NEXT_PUBLIC_FEEDBACK_API}}' >> .env
 
-      - name: Install dependencies
-        run: yarn
-
-      - name: Build
-        run: yarn build
-
       - name: Accessing the cer
         run: |
           echo '${{secrets.AWS_ACCESS_KEY_CER}}' >> deployer.cer
