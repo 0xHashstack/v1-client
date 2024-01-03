@@ -461,7 +461,7 @@ const PersonalStatsDashboard = ({
                             // mt="28px"
                             >
                               <Text>
-                                {numberFormatter(member.pts)}
+                                {numberFormatter(member.pts+member.ptsAllocated)}
                               </Text>
                             </Tooltip>
                           </Text>
@@ -514,7 +514,7 @@ const PersonalStatsDashboard = ({
                             // mt="28px"
                             >
                               <Text>
-                            {numberFormatter(member.est)}
+                            {numberFormatter(member.est+member.hashAllocated)}
                               </Text>
                             </Tooltip>
                           </Text>

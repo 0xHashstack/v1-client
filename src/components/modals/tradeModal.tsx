@@ -125,6 +125,7 @@ import axios from "axios";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import RedinfoIcon from "@/assets/icons/redinfoicon";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 const TradeModal = ({
   buttonText,
   coin,
@@ -2815,7 +2816,7 @@ borderWidth:'5px',
                                 mt="6px"
                                 fontWeight="medium"
                                     >
-                                    Pool apr: {numberFormatter(getAprByPool(poolAprs,pool,currentDapp))}%                                               
+                                    Pool apr: {numberFormatterPercentage(getAprByPool(poolAprs,pool,currentDapp))}%                                               
                                       </Box>
                                 </Box>
                               </Box>
@@ -3607,7 +3608,7 @@ borderWidth:'5px',
                       currentTransactionStatus={currentTransactionStatus}
                       setCurrentTransactionStatus={setCurrentTransactionStatus}
                     >
-                      Borrow
+                      Spend
                     </AnimatedButton>
                   </Box>
                 ) : (
@@ -3621,7 +3622,7 @@ borderWidth:'5px',
                     mb="1.5rem"
                     _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                   >
-                    Borrow
+                    Spend
                   </Button>
                 )}
               </Box>

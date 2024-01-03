@@ -22,7 +22,6 @@ const Footer = () => {
   const { data:block, isLoading, isError } = useBlockNumber({
     blockIdentifier: 'latest' as BlockNumber
   })
-  console.log(block,'block')
   // const [walletConnected, setwalletConnected] = useState<any>()
   // useEffect(()=>{
   //   const walletConnected=localStorage.getItem('lastUsedConnector');

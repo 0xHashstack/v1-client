@@ -128,6 +128,7 @@ import { getrTokensMinted } from "@/Blockchain/scripts/Rewards";
 import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -155,6 +156,8 @@ const YourBorrowModal = ({
   borrow,
   spendType,
   setSpendType,
+  allSplit,
+  currentLoanAmountParsed,
   ...restProps
 }: any) => {
   // useEffect(() => {}, []);
@@ -204,6 +207,7 @@ const YourBorrowModal = ({
   const { address } = useAccount();
   const [uniqueID, setUniqueID] = useState(0);
   const getUniqueId = () => uniqueID;
+  let matchedObject = allSplit.find((obj: { loanId: any; }) => obj.loanId === Number(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()));
   // useEffect(() => {
   //   const fetchAprs = async () => {
   //     if (avgs?.length == 0) {
@@ -510,12 +514,12 @@ const YourBorrowModal = ({
     walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
       ?.statusBalanceOf === "success"
       ? parseAmount(
-          String(uint256.uint256ToBN(
-            walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
-              ?.dataBalanceOf?.balance
-          )),
-          tokenDecimalsMap[currentBorrowMarketCoin1.slice(1) as NativeToken]
-        )
+        String(uint256.uint256ToBN(
+          walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
+            ?.dataBalanceOf?.balance
+        )),
+        tokenDecimalsMap[currentBorrowMarketCoin1.slice(1) as NativeToken]
+      )
       : 0
   );
   const minAmounts = useSelector(selectMinimumDepositAmounts);
@@ -548,10 +552,10 @@ const YourBorrowModal = ({
   const [walletBalance2, setwalletBalance2] = useState(
     walletBalances[collateralAsset]?.statusBalanceOf === "success"
       ? parseAmount(
-          String(uint256.uint256ToBN(
-            walletBalances[collateralAsset]?.dataBalanceOf?.balance
-          )),
-          tokenDecimalsMap[collateralAsset]
+        String(uint256.uint256ToBN(
+          walletBalances[collateralAsset]?.dataBalanceOf?.balance
+        )),
+        tokenDecimalsMap[collateralAsset]
       )
       : 0
   );
@@ -797,18 +801,18 @@ const YourBorrowModal = ({
   //   },
   // });
   const poolAprs = useSelector(selectJediswapPoolAprs);
-  const getAprByPool = (dataArray: any[], pool: string,dapp:string) => {
+  const getAprByPool = (dataArray: any[], pool: string, dapp: string) => {
     const matchedObject = dataArray.find(item => {
-      if (item.name === "USDT/USDC" ) {
-        return item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap") && ("USDC/USDT" === pool );
-      }else if(item.name === "ETH/DAI" ) {
-        return item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap") && ("DAI/ETH" === pool );
+      if (item.name === "USDT/USDC") {
+        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("USDC/USDT" === pool);
+      } else if (item.name === "ETH/DAI") {
+        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("DAI/ETH" === pool);
       }
       else {
-        return item.name === pool && item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap");
+        return item.name === pool && item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap");
       }
     });
-  
+
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
   mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
@@ -1521,7 +1525,7 @@ const YourBorrowModal = ({
                     />
                   </Box>
                 ) : (
-                  "-"+getBorrowAPR(currentBorrowMarketCoin1.slice(1)) + "%"
+                  "-" + getBorrowAPR(currentBorrowMarketCoin1.slice(1)) + "%"
                 )}
               </Text>
             </Box>
@@ -1600,34 +1604,34 @@ const YourBorrowModal = ({
               {(radioValue == "1" && currentPool != "Select a pool")
                 ?
                 <Text
-                  color={((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                  color={((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                     (val: any) => val?.token == borrow?.loanMarket.slice(1)
                   )?.exchangeRateDTokenToUnderlying) *
                     (-(reduxProtocolStats?.find(
                       (stat: any) =>
                         stat?.token === currentBorrowMarketCoin1.slice(1)
-                    )?.borrowRate) + getAprByPool(poolAprs, currentPool,currentDapp)) +
-                    dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                    )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)) +
+                    dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                       (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                     )?.exchangeRateRtokenToUnderlying) *
                     reduxProtocolStats?.find(
                       (stat: any) =>
                         stat?.token === borrow?.collateralMarket.slice(1)
                     )?.supplyRate) /
-                    dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices))<0 ?"rgb(255 94 94)" : "#00D395"}
+                    dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)) < 0 ? "rgb(255 94 94)" : "#00D395"}
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
                 >
                   {
-                    ((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                    ((dollarConvertor(borrow?.loanAmountParsed, borrow?.loanMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                       (val: any) => val?.token == borrow?.loanMarket.slice(1)
                     )?.exchangeRateDTokenToUnderlying) *
                       (-(reduxProtocolStats?.find(
                         (stat: any) =>
                           stat?.token === currentBorrowMarketCoin1.slice(1)
-                      )?.borrowRate) + getAprByPool(poolAprs, currentPool,currentDapp)) +
-                      dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
+                      )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)) +
+                      dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                         (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                       )?.exchangeRateRtokenToUnderlying) *
                       reduxProtocolStats?.find(
@@ -1644,7 +1648,7 @@ const YourBorrowModal = ({
                       currentBorrowId1
                         .slice(currentBorrowId1.indexOf("-") + 1)
                         .trim()
-                  )?.avg<0 ?"rgb(255 94 94)" : "#00D395"}
+                  )?.avg < 0 ? "rgb(255 94 94)" : "#00D395"}
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
@@ -1889,6 +1893,58 @@ const YourBorrowModal = ({
                 {fees.repayLoan}%
               </Text>
             </Box>
+            {(spendType=="SWAP" || spendType=="LIQUIDITY")&&            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#676D9A"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  Slippage:{" "}
+                </Text>
+                <Tooltip
+                  color="#F0F0F5"
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="Difference between the expected price of a trade and the price at which the trade is executed."
+                  bg="#02010F"
+                  fontSize={"13px"}
+                  fontWeight={"400"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                  border="1px solid"
+                  borderColor="#23233D"
+                  arrowShadowColor="#2B2F35"
+                  maxW="222px"
+                >
+                  <Box ml="0.1rem" mt="0.2rem">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              {spendType=="LIQUIDITY" ?              <Text
+                color="#676D9A"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                {numberFormatterPercentage((1 - ((dollarConvertor(matchedObject?.amountA, matchedObject?.tokenA, oraclePrices) + dollarConvertor(matchedObject?.amountB, matchedObject?.tokenB, oraclePrices)) / (dollarConvertor(borrowAmount,currentBorrowMarketCoin1.slice(1),oraclePrices) * reduxProtocolStats?.find(
+                  (val: any) => val?.token == currentBorrowMarketCoin1.slice(1)
+                )?.exchangeRateDTokenToUnderlying))) * 100)}%
+              </Text>:              <Text
+                color="#676D9A"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+               {numberFormatterPercentage((1-(dollarConvertor(currentLoanAmountParsed,currentLoanMarket,oraclePrices)/(dollarConvertor(borrowAmount,currentBorrowMarketCoin1.slice(1),oraclePrices) * reduxProtocolStats?.find(
+                  (val: any) => val?.token == currentBorrowMarketCoin1.slice(1)
+                )?.exchangeRateDTokenToUnderlying)))*100)}%
+              </Text>}
+
+            </Box>}
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
@@ -2090,6 +2146,57 @@ const YourBorrowModal = ({
                 {fees.repayLoan}%
               </Text>
             </Box>
+            {(spendType=="SWAP" || spendType=="LIQUIDITY")&&            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#676D9A"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  Slippage:{" "}
+                </Text>
+                <Tooltip
+                  color="#F0F0F5"
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="Difference between the expected price of a trade and the price at which the trade is executed."
+                  bg="#02010F"
+                  fontSize={"13px"}
+                  fontWeight={"400"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                  border="1px solid"
+                  borderColor="#23233D"
+                  arrowShadowColor="#2B2F35"
+                  maxW="222px"
+                >
+                  <Box ml="0.1rem" mt="0.2rem">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              {spendType=="LIQUIDITY" ? <Text
+                color="#676D9A"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                {numberFormatterPercentage((1 - ((dollarConvertor(matchedObject?.amountA, matchedObject?.tokenA, oraclePrices) + dollarConvertor(matchedObject?.amountB, matchedObject?.tokenB, oraclePrices)) / (dollarConvertor(borrowAmount,currentBorrowMarketCoin1.slice(1),oraclePrices) * reduxProtocolStats?.find(
+                  (val: any) => val?.token == currentBorrowMarketCoin1.slice(1)
+                )?.exchangeRateDTokenToUnderlying))) * 100)}%
+              </Text>:              <Text
+                color="#676D9A"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+               {numberFormatterPercentage((1-(dollarConvertor(currentLoanAmountParsed,currentLoanMarket,oraclePrices)/(dollarConvertor(borrowAmount,currentBorrowMarketCoin1.slice(1),oraclePrices) * reduxProtocolStats?.find(
+                  (val: any) => val?.token == currentBorrowMarketCoin1.slice(1)
+                )?.exchangeRateDTokenToUnderlying)))*100)}%
+              </Text>}
+            </Box>}
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#676D9A" fontSize="xs">
@@ -2210,7 +2317,7 @@ const YourBorrowModal = ({
                   arrowShadowColor="#2B2F35"
                   maxW="222px"
                 >
-                  <Box ml="0.1rem" mt="0.1rem">
+                  <Box ml="0.1rem" mt="0.2rem">
                     <InfoIcon />
                   </Box>
                 </Tooltip>
@@ -2224,6 +2331,57 @@ const YourBorrowModal = ({
                 {fees.l3interaction}%
               </Text>
             </Box>
+            {(spendType=="SWAP" || spendType=="LIQUIDITY")&&            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#676D9A"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  Slippage:{" "}
+                </Text>
+                <Tooltip
+                  color="#F0F0F5"
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="Difference between the expected price of a trade and the price at which the trade is executed."
+                  bg="#02010F"
+                  fontSize={"13px"}
+                  fontWeight={"400"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                  border="1px solid"
+                  borderColor="#23233D"
+                  arrowShadowColor="#2B2F35"
+                  maxW="222px"
+                >
+                  <Box ml="0.1rem" mt="0.2rem">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              {spendType=="LIQUIDITY" ?              <Text
+                color="#676D9A"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                {numberFormatterPercentage((1 - ((dollarConvertor(matchedObject?.amountA, matchedObject?.tokenA, oraclePrices) + dollarConvertor(matchedObject?.amountB, matchedObject?.tokenB, oraclePrices)) / (dollarConvertor(borrowAmount,currentBorrowMarketCoin1.slice(1),oraclePrices) * reduxProtocolStats?.find(
+                  (val: any) => val?.token == currentBorrowMarketCoin1.slice(1)
+                )?.exchangeRateDTokenToUnderlying))) * 100)}%
+              </Text>:              <Text
+                color="#676D9A"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+               {numberFormatterPercentage((1-(dollarConvertor(currentLoanAmountParsed,currentLoanMarket,oraclePrices)/(dollarConvertor(borrowAmount,currentBorrowMarketCoin1.slice(1),oraclePrices) * reduxProtocolStats?.find(
+                  (val: any) => val?.token == currentBorrowMarketCoin1.slice(1)
+                )?.exchangeRateDTokenToUnderlying)))*100)}%
+              </Text>}
+            </Box>}
             {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -4104,10 +4262,7 @@ const YourBorrowModal = ({
                                           mt="6px"
                                           fontWeight="medium"
                                         >
-
-                                          Pool apr: {numberFormatter(getAprByPool(poolAprs, pool,currentDapp))}%
-
-
+                                          Pool apr: {numberFormatterPercentage(getAprByPool(poolAprs, pool, currentDapp))}%
                                         </Box>
                                       </Box>
                                     </Box>
@@ -5703,7 +5858,7 @@ const YourBorrowModal = ({
                               />
                             </Box>
                           ) : (
-                            "-"+getBorrowAPR(currentBorrowMarketCoin2.slice(1)) +
+                            "-" + getBorrowAPR(currentBorrowMarketCoin2.slice(1)) +
                             "%"
                           )}
                         </Text>
