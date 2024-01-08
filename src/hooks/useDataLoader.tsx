@@ -1239,7 +1239,7 @@ const useDataLoader = () => {
           dispatch(setJediSwapPoolsSupportedCount(count));
         })
         try{
-          const res=await axios.get(`${process.env.NEXT_PUBLIC_METRICS_API}/api/amm-aprs`);
+          const res=await axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`);
           if(res?.data){
             dispatch(setJediSwapPoolAprs(res?.data));
           }
