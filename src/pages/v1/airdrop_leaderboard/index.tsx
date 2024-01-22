@@ -644,7 +644,7 @@ useEffect(()=>{
                   Airdrop campaign -
                 </Text>
                 <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                  &nbsp;{daysLeft} days left
+                  &nbsp;{daysLeft>0 ? daysLeft:0} days left
                 </Text>
               </Box>
               <Box display="flex">
