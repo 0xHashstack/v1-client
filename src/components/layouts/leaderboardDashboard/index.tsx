@@ -53,7 +53,7 @@ const LeaderboardDashboard = ({
     "",
     "Liquidity (Supply/Borrow,Referrals)",
     "Points earned for rewards",
-    "Estimated $HASH",
+    "Allocated $HASH",
 
   ];
   const activeModal = Object.keys(modalDropdowns).find(
