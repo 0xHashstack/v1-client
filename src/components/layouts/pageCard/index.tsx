@@ -254,37 +254,41 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         if (!address) {
           return;
         }
-        const url = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/is-whitelisted/${address}`:`https://hstk.fi/is-whitelisted/${address}`;
-        const response = await axios.get(url);
-        if (response.data) {
-          setWhitelisted(response.data?.isWhitelisted);
-          dispatch(setUserWhiteListed(response.data?.isWhitelisted))
-          if(response.data?.isWhitelisted==false){
-            await axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/add-address':'https://hstk.fi/add-address'), { address: address })
-            .then((response) => {
-             //console.log(response, "added to db");
-              // Log the response from the backend.
-            })
-            .catch((error) => {
-              console.error('Error in adding address:', error);
-            });
-          }
-          if (userType == "U1") {
-            await axios.post((process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/nft-sign':'https://hstk.fi/nft-sign'), { address: address })
+        if(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"){
+          setLoading(false)
+        }else{
+          const url = `https://hstk.fi/is-whitelisted/${address}`;
+          const response = await axios.get(url);
+          if (response.data) {
+            setWhitelisted(response.data?.isWhitelisted);
+            dispatch(setUserWhiteListed(response.data?.isWhitelisted))
+            if(response.data?.isWhitelisted==false){
+              await axios.post('https://hstk.fi/add-address', { address: address })
               .then((response) => {
-               //console.log(response, "hash");
-                if (response) {
-                  dispatch(setMessageHash(response?.data?.msg_hash))
-                  dispatch(setSignature(response?.data?.signature))
-                }
+               //console.log(response, "added to db");
                 // Log the response from the backend.
               })
               .catch((error) => {
-                console.error('Error:', error);
+                console.error('Error in adding address:', error);
               });
+            }
+            if (userType == "U1") {
+              await axios.post('https://hstk.fi/nft-sign', { address: address })
+                .then((response) => {
+                 //console.log(response, "hash");
+                  if (response) {
+                    dispatch(setMessageHash(response?.data?.msg_hash))
+                    dispatch(setSignature(response?.data?.signature))
+                  }
+                  // Log the response from the backend.
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+            }
           }
+          setLoading(false)
         }
-        setLoading(false)
       } catch (err) {
        //console.log(err, "err in whitelist")
       }
@@ -293,27 +297,32 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
 
     const referal = async () => {
       try {
-        if (ref) {
-          const response = await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/get_token/${ref}`:`https://hstk.fi/get_token/${ref}`);
-         //console.log(response?.data, "refer")
-          if (response) {
-            axios.post(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?'https://testnet.hstk.fi/link-referral':'https://hstk.fi/link-referral', { address: address }, {
-              headers: {
-                "reftoken": response.data
-              }
-            })
-              .then((response) => {
-                setRefferalLinked(response?.data?.success)
-               //console.log(response, "linked"); // Log the response from the backend.
-                isWhiteListed();
+        if(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"){
+          
+        }else{
+          if (ref) {
+            const response = await axios.get(`https://hstk.fi/get_token/${ref}`);
+           //console.log(response?.data, "refer")
+            if (response) {
+              axios.post('https://hstk.fi/link-referral', { address: address }, {
+                headers: {
+                  "reftoken": response.data
+                }
               })
-              .catch((error) => {
-                console.error('Error:', error);
-              });
+                .then((response) => {
+                  setRefferalLinked(response?.data?.success)
+                 //console.log(response, "linked"); // Log the response from the backend.
+                  isWhiteListed();
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+            }
+           //console.log("hi")
+           //console.log(response.data, "token")
+            setUniqueToken(response.data);
           }
-         //console.log("hi")
-         //console.log(response.data, "token")
-          setUniqueToken(response.data);
+
         }
       } catch (err) {
        //console.log(err, "err in token")
