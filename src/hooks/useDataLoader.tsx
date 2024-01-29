@@ -1141,13 +1141,15 @@ const useDataLoader = () => {
           const count = getTransactionCount();
           dispatch(setFeesCount(count));
         })
-        const dataUserType=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/get-user-type/${address}`:`https://hstk.fi/get-user-type/${address}`);
-        const dataExisitingLink=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/get-ref-link/${address}`:`https://hstk.fi/get-ref-link/${address}`)
-        if(dataUserType){
-          dispatch(setUserType(dataUserType?.data?.user_type))
-        }
-        if(dataExisitingLink){
-          dispatch(setExisitingLink(dataExisitingLink?.data?.ref))
+        if(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"){
+          const dataUserType=await axios.get(`https://hstk.fi/get-user-type/${address}`);
+          const dataExisitingLink=await axios.get(`https://hstk.fi/get-ref-link/${address}`)
+          if(dataUserType){
+            dispatch(setUserType(dataUserType?.data?.user_type))
+          }
+          if(dataExisitingLink){
+            dispatch(setExisitingLink(dataExisitingLink?.data?.ref))
+          }
         }
       }
       if (feesCount < transactionRefresh) {
@@ -1239,7 +1241,7 @@ const useDataLoader = () => {
           dispatch(setJediSwapPoolsSupportedCount(count));
         })
         try{
-          const res=await axios.get('https://b1ibz9x1s9.execute-api.ap-southeast-1.amazonaws.com/api/amm-aprs');
+          const res=await axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`);
           if(res?.data){
             dispatch(setJediSwapPoolAprs(res?.data));
           }

@@ -65,6 +65,7 @@ import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import CopyIcon from "@/assets/icons/copyIcon";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
+import Link from "next/link";
 const Campaign = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItemsLeaderBoard = [
@@ -79,19 +80,19 @@ const Campaign = () => {
     "Account",
     "Liquidity generated in ($)",
     "Points",
-    "HASH (est)"
+    "HASH  "
   ];
   const columnItemsPersonalStats = [
     "Liquidity Provided",
     "Liquidity generated in ($)",
     "Points",
-    "HASH (est)"
+    "HASH  "
   ];
   const columnItemsPersonalStatsReferalCampaign = [
     "Traders Referred",
     "Liquidity generated in ($)",
     "Points",
-    "HASH (est)"
+    "HASH  "
   ];
   const sampleDate: any = [{
     id: 0, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
@@ -317,6 +318,21 @@ useEffect(()=>{
   return (
     <PageCard pt="6.5rem">
       {/* <StatsBoard /> */}
+      <Box width="100%" bg="#FF8F8C" position="fixed" height="32px" alignItems="center" justifyContent="center" display="flex" top="3.8125rem">
+        <Text color="#030210" fontSize="14px" fontWeight="700" lineHeight="18px" letterSpacing="-0.15px">
+          Thank you for making Airdrop campaign 01 successful.
+        </Text>
+        <Text color="#030210" fontSize="14px" fontWeight="400" lineHeight="18px" letterSpacing="-0.15px" ml="0.2rem">
+           HASH token will be available for claim post its public release.
+        </Text>
+        <Link href={"https://hashstack.medium.com/launched-airdrop-for-hashstack-v1-d592ee7ff24e"} target="_blank">
+          <Text color="#030210" fontSize="14px" fontWeight="400" lineHeight="18px" letterSpacing="-0.15px" ml="0.2rem" textDecoration="underline" cursor="pointer">
+            Please check the announcement article for more details.
+          </Text>
+        
+        </Link>
+        
+      </Box>
       <HStack
         display="flex"
         justifyContent="space-between"
@@ -644,7 +660,7 @@ useEffect(()=>{
                   Airdrop campaign -
                 </Text>
                 <Text color="#00D395" fontSize="16px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                  &nbsp;{daysLeft} days left
+                  &nbsp;{daysLeft>0 ? daysLeft:0} days left
                 </Text>
               </Box>
               <Box display="flex">

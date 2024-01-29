@@ -19,6 +19,7 @@ import StarknetLogo from "@/assets/icons/coins/starknet";
 import BrowserWalletIcon from "@/assets/icons/wallets/browserwallet";
 import EthWalletLogo from "@/assets/icons/coins/ethwallet";
 import {
+  Connector,
   argent,
   braavos,
   useAccount,
@@ -217,6 +218,18 @@ export default function Home() {
     }
     ////console.log("account home", address, status);
   }, [status, isConnected]);
+  const [bravoosAvailable, setbravoosAvailable] = useState(true);
+  const [argentAvailable, setargentAvailable] = useState(true)
+  useEffect(()=>{
+    (connectors.map((connector)=>{
+      if(connector.id=="braavos"){
+         setbravoosAvailable(connector.available());
+      }else if(connector.id=="argentX"){
+        setargentAvailable(connector.available());
+      }
+      return true;
+    }))
+  },[])
   return (
     <Box
       display="flex"
@@ -252,8 +265,8 @@ export default function Home() {
           width="400px"
           mt="8px"
         >
-          {connectors[0]?.id == "braavos" ||
-          connectors[1]?.id == "braavos" ? (
+          { (connectors[0]?.id == "braavos" ||
+          connectors[1]?.id == "braavos") && bravoosAvailable ? (
             <Box
               w="full"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
@@ -285,8 +298,8 @@ export default function Home() {
                     endColor="#2B2F35"
                     borderRadius="6px"
                   />
-                ) : connectors[0]?.id == "braavos" ||
-                  connectors[1]?.id == "braavos" ? (
+                ) : (connectors[0]?.id == "braavos" ||
+                  connectors[1]?.id == "braavos") && bravoosAvailable  ? (
                   // || availableDataLoading
                   "Braavos Wallet"
                 ) : (
@@ -322,8 +335,8 @@ export default function Home() {
                       endColor="#2B2F35"
                       borderRadius="6px"
                     />
-                  ) : connectors[0]?.id == "braavos" ||
-                  connectors[1]?.id == "braavos" ? (
+                  ) : (connectors[0]?.id == "braavos" ||
+                  connectors[1]?.id == "braavos") &&bravoosAvailable ? (
                     // || availableDataLoading
                     "Braavos Wallet"
                   ) : (
@@ -337,8 +350,8 @@ export default function Home() {
             </Link>
           )}
 
-          {connectors[1]?.id == "argentX" ||
-          connectors[0]?.id == "argentX" ? (
+          {(connectors[1]?.id == "argentX" ||
+          connectors[0]?.id == "argentX") && argentAvailable ? (
             <Box
               w="full"
               py="2"
@@ -370,8 +383,8 @@ export default function Home() {
                     endColor="#2B2F35"
                     borderRadius="6px"
                   />
-                ) : connectors[0]?.id == "argentX" ||
-                connectors[1]?.id == "argentX" ? (
+                ) : (connectors[0]?.id == "argentX" ||
+                connectors[1]?.id == "argentX" && argentAvailable) ? (
                   // || availableDataLoading
                   "Argent X Wallet"
                 ) : (
@@ -411,8 +424,8 @@ export default function Home() {
                       endColor="#2B2F35"
                       borderRadius="6px"
                     />
-                  ) : connectors[1]?.id == "argentX" ||
-                  connectors[0]?.id == "argentX" ? (
+                  ) : (connectors[1]?.id == "argentX" ||
+                  connectors[0]?.id == "argentX")&& argentAvailable ? (
                     // || availableDataLoading
                     "Argent X Wallet"
                   ) : (
