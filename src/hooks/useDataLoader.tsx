@@ -1141,13 +1141,15 @@ const useDataLoader = () => {
           const count = getTransactionCount();
           dispatch(setFeesCount(count));
         })
-        const dataUserType=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/get-user-type/${address}`:`https://hstk.fi/get-user-type/${address}`);
-        const dataExisitingLink=await axios.get(process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?`https://testnet.hstk.fi/get-ref-link/${address}`:`https://hstk.fi/get-ref-link/${address}`)
-        if(dataUserType){
-          dispatch(setUserType(dataUserType?.data?.user_type))
-        }
-        if(dataExisitingLink){
-          dispatch(setExisitingLink(dataExisitingLink?.data?.ref))
+        if(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"){
+          const dataUserType=await axios.get(`https://hstk.fi/get-user-type/${address}`);
+          const dataExisitingLink=await axios.get(`https://hstk.fi/get-ref-link/${address}`)
+          if(dataUserType){
+            dispatch(setUserType(dataUserType?.data?.user_type))
+          }
+          if(dataExisitingLink){
+            dispatch(setExisitingLink(dataExisitingLink?.data?.ref))
+          }
         }
       }
       if (feesCount < transactionRefresh) {
