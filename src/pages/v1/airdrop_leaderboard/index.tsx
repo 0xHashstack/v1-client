@@ -318,14 +318,14 @@ useEffect(()=>{
   return (
     <PageCard pt="6.5rem">
       {/* <StatsBoard /> */}
-      <Box width="100%" bg="#FF8F8C" position="fixed" height="32px" alignItems="center" justifyContent="center" display="flex" top="3.8125rem">
+      <Box zIndex="100" width="100%" bg="#FF8F8C" position="fixed" height="32px" alignItems="center" justifyContent="center" display="flex" top="3.8125rem">
         <Text color="#030210" fontSize="14px" fontWeight="700" lineHeight="18px" letterSpacing="-0.15px">
           Thank you for making Airdrop campaign 01 successful.
         </Text>
         <Text color="#030210" fontSize="14px" fontWeight="400" lineHeight="18px" letterSpacing="-0.15px" ml="0.2rem">
            HASH token will be available for claim post its public release.
         </Text>
-        <Link href={"https://hashstack.medium.com/launched-airdrop-for-hashstack-v1-d592ee7ff24e"} target="_blank">
+        <Link href={"https://hashstack.medium.com/completed-airdrop-phase-1-c57ae0ff0251"} target="_blank">
           <Text color="#030210" fontSize="14px" fontWeight="400" lineHeight="18px" letterSpacing="-0.15px" ml="0.2rem" textDecoration="underline" cursor="pointer">
             Please check the announcement article for more details.
           </Text>

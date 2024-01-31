@@ -247,11 +247,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
     if ((account && !isCorrectNetwork())) {
         setRender(false);
     } else {
-      if(!userWhitelisted && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"){
-        setRender(false);
-      }else{
         setRender(true);
-      }
     }
   }, [account,whitelisted,userWhitelisted,referralLinked]);
   const [allowedReferral, setAllowedReferral] = useState(false)
@@ -317,52 +313,6 @@ const userWhitelisted=useSelector(selectWhiteListed);
           </Box>
         </Link>
 
-        <Box
-          padding="16px 12px"
-          fontSize="14px"
-          borderRadius="5px"
-          cursor="pointer"
-          marginBottom="0px"
-          className="button"
-          color={pathname !== "/v1/airdrop_leaderboard" && pathname !== "/v1/referral" ? "#00D395" : "#676D9A"}
-          // _hover={{
-          //   color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
-          // }}
-          onClick={() => {
-            if (router.pathname != "/waitlist") {
-              router.push("/v1/market");
-            }
-          }}
-          onMouseEnter={() => setDashboardHover(true)}
-          onMouseLeave={() => setDashboardHover(false)}
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            gap={"8px"}
-          >
-            {router.pathname == "/v1/airdrop_leaderboard" || router.pathname=="/v1/referral" ? (
-                <Image
-                  src={hoverDashboardIcon}
-                  alt="Picture of the author"
-                  width="16"
-                  height="16"
-                  style={{ cursor: "pointer" }}
-                />
-            ) : (
-              <Image
-              src={"/dashboardIcon.svg"}
-              alt="Picture of the author"
-              width="16"
-              height="16"
-              style={{ cursor: "pointer" }}
-            />
-            )}
-
-            <Text fontSize="14px">Dashboard</Text>
-          </Box>
-        </Box>
         {/* {userType=="U1" ?
        <Box
           padding="16px 12px"
@@ -459,7 +409,52 @@ const userWhitelisted=useSelector(selectWhiteListed);
           </Box>
       </Box>:<></>
         } */}
+        <Box
+          padding="16px 12px"
+          fontSize="14px"
+          borderRadius="5px"
+          cursor="pointer"
+          marginBottom="0px"
+          className="button"
+          color={pathname !== "/v1/airdrop_leaderboard" && pathname !== "/v1/referral" ? "#00D395" : "#676D9A"}
+          // _hover={{
+          //   color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
+          // }}
+          onClick={() => {
+            if (router.pathname != "/waitlist") {
+              router.push("/v1/market");
+            }
+          }}
+          onMouseEnter={() => setDashboardHover(true)}
+          onMouseLeave={() => setDashboardHover(false)}
+        >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            gap={"8px"}
+          >
+            {router.pathname == "/v1/airdrop_leaderboard" || router.pathname=="/v1/referral" ? (
+                <Image
+                  src={hoverDashboardIcon}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+            ) : (
+              <Image
+              src={"/dashboardIcon.svg"}
+              alt="Picture of the author"
+              width="16"
+              height="16"
+              style={{ cursor: "pointer" }}
+            />
+            )}
 
+            <Text fontSize="14px">Dashboard</Text>
+          </Box>
+        </Box>
 
         {     <Box
           padding="16px 12px"
@@ -517,6 +512,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
             validRTokens={validRTokens}
           />
         </Box>}
+
         {process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"  ?        <Box
           padding="16px 12px"
           fontSize="12px"
