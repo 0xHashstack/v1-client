@@ -126,6 +126,7 @@ import dollarConvertor from "@/utils/functions/dollarConvertor";
 import RedinfoIcon from "@/assets/icons/redinfoicon";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import posthog from "posthog-js";
 const TradeModal = ({
   buttonText,
   coin,
@@ -755,7 +756,7 @@ const TradeModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Trade Modal Market Status", {
+          posthog.capture("Trade Modal Market Status", {
             Status: "Failure",
             BorrowToken: currentBorrowCoin,
             BorrowAmount: inputBorrowAmount,
@@ -806,7 +807,7 @@ const TradeModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Trade Modal Market Status", {
+          posthog.capture("Trade Modal Market Status", {
             Status: "Failure",
             BorrowToken: currentBorrowCoin,
             BorrowAmount: inputBorrowAmount,
@@ -842,7 +843,7 @@ const TradeModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track("Trade Modal Market Status", {
+      posthog.capture("Trade Modal Market Status", {
         Status: "Failure",
       });
       toast.error(toastContent, {
@@ -3565,7 +3566,7 @@ borderWidth:'5px',
                       // );
 
                       if (transactionStarted == false) {
-                        mixpanel.track("Trade Button Clicked Market page", {
+                        posthog.capture("Trade Button Clicked Market page", {
                           Clicked: true,
                         });
                         dispatch(setTransactionStartedAndModalClosed(false));

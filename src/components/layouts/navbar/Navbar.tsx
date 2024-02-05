@@ -61,6 +61,7 @@ import {
 } from "@/store/slices/readDataSlice";
 import { AccountInterface, ProviderInterface, number } from "starknet";
 import TransferDepositModal from "@/components/modals/TransferDepositModal";
+import posthog from "posthog-js";
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string;
@@ -468,8 +469,8 @@ const userWhitelisted=useSelector(selectWhiteListed);
           }}
           onMouseEnter={() => setStakeHover(true)}
           onMouseLeave={() => setStakeHover(false)}
-          onClick={() => {
-            mixpanel.track("Stake Button Clicked Navbar", {
+          onClick={() => {      
+            posthog.capture("Stake Button Clicked Navbar", {
               Clicked: true,
             });
           }}

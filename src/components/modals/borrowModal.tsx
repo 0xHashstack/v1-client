@@ -94,6 +94,7 @@ import { getMaximumLoanAmount, getMinimumLoanAmount } from "@/Blockchain/scripts
 import BugIcon from "@/assets/icons/bugIcon";
 import RedinfoIcon from "@/assets/icons/redinfoicon";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
+import posthog from "posthog-js";
 const BorrowModal = ({
   buttonText,
   coin,
@@ -534,7 +535,7 @@ const BorrowModal = ({
             setCurrentTransactionStatus: setCurrentTransactionStatus,
             uniqueID: uqID,
           };
-          mixpanel.track("Borrow Market Status", {
+          posthog.capture("Borrow Market Status", {
             Status: "Success",
             "Borrow Amount": inputBorrowAmount,
             "Borrow Token": currentBorrowCoin,
@@ -590,7 +591,7 @@ const BorrowModal = ({
             dispatch(setActiveTransactions(activeTransactions));
           }
         }
-        mixpanel.track("Borrow Market Status", {
+        posthog.capture("Borrow Market Status", {
           Status: "Success",
           "Collateral Amount": inputCollateralAmount,
           "Collateral Market": currentCollateralCoin,
@@ -615,7 +616,7 @@ const BorrowModal = ({
         setTransactionStarted(false);
       }
      //console.log("handle borrow", err);
-      mixpanel.track("Borrow Market Status", {
+      posthog.capture("Borrow Market Status", {
         Status: "Failure",
       });
       const toastContent = (
@@ -2489,7 +2490,7 @@ const BorrowModal = ({
                     setTransactionStarted(true);
                     if (transactionStarted == false) {
                       dispatch(setTransactionStartedAndModalClosed(false));
-                      mixpanel.track("Borrow Market Button Clicked", {
+                      posthog.capture("Borrow Market Button Clicked", {
                         "Borrow Clicked": true,
                       });
                       handleBorrow();

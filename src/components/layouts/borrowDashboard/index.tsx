@@ -60,6 +60,7 @@ import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import DollarActiveRadioButton from "@/assets/icons/dollarActiveRadioButton";
 import DollarNonActiveRadioButton from "@/assets/icons/dollarNonActiveRadioButton";
+import posthog from "posthog-js";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -1736,6 +1737,12 @@ const BorrowDashboard = ({
                               borrow.collateralAmountParsed +
                               " " +
                               borrow.collateralMarket
+                            );
+                            posthog.capture(
+                              "Your Borrow Actions Clicked",
+                              {
+                                Clicked: true,
+                              }
                             );
                             setCurrentSpendStatus(borrow.spendType);
                             setCurrentLoanAmount(borrow?.currentLoanAmount);

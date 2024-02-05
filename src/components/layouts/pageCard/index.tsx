@@ -37,6 +37,7 @@ import FeedbackModal from "@/components/modals/feedbackModal";
 import InfoIcon from "@/assets/icons/infoIcon";
 import axios from "axios";
 import Link from "next/link";
+import posthog from "posthog-js";
 interface Props extends StackProps {
   children: ReactNode;
 }

@@ -32,6 +32,7 @@ import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
 
 import TableInfoIcon from "../table/tableIcons/infoIcon";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import posthog from "posthog-js";
 
 export interface ICoin {
   name: string;
@@ -842,6 +843,12 @@ const SupplyDashboard = ({
                           setCurrentSelectedSupplyCoin(supply?.token);
                           setcurrentSelectedWithdrawlCoin(supply?.rToken);
                           setCurrentActionMarket(supply?.rToken);
+                          posthog.capture(
+                            "Your Supply Actions Clicked",
+                            {
+                              Clicked: true,
+                            }
+                          );
                         }}
                       >
                         <YourSupplyModal

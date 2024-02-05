@@ -19,6 +19,7 @@ const useTransactionHandler = () => {
   const dispatch = useDispatch();
   const toastHash = [""];
   // console.log(transactionsData,"redux")
+  console.log(activeTransactions,"active")
   useEffect(() => {
     ////console.log("trans activeTransactions useEffect called");
     if (activeTransactions) {
@@ -115,7 +116,6 @@ const useTransactionHandler = () => {
         toastHash.push(transaction_hash);
       }
       if (
- 
         transaction_status == "ACCEPTED_ON_L2" ||
         transaction_status == "ACCEPTED_ON_L1" ||
         transaction_status == "REJECTED"
