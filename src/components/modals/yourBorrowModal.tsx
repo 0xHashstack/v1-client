@@ -129,6 +129,7 @@ import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import posthog from "posthog-js";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -381,9 +382,11 @@ const YourBorrowModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track("Zero Repay Status", {
+        posthog.capture("Repay Borrow Status", {
           Status: "Success",
           "Loan ID": loan?.loanId,
+          "Borrow Market": currentBorrowMarketCoin1,
+          "Collateral Token":collateralBalance.substring(spaceIndex + 1),
         });
 
         dispatch(setActiveTransactions(activeTransactions));
@@ -414,7 +417,7 @@ const YourBorrowModal = ({
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
       });
-      mixpanel.track("Repay Borrow Status", {
+      posthog.capture("Repay Borrow Status", {
         Status: "Failure",
       });
       // const toastParamValue = {
@@ -459,10 +462,11 @@ const YourBorrowModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track("Convert to Borrow Market Status", {
+        posthog.capture("Convert to Borrow Market Status", {
           Status: "Success",
           "Loan ID": revertLoanId,
           "Borrow Market": currentBorrowMarketCoin1,
+          "Collateral Token":collateralBalance.substring(spaceIndex + 1),
         });
 
         dispatch(setActiveTransactions(activeTransactions));
@@ -483,7 +487,7 @@ const YourBorrowModal = ({
         // dispatch(setTransactionStatus("failed"));
         setTransactionStarted(false);
       }
-      mixpanel.track("Convert to Borrow Market Status", {
+      posthog.capture("Convert to Borrow Market Status", {
         Status: "Failure",
       });
     }
@@ -852,10 +856,11 @@ const YourBorrowModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track("Zero Repay Status", {
+        posthog.capture("Zero Repay Status", {
           Status: "Success",
           "Loan ID": loan?.loanId,
           "Borrow Market": currentBorrowMarketCoin1,
+          "Collateral Token":collateralBalance.substring(spaceIndex + 1),
         });
 
         dispatch(setActiveTransactions(activeTransactions));
@@ -876,7 +881,7 @@ const YourBorrowModal = ({
         // dispatch(setTransactionStatus("failed"));
         setTransactionStarted(false);
       }
-      mixpanel.track("Zero Repay Status", {
+      posthog.capture("Zero Repay Status", {
         Status: "Failure",
       });
       const toastContent = (
@@ -925,13 +930,14 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Spend Borrow Status Your Borrow", {
+          posthog.capture("Spend Borrow Status Your Borrow", {
             Status: "Success",
             Action: "Trade",
             "Loan Id": swapLoanId,
             "Pool Selected": currentPool,
             "Dapp Selected": currentDapp,
             "Borrow Market": currentBorrowMarketCoin1,
+            "Collateral Token":collateralBalance.substring(spaceIndex + 1),
           });
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -971,13 +977,14 @@ const YourBorrowModal = ({
           // addTransaction({ hash: deposit?.transaction_hash });
 
           activeTransactions?.push(trans_data);
-          mixpanel.track("Spend Borrow Status Your Borrow", {
+          posthog.capture("Spend Borrow Status Your Borrow", {
             Status: "Success",
             Action: "Trade",
             "Loan Id": swapLoanId,
             "Pool Selected": currentPool,
             "Dapp Selected": currentDapp,
             "Borrow Market": currentBorrowMarketCoin1,
+            "Collateral Token":collateralBalance.substring(spaceIndex + 1),
           });
 
           dispatch(setActiveTransactions(activeTransactions));
@@ -1007,7 +1014,7 @@ const YourBorrowModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track("Spend Borrow Status Your Borrow", {
+      posthog.capture("Spend Borrow Status Your Borrow", {
         Status: "Failure",
       });
       toast.error(toastContent, {
@@ -1047,13 +1054,14 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Spend Borrow Status Your Borrow", {
+          posthog.capture("Spend Borrow Status Your Borrow", {
             Status: "Success",
             "Loan ID": liquidityLoanId,
             Action: "Liquidity",
             "Pool Selected": currentPool,
             "Dapp Selected": currentDapp,
             "Borrow Market": currentBorrowMarketCoin1,
+            "Collateral Token":collateralBalance.substring(spaceIndex + 1),
           });
 
           dispatch(setActiveTransactions(activeTransactions));
@@ -1095,12 +1103,13 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Spend Borrow Status Your Borrow", {
+          posthog.capture("Spend Borrow Status Your Borrow", {
             Status: "Success",
             "Loan ID": liquidityLoanId,
             Action: "Liquidity",
             "Pool Selected": currentPool,
             "Dapp Selected": currentDapp,
+            "Collateral Token":collateralBalance.substring(spaceIndex + 1),
           });
 
           dispatch(setActiveTransactions(activeTransactions));
@@ -1129,7 +1138,7 @@ const YourBorrowModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track("Spend Borrow Status Your Borrow", {
+      posthog.capture("Spend Borrow Status Your Borrow", {
         Status: "Failure",
       });
       toast.error(toastContent, {
@@ -1170,11 +1179,12 @@ const YourBorrowModal = ({
             };
             // addTransaction({ hash: deposit?.transaction_hash });
             activeTransactions?.push(trans_data);
-            mixpanel.track("Add Collateral Your Borrow Status", {
+            posthog.capture("Add Collateral Your Borrow Status", {
               Status: "Success",
               "Loan id": currentBorrowId2,
               "Borrow Market": currentBorrowMarketCoin2,
               "Collateral Amount": rTokenAmount,
+              "Collateral Token":collateralBalance.substring(spaceIndex + 1)
             });
 
             dispatch(setActiveTransactions(activeTransactions));
@@ -1219,11 +1229,12 @@ const YourBorrowModal = ({
               };
               // addTransaction({ hash: deposit?.transaction_hash });
               activeTransactions?.push(trans_data);
-              mixpanel.track("Add Collateral Your Borrow Status", {
+              posthog.capture("Add Collateral Your Borrow Status", {
                 Status: "Success",
                 "Loan id": currentBorrowId2,
                 "Borrow Market": currentBorrowMarketCoin2,
                 "Collateral Amount": collateralAmount,
+                "Collateral Token":collateralBalance.substring(spaceIndex + 2)
               });
 
               dispatch(setActiveTransactions(activeTransactions));
@@ -1247,7 +1258,7 @@ const YourBorrowModal = ({
         // dispatch(setTransactionStatus("failed"));
         setCollateralTransactionStarted(false);
       }
-      mixpanel.track("Add Collateral Your Borrow Status", {
+      posthog.capture("Add Collateral Your Borrow Status", {
         Status: "Failure",
       });
       const toastContent = (
@@ -4369,7 +4380,7 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            mixpanel.track(
+                            posthog.capture(
                               "Spend Borrow Button Clicked Your Borrow",
                               {
                                 Clicked: true,
@@ -4451,7 +4462,7 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            mixpanel.track("Repay Borrow Button Clicked", {
+                            posthog.capture("Repay Borrow Button Clicked", {
                               Clicked: true,
                             });
                             if (transactionStarted == false) {
@@ -4527,7 +4538,7 @@ const YourBorrowModal = ({
                       <Box
                         onClick={() => {
                           setTransactionStarted(true);
-                          mixpanel.track(
+                          posthog.capture(
                             "Convert Borrow Market Button Clicked",
                             {
                               Clicked: true,
@@ -4587,7 +4598,7 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            mixpanel.track("Zero Repay Button Clicked", {
+                            posthog.capture("Zero Repay Button Clicked", {
                               Clicked: true,
                             });
                             dispatch(
@@ -6041,7 +6052,7 @@ const YourBorrowModal = ({
                       <Box
                         onClick={() => {
                           setCollateralTransactionStarted(true);
-                          mixpanel.track(
+                          posthog.capture(
                             "Add Collateral Button Clicked Your Borrow",
                             {
                               Clicked: true,

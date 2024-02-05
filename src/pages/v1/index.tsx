@@ -44,6 +44,7 @@ import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { Contract, RpcProvider } from "starknet";
 import GetTokensModal from "@/components/modals/getTokens";
 import SupplyModal from "@/components/modals/SupplyModal";
+import posthog from "posthog-js";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -198,10 +199,9 @@ export default function Home() {
       // if(address){
       //   // mixpanel.identify(address)
       //   mixpanel.identify("13793");
-      //   mixpanel.track('Signed Up')
+      //   posthog.capture('Signed Up')
       // }
-      mixpanel?.identify(address);
-      mixpanel?.track("Connect Wallet", {
+      posthog.capture("Connect Wallet", {
         "Wallet address": address,
         "Wallet Connected": walletConnected,
       });

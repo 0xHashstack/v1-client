@@ -7,6 +7,7 @@ import Head from "next/head";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { loadSpace } from "@usersnap/browser";
 import { goerli, mainnet } from "@starknet-react/chains";
+import { PostHogProvider} from 'posthog-js/react'
 import {
   StarknetConfig,
   InjectedConnector,
@@ -160,7 +161,9 @@ export default function App({ Component, pageProps }: AppProps) {
   //     }
   //   })
   //   .catch((err) =>//console.log(err));
-
+  const options = {
+    api_host: process.env.NEXT_PUBLIC_HOSTHOG_HOST,
+  }
   return (
     <>
       <Head>
@@ -175,6 +178,10 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <link rel="shortcut icon" href="/favicon-32x32.png" />
       </Head>
+      <PostHogProvider
+      apiKey={process.env.NEXT_PUBLIC_POSTHOG_KEY}
+      options={options}
+      >
         <ChakraProvider theme={theme}>
         <StarknetConfig
       chains={ [mainnet, goerli]}
@@ -188,6 +195,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </Provider>
           </StarknetConfig>
         </ChakraProvider>
+      </PostHogProvider>
 
     </>
   );

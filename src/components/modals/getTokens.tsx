@@ -64,6 +64,7 @@ import {
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import mixpanel from "mixpanel-browser";
+import posthog from "posthog-js";
 const GetTokensModal = ({
   buttonText,
   backGroundOverLay,
@@ -144,7 +145,7 @@ const GetTokensModal = ({
   const handleGetToken = async (coin: any) => {
     try {
       const getTokens = await writeAsyncGetTokens();
-      mixpanel.track("Get Tokens", {
+      posthog.capture("Get Tokens", {
         "Token Selected": coin,
       });
       if (getTokens?.transaction_hash) {
@@ -176,7 +177,7 @@ const GetTokensModal = ({
           uniqueID: uqID,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
-        mixpanel.track("Get Tokens Status", {
+        posthog.capture("Get Tokens Status", {
           Status: "Success",
         });
         activeTransactions?.push(trans_data);
@@ -188,7 +189,7 @@ const GetTokensModal = ({
     } catch (err: any) {
       console.log(err);
       // dispatch(setTransactionStatus("failed"));
-      mixpanel.track("Get Tokens Status", {
+      posthog.capture("Get Tokens Status", {
         Status: "Failure",
       });
       // dispatch(setTransactionStartedAndModalClosed(true));

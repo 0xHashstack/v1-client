@@ -39,6 +39,9 @@ jobs:
           echo 'NEXT_PUBLIC_INFURA_MAINNET=${{secrets.NEXT_PUBLIC_INFURA_MAINNET}}' >> .env
           echo 'NEXT_PUBLIC_INFURA_TESTNET=${{secrets.NEXT_PUBLIC_INFURA_TESTNET}}' >> .env
           echo 'NEXT_PUBLIC_FEEDBACK_API=${{secrets.NEXT_PUBLIC_FEEDBACK_API}}' >> .env
+          echo 'NEXT_PUBLIC_POSTHOG_KEY=${{secrets.NEXT_PUBLIC_POSTHOG_KEY}}' >> .env
+          echo 'NEXT_PUBLIC_HOSTHOG_HOST=${{secrets.NEXT_PUBLIC_HOSTHOG_HOST}}' >> .env
+          
       - name: Install dependencies
         run: yarn
       - name: Build

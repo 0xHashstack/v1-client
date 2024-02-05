@@ -67,6 +67,7 @@ import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import Image from "next/image";
 import mixpanel from "mixpanel-browser";
+import posthog from "posthog-js";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -268,7 +269,7 @@ const SwapModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Swap Spend Borrow Status", {
+          posthog.capture("Swap Spend Borrow Status", {
             Status: "Success",
             "Market Selected": currentSelectedCoin,
             "Borrow ID": currentBorrowId,
@@ -317,7 +318,7 @@ const SwapModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Swap Spend Borrow Status", {
+          posthog.capture("Swap Spend Borrow Status", {
             Status: "Success",
             "Market Selected": currentSelectedCoin,
             "Borrow ID": currentBorrowId,
@@ -350,7 +351,7 @@ const SwapModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track("Swap Spend Borrow Status", {
+      posthog.capture("Swap Spend Borrow Status", {
         Status: "Failure",
       });
       toast.error(toastContent, {
@@ -471,7 +472,7 @@ const SwapModal = ({
           onClick={() => {
             if (selectedDapp == "") {
             } else {
-              mixpanel.track("Swap Modal Selected", {
+              posthog.capture("Swap Modal Selected", {
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
@@ -496,7 +497,7 @@ const SwapModal = ({
           onClick={() => {
             if (selectedDapp == "") {
             } else {
-              mixpanel.track("Swap Modal Selected", {
+              posthog.capture("Swap Modal Selected", {
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
@@ -1288,7 +1289,7 @@ const SwapModal = ({
                 onClick={() => {
                   setTransactionStarted(true);
                   if (transactionStarted == false) {
-                    mixpanel.track("Swap Modal Button Clicked Spend Borrow", {
+                    posthog.capture("Swap Modal Button Clicked Spend Borrow", {
                       Clicked: true,
                     });
                     dispatch(setTransactionStartedAndModalClosed(false));

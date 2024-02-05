@@ -94,6 +94,7 @@ import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import posthog from "posthog-js";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -388,7 +389,7 @@ const LiquidityProvisionModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Liquidity Spend Borrow Status", {
+          posthog.capture("Liquidity Spend Borrow Status", {
             Status: "Success",
             PoolSelected: currentPool,
             BorrowId: currentBorrowId,
@@ -437,7 +438,7 @@ const LiquidityProvisionModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Liquidity Spend Borrow Status", {
+          posthog.capture("Liquidity Spend Borrow Status", {
             Status: "Success",
             PoolSelected: currentPool,
             BorrowId: currentBorrowId,
@@ -472,7 +473,7 @@ const LiquidityProvisionModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track("Liquidity Spend Borrow Status", {
+      posthog.capture("Liquidity Spend Borrow Status", {
         Status: "Failure",
       });
       toast.error(toastContent, {
@@ -660,7 +661,7 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               ////console.log("hi");
             } else {
-              mixpanel.track("Liquidity Modal Selected", {
+              posthog.capture("Liquidity Modal Selected", {
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
@@ -687,7 +688,7 @@ const LiquidityProvisionModal = ({
                 localStorage.setItem("transactionCheck", JSON.stringify(data));
               }
               onOpen();
-              mixpanel.track("Liquidity Modal Selected", {
+              posthog.capture("Liquidity Modal Selected", {
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
@@ -714,7 +715,7 @@ const LiquidityProvisionModal = ({
                 localStorage.setItem("transactionCheck", JSON.stringify(data));
               }
               onOpen();
-              mixpanel.track("Liquidity Modal Selected", {
+              posthog.capture("Liquidity Modal Selected", {
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
@@ -1630,7 +1631,7 @@ const LiquidityProvisionModal = ({
                   onClick={() => {
                     setTransactionStarted(true);
                     if (transactionStarted == false) {
-                      mixpanel.track("Liquidity Button Clicked Spend Borrow", {
+                      posthog.capture("Liquidity Button Clicked Spend Borrow", {
                         Clicked: true,
                       });
                       dispatch(setTransactionStartedAndModalClosed(false));

@@ -106,6 +106,7 @@ import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { tokenDecimalsMap } from "@/Blockchain/utils/addressServices";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
+import posthog from "posthog-js";
 // import userTokensMinted from "@/Blockchain/scripts/Rewards";
 // import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
 
@@ -379,7 +380,7 @@ const StakeUnstakeModal = ({
   const handleStakeTransaction = async () => {
     try {
       ////console.log("staking", rToken, rTokenAmount);
-      mixpanel.track("Action Selected", {
+      posthog.capture("Action Selected", {
         Actions: "Stake",
       });
       const stake = await writeAsyncStakeRequest();
@@ -414,7 +415,7 @@ const StakeUnstakeModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track("Stake Modal Market Page Status", {
+        posthog.capture("Stake Modal Market Page Status", {
           Status: "Success",
           Token: currentSelectedStakeCoin,
           TokenAmount: inputStakeAmount,
@@ -451,7 +452,7 @@ const StakeUnstakeModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track("Stake Modal Market Page Status", {
+      posthog.capture("Stake Modal Market Page Status", {
         Status: "Failure",
       });
       toast.error(toastContent, {
@@ -462,7 +463,7 @@ const StakeUnstakeModal = ({
   };
   const hanldeStakeAndSupplyTransaction = async () => {
     try {
-      mixpanel.track("Action Selected", {
+      posthog.capture("Action Selected", {
         Action: "Deposit and Stake",
       });
       const depositStake = await writeAsyncDepositStake();
@@ -499,7 +500,7 @@ const StakeUnstakeModal = ({
 
         dispatch(setActiveTransactions(activeTransactions));
       }
-      mixpanel.track("Supply Market Status", {
+      posthog.capture("Supply Market Status", {
         Status: "Success Deposit and Stake",
         Token: currentSelectedStakeCoin,
         TokenAmount: inputStakeAmount,
@@ -514,7 +515,7 @@ const StakeUnstakeModal = ({
       ////console.log("Status transaction", deposit);
      //console.log(isSuccessDeposit, "success ?");
     } catch (err: any) {
-      mixpanel.track("Stake Market Status", {
+      posthog.capture("Stake Market Status", {
         Status: "Failure",
       });
       const uqID = getUniqueId();
@@ -587,10 +588,10 @@ const StakeUnstakeModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track("Unstake Modal Market Page Status", {
+        posthog.capture("Unstake Modal Market Page Status", {
           Status: "Success",
           Token: currentSelectedUnstakeCoin,
-          TokenAmount: rTokenAmount,
+          TokenAmount: rTokenToWithdraw,
         });
 
         dispatch(setActiveTransactions(activeTransactions));
@@ -619,7 +620,7 @@ const StakeUnstakeModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track("Unstake Modal Market Page Status", {
+      posthog.capture("Unstake Modal Market Page Status", {
         Status: "Failure",
       });
       toast.error(toastContent, {
@@ -1962,7 +1963,7 @@ const StakeUnstakeModal = ({
                               onClick={() => {
                                 setTransactionStarted(true);
                                 if (transactionStarted == false) {
-                                  mixpanel.track(
+                                  posthog.capture(
                                     "Stake Button Clicked Market page",
                                     {
                                       "Stake Clicked": true,
@@ -2052,7 +2053,7 @@ const StakeUnstakeModal = ({
                             onClick={() => {
                               setTransactionStarted(true);
                               if (transactionStarted == false) {
-                                mixpanel.track(
+                                posthog.capture(
                                   "Stake Button Clicked Market page",
                                   {
                                     "Stake Clicked": true,
@@ -2772,7 +2773,7 @@ const StakeUnstakeModal = ({
                           onClick={() => {
                             setUnstakeTransactionStarted(true);
                             if (unstakeTransactionStarted == false) {
-                              mixpanel.track(
+                              posthog.capture(
                                 "Unstake Button Clicked Market page",
                                 {
                                   "Unstake Clicked": true,
