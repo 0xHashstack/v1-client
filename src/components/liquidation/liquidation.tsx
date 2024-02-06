@@ -350,13 +350,8 @@ const Liquidation = ({
   });
 
   async function is_loan_liquidable(Id) {
-    const provider = new Provider({
-      sequencer: {
-        baseUrl: 'https://alpha-mainnet.starknet.io',
-        feederGatewayUrl: 'feeder_gateway',
-        gatewayUrl: 'gateway',
-      }
-    })
+    const rpcUrl='https://starknet-mainnet.infura.io/v3/'+String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
+    const provider = new RpcProvider({ nodeUrl: rpcUrl});
     const Liquidate = new Contract(LiquidateAbi, diamondAddress, provider);
     const res = await Liquidate.call("is_loan_liquidable", [Id], {
       blockIdentifier: "pending",

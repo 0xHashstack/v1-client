@@ -498,13 +498,8 @@ const Dashboard = () => {
   }
 
   async function get_user_loans() {
-    const provider = new Provider({
-      sequencer: {
-        baseUrl: "https://alpha-mainnet.starknet.io",
-        feederGatewayUrl: "feeder_gateway",
-        gatewayUrl: "gateway",
-      },
-    });
+    const rpcUrl='https://starknet-mainnet.infura.io/v3/'+String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
+    const provider = new RpcProvider({ nodeUrl: rpcUrl});
     const MySwap = new Contract(loanAbi, diamondAddress, provider);
     const res = await MySwap.call("get_user_loans", [account], {
       blockIdentifier: "pending",
@@ -571,17 +566,11 @@ const Dashboard = () => {
   }
 
   async function get_user_deposits() {
-    const provider = new Provider({
-      sequencer: {
-        baseUrl: "https://alpha-mainnet.starknet.io",
-        feederGatewayUrl: "feeder_gateway",
-        gatewayUrl: "gateway",
-      },
-    });
+    const rpcUrl='https://starknet-mainnet.infura.io/v3/'+String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
+    const provider = new RpcProvider({ nodeUrl: rpcUrl});
     const Deposit = new Contract(depositAbi, diamondAddress, provider);
     const res = await Deposit.call("get_user_deposits", [account]);
     parseDepositsData(res?.deposit_records_arr, res?.yield_records_arr);
-    // console.log("unparsed deposit", res);
   }
 
   useEffect(() => {

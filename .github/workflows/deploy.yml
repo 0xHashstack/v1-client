@@ -27,6 +27,22 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.14.0
+          
+      - name: "Setup .env"
+        run: |
+          touch .env
+          echo 'NEXT_PUBLIC_APP_ENV=production' >> .env
+          echo 'NEXT_PUBLIC_NODE_ENV=mainnet' >> .env
+          echo 'NEXT_PUBLIC_TESTNET_CHAINID=0x534e5f474f45524c49' >> .env
+          echo 'NEXT_PUBLIC_MAINNET_CHAINID=0x534e5f4d41494e' >> .env
+          echo 'NEXT_PUBLIC_METRICS_API=https://metricsapimainnet.hashstack.finance' >> .env
+          echo 'NEXT_PUBLIC_MIXPANEL_KEY=${{secrets.NEXT_PUBLIC_MIXPANEL_KEY_MAINNET}}' >> .env
+          echo 'NEXT_PUBLIC_INFURA_MAINNET=${{secrets.NEXT_PUBLIC_INFURA_MAINNET}}' >> .env
+          echo 'NEXT_PUBLIC_INFURA_TESTNET=${{secrets.NEXT_PUBLIC_INFURA_TESTNET}}' >> .env
+          echo 'NEXT_PUBLIC_FEEDBACK_API=${{secrets.NEXT_PUBLIC_FEEDBACK_API}}' >> .env
+          echo 'NEXT_PUBLIC_POSTHOG_KEY=${{secrets.NEXT_PUBLIC_POSTHOG_KEY}}' >> .env
+          echo 'NEXT_PUBLIC_HOSTHOG_HOST=${{secrets.NEXT_PUBLIC_HOSTHOG_HOST}}' >> .env
+
       - name: Install dependencies
         run: yarn
       - name: Build
