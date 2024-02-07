@@ -1,109 +1,43 @@
-import { ILoan } from "@/Blockchain/interfaces/interfaces";
-import { getUserLoans } from "@/Blockchain/scripts/Loans";
+import {
+  Box,
+  Button,
+  HStack,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  Skeleton,
+  Text,
+  Tooltip,
+  VStack,
+} from "@chakra-ui/react";
+import { useAccount } from "@starknet-react/core";
+import axios from "axios";
+import Link from "next/link";
+import { default as React, useEffect, useRef, useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import CopyIcon from "@/assets/icons/copyIcon";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import BorrowDashboard from "@/components/layouts/borrowDashboard";
-import LeaderboardDashboard from "@/components/layouts/leaderboardDashboard";
-import MarketDashboard from "@/components/layouts/marketDashboard";
-import NavButtons from "@/components/layouts/navButtons";
-import Navbar from "@/components/layouts/navbar/Navbar";
-import PageCard from "@/components/layouts/pageCard";
-import PersonalStatsDashboard from "@/components/layouts/personalStatsDashboard";
-import StatsBoard from "@/components/layouts/statsBoard";
-import YourBorrowModal from "@/components/modals/yourBorrowModal";
-import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
-import Pagination from "@/components/uiElements/pagination";
-import useDataLoader from "@/hooks/useDataLoader";
+import { default as LeaderboardDashboard } from "@/components/layouts/leaderboardDashboard";
+import { default as PageCard } from "@/components/layouts/pageCard";
+import UserCampaignData from "@/components/layouts/userCampaignData";
+import { default as useDataLoader } from "@/hooks/useDataLoader";
 import {
   selectAirdropDropdowns,
-  selectCurrentDropdown,
   setAirdropDropdown,
 } from "@/store/slices/dropdownsSlice";
 import {
   selectExistingLink,
-  selectInteractedAddress,
   selectNetAPR,
-  selectUserLoans,
   selectYourBorrow,
   selectYourSupply,
-  setUserLoans,
 } from "@/store/slices/readDataSlice";
-import { Coins } from "@/utils/constants/coin";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import {
-  Box,
-  Button,
-  Card,
-  HStack,
-  Image,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  NumberInput,
-  NumberInputField,
-  Radio,
-  RadioGroup,
-  Skeleton,
-  Slider,
-  SliderFilledTrack,
-  SliderMark,
-  SliderThumb,
-  SliderTrack,
-  Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Table,
-  TableContainer,
-  Tabs,
-  Tbody,
-  Td,
-  Text,
-  Thead,
-  Tooltip,
-  Tr,
-  VStack,
-  useDisclosure,
-  useOutsideClick,
-} from "@chakra-ui/react";
-import NavButtons from "@/components/layouts/navButtons";
-import Navbar from "@/components/layouts/navbar/Navbar";
-import { Stack } from "@chakra-ui/react";
-import StatsBoard from "@/components/layouts/statsBoard";
-import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
-import Pagination from "@/components/uiElements/pagination";
-import YourBorrowModal from "@/components/modals/yourBorrowModal";
-import React, { useEffect, useState } from "react";
-import { HStack, VStack } from "@chakra-ui/react";
-import PageCard from "@/components/layouts/pageCard";
-import { Coins } from "@/utils/constants/coin";
-import { useDispatch, useSelector } from "react-redux";
-import { useAccount } from "@starknet-react/core";
-import { selectYourBorrow, selectNetAPR, selectExistingLink, selectInteractedAddress, selectYourSupply } from "@/store/slices/readDataSlice";
-import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
-import { getUserLoans } from "@/Blockchain/scripts/Loans";
-import { ILoan } from "@/Blockchain/interfaces/interfaces";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import useDataLoader from "@/hooks/useDataLoader";
-import LeaderboardDashboard from "@/components/layouts/leaderboardDashboard";
-import PersonalStatsDashboard from "@/components/layouts/personalStatsDashboard";
-import axios from "axios";
-import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import CopyToClipboard from "react-copy-to-clipboard";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import UserCampaignData from "@/components/layouts/userCampaignData";
+import { default as numberFormatter } from "@/utils/functions/numberFormatter";
+
 const Campaign = () => {
-  const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItemsLeaderBoard = [
     "Rank",
     "Account",
@@ -111,25 +45,29 @@ const Campaign = () => {
     "Points",
     "Est.token earning \n $STRK",
   ];
-  const columnItemsLeaderBoardReferalCampaign = [
-    "Rank",
-    "Account",
-    "Liquidity generated in ($)",
-    "Points",
-    "HASH  ",
-  ];
+
   const columnItemsPersonalStats = [
     "Campaign Name",
     "Duration",
     "Total Hash Earned",
-    ""
+    "",
   ];
+
+  const columnItemsLeaderBoardCCp = [
+    "Rank",
+    "Account",
+    "Points",
+    "Hash Tokens",
+    "",
+  ];
+
   const columnItemsPersonalStatsReferalCampaign = [
     "Campaign Name",
     "Duration",
     "Total Hash Earned",
-    ""
+    "",
   ];
+
   const sampleDate: any = [
     {
       id: 0,
@@ -282,112 +220,33 @@ const Campaign = () => {
       est: 232,
     },
   ];
-  const sampleDataLeaderBoard = [
-    {
-      id: 0,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      account: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 1,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      account: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 2,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      account: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 3,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      account: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 4,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      account: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 5,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      account: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-    {
-      id: 6,
-      start: "1 Mar",
-      end: "1 April",
-      rank: 28,
-      account: "Braavos",
-      liq: 500,
-      pts: 100,
-      est: 232,
-    },
-  ];
-  const ddRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
-  const { account, address } = useAccount();
+  const { address } = useAccount();
   useDataLoader();
-  const UserLoans = useSelector(selectUserLoans);
-  useEffect(() => {
-    // if (UserLoans) {
-    //   if (UserLoans?.length <= (currentPagination - 1) * 6) {
-    //    //console.log("pagination", Pagination, UserLoans);
-    //     if (currentPagination > 1) {
-    //       setCurrentPagination(currentPagination - 1);
-    //     }
-    //   }
-    // }
-    if (sampleDate) {
-      if (sampleDate.length <= (currentPagination - 1) * 6) {
-        if (currentPagination > 1) {
-          setCurrentPagination(currentPagination - 1);
-        }
-      }
-    }
-  }, []);
+  const ddRef = useRef<HTMLDivElement>(null);
 
+  const [currentPagination, setCurrentPagination] = useState<number>(1);
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [communityHash, setCommunityHash] = useState();
   const [communityPoints, setCommunityPoints] = useState();
   const [personalData, setPersonalData] = useState([]);
-  const [epoch, setepoch] = useState(1);
+  const [epoch, setEpoch] = useState(1);
   const [snapshotNumber, setSnapshotNumber] = useState(0);
-  const interactedAddress = useSelector(selectInteractedAddress);
+  const totalBorrow = useSelector(selectYourBorrow);
+  const totalSupply = useSelector(selectYourSupply);
+  const netAPR = useSelector(selectNetAPR);
+  const [campaignSelected, setCampaignSelected] = useState(2);
+  const [tabValue, setTabValue] = useState(1);
+  const exisitingLink = useSelector(selectExistingLink);
+  const [refferal, setRefferal] = useState("xyz");
   const airdropDropdowns = useSelector(selectAirdropDropdowns);
-  const currentDropdown = useSelector(selectCurrentDropdown);
   const [currentSelectedDrop, setCurrentSelectedDrop] = useState("Airdrop 1");
+  const [daysLeft, setDaysLeft] = useState<number>(56);
+
+  const startDate = new Date("2023-11-27");
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 55);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -399,47 +258,87 @@ const Campaign = () => {
           res?.data?.communityInfo?.estimatedHashTokensCommunity
         );
         setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints);
+      }
+    };
+    fetchDetails();
+  }, []);
 
-  const [leaderboardData, setLeaderboardData] = useState([])
-  const [communityHash, setCommunityHash] = useState()
-  const [communityPoints, setCommunityPoints] = useState()
-  const [personalData, setPersonalData] = useState([])
-  const [campaignData, setcampaignData] = useState([])
-  const [epoch, setepoch] = useState(1)
-  const [snapshotNumber, setSnapshotNumber] = useState(0)
-  const interactedAddress = useSelector(selectInteractedAddress)
+  useEffect(() => {
+    if (sampleDate) {
+      if (sampleDate.length <= (currentPagination - 1) * 6) {
+        if (currentPagination > 1) {
+          setCurrentPagination(currentPagination - 1);
+        }
+      }
+    }
+  }, []);
+
   useEffect(() => {
     const fetchDetails = async () => {
       if (address) {
-        const res = await axios.get(`https://hstk.fi/api/temp-allocation/${address}`)
-        setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
-        setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
-        setepoch(res?.data?.communityInfo?.latestEpoch);
+        const res = await axios.get(
+          `https://hstk.fi/api/temp-allocation/${address}`
+        );
+        setCommunityHash(
+          res?.data?.communityInfo?.estimatedHashTokensCommunity
+        );
+        setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints);
+        setEpoch(res?.data?.communityInfo?.latestEpoch);
         setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber);
         let arr: any = [];
-        setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber)
-        let arr: any = [];
+        setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber);
         arr.push({
-          id: 0, start: "25th Nov", end: "8th Dec", epoch: res?.data?.userInfo?.epoch, tradders: res?.data?.userInfo?.totalReferredAddresses, liq: res?.data?.userInfo?.selfValue, supplyliq: res?.data?.userInfo?.supplyValue, borrowliq: res?.data?.userInfo?.borrowValue, referredliq: res?.data?.userInfo?.referralValue,
-          pts: res?.data?.userInfo?.totalPoints, ptsAllocated: res?.data?.userInfo?.allocatedData?.pointsAllocated, selfpts: res?.data?.userInfo?.selfPoints, referredpts: res?.data?.userInfo?.referralPoints, hashAllocated: res?.data?.userInfo?.allocatedData?.hashAllocated, est: res?.data?.userInfo?.estimatedHashTokensUser
-        })
+          id: 0,
+          start: "25th Nov",
+          end: "8th Dec",
+          epoch: res?.data?.userInfo?.epoch,
+          tradders: res?.data?.userInfo?.totalReferredAddresses,
+          liq: res?.data?.userInfo?.selfValue,
+          supplyliq: res?.data?.userInfo?.supplyValue,
+          borrowliq: res?.data?.userInfo?.borrowValue,
+          referredliq: res?.data?.userInfo?.referralValue,
+          pts: res?.data?.userInfo?.totalPoints,
+          ptsAllocated: res?.data?.userInfo?.allocatedData?.pointsAllocated,
+          selfpts: res?.data?.userInfo?.selfPoints,
+          referredpts: res?.data?.userInfo?.referralPoints,
+          hashAllocated: res?.data?.userInfo?.allocatedData?.hashAllocated,
+          est: res?.data?.userInfo?.estimatedHashTokensUser,
+        });
         setPersonalData(arr);
       }
     };
     fetchDetails();
-  }, [address])
+  }, [address]);
+
   useEffect(() => {
     try {
       const fetchLeaderBoardData = async () => {
-        const res = await axios.get('https://hstk.fi/api/leaderboard');
+        const res = await axios.get("https://hstk.fi/api/leaderboard");
         setLeaderboardData(res?.data);
       };
       fetchLeaderBoardData();
     } catch (err) {
-    } catch (err) {
       console.log(err);
     }
   }, []);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, []);
+
+  useEffect(() => {
+    updateDaysLeft();
+  }, []);
+
+  // Update days left on page load and start an interval to update it daily
+  useEffect(() => {
+    setCurrentPagination(1);
+  }, [tabValue]);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (ddRef.current && !ddRef.current.contains(event.target as Node)) {
@@ -453,80 +352,27 @@ const Campaign = () => {
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscapeKey);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscapeKey);
-    };
-  }, []);
+  const updateDaysLeft = () => {
+    const now = new Date();
+    const timeDiff = endDate.getTime() - now.getTime();
+    const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    setDaysLeft(daysLeft);
+  };
 
-  }, [])
-
-  // useEffect(() => {
-  //   const loan = async () => {
-  //     try {
-  //       const loans = await getUserLoans(address || "");
-  //       ////console.log(loans,"Loans from your borrow index page")
-
-  //       // loans.filter(
-  //       //   (loan) =>
-  //       //     loan.collateralAmountParsed &&
-  //       //     loan.collateralAmountParsed > 0 &&
-  //       //     loan.loanAmountParsed &&
-  //       //     loan.loanAmountParsed > 0
-  //       // );
-  //       if (loans) {
-  //         setuserLoans(
-  //           loans.filter(
-  //             (loan) =>
-  //               loan?.collateralAmountParsed &&
-  //               loan?.collateralAmountParsed > 0 &&
-  //               loan?.loanAmountParsed &&
-  //               loan?.loanAmountParsed > 0
-  //           )
-  //         );
-  //       }
-  //       dispatch(setUserLoans(loans.filter(
-  //         (loan) =>
-  //           loan.collateralAmountParsed &&
-  //           loan.collateralAmountParsed > 0 &&
-  //           loan.loanAmountParsed &&
-  //           loan.loanAmountParsed > 0
-  //       )));
-  //     } catch (err) {
-  //      //console.log("your-borrow : unable to fetch user loans");
-  //     }
-  //     ////console.log("loans", loans);
-  //   };
-  //   if (account) {
-  //     loan();
-  //   }
-  // }, [account, UserLoans]);
-  const totalBorrow = useSelector(selectYourBorrow);
-  const totalSupply = useSelector(selectYourSupply);
-  const totalSupply = useSelector(selectYourSupply);
-  const netAPR = useSelector(selectNetAPR);
-  const [campaignSelected, setCampaignSelected] = useState(2);
-  const [tabValue, setTabValue] = useState(1);
-  const exisitingLink = useSelector(selectExistingLink);
-  const [refferal, setRefferal] = useState("xyz");
   const handleChange = async (e: any) => {
     if (exisitingLink != null) {
     } else {
       if (totalBorrow == 0 && totalSupply == 0) {
-
-    }
-    else {
-      if (totalBorrow == 0 && totalSupply == 0) {
-        return;
       } else {
-      } else {
-        setRefferal(e.target.value);
+        if (totalBorrow == 0 && totalSupply == 0) {
+          return;
+        } else {
+          setRefferal(e.target.value);
+        }
       }
     }
   };
+
   const handleCopyClick = async () => {
     try {
       if (exisitingLink) {
@@ -540,8 +386,18 @@ const Campaign = () => {
         });
       } else {
         if (totalBorrow > 0 || totalSupply > 0) {
-          await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + refferal);
-          axios.post((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/shorten" : 'https://hstk.fi/shorten'), { pseudo_name: refferal, address: address })
+          await navigator.clipboard.writeText(
+            (process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
+              ? "https://testnet.hstk.fi/"
+              : "https://hstk.fi/") + refferal
+          );
+          axios
+            .post(
+              process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
+                ? "https://testnet.hstk.fi/shorten"
+                : "https://hstk.fi/shorten",
+              { pseudo_name: refferal, address: address }
+            )
             .then((response) => {
               toast.success("Copied", {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -556,7 +412,6 @@ const Campaign = () => {
             });
         }
       }
-
     } catch (error: any) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -564,31 +419,9 @@ const Campaign = () => {
       console.error("Failed to copy text: ", error);
     }
   };
-  const startDate = new Date('2023-11-27');
-  const endDate = new Date(startDate);
-  endDate.setDate(startDate.getDate() + 55);
 
-  // Function to update the days left
-  const [daysLeft, setDaysLeft] = useState<number>(56)
-  function updateDaysLeft() {
-    const now = new Date();
-    const timeDiff = endDate.getTime() - now.getTime();
-    const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    setDaysLeft(daysLeft);
-  }
-  useEffect(() => {
-    updateDaysLeft();
-  }, [])
-
-  // Update days left on page load and start an interval to update it daily
-  useEffect(() => {
-  // Update days left on page load and start an interval to update it daily
-  useEffect(() => {
-    setCurrentPagination(1);
-  }, [tabValue])
   return (
     <PageCard pt="6.5rem">
-      {/* <StatsBoard /> */}
       <Box
         zIndex="100"
         width="100%"
@@ -609,7 +442,14 @@ const Campaign = () => {
         >
           Thank you for making Airdrop campaign 01 successful.
         </Text>
-        <Text color="#030210" fontSize="14px" fontWeight="400" lineHeight="18px" letterSpacing="-0.15px" ml="0.2rem">
+        <Text
+          color="#030210"
+          fontSize="14px"
+          fontWeight="400"
+          lineHeight="18px"
+          letterSpacing="-0.15px"
+          ml="0.2rem"
+        >
           HASH token will be available for claim post its public release.
         </Text>
         <Link
@@ -630,9 +470,7 @@ const Campaign = () => {
           >
             Please check the announcement article for more details.
           </Text>
-
         </Link>
-
       </Box>
 
       <HStack
@@ -645,7 +483,12 @@ const Campaign = () => {
         mb="1rem"
         zIndex="1"
       >
-        <HStack mt="3rem">
+        <HStack
+          mt="3rem"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
           <Button
             bg="transparent"
             fontStyle="normal"
@@ -656,15 +499,17 @@ const Campaign = () => {
             letterSpacing="-0.15px"
             padding="1.125rem 0.4rem"
             margin="2px"
-            // mt="4rem"
-            color={campaignSelected == 2 ? "#fff" : "#676D9A"}
-            borderBottom={campaignSelected == 2 ? "2px solid #4D59E8" : ""}
+            color={tabValue == 1 ? "#fff" : "#676D9A"}
+            borderBottom={tabValue == 1 ? "2px solid #4D59E8" : ""}
             borderRadius="0px"
             _hover={{ bg: "transparent", color: "#E6EDF3" }}
-            onClick={() => { setTabValue(1) }}
+            onClick={() => {
+              setTabValue(1);
+            }}
           >
             Your dashboard
           </Button>
+
           <Button
             bg="transparent"
             fontStyle="normal"
@@ -675,29 +520,124 @@ const Campaign = () => {
             letterSpacing="-0.15px"
             padding="1.125rem 0.4rem"
             margin="2px"
-            color={campaignSelected == 1 ? "#fff" : "#676D9A"}
-            borderBottom={campaignSelected == 1 ? "2px solid #4D59E8" : ""}
+            color={tabValue == 2 ? "#fff" : "#676D9A"}
+            borderBottom={tabValue == 2 ? "2px solid #4D59E8" : ""}
             borderRadius="0px"
             _hover={{ bg: "transparent", color: "#E6EDF3" }}
-            onClick={() => {setTabValue(2) }}
+            onClick={() => {
+              setTabValue(2);
+            }}
           >
             LeaderBoard
           </Button>
-        </HStack>
-        <HStack display='flex' width="100%" alignItems="flex-start" justifyContent="space-between">
 
-          <HStack mt="4rem" display="flex" flexDirection="column" alignItems="flex-start" >
+          {/* Dropdown  */}
+          {tabValue === 2 && (
+            <Box
+              display="flex"
+              border="1px"
+              borderColor="#2B2F35"
+              justifyContent="space-between"
+              py="2"
+              pl="3"
+              pr="3"
+              width="16rem"
+              borderRadius="md"
+              className="navbar"
+              cursor="pointer"
+              ref={ddRef}
+              onClick={() =>
+                dispatch(setAirdropDropdown("airdropAndCcpDropdown"))
+              }
+            >
+              <Box display="flex" gap="1">
+                <Text color="white">{currentSelectedDrop}</Text>
+              </Box>
+
+              <Box pt="1" className="navbar-button">
+                <DropdownUp />
+              </Box>
+
+              {airdropDropdowns.airdropAndCcpDropdown && (
+                <Box
+                  w="full"
+                  left="0"
+                  bg="#03060B"
+                  py="2"
+                  className="dropdown-container"
+                  boxShadow="dark-lg"
+                >
+                  {["Airdrop 1", "CCP 1"].map((item: string, index: number) => {
+                    return (
+                      <Box
+                        key={index}
+                        as="button"
+                        w="full"
+                        display="flex"
+                        alignItems="center"
+                        gap="1"
+                        pr="2"
+                        onClick={() => {
+                          setCurrentSelectedDrop(item);
+                        }}
+                        _hover={{
+                          bg: "#171026",
+                        }}
+                      >
+                        {item === currentSelectedDrop && (
+                          <Box
+                            w="3px"
+                            h="28px"
+                            bg="#4954DC"
+                            borderRightRadius="md"
+                          ></Box>
+                        )}
+                        <Box
+                          w="full"
+                          display="flex"
+                          py="5px"
+                          px={`${item === currentSelectedDrop ? "3" : "5"}`}
+                          gap="1"
+                          borderRadius="md"
+                        >
+                          <Text color="white">{item}</Text>
+                        </Box>
+                      </Box>
+                    );
+                  })}
+                </Box>
+              )}
+            </Box>
+          )}
+        </HStack>
+
+        <HStack
+          display="flex"
+          width="100%"
+          alignItems="flex-start"
+          justifyContent="space-between"
+        >
+          <HStack
+            mt="4rem"
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+          >
             <Box>
-              <Text color="#F0F0F5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal" mb="0.2rem">
+              <Text
+                color="#F0F0F5"
+                fontSize="16px"
+                fontWeight="400"
+                lineHeight="20px"
+                fontStyle="normal"
+                mb="0.2rem"
+              >
                 Overall campaign stats
               </Text>
             </Box>
-            <HStack display="flex" justifyContent="space-between" >
+            <HStack display="flex" justifyContent="space-between">
               <HStack
-                // width="13.5rem"
                 display="flex"
-                // bgColor="yellow"
-                // flexGrow={1}
                 p="18px 26px"
                 border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 borderRadius="8px"
@@ -720,32 +660,33 @@ const Campaign = () => {
                   gap={"6px"}
                   justifyContent="flex-start"
                   alignItems="flex-start"
-                // p="13px 25px"
                 >
                   <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                     Points Accrued
                   </Text>
-                  {communityPoints ? <Text color="#e6edf3" fontSize="20px">
-                    {numberFormatter(communityPoints)}
-                  </Text> : <Skeleton
-                    width="6rem"
-                    height="1.4rem"
-                    startColor="#101216"
-                    endColor="#2B2F35"
-                    borderRadius="6px"
-                  />}
+                  {communityPoints ? (
+                    <Text color="#e6edf3" fontSize="20px">
+                      {numberFormatter(communityPoints)}
+                    </Text>
+                  ) : (
+                    <Skeleton
+                      width="6rem"
+                      height="1.4rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  )}
                 </VStack>
                 <VStack
                   gap={"6px"}
                   justifyContent="flex-start"
                   alignItems="flex-start"
-                // p="13px 25px"
                 >
                   <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                     <Tooltip
                       hasArrow
                       label="Estimated Tokens Earned"
-                      // arrowPadding={-5420}
                       placement="bottom"
                       boxShadow="dark-lg"
                       bg="#010409"
@@ -756,220 +697,137 @@ const Campaign = () => {
                       border="1px solid"
                       borderColor="#2B2F35"
                       arrowShadowColor="#2B2F35"
-                    // cursor="context-menu"
-                    // marginRight={idx1 === 1 ? "52px" : ""}
-                    // maxW="222px"
-                    // mt="28px"
                     >
                       Epoch Pool
                     </Tooltip>
                   </Text>
-                  {!communityHash ? <Skeleton
-                    width="6rem"
-                    height="1.4rem"
-                    startColor="#101216"
-                    endColor="#2B2F35"
-                    borderRadius="6px"
-                  /> : <Text color="#e6edf3" fontSize="20px">
-                    11.25M HASH
-                    {/* {numberFormatter(communityHash).substring(0,1)}{numberFormatter(communityHash).substring(5,)} HASH */}
-                  </Text>}
-
+                  {!communityHash ? (
+                    <Skeleton
+                      width="6rem"
+                      height="1.4rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  ) : (
+                    <Text color="#e6edf3" fontSize="20px">
+                      11.25M HASH
+                    </Text>
+                  )}
                 </VStack>
               </HStack>
-              {/* {campaignSelected == 1 ?
-              <HStack
-                // width="13.5rem"
-                display="flex"
-                // bgColor="yellow"
-                // flexGrow={1}
-                gap="5rem"
-              >
-                <VStack
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="flex-start"
-                  gap={"6px"}
-                  p="13px 25px"
-                >
-                  <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                    Total $ of tokens staked
-                  </Text>
-                  <Text color="#e6edf3" fontSize="20px">
-                    5,3100.00
-                  </Text>
-                </VStack>
-                <VStack
-                  gap={"6px"}
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                // p="13px 25px"
-                >
-                  <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                    Total $ of tokens borrowed
-                  </Text>
-                  <Text color="#e6edf3" fontSize="20px">
-                    5,3100.00
-                  </Text>
-                </VStack>
-              </HStack>
-              :
-              <HStack
-                // width="13.5rem"
-                display="flex"
-                // bgColor="yellow"
-                // flexGrow={1}
-                gap="5rem"
-              >
-                <VStack
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="flex-start"
-                  gap={"6px"}
-                  p="13px 25px"
-                >
-                  <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                    Traders referred
-                  </Text>
-                  <Text color="#e6edf3" fontSize="20px">
-                    5,310
-                  </Text>
-                </VStack>
-                <VStack
-                  gap={"6px"}
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                // p="13px 25px"
-                >
-                  <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                    <Tooltip
-                      hasArrow
-                      label="Liquidity provided by traders you have referred"
-                      // arrowPadding={-5420}
-                      placement="bottom"
-                      boxShadow="dark-lg"
-                      bg="#010409"
-                      fontSize={"13px"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                      border="1px solid"
-                      borderColor="#2B2F35"
-                      arrowShadowColor="#2B2F35"
-                    // cursor="context-menu"
-                    // marginRight={idx1 === 1 ? "52px" : ""}
-                    // maxW="222px"
-                    // mt="28px"
-                    >
-                      Referees liquidity
-                    </Tooltip>
-                  </Text>
-                  <Text color="#e6edf3" fontSize="20px">
-                    $5,3100.00
-                  </Text>
-                </VStack>
-                <VStack
-                  gap={"6px"}
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                // p="13px 25px"
-                >
-                  <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                    User slab
-                  </Text>
-                  <Text color="#e6edf3" fontSize="20px">
-                    1
-                  </Text>
-                </VStack>
-              </HStack>} */}
             </HStack>
           </HStack>
           <Box mt="4rem" display="flex" flexDirection="column">
-              <Text color="#F0F0F5" fontSize="16px" fontWeight="400" lineHeight="20px" fontStyle="normal" mb="0.8rem">
-                Your Referral Link
-              </Text>
-              <Box display="flex" mt="0">
-                <InputGroup width="550px" mt="0rem" border="1px solid #676D9A" borderRight="0px" borderRadius="6px 0px 0px 6px" height="5.3rem" >
-                  <InputLeftAddon height="80px" fontSize="20px" border="none" bg="none" color="#4D59E8" paddingInlineEnd="0">
-                    {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/"}
-                  </InputLeftAddon>
-                  {exisitingLink ?
-                    <Input fontSize="20px" height="80px" border="none" color="#F0F0F5" value={exisitingLink} paddingInlineStart="0" _focus={{
+            <Text
+              color="#F0F0F5"
+              fontSize="16px"
+              fontWeight="400"
+              lineHeight="20px"
+              fontStyle="normal"
+              mb="0.8rem"
+            >
+              Your Referral Link
+            </Text>
+            <Box display="flex" mt="0">
+              <InputGroup
+                width="550px"
+                mt="0rem"
+                border="1px solid #676D9A"
+                borderRight="0px"
+                borderRadius="6px 0px 0px 6px"
+                height="5.3rem"
+              >
+                <InputLeftAddon
+                  height="80px"
+                  fontSize="20px"
+                  border="none"
+                  bg="none"
+                  color="#4D59E8"
+                  paddingInlineEnd="0"
+                >
+                  {process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
+                    ? "https://testnet.hstk.fi/"
+                    : "https://hstk.fi/"}
+                </InputLeftAddon>
+                {exisitingLink ? (
+                  <Input
+                    fontSize="20px"
+                    height="80px"
+                    border="none"
+                    color="#F0F0F5"
+                    value={exisitingLink}
+                    paddingInlineStart="0"
+                    _focus={{
                       outline: "0",
                       boxShadow: "none",
                     }}
-                      onChange={handleChange}
-                    /> : <Input fontSize="20px" height="80px" border="none" color="#F0F0F5" value={totalBorrow == 0 && totalSupply == 0 ? "****" : refferal} paddingInlineStart="0" _focus={{
+                    onChange={handleChange}
+                  />
+                ) : (
+                  <Input
+                    fontSize="20px"
+                    height="80px"
+                    border="none"
+                    color="#F0F0F5"
+                    value={
+                      totalBorrow == 0 && totalSupply == 0 ? "****" : refferal
+                    }
+                    paddingInlineStart="0"
+                    _focus={{
                       outline: "0",
                       boxShadow: "none",
                     }}
-                      onChange={handleChange}
-
-                    />
-                  }
-                </InputGroup>
-                <Box cursor="pointer" onClick={() => {
+                    onChange={handleChange}
+                  />
+                )}
+              </InputGroup>
+              <Box
+                cursor="pointer"
+                onClick={() => {
                   handleCopyClick();
-
-                }}>
-                  <CopyToClipboard text="Works">
-                    <CopyIcon />
-                  </CopyToClipboard>
-                </Box>
+                }}
+              >
+                <CopyToClipboard text="Works">
+                  <CopyIcon />
+                </CopyToClipboard>
               </Box>
-              <Box display="flex">
-                <Text
-                  color="#B1B0B5"
-                  fontSize="16px"
-                  fontWeight="400"
-                  lineHeight="20px"
-                  fontStyle="normal"
-                >
-                  Snapshot -
-                </Text>
-                <Text
-                  color="#00D395"
-                  fontSize="16px"
-                  fontStyle="normal"
-                  fontWeight="400"
-                  lineHeight="20px"
-                >
-                  &nbsp;{snapshotNumber}/6
-                </Text>
-              </Box>
-              {(totalBorrow == 0 && totalSupply == 0) ?
-                <Box
-                  display="flex"
-                  bg="#222766"
-                  p="4"
-                  border="1px solid #3841AA"
-                  fontStyle="normal"
-                  fontWeight="400"
-                  lineHeight="18px"
-                  borderRadius="6px"
-                  color="#B1B0B5" fontSize="14px" letterSpacing="-0.15px" mt="0.3rem"
-                // textAlign="center"
-                >
-                  <Box pr="3" mt="0.5" cursor="pointer">
-                    <BlueInfoIcon />
-                  </Box>
-                  To generate your referral link, you must supply a min of $25, or borrow $100.
-                  {/* <Box
-                                py="1"
-                                pl="4"
-                                cursor="pointer"
-                                // onClick={handleClick}
-                              >
-                                <TableClose />
-                              </Box> */}
-                </Box>
-                :
-                <Box color="#676D9A" fontSize="14px" fontStyle="normal" fontWeight="500" lineHeight="20px" letterSpacing="-0.15px" mt="0.3rem">
-                  You can change this link only once
-                </Box>
-              }
             </Box>
-          )}
+            {totalBorrow == 0 && totalSupply == 0 ? (
+              <Box
+                display="flex"
+                bg="#222766"
+                p="4"
+                border="1px solid #3841AA"
+                fontStyle="normal"
+                fontWeight="400"
+                lineHeight="18px"
+                borderRadius="6px"
+                color="#B1B0B5"
+                fontSize="14px"
+                letterSpacing="-0.15px"
+                mt="0.3rem"
+              >
+                <Box pr="3" mt="0.5" cursor="pointer">
+                  <BlueInfoIcon />
+                </Box>
+                To generate your referral link, you must supply a min of $25, or
+                borrow $100.
+              </Box>
+            ) : (
+              <Box
+                color="#676D9A"
+                fontSize="14px"
+                fontStyle="normal"
+                fontWeight="500"
+                lineHeight="20px"
+                letterSpacing="-0.15px"
+                mt="0.3rem"
+              >
+                You can change this link only once
+              </Box>
+            )}
+          </Box>
         </HStack>
 
         <Box
@@ -979,14 +837,9 @@ const Campaign = () => {
           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
           mt="1rem"
         >
-            {tabValue== 1 ? <UserCampaignData
+          {tabValue == 1 ? (
+            <UserCampaignData
               width={"95%"}
-              currentPagination={currentPagination}
-              setCurrentPagination={setCurrentPagination}
-              leaderBoardData={personalData}
-              columnItems={campaignSelected == 1 ? columnItemsPersonalStats : columnItemsPersonalStatsReferalCampaign}
-            />:
-            <PersonalStatsDashboard width={"95%"}
               currentPagination={currentPagination}
               setCurrentPagination={setCurrentPagination}
               leaderBoardData={personalData}
@@ -996,8 +849,20 @@ const Campaign = () => {
                   : columnItemsPersonalStatsReferalCampaign
               }
             />
+          ) : (
+            <LeaderboardDashboard
+              width={"95%"}
+              currentSelectedDrop={currentSelectedDrop}
+              currentPagination={currentPagination}
+              setCurrentPagination={setCurrentPagination}
+              leaderBoardData={leaderboardData}
+              columnItems={
+                currentSelectedDrop == "Airdrop 1"
+                  ? columnItemsLeaderBoard
+                  : columnItemsLeaderBoardCCp
+              }
+            />
           )}
-          {/* <SupplyModal /> */}
         </Box>
       </HStack>
     </PageCard>
