@@ -46,13 +46,13 @@ const initialState = {
     coinSelectedExchangeRateDToken: false,
     coinSelectedAPRByMarket: false,
     coinSelectedExchangeRateRToken: false,
-    liquidityMiningTenureDropDown:false,
+    liquidityMiningTenureDropDown: false,
   },
   metricsDropdowns: {
     yourMetricsMarketDropdown: false,
-
-    
-
+  },
+  airdropDropdowns: {
+    airdropAndCcpDropdown: false,
   },
 };
 
@@ -102,6 +102,19 @@ export const dropdownSlice = createSlice({
       // alert(dropdownName);
       state.metricsDropdowns = dropdowns;
     },
+    setAirdropDropdown(state, action) {
+      const dropdownName = action.payload;
+      const dropdowns = { ...state.airdropDropdowns };
+      Object.keys(dropdowns)?.forEach((key) => {
+        if (key == dropdownName) {
+          dropdowns[key] = !dropdowns[key];
+        } else {
+          dropdowns[key] = false;
+        }
+      });
+      state.currentDropdown = dropdownName;
+      state.airdropDropdowns = dropdowns;
+    },
     resetModalDropdowns(state) {
       state.modalDropdowns = initialState.modalDropdowns;
       state.currentModalDropdown = initialState.currentModalDropdown;
@@ -127,6 +140,7 @@ export const dropdownSlice = createSlice({
 export const { setNavDropdown, resetModalDropdowns } = dropdownSlice.actions;
 export const { setModalDropdown } = dropdownSlice.actions;
 export const { setMetricsDropdown } = dropdownSlice.actions;
+export const { setAirdropDropdown } = dropdownSlice.actions;
 export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns;
 export const selectCurrentDropdown = (state) => state.dropdowns.currentDropdown;
 export const selectModalDropDowns = (state) => state.dropdowns.modalDropdowns;
@@ -135,3 +149,5 @@ export const selectCurrentModalDropdown = (state) =>
 export const selectMetricsDropdowns = (state) =>
   state.dropdowns.metricsDropdowns;
 export default dropdownSlice.reducer;
+export const selectAirdropDropdowns = (state) =>
+  state.dropdowns.airdropDropdowns;

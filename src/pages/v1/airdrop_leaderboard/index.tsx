@@ -1,43 +1,78 @@
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import { getUserLoans } from "@/Blockchain/scripts/Loans";
+import BlueInfoIcon from "@/assets/icons/blueinfoicon";
+import CopyIcon from "@/assets/icons/copyIcon";
+import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import BorrowDashboard from "@/components/layouts/borrowDashboard";
+import LeaderboardDashboard from "@/components/layouts/leaderboardDashboard";
 import MarketDashboard from "@/components/layouts/marketDashboard";
+import NavButtons from "@/components/layouts/navButtons";
+import Navbar from "@/components/layouts/navbar/Navbar";
+import PageCard from "@/components/layouts/pageCard";
+import PersonalStatsDashboard from "@/components/layouts/personalStatsDashboard";
+import StatsBoard from "@/components/layouts/statsBoard";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
+import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
+import Pagination from "@/components/uiElements/pagination";
+import useDataLoader from "@/hooks/useDataLoader";
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-  Button,
-  Tooltip,
+  selectAirdropDropdowns,
+  selectCurrentDropdown,
+  setAirdropDropdown,
+} from "@/store/slices/dropdownsSlice";
+import {
+  selectExistingLink,
+  selectInteractedAddress,
+  selectNetAPR,
+  selectUserLoans,
+  selectYourBorrow,
+  selectYourSupply,
+  setUserLoans,
+} from "@/store/slices/readDataSlice";
+import { Coins } from "@/utils/constants/coin";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import {
   Box,
-  Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Td,
-  TableContainer,
-  TabList,
-  Tab,
-  TabPanel,
-  Tabs,
-  TabPanels,
-  RadioGroup,
-  Radio,
-  NumberInput,
-  Slider,
-  SliderMark,
-  SliderTrack,
-  SliderThumb,
-  SliderFilledTrack,
-  NumberInputField,
-
+  Button,
   Card,
-  ModalHeader,
-  Skeleton,
+  HStack,
+  Image,
+  Input,
   InputGroup,
   InputLeftAddon,
-  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  NumberInput,
+  NumberInputField,
+  Radio,
+  RadioGroup,
+  Skeleton,
+  Slider,
+  SliderFilledTrack,
+  SliderMark,
+  SliderThumb,
+  SliderTrack,
+  Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Table,
+  TableContainer,
+  Tabs,
+  Tbody,
+  Td,
+  Text,
+  Thead,
+  Tooltip,
+  Tr,
+  VStack,
+  useDisclosure,
+  useOutsideClick,
 } from "@chakra-ui/react";
 import NavButtons from "@/components/layouts/navButtons";
 import Navbar from "@/components/layouts/navbar/Navbar";
@@ -61,11 +96,11 @@ import useDataLoader from "@/hooks/useDataLoader";
 import LeaderboardDashboard from "@/components/layouts/leaderboardDashboard";
 import PersonalStatsDashboard from "@/components/layouts/personalStatsDashboard";
 import axios from "axios";
-import { toast } from "react-toastify";
-import CopyToClipboard from "react-copy-to-clipboard";
-import CopyIcon from "@/assets/icons/copyIcon";
-import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import Link from "next/link";
+import React, { useEffect, useRef, useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import UserCampaignData from "@/components/layouts/userCampaignData";
 const Campaign = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
@@ -74,14 +109,14 @@ const Campaign = () => {
     "Account",
     "Referees Liquidity",
     "Points",
-    "Est.token earning \n $STRK"
+    "Est.token earning \n $STRK",
   ];
   const columnItemsLeaderBoardReferalCampaign = [
     "Rank",
     "Account",
     "Liquidity generated in ($)",
     "Points",
-    "HASH  "
+    "HASH  ",
   ];
   const columnItemsPersonalStats = [
     "Campaign Name",
@@ -95,54 +130,231 @@ const Campaign = () => {
     "Total Hash Earned",
     ""
   ];
-  const sampleDate: any = [{
-    id: 0, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 1, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 2, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 3, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 4, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 5, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 6, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  },
-  {
-    id: 7, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 8, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  },
-  {
-    id: 10, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 20, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 30, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 40, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 50, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 60, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  },]
-  const sampleDataLeaderBoard = [{
-    id: 0, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 1, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 2, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 3, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 4, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 5, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  }, {
-    id: 6, start: "1 Mar", end: "1 April", rank: 28, account: "Braavos", liq: 500, pts: 100, est: 232
-  },]
+  const sampleDate: any = [
+    {
+      id: 0,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 1,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 2,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 3,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 4,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 5,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 6,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 7,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 8,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 10,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 20,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 30,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 40,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 50,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 60,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+  ];
+  const sampleDataLeaderBoard = [
+    {
+      id: 0,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 1,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 2,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 3,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 4,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 5,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+    {
+      id: 6,
+      start: "1 Mar",
+      end: "1 April",
+      rank: 28,
+      account: "Braavos",
+      liq: 500,
+      pts: 100,
+      est: 232,
+    },
+  ];
+  const ddRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
   const { account, address } = useAccount();
@@ -166,6 +378,28 @@ const Campaign = () => {
     }
   }, []);
 
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [communityHash, setCommunityHash] = useState();
+  const [communityPoints, setCommunityPoints] = useState();
+  const [personalData, setPersonalData] = useState([]);
+  const [epoch, setepoch] = useState(1);
+  const [snapshotNumber, setSnapshotNumber] = useState(0);
+  const interactedAddress = useSelector(selectInteractedAddress);
+  const airdropDropdowns = useSelector(selectAirdropDropdowns);
+  const currentDropdown = useSelector(selectCurrentDropdown);
+  const [currentSelectedDrop, setCurrentSelectedDrop] = useState("Airdrop 1");
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      if (address) {
+        const res = await axios.get(
+          `https://hstk.fi/api/temp-allocation/${address}`
+        );
+        setCommunityHash(
+          res?.data?.communityInfo?.estimatedHashTokensCommunity
+        );
+        setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints);
+
   const [leaderboardData, setLeaderboardData] = useState([])
   const [communityHash, setCommunityHash] = useState()
   const [communityPoints, setCommunityPoints] = useState()
@@ -181,6 +415,8 @@ const Campaign = () => {
         setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
         setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
         setepoch(res?.data?.communityInfo?.latestEpoch);
+        setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber);
+        let arr: any = [];
         setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber)
         let arr: any = [];
         arr.push({
@@ -189,7 +425,7 @@ const Campaign = () => {
         })
         setPersonalData(arr);
       }
-    }
+    };
     fetchDetails();
   }, [address])
   useEffect(() => {
@@ -197,11 +433,34 @@ const Campaign = () => {
       const fetchLeaderBoardData = async () => {
         const res = await axios.get('https://hstk.fi/api/leaderboard');
         setLeaderboardData(res?.data);
-      }
+      };
       fetchLeaderBoardData();
+    } catch (err) {
     } catch (err) {
       console.log(err);
     }
+  }, []);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (ddRef.current && !ddRef.current.contains(event.target as Node)) {
+      dispatch(setAirdropDropdown(""));
+    }
+  };
+
+  const handleEscapeKey = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      dispatch(setAirdropDropdown(""));
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, []);
 
   }, [])
 
@@ -247,6 +506,7 @@ const Campaign = () => {
   // }, [account, UserLoans]);
   const totalBorrow = useSelector(selectYourBorrow);
   const totalSupply = useSelector(selectYourSupply);
+  const totalSupply = useSelector(selectYourSupply);
   const netAPR = useSelector(selectNetAPR);
   const [campaignSelected, setCampaignSelected] = useState(2);
   const [tabValue, setTabValue] = useState(1);
@@ -254,23 +514,30 @@ const Campaign = () => {
   const [refferal, setRefferal] = useState("xyz");
   const handleChange = async (e: any) => {
     if (exisitingLink != null) {
+    } else {
+      if (totalBorrow == 0 && totalSupply == 0) {
 
     }
     else {
       if (totalBorrow == 0 && totalSupply == 0) {
         return;
       } else {
+      } else {
         setRefferal(e.target.value);
       }
     }
-  }
+  };
   const handleCopyClick = async () => {
     try {
       if (exisitingLink) {
-        await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + exisitingLink);
+        await navigator.clipboard.writeText(
+          (process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
+            ? "https://testnet.hstk.fi/"
+            : "https://hstk.fi/") + exisitingLink
+        );
         toast.success("Copied", {
           position: toast.POSITION.BOTTOM_RIGHT,
-        })
+        });
       } else {
         if (totalBorrow > 0 || totalSupply > 0) {
           await navigator.clipboard.writeText((process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "https://testnet.hstk.fi/" : "https://hstk.fi/") + refferal);
@@ -278,14 +545,14 @@ const Campaign = () => {
             .then((response) => {
               toast.success("Copied", {
                 position: toast.POSITION.BOTTOM_RIGHT,
-              })
+              });
               //console.log(response, "response refer link"); // Log the response from the backend.
             })
             .catch((error) => {
               toast.error(error?.response?.data?.error, {
                 position: toast.POSITION.BOTTOM_RIGHT,
-              })
-              console.error('Error:', error?.response?.data?.error);
+              });
+              console.error("Error:", error?.response?.data?.error);
             });
         }
       }
@@ -293,8 +560,8 @@ const Campaign = () => {
     } catch (error: any) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_RIGHT,
-      })
-      console.error('Failed to copy text: ', error);
+      });
+      console.error("Failed to copy text: ", error);
     }
   };
   const startDate = new Date('2023-11-27');
@@ -315,26 +582,59 @@ const Campaign = () => {
 
   // Update days left on page load and start an interval to update it daily
   useEffect(() => {
+  // Update days left on page load and start an interval to update it daily
+  useEffect(() => {
     setCurrentPagination(1);
   }, [tabValue])
   return (
     <PageCard pt="6.5rem">
       {/* <StatsBoard /> */}
-      <Box zIndex="100" width="100%" bg="#FF8F8C" position="fixed" height="32px" alignItems="center" justifyContent="center" display="flex" top="3.8125rem">
-        <Text color="#030210" fontSize="14px" fontWeight="700" lineHeight="18px" letterSpacing="-0.15px">
+      <Box
+        zIndex="100"
+        width="100%"
+        bg="#FF8F8C"
+        position="fixed"
+        height="32px"
+        alignItems="center"
+        justifyContent="center"
+        display="flex"
+        top="3.8125rem"
+      >
+        <Text
+          color="#030210"
+          fontSize="14px"
+          fontWeight="700"
+          lineHeight="18px"
+          letterSpacing="-0.15px"
+        >
           Thank you for making Airdrop campaign 01 successful.
         </Text>
         <Text color="#030210" fontSize="14px" fontWeight="400" lineHeight="18px" letterSpacing="-0.15px" ml="0.2rem">
           HASH token will be available for claim post its public release.
         </Text>
-        <Link href={"https://hashstack.medium.com/completed-airdrop-phase-1-c57ae0ff0251"} target="_blank">
-          <Text color="#030210" fontSize="14px" fontWeight="400" lineHeight="18px" letterSpacing="-0.15px" ml="0.2rem" textDecoration="underline" cursor="pointer">
+        <Link
+          href={
+            "https://hashstack.medium.com/completed-airdrop-phase-1-c57ae0ff0251"
+          }
+          target="_blank"
+        >
+          <Text
+            color="#030210"
+            fontSize="14px"
+            fontWeight="400"
+            lineHeight="18px"
+            letterSpacing="-0.15px"
+            ml="0.2rem"
+            textDecoration="underline"
+            cursor="pointer"
+          >
             Please check the announcement article for more details.
           </Text>
 
         </Link>
 
       </Box>
+
       <HStack
         display="flex"
         justifyContent="space-between"
@@ -617,6 +917,26 @@ const Campaign = () => {
                   </CopyToClipboard>
                 </Box>
               </Box>
+              <Box display="flex">
+                <Text
+                  color="#B1B0B5"
+                  fontSize="16px"
+                  fontWeight="400"
+                  lineHeight="20px"
+                  fontStyle="normal"
+                >
+                  Snapshot -
+                </Text>
+                <Text
+                  color="#00D395"
+                  fontSize="16px"
+                  fontStyle="normal"
+                  fontWeight="400"
+                  lineHeight="20px"
+                >
+                  &nbsp;{snapshotNumber}/6
+                </Text>
+              </Box>
               {(totalBorrow == 0 && totalSupply == 0) ?
                 <Box
                   display="flex"
@@ -649,9 +969,12 @@ const Campaign = () => {
                 </Box>
               }
             </Box>
+          )}
         </HStack>
 
-        <Box borderRadius={'lg'} width={'100%'}
+        <Box
+          borderRadius={"lg"}
+          width={"100%"}
           background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
           mt="1rem"
@@ -667,8 +990,13 @@ const Campaign = () => {
               currentPagination={currentPagination}
               setCurrentPagination={setCurrentPagination}
               leaderBoardData={personalData}
-              columnItems={campaignSelected == 1 ? columnItemsPersonalStats : columnItemsPersonalStatsReferalCampaign} />
-          }
+              columnItems={
+                campaignSelected == 1
+                  ? columnItemsPersonalStats
+                  : columnItemsPersonalStatsReferalCampaign
+              }
+            />
+          )}
           {/* <SupplyModal /> */}
         </Box>
       </HStack>
