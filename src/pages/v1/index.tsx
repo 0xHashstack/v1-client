@@ -184,6 +184,10 @@ export default function Home() {
     }
     if (walletConnected) {
       localStorage.setItem("connected", walletConnected);
+      posthog.capture("Connect Wallet", {
+        "Wallet address": address,
+        "Wallet Connected": walletConnected,
+      });
     }
     if (!hasVisited) {
       // Set a local storage item to indicate the user has visited
@@ -201,10 +205,7 @@ export default function Home() {
       //   mixpanel.identify("13793");
       //   posthog.capture('Signed Up')
       // }
-      posthog.capture("Connect Wallet", {
-        "Wallet address": address,
-        "Wallet Connected": walletConnected,
-      });
+
       
 
       // if (!isWhiteListed) {

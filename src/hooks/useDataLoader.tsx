@@ -1190,7 +1190,7 @@ const useDataLoader = () => {
         if (!data) {
           return;
         }
-        ////console.log(data,"data deposit useffect")
+        // console.log(data,"data deposit useffect")
         ////console.log(data.length,"data length")
         if (data) {
           dispatch(setUserDeposits(data));
@@ -1344,6 +1344,7 @@ const useDataLoader = () => {
             rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
           };
           if (data?.rBTC == null) return;
+          console.log(data,"stake")
           dispatch(setStakingShares(data));
           const count = getTransactionCount();
           dispatch(setStakingSharesCount(count));
