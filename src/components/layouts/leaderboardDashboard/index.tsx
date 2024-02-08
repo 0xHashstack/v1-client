@@ -89,7 +89,7 @@ const LeaderboardDashboard = ({
       alignItems="flex-start"
       height={"34rem"}
       padding={"1rem 2rem 0rem"}
-      overflowX="hidden"
+      overflowY="scroll"
     >
       <Table variant="unstyled" width="100%">
         <Thead width={"100%"} height={"5rem"}>
@@ -153,12 +153,11 @@ const LeaderboardDashboard = ({
         </Thead>
         <Tbody position="relative" overflowX="hidden" alignContent={"center"}>
           {leaderBoardData
-            ?.slice(lower_bound, upper_bound + 1)
             .map((member: any, idx: any) => {
               return (
                 <>
                   <Tr
-                    key={lower_bound + idx}
+                    key={idx}
                     width={"100%"}
                     height="4rem"
                     position="relative"
@@ -181,7 +180,7 @@ const LeaderboardDashboard = ({
                         fontSize="14px"
                         color="#E6EDF3"
                       >
-                        {lower_bound + 1 + idx}
+                        {idx+1}
                       </Text>
                     </Td>
 
@@ -233,13 +232,10 @@ const LeaderboardDashboard = ({
                             <Box>
                               {currentSelectedDrop === "Airdrop 1" ? (
                                 <>
-                                  Supply/Borrow: ${member.selfValue}
+                                  Supply/Borrow: ${numberFormatter(member.selfValue)}
                                   <br />
-                                  Referrals: ${member.referralValue}
-                                  Points Allocated:{" "}
-                                  {member.pointsAllocated
-                                    ? numberFormatter(member?.pointsAllocated)
-                                    : 0}
+                                  Referrals: ${numberFormatter(member.referralValue)}
+                                  
                                   <br />
                                 </>
                               ) : (
@@ -248,7 +244,7 @@ const LeaderboardDashboard = ({
                                   {member.pointsEstimated
                                     ? numberFormatter(member?.pointsEstimated)
                                     : 0}
-                                  )
+                                  
                                 </>
                               )}
                             </Box>
@@ -267,12 +263,10 @@ const LeaderboardDashboard = ({
                           arrowShadowColor="#2B2F35"
                         >
                           <Text>
-                            {currentSelectedDrop === "Airdrop 1"
-                              ? numberFormatter(
+                              {numberFormatter(
                                   Number(member.selfValue) +
                                     Number(member.referralValue)
-                                )
-                              : numberFormatter(member.netPoints)}
+                                )}
                           </Text>
                         </Tooltip>
                       </Text>

@@ -36,14 +36,15 @@ import {
   selectYourSupply,
 } from "@/store/slices/readDataSlice";
 import { default as numberFormatter } from "@/utils/functions/numberFormatter";
+import ExternalLinkWhite from "@/assets/icons/externalLinkWhite";
 
 const Campaign = () => {
   const columnItemsLeaderBoard = [
     "Rank",
     "Account",
-    "Referees Liquidity",
+    "Liquidity generated in ($)",
     "Points",
-    "Est.token earning \n $STRK",
+    "Hash Tokens",
   ];
 
   const columnItemsPersonalStats = [
@@ -243,10 +244,22 @@ const Campaign = () => {
   const airdropDropdowns = useSelector(selectAirdropDropdowns);
   const [currentSelectedDrop, setCurrentSelectedDrop] = useState("Airdrop 1");
   const [daysLeft, setDaysLeft] = useState<number>(56);
+  const [epochsData, setepochsData] = useState([])
+  const [snapshotData, setsnapshotData] = useState([])
 
   const startDate = new Date("2023-11-27");
   const endDate = new Date(startDate);
   endDate.setDate(startDate.getDate() + 55);
+  const [campaignDetails, setcampaignDetails] = useState([
+    {
+      campaignName:"Airdrop 01",
+      timeline:"27 Nov 23 - 22 Jan 24"
+    },
+    {
+      campaignName:"CCP",
+      timeline:"15 Feb 24 - 22 Jan 24"
+    },
+  ])
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -272,6 +285,24 @@ const Campaign = () => {
       }
     }
   }, []);
+  useEffect(()=>{
+    try{
+      const fetchData=async()=>{
+        if(address){
+          const res=await axios.get(`https://hstk.fi/api/get-epoch-wise-data/${address}`)
+          const data= JSON.parse(res?.data)
+          setepochsData(data?.finalSnapData)
+          let snaps=data?.epochWise;
+          snaps.sort((a: { epoch: number; }, b: { epoch: number; }) => a.epoch - b.epoch);
+          setsnapshotData(data?.epochWise)
+        }
+      }
+      fetchData()
+    }catch(err){
+      console.log(err);
+    }
+
+  },[address])
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -304,6 +335,7 @@ const Campaign = () => {
           hashAllocated: res?.data?.userInfo?.allocatedData?.hashAllocated,
           est: res?.data?.userInfo?.estimatedHashTokensUser,
         });
+
         setPersonalData(arr);
       }
     };
@@ -440,17 +472,7 @@ const Campaign = () => {
           lineHeight="18px"
           letterSpacing="-0.15px"
         >
-          Thank you for making Airdrop campaign 01 successful.
-        </Text>
-        <Text
-          color="#030210"
-          fontSize="14px"
-          fontWeight="400"
-          lineHeight="18px"
-          letterSpacing="-0.15px"
-          ml="0.2rem"
-        >
-          HASH token will be available for claim post its public release.
+          submit your Submission for CCP campaign 
         </Text>
         <Link
           href={
@@ -461,14 +483,14 @@ const Campaign = () => {
           <Text
             color="#030210"
             fontSize="14px"
-            fontWeight="400"
+            fontWeight="800"
             lineHeight="18px"
             letterSpacing="-0.15px"
             ml="0.2rem"
             textDecoration="underline"
             cursor="pointer"
           >
-            Please check the announcement article for more details.
+            here
           </Text>
         </Link>
       </Box>
@@ -538,6 +560,7 @@ const Campaign = () => {
               border="1px"
               borderColor="#2B2F35"
               justifyContent="space-between"
+              ml="2rem"
               py="2"
               pl="3"
               pr="3"
@@ -611,37 +634,245 @@ const Campaign = () => {
           )}
         </HStack>
 
-        <HStack
+        { currentSelectedDrop=="Airdrop 1" ?
+              <HStack
+              display="flex"
+              width="100%"
+              alignItems="flex-start"
+              justifyContent="space-between"
+            >
+              <HStack
+                mt="4rem"
+                display="flex"
+                flexDirection="column"
+                alignItems="flex-start"
+              >
+                <Box>
+                  <Text
+                    color="#F0F0F5"
+                    fontSize="16px"
+                    fontWeight="400"
+                    lineHeight="20px"
+                    fontStyle="normal"
+                    mb="0.2rem"
+                  >
+                    Overall campaign stats
+                  </Text>
+                </Box>
+                <HStack display="flex" justifyContent="space-between">
+                  <HStack
+                    display="flex"
+                    p="18px 26px"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                    borderRadius="8px"
+                    gap="6.3rem"
+                  >
+                    <VStack
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="flex-start"
+                      gap={"6px"}
+                    >
+                      <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+                        Campaign pool
+                      </Text>
+                      <Text color="#00D395" fontSize="20px">
+                        45M HASH
+                      </Text>
+                    </VStack>
+                    <VStack
+                      gap={"6px"}
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                    >
+                      <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+                        Points Accrued
+                      </Text>
+                      {communityPoints ? (
+                        <Text color="#00D395" fontSize="20px">
+                          {numberFormatter(communityPoints)}
+                        </Text>
+                      ) : (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      )}
+                    </VStack>
+                    <VStack
+                      gap={"6px"}
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                    >
+                      <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+                        <Tooltip
+                          hasArrow
+                          label="Estimated Tokens Earned"
+                          placement="bottom"
+                          boxShadow="dark-lg"
+                          bg="#010409"
+                          fontSize={"13px"}
+                          fontWeight={"thin"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                          border="1px solid"
+                          borderColor="#2B2F35"
+                          arrowShadowColor="#2B2F35"
+                        >
+                          Epoch Pool
+                        </Tooltip>
+                      </Text>
+                      {!communityHash ? (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (
+                        <Text color="#00D395" fontSize="20px">
+                          11.25M HASH
+                        </Text>
+                      )}
+                    </VStack>
+                  </HStack>
+                </HStack>
+              </HStack>
+              <Box mt="4rem" display="flex" flexDirection="column">
+                <Text
+                  color="#F0F0F5"
+                  fontSize="16px"
+                  fontWeight="400"
+                  lineHeight="20px"
+                  fontStyle="normal"
+                  mb="0.8rem"
+                >
+                  Your Referral Link
+                </Text>
+                <Box display="flex" mt="0">
+                  <InputGroup
+                    width="550px"
+                    mt="0rem"
+                    border="1px solid #676D9A"
+                    borderRight="0px"
+                    borderRadius="6px 0px 0px 6px"
+                    height="5.3rem"
+                  >
+                    <InputLeftAddon
+                      height="80px"
+                      fontSize="20px"
+                      border="none"
+                      bg="none"
+                      color="#4D59E8"
+                      paddingInlineEnd="0"
+                    >
+                      {process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
+                        ? "https://testnet.hstk.fi/"
+                        : "https://hstk.fi/"}
+                    </InputLeftAddon>
+                    {exisitingLink ? (
+                      <Input
+                        fontSize="20px"
+                        height="80px"
+                        border="none"
+                        color="#F0F0F5"
+                        value={exisitingLink}
+                        paddingInlineStart="0"
+                        _focus={{
+                          outline: "0",
+                          boxShadow: "none",
+                        }}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      <Input
+                        fontSize="20px"
+                        height="80px"
+                        border="none"
+                        color="#F0F0F5"
+                        value={
+                          totalBorrow == 0 && totalSupply == 0 ? "****" : refferal
+                        }
+                        paddingInlineStart="0"
+                        _focus={{
+                          outline: "0",
+                          boxShadow: "none",
+                        }}
+                        onChange={handleChange}
+                      />
+                    )}
+                  </InputGroup>
+                  <Box
+                    cursor="pointer"
+                    onClick={() => {
+                      handleCopyClick();
+                    }}
+                  >
+                    <CopyToClipboard text="Works">
+                      <CopyIcon />
+                    </CopyToClipboard>
+                  </Box>
+                </Box>
+                {totalBorrow == 0 && totalSupply == 0 ? (
+                  <Box
+                    display="flex"
+                    bg="#222766"
+                    p="4"
+                    border="1px solid #3841AA"
+                    fontStyle="normal"
+                    fontWeight="400"
+                    lineHeight="18px"
+                    borderRadius="6px"
+                    color="#B1B0B5"
+                    fontSize="14px"
+                    letterSpacing="-0.15px"
+                    mt="0.3rem"
+                  >
+                    <Box pr="3" mt="0.5" cursor="pointer">
+                      <BlueInfoIcon />
+                    </Box>
+                    To generate your referral link, you must supply a min of $25, or
+                    borrow $100.
+                  </Box>
+                ) : (
+                  <Box
+                    color="#676D9A"
+                    fontSize="14px"
+                    fontStyle="normal"
+                    fontWeight="500"
+                    lineHeight="20px"
+                    letterSpacing="-0.15px"
+                    mt="0.3rem"
+                  >
+                    You can change this link only once
+                  </Box>
+                )}
+              </Box>
+            </HStack>:        
+            <HStack
           display="flex"
           width="100%"
           alignItems="flex-start"
-          justifyContent="space-between"
+          gap="5rem"
         >
           <HStack
-            mt="4rem"
+            mt="5rem"
             display="flex"
             flexDirection="column"
             alignItems="flex-start"
           >
-            <Box>
-              <Text
-                color="#F0F0F5"
-                fontSize="16px"
-                fontWeight="400"
-                lineHeight="20px"
-                fontStyle="normal"
-                mb="0.2rem"
-              >
-                Overall campaign stats
-              </Text>
-            </Box>
             <HStack display="flex" justifyContent="space-between">
               <HStack
                 display="flex"
-                p="18px 26px"
+                p="28px 48px"
                 border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 borderRadius="8px"
                 gap="6.3rem"
+                bg="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
               >
                 <VStack
                   display="flex"
@@ -652,7 +883,7 @@ const Campaign = () => {
                   <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                     Campaign pool
                   </Text>
-                  <Text color="#e6edf3" fontSize="20px">
+                  <Text color="#00D395" fontSize="20px">
                     45M HASH
                   </Text>
                 </VStack>
@@ -665,7 +896,7 @@ const Campaign = () => {
                     Points Accrued
                   </Text>
                   {communityPoints ? (
-                    <Text color="#e6edf3" fontSize="20px">
+                    <Text color="#00D395" fontSize="20px">
                       {numberFormatter(communityPoints)}
                     </Text>
                   ) : (
@@ -710,7 +941,7 @@ const Campaign = () => {
                       borderRadius="6px"
                     />
                   ) : (
-                    <Text color="#e6edf3" fontSize="20px">
+                    <Text color="#00D395" fontSize="20px">
                       11.25M HASH
                     </Text>
                   )}
@@ -718,117 +949,26 @@ const Campaign = () => {
               </HStack>
             </HStack>
           </HStack>
-          <Box mt="4rem" display="flex" flexDirection="column">
-            <Text
-              color="#F0F0F5"
-              fontSize="16px"
-              fontWeight="400"
-              lineHeight="20px"
-              fontStyle="normal"
-              mb="0.8rem"
-            >
-              Your Referral Link
-            </Text>
-            <Box display="flex" mt="0">
-              <InputGroup
-                width="550px"
-                mt="0rem"
-                border="1px solid #676D9A"
-                borderRight="0px"
-                borderRadius="6px 0px 0px 6px"
-                height="5.3rem"
-              >
-                <InputLeftAddon
-                  height="80px"
-                  fontSize="20px"
-                  border="none"
-                  bg="none"
-                  color="#4D59E8"
-                  paddingInlineEnd="0"
-                >
-                  {process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
-                    ? "https://testnet.hstk.fi/"
-                    : "https://hstk.fi/"}
-                </InputLeftAddon>
-                {exisitingLink ? (
-                  <Input
-                    fontSize="20px"
-                    height="80px"
-                    border="none"
-                    color="#F0F0F5"
-                    value={exisitingLink}
-                    paddingInlineStart="0"
-                    _focus={{
-                      outline: "0",
-                      boxShadow: "none",
-                    }}
-                    onChange={handleChange}
-                  />
-                ) : (
-                  <Input
-                    fontSize="20px"
-                    height="80px"
-                    border="none"
-                    color="#F0F0F5"
-                    value={
-                      totalBorrow == 0 && totalSupply == 0 ? "****" : refferal
-                    }
-                    paddingInlineStart="0"
-                    _focus={{
-                      outline: "0",
-                      boxShadow: "none",
-                    }}
-                    onChange={handleChange}
-                  />
-                )}
-              </InputGroup>
-              <Box
-                cursor="pointer"
-                onClick={() => {
-                  handleCopyClick();
-                }}
-              >
-                <CopyToClipboard text="Works">
-                  <CopyIcon />
-                </CopyToClipboard>
-              </Box>
+          <Box mt="6.5rem" display="flex" flexDirection="column" gap="1.8rem" color="#F0F0F5" fontSize="12px" lineHeight="20px" fontWeight="400">
+            <Box display="flex">
+              <Link href={""} style={{display:"flex",gap:"1rem"}} target="_blank">
+                      <Text>
+                        Please check the airdrop announcement article
+                      </Text>
+                      <ExternalLinkWhite/>
+              </Link>
             </Box>
-            {totalBorrow == 0 && totalSupply == 0 ? (
-              <Box
-                display="flex"
-                bg="#222766"
-                p="4"
-                border="1px solid #3841AA"
-                fontStyle="normal"
-                fontWeight="400"
-                lineHeight="18px"
-                borderRadius="6px"
-                color="#B1B0B5"
-                fontSize="14px"
-                letterSpacing="-0.15px"
-                mt="0.3rem"
-              >
-                <Box pr="3" mt="0.5" cursor="pointer">
-                  <BlueInfoIcon />
-                </Box>
-                To generate your referral link, you must supply a min of $25, or
-                borrow $100.
-              </Box>
-            ) : (
-              <Box
-                color="#676D9A"
-                fontSize="14px"
-                fontStyle="normal"
-                fontWeight="500"
-                lineHeight="20px"
-                letterSpacing="-0.15px"
-                mt="0.3rem"
-              >
-                You can change this link only once
-              </Box>
-            )}
+            <Box display="flex">
+              <Link href={""} style={{display:"flex",gap:"1rem"}} target="_blank">
+                      <Text >
+                        Please check the airdrop announcement article
+                      </Text>
+                      <ExternalLinkWhite/>
+              </Link>
+            </Box>
           </Box>
-        </HStack>
+        </HStack>  
+      }
 
         <Box
           borderRadius={"lg"}
@@ -840,6 +980,9 @@ const Campaign = () => {
           {tabValue == 1 ? (
             <UserCampaignData
               width={"95%"}
+              epochsData={epochsData}
+              campaignDetails={campaignDetails}
+              snapshotsData={snapshotData}
               currentPagination={currentPagination}
               setCurrentPagination={setCurrentPagination}
               leaderBoardData={personalData}

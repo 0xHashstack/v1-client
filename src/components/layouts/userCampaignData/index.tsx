@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Thead,
@@ -27,6 +27,9 @@ const UserCampaignData = ({
   setCurrentPagination,
   leaderBoardData,
   columnItems,
+  epochsData,
+  snapshotsData,
+  campaignDetails,
 }: // userLoans,
   {
     width: string;
@@ -34,6 +37,9 @@ const UserCampaignData = ({
     setCurrentPagination: any;
     leaderBoardData: any,
     columnItems: any;
+    epochsData: any;
+    snapshotsData: any;
+    campaignDetails:any;
 
     // columnItems: Array<Array<string>>;
     // gap: string;
@@ -54,12 +60,37 @@ const UserCampaignData = ({
   const tenure = ["Day", "Week", "Month"];
   const modalDropdowns = useSelector(selectModalDropDowns);
   const tooltips = [
-    "Number of traders you have referred",
-    "Liquidity (Supply/Borrow,Referrals)",
-    "Points earned for rewards",
+    "",
+    "",
     "Allocated $HASH",
   ];
   const [openEpochs, setOpenEpochs] = useState<any>([]);
+  const snapshotsDates=[
+    "30 Nov 23",
+    "2 Nov 23",
+    "4 Dec 23",
+    "6 Dec 23",
+    "8 Dec 23",
+    "10 Dec 23",
+    "14 Dec 23",
+    "16 Dec 23",
+    "18 Dec 23",
+    "20 Dec 23",
+    "22 Dec 23",
+    "24 Dec 23",
+    "28 Dec 23",
+    "30 Dec 23",
+    "1 Jan 24",
+    "3 Jan 24",
+    "5 Jan 24",
+    "7 Jan 24",
+    "11 Jan 24",
+    "13 Jan 24",
+    "15 Jan 24",
+    "17 Jan 24",
+    "19 Jan 24",
+    "21 jan 24"
+  ]
 
   // Function to toggle the open state of an epoch
   const toggleEpochSelection = (idxEpoch: any) => {
@@ -79,6 +110,59 @@ const UserCampaignData = ({
   const isEpochOpen = (idxEpoch: any) => {
     return openEpochs.includes(idxEpoch);
   };
+  const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []]);
+  useEffect(() => {
+    const groupSize = 6;
+
+    // Calculate the number of groups needed
+    const numGroups = Math.ceil(snapshotsData.length / groupSize);
+
+    // Initialize groupedSnapshots array
+    const newGroupedSnapshots = Array.from({ length: numGroups }, (_, groupIndex) =>
+      snapshotsData.slice(groupIndex * groupSize, (groupIndex + 1) * groupSize).sort((a: any, b: any) => a.snapshot_number - b.snapshot_number)
+    );
+
+    setGroupedSnapshots(newGroupedSnapshots);
+  }, [snapshotsData]);
+  const [snapshotData, setsnapshotData] = useState([[{
+    Date: "27/11/2023 - 10/12/23",
+    Liq: 330,
+    Points: 359,
+    Hash: 559
+  },
+  {
+    Date: "27/11/2023 - 10/12/23",
+    Liq: 330,
+    Points: 359,
+    Hash: 559
+  },
+  {
+    Date: "27/11/2023 - 10/12/23",
+    Liq: 330,
+    Points: 359,
+    Hash: 559
+  },
+  {
+    Date: "27/11/2023 - 10/12/23",
+    Liq: 330,
+    Points: 359,
+    Hash: 559
+  },
+  {
+    Date: "27/11/2023 - 10/12/23",
+    Liq: 330,
+    Points: 359,
+    Hash: 559
+  },
+  {
+    Date: "27/11/2023 - 10/12/23",
+    Liq: 330,
+    Points: 359,
+    Hash: 559
+  },]])
+  useEffect(() => {
+
+  }, [])
   const epochData = [
     {
       Date: "27/11/2023 - 10/12/23",
@@ -101,44 +185,7 @@ const UserCampaignData = ({
       Hash: 559
     },
   ]
-  const snapshotData = [
-    {
-      Date: "27/11/2023 - 10/12/23",
-      Liq: 330,
-      Points: 359,
-      Hash: 559
-    },
-    {
-      Date: "27/11/2023 - 10/12/23",
-      Liq: 330,
-      Points: 359,
-      Hash: 559
-    },
-    {
-      Date: "27/11/2023 - 10/12/23",
-      Liq: 330,
-      Points: 359,
-      Hash: 559
-    },
-    {
-      Date: "27/11/2023 - 10/12/23",
-      Liq: 330,
-      Points: 359,
-      Hash: 559
-    },
-    {
-      Date: "27/11/2023 - 10/12/23",
-      Liq: 330,
-      Points: 359,
-      Hash: 559
-    },
-    {
-      Date: "27/11/2023 - 10/12/23",
-      Liq: 330,
-      Points: 359,
-      Hash: 559
-    },
-  ]
+
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
@@ -362,7 +409,7 @@ const UserCampaignData = ({
             </Thead>
             <Tbody
               position="relative"
-              overflowX="hidden"
+              // overflowX="hidden"
               alignContent={"center"}
             //   display="flex"
             //   flexDirection="column"
@@ -378,11 +425,11 @@ const UserCampaignData = ({
                         key={idx}
                         width={"100%"}
                         height="4rem"
-                        bg="#676D9A48"
+                        bg= {epochDropdownSelected ? "#676D9A48":""}
                         // height={"5rem"}
                         // bgColor="green"
                         // borderBottom="1px solid #2b2f35"
-                        position="relative"
+                        // position="relative"
                         cursor="pointer"
                         onClick={() => {
                           setepochDropdownSelected(!epochDropdownSelected)
@@ -454,7 +501,7 @@ const UserCampaignData = ({
                             color="#E6EDF3"
                           // bgColor={"blue"}
                           >
-                            {member.tradders}
+                            {campaignDetails[idx]?.campaignName}
                           </Text>
                         </Td>
                         <Td
@@ -478,12 +525,7 @@ const UserCampaignData = ({
                           >
                             <Tooltip
                               hasArrow
-                              label={
-                                <Box>
-                                  Supply/Borrow: ${member.supplyliq + member.borrowliq}
-                                  <br />
-                                  Referrals: ${member.referredliq}
-                                </Box>
+                              label={""
                               }
                               // arrowPadding={-5420}
                               placement="right"
@@ -504,7 +546,7 @@ const UserCampaignData = ({
                             // mt="28px"
                             >
                               <Text>
-                                {numberFormatter(Number(member.liq) + Number(member.referredliq))}
+                                {campaignDetails[idx]?.timeline}
                               </Text>
                             </Tooltip>
                           </Text>
@@ -532,9 +574,9 @@ const UserCampaignData = ({
                               hasArrow
                               label={
                                 <Box>
-                                  Points Allocated: {numberFormatter(member.ptsAllocated)}
+                                  HASH Allocated: {member.hashAllocated ? numberFormatter(member?.hashAllocated) : 0}
                                   <br />
-                                  Points Estimated: {numberFormatter(member.pts)}
+                                  HASH Estimated: {member.est ? numberFormatter(member?.est) : 0}
                                 </Box>
                               }
                               // arrowPadding={-5420}
@@ -556,7 +598,7 @@ const UserCampaignData = ({
                             // mt="28px"
                             >
                               <Text>
-                                {numberFormatter(member.pts + member.ptsAllocated)}
+                                {numberFormatter(member.est + member.hashAllocated)}
                               </Text>
                             </Tooltip>
                           </Text>
@@ -582,26 +624,15 @@ const UserCampaignData = ({
                             gap="1rem"
                           // bgColor={"blue"}
                           >
-                            <Text textDecoration="underline" cursor="pointer">
+                            <Text textDecoration="underline" cursor="pointer" color="#3E415C">
                               Claim
                             </Text>
-                            <Box cursor="pointer" onMouseEnter={()=>{sethoverEpochDrop(true)}} onMouseLeave={()=>{sethoverEpochDrop(false)}}>
-                              {epochDropdownSelected ? <CircularDropDownClose /> : hoverEpochDrop ?<CircularDropDownActive/>: <CircularDropDown />}
-
+                            <Box cursor="pointer" onMouseEnter={() => { sethoverEpochDrop(true) }} onMouseLeave={() => { sethoverEpochDrop(false) }}>
+                              {epochDropdownSelected ? <CircularDropDownClose /> : hoverEpochDrop ? <CircularDropDownActive /> : <CircularDropDown />}
                             </Box>
                           </Box>
                         </Td>
                       </Tr>
-                      {/* <Tr
-                        style={{
-                          position: "absolute",
-                          // left: "0%",
-                          width: "100%",
-                          height: "1px",
-                          borderBottom: "1px solid rgba(103, 109, 154, 0.30)",
-                          display: `${member.id == 5 ? "none" : "block"}`,
-                        }}
-                      /> */}
                       <Tr key={idx}
                         width={"100%"}
                         height="4rem"
@@ -613,7 +644,7 @@ const UserCampaignData = ({
                         cursor="pointer"
                         pl="1rem"  >
                         {epochDropdownSelected && <Box borderRadius="6px" mt="1rem" mr="2rem" ml="2rem" border={openEpochs.length > 0 ? "" : "1px solid #676D9A48"} borderBottom={openEpochs.length > 0 ? "1px solid #676D9A48" : ""}>
-                          {epochData.map((epochs: any, idxEpoch: any) => (
+                          {epochsData.map((epochs: any, idxEpoch: any) => (
 
                             <Box key={idxEpoch} >
                               <Box display="flex" borderTop={openEpochs.length > 0 ? "1px solid #676D9A48" : ""} borderLeft={openEpochs.length > 0 ? "1px solid #676D9A48" : ""} borderBottom={openEpochs.length > 0 ? isEpochOpen(idxEpoch) ? "1px solid #676D9A48" : "" : ""} borderBottomRadius={openEpochs.length > 0 ? isEpochOpen(idxEpoch) ? "6px" : "" : "6px"} borderRight={openEpochs.length > 0 ? "1px solid #676D9A48" : ""} borderRadius={openEpochs.length > 0 ? isEpochOpen(idxEpoch) ? "6px" : "" : "6px"} justifyContent="space-between" cursor="pointer" padding="24px 48px 24px 48px" color="#F0F0F5" fontSize="14px" fontWeight="400" lineHeight="20px" onClick={() => {
@@ -624,14 +655,14 @@ const UserCampaignData = ({
                                   Epoch {idxEpoch + 1}
                                 </Text>
                                 <Text>
-                                  {epochs.Date}
+                                  {idxEpoch == 0 ? "27 Nov 23 - 11 Dec 23" : idxEpoch == 1 ? "12 Dec 23 - 25 Dec 23" : idxEpoch == 2 ? "26 Dec 23 - 8 Jan 24" : "9 Jan 24 - 22 Jan 24"}
                                 </Text>
                                 <Text>
-                                  {epochs?.Points} points
+                                  {numberFormatter(epochs?.pointsAllocated)} points
                                 </Text>
                                 <Box display="flex" gap="1.5rem">
                                   <Text>
-                                    {epochs?.Hash} Hash tokens earned
+                                    {numberFormatter(epochs?.hashAllocated)} Hash tokens earned
                                   </Text>
                                   {isEpochOpen(idxEpoch) ? <CircularDropDownClose /> : <CircularDropDownActive />}
 
@@ -640,25 +671,25 @@ const UserCampaignData = ({
                               <Box borderBottom={idxEpoch != 3 ? isEpochOpen(idxEpoch) ? "" : "1px solid #676D9A48" : ""} >
                               </Box>
                               {isEpochOpen(idxEpoch) &&
-                                <Box mb="1rem">
-                                  {snapshotData?.map((snapshot: any, idxSnap: any) => (
+                                <Box >
+                                  {groupedSnapshots[idxEpoch]?.map((snapshot: any, idxSnap: any) => (
                                     <Box key={idxSnap} bg={idxSnap % 2 == 0 ? "#676D9A16" : "#676D9A32"} mr="4rem" ml="4rem" borderRadius="6px">
                                       <Box borderRadius="6px" mt="0.5" display="flex" justifyContent="space-between" cursor="pointer" ml="2rem" mr="2rem" padding="24px 24px 24px 24px" color="#F0F0F5" fontSize="14px" fontWeight="400" lineHeight="20px">
                                         <Text>
-                                          Snapshot {idxSnap + 1}
+                                          Snapshot {idxSnap + 1} 
                                         </Text>
                                         <Text>
-                                          {snapshot.Date}
+                                          {snapshotsDates[(idxSnap)+(idxEpoch*6)]}
                                         </Text>
                                         <Text>
-                                          ${snapshot?.Liq} Liquidity generated
+                                          ${numberFormatter(snapshot?.supplyValue+snapshot?.borrowValue)} Liquidity generated
                                         </Text>
                                         <Text>
-                                          {snapshot?.Points} points
+                                          {numberFormatter(snapshot?.totalPoints)} points
                                         </Text>
                                         <Box display="flex" gap="1.5rem">
                                           <Text>
-                                            {snapshot?.Hash} Hash tokens earned
+                                            {numberFormatter(snapshot?.estimatedHashTokensUser)}  Hash tokens earned
                                           </Text>
                                           <ExternalLink />
                                         </Box>
@@ -667,20 +698,28 @@ const UserCampaignData = ({
                                   ))}
                                 </Box>
                               }
-
-
-
                             </Box>
                           ))}
                         </Box>}
 
 
                       </Tr>
+                                           {!epochDropdownSelected && <Tr
+                        style={{
+                          position: "absolute",
+                          // left: "0%",
+                          width: "100%",
+                          height: "1px",
+                          borderBottom: "1px solid rgba(103, 109, 154, 0.30)",
+                          display: `${member.id == 5 ? "none" : "block"}`,
+                        }}
+                      />}
                     </>
                   );
 
                 })}
             </Tbody>
+            
           </Table>
 
         </TableContainer>
