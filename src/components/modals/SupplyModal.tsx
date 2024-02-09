@@ -204,11 +204,7 @@ const SupplyModal = ({
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
   // const walletBalances = useSelector(selectAssetWalletBalance);
   // const transactionRefresh=useSelector(selectTransactionRefresh);
 

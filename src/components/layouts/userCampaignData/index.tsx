@@ -12,6 +12,7 @@ import {
   Tooltip,
   Button,
 } from "@chakra-ui/react";
+import Image from "next/image";
 import { selectModalDropDowns, setModalDropdown } from '@/store/slices/dropdownsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ArrowUp from '@/assets/icons/arrowup';
@@ -39,7 +40,7 @@ const UserCampaignData = ({
     columnItems: any;
     epochsData: any;
     snapshotsData: any;
-    campaignDetails:any;
+    campaignDetails: any;
 
     // columnItems: Array<Array<string>>;
     // gap: string;
@@ -65,7 +66,7 @@ const UserCampaignData = ({
     "Allocated $HASH",
   ];
   const [openEpochs, setOpenEpochs] = useState<any>([]);
-  const snapshotsDates=[
+  const snapshotsDates = [
     "30 Nov 23",
     "2 Nov 23",
     "4 Dec 23",
@@ -110,6 +111,7 @@ const UserCampaignData = ({
   const isEpochOpen = (idxEpoch: any) => {
     return openEpochs.includes(idxEpoch);
   };
+  console.log(openEpochs.length, "length")
   const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []]);
   useEffect(() => {
     const groupSize = 6;
@@ -185,7 +187,6 @@ const UserCampaignData = ({
       Hash: 559
     },
   ]
-
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
@@ -240,7 +241,7 @@ const UserCampaignData = ({
 
           // bgColor={"red"}
           // height={"100%"}
-          height={"34rem"}
+          height={"36rem"}
           padding={"1rem 2rem 0rem"}
           overflowY="scroll"
         // overflowX="hidden"
@@ -425,7 +426,7 @@ const UserCampaignData = ({
                         key={idx}
                         width={"100%"}
                         height="4rem"
-                        bg= {epochDropdownSelected ? "#676D9A48":""}
+                        bg={epochDropdownSelected ? "#676D9A48" : ""}
                         // height={"5rem"}
                         // bgColor="green"
                         // borderBottom="1px solid #2b2f35"
@@ -676,13 +677,13 @@ const UserCampaignData = ({
                                     <Box key={idxSnap} bg={idxSnap % 2 == 0 ? "#676D9A16" : "#676D9A32"} mr="4rem" ml="4rem" borderRadius="6px">
                                       <Box borderRadius="6px" mt="0.5" display="flex" justifyContent="space-between" cursor="pointer" ml="2rem" mr="2rem" padding="24px 24px 24px 24px" color="#F0F0F5" fontSize="14px" fontWeight="400" lineHeight="20px">
                                         <Text>
-                                          Snapshot {idxSnap + 1} 
+                                          Snapshot {idxSnap + 1}
                                         </Text>
                                         <Text>
-                                          {snapshotsDates[(idxSnap)+(idxEpoch*6)]}
+                                          {snapshotsDates[(idxSnap) + (idxEpoch * 6)]}
                                         </Text>
                                         <Text>
-                                          ${numberFormatter(snapshot?.supplyValue+snapshot?.borrowValue)} Liquidity generated
+                                          ${numberFormatter(snapshot?.supplyValue + snapshot?.borrowValue + snapshot?.referralValue)} Liquidity generated
                                         </Text>
                                         <Text>
                                           {numberFormatter(snapshot?.totalPoints)} points
@@ -704,7 +705,7 @@ const UserCampaignData = ({
 
 
                       </Tr>
-                                           {!epochDropdownSelected && <Tr
+                      {!epochDropdownSelected && <Tr
                         style={{
                           position: "absolute",
                           // left: "0%",
@@ -714,12 +715,229 @@ const UserCampaignData = ({
                           display: `${member.id == 5 ? "none" : "block"}`,
                         }}
                       />}
+                      <Tr
+                        key={idx}
+                        width={"100%"}
+                        height="4rem"
+                        bg={"#676D9A48"}
+                        // height={"5rem"}
+                        // bgColor="green"
+                        // borderBottom="1px solid #2b2f35"
+                        position="relative"
+                        top={epochDropdownSelected ? openEpochs.length == 0 ? "20rem" : openEpochs.length == 1 ? "46rem" : openEpochs.length == 2 ? "73rem" : openEpochs.length == 3 ? "99rem" : openEpochs.length == 4 ? "125rem" : "" : "0"}
+                        cursor="pointer"
+                        p={0}
+                        style={{ borderRadius: "6px" }}
+                      >
+                        {/* <Td
+                          width={"16.6%"}
+                          // maxWidth={`${gap[idx1][idx2]}%`}
+                          fontSize={"14px"}
+                          fontWeight={400}
+                          padding={2}
+                          textAlign="center"
+                        >
+                          <Text
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent={"start"}
+                            fontWeight="400"
+                            fontSize="14px"
+                            color="#E6EDF3"
+                          // bgColor={"blue"}
+                          >
+                            {member.start} - {member.end}
+                          </Text>
+                        </Td> */}
+                        {/* <Td
+                          width={"16.6%"}
+                          // maxWidth={`${gap[idx1][idx2]}%`}
+                          fontSize={"14px"}
+                          fontWeight={400}
+                          padding={2}
+                          textAlign="center"
+                        >
+                          <Text
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            fontWeight="400"
+                            fontSize="14px"
+                            color="#E6EDF3"
+                          // bgColor={"blue"}
+                          >
+                            {member.epoch}
+                          </Text>
+                        </Td> */}
+                        <Td
+                          width={"16.6%"}
+                          // maxWidth={`${gap[idx1][idx2]}%`}
+                          fontSize={"14px"}
+                          fontWeight={400}
+                          padding={2}
+                          textAlign="center"
+                        >
+                          <Text
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            alignItems="center"
+                            // justifyContent="center"
+                            fontWeight="400"
+                            fontSize="14px"
+                            ml="10"
+                            color="#E6EDF3"
+                          // bgColor={"blue"}
+                          >
+                            <Image
+                              src="/latestSyncedBlockGreenDot.svg"
+                              alt="Picture of the author"
+                              width="8"
+                              height="8"
+                              style={{ marginRight: "0.5rem", marginBottom: "0.1rem" }}
+                            />
+                            {campaignDetails[idx + 1]?.campaignName}
+                          </Text>
+                        </Td>
+                        <Td
+                          width={"16.6%"}
+                          // maxWidth={`${gap[idx1][idx2]}%`}
+                          fontSize={"14px"}
+                          fontWeight={400}
+                          padding={2}
+                          textAlign="center"
+                        >
+                          <Text
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            fontWeight="400"
+                            fontSize="14px"
+                            color="#E6EDF3"
+                          // bgColor={"blue"}
+                          >
+                            <Tooltip
+                              hasArrow
+                              label={""
+                              }
+                              // arrowPadding={-5420}
+                              placement="right"
+                              rounded="md"
+                              boxShadow="dark-lg"
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                            // cursor="context-menu"
+                            // marginRight={idx1 === 1 ? "52px" : ""}
+                            // maxW="222px"
+                            // mt="28px"
+                            >
+                              <Text>
+                                {campaignDetails[idx + 1]?.timeline}
+                              </Text>
+                            </Tooltip>
+                          </Text>
+                        </Td>
+                        <Td
+                          width={"16.6%"}
+                          // maxWidth={`${gap[idx1][idx2]}%`}
+                          fontSize={"14px"}
+                          fontWeight={400}
+                          padding={2}
+                          textAlign="center"
+                        >
+                          <Text
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            fontWeight="400"
+                            fontSize="14px"
+                            color="#E6EDF3"
+                          // bgColor={"blue"}
+                          >
+                            <Tooltip
+                              hasArrow
+                              label={
+                                <Box>
+                                  HASH Allocated: {member.hashAllocated ? numberFormatter(member?.hashAllocated) : 0}
+                                  <br />
+                                  HASH Estimated: {member.est ? numberFormatter(member?.est) : 0}
+                                </Box>
+                              }
+                              // arrowPadding={-5420}
+                              placement="right"
+                              rounded="md"
+                              boxShadow="dark-lg"
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                            // cursor="context-menu"
+                            // marginRight={idx1 === 1 ? "52px" : ""}
+                            // maxW="222px"
+                            // mt="28px"
+                            >
+                              <Text>
+                                {numberFormatter(member.est + member.hashAllocated)}
+                              </Text>
+                            </Tooltip>
+                          </Text>
+                        </Td>
+                        <Td
+                          width={"16.6%"}
+                          // maxWidth={`${gap[idx1][idx2]}%`}
+                          fontSize={"14px"}
+                          fontWeight={400}
+                          padding={2}
+                          textAlign="end"
+                        >
+                          <Box
+                            width="100%"
+                            height="100%"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="end"
+                            fontWeight="400"
+                            fontSize="14px"
+                            color="#E6EDF3"
+                            pr="10"
+                            gap="1rem"
+                          // bgColor={"blue"}
+                          >
+                            <Text textDecoration="underline" cursor="pointer" color="#3E415C">
+                              Claim
+                            </Text>
+                            <Box cursor="pointer" onMouseEnter={() => { sethoverEpochDrop(true) }} onMouseLeave={() => { sethoverEpochDrop(false) }}>
+                              {epochDropdownSelected ? <CircularDropDownClose /> : hoverEpochDrop ? <CircularDropDownActive /> : <CircularDropDown />}
+                            </Box>
+                          </Box>
+                        </Td>
+                      </Tr>
                     </>
                   );
 
                 })}
             </Tbody>
-            
+
           </Table>
 
         </TableContainer>

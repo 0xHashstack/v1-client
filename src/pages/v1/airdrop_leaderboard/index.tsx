@@ -250,6 +250,9 @@ const Campaign = () => {
   const startDate = new Date("2023-11-27");
   const endDate = new Date(startDate);
   endDate.setDate(startDate.getDate() + 55);
+  const [userPointsAllocated, setuserPointsAllocated] = useState()
+  const [userHashAllocated, setuserHashAllocated] = useState()
+  const [userRank, setuserRank] = useState()
   const [campaignDetails, setcampaignDetails] = useState([
     {
       campaignName:"Airdrop 01",
@@ -257,7 +260,7 @@ const Campaign = () => {
     },
     {
       campaignName:"CCP",
-      timeline:"15 Feb 24 - 22 Jan 24"
+      timeline:"15 Feb 24 - 4 Apr 24"
     },
   ])
 
@@ -290,8 +293,9 @@ const Campaign = () => {
       const fetchData=async()=>{
         if(address){
           const res=await axios.get(`https://hstk.fi/api/get-epoch-wise-data/${address}`)
-          const data= JSON.parse(res?.data)
+          const data= res?.data
           setepochsData(data?.finalSnapData)
+          setuserRank(data?.rank)
           let snaps=data?.epochWise;
           snaps.sort((a: { epoch: number; }, b: { epoch: number; }) => a.epoch - b.epoch);
           setsnapshotData(data?.epochWise)
@@ -335,6 +339,8 @@ const Campaign = () => {
           hashAllocated: res?.data?.userInfo?.allocatedData?.hashAllocated,
           est: res?.data?.userInfo?.estimatedHashTokensUser,
         });
+        setuserPointsAllocated(res?.data?.userInfo?.allocatedData?.pointsAllocated);
+        setuserHashAllocated(res?.data?.userInfo?.allocatedData?.hashAllocated)
 
         setPersonalData(arr);
       }
@@ -634,7 +640,7 @@ const Campaign = () => {
           )}
         </HStack>
 
-        { currentSelectedDrop=="Airdrop 1" ?
+        { tabValue==1 ?
               <HStack
               display="flex"
               width="100%"
@@ -642,23 +648,11 @@ const Campaign = () => {
               justifyContent="space-between"
             >
               <HStack
-                mt="4rem"
+                mt="6rem"
                 display="flex"
                 flexDirection="column"
                 alignItems="flex-start"
               >
-                <Box>
-                  <Text
-                    color="#F0F0F5"
-                    fontSize="16px"
-                    fontWeight="400"
-                    lineHeight="20px"
-                    fontStyle="normal"
-                    mb="0.2rem"
-                  >
-                    Overall campaign stats
-                  </Text>
-                </Box>
                 <HStack display="flex" justifyContent="space-between">
                   <HStack
                     display="flex"
@@ -674,11 +668,21 @@ const Campaign = () => {
                       gap={"6px"}
                     >
                       <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                        Campaign pool
+                        Your Rank
                       </Text>
-                      <Text color="#00D395" fontSize="20px">
-                        45M HASH
-                      </Text>
+                      {userRank ? (
+                        <Text color="#00D395" fontSize="20px">
+                          {userRank}
+                        </Text>
+                      ) : (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      )}
                     </VStack>
                     <VStack
                       gap={"6px"}
@@ -686,11 +690,11 @@ const Campaign = () => {
                       alignItems="flex-start"
                     >
                       <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                        Points Accrued
+                        Total Points
                       </Text>
-                      {communityPoints ? (
+                      {userPointsAllocated ? (
                         <Text color="#00D395" fontSize="20px">
-                          {numberFormatter(communityPoints)}
+                          {numberFormatter(userPointsAllocated)}
                         </Text>
                       ) : (
                         <Skeleton
@@ -722,10 +726,10 @@ const Campaign = () => {
                           borderColor="#2B2F35"
                           arrowShadowColor="#2B2F35"
                         >
-                          Epoch Pool
+                          Hash tokens earned
                         </Tooltip>
                       </Text>
-                      {!communityHash ? (
+                      {!userHashAllocated ? (
                         <Skeleton
                           width="6rem"
                           height="1.4rem"
@@ -735,7 +739,7 @@ const Campaign = () => {
                         />
                       ) : (
                         <Text color="#00D395" fontSize="20px">
-                          11.25M HASH
+                          {numberFormatter(userHashAllocated)} HASH
                         </Text>
                       )}
                     </VStack>

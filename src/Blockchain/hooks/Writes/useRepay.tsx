@@ -29,11 +29,7 @@ const useRepay = (loanParam: any) => {
   const [loan, setLoan] = useState<ILoan>(loanParam);
   const [allowanceVal, setAllowance] = useState(0);
   ////console.log(repayAmount, "loan param", loanParam);
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
 
   const [transApprove, setTransApprove] = useState("");
   const [transRepayHash, setTransRepayHash] = useState("");

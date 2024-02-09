@@ -291,11 +291,7 @@ const YourSupplyModal = ({
         break;
     }
   };
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;

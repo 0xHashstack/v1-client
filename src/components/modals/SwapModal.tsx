@@ -225,11 +225,7 @@ const SwapModal = ({
   //     }
   //   },
   // });
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
   // const avgs=useSelector(selectAprAndHealthFactor)
   const avgs = useSelector(selectEffectiveApr);
   const avgsLoneHealth = useSelector(selectHealthFactor);

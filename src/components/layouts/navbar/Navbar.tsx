@@ -108,11 +108,7 @@ const Navbar = ({ validRTokens }: any) => {
 
   const router = useRouter();
   const { pathname } = router;
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
   const nftBalance:any=useSelector(selectNftBalance);

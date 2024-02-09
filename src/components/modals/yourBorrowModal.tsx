@@ -819,11 +819,7 @@ const YourBorrowModal = ({
 
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
   const handleZeroRepay = async () => {
     try {
       if (!loan?.loanId) {
