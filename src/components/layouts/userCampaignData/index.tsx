@@ -18,6 +18,7 @@ import CircularDropDownActive from "@/assets/icons/circularDropDownActive";
 import CircularDropDownClose from "@/assets/icons/circularDropDownClose";
 import ExternalLink from "@/assets/icons/externalLink";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import Link from "next/link";
 
 const snapshotsDates = [
   "30 Nov 23",
@@ -66,7 +67,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []]);
   const [loading, setLoading] = useState<boolean>(false);
   const [openEpochs, setOpenEpochs] = useState<any>([]);
-
+  const [ccpDropdownSelected, setccpDropdownSelected] = useState(false)
+  let topLength=epochsData.length*5;
   // Function to toggle the open state of an epoch
   const toggleEpochSelection = (idxEpoch: any) => {
     setOpenEpochs((prevOpenEpochs: any[]) => {
@@ -80,6 +82,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
     });
   };
   const [hoverEpochDrop, sethoverEpochDrop] = useState(false);
+  const [hoverccpDrop, sethoverccpDrop] = useState(false)
 
   // Function to check whether an epoch is open
   const isEpochOpen = (idxEpoch: any) => {
@@ -200,12 +203,302 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   key={idx}
                   width={"100%"}
                   height="4rem"
+                  bg={"#676D9A48"}
+                  position="relative"
+                  // top={
+                  //   epochDropdownSelected
+                  //     ? openEpochs.length == 0
+                  //       ? "20rem"
+                  //       : openEpochs.length == 1
+                  //       ? "46rem"
+                  //       : openEpochs.length == 2
+                  //       ? "73rem"
+                  //       : openEpochs.length == 3
+                  //       ? "99rem"
+                  //       : openEpochs.length == 4
+                  //       ? "125rem"
+                  //       : ""
+                  //     : "0"
+                  // }
+                  cursor="pointer"
+                  p={0}
+                  style={{ borderRadius: "6px" }}
+                  onClick={()=>{
+                    setccpDropdownSelected(!ccpDropdownSelected)
+                  }}
+                >
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      ml="10"
+                      color="#E6EDF3"
+                    >
+                      <Image
+                        src="/latestSyncedBlockGreenDot.svg"
+                        alt="Picture of the author"
+                        width="8"
+                        height="8"
+                        style={{
+                          marginRight: "0.5rem",
+                          marginBottom: "0.1rem",
+                        }}
+                      />
+                      {campaignDetails[idx + 1]?.campaignName}
+                    </Text>
+                  </Td>
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={""}
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text>{campaignDetails[idx + 1]?.timeline}</Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={
+                          <Box>
+                            HASH Allocated:{" "}
+                            {member.hashAllocated
+                              ? numberFormatter(member?.hashAllocated)
+                              : 0}
+                            <br />
+                            HASH Estimated:{" "}
+                            {member.est ? numberFormatter(member?.est) : 0}
+                          </Box>
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text>
+                          {numberFormatter(member.est + member.hashAllocated)}
+                        </Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="end"
+                  >
+                    <Box
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="end"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                      pr="10"
+                      gap="1rem"
+                    >
+                      <Text
+                        textDecoration="underline"
+                        cursor="pointer"
+                        color="#3E415C"
+                      >
+                        Claim
+                      </Text>
+                      <Box
+                        cursor="pointer"
+                        onMouseEnter={() => {
+                          sethoverccpDrop(true)
+                        }}
+                        onMouseLeave={() => {
+                          sethoverccpDrop(false)
+                        }}
+                      >
+                        {ccpDropdownSelected ? (
+                          <CircularDropDownClose />
+                        ) : hoverccpDrop ? (
+                          <CircularDropDownActive />
+                        ) : (
+                          <CircularDropDown />
+                        )}
+                      </Box>
+                    </Box>
+                  </Td>
+                </Tr>
+                <Tr
+                  key={idx}
+                  width={"100%"}
+                  height="4rem"
+                  position="absolute"
+                  cursor="pointer"
+                  pl="1rem"
+                >
+                  {ccpDropdownSelected && (
+                    <Box
+                      borderRadius="6px"
+                      mt="1rem"
+                      mr="2rem"
+                      ml="2rem"
+                      border={
+                        openEpochs.length > 0 ? "" : "1px solid #676D9A48"
+                      }
+                      borderBottom={
+                        openEpochs.length > 0 ? "1px solid #676D9A48" : ""
+                      }
+                    >
+                      {epochsData.map((epochs: any, idxEpoch: any) => (
+                        <Box key={idxEpoch}>
+                          <Box
+                            display="flex"
+                            borderTop={
+                              openEpochs.length > 0 ? "1px solid #676D9A48" : ""
+                            }
+                            borderLeft={
+                              openEpochs.length > 0 ? "1px solid #676D9A48" : ""
+                            }
+                            borderBottom={
+                              openEpochs.length > 0
+                                ? isEpochOpen(idxEpoch)
+                                  ? "1px solid #676D9A48"
+                                  : ""
+                                : ""
+                            }
+                            borderBottomRadius={
+                              openEpochs.length > 0
+                                ? isEpochOpen(idxEpoch)
+                                  ? "6px"
+                                  : ""
+                                : "6px"
+                            }
+                            borderRight={
+                              openEpochs.length > 0 ? "1px solid #676D9A48" : ""
+                            }
+                            borderRadius={
+                              openEpochs.length > 0
+                                ? isEpochOpen(idxEpoch)
+                                  ? "6px"
+                                  : ""
+                                : "6px"
+                            }
+                            justifyContent="space-between"
+                            cursor="pointer"
+                            padding="24px 48px 24px 48px"
+                            color="#F0F0F5"
+                            fontSize="14px"
+                            fontWeight="400"
+                            lineHeight="20px"
+                            onClick={() => {
+                              // setsnapshotDropdownSelected(!snapshotDropdownSelected)
+                            }}
+                          >
+                            <Text> {idxEpoch + 1}</Text>
+                            <Text>
+                                27 Nov 23 
+                            </Text>
+                            <Text>
+                              {numberFormatter(epochs?.pointsAllocated)} points allocated
+                            </Text>
+                            <Box display="flex" gap="1.5rem">
+                              <Text>
+                                {numberFormatter(epochs?.hashAllocated)} est. Hash
+                                tokens earned
+                              </Text>
+                            </Box>
+                          </Box>
+                          <Box
+                            borderBottom={
+                              idxEpoch != 3
+                                ? isEpochOpen(idxEpoch)
+                                  ? ""
+                                  : "1px solid #676D9A48"
+                                : ""
+                            }
+                          ></Box>
+                        </Box>
+                      ))}
+                      
+                    </Box>
+                  )}
+                </Tr>  
+                <Tr
+                  key={idx}
+                  width={"100%"}
+                  height="4rem"
                   bg={epochDropdownSelected ? "#676D9A48" : ""}
                   cursor="pointer"
+                  position="relative"
                   onClick={() => {
                     setepochDropdownSelected(!epochDropdownSelected);
                   }}
                   p={0}
+                      top={
+                      ccpDropdownSelected
+                      ? `${topLength}rem`:"0"
+                  }
                   style={{ borderRadius: "6px" }}
                 >
                   <Td
@@ -367,6 +660,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   position="absolute"
                   cursor="pointer"
                   pl="1rem"
+                  top={ccpDropdownSelected ?`${(topLength)*1.43}rem`:""}
                 >
                   {epochDropdownSelected && (
                     <Box
@@ -514,7 +808,9 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                                           )}{" "}
                                           Hash tokens earned
                                         </Text>
-                                        <ExternalLink />
+                                        <Link href="https://github.com/0xHashstack/airdrop-snapshots" target="_blank">
+                                          <ExternalLink />
+                                        </Link>
                                       </Box>
                                     </Box>
                                   </Box>
@@ -527,205 +823,18 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     </Box>
                   )}
                 </Tr>
-                {!epochDropdownSelected && (
+                {!epochDropdownSelected  &&  (
                   <Tr
-                    style={{
-                      position: "absolute",
+                      position= "absolute"
                       // left: "0%",
-                      width: "100%",
-                      height: "1px",
-                      borderBottom: "1px solid rgba(103, 109, 154, 0.30)",
-                      display: `${member.id == 5 ? "none" : "block"}`,
-                    }}
+                      width="100%"
+                      height= "1px"
+                      borderBottom= "1px solid rgba(103, 109, 154, 0.30)"
+                      display= {`${member.id == 5 ? "none" : "block"}`}
+                      top={ccpDropdownSelected ?`${(topLength)*1.4}rem`:""}
                   />
                 )}
-                <Tr
-                  key={idx}
-                  width={"100%"}
-                  height="4rem"
-                  bg={"#676D9A48"}
-                  position="relative"
-                  top={
-                    epochDropdownSelected
-                      ? openEpochs.length == 0
-                        ? "20rem"
-                        : openEpochs.length == 1
-                        ? "46rem"
-                        : openEpochs.length == 2
-                        ? "73rem"
-                        : openEpochs.length == 3
-                        ? "99rem"
-                        : openEpochs.length == 4
-                        ? "125rem"
-                        : ""
-                      : "0"
-                  }
-                  cursor="pointer"
-                  p={0}
-                  style={{ borderRadius: "6px" }}
-                >
-                  <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    padding={2}
-                    textAlign="center"
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      fontWeight="400"
-                      fontSize="14px"
-                      ml="10"
-                      color="#E6EDF3"
-                    >
-                      <Image
-                        src="/latestSyncedBlockGreenDot.svg"
-                        alt="Picture of the author"
-                        width="8"
-                        height="8"
-                        style={{
-                          marginRight: "0.5rem",
-                          marginBottom: "0.1rem",
-                        }}
-                      />
-                      {campaignDetails[idx + 1]?.campaignName}
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    padding={2}
-                    textAlign="center"
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      fontSize="14px"
-                      color="#E6EDF3"
-                    >
-                      <Tooltip
-                        hasArrow
-                        label={""}
-                        placement="right"
-                        rounded="md"
-                        boxShadow="dark-lg"
-                        bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
-                        color="#F0F0F5"
-                        border="1px solid"
-                        borderColor="#23233D"
-                        arrowShadowColor="#2B2F35"
-                      >
-                        <Text>{campaignDetails[idx + 1]?.timeline}</Text>
-                      </Tooltip>
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    padding={2}
-                    textAlign="center"
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      fontSize="14px"
-                      color="#E6EDF3"
-                    >
-                      <Tooltip
-                        hasArrow
-                        label={
-                          <Box>
-                            HASH Allocated:{" "}
-                            {member.hashAllocated
-                              ? numberFormatter(member?.hashAllocated)
-                              : 0}
-                            <br />
-                            HASH Estimated:{" "}
-                            {member.est ? numberFormatter(member?.est) : 0}
-                          </Box>
-                        }
-                        placement="right"
-                        rounded="md"
-                        boxShadow="dark-lg"
-                        bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
-                        color="#F0F0F5"
-                        border="1px solid"
-                        borderColor="#23233D"
-                        arrowShadowColor="#2B2F35"
-                      >
-                        <Text>
-                          {numberFormatter(member.est + member.hashAllocated)}
-                        </Text>
-                      </Tooltip>
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    padding={2}
-                    textAlign="end"
-                  >
-                    <Box
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="end"
-                      fontWeight="400"
-                      fontSize="14px"
-                      color="#E6EDF3"
-                      pr="10"
-                      gap="1rem"
-                    >
-                      <Text
-                        textDecoration="underline"
-                        cursor="pointer"
-                        color="#3E415C"
-                      >
-                        Claim
-                      </Text>
-                      <Box
-                        cursor="pointer"
-                        onMouseEnter={() => {
-                          sethoverEpochDrop(true);
-                        }}
-                        onMouseLeave={() => {
-                          sethoverEpochDrop(false);
-                        }}
-                      >
-                        {epochDropdownSelected ? (
-                          <CircularDropDownClose />
-                        ) : hoverEpochDrop ? (
-                          <CircularDropDownActive />
-                        ) : (
-                          <CircularDropDown />
-                        )}
-                      </Box>
-                    </Box>
-                  </Td>
-                </Tr>
+
               </>
             );
           })}

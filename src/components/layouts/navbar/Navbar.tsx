@@ -549,11 +549,6 @@ const userWhitelisted=useSelector(selectWhiteListed);
               )}
 
               <Text fontSize="14px" >Airdrop</Text>
-              <Box bg="#F7BB5B" height="18px" width="45px" textAlign="center"  lineHeight="18px"
-              clipPath="polygon(110% 0%, 10% 0%, 0% 50%, 10% 100%, 110% 100%)" fontSize="12px" fontWeight="400" color="#000" borderRightRadius="4px"
-              >
-                NEW
-              </Box>
             </Box>
         </Box>:""}
         {/* <Box

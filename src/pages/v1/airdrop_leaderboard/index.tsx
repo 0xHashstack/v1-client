@@ -261,7 +261,7 @@ const Campaign: NextPage = () => {
     const fetchDetails = async () => {
       if (address) {
         const res = await axios.get(
-          `https://hstk.fi/api/temp-allocation/0x04f0EEF65A603FF6B232a17CC6B41831427273EFC05C35B67374598fbacDa8dE`
+          `https://hstk.fi/api/temp-allocation/${address}`
         );
         setCommunityHash(
           res?.data?.communityInfo?.estimatedHashTokensCommunity
@@ -287,7 +287,7 @@ const Campaign: NextPage = () => {
       const fetchData = async () => {
         if (address) {
           const res = await axios.get(
-            `https://hstk.fi/api/get-epoch-wise-data/0x04f0EEF65A603FF6B232a17CC6B41831427273EFC05C35B67374598fbacDa8dE`
+            `https://hstk.fi/api/get-epoch-wise-data/${address}`
           );
           const data = res?.data;
           setepochsData(data?.finalSnapData);
@@ -477,11 +477,11 @@ const Campaign: NextPage = () => {
           lineHeight="18px"
           letterSpacing="-0.15px"
         >
-          submit your Submission for CCP campaign
+          Submit your Submission for CCP campaign
         </Text>
         <Link
           href={
-            "https://hashstack.medium.com/completed-airdrop-phase-1-c57ae0ff0251"
+            "https://docs.google.com/forms/d/e/1FAIpQLSdb9IgFNLSd5WO9Phl3NjaFYGFser6blDCLrZKyTUR9jZsOTA/viewform"
           }
           target="_blank"
         >

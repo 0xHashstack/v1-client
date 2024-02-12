@@ -14,6 +14,7 @@ import { useAccount } from "@starknet-react/core";
 import React, { useState } from "react";
 
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { useRouter } from "next/router";
 
 const tooltips = [
   "",
@@ -40,6 +41,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { address } = useAccount();
+  const router=useRouter();
 
   return loading ? (
     <Box
@@ -211,16 +213,15 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                             {currentSelectedDrop === "Airdrop 1" ? (
                               <>
                                 Supply/Borrow: $
-                                {member.supplyliq + member.borrowliq}
+                                {numberFormatter(member.supplyliq + member.borrowliq)}
                                 <br />
-                                Referrals: ${member.referredliq}
+                                Referrals: ${numberFormatter(member.referredliq)}
                               </>
                             ) : (
                               <>
-                                Points Estimated:{" "}
-                                {member.pointsEstimated
-                                  ? numberFormatter(member?.pointsEstimated)
-                                  : 0}
+                                 Points Allocated: {numberFormatter(member.ptsAllocated)}
+                                  <br />
+                                  Points Estimated: {numberFormatter(member.pts)}
                               </>
                             )}
                           </Box>
@@ -239,9 +240,9 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {numberFormatter(
+                          {currentSelectedDrop==="Airdrop 1" ? numberFormatter(
                             Number(member.liq) + Number(member.referredliq)
-                          )}
+                          ): numberFormatter(member.pts+member.ptsAllocated)}
                         </Text>
                       </Tooltip>
                     </Text>
@@ -302,7 +303,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {numberFormatter(member.pts + member.ptsAllocated)}
+                           {currentSelectedDrop === "Airdrop 1" ? numberFormatter(member.pts + member.ptsAllocated):numberFormatter(member?.hashAllocated)}
                         </Text>
                       </Tooltip>
                     </Text>
@@ -647,6 +648,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       padding={2}
                       textAlign="end"
                     >
+
                       <Text
                         width="100%"
                         height="100%"
@@ -659,6 +661,9 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         pr="10"
                         textDecoration="underline"
                         cursor="pointer"
+                        onClick={()=>{
+                          router.push('/v1/ccp_submissions')
+                        }}
                       >
                         Submission
                       </Text>
