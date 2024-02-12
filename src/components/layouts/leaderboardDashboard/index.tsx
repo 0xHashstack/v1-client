@@ -10,55 +10,36 @@ import {
   Tooltip,
   Tr,
 } from "@chakra-ui/react";
+import { useAccount } from "@starknet-react/core";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
-import {
-  selectModalDropDowns,
-  setModalDropdown,
-} from "@/store/slices/dropdownsSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 
-const LeaderboardDashboard = ({
-  width,
-  currentPagination,
-  setCurrentPagination,
-  leaderBoardData,
-  columnItems,
-  currentSelectedDrop,
-}: {
-  width: string;
-  currentPagination: any;
-  setCurrentPagination: any;
+const tooltips = [
+  "",
+  "",
+  "Liquidity (Supply/Borrow,Referrals)",
+  "Points earned for rewards",
+  "Allocated $HASH",
+];
+
+interface LeaderboardDashboardProps {
   leaderBoardData: any;
+  personalData: any;
   columnItems: any;
   currentSelectedDrop: string;
+  airdropCampaignUserRank: any;
+}
+
+const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
+  leaderBoardData,
+  personalData,
+  columnItems,
+  currentSelectedDrop,
+  airdropCampaignUserRank,
 }) => {
-  const tenure = ["Day", "Week", "Month"];
-  const tooltips = [
-    "",
-    "",
-    "Liquidity (Supply/Borrow,Referrals)",
-    "Points earned for rewards",
-    "Allocated $HASH",
-  ];
-
-  let lower_bound = 6 * (currentPagination - 1);
-  let upper_bound = lower_bound + 5;
-
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentSelectedTenure, setcurrentSelectedTenure] = useState("Day");
-  const modalDropdowns = useSelector(selectModalDropDowns);
-  const dispatch = useDispatch();
-
-  const handleDropdownClick = (dropdownName: any) => {
-    // Dispatches an action called setModalDropdown with the dropdownName as the payload
-    dispatch(setModalDropdown(dropdownName));
-  };
-
-  const activeModal = Object.keys(modalDropdowns).find(
-    (key) => modalDropdowns[key] === true
-  );
+  const { address } = useAccount();
 
   return loading ? (
     <Box
@@ -152,101 +133,211 @@ const LeaderboardDashboard = ({
           </Tr>
         </Thead>
         <Tbody position="relative" overflowX="hidden" alignContent={"center"}>
-          {leaderBoardData
-            .map((member: any, idx: any) => {
-              return (
-                <>
-                  <Tr
-                    key={idx}
-                    width={"100%"}
-                    height="4rem"
-                    position="relative"
-                    p={0}
+          {personalData.map((member: any, idx: any) => {
+            return (
+              <>
+                <Tr
+                  key={idx}
+                  width={"100%"}
+                  height="4rem"
+                  position="relative"
+                  p={0}
+                  background="#676D9A48"
+                >
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
                   >
-                    <Td
-                      width={"16.6%"}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      padding={2}
-                      textAlign="center"
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent={"start"}
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
                     >
-                      <Text
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent={"start"}
-                        fontWeight="400"
-                        fontSize="14px"
-                        color="#E6EDF3"
-                      >
-                        {idx+1}
-                      </Text>
-                    </Td>
+                      {airdropCampaignUserRank}
+                    </Text>
+                  </Td>
 
-                    <Td
-                      width={"16.6%"}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      padding={2}
-                      textAlign="center"
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
                     >
-                      <Text
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        fontWeight="400"
-                        fontSize="14px"
-                        color="#E6EDF3"
-                      >
-                        {member.walletAddress.substring(0, 5)}...
-                        {member.walletAddress.substring(
-                          member.walletAddress.length - 5,
-                          member.walletAddress.length
-                        )}
-                      </Text>
-                    </Td>
+                      {address?.substring(0, 5)}...
+                      {address?.substring(address?.length - 5, address?.length)}
+                    </Text>
+                  </Td>
 
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={
+                          <Box>
+                            {currentSelectedDrop === "Airdrop 1" ? (
+                              <>
+                                Supply/Borrow: $
+                                {member.supplyliq + member.borrowliq}
+                                <br />
+                                Referrals: ${member.referredliq}
+                              </>
+                            ) : (
+                              <>
+                                Points Estimated:{" "}
+                                {member.pointsEstimated
+                                  ? numberFormatter(member?.pointsEstimated)
+                                  : 0}
+                              </>
+                            )}
+                          </Box>
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text>
+                          {numberFormatter(
+                            Number(member.liq) + Number(member.referredliq)
+                          )}
+                        </Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={
+                          currentSelectedDrop === "Airdrop 1" ? (
+                            <Box>
+                              Points Allocated:{" "}
+                              {numberFormatter(member.ptsAllocated)}
+                              <br />
+                              Points Estimated: {numberFormatter(member.pts)}
+                            </Box>
+                          ) : (
+                            <Box>
+                              HASH Allocated:{" "}
+                              {member.hashAllocated
+                                ? numberFormatter(member?.hashAllocated)
+                                : 0}
+                              <br />
+                              HASH Estimated:{" "}
+                              {member.estimatedHash
+                                ? numberFormatter(member?.estimatedHash)
+                                : 0}
+                            </Box>
+                          )
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text>
+                          {numberFormatter(member.pts + member.ptsAllocated)}
+                        </Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
+
+                  {currentSelectedDrop === "Airdrop 1" ? (
                     <Td
                       width={"16.6%"}
                       fontSize={"14px"}
                       fontWeight={400}
                       padding={2}
-                      textAlign="center"
+                      textAlign="end"
                     >
                       <Text
                         width="100%"
                         height="100%"
                         display="flex"
                         alignItems="center"
-                        justifyContent="center"
+                        justifyContent="flex-end"
                         fontWeight="400"
                         fontSize="14px"
                         color="#E6EDF3"
+                        pr="10"
                       >
                         <Tooltip
                           hasArrow
                           label={
                             <Box>
-                              {currentSelectedDrop === "Airdrop 1" ? (
-                                <>
-                                  Supply/Borrow: ${numberFormatter(member.selfValue)}
-                                  <br />
-                                  Referrals: ${numberFormatter(member.referralValue)}
-                                  
-                                  <br />
-                                </>
-                              ) : (
-                                <>
-                                  Points Estimated:{" "}
-                                  {member.pointsEstimated
-                                    ? numberFormatter(member?.pointsEstimated)
-                                    : 0}
-                                  
-                                </>
-                              )}
+                              HASH Allocated:{" "}
+                              {member.hashAllocated
+                                ? numberFormatter(member?.hashAllocated)
+                                : 0}
+                              <br />
+                              HASH Estimated:{" "}
+                              {member.est ? numberFormatter(member?.est) : 0}
                             </Box>
                           }
                           placement="right"
@@ -262,61 +353,272 @@ const LeaderboardDashboard = ({
                           borderColor="#23233D"
                           arrowShadowColor="#2B2F35"
                         >
-                          <Text>
-                              {numberFormatter(
-                                  Number(member.selfValue) +
-                                    Number(member.referralValue)
-                                )}
-                          </Text>
+                          {numberFormatter(member.est + member.hashAllocated)}
                         </Tooltip>
                       </Text>
                     </Td>
-
+                  ) : (
                     <Td
                       width={"16.6%"}
                       fontSize={"14px"}
                       fontWeight={400}
                       padding={2}
-                      textAlign="center"
+                      textAlign="end"
                     >
                       <Text
                         width="100%"
                         height="100%"
                         display="flex"
                         alignItems="center"
-                        justifyContent="center"
+                        justifyContent="flex-end"
                         fontWeight="400"
                         fontSize="14px"
                         color="#E6EDF3"
+                        pr="10"
+                        textDecoration="underline"
+                        cursor="pointer"
                       >
-                        <Tooltip
-                          hasArrow
-                          label={
-                            currentSelectedDrop === "Airdrop 1" ? (
-                              <Box>
-                                Points Allocated:{" "}
-                                {member.pointsAllocated
-                                  ? numberFormatter(member?.pointsAllocated)
-                                  : 0}
+                        Submission
+                      </Text>
+                    </Td>
+                  )}
+                </Tr>
+
+                <Tr
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "1px",
+                    borderBottom: "1px solid #2b2f35",
+                    display: `${member.id == 5 ? "none" : "block"}`,
+                  }}
+                />
+              </>
+            );
+          })}
+          {leaderBoardData.map((member: any, idx: any) => {
+            return (
+              <>
+                <Tr
+                  key={idx}
+                  width={"100%"}
+                  height="4rem"
+                  position="relative"
+                  p={0}
+                >
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent={"start"}
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      {idx + 1}
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      {member.walletAddress.substring(0, 5)}...
+                      {member.walletAddress.substring(
+                        member.walletAddress.length - 5,
+                        member.walletAddress.length
+                      )}
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={
+                          <Box>
+                            {currentSelectedDrop === "Airdrop 1" ? (
+                              <>
+                                Supply/Borrow: $
+                                {numberFormatter(member.selfValue)}
                                 <br />
+                                Referrals: $
+                                {numberFormatter(member.referralValue)}
+                                <br />
+                              </>
+                            ) : (
+                              <>
                                 Points Estimated:{" "}
                                 {member.pointsEstimated
                                   ? numberFormatter(member?.pointsEstimated)
                                   : 0}
-                              </Box>
-                            ) : (
-                              <Box>
-                                HASH Allocated:{" "}
-                                {member.hashAllocated
-                                  ? numberFormatter(member?.hashAllocated)
-                                  : 0}
-                                <br />
-                                HASH Estimated:{" "}
-                                {member.estimatedHash
-                                  ? numberFormatter(member?.estimatedHash)
-                                  : 0}
-                              </Box>
-                            )
+                              </>
+                            )}
+                          </Box>
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text>
+                          {numberFormatter(
+                            Number(member.selfValue) +
+                              Number(member.referralValue)
+                          )}
+                        </Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={
+                          currentSelectedDrop === "Airdrop 1" ? (
+                            <Box>
+                              Points Allocated:{" "}
+                              {member.pointsAllocated
+                                ? numberFormatter(member?.pointsAllocated)
+                                : 0}
+                              <br />
+                              Points Estimated:{" "}
+                              {member.pointsEstimated
+                                ? numberFormatter(member?.pointsEstimated)
+                                : 0}
+                            </Box>
+                          ) : (
+                            <Box>
+                              HASH Allocated:{" "}
+                              {member.hashAllocated
+                                ? numberFormatter(member?.hashAllocated)
+                                : 0}
+                              <br />
+                              HASH Estimated:{" "}
+                              {member.estimatedHash
+                                ? numberFormatter(member?.estimatedHash)
+                                : 0}
+                            </Box>
+                          )
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text>
+                          {currentSelectedDrop === "Airdrop 1"
+                            ? numberFormatter(member.netPoints)
+                            : numberFormatter(
+                                Number(member.estimatedHash) +
+                                  member.hashAllocated
+                              )}
+                        </Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
+
+                  {currentSelectedDrop === "Airdrop 1" ? (
+                    <Td
+                      width={"16.6%"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      padding={2}
+                      textAlign="end"
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                        pr="10"
+                      >
+                        <Tooltip
+                          hasArrow
+                          label={
+                            <Box>
+                              HASH Allocated:{" "}
+                              {member.hashAllocated
+                                ? numberFormatter(member?.hashAllocated)
+                                : 0}
+                              <br />
+                              HASH Estimated:{" "}
+                              {member.estimatedHash
+                                ? numberFormatter(member?.estimatedHash)
+                                : 0}
+                            </Box>
                           }
                           placement="right"
                           rounded="md"
@@ -331,112 +633,51 @@ const LeaderboardDashboard = ({
                           borderColor="#23233D"
                           arrowShadowColor="#2B2F35"
                         >
-                          <Text>
-                            {currentSelectedDrop === "Airdrop 1"
-                              ? numberFormatter(member.netPoints)
-                              : numberFormatter(
-                                  Number(member.estimatedHash) +
-                                    member.hashAllocated
-                                )}
-                          </Text>
+                          {numberFormatter(
+                            Number(member.estimatedHash) + member.hashAllocated
+                          )}
                         </Tooltip>
                       </Text>
                     </Td>
-
-                    {currentSelectedDrop === "Airdrop 1" ? (
-                      <Td
-                        width={"16.6%"}
-                        fontSize={"14px"}
-                        fontWeight={400}
-                        padding={2}
-                        textAlign="end"
+                  ) : (
+                    <Td
+                      width={"16.6%"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      padding={2}
+                      textAlign="end"
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                        pr="10"
+                        textDecoration="underline"
+                        cursor="pointer"
                       >
-                        <Text
-                          width="100%"
-                          height="100%"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="flex-end"
-                          fontWeight="400"
-                          fontSize="14px"
-                          color="#E6EDF3"
-                          pr="10"
-                        >
-                          <Tooltip
-                            hasArrow
-                            label={
-                              <Box>
-                                HASH Allocated:{" "}
-                                {member.hashAllocated
-                                  ? numberFormatter(member?.hashAllocated)
-                                  : 0}
-                                <br />
-                                HASH Estimated:{" "}
-                                {member.estimatedHash
-                                  ? numberFormatter(member?.estimatedHash)
-                                  : 0}
-                              </Box>
-                            }
-                            placement="right"
-                            rounded="md"
-                            boxShadow="dark-lg"
-                            bg="#02010F"
-                            fontSize={"13px"}
-                            fontWeight={"400"}
-                            borderRadius={"lg"}
-                            padding={"2"}
-                            color="#F0F0F5"
-                            border="1px solid"
-                            borderColor="#23233D"
-                            arrowShadowColor="#2B2F35"
-                          >
-                            {numberFormatter(
-                              Number(member.estimatedHash) +
-                                member.hashAllocated
-                            )}
-                          </Tooltip>
-                        </Text>
-                      </Td>
-                    ) : (
-                      <Td
-                        width={"16.6%"}
-                        fontSize={"14px"}
-                        fontWeight={400}
-                        padding={2}
-                        textAlign="end"
-                      >
-                        <Text
-                          width="100%"
-                          height="100%"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="flex-end"
-                          fontWeight="400"
-                          fontSize="14px"
-                          color="#E6EDF3"
-                          pr="10"
-                          textDecoration="underline"
-                          cursor="pointer"
-                        >
-                          Submission
-                        </Text>
-                      </Td>
-                    )}
-                  </Tr>
+                        Submission
+                      </Text>
+                    </Td>
+                  )}
+                </Tr>
 
-                  <Tr
-                    style={{
-                      position: "absolute",
-                      // left: "0%",
-                      width: "100%",
-                      height: "1px",
-                      borderBottom: "1px solid #2b2f35",
-                      display: `${member.id == 5 ? "none" : "block"}`,
-                    }}
-                  />
-                </>
-              );
-            })}
+                <Tr
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "1px",
+                    borderBottom: "1px solid #2b2f35",
+                    display: `${member.id == 5 ? "none" : "block"}`,
+                  }}
+                />
+              </>
+            );
+          })}
         </Tbody>
       </Table>
     </TableContainer>
