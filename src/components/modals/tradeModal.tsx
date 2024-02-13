@@ -3327,11 +3327,11 @@ borderWidth:'5px',
                         )?.supplyRate
                       } */}
                             {Number(
-                              ((-(inputBorrowAmountUSD *
-                                (protocolStats?.find(
+                              (((inputBorrowAmountUSD *
+                                (-(protocolStats?.find(
                                   (stat: any) =>
                                     stat?.token === currentBorrowCoin
-                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp))) +
                                 inputCollateralAmountUSD *
                                 protocolStats?.find(
                                   (stat: any) =>
@@ -3392,10 +3392,10 @@ borderWidth:'5px',
                             </Text>
                             : <Text color={Number(
                               ((inputBorrowAmountUSD *
-                                (-protocolStats?.find(
+                                ((-protocolStats?.find(
                                   (stat: any) =>
                                     stat?.token === currentBorrowCoin
-                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp))) +
                                 inputCollateralAmountUSD *
                                 protocolStats?.find(
                                   (stat: any) =>
@@ -3407,10 +3407,10 @@ borderWidth:'5px',
                             {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                             {Number(
                               ((inputBorrowAmountUSD *
-                                (-protocolStats?.find(
+                                ((-protocolStats?.find(
                                   (stat: any) =>
                                     stat?.token === currentBorrowCoin
-                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
+                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp))) +
                                 inputCollateralAmountUSD *
                                 protocolStats?.find(
                                   (stat: any) =>

@@ -1504,7 +1504,7 @@ const LiquidityProvisionModal = ({
                         (-(reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.loanMarket.slice(1)
-                        )?.borrowRate)) + getAprByPool(poolApr, currentPool,currentSwap)) +
+                        )?.borrowRate)+ getAprByPool(poolApr, currentPool,currentSwap)) ) +
                         dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                           (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying) *

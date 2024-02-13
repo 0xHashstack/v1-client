@@ -18,7 +18,6 @@ import { default as React, useEffect, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import CopyIcon from "@/assets/icons/copyIcon";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
@@ -228,9 +227,9 @@ const Campaign: NextPage = () => {
   const [currentSelectedDrop, setCurrentSelectedDrop] = useState("Airdrop 1");
   const [epochsData, setepochsData] = useState([]);
   const [snapshotData, setsnapshotData] = useState([]);
-  const [userPointsAllocated, setuserPointsAllocated] = useState();
-  const [userHashAllocated, setuserHashAllocated] = useState();
-  const [userRank, setuserRank] = useState();
+  const [userPointsAllocated, setuserPointsAllocated] = useState<any>();
+  const [userHashAllocated, setuserHashAllocated] = useState<any>();
+  const [userRank, setuserRank] = useState<any>();
   const [campaignDetails, setCampaignDetails] = useState([
     {
       campaignName: "Airdrop 01",
@@ -291,7 +290,11 @@ const Campaign: NextPage = () => {
           );
           const data = res?.data;
           setepochsData(data?.finalSnapData);
-          setuserRank(data?.rank);
+          if(data?.rank){
+            setuserRank(data?.rank);
+          }else{
+            setuserRank("-")
+          }
           let snaps = data?.epochWise;
           snaps.sort(
             (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
@@ -309,7 +312,7 @@ const Campaign: NextPage = () => {
     const fetchDetails = async () => {
       if (address) {
         const res = await axios.get(
-          `https://hstk.fi/api/temp-allocation/0x04f0EEF65A603FF6B232a17CC6B41831427273EFC05C35B67374598fbacDa8dE`
+          `https://hstk.fi/api/temp-allocation/${address}`
         );
         setCommunityHash(
           res?.data?.communityInfo?.estimatedHashTokensCommunity
@@ -336,10 +339,18 @@ const Campaign: NextPage = () => {
           hashAllocated: res?.data?.userInfo?.allocatedData?.hashAllocated,
           est: res?.data?.userInfo?.estimatedHashTokensUser,
         });
-        setuserPointsAllocated(
-          res?.data?.userInfo?.allocatedData?.pointsAllocated
-        );
-        setuserHashAllocated(res?.data?.userInfo?.allocatedData?.hashAllocated);
+        if(res?.data?.userInfo?.allocatedData?.pointsAllocated==null){
+          setuserPointsAllocated(0);
+        }else{
+          setuserPointsAllocated(
+            res?.data?.userInfo?.allocatedData?.pointsAllocated
+          );
+        }
+        if(res?.data?.userInfo?.allocatedData?.hashAllocated==null){
+          setuserHashAllocated(0);
+        }else{
+          setuserHashAllocated(res?.data?.userInfo?.allocatedData?.hashAllocated);
+        }
 
         setPersonalData(arr);
       }
@@ -691,7 +702,7 @@ const Campaign: NextPage = () => {
                     <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                       Total Points
                     </Text>
-                    {userPointsAllocated ? (
+                    {userPointsAllocated!=null ? (
                       <Text color="#00D395" fontSize="20px">
                         {numberFormatter(userPointsAllocated)}
                       </Text>
@@ -713,7 +724,7 @@ const Campaign: NextPage = () => {
                     <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                       <Tooltip
                         hasArrow
-                        label="Estimated Tokens Earned"
+                        label=""
                         placement="bottom"
                         boxShadow="dark-lg"
                         bg="#010409"
@@ -728,7 +739,7 @@ const Campaign: NextPage = () => {
                         Hash tokens earned
                       </Tooltip>
                     </Text>
-                    {!userHashAllocated ? (
+                    {userHashAllocated==null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -920,7 +931,6 @@ const Campaign: NextPage = () => {
                       />
                     )}
                   </VStack>
-
                   <VStack
                     gap={"6px"}
                     justifyContent="flex-start"
@@ -929,7 +939,7 @@ const Campaign: NextPage = () => {
                     <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                       <Tooltip
                         hasArrow
-                        label="Estimated Tokens Earned"
+                        label=""
                         placement="bottom"
                         boxShadow="dark-lg"
                         bg="#010409"
