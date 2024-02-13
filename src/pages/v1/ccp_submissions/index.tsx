@@ -3,10 +3,69 @@ import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import demo from "@/assets/images/demo.webp";
 import PageCard from "@/components/layouts/pageCard";
+import { useEffect, useState } from "react";
+
+const submissionsData = [
+  {
+    type: "Article",
+    points: 100,
+    link: "http://localhost:3000/v1/ccp_submissions/",
+    img: "",
+  },
+  {
+    type: "Twitter Thread",
+    points: 100,
+    link: "http://localhost:3000/v1/ccp_submissions/",
+  },
+  {
+    type: "Review",
+    points: 100,
+    link: "http://localhost:3000/v1/ccp_submissions/",
+  },
+  {
+    type: "Tiktok Feature",
+    points: 100,
+    link: "http://localhost:3000/v1/ccp_submissions/",
+  },
+  {
+    type: "Article",
+    points: 100,
+    link: "http://localhost:3000/v1/ccp_submissions/",
+  },
+  {
+    type: "Twitter Thread",
+    points: 100,
+    link: "http://localhost:3000/v1/ccp_submissions/",
+  },
+  {
+    type: "Review",
+    points: 100,
+    link: "http://localhost:3000/v1/ccp_submissions/",
+  },
+  {
+    type: "Tiktok Feature",
+    points: 100,
+    link: "http://localhost:3000/v1/ccp_submissions/",
+  },
+  {
+    type: "Article",
+    points: 100,
+    link: "http://localhost:3000/v1/ccp_submissions/",
+  },
+];
 
 const CcpSubmissions: NextPage = () => {
+  const [selectedFilter, setSelectedFilter] = useState("Article");
+  const [filteredSubmissionData, setFilteredSubmissionData] =
+    useState(submissionsData);
+
+  useEffect(() => {
+    setFilteredSubmissionData(
+      submissionsData.filter((item) => item.type === selectedFilter)
+    );
+  }, [selectedFilter]);
+
   return (
     <PageCard pt="6.5rem">
       <HStack
@@ -39,50 +98,58 @@ const CcpSubmissions: NextPage = () => {
           width="100%"
         >
           <Button
-            color="white"
-            background="#4D59E8"
+            color={selectedFilter === "Article" ? "white" : "#676C9B"}
+            background={selectedFilter === "Article" ? "#4D59E8" : "#140E2D"}
             padding={{ base: "0rem .5rem", sm: "0rem .7rem" }}
             borderRadius="md"
             fontSize={{ base: "12px", sm: "14px" }}
             fontWeight="semibold"
             height="2rem"
             _hover={{ bg: "#4D59E8", color: "white" }}
+            onClick={() => setSelectedFilter("Article")}
           >
             Article
           </Button>
           <Button
-            color="#676C9B"
-            background="#140E2D"
+            color={selectedFilter === "Twitter Thread" ? "white" : "#676C9B"}
+            background={
+              selectedFilter === "Twitter Thread" ? "#4D59E8" : "#140E2D"
+            }
             padding={{ base: "0rem .5rem", sm: "0rem .7rem" }}
             borderRadius="md"
             fontSize={{ base: "12px", sm: "14px" }}
             fontWeight="semibold"
             height="2rem"
             _hover={{ bg: "#4D59E8", color: "white" }}
+            onClick={() => setSelectedFilter("Twitter Thread")}
           >
             Twitter Thread
           </Button>
           <Button
-            color="#676C9B"
-            background="#140E2D"
+            color={selectedFilter === "Review" ? "white" : "#676C9B"}
+            background={selectedFilter === "Review" ? "#4D59E8" : "#140E2D"}
             padding={{ base: "0rem .5rem", sm: "0rem .7rem" }}
             borderRadius="md"
             fontSize={{ base: "12px", sm: "14px" }}
             fontWeight="semibold"
             height="2rem"
             _hover={{ bg: "#4D59E8", color: "white" }}
+            onClick={() => setSelectedFilter("Review")}
           >
             Review
           </Button>
           <Button
-            color="#676C9B"
-            background="#140E2D"
+            color={selectedFilter === "Tiktok Feature" ? "white" : "#676C9B"}
+            background={
+              selectedFilter === "Tiktok Feature" ? "#4D59E8" : "#140E2D"
+            }
             padding={{ base: "0rem .5rem", sm: "0rem .7rem" }}
             borderRadius="md"
             fontSize={{ base: "12px", sm: "14px" }}
             fontWeight="semibold"
             height="2rem"
             _hover={{ bg: "#4D59E8", color: "white" }}
+            onClick={() => setSelectedFilter("Tiktok Feature")}
           >
             Tiktok Feature
           </Button>
@@ -100,7 +167,7 @@ const CcpSubmissions: NextPage = () => {
         width="95%"
         marginTop="1.5rem"
       >
-        {[...Array(9)].map((_, i) => (
+        {filteredSubmissionData.map((item, i) => (
           <Box borderRadius="lg" border="1px solid #282A44" key={i}>
             <Box
               position="relative"
@@ -108,7 +175,7 @@ const CcpSubmissions: NextPage = () => {
               width="100%"
               objectFit="cover"
             >
-              <Image
+              {/* <Image
                 src={demo}
                 fill
                 alt="img"
@@ -116,7 +183,7 @@ const CcpSubmissions: NextPage = () => {
                   borderTopLeftRadius: "8px",
                   borderTopRightRadius: "8px",
                 }}
-              />
+              /> */}
             </Box>
             <Box
               background="#16162C"
@@ -133,7 +200,7 @@ const CcpSubmissions: NextPage = () => {
                 alignItems="center"
                 width="100%"
               >
-                <Text color="white">CCP 1 - Article</Text>
+                <Text color="white">CCP 1 - {item.type}</Text>
                 <Box
                   color="black"
                   background="#B3894D"
@@ -143,12 +210,12 @@ const CcpSubmissions: NextPage = () => {
                   fontWeight="semibold"
                   borderRadius="md"
                 >
-                  Points - 100
+                  Points - {item.points}
                 </Box>
               </Box>
               <Link href="#">
                 <Text color="#4F59E9" fontSize="sm">
-                  http://localhost:3000/v1/ccp_submissions/
+                  {item.link}
                 </Text>
               </Link>
             </Box>
