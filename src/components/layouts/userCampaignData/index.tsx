@@ -67,8 +67,12 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []]);
   const [loading, setLoading] = useState<boolean>(false);
   const [openEpochs, setOpenEpochs] = useState<any>([]);
-  const [ccpDropdownSelected, setccpDropdownSelected] = useState(false)
-  let topLength=epochsData.length*5;
+  const [ccpDropdownSelected, setccpDropdownSelected] = useState(false);
+  const [hoverEpochDrop, sethoverEpochDrop] = useState(false);
+  const [hoverccpDrop, sethoverccpDrop] = useState(false);
+
+  let topLength = epochsData.length * 5;
+
   // Function to toggle the open state of an epoch
   const toggleEpochSelection = (idxEpoch: any) => {
     setOpenEpochs((prevOpenEpochs: any[]) => {
@@ -81,8 +85,6 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
       }
     });
   };
-  const [hoverEpochDrop, sethoverEpochDrop] = useState(false);
-  const [hoverccpDrop, sethoverccpDrop] = useState(false)
 
   // Function to check whether an epoch is open
   const isEpochOpen = (idxEpoch: any) => {
@@ -195,6 +197,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
             ))}
           </Tr>
         </Thead>
+
         <Tbody position="relative" alignContent={"center"}>
           {leaderBoardData.map((member: any, idx: any) => {
             return (
@@ -205,26 +208,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   height="4rem"
                   bg={"#676D9A48"}
                   position="relative"
-                  // top={
-                  //   epochDropdownSelected
-                  //     ? openEpochs.length == 0
-                  //       ? "20rem"
-                  //       : openEpochs.length == 1
-                  //       ? "46rem"
-                  //       : openEpochs.length == 2
-                  //       ? "73rem"
-                  //       : openEpochs.length == 3
-                  //       ? "99rem"
-                  //       : openEpochs.length == 4
-                  //       ? "125rem"
-                  //       : ""
-                  //     : "0"
-                  // }
                   cursor="pointer"
                   p={0}
                   style={{ borderRadius: "6px" }}
-                  onClick={()=>{
-                    setccpDropdownSelected(!ccpDropdownSelected)
+                  onClick={() => {
+                    setccpDropdownSelected(!ccpDropdownSelected);
                   }}
                 >
                   <Td
@@ -372,10 +360,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       <Box
                         cursor="pointer"
                         onMouseEnter={() => {
-                          sethoverccpDrop(true)
+                          sethoverccpDrop(true);
                         }}
                         onMouseLeave={() => {
-                          sethoverccpDrop(false)
+                          sethoverccpDrop(false);
                         }}
                       >
                         {ccpDropdownSelected ? (
@@ -389,6 +377,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     </Box>
                   </Td>
                 </Tr>
+
                 <Tr
                   key={idx}
                   width={"100%"}
@@ -451,21 +440,17 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             fontSize="14px"
                             fontWeight="400"
                             lineHeight="20px"
-                            onClick={() => {
-                              // setsnapshotDropdownSelected(!snapshotDropdownSelected)
-                            }}
                           >
                             <Text> {idxEpoch + 1}</Text>
+                            <Text>27 Nov 23</Text>
                             <Text>
-                                27 Nov 23 
-                            </Text>
-                            <Text>
-                              {numberFormatter(epochs?.pointsAllocated)} points allocated
+                              {numberFormatter(epochs?.pointsAllocated)} points
+                              allocated
                             </Text>
                             <Box display="flex" gap="1.5rem">
                               <Text>
-                                {numberFormatter(epochs?.hashAllocated)} est. Hash
-                                tokens earned
+                                {numberFormatter(epochs?.hashAllocated)} est.
+                                Hash tokens earned
                               </Text>
                             </Box>
                           </Box>
@@ -480,10 +465,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                           ></Box>
                         </Box>
                       ))}
-                      
                     </Box>
                   )}
-                </Tr>  
+                </Tr>
+
                 <Tr
                   key={idx}
                   width={"100%"}
@@ -492,13 +477,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   cursor="pointer"
                   position="relative"
                   onClick={() => {
-                    setepochDropdownSelected(!epochDropdownSelected);
+                    epochsData.length > 0 &&
+                      setepochDropdownSelected(!epochDropdownSelected);
                   }}
                   p={0}
-                      top={
-                      ccpDropdownSelected
-                      ? `${topLength}rem`:"0"
-                  }
+                  top={ccpDropdownSelected ? `${topLength}rem` : "4px"}
                   style={{ borderRadius: "6px" }}
                 >
                   <Td
@@ -653,6 +636,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     </Box>
                   </Td>
                 </Tr>
+
                 <Tr
                   key={idx}
                   width={"100%"}
@@ -660,7 +644,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   position="absolute"
                   cursor="pointer"
                   pl="1rem"
-                  top={ccpDropdownSelected ?`${(topLength)*1.43}rem`:""}
+                  top={ccpDropdownSelected ? `${topLength * 1.43}rem` : ""}
                 >
                   {epochDropdownSelected && (
                     <Box
@@ -717,7 +701,6 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             fontWeight="400"
                             lineHeight="20px"
                             onClick={() => {
-                              // setsnapshotDropdownSelected(!snapshotDropdownSelected)
                               toggleEpochSelection(idxEpoch);
                             }}
                           >
@@ -808,7 +791,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                                           )}{" "}
                                           Hash tokens earned
                                         </Text>
-                                        <Link href="https://github.com/0xHashstack/airdrop-snapshots" target="_blank">
+                                        <Link
+                                          href="https://github.com/0xHashstack/airdrop-snapshots"
+                                          target="_blank"
+                                        >
                                           <ExternalLink />
                                         </Link>
                                       </Box>
@@ -823,18 +809,17 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     </Box>
                   )}
                 </Tr>
-                {!epochDropdownSelected  &&  (
+
+                {!epochDropdownSelected && (
                   <Tr
-                      position= "absolute"
-                      // left: "0%",
-                      width="100%"
-                      height= "1px"
-                      borderBottom= "1px solid rgba(103, 109, 154, 0.30)"
-                      display= {`${member.id == 5 ? "none" : "block"}`}
-                      top={ccpDropdownSelected ?`${(topLength)*1.4}rem`:""}
+                    position="absolute"
+                    width="100%"
+                    height="1px"
+                    borderBottom="1px solid rgba(103, 109, 154, 0.30)"
+                    display={`${member.id == 5 ? "none" : "block"}`}
+                    top={ccpDropdownSelected ? `${topLength * 1.4}rem` : ""}
                   />
                 )}
-
               </>
             );
           })}
