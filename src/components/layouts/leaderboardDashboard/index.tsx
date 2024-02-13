@@ -387,6 +387,9 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         pr="10"
                         textDecoration="underline"
                         cursor="pointer"
+                        onClick={() => {
+                          router.push("/v1/ccp_submissions");
+                        }}
                       >
                         Submission
                       </Text>
