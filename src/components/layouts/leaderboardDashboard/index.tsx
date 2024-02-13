@@ -662,7 +662,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         textDecoration="underline"
                         cursor="pointer"
                         onClick={()=>{
-                          router.push('/v1/ccp_submissions')
+                          router.push("/v1/ccp_submissions")
                         }}
                       >
                         Submission

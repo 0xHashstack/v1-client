@@ -548,7 +548,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
                 />
               )}
 
-              <Text fontSize="14px" >Airdrop</Text>
+              <Text fontSize="14px" >More</Text>
             </Box>
         </Box>:""}
         {/* <Box
