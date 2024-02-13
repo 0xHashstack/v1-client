@@ -41,7 +41,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { address } = useAccount();
-  const router=useRouter();
+  const router = useRouter();
 
   return loading ? (
     <Box
@@ -134,6 +134,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
             ))}
           </Tr>
         </Thead>
+
         <Tbody position="relative" overflowX="hidden" alignContent={"center"}>
           {personalData.map((member: any, idx: any) => {
             return (
@@ -213,15 +214,19 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                             {currentSelectedDrop === "Airdrop 1" ? (
                               <>
                                 Supply/Borrow: $
-                                {numberFormatter(member.supplyliq + member.borrowliq)}
+                                {numberFormatter(
+                                  member.supplyliq + member.borrowliq
+                                )}
                                 <br />
-                                Referrals: ${numberFormatter(member.referredliq)}
+                                Referrals: $
+                                {numberFormatter(member.referredliq)}
                               </>
                             ) : (
                               <>
-                                 Points Allocated: {numberFormatter(member.ptsAllocated)}
-                                  <br />
-                                  Points Estimated: {numberFormatter(member.pts)}
+                                Points Allocated:{" "}
+                                {numberFormatter(member.ptsAllocated)}
+                                <br />
+                                Points Estimated: {numberFormatter(member.pts)}
                               </>
                             )}
                           </Box>
@@ -240,9 +245,11 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {currentSelectedDrop==="Airdrop 1" ? numberFormatter(
-                            Number(member.liq) + Number(member.referredliq)
-                          ): numberFormatter(member.pts+member.ptsAllocated)}
+                          {currentSelectedDrop === "Airdrop 1"
+                            ? numberFormatter(
+                                Number(member.liq) + Number(member.referredliq)
+                              )
+                            : numberFormatter(member.pts + member.ptsAllocated)}
                         </Text>
                       </Tooltip>
                     </Text>
@@ -303,7 +310,9 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                           {currentSelectedDrop === "Airdrop 1" ? numberFormatter(member.pts + member.ptsAllocated):numberFormatter(member?.hashAllocated)}
+                          {currentSelectedDrop === "Airdrop 1"
+                            ? numberFormatter(member.pts + member.ptsAllocated)
+                            : numberFormatter(member?.hashAllocated)}
                         </Text>
                       </Tooltip>
                     </Text>
@@ -648,7 +657,6 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       padding={2}
                       textAlign="end"
                     >
-
                       <Text
                         width="100%"
                         height="100%"
@@ -661,8 +669,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         pr="10"
                         textDecoration="underline"
                         cursor="pointer"
-                        onClick={()=>{
-                          router.push('/v1/ccp_submissions')
+                        onClick={() => {
+                          router.push("/v1/ccp_submissions");
                         }}
                       >
                         Submission
