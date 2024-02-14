@@ -408,7 +408,6 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
             );
           })}
           {leaderBoardData.map((member: any, idx: any) => {
-            console.log(member["Wallet Address (StarkNet)"].length, "lne")
             return (
               <>
                 <Tr
@@ -673,7 +672,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       textAlign="end"
                     >
                       <Link
-                        href={`/v1/airdrop_leaderboard/submissions/${member.walletAddress}`}
+                        href={`/v1/airdrop_leaderboard/submissions/${member["Wallet Address (StarkNet)"]}`}
                       >
                         <Text
                           width="100%"

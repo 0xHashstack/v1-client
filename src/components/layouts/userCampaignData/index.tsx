@@ -110,7 +110,6 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 
     setGroupedSnapshots(newGroupedSnapshots);
   }, [snapshotsData]);
-  console.log(ccpUserData.length*68,"lne")
 
   return loading ? (
     <Box

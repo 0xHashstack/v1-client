@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import PageCard from "@/components/layouts/pageCard";
+import axios from "axios";
 
 const submissionsData = [
   {
@@ -68,6 +69,19 @@ const CcpSubmissions: NextPage = () => {
       submissionsData.filter((item) => item.type === selectedFilter)
     );
   }, [selectedFilter]);
+  useEffect(()=>{
+    try{
+      const fetchUserCCPData=async()=>{
+        const res=await axios.get(`https://hstk.fi/api/ccp/submission/${walletAddress}`)
+        console.log(res?.data,"data in submissions")
+      }
+      if(walletAddress){
+        fetchUserCCPData();
+      }
+    }catch(err){
+      console.log(err)
+    }
+  },[walletAddress])
 
   return (
     <PageCard pt="6.5rem">

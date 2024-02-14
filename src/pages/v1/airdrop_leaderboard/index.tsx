@@ -312,7 +312,7 @@ const Campaign: NextPage = () => {
   useEffect(()=>{
     try{
       const fetchUserCCPData=async()=>{
-        const res=await axios.get(`https://hstk.fi/api/ccp/submission/0x04f0EEF65A603FF6B232a17CC6B41831427273EFC05C35B67374598fbacDa8dE`)
+        const res=await axios.get(`https://hstk.fi/api/ccp/submission/${address}`)
         setUserccpData(res?.data)
         console.log(res?.data,"data")
       }
@@ -511,45 +511,6 @@ const Campaign: NextPage = () => {
         display="flex"
         top="3.8125rem"
       >
-                <Text
-          color="#030210"
-          fontSize="14px"
-          fontWeight="700"
-          lineHeight="18px"
-          letterSpacing="-0.15px"
-        >
-          Register yourself in CCP from here
-        </Text>
-        <Link
-          href={
-            "https://forms.gle/zjQGYo5Nj1Wi3GLR8"
-          }
-          target="_blank"
-        >
-          <Text
-            color="#030210"
-            fontSize="14px"
-            fontWeight="800"
-            lineHeight="18px"
-            letterSpacing="-0.15px"
-            ml="0.2rem"
-            textDecoration="underline"
-            cursor="pointer"
-          >
-            here
-          </Text>
-        </Link>
-        <Text
-          color="#030210"
-          fontSize="14px"
-          fontWeight="700"
-          lineHeight="18px"
-          letterSpacing="-0.15px"
-          ml="0.25rem"
-          mr="0.25rem"
-        >
-          |
-        </Text>
         <Text
           color="#030210"
           fontSize="14px"
