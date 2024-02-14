@@ -163,7 +163,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       fontSize="14px"
                       color="#E6EDF3"
                     >
-                      {airdropCampaignUserRank}
+                      {currentSelectedDrop === "Airdrop 1" ?airdropCampaignUserRank:"-"}
                     </Text>
                   </Td>
 
@@ -376,6 +376,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     >
                       <Link
                         href={`/v1/airdrop_leaderboard/submissions/${address}`}
+                        target="_blank"
                       >
                         <Text
                           width="100%"
@@ -408,7 +409,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                 />
               </>
             );
-          })}
+          })
+          }
           {leaderBoardData.map((member: any, idx: any) => {
             return (
               <>
@@ -675,6 +677,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     >
                       <Link
                         href={`/v1/airdrop_leaderboard/submissions/${member["Wallet Address (StarkNet)"]}`}
+                        target="_blank"
                       >
                         <Text
                           width="100%"

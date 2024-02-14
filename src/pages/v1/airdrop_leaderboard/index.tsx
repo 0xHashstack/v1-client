@@ -1,3 +1,4 @@
+import { processAddress } from "@/Blockchain/stark-constants";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import CopyIcon from "@/assets/icons/copyIcon";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
@@ -235,11 +236,11 @@ const Campaign: NextPage = () => {
   const [campaignDetails, setCampaignDetails] = useState([
     {
       campaignName: "Airdrop 01",
-      timeline: "27 Nov 23 - 22 Jan 24",
+      timeline: "27 Nov 2023 - 22 Jan 2024",
     },
     {
       campaignName: "CCP",
-      timeline: "15 Feb 24 - 4 Apr 24",
+      timeline: "15 Feb 2024 - 4 Apr 2024",
     },
   ]);
 

@@ -21,31 +21,44 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 import Link from "next/link";
 
 const snapshotsDates = [
-  "30 Nov 23",
-  "2 Nov 23",
-  "4 Dec 23",
-  "6 Dec 23",
-  "8 Dec 23",
-  "10 Dec 23",
-  "14 Dec 23",
-  "16 Dec 23",
-  "18 Dec 23",
-  "20 Dec 23",
-  "22 Dec 23",
-  "24 Dec 23",
-  "28 Dec 23",
-  "30 Dec 23",
-  "1 Jan 24",
-  "3 Jan 24",
-  "5 Jan 24",
-  "7 Jan 24",
-  "11 Jan 24",
-  "13 Jan 24",
-  "15 Jan 24",
-  "17 Jan 24",
-  "19 Jan 24",
-  "21 jan 24",
+  "30 Nov 2023",
+  "2 Nov 2023",
+  "4 Dec 2023",
+  "6 Dec 2023",
+  "8 Dec 2023",
+  "10 Dec 2023",
+  "14 Dec 2023",
+  "16 Dec 2023",
+  "18 Dec 2023",
+  "20 Dec 2023",
+  "22 Dec 2023",
+  "24 Dec 2023",
+  "28 Dec 2023",
+  "30 Dec 2023",
+  "1 Jan 2024",
+  "3 Jan 2024",
+  "5 Jan 2024",
+  "7 Jan 2024",
+  "11 Jan 2024",
+  "13 Jan 2024",
+  "15 Jan 2024",
+  "17 Jan 2024",
+  "19 Jan 2024",
+  "21 jan 2024",
 ];
+const Months =[
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "June",
+  "July",
+  "Sept",
+  "Oct",
+  "Nov",
+  "Dec"
+]
 const tooltips = ["", "", "Allocated $HASH"];
 
 interface UserCampaignDataProps {
@@ -411,15 +424,15 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             fontWeight="400"
                             lineHeight="20px"
                           >
-                            <Text> {idxccp + 1}</Text>
-                            <Text>{data.Timestamp}</Text>
+                            <Text> {data["Content Platform"]}</Text>
+                            <Text>{data.Timestamp.slice(0,2)} {Months[data.Timestamp.slice(4,5)-1]} {data.Timestamp.slice(6,10)}</Text>
                             <Text>
                               {numberFormatter(data?.pointsAllocated)} points
                               allocated
                             </Text>
                             <Box display="flex" gap="1.5rem">
                               <Text>
-                                {numberFormatter(data?.hashAllocated)} est.
+                                {numberFormatter(data?.hashAllocated)} 
                                 Hash tokens earned
                               </Text>
                             </Box>
@@ -674,12 +687,12 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             <Text>Epoch {idxEpoch + 1}</Text>
                             <Text>
                               {idxEpoch == 0
-                                ? "27 Nov 23 - 11 Dec 23"
+                                ? "27 Nov 2023 - 11 Dec 2023"
                                 : idxEpoch == 1
-                                ? "12 Dec 23 - 25 Dec 23"
+                                ? "12 Dec 2023 - 25 Dec 2023"
                                 : idxEpoch == 2
-                                ? "26 Dec 23 - 8 Jan 24"
-                                : "9 Jan 24 - 22 Jan 24"}
+                                ? "26 Dec 2023 - 8 Jan 2024"
+                                : "9 Jan 2024 - 22 Jan 2024"}
                             </Text>
                             <Text>
                               {numberFormatter(epochs?.pointsAllocated)} points
