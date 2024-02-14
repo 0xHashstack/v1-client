@@ -1,3 +1,21 @@
+import BlueInfoIcon from "@/assets/icons/blueinfoicon";
+import CopyIcon from "@/assets/icons/copyIcon";
+import DropdownUp from "@/assets/icons/dropdownUpIcon";
+import ExternalLinkWhite from "@/assets/icons/externalLinkWhite";
+import { default as LeaderboardDashboard } from "@/components/layouts/leaderboardDashboard";
+import { default as PageCard } from "@/components/layouts/pageCard";
+import UserCampaignData from "@/components/layouts/userCampaignData";
+import { default as useDataLoader } from "@/hooks/useDataLoader";
+import {
+  selectAirdropDropdowns,
+  setAirdropDropdown,
+} from "@/store/slices/dropdownsSlice";
+import {
+  selectExistingLink,
+  selectYourBorrow,
+  selectYourSupply,
+} from "@/store/slices/readDataSlice";
+import { default as numberFormatter } from "@/utils/functions/numberFormatter";
 import {
   Box,
   Button,
@@ -18,24 +36,6 @@ import { default as React, useEffect, useRef, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import BlueInfoIcon from "@/assets/icons/blueinfoicon";
-import CopyIcon from "@/assets/icons/copyIcon";
-import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import ExternalLinkWhite from "@/assets/icons/externalLinkWhite";
-import { default as LeaderboardDashboard } from "@/components/layouts/leaderboardDashboard";
-import { default as PageCard } from "@/components/layouts/pageCard";
-import UserCampaignData from "@/components/layouts/userCampaignData";
-import { default as useDataLoader } from "@/hooks/useDataLoader";
-import {
-  selectAirdropDropdowns,
-  setAirdropDropdown,
-} from "@/store/slices/dropdownsSlice";
-import {
-  selectExistingLink,
-  selectYourBorrow,
-  selectYourSupply,
-} from "@/store/slices/readDataSlice";
-import { default as numberFormatter } from "@/utils/functions/numberFormatter";
 
 const columnItemsLeaderBoard = [
   "Rank",
@@ -292,10 +292,10 @@ const Campaign: NextPage = () => {
           );
           const data = res?.data;
           setepochsData(data?.finalSnapData);
-          if(data?.rank){
+          if (data?.rank) {
             setuserRank(data?.rank);
-          }else{
-            setuserRank("-")
+          } else {
+            setuserRank("-");
           }
           let snaps = data?.epochWise;
           snaps.sort(
@@ -367,17 +367,19 @@ const Campaign: NextPage = () => {
           hashAllocated: res?.data?.userInfo?.allocatedData?.hashAllocated,
           est: res?.data?.userInfo?.estimatedHashTokensUser,
         });
-        if(res?.data?.userInfo?.allocatedData?.pointsAllocated==null){
+        if (res?.data?.userInfo?.allocatedData?.pointsAllocated == null) {
           setuserPointsAllocated(0);
-        }else{
+        } else {
           setuserPointsAllocated(
             res?.data?.userInfo?.allocatedData?.pointsAllocated
           );
         }
-        if(res?.data?.userInfo?.allocatedData?.hashAllocated==null){
+        if (res?.data?.userInfo?.allocatedData?.hashAllocated == null) {
           setuserHashAllocated(0);
-        }else{
-          setuserHashAllocated(res?.data?.userInfo?.allocatedData?.hashAllocated);
+        } else {
+          setuserHashAllocated(
+            res?.data?.userInfo?.allocatedData?.hashAllocated
+          );
         }
 
         setPersonalData(arr);
@@ -555,7 +557,7 @@ const Campaign: NextPage = () => {
           lineHeight="18px"
           letterSpacing="-0.15px"
         >
-          Submit your Submission for CCP campaign
+          Register yourself in CCP from here
         </Text>
         <Link
           href={
@@ -563,6 +565,40 @@ const Campaign: NextPage = () => {
           }
           target="_blank"
         >
+          <Text
+            color="#030210"
+            fontSize="14px"
+            fontWeight="800"
+            lineHeight="18px"
+            letterSpacing="-0.15px"
+            ml="0.2rem"
+            textDecoration="underline"
+            cursor="pointer"
+          >
+            here
+          </Text>
+        </Link>
+        <Text
+          color="#030210"
+          fontSize="14px"
+          fontWeight="700"
+          lineHeight="18px"
+          letterSpacing="-0.15px"
+          ml="0.25rem"
+          mr="0.25rem"
+        >
+          |
+        </Text>
+        <Text
+          color="#030210"
+          fontSize="14px"
+          fontWeight="700"
+          lineHeight="18px"
+          letterSpacing="-0.15px"
+        >
+          Submit your Submission for CCP campaign
+        </Text>
+        <Link href={"https://forms.gle/Suuw8ZFT3E113EMc6"} target="_blank">
           <Text
             color="#030210"
             fontSize="14px"
@@ -769,7 +805,7 @@ const Campaign: NextPage = () => {
                     <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                       Total Points
                     </Text>
-                    {userPointsAllocated!=null ? (
+                    {userPointsAllocated != null ? (
                       <Text color="#00D395" fontSize="20px">
                         {numberFormatter(userPointsAllocated)}
                       </Text>
@@ -806,7 +842,7 @@ const Campaign: NextPage = () => {
                         Hash tokens earned
                       </Tooltip>
                     </Text>
-                    {userHashAllocated==null ? (
+                    {userHashAllocated == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"

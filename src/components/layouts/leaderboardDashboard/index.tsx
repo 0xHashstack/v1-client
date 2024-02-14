@@ -11,10 +11,11 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useAccount } from "@starknet-react/core";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { useRouter } from "next/router";
 
 const tooltips = [
   "",
@@ -387,9 +388,6 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         pr="10"
                         textDecoration="underline"
                         cursor="pointer"
-                        onClick={() => {
-                          router.push("/v1/ccp_submissions");
-                        }}
                       >
                         Submission
                       </Text>
@@ -674,24 +672,25 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       padding={2}
                       textAlign="end"
                     >
-                      <Text
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="flex-end"
-                        fontWeight="400"
-                        fontSize="14px"
-                        color="#E6EDF3"
-                        pr="10"
-                        textDecoration="underline"
-                        cursor="pointer"
-                        onClick={() => {
-                          router.push("/v1/ccp_submissions");
-                        }}
+                      <Link
+                        href={`/v1/airdrop_leaderboard/submissions/${member.walletAddress}`}
                       >
-                        Submission
-                      </Text>
+                        <Text
+                          width="100%"
+                          height="100%"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="flex-end"
+                          fontWeight="400"
+                          fontSize="14px"
+                          color="#E6EDF3"
+                          pr="10"
+                          textDecoration="underline"
+                          cursor="pointer"
+                        >
+                          Submission
+                        </Text>
+                      </Link>
                     </Td>
                   )}
                 </Tr>

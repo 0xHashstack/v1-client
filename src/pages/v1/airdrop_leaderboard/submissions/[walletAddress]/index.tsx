@@ -2,9 +2,10 @@ import { Box, Button, HStack, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import PageCard from "@/components/layouts/pageCard";
-import { useEffect, useState } from "react";
 
 const submissionsData = [
   {
@@ -59,6 +60,8 @@ const CcpSubmissions: NextPage = () => {
   const [selectedFilter, setSelectedFilter] = useState("Article");
   const [filteredSubmissionData, setFilteredSubmissionData] =
     useState(submissionsData);
+  const router = useRouter();
+  const { walletAddress } = router.query;
 
   useEffect(() => {
     setFilteredSubmissionData(
@@ -86,7 +89,13 @@ const CcpSubmissions: NextPage = () => {
           marginTop=".5rem"
           display="flex"
         >
-          Leaderboard/Submissions/CCP/ <Text color="#fff">0xDe.....FHR2</Text>
+          Leaderboard/Submissions/CCP/{" "}
+          <Text color="#fff">
+            {walletAddress?.toString().substring(0, 5)}...
+            {walletAddress
+              ?.toString()
+              .substring(walletAddress?.length - 5, walletAddress?.length)}
+          </Text>
         </Box>
 
         <Box
