@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { useAccount } from "@starknet-react/core";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 import numberFormatter from "@/utils/functions/numberFormatter";
@@ -42,7 +41,6 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { address } = useAccount();
-  const router = useRouter();
 
   return loading ? (
     <Box
@@ -376,21 +374,25 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       padding={2}
                       textAlign="end"
                     >
-                      <Text
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="flex-end"
-                        fontWeight="400"
-                        fontSize="14px"
-                        color="#E6EDF3"
-                        pr="10"
-                        textDecoration="underline"
-                        cursor="pointer"
+                      <Link
+                        href={`/v1/airdrop_leaderboard/submissions/${address}`}
                       >
-                        Submission
-                      </Text>
+                        <Text
+                          width="100%"
+                          height="100%"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="flex-end"
+                          fontWeight="400"
+                          fontSize="14px"
+                          color="#E6EDF3"
+                          pr="10"
+                          textDecoration="underline"
+                          cursor="pointer"
+                        >
+                          Submission
+                        </Text>
+                      </Link>
                     </Td>
                   )}
                 </Tr>
