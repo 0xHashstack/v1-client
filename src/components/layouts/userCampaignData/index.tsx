@@ -424,16 +424,15 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             fontWeight="400"
                             lineHeight="20px"
                           >
-                            <Text> {data["Content Platform"]}</Text>
-                            <Text>{data.Timestamp.slice(0,2)} {Months[data.Timestamp.slice(4,5)-1]} {data.Timestamp.slice(6,10)}</Text>
+                            <Text width={"10%"} textAlign="left"> {data["Content Platform"]}</Text>
+                            <Text textAlign="center">{data.Timestamp.slice(0,2)} {Months[data.Timestamp.slice(4,5)-1]} {data.Timestamp.slice(6,10)}</Text>
                             <Text>
-                              {numberFormatter(data?.pointsAllocated)} points
+                              {numberFormatter(data["Recommended (Community Team)"])} points
                               allocated
                             </Text>
                             <Box display="flex" gap="1.5rem">
                               <Text>
-                                {numberFormatter(data?.hashAllocated)} 
-                                Hash tokens earned
+                                {numberFormatter(data["Allocated (Product Team)"])} Hash tokens earned
                               </Text>
                             </Box>
                           </Box>
