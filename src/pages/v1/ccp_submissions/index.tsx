@@ -170,20 +170,22 @@ const CcpSubmissions: NextPage = () => {
         {filteredSubmissionData.map((item, i) => (
           <Box borderRadius="lg" border="1px solid #282A44" key={i}>
             <Box
-              position="relative"
               height={200}
               width="100%"
-              objectFit="cover"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
             >
-              {/* <Image
-                src={demo}
-                fill
+              <Image
+                src="/submission_placeholder.svg"
+                width={137}
+                height={81}
                 alt="img"
                 style={{
                   borderTopLeftRadius: "8px",
                   borderTopRightRadius: "8px",
                 }}
-              /> */}
+              />
             </Box>
             <Box
               background="#16162C"
