@@ -52,6 +52,7 @@ interface UserCampaignDataProps {
   leaderBoardData: any;
   columnItems: any;
   epochsData: any;
+  ccpUserData:any;
   snapshotsData: any;
   campaignDetails: any;
 }
@@ -60,6 +61,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   leaderBoardData,
   columnItems,
   epochsData,
+  ccpUserData,
   snapshotsData,
   campaignDetails,
 }) => {
@@ -71,7 +73,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   const [hoverEpochDrop, sethoverEpochDrop] = useState(false);
   const [hoverccpDrop, sethoverccpDrop] = useState(false);
 
-  let topLength = epochsData.length * 5;
+  let topLength = ccpUserData.length * 5.25;
 
   // Function to toggle the open state of an epoch
   const toggleEpochSelection = (idxEpoch: any) => {
@@ -393,46 +395,13 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       mr="2rem"
                       ml="2rem"
                       border={
-                        openEpochs.length > 0 ? "" : "1px solid #676D9A48"
-                      }
-                      borderBottom={
-                        openEpochs.length > 0 ? "1px solid #676D9A48" : ""
+                         "1px solid #676D9A48"
                       }
                     >
-                      {epochsData.map((epochs: any, idxEpoch: any) => (
-                        <Box key={idxEpoch}>
+                      {ccpUserData.map((data: any, idxccp: any) => (
+                        <Box key={idxccp}>
                           <Box
                             display="flex"
-                            borderTop={
-                              openEpochs.length > 0 ? "1px solid #676D9A48" : ""
-                            }
-                            borderLeft={
-                              openEpochs.length > 0 ? "1px solid #676D9A48" : ""
-                            }
-                            borderBottom={
-                              openEpochs.length > 0
-                                ? isEpochOpen(idxEpoch)
-                                  ? "1px solid #676D9A48"
-                                  : ""
-                                : ""
-                            }
-                            borderBottomRadius={
-                              openEpochs.length > 0
-                                ? isEpochOpen(idxEpoch)
-                                  ? "6px"
-                                  : ""
-                                : "6px"
-                            }
-                            borderRight={
-                              openEpochs.length > 0 ? "1px solid #676D9A48" : ""
-                            }
-                            borderRadius={
-                              openEpochs.length > 0
-                                ? isEpochOpen(idxEpoch)
-                                  ? "6px"
-                                  : ""
-                                : "6px"
-                            }
                             justifyContent="space-between"
                             cursor="pointer"
                             padding="24px 48px 24px 48px"
@@ -441,26 +410,24 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             fontWeight="400"
                             lineHeight="20px"
                           >
-                            <Text> {idxEpoch + 1}</Text>
-                            <Text>27 Nov 23</Text>
+                            <Text> {idxccp + 1}</Text>
+                            <Text>{data.Timestamp}</Text>
                             <Text>
-                              {numberFormatter(epochs?.pointsAllocated)} points
+                              {numberFormatter(data?.pointsAllocated)} points
                               allocated
                             </Text>
                             <Box display="flex" gap="1.5rem">
                               <Text>
-                                {numberFormatter(epochs?.hashAllocated)} est.
+                                {numberFormatter(data?.hashAllocated)} est.
                                 Hash tokens earned
                               </Text>
                             </Box>
                           </Box>
                           <Box
                             borderBottom={
-                              idxEpoch != 3
-                                ? isEpochOpen(idxEpoch)
-                                  ? ""
-                                  : "1px solid #676D9A48"
-                                : ""
+
+                                  "1px solid #676D9A48"
+
                             }
                           ></Box>
                         </Box>

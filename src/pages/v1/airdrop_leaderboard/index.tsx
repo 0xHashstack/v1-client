@@ -229,6 +229,7 @@ const Campaign: NextPage = () => {
   const [snapshotData, setsnapshotData] = useState([]);
   const [userPointsAllocated, setuserPointsAllocated] = useState<any>();
   const [userHashAllocated, setuserHashAllocated] = useState<any>();
+  const [userccpData, setUserccpData] = useState([])
   const [userRank, setuserRank] = useState<any>();
   const [campaignDetails, setCampaignDetails] = useState([
     {
@@ -307,6 +308,19 @@ const Campaign: NextPage = () => {
       console.log(err);
     }
   }, [address]);
+
+  useEffect(()=>{
+    try{
+      const fetchUserCCPData=async()=>{
+        const res=await axios.get(`https://hstk.fi/api/ccp/submission/0x04f0EEF65A603FF6B232a17CC6B41831427273EFC05C35B67374598fbacDa8dE`)
+        setUserccpData(res?.data)
+        console.log(res?.data,"data")
+      }
+      fetchUserCCPData();
+    }catch(err){
+      console.log(err)
+    }
+  },[address])
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -492,7 +506,7 @@ const Campaign: NextPage = () => {
         </Text>
         <Link
           href={
-            "https://docs.google.com/forms/d/e/1FAIpQLSdb9IgFNLSd5WO9Phl3NjaFYGFser6blDCLrZKyTUR9jZsOTA/viewform"
+            "https://forms.gle/Suuw8ZFT3E113EMc6"
           }
           target="_blank"
         >
@@ -1018,6 +1032,7 @@ const Campaign: NextPage = () => {
           {tabValue == 1 ? (
             <UserCampaignData
               epochsData={epochsData}
+              ccpUserData={userccpData}
               campaignDetails={campaignDetails}
               snapshotsData={snapshotData}
               leaderBoardData={personalData}
