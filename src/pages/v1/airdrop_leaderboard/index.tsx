@@ -229,8 +229,8 @@ const Campaign: NextPage = () => {
   const [snapshotData, setsnapshotData] = useState([]);
   const [userPointsAllocated, setuserPointsAllocated] = useState<any>();
   const [userHashAllocated, setuserHashAllocated] = useState<any>();
-  const [userccpData, setUserccpData] = useState([])
-  const [ccpLeaderBoardData, setccpLeaderBoardData] = useState([])
+  const [userccpData, setUserccpData] = useState([]);
+  const [ccpLeaderBoardData, setccpLeaderBoardData] = useState([]);
   const [userRank, setuserRank] = useState<any>();
   const [campaignDetails, setCampaignDetails] = useState([
     {
@@ -309,32 +309,34 @@ const Campaign: NextPage = () => {
       console.log(err);
     }
   }, [address]);
-  useEffect(()=>{
-    try{
-      const fetchUserCCPData=async()=>{
-        const res=await axios.get(`https://hstk.fi/api/ccp/submission/${address}`)
-        setUserccpData(res?.data)
-        console.log(res?.data,"data")
-      }
-      if(address){
+  useEffect(() => {
+    try {
+      const fetchUserCCPData = async () => {
+        const res = await axios.get(
+          `https://hstk.fi/api/ccp/submission/${address}`
+        );
+        setUserccpData(res?.data);
+        console.log(res?.data, "data");
+      };
+      if (address) {
         fetchUserCCPData();
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  },[address])
+  }, [address]);
 
-  useEffect(()=>{
-    try{
-      const fetchLeaderBoardDataCCP=async()=>{
-        const res=await axios.get('https://hstk.fi/api/ccp/submissions');
+  useEffect(() => {
+    try {
+      const fetchLeaderBoardDataCCP = async () => {
+        const res = await axios.get("https://hstk.fi/api/ccp/submissions");
         setccpLeaderBoardData(res?.data);
-      }
+      };
       fetchLeaderBoardDataCCP();
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  },[])
+  }, []);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -518,14 +520,9 @@ const Campaign: NextPage = () => {
           lineHeight="18px"
           letterSpacing="-0.15px"
         >
-          Register yourself in CCP from here
+          Register yourself in CCP from
         </Text>
-        <Link
-          href={
-            "https://forms.gle/Suuw8ZFT3E113EMc6"
-          }
-          target="_blank"
-        >
+        <Link href="https://forms.gle/zjQGYo5Nj1Wi3GLR8" target="_blank">
           <Text
             color="#030210"
             fontSize="14px"
@@ -1090,7 +1087,11 @@ const Campaign: NextPage = () => {
             />
           ) : (
             <LeaderboardDashboard
-              leaderBoardData={currentSelectedDrop=="CCP 1" ?ccpLeaderBoardData:leaderboardData}
+              leaderBoardData={
+                currentSelectedDrop == "CCP 1"
+                  ? ccpLeaderBoardData
+                  : leaderboardData
+              }
               currentSelectedDrop={currentSelectedDrop}
               airdropCampaignUserRank={userRank}
               personalData={personalData}

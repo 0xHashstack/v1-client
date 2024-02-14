@@ -57,31 +57,46 @@ const submissionsData = [
   },
 ];
 
+interface SubmissionData {
+  Allocated: string;
+  "Content Platform": string;
+  Link: string;
+  "Recommended (Community Team)": string;
+  Timestamp: string;
+  "Wallet Address (StarkNet)": string;
+}
+
 const CcpSubmissions: NextPage = () => {
   const [selectedFilter, setSelectedFilter] = useState("Article");
-  const [filteredSubmissionData, setFilteredSubmissionData] =
-    useState(submissionsData);
+  const [filteredSubmissionData, setFilteredSubmissionData] = useState<
+    SubmissionData[] | null
+  >(null);
+
   const router = useRouter();
   const { walletAddress } = router.query;
 
+  // useEffect(() => {
+  //   setFilteredSubmissionData(
+  //     submissionsData.filter((item) => item.type === selectedFilter)
+  //   );
+  // }, [selectedFilter]);
+
   useEffect(() => {
-    setFilteredSubmissionData(
-      submissionsData.filter((item) => item.type === selectedFilter)
-    );
-  }, [selectedFilter]);
-  useEffect(()=>{
-    try{
-      const fetchUserCCPData=async()=>{
-        const res=await axios.get(`https://hstk.fi/api/ccp/submission/${walletAddress}`)
-        console.log(res?.data,"data in submissions")
-      }
-      if(walletAddress){
+    try {
+      const fetchUserCCPData = async () => {
+        const res = await axios.get(
+          `https://hstk.fi/api/ccp/submission/${walletAddress}`
+        );
+        console.log("🚀 ~ fetchUserCCPData ~ res:", res);
+        setFilteredSubmissionData(res?.data);
+      };
+      if (walletAddress) {
         fetchUserCCPData();
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  },[walletAddress])
+  }, [walletAddress]);
 
   return (
     <PageCard pt="6.5rem">
@@ -190,7 +205,7 @@ const CcpSubmissions: NextPage = () => {
         width="95%"
         marginTop="1.5rem"
       >
-        {filteredSubmissionData.map((item, i) => (
+        {filteredSubmissionData?.map((item, i) => (
           <Box borderRadius="lg" border="1px solid #282A44" key={i}>
             <Box
               height={200}
@@ -225,7 +240,7 @@ const CcpSubmissions: NextPage = () => {
                 alignItems="center"
                 width="100%"
               >
-                <Text color="white">CCP 1 - {item.type}</Text>
+                <Text color="white">CCP 1 - {item["Content Platform"]}</Text>
                 <Box
                   color="black"
                   background="#B3894D"
@@ -235,12 +250,12 @@ const CcpSubmissions: NextPage = () => {
                   fontWeight="semibold"
                   borderRadius="md"
                 >
-                  Points - {item.points}
+                  Points - {item["Recommended (Community Team)"]}
                 </Box>
               </Box>
               <Link href="#">
                 <Text color="#4F59E9" fontSize="sm">
-                  {item.link}
+                  {item.Link}
                 </Text>
               </Link>
             </Box>
