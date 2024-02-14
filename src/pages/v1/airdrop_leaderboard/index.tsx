@@ -230,6 +230,7 @@ const Campaign: NextPage = () => {
   const [userPointsAllocated, setuserPointsAllocated] = useState<any>();
   const [userHashAllocated, setuserHashAllocated] = useState<any>();
   const [userccpData, setUserccpData] = useState([])
+  const [ccpLeaderBoardData, setccpLeaderBoardData] = useState([])
   const [userRank, setuserRank] = useState<any>();
   const [campaignDetails, setCampaignDetails] = useState([
     {
@@ -308,7 +309,6 @@ const Campaign: NextPage = () => {
       console.log(err);
     }
   }, [address]);
-
   useEffect(()=>{
     try{
       const fetchUserCCPData=async()=>{
@@ -316,11 +316,25 @@ const Campaign: NextPage = () => {
         setUserccpData(res?.data)
         console.log(res?.data,"data")
       }
-      fetchUserCCPData();
+      if(address){
+        fetchUserCCPData();
+      }
     }catch(err){
       console.log(err)
     }
   },[address])
+
+  useEffect(()=>{
+    try{
+      const fetchLeaderBoardDataCCP=async()=>{
+        const res=await axios.get('https://hstk.fi/api/ccp/submissions');
+        setccpLeaderBoardData(res?.data);
+      }
+      fetchLeaderBoardDataCCP();
+    }catch(err){
+      console.log(err)
+    }
+  },[])
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -495,6 +509,45 @@ const Campaign: NextPage = () => {
         display="flex"
         top="3.8125rem"
       >
+                <Text
+          color="#030210"
+          fontSize="14px"
+          fontWeight="700"
+          lineHeight="18px"
+          letterSpacing="-0.15px"
+        >
+          Register yourself in CCP from here
+        </Text>
+        <Link
+          href={
+            "https://forms.gle/zjQGYo5Nj1Wi3GLR8"
+          }
+          target="_blank"
+        >
+          <Text
+            color="#030210"
+            fontSize="14px"
+            fontWeight="800"
+            lineHeight="18px"
+            letterSpacing="-0.15px"
+            ml="0.2rem"
+            textDecoration="underline"
+            cursor="pointer"
+          >
+            here
+          </Text>
+        </Link>
+        <Text
+          color="#030210"
+          fontSize="14px"
+          fontWeight="700"
+          lineHeight="18px"
+          letterSpacing="-0.15px"
+          ml="0.25rem"
+          mr="0.25rem"
+        >
+          |
+        </Text>
         <Text
           color="#030210"
           fontSize="14px"
@@ -1040,7 +1093,7 @@ const Campaign: NextPage = () => {
             />
           ) : (
             <LeaderboardDashboard
-              leaderBoardData={leaderboardData}
+              leaderBoardData={currentSelectedDrop=="CCP 1" ?ccpLeaderBoardData:leaderboardData}
               currentSelectedDrop={currentSelectedDrop}
               airdropCampaignUserRank={userRank}
               personalData={personalData}

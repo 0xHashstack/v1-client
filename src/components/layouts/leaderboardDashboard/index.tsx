@@ -95,8 +95,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     idx1 == 0
                       ? "left"
                       : idx1 == columnItems?.length - 1
-                      ? "right"
-                      : "center"
+                        ? "right"
+                        : "center"
                   }
                   pl={idx1 == 0 ? 2 : 0}
                   pr={idx1 == columnItems.length - 1 ? 10 : 0}
@@ -247,8 +247,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         <Text>
                           {currentSelectedDrop === "Airdrop 1"
                             ? numberFormatter(
-                                Number(member.liq) + Number(member.referredliq)
-                              )
+                              Number(member.liq) + Number(member.referredliq)
+                            )
                             : numberFormatter(member.pts + member.ptsAllocated)}
                         </Text>
                       </Tooltip>
@@ -410,6 +410,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
             );
           })}
           {leaderBoardData.map((member: any, idx: any) => {
+            console.log(member["Wallet Address (StarkNet)"].length, "lne")
             return (
               <>
                 <Tr
@@ -447,22 +448,37 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     padding={2}
                     textAlign="center"
                   >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      fontSize="14px"
-                      color="#E6EDF3"
-                    >
-                      {member.walletAddress.substring(0, 5)}...
-                      {member.walletAddress.substring(
-                        member.walletAddress.length - 5,
-                        member.walletAddress.length
-                      )}
-                    </Text>
+                    {currentSelectedDrop == "Airdrop 1" ?
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                      >
+                        {member.walletAddress.substring(0, 5)}...
+                        {member.walletAddress.substring(
+                          member.walletAddress.length - 5,
+                          member.walletAddress.length
+                        )}
+                      </Text> : <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                      >
+                        {member["Wallet Address (StarkNet)"].substring(0, 5)}...
+                        {member["Wallet Address (StarkNet)"].substring(
+                          member["Wallet Address (StarkNet)"].length - 5, member["Wallet Address (StarkNet)"].length)}
+                      </Text>
+                    }
                   </Td>
 
                   <Td
@@ -497,9 +513,9 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                               </>
                             ) : (
                               <>
-                                Points Estimated:{" "}
-                                {member.pointsEstimated
-                                  ? numberFormatter(member?.pointsEstimated)
+                                Points Allocated:{" "}
+                                {numberFormatter(member["Recommended (Community Team)"])
+                                  ? numberFormatter(member["Recommended (Community Team)"])
                                   : 0}
                               </>
                             )}
@@ -519,10 +535,10 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {numberFormatter(
+                          {currentSelectedDrop=="Airdrop 1" ?numberFormatter(
                             Number(member.selfValue) +
-                              Number(member.referralValue)
-                          )}
+                            Number(member.referralValue)
+                          ):numberFormatter(member["Recommended (Community Team)"])}
                         </Text>
                       </Tooltip>
                     </Text>
@@ -563,8 +579,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                           ) : (
                             <Box>
                               HASH Allocated:{" "}
-                              {member.hashAllocated
-                                ? numberFormatter(member?.hashAllocated)
+                              {member["Hash Allocated"]
+                                ? numberFormatter(member["Hash Allocated"])
                                 : 0}
                               <br />
                               HASH Estimated:{" "}
@@ -590,10 +606,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         <Text>
                           {currentSelectedDrop === "Airdrop 1"
                             ? numberFormatter(member.netPoints)
-                            : numberFormatter(
-                                Number(member.estimatedHash) +
-                                  member.hashAllocated
-                              )}
+                            : numberFormatter(member["Hash Allocated"]
+                            )}
                         </Text>
                       </Tooltip>
                     </Text>

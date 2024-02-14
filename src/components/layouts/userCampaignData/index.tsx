@@ -11,7 +11,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import CircularDropDown from "@/assets/icons/circularDropDown";
 import CircularDropDownActive from "@/assets/icons/circularDropDownActive";
@@ -72,8 +72,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   const [ccpDropdownSelected, setccpDropdownSelected] = useState(false);
   const [hoverEpochDrop, sethoverEpochDrop] = useState(false);
   const [hoverccpDrop, sethoverccpDrop] = useState(false);
+  let topLength = ccpUserData.length * 5.15;
 
-  let topLength = ccpUserData.length * 5.25;
 
   // Function to toggle the open state of an epoch
   const toggleEpochSelection = (idxEpoch: any) => {
@@ -110,6 +110,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 
     setGroupedSnapshots(newGroupedSnapshots);
   }, [snapshotsData]);
+  console.log(ccpUserData.length*68,"lne")
 
   return loading ? (
     <Box
@@ -382,6 +383,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 
                 <Tr
                   key={idx}
+                  
                   width={"100%"}
                   height="4rem"
                   position="absolute"
@@ -425,9 +427,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                           </Box>
                           <Box
                             borderBottom={
-
+                              idxccp==ccpUserData.length-1 ?"0":
                                   "1px solid #676D9A48"
-
                             }
                           ></Box>
                         </Box>
@@ -448,7 +449,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       setepochDropdownSelected(!epochDropdownSelected);
                   }}
                   p={0}
-                  top={ccpDropdownSelected ? `${topLength}rem` : "4px"}
+                  top={ccpDropdownSelected ? `${(ccpUserData.length*68)+34}px` : "4px"}
                   style={{ borderRadius: "6px" }}
                 >
                   <Td
@@ -611,7 +612,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   position="absolute"
                   cursor="pointer"
                   pl="1rem"
-                  top={ccpDropdownSelected ? `${topLength * 1.43}rem` : ""}
+                  top={ccpDropdownSelected ? epochDropdownSelected ? `${((ccpUserData.length*68)+(64*2)+(34))}px`:`${ccpUserData.length*68}px` : ""}
                 >
                   {epochDropdownSelected && (
                     <Box
@@ -782,9 +783,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     position="absolute"
                     width="100%"
                     height="1px"
-                    borderBottom="1px solid rgba(103, 109, 154, 0.30)"
-                    display={`${member.id == 5 ? "none" : "block"}`}
-                    top={ccpDropdownSelected ? `${topLength * 1.4}rem` : ""}
+                    borderTop="1px solid rgba(103, 109, 154, 0.30)"
+                    top={ccpDropdownSelected ? `${(ccpUserData.length *68)+(64*2.5)}px` : ""}
                   />
                 )}
               </>
