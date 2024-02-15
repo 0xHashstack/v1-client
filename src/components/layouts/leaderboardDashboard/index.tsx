@@ -14,8 +14,8 @@ import { useAccount } from "@starknet-react/core";
 import Link from "next/link";
 import React, { useState } from "react";
 
-import numberFormatter from "@/utils/functions/numberFormatter";
 import { processAddress } from "@/Blockchain/stark-constants";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 const tooltips = [
   "",
@@ -31,9 +31,9 @@ interface LeaderboardDashboardProps {
   columnItems: any;
   currentSelectedDrop: string;
   airdropCampaignUserRank: any;
-  userHashCCP:any;
-  userPointsCCP:any;
-  userRankCCP:any;
+  userHashCCP: any;
+  userPointsCCP: any;
+  userRankCCP: any;
 }
 
 const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
@@ -101,8 +101,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     idx1 == 0
                       ? "left"
                       : idx1 == columnItems?.length - 1
-                        ? "right"
-                        : "center"
+                      ? "right"
+                      : "center"
                   }
                   pl={idx1 == 0 ? 2 : 0}
                   pr={idx1 == columnItems.length - 1 ? 10 : 0}
@@ -170,7 +170,11 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       fontSize="14px"
                       color="#E6EDF3"
                     >
-                      {currentSelectedDrop === "Airdrop 1" ?airdropCampaignUserRank:userRankCCP ?userRankCCP:"-"}
+                      {currentSelectedDrop === "Airdrop 1"
+                        ? airdropCampaignUserRank
+                        : userRankCCP
+                        ? userRankCCP
+                        : "-"}
                     </Text>
                   </Td>
 
@@ -253,8 +257,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         <Text>
                           {currentSelectedDrop === "Airdrop 1"
                             ? numberFormatter(
-                              Number(member.liq) + Number(member.referredliq)
-                            )
+                                Number(member.liq) + Number(member.referredliq)
+                              )
                             : numberFormatter(userPointsCCP)}
                         </Text>
                       </Tooltip>
@@ -416,8 +420,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                 />
               </>
             );
-          })
-          }
+          })}
+
           {leaderBoardData.map((member: any, idx: any) => {
             return (
               <>
@@ -456,7 +460,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     padding={2}
                     textAlign="center"
                   >
-                    {currentSelectedDrop == "Airdrop 1" ?
+                    {currentSelectedDrop == "Airdrop 1" ? (
                       <Text
                         width="100%"
                         height="100%"
@@ -472,7 +476,9 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                           member.walletAddress.length - 5,
                           member.walletAddress.length
                         )}
-                      </Text> : <Text
+                      </Text>
+                    ) : (
+                      <Text
                         width="100%"
                         height="100%"
                         display="flex"
@@ -484,9 +490,11 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       >
                         {member["Wallet Address (StarkNet)"].substring(0, 5)}...
                         {member["Wallet Address (StarkNet)"].substring(
-                          member["Wallet Address (StarkNet)"].length - 5, member["Wallet Address (StarkNet)"].length)}
+                          member["Wallet Address (StarkNet)"].length - 5,
+                          member["Wallet Address (StarkNet)"].length
+                        )}
                       </Text>
-                    }
+                    )}
                   </Td>
 
                   <Td
@@ -522,8 +530,17 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                             ) : (
                               <>
                                 Points Allocated:{" "}
-                                {numberFormatter(member["Recommended (Community Team)"])
-                                  ? numberFormatter(member["Recommended (Community Team)"])
+                                {numberFormatter(
+                                  member["Recommended (Community Team)"]
+                                )
+                                  ? numberFormatter(
+                                      member["Recommended (Community Team)"]
+                                    )
+                                  : 0}
+                                <br />
+                                Points Estimated:{" "}
+                                {member.pointsEstimated
+                                  ? numberFormatter(member?.pointsEstimated)
                                   : 0}
                               </>
                             )}
@@ -543,10 +560,14 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {currentSelectedDrop=="Airdrop 1" ?numberFormatter(
-                            Number(member.selfValue) +
-                            Number(member.referralValue)
-                          ):numberFormatter(member["Recommended (Community Team)"])}
+                          {currentSelectedDrop == "Airdrop 1"
+                            ? numberFormatter(
+                                Number(member.selfValue) +
+                                  Number(member.referralValue)
+                              )
+                            : numberFormatter(
+                                member["Recommended (Community Team)"]
+                              )}
                         </Text>
                       </Tooltip>
                     </Text>
@@ -614,8 +635,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         <Text>
                           {currentSelectedDrop === "Airdrop 1"
                             ? numberFormatter(member.netPoints)
-                            : numberFormatter(member["Hash Allocated"]
-                            )}
+                            : numberFormatter(member["Hash Allocated"])}
                         </Text>
                       </Tooltip>
                     </Text>
@@ -683,7 +703,9 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       textAlign="end"
                     >
                       <Link
-                        href={`/v1/airdrop_leaderboard/submissions/${processAddress(member["Wallet Address (StarkNet)"])}`}
+                        href={`/v1/airdrop_leaderboard/submissions/${processAddress(
+                          member["Wallet Address (StarkNet)"]
+                        )}`}
                         target="_blank"
                       >
                         <Text

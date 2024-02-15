@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Skeleton, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { NextPage } from "next";
 import Image from "next/image";
@@ -133,7 +133,13 @@ const CcpSubmissions: NextPage = () => {
       >
         {loading ? (
           <Box>
-            <Text color="#fff">Loading...</Text>
+            <Skeleton
+              width="6rem"
+              height="4rem"
+              startColor="#101216"
+              endColor="#2B2F35"
+              borderRadius="6px"
+            />
           </Box>
         ) : !(submissionData.length <= 0) ? (
           submissionData?.map((item, i) => (
@@ -141,7 +147,7 @@ const CcpSubmissions: NextPage = () => {
               borderRadius="lg"
               border="1px solid #282A44"
               key={i}
-              maxWidth={500}
+              maxWidth={submissionData.length > 1 ? "500" : ""}
             >
               <Box
                 height={200}
@@ -186,7 +192,7 @@ const CcpSubmissions: NextPage = () => {
                     fontWeight="semibold"
                     borderRadius="md"
                   >
-                    Points - {item["Recommended (Community Team)"] ? item["Recommended (Community Team)"]:0}
+                    Points - {item["Recommended (Community Team)"]}
                   </Box>
                 </Box>
                 <Link href={item.Link} target="_blank">
