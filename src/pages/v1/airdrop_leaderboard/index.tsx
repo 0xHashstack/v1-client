@@ -235,6 +235,8 @@ const Campaign: NextPage = () => {
   const [userRank, setuserRank] = useState<any>();
   const [userPointsCCP, setuserPointsCCP] = useState<any>(0)
   const [userHashCCP, setuserHashCCP] = useState<any>(0)
+  const [totalPointsCCP, settotalPointsCCP] = useState<any>(0)
+  const [userRankCCP, setuserRankCCP] = useState<any>(0)
   const [campaignDetails, setCampaignDetails] = useState([
     {
       campaignName: "Airdrop 01",
@@ -341,13 +343,25 @@ const Campaign: NextPage = () => {
     try {
       const fetchLeaderBoardDataCCP = async () => {
         const res = await axios.get("https://hstk.fi/api/ccp/submissions");
+        let totalPoints=0;
+        if(res?.data){
+          res?.data.map((data:any)=>{
+            if(address){
+              if(address===processAddress(data["Wallet Address (StarkNet)"])){
+                setuserRankCCP(data?.Rank)
+              }
+            }
+           totalPoints+=Number(data["Recommended (Community Team)"])
+          })
+        }
+        settotalPointsCCP(totalPoints)
         setccpLeaderBoardData(res?.data);
       };
       fetchLeaderBoardDataCCP();
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [address]);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -752,9 +766,9 @@ const Campaign: NextPage = () => {
                     <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                       Your Rank
                     </Text>
-                    {userRank ? (
+                    {userRankCCP ? (
                       <Text color="#00D395" fontSize="20px" textAlign="center">
-                        -
+                        {userRankCCP}
                       </Text>
                     ) : (
                       <Skeleton
@@ -989,9 +1003,9 @@ const Campaign: NextPage = () => {
                       Points Accrued
                     </Text>
 
-                    {communityPoints ? (
+                    {communityPoints && totalPointsCCP ? (
                       <Text color="#00D395" fontSize="20px">
-                        {numberFormatter(communityPoints)}
+                        {currentSelectedDrop=="Airdrop 1" ? numberFormatter(communityPoints): numberFormatter(totalPointsCCP)}
                       </Text>
                     ) : (
                       <Skeleton
@@ -1003,7 +1017,7 @@ const Campaign: NextPage = () => {
                       />
                     )}
                   </VStack>
-                  <VStack
+                  {currentSelectedDrop=="Airdrop 1" &&                  <VStack
                     gap={"6px"}
                     justifyContent="flex-start"
                     alignItems="flex-start"
@@ -1040,7 +1054,8 @@ const Campaign: NextPage = () => {
                         11.25M HASH
                       </Text>
                     )}
-                  </VStack>
+                  </VStack>}
+
                 </HStack>
               </HStack>
             </HStack>
@@ -1100,6 +1115,7 @@ const Campaign: NextPage = () => {
             />
           ) : (
             <LeaderboardDashboard
+            userRankCCP={userRankCCP}
             userHashCCP={userHashCCP}
             userPointsCCP={userPointsCCP}
               leaderBoardData={

@@ -15,6 +15,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { processAddress } from "@/Blockchain/stark-constants";
 
 const tooltips = [
   "",
@@ -32,6 +33,7 @@ interface LeaderboardDashboardProps {
   airdropCampaignUserRank: any;
   userHashCCP:any;
   userPointsCCP:any;
+  userRankCCP:any;
 }
 
 const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
@@ -42,6 +44,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
   airdropCampaignUserRank,
   userHashCCP,
   userPointsCCP,
+  userRankCCP,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { address } = useAccount();
@@ -167,7 +170,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       fontSize="14px"
                       color="#E6EDF3"
                     >
-                      {currentSelectedDrop === "Airdrop 1" ?airdropCampaignUserRank:"-"}
+                      {currentSelectedDrop === "Airdrop 1" ?airdropCampaignUserRank:userRankCCP ?userRankCCP:"-"}
                     </Text>
                   </Td>
 
@@ -680,7 +683,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       textAlign="end"
                     >
                       <Link
-                        href={`/v1/airdrop_leaderboard/submissions/${member["Wallet Address (StarkNet)"]}`}
+                        href={`/v1/airdrop_leaderboard/submissions/${processAddress(member["Wallet Address (StarkNet)"])}`}
                         target="_blank"
                       >
                         <Text

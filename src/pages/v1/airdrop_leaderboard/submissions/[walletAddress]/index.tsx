@@ -186,7 +186,7 @@ const CcpSubmissions: NextPage = () => {
                     fontWeight="semibold"
                     borderRadius="md"
                   >
-                    Points - {item["Recommended (Community Team)"]}
+                    Points - {item["Recommended (Community Team)"] ? item["Recommended (Community Team)"]:0}
                   </Box>
                 </Box>
                 <Link href={item.Link} target="_blank">
