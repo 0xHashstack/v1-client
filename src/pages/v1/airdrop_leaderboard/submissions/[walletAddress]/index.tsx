@@ -8,55 +8,6 @@ import { useEffect, useState } from "react";
 
 import PageCard from "@/components/layouts/pageCard";
 
-const submissionsData = [
-  {
-    type: "Article",
-    points: 100,
-    link: "http://localhost:3000/v1/ccp_submissions/",
-    img: "",
-  },
-  {
-    type: "Twitter Thread",
-    points: 100,
-    link: "http://localhost:3000/v1/ccp_submissions/",
-  },
-  {
-    type: "Review",
-    points: 100,
-    link: "http://localhost:3000/v1/ccp_submissions/",
-  },
-  {
-    type: "Tiktok Feature",
-    points: 100,
-    link: "http://localhost:3000/v1/ccp_submissions/",
-  },
-  {
-    type: "Article",
-    points: 100,
-    link: "http://localhost:3000/v1/ccp_submissions/",
-  },
-  {
-    type: "Twitter Thread",
-    points: 100,
-    link: "http://localhost:3000/v1/ccp_submissions/",
-  },
-  {
-    type: "Review",
-    points: 100,
-    link: "http://localhost:3000/v1/ccp_submissions/",
-  },
-  {
-    type: "Tiktok Feature",
-    points: 100,
-    link: "http://localhost:3000/v1/ccp_submissions/",
-  },
-  {
-    type: "Article",
-    points: 100,
-    link: "http://localhost:3000/v1/ccp_submissions/",
-  },
-];
-
 const filterButtons = [
   "Medium Article",
   "Twitter Tweet",
@@ -78,11 +29,9 @@ interface SubmissionData {
 }
 
 const CcpSubmissions: NextPage = () => {
-  const [selectedFilter, setSelectedFilter] = useState("Medium Article");
-  const [filteredSubmissionData, setFilteredSubmissionData] = useState<
-    SubmissionData[] | null
-  >(null);
-  const [loading, setLoading] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("");
+  const [submissionData, setSubmissionData] = useState<SubmissionData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const router = useRouter();
   const { walletAddress } = router.query;
@@ -94,19 +43,22 @@ const CcpSubmissions: NextPage = () => {
         const res = await axios.get(
           `https://hstk.fi/api/ccp/submission/${walletAddress}`
         );
-        setFilteredSubmissionData(
-          (res?.data as SubmissionData[]).filter(
-            (item) => item["Content Platform"] === selectedFilter
-          )
-        );
+        if (selectedFilter === "") {
+          setSubmissionData(res.data);
+        } else {
+          const filteredData = res.data.filter(
+            (item: SubmissionData) =>
+              item["Content Platform"] === selectedFilter
+          );
+          setSubmissionData(filteredData);
+        }
       };
       if (walletAddress) {
         fetchUserCCPData();
       }
+      setLoading(false);
     } catch (err) {
       console.log(err);
-      setLoading(false);
-    } finally {
       setLoading(false);
     }
   }, [selectedFilter, walletAddress]);
@@ -180,18 +132,17 @@ const CcpSubmissions: NextPage = () => {
         marginTop="1.5rem"
       >
         {loading ? (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            width="100%"
-            height="100%"
-          >
+          <Box>
             <Text color="#fff">Loading...</Text>
           </Box>
-        ) : (
-          filteredSubmissionData?.map((item, i) => (
-            <Box borderRadius="lg" border="1px solid #282A44" key={i}>
+        ) : !(submissionData.length <= 0) ? (
+          submissionData?.map((item, i) => (
+            <Box
+              borderRadius="lg"
+              border="1px solid #282A44"
+              key={i}
+              maxWidth={500}
+            >
               <Box
                 height={200}
                 width="100%"
@@ -253,6 +204,10 @@ const CcpSubmissions: NextPage = () => {
               </Box>
             </Box>
           ))
+        ) : (
+          <Box>
+            <Text color="#fff">No data found</Text>
+          </Box>
         )}
       </HStack>
     </PageCard>
