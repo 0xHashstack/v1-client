@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import PageCard from "@/components/layouts/pageCard";
-import { bool } from "aws-sdk/clients/signer";
 
 const filterButtons = [
   "Medium Article",
@@ -42,7 +41,7 @@ const CcpSubmissions: NextPage = () => {
       setLoading(true);
       const fetchUserCCPData = async () => {
         const res = await axios.get(
-          `https://hstk.fi/api/ccp/submission/0x5970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4`
+          `https://hstk.fi/api/ccp/submission/${walletAddress}`
         );
         if (selectedFilter === "") {
           setSubmissionData(res.data);
