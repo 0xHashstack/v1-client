@@ -233,6 +233,8 @@ const Campaign: NextPage = () => {
   const [userccpData, setUserccpData] = useState([]);
   const [ccpLeaderBoardData, setccpLeaderBoardData] = useState([]);
   const [userRank, setuserRank] = useState<any>();
+  const [userPointsCCP, setuserPointsCCP] = useState<any>(0)
+  const [userHashCCP, setuserHashCCP] = useState<any>(0)
   const [campaignDetails, setCampaignDetails] = useState([
     {
       campaignName: "Airdrop 01",
@@ -317,7 +319,16 @@ const Campaign: NextPage = () => {
           `https://hstk.fi/api/ccp/submission/${address}`
         );
         setUserccpData(res?.data);
-        console.log(res?.data, "data");
+        let points=0;
+        let hash=0;
+        if(res?.data){
+          res?.data.map((data:any)=>{
+            points+=(Number(data["Recommended (Community Team)"]) ? Number(data["Recommended (Community Team)"]) :0);
+            hash+=(Number(data["Allocated (Product Team)"])?Number(data["Allocated (Product Team)"]):0)
+          })
+        }
+        setuserPointsCCP(points);
+        setuserHashCCP(hash);
       };
       if (address) {
         fetchUserCCPData();
@@ -326,7 +337,6 @@ const Campaign: NextPage = () => {
       console.log(err);
     }
   }, [address]);
-
   useEffect(() => {
     try {
       const fetchLeaderBoardDataCCP = async () => {
@@ -743,8 +753,8 @@ const Campaign: NextPage = () => {
                       Your Rank
                     </Text>
                     {userRank ? (
-                      <Text color="#00D395" fontSize="20px">
-                        {userRank}
+                      <Text color="#00D395" fontSize="20px" textAlign="center">
+                        -
                       </Text>
                     ) : (
                       <Skeleton
@@ -764,9 +774,9 @@ const Campaign: NextPage = () => {
                     <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                       Total Points
                     </Text>
-                    {userPointsAllocated != null ? (
+                    {userPointsCCP != null ? (
                       <Text color="#00D395" fontSize="20px">
-                        {numberFormatter(userPointsAllocated)}
+                        {numberFormatter(userPointsCCP)}
                       </Text>
                     ) : (
                       <Skeleton
@@ -801,7 +811,7 @@ const Campaign: NextPage = () => {
                         Hash tokens earned
                       </Tooltip>
                     </Text>
-                    {userHashAllocated == null ? (
+                    {userHashCCP == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -811,7 +821,7 @@ const Campaign: NextPage = () => {
                       />
                     ) : (
                       <Text color="#00D395" fontSize="20px">
-                        {numberFormatter(userHashAllocated)} HASH
+                        {numberFormatter(userHashCCP)} HASH
                       </Text>
                     )}
                   </VStack>
@@ -1079,6 +1089,8 @@ const Campaign: NextPage = () => {
         >
           {tabValue == 1 ? (
             <UserCampaignData
+            userHashCCP={userHashCCP}
+            userPointsCCP={userPointsCCP}
               epochsData={epochsData}
               ccpUserData={userccpData}
               campaignDetails={campaignDetails}
@@ -1088,6 +1100,8 @@ const Campaign: NextPage = () => {
             />
           ) : (
             <LeaderboardDashboard
+            userHashCCP={userHashCCP}
+            userPointsCCP={userPointsCCP}
               leaderBoardData={
                 currentSelectedDrop == "CCP 1"
                   ? ccpLeaderBoardData

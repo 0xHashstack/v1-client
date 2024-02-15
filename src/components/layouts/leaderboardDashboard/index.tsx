@@ -30,6 +30,8 @@ interface LeaderboardDashboardProps {
   columnItems: any;
   currentSelectedDrop: string;
   airdropCampaignUserRank: any;
+  userHashCCP:any;
+  userPointsCCP:any;
 }
 
 const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
@@ -38,6 +40,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
   columnItems,
   currentSelectedDrop,
   airdropCampaignUserRank,
+  userHashCCP,
+  userPointsCCP,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { address } = useAccount();
@@ -223,7 +227,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                             ) : (
                               <>
                                 Points Allocated:{" "}
-                                {numberFormatter(member.ptsAllocated)}
+                                {numberFormatter(userPointsCCP)}
                                 <br />
                                 Points Estimated: {numberFormatter(member.pts)}
                               </>
@@ -248,7 +252,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                             ? numberFormatter(
                               Number(member.liq) + Number(member.referredliq)
                             )
-                            : numberFormatter(member.pts + member.ptsAllocated)}
+                            : numberFormatter(userPointsCCP)}
                         </Text>
                       </Tooltip>
                     </Text>
@@ -285,7 +289,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                             <Box>
                               HASH Allocated:{" "}
                               {member.hashAllocated
-                                ? numberFormatter(member?.hashAllocated)
+                                ? numberFormatter(userHashCCP)
                                 : 0}
                               <br />
                               HASH Estimated:{" "}
@@ -311,7 +315,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         <Text>
                           {currentSelectedDrop === "Airdrop 1"
                             ? numberFormatter(member.pts + member.ptsAllocated)
-                            : numberFormatter(member?.hashAllocated)}
+                            : numberFormatter(userHashCCP)}
                         </Text>
                       </Tooltip>
                     </Text>

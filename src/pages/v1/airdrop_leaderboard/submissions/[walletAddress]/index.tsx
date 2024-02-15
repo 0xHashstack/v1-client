@@ -238,7 +238,7 @@ const CcpSubmissions: NextPage = () => {
                     Points - {item["Recommended (Community Team)"]}
                   </Box>
                 </Box>
-                <Link href="#">
+                <Link href={item.Link} target="_blank">
                   <Text
                     color="#4F59E9"
                     fontSize="sm"

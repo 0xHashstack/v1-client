@@ -68,6 +68,8 @@ interface UserCampaignDataProps {
   ccpUserData:any;
   snapshotsData: any;
   campaignDetails: any;
+  userHashCCP:any;
+  userPointsCCP:any;
 }
 
 const UserCampaignData: React.FC<UserCampaignDataProps> = ({
@@ -77,6 +79,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   ccpUserData,
   snapshotsData,
   campaignDetails,
+  userHashCCP,
+  userPointsCCP,
 }) => {
   const [epochDropdownSelected, setepochDropdownSelected] = useState(false);
   const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []]);
@@ -227,7 +231,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   p={0}
                   style={{ borderRadius: "6px" }}
                   onClick={() => {
-                    setccpDropdownSelected(!ccpDropdownSelected);
+                    if(ccpUserData.length==0){
+
+                    }else{
+                      setccpDropdownSelected(!ccpDropdownSelected);
+                    }
                   }}
                 >
                   <Td
@@ -319,8 +327,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         label={
                           <Box>
                             HASH Allocated:{" "}
-                            {member.hashAllocated
-                              ? numberFormatter(member?.hashAllocated)
+                            {userHashCCP
+                              ? numberFormatter(userHashCCP)
                               : 0}
                             <br />
                             HASH Estimated:{" "}
@@ -341,7 +349,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {numberFormatter(member.est + member.hashAllocated)}
+                          {numberFormatter(userHashCCP)}
                         </Text>
                       </Tooltip>
                     </Text>
@@ -427,12 +435,12 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             <Text width={"10%"} textAlign="left"> {data["Content Platform"]}</Text>
                             <Text textAlign="center">{data.Timestamp.slice(0,2)} {Months[data.Timestamp.slice(4,5)-1]} {data.Timestamp.slice(6,10)}</Text>
                             <Text>
-                              {numberFormatter(data["Recommended (Community Team)"])} points
+                              { numberFormatter(data["Recommended (Community Team)"] ? data["Recommended (Community Team)"]:0)} points
                               allocated
                             </Text>
                             <Box display="flex" gap="1.5rem">
                               <Text>
-                                {numberFormatter(data["Allocated (Product Team)"])} Hash tokens earned
+                                {numberFormatter(data["Allocated (Product Team)"] ? data["Allocated (Product Team)"]:0 )} Hash tokens earned
                               </Text>
                             </Box>
                           </Box>
