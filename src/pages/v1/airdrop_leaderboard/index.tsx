@@ -1071,7 +1071,7 @@ const Campaign: NextPage = () => {
               </HStack>
             </HStack>
 
-            <Box
+            {/* <Box
               mt="6.5rem"
               display="flex"
               flexDirection="column"
@@ -1102,7 +1102,7 @@ const Campaign: NextPage = () => {
                   <ExternalLinkWhite />
                 </Link>
               </Box>
-            </Box>
+            </Box> */}
           </HStack>
         )}
 
