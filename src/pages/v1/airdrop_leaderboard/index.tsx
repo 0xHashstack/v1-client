@@ -225,7 +225,7 @@ const Campaign: NextPage = () => {
   const [snapshotNumber, setSnapshotNumber] = useState(0);
   const [tabValue, setTabValue] = useState(1);
   const [refferal, setRefferal] = useState("xyz");
-  const [currentSelectedDrop, setCurrentSelectedDrop] = useState("Airdrop 1");
+  const [currentSelectedDrop, setCurrentSelectedDrop] = useState("CCP 1");
   const [epochsData, setepochsData] = useState([]);
   const [snapshotData, setsnapshotData] = useState([]);
   const [userPointsAllocated, setuserPointsAllocated] = useState<any>();
@@ -233,10 +233,10 @@ const Campaign: NextPage = () => {
   const [userccpData, setUserccpData] = useState([]);
   const [ccpLeaderBoardData, setccpLeaderBoardData] = useState([]);
   const [userRank, setuserRank] = useState<any>();
-  const [userPointsCCP, setuserPointsCCP] = useState<any>(0)
-  const [userHashCCP, setuserHashCCP] = useState<any>(0)
-  const [totalPointsCCP, settotalPointsCCP] = useState<any>(0)
-  const [userRankCCP, setuserRankCCP] = useState<any>(0)
+  const [userPointsCCP, setuserPointsCCP] = useState<any>(0);
+  const [userHashCCP, setuserHashCCP] = useState<any>(0);
+  const [totalPointsCCP, settotalPointsCCP] = useState<any>(0);
+  const [userRankCCP, setuserRankCCP] = useState<any>(0);
   const [campaignDetails, setCampaignDetails] = useState([
     {
       campaignName: "Airdrop 01",
@@ -321,13 +321,17 @@ const Campaign: NextPage = () => {
           `https://hstk.fi/api/ccp/submission/${address}`
         );
         setUserccpData(res?.data);
-        let points=0;
-        let hash=0;
-        if(res?.data){
-          res?.data.map((data:any)=>{
-            points+=(Number(data["Recommended (Community Team)"]) ? Number(data["Recommended (Community Team)"]) :0);
-            hash+=(Number(data["Allocated (Product Team)"])?Number(data["Allocated (Product Team)"]):0)
-          })
+        let points = 0;
+        let hash = 0;
+        if (res?.data) {
+          res?.data.map((data: any) => {
+            points += Number(data["Recommended (Community Team)"])
+              ? Number(data["Recommended (Community Team)"])
+              : 0;
+            hash += Number(data["Allocated (Product Team)"])
+              ? Number(data["Allocated (Product Team)"])
+              : 0;
+          });
         }
         setuserPointsCCP(points);
         setuserHashCCP(hash);
@@ -343,18 +347,20 @@ const Campaign: NextPage = () => {
     try {
       const fetchLeaderBoardDataCCP = async () => {
         const res = await axios.get("https://hstk.fi/api/ccp/submissions");
-        let totalPoints=0;
-        if(res?.data){
-          res?.data.map((data:any)=>{
-            if(address){
-              if(address===processAddress(data["Wallet Address (StarkNet)"])){
-                setuserRankCCP(data?.Rank)
+        let totalPoints = 0;
+        if (res?.data) {
+          res?.data.map((data: any) => {
+            if (address) {
+              if (
+                address === processAddress(data["Wallet Address (StarkNet)"])
+              ) {
+                setuserRankCCP(data?.Rank);
               }
             }
-           totalPoints+=Number(data["Recommended (Community Team)"])
-          })
+            totalPoints += Number(data["Recommended (Community Team)"]);
+          });
         }
-        settotalPointsCCP(totalPoints)
+        settotalPointsCCP(totalPoints);
         setccpLeaderBoardData(res?.data);
       };
       fetchLeaderBoardDataCCP();
@@ -979,20 +985,22 @@ const Campaign: NextPage = () => {
                   gap="6.3rem"
                   bg="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                 >
-                  <VStack
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="flex-start"
-                    gap={"6px"}
-                  >
-                    <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                      Campaign pool
-                    </Text>
+                  {currentSelectedDrop === "Airdrop 1" && (
+                    <VStack
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="flex-start"
+                      gap={"6px"}
+                    >
+                      <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+                        Campaign pool
+                      </Text>
 
-                    <Text color="#00D395" fontSize="20px">
-                      45M HASH
-                    </Text>
-                  </VStack>
+                      <Text color="#00D395" fontSize="20px">
+                        45M HASH
+                      </Text>
+                    </VStack>
+                  )}
 
                   <VStack
                     gap={"6px"}
@@ -1005,7 +1013,9 @@ const Campaign: NextPage = () => {
 
                     {communityPoints && totalPointsCCP ? (
                       <Text color="#00D395" fontSize="20px">
-                        {currentSelectedDrop=="Airdrop 1" ? numberFormatter(communityPoints): numberFormatter(totalPointsCCP)}
+                        {currentSelectedDrop == "Airdrop 1"
+                          ? numberFormatter(communityPoints)
+                          : numberFormatter(totalPointsCCP)}
                       </Text>
                     ) : (
                       <Skeleton
@@ -1017,45 +1027,46 @@ const Campaign: NextPage = () => {
                       />
                     )}
                   </VStack>
-                  {currentSelectedDrop=="Airdrop 1" &&                  <VStack
-                    gap={"6px"}
-                    justifyContent="flex-start"
-                    alignItems="flex-start"
-                  >
-                    <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                      <Tooltip
-                        hasArrow
-                        label=""
-                        placement="bottom"
-                        boxShadow="dark-lg"
-                        bg="#010409"
-                        fontSize={"13px"}
-                        fontWeight={"thin"}
-                        borderRadius={"lg"}
-                        padding={"2"}
-                        border="1px solid"
-                        borderColor="#2B2F35"
-                        arrowShadowColor="#2B2F35"
-                      >
-                        Epoch Pool
-                      </Tooltip>
-                    </Text>
-
-                    {!communityHash ? (
-                      <Skeleton
-                        width="6rem"
-                        height="1.4rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />
-                    ) : (
-                      <Text color="#00D395" fontSize="20px">
-                        11.25M HASH
+                  {currentSelectedDrop == "Airdrop 1" && (
+                    <VStack
+                      gap={"6px"}
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                    >
+                      <Text color="#B1B0B5" fontSize="14px" alignItems="center">
+                        <Tooltip
+                          hasArrow
+                          label=""
+                          placement="bottom"
+                          boxShadow="dark-lg"
+                          bg="#010409"
+                          fontSize={"13px"}
+                          fontWeight={"thin"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                          border="1px solid"
+                          borderColor="#2B2F35"
+                          arrowShadowColor="#2B2F35"
+                        >
+                          Epoch Pool
+                        </Tooltip>
                       </Text>
-                    )}
-                  </VStack>}
 
+                      {!communityHash ? (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (
+                        <Text color="#00D395" fontSize="20px">
+                          11.25M HASH
+                        </Text>
+                      )}
+                    </VStack>
+                  )}
                 </HStack>
               </HStack>
             </HStack>
@@ -1104,8 +1115,8 @@ const Campaign: NextPage = () => {
         >
           {tabValue == 1 ? (
             <UserCampaignData
-            userHashCCP={userHashCCP}
-            userPointsCCP={userPointsCCP}
+              userHashCCP={userHashCCP}
+              userPointsCCP={userPointsCCP}
               epochsData={epochsData}
               ccpUserData={userccpData}
               campaignDetails={campaignDetails}
@@ -1115,9 +1126,9 @@ const Campaign: NextPage = () => {
             />
           ) : (
             <LeaderboardDashboard
-            userRankCCP={userRankCCP}
-            userHashCCP={userHashCCP}
-            userPointsCCP={userPointsCCP}
+              userRankCCP={userRankCCP}
+              userHashCCP={userHashCCP}
+              userPointsCCP={userPointsCCP}
               leaderBoardData={
                 currentSelectedDrop == "CCP 1"
                   ? ccpLeaderBoardData
