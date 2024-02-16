@@ -757,11 +757,7 @@ const ExchangeRaterToken = ({ color, curveColor, series }: any) => {
   const dispatch = useDispatch();
 
   const modalDropdowns = useSelector(selectModalDropDowns);
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
   const getCoin = (CoinName: number) => {
     switch (CoinName) {
       case 0:

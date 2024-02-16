@@ -1,163 +1,247 @@
-import React, { useState } from "react";
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Td,
-  TableContainer,
-  Text,
   Box,
-
   Spinner,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Thead,
   Tooltip,
+  Tr,
 } from "@chakra-ui/react";
-import { selectModalDropDowns, setModalDropdown } from '@/store/slices/dropdownsSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import ArrowUp from '@/assets/icons/arrowup';
-import DropdownUp from '@/assets/icons/dropdownUpIcon';
+import { useAccount } from "@starknet-react/core";
+import Link from "next/link";
+import React, { useState } from "react";
+
+import { processAddress } from "@/Blockchain/stark-constants";
 import numberFormatter from "@/utils/functions/numberFormatter";
-const LeaderboardDashboard = ({
-  width,
-  currentPagination,
-  setCurrentPagination,
+
+const tooltips = [
+  "",
+  "",
+  "Liquidity (Supply/Borrow,Referrals)",
+  "Points earned for rewards",
+  "Allocated $HASH",
+];
+
+interface LeaderboardDashboardProps {
+  leaderBoardData: any;
+  personalData: any;
+  columnItems: any;
+  currentSelectedDrop: string;
+  airdropCampaignUserRank: any;
+  userHashCCP: any;
+  userPointsCCP: any;
+  userRankCCP: any;
+}
+
+const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
   leaderBoardData,
+  personalData,
   columnItems,
-}: // userLoans,
-  {
-    width: string;
-    currentPagination: any;
-    setCurrentPagination: any;
-    leaderBoardData: any,
-    columnItems: any;
-
-    // columnItems: Array<Array<string>>;
-    // gap: string;
-    // rowItems: any;
-  }) => {
-  let lower_bound = 6 * (currentPagination - 1);
-  let upper_bound = lower_bound + 5;
+  currentSelectedDrop,
+  airdropCampaignUserRank,
+  userHashCCP,
+  userPointsCCP,
+  userRankCCP,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [currentSelectedTenure, setcurrentSelectedTenure] = useState(
-    "Day"
-  );
-  const dispatch = useDispatch();
-  const handleDropdownClick = (dropdownName: any) => {
-    // Dispatches an action called setModalDropdown with the dropdownName as the payload
-    dispatch(setModalDropdown(dropdownName));
-  };
-  const tenure = ["Day", "Week", "Month"];
-  const modalDropdowns = useSelector(selectModalDropDowns);
-  const tooltips = [
-    "",
-    "",
-    "Liquidity (Supply/Borrow,Referrals)",
-    "Points earned for rewards",
-    "Allocated $HASH",
+  const { address } = useAccount();
 
-  ];
-  const activeModal = Object.keys(modalDropdowns).find(
-    (key) => modalDropdowns[key] === true
-  );
-  return (
-    loading ? (
-      <>
-        <Box
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          width="95%"
-          height={"37rem"}
-          // height="552px"
-          bgColor="#101216"
-          borderRadius="8px"
-        >
-          {/* <Text color="#FFFFFF" fontSize="20px">
-                  Loading...
-                </Text> */}
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="#010409"
-            size="xl"
-          />
-          {/* <YourBorrowModal
-                  buttonText="Borrow assets"
-                  variant="link"
-                  fontSize="16px"
-                  fontWeight="400"
-                  display="inline"
-                  color="#0969DA"
-                  cursor="pointer"
-                  ml="0.4rem"
-                  lineHeight="24px"
-                /> */}
-        </Box>
-      </>
-    ) : (
-      <>
-        <TableContainer
-          //   border="1px"
-          //   borderColor="#2B2F35"
-          color="white"
-          borderRadius="md"
-          w="100%"
-          display="flex"
-          justifyContent="flex-start"
-          alignItems="flex-start"
+  return loading ? (
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      width="95%"
+      height={"37rem"}
+      bgColor="#101216"
+      borderRadius="8px"
+    >
+      <Spinner
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="#010409"
+        size="xl"
+      />
+    </Box>
+  ) : (
+    <TableContainer
+      color="white"
+      borderRadius="md"
+      w="100%"
+      display="flex"
+      justifyContent="flex-start"
+      alignItems="flex-start"
+      height={"34rem"}
+      padding={"1rem 2rem 0rem"}
+      overflowY="scroll"
+    >
+      <Table variant="unstyled" width="100%">
+        <Thead width={"100%"} height={"5rem"}>
+          <Tr width={"100%"} height="2rem">
+            {columnItems.map((val: any, idx1: any) => (
+              <Td
+                key={idx1}
+                width={"16.6%"}
+                fontSize={"12px"}
+                fontWeight={400}
+                p={0}
+              >
+                <Text
+                  whiteSpace="pre-wrap"
+                  overflowWrap="break-word"
+                  width={"100%"}
+                  height={"2rem"}
+                  fontSize="12px"
+                  textAlign={
+                    idx1 == 0
+                      ? "left"
+                      : idx1 == columnItems?.length - 1
+                      ? "right"
+                      : "center"
+                  }
+                  pl={idx1 == 0 ? 2 : 0}
+                  pr={idx1 == columnItems.length - 1 ? 10 : 0}
+                  color={"#BDBFC1"}
+                  cursor="context-menu"
+                >
+                  <Tooltip
+                    hasArrow
+                    label={
+                      currentSelectedDrop === "Airdrop 1"
+                        ? tooltips[idx1]
+                        : tooltips.filter((item) => item !== tooltips[2])[idx1]
+                    }
+                    placement={
+                      (idx1 === 0 && "bottom-start") ||
+                      (idx1 === columnItems.length - 1 && "bottom-end") ||
+                      "bottom"
+                    }
+                    rounded="md"
+                    boxShadow="dark-lg"
+                    bg="#02010F"
+                    fontSize={"13px"}
+                    fontWeight={"400"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    color="#F0F0F5"
+                    border="1px solid"
+                    borderColor="#23233D"
+                    arrowShadowColor="#2B2F35"
+                  >
+                    {val}
+                  </Tooltip>
+                </Text>
+              </Td>
+            ))}
+          </Tr>
+        </Thead>
 
-          // bgColor={"red"}
-          // height={"100%"}
-          height={"34rem"}
-          padding={"1rem 2rem 0rem"}
-          overflowX="hidden"
-        // mt={"3rem"}
-        >
-          <Table
-            variant="unstyled"
-            width="100%"
-          // bgColor={"blue"}
-          // p={0}
-          >
-            <Thead width={"100%"} height={"5rem"}>
-              <Tr width={"100%"} height="2rem">
-                {columnItems.map((val: any, idx1: any) => (
+        <Tbody position="relative" overflowX="hidden" alignContent={"center"}>
+          {personalData.map((member: any, idx: any) => {
+            return (
+              <>
+                <Tr
+                  key={idx}
+                  width={"100%"}
+                  height="4rem"
+                  position="relative"
+                  p={0}
+                  background="#676D9A48"
+                >
                   <Td
-                    key={idx1}
                     width={"16.6%"}
-                    // maxWidth={`${gap[idx1][idx2]}%`}
-                    fontSize={"12px"}
+                    fontSize={"14px"}
                     fontWeight={400}
-                    // textAlign={"left"}
-                    p={0}
-                  // bgColor={"pink"}
-                  // border="1px solid red"
+                    padding={2}
+                    textAlign="center"
                   >
                     <Text
-                      whiteSpace="pre-wrap"
-                      overflowWrap="break-word"
-                      width={"100%"}
-                      height={"2rem"}
-                      fontSize="12px"
-                      textAlign={
-                        idx1 == 0 ? "left" : idx1 == columnItems?.length - 1 ? "right" : "center"
-                      }
-                      pl={idx1 == 0 ? 2 : 0}
-                      pr={idx1 == columnItems.length - 1 ? 10 : 0}
-                      color={"#BDBFC1"}
-                      cursor="context-menu"
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent={"start"}
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      {currentSelectedDrop === "Airdrop 1"
+                        ? airdropCampaignUserRank
+                        : userRankCCP
+                        ? userRankCCP
+                        : "-"}
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      {address?.substring(0, 5)}...
+                      {address?.substring(address?.length - 5, address?.length)}
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
                     >
                       <Tooltip
                         hasArrow
-                        label={tooltips[idx1]}
-                        // arrowPadding={-5420}
-                        placement={
-                          (idx1 === 0 && "bottom-start") ||
-                          (idx1 === columnItems.length - 1 && "bottom-end") ||
-                          "bottom"
+                        label={
+                          <Box>
+                            {currentSelectedDrop === "Airdrop 1" ? (
+                              <>
+                                Supply/Borrow: $
+                                {numberFormatter(
+                                  member.supplyliq + member.borrowliq
+                                )}
+                                <br />
+                                Referrals: $
+                                {numberFormatter(member.referredliq)}
+                              </>
+                            ) : (
+                              <>
+                                Points Allocated:{" "}
+                                {numberFormatter(userPointsCCP)}
+                                <br />
+                                Points Estimated: {numberFormatter(member.pts)}
+                              </>
+                            )}
+                          </Box>
                         }
+                        placement="right"
                         rounded="md"
                         boxShadow="dark-lg"
                         bg="#02010F"
@@ -169,275 +253,497 @@ const LeaderboardDashboard = ({
                         border="1px solid"
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
-                      // cursor="context-menu"
-                      // marginRight={idx1 === 1 ? "52px" : ""}
-                      // maxW="222px"
-                      // mt="28px"
                       >
-                        {val}
+                        <Text>
+                          {currentSelectedDrop === "Airdrop 1"
+                            ? numberFormatter(
+                                Number(member.liq) + Number(member.referredliq)
+                              )
+                            : numberFormatter(userPointsCCP)}
+                        </Text>
                       </Tooltip>
                     </Text>
                   </Td>
-                ))}
-              </Tr>
-            </Thead>
-            <Tbody
-              position="relative"
-              overflowX="hidden"
-              alignContent={"center"}
-            //   display="flex"
-            //   flexDirection="column"
-            //   gap={"1rem"}
-            >
-              {leaderBoardData
-                ?.slice(lower_bound, upper_bound + 1)
-                .map((member: any, idx: any) => {
-                  ////console.log("faisal coin check", coin);
-                  // borrowIDCoinMap.push([coin.id, coin?.name]);
-                  return (
-                    <>
-                      <Tr
-                        key={lower_bound + idx}
-                        width={"100%"}
-                        height="4rem"
-                        // height={"5rem"}
-                        // bgColor="green"
-                        // borderBottom="1px solid #2b2f35"
-                        position="relative"
-                        p={0}
+
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={
+                          currentSelectedDrop === "Airdrop 1" ? (
+                            <Box>
+                              Points Allocated:{" "}
+                              {numberFormatter(member.ptsAllocated)}
+                              <br />
+                              Points Estimated: {numberFormatter(member.pts)}
+                            </Box>
+                          ) : (
+                            <Box>
+                              HASH Allocated:{" "}
+                              {member.hashAllocated
+                                ? numberFormatter(userHashCCP)
+                                : 0}
+                              <br />
+                              HASH Estimated:{" "}
+                              {member.estimatedHash
+                                ? numberFormatter(member?.estimatedHash)
+                                : 0}
+                            </Box>
+                          )
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
                       >
-                        <Td
-                          width={"16.6%"}
-                          // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
-                          fontWeight={400}
-                          padding={2}
-                          textAlign="center"
-                        >
-                          <Text
-                            width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent={"start"}
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                          // bgColor={"blue"}
-                          >
-                            {lower_bound + 1 + idx}
-                          </Text>
-                        </Td>
+                        <Text>
+                          {currentSelectedDrop === "Airdrop 1"
+                            ? numberFormatter(member.pts + member.ptsAllocated)
+                            : numberFormatter(userHashCCP)}
+                        </Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
 
-                        <Td
-                          width={"16.6%"}
-                          // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
-                          fontWeight={400}
-                          padding={2}
-                          textAlign="center"
+                  {currentSelectedDrop === "Airdrop 1" ? (
+                    <Td
+                      width={"16.6%"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      padding={2}
+                      textAlign="end"
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                        pr="10"
+                      >
+                        <Tooltip
+                          hasArrow
+                          label={
+                            <Box>
+                              HASH Allocated:{" "}
+                              {member.hashAllocated
+                                ? numberFormatter(member?.hashAllocated)
+                                : 0}
+                              <br />
+                              HASH Estimated:{" "}
+                              {member.est ? numberFormatter(member?.est) : 0}
+                            </Box>
+                          }
+                          placement="right"
+                          rounded="md"
+                          boxShadow="dark-lg"
+                          bg="#02010F"
+                          fontSize={"13px"}
+                          fontWeight={"400"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                          color="#F0F0F5"
+                          border="1px solid"
+                          borderColor="#23233D"
+                          arrowShadowColor="#2B2F35"
                         >
-                          <Text
-                            width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                          // bgColor={"blue"}
-                          >
-                            {member.walletAddress.substring(
-                              0,
-                              5
-                            )}...{member.walletAddress.substring(
-                              member.walletAddress.length - 5,
-                              member.walletAddress.length
+                          {numberFormatter(member.est + member.hashAllocated)}
+                        </Tooltip>
+                      </Text>
+                    </Td>
+                  ) : (
+                    <Td
+                      width={"16.6%"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      padding={2}
+                      textAlign="end"
+                    >
+                      <Link
+                        href={`/v1/airdrop_leaderboard/submissions/${address}`}
+                        target="_blank"
+                      >
+                        <Text
+                          width="100%"
+                          height="100%"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="flex-end"
+                          fontWeight="400"
+                          fontSize="14px"
+                          color="#E6EDF3"
+                          pr="10"
+                          textDecoration="underline"
+                          cursor="pointer"
+                        >
+                          Submission
+                        </Text>
+                      </Link>
+                    </Td>
+                  )}
+                </Tr>
+
+                <Tr
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "1px",
+                    borderBottom: "1px solid #2b2f35",
+                    display: `${member.id == 5 ? "none" : "block"}`,
+                  }}
+                />
+              </>
+            );
+          })}
+
+          {leaderBoardData.map((member: any, idx: any) => {
+            return (
+              <>
+                <Tr
+                  key={idx}
+                  width={"100%"}
+                  height="4rem"
+                  position="relative"
+                  p={0}
+                >
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent={"start"}
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      {idx + 1}
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    {currentSelectedDrop == "Airdrop 1" ? (
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                      >
+                        {member.walletAddress.substring(0, 5)}...
+                        {member.walletAddress.substring(
+                          member.walletAddress.length - 5,
+                          member.walletAddress.length
+                        )}
+                      </Text>
+                    ) : (
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                      >
+                        {member["Wallet Address (StarkNet)"].substring(0, 5)}...
+                        {member["Wallet Address (StarkNet)"].substring(
+                          member["Wallet Address (StarkNet)"].length - 5,
+                          member["Wallet Address (StarkNet)"].length
+                        )}
+                      </Text>
+                    )}
+                  </Td>
+
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={
+                          <Box>
+                            {currentSelectedDrop === "Airdrop 1" ? (
+                              <>
+                                Supply/Borrow: $
+                                {numberFormatter(member.selfValue)}
+                                <br />
+                                Referrals: $
+                                {numberFormatter(member.referralValue)}
+                                <br />
+                              </>
+                            ) : (
+                              <>
+                                Points Allocated:{" "}
+                                {numberFormatter(
+                                  member["Recommended (Community Team)"]
+                                )
+                                  ? numberFormatter(
+                                      member["Recommended (Community Team)"]
+                                    )
+                                  : 0}
+                                <br />
+                                Points Estimated:{" "}
+                                {member.pointsEstimated
+                                  ? numberFormatter(member?.pointsEstimated)
+                                  : 0}
+                              </>
                             )}
-                          </Text>
-                        </Td>
-                        <Td
-                          width={"16.6%"}
-                          // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
-                          fontWeight={400}
-                          padding={2}
-                          textAlign="center"
+                          </Box>
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text>
+                          {currentSelectedDrop == "Airdrop 1"
+                            ? numberFormatter(
+                                Number(member.selfValue) +
+                                  Number(member.referralValue)
+                              )
+                            : numberFormatter(
+                                member["Recommended (Community Team)"]
+                              )}
+                        </Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={"16.6%"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={
+                          currentSelectedDrop === "Airdrop 1" ? (
+                            <Box>
+                              Points Allocated:{" "}
+                              {member.pointsAllocated
+                                ? numberFormatter(member?.pointsAllocated)
+                                : 0}
+                              <br />
+                              Points Estimated:{" "}
+                              {member.pointsEstimated
+                                ? numberFormatter(member?.pointsEstimated)
+                                : 0}
+                            </Box>
+                          ) : (
+                            <Box>
+                              HASH Allocated:{" "}
+                              {member["Hash Allocated"]
+                                ? numberFormatter(member["Hash Allocated"])
+                                : 0}
+                              <br />
+                              HASH Estimated:{" "}
+                              {member.estimatedHash
+                                ? numberFormatter(member?.estimatedHash)
+                                : 0}
+                            </Box>
+                          )
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={"13px"}
+                        fontWeight={"400"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text>
+                          {currentSelectedDrop === "Airdrop 1"
+                            ? numberFormatter(member.netPoints)
+                            : numberFormatter(member["Hash Allocated"])}
+                        </Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
+
+                  {currentSelectedDrop === "Airdrop 1" ? (
+                    <Td
+                      width={"16.6%"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      padding={2}
+                      textAlign="end"
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                        pr="10"
+                      >
+                        <Tooltip
+                          hasArrow
+                          label={
+                            <Box>
+                              HASH Allocated:{" "}
+                              {member.hashAllocated
+                                ? numberFormatter(member?.hashAllocated)
+                                : 0}
+                              <br />
+                              HASH Estimated:{" "}
+                              {member.estimatedHash
+                                ? numberFormatter(member?.estimatedHash)
+                                : 0}
+                            </Box>
+                          }
+                          placement="right"
+                          rounded="md"
+                          boxShadow="dark-lg"
+                          bg="#02010F"
+                          fontSize={"13px"}
+                          fontWeight={"400"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                          color="#F0F0F5"
+                          border="1px solid"
+                          borderColor="#23233D"
+                          arrowShadowColor="#2B2F35"
                         >
-                          <Text
-                            width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                          // bgColor={"blue"}
-                          >
-
-                            <Tooltip
-                              hasArrow
-                              label={
-                                <Box>
-                                  Supply/Borrow: ${member.selfValue}
-                                  <br />
-                                  Referrals: ${member.referralValue}
-                                </Box>
-                              }
-                              // arrowPadding={-5420}
-                              placement="right"
-                              rounded="md"
-                              boxShadow="dark-lg"
-                              bg="#02010F"
-                              fontSize={"13px"}
-                              fontWeight={"400"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                              color="#F0F0F5"
-                              border="1px solid"
-                              borderColor="#23233D"
-                              arrowShadowColor="#2B2F35"
-                            // cursor="context-menu"
-                            // marginRight={idx1 === 1 ? "52px" : ""}
-                            // maxW="222px"
-                            // mt="28px"
-                            >
-                              <Text>
-                                {numberFormatter(Number(member.selfValue) + Number(member.referralValue))}
-                              </Text>
-                            </Tooltip>
-                          </Text>
-                        </Td>
-                        <Td
-                          width={"16.6%"}
-                          // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
-                          fontWeight={400}
-                          padding={2}
-                          textAlign="center"
+                          {numberFormatter(
+                            Number(member.estimatedHash) + member.hashAllocated
+                          )}
+                        </Tooltip>
+                      </Text>
+                    </Td>
+                  ) : (
+                    <Td
+                      width={"16.6%"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      padding={2}
+                      textAlign="end"
+                    >
+                      <Link
+                        href={`/v1/airdrop_leaderboard/submissions/${processAddress(
+                          member["Wallet Address (StarkNet)"]
+                        )}`}
+                        target="_blank"
+                      >
+                        <Text
+                          width="100%"
+                          height="100%"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="flex-end"
+                          fontWeight="400"
+                          fontSize="14px"
+                          color="#E6EDF3"
+                          pr="10"
+                          textDecoration="underline"
+                          cursor="pointer"
                         >
+                          Submission
+                        </Text>
+                      </Link>
+                    </Td>
+                  )}
+                </Tr>
 
-                          <Text
-                            width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                          // bgColor={"blue"}
-                          >
-                            <Tooltip
-                              hasArrow
-                              label={
-                                <Box>
-                                  Points Allocated: {member.pointsAllocated ? numberFormatter(member?.pointsAllocated) : 0}
-                                  <br />
-                                  Points Estimated: {member.pointsEstimated ? numberFormatter(member?.pointsEstimated) : 0}
-                                </Box>
-                              }
-                              // arrowPadding={-5420}
-                              placement="right"
-                              rounded="md"
-                              boxShadow="dark-lg"
-                              bg="#02010F"
-                              fontSize={"13px"}
-                              fontWeight={"400"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                              color="#F0F0F5"
-                              border="1px solid"
-                              borderColor="#23233D"
-                              arrowShadowColor="#2B2F35"
-                            // cursor="context-menu"
-                            // marginRight={idx1 === 1 ? "52px" : ""}
-                            // maxW="222px"
-                            // mt="28px"
-                            >
-                              <Text>
-                                {numberFormatter(member.netPoints)}
-                              </Text>
-                            </Tooltip>
-                          </Text>
-                        </Td>
-                        <Td
-                          width={"16.6%"}
-                          // maxWidth={`${gap[idx1][idx2]}%`}
-                          fontSize={"14px"}
-                          fontWeight={400}
-                          padding={2}
-                          textAlign="end"
-                        >
-                          <Text
-                            width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="flex-end"
-                            fontWeight="400"
-                            fontSize="14px"
-                            color="#E6EDF3"
-                            pr="10"
-
-                          // bgColor={"blue"}
-                          >
-                            <Tooltip
-                              hasArrow
-                              label={
-                                <Box>
-                                  HASH Allocated: {member.hashAllocated ? numberFormatter(member?.hashAllocated):0}
-                                  <br />
-                                  HASH Estimated: {member.estimatedHash ? numberFormatter(member?.estimatedHash) :0}
-                                </Box>
-                              }
-                              // arrowPadding={-5420}
-                              placement="right"
-                              rounded="md"
-                              boxShadow="dark-lg"
-                              bg="#02010F"
-                              fontSize={"13px"}
-                              fontWeight={"400"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                              color="#F0F0F5"
-                              border="1px solid"
-                              borderColor="#23233D"
-                              arrowShadowColor="#2B2F35"
-                            // cursor="context-menu"
-                            // marginRight={idx1 === 1 ? "52px" : ""}
-                            // maxW="222px"
-                            // mt="28px"
-                            >
-                            {numberFormatter(Number(member.estimatedHash)+member.hashAllocated)}
-                            </Tooltip>
-                          </Text>
-                        </Td>
-                      </Tr>
-                      <Tr
-                        style={{
-                          position: "absolute",
-                          // left: "0%",
-                          width: "100%",
-                          height: "1px",
-                          borderBottom: "1px solid #2b2f35",
-                          display: `${member.id == 5 ? "none" : "block"}`,
-                        }}
-                      />
-                    </>
-                  );
-                })}
-            </Tbody>
-          </Table>
-
-        </TableContainer>
-
-      </>
-
-    )
-  )
+                <Tr
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "1px",
+                    borderBottom: "1px solid #2b2f35",
+                    display: `${member.id == 5 ? "none" : "block"}`,
+                  }}
+                />
+              </>
+            );
+          })}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  );
 };
 
 export default LeaderboardDashboard;

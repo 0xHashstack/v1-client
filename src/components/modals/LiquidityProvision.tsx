@@ -280,11 +280,7 @@ const LiquidityProvisionModal = ({
     "USDT/DAI",
     "USDC/DAI",
   ];
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -1508,7 +1504,7 @@ const LiquidityProvisionModal = ({
                         (-(reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.loanMarket.slice(1)
-                        )?.borrowRate)) + getAprByPool(poolApr, currentPool,currentSwap)) +
+                        )?.borrowRate)+ getAprByPool(poolApr, currentPool,currentSwap)) ) +
                         dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                           (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying) *

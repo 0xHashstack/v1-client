@@ -108,11 +108,7 @@ const Navbar = ({ validRTokens }: any) => {
 
   const router = useRouter();
   const { pathname } = router;
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
   const nftBalance:any=useSelector(selectNftBalance);
@@ -552,12 +548,7 @@ const userWhitelisted=useSelector(selectWhiteListed);
                 />
               )}
 
-              <Text fontSize="14px" >Airdrop</Text>
-              <Box bg="#F7BB5B" height="18px" width="45px" textAlign="center"  lineHeight="18px"
-              clipPath="polygon(110% 0%, 10% 0%, 0% 50%, 10% 100%, 110% 100%)" fontSize="12px" fontWeight="400" color="#000" borderRightRadius="4px"
-              >
-                NEW
-              </Box>
+              <Text fontSize="14px" >More</Text>
             </Box>
         </Box>:""}
         {/* <Box

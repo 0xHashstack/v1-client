@@ -222,13 +222,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            chain.network!="mainnet"
+            chain.network!="mainnet" && chain?.name!="Starknet Goerli Testnet"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            chain.network!="goerli"
+            chain.network!="goerli" && chain?.name!="Starknet Goerli Testnet"
           );
         }
       } else if (walletConnected == "argentX") {
@@ -238,13 +238,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
 
-            chain.network!="mainnet"
+            chain.network!="mainnet" && chain?.name!="Starknet Goerli Testnet"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            chain?.network!="goerli"
+            chain?.network!="goerli" && chain?.name!="Starknet Goerli Testnet"
           );
         }
       }

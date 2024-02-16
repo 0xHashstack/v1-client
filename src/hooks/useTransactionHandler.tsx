@@ -19,7 +19,6 @@ const useTransactionHandler = () => {
   const dispatch = useDispatch();
   const toastHash = [""];
   // console.log(transactionsData,"redux")
-  console.log(activeTransactions,"active")
   useEffect(() => {
     ////console.log("trans activeTransactions useEffect called");
     if (activeTransactions) {

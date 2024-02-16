@@ -279,7 +279,6 @@ const PersonalStatsDashboard = ({
             //   gap={"1rem"}
             >
               {leaderBoardData
-                ?.slice(lower_bound, upper_bound + 1)
                 .map((member: any, idx: any) => {
                   ////console.log("faisal coin check", coin);
                   // borrowIDCoinMap.push([coin.id, coin?.name]);

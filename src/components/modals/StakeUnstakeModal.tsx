@@ -286,11 +286,7 @@ const StakeUnstakeModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
   const [toastId, setToastId] = useState<any>();
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
 
 
   // const recieptData = useWaitForTransaction({
