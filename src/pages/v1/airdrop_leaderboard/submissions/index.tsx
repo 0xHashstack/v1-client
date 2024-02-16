@@ -34,7 +34,7 @@ const CcpSubmissions: NextPage = () => {
   const [loading, setLoading] = useState(true);
 
   const router = useRouter();
-  const { walletAddress } = router.query;
+  const  walletAddress  = router.query?.address;
 
   useEffect(() => {
     try {

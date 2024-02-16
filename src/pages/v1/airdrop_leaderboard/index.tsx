@@ -547,7 +547,7 @@ const Campaign: NextPage = () => {
         <Text
           color="#030210"
           fontSize="14px"
-          fontWeight="700"
+          fontWeight="600"
           lineHeight="18px"
           letterSpacing="-0.15px"
         >
@@ -581,7 +581,7 @@ const Campaign: NextPage = () => {
         <Text
           color="#030210"
           fontSize="14px"
-          fontWeight="700"
+          fontWeight="600"
           lineHeight="18px"
           letterSpacing="-0.15px"
         >
