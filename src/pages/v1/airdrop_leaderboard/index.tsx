@@ -1011,7 +1011,7 @@ const Campaign: NextPage = () => {
                       Points Accrued
                     </Text>
 
-                    {communityPoints && totalPointsCCP ? (
+                    {communityPoints || totalPointsCCP ? (
                       <Text color="#00D395" fontSize="20px">
                         {currentSelectedDrop == "Airdrop 1"
                           ? numberFormatter(communityPoints)
