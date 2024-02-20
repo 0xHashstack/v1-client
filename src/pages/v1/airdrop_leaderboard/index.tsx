@@ -1007,7 +1007,7 @@ const Campaign: NextPage = () => {
                       </Text>
 
                       <Text color="#00D395" fontSize="20px">
-                        38M HASH
+                        45M HASH
                       </Text>
                     </VStack>
                   )}
