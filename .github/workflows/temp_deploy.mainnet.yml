@@ -19,10 +19,10 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
 
-      - name: Use Node.js 16.14.0
+      - name: Use Node.js 20
         uses: actions/setup-node@v1
         with:
-          node-version: 16.14.0
+          node-version: 20.0
 
       - name: "Setup .env"
         run: |
