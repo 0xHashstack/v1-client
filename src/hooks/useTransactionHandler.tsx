@@ -115,7 +115,6 @@ const useTransactionHandler = () => {
         toastHash.push(transaction_hash);
       }
       if (
- 
         transaction_status == "ACCEPTED_ON_L2" ||
         transaction_status == "ACCEPTED_ON_L1" ||
         transaction_status == "REJECTED"

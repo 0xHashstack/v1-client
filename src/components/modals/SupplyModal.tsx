@@ -96,6 +96,7 @@ import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, s
 import { getFees, getMaximumDepositAmount, getMinimumDepositAmount, getNFTBalance, getNFTMaxAmount } from "@/Blockchain/scripts/Rewards";
 import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 import { get_user_holding_zklend } from "@/Blockchain/scripts/liquidityMigration";
+import posthog from "posthog-js";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -203,11 +204,7 @@ const SupplyModal = ({
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
   // const walletBalances = useSelector(selectAssetWalletBalance);
   // const transactionRefresh=useSelector(selectTransactionRefresh);
 
@@ -458,7 +455,7 @@ const SupplyModal = ({
   const handleTransaction = async () => {
     try {
       if (ischecked) {
-        mixpanel.track("Action Selected", {
+        posthog.capture("Action Selected", {
           Action: "Deposit and Stake",
         });
         const depositStake = await writeAsyncDepositStake();
@@ -496,7 +493,7 @@ const SupplyModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        mixpanel.track("Supply Market Status", {
+        posthog.capture("Supply Market Status", {
           Status: "Success Deposit and Stake",
           Token: currentSelectedCoin,
           TokenAmount: inputAmount,
@@ -511,7 +508,7 @@ const SupplyModal = ({
         ////console.log("Status transaction", deposit);
        //console.log(isSuccessDeposit, "success ?");
       } else {
-        mixpanel.track("Action Selected", {
+        posthog.capture("Action Selected", {
           Action: "Deposit",
         });
         const deposit = await writeAsyncDeposit();
@@ -550,7 +547,7 @@ const SupplyModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         // const deposit = await writeAsyncDepositStake();
-        mixpanel.track("Supply Market Status", {
+        posthog.capture("Supply Market Status", {
           Status: "Success",
           Token: currentSelectedCoin,
           TokenAmount: inputAmount,
@@ -569,7 +566,7 @@ const SupplyModal = ({
       }
     } catch (err: any) {
       // setTransactionFailed(true);
-      mixpanel.track("Supply Market Status", {
+      posthog.capture("Supply Market Status", {
         Status: "Failure",
       });
       const uqID = getUniqueId();
@@ -1617,7 +1614,7 @@ const SupplyModal = ({
                         dispatch(setTransactionStartedAndModalClosed(false));
 
                         handleTransaction();
-                        mixpanel.track("Supply Market Clicked Button", {
+                        posthog.capture("Supply Market Clicked Button", {
                           "Supply Clicked": true,
                         });
                       }

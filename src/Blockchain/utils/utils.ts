@@ -1,9 +1,10 @@
 import { BigNumber } from "bignumber.js";
-import { utils } from "ethers";
+import { ethers, utils } from "ethers";
 import { Logger } from "ethers/lib/utils";
 import { getTokenFromAddress } from "../stark-constants";
 import { tokenDecimalsMap } from "./addressServices";
 import { Token } from "../interfaces/interfaces";
+import { num } from "starknet";
 export const fixedSpecial = (num: number, n: number) => {
   var str = num.toPrecision();
   if (str.indexOf("e+") === -1) return str;
@@ -159,9 +160,9 @@ export const weiToEtherNumber = (amount: string, tokenName: Token) => {
 
 export const parseAmount = (amount: string, decimals = 18) => {
   const factor = new BigNumber(1000000);
-  const amountBN = new BigNumber(amount)
+  const amountBN = new BigNumber( amount)
     .times(factor)
     .dividedBy(new BigNumber(10).exponentiatedBy(decimals));
-  return amountBN.toNumber() / factor.toNumber();
+    const roundedAmountBN = amountBN.decimalPlaces(8, BigNumber.ROUND_DOWN);
+  return roundedAmountBN.toNumber()/factor.toNumber();
 };
-

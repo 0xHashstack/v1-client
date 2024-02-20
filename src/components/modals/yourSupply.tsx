@@ -95,6 +95,7 @@ import { getSupplyunlocked } from "@/Blockchain/scripts/Rewards";
 import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectUserDeposits } from "@/store/slices/readDataSlice";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import posthog from "posthog-js";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -290,11 +291,7 @@ const YourSupplyModal = ({
         break;
     }
   };
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
@@ -495,7 +492,7 @@ const YourSupplyModal = ({
         activeTransactions?.push(trans_data);
         dispatch(setActiveTransactions(activeTransactions));
       }
-      mixpanel.track("Withdraw Supply Status", {
+      posthog.capture("Withdraw Supply Status", {
         Status: "Success",
         "Token Selected": asset,
         "Token Amount": inputWithdrawlAmount,
@@ -513,7 +510,7 @@ const YourSupplyModal = ({
      //console.log(withdraw);
     } catch (err: any) {
      //console.log("withraw", err);
-      mixpanel.track("Withdraw Supply Status", {
+      posthog.capture("Withdraw Supply Status", {
         Status: "Failure",
       });
       const uqID = getUniqueId();
@@ -542,7 +539,7 @@ const YourSupplyModal = ({
   const handleAddSupply = async () => {
     try {
       if (ischecked) {
-        mixpanel.track("Add Supply and Stake selected", {
+        posthog.capture("Add Supply and Stake selected", {
           Clicked: true,
         });
         const addSupplyAndStake = await writeAsyncDepositStake();
@@ -578,7 +575,7 @@ const YourSupplyModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Add Supply and Stake Your Supply Status", {
+          posthog.capture("Add Supply and Stake Your Supply Status", {
             Status: "Success",
             "Token Selected": supplyAsset,
             "Token Amount": depositAmount,
@@ -625,7 +622,7 @@ const YourSupplyModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Add Supply Your Supply Status", {
+          posthog.capture("Add Supply Your Supply Status", {
             Status: "Success",
             "Token Selected": supplyAsset,
             "Token Amount": depositAmount,
@@ -651,7 +648,7 @@ const YourSupplyModal = ({
         // dispatch(setTransactionStatus("failed"));
         setTransactionStarted(false);
       }
-      mixpanel.track("Add Supply Your Supply Status", {
+      posthog.capture("Add Supply Your Supply Status", {
         Status: "Failure",
       });
       const toastContent = (
@@ -1588,7 +1585,7 @@ const YourSupplyModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            mixpanel.track(
+                            posthog.capture(
                               "Add Supply Button Clicked Your Supply",
                               {
                                 Clicked: true,
@@ -2339,7 +2336,7 @@ const YourSupplyModal = ({
                           onClick={() => {
                             setWithdrawTransactionStarted(true);
                             if (withdrawTransactionStarted == false) {
-                              mixpanel.track(
+                              posthog.capture(
                                 "Withdraw Button Clicked your supply",
                                 {
                                   Clicked: true,

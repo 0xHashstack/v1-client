@@ -94,6 +94,7 @@ import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import posthog from "posthog-js";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -279,11 +280,7 @@ const LiquidityProvisionModal = ({
     "USDT/DAI",
     "USDC/DAI",
   ];
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
-    debug: true,
-    track_pageview: true,
-    persistence: "localStorage",
-  });
+
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -388,7 +385,7 @@ const LiquidityProvisionModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Liquidity Spend Borrow Status", {
+          posthog.capture("Liquidity Spend Borrow Status", {
             Status: "Success",
             PoolSelected: currentPool,
             BorrowId: currentBorrowId,
@@ -437,7 +434,7 @@ const LiquidityProvisionModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track("Liquidity Spend Borrow Status", {
+          posthog.capture("Liquidity Spend Borrow Status", {
             Status: "Success",
             PoolSelected: currentPool,
             BorrowId: currentBorrowId,
@@ -472,7 +469,7 @@ const LiquidityProvisionModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track("Liquidity Spend Borrow Status", {
+      posthog.capture("Liquidity Spend Borrow Status", {
         Status: "Failure",
       });
       toast.error(toastContent, {
@@ -660,7 +657,7 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               ////console.log("hi");
             } else {
-              mixpanel.track("Liquidity Modal Selected", {
+              posthog.capture("Liquidity Modal Selected", {
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
@@ -687,7 +684,7 @@ const LiquidityProvisionModal = ({
                 localStorage.setItem("transactionCheck", JSON.stringify(data));
               }
               onOpen();
-              mixpanel.track("Liquidity Modal Selected", {
+              posthog.capture("Liquidity Modal Selected", {
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
@@ -714,7 +711,7 @@ const LiquidityProvisionModal = ({
                 localStorage.setItem("transactionCheck", JSON.stringify(data));
               }
               onOpen();
-              mixpanel.track("Liquidity Modal Selected", {
+              posthog.capture("Liquidity Modal Selected", {
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
@@ -1507,7 +1504,7 @@ const LiquidityProvisionModal = ({
                         (-(reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.loanMarket.slice(1)
-                        )?.borrowRate)) + getAprByPool(poolApr, currentPool,currentSwap)) +
+                        )?.borrowRate)+ getAprByPool(poolApr, currentPool,currentSwap)) ) +
                         dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices)*(reduxProtocolStats.find(
                           (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying) *
@@ -1630,7 +1627,7 @@ const LiquidityProvisionModal = ({
                   onClick={() => {
                     setTransactionStarted(true);
                     if (transactionStarted == false) {
-                      mixpanel.track("Liquidity Button Clicked Spend Borrow", {
+                      posthog.capture("Liquidity Button Clicked Spend Borrow", {
                         Clicked: true,
                       });
                       dispatch(setTransactionStartedAndModalClosed(false));
