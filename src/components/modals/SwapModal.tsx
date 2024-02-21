@@ -120,7 +120,7 @@ const SwapModal = ({
 
   let activeTransactions = useSelector(selectActiveTransactions);
 
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coins = ["BTC", "USDT", "USDC", "ETH"];
 
   useEffect(() => {}, [currentSwap]);
   const getBorrowAPR = (borrowMarket: string) => {

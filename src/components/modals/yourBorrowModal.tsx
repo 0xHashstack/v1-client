@@ -2648,7 +2648,7 @@ const YourBorrowModal = ({
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coins = ["BTC", "USDT", "USDC", "ETH"];
   const actions = [
     "Spend Borrow",
     "Convert to borrow market",
@@ -2672,13 +2672,13 @@ const YourBorrowModal = ({
     "ETH/USDT",
     "USDC/USDT",
     "ETH/USDC",
-    "DAI/ETH",
+    // "DAI/ETH",
     "BTC/ETH",
     "BTC/USDT",
     "BTC/USDC",
-    "BTC/DAI",
-    "USDT/DAI",
-    "USDC/DAI",
+    // "BTC/DAI",
+    // "USDT/DAI",
+    // "USDC/DAI",
   ];
   // const pools = [
   //   ["ETH", "USDT"],
@@ -6030,7 +6030,7 @@ const YourBorrowModal = ({
                         </Text>
                       </Text> */}
                     </Card>
-                    {inputCollateralAmount > 0 &&
+                    {inputCollateralAmount > 0 && collateralAsset!="DAI" &&
                       //123456
                       (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ?
                         (currentTokenSelected == "Native Token" ?

@@ -272,13 +272,13 @@ const LiquidityProvisionModal = ({
     "ETH/USDT",
     "USDC/USDT",
     "ETH/USDC",
-    "DAI/ETH",
+    // "DAI/ETH",
     "BTC/ETH",
     "BTC/USDT",
     "BTC/USDC",
-    "BTC/DAI",
-    "USDT/DAI",
-    "USDC/DAI",
+    // "BTC/DAI",
+    // "USDT/DAI",
+    // "USDC/DAI",
   ];
 
 

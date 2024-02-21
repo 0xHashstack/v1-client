@@ -13,6 +13,7 @@ import {
   useMediaQuery,
   Skeleton,
   Tooltip,
+  Button,
 } from "@chakra-ui/react";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 import Image from "next/image";
@@ -195,20 +196,20 @@ const DashboardLeft = ({
 
   return (
     <TableContainer
-    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-    color="white"
-    borderRadius="md"
-    w={width}
-    display="flex"
-    justifyContent="flex-start"
-    alignItems="flex-start"
-    // bgColor={"yellow"}
-    height={"100%"}
-    paddingX={isLargerThan1280 ? "2rem" : "1rem"}
-    pt={"1.7rem"}
-    // pb={"0.5rem"}
-    overflowX="hidden"
+      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+      color="white"
+      borderRadius="md"
+      w={width}
+      display="flex"
+      justifyContent="flex-start"
+      alignItems="flex-start"
+      // bgColor={"yellow"}
+      height={"100%"}
+      paddingX={isLargerThan1280 ? "2rem" : "1rem"}
+      pt={"1.7rem"}
+      // pb={"0.5rem"}
+      overflowX="hidden"
     // bgColor={"red"}
     // px={"1.5rem"}
     >
@@ -222,7 +223,7 @@ const DashboardLeft = ({
                 fontWeight={400}
                 // border="1px solid blue"
                 padding={0}
-                // bgColor={"red"}
+              // bgColor={"red"}
               >
                 <Text
                   whiteSpace="pre-wrap"
@@ -234,7 +235,7 @@ const DashboardLeft = ({
                   textAlign={idx == 0 ? "left" : "center"}
                   color={"#BDBFC1"}
                   padding={0}
-                  // pl={idx == 0 ? "7.2%" : 0}
+                // pl={idx == 0 ? "7.2%" : 0}
                 >
                   <Tooltip
                     hasArrow
@@ -255,8 +256,8 @@ const DashboardLeft = ({
                     border="1px solid"
                     borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
-                    // maxW="222px"
-                    // mt="28px"
+                  // maxW="222px"
+                  // mt="28px"
                   >
                     {val}
                   </Tooltip>
@@ -268,9 +269,9 @@ const DashboardLeft = ({
         <Tbody
           position="relative"
           overflowX="hidden"
-          //   display="flex"
-          //   flexDirection="column"
-          //   gap={"1rem"}
+        //   display="flex"
+        //   flexDirection="column"
+        //   gap={"1rem"}
         >
           {Coins.map((coin, idx) => (
             <>
@@ -294,11 +295,11 @@ const DashboardLeft = ({
                     display="flex"
                     justifyContent="flex-start"
                     alignItems="center"
-                    // bgColor="red"
+                  // bgColor="red"
                   >
                     <Box height="2rem" width="2rem">
                       <Image
-                        src={`/${coin?.name}.svg`}
+                        src={coin?.name == "DAI" ? `/${coin?.name}Disabled.svg` : `/${coin?.name}.svg`}
                         alt={`Picture of the coin that I want to access ${coin?.name}`}
                         width="32"
                         height="32"
@@ -313,9 +314,20 @@ const DashboardLeft = ({
                       //   bgColor="blue"
                       pt="3px"
                     >
-                      <Text fontSize="14px" fontWeight="400">
-                        {(coin?.name =="BTC" || coin?.name=="ETH") ?"w"+coin?.name:coin?.name}
+                      <Box display="flex" gap="0.5rem">
+                      <Text fontSize="14px" fontWeight="400" >
+                        {(coin?.name == "BTC" || coin?.name == "ETH") ? "w" + coin?.name : coin?.name}
                       </Text>
+                      {coin?.name=="DAI" &&                      <Image
+                        src={`/paused.svg`}
+                        alt={`Picture of the coin that I want to access ${coin?.name}`}
+                        width="48"
+                        height="16"
+                      />}
+
+                      
+
+                      </Box>
                       {!assetBalance[coin?.name]?.dataBalanceOf ? (
                         // <Skeleton
                         //   width="3rem"
@@ -332,11 +344,11 @@ const DashboardLeft = ({
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}
                           {numberFormatter(
-                              parseAmount(
-                                String(uint256.uint256ToBN(
-                                  assetBalance[coin?.name]?.dataBalanceOf?.balance
-                                )),
-                                tokenDecimalsMap[coin?.name]
+                            parseAmount(
+                              String(uint256.uint256ToBN(
+                                assetBalance[coin?.name]?.dataBalanceOf?.balance
+                              )),
+                              tokenDecimalsMap[coin?.name]
                             )
                           )}
                           {/* )} */}
@@ -360,10 +372,11 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    // bgColor={"blue"}
+                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                  // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coinPrices[idx]===null ? (
+                    {coinPrices[idx] === null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -372,7 +385,7 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      (coinPrices[idx]?.price)==0?0:numberFormatter(coinPrices[idx]?.price)
+                      (coinPrices[idx]?.price) == 0 ? 0 : numberFormatter(coinPrices[idx]?.price)
                     )}
                     {/* 0000.00 */}
                   </Box>
@@ -392,10 +405,11 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    // bgColor={"blue"}
+                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                  // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {totalSupplies[idx]==null ? (
+                    {totalSupplies[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -404,7 +418,7 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                       numberFormatter(totalSupplies[idx])
+                      numberFormatter(totalSupplies[idx])
                     )}
                   </Box>
                 </Td>
@@ -423,10 +437,11 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    // bgColor={"blue"}
+                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                  // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {supplyAPRs[idx]==null ? (
+                    {supplyAPRs[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -462,23 +477,39 @@ const DashboardLeft = ({
                       setCurrentSupplyAPR(idx);
                     }}
                   >
-                    <SupplyModal
-                      buttonText="Supply"
-                      height={"2rem"}
-                      fontSize={"12px"}
-                      padding="6px 12px"
-                      border="1px solid #BDBFC1"
-                      bgColor="transparent"
-                      _hover={{ bg: "white", color: "black" }}
-                      borderRadius={"6px"}
-                      color="#BDBFC1;"
-                      backGroundOverLay="rgba(244, 242, 255, 0.5)"
-                      coin={coin}
-                      supplyAPRs={supplyAPRs}
-                      currentSupplyAPR={currentSupplyAPR}
-                      setCurrentSupplyAPR={setCurrentSupplyAPR}
+                    {coin?.name == "DAI" ?
+                      <Button
+                        height={"2rem"}
+                        fontSize={"12px"}
+                        padding="6px 12px"
+                        border="1px solid #3E415C"
+                        bgColor="transparent"
+                        _hover={{ bg: "white", color: "black" }}
+                        borderRadius={"6px"}
+                        color="#3E415C"
+                      >
+                        Supply
+
+                      </Button>
+                      : <SupplyModal
+                        buttonText="Supply"
+                        height={"2rem"}
+                        fontSize={"12px"}
+                        padding="6px 12px"
+                        border="1px solid #BDBFC1"
+                        bgColor="transparent"
+                        _hover={{ bg: "white", color: "black" }}
+                        borderRadius={"6px"}
+                        color="#BDBFC1;"
+                        backGroundOverLay="rgba(244, 242, 255, 0.5)"
+                        coin={coin}
+                        supplyAPRs={supplyAPRs}
+                        currentSupplyAPR={currentSupplyAPR}
+                        setCurrentSupplyAPR={setCurrentSupplyAPR}
                       // walletBalance={assetBalance[coin?.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(assetBalance[coin?.name]?.dataBalanceOf?.balance))) : 0}
-                    />
+                      />
+                    }
+
                   </Box>
                 </Td>
                 <Td
@@ -493,11 +524,16 @@ const DashboardLeft = ({
                   pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    <StakeUnstakeModal
-                      coin={coin}
-                      nav={false}
-                      validRTokens={validRTokens}
-                    />
+                    {coin?.name == "DAI" ?
+                      <Text color="#3E415C" borderBottom="1px solid #3E415C" cursor="pointer">
+                        Stake
+                      </Text> : <StakeUnstakeModal
+                        coin={coin}
+                        nav={false}
+                        validRTokens={validRTokens}
+                      />
+                    }
+
                   </Box>
                 </Td>
               </Tr>

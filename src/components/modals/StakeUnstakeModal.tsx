@@ -1238,6 +1238,7 @@ const StakeUnstakeModal = ({
                             >
                               {rcoins?.map((_coin: RToken, index: number) => {
                                 return (
+                                  _coin=="rDAI" ?"":
                                   <Box
                                     key={index}
                                     as="button"

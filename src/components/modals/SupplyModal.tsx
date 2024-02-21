@@ -713,7 +713,7 @@ const SupplyModal = ({
     }
   };
 
-  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH"];
 
   const resetStates = () => {
     setDepositAmount(0);
