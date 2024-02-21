@@ -1580,7 +1580,7 @@ const YourSupplyModal = ({
                             </Box>
                           </Box>
                         )}
-                      {inputSupplyAmount > 0 &&((inputSupplyAmount > 0 && inputSupplyAmount >= minimumDepositAmount) || process.env.NEXT_PUBLIC_NODE_ENV == "testnet") && (process.env.NEXT_PUBLIC_NODE_ENV == "testnet" || inputSupplyAmount <= maximumDepositAmount)&&
+                      {inputSupplyAmount > 0 && supplyAsset!="DAI" && ((inputSupplyAmount > 0 && inputSupplyAmount >= minimumDepositAmount) || process.env.NEXT_PUBLIC_NODE_ENV == "testnet") && (process.env.NEXT_PUBLIC_NODE_ENV == "testnet" || inputSupplyAmount <= maximumDepositAmount)&&
                         inputSupplyAmount <= walletBalance ? (
                         <Box
                           onClick={() => {
