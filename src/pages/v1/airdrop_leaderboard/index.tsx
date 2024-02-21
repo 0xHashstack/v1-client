@@ -51,7 +51,6 @@ const columnItemsLeaderBoardCCp = [
   "Rank",
   "Account",
   "Points",
-  "Hash Tokens",
   "",
 ];
 
@@ -818,7 +817,7 @@ const Campaign: NextPage = () => {
                       />
                     )}
                   </VStack>
-                  <VStack
+                  {/* <VStack
                     gap={"6px"}
                     justifyContent="flex-start"
                     alignItems="flex-start"
@@ -854,7 +853,7 @@ const Campaign: NextPage = () => {
                         {numberFormatter(userHashCCP)} HASH
                       </Text>
                     )}
-                  </VStack>
+                  </VStack> */}
                 </HStack>
               </HStack>
             </HStack>

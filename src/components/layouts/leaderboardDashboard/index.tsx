@@ -264,7 +264,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       </Tooltip>
                     </Text>
                   </Td>
-
+                  {currentSelectedDrop=="Airdrop 1" && 
                   <Td
                     width={"16.6%"}
                     fontSize={"14px"}
@@ -326,7 +326,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         </Text>
                       </Tooltip>
                     </Text>
-                  </Td>
+                  </Td>}
+
 
                   {currentSelectedDrop === "Airdrop 1" ? (
                     <Td
@@ -572,8 +573,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       </Tooltip>
                     </Text>
                   </Td>
-
-                  <Td
+                    {currentSelectedDrop === "Airdrop 1" &&                   <Td
                     width={"16.6%"}
                     fontSize={"14px"}
                     fontWeight={400}
@@ -639,7 +639,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         </Text>
                       </Tooltip>
                     </Text>
-                  </Td>
+                  </Td>}
+
 
                   {currentSelectedDrop === "Airdrop 1" ? (
                     <Td
