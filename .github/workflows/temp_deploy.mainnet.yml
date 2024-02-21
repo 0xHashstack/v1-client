@@ -22,7 +22,7 @@ jobs:
       - name: Use Node.js 20
         uses: actions/setup-node@v1
         with:
-          node-version: 20.0
+          node-version: 20
 
       - name: "Setup .env"
         run: |
@@ -38,7 +38,7 @@ jobs:
           echo 'NEXT_PUBLIC_FEEDBACK_API=${{secrets.NEXT_PUBLIC_FEEDBACK_API}}' >> .env
           echo 'NEXT_PUBLIC_POSTHOG_KEY=${{secrets.NEXT_PUBLIC_POSTHOG_KEY}}' >> .env
           echo 'NEXT_PUBLIC_HOSTHOG_HOST=${{secrets.NEXT_PUBLIC_HOSTHOG_HOST}}' >> .env
-          
+
       - name: Accessing the cer
         run: |
           echo '${{secrets.AWS_ACCESS_KEY_CER}}' >> deployer.cer
