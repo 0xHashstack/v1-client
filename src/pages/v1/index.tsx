@@ -5,12 +5,21 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import posthog from "posthog-js";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+import BTCLogo from "@/assets/icons/coins/btc";
+import DAILogo from "@/assets/icons/coins/dai";
+import ETHLogo from "@/assets/icons/coins/eth";
+import EthWalletLogo from "@/assets/icons/coins/ethwallet";
+import StarknetLogo from "@/assets/icons/coins/starknet";
+import USDCLogo from "@/assets/icons/coins/usdc";
+import USDTLogo from "@/assets/icons/coins/usdt";
 import BravosIcon from "@/assets/icons/wallets/bravos";
 import {
   setReferral,
   setTransactionRefresh,
 } from "@/store/slices/readDataSlice";
+import { selectWalletBalance } from "@/store/slices/userAccountSlice";
 
 export default function Home() {
   const { account, address, status, isConnected } = useAccount();
@@ -23,6 +32,15 @@ export default function Home() {
   const router = useRouter();
   const waitlistHref = "/v1/waitlist";
   const marketHref2 = "/v1/market";
+  const whitelistHref = "/v1/whitelist";
+  const dispatch = useDispatch();
+  const walletBalance = useSelector(selectWalletBalance);
+
+  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const networks = [
+    { name: "Starknet", status: "enable" },
+    { name: "Ethereum (Coming soon)", status: "disable" },
+  ];
 
   useEffect(() => {
     const timeout = setTimeout(() => {
