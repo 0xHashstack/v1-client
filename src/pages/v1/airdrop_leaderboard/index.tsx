@@ -1,22 +1,3 @@
-import { processAddress } from "@/Blockchain/stark-constants";
-import BlueInfoIcon from "@/assets/icons/blueinfoicon";
-import CopyIcon from "@/assets/icons/copyIcon";
-import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import ExternalLinkWhite from "@/assets/icons/externalLinkWhite";
-import { default as LeaderboardDashboard } from "@/components/layouts/leaderboardDashboard";
-import { default as PageCard } from "@/components/layouts/pageCard";
-import UserCampaignData from "@/components/layouts/userCampaignData";
-import { default as useDataLoader } from "@/hooks/useDataLoader";
-import {
-  selectAirdropDropdowns,
-  setAirdropDropdown,
-} from "@/store/slices/dropdownsSlice";
-import {
-  selectExistingLink,
-  selectYourBorrow,
-  selectYourSupply,
-} from "@/store/slices/readDataSlice";
-import { default as numberFormatter } from "@/utils/functions/numberFormatter";
 import {
   Box,
   Button,
@@ -38,6 +19,26 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
+import { processAddress } from "@/Blockchain/stark-constants";
+import BlueInfoIcon from "@/assets/icons/blueinfoicon";
+import CopyIcon from "@/assets/icons/copyIcon";
+import DropdownUp from "@/assets/icons/dropdownUpIcon";
+import { default as LeaderboardDashboard } from "@/components/layouts/leaderboardDashboard";
+import { default as PageCard } from "@/components/layouts/pageCard";
+import UserCampaignData from "@/components/layouts/userCampaignData";
+import { default as useDataLoader } from "@/hooks/useDataLoader";
+import {
+  selectAirdropDropdowns,
+  selectNavDropdowns,
+  setAirdropDropdown,
+} from "@/store/slices/dropdownsSlice";
+import {
+  selectExistingLink,
+  selectYourBorrow,
+  selectYourSupply,
+} from "@/store/slices/readDataSlice";
+import { default as numberFormatter } from "@/utils/functions/numberFormatter";
+
 const columnItemsLeaderBoard = [
   "Rank",
   "Account",
@@ -50,7 +51,6 @@ const columnItemsLeaderBoardCCp = [
   "Rank",
   "Account",
   "Points",
-  "Hash Tokens",
   "",
 ];
 
@@ -252,6 +252,7 @@ const Campaign: NextPage = () => {
   const totalSupply = useSelector(selectYourSupply);
   const exisitingLink = useSelector(selectExistingLink);
   const airdropDropdowns = useSelector(selectAirdropDropdowns);
+  const navDropdowns = useSelector(selectNavDropdowns);
 
   const dispatch = useDispatch();
   const { address } = useAccount();
@@ -314,6 +315,7 @@ const Campaign: NextPage = () => {
       console.log(err);
     }
   }, [address]);
+
   useEffect(() => {
     try {
       const fetchUserCCPData = async () => {
@@ -343,6 +345,7 @@ const Campaign: NextPage = () => {
       console.log(err);
     }
   }, [address]);
+
   useEffect(() => {
     try {
       const fetchLeaderBoardDataCCP = async () => {
@@ -534,7 +537,13 @@ const Campaign: NextPage = () => {
   return (
     <PageCard pt="6.5rem">
       <Box
-        zIndex="100"
+        zIndex={
+          navDropdowns.walletConnectionDropdown |
+          navDropdowns.settingsDropdown |
+          navDropdowns.languagesDropdown
+            ? "0"
+            : "100"
+        }
         width="100%"
         bg="#FF8F8C"
         position="fixed"
@@ -808,7 +817,7 @@ const Campaign: NextPage = () => {
                       />
                     )}
                   </VStack>
-                  <VStack
+                  {/* <VStack
                     gap={"6px"}
                     justifyContent="flex-start"
                     alignItems="flex-start"
@@ -844,7 +853,7 @@ const Campaign: NextPage = () => {
                         {numberFormatter(userHashCCP)} HASH
                       </Text>
                     )}
-                  </VStack>
+                  </VStack> */}
                 </HStack>
               </HStack>
             </HStack>

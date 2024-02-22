@@ -438,11 +438,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                               { numberFormatter(data["Recommended (Community Team)"] ? data["Recommended (Community Team)"]:0)} points
                               allocated
                             </Text>
-                            <Box display="flex" gap="1.5rem">
+                            {/* <Box display="flex" gap="1.5rem">
                               <Text>
                                 {numberFormatter(data["Allocated (Product Team)"] ? data["Allocated (Product Team)"]:0 )} Hash tokens earned
                               </Text>
-                            </Box>
+                            </Box> */}
                           </Box>
                           <Box
                             borderBottom={

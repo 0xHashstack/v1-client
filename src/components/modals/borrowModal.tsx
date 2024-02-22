@@ -757,7 +757,7 @@ const BorrowModal = ({
   };
 
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
-  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH"];
   const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
   const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
   useEffect(()=>{

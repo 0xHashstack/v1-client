@@ -1,44 +1,14 @@
-import { Inter } from "next/font/google";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Box, Button, Stack, Text } from "@chakra-ui/react";
-import Navbar from "@/components/layouts/navbar/Navbar";
+import { Box, Text } from "@chakra-ui/react";
+import { useAccount } from "@starknet-react/core";
+
 import PageCard from "@/components/layouts/pageCard";
-// import WalletConnectModal from "@/components/modals/WalletConnectModal";
-import {
-  useAccount,
-  useBlock,
-} from "@starknet-react/core";
-import { useContract } from "@starknet-react/core";
-import { useDispatch, useSelector } from "react-redux";
-import { selectAccount, setAccount } from "@/store/slices/userAccountSlice";
-import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
+import ReferFreindsModal from "@/components/modals/ReferFreindsModal";
 import SupplyEquivalentModal from "@/components/modals/SupplyEquivalentModal";
 import TransferDepositModal from "@/components/modals/TransferDepositModal";
-import ReferFreindsModal from "@/components/modals/ReferFreindsModal";
-// import { get_user_loans } from "@/Blockchain/scripts/Loans";
-// import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function WaitList() {
-  // const account = JSON.parse(useSelector(selectAccount));
-  ////console.log(account ,"waitlist")
-
   const { account: _account } = useAccount();
-  // useEffect(() => {
-  //   if (!_account) {
-  //     const walletConnected = localStorage.getItem("lastUsedConnector");
-  //     if (walletConnected == "braavos") {
-  //       disconnect();
-  //       connect(connectors[0]);
-  //     } else if (walletConnected == "argentx") {
-  //       disconnect();
-  //       connect(connectors[0]);
-  //     }
-  //   }
-  // }, []);
+
   return (
     <PageCard justifyContent="center">
       <Text color="#D3AC41" fontSize="48px" fontWeight="600" fontStyle="normal">

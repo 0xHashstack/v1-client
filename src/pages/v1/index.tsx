@@ -1,75 +1,33 @@
-import { Inter } from "next/font/google";
-import { useEffect, useState } from "react";
+import { Box, Button, Card, Skeleton, Text } from "@chakra-ui/react";
+import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Image from "next/image";
-import { Button, Card, Text, Box, Portal, Skeleton } from "@chakra-ui/react";
-import Navbar from "@/components/layouts/navbar/Navbar";
-import PageCard from "@/components/layouts/pageCard";
-// import WalletConnectModal from "@/components/modals/WalletConnectModal";
-import ArgentXLogo from "../assets/images/ArgentXlogo.svg";
-import BTCLogo from "@/assets/icons/coins/btc";
-import USDCLogo from "@/assets/icons/coins/usdc";
-import BravosIcon from "@/assets/icons/wallets/bravos";
-import USDTLogo from "@/assets/icons/coins/usdt";
-import ETHLogo from "@/assets/icons/coins/eth";
-import DAILogo from "@/assets/icons/coins/dai";
-import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import StarknetLogo from "@/assets/icons/coins/starknet";
-import BrowserWalletIcon from "@/assets/icons/wallets/browserwallet";
-import EthWalletLogo from "@/assets/icons/coins/ethwallet";
-import {
-  Connector,
-  argent,
-  braavos,
-  useAccount,
-  useConnect,
-  useDisconnect,
-  // useBalance,
-} from "@starknet-react/core";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectWalletBalance,
-  setAccount,
-} from "@/store/slices/userAccountSlice";
-import { setReferral, setTransactionRefresh } from "@/store/slices/readDataSlice";
-import Banner from "@/components/uiElements/loaders/Banner";
-import Banner2 from "@/components/uiElements/loaders/Banner2";
-import useTransactionRefresh from "@/hooks/useTransactionRefresh";
-import mixpanel from "mixpanel-browser";
-import useDataLoader from "@/hooks/useDataLoader";
-import { diamondAddress, getProvider } from "@/Blockchain/stark-constants";
-import comptrollerAbi from "../../Blockchain/abis_mainnet/comptroller_abi.json";
-import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
-import { Contract, RpcProvider } from "starknet";
-import GetTokensModal from "@/components/modals/getTokens";
-import SupplyModal from "@/components/modals/SupplyModal";
 import posthog from "posthog-js";
-// import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const inter = Inter({ subsets: ["latin"] });
+import BTCLogo from "@/assets/icons/coins/btc";
+import DAILogo from "@/assets/icons/coins/dai";
+import ETHLogo from "@/assets/icons/coins/eth";
+import EthWalletLogo from "@/assets/icons/coins/ethwallet";
+import StarknetLogo from "@/assets/icons/coins/starknet";
+import USDCLogo from "@/assets/icons/coins/usdc";
+import USDTLogo from "@/assets/icons/coins/usdt";
+import BravosIcon from "@/assets/icons/wallets/bravos";
+import {
+  setReferral,
+  setTransactionRefresh,
+} from "@/store/slices/readDataSlice";
+import { selectWalletBalance } from "@/store/slices/userAccountSlice";
+
 export default function Home() {
   const { account, address, status, isConnected } = useAccount();
-  // const { data, isLoading, error, refetch } = useBalance({
-  //   address
-  // })
-  ////console.log(data);
-  // const connectors = [
-  //   braavos(),
-  //   argent(),
-  // ];
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
 
-  // const { available, refresh } =
-  //   useConnectors();
-  const [render, setRender] = useState(true);
-
-  const [lastusedConnector, setLastusedConnector] = useState("");
-  const [isWhiteListed, setIsWhiteListed] = useState(false);
   const [isWaitListed, setIsWaitListed] = useState(true);
   const [availableDataLoading, setAvailableDataLoading] = useState(true);
-  const [walletConnectedRefresh, setWalletConnectedRefresh] = useState(false)
 
   const router = useRouter();
   const waitlistHref = "/v1/waitlist";
@@ -77,13 +35,6 @@ export default function Home() {
   const whitelistHref = "/v1/whitelist";
   const dispatch = useDispatch();
   const walletBalance = useSelector(selectWalletBalance);
-  // mixpanel.identify("13793");
- 
-
-  // useEffect(() => {
-  //   const interval = setInterval(refresh, 200);
-  //   return () => clearInterval(interval);
-  // }, [refresh]);
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const networks = [
@@ -98,85 +49,56 @@ export default function Home() {
 
     return () => clearTimeout(timeout);
   }, []);
-  const getCoin = (CoinName: string) => {
-    switch (CoinName) {
-      case "BTC":
-        return <BTCLogo height={"16px"} width={"16px"} />;
-        break;
-      case "USDC":
-        return <USDCLogo height={"16px"} width={"16px"} />;
-        break;
-      case "USDT":
-        return <USDTLogo height={"16px"} width={"16px"} />;
-        break;
-      case "ETH":
-        return <ETHLogo height={"16px"} width={"16px"} />;
-        break;
-      case "DAI":
-        return <DAILogo height={"16px"} width={"16px"} />;
-        break;
-      case "Starknet":
-        return <StarknetLogo />;
-        break;
-      case "Ethereum (Coming soon)":
-        return <EthWalletLogo />;
-        break;
-      default:
-        break;
-    }
-  };
-  ////console.log(account ,"index page")
-  ////console.log("Index reload check",account);
+
   useEffect(() => {
     localStorage.setItem("connected", "");
   }, []);
+
   const { ref } = router.query;
-    if(ref){
-      dispatch(setReferral(ref));
-    }
+  if (ref) {
+    dispatch(setReferral(ref));
+  }
+
   useEffect(() => {
-    // alert(status)
-    // const storedAccount = localStorage.getItem("account");
     const hasVisited = localStorage.getItem("visited");
     const walletConnected = localStorage.getItem("lastUsedConnector");
+
     localStorage.setItem("transactionCheck", JSON.stringify([]));
     if (walletConnected == "braavos") {
-        disconnect();
-        connectors.map((connector:any)=>{
-          if(connector.id=="braavos"){
-            connect(connector);
-          }
-        })
-        
-      if(!account){
+      disconnect();
+      connectors.map((connector: any) => {
+        if (connector.id == "braavos") {
+          connect(connector);
+        }
+      });
+
+      if (!account) {
         return;
-      }else{
+      } else {
         if (!isWaitListed) {
           router.replace(waitlistHref);
         } else {
           router.replace(marketHref2);
         }
       }
-      // dispatch(setTransactionRefresh("reset"));
     } else if (walletConnected == "argentX") {
-        disconnect();
-        connectors.map((connector)=>{
-          if(connector.id=="argentX"){
-            connect({connector});
-          }
-        })
-      if(!account){
+      disconnect();
+      connectors.map((connector) => {
+        if (connector.id == "argentX") {
+          connect({ connector });
+        }
+      });
+      if (!account) {
         return;
-      }else{
+      } else {
         if (!isWaitListed) {
           router.replace(waitlistHref);
         } else {
           router.replace(marketHref2);
         }
       }
-      // dispatch(setTransactionRefresh("reset"));
-    }else{
-      return
+    } else {
+      return;
     }
     if (walletConnected) {
       localStorage.setItem("connected", walletConnected);
@@ -189,44 +111,22 @@ export default function Home() {
       // Set a local storage item to indicate the user has visited
       localStorage.setItem("visited", "true");
     }
-    // if (storedAccount) {
-    //   router.push('./market')
-    // }
-    if (status == "connected" || isConnected) {
-      // alert(account?.address);
-      // localStorage.setItem("account", JSON.stringify(account));
-      // dispatch(setAccount(JSON.stringify(account)));
-      // if(address){
-      //   // mixpanel.identify(address)
-      //   mixpanel.identify("13793");
-      //   posthog.capture('Signed Up')
-      // }
-
-      
-
-      // if (!isWhiteListed) {
-      //   router.replace(whitelistHref);
-      // } else if (isWaitListed) {
-      //   router.replace(waitlistHref);
-      // }
-      // {
-      //   router.replace(marketHref2);
-      // }
-    }
-    ////console.log("account home", address, status);
   }, [status, isConnected]);
+
   const [bravoosAvailable, setbravoosAvailable] = useState(true);
-  const [argentAvailable, setargentAvailable] = useState(true)
-  useEffect(()=>{
-    (connectors.map((connector)=>{
-      if(connector.id=="braavos"){
-         setbravoosAvailable(connector.available());
-      }else if(connector.id=="argentX"){
+  const [argentAvailable, setargentAvailable] = useState(true);
+
+  useEffect(() => {
+    connectors.map((connector) => {
+      if (connector.id == "braavos") {
+        setbravoosAvailable(connector.available());
+      } else if (connector.id == "argentX") {
         setargentAvailable(connector.available());
       }
       return true;
-    }))
-  },[])
+    });
+  }, []);
+
   return (
     <Box
       display="flex"
@@ -235,13 +135,6 @@ export default function Home() {
       backgroundColor="#191922"
       height="100vh"
     >
-      {/* <PageCard
-      justifyContent="center"
-      alignItems="center"
-      backgroundColor="#191922"
-      height="100vh"
-    > */}
-
       <Box
         display="flex"
         background="#02010F"
@@ -249,10 +142,8 @@ export default function Home() {
         alignItems="flex-start"
         padding="32px"
         width="462px"
-        // height="567px"
         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         borderRadius="8px"
-        // bgColor="red"
       >
         <Text color="#fff">Connect a wallet</Text>
         <Card
@@ -262,8 +153,8 @@ export default function Home() {
           width="400px"
           mt="8px"
         >
-          { (connectors[0]?.id == "braavos" ||
-          connectors[1]?.id == "braavos") && bravoosAvailable ? (
+          {(connectors[0]?.id == "braavos" || connectors[1]?.id == "braavos") &&
+          bravoosAvailable ? (
             <Box
               w="full"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
@@ -273,16 +164,15 @@ export default function Home() {
               display="flex"
               justifyContent="space-between"
               cursor="pointer"
-              // onClick={() => router.push("/market")}
               onClick={() => {
                 localStorage.setItem("lastUsedConnector", "braavos");
                 localStorage.setItem("connected", "braavos");
                 disconnect();
-                connectors.map((connector)=>{
-                  if(connector.id=="braavos"){
-                    connect({connector});
+                connectors.map((connector) => {
+                  if (connector.id == "braavos") {
+                    connect({ connector });
                   }
-                })
+                });
                 dispatch(setTransactionRefresh("reset"));
               }}
             >
@@ -296,8 +186,8 @@ export default function Home() {
                     borderRadius="6px"
                   />
                 ) : (connectors[0]?.id == "braavos" ||
-                  connectors[1]?.id == "braavos") && bravoosAvailable  ? (
-                  // || availableDataLoading
+                    connectors[1]?.id == "braavos") &&
+                  bravoosAvailable ? (
                   "Braavos Wallet"
                 ) : (
                   "Download Braavos Wallet"
@@ -318,10 +208,6 @@ export default function Home() {
                 display="flex"
                 justifyContent="space-between"
                 cursor="pointer"
-                // onClick={() => router.push("/market")}
-                // onClick={() =>
-                //   connect(connectors[0])
-                // }
               >
                 <Box ml="1rem" color="white">
                   {availableDataLoading ? (
@@ -333,8 +219,8 @@ export default function Home() {
                       borderRadius="6px"
                     />
                   ) : (connectors[0]?.id == "braavos" ||
-                  connectors[1]?.id == "braavos") &&bravoosAvailable ? (
-                    // || availableDataLoading
+                      connectors[1]?.id == "braavos") &&
+                    bravoosAvailable ? (
                     "Braavos Wallet"
                   ) : (
                     "Download Braavos Wallet"
@@ -347,8 +233,8 @@ export default function Home() {
             </Link>
           )}
 
-          {(connectors[1]?.id == "argentX" ||
-          connectors[0]?.id == "argentX") && argentAvailable ? (
+          {(connectors[1]?.id == "argentX" || connectors[0]?.id == "argentX") &&
+          argentAvailable ? (
             <Box
               w="full"
               py="2"
@@ -363,11 +249,11 @@ export default function Home() {
                 localStorage.setItem("lastUsedConnector", "argentX");
                 localStorage.setItem("connected", "argentX");
                 disconnect();
-                connectors.map((connector)=>{
-                  if(connector.id=="argentX"){
-                    connect({connector});
+                connectors.map((connector) => {
+                  if (connector.id == "argentX") {
+                    connect({ connector });
                   }
-                })
+                });
                 dispatch(setTransactionRefresh("reset"));
               }}
             >
@@ -380,9 +266,8 @@ export default function Home() {
                     endColor="#2B2F35"
                     borderRadius="6px"
                   />
-                ) : (connectors[0]?.id == "argentX" ||
-                connectors[1]?.id == "argentX" && argentAvailable) ? (
-                  // || availableDataLoading
+                ) : connectors[0]?.id == "argentX" ||
+                  (connectors[1]?.id == "argentX" && argentAvailable) ? (
                   "Argent X Wallet"
                 ) : (
                   "Download Argent X Wallet"
@@ -410,7 +295,6 @@ export default function Home() {
                 display="flex"
                 justifyContent="space-between"
                 cursor="pointer"
-                // onClick={() => connect(connectors[1])}
               >
                 <Box ml="1rem" color="white">
                   {availableDataLoading ? (
@@ -422,8 +306,8 @@ export default function Home() {
                       borderRadius="6px"
                     />
                   ) : (connectors[1]?.id == "argentX" ||
-                  connectors[0]?.id == "argentX")&& argentAvailable ? (
-                    // || availableDataLoading
+                      connectors[0]?.id == "argentX") &&
+                    argentAvailable ? (
                     "Argent X Wallet"
                   ) : (
                     "Download Argent X Wallet"
@@ -472,24 +356,13 @@ export default function Home() {
           </Button>
         </Box>
 
-        <Box
-          mt="16px"
-          display="flex"
-          flexDirection="column"
-          // pb="32px"
-          // bgColor="blue"
-        >
+        <Box mt="16px" display="flex" flexDirection="column">
           <Text
             fontSize="12px"
             lineHeight="18px"
             fontWeight="400"
             color="#3E415C"
           >
-            {/* This mainnet is currently in alpha with limitations on the maximum
-            supply & borrow amount. This is done in consideration of the current
-            network and liquidity constraints of the Starknet. We urge the users
-            to use the dapp with caution. Hashstack will not cover any
-            accidental loss of user funds. */}
             Wallets are provided by External Providers and by selecting you
             agree to Terms of those Providers. Your access to the wallet might
             be reliant on the External Provider being operational.
@@ -506,7 +379,6 @@ export default function Home() {
           </Text>
         </Box>
       </Box>
-      {/* </PageCard> */}
     </Box>
   );
 }

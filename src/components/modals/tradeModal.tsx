@@ -255,13 +255,13 @@ const TradeModal = ({
     "ETH/USDT",
     "USDC/USDT",
     "ETH/USDC",
-    "DAI/ETH",
+    // "DAI/ETH",
     "BTC/ETH",
     "BTC/USDT",
     "BTC/USDC",
-    "BTC/DAI",
-    "USDT/DAI",
-    "USDC/DAI",
+    // "BTC/DAI",
+    // "USDT/DAI",
+    // "USDC/DAI",
   ];
 
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
@@ -393,7 +393,7 @@ const TradeModal = ({
       // dispatch((newValue));
     }
   };
-  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH"];
 
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
     coin ? coin?.name : "BTC"
