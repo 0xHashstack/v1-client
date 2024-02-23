@@ -215,7 +215,23 @@ const DashboardRight = ({
                         height="32"
                       />
                     </Box>
+                    <Box gap="0.2rem" display={coin?.name=="DAI" ?"flex":""}>
                     <Text fontSize="14px">{(coin?.name == "BTC" || coin?.name == "ETH") ? "w" + coin?.name : coin?.name}</Text>
+                    {coin?.name=="DAI" &&                      <Image
+                        src={`/paused.svg`}
+                        alt={`Picture of the coin that I want to access ${coin?.name}`}
+                        width="48"
+                        height="16"
+                      />}
+                      {coin?.name=="STRK" && 
+                      <Image
+                        src={`/comingsoon.svg`}
+                        alt={`Picture of the coin that I want to access ${coin?.name}`}
+                        width="72"
+                        height="16"
+                      />
+                      }
+                    </Box>
                     
                   </HStack>
                 </Td>
