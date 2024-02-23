@@ -32,6 +32,7 @@ export const Coins: ICoin[] = [
   { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
   { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
   { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
+  { name: "STRK", icon: "mdi-dai", symbol: "STRK" },
 ];
 
 const DashboardRight = ({
@@ -214,7 +215,24 @@ const DashboardRight = ({
                         height="32"
                       />
                     </Box>
+                    <Box gap="0.2rem" display={coin?.name=="DAI" ?"flex":""}>
                     <Text fontSize="14px">{(coin?.name == "BTC" || coin?.name == "ETH") ? "w" + coin?.name : coin?.name}</Text>
+                    {coin?.name=="DAI" &&                      <Image
+                        src={`/paused.svg`}
+                        alt={`Picture of the coin that I want to access ${coin?.name}`}
+                        width="48"
+                        height="16"
+                      />}
+                      {coin?.name=="STRK" && 
+                      <Image
+                        src={`/comingsoon.svg`}
+                        alt={`Picture of the coin that I want to access ${coin?.name}`}
+                        width="72"
+                        height="16"
+                      />
+                      }
+                    </Box>
+                    
                   </HStack>
                 </Td>
                 <Td
@@ -232,11 +250,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {totalBorrows[idx] == null ? (
+                    {coin?.name=="STRK" ? numberFormatter(0): totalBorrows[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -264,11 +282,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {availableReserves[idx] == null ? (
+                    {coin?.name=="STRK" ? numberFormatter(0): availableReserves[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -296,11 +314,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {utilization[idx] == null ? (
+                    {coin?.name=="STRK" ? numberFormatter(0): utilization[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -328,11 +346,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {borrowAPRs[idx] == null ? (
+                    {coin?.name=="STRK" ? numberFormatter(0): borrowAPRs[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -372,7 +390,7 @@ const DashboardRight = ({
                     }}
                   // bgColor={"blue"}
                   >
-                    {coin?.name == "DAI" ?
+                    {coin?.name == "DAI" || coin?.name=="STRK" ?
                       <Button
                         height={"2rem"}
                         fontSize={"12px"}
@@ -429,7 +447,7 @@ const DashboardRight = ({
                       setCurrentSupplyAPR(idx);
                     }}
                   >
-                    {coin?.name=="DAI" ?
+                    {coin?.name == "DAI" || coin?.name=="STRK" ?
                    <Text color="#3E415C" borderBottom="1px solid #3E415C" cursor="pointer">
                    Spend
                  </Text>:                      <TradeModal
