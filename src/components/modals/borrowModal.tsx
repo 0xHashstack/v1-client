@@ -95,6 +95,7 @@ import BugIcon from "@/assets/icons/bugIcon";
 import RedinfoIcon from "@/assets/icons/redinfoicon";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import posthog from "posthog-js";
+import STRKLogo from "@/assets/icons/coins/strk";
 const BorrowModal = ({
   buttonText,
   coin,
@@ -125,6 +126,7 @@ const BorrowModal = ({
     BTC: any;
     ETH: any;
     DAI: any;
+    STRK:any;
   }
   const walletBalances: assetB | any = {
     USDT: useBalanceOf(tokenAddressMap["USDT"]),
@@ -132,6 +134,7 @@ const BorrowModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    STRK:useBalanceOf(tokenAddressMap["STRK"])
   };
 
 
@@ -690,6 +693,9 @@ const BorrowModal = ({
       case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "STRK":
+          return <STRKLogo height={"16px"} width={"16px"}/>;
+          break;
       default:
         break;
     }
@@ -757,7 +763,7 @@ const BorrowModal = ({
   };
 
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
-  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH"];
+  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH","STRK"];
   const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
   const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
   useEffect(()=>{

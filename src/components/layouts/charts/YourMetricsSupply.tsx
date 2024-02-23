@@ -81,7 +81,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
       },
       categories: categories
         ? categories
-        : ["wBTC", "wETH", "USDT", "USDC", "DAI"],
+        : ["wBTC", "wETH", "USDT", "USDC", "DAI","STRK"],
     },
     plotOptions: {
       bar: {
@@ -148,28 +148,33 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
   const chartSeries = [
     {
       name: "wBTC",
-      data: supplyData ? [supplyData?.[0], 0, 0, 0, 0] : [44000, 0, 0, 0, 0],
+      data: supplyData ? [supplyData?.[0], 0, 0, 0, 0,0] : [44000, 0, 0, 0, 0],
       color: "#4D3C03",
     },
     {
       name: "wETH",
-      data: supplyData ? [0, supplyData?.[1], 0, 0, 0] : [0, 55000, 0, 0, 0],
+      data: supplyData ? [0, supplyData?.[1], 0, 0, 0,0] : [0, 55000, 0, 0, 0],
       color: "#4D59E8",
     },
     {
       name: "USDT",
-      data: supplyData ? [0, 0, supplyData?.[2], 0, 0] : [0, 0, 41000, 0, 0],
+      data: supplyData ? [0, 0, supplyData?.[2], 0, 0,0] : [0, 0, 41000, 0, 0],
       color: "#2DA44E",
     },
     {
       name: "USDC",
-      data: supplyData ? [0, 0, 0, supplyData?.[3], 0] : [0, 0, 0, 17000, 0],
+      data: supplyData ? [0, 0, 0, supplyData?.[3], 0,0] : [0, 0, 0, 17000, 0],
       color: "#222766",
     },
     {
       name: "DAI",
-      data: supplyData ? [0, 0, 0, 0, supplyData?.[4]] : [0, 0, 0, 0, 15000],
+      data: supplyData ? [0, 0, 0, 0, supplyData?.[4],0] : [0, 0, 0, 0, 15000],
       color: "#A48007",
+    },
+    {
+      name: "STRK",
+      data: supplyData ? [0, 0, 0, 0,0, 0] : [0, 0, 0, 0, 15000],
+      color: "#0C0C4F",
     },
   ];
 

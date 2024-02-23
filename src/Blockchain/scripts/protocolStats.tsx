@@ -103,7 +103,7 @@ export async function getProtocolStats() {
     }
     return new Promise((resolve, reject) => {
       Promise.allSettled([...promises]).then((val) => {
-      //  console.log("protocol stats result - ", val);
+       console.log("protocol stats result - ", val);
         const results = val.map((stat, idx) => {
           if (
             stat?.status == "fulfilled" &&

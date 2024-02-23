@@ -68,6 +68,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import Image from "next/image";
 import mixpanel from "mixpanel-browser";
 import posthog from "posthog-js";
+import STRKLogo from "@/assets/icons/coins/strk";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -120,7 +121,7 @@ const SwapModal = ({
 
   let activeTransactions = useSelector(selectActiveTransactions);
 
-  const coins = ["BTC", "USDT", "USDC", "ETH"];
+  const coins = ["BTC", "USDT", "USDC", "ETH","STRK"];
 
   useEffect(() => {}, [currentSwap]);
   const getBorrowAPR = (borrowMarket: string) => {
@@ -162,6 +163,9 @@ const SwapModal = ({
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "STRK":
+          return <STRKLogo height={"16px"} width={"16px"}/>;
+          break;
       default:
         break;
     }

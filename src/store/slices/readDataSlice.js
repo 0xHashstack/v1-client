@@ -12,21 +12,25 @@ const initialState = {
   hourlyUSDTData: null,
   hourlyUSDCData: null,
   hourlyDAIData: null,
+  hourlySTRKData:null,
   dailyBTCData: null,
   dailyETHData: null,
   dailyUSDTData: null,
   dailyUSDCData: null,
   dailyDAIData: null,
+  dailySTRKData:null,
   monthlyBTCData: null,
   monthlyETHData: null,
   monthlyUSDTData: null,
   monthlyUSDCData: null,
   monthlyDAIData: null,
+  monthlySTRKData:null,
   allBTCData: null,
   allETHData: null,
   allUSDTData: null,
   allUSDCData: null,
   allDAIData: null,
+  allSTRKData:null,
 
   protocolReserves: {
     totalReserves: null,
@@ -179,6 +183,9 @@ export const readDataSlice = createSlice({
     setHourlyDAIData(state, action) {
       state.hourlyDAIData = action.payload;
     },
+    setHourlySTRKData(state, action) {
+      state.hourlySTRKData = action.payload;
+    },
     setDailyBTCData(state, action) {
       state.dailyBTCData = action.payload;
     },
@@ -193,6 +200,9 @@ export const readDataSlice = createSlice({
     },
     setDailyDAIData(state, action) {
       state.dailyDAIData = action.payload;
+    },
+    setDailySTRKData(state, action) {
+      state.dailySTRKData = action.payload;
     },
     setMonthlyBTCData(state, action) {
       state.monthlyBTCData = action.payload;
@@ -209,6 +219,9 @@ export const readDataSlice = createSlice({
     setMonthlyDAIData(state, action) {
       state.monthlyDAIData = action.payload;
     },
+    setMonthlySTRKData(state, action) {
+      state.monthlySTRKData = action.payload;
+    },
     setAllBTCData(state, action) {
       state.allBTCData = action.payload;
     },
@@ -223,6 +236,9 @@ export const readDataSlice = createSlice({
     },
     setAllDAIData(state, action) {
       state.allDAIData = action.payload;
+    },
+    setAllSTRKData(state, action) {
+      state.allSTRKData = action.payload;
     },
     resetState(state, action) {
       return { ...initialState };
@@ -331,6 +347,7 @@ export const {
   setHourlyETHData,
   setHourlyUSDCData,
   setHourlyUSDTData,
+  setHourlySTRKData,
   resetState,
   setEffectiveAPR,
   setHealthFactor,
@@ -339,16 +356,19 @@ export const {
   setDailyUSDCData,
   setDailyUSDTData,
   setDailyDAIData,
+  setDailySTRKData,
   setMonthlyBTCData,
   setMonthlyETHData,
   setMonthlyUSDCData,
   setMonthlyUSDTData,
   setMonthlyDAIData,
+  setMonthlySTRKData,
   setAllBTCData,
   setAllETHData,
   setAllUSDCData,
   setAllUSDTData,
   setAllDAIData,
+  setAllSTRKData,
   setYourMetricsBorrow,
   setYourMetricsSupply,
   setStakingShares,
@@ -399,21 +419,25 @@ export const selectHourlyETHData = (state) => state.read_data.hourlyETHData;
 export const selectHourlyUSDTData = (state) => state.read_data.hourlyUSDTData;
 export const selectHourlyUSDCData = (state) => state.read_data.hourlyUSDCData;
 export const selectHourlyDAIData = (state) => state.read_data.hourlyDAIData;
+export const selectHourlySTRKData = (state) => state.read_data.hourlySTRKData;
 export const selectDailyBTCData = (state) => state.read_data.dailyBTCData;
 export const selectDailyETHData = (state) => state.read_data.dailyETHData;
 export const selectDailyUSDTData = (state) => state.read_data.dailyUSDTData;
 export const selectDailyUSDCData = (state) => state.read_data.dailyUSDCData;
 export const selectDailyDAIData = (state) => state.read_data.dailyDAIData;
+export const selectDailySTRKData = (state) => state.read_data.dailySTRKData;
 export const selectMonthlyBTCData = (state) => state.read_data.monthlyBTCData;
 export const selectMonthlyETHData = (state) => state.read_data.monthlyETHData;
 export const selectMonthlyUSDTData = (state) => state.read_data.monthlyUSDTData;
 export const selectMonthlyUSDCData = (state) => state.read_data.monthlyUSDCData;
 export const selectMonthlyDAIData = (state) => state.read_data.monthlyDAIData;
+export const selectMonthlySTRKData = (state) => state.read_data.monthlySTRKData;
 export const selectAllBTCData = (state) => state.read_data.allBTCData;
 export const selectAllETHData = (state) => state.read_data.allETHData;
 export const selectAllUSDTData = (state) => state.read_data.allUSDTData;
 export const selectAllUSDCData = (state) => state.read_data.allUSDCData;
 export const selectAllDAIData = (state) => state.read_data.allDAIData;
+export const selectAllSTRKData = (state) => state.read_data.allSTRKData;
 export const selectYourMetricsSupply = (state) =>
   state.read_data.yourMetricsSupply;
 export const selectYourMetricsBorrow = (state) =>

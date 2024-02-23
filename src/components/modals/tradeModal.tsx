@@ -127,6 +127,7 @@ import RedinfoIcon from "@/assets/icons/redinfoicon";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import posthog from "posthog-js";
+import STRKLogo from "@/assets/icons/coins/strk";
 const TradeModal = ({
   buttonText,
   coin,
@@ -213,6 +214,7 @@ const TradeModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    STRK:useBalanceOf(tokenAddressMap["STRK"]),
     rUSDT: useBalanceOf(tokenAddressMap["rUSDT"]),
     rUSDC: useBalanceOf(tokenAddressMap["rUSDC"]),
     rBTC: useBalanceOf(tokenAddressMap["rBTC"]),
@@ -297,6 +299,9 @@ const TradeModal = ({
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "STRK":
+          return <STRKLogo height={"16px"} width={"16px"}/>;
+          break;      
       case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
@@ -393,7 +398,7 @@ const TradeModal = ({
       // dispatch((newValue));
     }
   };
-  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH"];
+  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH","STRK"];
 
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
     coin ? coin?.name : "BTC"

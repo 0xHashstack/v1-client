@@ -130,6 +130,7 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import posthog from "posthog-js";
+import STRKLogo from "@/assets/icons/coins/strk";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -505,6 +506,7 @@ const YourBorrowModal = ({
     BTC: any;
     ETH: any;
     DAI: any;
+    STRK:any;
   }
   const walletBalances: assetB = {
     USDT: useBalanceOf(tokenAddressMap["USDT"]),
@@ -512,6 +514,7 @@ const YourBorrowModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    STRK:useBalanceOf(tokenAddressMap["STRK"])
   };
 
   const [walletBalance1, setwalletBalance1] = useState(
@@ -647,6 +650,9 @@ const YourBorrowModal = ({
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "STRK":
+          return <STRKLogo height={"16px"} width={"16px"}/>;
+          break;
       case "dBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
@@ -2648,7 +2654,7 @@ const YourBorrowModal = ({
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
-  const coins = ["BTC", "USDT", "USDC", "ETH"];
+  const coins = ["BTC", "USDT", "USDC", "ETH","STRK"];
   const actions = [
     "Spend Borrow",
     "Convert to borrow market",

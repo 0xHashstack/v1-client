@@ -22,6 +22,7 @@ export const tokenAddressMap: ItokenAddressMap | any = {
   USDC: getTokenFromName("USDC")?.address,
   ETH: getTokenFromName("ETH")?.address,
   DAI: getTokenFromName("DAI")?.address,
+  STRK:getTokenFromName("STRK")?.address,
 
   rBTC: getRTokenFromName("rBTC")?.address,
   rUSDT: getRTokenFromName("rUSDT")?.address,

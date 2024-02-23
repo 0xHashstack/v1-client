@@ -44,6 +44,12 @@ const YourMetricsSupplyBorrow = ({
         data: [30000, 40000, 12300, 50000, 49800, 60000, 80000],
       },
     ],
+    STRK: [
+      {
+        name: "Series 1",
+        data: [30000, 40000, 12300, 50000, 49800, 60000, 80000],
+      },
+    ],
   };
 
   const series2: any = {
