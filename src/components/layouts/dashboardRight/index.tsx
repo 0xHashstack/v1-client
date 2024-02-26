@@ -223,14 +223,7 @@ const DashboardRight = ({
                         width="48"
                         height="16"
                       />}
-                      {coin?.name=="STRK" && 
-                      <Image
-                        src={`/comingsoon.svg`}
-                        alt={`Picture of the coin that I want to access ${coin?.name}`}
-                        width="72"
-                        height="16"
-                      />
-                      }
+                      
                     </Box>
                     
                   </HStack>
@@ -250,11 +243,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coin?.name=="STRK" ? numberFormatter(0): totalBorrows[idx] == null ? (
+                    { totalBorrows[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -282,11 +275,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coin?.name=="STRK" ? numberFormatter(0): availableReserves[idx] == null ? (
+                    { availableReserves[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -314,11 +307,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coin?.name=="STRK" ? numberFormatter(0): utilization[idx] == null ? (
+                    { utilization[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -346,11 +339,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coin?.name=="STRK" ? numberFormatter(0): borrowAPRs[idx] == null ? (
+                    { borrowAPRs[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -390,7 +383,7 @@ const DashboardRight = ({
                     }}
                   // bgColor={"blue"}
                   >
-                    {coin?.name == "DAI" || coin?.name=="STRK" ?
+                    {coin?.name == "DAI" ?
                       <Button
                         height={"2rem"}
                         fontSize={"12px"}
@@ -447,7 +440,7 @@ const DashboardRight = ({
                       setCurrentSupplyAPR(idx);
                     }}
                   >
-                    {coin?.name == "DAI" || coin?.name=="STRK" ?
+                    {coin?.name == "DAI"  ?
                    <Text color="#3E415C" borderBottom="1px solid #3E415C" cursor="pointer">
                    Spend
                  </Text>:                      <TradeModal
