@@ -196,6 +196,7 @@ const DashboardRight = ({
                 // bgColor="blue"
                 // borderBottom="1px solid #2b2f35"
                 position="relative"
+                bg={coin?.name === "STRK" ? "linear-gradient(90deg, #34345600 0%, #34345688 50%, #34345600 100%, #34345600 100%)" : ""}
               >
                 <Td
                   width={"14%"}
@@ -472,7 +473,7 @@ const DashboardRight = ({
                   backgroundColor: "#2b2f35",
                   width: "100%",
                   // left: "1.75%",
-                  display: `${idx == Coins.length - 1 ? "none" : "block"}`,
+                  display: `${idx == Coins.length - 1 ? "none" : idx==0 ?"none":"block"}`,
                 }}
               />
             </>
