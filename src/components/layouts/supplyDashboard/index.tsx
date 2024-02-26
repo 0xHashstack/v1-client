@@ -304,7 +304,7 @@ const SupplyDashboard = ({
       ////console.log("supply in supply dash: ", supply);
       if (!supply) return;
       let data: any = [];
-      let indexes: any = [2, 3, 0, 1, 4];
+      let indexes: any = [2, 3, 0, 1, 4,5];
 
       indexes.forEach((index: number) => {
         if (

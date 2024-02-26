@@ -173,7 +173,7 @@ const YourMetricsSupply = ({ series, formatter, color, categories }: any) => {
     },
     {
       name: "STRK",
-      data: supplyData ? [0, 0, 0, 0,0, 0] : [0, 0, 0, 0, 15000],
+      data: supplyData ? [0, 0, 0, 0,0, supplyData?.[5]] : [0, 0, 0, 0, 15000],
       color: "#0C0C4F",
     },
   ];

@@ -260,6 +260,10 @@ const useDataLoader = () => {
     {
       address: "0x3d58a2767ebb27cf36b5fa1d0da6566b6042bd1a9a051c40129bad48edb147b",
       keyvalue: "USDC/DAI"
+    },
+    {
+      address: "0x2ed66297d146ecd91595c3174da61c1397e8b7fcecf25d423b1ba6717b0ece9",
+      keyvalue: "STRK/ETH"
     }
   ])
   const [poolsPairsMainnet, setPoolPairsMainnet] = useState<any>([
@@ -302,6 +306,10 @@ const useDataLoader = () => {
     {
       address: "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
       keyvalue: "USDC/DAI"
+    },
+    {
+      address: "0x2ed66297d146ecd91595c3174da61c1397e8b7fcecf25d423b1ba6717b0ece9",
+      keyvalue: "STRK/ETH"
     }
   ])
   const mySwapPoolPairs = [
@@ -1061,7 +1069,7 @@ const useDataLoader = () => {
     try {
       const fetchOraclePrices = async () => {
           let data = await getOraclePrices();
-        if (!data || data?.length < 5) {
+        if (!data || data?.length < 6) {
           return;
         }
         dispatch(setOraclePrices(data));
@@ -1164,7 +1172,7 @@ const useDataLoader = () => {
       const fetchProtocolStats = async () => {
         const dataStats = await getProtocolStats();
       //  console.log("protocol stats - transactionRefresh done", dataStats);
-        if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 5)) {
+        if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 6)) {
           return;
         }
         ////console.log(dataStats,"data market in pagecard")
@@ -1186,7 +1194,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const data = await getUserDeposits("0x074061d07a0fbd8ffc376dc4f593c69854c51b6c2fe5596d88452e9efdd76864");
+        const data = await getUserDeposits(address);
         if (!data) {
           return;
         }
@@ -1219,6 +1227,7 @@ const useDataLoader = () => {
           getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? poolsPairs[7]?.address : poolsPairsMainnet[7]?.address, constants?.JEDI_SWAP),
           getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? poolsPairs[8]?.address : poolsPairsMainnet[8]?.address, constants?.JEDI_SWAP),
           getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? poolsPairs[9]?.address : poolsPairsMainnet[9]?.address, constants?.JEDI_SWAP),
+          getSupportedPools(process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? poolsPairs[10]?.address : poolsPairsMainnet[10]?.address, constants?.JEDI_SWAP),
         ]
         const Poolsdata: any = [];
         let data: any;
@@ -1334,6 +1343,7 @@ const useDataLoader = () => {
           getUserStakingShares(address, "rUSDT"),
           getUserStakingShares(address, "rUSDC"),
           getUserStakingShares(address, "rDAI"),
+          getUserStakingShares(address, "rSTRK"),
         ];
         Promise.allSettled([...promises]).then((val) => {
           const data = {
@@ -1342,9 +1352,9 @@ const useDataLoader = () => {
             rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : null,
             rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : null,
             rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : null,
+            rSTRK: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : null,
           };
           if (data?.rBTC == null) return;
-          console.log(data,"stake")
           dispatch(setStakingShares(data));
           const count = getTransactionCount();
           dispatch(setStakingSharesCount(count));
@@ -1367,11 +1377,13 @@ const useDataLoader = () => {
           getMinimumDepositAmount("rUSDT"),
           getMinimumDepositAmount("rUSDC"),
           getMinimumDepositAmount("rDAI"),
+          getMinimumDepositAmount("rSTRK"),
           getMaximumDepositAmount("rBTC"),
           getMaximumDepositAmount("rETH"),
           getMaximumDepositAmount("rUSDT"),
           getMaximumDepositAmount("rUSDC"),
           getMaximumDepositAmount("rDAI"),
+          getMaximumDepositAmount("rSTRK"),
         ]
         Promise.allSettled([...promises]).then((val) => {
           const data = {
@@ -1380,14 +1392,17 @@ const useDataLoader = () => {
             rUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : 10,
             rUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : 10,
             rDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : 10,
+            rSTRK:val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 10
           }
           const maxdata = {
-            rBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00074,
-            rETH: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0.012,
-            rUSDT: val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 20,
-            rUSDC: val?.[8]?.status == "fulfilled" ? val?.[8]?.value : 20,
-            rDAI: val?.[9]?.status == "fulfilled" ? val?.[9]?.value : 20,
+            rBTC: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0.00074,
+            rETH: val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 0.012,
+            rUSDT: val?.[8]?.status == "fulfilled" ? val?.[8]?.value : 20,
+            rUSDC: val?.[9]?.status == "fulfilled" ? val?.[9]?.value : 20,
+            rDAI: val?.[10]?.status == "fulfilled" ? val?.[10]?.value : 20,
+            rSTRK: val?.[11]?.status == "fulfilled" ? val?.[11]?.value : 20,
           }
+          
           if (data?.rBTC == null) return;
           if (maxdata?.rBTC == null) return;
           dispatch(setMinimumDepositAmounts(data));
@@ -1412,11 +1427,13 @@ const useDataLoader = () => {
           getMinimumLoanAmount("dUSDT"),
           getMinimumLoanAmount("dUSDC"),
           getMinimumLoanAmount("dDAI"),
+          getMinimumLoanAmount("dSTRK"),
           getMaximumLoanAmount("dBTC"),
           getMaximumLoanAmount("dETH"),
           getMaximumLoanAmount("dUSDT"),
           getMaximumLoanAmount("dUSDC"),
           getMaximumLoanAmount("dDAI"),
+          getMaximumLoanAmount("dSTRK"),
         ]
         Promise.allSettled([...promises]).then((val) => {
           const data = {
@@ -1425,13 +1442,15 @@ const useDataLoader = () => {
             dUSDT: val?.[2]?.status == "fulfilled" ? val?.[2]?.value : 30,
             dUSDC: val?.[3]?.status == "fulfilled" ? val?.[3]?.value : 30,
             dDAI: val?.[4]?.status == "fulfilled" ? val?.[4]?.value : 30,
+            dSTRK: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 30,
           }
           const maxdata = {
-            dBTC: val?.[5]?.status == "fulfilled" ? val?.[5]?.value : 0.00148,
-            dETH: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0.024,
-            dUSDT: val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 40,
-            dUSDC: val?.[8]?.status == "fulfilled" ? val?.[8]?.value : 40,
-            dDAI: val?.[9]?.status == "fulfilled" ? val?.[9]?.value : 40,
+            dBTC: val?.[6]?.status == "fulfilled" ? val?.[6]?.value : 0.00148,
+            dETH: val?.[7]?.status == "fulfilled" ? val?.[7]?.value : 0.024,
+            dUSDT: val?.[8]?.status == "fulfilled" ? val?.[8]?.value : 40,
+            dUSDC: val?.[9]?.status == "fulfilled" ? val?.[9]?.value : 40,
+            dDAI: val?.[10]?.status == "fulfilled" ? val?.[10]?.value : 40,
+            dSTRK: val?.[11]?.status == "fulfilled" ? val?.[11]?.value : 40,
           }
           if (data?.dBTC == null) return;
           if (maxdata?.dBTC == null) return;
@@ -1559,7 +1578,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const userLoans = await getUserLoans("0x074061d07a0fbd8ffc376dc4f593c69854c51b6c2fe5596d88452e9efdd76864");
+        const userLoans = await getUserLoans(address);
       //  console.log(userLoans,"data user loans")
         if (!userLoans) {
           return;
@@ -1816,18 +1835,27 @@ const useDataLoader = () => {
             dataDeposit?.[4]?.rTokenStakedParsed !== 0
             ? protocolStats?.[4]?.supplyRate
             : 0;
+            const aprF =
+            dataDeposit?.[5]?.rTokenAmountParsed !== 0 ||
+              dataDeposit?.[5]?.rTokenFreeParsed !== 0 ||
+              dataDeposit?.[5]?.rTokenLockedParsed !== 0 ||
+              dataDeposit?.[5]?.rTokenStakedParsed !== 0
+              ? protocolStats?.[5]?.supplyRate
+              : 0;
         const avgSupplyApr =
-          (aprA + aprB + aprC + aprD + aprE) /
+          (aprA + aprB + aprC + aprD + aprE+aprF) /
           ((aprA ? 1 : 0) +
             (aprB ? 1 : 0) +
             (aprC ? 1 : 0) +
             (aprD ? 1 : 0) +
-            (aprE ? 1 : 0)
+            (aprE ? 1 : 0) +
+            (aprF ? 1 : 0)
             ? (aprA ? 1 : 0) +
             (aprB ? 1 : 0) +
             (aprC ? 1 : 0) +
             (aprD ? 1 : 0) +
-            (aprE ? 1 : 0)
+            (aprE ? 1 : 0) +
+            (aprF ? 1 : 0)
             : 1);
         // const avgSupplyApr = await effectiveAprDeposit(
         //   dataDeposit[0],
@@ -1884,7 +1912,7 @@ const useDataLoader = () => {
       const fetchAvgBorrowAPRCount = async () => {
         if (!userLoans || !protocolStats) return;
         const loans = userLoans;
-        const loanCheck = [0, 0, 0, 0, 0];
+        const loanCheck = [0, 0, 0, 0, 0,0];
         loans.forEach((val: any, idx: number) => {
           if (val?.underlyingMarket == "BTC") {
             loanCheck[0] = 1;
@@ -1896,6 +1924,8 @@ const useDataLoader = () => {
             loanCheck[3] = 1;
           } else if (val?.underlyingMarket == "DAI") {
             loanCheck[4] = 1;
+          }else if (val?.underlyingMarket == "STRK") {
+            loanCheck[5] = 1;
           }
         });
         const avgBorrowApr =
@@ -1903,17 +1933,21 @@ const useDataLoader = () => {
             (loanCheck[1] ? protocolStats?.[1]?.borrowRate : 0) +
             (loanCheck[2] ? protocolStats?.[2]?.borrowRate : 0) +
             (loanCheck[3] ? protocolStats?.[3]?.borrowRate : 0) +
-            (loanCheck[4] ? protocolStats?.[4]?.borrowRate : 0)) /
+            (loanCheck[4] ? protocolStats?.[4]?.borrowRate : 0) +
+            (loanCheck[5] ? protocolStats?.[5]?.borrowRate : 0)
+            ) /
           ((loanCheck[0] ? 1 : 0) +
             (loanCheck[1] ? 1 : 0) +
             (loanCheck[2] ? 1 : 0) +
             (loanCheck[3] ? 1 : 0) +
-            (loanCheck[4] ? 1 : 0)
+            (loanCheck[4] ? 1 : 0) +
+            (loanCheck[5] ? 1 : 0)
             ? (loanCheck[0] ? 1 : 0) +
             (loanCheck[1] ? 1 : 0) +
             (loanCheck[2] ? 1 : 0) +
             (loanCheck[3] ? 1 : 0) +
-            (loanCheck[4] ? 1 : 0)
+            (loanCheck[4] ? 1 : 0) +
+            (loanCheck[5] ? 1 : 0)
             : 1);
         // const avgBorrowApr = await effectivAPRLoan(
         //   userLoans[0],
@@ -1982,7 +2016,7 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchBorrowData = async () => {
-        const borrow = { BTC: 0, ETH: 0, USDT: 0, USDC: 0, DAI: 0 };
+        const borrow = { BTC: 0, ETH: 0, USDT: 0, USDC: 0, DAI: 0 ,STRK:0};
         for (let loan of userLoans) {
           if (
             loan?.loanState === "REPAID" ||
@@ -2011,6 +2045,8 @@ const useDataLoader = () => {
               borrow.ETH += loanAmoungUnderlying * oraclePrice.price;
             } else if (loan?.underlyingMarket == "DAI") {
               borrow.DAI += loanAmoungUnderlying * oraclePrice.price;
+            } else if (loan?.underlyingMarket == "STRK") {
+              borrow.STRK += loanAmoungUnderlying * oraclePrice.price;
             }
           }
         }

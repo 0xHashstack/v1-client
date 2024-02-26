@@ -104,6 +104,7 @@ const YourMetricsSupplyBorrow = ({
           stats?.[0].supplyRate,
           stats?.[1].supplyRate,
           stats?.[4].supplyRate,
+          stats?.[5].supplyRate,
         ]);
         setBorrowAPRs([
           stats?.[2].borrowRate,
@@ -111,6 +112,7 @@ const YourMetricsSupplyBorrow = ({
           stats?.[0].borrowRate,
           stats?.[1].borrowRate,
           stats?.[4].borrowRate,
+          stats?.[5].borrowRate,
         ]);
       } catch (error) {
        //console.log("error on getting protocol stats");

@@ -23,7 +23,7 @@ import {
 
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
-import { getMinimumDepositAmount,getMaximumDepositAmount, getMaximumDynamicLoanAmount } from "@/Blockchain/scripts/Rewards";
+import { getMinimumDepositAmount, getMaximumDepositAmount, getMaximumDynamicLoanAmount } from "@/Blockchain/scripts/Rewards";
 
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
@@ -126,7 +126,7 @@ const BorrowModal = ({
     BTC: any;
     ETH: any;
     DAI: any;
-    STRK:any;
+    STRK: any;
   }
   const walletBalances: assetB | any = {
     USDT: useBalanceOf(tokenAddressMap["USDT"]),
@@ -134,7 +134,7 @@ const BorrowModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
-    STRK:useBalanceOf(tokenAddressMap["STRK"])
+    STRK: useBalanceOf(tokenAddressMap["STRK"])
   };
 
 
@@ -148,11 +148,11 @@ const BorrowModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-            String(uint256.uint256ToBN(
-              walletBalances[coin?.name]?.dataBalanceOf?.balance
-            )),
-            tokenDecimalsMap[coin?.name]
-          )
+          String(uint256.uint256ToBN(
+            walletBalances[coin?.name]?.dataBalanceOf?.balance
+          )),
+          tokenDecimalsMap[coin?.name]
+        )
         : 0
     );
     ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
@@ -274,7 +274,7 @@ const BorrowModal = ({
   //   },
   // });
   let activeTransactions = useSelector(selectActiveTransactions);
-  const coinAlign = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coinAlign = ["BTC", "USDT", "USDC", "ETH", "DAI", "STRK"];
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
     coin ? coin?.name : "BTC"
   );
@@ -283,12 +283,12 @@ const BorrowModal = ({
   );
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
-  const minAmounts=useSelector(selectMinimumDepositAmounts);
-  const maxAmounts=useSelector(selectMaximumDepositAmounts);
-  useEffect(()=>{
-    setMinimumDepositAmount(minAmounts["r"+currentCollateralCoin])
-    setmaximumDepositAmount(maxAmounts["r"+currentCollateralCoin])
-  },[currentCollateralCoin,minAmounts,maxAmounts])
+  const minAmounts = useSelector(selectMinimumDepositAmounts);
+  const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  useEffect(() => {
+    setMinimumDepositAmount(minAmounts["r" + currentCollateralCoin])
+    setmaximumDepositAmount(maxAmounts["r" + currentCollateralCoin])
+  }, [currentCollateralCoin, minAmounts, maxAmounts])
   // useEffect(()=>{
   //   const fetchMinDeposit=async()=>{
   //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
@@ -324,6 +324,7 @@ const BorrowModal = ({
         stats?.[3],
         stats?.[1],
         stats?.[4],
+        stats?.[5]
       ]);
   };
   useEffect(() => {
@@ -331,7 +332,7 @@ const BorrowModal = ({
       fetchProtocolStats();
       ////console.log("protocolStats", protocolStats);
     } catch (err: any) {
-     //console.log("borrow modal : error fetching protocolStats");
+      //console.log("borrow modal : error fetching protocolStats");
     }
   }, [protocolStatsRedux]);
   // useEffect(() => {
@@ -377,7 +378,7 @@ const BorrowModal = ({
       };
       fetchHealthFactor();
     } catch (err) {
-     //console.log(err);
+      //console.log(err);
     }
   }, [
     amount,
@@ -390,7 +391,7 @@ const BorrowModal = ({
 
   const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0);
   const availableReserves = protocolStats?.find(
-    (stat: any) => stat?.token === currentBorrowCoin  
+    (stat: any) => stat?.token === currentBorrowCoin
   )?.availableReserves;
   const [inputCollateralAmountUSD, setInputCollateralAmountUSD] =
     useState<any>(0);
@@ -402,7 +403,7 @@ const BorrowModal = ({
     fetchParsedUSDValueCollateral();
   }, [collateralAmount, currentCollateralCoin, rToken, rTokenAmount]);
 
-  const fees=useSelector(selectFees);
+  const fees = useSelector(selectFees);
 
   const fetchParsedUSDValueBorrow = async () => {
     try {
@@ -437,7 +438,7 @@ const BorrowModal = ({
       //   parsedBorrowAmount
       // );
     } catch (error) {
-     //console.log(error);
+      //console.log(error);
     }
   };
 
@@ -466,7 +467,7 @@ const BorrowModal = ({
         // );
         setInputCollateralAmountUSD(parsedBorrowAmount);
       } else if (tokenTypeSelected === "rToken") {
-      
+
 
         const parsedBorrowAmount =
           oraclePrices.find((curr: any) => curr.name === rToken.slice(1))
@@ -487,14 +488,14 @@ const BorrowModal = ({
         setInputCollateralAmountUSD(parsedBorrowAmount);
       }
     } catch (error) {
-     //console.log(error);
+      //console.log(error);
     }
   };
 
   useEffect(() => {
     setCurrentAvailableReserves(
       protocolStats[coinAlign?.indexOf(currentBorrowCoin)]?.availableReserves *
-        0.895
+      0.895
     );
     ////console.log(coinAlign?.indexOf(currentBorrowCoin));
   }, [protocolStats, currentBorrowCoin]);
@@ -614,7 +615,7 @@ const BorrowModal = ({
         // dispatch(setTransactionStatus("failed"));
         setTransactionStarted(false);
       }
-     //console.log("handle borrow", err);
+      //console.log("handle borrow", err);
       posthog.capture("Borrow Market Status", {
         Status: "Failure",
       });
@@ -640,7 +641,7 @@ const BorrowModal = ({
     return amount ? numberFormatter(amount.rTokenAmount) : 0;
   };
 
- 
+
 
   // const {  market,
   //   setMarket,
@@ -693,9 +694,13 @@ const BorrowModal = ({
       case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
-        case "STRK":
-          return <STRKLogo height={"16px"} width={"16px"}/>;
-          break;
+      case "STRK":
+        return <STRKLogo height={"16px"} width={"16px"} />;
+        break;
+        break;
+      case "rSTRK":
+        return <STRKLogo height={"16px"} width={"16px"} />;
+        break;
       default:
         break;
     }
@@ -763,27 +768,27 @@ const BorrowModal = ({
   };
 
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
-  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH","STRK"];
-  const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
-  const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
-  useEffect(()=>{
-    const fecthLoanAmount=async()=>{
-      const dynamicdata=await getMaximumDynamicLoanAmount(amount,currentBorrowCoin,currentCollateralCoin[0]=="r" ? currentCollateralCoin.slice(1):currentCollateralCoin );
-      if(dynamicdata!=undefined){
-        const data=maxLoanAmounts["d"+currentBorrowCoin];
-        if(currentBorrowCoin==currentCollateralCoin){
-          setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
-        }else if(currentCollateralCoin[0]=="r" && currentCollateralCoin.slice(1)==currentBorrowCoin){
-          setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
+  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI", "STRK"];
+  const minLoanAmounts = useSelector(selectMinimumLoanAmounts);
+  const maxLoanAmounts = useSelector(selectMaximumLoanAmounts);
+  useEffect(() => {
+    const fecthLoanAmount = async () => {
+      const dynamicdata = await getMaximumDynamicLoanAmount(amount, currentBorrowCoin, currentCollateralCoin[0] == "r" ? currentCollateralCoin.slice(1) : currentCollateralCoin);
+      if (dynamicdata != undefined) {
+        const data = maxLoanAmounts["d" + currentBorrowCoin];
+        if (currentBorrowCoin == currentCollateralCoin) {
+          setMaximumLoanAmount(maxLoanAmounts["d" + currentBorrowCoin])
+        } else if (currentCollateralCoin[0] == "r" && currentCollateralCoin.slice(1) == currentBorrowCoin) {
+          setMaximumLoanAmount(maxLoanAmounts["d" + currentBorrowCoin])
         }
-        else{
-          setMaximumLoanAmount(Math.min(dynamicdata,data));
+        else {
+          setMaximumLoanAmount(Math.min(dynamicdata, data));
         }
       }
     }
     fecthLoanAmount();
-    setMinimumLoanAmount(minLoanAmounts["d"+currentBorrowCoin])
-  },[currentBorrowCoin,maxLoanAmounts,minLoanAmounts,currentCollateralCoin])
+    setMinimumLoanAmount(minLoanAmounts["d" + currentBorrowCoin])
+  }, [currentBorrowCoin, maxLoanAmounts, minLoanAmounts, currentCollateralCoin])
   // useEffect(()=>{
   //   const fetchMinLoanAmount=async()=>{
   //     const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
@@ -824,11 +829,11 @@ const BorrowModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-            String(uint256.uint256ToBN(
-              walletBalances[coin?.name]?.dataBalanceOf?.balance
-            )),
-            tokenDecimalsMap[coin?.name]
-          )
+          String(uint256.uint256ToBN(
+            walletBalances[coin?.name]?.dataBalanceOf?.balance
+          )),
+          tokenDecimalsMap[coin?.name]
+        )
         : 0
     );
     // setDepositTransHash("")
@@ -951,7 +956,7 @@ const BorrowModal = ({
                     borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
-                    // mt="28px"
+                  // mt="28px"
                   >
                     <Box p="1">
                       <InfoIcon />
@@ -981,7 +986,7 @@ const BorrowModal = ({
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentCollateralCoin)}</Box>
-                    <Text>{(currentCollateralCoin=="BTC"|| currentCollateralCoin=="ETH")? "w"+currentCollateralCoin:currentCollateralCoin}</Text>
+                    <Text>{(currentCollateralCoin == "BTC" || currentCollateralCoin == "ETH") ? "w" + currentCollateralCoin : currentCollateralCoin}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
                     {activeModal == "borrowModalCollateralMarketDropdown" ? (
@@ -1042,17 +1047,15 @@ const BorrowModal = ({
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  pl={`${
-                                    coin === currentCollateralCoin ? "1" : "5"
-                                  }`}
+                                  pl={`${coin === currentCollateralCoin ? "1" : "5"
+                                    }`}
                                   pr="6px"
                                   gap="1"
                                   justifyContent="space-between"
-                                  bg={`${
-                                    coin === currentCollateralCoin
+                                  bg={`${coin === currentCollateralCoin
                                       ? "#4D59E8"
                                       : "inherit"
-                                  }`}
+                                    }`}
                                   borderRadius="md"
                                 >
                                   <Box display="flex">
@@ -1098,7 +1101,11 @@ const BorrowModal = ({
                         />
                       )}
                       {coins?.map((coin: NativeToken, index: number) => {
+                        if (coin === "DAI") {
+                          return null; // Skip rendering for "dai"
+                        }
                         return (
+
                           <Box
                             key={index}
                             as="button"
@@ -1121,12 +1128,12 @@ const BorrowModal = ({
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"
                                   ? parseAmount(
-                                      String(uint256.uint256ToBN(
-                                        walletBalances[coin]?.dataBalanceOf
-                                          ?.balance
-                                      )),
-                                      tokenDecimalsMap[coin]
-                                    )
+                                    String(uint256.uint256ToBN(
+                                      walletBalances[coin]?.dataBalanceOf
+                                        ?.balance
+                                    )),
+                                    tokenDecimalsMap[coin]
+                                  )
                                   : 0
                               );
                             }}
@@ -1143,22 +1150,20 @@ const BorrowModal = ({
                               w="full"
                               display="flex"
                               py="5px"
-                              pl={`${
-                                coin === currentCollateralCoin ? "1" : "5"
-                              }`}
+                              pl={`${coin === currentCollateralCoin ? "1" : "5"
+                                }`}
                               pr="6px"
                               gap="1"
-                              bg={`${
-                                coin === currentCollateralCoin
+                              bg={`${coin === currentCollateralCoin
                                   ? "#4D59E8"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                               justifyContent="space-between"
                             >
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
-                                <Text color="white">{(coin=="BTC" || coin=="ETH")? "w"+coin:coin}</Text>
+                                <Text color="white">{(coin == "BTC" || coin == "ETH") ? "w" + coin : coin}</Text>
                               </Box>
                               <Box
                                 fontSize="9px"
@@ -1225,32 +1230,30 @@ const BorrowModal = ({
                 </Box>
                 <Box
                   width="100%"
-                  color={`${
-                    rTokenAmount > walletBalance
+                  color={`${rTokenAmount > walletBalance
                       ? "#CF222E"
                       : rTokenAmount < 0
-                      ? "#CF222E"
-                      :(process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>
-                        maximumDepositAmount))
-                      ? "#CF222E"
+                        ? "#CF222E"
+                        : (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && rTokenAmount > 0 && (rTokenAmount < minimumDepositAmount || rTokenAmount >
+                          maximumDepositAmount))
+                          ? "#CF222E"
 
-                      : rTokenAmount == 0
-                      ? "white"
-                      : "#00D395"
-                  }`}
-                  border={`${
-                    rTokenAmount > walletBalance
+                          : rTokenAmount == 0
+                            ? "white"
+                            : "#00D395"
+                    }`}
+                  border={`${rTokenAmount > walletBalance
                       ? "1px solid #CF222E"
                       : rTokenAmount < 0
-                      ? "1px solid #CF222E"
-                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>
-                        maximumDepositAmount)
-                      ? "1px solid #CF222E"
-                      // DO MAX CHECK 1209
-                      : rTokenAmount > 0 && rTokenAmount <= walletBalance
-                      ? "1px solid #00D395"
-                      : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                  }`}
+                        ? "1px solid #CF222E"
+                        : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && rTokenAmount > 0 && (rTokenAmount < minimumDepositAmount || rTokenAmount >
+                          maximumDepositAmount)
+                          ? "1px solid #CF222E"
+                          // DO MAX CHECK 1209
+                          : rTokenAmount > 0 && rTokenAmount <= walletBalance
+                            ? "1px solid #00D395"
+                            : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                    }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -1268,7 +1271,7 @@ const BorrowModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                     placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentCollateralCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount } ${currentCollateralCoin}`}
+                      placeholder={process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? `0.01536 ${currentCollateralCoin}` : `min ${minimumDepositAmount == null ? 0 : minimumDepositAmount} ${currentCollateralCoin}`}
                       border="0px"
                       _disabled={{ color: "#00D395" }}
                       _placeholder={{
@@ -1285,18 +1288,17 @@ const BorrowModal = ({
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color={`${
-                      rTokenAmount > walletBalance
+                    color={`${rTokenAmount > walletBalance
                         ? "#CF222E"
                         : rTokenAmount < 0
-                        ? "#CF222E"
-                        :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>0 && (rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount)
-                        ? "#CF222E"
+                          ? "#CF222E"
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && rTokenAmount > 0 && (rTokenAmount < minimumDepositAmount || rTokenAmount > maximumDepositAmount)
+                            ? "#CF222E"
 
-                        : rTokenAmount == 0
-                        ? "#4D59E8"
-                        : "#00D395"
-                    }`}
+                            : rTokenAmount == 0
+                              ? "#4D59E8"
+                              : "#00D395"
+                      }`}
                     _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                     onClick={() => {
                       // setRTokenAmount(walletBalance);
@@ -1314,7 +1316,7 @@ const BorrowModal = ({
                     MAX
                   </Button>
                 </Box>
-                {rTokenAmount > walletBalance || rTokenAmount < 0 || (rTokenAmount>0 && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&(rTokenAmount<minimumDepositAmount||rTokenAmount>maximumDepositAmount))? (
+                {rTokenAmount > walletBalance || rTokenAmount < 0 || (rTokenAmount > 0 && process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && (rTokenAmount < minimumDepositAmount || rTokenAmount > maximumDepositAmount)) ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -1332,11 +1334,11 @@ const BorrowModal = ({
                       <Text ml="0.3rem">
                         {rTokenAmount > walletBalance
                           ? "Amount exceeds balance"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount <minimumDepositAmount 
-                          ? `less than min amount`
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&rTokenAmount>maximumDepositAmount
-                          ?'more than max amount'
-                          : "Invalid"}
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && rTokenAmount < minimumDepositAmount
+                            ? `less than min amount`
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && rTokenAmount > maximumDepositAmount
+                              ? 'more than max amount'
+                              : "Invalid"}
                       </Text>
                     </Text>
                     <Text
@@ -1367,10 +1369,10 @@ const BorrowModal = ({
                     {currentCollateralCoin && currentCollateralCoin[0] == "r"
                       ? "rToken Balance: " + getBalance(currentCollateralCoin)
                       : "Wallet Balance: " +
-                        (walletBalance.toFixed(5).replace(/\.?0+$/, "").length >
+                      (walletBalance.toFixed(5).replace(/\.?0+$/, "").length >
                         5
-                          ? numberFormatter(walletBalance)
-                          : numberFormatter(walletBalance))}
+                        ? numberFormatter(walletBalance)
+                        : numberFormatter(walletBalance))}
                     {/* Wallet Balance:{" "}
                     {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
                       ? Math.floor(walletBalance)
@@ -1392,13 +1394,13 @@ const BorrowModal = ({
                         setRTokenAmount(walletBalance);
                       } else {
                         var ans = (val * walletBalance) / 100;
-                        if(ans<10){
+                        if (ans < 10) {
                           dispatch(setInputBorrowModalCollateralAmount(ans));
                           // setRTokenAmount(ans);
                           // setAmount(ans);
                           setCollateralAmount(parseFloat(ans.toFixed(7)));
                           setRTokenAmount(parseFloat(ans.toFixed(7)));
-                        }else{
+                        } else {
                           ans = Math.round(ans * 100) / 100;
                           dispatch(setInputBorrowModalCollateralAmount(ans));
                           // setRTokenAmount(ans);
@@ -1565,7 +1567,7 @@ const BorrowModal = ({
                     borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
                     maxW="222px"
-                    // mt="12px"
+                  // mt="12px"
                   >
                     <Box p="1">
                       <InfoIcon />
@@ -1593,7 +1595,7 @@ const BorrowModal = ({
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentBorrowCoin)}</Box>
-                    <Text>{(currentBorrowCoin=="BTC"|| currentBorrowCoin=="ETH" ?"w"+currentBorrowCoin:currentBorrowCoin)}</Text>
+                    <Text>{(currentBorrowCoin == "BTC" || currentBorrowCoin == "ETH" ? "w" + currentBorrowCoin : currentBorrowCoin)}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
                     {activeModal == "borrowModalBorrowMarketDropdown" ? (
@@ -1613,6 +1615,9 @@ const BorrowModal = ({
                       boxShadow="dark-lg"
                     >
                       {coins?.map((coin: string, index: number) => {
+                        if (coin === "DAI") {
+                          return null; // Skip rendering for "dai"
+                        }
                         return (
                           <Box
                             key={index}
@@ -1626,7 +1631,7 @@ const BorrowModal = ({
                               setCurrentBorrowCoin(coin);
                               setCurrentAvailableReserves(
                                 protocolStats?.[index]?.availableReserves *
-                                  0.895
+                                0.895
                               );
                               // setMarket(coin);
                               setMarket(coin);
@@ -1652,17 +1657,16 @@ const BorrowModal = ({
                               pl={`${coin === currentBorrowCoin ? "1" : "5"}`}
                               pr="6px"
                               gap="1"
-                              bg={`${
-                                coin === currentBorrowCoin
+                              bg={`${coin === currentBorrowCoin
                                   ? "#4D59E8"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                               justifyContent="space-between"
                             >
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
-                                <Text color="white">{(coin=="BTC" || coin=="ETH")? "w"+coin:coin}</Text>
+                                <Text color="white">{(coin == "BTC" || coin == "ETH") ? "w" + coin : coin}</Text>
                               </Box>
                               <Box
                                 fontSize="9px"
@@ -1675,17 +1679,17 @@ const BorrowModal = ({
                                 {(protocolStats?.[index]?.availableReserves &&
                                   numberFormatter(
                                     protocolStats?.[index]?.availableReserves *
-                                      0.895
+                                    0.895
                                   )) || (
-                                  <Skeleton
-                                    width="3rem"
-                                    height="1rem"
-                                    startColor="#1E212F"
-                                    endColor="#03060B"
-                                    borderRadius="6px"
-                                    ml={2}
-                                  />
-                                )}
+                                    <Skeleton
+                                      width="3rem"
+                                      height="1rem"
+                                      startColor="#1E212F"
+                                      endColor="#03060B"
+                                      borderRadius="6px"
+                                      ml={2}
+                                    />
+                                  )}
                               </Box>
                             </Box>
                           </Box>
@@ -1724,24 +1728,23 @@ const BorrowModal = ({
                 <Box
                   width="100%"
                   color="white"
-                  border={`${
-                    inputCollateralAmountUSD &&
-                    inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
+                  border={`${inputCollateralAmountUSD &&
+                      inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                       ? "1px solid #CF222E"
                       : inputBorrowAmountUSD < 0 ||
                         inputBorrowAmount > currentAvailableReserves
-                      ? "1px solid #CF222E"
-                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
-                      ?"1px solid #CF222E"
-                      : process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount 
-                      ?"1px solid #CF222E"
-                      : isNaN(amount)
-                      ? "1px solid #CF222E"
- 
-                      : amount > 0
-                      ? "1px solid #00D395"
-                      : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
-                  }`}
+                        ? "1px solid #CF222E"
+                        : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputBorrowAmount > 0 && inputBorrowAmount < minimumLoanAmount
+                          ? "1px solid #CF222E"
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputBorrowAmount > maximumLoanAmount
+                            ? "1px solid #CF222E"
+                            : isNaN(amount)
+                              ? "1px solid #CF222E"
+
+                              : amount > 0
+                                ? "1px solid #00D395"
+                                : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
+                    }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -1759,28 +1762,27 @@ const BorrowModal = ({
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
-                                          placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowCoin}`:`min ${minimumLoanAmount==null ?0:minimumLoanAmount} ${currentBorrowCoin}`}
+                      placeholder={process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? `0.01536 ${currentBorrowCoin}` : `min ${minimumLoanAmount == null ? 0 : minimumLoanAmount} ${currentBorrowCoin}`}
 
-                      color={`${
-                        inputCollateralAmountUSD &&
-                        inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
+                      color={`${inputCollateralAmountUSD &&
+                          inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                           ? "#CF222E"
                           : isNaN(amount)
-                          ? "#CF222E":
-                          process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
-                          ?"#CF222E"
-                          : process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount
-                          ? "#CF222E"
-                          : inputBorrowAmount < 0 ||
-                            inputBorrowAmount > currentAvailableReserves
-                          ? "#CF222E"
-                          :amount>0
-                          ?"#00D395"
+                            ? "#CF222E" :
+                            process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputBorrowAmount > 0 && inputBorrowAmount < minimumLoanAmount
+                              ? "#CF222E"
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputBorrowAmount > maximumLoanAmount
+                                ? "#CF222E"
+                                : inputBorrowAmount < 0 ||
+                                  inputBorrowAmount > currentAvailableReserves
+                                  ? "#CF222E"
+                                  : amount > 0
+                                    ? "#00D395"
 
-                          : inputBorrowAmountUSD == 0
-                          ? "white"
-                          : "#00D395"
-                      }`}
+                                    : inputBorrowAmountUSD == 0
+                                      ? "white"
+                                      : "#00D395"
+                        }`}
                       border="0px"
                       _placeholder={{
                         color: "#393D4F",
@@ -1797,31 +1799,30 @@ const BorrowModal = ({
                   </NumberInput>
                   <Button
                     variant="ghost"
-                    color={`${
-                      inputCollateralAmountUSD &&
-                      inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
+                    color={`${inputCollateralAmountUSD &&
+                        inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                         ? "#CF222E"
                         : isNaN(amount)
-                        ? "#CF222E":
-                        process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>0 && inputBorrowAmount<minimumLoanAmount
-                      ?"#CF222E"
-                      :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount ?
-                      "#CF222E"
-                        : inputBorrowAmount < 0 ||
-                          inputBorrowAmount > currentAvailableReserves
-                        ? "#CF222E"
-                        : inputBorrowAmountUSD == 0
-                        ? "#4D59E8"
-                        : "#00D395"
-                    }`}
+                          ? "#CF222E" :
+                          process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputBorrowAmount > 0 && inputBorrowAmount < minimumLoanAmount
+                            ? "#CF222E"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputBorrowAmount > maximumLoanAmount ?
+                              "#CF222E"
+                              : inputBorrowAmount < 0 ||
+                                inputBorrowAmount > currentAvailableReserves
+                                ? "#CF222E"
+                                : inputBorrowAmountUSD == 0
+                                  ? "#4D59E8"
+                                  : "#00D395"
+                      }`}
                     _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
                     onClick={() => {
                       if (inputCollateralAmountUSD > 0) {
                         if (
                           (4.98 * inputCollateralAmountUSD) /
-                            oraclePrices.find(
-                              (curr: any) => curr.name === currentBorrowCoin
-                            )?.price >
+                          oraclePrices.find(
+                            (curr: any) => curr.name === currentBorrowCoin
+                          )?.price >
                           currentAvailableReserves
                         ) {
                           setAmount(currentAvailableReserves);
@@ -1830,15 +1831,15 @@ const BorrowModal = ({
                         } else {
                           setAmount(
                             (4.98 * inputCollateralAmountUSD) /
-                              oraclePrices.find(
-                                (curr: any) => curr.name === currentBorrowCoin
-                              )?.price
+                            oraclePrices.find(
+                              (curr: any) => curr.name === currentBorrowCoin
+                            )?.price
                           );
                           setinputBorrowAmount(
                             (4.98 * inputCollateralAmountUSD) /
-                              oraclePrices.find(
-                                (curr: any) => curr.name === currentBorrowCoin
-                              )?.price
+                            oraclePrices.find(
+                              (curr: any) => curr.name === currentBorrowCoin
+                            )?.price
                           );
                           setsliderValue2(100);
                         }
@@ -1864,11 +1865,11 @@ const BorrowModal = ({
                   </Button>
                 </Box>
                 {amount > currentAvailableReserves ||
-                (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>0 && (inputBorrowAmount<minimumLoanAmount||
-                inputBorrowAmount>maximumLoanAmount) )||
-                (amount > 0 &&
-                  inputCollateralAmountUSD &&
-                  inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD) ? (
+                  (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputBorrowAmount > 0 && (inputBorrowAmount < minimumLoanAmount ||
+                    inputBorrowAmount > maximumLoanAmount)) ||
+                  (amount > 0 &&
+                    inputCollateralAmountUSD &&
+                    inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD) ? (
                   <Box
                     display="flex"
                     justifyContent="space-between"
@@ -1886,14 +1887,14 @@ const BorrowModal = ({
                       <Text ml="0.3rem">
                         {amount > currentAvailableReserves
                           ? "Amount exceeds balance"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount<minimumLoanAmount ?
-                          "Less than min Amount"
-                          :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount?
-                          "More than max Amount"
-                          : inputBorrowAmountUSD >
-                            4.98 * inputCollateralAmountUSD
-                          ? "Debt higher than permitted"
-                          : ""}
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputBorrowAmount < minimumLoanAmount ?
+                            "Less than min Amount"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && inputBorrowAmount > maximumLoanAmount ?
+                              "More than max Amount"
+                              : inputBorrowAmountUSD >
+                                4.98 * inputCollateralAmountUSD
+                                ? "Debt higher than permitted"
+                                : ""}
                       </Text>
                     </Text>
                     <Box
@@ -1903,18 +1904,18 @@ const BorrowModal = ({
                       alignItems="center"
                     >
                       Available reserves:{" "}
-                      {availableReserves==null ? (
-                         <Skeleton
-                         width="4rem"
-                         height=".85rem"
-                         startColor="#2B2F35"
-                         endColor="#101216"
-                         borderRadius="4px"
-                         m={1}
-                       />
+                      {availableReserves == null ? (
+                        <Skeleton
+                          width="4rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="4px"
+                          m={1}
+                        />
                       ) : (
                         numberFormatter(currentAvailableReserves)
-                       
+
                       )}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentBorrowCoin}`}
@@ -1933,18 +1934,18 @@ const BorrowModal = ({
                     fontFamily="Inter"
                   >
                     Available reserves:{" "}
-                    {availableReserves==null ? (
-                       <Skeleton
-                       width="4rem"
-                       height=".85rem"
-                       startColor="#2B2F35"
-                       endColor="#101216"
-                       borderRadius="4px"
-                       m={1}
-                     />
+                    {availableReserves == null ? (
+                      <Skeleton
+                        width="4rem"
+                        height=".85rem"
+                        startColor="#2B2F35"
+                        endColor="#101216"
+                        borderRadius="4px"
+                        m={1}
+                      />
                     ) : (
                       numberFormatter(currentAvailableReserves)
-                     
+
                     )}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentBorrowCoin}`}
@@ -1972,26 +1973,26 @@ const BorrowModal = ({
                         if (inputCollateralAmountUSD > 0) {
                           setAmount(
                             (4.98 * inputCollateralAmountUSD) /
-                              oraclePrices.find(
-                                (curr: any) => curr.name === currentBorrowCoin
-                              )?.price
+                            oraclePrices.find(
+                              (curr: any) => curr.name === currentBorrowCoin
+                            )?.price
                           );
                           setinputBorrowAmount(
                             (4.98 * inputCollateralAmountUSD) /
-                              oraclePrices.find(
-                                (curr: any) => curr.name === currentBorrowCoin
-                              )?.price
+                            oraclePrices.find(
+                              (curr: any) => curr.name === currentBorrowCoin
+                            )?.price
                           );
                         } else {
                           setAmount(currentAvailableReserves);
                           setinputBorrowAmount(currentAvailableReserves);
                         }
                       } else {
-                        if(ans<10){
+                        if (ans < 10) {
                           dispatch(setInputBorrowModalBorrowAmount(ans));
                           setAmount(parseFloat(ans.toFixed(7)));
                           setinputBorrowAmount(parseFloat(ans.toFixed(7)));
-                        }else{
+                        } else {
                           ans = Math.round(ans * 100) / 100;
                           dispatch(setInputBorrowModalBorrowAmount(ans));
                           setAmount(ans);
@@ -2098,7 +2099,7 @@ const BorrowModal = ({
               </Box>
             </Box>
 
-            <Card               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+            <Card background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))" mt="1.5rem" p="1rem" >
               <Text
                 color="#8B949E"
@@ -2118,20 +2119,20 @@ const BorrowModal = ({
                     Fees:
                   </Text>
                   <Tooltip
-                        hasArrow
-                        placement="right"
-                        boxShadow="dark-lg"
-                        label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
-                        bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
-                        color="#F0F0F5"
-                        border="1px solid"
-                        borderColor="#23233D"
-                        arrowShadowColor="#2B2F35"
-                        maxW="222px"
+                    hasArrow
+                    placement="right"
+                    boxShadow="dark-lg"
+                    label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
+                    bg="#02010F"
+                    fontSize={"13px"}
+                    fontWeight={"400"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    color="#F0F0F5"
+                    border="1px solid"
+                    borderColor="#23233D"
+                    arrowShadowColor="#2B2F35"
+                    maxW="222px"
                   >
                     <Box>
                       <InfoIcon />
@@ -2192,7 +2193,7 @@ const BorrowModal = ({
                   font-family="Avenir"
                   color="#676D9A"
                 >
-                  {!borrowAPRs || borrowAPRs[currentBorrowAPR]==null ? (
+                  {!borrowAPRs || borrowAPRs[currentBorrowAPR] == null ? (
                     <Box pt="2px">
                       <Skeleton
                         width="2.3rem"
@@ -2260,8 +2261,8 @@ const BorrowModal = ({
                   >
                     {tokenTypeSelected === "Native" ? (
                       inputBorrowAmount === 0 ||
-                      collateralAmount === 0 ||
-                      !borrowAPRs[currentBorrowAPR] ? (
+                        collateralAmount === 0 ||
+                        !borrowAPRs[currentBorrowAPR] ? (
                         <Box pt="2px">
                           <Skeleton
                             width="2.3rem"
@@ -2273,22 +2274,22 @@ const BorrowModal = ({
                         </Box>
                       ) : (
                         <Text
-                        color={Number(
-                          (-(inputBorrowAmountUSD *
-                            protocolStats?.find(
-                              (stat: any) => stat?.token === currentBorrowCoin
-                            )?.borrowRate) +
-                            inputCollateralAmountUSD *
+                          color={Number(
+                            (-(inputBorrowAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) => stat?.token === currentBorrowCoin
+                              )?.borrowRate) +
+                              inputCollateralAmountUSD *
                               protocolStats?.find(
                                 (stat: any) =>
                                   stat?.token === currentCollateralCoin
                               )?.supplyRate) /
                             inputBorrowAmountUSD
-                        ) <0 ?"rgb(255 94 94)" : "#00D395"}
+                          ) < 0 ? "rgb(255 94 94)" : "#00D395"}
                         >
                           {/* 5.56% */}
                           {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                          {}
+                          { }
                           {/* {
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentCollateralCoin
@@ -2300,61 +2301,61 @@ const BorrowModal = ({
                                 (stat: any) => stat?.token === currentBorrowCoin
                               )?.borrowRate) +
                               inputCollateralAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentCollateralCoin
-                                )?.supplyRate) /
-                              inputBorrowAmountUSD
+                              protocolStats?.find(
+                                (stat: any) =>
+                                  stat?.token === currentCollateralCoin
+                              )?.supplyRate) /
+                            inputBorrowAmountUSD
                           ).toFixed(2)}%
                         </Text>
                       )
                     ) : // protocolStats.length === 0 ||
-                    rTokenAmount === 0 ||
-                      inputBorrowAmount === 0 ||
-                      !borrowAPRs[currentBorrowAPR] ? (
-                      <Box pt="2px">
-                        <Skeleton
-                          width="2.3rem"
-                          height=".85rem"
-                          startColor="#2B2F35"
-                          endColor="#101216"
-                          borderRadius="6px"
-                        />
-                      </Box>
-                    ) : (
-                      <Text
-                      color={(
-                        (-(inputBorrowAmountUSD *
-                          protocolStats?.find(
-                            (stat: any) => stat?.token === currentBorrowCoin
-                          )?.borrowRate) +
-                          inputCollateralAmountUSD *
-                            protocolStats?.find(
-                              (stat: any) => stat?.token === rToken.slice(1)
-                            )?.supplyRate) /
-                        inputBorrowAmountUSD
-                      )<0 ?"rgb(255 94 94)" : "#00D395"}
-                      >
-                        {/* 5.56% */}
-                        {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                        {(
-                          (-(inputBorrowAmountUSD *
-                            protocolStats?.find(
-                              (stat: any) => stat?.token === currentBorrowCoin
-                            )?.borrowRate) +
-                            inputCollateralAmountUSD *
+                      rTokenAmount === 0 ||
+                        inputBorrowAmount === 0 ||
+                        !borrowAPRs[currentBorrowAPR] ? (
+                        <Box pt="2px">
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                        </Box>
+                      ) : (
+                        <Text
+                          color={(
+                            (-(inputBorrowAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) => stat?.token === currentBorrowCoin
+                              )?.borrowRate) +
+                              inputCollateralAmountUSD *
                               protocolStats?.find(
                                 (stat: any) => stat?.token === rToken.slice(1)
                               )?.supplyRate) /
-                          inputBorrowAmountUSD
-                        ).toFixed(2)}%
-                        {/* {
+                            inputBorrowAmountUSD
+                          ) < 0 ? "rgb(255 94 94)" : "#00D395"}
+                        >
+                          {/* 5.56% */}
+                          {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                          {(
+                            (-(inputBorrowAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) => stat?.token === currentBorrowCoin
+                              )?.borrowRate) +
+                              inputCollateralAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) => stat?.token === rToken.slice(1)
+                              )?.supplyRate) /
+                            inputBorrowAmountUSD
+                          ).toFixed(2)}%
+                          {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin
                             )?.supplyRate
                           } */}
-                      </Text>
-                    )}
+                        </Text>
+                      )}
                   </Text>
                 </Text>
               )}
@@ -2412,7 +2413,7 @@ const BorrowModal = ({
             </Card>
 
             {currentCollateralCoin &&
-              currentCollateralCoin[0] !== "r" &&
+               currentCollateralCoin[0] !== "r" &&
               protocolStatsRedux && (
                 <Box
                   // display="flex"
@@ -2423,39 +2424,39 @@ const BorrowModal = ({
                   display="flex"
                   alignItems="center"
                   mt="2rem"
-                  // mb="1rem"
+                // mb="1rem"
                 >
                   <Box
                     display="flex"
-                    bg={dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?"#480C10":"#222766"} 
+                    bg={dollarConvertor(maximumLoanAmount, currentBorrowCoin, oraclePrices) < 100 || (tokenTypeSelected == "Native" ?  (currentBorrowCoin=="BTC" && currentCollateralCoin=="STRK"): (currentBorrowCoin=="BTC" && rToken=="rSTRK")) ? "#480C10" : "#222766"}
                     color="#F0F0F5"
                     fontSize="12px"
                     p="4"
-                    border={dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?"1px solid #9B1A23":"1px solid #3841AA"}
+                    border={dollarConvertor(maximumLoanAmount, currentBorrowCoin, oraclePrices) < 100 || (tokenTypeSelected == "Native" ?  (currentBorrowCoin=="BTC" && currentCollateralCoin=="STRK"): (currentBorrowCoin=="BTC" && rToken=="rSTRK")) ? "1px solid #9B1A23" : "1px solid #3841AA"}
                     fontStyle="normal"
                     fontWeight="400"
                     lineHeight="18px"
                     borderRadius="6px"
-                    // textAlign="center"
+                  // textAlign="center"
                   >
                     <Box pr="3" mt="0.5" cursor="pointer">
-                      {dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?<RedinfoIcon/>:<BlueInfoIcon />}
+                      {dollarConvertor(maximumLoanAmount, currentBorrowCoin, oraclePrices) < 100 || (tokenTypeSelected == "Native" ? (currentBorrowCoin=="BTC" && currentCollateralCoin=="STRK"): (currentBorrowCoin=="BTC" && rToken=="rSTRK")) ? <RedinfoIcon /> : <BlueInfoIcon />}
                     </Box>
-                    {dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?
-                  `The current collateral and borrowing market combination isn't allowed at this moment.`:  
-                    `You have selected a native token as collateral which will be
+                    { dollarConvertor(maximumLoanAmount, currentBorrowCoin, oraclePrices) < 100 || (tokenTypeSelected == "Native" ?  (currentBorrowCoin=="BTC" && currentCollateralCoin=="STRK"): (currentBorrowCoin=="BTC" && rToken=="rSTRK")) ?
+                      `The current collateral and borrowing market combination isn't allowed at this moment.` :
+                      `You have selected a native token as collateral which will be
                     converted to rtokens 1r${currentCollateralCoin} =
                     ${(protocolStatsRedux.find(
-                      (val: any) => val?.token == currentCollateralCoin.split(1)
-                    )?.exchangeRateRtokenToUnderlying
-                      ? numberFormatter(
+                        (val: any) => val?.token == currentCollateralCoin.split(1)
+                      )?.exchangeRateRtokenToUnderlying
+                        ? numberFormatter(
                           protocolStatsRedux.find(
                             (val: any) =>
                               val?.token == currentCollateralCoin.split(1)
                           )?.exchangeRateRtokenToUnderlying
                         )
-                      : "") + currentCollateralCoin?.split(1)}`
-                  }
+                        : "") + currentCollateralCoin?.split(1)}`
+                    }
                     {/* <Box
                                 py="1"
                                 pl="4"
@@ -2469,16 +2470,17 @@ const BorrowModal = ({
               )}
 
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
-            (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
-            amount > 0 &&
-           (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"?( inputBorrowAmount>=minimumLoanAmount &&
-            inputBorrowAmount<=maximumLoanAmount ):true)&&
-            rTokenAmount <= walletBalance &&
-            // rTokenAmount<
-            (rTokenAmount>0 && (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" &&tokenTypeSelected == "Native" ?(rTokenAmount>=minimumDepositAmount && rTokenAmount<=maximumDepositAmount):true)) &&
-            // do max 1209
-            inputBorrowAmount <= currentAvailableReserves &&
-            inputBorrowAmountUSD <= 4.98 * inputCollateralAmountUSD ? (
+              (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
+              (tokenTypeSelected == "Native" ?  !(currentBorrowCoin=="BTC" && currentCollateralCoin=="STRK"): !(currentBorrowCoin=="BTC" && rToken=="rSTRK")) &&
+              amount > 0 &&
+              (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ? (inputBorrowAmount >= minimumLoanAmount &&
+                inputBorrowAmount <= maximumLoanAmount) : true) &&
+              rTokenAmount <= walletBalance &&
+              // rTokenAmount<
+              (rTokenAmount > 0 && (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && tokenTypeSelected == "Native" ? (rTokenAmount >= minimumDepositAmount && rTokenAmount <= maximumDepositAmount) : true)) &&
+              // do max 1209
+              inputBorrowAmount <= currentAvailableReserves &&
+              inputBorrowAmountUSD <= 4.98 * inputCollateralAmountUSD ? (
               // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
               // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&
               // inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (
@@ -2500,8 +2502,8 @@ const BorrowModal = ({
                   }}
                 >
                   <AnimatedButton
-                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                     // bgColor="red"
                     // p={0}
                     color="#8B949E"
@@ -2537,8 +2539,8 @@ const BorrowModal = ({
               )
             ) : (
               <Button
-              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-              background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                 color="#6E7681"
                 size="sm"
                 width="100%"

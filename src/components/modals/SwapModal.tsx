@@ -48,6 +48,7 @@ import {
   selectEffectiveApr,
   selectFees,
   selectHealthFactor,
+  selectJediSwapPoolsSupported,
   selectMySwapPoolsSupported,
   selectUserLoans,
 } from "@/store/slices/readDataSlice";
@@ -398,7 +399,9 @@ const SwapModal = ({
     setToMarket(currentSelectedCoin);
   }, [currentSelectedCoin]);
   const mySwapPoolPairs=useSelector(selectMySwapPoolsSupported);
+  const poolsPairs = useSelector(selectJediSwapPoolsSupported);
   const [myswapPools, setmyswapPools] = useState([]);
+  const [jediswapPools, setjediswapPools] = useState([]);
   const fees=useSelector(selectFees)
   useEffect(()=>{
     function findSideForMember(array:any, token:any) {
@@ -417,6 +420,25 @@ const SwapModal = ({
        // Token not found in any "keyvalue" pairs
   }
   findSideForMember(mySwapPoolPairs,currentBorrowMarketCoin);
+  },[currentBorrowMarketCoin])
+
+  useEffect(()=>{
+    function findSideForMember(array:any, token:any) {
+      const data:any=[];
+      for (const obj of array) {
+          const keyvalue = obj.keyvalue;
+          const [tokenA, tokenB] = keyvalue.split('/');
+          
+          if (tokenA === token) {
+              data.push(tokenB)
+          } else if (tokenB === token) {
+              data.push(tokenA);
+          }
+      }
+      setjediswapPools(data);
+       // Token not found in any "keyvalue" pairs
+  }
+  findSideForMember(poolsPairs,currentBorrowMarketCoin);
   },[currentBorrowMarketCoin])
 
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -641,7 +663,11 @@ const SwapModal = ({
                   >
                     {coins?.map((coin: string, index: number) => {
                       const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
+                      const matchingPairJedi = jediswapPools?.find((pair: any) => pair === coin);
                       if (coin === currentBorrowMarketCoin || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentSwap == "MySwap" &&!matchingPair)) {
+                        return null;
+                      }
+                      if (coin == currentBorrowMarketCoin || (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && currentSwap == "Jediswap" && !matchingPairJedi)) {
                         return null;
                       }
                       return (

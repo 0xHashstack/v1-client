@@ -115,6 +115,8 @@ const MarketDashboard = () => {
         stats?.[0],
         stats?.[1],
         stats?.[4],
+        stats?.[5]
+
       ]);
       setTotalSupplies([
         stats?.[2].totalSupply,
@@ -122,6 +124,7 @@ const MarketDashboard = () => {
         stats?.[0].totalSupply,
         stats?.[1].totalSupply,
         stats?.[4].totalSupply,
+        stats?.[5].totalSupply
       ]);
       setTotalBorrows([
         stats?.[2].totalBorrow,
@@ -129,6 +132,7 @@ const MarketDashboard = () => {
         stats?.[0].totalBorrow,
         stats?.[1].totalBorrow,
         stats?.[4].totalBorrow,
+        stats?.[5].totalBorrow
       ]);
       setBorrowAPRs([
         stats?.[2].borrowRate,
@@ -136,6 +140,7 @@ const MarketDashboard = () => {
         stats?.[0].borrowRate,
         stats?.[1].borrowRate,
         stats?.[4].borrowRate,
+        stats?.[5].borrowRate
       ]);
       setAvailableReserves([
         stats?.[2].availableReserves,
@@ -143,6 +148,7 @@ const MarketDashboard = () => {
         stats?.[0].availableReserves,
         stats?.[1].availableReserves,
         stats?.[4].availableReserves,
+        stats?.[5].availableReserves
       ])
       const avg =
         (stats?.[4].borrowRate +
@@ -159,6 +165,7 @@ const MarketDashboard = () => {
         stats?.[0].supplyRate,
         stats?.[1].supplyRate,
         stats?.[4].supplyRate,
+        stats?.[5].supplyRate
       ]);
      
       // dispatch(setAvgSupplyAPR(avgSupply));
@@ -168,6 +175,7 @@ const MarketDashboard = () => {
         stats?.[0].utilisationPerMarket,
         stats?.[1].utilisationPerMarket,
         stats?.[4].utilisationPerMarket,
+        stats?.[5].utilisationPerMarket
       ]);
     } catch (error) {
       ////console.log("error on getting protocol stats");

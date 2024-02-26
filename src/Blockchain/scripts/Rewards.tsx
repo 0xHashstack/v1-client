@@ -323,7 +323,6 @@ export async function getMaximumDynamicLoanAmount(
     //   uint256.uint256ToBN(result?._get_maximum_loan_amount).toString(),
     //   tokenDecimalsMap[dToken]
     // );
-    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
     return res;
   } catch (err) {
    console.log(err, "err in getMaximumDynamicDeposit");

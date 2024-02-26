@@ -72,6 +72,7 @@ const initialState = {
     rUSDT: null,
     rUSDC: null,
     rDAI: null,
+    rSTRK: null,
   },
   minDepositAmounts:{
     rBTC: 0.00037,
@@ -79,6 +80,7 @@ const initialState = {
     rUSDT: 10,
     rUSDC: 10,
     rDAI: 10,
+    rSTRK: 10,
   },
   maxDepositAmounts:{
     rBTC: 0.00074,
@@ -86,6 +88,7 @@ const initialState = {
     rUSDT: 20,
     rUSDC: 20,
     rDAI: 20,
+    rSTRK: 500,
   },
   minLoanAmounts:{
     dBTC: 0.001,
@@ -93,6 +96,7 @@ const initialState = {
     dUSDT: 30,
     dUSDC: 30,
     dDAI: 30,
+    dSTRK:30,
   },
   maxLoanAmounts:{
     dBTC: 0.00148,
@@ -100,6 +104,7 @@ const initialState = {
     dUSDT: 40,
     dUSDC: 40,
     dDAI: 40,
+    dSTRK:40,
   },
   fees:{
     supply: 0,
