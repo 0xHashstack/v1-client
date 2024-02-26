@@ -323,6 +323,8 @@ const TradeModal = ({
         return <DAILogo height={"16px"} width={"16px"} />;
       case "STRK":
         return <STRKLogo height={"16px"} width={"16px"} />;
+        case "rSTRK":
+          return <STRKLogo height={"16px"} width={"16px"} />;
       case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
       case "Jediswap":

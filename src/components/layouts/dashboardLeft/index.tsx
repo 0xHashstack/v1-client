@@ -215,9 +215,11 @@ const DashboardLeft = ({
     // bgColor={"red"}
     // px={"1.5rem"}
     >
-      <Table variant="unstyled" width="100%" height="100%">
+      <Table variant="unstyled" width="100%" height="100%"
+      >
         <Thead width={"100%"} height={"2.7rem"}>
-          <Tr width={"100%"}>
+          <Tr width={"100%"} 
+          >
             {columnItems.map((val: any, idx: any) => (
               <Td
                 key={idx}
@@ -271,6 +273,7 @@ const DashboardLeft = ({
         <Tbody
           position="relative"
           overflowX="hidden"
+          
         //   display="flex"
         //   flexDirection="column"
         //   gap={"1rem"}
