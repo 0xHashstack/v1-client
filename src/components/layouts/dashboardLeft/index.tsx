@@ -326,9 +326,14 @@ const DashboardLeft = ({
                         width="48"
                         height="16"
                       />}
-
-                      
-
+                      {coin?.name=="STRK" && 
+                      <Image
+                        src={`/comingsoon.svg`}
+                        alt={`Picture of the coin that I want to access ${coin?.name}`}
+                        width="72"
+                        height="16"
+                      />
+                      }
                       </Box>
                       {!assetBalance[coin?.name]?.dataBalanceOf ? (
                         // <Skeleton
@@ -374,11 +379,11 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coinPrices[idx] === null ? (
+                    {coin?.name=="STRK" ? "-": coinPrices[idx] === null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -407,11 +412,11 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {totalSupplies[idx] == null ? (
+                    {coin?.name=="STRK" ? numberFormatter(0): totalSupplies[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -439,11 +444,11 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {supplyAPRs[idx] == null ? (
+                    {coin?.name=="STRK" ? numberFormatter(0): supplyAPRs[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -479,7 +484,7 @@ const DashboardLeft = ({
                       setCurrentSupplyAPR(idx);
                     }}
                   >
-                    {coin?.name == "DAI" ?
+                    {coin?.name == "DAI" || coin?.name=="STRK" ?
                       <Button
                         height={"2rem"}
                         fontSize={"12px"}
@@ -526,7 +531,7 @@ const DashboardLeft = ({
                   pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    {coin?.name == "DAI" ?
+                    {coin?.name == "DAI" || coin?.name=="STRK" ?
                       <Text color="#3E415C" borderBottom="1px solid #3E415C" cursor="pointer">
                         Stake
                       </Text> : <StakeUnstakeModal
