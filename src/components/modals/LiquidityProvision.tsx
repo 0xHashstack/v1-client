@@ -95,6 +95,7 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import posthog from "posthog-js";
+import StrkToEth from "@/assets/icons/pools/strkToEth";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -257,6 +258,9 @@ const LiquidityProvisionModal = ({
       case "USDC/DAI":
         return <UsdcToDai />;
         break;
+        case "STRK/ETH":
+          return <StrkToEth />;
+          break;
       default:
         break;
     }
@@ -276,6 +280,7 @@ const LiquidityProvisionModal = ({
     "BTC/ETH",
     "BTC/USDT",
     "BTC/USDC",
+    "STRK/ETH"
     // "BTC/DAI",
     // "USDT/DAI",
     // "USDC/DAI",

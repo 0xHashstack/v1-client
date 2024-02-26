@@ -110,6 +110,7 @@ const MarketDashboard = () => {
       ////console.log("fetchprotocolstats", stats); //23014
       // const temp: any = ;
       setProtocolStats([
+        stats?.[5],
         stats?.[2],
         stats?.[3],
         stats?.[0],
@@ -117,6 +118,7 @@ const MarketDashboard = () => {
         stats?.[4],
       ]);
       setTotalSupplies([
+        stats?.[5].totalSupply,
         stats?.[2].totalSupply,
         stats?.[3].totalSupply,
         stats?.[0].totalSupply,
@@ -124,6 +126,7 @@ const MarketDashboard = () => {
         stats?.[4].totalSupply,
       ]);
       setTotalBorrows([
+        stats?.[5].totalBorrow,
         stats?.[2].totalBorrow,
         stats?.[3].totalBorrow,
         stats?.[0].totalBorrow,
@@ -131,6 +134,7 @@ const MarketDashboard = () => {
         stats?.[4].totalBorrow,
       ]);
       setBorrowAPRs([
+        stats?.[5].borrowRate,
         stats?.[2].borrowRate,
         stats?.[3].borrowRate,
         stats?.[0].borrowRate,
@@ -138,6 +142,7 @@ const MarketDashboard = () => {
         stats?.[4].borrowRate,
       ]);
       setAvailableReserves([
+        stats?.[5].availableReserves,
         stats?.[2].availableReserves,
         stats?.[3].availableReserves,
         stats?.[0].availableReserves,
@@ -154,6 +159,7 @@ const MarketDashboard = () => {
       ////console.log(avg,"avg borrow")
       // dispatch(setAvgBorrowAPR(avg));
       setSupplyAPRs([
+        stats?.[5].supplyRate,
         stats?.[2].supplyRate,
         stats?.[3].supplyRate,
         stats?.[0].supplyRate,
@@ -163,6 +169,7 @@ const MarketDashboard = () => {
      
       // dispatch(setAvgSupplyAPR(avgSupply));
       setUtilizations([
+        stats?.[5].utilisationPerMarket,
         stats?.[2].utilisationPerMarket,
         stats?.[3].utilisationPerMarket,
         stats?.[0].utilisationPerMarket,

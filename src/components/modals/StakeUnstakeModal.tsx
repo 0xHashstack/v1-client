@@ -107,6 +107,7 @@ import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { tokenDecimalsMap } from "@/Blockchain/utils/addressServices";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import posthog from "posthog-js";
+import STRKLogo from "@/assets/icons/coins/strk";
 // import userTokensMinted from "@/Blockchain/scripts/Rewards";
 // import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
 
@@ -228,6 +229,9 @@ const StakeUnstakeModal = ({
       case "ETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
         break;
+        case "STRK":
+          return <STRKLogo height={"16px"} width={"16px"}/>;
+          break;
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
@@ -246,6 +250,9 @@ const StakeUnstakeModal = ({
       case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "rSTRK":
+          return <STRKLogo height={"16px"} width={"16px"}/>;
+          break;
       case "Jediswap":
         return <JediswapLogo />;
         break;
@@ -694,6 +701,7 @@ const StakeUnstakeModal = ({
     { USDC: "rUSDC" },
     { ETH: "rETH" },
     { DAI: "rDAI" },
+    {STRK:"rSTRK"}
   ];
   interface assetB {
     USDT: any;
@@ -708,6 +716,7 @@ const StakeUnstakeModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    STRK: useBalanceOf(tokenAddressMap["STRK"]),
   };
   const assetBalance: assetB | any = {
     USDT: useBalanceOf(tokenAddressMap["USDT"]),
@@ -723,6 +732,7 @@ const StakeUnstakeModal = ({
     rUSDC: true,
     rETH: true,
     rDAI: true,
+    rSTRK:true,
   };
 
   const isValid = (coin: string) => {
@@ -732,7 +742,7 @@ const StakeUnstakeModal = ({
     return false;
   };
 
-  const rcoins: RToken[] = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
+  const rcoins: RToken[] = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI","rSTRK"];
   const coinObj: any = coins?.find((obj) => coin?.name in obj);
   const rcoinValue = coinObj ? coinObj[coin.name] : "rUSDT";
   const [isSupplied, setIsSupplied] = useState(false);

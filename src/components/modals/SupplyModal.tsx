@@ -97,6 +97,7 @@ import { getFees, getMaximumDepositAmount, getMinimumDepositAmount, getNFTBalanc
 import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 import { get_user_holding_zklend } from "@/Blockchain/scripts/liquidityMigration";
 import posthog from "posthog-js";
+import STRKLogo from "@/assets/icons/coins/strk";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -178,6 +179,7 @@ const SupplyModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    STRK:useBalanceOf(tokenAddressMap["STRK"])
   };
 
   const assetBalance: assetB | any = {
@@ -186,6 +188,7 @@ const SupplyModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    STRK:useBalanceOf(tokenAddressMap["STRK"])
   };
   ////console.log(walletBalances,"wallet balances in supply modal")
 
@@ -645,6 +648,9 @@ const SupplyModal = ({
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+      case "STRK":
+        return <STRKLogo height={"16px"} width={"16px"}/>;
+        break;
       default:
         break;
     }
@@ -713,7 +719,7 @@ const SupplyModal = ({
     }
   };
 
-  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH"];
+  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH","STRK"];
 
   const resetStates = () => {
     setDepositAmount(0);

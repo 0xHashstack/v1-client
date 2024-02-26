@@ -691,6 +691,27 @@
           "apr_at_optimal_ur": "1500",
           "optimal_ur": "5000",
           "apr_max": "15000"
+        },
+        {
+          "name": "STRK",
+          "symbol": "STRK",
+          "decimals": 18,
+          "minDeposit": "10000000000000000000",
+          "maxDeposit": "500000000000000000000000",
+          "minLoan": "40000000000000000000",
+          "maxLoan": "400000000000000000000",
+          "rToken": "0x07514ee6fa12f300ce293c60d60ecce0704314defdb137301dae78a7e5abbdd7",
+          "dToken": "0x01bdbaaa456c7d6bbba9ff740af3cfcd40bec0e85cd5cefc3fbb05a552fd14df",
+          "address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "CEXSymbol": "STRKUSDT",
+          "pontis_key": "6004514686061859652",
+          "mockPrice": 2,
+          "ethereumAddress": "0xCa14007Eff0dB1f8135f4C25B34De49AB0d42766",
+          "NETWORK_TOKEN_ADDRESS": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "base_apr": "200",
+          "apr_at_optimal_ur": "1500",
+          "optimal_ur": "5000",
+          "apr_max": "11000"
         }
       ],
       "rTOKENS": [
@@ -733,6 +754,14 @@
           "underlying_asset": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
           "address": "0x19c981ec23aa9cbac1cc1eb7f92cf09ea2816db9cbd932e251c86a2e8fb725f",
           "NETWORK_TOKEN_ADDRESS": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3"
+        },
+        {
+          "name": "rSTRK",
+          "symbol": "rSTRK",
+          "decimals": 18,
+          "underlying_asset": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "address": "0x07514ee6fa12f300ce293c60d60ecce0704314defdb137301dae78a7e5abbdd7",
+          "NETWORK_TOKEN_ADDRESS": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
         }
       ],
       "dTOKENS": [
@@ -775,6 +804,14 @@
           "underlying_asset": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
           "address": "0x7eeed99c095f83716e465e2c52a3ec8f47b323041ddc4f97778ac0393b7f358",
           "NETWORK_TOKEN_ADDRESS": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3"
+        },
+        {
+          "name": "dSTRK",
+          "symbol": "dSTRK",
+          "decimals": 18,
+          "underlying_asset": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "address": "0x01bdbaaa456c7d6bbba9ff740af3cfcd40bec0e85cd5cefc3fbb05a552fd14df",
+          "NETWORK_TOKEN_ADDRESS": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
         }
       ],
       "peripherals": {

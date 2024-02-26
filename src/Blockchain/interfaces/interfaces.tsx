@@ -1,6 +1,6 @@
-export type NativeToken = "BTC" | "ETH" | "DAI" | "USDC" | "USDT";
-export type DToken = "dBTC" | "dETH" | "dDAI" | "dUSDC" | "dUSDT";
-export type RToken = "rBTC" | "rETH" | "rDAI" | "rUSDC" | "rUSDT";
+export type NativeToken = "BTC" | "ETH" | "DAI" | "USDC" | "USDT" | "STRK";
+export type DToken = "dBTC" | "dETH" | "dDAI" | "dUSDC" | "dUSDT" | "dSTRK";
+export type RToken = "rBTC" | "rETH" | "rDAI" | "rUSDC" | "rUSDT" | "rSTRK";
 
 export type Token = NativeToken | DToken | RToken;
 

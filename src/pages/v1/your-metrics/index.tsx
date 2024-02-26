@@ -79,6 +79,7 @@ const YourMetrics = () => {
           stats?.[0],
           stats?.[1],
           stats?.[4],
+          stats?.[5]
         ]);
       };
       fetchProtocolStats();

@@ -1,117 +1,90 @@
 import {
+  Box,
+  Button,
+  Heading,
   Modal,
-  ModalOverlay,
-  ModalContent,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
-  Button,
-  Tooltip,
-  Slider,
-  SliderMark,
-  SliderTrack,
-  SliderThumb,
-  SliderFilledTrack,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   NumberInput,
   NumberInputField,
-  Box,
-  Text,
-  Heading,
-  RadioGroup,
-  Stack,
   Radio,
+  RadioGroup,
   Skeleton,
-  ModalHeader,
+  Slider,
+  SliderFilledTrack,
+  SliderMark,
+  SliderThumb,
+  SliderTrack,
+  Stack,
+  Text,
+  Tooltip,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
+import {
+  getMaximumDepositAmount,
+  getMaximumDynamicLoanAmount,
+  getMinimumDepositAmount,
+} from "@/Blockchain/scripts/Rewards";
 import BTCLogo from "../../assets/icons/coins/btc";
-import { getMinimumDepositAmount,getMaximumDepositAmount, getMaximumDynamicLoanAmount } from "@/Blockchain/scripts/Rewards";
 
+import { constants } from "@/Blockchain/utils/constants";
+import DAILogo from "@/assets/icons/coins/dai";
+import ETHLogo from "@/assets/icons/coins/eth";
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
-import ETHLogo from "@/assets/icons/coins/eth";
-import DAILogo from "@/assets/icons/coins/dai";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
-import DropdownUp from "../../assets/icons/dropdownUpIcon";
-import InfoIcon from "../../assets/icons/infoIcon";
-import { useDispatch, useSelector } from "react-redux";
-import { constants } from "@/Blockchain/utils/constants";
 import {
-  selectWalletBalance,
-  setInputTradeModalCollateralAmount,
-  setInputTradeModalBorrowAmount,
-  selectAssetWalletBalance,
-  setTransactionStatus,
-  selectActiveTransactions,
-  setActiveTransactions,
-  setTransactionStartedAndModalClosed,
-  // setTransactionStarted,
-  // selectTransactionStarted,
-} from "@/store/slices/userAccountSlice";
+  resetModalDropdowns,
+  selectModalDropDowns,
+  selectNavDropdowns,
+  setModalDropdown,
+  setNavDropdown,
+} from "@/store/slices/dropdownsSlice";
 import {
-  selectProtocolStats,
-  selectOraclePrices,
-  selectJediSwapPoolsSupported,
-  selectMySwapPoolsSupported,
-  selectMaximumLoanAmounts,
-  selectMinimumLoanAmounts,
-  selectMaximumDepositAmounts,
-  selectMinimumDepositAmounts,
   selectFees,
+  selectJediSwapPoolsSupported,
   selectJediswapPoolAprs,
+  selectMaximumDepositAmounts,
+  selectMaximumLoanAmounts,
+  selectMinimumDepositAmounts,
+  selectMinimumLoanAmounts,
+  selectMySwapPoolsSupported,
+  selectOraclePrices,
+  selectProtocolStats,
 } from "@/store/slices/readDataSlice";
 import {
-  selectNavDropdowns,
-  setNavDropdown,
-  setModalDropdown,
-  selectModalDropDowns,
-  resetModalDropdowns,
-} from "@/store/slices/dropdownsSlice";
+  selectActiveTransactions,
+  selectAssetWalletBalance,
+  selectWalletBalance,
+  setActiveTransactions,
+  setInputTradeModalBorrowAmount,
+  setInputTradeModalCollateralAmount,
+  setTransactionStartedAndModalClosed,
+  setTransactionStatus,
+} from "@/store/slices/userAccountSlice";
+import { useDispatch, useSelector } from "react-redux";
 import TransactionFees from "../../../TransactionFees.json";
+import DropdownUp from "../../assets/icons/dropdownUpIcon";
+import InfoIcon from "../../assets/icons/infoIcon";
 
-import { useEffect, useState } from "react";
-import SliderTooltip from "../uiElements/sliders/sliderTooltip";
-import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
-import MySwapDisabled from "@/assets/icons/dapps/mySwapDisabled";
-import EthToUsdc from "@/assets/icons/pools/ethToUsdc";
-import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
-import UsdcToUsdt from "@/assets/icons/pools/usdcToUsdt";
-import SmallEth from "@/assets/icons/coins/smallEth";
-import SmallUsdt from "@/assets/icons/coins/smallUsdt";
-import DaiToEth from "@/assets/icons/pools/daiToEth";
-import BtcToEth from "@/assets/icons/pools/btcToEth";
-import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
-import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
-import AnimatedButton from "../uiElements/buttons/AnimationButton";
-import SuccessButton from "../uiElements/buttons/SuccessButton";
-import ErrorButton from "../uiElements/buttons/ErrorButton";
-import ArrowUp from "@/assets/icons/arrowup";
-import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
-import { uint256 } from "starknet";
-import {
-  tokenAddressMap,
-  tokenDecimalsMap,
-} from "@/Blockchain/utils/addressServices";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import useBorrowAndSpend from "@/Blockchain/hooks/Writes/useBorrowAndSpend";
-import { useWaitForTransaction } from "@starknet-react/core";
-import CopyToClipboard from "react-copy-to-clipboard";
-import { toast } from "react-toastify";
-import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
-import BtcToUsdc from "@/assets/icons/pools/btcToUsdc";
-import BtcToDai from "@/assets/icons/pools/btcToDai";
-import UsdtToDai from "@/assets/icons/pools/usdtToDai";
-import UsdcToDai from "@/assets/icons/pools/usdcToDai";
-import MySwap from "@/assets/icons/dapps/mySwap";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
-import mixpanel from "mixpanel-browser";
 import {
   getLoanHealth_NativeCollateral,
   getLoanHealth_RTokenCollateral,
 } from "@/Blockchain/scripts/LoanHealth";
-import Image from "next/image";
+import {
+  getMaximumLoanAmount,
+  getMinimumLoanAmount,
+  getSupportedPools,
+} from "@/Blockchain/scripts/Rewards";
 import {
   getJediEstimateLiquiditySplit,
   getJediEstimatedLpAmountOut,
@@ -119,14 +92,49 @@ import {
   getMySwapEstimatedLpAmountOut,
   getUSDValue,
 } from "@/Blockchain/scripts/l3interaction";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import { getMaximumLoanAmount, getMinimumLoanAmount, getSupportedPools } from "@/Blockchain/scripts/Rewards";
-import axios from "axios";
-import dollarConvertor from "@/utils/functions/dollarConvertor";
-import RedinfoIcon from "@/assets/icons/redinfoicon";
+import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
+import ArrowUp from "@/assets/icons/arrowup";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
+import SmallEth from "@/assets/icons/coins/smallEth";
+import SmallUsdt from "@/assets/icons/coins/smallUsdt";
+import STRKLogo from "@/assets/icons/coins/strk";
+import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
+import MySwap from "@/assets/icons/dapps/mySwap";
+import MySwapDisabled from "@/assets/icons/dapps/mySwapDisabled";
+import BtcToDai from "@/assets/icons/pools/btcToDai";
+import BtcToEth from "@/assets/icons/pools/btcToEth";
+import BtcToUsdc from "@/assets/icons/pools/btcToUsdc";
+import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
+import DaiToEth from "@/assets/icons/pools/daiToEth";
+import EthToUsdc from "@/assets/icons/pools/ethToUsdc";
+import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
+import StrkToEth from "@/assets/icons/pools/strkToEth";
+import UsdcToDai from "@/assets/icons/pools/usdcToDai";
+import UsdcToUsdt from "@/assets/icons/pools/usdcToUsdt";
+import UsdtToDai from "@/assets/icons/pools/usdtToDai";
+import RedinfoIcon from "@/assets/icons/redinfoicon";
+import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
+import dollarConvertor from "@/utils/functions/dollarConvertor";
+import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import { useWaitForTransaction } from "@starknet-react/core";
+import axios from "axios";
+import mixpanel from "mixpanel-browser";
+import Image from "next/image";
 import posthog from "posthog-js";
+import { useEffect, useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { toast } from "react-toastify";
+import { uint256 } from "starknet";
+import AnimatedButton from "../uiElements/buttons/AnimationButton";
+import ErrorButton from "../uiElements/buttons/ErrorButton";
+import SuccessButton from "../uiElements/buttons/SuccessButton";
+import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 const TradeModal = ({
   buttonText,
   coin,
@@ -213,22 +221,25 @@ const TradeModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    STRK: useBalanceOf(tokenAddressMap["STRK"]),
     rUSDT: useBalanceOf(tokenAddressMap["rUSDT"]),
     rUSDC: useBalanceOf(tokenAddressMap["rUSDC"]),
     rBTC: useBalanceOf(tokenAddressMap["rBTC"]),
     rETH: useBalanceOf(tokenAddressMap["rETH"]),
     rDAI: useBalanceOf(tokenAddressMap["rDAI"]),
   };
-  const [walletBalance, setwalletBalance] = useState(0)
+  const [walletBalance, setwalletBalance] = useState(0);
   useEffect(() => {
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          String(uint256.uint256ToBN(
-            walletBalances[coin?.name]?.dataBalanceOf?.balance
-          )),
-          tokenDecimalsMap[coin?.name]
-        )
+            String(
+              uint256.uint256ToBN(
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
+              )
+            ),
+            tokenDecimalsMap[coin?.name]
+          )
         : 0
     );
     ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
@@ -237,18 +248,39 @@ const TradeModal = ({
     { name: "Jediswap", status: "enable" },
     { name: "mySwap", status: "enable" },
   ];
-  const getAprByPool = (dataArray: any[], pool: string,dapp:string) => {
-    const matchedObject = dataArray.find(item => {
-      if (item.name === "USDT/USDC" ) {
-        return item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap") && ("USDC/USDT" === pool );
-      }else if(item.name === "ETH/DAI" ) {
-        return item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap") && ("DAI/ETH" === pool );
-      }
-      else {
-        return item.name === pool && item.amm === (dapp=="Select a dapp" ? "jedi":dapp=="Jediswap" ? "jedi":"myswap");
+  const getAprByPool = (dataArray: any[], pool: string, dapp: string) => {
+    const matchedObject = dataArray.find((item) => {
+      if (item.name === "USDT/USDC") {
+        return (
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "USDC/USDT" === pool
+        );
+      } else if (item.name === "ETH/DAI") {
+        return (
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "DAI/ETH" === pool
+        );
+      } else {
+        return (
+          item.name === pool &&
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap")
+        );
       }
     });
-  
+
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
   const pools = [
@@ -259,6 +291,7 @@ const TradeModal = ({
     "BTC/ETH",
     "BTC/USDT",
     "BTC/USDC",
+    "STRK/ETH",
     // "BTC/DAI",
     // "USDT/DAI",
     // "USDC/DAI",
@@ -272,55 +305,42 @@ const TradeModal = ({
     switch (CoinName) {
       case "BTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
-        break;
       case "rBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
-        break;
       case "USDC":
         return <USDCLogo height={"16px"} width={"16px"} />;
-        break;
       case "rUSDC":
         return <USDCLogo height={"16px"} width={"16px"} />;
-        break;
       case "USDT":
         return <USDTLogo height={"16px"} width={"16px"} />;
-        break;
       case "rUSDT":
         return <USDTLogo height={"16px"} width={"16px"} />;
-        break;
       case "ETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
-        break;
       case "rETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
-        break;
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
-        break;
+      case "STRK":
+        return <STRKLogo height={"16px"} width={"16px"} />;
+        case "rSTRK":
+          return <STRKLogo height={"16px"} width={"16px"} />;
       case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
-        break;
       case "Jediswap":
         return <JediswapLogo />;
-        break;
       case "mySwap":
         return <MySwap />;
-        break;
       case "ETH/USDT":
         return <EthToUsdt />;
-        break;
       case "USDC/USDT":
         return <UsdcToUsdt />;
-        break;
       case "ETH/USDC":
         return <EthToUsdc />;
-        break;
       case "DAI/ETH":
         return <DaiToEth />;
-        break;
       case "BTC/ETH":
         return <BtcToEth />;
-        break;
       case "BTC/USDT":
         return <BtcToUsdt />;
       case "BTC/USDC":
@@ -331,13 +351,14 @@ const TradeModal = ({
         return <UsdtToDai />;
       case "USDC/DAI":
         return <UsdcToDai />;
-        break;
+      case "STRK/ETH":
+        return <StrkToEth />;
       default:
         break;
     }
   };
 
-  const fees=useSelector(selectFees)
+  const fees = useSelector(selectFees);
 
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
@@ -393,7 +414,7 @@ const TradeModal = ({
       // dispatch((newValue));
     }
   };
-  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH"];
+  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI", "STRK"];
 
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
     coin ? coin?.name : "BTC"
@@ -415,31 +436,54 @@ const TradeModal = ({
         stats?.[3],
         stats?.[1],
         stats?.[4],
+        stats?.[5],
       ]);
   };
-  const poolsPairs=useSelector(selectJediSwapPoolsSupported);
-  const mySwapPoolPairs=useSelector(selectMySwapPoolsSupported);
+  const poolsPairs = useSelector(selectJediSwapPoolsSupported);
+  const mySwapPoolPairs = useSelector(selectMySwapPoolsSupported);
   const [myswapPools, setmyswapPools] = useState([]);
-  useEffect(()=>{
-    function findSideForMember(array:any, token:any) {
-      const data:any=[];
+  const [jediswapPools, setjediswapPools] = useState([]);
+  useEffect(() => {
+    function findSideForMember(array: any, token: any) {
+      const data: any = [];
       for (const obj of array) {
-          const keyvalue = obj.keyvalue;
-          const [tokenA, tokenB] = keyvalue.split('/');
-          
-          if (tokenA === token) {
-              data.push(tokenB)
-          } else if (tokenB === token) {
-              data.push(tokenA);
-          }
+        const keyvalue = obj.keyvalue;
+        const [tokenA, tokenB] = keyvalue.split("/");
+
+        if (tokenA === token) {
+          data.push(tokenB);
+        } else if (tokenB === token) {
+          data.push(tokenA);
+        }
       }
       setmyswapPools(data);
-       // Token not found in any "keyvalue" pairs
-  }
-  if(mySwapPoolPairs){
-    findSideForMember(mySwapPoolPairs,currentBorrowCoin);
-  }
-  },[currentBorrowCoin,mySwapPoolPairs])
+      // Token not found in any "keyvalue" pairs
+    }
+    if (mySwapPoolPairs) {
+      findSideForMember(mySwapPoolPairs, currentBorrowCoin);
+    }
+  }, [currentBorrowCoin, mySwapPoolPairs]);
+
+  useEffect(() => {
+    function findSideForMember(array: any, token: any) {
+      const data: any = [];
+      for (const obj of array) {
+        const keyvalue = obj.keyvalue;
+        const [tokenA, tokenB] = keyvalue.split("/");
+
+        if (tokenA === token) {
+          data.push(tokenB);
+        } else if (tokenB === token) {
+          data.push(tokenA);
+        }
+      }
+      setjediswapPools(data);
+      // Token not found in any "keyvalue" pairs
+    }
+    if (poolsPairs) {
+      findSideForMember(poolsPairs, currentBorrowCoin);
+    }
+  }, [currentBorrowCoin, poolsPairs]);
 
   // const [poolsPairs,setPoolPairs] = useState<any>([
   //   {
@@ -486,13 +530,13 @@ const TradeModal = ({
   //   }
   //   fetchPools();
   // },[])
-  
+
   useEffect(() => {
     try {
       fetchProtocolStats();
       ////console.log("protocolStats", protocolStats);
     } catch (err: any) {
-     //console.log("borrow modal : error fetching protocolStats");
+      //console.log("borrow modal : error fetching protocolStats");
     }
   }, [stats]);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
@@ -522,12 +566,12 @@ const TradeModal = ({
   }, [radioValue]);
   const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
   useEffect(() => {
-    setLoanMarket(coin ? coin.name : "BTC")
-    setCollateralMarket(coin ? coin.name : "BTC")
-  }, [coin])
-  useEffect(()=>{
-    setCurrentPoolCoin('Select a pool')
-  },[currentDapp])
+    setLoanMarket(coin ? coin.name : "BTC");
+    setCollateralMarket(coin ? coin.name : "BTC");
+  }, [coin]);
+  useEffect(() => {
+    setCurrentPoolCoin("Select a pool");
+  }, [currentDapp]);
   const resetStates = () => {
     setSliderValue(0);
     setsliderValue2(0);
@@ -551,11 +595,13 @@ const TradeModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          String(uint256.uint256ToBN(
-            walletBalances[coin?.name]?.dataBalanceOf?.balance
-          )),
-          tokenDecimalsMap[coin?.name]
-        )
+            String(
+              uint256.uint256ToBN(
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
+              )
+            ),
+            tokenDecimalsMap[coin?.name]
+          )
         : 0
     );
     // if (transactionStarted) dispatch(setTransactionStarted(""));
@@ -680,7 +726,7 @@ const TradeModal = ({
       };
       fetchHealthFactor();
     } catch (err) {
-     //console.log(err);
+      //console.log(err);
     }
   }, [
     inputBorrowAmount,
@@ -689,14 +735,15 @@ const TradeModal = ({
     currentCollateralCoin,
     rTokenAmount,
   ]);
-  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
-  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
-  const minAmounts=useSelector(selectMinimumDepositAmounts);
-  const maxAmounts=useSelector(selectMaximumDepositAmounts);
-  useEffect(()=>{
-    setMinimumDepositAmount(minAmounts["r"+currentCollateralCoin])
-    setmaximumDepositAmount(maxAmounts["r"+currentCollateralCoin])
-  },[currentCollateralCoin,minAmounts,maxAmounts])
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0);
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0);
+  const minAmounts = useSelector(selectMinimumDepositAmounts);
+  const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  useEffect(() => {
+    setMinimumDepositAmount(minAmounts["r" + currentCollateralCoin]);
+    setmaximumDepositAmount(maxAmounts["r" + currentCollateralCoin]);
+  }, [currentCollateralCoin, minAmounts, maxAmounts]);
+
   // useEffect(()=>{
   //   const fetchMinDeposit=async()=>{
   //     const data=await getMinimumDepositAmount("r"+currentCollateralCoin)
@@ -823,7 +870,7 @@ const TradeModal = ({
         }
       }
     } catch (err: any) {
-     //console.log(err);
+      //console.log(err);
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -897,11 +944,11 @@ const TradeModal = ({
       //   parsedBorrowAmount
       // );
     } catch (error) {
-     //console.log(error);
+      //console.log(error);
     }
   };
   // const [poolAprs, setPoolAprs] = useState<any>([])
-  const poolAprs=useSelector(selectJediswapPoolAprs);
+  const poolAprs = useSelector(selectJediswapPoolAprs);
   // useEffect(()=>{
   //   try{
   //       const fetchPoolData=async()=>{
@@ -972,7 +1019,7 @@ const TradeModal = ({
         setInputCollateralAmountUSD(parsedBorrowAmount);
       }
     } catch (error) {
-     //console.log(error);
+      //console.log(error);
     }
   };
   const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
@@ -981,28 +1028,41 @@ const TradeModal = ({
   const [currentSplit, setCurrentSplit] = useState<
     Number[] | undefined | null
   >();
-  const [minimumLoanAmount, setMinimumLoanAmount] = useState<any>(0)
-  const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0)
-  const minLoanAmounts=useSelector(selectMinimumLoanAmounts);
-  const maxLoanAmounts=useSelector(selectMaximumLoanAmounts);
-  useEffect(()=>{
-    const fecthLoanAmount=async()=>{
-      const dynamicdata=await getMaximumDynamicLoanAmount(collateralAmount,currentBorrowCoin,currentCollateralCoin[0]=="r" ? currentCollateralCoin.slice(1):currentCollateralCoin );
-      if(dynamicdata!=undefined){
-        const data=maxLoanAmounts["d"+currentBorrowCoin];
-        if(currentBorrowCoin==currentCollateralCoin){
-          setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
-        }else if(currentCollateralCoin[0]=="r" && currentCollateralCoin.slice(1)==currentBorrowCoin){
-          setMaximumLoanAmount(maxLoanAmounts["d"+currentBorrowCoin])
-        }
-        else{
-          setMaximumLoanAmount(Math.min(dynamicdata,data));
+  const [minimumLoanAmount, setMinimumLoanAmount] = useState<any>(0);
+  const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0);
+  const minLoanAmounts = useSelector(selectMinimumLoanAmounts);
+  const maxLoanAmounts = useSelector(selectMaximumLoanAmounts);
+  useEffect(() => {
+    const fecthLoanAmount = async () => {
+      const dynamicdata = await getMaximumDynamicLoanAmount(
+        collateralAmount,
+        currentBorrowCoin,
+        currentCollateralCoin[0] == "r"
+          ? currentCollateralCoin.slice(1)
+          : currentCollateralCoin
+      );
+      if (dynamicdata != undefined) {
+        const data = maxLoanAmounts["d" + currentBorrowCoin];
+        if (currentBorrowCoin == currentCollateralCoin) {
+          setMaximumLoanAmount(maxLoanAmounts["d" + currentBorrowCoin]);
+        } else if (
+          currentCollateralCoin[0] == "r" &&
+          currentCollateralCoin.slice(1) == currentBorrowCoin
+        ) {
+          setMaximumLoanAmount(maxLoanAmounts["d" + currentBorrowCoin]);
+        } else {
+          setMaximumLoanAmount(Math.min(dynamicdata, data));
         }
       }
-    }
+    };
     fecthLoanAmount();
-    setMinimumLoanAmount(minLoanAmounts["d"+currentBorrowCoin])
-  },[currentBorrowCoin,maxLoanAmounts,minLoanAmounts,currentCollateralCoin])
+    setMinimumLoanAmount(minLoanAmounts["d" + currentBorrowCoin]);
+  }, [
+    currentBorrowCoin,
+    maxLoanAmounts,
+    minLoanAmounts,
+    currentCollateralCoin,
+  ]);
   // useEffect(()=>{
   //   const fetchMinLoanAmount=async()=>{
   //     const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
@@ -1144,7 +1204,6 @@ const TradeModal = ({
   //   };
   //   fetchEstrTokens();
   // }, [collateralBalance, inputCollateralAmount]);
-
   return (
     <Box>
       <Text
@@ -1244,7 +1303,7 @@ const TradeModal = ({
               display="flex"
               justifyContent="space-around"
               gap="5"
-            //   alignItems="center"
+              //   alignItems="center"
             >
               <Box w="48%">
                 <Box
@@ -1277,7 +1336,7 @@ const TradeModal = ({
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                         maxW="252px"
-                      // mt="12px"
+                        // mt="12px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -1307,7 +1366,12 @@ const TradeModal = ({
                     >
                       <Box display="flex" gap="1">
                         <Box p="1">{getCoin(currentCollateralCoin)}</Box>
-                        <Text>{(currentCollateralCoin=="BTC" || currentCollateralCoin=='ETH') ? "w"+currentCollateralCoin:currentCollateralCoin}</Text>
+                        <Text>
+                          {currentCollateralCoin == "BTC" ||
+                          currentCollateralCoin == "ETH"
+                            ? "w" + currentCollateralCoin
+                            : currentCollateralCoin}
+                        </Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
                         {activeModal == "tradeModalCollateralMarketDropdown" ? (
@@ -1431,17 +1495,19 @@ const TradeModal = ({
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      pl={`${coin === currentCollateralCoin
+                                      pl={`${
+                                        coin === currentCollateralCoin
                                           ? "1"
                                           : "5"
-                                        }`}
+                                      }`}
                                       pr="6px"
                                       gap="1"
                                       justifyContent="space-between"
-                                      bg={`${coin === currentCollateralCoin
+                                      bg={`${
+                                        coin === currentCollateralCoin
                                           ? "#4D59E8"
                                           : "inherit"
-                                        }`}
+                                      }`}
                                       borderRadius="md"
                                     >
                                       <Box display="flex">
@@ -1478,6 +1544,9 @@ const TradeModal = ({
                             />
                           )}
                           {coins?.map((coin: NativeToken, index: number) => {
+                            if (coin === "DAI") {
+                              return null;
+                            }
                             return (
                               <Box
                                 key={index}
@@ -1496,12 +1565,14 @@ const TradeModal = ({
                                     walletBalances[coin]?.statusBalanceOf ===
                                       "success"
                                       ? parseAmount(
-                                        String(uint256.uint256ToBN(
-                                          walletBalances[coin]?.dataBalanceOf
-                                            ?.balance
-                                        )),
-                                        tokenDecimalsMap[coin]
-                                      )
+                                          String(
+                                            uint256.uint256ToBN(
+                                              walletBalances[coin]
+                                                ?.dataBalanceOf?.balance
+                                            )
+                                          ),
+                                          tokenDecimalsMap[coin]
+                                        )
                                       : 0
                                   );
                                 }}
@@ -1518,20 +1589,26 @@ const TradeModal = ({
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  pl={`${coin === currentCollateralCoin ? "1" : "5"
-                                    }`}
+                                  pl={`${
+                                    coin === currentCollateralCoin ? "1" : "5"
+                                  }`}
                                   pr="6px"
                                   gap="1"
-                                  bg={`${coin === currentCollateralCoin
+                                  bg={`${
+                                    coin === currentCollateralCoin
                                       ? "#4D59E8"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                   justifyContent="space-between"
                                 >
                                   <Box display="flex">
                                     <Box p="1">{getCoin(coin)}</Box>
-                                    <Text color="white">{(coin=="BTC" || coin=="ETH")?"w"+coin:coin}</Text>
+                                    <Text color="white">
+                                      {coin == "BTC" || coin == "ETH"
+                                        ? "w" + coin
+                                        : coin}
+                                    </Text>
                                   </Box>
                                   <Box
                                     fontSize="9px"
@@ -1543,14 +1620,16 @@ const TradeModal = ({
                                     {walletBalances[coin]?.dataBalanceOf
                                       ?.balance
                                       ? numberFormatter(
-                                        parseAmount(
-                                          String(uint256.uint256ToBN(
-                                            walletBalances[coin]
-                                              ?.dataBalanceOf?.balance
-                                          )),
-                                          tokenDecimalsMap[coin]
+                                          parseAmount(
+                                            String(
+                                              uint256.uint256ToBN(
+                                                walletBalances[coin]
+                                                  ?.dataBalanceOf?.balance
+                                              )
+                                            ),
+                                            tokenDecimalsMap[coin]
+                                          )
                                         )
-                                      )
                                       : "-"}
                                   </Box>
                                 </Box>
@@ -1590,20 +1669,23 @@ const TradeModal = ({
                     <Box
                       width="100%"
                       color="white"
-                      border={`${inputCollateralAmount > walletBalance
+                      border={`${
+                        inputCollateralAmount > walletBalance
                           ? "1px solid #CF222E"
                           : inputCollateralAmount < 0
-                            ? "1px solid #CF222E"
-                            : isNaN(inputCollateralAmount)
-                              ? "1px solid #CF222E"
-                              :inputCollateralAmount>0 &&process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& (inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount)
-                              ? "1px solid #CF222E"
-                              
-                              : inputCollateralAmount > 0 &&
-                                inputCollateralAmount <= walletBalance
-                                ? "1px solid #00D395"
-                                : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
-                        }`}
+                          ? "1px solid #CF222E"
+                          : isNaN(inputCollateralAmount)
+                          ? "1px solid #CF222E"
+                          : inputCollateralAmount > 0 &&
+                            process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                            (inputCollateralAmount < minimumDepositAmount ||
+                              inputCollateralAmount > maximumDepositAmount)
+                          ? "1px solid #CF222E"
+                          : inputCollateralAmount > 0 &&
+                            inputCollateralAmount <= walletBalance
+                          ? "1px solid #00D395"
+                          : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
+                      }`}
                       borderRadius="6px"
                       display="flex"
                       justifyContent="space-between"
@@ -1623,20 +1705,36 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                            placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentCollateralCoin}`:`min ${minimumDepositAmount==null ?0:minimumDepositAmount} ${currentCollateralCoin}`}
-                          color={`${inputCollateralAmount > walletBalance
+                          placeholder={
+                            process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
+                              ? `0.01536 ${currentCollateralCoin}`
+                              : `min ${
+                                  minimumDepositAmount == null
+                                    ? 0
+                                    : minimumDepositAmount
+                                } ${currentCollateralCoin}`
+                          }
+                          color={`${
+                            inputCollateralAmount > walletBalance
                               ? "#CF222E"
                               : isNaN(inputCollateralAmount)
-                                ? "#CF222E"
-                                : inputCollateralAmount < 0
-                                  ? "#CF222E"
-                          :((process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount<minimumDepositAmount) || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount > maximumDepositAmount)) && inputCollateralAmount>0
-                                  ? "#CF222E"
-                                  
-                                  : inputCollateralAmount == 0
-                                    ? "white"
-                                    : "#00D395"
-                            }`}
+                              ? "#CF222E"
+                              : inputCollateralAmount < 0
+                              ? "#CF222E"
+                              : ((process.env.NEXT_PUBLIC_NODE_ENV ==
+                                  "mainnet" &&
+                                  inputCollateralAmount <
+                                    minimumDepositAmount) ||
+                                  (process.env.NEXT_PUBLIC_NODE_ENV ==
+                                    "mainnet" &&
+                                    inputCollateralAmount >
+                                      maximumDepositAmount)) &&
+                                inputCollateralAmount > 0
+                              ? "#CF222E"
+                              : inputCollateralAmount == 0
+                              ? "white"
+                              : "#00D395"
+                          }`}
                           _disabled={{ color: "#00D395" }}
                           border="0px"
                           _placeholder={{
@@ -1653,20 +1751,25 @@ const TradeModal = ({
                       </NumberInput>
                       <Button
                         variant="ghost"
-                        color={`${inputCollateralAmount > walletBalance
+                        color={`${
+                          inputCollateralAmount > walletBalance
                             ? "#CF222E"
                             : isNaN(inputCollateralAmount)
-                              ? "#CF222E"
-                        :(inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount) && process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount>0
-                        ? "#CF222E"
-
-                              : inputCollateralAmount < 0
-                                ? "#CF222E"
-                                : inputCollateralAmount == 0
-                                  ? "#4D59E8"
-                                  : "#00D395"
-                          }`}
-                        _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
+                            ? "#CF222E"
+                            : (inputCollateralAmount < minimumDepositAmount ||
+                                inputCollateralAmount > maximumDepositAmount) &&
+                              process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                              inputCollateralAmount > 0
+                            ? "#CF222E"
+                            : inputCollateralAmount < 0
+                            ? "#CF222E"
+                            : inputCollateralAmount == 0
+                            ? "#4D59E8"
+                            : "#00D395"
+                        }`}
+                        _hover={{
+                          bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
+                        }}
                         onClick={() => {
                           setinputCollateralAmount(walletBalance);
                           setCollateralAmount(walletBalance);
@@ -1683,9 +1786,12 @@ const TradeModal = ({
                       </Button>
                     </Box>
                     {inputCollateralAmount > walletBalance ||
-                      inputCollateralAmount < 0 ||
-                      ((inputCollateralAmount<minimumDepositAmount || inputCollateralAmount > maximumDepositAmount)&& process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount>0) ||
-                      isNaN(inputCollateralAmount) ? (
+                    inputCollateralAmount < 0 ||
+                    ((inputCollateralAmount < minimumDepositAmount ||
+                      inputCollateralAmount > maximumDepositAmount) &&
+                      process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                      inputCollateralAmount > 0) ||
+                    isNaN(inputCollateralAmount) ? (
                       <Text
                         display="flex"
                         justifyContent="space-between"
@@ -1703,12 +1809,14 @@ const TradeModal = ({
                           <Text ml="0.3rem">
                             {inputCollateralAmount > walletBalance
                               ? "Amount exceeds balance"
-                              :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount <minimumDepositAmount 
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                inputCollateralAmount < minimumDepositAmount
                               ? `less than min amount`
-                              :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputCollateralAmount>maximumDepositAmount
-                              ?'more than max amount'
-                              //do max 1209
-                              : "Invalid Input"}
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                inputCollateralAmount > maximumDepositAmount
+                              ? "more than max amount"
+                              : //do max 1209
+                                "Invalid Input"}
                           </Text>
                         </Text>
                         <Text
@@ -1716,9 +1824,11 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Wallet Balance: {" "}                      {walletBalance?.toFixed(5).replace(/\.?0+$/, "").length > 5
-                        ? numberFormatter(walletBalance)
-                        : numberFormatter(walletBalance)}
+                          Wallet Balance:{" "}
+                          {walletBalance?.toFixed(5).replace(/\.?0+$/, "")
+                            .length > 5
+                            ? numberFormatter(walletBalance)
+                            : numberFormatter(walletBalance)}
                           <Text color="#676D9A" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
@@ -1735,9 +1845,11 @@ const TradeModal = ({
                         fontStyle="normal"
                         fontFamily="Inter"
                       >
-                        Wallet Balance: {" "}                      {walletBalance?.toFixed(5).replace(/\.?0+$/, "").length > 5
-                        ? numberFormatter(walletBalance)
-                        : numberFormatter(walletBalance)}
+                        Wallet Balance:{" "}
+                        {walletBalance?.toFixed(5).replace(/\.?0+$/, "")
+                          .length > 5
+                          ? numberFormatter(walletBalance)
+                          : numberFormatter(walletBalance)}
                         <Text color="#676D9A" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>
@@ -1756,12 +1868,18 @@ const TradeModal = ({
                             setRTokenAmount(walletBalance);
                           } else {
                             var ans = (val / 100) * walletBalance;
-                            if(ans<10){
-                              dispatch(setInputTradeModalCollateralAmount(parseFloat(ans.toFixed(7))));
-                              setinputCollateralAmount(parseFloat(ans.toFixed(7)));
+                            if (ans < 10) {
+                              dispatch(
+                                setInputTradeModalCollateralAmount(
+                                  parseFloat(ans.toFixed(7))
+                                )
+                              );
+                              setinputCollateralAmount(
+                                parseFloat(ans.toFixed(7))
+                              );
                               setCollateralAmount(parseFloat(ans.toFixed(7)));
                               setRTokenAmount(parseFloat(ans.toFixed(7)));
-                            }else{
+                            } else {
                               ans = Math.round(ans * 100) / 100;
                               dispatch(setInputTradeModalCollateralAmount(ans));
                               setinputCollateralAmount(ans);
@@ -1924,7 +2042,12 @@ const TradeModal = ({
                     >
                       <Box display="flex" gap="1">
                         <Box p="1">{getCoin(currentBorrowCoin)}</Box>
-                        <Text>{(currentBorrowCoin=="BTC"|| currentBorrowCoin=='ETH')? "w"+currentBorrowCoin:currentBorrowCoin}</Text>
+                        <Text>
+                          {currentBorrowCoin == "BTC" ||
+                          currentBorrowCoin == "ETH"
+                            ? "w" + currentBorrowCoin
+                            : currentBorrowCoin}
+                        </Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
                         {activeModal == "tradeModalBorrowMarketDropdown" ? (
@@ -1998,6 +2121,9 @@ const TradeModal = ({
                           boxShadow="dark-lg"
                         >
                           {coins?.map((coin: NativeToken, index: number) => {
+                            if (coin === "DAI") {
+                              return null;
+                            }
                             return (
                               <Box
                                 key={index}
@@ -2011,7 +2137,7 @@ const TradeModal = ({
                                   setCurrentBorrowCoin(coin);
                                   setCurrentAvailableReserves(
                                     protocolStats?.[index]?.availableReserves *
-                                    0.895
+                                      0.895
                                   );
                                   setCurrentBorrowAPR(
                                     coinIndex.find(
@@ -2035,20 +2161,26 @@ const TradeModal = ({
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  pl={`${coin === currentBorrowCoin ? "1" : "5"
-                                    }`}
+                                  pl={`${
+                                    coin === currentBorrowCoin ? "1" : "5"
+                                  }`}
                                   pr="6px"
                                   gap="1"
-                                  bg={`${coin === currentBorrowCoin
+                                  bg={`${
+                                    coin === currentBorrowCoin
                                       ? "#4D59E8"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                   justifyContent="space-between"
                                 >
                                   <Box display="flex">
                                     <Box p="1">{getCoin(coin)}</Box>
-                                    <Text color="white">{(coin=="BTC" || coin=='ETH'?"w"+coin:coin)}</Text>
+                                    <Text color="white">
+                                      {coin == "BTC" || coin == "ETH"
+                                        ? "w" + coin
+                                        : coin}
+                                    </Text>
                                   </Box>
                                   <Box
                                     fontSize="9px"
@@ -2064,15 +2196,15 @@ const TradeModal = ({
                                         protocolStats?.[index]
                                           ?.availableReserves * 0.895
                                       )) || (
-                                        <Skeleton
-                                          width="3rem"
-                                          height="1rem"
-                                          startColor="#1E212F"
-                                          endColor="#03060B"
-                                          borderRadius="6px"
-                                          ml={2}
-                                        />
-                                      )}
+                                      <Skeleton
+                                        width="3rem"
+                                        height="1rem"
+                                        startColor="#1E212F"
+                                        endColor="#03060B"
+                                        borderRadius="6px"
+                                        ml={2}
+                                      />
+                                    )}
                                   </Box>
                                 </Box>
                               </Box>
@@ -2111,22 +2243,26 @@ const TradeModal = ({
                     <Box
                       width="100%"
                       color="white"
-                      border={`${inputCollateralAmountUSD &&
-                          inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
+                      border={`${
+                        inputCollateralAmountUSD &&
+                        inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                           ? "1px solid #CF222E"
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
-                            ? "1px solid #CF222E"
-                            :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount<minimumLoanAmount && inputBorrowAmount>0
-                            ? "1px solid #CF222E"
-                            :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount 
-                            ? "1px solid #CF222E"
-                            : isNaN(inputBorrowAmount)
-                              ? "1px solid #CF222E"
-                              : inputBorrowAmount > 0
-                                ? "1px solid #00D395"
-                                : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
-                        }`}
+                          ? "1px solid #CF222E"
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                            inputBorrowAmount < minimumLoanAmount &&
+                            inputBorrowAmount > 0
+                          ? "1px solid #CF222E"
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                            inputBorrowAmount > maximumLoanAmount
+                          ? "1px solid #CF222E"
+                          : isNaN(inputBorrowAmount)
+                          ? "1px solid #CF222E"
+                          : inputBorrowAmount > 0
+                          ? "1px solid #00D395"
+                          : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
+                      }`}
                       borderRadius="6px"
                       display="flex"
                       justifyContent="space-between"
@@ -2147,24 +2283,36 @@ const TradeModal = ({
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
-                      placeholder={process.env.NEXT_PUBLIC_NODE_ENV=="testnet"? `0.01536 ${currentBorrowCoin}`:`min ${minimumLoanAmount==null ?0:minimumLoanAmount} ${currentBorrowCoin}`}
-                          color={`${inputCollateralAmountUSD &&
-                              inputBorrowAmountUSD >
+                          placeholder={
+                            process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
+                              ? `0.01536 ${currentBorrowCoin}`
+                              : `min ${
+                                  minimumLoanAmount == null
+                                    ? 0
+                                    : minimumLoanAmount
+                                } ${currentBorrowCoin}`
+                          }
+                          color={`${
+                            inputCollateralAmountUSD &&
+                            inputBorrowAmountUSD >
                               4.98 * inputCollateralAmountUSD
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
-                                ? "#CF222E"
-                                : inputBorrowAmount < 0 ||
-                                  inputBorrowAmount > currentAvailableReserves
-                                  ? "#CF222E"
-                                  :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount<minimumLoanAmount &&inputBorrowAmount>0
-                                  ? "#CF222E"
-                                  :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount 
-                                  ?"#CF222E"
-                                  : inputBorrowAmount == 0
-                                    ? "white"
-                                    : "#00D395"
-                            }`}
+                              ? "#CF222E"
+                              : inputBorrowAmount < 0 ||
+                                inputBorrowAmount > currentAvailableReserves
+                              ? "#CF222E"
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                inputBorrowAmount < minimumLoanAmount &&
+                                inputBorrowAmount > 0
+                              ? "#CF222E"
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                inputBorrowAmount > maximumLoanAmount
+                              ? "#CF222E"
+                              : inputBorrowAmount == 0
+                              ? "white"
+                              : "#00D395"
+                          }`}
                           border="0px"
                           _disabled={{ color: "#00D395" }}
                           _placeholder={{
@@ -2181,31 +2329,36 @@ const TradeModal = ({
                       </NumberInput>
                       <Button
                         variant="ghost"
-                        color={`${inputCollateralAmountUSD &&
-                            inputBorrowAmountUSD >
-                            4.98 * inputCollateralAmountUSD
+                        color={`${
+                          inputCollateralAmountUSD &&
+                          inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                             ? "#CF222E"
                             : isNaN(inputBorrowAmount)
-                              ? "#CF222E"
-                              : inputBorrowAmount < 0 ||
-                                inputBorrowAmount > currentAvailableReserves
-                                ? "#CF222E"
-                                :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount<minimumLoanAmount && inputBorrowAmount>0
-                                ?"#CF222E"
-                                :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount>maximumLoanAmount
-                                ?"#CF222E"
-                                : inputBorrowAmount == 0
-                                  ? "#4D59E8"
-                                  : "#00D395"
-                          }`}
-                        _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
+                            ? "#CF222E"
+                            : inputBorrowAmount < 0 ||
+                              inputBorrowAmount > currentAvailableReserves
+                            ? "#CF222E"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                              inputBorrowAmount < minimumLoanAmount &&
+                              inputBorrowAmount > 0
+                            ? "#CF222E"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                              inputBorrowAmount > maximumLoanAmount
+                            ? "#CF222E"
+                            : inputBorrowAmount == 0
+                            ? "#4D59E8"
+                            : "#00D395"
+                        }`}
+                        _hover={{
+                          bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
+                        }}
                         onClick={() => {
                           if (inputCollateralAmountUSD > 0) {
                             if (
                               (4.98 * inputCollateralAmountUSD) /
-                              oraclePrices.find(
-                                (curr: any) => curr.name === currentBorrowCoin
-                              )?.price >
+                                oraclePrices.find(
+                                  (curr: any) => curr.name === currentBorrowCoin
+                                )?.price >
                               currentAvailableReserves
                             ) {
                               setinputBorrowAmount(currentAvailableReserves);
@@ -2214,17 +2367,17 @@ const TradeModal = ({
                             } else {
                               setinputBorrowAmount(
                                 (4.98 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) =>
-                                    curr.name === currentBorrowCoin
-                                )?.price
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price
                               );
                               setLoanAmount(
                                 (4.98 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) =>
-                                    curr.name === currentBorrowCoin
-                                )?.price
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price
                               );
                               setsliderValue2(100);
                             }
@@ -2249,13 +2402,14 @@ const TradeModal = ({
                       </Button>
                     </Box>
                     {inputBorrowAmount > currentAvailableReserves ||
-                    inputBorrowAmount>0 &&process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& inputBorrowAmount<minimumLoanAmount ||
-                    inputBorrowAmount>maximumLoanAmount ||
-                      (inputBorrowAmount > 0 &&
-                        inputCollateralAmountUSD &&
-                        inputBorrowAmountUSD >
-                        4.98 * inputCollateralAmountUSD) ||
-                      isNaN(inputBorrowAmount) ? (
+                    (inputBorrowAmount > 0 &&
+                      process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                      inputBorrowAmount < minimumLoanAmount) ||
+                    inputBorrowAmount > maximumLoanAmount ||
+                    (inputBorrowAmount > 0 &&
+                      inputCollateralAmountUSD &&
+                      inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD) ||
+                    isNaN(inputBorrowAmount) ? (
                       <Text
                         display="flex"
                         justifyContent="space-between"
@@ -2274,14 +2428,16 @@ const TradeModal = ({
                           <Text ml="0.3rem">
                             {inputBorrowAmount > currentAvailableReserves
                               ? "Amount exceeds balance"
-                              :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&&inputBorrowAmount< minimumLoanAmount
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                inputBorrowAmount < minimumLoanAmount
                               ? "Less than min amount"
-                              :process.env.NEXT_PUBLIC_NODE_ENV=="mainnet"&& inputBorrowAmount>maximumLoanAmount
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                inputBorrowAmount > maximumLoanAmount
                               ? "More than max amount"
                               : inputBorrowAmountUSD >
                                 4.98 * inputCollateralAmountUSD
-                                ? "Debt higher than permitted"
-                                : "Invalid Input"}
+                              ? "Debt higher than permitted"
+                              : "Invalid Input"}
                           </Text>
                         </Text>
                         <Text
@@ -2308,7 +2464,7 @@ const TradeModal = ({
                         fontFamily="Inter"
                       >
                         Available reserves:{" "}
-                        {currentAvailableReserves!=null ? (
+                        {currentAvailableReserves != null ? (
                           numberFormatter(currentAvailableReserves)
                         ) : (
                           <Skeleton
@@ -2336,17 +2492,17 @@ const TradeModal = ({
                             if (inputCollateralAmountUSD > 0) {
                               setinputBorrowAmount(
                                 (4.98 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) =>
-                                    curr.name === currentBorrowCoin
-                                )?.price
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price
                               );
                               setLoanAmount(
                                 (4.98 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) =>
-                                    curr.name === currentBorrowCoin
-                                )?.price
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price
                               );
                             } else {
                               setinputBorrowAmount(currentAvailableReserves);
@@ -2364,11 +2520,15 @@ const TradeModal = ({
                             } else {
                               var ans = (val / 100) * currentAvailableReserves;
                             }
-                            if(ans<10){
-                              dispatch(setInputTradeModalBorrowAmount(parseFloat(ans.toFixed(7))));
+                            if (ans < 10) {
+                              dispatch(
+                                setInputTradeModalBorrowAmount(
+                                  parseFloat(ans.toFixed(7))
+                                )
+                              );
                               setinputBorrowAmount(parseFloat(ans.toFixed(7)));
                               setLoanAmount(parseFloat(ans.toFixed(7)));
-                            }else{
+                            } else {
                               ans = Math.round(ans * 100) / 100;
                               dispatch(setInputTradeModalBorrowAmount(ans));
                               setinputBorrowAmount(ans);
@@ -2480,32 +2640,30 @@ const TradeModal = ({
               <Box w="48%">
                 <Box display="flex" flexDir="column" p="3" gap="1">
                   <Box>
-                    <RadioGroup  onChange={setRadioValue} value={radioValue}>
+                    <RadioGroup onChange={setRadioValue} value={radioValue}>
                       <Stack spacing={4} direction="row">
                         <Radio
-                                  // variant="primary"
+                          // variant="primary"
                           value="1"
                           // border
-                        
+
                           borderColor="#2B2F35"
                           colorScheme="customPurple"
                           // bg="black"
                           _checked={{
                             bg: "black",
                             color: "white",
-borderWidth:'5px',
-                              borderColor:"#4D59E8",
+                            borderWidth: "5px",
+                            borderColor: "#4D59E8",
                           }}
-                        
                           _focus={{ boxShadow: "none", outline: "0" }}
-                        // onClick={() => {
-                        //   setMethod("ADD_LIQUIDITY");
-                        // }}
+                          // onClick={() => {
+                          //   setMethod("ADD_LIQUIDITY");
+                          // }}
                         >
                           Liquidity provisioning
                         </Radio>
                         <Radio
-                     
                           fontSize="sm"
                           value="2"
                           // bg="#2B2F35"
@@ -2515,15 +2673,17 @@ borderWidth:'5px',
                           _checked={{
                             bg: "black",
                             color: "white",
-borderWidth:'5px',
-                              borderColor:"#4D59E8",
+                            borderWidth: "5px",
+                            borderColor: "#4D59E8",
                           }}
                           _focus={{ boxShadow: "none", outline: "0" }}
-                        // onClick={() => {
-                        //   setMethod("SWAP");
-                        // }}
+                          // onClick={() => {
+                          //   setMethod("SWAP");
+                          // }}
                         >
-                          {process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?"Trade":"Swap"}
+                          {process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
+                            ? "Trade"
+                            : "Swap"}
                         </Radio>
                       </Stack>
                     </RadioGroup>
@@ -2559,7 +2719,7 @@ borderWidth:'5px',
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                         maxW="242px"
-                      // mt="5px"
+                        // mt="5px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -2647,13 +2807,15 @@ borderWidth:'5px',
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  px={`${dapp.name === currentDapp ? "1" : "5"
-                                    }`}
+                                  px={`${
+                                    dapp.name === currentDapp ? "1" : "5"
+                                  }`}
                                   gap="1"
-                                  bg={`${dapp.name === currentDapp
+                                  bg={`${
+                                    dapp.name === currentDapp
                                       ? "#4D59E8"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(dapp.name)}</Box>
@@ -2735,7 +2897,31 @@ borderWidth:'5px',
                           ""
                         )}
                         <Text>
-                          {radioValue === "1" ? (currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH") &&((currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH"))  ?"w"+currentPool.split("/")[0]+"/w"+currentPool.split("/")[1]:(currentPool.split("/")[0]=="BTC" || currentPool.split("/")[0]=="ETH")  ?"w"+currentPool.split("/")[0]+"/"+currentPool.split("/")[1]:(currentPool.split("/")[1]=="BTC" || currentPool.split("/")[1]=="ETH")  ?currentPool.split("/")[0]+"/w"+currentPool.split("/")[1] :currentPool : (currentPoolCoin=="BTC" || currentPoolCoin=='ETH') ?"w"+currentPoolCoin:currentPoolCoin}
+                          {radioValue === "1"
+                            ? (currentPool.split("/")[0] == "BTC" ||
+                                currentPool.split("/")[0] == "ETH") &&
+                              (currentPool.split("/")[1] == "BTC" ||
+                                currentPool.split("/")[1] == "ETH")
+                              ? "w" +
+                                currentPool.split("/")[0] +
+                                "/w" +
+                                currentPool.split("/")[1]
+                              : currentPool.split("/")[0] == "BTC" ||
+                                currentPool.split("/")[0] == "ETH"
+                              ? "w" +
+                                currentPool.split("/")[0] +
+                                "/" +
+                                currentPool.split("/")[1]
+                              : currentPool.split("/")[1] == "BTC" ||
+                                currentPool.split("/")[1] == "ETH"
+                              ? currentPool.split("/")[0] +
+                                "/w" +
+                                currentPool.split("/")[1]
+                              : currentPool
+                            : currentPoolCoin == "BTC" ||
+                              currentPoolCoin == "ETH"
+                            ? "w" + currentPoolCoin
+                            : currentPoolCoin}
                         </Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
@@ -2746,7 +2932,7 @@ borderWidth:'5px',
                         )}
                       </Box>
                       {modalDropdowns.yourBorrowPoolDropdown &&
-                        radioValue === "1" ? (
+                      radioValue === "1" ? (
                         <Box
                           w="full"
                           left="0"
@@ -2759,9 +2945,19 @@ borderWidth:'5px',
                           overflow="scroll"
                         >
                           {pools.map((pool, index) => {
-                            const matchingPair = currentDapp=="Jediswap" ? poolsPairs.find((pair:any) => pair.keyvalue === pool):mySwapPoolPairs.find((pair:any) => pair.keyvalue === pool);
+                            const matchingPair =
+                              currentDapp == "Jediswap"
+                                ? poolsPairs.find(
+                                    (pair: any) => pair.keyvalue === pool
+                                  )
+                                : mySwapPoolPairs.find(
+                                    (pair: any) => pair.keyvalue === pool
+                                  );
 
-                            if (!matchingPair && currentDapp!="Select a dapp" ) {
+                            if (
+                              !matchingPair &&
+                              currentDapp != "Select a dapp"
+                            ) {
                               return null; // Skip rendering for pools with keyvalue "null"
                             }
                             return (
@@ -2798,23 +2994,48 @@ borderWidth:'5px',
                                   pr="2"
                                   pl={`${pool === currentPool ? "1" : "4"}`}
                                   gap="1"
-                                  bg={`${pool === currentPool ? "#4D59E8" : "inherit"
-                                    }`}
+                                  bg={`${
+                                    pool === currentPool ? "#4D59E8" : "inherit"
+                                  }`}
                                   borderRadius="md"
                                 >
                                   <Box display="flex">
-
-                                  <Box p="1">{getCoin(pool)}</Box>
-                                  <Text>{(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH") &&((pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH"))  ?"w"+pool.split("/")[0]+"/w"+pool.split("/")[1]:(pool.split("/")[0]=="BTC" || pool.split("/")[0]=="ETH")  ?"w"+pool.split("/")[0]+"/"+pool.split("/")[1]:(pool.split("/")[1]=="BTC" || pool.split("/")[1]=="ETH")  ?pool.split("/")[0]+"/w"+pool.split("/")[1] :pool}</Text>
+                                    <Box p="1">{getCoin(pool)}</Box>
+                                    <Text>
+                                      {(pool.split("/")[0] == "BTC" ||
+                                        pool.split("/")[0] == "ETH") &&
+                                      (pool.split("/")[1] == "BTC" ||
+                                        pool.split("/")[1] == "ETH")
+                                        ? "w" +
+                                          pool.split("/")[0] +
+                                          "/w" +
+                                          pool.split("/")[1]
+                                        : pool.split("/")[0] == "BTC" ||
+                                          pool.split("/")[0] == "ETH"
+                                        ? "w" +
+                                          pool.split("/")[0] +
+                                          "/" +
+                                          pool.split("/")[1]
+                                        : pool.split("/")[1] == "BTC" ||
+                                          pool.split("/")[1] == "ETH"
+                                        ? pool.split("/")[0] +
+                                          "/w" +
+                                          pool.split("/")[1]
+                                        : pool}
+                                    </Text>
                                   </Box>
-                                    <Box
-                                fontSize="9px"
-                                color="#E6EDF3"
-                                mt="6px"
-                                fontWeight="medium"
-                                    >
-                                    Pool apr: {numberFormatterPercentage(getAprByPool(poolAprs,pool,currentDapp))}%                                               
-                                      </Box>
+                                  <Box
+                                    fontSize="9px"
+                                    color="#E6EDF3"
+                                    mt="6px"
+                                    fontWeight="medium"
+                                  >
+                                    Pool apr:{" "}
+                                    {numberFormatterPercentage(
+                                      getAprByPool(poolAprs, pool, currentDapp)
+                                    )}
+                                    %
+                                  </Box>
                                 </Box>
                               </Box>
                             );
@@ -2831,8 +3052,29 @@ borderWidth:'5px',
                           boxShadow="dark-lg"
                         >
                           {coins?.map((coin: NativeToken, index: number) => {
-                            const matchingPair =  myswapPools?.find((pair:any) => pair === coin);
-                            if (coin == currentBorrowCoin || (process.env.NEXT_PUBLIC_NODE_ENV=="mainnet" && currentDapp=="mySwap" &&!matchingPair)) {
+                            if (coin === "DAI") {
+                              return null;
+                            }
+                            const matchingPair = myswapPools?.find(
+                              (pair: any) => pair === coin
+                            );
+                            const matchingPairJedi = jediswapPools?.find(
+                              (pair: any) => pair === coin
+                            );
+                            if (
+                              coin == currentBorrowCoin ||
+                              (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                currentDapp == "mySwap" &&
+                                !matchingPair)
+                            ) {
+                              return null;
+                            }
+                            if (
+                              coin == currentBorrowCoin ||
+                              (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                currentDapp == "Jediswap" &&
+                                !matchingPairJedi)
+                            ) {
                               return null;
                             }
                             return (
@@ -2863,14 +3105,19 @@ borderWidth:'5px',
                                   py="5px"
                                   px={`${coin === currentPoolCoin ? "1" : "5"}`}
                                   gap="1"
-                                  bg={`${coin === currentPoolCoin
+                                  bg={`${
+                                    coin === currentPoolCoin
                                       ? "#4D59E8"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
-                                  <Text>{(coin=="BTC"|| coin=="ETH")?"w"+coin:coin}</Text>
+                                  <Text>
+                                    {coin == "BTC" || coin == "ETH"
+                                      ? "w" + coin
+                                      : coin}
+                                  </Text>
                                 </Box>
                               </Box>
                             );
@@ -2889,147 +3136,120 @@ borderWidth:'5px',
                   background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                   my="4"
                 >
-                  {radioValue == "1" && currentPool !== "Select a pool" &&collateralAmount > 0 && inputBorrowAmount > 0  && (
-                    <Box display="flex" justifyContent="space-between" mb="1">
-                      <Box display="flex">
-                        <Text color="#676D9A" fontSize="xs">
-                          est LP tokens recieved:{" "}
-                        </Text>
-                        <Tooltip
-                          hasArrow
-                          placement="right"
-                          boxShadow="dark-lg"
-                          label="Estimated Liquidity Provider Tokens Received: Estimate of LP tokens received by providing liquidity to a pool."
-                          bg="#02010F"
-                          fontSize={"13px"}
-                          fontWeight={"400"}
-                          borderRadius={"lg"}
-                          padding={"2"}
-                          color="#F0F0F5"
-                          border="1px solid"
-                          borderColor="#23233D"
-                          arrowShadowColor="#2B2F35"
-                          maxW="232px"
-                        // mt="50px"
-                        >
-                          <Box p="1">
-                            <InfoIcon />
-                          </Box>
-                        </Tooltip>
-                      </Box>
-                      <Text
-                        color="#676D9A"
-                        fontSize="12px"
-                        fontWeight="400"
-                        fontStyle="normal"
-                      >
-                        {currentLPTokenAmount == undefined ||
-                          currentLPTokenAmount === null ? (
-                          <Box pt="2px">
-                            <Skeleton
-                              width="2.3rem"
-                              height=".85rem"
-                              startColor="#2B2F35"
-                              endColor="#101216"
-                              borderRadius="6px"
-                            />
-                          </Box>
-                        ) : (
-                          numberFormatter(currentLPTokenAmount)
-                        )}
-                        {/* $ 10.91 */}
-                      </Text>
-                    </Box>
-                  )}
-                  {radioValue == "1" && currentPool !== "Select a pool" && collateralAmount > 0 && inputBorrowAmount > 0 && (
-                    <Box
-                      display="flex"
-                      justifyContent="space-between"
-                      mb="0.3rem"
-                    >
-                      <Box display="flex">
+                  {radioValue == "1" &&
+                    currentPool !== "Select a pool" &&
+                    collateralAmount > 0 &&
+                    inputBorrowAmount > 0 && (
+                      <Box display="flex" justifyContent="space-between" mb="1">
+                        <Box display="flex">
+                          <Text color="#676D9A" fontSize="xs">
+                            est LP tokens recieved:{" "}
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label="Estimated Liquidity Provider Tokens Received: Estimate of LP tokens received by providing liquidity to a pool."
+                            bg="#02010F"
+                            fontSize={"13px"}
+                            fontWeight={"400"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                            maxW="232px"
+                            // mt="50px"
+                          >
+                            <Box p="1">
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Box>
                         <Text
                           color="#676D9A"
                           fontSize="12px"
                           fontWeight="400"
                           fontStyle="normal"
                         >
-                          Liquidity split:{" "}
+                          {currentLPTokenAmount == undefined ||
+                          currentLPTokenAmount === null ? (
+                            <Box pt="2px">
+                              <Skeleton
+                                width="2.3rem"
+                                height=".85rem"
+                                startColor="#2B2F35"
+                                endColor="#101216"
+                                borderRadius="6px"
+                              />
+                            </Box>
+                          ) : (
+                            numberFormatter(currentLPTokenAmount)
+                          )}
+                          {/* $ 10.91 */}
                         </Text>
-                        <Tooltip
-                          hasArrow
-                          placement="right"
-                          boxShadow="dark-lg"
-                          label="The fee for reallocating liquidity across assets in a protocol."
-                          bg="#02010F"
-                          fontSize={"13px"}
-                          fontWeight={"400"}
-                          borderRadius={"lg"}
-                          padding={"2"}
-                          color="#F0F0F5"
-                          border="1px solid"
-                          borderColor="#23233D"
-                          arrowShadowColor="#2B2F35"
-                          maxW="222px"
-                        >
-                          <Box ml="0.2rem" mt="0.2rem">
-                            <InfoIcon />
-                          </Box>
-                        </Tooltip>
                       </Box>
+                    )}
+                  {radioValue == "1" &&
+                    currentPool !== "Select a pool" &&
+                    collateralAmount > 0 &&
+                    inputBorrowAmount > 0 && (
                       <Box
                         display="flex"
-                        gap="2"
-                        color="#676D9A"
-                        fontSize="12px"
-                        fontWeight="400"
-                        fontStyle="normal"
+                        justifyContent="space-between"
+                        mb="0.3rem"
                       >
-                        <Box display="flex" gap="2px">
-                          <Box mt="2px">
-                            {/* <SmallEth /> */}
-                            <Image
-                              src={`/${toMarketLiqA}.svg`}
-                              alt="liquidity split coin1"
-                              width="12"
-                              height="12"
-                            />
-                          </Box>
-                          <Text>
-                            {/* {currentSplit?.[0]?.toString() || (
-                              <Skeleton
-                                width="2.3rem"
-                                height=".85rem"
-                                startColor="#2B2F35"
-                                endColor="#101216"
-                                borderRadius="6px"
-                              />
-                            )} */}
-                            {currentSplit?.[0].toString() ? (
-                              numberFormatter(currentSplit?.[0].toString())
-                            ) : (
-                              <Skeleton
-                                width="2.3rem"
-                                height=".85rem"
-                                startColor="#2B2F35"
-                                endColor="#101216"
-                                borderRadius="6px"
-                              />
-                            )}
+                        <Box display="flex">
+                          <Text
+                            color="#676D9A"
+                            fontSize="12px"
+                            fontWeight="400"
+                            fontStyle="normal"
+                          >
+                            Liquidity split:{" "}
                           </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label="The fee for reallocating liquidity across assets in a protocol."
+                            bg="#02010F"
+                            fontSize={"13px"}
+                            fontWeight={"400"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                            maxW="222px"
+                          >
+                            <Box ml="0.2rem" mt="0.2rem">
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
                         </Box>
-                        <Box display="flex" gap="2px">
-                          <Box mt="2px">
-                            {/* <SmallUsdt /> */}
-                            <Image
-                              src={`/${toMarketLiqB}.svg`}
-                              alt="liquidity split coin1"
-                              width="12"
-                              height="12"
-                            />
-                          </Box>
-                          <Text>
-                            {/* {currentSplit?.[1].toString() || (
+                        <Box
+                          display="flex"
+                          gap="2"
+                          color="#676D9A"
+                          fontSize="12px"
+                          fontWeight="400"
+                          fontStyle="normal"
+                        >
+                          <Box display="flex" gap="2px">
+                            <Box mt="2px">
+                              {/* <SmallEth /> */}
+                              <Image
+                                src={`/${toMarketLiqA}.svg`}
+                                alt="liquidity split coin1"
+                                width="12"
+                                height="12"
+                              />
+                            </Box>
+                            <Text>
+                              {/* {currentSplit?.[0]?.toString() || (
                               <Skeleton
                                 width="2.3rem"
                                 height=".85rem"
@@ -3038,9 +3258,31 @@ borderWidth:'5px',
                                 borderRadius="6px"
                               />
                             )} */}
-                            {currentSplit?.[1].toString() ? (
-                              numberFormatter(currentSplit?.[1].toString())
-                            ) : (
+                              {currentSplit?.[0].toString() ? (
+                                numberFormatter(currentSplit?.[0].toString())
+                              ) : (
+                                <Skeleton
+                                  width="2.3rem"
+                                  height=".85rem"
+                                  startColor="#2B2F35"
+                                  endColor="#101216"
+                                  borderRadius="6px"
+                                />
+                              )}
+                            </Text>
+                          </Box>
+                          <Box display="flex" gap="2px">
+                            <Box mt="2px">
+                              {/* <SmallUsdt /> */}
+                              <Image
+                                src={`/${toMarketLiqB}.svg`}
+                                alt="liquidity split coin1"
+                                width="12"
+                                height="12"
+                              />
+                            </Box>
+                            <Text>
+                              {/* {currentSplit?.[1].toString() || (
                               <Skeleton
                                 width="2.3rem"
                                 height=".85rem"
@@ -3048,12 +3290,23 @@ borderWidth:'5px',
                                 endColor="#101216"
                                 borderRadius="6px"
                               />
-                            )}
-                          </Text>
+                            )} */}
+                              {currentSplit?.[1].toString() ? (
+                                numberFormatter(currentSplit?.[1].toString())
+                              ) : (
+                                <Skeleton
+                                  width="2.3rem"
+                                  height=".85rem"
+                                  startColor="#2B2F35"
+                                  endColor="#101216"
+                                  borderRadius="6px"
+                                />
+                              )}
+                            </Text>
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
-                  )}
+                    )}
                   {/* {radioValue == "2" && (
                     <Box
                       display="flex"
@@ -3130,7 +3383,7 @@ borderWidth:'5px',
                       {fees.borrowTrade}%
                     </Text>
                   </Box>
-{/* 
+                  {/* 
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
                       <Text color="#676D9A" fontSize="xs">
@@ -3180,7 +3433,7 @@ borderWidth:'5px',
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                         maxW="274px"
-                      // mb="10px"
+                        // mb="10px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -3189,8 +3442,8 @@ borderWidth:'5px',
                     </Box>
                     <Text color="#676D9A" fontSize="xs">
                       {!borrowAPRs ||
-                        borrowAPRs.length === 0 ||
-                        !borrowAPRs[currentBorrowAPR] ? (
+                      borrowAPRs.length === 0 ||
+                      !borrowAPRs[currentBorrowAPR] ? (
                         <Box pt="1px">
                           <Skeleton
                             width="2.3rem"
@@ -3201,7 +3454,7 @@ borderWidth:'5px',
                           />
                         </Box>
                       ) : (
-                        "-"+borrowAPRs[currentBorrowAPR] + "%"
+                        "-" + borrowAPRs[currentBorrowAPR] + "%"
                       )}
                       {/* 5.56% */}
                     </Text>
@@ -3257,8 +3510,8 @@ borderWidth:'5px',
                       >
                         {tokenTypeSelected === "Native" ? (
                           inputBorrowAmount === 0 ||
-                            collateralAmount === 0 ||
-                            !borrowAPRs[currentBorrowAPR] ? (
+                          collateralAmount === 0 ||
+                          !borrowAPRs[currentBorrowAPR] ? (
                             <Box pt="2px">
                               <Skeleton
                                 width="2.3rem"
@@ -3268,163 +3521,219 @@ borderWidth:'5px',
                                 borderRadius="6px"
                               />
                             </Box>
-                          ) : (
-                            currentPool=="Select a pool" ?
-                            <Text color={Number(
-                              (-(inputBorrowAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentBorrowCoin
-                                )?.borrowRate) +
-                                inputCollateralAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentCollateralCoin
-                                )?.supplyRate) /
-                              inputBorrowAmountUSD
-                            )<0 ?"rgb(255 94 94)" : "#00D395"}>
+                          ) : currentPool == "Select a pool" ? (
+                            <Text
+                              color={
+                                Number(
+                                  (-(
+                                    inputBorrowAmountUSD *
+                                    protocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token === currentBorrowCoin
+                                    )?.borrowRate
+                                  ) +
+                                    inputCollateralAmountUSD *
+                                      protocolStats?.find(
+                                        (stat: any) =>
+                                          stat?.token === currentCollateralCoin
+                                      )?.supplyRate) /
+                                    inputBorrowAmountUSD
+                                ) < 0
+                                  ? "rgb(255 94 94)"
+                                  : "#00D395"
+                              }
+                            >
                               {/* 5.56% */}
                               {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                              { }
+                              {}
                               {/* {
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentCollateralCoin
                           )?.supplyRate
                         } */}
                               {Number(
-                                (-(inputBorrowAmountUSD *
+                                (-(
+                                  inputBorrowAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentBorrowCoin
-                                  )?.borrowRate) +
+                                  )?.borrowRate
+                                ) +
                                   inputCollateralAmountUSD *
-                                  protocolStats?.find(
-                                    (stat: any) =>
-                                      stat?.token === currentCollateralCoin
-                                  )?.supplyRate) /
-                                inputBorrowAmountUSD
-                              ).toFixed(2)}%
+                                    protocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token === currentCollateralCoin
+                                    )?.supplyRate) /
+                                  inputBorrowAmountUSD
+                              ).toFixed(2)}
+                              %
                             </Text>
-                            :                            <Text color={Number(
-                              ((-(inputBorrowAmountUSD *
-                                (protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentBorrowCoin
-                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp)) +
-                                inputCollateralAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentCollateralCoin
-                                )?.supplyRate) /
-                              inputCollateralAmountUSD)
-                            )<0 ? "rgb(255 94 94)" : "#00D395"}>
-                            {/* 5.56% */}
-                            {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                            { }
-                            {/* {
+                          ) : (
+                            <Text
+                              color={
+                                Number(
+                                  (inputBorrowAmountUSD *
+                                    (-protocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token === currentBorrowCoin
+                                    )?.borrowRate +
+                                      getAprByPool(
+                                        poolAprs,
+                                        currentPool,
+                                        currentDapp
+                                      )) +
+                                    inputCollateralAmountUSD *
+                                      protocolStats?.find(
+                                        (stat: any) =>
+                                          stat?.token === currentCollateralCoin
+                                      )?.supplyRate) /
+                                    inputCollateralAmountUSD
+                                ) < 0
+                                  ? "rgb(255 94 94)"
+                                  : "rgb(3 211 148)"
+                              }
+                            >
+                              {/* 5.56% */}
+                              {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                              {}
+                              {/* {
                         protocolStats?.find(
                           (stat: any) => stat?.token === currentCollateralCoin
                         )?.supplyRate
                       } */}
-                            {Number(
-                              (((inputBorrowAmountUSD *
-                                (-(protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentBorrowCoin
-                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp))) +
-                                inputCollateralAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentCollateralCoin
-                                )?.supplyRate) /
-                              inputCollateralAmountUSD)
-                            ).toFixed(2)}%
-                          </Text>
+                              {Number(
+                                (inputBorrowAmountUSD *
+                                  (-protocolStats?.find(
+                                    (stat: any) =>
+                                      stat?.token === currentBorrowCoin
+                                  )?.borrowRate +
+                                    getAprByPool(
+                                      poolAprs,
+                                      currentPool,
+                                      currentDapp
+                                    )) +
+                                  inputCollateralAmountUSD *
+                                    protocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token === currentCollateralCoin
+                                    )?.supplyRate) /
+                                  inputCollateralAmountUSD
+                              ).toFixed(2)}
+                              %
+                            </Text>
                           )
                         ) : // protocolStats.length === 0 ||
-                          rTokenAmount === 0 ||
-                            inputBorrowAmount === 0 ||
-                            !borrowAPRs[currentBorrowAPR] ? (
-                            <Box pt="2px">
-                              <Skeleton
-                                width="2.3rem"
-                                height=".85rem"
-                                startColor="#2B2F35"
-                                endColor="#101216"
-                                borderRadius="6px"
-                              />
-                            </Box>
-                          ) : (
-                            currentPool=="Select a pool" ?
-                            <Text color={Number(
-                              (-(inputBorrowAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentBorrowCoin
-                                )?.borrowRate) +
-                                inputCollateralAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === rToken.slice(1)
-                                )?.supplyRate) /
-                              inputBorrowAmountUSD
-                            )<0 ? "rgb(255 94 94)" : "#00D395"}>
-                              {/* 5.56% */}
-                              {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                              {Number(
-                                (-(inputBorrowAmountUSD *
+                        rTokenAmount === 0 ||
+                          inputBorrowAmount === 0 ||
+                          !borrowAPRs[currentBorrowAPR] ? (
+                          <Box pt="2px">
+                            <Skeleton
+                              width="2.3rem"
+                              height=".85rem"
+                              startColor="#2B2F35"
+                              endColor="#101216"
+                              borderRadius="6px"
+                            />
+                          </Box>
+                        ) : currentPool == "Select a pool" ? (
+                          <Text
+                            color={
+                              Number(
+                                (-(
+                                  inputBorrowAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentBorrowCoin
-                                  )?.borrowRate) +
+                                  )?.borrowRate
+                                ) +
                                   inputCollateralAmountUSD *
+                                    protocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token === rToken.slice(1)
+                                    )?.supplyRate) /
+                                  inputBorrowAmountUSD
+                              ) < 0
+                                ? "rgb(255 94 94)"
+                                : "#00D395"
+                            }
+                          >
+                            {/* 5.56% */}
+                            {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                            {Number(
+                              (-(
+                                inputBorrowAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate
+                              ) +
+                                inputCollateralAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === rToken.slice(1)
                                   )?.supplyRate) /
                                 inputBorrowAmountUSD
-                              ).toFixed(2)}%
-                              {/* {
+                            ).toFixed(2)}
+                            %
+                            {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin
                             )?.supplyRate
                           } */}
-                            </Text>
-                            : <Text color={Number(
-                              ((inputBorrowAmountUSD *
-                                ((-protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentBorrowCoin
-                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp))) +
-                                inputCollateralAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === rToken.slice(1)
-                                )?.supplyRate) /
-                              inputCollateralAmountUSD
-                            )<0 ?"rgb(255 94 94)" : "#00D395" }>
+                          </Text>
+                        ) : (
+                          <Text
+                            color={
+                              Number(
+                                (inputBorrowAmountUSD *
+                                  (-protocolStats?.find(
+                                    (stat: any) =>
+                                      stat?.token === currentBorrowCoin
+                                  )?.borrowRate +
+                                    getAprByPool(
+                                      poolAprs,
+                                      currentPool,
+                                      currentDapp
+                                    )) +
+                                  inputCollateralAmountUSD *
+                                    protocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token === rToken.slice(1)
+                                    )?.supplyRate) /
+                                  inputCollateralAmountUSD
+                              ) < 0
+                                ? "rgb(255 94 94)"
+                                : "#00D395"
+                            }
+                          >
                             {/* 5.56% */}
                             {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                             {Number(
-                              ((inputBorrowAmountUSD *
-                                ((-protocolStats?.find(
+                              (inputBorrowAmountUSD *
+                                (-protocolStats?.find(
                                   (stat: any) =>
                                     stat?.token === currentBorrowCoin
-                                )?.borrowRate)+getAprByPool(poolAprs,currentPool,currentDapp))) +
+                                )?.borrowRate +
+                                  getAprByPool(
+                                    poolAprs,
+                                    currentPool,
+                                    currentDapp
+                                  )) +
                                 inputCollateralAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === rToken.slice(1)
-                                )?.supplyRate) /
-                              inputCollateralAmountUSD
-                            ).toFixed(2)}%
+                                  protocolStats?.find(
+                                    (stat: any) =>
+                                      stat?.token === rToken.slice(1)
+                                  )?.supplyRate) /
+                                inputCollateralAmountUSD
+                            ).toFixed(2)}
+                            %
                             {/* {
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentCollateralCoin
                           )?.supplyRate
                         } */}
                           </Text>
-                          )}
+                        )}
                       </Text>
                     </Text>
                   )}
@@ -3464,51 +3773,98 @@ borderWidth:'5px',
                   )}
                 </Box>
                 {currentCollateralCoin &&
-              currentCollateralCoin[0] !== "r" &&
-              stats && (
-                <Box
-                  // display="flex"
-                  // justifyContent="left"
-                  w="100%"
-                  // pb="4"
-                  height="64px"
-                  display="flex"
-                  alignItems="center"
-                  mt="2rem"
-                  // mb="1rem"
-                >
-                  <Box
-                    display="flex"
-                    bg={dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?"#480C10":"#222766"} 
-                    color="#F0F0F5"
-                    fontSize="12px"
-                    p="4"
-                    border={dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?"1px solid #9B1A23":"1px solid #3841AA"}
-                    fontStyle="normal"
-                    fontWeight="400"
-                    lineHeight="18px"
-                    borderRadius="6px"
-                    // textAlign="center"
-                  >
-                    <Box pr="3" mt="0.5" cursor="pointer">
-                      {dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?<RedinfoIcon/>:<BlueInfoIcon />}
-                    </Box>
-                    {dollarConvertor(maximumLoanAmount,currentBorrowCoin,oraclePrices)<100 ?
-                  `The current collateral and borrowing market combination isn't allowed at this moment.`:  
-                    `You have selected a native token as collateral which will be
+                  currentCollateralCoin[0] !== "r" &&
+                  stats && (
+                    <Box
+                      // display="flex"
+                      // justifyContent="left"
+                      w="100%"
+                      // pb="4"
+                      height="64px"
+                      display="flex"
+                      alignItems="center"
+                      mt="2rem"
+                      // mb="1rem"
+                    >
+                      <Box
+                        display="flex"
+                        bg={
+                          dollarConvertor(
+                            maximumLoanAmount,
+                            currentBorrowCoin,
+                            oraclePrices
+                          ) < 100 ||
+                          (tokenTypeSelected == "Native"
+                            ? currentBorrowCoin == "BTC" &&
+                              currentCollateralCoin == "STRK"
+                            : currentBorrowCoin == "BTC" && rToken == "rSTRK")
+                            ? "#480C10"
+                            : "#222766"
+                        }
+                        color="#F0F0F5"
+                        fontSize="12px"
+                        p="4"
+                        border={
+                          dollarConvertor(
+                            maximumLoanAmount,
+                            currentBorrowCoin,
+                            oraclePrices
+                          ) < 100 ||
+                          (tokenTypeSelected == "Native"
+                            ? currentBorrowCoin == "BTC" &&
+                              currentCollateralCoin == "STRK"
+                            : currentBorrowCoin == "BTC" && rToken == "rSTRK")
+                            ? "1px solid #9B1A23"
+                            : "1px solid #3841AA"
+                        }
+                        fontStyle="normal"
+                        fontWeight="400"
+                        lineHeight="18px"
+                        borderRadius="6px"
+                        // textAlign="center"
+                      >
+                        <Box pr="3" mt="0.5" cursor="pointer">
+                          {dollarConvertor(
+                            maximumLoanAmount,
+                            currentBorrowCoin,
+                            oraclePrices
+                          ) < 100 ||
+                          (tokenTypeSelected == "Native"
+                            ? currentBorrowCoin == "BTC" &&
+                              currentCollateralCoin == "STRK"
+                            : currentBorrowCoin == "BTC" &&
+                              rToken == "rSTRK") ? (
+                            <RedinfoIcon />
+                          ) : (
+                            <BlueInfoIcon />
+                          )}
+                        </Box>
+                        {dollarConvertor(
+                          maximumLoanAmount,
+                          currentBorrowCoin,
+                          oraclePrices
+                        ) < 100 ||
+                        (tokenTypeSelected == "Native"
+                          ? currentBorrowCoin == "BTC" &&
+                            currentCollateralCoin == "STRK"
+                          : currentBorrowCoin == "BTC" && rToken == "rSTRK")
+                          ? `The current collateral and borrowing market combination isn't allowed at this moment.`
+                          : `You have selected a native token as collateral which will be
                     converted to rtokens 1r${currentCollateralCoin} =
-                    ${(stats.find(
-                      (val: any) => val?.token == currentCollateralCoin.split(1)
-                    )?.exchangeRateRtokenToUnderlying
-                      ? numberFormatter(
-                          stats.find(
-                            (val: any) =>
-                              val?.token == currentCollateralCoin.split(1)
-                          )?.exchangeRateRtokenToUnderlying
-                        )
-                      : "") + currentCollateralCoin?.split(1)}`
-                  }
-                    {/* <Box
+                    ${
+                      (stats.find(
+                        (val: any) =>
+                          val?.token == currentCollateralCoin.split(1)
+                      )?.exchangeRateRtokenToUnderlying
+                        ? numberFormatter(
+                            stats.find(
+                              (val: any) =>
+                                val?.token == currentCollateralCoin.split(1)
+                            )?.exchangeRateRtokenToUnderlying
+                          )
+                        : "") + currentCollateralCoin?.split(1)
+                    }`}
+                        {/* <Box
                                 py="1"
                                 pl="4"
                                 cursor="pointer"
@@ -3516,22 +3872,32 @@ borderWidth:'5px',
                               >
                                 <TableClose />
                               </Box> */}
-                  </Box>
-                </Box>
-              )}
+                      </Box>
+                    </Box>
+                  )}
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
-                  (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
-               ((   inputBorrowAmount>=minimumLoanAmount &&
-                  inputBorrowAmount<=maximumLoanAmount )||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
-                  inputBorrowAmount <= currentAvailableReserves &&
-                  inputBorrowAmount > 0 &&
-                (( tokenTypeSelected=="Native" ?  inputCollateralAmount >= minimumDepositAmount &&
-                  inputCollateralAmount<=maximumDepositAmount:true)||process.env.NEXT_PUBLIC_NODE_ENV=="testnet") &&
-                  inputCollateralAmount <= walletBalance &&
-                  inputBorrowAmountUSD <= 4.98 * inputCollateralAmountUSD &&
-                  currentDapp != "Select a dapp" &&
-                  (currentPool != "Select a pool" ||
-                    currentPoolCoin != "Select a pool") ? (
+                (tokenTypeSelected == "Native"
+                  ? !(
+                      currentBorrowCoin == "BTC" &&
+                      currentCollateralCoin == "STRK"
+                    )
+                  : !(currentBorrowCoin == "BTC" && rToken == "rSTRK")) &&
+                (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
+                ((inputBorrowAmount >= minimumLoanAmount &&
+                  inputBorrowAmount <= maximumLoanAmount) ||
+                  process.env.NEXT_PUBLIC_NODE_ENV == "testnet") &&
+                inputBorrowAmount <= currentAvailableReserves &&
+                inputBorrowAmount > 0 &&
+                ((tokenTypeSelected == "Native"
+                  ? inputCollateralAmount >= minimumDepositAmount &&
+                    inputCollateralAmount <= maximumDepositAmount
+                  : true) ||
+                  process.env.NEXT_PUBLIC_NODE_ENV == "testnet") &&
+                inputCollateralAmount <= walletBalance &&
+                inputBorrowAmountUSD <= 4.98 * inputCollateralAmountUSD &&
+                currentDapp != "Select a dapp" &&
+                (currentPool != "Select a pool" ||
+                  currentPoolCoin != "Select a pool") ? (
                   <Box
                     onClick={() => {
                       setTransactionStarted(true);
@@ -3617,7 +3983,9 @@ borderWidth:'5px',
                     width="100%"
                     mt="1.5rem"
                     mb="1.5rem"
-                    _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
+                    _hover={{
+                      bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
+                    }}
                   >
                     Spend
                   </Button>

@@ -96,6 +96,7 @@ import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, s
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import posthog from "posthog-js";
+import STRKLogo from "@/assets/icons/coins/strk";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -136,11 +137,13 @@ const YourSupplyModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    STRK:useBalanceOf(tokenAddressMap["STRK"]),
     rBTC: useBalanceOf(tokenAddressMap["rBTC"]),
     rUSDT: useBalanceOf(tokenAddressMap["rUSDT"]),
     rUSDC: useBalanceOf(tokenAddressMap["rUSDC"]),
     rETH: useBalanceOf(tokenAddressMap["rETH"]),
     rDAI: useBalanceOf(tokenAddressMap["rDAI"]),
+    rSTRK:useBalanceOf(tokenAddressMap["rSTRK"]),
   };
   const userDeposit = useSelector(selectUserDeposits);
   ////console.log(userDeposit,"user deposit your supply")
@@ -248,6 +251,12 @@ const YourSupplyModal = ({
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "STRK":
+          return <STRKLogo height={"16px"} width={"16px"}/>;
+          break;
+          case "rSTRK":
+            return <STRKLogo height={"16px"} width={"16px"}/>;
+            break;
       case "rBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;

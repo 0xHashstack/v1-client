@@ -130,6 +130,8 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import posthog from "posthog-js";
+import STRKLogo from "@/assets/icons/coins/strk";
+import StrkToEth from "@/assets/icons/pools/strkToEth";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -505,6 +507,7 @@ const YourBorrowModal = ({
     BTC: any;
     ETH: any;
     DAI: any;
+    STRK:any;
   }
   const walletBalances: assetB = {
     USDT: useBalanceOf(tokenAddressMap["USDT"]),
@@ -512,6 +515,7 @@ const YourBorrowModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    STRK:useBalanceOf(tokenAddressMap["STRK"])
   };
 
   const [walletBalance1, setwalletBalance1] = useState(
@@ -647,6 +651,9 @@ const YourBorrowModal = ({
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "STRK":
+          return <STRKLogo height={"16px"} width={"16px"}/>;
+          break;
       case "dBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
@@ -709,6 +716,9 @@ const YourBorrowModal = ({
       case "USDC/DAI":
         return <UsdcToDai />;
         break;
+        case "STRK/ETH":
+          return <StrkToEth />;
+          break;
       default:
         break;
     }
@@ -2648,7 +2658,7 @@ const YourBorrowModal = ({
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
-  const coins = ["BTC", "USDT", "USDC", "ETH"];
+  const coins = ["BTC", "USDT", "USDC", "ETH","STRK"];
   const actions = [
     "Spend Borrow",
     "Convert to borrow market",
@@ -2676,6 +2686,7 @@ const YourBorrowModal = ({
     "BTC/ETH",
     "BTC/USDT",
     "BTC/USDC",
+    "STRK/ETH"
     // "BTC/DAI",
     // "USDT/DAI",
     // "USDC/DAI",
@@ -2933,6 +2944,7 @@ const YourBorrowModal = ({
     }
   };
   const [myswapPools, setmyswapPools] = useState([]);
+  const [jediswapPools, setjediswapPools] = useState([]);
   useEffect(() => {
     function findSideForMember(array: any, token: any) {
       const data: any = [];
@@ -2953,6 +2965,27 @@ const YourBorrowModal = ({
       findSideForMember(mySwapPoolPairs, currentBorrowMarketCoin1.slice(1));
     }
   }, [currentBorrowMarketCoin1, mySwapPoolPairs]);
+
+  useEffect(() => {
+    function findSideForMember(array: any, token: any) {
+      const data: any = [];
+      for (const obj of array) {
+        const keyvalue = obj.keyvalue;
+        const [tokenA, tokenB] = keyvalue.split("/");
+
+        if (tokenA === token) {
+          data.push(tokenB);
+        } else if (tokenB === token) {
+          data.push(tokenA);
+        }
+      }
+      setjediswapPools(data);
+      // Token not found in any "keyvalue" pairs
+    }
+    if (poolsPairs) {
+      findSideForMember(poolsPairs, currentBorrowMarketCoin1.slice(1));
+    }
+  }, [currentBorrowMarketCoin1, poolsPairs]);
   const fetchLPAmount = async () => {
     if (
       spendType !== "UNSPENT" ||
@@ -4290,6 +4323,7 @@ const YourBorrowModal = ({
                                   const matchingPair = myswapPools?.find(
                                     (pair: any) => pair === coin
                                   );
+                                  const matchingPairJedi = jediswapPools?.find((pair: any) => pair === coin);
                                   if (
                                     coin ===
                                     currentBorrowMarketCoin1.slice(1) ||
@@ -4297,6 +4331,16 @@ const YourBorrowModal = ({
                                       "mainnet" &&
                                       currentDapp == "mySwap" &&
                                       !matchingPair)
+                                  ) {
+                                    return;
+                                  }
+                                  if (
+                                    coin ===
+                                    currentBorrowMarketCoin1.slice(1) ||
+                                    (process.env.NEXT_PUBLIC_NODE_ENV ==
+                                      "mainnet" &&
+                                      currentDapp == "Jediswap" &&
+                                      !matchingPairJedi)
                                   ) {
                                     return;
                                   }

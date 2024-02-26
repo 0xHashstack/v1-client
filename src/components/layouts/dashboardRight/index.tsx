@@ -27,12 +27,12 @@ export interface ICoin {
 }
 
 export const Coins: ICoin[] = [
+  { name: "STRK", icon: "mdi-strk", symbol: "STRK" },
   { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },
   { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" },
   { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
   { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
   { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
-  { name: "STRK", icon: "mdi-dai", symbol: "STRK" },
 ];
 
 const DashboardRight = ({
@@ -196,6 +196,7 @@ const DashboardRight = ({
                 // bgColor="blue"
                 // borderBottom="1px solid #2b2f35"
                 position="relative"
+                bg={coin?.name === "STRK" ? "linear-gradient(90deg, #34345600 0%, #34345688 50%, #34345600 100%, #34345600 100%)" : ""}
               >
                 <Td
                   width={"14%"}
@@ -215,7 +216,7 @@ const DashboardRight = ({
                         height="32"
                       />
                     </Box>
-                    <Box gap="0.2rem" display={coin?.name=="DAI" ?"flex":""}>
+                    <Box gap="0.2rem" display={"flex"}>
                     <Text fontSize="14px">{(coin?.name == "BTC" || coin?.name == "ETH") ? "w" + coin?.name : coin?.name}</Text>
                     {coin?.name=="DAI" &&                      <Image
                         src={`/paused.svg`}
@@ -223,14 +224,13 @@ const DashboardRight = ({
                         width="48"
                         height="16"
                       />}
-                      {coin?.name=="STRK" && 
-                      <Image
-                        src={`/comingsoon.svg`}
+                                                                  {coin?.name=="STRK" &&                      <Image
+                        src={`/new.svg`}
                         alt={`Picture of the coin that I want to access ${coin?.name}`}
-                        width="72"
+                        width="36"
                         height="16"
-                      />
-                      }
+                      />}
+                      
                     </Box>
                     
                   </HStack>
@@ -250,11 +250,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coin?.name=="STRK" ? numberFormatter(0): totalBorrows[idx] == null ? (
+                    { totalBorrows[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -282,11 +282,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coin?.name=="STRK" ? numberFormatter(0): availableReserves[idx] == null ? (
+                    { availableReserves[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -314,11 +314,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coin?.name=="STRK" ? numberFormatter(0): utilization[idx] == null ? (
+                    { utilization[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -346,11 +346,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" || coin?.name=="STRK" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coin?.name=="STRK" ? numberFormatter(0): borrowAPRs[idx] == null ? (
+                    { borrowAPRs[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -390,7 +390,7 @@ const DashboardRight = ({
                     }}
                   // bgColor={"blue"}
                   >
-                    {coin?.name == "DAI" || coin?.name=="STRK" ?
+                    {coin?.name == "DAI" ?
                       <Button
                         height={"2rem"}
                         fontSize={"12px"}
@@ -447,7 +447,7 @@ const DashboardRight = ({
                       setCurrentSupplyAPR(idx);
                     }}
                   >
-                    {coin?.name == "DAI" || coin?.name=="STRK" ?
+                    {coin?.name == "DAI"  ?
                    <Text color="#3E415C" borderBottom="1px solid #3E415C" cursor="pointer">
                    Spend
                  </Text>:                      <TradeModal
@@ -473,7 +473,7 @@ const DashboardRight = ({
                   backgroundColor: "#2b2f35",
                   width: "100%",
                   // left: "1.75%",
-                  display: `${idx == Coins.length - 1 ? "none" : "block"}`,
+                  display: `${idx == Coins.length - 1 ? "none" : idx==0 ?"none":"block"}`,
                 }}
               />
             </>
