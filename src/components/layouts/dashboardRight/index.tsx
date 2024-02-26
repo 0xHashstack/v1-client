@@ -27,12 +27,12 @@ export interface ICoin {
 }
 
 export const Coins: ICoin[] = [
+  { name: "STRK", icon: "mdi-strk", symbol: "STRK" },
   { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },
   { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" },
   { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
   { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
   { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
-  { name: "STRK", icon: "mdi-strk", symbol: "STRK" },
 ];
 
 const DashboardRight = ({
@@ -215,12 +215,18 @@ const DashboardRight = ({
                         height="32"
                       />
                     </Box>
-                    <Box gap="0.2rem" display={coin?.name=="DAI" ?"flex":""}>
+                    <Box gap="0.2rem" display={"flex"}>
                     <Text fontSize="14px">{(coin?.name == "BTC" || coin?.name == "ETH") ? "w" + coin?.name : coin?.name}</Text>
                     {coin?.name=="DAI" &&                      <Image
                         src={`/paused.svg`}
                         alt={`Picture of the coin that I want to access ${coin?.name}`}
                         width="48"
+                        height="16"
+                      />}
+                                                                  {coin?.name=="STRK" &&                      <Image
+                        src={`/new.svg`}
+                        alt={`Picture of the coin that I want to access ${coin?.name}`}
+                        width="36"
                         height="16"
                       />}
                       
