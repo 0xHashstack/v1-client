@@ -809,9 +809,9 @@
           "name": "dSTRK",
           "symbol": "dSTRK",
           "decimals": 18,
-          "underlying_asset": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
-          "address": "0x01bdbaaa456c7d6bbba9ff740af3cfcd40bec0e85cd5cefc3fbb05a552fd14df",
-          "NETWORK_TOKEN_ADDRESS": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
+          "underlying_asset": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "address": "0x1bdbaaa456c7d6bbba9ff740af3cfcd40bec0e85cd5cefc3fbb05a552fd14df",
+          "NETWORK_TOKEN_ADDRESS": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
         }
       ],
       "peripherals": {

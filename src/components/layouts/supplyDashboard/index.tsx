@@ -252,6 +252,7 @@ const SupplyDashboard = ({
           stats?.[0],
           stats?.[1],
           stats?.[4],
+          stats?.[5],
         ]);
         setSupplyAPRs([
           stats?.[2].supplyRate,
@@ -259,6 +260,7 @@ const SupplyDashboard = ({
           stats?.[0].supplyRate,
           stats?.[1].supplyRate,
           stats?.[4].supplyRate,
+          stats?.[5].supplyRate,
         ]);
       } catch (error) {
        //console.log("error on getting protocol stats");

@@ -669,6 +669,9 @@ const YourBorrowModal = ({
       case "dDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "dSTRK":
+          return <STRKLogo height={"16px"} width={"16px"}/>;
+          break;
       case "rBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
@@ -684,6 +687,9 @@ const YourBorrowModal = ({
       case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "rSTRK":
+          return <STRKLogo height={"16px"} width={"16px"}/>;
+          break;
       case "Jediswap":
         return <JediswapLogo />;
         break;
