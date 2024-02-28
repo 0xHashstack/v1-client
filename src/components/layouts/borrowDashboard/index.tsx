@@ -461,6 +461,7 @@ const BorrowDashboard = ({
         stats?.[0].borrowRate,
         stats?.[1].borrowRate,
         stats?.[4].borrowRate,
+        stats?.[5].borrowRate,
       ]);
     } catch (error) {
       //console.log("error on getting protocol stats");
@@ -484,6 +485,9 @@ const BorrowDashboard = ({
       case "DAI":
         return borrowAPRs[4];
         break;
+        case "STRK":
+          return borrowAPRs[5];
+          break;
 
       default:
         break;
@@ -495,7 +499,12 @@ const BorrowDashboard = ({
     const matchedObject = dataArray.find(item => {
       if (item.name === "USDT/USDC") {
         return item.amm === "jedi" && ("USDC/USDT" === pool);
-      } else if (item.name === "ETH/DAI") {
+      }else if(item.name=="ETH/STRK"){
+        return (
+          item.amm === "jedi" && "STRK/ETH" === pool
+        )
+      } 
+      else if (item.name === "ETH/DAI") {
         return item.amm === "jedi" && ("DAI/ETH" === pool);
       }
       else {
