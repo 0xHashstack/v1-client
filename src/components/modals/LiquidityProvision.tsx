@@ -613,7 +613,17 @@ const LiquidityProvisionModal = ({
     const matchedObject = dataArray.find(item => {
       if (item.name === "USDT/USDC") {
         return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("USDC/USDT" === pool);
-      } else if (item.name === "ETH/DAI") {
+      }else if(item.name=="ETH/STRK"){
+        return (
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "STRK/ETH" === pool
+        )
+      } 
+      else if (item.name === "ETH/DAI") {
         return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("DAI/ETH" === pool);
       }
       else {
