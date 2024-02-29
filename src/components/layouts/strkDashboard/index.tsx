@@ -15,6 +15,8 @@ import { selectOraclePrices, selectProtocolStats, selectEffectiveApr, selectHeal
 import LiquidityProvisionModal from '@/components/modals/LiquidityProvision'
 import TradeModal from '@/components/modals/tradeModal'
 import { useAccount } from '@starknet-react/core'
+import { toast } from "react-toastify";
+import CopyToClipboard from 'react-copy-to-clipboard'
 
 export interface ICoin {
     name: string;
@@ -61,6 +63,7 @@ const StrkDashboard = () => {
     const avgsLoneHealth = useSelector(selectHealthFactor);
     const [ltv, setLtv] = useState<any>([]);
     const [borrowId, setborrowId] = useState("Select Existing borrow")
+    const [currentPool, setcurrentPool] = useState("Select a pool")
 
     const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
     const [currentBorrowData, setcurrentBorrowData] = useState()
@@ -78,6 +81,7 @@ const StrkDashboard = () => {
     const [borrowAPRs, setBorrowAPRs] = useState<any>([]);
     const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>(0);
     const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>(0);
+    const [poolNumber, setpoolNumber] = useState(false)
     const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
     const coin = { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" };
     const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([]);
@@ -246,11 +250,11 @@ const StrkDashboard = () => {
                         fontSize={"12px"}
                         mt="0.5rem"
                         padding="6px 12px"
-                        border="1px solid #BDBFC1"
+                        border="1px solid #3E415C"
                         bgColor="transparent"
-                        _hover={{ bg: "white", color: "black" }}
+                        _hover={{ bg: "transparent", color: "#3E415C" }}
                         borderRadius={"6px"}
-                        color="#BDBFC1">
+                        color="#3E415C">
                         Claim
                     </Button>
 
@@ -408,6 +412,10 @@ const StrkDashboard = () => {
                                                                 // bgColor="green"
                                                                 onClick={() => {
                                                                     setSelectedDapp("trade");
+                                                                    setCurrentBorrow(borrow.loanId);
+                                                                    setcurrentBorrowData(borrow)
+                                                                    setBorrowAmount(borrow.currentLoanAmountParsed);
+                                                                    setCurrentMarketCoin(borrow.currentLoanMarket);
                                                                     setCurrentLoanAmount(borrow?.currentLoanAmount);
                                                                     setCurrentLoanMarket(borrow?.currentLoanMarket);
                                                                     setCurrentMarketCoin(borrow.currentLoanMarket);
@@ -612,7 +620,9 @@ const StrkDashboard = () => {
                     </Box>}
                     <Box display="flex" gap="5rem" mt="2rem">
                         {rewardPools.map((pool: string, idx: number) => (
-                            <Box bg="#34345633" padding="64px" borderRadius="8px" justifyContent="center" textAlign="center">
+                            <Box key={idx} bg="#34345633" padding="64px" borderRadius="8px" justifyContent="center" textAlign="center" onClick={()=>{
+                                setcurrentPool(pool);
+                            }}>
                                 <Box display="flex" width="100%" justifyContent='center'>
                                     <Image src={`/${pool.split('/')[0]
                                         }.svg`}
@@ -632,8 +642,38 @@ const StrkDashboard = () => {
                                         {pool}
                                     </Text>
                                 </Box>
-                                <Box mt="1rem">
+                                <Box mt="1rem" onClick={()=>{
+                                    setpoolNumber(!poolNumber)
+                                }}>
                                     {userLoans?.length > 0 ?
+                                    borrowId==="Select Existing borrow" ?<Button
+                                    cursor="pointer"
+                                    height={"2rem"}
+                                    fontSize={"12px"}
+                                    mt="0.5rem"
+                                    padding="6px 12px"
+                                    bg="linear-gradient(to right, #7956EC,#1B29AE);"
+                                    _hover={{ bg: "white", color: "black" }}
+                                    borderRadius={"6px"}
+                                    color="white"
+                                    onClick={()=>{
+                                        const toastContent = (
+                                            <div>
+                                              Select Loan to Spend{" "}
+                                              <CopyToClipboard text="Enter Loan ID">
+                                                <Text as="u">copy error!</Text>
+                                              </CopyToClipboard>
+                                            </div>
+                                          );
+                                        toast.error(toastContent, {
+                                            position: toast.POSITION.BOTTOM_RIGHT,
+                                            autoClose: false,
+                                          });
+                                    }}
+                                    >
+                                        Spend
+
+                                    </Button>:
                                         <LiquidityProvisionModal
                                             borrowIDCoinMap={borrowIDCoinMap}
                                             coins={coins}
@@ -649,6 +689,9 @@ const StrkDashboard = () => {
                                             setCurrentLoanAmount={setCurrentLoanAmount}
                                             setCurrentLoanMarket={setCurrentLoanMarket}
                                             borrowAPRs={borrowAPRs}
+                                            currentSelectedDapp={"Jediswap"}
+                                            currentSelectedPool={pool}
+                                            poolNumber={poolNumber}
                                         />
                                         : <TradeModal
                                             coin={coin}
@@ -659,6 +702,9 @@ const StrkDashboard = () => {
                                             setCurrentBorrowAPR={setCurrentBorrowAPR}
                                             validRTokens={validRTokens}
                                             currentBorrowMarketCoin={currentBorrowMarketCoin}
+                                            currentSelectedDapp={"Jediswap"}
+                                            currentSelectedPool={pool}
+                                            poolNumber={poolNumber}
                                         />
                                     }
 
@@ -668,7 +714,7 @@ const StrkDashboard = () => {
                     </Box>
                 </Box>
             </Box>
-            <Box mt="1rem"
+            {/* <Box mt="1rem"
                 background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                 border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 width="100%"
@@ -707,7 +753,7 @@ const StrkDashboard = () => {
                         ))}
                     </Box>
                 </Box>
-            </Box>
+            </Box> */}
         </VStack>
     )
 }

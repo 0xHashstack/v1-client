@@ -43,8 +43,8 @@ import TableMySwapDull from "../layouts/table/tableIcons/mySwapDull";
 import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
 import useSwap from "@/Blockchain/hooks/Writes/useSwap";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-import { toast } from "react-toastify";
 import TransactionFees from "../../../TransactionFees.json";
+import { toast } from "react-toastify";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -112,6 +112,9 @@ const LiquidityProvisionModal = ({
   setCurrentLoanAmount,
   setCurrentLoanMarket,
   borrowAPRs,
+  currentSelectedPool,
+  currentSelectedDapp,
+  poolNumber,
 }: any) => {
   ////console.log("liquidity found map: ", borrowIDCoinMap);
   ////console.log("liquidity found borrow ids: ", borrowIds);
@@ -359,6 +362,16 @@ const LiquidityProvisionModal = ({
   const router = useRouter();
   const { pathname } = router;
   const fees = useSelector(selectFees);
+
+  useEffect(()=>{
+    if(pathname==="/v1/strk-rewards"){
+      setCurrentPool(currentSelectedPool)
+      setToMarketA(currentSelectedPool.split("/")[0]);
+                                  //@ts-ignore
+      setToMarketB(currentSelectedPool.split("/")[1]);
+    }
+  },[poolNumber])
+
   const handleLiquidity = async () => {
     try {
       if (currentSwap == "Jediswap") {
@@ -666,6 +679,7 @@ const LiquidityProvisionModal = ({
       setCurrentLPTokenAmount(lp_tokon);
     }
   };
+
   return (
     <div>
       {pathname !== "/v1/strk-rewards" ?

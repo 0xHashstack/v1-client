@@ -143,11 +143,13 @@ const TradeModal = ({
   currentBorrowAPR,
   setCurrentBorrowAPR,
   validRTokens,
+  currentSelectedPool,
+  currentSelectedDapp,
+  poolNumber,
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   //  //console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
-
   const {
     loanMarket,
     setLoanMarket,
@@ -295,23 +297,23 @@ const TradeModal = ({
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
   const pools = [
-    "ETH/USDT",
+    "STRK/ETH",
     "USDC/USDT",
     "ETH/USDC",
+    "ETH/USDT",
     // "DAI/ETH",
     "BTC/ETH",
     "BTC/USDT",
     "BTC/USDC",
-    "STRK/ETH",
+
     // "BTC/DAI",
     // "USDT/DAI",
     // "USDC/DAI",
   ];
 
-  const [currentDapp, setCurrentDapp] = useState("Select a dapp");
+  const [currentDapp, setCurrentDapp] = useState(currentSelectedDapp ?currentSelectedDapp: "Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
   const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
-
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -1215,6 +1217,15 @@ const TradeModal = ({
   //   };
   //   fetchEstrTokens();
   // }, [collateralBalance, inputCollateralAmount]);
+  useEffect(()=>{
+    if(pathname==="/v1/strk-rewards"){
+      setCurrentPool(currentSelectedPool)
+      setCurrentDapp("Jediswap")
+      setToMarketLiqA(currentSelectedPool.split("/")[0]);
+                                  //@ts-ignore
+      setToMarketLiqB(currentSelectedPool.split("/")[1]);
+    }
+  },[poolNumber])
   const router = useRouter();
   const { pathname } = router;
   return (
@@ -2934,6 +2945,7 @@ const TradeModal = ({
                         ) : (
                           ""
                         )}
+                        
                         <Text>
                           {radioValue === "1"
                             ? (currentPool.split("/")[0] == "BTC" ||
