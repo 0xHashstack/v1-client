@@ -906,7 +906,7 @@ const YourBorrowModal = ({
       }
     });
 
-    return matchedObject ? matchedObject.tvl * 100 : 0;
+    return matchedObject ? matchedObject.tvl : 0;
   };
 
   const handleZeroRepay = async () => {
@@ -983,7 +983,19 @@ const YourBorrowModal = ({
       });
     }
   };
-
+  const getStrkAlloaction=(pool:any)=>{
+    try{
+      if(strkTokenAlloactionData[pool]){
+        return strkTokenAlloactionData[pool][strkTokenAlloactionData[pool].length-1]?.allocation;
+      }else{
+        return 0;
+      }
+    }catch(err){
+      return 0;
+      console.log(err)
+    }
+    
+  }
   const hanldeTrade = async () => {
     try {
       // if(currentDapp)
@@ -4371,20 +4383,33 @@ const YourBorrowModal = ({
                                           : "inherit"
                                           }`}
                                         borderRadius="md"
+                                        borderBottom={index==2 && currentDapp=="Jediswap" ?"1px solid #30363D":""}
                                       >
-                                        <Box display="flex">
+                                        <Box display="flex" mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}>
                                           <Box p="1">{getCoin(pool)}</Box>
                                           <Text>{(pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") && ((pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH")) ? "w" + pool.split("/")[0] + "/w" + pool.split("/")[1] : (pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") ? "w" + pool.split("/")[0] + "/" + pool.split("/")[1] : (pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH") ? pool.split("/")[0] + "/w" + pool.split("/")[1] : pool}</Text>
 
                                         </Box>
-                                        <Box
-                                          fontSize="9px"
-                                          color="#E6EDF3"
-                                          mt="6px"
-                                          fontWeight="medium"
-                                        >
-                                          Pool apr: {numberFormatterPercentage(getAprByPool(poolAprs, pool, currentDapp))}%
-                                        </Box>
+                                        <Box >
+                                          <Box
+                                            fontSize="9px"
+                                            color="#E6EDF3"
+                                            mt="6px"
+                                            fontWeight="medium"
+                                          >
+                                            Pool apr: {numberFormatterPercentage(getAprByPool(poolAprs, pool, currentDapp))}%
+                                          </Box>
+                                          {index<=2 && currentDapp=="Jediswap"  &&
+                                          <Box
+                                            fontSize="9px"
+                                            color="#E6EDF3"
+                                            mt="6px"
+                                            fontWeight="medium"
+                                          >
+                                            STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, pool, currentDapp)))}%
+                                          </Box>
+                                }
+                                          </Box>
                                       </Box>
                                     </Box>
                                   );

@@ -48,6 +48,7 @@ import dollarConvertor from "@/utils/functions/dollarConvertor";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import TableInfoIcon from "../table/tableIcons/infoIcon";
+import axios from "axios";
 
 export interface ICoin {
   name: string;
@@ -344,6 +345,49 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
       setLoading(false);
     }
   }, [Borrows]);
+
+  const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
+  const getStrkAlloaction=(pool:any)=>{
+    try{
+      if(strkTokenAlloactionData[pool]){
+        return strkTokenAlloactionData[pool][strkTokenAlloactionData[pool].length-1]?.allocation;
+      }else{
+        return 0;
+      }
+    }catch(err){
+      return 0;
+    }
+    
+  }
+useEffect(()=>{
+  try{
+    const fetchData=async()=>{
+      const res=await axios.get('https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json')
+      setstrkTokenAlloactionData(res?.data?.Jediswap_v1)
+    }
+    fetchData()
+  }catch(err){
+    console.log(err)
+  }
+},[])
+const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
+  const matchedObject = dataArray.find((item) => {
+    if (item.name === "USDT/USDC") {
+      return item.amm === "jedi" && "USDC/USDT" === pool;
+    } else if (item.name == "ETH/STRK") {
+      return item.amm === "jedi" && "STRK/ETH" === pool;
+    } else if (item.name === "ETH/DAI") {
+      return item.amm === "jedi" && "DAI/ETH" === pool;
+    } else {
+      return (
+        item.name === pool &&
+        item.amm === (l3App == "JEDI_SWAP" ? "jedi" : "myswap")
+      );
+    }
+  });
+  return matchedObject ? matchedObject.tvl  : 0;
+};
+// console.log(strkTokenAlloactionData["STRK/ETH"][strkTokenAlloactionData["STRK/ETH"].length-1].allocation,"allocat")
 
   return loading ? (
     <Box
@@ -893,6 +937,82 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         %
                                       </Text>
                                     </Box>
+                                     <Box
+                                      display="flex"
+                                      justifyContent="space-between"
+                                    >
+                                      <Text>
+                                        STRK (
+                                        {(
+                                          ((dollarConvertor(
+                                            allSplit?.[lower_bound + idx]
+                                              ?.amountA,
+                                            allSplit?.[lower_bound + idx]
+                                              ?.tokenA,
+                                            oraclePrices
+                                          ) +
+                                            dollarConvertor(
+                                              allSplit?.[lower_bound + idx]
+                                                ?.amountB,
+                                              allSplit?.[lower_bound + idx]
+                                                ?.tokenB,
+                                              oraclePrices
+                                            )) /
+                                            dollarConvertor(
+                                              borrow?.collateralAmountParsed,
+                                              borrow?.collateralMarket.slice(1),
+                                              oraclePrices
+                                            )) *
+                                          reduxProtocolStats?.find(
+                                            (val: any) =>
+                                              val?.token ==
+                                              borrow?.collateralMarket.slice(1)
+                                          )?.exchangeRateRtokenToUnderlying
+                                        ).toFixed(1)}
+                                        x):
+                                      </Text>
+                                      <Text>
+                                        +
+                                        {(((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
+                                                      ?.tokenA +
+                                                      "/" +
+                                                      allSplit?.[lower_bound + idx]
+                                                        ?.tokenB))/getTvlByPool(
+                                                    poolAprs,
+                                                    allSplit?.[lower_bound + idx]
+                                                      ?.tokenA +
+                                                      "/" +
+                                                      allSplit?.[lower_bound + idx]
+                                                        ?.tokenB,
+                                                    borrow?.l3App
+                                                  )*((dollarConvertor(
+                                                    allSplit?.[lower_bound + idx]
+                                                      ?.amountA,
+                                                    allSplit?.[lower_bound + idx]
+                                                      ?.tokenA,
+                                                    oraclePrices
+                                                  ) +
+                                                    dollarConvertor(
+                                                      allSplit?.[lower_bound + idx]
+                                                        ?.amountB,
+                                                      allSplit?.[lower_bound + idx]
+                                                        ?.tokenB,
+                                                      oraclePrices
+                                                    ))) /
+                                                  dollarConvertor(
+                                                    borrow?.collateralAmountParsed,
+                                                    borrow?.collateralMarket.slice(1),
+                                                    oraclePrices
+                                                  )) *
+                                                reduxProtocolStats?.find(
+                                                  (val: any) =>
+                                                    val?.token ==
+                                                    borrow?.collateralMarket.slice(1)
+                                                )?.exchangeRateRtokenToUnderlying).toFixed(2)
+                                              }
+                                        %
+                                      </Text>
+                                    </Box>
                                     <Box
                                       display="flex"
                                       justifyContent="space-between"
@@ -928,7 +1048,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                                 item?.loanId == borrow?.loanId
                                             )?.avg
                                           ) +
-                                          ((getAprByPool(
+                                          (((getAprByPool(
                                             poolAprs,
                                             allSplit?.[lower_bound + idx]
                                               ?.tokenA +
@@ -936,7 +1056,19 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                               allSplit?.[lower_bound + idx]
                                                 ?.tokenB,
                                             borrow?.l3App
-                                          ) *
+                                          ) +  ((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
+                                            ?.tokenA +
+                                            "/" +
+                                            allSplit?.[lower_bound + idx]
+                                              ?.tokenB))/getTvlByPool(
+                                                poolAprs,
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenA +
+                                                  "/" +
+                                                  allSplit?.[lower_bound + idx]
+                                                    ?.tokenB,
+                                                borrow?.l3App)
+                                              ))*
                                             (dollarConvertor(
                                               allSplit?.[lower_bound + idx]
                                                 ?.amountA,
@@ -981,7 +1113,69 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                 borderColor="#23233D"
                                 arrowShadowColor="#2B2F35"
                               >
-                                {"✨" +
+                                {
+                                  (allSplit?.[lower_bound + idx]?.tokenA +
+                                    "/" +
+                                    allSplit?.[lower_bound + idx]?.tokenB ===
+                                    "STRK/ETH" ||
+                                    allSplit?.[lower_bound + idx]?.tokenA +
+                                      "/" +
+                                      allSplit?.[lower_bound + idx]?.tokenB ===
+                                      "ETH/USDC" ||
+                                    allSplit?.[lower_bound + idx]?.tokenA +
+                                      "/" +
+                                      allSplit?.[lower_bound + idx]?.tokenB ===
+                                      "USDC/USDT")
+                                    ? "✨" + (
+                                      Number(
+                                        avgs?.find(
+                                          (item: any) =>
+                                            item?.loanId == borrow?.loanId
+                                        )?.avg
+                                      ) +
+                                      (((getAprByPool(
+                                        poolAprs,
+                                        allSplit?.[lower_bound + idx]?.tokenA +
+                                          "/" +
+                                          allSplit?.[lower_bound + idx]?.tokenB,
+                                        borrow?.l3App
+                                      )+((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
+                                        ?.tokenA +
+                                        "/" +
+                                        allSplit?.[lower_bound + idx]
+                                          ?.tokenB))/getTvlByPool(
+                                            poolAprs,
+                                            allSplit?.[lower_bound + idx]
+                                              ?.tokenA +
+                                              "/" +
+                                              allSplit?.[lower_bound + idx]
+                                                ?.tokenB,
+                                            borrow?.l3App
+                                          ))) *
+                                        (dollarConvertor(
+                                          allSplit?.[lower_bound + idx]?.amountA,
+                                          allSplit?.[lower_bound + idx]?.tokenA,
+                                          oraclePrices
+                                        ) +
+                                          dollarConvertor(
+                                            allSplit?.[lower_bound + idx]
+                                              ?.amountB,
+                                            allSplit?.[lower_bound + idx]?.tokenB,
+                                            oraclePrices
+                                          ))) /
+                                        dollarConvertor(
+                                          borrow?.collateralAmountParsed,
+                                          borrow?.collateralMarket.slice(1),
+                                          oraclePrices
+                                        )) *
+                                        reduxProtocolStats?.find(
+                                          (val: any) =>
+                                            val?.token ==
+                                            borrow?.collateralMarket.slice(1)
+                                        )?.exchangeRateRtokenToUnderlying
+                                    ).toFixed(3) +
+                                    "%"
+                                    : "" +
                                   (
                                     Number(
                                       avgs?.find(
@@ -989,13 +1183,25 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                           item?.loanId == borrow?.loanId
                                       )?.avg
                                     ) +
-                                    ((getAprByPool(
+                                    (((getAprByPool(
                                       poolAprs,
                                       allSplit?.[lower_bound + idx]?.tokenA +
                                         "/" +
                                         allSplit?.[lower_bound + idx]?.tokenB,
                                       borrow?.l3App
-                                    ) *
+                                    )+((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
+                                      ?.tokenA +
+                                      "/" +
+                                      allSplit?.[lower_bound + idx]
+                                        ?.tokenB))/getTvlByPool(
+                                          poolAprs,
+                                          allSplit?.[lower_bound + idx]
+                                            ?.tokenA +
+                                            "/" +
+                                            allSplit?.[lower_bound + idx]
+                                              ?.tokenB,
+                                          borrow?.l3App
+                                        ))) *
                                       (dollarConvertor(
                                         allSplit?.[lower_bound + idx]?.amountA,
                                         allSplit?.[lower_bound + idx]?.tokenA,

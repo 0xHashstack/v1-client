@@ -339,7 +339,18 @@ const LiquidityProvisionModal = ({
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
     dispatch(setModalDropdown(dropdownName));
   };
-
+  const getStrkAlloaction=(pool:any)=>{
+    try{
+      if(strkTokenAlloactionData[pool]){
+        return strkTokenAlloactionData[pool][strkTokenAlloactionData[pool].length-1]?.allocation;
+      }else{
+        return 0;
+      }
+    }catch(err){
+      return 0;
+    }
+    
+  }
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
@@ -714,7 +725,7 @@ const LiquidityProvisionModal = ({
       }
     });
 
-    return matchedObject ? matchedObject.tvl * 100 : 0;
+    return matchedObject ? matchedObject.tvl  : 0;
   };
   const reduxProtocolStats = useSelector(selectProtocolStats)
   const oraclePrices = useSelector(selectOraclePrices)
@@ -1020,12 +1031,14 @@ const LiquidityProvisionModal = ({
                               bg={`${pool === currentPool ? "#4D59E8" : "inherit"
                                 }`}
                               borderRadius="md"
+                              borderBottom={index==2 && currentSwap=="Jediswap" ?"1px solid #30363D":""}
                             >
-                              <Box display="flex">
+                              <Box display="flex" mt={ index<=2 && currentSwap=="Jediswap" ?"0.5rem":""}>
 
                                 <Box p="1">{getCoin(pool)}</Box>
                                 <Text>{(pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") && ((pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH")) ? "w" + pool.split("/")[0] + "/w" + pool.split("/")[1] : (pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") ? "w" + pool.split("/")[0] + "/" + pool.split("/")[1] : (pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH") ? pool.split("/")[0] + "/w" + pool.split("/")[1] : pool}</Text>
                               </Box>
+                              <Box>
                               <Box
                                 fontSize="9px"
                                 color="#E6EDF3"
@@ -1034,6 +1047,17 @@ const LiquidityProvisionModal = ({
                               >
                                 Pool apr: {numberFormatterPercentage(getAprByPool(poolApr, pool, currentSwap))}%
                               </Box>
+                              {index<=2 && currentSwap=="Jediswap"  &&
+                                          <Box
+                                            fontSize="9px"
+                                            color="#E6EDF3"
+                                            mt="6px"
+                                            fontWeight="medium"
+                                          >
+                                            STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, currentSwap)))}%
+                                          </Box>}                              
+                              </Box>
+
                             </Box>
                           </Box>
                         );
