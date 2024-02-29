@@ -60,6 +60,7 @@ interface BorrowDashboardProps {
   width: string;
   currentPagination: any;
   setCurrentPagination: any;
+  Coins: any;
   columnItems: any;
   Borrows: ILoan[];
   userLoans: any;
@@ -79,6 +80,7 @@ const tooltips = [
 const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
   width,
   currentPagination,
+  Coins,
   setCurrentPagination,
   columnItems,
 }) => {
