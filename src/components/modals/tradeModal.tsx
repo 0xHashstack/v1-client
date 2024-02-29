@@ -135,6 +135,7 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+import { useRouter } from "next/router";
 const TradeModal = ({
   buttonText,
   coin,
@@ -1214,8 +1215,11 @@ const TradeModal = ({
   //   };
   //   fetchEstrTokens();
   // }, [collateralBalance, inputCollateralAmount]);
+  const router = useRouter();
+  const { pathname } = router;
   return (
     <Box>
+      {pathname!=="/v1/strk-rewards" ?
       <Text
         key="borrow-details"
         as="span"
@@ -1253,7 +1257,31 @@ const TradeModal = ({
         }}
       >
         Spend
-      </Text>
+      </Text>:<Button
+                cursor="pointer"
+                height={"2rem"}
+                fontSize={"12px"}
+                mt="0.5rem"
+                padding="6px 12px"
+                bg="linear-gradient(to right, #7956EC,#1B29AE);"
+                _hover={{ bg: "white", color: "black" }}
+                borderRadius={"6px"}
+                color="white"
+                onClick={() => {
+                  const uqID = Math.random();
+                  setUniqueID(uqID);
+                  let data: any = localStorage.getItem("transactionCheck");
+                  data = data ? JSON.parse(data) : [];
+                  if (data && !data.includes(uqID)) {
+                    data.push(uqID);
+                    localStorage.setItem("transactionCheck", JSON.stringify(data));
+                  }
+                  onOpen();
+                }}
+      >
+        Spend
+        
+        </Button>}
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
 
       <Modal
