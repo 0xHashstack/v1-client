@@ -97,6 +97,7 @@ import numberFormatterPercentage from "@/utils/functions/numberFormatterPercenta
 import posthog from "posthog-js";
 import StrkToEth from "@/assets/icons/pools/strkToEth";
 import { useRouter } from "next/router";
+import axios from "axios";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -164,6 +165,9 @@ const LiquidityProvisionModal = ({
   const userLoans = useSelector(selectUserLoans);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
   const [uniqueID, setUniqueID] = useState(0);
+  const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
+  const [allocationData, setallocationData] = useState<any>()
+  const [poolAllocatedData, setpoolAllocatedData] = useState<any>()
   const getUniqueId = () => uniqueID;
 
   let activeTransactions = useSelector(selectActiveTransactions);
@@ -174,6 +178,44 @@ const LiquidityProvisionModal = ({
   // }, [userLoans]);
   ////console.log(userLoans)
   ////console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
+
+  useEffect(()=>{
+    try{
+      const fetchData=async()=>{
+        const res=await axios.get('https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json')
+        setstrkTokenAlloactionData(res?.data?.Jediswap_v1)
+      }
+      fetchData()
+    }catch(err){
+      console.log(err)
+    }
+  },[])
+
+  useEffect(()=>{
+    try{
+      if(currentPool!=='Select a pool'){    
+        if(strkTokenAlloactionData[currentPool]){        
+          setallocationData(strkTokenAlloactionData[currentPool])
+        }
+      }
+    }catch(err){
+
+      console.log("hi")
+      // console.log(err);
+    }
+  },[strkTokenAlloactionData,currentPool])
+
+  useEffect(()=>{
+    if(allocationData?.length>0){
+      if(currentPool==="STRK/ETH" || currentPool=="USDC/USDT" || currentPool=="ETH/USDC"){
+        setpoolAllocatedData(allocationData[allocationData.length-1]?.allocation)
+      }else{
+        setpoolAllocatedData(0)
+      }
+    }
+  },[allocationData,currentPool])
+
+
   useEffect(() => {
     const result = userLoans?.find(
       (item: any) =>
@@ -277,14 +319,15 @@ const LiquidityProvisionModal = ({
   //   "ID - 1234510",
   // ];
   const pools = [
-    "ETH/USDT",
+    "STRK/ETH",
     "USDC/USDT",
     "ETH/USDC",
+    "ETH/USDT",
     // "DAI/ETH",
     "BTC/ETH",
     "BTC/USDT",
     "BTC/USDC",
-    "STRK/ETH"
+
     // "BTC/DAI",
     // "USDT/DAI",
     // "USDC/DAI",
@@ -296,7 +339,18 @@ const LiquidityProvisionModal = ({
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
     dispatch(setModalDropdown(dropdownName));
   };
-
+  const getStrkAlloaction=(pool:any)=>{
+    try{
+      if(strkTokenAlloactionData[pool]){
+        return strkTokenAlloactionData[pool][strkTokenAlloactionData[pool].length-1]?.allocation;
+      }else{
+        return 0;
+      }
+    }catch(err){
+      return 0;
+    }
+    
+  }
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
@@ -649,6 +703,30 @@ const LiquidityProvisionModal = ({
 
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
+  const getTvlByPool = (dataArray: any[], pool: string, dapp: string) => {
+    const matchedObject = dataArray.find(item => {
+      if (item.name === "USDT/USDC") {
+        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("USDC/USDT" === pool);
+      } else if (item.name == "ETH/STRK") {
+        return (
+          item.amm ===
+          (dapp == "Select a dapp"
+            ? "jedi"
+            : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "STRK/ETH" === pool
+        )
+      }
+      else if (item.name === "ETH/DAI") {
+        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("DAI/ETH" === pool);
+      }
+      else {
+        return item.name === pool && item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap");
+      }
+    });
+
+    return matchedObject ? matchedObject.tvl  : 0;
+  };
   const reduxProtocolStats = useSelector(selectProtocolStats)
   const oraclePrices = useSelector(selectOraclePrices)
   const fetchLPAmount = async () => {
@@ -678,7 +756,7 @@ const LiquidityProvisionModal = ({
       );
       setCurrentLPTokenAmount(lp_tokon);
     }
-  };
+  };  
 
   return (
     <div>
@@ -953,12 +1031,14 @@ const LiquidityProvisionModal = ({
                               bg={`${pool === currentPool ? "#4D59E8" : "inherit"
                                 }`}
                               borderRadius="md"
+                              borderBottom={index==2 && currentSwap=="Jediswap" ?"1px solid #30363D":""}
                             >
-                              <Box display="flex">
+                              <Box display="flex" mt={ index<=2 && currentSwap=="Jediswap" ?"0.5rem":""}>
 
                                 <Box p="1">{getCoin(pool)}</Box>
                                 <Text>{(pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") && ((pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH")) ? "w" + pool.split("/")[0] + "/w" + pool.split("/")[1] : (pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") ? "w" + pool.split("/")[0] + "/" + pool.split("/")[1] : (pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH") ? pool.split("/")[0] + "/w" + pool.split("/")[1] : pool}</Text>
                               </Box>
+                              <Box>
                               <Box
                                 fontSize="9px"
                                 color="#E6EDF3"
@@ -967,6 +1047,17 @@ const LiquidityProvisionModal = ({
                               >
                                 Pool apr: {numberFormatterPercentage(getAprByPool(poolApr, pool, currentSwap))}%
                               </Box>
+                              {index<=2 && currentSwap=="Jediswap"  &&
+                                          <Box
+                                            fontSize="9px"
+                                            color="#E6EDF3"
+                                            mt="6px"
+                                            fontWeight="medium"
+                                          >
+                                            STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, currentSwap)))}%
+                                          </Box>}                              
+                              </Box>
+
                             </Box>
                           </Box>
                         );
@@ -1533,7 +1624,7 @@ const LiquidityProvisionModal = ({
                       fontWeight="400"
                       fontStyle="normal"
                     >
-                      Effective apr:{" "}
+                      Effective apr:{" "} 
                     </Text>
                     <Tooltip
                       hasArrow
@@ -1566,7 +1657,7 @@ const LiquidityProvisionModal = ({
                         (-(reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.loanMarket.slice(1)
-                        )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap))) +
+                        )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap)))) +
                         dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                           (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying) *
@@ -1586,7 +1677,7 @@ const LiquidityProvisionModal = ({
                           (-(reduxProtocolStats?.find(
                             (stat: any) =>
                               stat?.token === borrow?.loanMarket.slice(1)
-                          )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)) +
+                          )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap))) + 
                           dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                             (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                           )?.exchangeRateRtokenToUnderlying) *
