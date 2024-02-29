@@ -1194,7 +1194,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const data = await getUserDeposits(address);
+        const data = await getUserDeposits("0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864");
         if (!data) {
           return;
         }
@@ -1578,7 +1578,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const userLoans = await getUserLoans(address);
+        const userLoans = await getUserLoans("0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864");
       //  console.log(userLoans,"data user loans")
         if (!userLoans) {
           return;

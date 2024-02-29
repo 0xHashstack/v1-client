@@ -61,6 +61,7 @@ import dollarConvertor from "@/utils/functions/dollarConvertor";
 import DollarActiveRadioButton from "@/assets/icons/dollarActiveRadioButton";
 import DollarNonActiveRadioButton from "@/assets/icons/dollarNonActiveRadioButton";
 import posthog from "posthog-js";
+import axios from "axios";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -551,6 +552,20 @@ const BorrowDashboard = ({
     "This is return you would make if you closed the loan now. ROE is Return on equity.",
     "Loan risk metric comparing collateral value to borrowed amount to check potential liquidation.",
   ];
+  const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
+  const [allocationData, setallocationData] = useState<any>()
+  const [poolAllocatedData, setpoolAllocatedData] = useState<any>()
+  useEffect(()=>{
+    try{
+      const fetchData=async()=>{
+        const res=await axios.get('https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json')
+        setstrkTokenAlloactionData(res?.data?.Jediswap_v1)
+      }
+      fetchData()
+    }catch(err){
+      console.log(err)
+    }
+  },[])
 
   ////console.log("Borrows", loading, Borrows);
   return loading ? (

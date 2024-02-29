@@ -296,6 +296,30 @@ const TradeModal = ({
 
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
+  const getTvlByPool = (dataArray: any[], pool: string, dapp: string) => {
+    const matchedObject = dataArray.find(item => {
+      if (item.name === "USDT/USDC") {
+        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("USDC/USDT" === pool);
+      } else if (item.name == "ETH/STRK") {
+        return (
+          item.amm ===
+          (dapp == "Select a dapp"
+            ? "jedi"
+            : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "STRK/ETH" === pool
+        )
+      }
+      else if (item.name === "ETH/DAI") {
+        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("DAI/ETH" === pool);
+      }
+      else {
+        return item.name === pool && item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap");
+      }
+    });
+
+    return matchedObject ? matchedObject.tvl * 100 : 0;
+  };
   const pools = [
     "STRK/ETH",
     "USDC/USDT",
@@ -583,6 +607,7 @@ const TradeModal = ({
     setCollateralMarket(coin ? coin.name : "BTC");
   }, [coin]);
   useEffect(() => {
+    setCurrentPool("Select a pool")
     setCurrentPoolCoin("Select a pool");
   }, [currentDapp]);
   const resetStates = () => {
@@ -1117,6 +1142,46 @@ const TradeModal = ({
     toMarketLiqB,
     currentDapp,
   ]);
+
+  const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
+  const [allocationData, setallocationData] = useState<any>()
+  const [poolAllocatedData, setpoolAllocatedData] = useState<any>()
+
+  useEffect(()=>{
+    try{
+      const fetchData=async()=>{
+        const res=await axios.get('https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json')
+        setstrkTokenAlloactionData(res?.data?.Jediswap_v1)
+      }
+      fetchData()
+    }catch(err){
+      console.log(err)
+    }
+  },[])
+
+  useEffect(()=>{
+    try{
+      if(currentPool!=='Select a pool'){    
+        if(strkTokenAlloactionData[currentPool]){        
+          setallocationData(strkTokenAlloactionData[currentPool])
+        }
+      }
+    }catch(err){
+
+      console.log("hi")
+      // console.log(err);
+    }
+  },[strkTokenAlloactionData,currentPool])
+
+  useEffect(()=>{
+    if(allocationData?.length>0){
+      if(currentPool==="STRK/ETH" || currentPool=="USDC/USDT" || currentPool=="ETH/USDC"){
+        setpoolAllocatedData(allocationData[allocationData.length-1]?.allocation)
+      }else{
+        setpoolAllocatedData(0)
+      }
+    }
+  },[allocationData,currentPool])
 
   const fetchLiquiditySplit = async () => {
     if (
@@ -3631,7 +3696,7 @@ const TradeModal = ({
                                         poolAprs,
                                         currentPool,
                                         currentDapp
-                                      )) +
+                                      )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                                     inputCollateralAmountUSD *
                                       protocolStats?.find(
                                         (stat: any) =>
@@ -3661,7 +3726,7 @@ const TradeModal = ({
                                       poolAprs,
                                       currentPool,
                                       currentDapp
-                                    )) +
+                                    )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                                   inputCollateralAmountUSD *
                                     protocolStats?.find(
                                       (stat: any) =>
@@ -3744,7 +3809,7 @@ const TradeModal = ({
                                       poolAprs,
                                       currentPool,
                                       currentDapp
-                                    )) +
+                                    )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                                   inputCollateralAmountUSD *
                                     protocolStats?.find(
                                       (stat: any) =>
@@ -3768,7 +3833,7 @@ const TradeModal = ({
                                     poolAprs,
                                     currentPool,
                                     currentDapp
-                                  )) +
+                                  )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                                 inputCollateralAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
