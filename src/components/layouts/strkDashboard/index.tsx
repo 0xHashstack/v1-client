@@ -116,78 +116,121 @@ const StrkDashboard = () => {
   const [validRTokens, setValidRTokens] = useState([]);
   const userDeposits = useSelector(selectUserDeposits);
   const { account, address } = useAccount();
-  const poolApr = useSelector(selectJediswapPoolAprs)
+  const poolApr = useSelector(selectJediswapPoolAprs);
   const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
-  useEffect(()=>{
-    try{
-      const fetchData=async()=>{
-        const res=await axios.get('https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json')
-        setstrkTokenAlloactionData(res?.data?.Jediswap_v1)
-      }
-      fetchData()
-    }catch(err){
-      console.log(err)
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const res = await axios.get(
+          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json"
+        );
+        setstrkTokenAlloactionData(res?.data?.Jediswap_v1);
+      };
+      fetchData();
+    } catch (err) {
+      console.log(err);
     }
-  },[])
-  const getStrkAlloaction=(pool:any)=>{
-    try{
-      if(strkTokenAlloactionData[pool]){
-        return strkTokenAlloactionData[pool][strkTokenAlloactionData[pool].length-1]?.allocation;
-      }else{
+  }, []);
+  const getStrkAlloaction = (pool: any) => {
+    try {
+      if (strkTokenAlloactionData[pool]) {
+        return strkTokenAlloactionData[pool][
+          strkTokenAlloactionData[pool].length - 1
+        ]?.allocation;
+      } else {
         return 0;
       }
-    }catch(err){
+    } catch (err) {
       return 0;
     }
-    
-  }
+  };
   const getAprByPool = (dataArray: any[], pool: string, dapp: string) => {
-    const matchedObject = dataArray.find(item => {
+    const matchedObject = dataArray.find((item) => {
       if (item.name === "USDT/USDC") {
-        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("USDC/USDT" === pool);
+        return (
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "USDC/USDT" === pool
+        );
       } else if (item.name == "ETH/STRK") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "STRK/ETH" === pool
-        )
-      }
-      else if (item.name === "ETH/DAI") {
-        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("DAI/ETH" === pool);
-      }
-      else {
-        return item.name === pool && item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap");
+        );
+      } else if (item.name === "ETH/DAI") {
+        return (
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "DAI/ETH" === pool
+        );
+      } else {
+        return (
+          item.name === pool &&
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap")
+        );
       }
     });
 
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
   const getTvlByPool = (dataArray: any[], pool: string, dapp: string) => {
-    const matchedObject = dataArray.find(item => {
+    const matchedObject = dataArray.find((item) => {
       if (item.name === "USDT/USDC") {
-        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("USDC/USDT" === pool);
+        return (
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "USDC/USDT" === pool
+        );
       } else if (item.name == "ETH/STRK") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "STRK/ETH" === pool
-        )
-      }
-      else if (item.name === "ETH/DAI") {
-        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("DAI/ETH" === pool);
-      }
-      else {
-        return item.name === pool && item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap");
+        );
+      } else if (item.name === "ETH/DAI") {
+        return (
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "DAI/ETH" === pool
+        );
+      } else {
+        return (
+          item.name === pool &&
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap")
+        );
       }
     });
 
-    return matchedObject ? matchedObject.tvl  : 0;
+    return matchedObject ? matchedObject.tvl : 0;
   };
   useEffect(() => {
     if (validRTokens.length === 0) {
@@ -788,12 +831,28 @@ const StrkDashboard = () => {
                 </Box>
                 <Box display="flex" mt="0.5rem" gap="0.8rem">
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    Pool Apr: {numberFormatterPercentage(getAprByPool(poolApr, pool, "Jediswap"))}%
+                    Pool Apr:{" "}
+                    {numberFormatterPercentage(
+                      getAprByPool(poolApr, pool, "Jediswap")
+                    )}
+                    %
                   </Text>
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    STRK Apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, "Jediswap")))}%
+                    STRK Apr:{" "}
+                    {numberFormatterPercentage(
+                      String(
+                        (100 *
+                          365 *
+                          (getStrkAlloaction(pool) *
+                            oraclePrices?.find(
+                              (curr: any) => curr.name === "STRK"
+                            )?.price)) /
+                          getTvlByPool(poolApr, pool, "Jediswap")
+                      )
+                    )}
+                    %
                   </Text>
-                  </Box>
+                </Box>
                 <Box
                   mt="0.5rem"
                   onClick={() => {
