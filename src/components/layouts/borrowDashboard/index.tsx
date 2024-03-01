@@ -939,7 +939,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                         %
                                       </Text>
                                     </Box>
-                                     <Box
+                                     {/* <Box
                                       display="flex"
                                       justifyContent="space-between"
                                     >
@@ -1014,7 +1014,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                               }
                                         %
                                       </Text>
-                                    </Box>
+                                    </Box> */}
                                     <Box
                                       display="flex"
                                       justifyContent="space-between"
@@ -1058,19 +1058,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                               allSplit?.[lower_bound + idx]
                                                 ?.tokenB,
                                             borrow?.l3App
-                                          ) +  ((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                                            ?.tokenA +
-                                            "/" +
-                                            allSplit?.[lower_bound + idx]
-                                              ?.tokenB))/getTvlByPool(
-                                                poolAprs,
-                                                allSplit?.[lower_bound + idx]
-                                                  ?.tokenA +
-                                                  "/" +
-                                                  allSplit?.[lower_bound + idx]
-                                                    ?.tokenB,
-                                                borrow?.l3App)
-                                              ))*
+                                          ) )*
                                             (dollarConvertor(
                                               allSplit?.[lower_bound + idx]
                                                 ?.amountA,
@@ -1102,6 +1090,19 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                     </Box>
                                   </Box>
                                 }
+                                // ((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
+                                //   ?.tokenA +
+                                //   "/" +
+                                //   allSplit?.[lower_bound + idx]
+                                //     ?.tokenB))/getTvlByPool(
+                                //       poolAprs,
+                                //       allSplit?.[lower_bound + idx]
+                                //         ?.tokenA +
+                                //         "/" +
+                                //         allSplit?.[lower_bound + idx]
+                                //           ?.tokenB,
+                                //       borrow?.l3App)
+                                //     )
                                 placement="right"
                                 rounded="md"
                                 boxShadow="dark-lg"
@@ -1115,6 +1116,19 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                 borderColor="#23233D"
                                 arrowShadowColor="#2B2F35"
                               >
+                                {/* (100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
+                                        ?.tokenA +
+                                        "/" +
+                                        allSplit?.[lower_bound + idx]
+                                          ?.tokenB))/getTvlByPool(
+                                            poolAprs,
+                                            allSplit?.[lower_bound + idx]
+                                              ?.tokenA +
+                                              "/" +
+                                              allSplit?.[lower_bound + idx]
+                                                ?.tokenB,
+                                            borrow?.l3App
+                                          ) */}
                                 {
                                   (allSplit?.[lower_bound + idx]?.tokenA +
                                     "/" +
@@ -1141,19 +1155,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                           "/" +
                                           allSplit?.[lower_bound + idx]?.tokenB,
                                         borrow?.l3App
-                                      )+((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                                        ?.tokenA +
-                                        "/" +
-                                        allSplit?.[lower_bound + idx]
-                                          ?.tokenB))/getTvlByPool(
-                                            poolAprs,
-                                            allSplit?.[lower_bound + idx]
-                                              ?.tokenA +
-                                              "/" +
-                                              allSplit?.[lower_bound + idx]
-                                                ?.tokenB,
-                                            borrow?.l3App
-                                          ))) *
+                                      )) *
                                         (dollarConvertor(
                                           allSplit?.[lower_bound + idx]?.amountA,
                                           allSplit?.[lower_bound + idx]?.tokenA,
@@ -1191,19 +1193,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                         "/" +
                                         allSplit?.[lower_bound + idx]?.tokenB,
                                       borrow?.l3App
-                                    )+((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                                      ?.tokenA +
-                                      "/" +
-                                      allSplit?.[lower_bound + idx]
-                                        ?.tokenB))/getTvlByPool(
-                                          poolAprs,
-                                          allSplit?.[lower_bound + idx]
-                                            ?.tokenA +
-                                            "/" +
-                                            allSplit?.[lower_bound + idx]
-                                              ?.tokenB,
-                                          borrow?.l3App
-                                        ))) *
+                                    )) *
                                       (dollarConvertor(
                                         allSplit?.[lower_bound + idx]?.amountA,
                                         allSplit?.[lower_bound + idx]?.tokenA,

@@ -3146,7 +3146,9 @@ const TradeModal = ({
                                   // borderRadius="md"
                                   borderBottom={index==2 && currentDapp=="Jediswap" ?"1px solid #30363D":""}
                                 >
-                                  <Box display="flex" mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}>
+                                  <Box display="flex" 
+                                  // mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}
+                                  >
                                     <Box p="1">{getCoin(pool)}</Box>
                                     <Text>
                                       {(pool.split("/")[0] == "BTC" ||
@@ -3184,7 +3186,7 @@ const TradeModal = ({
                                     )}
                                     %
                                   </Box>
-                                  {index<=2 && currentDapp=="Jediswap"  &&
+                                  {/* {index<=2 && currentDapp=="Jediswap"  &&
                                           <Box
                                             fontSize="9px"
                                             color="#E6EDF3"
@@ -3192,7 +3194,7 @@ const TradeModal = ({
                                             fontWeight="medium"
                                           >
                                             STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, pool, currentDapp)))}%
-                                          </Box>}        
+                                          </Box>}         */}
                                   </Box>
                                 </Box>
                                 
@@ -3740,7 +3742,7 @@ const TradeModal = ({
                                         poolAprs,
                                         currentPool,
                                         currentDapp
-                                      )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                                      )) +
                                     inputCollateralAmountUSD *
                                       protocolStats?.find(
                                         (stat: any) =>
@@ -3752,6 +3754,7 @@ const TradeModal = ({
                                   : "rgb(3 211 148)"
                               }
                             >
+                              {/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp)) */}
                               {/* 5.56% */}
                               {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                               {}
@@ -3770,7 +3773,7 @@ const TradeModal = ({
                                       poolAprs,
                                       currentPool,
                                       currentDapp
-                                    )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                                    )) +
                                   inputCollateralAmountUSD *
                                     protocolStats?.find(
                                       (stat: any) =>
@@ -3781,6 +3784,7 @@ const TradeModal = ({
                               %
                             </Text>
                           )
+                          // (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))
                         ) : // protocolStats.length === 0 ||
                         rTokenAmount === 0 ||
                           inputBorrowAmount === 0 ||
@@ -3853,7 +3857,7 @@ const TradeModal = ({
                                       poolAprs,
                                       currentPool,
                                       currentDapp
-                                    )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                                    )) +
                                   inputCollateralAmountUSD *
                                     protocolStats?.find(
                                       (stat: any) =>
@@ -3865,6 +3869,7 @@ const TradeModal = ({
                                 : "#00D395"
                             }
                           >
+                            {/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp)) */}
                             {/* 5.56% */}
                             {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                             {Number(
@@ -3877,7 +3882,7 @@ const TradeModal = ({
                                     poolAprs,
                                     currentPool,
                                     currentDapp
-                                  )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                                  )) +
                                 inputCollateralAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
@@ -3886,6 +3891,7 @@ const TradeModal = ({
                                 inputCollateralAmountUSD
                             ).toFixed(2)}
                             %
+                            {/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp)) */}
                             {/* {
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentCollateralCoin

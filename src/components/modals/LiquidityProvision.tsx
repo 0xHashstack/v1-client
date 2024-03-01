@@ -1033,7 +1033,9 @@ const LiquidityProvisionModal = ({
                               borderRadius="md"
                               borderBottom={index==2 && currentSwap=="Jediswap" ?"1px solid #30363D":""}
                             >
-                              <Box display="flex" mt={ index<=2 && currentSwap=="Jediswap" ?"0.5rem":""}>
+                              <Box display="flex" 
+                              // mt={ index<=2 && currentSwap=="Jediswap" ?"0.5rem":""}
+                              >
 
                                 <Box p="1">{getCoin(pool)}</Box>
                                 <Text>{(pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") && ((pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH")) ? "w" + pool.split("/")[0] + "/w" + pool.split("/")[1] : (pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") ? "w" + pool.split("/")[0] + "/" + pool.split("/")[1] : (pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH") ? pool.split("/")[0] + "/w" + pool.split("/")[1] : pool}</Text>
@@ -1047,7 +1049,7 @@ const LiquidityProvisionModal = ({
                               >
                                 Pool apr: {numberFormatterPercentage(getAprByPool(poolApr, pool, currentSwap))}%
                               </Box>
-                              {index<=2 && currentSwap=="Jediswap"  &&
+                              {/* {index<=2 && currentSwap=="Jediswap"  &&
                                           <Box
                                             fontSize="9px"
                                             color="#E6EDF3"
@@ -1055,7 +1057,7 @@ const LiquidityProvisionModal = ({
                                             fontWeight="medium"
                                           >
                                             STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, currentSwap)))}%
-                                          </Box>}                              
+                                          </Box>}                               */}
                               </Box>
 
                             </Box>
@@ -1657,7 +1659,7 @@ const LiquidityProvisionModal = ({
                         (-(reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.loanMarket.slice(1)
-                        )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap)))) +
+                        )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap))) +
                         dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                           (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying) *
@@ -1677,7 +1679,7 @@ const LiquidityProvisionModal = ({
                           (-(reduxProtocolStats?.find(
                             (stat: any) =>
                               stat?.token === borrow?.loanMarket.slice(1)
-                          )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap))) + 
+                          )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)) + 
                           dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                             (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                           )?.exchangeRateRtokenToUnderlying) *
@@ -1719,6 +1721,8 @@ const LiquidityProvisionModal = ({
                     </Text>
                   }
                 </Box>
+                {/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap)) */}
+                {/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap)) */}
                 {/* <Box display="flex" justifyContent="space-between">
                   <Box display="flex">
                     <Text

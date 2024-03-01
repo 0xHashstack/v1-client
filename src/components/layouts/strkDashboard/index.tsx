@@ -376,19 +376,19 @@ const StrkDashboard = () => {
             Participate in a
           </Text>
           <Text fontSize="26px" color="#7956EC" fontWeight="600" ml="0.5rem">
-            40 M $STRK
+            40M $STRK
           </Text>
           <Text fontSize="26px" color="white" fontWeight="600" ml="0.5rem">
             Incentive Program!
           </Text>
         </Box>
-        <Box display="flex" gap="2rem" mr="1rem">
+        {/* <Box display="flex" gap="2rem" mr="1rem">
           <Box gap="0.2rem">
             <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
               STRK Reward
             </Text>
             <Text fontSize="16px" fontWeight="500" color="white">
-              {numberFormatter(365)} STRK
+              {numberFormatter(0)} STRK
             </Text>
           </Box>
           <Button
@@ -404,7 +404,7 @@ const StrkDashboard = () => {
           >
             Claim
           </Button>
-        </Box>
+        </Box> */}
       </Box>
       <Box
         mt="1rem"
@@ -801,7 +801,7 @@ const StrkDashboard = () => {
               <Box
                 key={idx}
                 bg="#34345633"
-                paddingX="2.5rem"
+                paddingX="4rem"
                 paddingY="2rem"
                 borderRadius="8px"
                 justifyContent="center"
@@ -837,7 +837,7 @@ const StrkDashboard = () => {
                     )}
                     %
                   </Text>
-                  <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
+                  {/* <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
                     STRK Apr:{" "}
                     {numberFormatterPercentage(
                       String(
@@ -851,7 +851,7 @@ const StrkDashboard = () => {
                       )
                     )}
                     %
-                  </Text>
+                  </Text> */}
                 </Box>
                 <Box
                   mt="0.5rem"

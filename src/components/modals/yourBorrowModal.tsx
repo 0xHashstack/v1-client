@@ -1718,7 +1718,7 @@ const YourBorrowModal = ({
                     (-(reduxProtocolStats?.find(
                       (stat: any) =>
                         stat?.token === currentBorrowMarketCoin1.slice(1)
-                    )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                    )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)) +
                     dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                       (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                     )?.exchangeRateRtokenToUnderlying) *
@@ -1738,7 +1738,7 @@ const YourBorrowModal = ({
                       (-(reduxProtocolStats?.find(
                         (stat: any) =>
                           stat?.token === currentBorrowMarketCoin1.slice(1)
-                      )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                      )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)) +
                       dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                         (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                       )?.exchangeRateRtokenToUnderlying) *
@@ -1779,7 +1779,7 @@ const YourBorrowModal = ({
                   %
                 </Text>
               }
-
+{/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp)) */}
             </Box>
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
@@ -4401,7 +4401,9 @@ const YourBorrowModal = ({
                                         borderRadius="md"
                                         borderBottom={index==2 && currentDapp=="Jediswap" ?"1px solid #30363D":""}
                                       >
-                                        <Box display="flex" mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}>
+                                        <Box display="flex" 
+                                        // mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}
+                                        >
                                           <Box p="1">{getCoin(pool)}</Box>
                                           <Text>{(pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") && ((pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH")) ? "w" + pool.split("/")[0] + "/w" + pool.split("/")[1] : (pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") ? "w" + pool.split("/")[0] + "/" + pool.split("/")[1] : (pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH") ? pool.split("/")[0] + "/w" + pool.split("/")[1] : pool}</Text>
 
@@ -4415,7 +4417,7 @@ const YourBorrowModal = ({
                                           >
                                             Pool apr: {numberFormatterPercentage(getAprByPool(poolAprs, pool, currentDapp))}%
                                           </Box>
-                                          {index<=2 && currentDapp=="Jediswap"  &&
+                                          {/* {index<=2 && currentDapp=="Jediswap"  &&
                                           <Box
                                             fontSize="9px"
                                             color="#E6EDF3"
@@ -4424,7 +4426,7 @@ const YourBorrowModal = ({
                                           >
                                             STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, pool, currentDapp)))}%
                                           </Box>
-                                }
+                                } */}
                                           </Box>
                                       </Box>
                                     </Box>
