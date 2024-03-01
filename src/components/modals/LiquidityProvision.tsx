@@ -1038,7 +1038,28 @@ const LiquidityProvisionModal = ({
                               >
 
                                 <Box p="1">{getCoin(pool)}</Box>
+                                <Tooltip
+                            hasArrow
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label={index<=2 && currentSwap=="Jediswap" ?"Earn $STRK Rewards.":""}
+                            bg="#02010F"
+                            fontSize={"13px"}
+                            fontWeight={"400"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                            maxW="232px"
+                            // mt="50px"
+                          >
                                 <Text>{(pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") && ((pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH")) ? "w" + pool.split("/")[0] + "/w" + pool.split("/")[1] : (pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") ? "w" + pool.split("/")[0] + "/" + pool.split("/")[1] : (pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH") ? pool.split("/")[0] + "/w" + pool.split("/")[1] : pool}</Text>
+                          </Tooltip>
+                                <Text mt="-0.1rem">
+                                        {(index<=2 && currentSwap=="Jediswap") ?"✨":"" }
+                                    </Text>
                               </Box>
                               <Box>
                               <Box
