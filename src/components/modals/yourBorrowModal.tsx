@@ -4157,6 +4157,14 @@ const YourBorrowModal = ({
                               <Text mt="0.10rem" color="white">
                                 {currentDapp}
                               </Text>
+                              {currentDapp=="Jediswap" && radioValue=="1" &&
+                                  <Image
+                                    src={'/strkReward.svg'}
+                                    alt={`Strk reward`}
+                                    width="74"
+                                    height="15"
+                                    style={{marginTop:"0.2rem"}}
+                                  />}
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (
@@ -4219,6 +4227,14 @@ const YourBorrowModal = ({
                                         <Text pt="1" color="white">
                                           {dapp.name}
                                         </Text>
+                                        {dapp.name=="Jediswap" && radioValue=="1" &&
+                                  <Image
+                                    src={'/strkReward.svg'}
+                                    alt={`Strk reward`}
+                                    width="74"
+                                    height="15"
+                                    style={{marginTop:"0.3rem"}}
+                                  />}
                                       </Box>
                                       {dapp.status === "disable" && (
                                         <Text

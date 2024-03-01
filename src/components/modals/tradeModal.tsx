@@ -2878,6 +2878,14 @@ const TradeModal = ({
                           ""
                         )}
                         <Text>{currentDapp}</Text>
+                        {currentDapp=="Jediswap" &&
+                                  <Image
+                                    src={'/strkReward.svg'}
+                                    alt={`Strk reward`}
+                                    width="74"
+                                    height="15"
+                                    style={{marginTop:"0.2rem"}}
+                                  />}
                       </Box>
                       <Box pt="1" className="navbar-button">
                         {activeModal == "yourBorrowDappDropdown" ? (
@@ -2949,6 +2957,16 @@ const TradeModal = ({
                                   <Text pt="1" color="white">
                                     {dapp.name}
                                   </Text>
+                                  <Box>
+                                    {dapp.name=="Jediswap" &&
+                                  <Image
+                                    src={'/strkReward.svg'}
+                                    alt={`Strk reward`}
+                                    width="74"
+                                    height="15"
+                                    style={{marginTop:"0.3rem"}}
+                                  />}
+                                  </Box>
                                 </Box>
                                 {dapp.status === "disable" && (
                                   <Text
