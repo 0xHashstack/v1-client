@@ -28,7 +28,12 @@ const Market: NextPage = () => {
           fill
           style={{ objectFit: "cover", borderRadius: "8px" }}
         />
-        <Box position="absolute" top="2" left="7">
+        <Box
+          position="absolute"
+          //  top="2"
+          top="7"
+          left="7"
+        >
           <Box
             color="#E6EDF3"
             fontSize="2.1rem"
@@ -59,7 +64,7 @@ const Market: NextPage = () => {
               $STRK Tokens
             </Text>
           </Box>
-          <Button
+          {/* <Button
             marginTop="2.5"
             color="white"
             bgGradient="linear-gradient(#7956EC, #1B29AE)"
@@ -69,7 +74,7 @@ const Market: NextPage = () => {
             _hover={{ bgGradient: "linear-gradient(#1B29AE, #7956EC)" }}
           >
             Learn more
-          </Button>
+          </Button> */}
         </Box>
       </Box>
       <StatsBoard />
