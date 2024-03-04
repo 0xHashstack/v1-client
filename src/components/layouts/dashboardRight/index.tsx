@@ -96,8 +96,6 @@ const DashboardRight = ({
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
 
-
-
   useEffect(() => {
     ////console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
   }, [currentBorrowMarketCoin]);
@@ -149,7 +147,7 @@ const DashboardRight = ({
                   textAlign={idx == 0 ? "left" : "center"}
                   color={"#BDBFC1"}
                   padding={0}
-                // pl={idx == 0 ? 5 : 0}
+                  // pl={idx == 0 ? 5 : 0}
                 >
                   <Tooltip
                     hasArrow
@@ -170,8 +168,8 @@ const DashboardRight = ({
                     border="1px solid"
                     borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
-                  // maxW="222px"
-                  // mt="28px"
+                    // maxW="222px"
+                    // mt="28px"
                   >
                     {val}
                   </Tooltip>
@@ -183,9 +181,9 @@ const DashboardRight = ({
         <Tbody
           position="relative"
           overflowX="hidden"
-        //   display="flex"
-        //   flexDirection="column"
-        //   gap={"1rem"}
+          //   display="flex"
+          //   flexDirection="column"
+          //   gap={"1rem"}
         >
           {Coins?.map((coin, idx) => (
             <>
@@ -196,7 +194,11 @@ const DashboardRight = ({
                 // bgColor="blue"
                 // borderBottom="1px solid #2b2f35"
                 position="relative"
-                bg={coin?.name === "STRK" ? "linear-gradient(90deg, #34345600 0%, #34345688 50%, #34345600 100%, #34345600 100%)" : ""}
+                bg={
+                  coin?.name === "STRK"
+                    ? "linear-gradient(90deg, #34345600 0%, #34345688 50%, #34345600 100%, #34345600 100%)"
+                    : ""
+                }
               >
                 <Td
                   width={"14%"}
@@ -205,34 +207,44 @@ const DashboardRight = ({
                   fontWeight={400}
                   padding={0}
                   textAlign="left"
-                // bgColor={"red"}
+                  // bgColor={"red"}
                 >
                   <HStack gap="10px">
                     <Box height="32px" width="32px">
                       <Image
-                        src={coin?.name == "DAI" ? `/${coin?.name}Disabled.svg` : `/${coin?.name}.svg`}
+                        src={
+                          coin?.name == "DAI"
+                            ? `/${coin?.name}Disabled.svg`
+                            : `/${coin?.name}.svg`
+                        }
                         alt="Picture of the author"
                         width="32"
                         height="32"
                       />
                     </Box>
-                    <Box gap="0.2rem" display={"flex"}>
-                    <Text fontSize="14px">{(coin?.name == "BTC" || coin?.name == "ETH") ? "w" + coin?.name : coin?.name}</Text>
-                    {coin?.name=="DAI" &&                      <Image
-                        src={`/paused.svg`}
-                        alt={`Picture of the coin that I want to access ${coin?.name}`}
-                        width="48"
-                        height="16"
-                      />}
-                                                                  {coin?.name=="STRK" &&                      <Image
-                        src={`/new.svg`}
-                        alt={`Picture of the coin that I want to access ${coin?.name}`}
-                        width="36"
-                        height="16"
-                      />}
-                      
+                    <Box gap="0.2rem" display={"flex"} flexDirection="column">
+                      <Text fontSize="14px">
+                        {coin?.name == "BTC" || coin?.name == "ETH"
+                          ? "w" + coin?.name
+                          : coin?.name}
+                      </Text>
+                      {coin?.name == "DAI" && (
+                        <Image
+                          src={`/paused.svg`}
+                          alt={`Picture of the coin that I want to access ${coin?.name}`}
+                          width="48"
+                          height="16"
+                        />
+                      )}
+                      {coin?.name == "STRK" && (
+                        <Image
+                          src={`/new.svg`}
+                          alt={`Picture of the coin that I want to access ${coin?.name}`}
+                          width="36"
+                          height="16"
+                        />
+                      )}
                     </Box>
-                    
                   </HStack>
                 </Td>
                 <Td
@@ -250,11 +262,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
-                  // bgColor={"blue"}
+                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    { totalBorrows[idx] == null ? (
+                    {totalBorrows[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -282,11 +294,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
-                  // bgColor={"blue"}
+                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    { availableReserves[idx] == null ? (
+                    {availableReserves[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -314,11 +326,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
-                  // bgColor={"blue"}
+                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    { utilization[idx] == null ? (
+                    {utilization[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -346,11 +358,11 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI"  ? "#3E415C" : "white"}
-                  // bgColor={"blue"}
+                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    { borrowAPRs[idx] == null ? (
+                    {borrowAPRs[idx] == null ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -373,8 +385,8 @@ const DashboardRight = ({
                   // bgColor={"red"}
                   // p="0 2 0 0"
                   p={1.5}
-                // pr={3}
-                // pl={1}
+                  // pr={3}
+                  // pl={1}
                 >
                   <Box
                     width="100%"
@@ -388,9 +400,9 @@ const DashboardRight = ({
                       setCurrentSupplyAPR(idx);
                       setCurrentBorrowMarketCoin(coin?.name);
                     }}
-                  // bgColor={"blue"}
+                    // bgColor={"blue"}
                   >
-                    {coin?.name == "DAI" ?
+                    {coin?.name == "DAI" ? (
                       <Button
                         height={"2rem"}
                         fontSize={"12px"}
@@ -402,9 +414,9 @@ const DashboardRight = ({
                         color="#3E415C"
                       >
                         Borrow
-
                       </Button>
-                      : <BorrowModal
+                    ) : (
+                      <BorrowModal
                         buttonText="Borrow"
                         height={"2rem"}
                         fontSize={"12px"}
@@ -423,8 +435,7 @@ const DashboardRight = ({
                         currentBorrowMarketCoin={currentBorrowMarketCoin}
                         protocolStats={protocolStats}
                       />
-                    }
-
+                    )}
                   </Box>
                 </Td>
                 <Td
@@ -447,21 +458,26 @@ const DashboardRight = ({
                       setCurrentSupplyAPR(idx);
                     }}
                   >
-                    {coin?.name == "DAI"  ?
-                   <Text color="#3E415C" borderBottom="1px solid #3E415C" cursor="pointer">
-                   Spend
-                 </Text>:                      <TradeModal
-                      coin={coin}
-                      borrowAPRs={borrowAPRs}
-                      currentBorrowAPR={currentBorrowAPR}
-                      supplyAPRs={supplyAPRs}
-                      currentSupplyAPR={currentSupplyAPR}
-                      setCurrentBorrowAPR={setCurrentBorrowAPR}
-                      validRTokens={validRTokens}
-                      currentBorrowMarketCoin={currentBorrowMarketCoin}
-                    />
-                  }
-
+                    {coin?.name == "DAI" ? (
+                      <Text
+                        color="#3E415C"
+                        borderBottom="1px solid #3E415C"
+                        cursor="pointer"
+                      >
+                        Spend
+                      </Text>
+                    ) : (
+                      <TradeModal
+                        coin={coin}
+                        borrowAPRs={borrowAPRs}
+                        currentBorrowAPR={currentBorrowAPR}
+                        supplyAPRs={supplyAPRs}
+                        currentSupplyAPR={currentSupplyAPR}
+                        setCurrentBorrowAPR={setCurrentBorrowAPR}
+                        validRTokens={validRTokens}
+                        currentBorrowMarketCoin={currentBorrowMarketCoin}
+                      />
+                    )}
                   </Box>
                 </Td>
               </Tr>
@@ -473,7 +489,13 @@ const DashboardRight = ({
                   backgroundColor: "#2b2f35",
                   width: "100%",
                   // left: "1.75%",
-                  display: `${idx == Coins.length - 1 ? "none" : idx==0 ?"none":"block"}`,
+                  display: `${
+                    idx == Coins.length - 1
+                      ? "none"
+                      : idx == 0
+                      ? "none"
+                      : "block"
+                  }`,
                 }}
               />
             </>
