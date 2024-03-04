@@ -8,6 +8,7 @@ import NavButtons from "@/components/layouts/navButtons";
 import PageCard from "@/components/layouts/pageCard";
 import StatsBoard from "@/components/layouts/statsBoard";
 import useDataLoader from "@/hooks/useDataLoader";
+import Link from "next/link";
 
 const Market: NextPage = () => {
   useDataLoader();
@@ -30,8 +31,7 @@ const Market: NextPage = () => {
         />
         <Box
           position="absolute"
-          //  top="2"
-          top="7"
+           top="2"
           left="7"
         >
           <Box
@@ -64,7 +64,8 @@ const Market: NextPage = () => {
               $STRK Tokens
             </Text>
           </Box>
-          {/* <Button
+          <Link href="https://twitter.com/0xHashstack/status/1764625609844838816" target="_blank">
+          <Button
             marginTop="2.5"
             color="white"
             bgGradient="linear-gradient(#7956EC, #1B29AE)"
@@ -74,7 +75,8 @@ const Market: NextPage = () => {
             _hover={{ bgGradient: "linear-gradient(#1B29AE, #7956EC)" }}
           >
             Learn more
-          </Button> */}
+          </Button>
+            </Link>
         </Box>
       </Box>
       <StatsBoard />
