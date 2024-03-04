@@ -2864,7 +2864,7 @@ const TradeModal = ({
                           ""
                         )}
                         <Text>{currentDapp}</Text>
-                        {currentDapp == "Jediswap" &&
+                        {currentDapp == "Jediswap" && radioValue=="1" &&
                           <Image
                             src={'/strkReward.svg'}
                             alt={`Strk reward`}
@@ -3190,7 +3190,7 @@ const TradeModal = ({
                                       )}
                                       %
                                     </Box>
-                                    {/* {index<=2 && currentDapp=="Jediswap"  &&
+                                    {index<=2 && currentDapp=="Jediswap"  &&
                                           <Box
                                             fontSize="9px"
                                             color="#E6EDF3"
@@ -3198,7 +3198,7 @@ const TradeModal = ({
                                             fontWeight="medium"
                                           >
                                             STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, pool, currentDapp)))}%
-                                          </Box>}         */}
+                                          </Box>}        
                                   </Box>
                                 </Box>
 
@@ -3745,7 +3745,7 @@ const TradeModal = ({
                                         poolAprs,
                                         currentPool,
                                         currentDapp
-                                      )) +
+                                      )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                                     inputCollateralAmountUSD *
                                     protocolStats?.find(
                                       (stat: any) =>
@@ -3776,7 +3776,7 @@ const TradeModal = ({
                                       poolAprs,
                                       currentPool,
                                       currentDapp
-                                    )) +
+                                    )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                                   inputCollateralAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
@@ -3860,7 +3860,7 @@ const TradeModal = ({
                                         poolAprs,
                                         currentPool,
                                         currentDapp
-                                      )) +
+                                      )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                                     inputCollateralAmountUSD *
                                     protocolStats?.find(
                                       (stat: any) =>
@@ -3885,7 +3885,7 @@ const TradeModal = ({
                                       poolAprs,
                                       currentPool,
                                       currentDapp
-                                    )) +
+                                    )+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                                   inputCollateralAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
@@ -4054,6 +4054,7 @@ const TradeModal = ({
                     inputBorrowAmount <= maximumLoanAmount) ||
                     process.env.NEXT_PUBLIC_NODE_ENV == "testnet") &&
                   inputBorrowAmount <= currentAvailableReserves &&
+                  (currentBorrowCoin==="USDT" ?currentPool!=="STRK/ETH":currentBorrowCoin==="BTC" ? currentPool!=="STRK/ETH":true) &&
                   inputBorrowAmount > 0 &&
                   ((tokenTypeSelected == "Native"
                     ? inputCollateralAmount >= minimumDepositAmount &&

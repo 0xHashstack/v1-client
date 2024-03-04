@@ -1070,7 +1070,7 @@ const LiquidityProvisionModal = ({
                               >
                                 Pool apr: {numberFormatterPercentage(getAprByPool(poolApr, pool, currentSwap))}%
                               </Box>
-                              {/* {index<=2 && currentSwap=="Jediswap"  &&
+                              {index<=2 && currentSwap=="Jediswap"  &&
                                           <Box
                                             fontSize="9px"
                                             color="#E6EDF3"
@@ -1078,7 +1078,7 @@ const LiquidityProvisionModal = ({
                                             fontWeight="medium"
                                           >
                                             STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, currentSwap)))}%
-                                          </Box>}                               */}
+                                          </Box>}                              
                               </Box>
 
                             </Box>
@@ -1680,7 +1680,7 @@ const LiquidityProvisionModal = ({
                         (-(reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.loanMarket.slice(1)
-                        )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap))) +
+                        )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap)))) +
                         dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                           (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying) *
@@ -1700,7 +1700,7 @@ const LiquidityProvisionModal = ({
                           (-(reduxProtocolStats?.find(
                             (stat: any) =>
                               stat?.token === borrow?.loanMarket.slice(1)
-                          )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)) + 
+                          )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap))) + 
                           dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                             (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                           )?.exchangeRateRtokenToUnderlying) *
@@ -1800,7 +1800,7 @@ const LiquidityProvisionModal = ({
                   </Text>
                 </Box> */}
               </Box>
-              {currentPool != "Select a pool" ? (
+              {currentPool != "Select a pool" && (currentBorrowMarketCoin==="USDT" ?currentPool!=="STRK/ETH":currentBorrowMarketCoin==="BTC" ? currentPool!=="STRK/ETH":true) ? (
                 <Box
                   onClick={() => {
                     setTransactionStarted(true);

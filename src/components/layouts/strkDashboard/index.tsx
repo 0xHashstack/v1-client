@@ -111,7 +111,7 @@ const StrkDashboard = () => {
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>(0);
   const [poolNumber, setpoolNumber] = useState(false);
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
-  const coin = { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" };
+  const coin = { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" };
   const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([]);
   const [validRTokens, setValidRTokens] = useState([]);
   const userDeposits = useSelector(selectUserDeposits);
@@ -801,7 +801,7 @@ const StrkDashboard = () => {
               <Box
                 key={idx}
                 bg="#34345633"
-                paddingX="4rem"
+                paddingX="2rem"
                 paddingY="2rem"
                 borderRadius="8px"
                 justifyContent="center"
@@ -837,7 +837,7 @@ const StrkDashboard = () => {
                     )}
                     %
                   </Text>
-                  {/* <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
+                  <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
                     STRK Apr:{" "}
                     {numberFormatterPercentage(
                       String(
@@ -851,7 +851,7 @@ const StrkDashboard = () => {
                       )
                     )}
                     %
-                  </Text> */}
+                  </Text>
                 </Box>
                 <Box
                   mt="0.5rem"

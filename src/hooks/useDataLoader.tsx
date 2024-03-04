@@ -130,6 +130,8 @@ import {
   setNftCurrentAmount,
   setJediSwapPoolAprs,
   selectJediswapPoolAprs,
+  setHourlySTRKData,
+  setDailySTRKData,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -443,22 +445,24 @@ const useDataLoader = () => {
           OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDT`),
           OffchainAPI.httpGet(`/api/metrics/tvl/daily/USDC`),
           OffchainAPI.httpGet(`/api/metrics/tvl/daily/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/daily/STRK`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/daily/DAI`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/daily/BTC`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDT`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/daily/USDC`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/daily/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/daily/STRK`),
           OffchainAPI.httpGet(`/api/metrics/urm_platform/daily`),
         ];
         Promise.allSettled([...promises]).then((val) => {
           val.map((response, idx) => {
             const res = response?.status != "rejected" ? response?.value : "0";
           });
-          for (var j = 0; j < 5; j++) {
+          for (var j = 0; j < 6; j++) {
             ////console.log(j,"for loop")
             const responseA = val?.[j] ? val?.[j] : null;
-            const responseB = val?.[j + 5] ? val?.[j + 5] : null;
-            const responseC = val?.[10] ? val?.[10] : null;
+            const responseB = val?.[j + 6] ? val?.[j + 6] : null;
+            const responseC = val?.[12] ? val?.[12] : null;
             // if (
             //   val[j]?.status != "rejected" &&
             //   val[j + 5]?.status != "rejected" &&
@@ -576,6 +580,8 @@ const useDataLoader = () => {
                 dispatch(setHourlyUSDCData(data));
               } else if (j == 4) {
                 dispatch(setHourlyETHData(data));
+              }else if(j==5){
+                dispatch(setHourlySTRKData(data))
               }
             }
           }
@@ -606,11 +612,13 @@ const useDataLoader = () => {
           OffchainAPI.httpGet(`/api/metrics/tvl/weekly/USDT`),
           OffchainAPI.httpGet(`/api/metrics/tvl/weekly/USDC`),
           OffchainAPI.httpGet(`/api/metrics/tvl/weekly/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/weekly/STRK`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/DAI`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/BTC`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/USDT`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/USDC`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/weekly/STRK`),
           OffchainAPI.httpGet(`/api/metrics/urm_platform/weekly`),
         ];
         Promise.allSettled([...promises]).then((val) => {
@@ -618,11 +626,11 @@ const useDataLoader = () => {
           val.map((response, idx) => {
             const res = response?.status != "rejected" ? response?.value : "0";
           });
-          for (var j = 0; j < 5; j++) {
+          for (var j = 0; j < 6; j++) {
             ////console.log(j,"for loop")
             const responseA = val?.[j] ? val?.[j] : null;
-            const responseB = val?.[j + 5] ? val?.[j + 5] : null;
-            const responseC = val?.[10] ? val?.[10] : null;
+            const responseB = val?.[j + 6] ? val?.[j + 6] : null;
+            const responseC = val?.[12] ? val?.[12] : null;
             // if (
             //   val[j]?.status != "rejected" &&
             //   val[j + 5]?.status != "rejected" &&
@@ -733,6 +741,8 @@ const useDataLoader = () => {
                 dispatch(setDailyUSDCData(data));
               } else if (j == 4) {
                 dispatch(setDailyETHData(data));
+              } else if(j==5){
+                dispatch(setDailySTRKData(data));
               }
             }
           }

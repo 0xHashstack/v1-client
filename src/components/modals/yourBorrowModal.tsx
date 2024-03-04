@@ -1718,7 +1718,7 @@ const YourBorrowModal = ({
                     (-(reduxProtocolStats?.find(
                       (stat: any) =>
                         stat?.token === currentBorrowMarketCoin1.slice(1)
-                    )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)) +
+                    )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                     dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                       (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                     )?.exchangeRateRtokenToUnderlying) *
@@ -1738,7 +1738,7 @@ const YourBorrowModal = ({
                       (-(reduxProtocolStats?.find(
                         (stat: any) =>
                           stat?.token === currentBorrowMarketCoin1.slice(1)
-                      )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)) +
+                      )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                       dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                         (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                       )?.exchangeRateRtokenToUnderlying) *
@@ -4437,7 +4437,7 @@ const YourBorrowModal = ({
                                           >
                                             Pool apr: {numberFormatterPercentage(getAprByPool(poolAprs, pool, currentDapp))}%
                                           </Box>
-                                          {/* {index<=2 && currentDapp=="Jediswap"  &&
+                                          {index<=2 && currentDapp=="Jediswap"  &&
                                           <Box
                                             fontSize="9px"
                                             color="#E6EDF3"
@@ -4446,7 +4446,7 @@ const YourBorrowModal = ({
                                           >
                                             STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, pool, currentDapp)))}%
                                           </Box>
-                                } */}
+                                }
                                           </Box>
                                       </Box>
                                     </Box>
@@ -4558,6 +4558,7 @@ const YourBorrowModal = ({
                     )}
                     {currentAction == "Spend Borrow" ? (
                       currentDapp != "Select a dapp" &&
+                      (currentBorrowMarketCoin1==="dUSDT" ?currentPool!=="STRK/ETH":currentBorrowMarketCoin1==="dBTC" ? currentPool!=="STRK/ETH":true) &&
                         (currentPool != "Select a pool" ||
                           currentPoolCoin != "Select a pool") &&
                         spendType === "UNSPENT" ? (
