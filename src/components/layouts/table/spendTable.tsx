@@ -264,6 +264,7 @@ const SpendTable = () => {
         stats?.[0]?.borrowRate,
         stats?.[1]?.borrowRate,
         stats?.[4]?.borrowRate,
+        stats?.[5]?.borrowRate,
       ]);
     } catch (error) {
      //console.log("error on getting protocol stats");

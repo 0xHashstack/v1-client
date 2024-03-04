@@ -820,6 +820,45 @@ const YourBorrowModal = ({
   //     }
   //   },
   // });
+  const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
+  const [allocationData, setallocationData] = useState<any>()
+  const [poolAllocatedData, setpoolAllocatedData] = useState<any>()
+
+  useEffect(()=>{
+    try{
+      const fetchData=async()=>{
+        const res=await axios.get('https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json')
+        setstrkTokenAlloactionData(res?.data?.Jediswap_v1)
+      }
+      fetchData()
+    }catch(err){
+      console.log(err)
+    }
+  },[])
+
+  useEffect(()=>{
+    try{
+      if(currentPool!=='Select a pool'){    
+        if(strkTokenAlloactionData[currentPool]){        
+          setallocationData(strkTokenAlloactionData[currentPool])
+        }
+      }
+    }catch(err){
+
+      console.log("hi")
+      // console.log(err);
+    }
+  },[strkTokenAlloactionData,currentPool])
+
+  useEffect(()=>{
+    if(allocationData?.length>0){
+      if(currentPool==="STRK/ETH" || currentPool=="USDC/USDT" || currentPool=="ETH/USDC"){
+        setpoolAllocatedData(allocationData[allocationData.length-1]?.allocation)
+      }else{
+        setpoolAllocatedData(0)
+      }
+    }
+  },[allocationData,currentPool])
   const poolAprs = useSelector(selectJediswapPoolAprs);
   const getAprByPool = (dataArray: any[], pool: string, dapp: string) => {
     const matchedObject = dataArray.find(item => {
@@ -844,6 +883,30 @@ const YourBorrowModal = ({
     });
 
     return matchedObject ? matchedObject.apr * 100 : 0;
+  };
+  const getTvlByPool = (dataArray: any[], pool: string, dapp: string) => {
+    const matchedObject = dataArray.find(item => {
+      if (item.name === "USDT/USDC") {
+        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("USDC/USDT" === pool);
+      } else if (item.name == "ETH/STRK") {
+        return (
+          item.amm ===
+          (dapp == "Select a dapp"
+            ? "jedi"
+            : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "STRK/ETH" === pool
+        )
+      }
+      else if (item.name === "ETH/DAI") {
+        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("DAI/ETH" === pool);
+      }
+      else {
+        return item.name === pool && item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap");
+      }
+    });
+
+    return matchedObject ? matchedObject.tvl : 0;
   };
 
   const handleZeroRepay = async () => {
@@ -920,7 +983,19 @@ const YourBorrowModal = ({
       });
     }
   };
-
+  const getStrkAlloaction=(pool:any)=>{
+    try{
+      if(strkTokenAlloactionData[pool]){
+        return strkTokenAlloactionData[pool][strkTokenAlloactionData[pool].length-1]?.allocation;
+      }else{
+        return 0;
+      }
+    }catch(err){
+      return 0;
+      console.log(err)
+    }
+    
+  }
   const hanldeTrade = async () => {
     try {
       // if(currentDapp)
@@ -1643,7 +1718,7 @@ const YourBorrowModal = ({
                     (-(reduxProtocolStats?.find(
                       (stat: any) =>
                         stat?.token === currentBorrowMarketCoin1.slice(1)
-                    )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)) +
+                    )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                     dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                       (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                     )?.exchangeRateRtokenToUnderlying) *
@@ -1663,7 +1738,7 @@ const YourBorrowModal = ({
                       (-(reduxProtocolStats?.find(
                         (stat: any) =>
                           stat?.token === currentBorrowMarketCoin1.slice(1)
-                      )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)) +
+                      )?.borrowRate) + getAprByPool(poolAprs, currentPool, currentDapp)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                       dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                         (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                       )?.exchangeRateRtokenToUnderlying) *
@@ -1704,7 +1779,7 @@ const YourBorrowModal = ({
                   %
                 </Text>
               }
-
+{/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp)) */}
             </Box>
             {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
@@ -2695,14 +2770,15 @@ const YourBorrowModal = ({
   ];
 
   const pools = [
-    "ETH/USDT",
+    "STRK/ETH",
     "USDC/USDT",
     "ETH/USDC",
+    "ETH/USDT",
     // "DAI/ETH",
     "BTC/ETH",
     "BTC/USDT",
     "BTC/USDC",
-    "STRK/ETH"
+
     // "BTC/DAI",
     // "USDT/DAI",
     // "USDC/DAI",
@@ -2844,6 +2920,7 @@ const YourBorrowModal = ({
   const [currentTokenSelected, setcurrentTokenSelected] = useState("rToken");
   const tokensArray = ["rToken", "Native Token"];
   useEffect(() => {
+    setCurrentPool("Select a pool")
     setCurrentPoolCoin("Select a pool");
   }, [currentDapp]);
   const resetStates = () => {
@@ -4080,6 +4157,14 @@ const YourBorrowModal = ({
                               <Text mt="0.10rem" color="white">
                                 {currentDapp}
                               </Text>
+                              {currentDapp=="Jediswap" && radioValue=="1" &&
+                                  <Image
+                                    src={'/strkReward.svg'}
+                                    alt={`Strk reward`}
+                                    width="74"
+                                    height="15"
+                                    style={{marginTop:"0.2rem"}}
+                                  />}
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (
@@ -4142,6 +4227,14 @@ const YourBorrowModal = ({
                                         <Text pt="1" color="white">
                                           {dapp.name}
                                         </Text>
+                                        {dapp.name=="Jediswap" && radioValue=="1" &&
+                                  <Image
+                                    src={'/strkReward.svg'}
+                                    alt={`Strk reward`}
+                                    width="74"
+                                    height="15"
+                                    style={{marginTop:"0.3rem"}}
+                                  />}
                                       </Box>
                                       {dapp.status === "disable" && (
                                         <Text
@@ -4306,20 +4399,55 @@ const YourBorrowModal = ({
                                           : "inherit"
                                           }`}
                                         borderRadius="md"
+                                        borderBottom={index==2 && currentDapp=="Jediswap" ?"1px solid #30363D":""}
                                       >
-                                        <Box display="flex">
-                                          <Box p="1">{getCoin(pool)}</Box>
-                                          <Text>{(pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") && ((pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH")) ? "w" + pool.split("/")[0] + "/w" + pool.split("/")[1] : (pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") ? "w" + pool.split("/")[0] + "/" + pool.split("/")[1] : (pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH") ? pool.split("/")[0] + "/w" + pool.split("/")[1] : pool}</Text>
-
-                                        </Box>
-                                        <Box
-                                          fontSize="9px"
-                                          color="#E6EDF3"
-                                          mt="6px"
-                                          fontWeight="medium"
+                                        <Box display="flex" 
+                                        // mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}
                                         >
-                                          Pool apr: {numberFormatterPercentage(getAprByPool(poolAprs, pool, currentDapp))}%
+                                          <Box p="1">{getCoin(pool)}</Box>
+                                          <Tooltip
+                            hasArrow
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label={index<=2 && currentDapp=="Jediswap" ?"Earn $STRK Rewards.":""}
+                            bg="#02010F"
+                            fontSize={"13px"}
+                            fontWeight={"400"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                            maxW="232px"
+                            // mt="50px"
+                          >
+                                          <Text>{(pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") && ((pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH")) ? "w" + pool.split("/")[0] + "/w" + pool.split("/")[1] : (pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") ? "w" + pool.split("/")[0] + "/" + pool.split("/")[1] : (pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH") ? pool.split("/")[0] + "/w" + pool.split("/")[1] : pool}</Text>
+                          </Tooltip>
+                                          <Text mt="-0.1rem">
+                                        {(index<=2 && currentDapp=="Jediswap") ?"✨":"" }
+                                    </Text>
                                         </Box>
+                                        <Box >
+                                          <Box
+                                            fontSize="9px"
+                                            color="#E6EDF3"
+                                            mt="6px"
+                                            fontWeight="medium"
+                                          >
+                                            Pool apr: {numberFormatterPercentage(getAprByPool(poolAprs, pool, currentDapp))}%
+                                          </Box>
+                                          {index<=2 && currentDapp=="Jediswap"  &&
+                                          <Box
+                                            fontSize="9px"
+                                            color="#E6EDF3"
+                                            mt="6px"
+                                            fontWeight="medium"
+                                          >
+                                            STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, pool, currentDapp)))}%
+                                          </Box>
+                                }
+                                          </Box>
                                       </Box>
                                     </Box>
                                   );
@@ -4430,6 +4558,7 @@ const YourBorrowModal = ({
                     )}
                     {currentAction == "Spend Borrow" ? (
                       currentDapp != "Select a dapp" &&
+                      (currentBorrowMarketCoin1==="dUSDT" ?currentPool!=="STRK/ETH":currentBorrowMarketCoin1==="dBTC" ? currentPool!=="STRK/ETH":true) &&
                         (currentPool != "Select a pool" ||
                           currentPoolCoin != "Select a pool") &&
                         spendType === "UNSPENT" ? (

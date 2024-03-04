@@ -25,6 +25,7 @@ const NavButtons = ({
     { path: "v1/spend-borrow", label: "Spend Borrow" },
     { path: "v1/your-supply", label: "Your Supply" },
     { path: "v1/your-borrow", label: "Your Borrow" },
+    { path: "v1/strk-rewards", label: "Earn STRK token ✨" },
   ];
 
   const router = useRouter();
@@ -68,7 +69,7 @@ const NavButtons = ({
               letterSpacing="-0.15px"
               padding="1.125rem 0.4rem"
               margin="2px"
-              color={pathname === `/${option.path}` ? "#ffffff" : "#676D9A"}
+              color={pathname === `/${option.path}` ? "#ffffff" : option.path==="v1/strk-rewards" ?"#7554E9": "#676D9A"}
               borderBottom={
                 pathname === `/${option.path}` ? "2px solid #4D59E8" : ""
               }

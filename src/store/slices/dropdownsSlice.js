@@ -47,6 +47,7 @@ const initialState = {
     coinSelectedAPRByMarket: false,
     coinSelectedExchangeRateRToken: false,
     liquidityMiningTenureDropDown: false,
+    borrowDropdown:false,
   },
   metricsDropdowns: {
     yourMetricsMarketDropdown: false,
