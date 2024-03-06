@@ -1,10 +1,25 @@
-import React, { useEffect, useState } from "react";
 import { Box, Button, Text } from "@chakra-ui/react";
-import SmallBlueDot from "@/assets/icons/smallBlueDot";
-import SmallGreenDot from "@/assets/icons/smallGreenDot";
 import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+import BTCLogo from "@/assets/icons/coins/btc";
+import BtcDisabled from "@/assets/icons/coins/btcDisabled";
+import DAILogo from "@/assets/icons/coins/dai";
+import DaiDisabled from "@/assets/icons/coins/daiDisabled";
+import ETHLogo from "@/assets/icons/coins/eth";
+import EthDisabled from "@/assets/icons/coins/ethDisabled";
+import STRKLogo from "@/assets/icons/coins/strk";
+import StrkDisabled from "@/assets/icons/coins/strkDisabled";
+import USDCLogo from "@/assets/icons/coins/usdc";
+import UsdcDisabled from "@/assets/icons/coins/usdcDisabled";
+import USDTLogo from "@/assets/icons/coins/usdt";
+import UsdtDisabled from "@/assets/icons/coins/usdtDisabled";
+import {
+  selectModalDropDowns,
+  setModalDropdown,
+} from "@/store/slices/dropdownsSlice";
 import {
   selectAllBTCData,
   selectAllDAIData,
@@ -26,34 +41,13 @@ import {
   selectMonthlyBTCData,
   selectMonthlyDAIData,
   selectMonthlyETHData,
+  selectMonthlySTRKData,
   selectMonthlyUSDCData,
   selectMonthlyUSDTData,
 } from "@/store/slices/readDataSlice";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import {
-  selectMetricsDropdowns,
-  selectModalDropDowns,
-  setMetricsDropdown,
-  setModalDropdown,
-} from "@/store/slices/dropdownsSlice";
-import mixpanel from "mixpanel-browser";
-import BTCLogo from "@/assets/icons/coins/btc";
-import USDCLogo from "@/assets/icons/coins/usdc";
-import USDTLogo from "@/assets/icons/coins/usdt";
-import ETHLogo from "@/assets/icons/coins/eth";
-import DAILogo from "@/assets/icons/coins/dai";
-import { setCoinSelectedExchangeRateRToken } from "@/store/slices/userAccountSlice";
-import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import ArrowUp from "@/assets/icons/arrowup";
-import Image from "next/image";
-import EthDisabled from "@/assets/icons/coins/ethDisabled";
-import UsdcDisabled from "@/assets/icons/coins/usdcDisabled";
-import UsdtDisabled from "@/assets/icons/coins/usdtDisabled";
-import DaiDisabled from "@/assets/icons/coins/daiDisabled";
-import BtcDisabled from "@/assets/icons/coins/btcDisabled";
-import STRKLogo from "@/assets/icons/coins/strk";
-import StrkDisabled from "@/assets/icons/coins/strkDisabled";
+
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+
 const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const [aprByMarket, setAPRByMarket] = useState(0);
   const [chartData, setChartData] = useState([
@@ -96,20 +90,25 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
   const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
   const monthlyDaiData = useSelector(selectMonthlyDAIData);
+  const monthlyStrkData = useSelector(selectMonthlySTRKData);
   const allBtcData = useSelector(selectAllBTCData);
   const allEthData = useSelector(selectAllETHData);
   const allUsdtData = useSelector(selectAllUSDTData);
   const allUsdcData = useSelector(selectAllUSDCData);
   const allDaiData = useSelector(selectAllDAIData);
-  const coinsData = [usdtData, btcData, ethData, usdcData, daiData];
-  ////console.log(ethData,"usdc data")
-  // useEffect(()=>{
 
-  // },[])
-  const splineColor = ["#00C7F2", "#846ED4", "#136B51", "#1A2683", "#996B22","#0C0C4F"];
+  const splineColor = [
+    "#00C7F2",
+    "#846ED4",
+    "#136B51",
+    "#1A2683",
+    "#996B22",
+    "#0C0C4F",
+  ];
+
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
-  ////console.log(btcData, "btc")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
+
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -128,8 +127,6 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number, option2: number) => {
-    // Simulating API call or data update based on option
-    // Replace this with your actual implementation
     let newData: any = [];
     let newCategories: any = [];
 
@@ -271,7 +268,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                 1689181345000, 1689184945000, 1689188545000, 1689192145000,
               ]);
           return { newData, newCategories };
-        } else if(currentSelectedCoin==4) {
+        } else if (currentSelectedCoin == 4) {
           daiData?.aprs && daiData?.apys
             ? (newData = [
                 {
@@ -305,7 +302,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                 1689181345000, 1689184945000, 1689188545000, 1689192145000,
               ]);
           return { newData, newCategories };
-        }else if(currentSelectedCoin==5) {
+        } else if (currentSelectedCoin == 5) {
           strkData?.aprs && strkData?.apys
             ? (newData = [
                 {
@@ -513,8 +510,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                 new Date("2023-07-07").getTime(),
               ]);
           return { newData, newCategories };
-        }
-        else if (currentSelectedCoin == 5) {
+        } else if (currentSelectedCoin == 5) {
           weeklyStrkData?.aprs && weeklyStrkData?.apys
             ? (newData = [
                 {
@@ -712,6 +708,32 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               ]);
           monthlyDaiData?.dates
             ? (newCategories = monthlyDaiData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
+          return { newData, newCategories };
+        } else if (currentSelectedCoin == 5) {
+          monthlyStrkData?.dTokenExchangeRates
+            ? (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: monthlyStrkData?.dTokenExchangeRates,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Exchange Rate",
+                  data: [100, 400, 250, 300, 390, 500, 800],
+                },
+              ]);
+          monthlyStrkData?.dates
+            ? (newCategories = monthlyStrkData?.dates)
             : (newCategories = [
                 new Date("2023-07-01").getTime(),
                 new Date("2023-07-02").getTime(),
@@ -1016,21 +1038,16 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
     switch (CoinName) {
       case 0:
         return <BTCLogo height={"16px"} width={"16px"} />;
-        break;
       case 1:
         return <USDTLogo height={"16px"} width={"16px"} />;
-        break;
       case 2:
         return <USDCLogo height={"16px"} width={"16px"} />;
-        break;
       case 3:
         return <ETHLogo height={"16px"} width={"16px"} />;
-        break;
       case 4:
         return <DAILogo height={"16px"} width={"16px"} />;
-        break;
-        case 5:
-        return <STRKLogo height={"16px"} width={"16px"} />
+      case 5:
+        return <STRKLogo height={"16px"} width={"16px"} />;
       default:
         break;
     }
@@ -1237,10 +1254,18 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 0 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
+            bg={
+              currentSelectedCoin === 0
+                ? "rgba(103, 109, 154, 0.10)"
+                : "transparent"
+            }
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 0 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            borderColor={
+              currentSelectedCoin === 0
+                ? "rgba(103, 109, 154, 0.30)"
+                : "#2B2F35"
+            }
             // p="1"
             onClick={() => setCurrentSelectedCoin(0)}
             cursor="pointer"
@@ -1262,10 +1287,18 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 3 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
+            bg={
+              currentSelectedCoin === 3
+                ? "rgba(103, 109, 154, 0.10)"
+                : "transparent"
+            }
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 3 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            borderColor={
+              currentSelectedCoin === 3
+                ? "rgba(103, 109, 154, 0.30)"
+                : "#2B2F35"
+            }
             // p="1"
             onClick={() => setCurrentSelectedCoin(3)}
             cursor="pointer"
@@ -1278,7 +1311,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               my="auto"
               color="white"
               fontSize="12px"
-            fontWeight="500"
+              fontWeight="500"
               textColor={currentSelectedCoin === 3 ? "white" : "#3E415C"}
             >
               wETH
@@ -1287,10 +1320,18 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 1 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
+            bg={
+              currentSelectedCoin === 1
+                ? "rgba(103, 109, 154, 0.10)"
+                : "transparent"
+            }
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 1 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            borderColor={
+              currentSelectedCoin === 1
+                ? "rgba(103, 109, 154, 0.30)"
+                : "#2B2F35"
+            }
             // p="1"
             onClick={() => setCurrentSelectedCoin(1)}
             cursor="pointer"
@@ -1312,10 +1353,18 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 2 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
+            bg={
+              currentSelectedCoin === 2
+                ? "rgba(103, 109, 154, 0.10)"
+                : "transparent"
+            }
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 2 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            borderColor={
+              currentSelectedCoin === 2
+                ? "rgba(103, 109, 154, 0.30)"
+                : "#2B2F35"
+            }
             // p="1"
             onClick={() => setCurrentSelectedCoin(2)}
             cursor="pointer"
@@ -1337,10 +1386,18 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 4 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
+            bg={
+              currentSelectedCoin === 4
+                ? "rgba(103, 109, 154, 0.10)"
+                : "transparent"
+            }
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 4 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            borderColor={
+              currentSelectedCoin === 4
+                ? "rgba(103, 109, 154, 0.30)"
+                : "#2B2F35"
+            }
             // p="1"
             onClick={() => setCurrentSelectedCoin(4)}
             cursor="pointer"
@@ -1362,10 +1419,18 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
           <Box
             display="flex"
             gap="2"
-            bg={currentSelectedCoin === 5 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
+            bg={
+              currentSelectedCoin === 5
+                ? "rgba(103, 109, 154, 0.10)"
+                : "transparent"
+            }
             borderRadius="md"
             border="1px"
-            borderColor={currentSelectedCoin === 5 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            borderColor={
+              currentSelectedCoin === 5
+                ? "rgba(103, 109, 154, 0.30)"
+                : "#2B2F35"
+            }
             // p="1"
             onClick={() => setCurrentSelectedCoin(5)}
             cursor="pointer"
