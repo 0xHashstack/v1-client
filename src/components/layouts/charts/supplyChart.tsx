@@ -12,11 +12,13 @@ import {
   selectDailyBTCData,
   selectDailyDAIData,
   selectDailyETHData,
+  selectDailySTRKData,
   selectDailyUSDCData,
   selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
+  selectHourlySTRKData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
   selectMonthlyBTCData,
@@ -59,11 +61,13 @@ const SupplyChart = () => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const strkData = useSelector(selectHourlySTRKData);
   const weeklyBtcData = useSelector(selectDailyBTCData);
   const weeklyEthData = useSelector(selectDailyETHData);
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const weeklyStrkData = useSelector(selectDailySTRKData);
   const monthlyBtcData = useSelector(selectMonthlyBTCData);
   const monthlyEthData = useSelector(selectMonthlyETHData);
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
@@ -75,7 +79,7 @@ const SupplyChart = () => {
   const allUsdcData = useSelector(selectAllUSDCData);
   const allDaiData = useSelector(selectAllDAIData);
   const protocolReserves = useSelector(selectProtocolReserves);
-  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
+  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22","#0C0C4F"];
   ////console.log(daiData?.supplyAmounts, "data protocol");
   //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
   const minValue = Math.min(...chartData.flatMap((series) => series.data));
@@ -91,7 +95,8 @@ const SupplyChart = () => {
         ethData?.supplyAmounts &&
         usdtData?.supplyAmounts &&
         usdcData?.supplyAmounts &&
-        daiData?.supplyAmounts
+        daiData?.supplyAmounts &&
+        strkData?.supplyAmounts
           ? (newData = [
               {
                 name: "wBTC",
@@ -112,6 +117,10 @@ const SupplyChart = () => {
               {
                 name: "DAI",
                 data: daiData?.supplyAmounts,
+              },
+              {
+                name: "STRK",
+                data: strkData?.supplyAmounts,
               },
             ])
           : (newData = [
@@ -169,7 +178,8 @@ const SupplyChart = () => {
         weeklyEthData?.supplyAmounts &&
         weeklyUsdtData?.supplyAmounts &&
         weeklyUsdcData?.supplyAmounts &&
-        weeklyDaiData?.supplyAmounts
+        weeklyDaiData?.supplyAmounts &&
+        weeklyStrkData?.supplyAmounts
           ? (newData = [
               {
                 name: "wBTC",
@@ -191,6 +201,10 @@ const SupplyChart = () => {
               {
                 name: "DAI",
                 data: weeklyDaiData.supplyAmounts,
+              },
+              {
+                name: "STRK",
+                data: weeklyStrkData.supplyAmounts,
               },
             ])
           : (newData = [

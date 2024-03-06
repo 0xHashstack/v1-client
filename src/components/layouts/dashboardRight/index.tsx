@@ -265,6 +265,21 @@ const DashboardRight = ({
                     color={coin?.name == "DAI" ? "#3E415C" : "white"}
                     // bgColor={"blue"}
                   >
+                                        <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label={totalBorrows[idx]!==null  ? idx==3 ?totalBorrows[idx].toFixed(4): totalBorrows[idx].toFixed(2):""}
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                    >
                     {/* {checkGap(idx1, idx2)} */}
                     {totalBorrows[idx] == null ? (
                       <Skeleton
@@ -277,6 +292,7 @@ const DashboardRight = ({
                     ) : (
                       numberFormatter(totalBorrows[idx])
                     )}
+                    </Tooltip>
                   </Box>
                 </Td>
                 <Td
@@ -297,6 +313,21 @@ const DashboardRight = ({
                     color={coin?.name == "DAI" ? "#3E415C" : "white"}
                     // bgColor={"blue"}
                   >
+                                                            <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label={availableReserves[idx]!==null  ? idx==3 ?availableReserves[idx].toFixed(4): availableReserves[idx].toFixed(2):""}
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                    >
                     {/* {checkGap(idx1, idx2)} */}
                     {availableReserves[idx] == null ? (
                       <Skeleton
@@ -309,6 +340,7 @@ const DashboardRight = ({
                     ) : (
                       numberFormatter(availableReserves[idx])
                     )}
+                    </Tooltip>
                   </Box>
                 </Td>
                 <Td

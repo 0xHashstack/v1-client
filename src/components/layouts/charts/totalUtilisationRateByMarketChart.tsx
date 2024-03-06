@@ -13,11 +13,13 @@ import {
   selectDailyBTCData,
   selectDailyDAIData,
   selectDailyETHData,
+  selectDailySTRKData,
   selectDailyUSDCData,
   selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
+  selectHourlySTRKData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
   selectMonthlyBTCData,
@@ -42,7 +44,7 @@ const TotalUtilisationRateByMarketChart = () => {
       data: [35000, 50000, 49000, 60000, 80000, 30000, 40000],
     },
   ]);
-  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
+  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22","#0C0C4F"];
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -62,11 +64,13 @@ const TotalUtilisationRateByMarketChart = () => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const strkData = useSelector(selectHourlySTRKData);
   const weeklyBtcData = useSelector(selectDailyBTCData);
   const weeklyEthData = useSelector(selectDailyETHData);
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const weeklyStrkData = useSelector(selectDailySTRKData);
   const monthlyBtcData = useSelector(selectMonthlyBTCData);
   const monthlyEthData = useSelector(selectMonthlyETHData);
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
@@ -91,7 +95,8 @@ const TotalUtilisationRateByMarketChart = () => {
         ethData?.utilRates &&
         usdtData?.utilRates &&
         usdcData?.utilRates &&
-        daiData?.utilRates
+        daiData?.utilRates &&
+        strkData?.utilRates
           ? (newData = [
               {
                 name: "wBTC",
@@ -112,6 +117,10 @@ const TotalUtilisationRateByMarketChart = () => {
               {
                 name: "DAI",
                 data: daiData?.utilRates,
+              },
+              {
+                name: "STRK",
+                data: strkData?.utilRates,
               },
             ])
           : (newData = [
@@ -164,7 +173,8 @@ const TotalUtilisationRateByMarketChart = () => {
         weeklyEthData?.utilRates &&
         weeklyUsdtData?.utilRates &&
         weeklyUsdcData?.utilRates &&
-        weeklyDaiData?.utilRates
+        weeklyDaiData?.utilRates &&
+        weeklyStrkData?.utilRates
           ? (newData = [
               {
                 name: "wBTC",
@@ -185,6 +195,10 @@ const TotalUtilisationRateByMarketChart = () => {
               {
                 name: "DAI",
                 data: weeklyDaiData?.utilRates,
+              },
+              {
+                name: "STRK",
+                data: weeklyStrkData?.utilRates,
               },
             ])
           : (newData = [

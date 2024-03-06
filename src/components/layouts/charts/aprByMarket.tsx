@@ -14,11 +14,13 @@ import {
   selectDailyBTCData,
   selectDailyDAIData,
   selectDailyETHData,
+  selectDailySTRKData,
   selectDailyUSDCData,
   selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
+  selectHourlySTRKData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
   selectMonthlyBTCData,
@@ -49,6 +51,8 @@ import UsdcDisabled from "@/assets/icons/coins/usdcDisabled";
 import UsdtDisabled from "@/assets/icons/coins/usdtDisabled";
 import DaiDisabled from "@/assets/icons/coins/daiDisabled";
 import BtcDisabled from "@/assets/icons/coins/btcDisabled";
+import STRKLogo from "@/assets/icons/coins/strk";
+import StrkDisabled from "@/assets/icons/coins/strkDisabled";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const [aprByMarket, setAPRByMarket] = useState(0);
@@ -80,11 +84,13 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const strkData = useSelector(selectHourlySTRKData);
   const weeklyBtcData = useSelector(selectDailyBTCData);
   const weeklyEthData = useSelector(selectDailyETHData);
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const weeklyStrkData = useSelector(selectDailySTRKData);
   const monthlyBtcData = useSelector(selectMonthlyBTCData);
   const monthlyEthData = useSelector(selectMonthlyETHData);
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
@@ -100,7 +106,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
   // useEffect(()=>{
 
   // },[])
-  const splineColor = ["#00C7F2", "#846ED4", "#136B51", "#1A2683", "#996B22"];
+  const splineColor = ["#00C7F2", "#846ED4", "#136B51", "#1A2683", "#996B22","#0C0C4F"];
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(0);
   ////console.log(btcData, "btc")
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
@@ -265,7 +271,7 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
                 1689181345000, 1689184945000, 1689188545000, 1689192145000,
               ]);
           return { newData, newCategories };
-        } else {
+        } else if(currentSelectedCoin==4) {
           daiData?.aprs && daiData?.apys
             ? (newData = [
                 {
@@ -293,6 +299,40 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               ]);
           daiData?.dates
             ? (newCategories = daiData?.dates)
+            : (newCategories = [
+                1689152545000, 1689156145000, 1689159745000, 1689163345000,
+                1689166945000, 1689170545000, 1689174145000, 1689177745000,
+                1689181345000, 1689184945000, 1689188545000, 1689192145000,
+              ]);
+          return { newData, newCategories };
+        }else if(currentSelectedCoin==5) {
+          strkData?.aprs && strkData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: strkData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: strkData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply Apr",
+                  data: [
+                    300, 400, 350, 500, 490, 500, 370, 350, 500, 490, 200, 150,
+                  ],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [
+                    200, 300, 250, 400, 390, 300, 400, 250, 280, 300, 400, 500,
+                  ],
+                },
+              ]);
+          strkData?.dates
+            ? (newCategories = strkData?.dates)
             : (newCategories = [
                 1689152545000, 1689156145000, 1689159745000, 1689163345000,
                 1689166945000, 1689170545000, 1689174145000, 1689177745000,
@@ -463,6 +503,41 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               ]);
           weeklyDaiData?.dates
             ? (newCategories = weeklyDaiData?.dates)
+            : (newCategories = [
+                new Date("2023-07-01").getTime(),
+                new Date("2023-07-02").getTime(),
+                new Date("2023-07-03").getTime(),
+                new Date("2023-07-04").getTime(),
+                new Date("2023-07-05").getTime(),
+                new Date("2023-07-06").getTime(),
+                new Date("2023-07-07").getTime(),
+              ]);
+          return { newData, newCategories };
+        }
+        else if (currentSelectedCoin == 5) {
+          weeklyStrkData?.aprs && weeklyStrkData?.apys
+            ? (newData = [
+                {
+                  name: "Supply Apr",
+                  data: weeklyStrkData?.aprs,
+                },
+                {
+                  name: "Borrow Apr",
+                  data: weeklyStrkData?.apys,
+                },
+              ])
+            : (newData = [
+                {
+                  name: "Supply APR",
+                  data: [100, 400, 250, 300, 390, 500, 800],
+                },
+                {
+                  name: "Borrow Apr",
+                  data: [300, 400, 350, 300, 490, 500, 800],
+                },
+              ]);
+          weeklyStrkData?.dates
+            ? (newCategories = weeklyStrkData?.dates)
             : (newCategories = [
                 new Date("2023-07-01").getTime(),
                 new Date("2023-07-02").getTime(),
@@ -954,6 +1029,8 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
       case 4:
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case 5:
+        return <STRKLogo height={"16px"} width={"16px"} />
       default:
         break;
     }
@@ -1280,6 +1357,31 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
               textColor={currentSelectedCoin === 4 ? "white" : "#3E415C"}
             >
               DAI
+            </Text>
+          </Box>
+          <Box
+            display="flex"
+            gap="2"
+            bg={currentSelectedCoin === 5 ? "rgba(103, 109, 154, 0.10)" : "transparent"}
+            borderRadius="md"
+            border="1px"
+            borderColor={currentSelectedCoin === 5 ? "rgba(103, 109, 154, 0.30)" : "#2B2F35"}
+            // p="1"
+            onClick={() => setCurrentSelectedCoin(5)}
+            cursor="pointer"
+            p="2"
+          >
+            <Box>
+              {currentSelectedCoin === 5 ? getCoin(5) : <StrkDisabled />}
+            </Box>
+            <Text
+              my="auto"
+              color="white"
+              fontSize="12px"
+              fontWeight="500"
+              textColor={currentSelectedCoin === 5 ? "white" : "#3E415C"}
+            >
+              STRK
             </Text>
           </Box>
         </Box>

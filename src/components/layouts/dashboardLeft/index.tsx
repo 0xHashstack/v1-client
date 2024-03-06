@@ -417,18 +417,34 @@ const DashboardLeft = ({
                     color={coin?.name == "DAI"  ? "#3E415C" : "white"}
                   // bgColor={"blue"}
                   >
-                    {/* {checkGap(idx1, idx2)} */}
-                    { totalSupplies[idx] == null ? (
-                      <Skeleton
-                        width="6rem"
-                        height="1.4rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />
-                    ) : (
-                      numberFormatter(totalSupplies[idx])
-                    )}
+                    <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label={totalSupplies[idx]!==null  ? idx==3 ?totalSupplies[idx].toFixed(4): totalSupplies[idx].toFixed(2):""}
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                    >
+                      {/* {checkGap(idx1, idx2)} */}
+                      { totalSupplies[idx] == null ? (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (
+                        numberFormatter(totalSupplies[idx])
+                      )}
+                    </Tooltip>
                   </Box>
                 </Td>
                 <Td
