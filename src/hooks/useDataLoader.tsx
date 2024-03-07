@@ -132,6 +132,7 @@ import {
   selectJediswapPoolAprs,
   setHourlySTRKData,
   setDailySTRKData,
+  setMonthlySTRKData,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -773,11 +774,13 @@ const useDataLoader = () => {
           OffchainAPI.httpGet(`/api/metrics/tvl/monthly/USDT`),
           OffchainAPI.httpGet(`/api/metrics/tvl/monthly/USDC`),
           OffchainAPI.httpGet(`/api/metrics/tvl/monthly/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/tvl/monthly/STRK`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/DAI`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/BTC`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/USDT`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/USDC`),
           OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/ETH`),
+          OffchainAPI.httpGet(`/api/metrics/apm_market/monthly/STRK`),
           OffchainAPI.httpGet(`/api/metrics/urm_platform/monthly`),
         ];
         Promise.allSettled([...promises]).then((val) => {
@@ -785,11 +788,11 @@ const useDataLoader = () => {
           val.map((response, idx) => {
             const res = response?.status != "rejected" ? response?.value : "0";
           });
-          for (var j = 0; j < 5; j++) {
+          for (var j = 0; j < 6; j++) {
             ////console.log(j,"for loop")
             const responseA = val?.[j] ? val?.[j] : null;
-            const responseB = val?.[j + 5] ? val?.[j + 5] : null;
-            const responseC = val?.[10] ? val?.[10] : null;
+            const responseB = val?.[j + 6] ? val?.[j + 6] : null;
+            const responseC = val?.[12] ? val?.[12] : null;
             // if (
             //   val[j]?.status != "rejected" &&
             //   val[j + 5]?.status != "rejected" &&
@@ -901,6 +904,8 @@ const useDataLoader = () => {
                 dispatch(setMonthlyUSDCData(data));
               } else if (j == 4) {
                 dispatch(setMonthlyETHData(data));
+              }else if(j==5){
+                dispatch(setMonthlySTRKData(data));
               }
             }
           }

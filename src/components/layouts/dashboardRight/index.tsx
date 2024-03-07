@@ -1,25 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Td,
-  TableContainer,
-  Text,
-  Box,
-  HStack,
-  useMediaQuery,
-  Tooltip,
-  Button,
-} from "@chakra-ui/react";
-import { Skeleton } from "@chakra-ui/react";
-import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import {
+  Box,
+  Button,
+  HStack,
+  Skeleton,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Thead,
+  Tooltip,
+  Tr,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import html2canvas from "html2canvas";
+import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -265,18 +265,40 @@ const DashboardRight = ({
                     color={coin?.name == "DAI" ? "#3E415C" : "white"}
                     // bgColor={"blue"}
                   >
-                    {/* {checkGap(idx1, idx2)} */}
-                    {totalBorrows[idx] == null ? (
-                      <Skeleton
-                        width="6rem"
-                        height="1.4rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />
-                    ) : (
-                      numberFormatter(totalBorrows[idx])
-                    )}
+                    <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label={
+                        totalBorrows[idx] !== null
+                          ? idx == 3
+                            ? totalBorrows[idx]?.toFixed(4)
+                            : totalBorrows[idx]?.toFixed(2)
+                          : ""
+                      }
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                    >
+                      {/* {checkGap(idx1, idx2)} */}
+                      {totalBorrows[idx] == null ? (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (
+                        numberFormatter(totalBorrows[idx])
+                      )}
+                    </Tooltip>
                   </Box>
                 </Td>
                 <Td
@@ -297,18 +319,40 @@ const DashboardRight = ({
                     color={coin?.name == "DAI" ? "#3E415C" : "white"}
                     // bgColor={"blue"}
                   >
-                    {/* {checkGap(idx1, idx2)} */}
-                    {availableReserves[idx] == null ? (
-                      <Skeleton
-                        width="6rem"
-                        height="1.4rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />
-                    ) : (
-                      numberFormatter(availableReserves[idx])
-                    )}
+                    <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label={
+                        availableReserves[idx] !== null
+                          ? idx == 3
+                            ? availableReserves[idx]?.toFixed(4)
+                            : availableReserves[idx]?.toFixed(2)
+                          : ""
+                      }
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                    >
+                      {/* {checkGap(idx1, idx2)} */}
+                      {availableReserves[idx] == null ? (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (
+                        numberFormatter(availableReserves[idx])
+                      )}
+                    </Tooltip>
                   </Box>
                 </Td>
                 <Td

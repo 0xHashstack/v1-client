@@ -23,6 +23,7 @@ import {
   selectMonthlyBTCData,
   selectMonthlyDAIData,
   selectMonthlyETHData,
+  selectMonthlySTRKData,
   selectMonthlyUSDCData,
   selectMonthlyUSDTData,
   selectProtocolReserves,
@@ -61,6 +62,7 @@ const TotalValueLockedMetrics = () => {
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
   const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
   const monthlyDaiData = useSelector(selectMonthlyDAIData);
+  const monthlyStrkData = useSelector(selectMonthlySTRKData);
   const allBtcData = useSelector(selectAllBTCData);
   const allEthData = useSelector(selectAllETHData);
   const allUsdtData = useSelector(selectAllUSDTData);
@@ -95,7 +97,8 @@ const TotalValueLockedMetrics = () => {
       ethData?.tvlAmounts[i] +
       usdcData?.tvlAmounts[i] +
       usdtData?.tvlAmounts[i] +
-      daiData?.tvlAmounts[i] 
+      daiData?.tvlAmounts[i] +
+      strkData?.tvlAmounts[i];
     tvlamounts.push(data);
   }
   for (let i = 0; i < weeklyBtcData?.tvlAmounts?.length; i++) {
@@ -104,7 +107,8 @@ const TotalValueLockedMetrics = () => {
       weeklyEthData?.tvlAmounts[i] +
       weeklyUsdcData?.tvlAmounts[i] +
       weeklyUsdtData?.tvlAmounts[i] +
-      weeklyDaiData?.tvlAmounts[i] 
+      weeklyDaiData?.tvlAmounts[i] +
+      weeklyStrkData?.tvlAmounts[i];
     tvlAmountsWeekly.push(data);
   }
   for (let i = 0; i < monthlyBtcData?.tvlAmounts?.length; i++) {
@@ -114,6 +118,7 @@ const TotalValueLockedMetrics = () => {
       monthlyUsdcData?.tvlAmounts[i] +
       monthlyUsdtData?.tvlAmounts[i] +
       monthlyDaiData?.tvlAmounts[i];
+      ;
     tvlAmountsMonthly.push(data);
   }
   for (let i = 0; i < allBtcData?.tvlAmounts?.length; i++) {

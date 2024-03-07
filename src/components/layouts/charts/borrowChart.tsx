@@ -11,11 +11,13 @@ import {
   selectDailyBTCData,
   selectDailyDAIData,
   selectDailyETHData,
+  selectDailySTRKData,
   selectDailyUSDCData,
   selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
+  selectHourlySTRKData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
   selectMonthlyBTCData,
@@ -43,11 +45,13 @@ const BorrowChart = () => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const strkData = useSelector(selectHourlySTRKData);
   const weeklyBtcData = useSelector(selectDailyBTCData);
   const weeklyEthData = useSelector(selectDailyETHData);
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const weeklyStrkData = useSelector(selectDailySTRKData);
   const monthlyBtcData = useSelector(selectMonthlyBTCData);
   const monthlyEthData = useSelector(selectMonthlyETHData);
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
@@ -73,7 +77,7 @@ const BorrowChart = () => {
   }, [liquidityProviderChartPeriod]);
   const totalBorrow=btcData?.borrowAmounts[btcData?.borrowAmounts.length-1]+ethData?.borrowAmounts[ethData?.borrowAmounts.length-1]+usdtData?.borrowAmounts[usdtData?.borrowAmounts.length-1]+usdcData?.borrowAmounts[usdcData?.borrowAmounts.length-1]+daiData?.borrowAmounts[daiData?.borrowAmounts.length-1];
   //  //console.log(new Date("2022-01-01").getTime(),"trial chart data")
-  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22"];
+  const splineColor = ["#804D0F", "#3B48A8", "#136B51", "#1A2683", "#996B22","#0C0C4F"];
   const fetchDataBasedOnOption = async (option: number) => {
     // Simulating API call or data update based on option
     // Replace this with your actual implementation
@@ -86,7 +90,8 @@ const BorrowChart = () => {
         ethData?.borrowAmounts &&
         usdtData?.borrowAmounts &&
         usdcData?.borrowAmounts &&
-        daiData?.borrowAmounts
+        daiData?.borrowAmounts &&
+        strkData?.borrowAmounts
           ? (newData = [
               {
                 name: "wBTC",
@@ -107,6 +112,10 @@ const BorrowChart = () => {
               {
                 name: "DAI",
                 data: daiData?.borrowAmounts,
+              },
+              {
+                name: "STRK",
+                data: strkData?.borrowAmounts,
               },
             ])
           : (newData = [
@@ -164,7 +173,8 @@ const BorrowChart = () => {
         weeklyEthData?.borrowAmounts &&
         weeklyUsdcData?.borrowAmounts &&
         weeklyUsdtData?.borrowAmounts &&
-        weeklyDaiData?.borrowAmounts
+        weeklyDaiData?.borrowAmounts &&
+        weeklyStrkData?.borrowAmounts
           ? (newData = [
               {
                 name: "wBTC",
@@ -185,6 +195,10 @@ const BorrowChart = () => {
               {
                 name: "DAI",
                 data: weeklyDaiData?.borrowAmounts,
+              },
+              {
+                name: "STRK",
+                data: weeklyStrkData?.borrowAmounts,
               },
             ])
           : (newData = [
