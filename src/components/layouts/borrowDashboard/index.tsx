@@ -295,13 +295,25 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
             ? Number(
                 avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
               ) +
-              ((getAprByPool(
+              (((getAprByPool(
                 poolAprs,
                 allSplit?.[lower_bound + idx]?.tokenA +
                   "/" +
                   allSplit?.[lower_bound + idx]?.tokenB,
                 borrow?.l3App
-              ) *
+              )+((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
+                ?.tokenA +
+                "/" +
+                allSplit?.[lower_bound + idx]
+                  ?.tokenB))/getTvlByPool(
+                    poolAprs,
+                    allSplit?.[lower_bound + idx]
+                      ?.tokenA +
+                      "/" +
+                      allSplit?.[lower_bound + idx]
+                        ?.tokenB,
+                    borrow?.l3App)
+                  )) *
                 (dollarConvertor(
                   allSplit?.[lower_bound + idx]?.amountA,
                   allSplit?.[lower_bound + idx]?.tokenA,
