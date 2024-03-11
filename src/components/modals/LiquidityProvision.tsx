@@ -1057,27 +1057,27 @@ const LiquidityProvisionModal = ({
                           >
                                 <Text>{(pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") && ((pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH")) ? "w" + pool.split("/")[0] + "/w" + pool.split("/")[1] : (pool.split("/")[0] == "BTC" || pool.split("/")[0] == "ETH") ? "w" + pool.split("/")[0] + "/" + pool.split("/")[1] : (pool.split("/")[1] == "BTC" || pool.split("/")[1] == "ETH") ? pool.split("/")[0] + "/w" + pool.split("/")[1] : pool}</Text>
                           </Tooltip>
-                                <Text mt="-0.1rem">
+                                {/* <Text mt="-0.1rem">
                                         {(index<=2 && currentSwap=="Jediswap") ?"✨":"" }
-                                    </Text>
+                                    </Text> */}
                               </Box>
                               <Box>
                               <Box
-                                fontSize="9px"
-                                color="#E6EDF3"
-                                mt="6px"
+                                fontSize="10px"
+                                color="#B1B0B5"
+                                mt="5px"
                                 fontWeight="medium"
                               >
-                                Pool apr: {numberFormatterPercentage(getAprByPool(poolApr, pool, currentSwap))}%
+                                Pool APR: {numberFormatterPercentage(getAprByPool(poolApr, pool, currentSwap))}%
                               </Box>
                               {index<=2 && currentSwap=="Jediswap"  &&
                                           <Box
-                                            fontSize="9px"
-                                            color="#E6EDF3"
-                                            mt="6px"
+                                            fontSize="10px"
+                                            color="#B1B0B5"
+                                            mt="5px"
                                             fontWeight="medium"
                                           >
-                                            STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, currentSwap)))}%
+                                            Stark APR: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, currentSwap)))}%
                                           </Box>}                              
                               </Box>
 

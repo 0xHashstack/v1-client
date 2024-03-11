@@ -3173,18 +3173,18 @@ const TradeModal = ({
                                               : pool}
                                       </Text>
                                     </Tooltip>
-                                    <Text mt="-0.1rem">
+                                    {/* <Text mt="-0.1rem">
                                       {(index <= 2 && currentDapp == "Jediswap") ? "✨" : ""}
-                                    </Text>
+                                    </Text> */}
                                   </Box>
                                   <Box>
                                     <Box
-                                      fontSize="9px"
-                                      color="#E6EDF3"
-                                      mt="6px"
+                                      fontSize="10px"
+                                      color="#B1B0B5"
+                                      mt="5px"
                                       fontWeight="medium"
                                     >
-                                      Pool apr:{" "}
+                                      Pool APR:{" "}
                                       {numberFormatterPercentage(
                                         getAprByPool(poolAprs, pool, currentDapp)
                                       )}
@@ -3192,12 +3192,12 @@ const TradeModal = ({
                                     </Box>
                                     {index<=2 && currentDapp=="Jediswap"  &&
                                           <Box
-                                            fontSize="9px"
-                                            color="#E6EDF3"
-                                            mt="6px"
+                                            fontSize="10px"
+                                            color="#B1B0B5"
+                                            mt="5px"
                                             fontWeight="medium"
                                           >
-                                            STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, pool, currentDapp)))}%
+                                            Stark APR: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, pool, currentDapp)))}%
                                           </Box>}        
                                   </Box>
                                 </Box>
