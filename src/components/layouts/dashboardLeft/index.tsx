@@ -235,7 +235,7 @@ const DashboardLeft = ({
                   height={"2rem"}
                   // textAlign="center"
                   textAlign={idx == 0 ? "left" : "center"}
-                  color={"#BDBFC1"}
+                  color={"#CBCBD1"}
                   padding={0}
                   // pl={idx == 0 ? "7.2%" : 0}
                 >

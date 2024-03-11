@@ -4465,12 +4465,12 @@ const YourBorrowModal = ({
                                         </Box>
                                         <Box>
                                           <Box
-                                            fontSize="9px"
-                                            color="#E6EDF3"
-                                            mt="6px"
+                                            fontSize="10px"
+                                            color="#B1B0B5"
+                                            mt="5px"
                                             fontWeight="medium"
                                           >
-                                            Pool apr:{" "}
+                                            Pool APR:{" "}
                                             {numberFormatterPercentage(
                                               getAprByPool(
                                                 poolAprs,
@@ -4483,12 +4483,12 @@ const YourBorrowModal = ({
                                           {index <= 2 &&
                                             currentDapp == "Jediswap" && (
                                               <Box
-                                                fontSize="9px"
-                                                color="#E6EDF3"
-                                                mt="6px"
+                                                fontSize="10px"
+                                                color="#B1B0B5"
+                                                mt="5px"
                                                 fontWeight="medium"
                                               >
-                                                STRK apr:{" "}
+                                                Stark APR:{" "}
                                                 {numberFormatterPercentage(
                                                   String(
                                                     (100 *

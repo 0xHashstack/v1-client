@@ -1063,21 +1063,21 @@ const LiquidityProvisionModal = ({
                               </Box>
                               <Box>
                               <Box
-                                fontSize="9px"
-                                color="#E6EDF3"
-                                mt="6px"
+                                fontSize="10px"
+                                color="#B1B0B5"
+                                mt="5px"
                                 fontWeight="medium"
                               >
-                                Pool apr: {numberFormatterPercentage(getAprByPool(poolApr, pool, currentSwap))}%
+                                Pool APR: {numberFormatterPercentage(getAprByPool(poolApr, pool, currentSwap))}%
                               </Box>
                               {index<=2 && currentSwap=="Jediswap"  &&
                                           <Box
-                                            fontSize="9px"
-                                            color="#E6EDF3"
-                                            mt="6px"
+                                            fontSize="10px"
+                                            color="#B1B0B5"
+                                            mt="5px"
                                             fontWeight="medium"
                                           >
-                                            STRK apr: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, currentSwap)))}%
+                                            Stark APR: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, currentSwap)))}%
                                           </Box>}                              
                               </Box>
 
