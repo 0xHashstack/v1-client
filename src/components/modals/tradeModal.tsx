@@ -3173,9 +3173,9 @@ const TradeModal = ({
                                               : pool}
                                       </Text>
                                     </Tooltip>
-                                    <Text mt="-0.1rem">
+                                    {/* <Text mt="-0.1rem">
                                       {(index <= 2 && currentDapp == "Jediswap") ? "✨" : ""}
-                                    </Text>
+                                    </Text> */}
                                   </Box>
                                   <Box>
                                     <Box

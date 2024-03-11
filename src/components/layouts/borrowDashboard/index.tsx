@@ -1166,7 +1166,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                       "/" +
                                       allSplit?.[lower_bound + idx]?.tokenB ===
                                       "USDC/USDT")
-                                    ? "✨" + (
+                                    ?  + (
                                       Number(
                                         avgs?.find(
                                           (item: any) =>

@@ -42,7 +42,7 @@ const StatsBoard: React.FC = () => {
         flexWrap="wrap"
       >
         <Stats
-          header={["Your networth", "Your Supply", "Your borrow", "Net APR"]}
+          header={["Your Net Worth", "Your Supply", "Your Borrow", "Net APR"]}
           statsData={[netWorth, yourSupply, yourBorrow, netAPR]}
           onclick={() => {
             handleRouteChange("/v1/your-metrics");
@@ -51,9 +51,9 @@ const StatsBoard: React.FC = () => {
         />
         <Stats
           header={[
-            "Total reserves",
-            "Available reserves",
-            "Avg. asset utillization",
+            "Total Reserves",
+            "Available Reserves",
+            "Avg. Asset Utillization",
           ]}
           statsData={protocolReserves}
           onclick={() => {

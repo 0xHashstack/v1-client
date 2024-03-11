@@ -3,6 +3,7 @@ import { HStack, VStack, Text, Box, Skeleton, Tooltip } from "@chakra-ui/react";
 import Image from "next/image";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useRouter } from "next/router";
+import InfoIcon from "@/assets/icons/infoIcon";
 const Stats = ({
   header,
   onclick,
@@ -46,9 +47,34 @@ const Stats = ({
             alignItems="flex-start"
             // backgroundColor={"red"}
           >
-            <Text color="#6e7681" fontSize={14}>
-              {header[idx]}
-            </Text>
+            <Box display="flex">
+              <Text color="#CBCBD1" fontSize={14}>
+                {header[idx]}
+              </Text>
+              {header[idx]==="Net APR"
+              &&<Box mt="0.1rem" ml="0.3rem">
+                <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label={"The overall APR combines both the borrowing APR and the lending APR."}
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                    >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8.00001 8.00001L8.00001 11.2M8.00001 5.62813V5.60001M1.60001 8.00001C1.60001 4.46538 4.46538 1.60001 8.00001 1.60001C11.5346 1.60001 14.4 4.46538 14.4 8.00001C14.4 11.5346 11.5346 14.4 8.00001 14.4C4.46538 14.4 1.60001 11.5346 1.60001 8.00001Z" stroke="#CBCBD1" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                    </Tooltip>
+              </Box>
+              }
+            </Box>
             <Box color="#E6EDF3" fontSize="20px">
               {value == null ? (
                 <Skeleton
