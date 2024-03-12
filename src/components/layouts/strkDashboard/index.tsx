@@ -948,7 +948,7 @@ const StrkDashboard = () => {
           </Text>
           <Box display="flex" gap="1.5rem" mt="2rem">
             {Coins.map((supplyCoin: any, idx: number) => (
-              <Box bg="#34345633" paddingX="2rem"
+              <Box key={idx} bg="#34345633" paddingX="2rem"
                 paddingY="2rem" borderRadius="8px" justifyContent="center" alignItems="center" textAlign="center">
                 <Box display="flex" width="100%" justifyContent='center'>
                   <Image

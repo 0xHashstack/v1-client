@@ -1559,9 +1559,9 @@ const SupplyModal = ({
                     </Tooltip>
                   </Text>
                   <Text color="#676D9A">
-                  {numberFormatterPercentage(strkData[currentSelectedCoin] ? ((365*100*(strkData[currentSelectedCoin][strkData[currentSelectedCoin]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
+                  {strkData?.[currentSelectedCoin] ? numberFormatterPercentage(strkData[currentSelectedCoin] ? ((365*100*(strkData[currentSelectedCoin][strkData[currentSelectedCoin]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
                               (curr: any) => curr.name === "STRK"
-                            )?.price)/strkData[currentSelectedCoin][strkData[currentSelectedCoin].length-1]?.supply_usd) :0)}%
+                            )?.price)/strkData[currentSelectedCoin][strkData[currentSelectedCoin].length-1]?.supply_usd) :0):0}%
                     {/* {protocolStats?.[0]?.stakingRate ? (
                               protocolStats?.[0]?.stakingRate
                             ) : (
