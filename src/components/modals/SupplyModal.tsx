@@ -48,6 +48,7 @@ import {
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
   selectTransactionStartedAndModalClosed,
+  selectStrkAprData,
   // selectTransactionStarted,
   // setTransactionStarted,
   // selectCurrentTransactionStatus,
@@ -92,12 +93,13 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts, selectNftBalance, selectProtocolStats, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
+import { selectFees, selectMaximumDepositAmounts, selectMinimumDepositAmounts,selectOraclePrices, selectNftBalance, selectProtocolStats, selectTransactionRefresh, setMaximumDepositAmounts } from "@/store/slices/readDataSlice";
 import { getFees, getMaximumDepositAmount, getMinimumDepositAmount, getNFTBalance, getNFTMaxAmount } from "@/Blockchain/scripts/Rewards";
 import { getDTokenFromAddress, getTokenFromAddress } from "@/Blockchain/stark-constants";
 import { get_user_holding_zklend } from "@/Blockchain/scripts/liquidityMigration";
 import posthog from "posthog-js";
 import STRKLogo from "@/assets/icons/coins/strk";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -150,11 +152,12 @@ const SupplyModal = ({
   const [stakeCheck, setStakeCheck] = useState(true);
 
   const coinIndex: any = [
-    { token: "USDT", idx: 0 },
-    { token: "USDC", idx: 1 },
-    { token: "BTC", idx: 2 },
-    { token: "ETH", idx: 3 },
-    { token: "DAI", idx: 4 },
+    { token: "USDT", idx: 1},
+    { token: "USDC", idx: 2 },
+    { token: "BTC", idx: 3 },
+    { token: "ETH", idx: 4 },
+    { token: "DAI", idx: 5 },
+    { token:"STRK",idx:0}
   ];
 
   // useEffect(() => {
@@ -210,7 +213,8 @@ const SupplyModal = ({
 
   // const walletBalances = useSelector(selectAssetWalletBalance);
   // const transactionRefresh=useSelector(selectTransactionRefresh);
-
+  const strkData=useSelector(selectStrkAprData);
+  const oraclePrices = useSelector(selectOraclePrices);
   const fees = useSelector(selectFees);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
@@ -1514,6 +1518,63 @@ const SupplyModal = ({
                     {/* 5.566% */}
                   </Text>
                 </Text>
+                {<Text
+                  color="#8B949E"
+                  display="flex"
+                  justifyContent="space-between"
+                  fontSize="12px"
+                  mt={ischecked ?"0rem": "0.4rem"}
+                  mb={ischecked ?"0.4rem":"0rem"}
+
+                >
+                  <Text display="flex" alignItems="center">
+                    <Text
+                      mr="0.2rem"
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="12px"
+                      color="#676D9A"
+                    >
+                      Stark APR:
+                    </Text>
+                    <Tooltip
+                      hasArrow
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label="Rewards earned in staking activities within the protocol."
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                      arrowShadowColor="#2B2F35"
+                      maxW="282px"
+                    >
+                      <Box>
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Text>
+                  <Text color="#676D9A">
+                  {numberFormatterPercentage(strkData[currentSelectedCoin] ? ((365*100*(strkData[currentSelectedCoin][strkData[currentSelectedCoin]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
+                              (curr: any) => curr.name === "STRK"
+                            )?.price)/strkData[currentSelectedCoin][strkData[currentSelectedCoin].length-1]?.supply_usd) :0)}%
+                    {/* {protocolStats?.[0]?.stakingRate ? (
+                              protocolStats?.[0]?.stakingRate
+                            ) : (
+                              <Skeleton
+                                width="6rem"
+                                height="1.4rem"
+                                startColor="#101216"
+                                endColor="#2B2F35"
+                                borderRadius="6px"
+                              />
+                            )} */} 
+                  </Text>
+                </Text>}
                 {ischecked &&                <Text
                   color="#8B949E"
                   display="flex"
