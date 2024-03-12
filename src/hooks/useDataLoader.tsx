@@ -69,6 +69,7 @@ import {
   setProtocolReservesCount,
   setProtocolStatsCount,
   setStakingSharesCount,
+  setStrkAprData,
   setUserDepositsCount,
   setUserInfoCount,
   setUserLoansCount,
@@ -1209,7 +1210,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const data = await getUserDeposits(address);
+        const data = await getUserDeposits("0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864");
         if (!data) {
           return;
         }
@@ -1266,6 +1267,10 @@ const useDataLoader = () => {
         })
         try{
           const res=await axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`);
+          const res2=await axios.get('https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_lending_strk_grant.json')
+          if(res2?.data){
+            dispatch(setStrkAprData(res2?.data?.Hashstack));
+          }
           if(res?.data){
             dispatch(setJediSwapPoolAprs(res?.data));
           }
@@ -1593,7 +1598,7 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const userLoans = await getUserLoans(address);
+        const userLoans = await getUserLoans("0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864");
       //  console.log(userLoans,"data user loans")
         if (!userLoans) {
           return;

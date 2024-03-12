@@ -42,6 +42,7 @@ const initialState = {
     availableReserves: null,
     avgAssetUtilisation: null,
   },
+  starkAprData:null,
   activeTransactions: [],
   transactionRefresh: 0,
   avgSupplyAPR: null,
@@ -276,6 +277,9 @@ export const userAccountSlice = createSlice({
     setMinMaxLoanCount(state,action){
       state.minMaxLoanCount=action.payload;
     },
+    setStrkAprData(state,action){
+      state.starkAprData=action.payload;
+    },
   setFeesCount(state,action){
     state.feesCount=action.payload;
   },
@@ -355,7 +359,8 @@ export const {
   setMinMaxLoanCount,
   setFeesCount,
   setTransactionCheck,
-  setLightModeSelected
+  setLightModeSelected,
+  setStrkAprData
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -466,5 +471,7 @@ export const selectTransactionCheck = (state) =>
   state.user_account.transactionCheck;
 export const selectLightModeSelected=(state)=>
   state.user_account.lightModeSelected;
+  export const selectStrkAprData=(state)=>
+  state.user_account.starkAprData;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;
