@@ -238,13 +238,13 @@ const TradeModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          String(
-            uint256.uint256ToBN(
-              walletBalances[coin?.name]?.dataBalanceOf?.balance
-            )
-          ),
-          tokenDecimalsMap[coin?.name]
-        )
+            String(
+              uint256.uint256ToBN(
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
+              )
+            ),
+            tokenDecimalsMap[coin?.name]
+          )
         : 0
     );
     ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
@@ -258,28 +258,27 @@ const TradeModal = ({
       if (item.name === "USDT/USDC") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "USDC/USDT" === pool
         );
       } else if (item.name == "ETH/STRK") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "STRK/ETH" === pool
-        )
-      }
-      else if (item.name === "ETH/DAI") {
+        );
+      } else if (item.name === "ETH/DAI") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "DAI/ETH" === pool
         );
@@ -287,9 +286,9 @@ const TradeModal = ({
         return (
           item.name === pool &&
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap")
         );
@@ -299,24 +298,44 @@ const TradeModal = ({
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
   const getTvlByPool = (dataArray: any[], pool: string, dapp: string) => {
-    const matchedObject = dataArray.find(item => {
+    const matchedObject = dataArray.find((item) => {
       if (item.name === "USDT/USDC") {
-        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("USDC/USDT" === pool);
+        return (
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "USDC/USDT" === pool
+        );
       } else if (item.name == "ETH/STRK") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "STRK/ETH" === pool
-        )
-      }
-      else if (item.name === "ETH/DAI") {
-        return item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap") && ("DAI/ETH" === pool);
-      }
-      else {
-        return item.name === pool && item.amm === (dapp == "Select a dapp" ? "jedi" : dapp == "Jediswap" ? "jedi" : "myswap");
+        );
+      } else if (item.name === "ETH/DAI") {
+        return (
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap") && "DAI/ETH" === pool
+        );
+      } else {
+        return (
+          item.name === pool &&
+          item.amm ===
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
+              ? "jedi"
+              : "myswap")
+        );
       }
     });
 
@@ -337,7 +356,9 @@ const TradeModal = ({
     // "USDC/DAI",
   ];
 
-  const [currentDapp, setCurrentDapp] = useState(currentSelectedDapp ? currentSelectedDapp : "Select a dapp");
+  const [currentDapp, setCurrentDapp] = useState(
+    currentSelectedDapp ? currentSelectedDapp : "Select a dapp"
+  );
   const [currentPool, setCurrentPool] = useState("Select a pool");
   const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
   const getCoin = (CoinName: string) => {
@@ -609,7 +630,7 @@ const TradeModal = ({
     setCollateralMarket(coin ? coin.name : "BTC");
   }, [coin]);
   useEffect(() => {
-    setCurrentPool("Select a pool")
+    setCurrentPool("Select a pool");
     setCurrentPoolCoin("Select a pool");
   }, [currentDapp]);
   const resetStates = () => {
@@ -635,13 +656,13 @@ const TradeModal = ({
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? parseAmount(
-          String(
-            uint256.uint256ToBN(
-              walletBalances[coin?.name]?.dataBalanceOf?.balance
-            )
-          ),
-          tokenDecimalsMap[coin?.name]
-        )
+            String(
+              uint256.uint256ToBN(
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
+              )
+            ),
+            tokenDecimalsMap[coin?.name]
+          )
         : 0
     );
     // if (transactionStarted) dispatch(setTransactionStarted(""));
@@ -1005,73 +1026,82 @@ const TradeModal = ({
   //     }
   // },[currentDapp])
 
-  const strkData=useSelector(selectStrkAprData)
-  const netSpendBalance=useSelector(selectnetSpendBalance);
+  const strkData = useSelector(selectStrkAprData);
+  const netSpendBalance = useSelector(selectnetSpendBalance);
 
-  const [netStrkBorrow, setnetStrkBorrow] = useState(0) ;
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0);
 
-  useEffect(()=>{
-    if(strkData!=null){
-      let netallocation=0;
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0;
       for (let token in strkData) {
-          if (strkData.hasOwnProperty(token)) {
-              strkData[token].forEach((info: { allocation: number; }) => {
-                  netallocation += 0.3*info.allocation;
-              });
-          }
+        if (strkData.hasOwnProperty(token)) {
+          strkData[token].forEach((info: { allocation: number }) => {
+            netallocation += 0.3 * info.allocation;
+          });
+        }
       }
-      setnetStrkBorrow(netallocation)
-    }else{
+      setnetStrkBorrow(netallocation);
+    } else {
       setnetStrkBorrow(0);
     }
-  },[strkData])
+  }, [strkData]);
 
-  const getBoostedAprSupply=(coin:any)=>{
-    if(strkData==null){
+  const getBoostedAprSupply = (coin: any) => {
+    if (strkData == null) {
       return 0;
-    }else{
-      if(strkData?.[coin]){
-        if(oraclePrices==null){
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
           return 0;
-        }else{
-          let value=(strkData?.[coin] ? ((365*100*(strkData?.[coin][strkData[coin]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
-            (curr: any) => curr.name === "STRK"
-          )?.price)/strkData?.[coin][strkData[coin].length-1]?.supply_usd) :0)
+        } else {
+          let value = strkData?.[coin]
+            ? (365 *
+                100 *
+                strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
+                0.7 *
+                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  ?.price) /
+              strkData?.[coin][strkData[coin].length - 1]?.supply_usd
+            : 0;
           return value;
         }
-      }else{
+      } else {
         return 0;
       }
     }
+  };
 
-  }
-
-const getBoostedApr=(coin:any)=>{
-  if(strkData==null){
-    return 0;
-  }else{
-    if(strkData?.[coin]){
-      if(oraclePrices==null){
-        return 0;
-      }else{
-        if(netStrkBorrow!=0){
-          if(netSpendBalance){
-            let value=(365*100*netStrkBorrow*oraclePrices?.find(
-              (curr: any) => curr.name === "STRK"
-            )?.price/netSpendBalance)
-            return value;
-          }else{
+  const getBoostedApr = (coin: any) => {
+    if (strkData == null) {
+      return 0;
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
+          return 0;
+        } else {
+          if (netStrkBorrow != 0) {
+            if (netSpendBalance) {
+              let value =
+                (365 *
+                  100 *
+                  netStrkBorrow *
+                  oraclePrices?.find((curr: any) => curr.name === "STRK")
+                    ?.price) /
+                netSpendBalance;
+              return value;
+            } else {
+              return 0;
+            }
+          } else {
             return 0;
           }
-        }else{
-          return 0;
         }
+      } else {
+        return 0;
       }
-    }else{
-      return 0;
     }
-  }
-}
+  };
 
   const fetchParsedUSDValueCollateral = async () => {
     try {
@@ -1214,44 +1244,51 @@ const getBoostedApr=(coin:any)=>{
   ]);
 
   const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
-  const [allocationData, setallocationData] = useState<any>()
-  const [poolAllocatedData, setpoolAllocatedData] = useState<any>()
+  const [allocationData, setallocationData] = useState<any>();
+  const [poolAllocatedData, setpoolAllocatedData] = useState<any>();
 
   useEffect(() => {
     try {
       const fetchData = async () => {
-        const res = await axios.get('https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json')
-        setstrkTokenAlloactionData(res?.data?.Jediswap_v1)
-      }
-      fetchData()
+        const res = await axios.get(
+          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json"
+        );
+        setstrkTokenAlloactionData(res?.data?.Jediswap_v1);
+      };
+      fetchData();
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     try {
-      if (currentPool !== 'Select a pool') {
+      if (currentPool !== "Select a pool") {
         if (strkTokenAlloactionData[currentPool]) {
-          setallocationData(strkTokenAlloactionData[currentPool])
+          setallocationData(strkTokenAlloactionData[currentPool]);
         }
       }
     } catch (err) {
-
-      console.log("hi")
+      console.log("hi");
       // console.log(err);
     }
-  }, [strkTokenAlloactionData, currentPool])
+  }, [strkTokenAlloactionData, currentPool]);
 
   useEffect(() => {
     if (allocationData?.length > 0) {
-      if (currentPool === "STRK/ETH" || currentPool == "USDC/USDT" || currentPool == "ETH/USDC") {
-        setpoolAllocatedData(allocationData[allocationData.length - 1]?.allocation)
+      if (
+        currentPool === "STRK/ETH" ||
+        currentPool == "USDC/USDT" ||
+        currentPool == "ETH/USDC"
+      ) {
+        setpoolAllocatedData(
+          allocationData[allocationData.length - 1]?.allocation
+        );
       } else {
-        setpoolAllocatedData(0)
+        setpoolAllocatedData(0);
       }
     }
-  }, [allocationData, currentPool])
+  }, [allocationData, currentPool]);
 
   const fetchLiquiditySplit = async () => {
     if (
@@ -1354,31 +1391,32 @@ const getBoostedApr=(coin:any)=>{
   // }, [collateralBalance, inputCollateralAmount]);
   useEffect(() => {
     if (pathname === "/v1/strk-rewards") {
-      setCurrentPool(currentSelectedPool)
-      setCurrentDapp("Jediswap")
+      setCurrentPool(currentSelectedPool);
+      setCurrentDapp("Jediswap");
       setToMarketLiqA(currentSelectedPool.split("/")[0]);
       //@ts-ignore
       setToMarketLiqB(currentSelectedPool.split("/")[1]);
     }
-  }, [poolNumber])
+  }, [poolNumber]);
   const router = useRouter();
   const { pathname } = router;
   const getStrkAlloaction = (pool: any) => {
     try {
       if (strkTokenAlloactionData[pool]) {
-        return strkTokenAlloactionData[pool][strkTokenAlloactionData[pool].length - 1]?.allocation;
+        return strkTokenAlloactionData[pool][
+          strkTokenAlloactionData[pool].length - 1
+        ]?.allocation;
       } else {
         return 0;
       }
     } catch (err) {
       return 0;
-      console.log(err)
+      console.log(err);
     }
-
-  }
+  };
   return (
     <Box>
-      {pathname !== "/v1/strk-rewards" ?
+      {pathname !== "/v1/strk-rewards" ? (
         <Text
           key="borrow-details"
           as="span"
@@ -1416,7 +1454,9 @@ const getBoostedApr=(coin:any)=>{
           }}
         >
           Spend
-        </Text> : <Button
+        </Text>
+      ) : (
+        <Button
           cursor="pointer"
           height={"2rem"}
           fontSize={"12px"}
@@ -1439,8 +1479,8 @@ const getBoostedApr=(coin:any)=>{
           }}
         >
           Spend
-
-        </Button>}
+        </Button>
+      )}
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
 
       <Modal
@@ -1500,7 +1540,7 @@ const getBoostedApr=(coin:any)=>{
               display="flex"
               justifyContent="space-around"
               gap="5"
-            //   alignItems="center"
+              //   alignItems="center"
             >
               <Box w="48%">
                 <Box
@@ -1533,7 +1573,7 @@ const getBoostedApr=(coin:any)=>{
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                         maxW="252px"
-                      // mt="12px"
+                        // mt="12px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -1565,7 +1605,7 @@ const getBoostedApr=(coin:any)=>{
                         <Box p="1">{getCoin(currentCollateralCoin)}</Box>
                         <Text>
                           {currentCollateralCoin == "BTC" ||
-                            currentCollateralCoin == "ETH"
+                          currentCollateralCoin == "ETH"
                             ? "w" + currentCollateralCoin
                             : currentCollateralCoin}
                         </Text>
@@ -1692,17 +1732,19 @@ const getBoostedApr=(coin:any)=>{
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      pl={`${coin === currentCollateralCoin
+                                      pl={`${
+                                        coin === currentCollateralCoin
                                           ? "1"
                                           : "5"
-                                        }`}
+                                      }`}
                                       pr="6px"
                                       gap="1"
                                       justifyContent="space-between"
-                                      bg={`${coin === currentCollateralCoin
+                                      bg={`${
+                                        coin === currentCollateralCoin
                                           ? "#4D59E8"
                                           : "inherit"
-                                        }`}
+                                      }`}
                                       borderRadius="md"
                                     >
                                       <Box display="flex">
@@ -1760,14 +1802,14 @@ const getBoostedApr=(coin:any)=>{
                                     walletBalances[coin]?.statusBalanceOf ===
                                       "success"
                                       ? parseAmount(
-                                        String(
-                                          uint256.uint256ToBN(
-                                            walletBalances[coin]
-                                              ?.dataBalanceOf?.balance
-                                          )
-                                        ),
-                                        tokenDecimalsMap[coin]
-                                      )
+                                          String(
+                                            uint256.uint256ToBN(
+                                              walletBalances[coin]
+                                                ?.dataBalanceOf?.balance
+                                            )
+                                          ),
+                                          tokenDecimalsMap[coin]
+                                        )
                                       : 0
                                   );
                                 }}
@@ -1784,14 +1826,16 @@ const getBoostedApr=(coin:any)=>{
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  pl={`${coin === currentCollateralCoin ? "1" : "5"
-                                    }`}
+                                  pl={`${
+                                    coin === currentCollateralCoin ? "1" : "5"
+                                  }`}
                                   pr="6px"
                                   gap="1"
-                                  bg={`${coin === currentCollateralCoin
+                                  bg={`${
+                                    coin === currentCollateralCoin
                                       ? "#4D59E8"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                   justifyContent="space-between"
                                 >
@@ -1813,16 +1857,16 @@ const getBoostedApr=(coin:any)=>{
                                     {walletBalances[coin]?.dataBalanceOf
                                       ?.balance
                                       ? numberFormatter(
-                                        parseAmount(
-                                          String(
-                                            uint256.uint256ToBN(
-                                              walletBalances[coin]
-                                                ?.dataBalanceOf?.balance
-                                            )
-                                          ),
-                                          tokenDecimalsMap[coin]
+                                          parseAmount(
+                                            String(
+                                              uint256.uint256ToBN(
+                                                walletBalances[coin]
+                                                  ?.dataBalanceOf?.balance
+                                              )
+                                            ),
+                                            tokenDecimalsMap[coin]
+                                          )
                                         )
-                                      )
                                       : "-"}
                                   </Box>
                                 </Box>
@@ -1862,22 +1906,23 @@ const getBoostedApr=(coin:any)=>{
                     <Box
                       width="100%"
                       color="white"
-                      border={`${inputCollateralAmount > walletBalance
+                      border={`${
+                        inputCollateralAmount > walletBalance
                           ? "1px solid #CF222E"
                           : inputCollateralAmount < 0
-                            ? "1px solid #CF222E"
-                            : isNaN(inputCollateralAmount)
-                              ? "1px solid #CF222E"
-                              : inputCollateralAmount > 0 &&
-                                process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                                (inputCollateralAmount < minimumDepositAmount ||
-                                  inputCollateralAmount > maximumDepositAmount)
-                                ? "1px solid #CF222E"
-                                : inputCollateralAmount > 0 &&
-                                  inputCollateralAmount <= walletBalance
-                                  ? "1px solid #00D395"
-                                  : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
-                        }`}
+                          ? "1px solid #CF222E"
+                          : isNaN(inputCollateralAmount)
+                          ? "1px solid #CF222E"
+                          : inputCollateralAmount > 0 &&
+                            process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                            (inputCollateralAmount < minimumDepositAmount ||
+                              inputCollateralAmount > maximumDepositAmount)
+                          ? "1px solid #CF222E"
+                          : inputCollateralAmount > 0 &&
+                            inputCollateralAmount <= walletBalance
+                          ? "1px solid #00D395"
+                          : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
+                      }`}
                       borderRadius="6px"
                       display="flex"
                       justifyContent="space-between"
@@ -1900,31 +1945,33 @@ const getBoostedApr=(coin:any)=>{
                           placeholder={
                             process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
                               ? `0.01536 ${currentCollateralCoin}`
-                              : `min ${minimumDepositAmount == null
-                                ? 0
-                                : minimumDepositAmount
-                              } ${currentCollateralCoin}`
+                              : `min ${
+                                  minimumDepositAmount == null
+                                    ? 0
+                                    : minimumDepositAmount
+                                } ${currentCollateralCoin}`
                           }
-                          color={`${inputCollateralAmount > walletBalance
+                          color={`${
+                            inputCollateralAmount > walletBalance
                               ? "#CF222E"
                               : isNaN(inputCollateralAmount)
-                                ? "#CF222E"
-                                : inputCollateralAmount < 0
-                                  ? "#CF222E"
-                                  : ((process.env.NEXT_PUBLIC_NODE_ENV ==
-                                    "mainnet" &&
-                                    inputCollateralAmount <
+                              ? "#CF222E"
+                              : inputCollateralAmount < 0
+                              ? "#CF222E"
+                              : ((process.env.NEXT_PUBLIC_NODE_ENV ==
+                                  "mainnet" &&
+                                  inputCollateralAmount <
                                     minimumDepositAmount) ||
-                                    (process.env.NEXT_PUBLIC_NODE_ENV ==
-                                      "mainnet" &&
-                                      inputCollateralAmount >
+                                  (process.env.NEXT_PUBLIC_NODE_ENV ==
+                                    "mainnet" &&
+                                    inputCollateralAmount >
                                       maximumDepositAmount)) &&
-                                    inputCollateralAmount > 0
-                                    ? "#CF222E"
-                                    : inputCollateralAmount == 0
-                                      ? "white"
-                                      : "#00D395"
-                            }`}
+                                inputCollateralAmount > 0
+                              ? "#CF222E"
+                              : inputCollateralAmount == 0
+                              ? "white"
+                              : "#00D395"
+                          }`}
                           _disabled={{ color: "#00D395" }}
                           border="0px"
                           _placeholder={{
@@ -1941,21 +1988,22 @@ const getBoostedApr=(coin:any)=>{
                       </NumberInput>
                       <Button
                         variant="ghost"
-                        color={`${inputCollateralAmount > walletBalance
+                        color={`${
+                          inputCollateralAmount > walletBalance
                             ? "#CF222E"
                             : isNaN(inputCollateralAmount)
-                              ? "#CF222E"
-                              : (inputCollateralAmount < minimumDepositAmount ||
+                            ? "#CF222E"
+                            : (inputCollateralAmount < minimumDepositAmount ||
                                 inputCollateralAmount > maximumDepositAmount) &&
-                                process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                                inputCollateralAmount > 0
-                                ? "#CF222E"
-                                : inputCollateralAmount < 0
-                                  ? "#CF222E"
-                                  : inputCollateralAmount == 0
-                                    ? "#4D59E8"
-                                    : "#00D395"
-                          }`}
+                              process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                              inputCollateralAmount > 0
+                            ? "#CF222E"
+                            : inputCollateralAmount < 0
+                            ? "#CF222E"
+                            : inputCollateralAmount == 0
+                            ? "#4D59E8"
+                            : "#00D395"
+                        }`}
                         _hover={{
                           bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
                         }}
@@ -1975,12 +2023,12 @@ const getBoostedApr=(coin:any)=>{
                       </Button>
                     </Box>
                     {inputCollateralAmount > walletBalance ||
-                      inputCollateralAmount < 0 ||
-                      ((inputCollateralAmount < minimumDepositAmount ||
-                        inputCollateralAmount > maximumDepositAmount) &&
-                        process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                        inputCollateralAmount > 0) ||
-                      isNaN(inputCollateralAmount) ? (
+                    inputCollateralAmount < 0 ||
+                    ((inputCollateralAmount < minimumDepositAmount ||
+                      inputCollateralAmount > maximumDepositAmount) &&
+                      process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                      inputCollateralAmount > 0) ||
+                    isNaN(inputCollateralAmount) ? (
                       <Text
                         display="flex"
                         justifyContent="space-between"
@@ -2000,12 +2048,12 @@ const getBoostedApr=(coin:any)=>{
                               ? "Amount exceeds balance"
                               : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
                                 inputCollateralAmount < minimumDepositAmount
-                                ? `less than min amount`
-                                : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                                  inputCollateralAmount > maximumDepositAmount
-                                  ? "more than max amount"
-                                  : //do max 1209
-                                  "Invalid Input"}
+                              ? `less than min amount`
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                inputCollateralAmount > maximumDepositAmount
+                              ? "more than max amount"
+                              : //do max 1209
+                                "Invalid Input"}
                           </Text>
                         </Text>
                         <Text
@@ -2233,7 +2281,7 @@ const getBoostedApr=(coin:any)=>{
                         <Box p="1">{getCoin(currentBorrowCoin)}</Box>
                         <Text>
                           {currentBorrowCoin == "BTC" ||
-                            currentBorrowCoin == "ETH"
+                          currentBorrowCoin == "ETH"
                             ? "w" + currentBorrowCoin
                             : currentBorrowCoin}
                         </Text>
@@ -2326,7 +2374,7 @@ const getBoostedApr=(coin:any)=>{
                                   setCurrentBorrowCoin(coin);
                                   setCurrentAvailableReserves(
                                     protocolStats?.[index]?.availableReserves *
-                                    0.895
+                                      0.895
                                   );
                                   setCurrentBorrowAPR(
                                     coinIndex.find(
@@ -2350,14 +2398,16 @@ const getBoostedApr=(coin:any)=>{
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  pl={`${coin === currentBorrowCoin ? "1" : "5"
-                                    }`}
+                                  pl={`${
+                                    coin === currentBorrowCoin ? "1" : "5"
+                                  }`}
                                   pr="6px"
                                   gap="1"
-                                  bg={`${coin === currentBorrowCoin
+                                  bg={`${
+                                    coin === currentBorrowCoin
                                       ? "#4D59E8"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                   justifyContent="space-between"
                                 >
@@ -2383,15 +2433,15 @@ const getBoostedApr=(coin:any)=>{
                                         protocolStats?.[index]
                                           ?.availableReserves * 0.895
                                       )) || (
-                                        <Skeleton
-                                          width="3rem"
-                                          height="1rem"
-                                          startColor="#1E212F"
-                                          endColor="#03060B"
-                                          borderRadius="6px"
-                                          ml={2}
-                                        />
-                                      )}
+                                      <Skeleton
+                                        width="3rem"
+                                        height="1rem"
+                                        startColor="#1E212F"
+                                        endColor="#03060B"
+                                        borderRadius="6px"
+                                        ml={2}
+                                      />
+                                    )}
                                   </Box>
                                 </Box>
                               </Box>
@@ -2430,25 +2480,26 @@ const getBoostedApr=(coin:any)=>{
                     <Box
                       width="100%"
                       color="white"
-                      border={`${inputCollateralAmountUSD &&
-                          inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
+                      border={`${
+                        inputCollateralAmountUSD &&
+                        inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                           ? "1px solid #CF222E"
                           : inputBorrowAmount < 0 ||
                             inputBorrowAmount > currentAvailableReserves
-                            ? "1px solid #CF222E"
-                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                              inputBorrowAmount < minimumLoanAmount &&
-                              inputBorrowAmount > 0
-                              ? "1px solid #CF222E"
-                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                                inputBorrowAmount > maximumLoanAmount
-                                ? "1px solid #CF222E"
-                                : isNaN(inputBorrowAmount)
-                                  ? "1px solid #CF222E"
-                                  : inputBorrowAmount > 0
-                                    ? "1px solid #00D395"
-                                    : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
-                        }`}
+                          ? "1px solid #CF222E"
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                            inputBorrowAmount < minimumLoanAmount &&
+                            inputBorrowAmount > 0
+                          ? "1px solid #CF222E"
+                          : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                            inputBorrowAmount > maximumLoanAmount
+                          ? "1px solid #CF222E"
+                          : isNaN(inputBorrowAmount)
+                          ? "1px solid #CF222E"
+                          : inputBorrowAmount > 0
+                          ? "1px solid #00D395"
+                          : "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
+                      }`}
                       borderRadius="6px"
                       display="flex"
                       justifyContent="space-between"
@@ -2472,31 +2523,33 @@ const getBoostedApr=(coin:any)=>{
                           placeholder={
                             process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
                               ? `0.01536 ${currentBorrowCoin}`
-                              : `min ${minimumLoanAmount == null
-                                ? 0
-                                : minimumLoanAmount
-                              } ${currentBorrowCoin}`
+                              : `min ${
+                                  minimumLoanAmount == null
+                                    ? 0
+                                    : minimumLoanAmount
+                                } ${currentBorrowCoin}`
                           }
-                          color={`${inputCollateralAmountUSD &&
-                              inputBorrowAmountUSD >
+                          color={`${
+                            inputCollateralAmountUSD &&
+                            inputBorrowAmountUSD >
                               4.98 * inputCollateralAmountUSD
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
-                                ? "#CF222E"
-                                : inputBorrowAmount < 0 ||
-                                  inputBorrowAmount > currentAvailableReserves
-                                  ? "#CF222E"
-                                  : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                                    inputBorrowAmount < minimumLoanAmount &&
-                                    inputBorrowAmount > 0
-                                    ? "#CF222E"
-                                    : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                                      inputBorrowAmount > maximumLoanAmount
-                                      ? "#CF222E"
-                                      : inputBorrowAmount == 0
-                                        ? "white"
-                                        : "#00D395"
-                            }`}
+                              ? "#CF222E"
+                              : inputBorrowAmount < 0 ||
+                                inputBorrowAmount > currentAvailableReserves
+                              ? "#CF222E"
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                inputBorrowAmount < minimumLoanAmount &&
+                                inputBorrowAmount > 0
+                              ? "#CF222E"
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                inputBorrowAmount > maximumLoanAmount
+                              ? "#CF222E"
+                              : inputBorrowAmount == 0
+                              ? "white"
+                              : "#00D395"
+                          }`}
                           border="0px"
                           _disabled={{ color: "#00D395" }}
                           _placeholder={{
@@ -2513,25 +2566,26 @@ const getBoostedApr=(coin:any)=>{
                       </NumberInput>
                       <Button
                         variant="ghost"
-                        color={`${inputCollateralAmountUSD &&
-                            inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
+                        color={`${
+                          inputCollateralAmountUSD &&
+                          inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD
                             ? "#CF222E"
                             : isNaN(inputBorrowAmount)
-                              ? "#CF222E"
-                              : inputBorrowAmount < 0 ||
-                                inputBorrowAmount > currentAvailableReserves
-                                ? "#CF222E"
-                                : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                                  inputBorrowAmount < minimumLoanAmount &&
-                                  inputBorrowAmount > 0
-                                  ? "#CF222E"
-                                  : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                                    inputBorrowAmount > maximumLoanAmount
-                                    ? "#CF222E"
-                                    : inputBorrowAmount == 0
-                                      ? "#4D59E8"
-                                      : "#00D395"
-                          }`}
+                            ? "#CF222E"
+                            : inputBorrowAmount < 0 ||
+                              inputBorrowAmount > currentAvailableReserves
+                            ? "#CF222E"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                              inputBorrowAmount < minimumLoanAmount &&
+                              inputBorrowAmount > 0
+                            ? "#CF222E"
+                            : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                              inputBorrowAmount > maximumLoanAmount
+                            ? "#CF222E"
+                            : inputBorrowAmount == 0
+                            ? "#4D59E8"
+                            : "#00D395"
+                        }`}
                         _hover={{
                           bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
                         }}
@@ -2539,9 +2593,9 @@ const getBoostedApr=(coin:any)=>{
                           if (inputCollateralAmountUSD > 0) {
                             if (
                               (4.98 * inputCollateralAmountUSD) /
-                              oraclePrices.find(
-                                (curr: any) => curr.name === currentBorrowCoin
-                              )?.price >
+                                oraclePrices.find(
+                                  (curr: any) => curr.name === currentBorrowCoin
+                                )?.price >
                               currentAvailableReserves
                             ) {
                               setinputBorrowAmount(currentAvailableReserves);
@@ -2550,17 +2604,17 @@ const getBoostedApr=(coin:any)=>{
                             } else {
                               setinputBorrowAmount(
                                 (4.98 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) =>
-                                    curr.name === currentBorrowCoin
-                                )?.price
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price
                               );
                               setLoanAmount(
                                 (4.98 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) =>
-                                    curr.name === currentBorrowCoin
-                                )?.price
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price
                               );
                               setsliderValue2(100);
                             }
@@ -2585,14 +2639,14 @@ const getBoostedApr=(coin:any)=>{
                       </Button>
                     </Box>
                     {inputBorrowAmount > currentAvailableReserves ||
-                      (inputBorrowAmount > 0 &&
-                        process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                        inputBorrowAmount < minimumLoanAmount) ||
-                      inputBorrowAmount > maximumLoanAmount ||
-                      (inputBorrowAmount > 0 &&
-                        inputCollateralAmountUSD &&
-                        inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD) ||
-                      isNaN(inputBorrowAmount) ? (
+                    (inputBorrowAmount > 0 &&
+                      process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                      inputBorrowAmount < minimumLoanAmount) ||
+                    inputBorrowAmount > maximumLoanAmount ||
+                    (inputBorrowAmount > 0 &&
+                      inputCollateralAmountUSD &&
+                      inputBorrowAmountUSD > 4.98 * inputCollateralAmountUSD) ||
+                    isNaN(inputBorrowAmount) ? (
                       <Text
                         display="flex"
                         justifyContent="space-between"
@@ -2613,14 +2667,14 @@ const getBoostedApr=(coin:any)=>{
                               ? "Amount exceeds balance"
                               : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
                                 inputBorrowAmount < minimumLoanAmount
-                                ? "Less than min amount"
-                                : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
-                                  inputBorrowAmount > maximumLoanAmount
-                                  ? "More than max amount"
-                                  : inputBorrowAmountUSD >
-                                    4.98 * inputCollateralAmountUSD
-                                    ? "Debt higher than permitted"
-                                    : "Invalid Input"}
+                              ? "Less than min amount"
+                              : process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                                inputBorrowAmount > maximumLoanAmount
+                              ? "More than max amount"
+                              : inputBorrowAmountUSD >
+                                4.98 * inputCollateralAmountUSD
+                              ? "Debt higher than permitted"
+                              : "Invalid Input"}
                           </Text>
                         </Text>
                         <Text
@@ -2675,17 +2729,17 @@ const getBoostedApr=(coin:any)=>{
                             if (inputCollateralAmountUSD > 0) {
                               setinputBorrowAmount(
                                 (4.98 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) =>
-                                    curr.name === currentBorrowCoin
-                                )?.price
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price
                               );
                               setLoanAmount(
                                 (4.98 * inputCollateralAmountUSD) /
-                                oraclePrices.find(
-                                  (curr: any) =>
-                                    curr.name === currentBorrowCoin
-                                )?.price
+                                  oraclePrices.find(
+                                    (curr: any) =>
+                                      curr.name === currentBorrowCoin
+                                  )?.price
                               );
                             } else {
                               setinputBorrowAmount(currentAvailableReserves);
@@ -2840,9 +2894,9 @@ const getBoostedApr=(coin:any)=>{
                             borderColor: "#4D59E8",
                           }}
                           _focus={{ boxShadow: "none", outline: "0" }}
-                        // onClick={() => {
-                        //   setMethod("ADD_LIQUIDITY");
-                        // }}
+                          // onClick={() => {
+                          //   setMethod("ADD_LIQUIDITY");
+                          // }}
                         >
                           Liquidity provisioning
                         </Radio>
@@ -2860,9 +2914,9 @@ const getBoostedApr=(coin:any)=>{
                             borderColor: "#4D59E8",
                           }}
                           _focus={{ boxShadow: "none", outline: "0" }}
-                        // onClick={() => {
-                        //   setMethod("SWAP");
-                        // }}
+                          // onClick={() => {
+                          //   setMethod("SWAP");
+                          // }}
                         >
                           {process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
                             ? "Trade"
@@ -2902,7 +2956,7 @@ const getBoostedApr=(coin:any)=>{
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                         maxW="242px"
-                      // mt="5px"
+                        // mt="5px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -2934,14 +2988,15 @@ const getBoostedApr=(coin:any)=>{
                           ""
                         )}
                         <Text>{currentDapp}</Text>
-                        {currentDapp == "Jediswap" && radioValue=="1" &&
+                        {/* {currentDapp == "Jediswap" && radioValue == "1" && (
                           <Image
-                            src={'/strkReward.svg'}
+                            src={"/strkReward.svg"}
                             alt={`Strk reward`}
                             width="74"
                             height="15"
                             style={{ marginTop: "0.2rem" }}
-                          />}
+                          />
+                        )} */}
                       </Box>
                       <Box pt="1" className="navbar-button">
                         {activeModal == "yourBorrowDappDropdown" ? (
@@ -2998,29 +3053,32 @@ const getBoostedApr=(coin:any)=>{
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  px={`${dapp.name === currentDapp ? "1" : "5"
-                                    }`}
+                                  px={`${
+                                    dapp.name === currentDapp ? "1" : "5"
+                                  }`}
                                   gap="1"
-                                  bg={`${dapp.name === currentDapp
+                                  bg={`${
+                                    dapp.name === currentDapp
                                       ? "#4D59E8"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(dapp.name)}</Box>
                                   <Text pt="1" color="white">
                                     {dapp.name}
                                   </Text>
-                                  <Box>
-                                    {dapp.name == "Jediswap" &&
+                                  {/* <Box>
+                                    {dapp.name == "Jediswap" && (
                                       <Image
-                                        src={'/strkReward.svg'}
+                                        src={"/strkReward.svg"}
                                         alt={`Strk reward`}
                                         width="74"
                                         height="15"
                                         style={{ marginTop: "0.3rem" }}
-                                      />}
-                                  </Box>
+                                      />
+                                    )}
+                                  </Box> */}
                                 </Box>
                                 {dapp.status === "disable" && (
                                   <Text
@@ -3099,29 +3157,29 @@ const getBoostedApr=(coin:any)=>{
                         <Text>
                           {radioValue === "1"
                             ? (currentPool.split("/")[0] == "BTC" ||
-                              currentPool.split("/")[0] == "ETH") &&
+                                currentPool.split("/")[0] == "ETH") &&
                               (currentPool.split("/")[1] == "BTC" ||
                                 currentPool.split("/")[1] == "ETH")
                               ? "w" +
-                              currentPool.split("/")[0] +
-                              "/w" +
-                              currentPool.split("/")[1]
+                                currentPool.split("/")[0] +
+                                "/w" +
+                                currentPool.split("/")[1]
                               : currentPool.split("/")[0] == "BTC" ||
                                 currentPool.split("/")[0] == "ETH"
-                                ? "w" +
+                              ? "w" +
                                 currentPool.split("/")[0] +
                                 "/" +
                                 currentPool.split("/")[1]
-                                : currentPool.split("/")[1] == "BTC" ||
-                                  currentPool.split("/")[1] == "ETH"
-                                  ? currentPool.split("/")[0] +
-                                  "/w" +
-                                  currentPool.split("/")[1]
-                                  : currentPool
+                              : currentPool.split("/")[1] == "BTC" ||
+                                currentPool.split("/")[1] == "ETH"
+                              ? currentPool.split("/")[0] +
+                                "/w" +
+                                currentPool.split("/")[1]
+                              : currentPool
                             : currentPoolCoin == "BTC" ||
                               currentPoolCoin == "ETH"
-                              ? "w" + currentPoolCoin
-                              : currentPoolCoin}
+                            ? "w" + currentPoolCoin
+                            : currentPoolCoin}
                         </Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
@@ -3132,7 +3190,7 @@ const getBoostedApr=(coin:any)=>{
                         )}
                       </Box>
                       {modalDropdowns.yourBorrowPoolDropdown &&
-                        radioValue === "1" ? (
+                      radioValue === "1" ? (
                         <Box
                           w="full"
                           left="0"
@@ -3148,11 +3206,11 @@ const getBoostedApr=(coin:any)=>{
                             const matchingPair =
                               currentDapp == "Jediswap"
                                 ? poolsPairs.find(
-                                  (pair: any) => pair.keyvalue === pool
-                                )
+                                    (pair: any) => pair.keyvalue === pool
+                                  )
                                 : mySwapPoolPairs.find(
-                                  (pair: any) => pair.keyvalue === pool
-                                );
+                                    (pair: any) => pair.keyvalue === pool
+                                  );
 
                             if (
                               !matchingPair &&
@@ -3194,20 +3252,30 @@ const getBoostedApr=(coin:any)=>{
                                   pr="2"
                                   pl={`${pool === currentPool ? "1" : "4"}`}
                                   gap="1"
-                                  bg={`${pool === currentPool ? "#4D59E8" : "inherit"
-                                    }`}
+                                  bg={`${
+                                    pool === currentPool ? "#4D59E8" : "inherit"
+                                  }`}
                                   // borderRadius="md"
-                                  borderBottom={index == 2 && currentDapp == "Jediswap" ? "1px solid #30363D" : ""}
+                                  borderBottom={
+                                    index == 2 && currentDapp == "Jediswap"
+                                      ? "1px solid #30363D"
+                                      : ""
+                                  }
                                 >
-                                  <Box display="flex"
-                                  // mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}
+                                  <Box
+                                    display="flex"
+                                    // mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}
                                   >
                                     <Box p="1">{getCoin(pool)}</Box>
                                     <Tooltip
                                       hasArrow
                                       placement="right"
                                       boxShadow="dark-lg"
-                                      label={index <= 2 && currentDapp == "Jediswap" ? "Earn $STRK Rewards." : ""}
+                                      label={
+                                        index <= 2 && currentDapp == "Jediswap"
+                                          ? "Earn $STRK Rewards."
+                                          : ""
+                                      }
                                       bg="#02010F"
                                       fontSize={"13px"}
                                       fontWeight={"400"}
@@ -3218,29 +3286,29 @@ const getBoostedApr=(coin:any)=>{
                                       borderColor="#23233D"
                                       arrowShadowColor="#2B2F35"
                                       maxW="232px"
-                                    // mt="50px"
+                                      // mt="50px"
                                     >
                                       <Text>
                                         {(pool.split("/")[0] == "BTC" ||
                                           pool.split("/")[0] == "ETH") &&
-                                          (pool.split("/")[1] == "BTC" ||
-                                            pool.split("/")[1] == "ETH")
+                                        (pool.split("/")[1] == "BTC" ||
+                                          pool.split("/")[1] == "ETH")
                                           ? "w" +
-                                          pool.split("/")[0] +
-                                          "/w" +
-                                          pool.split("/")[1]
+                                            pool.split("/")[0] +
+                                            "/w" +
+                                            pool.split("/")[1]
                                           : pool.split("/")[0] == "BTC" ||
                                             pool.split("/")[0] == "ETH"
-                                            ? "w" +
+                                          ? "w" +
                                             pool.split("/")[0] +
                                             "/" +
                                             pool.split("/")[1]
-                                            : pool.split("/")[1] == "BTC" ||
-                                              pool.split("/")[1] == "ETH"
-                                              ? pool.split("/")[0] +
-                                              "/w" +
-                                              pool.split("/")[1]
-                                              : pool}
+                                          : pool.split("/")[1] == "BTC" ||
+                                            pool.split("/")[1] == "ETH"
+                                          ? pool.split("/")[0] +
+                                            "/w" +
+                                            pool.split("/")[1]
+                                          : pool}
                                       </Text>
                                     </Tooltip>
                                     {/* <Text mt="-0.1rem">
@@ -3256,22 +3324,44 @@ const getBoostedApr=(coin:any)=>{
                                     >
                                       Pool APR:{" "}
                                       {numberFormatterPercentage(
-                                        getAprByPool(poolAprs, pool, currentDapp)
+                                        getAprByPool(
+                                          poolAprs,
+                                          pool,
+                                          currentDapp
+                                        )
                                       )}
                                       %
                                     </Box>
-                                    {index<=2 && currentDapp=="Jediswap"  &&
-                                          <Box
-                                            fontSize="10px"
-                                            color="#B1B0B5"
-                                            mt="5px"
-                                            fontWeight="medium"
-                                          >
-                                            Stark APR: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, pool, currentDapp)))}%
-                                          </Box>}        
+                                    {index <= 2 &&
+                                      currentDapp == "Jediswap" && (
+                                        <Box
+                                          fontSize="10px"
+                                          color="#B1B0B5"
+                                          mt="5px"
+                                          fontWeight="medium"
+                                        >
+                                          $STRK APR:{" "}
+                                          {numberFormatterPercentage(
+                                            String(
+                                              (100 *
+                                                365 *
+                                                (getStrkAlloaction(pool) *
+                                                  oraclePrices.find(
+                                                    (curr: any) =>
+                                                      curr.name === "STRK"
+                                                  )?.price)) /
+                                                getTvlByPool(
+                                                  poolAprs,
+                                                  pool,
+                                                  currentDapp
+                                                )
+                                            )
+                                          )}
+                                          %
+                                        </Box>
+                                      )}
                                   </Box>
                                 </Box>
-
                               </Box>
                             );
                           })}
@@ -3340,10 +3430,11 @@ const getBoostedApr=(coin:any)=>{
                                   py="5px"
                                   px={`${coin === currentPoolCoin ? "1" : "5"}`}
                                   gap="1"
-                                  bg={`${coin === currentPoolCoin
+                                  bg={`${
+                                    coin === currentPoolCoin
                                       ? "#4D59E8"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
@@ -3394,7 +3485,7 @@ const getBoostedApr=(coin:any)=>{
                             borderColor="#23233D"
                             arrowShadowColor="#2B2F35"
                             maxW="232px"
-                          // mt="50px"
+                            // mt="50px"
                           >
                             <Box p="1">
                               <InfoIcon />
@@ -3408,7 +3499,7 @@ const getBoostedApr=(coin:any)=>{
                           fontStyle="normal"
                         >
                           {currentLPTokenAmount == undefined ||
-                            currentLPTokenAmount === null ? (
+                          currentLPTokenAmount === null ? (
                             <Box pt="2px">
                               <Skeleton
                                 width="2.3rem"
@@ -3667,7 +3758,7 @@ const getBoostedApr=(coin:any)=>{
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                         maxW="274px"
-                      // mb="10px"
+                        // mb="10px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -3676,8 +3767,8 @@ const getBoostedApr=(coin:any)=>{
                     </Box>
                     <Text color="#676D9A" fontSize="xs">
                       {!borrowAPRs ||
-                        borrowAPRs.length === 0 ||
-                        !borrowAPRs[currentBorrowAPR] ? (
+                      borrowAPRs.length === 0 ||
+                      !borrowAPRs[currentBorrowAPR] ? (
                         <Box pt="1px">
                           <Skeleton
                             width="2.3rem"
@@ -3713,7 +3804,7 @@ const getBoostedApr=(coin:any)=>{
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                         maxW="274px"
-                      // mb="10px"
+                        // mb="10px"
                       >
                         <Box p="1">
                           <InfoIcon />
@@ -3722,8 +3813,8 @@ const getBoostedApr=(coin:any)=>{
                     </Box>
                     <Text color="#676D9A" fontSize="xs">
                       {!borrowAPRs ||
-                        borrowAPRs.length === 0 ||
-                        !borrowAPRs[currentBorrowAPR] ? (
+                      borrowAPRs.length === 0 ||
+                      !borrowAPRs[currentBorrowAPR] ? (
                         <Box pt="1px">
                           <Skeleton
                             width="2.3rem"
@@ -3734,7 +3825,10 @@ const getBoostedApr=(coin:any)=>{
                           />
                         </Box>
                       ) : (
-                        numberFormatterPercentage(getBoostedApr(currentBorrowCoin)+getBoostedAprSupply(currentCollateralCoin)) + "%"
+                        numberFormatterPercentage(
+                          getBoostedApr(currentBorrowCoin) +
+                            getBoostedAprSupply(currentCollateralCoin)
+                        ) + "%"
                       )}
                       {/* 5.56% */}
                     </Text>
@@ -3790,8 +3884,8 @@ const getBoostedApr=(coin:any)=>{
                       >
                         {tokenTypeSelected === "Native" ? (
                           inputBorrowAmount === 0 ||
-                            collateralAmount === 0 ||
-                            !borrowAPRs[currentBorrowAPR] ? (
+                          collateralAmount === 0 ||
+                          !borrowAPRs[currentBorrowAPR] ? (
                             <Box pt="2px">
                               <Skeleton
                                 width="2.3rem"
@@ -3805,7 +3899,7 @@ const getBoostedApr=(coin:any)=>{
                             <Text
                               color={
                                 Number(
-                                  ((-(
+                                  (-(
                                     inputBorrowAmountUSD *
                                     protocolStats?.find(
                                       (stat: any) =>
@@ -3813,11 +3907,14 @@ const getBoostedApr=(coin:any)=>{
                                     )?.borrowRate
                                   ) +
                                     inputCollateralAmountUSD *
-                                    protocolStats?.find(
-                                      (stat: any) =>
-                                        stat?.token === currentCollateralCoin
-                                    )?.supplyRate) /
-                                  inputBorrowAmountUSD)+getBoostedApr(currentBorrowCoin)+(getBoostedAprSupply(currentCollateralCoin)/inputBorrowAmountUSD)
+                                      protocolStats?.find(
+                                        (stat: any) =>
+                                          stat?.token === currentCollateralCoin
+                                      )?.supplyRate) /
+                                    inputBorrowAmountUSD +
+                                    getBoostedApr(currentBorrowCoin) +
+                                    getBoostedAprSupply(currentCollateralCoin) /
+                                      inputBorrowAmountUSD
                                 ) < 0
                                   ? "rgb(255 94 94)"
                                   : "#00D395"
@@ -3825,14 +3922,14 @@ const getBoostedApr=(coin:any)=>{
                             >
                               {/* 5.56% */}
                               {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                              { }
+                              {}
                               {/* {
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentCollateralCoin
                           )?.supplyRate
                         } */}
                               {Number(
-                                ((-(
+                                (-(
                                   inputBorrowAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
@@ -3840,11 +3937,14 @@ const getBoostedApr=(coin:any)=>{
                                   )?.borrowRate
                                 ) +
                                   inputCollateralAmountUSD *
-                                  protocolStats?.find(
-                                    (stat: any) =>
-                                      stat?.token === currentCollateralCoin
-                                  )?.supplyRate) /
-                                inputBorrowAmountUSD)+getBoostedApr(currentBorrowCoin)+(getBoostedAprSupply(currentCollateralCoin)/inputBorrowAmountUSD)
+                                    protocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token === currentCollateralCoin
+                                    )?.supplyRate) /
+                                  inputBorrowAmountUSD +
+                                  getBoostedApr(currentBorrowCoin) +
+                                  getBoostedAprSupply(currentCollateralCoin) /
+                                    inputBorrowAmountUSD
                               ).toFixed(2)}
                               %
                             </Text>
@@ -3876,7 +3976,7 @@ const getBoostedApr=(coin:any)=>{
                               {/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp)) */}
                               {/* 5.56% */}
                               {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                              { }
+                              {}
                               {/* {
                         protocolStats?.find(
                           (stat: any) => stat?.token === currentCollateralCoin
@@ -3903,46 +4003,25 @@ const getBoostedApr=(coin:any)=>{
                               %
                             </Text>
                           )
-                          // (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))
-                        ) : // protocolStats.length === 0 ||
-                          rTokenAmount === 0 ||
-                            inputBorrowAmount === 0 ||
-                            !borrowAPRs[currentBorrowAPR] ? (
-                            <Box pt="2px">
-                              <Skeleton
-                                width="2.3rem"
-                                height=".85rem"
-                                startColor="#2B2F35"
-                                endColor="#101216"
-                                borderRadius="6px"
-                              />
-                            </Box>
-                          ) : currentPool == "Select a pool" ? (
-                            <Text
-                              color={
-                                Number(
-                                  ((-(
-                                    inputBorrowAmountUSD *
-                                    protocolStats?.find(
-                                      (stat: any) =>
-                                        stat?.token === currentBorrowCoin
-                                    )?.borrowRate
-                                  ) +
-                                    inputCollateralAmountUSD *
-                                    protocolStats?.find(
-                                      (stat: any) =>
-                                        stat?.token === rToken.slice(1)
-                                    )?.supplyRate) /
-                                  inputBorrowAmountUSD)+getBoostedApr(currentBorrowCoin)+(getBoostedAprSupply(currentCollateralCoin)/inputBorrowAmountUSD)
-                                ) < 0
-                                  ? "rgb(255 94 94)"
-                                  : "#00D395"
-                              }
-                            >
-                              {/* 5.56% */}
-                              {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                              {Number(
-                                ((-(
+                        ) : // (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))
+                        // protocolStats.length === 0 ||
+                        rTokenAmount === 0 ||
+                          inputBorrowAmount === 0 ||
+                          !borrowAPRs[currentBorrowAPR] ? (
+                          <Box pt="2px">
+                            <Skeleton
+                              width="2.3rem"
+                              height=".85rem"
+                              startColor="#2B2F35"
+                              endColor="#101216"
+                              borderRadius="6px"
+                            />
+                          </Box>
+                        ) : currentPool == "Select a pool" ? (
+                          <Text
+                            color={
+                              Number(
+                                (-(
                                   inputBorrowAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
@@ -3950,14 +4029,41 @@ const getBoostedApr=(coin:any)=>{
                                   )?.borrowRate
                                 ) +
                                   inputCollateralAmountUSD *
+                                    protocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token === rToken.slice(1)
+                                    )?.supplyRate) /
+                                  inputBorrowAmountUSD +
+                                  getBoostedApr(currentBorrowCoin) +
+                                  getBoostedAprSupply(currentCollateralCoin) /
+                                    inputBorrowAmountUSD
+                              ) < 0
+                                ? "rgb(255 94 94)"
+                                : "#00D395"
+                            }
+                          >
+                            {/* 5.56% */}
+                            {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                            {Number(
+                              (-(
+                                inputBorrowAmountUSD *
+                                protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate
+                              ) +
+                                inputCollateralAmountUSD *
                                   protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === rToken.slice(1)
                                   )?.supplyRate) /
-                                inputBorrowAmountUSD)+getBoostedApr(currentBorrowCoin)+(getBoostedAprSupply(currentCollateralCoin)/inputBorrowAmountUSD)
-                              ).toFixed(2)}
-                              %
-                              {/* {
+                                inputBorrowAmountUSD +
+                                getBoostedApr(currentBorrowCoin) +
+                                getBoostedAprSupply(currentCollateralCoin) /
+                                  inputBorrowAmountUSD
+                            ).toFixed(2)}
+                            %
+                            {/* {
                             protocolStats?.find(
                               (stat: any) => stat?.token === currentCollateralCoin
                             )?.supplyRate
@@ -4008,16 +4114,16 @@ const getBoostedApr=(coin:any)=>{
                                       stat?.token === rToken.slice(1)
                                   )?.supplyRate+getBoostedAprSupply(rToken.slice(1)))) /
                                 inputCollateralAmountUSD
-                              ).toFixed(2)}
-                              %
-                              {/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp)) */}
-                              {/* {
+                            ).toFixed(2)}
+                            %
+                            {/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp)) */}
+                            {/* {
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentCollateralCoin
                           )?.supplyRate
                         } */}
-                            </Text>
-                          )}
+                          </Text>
+                        )}
                       </Text>
                     </Text>
                   )}
@@ -4068,7 +4174,7 @@ const getBoostedApr=(coin:any)=>{
                       display="flex"
                       alignItems="center"
                       mt="2rem"
-                    // mb="1rem"
+                      // mb="1rem"
                     >
                       <Box
                         display="flex"
@@ -4078,10 +4184,10 @@ const getBoostedApr=(coin:any)=>{
                             currentBorrowCoin,
                             oraclePrices
                           ) < 100 ||
-                            (tokenTypeSelected == "Native"
-                              ? currentBorrowCoin == "BTC" &&
+                          (tokenTypeSelected == "Native"
+                            ? currentBorrowCoin == "BTC" &&
                               currentCollateralCoin == "STRK"
-                              : currentBorrowCoin == "BTC" && rToken == "rSTRK")
+                            : currentBorrowCoin == "BTC" && rToken == "rSTRK")
                             ? "#480C10"
                             : "#222766"
                         }
@@ -4094,10 +4200,10 @@ const getBoostedApr=(coin:any)=>{
                             currentBorrowCoin,
                             oraclePrices
                           ) < 100 ||
-                            (tokenTypeSelected == "Native"
-                              ? currentBorrowCoin == "BTC" &&
+                          (tokenTypeSelected == "Native"
+                            ? currentBorrowCoin == "BTC" &&
                               currentCollateralCoin == "STRK"
-                              : currentBorrowCoin == "BTC" && rToken == "rSTRK")
+                            : currentBorrowCoin == "BTC" && rToken == "rSTRK")
                             ? "1px solid #9B1A23"
                             : "1px solid #3841AA"
                         }
@@ -4105,7 +4211,7 @@ const getBoostedApr=(coin:any)=>{
                         fontWeight="400"
                         lineHeight="18px"
                         borderRadius="6px"
-                      // textAlign="center"
+                        // textAlign="center"
                       >
                         <Box pr="3" mt="0.5" cursor="pointer">
                           {dollarConvertor(
@@ -4113,10 +4219,10 @@ const getBoostedApr=(coin:any)=>{
                             currentBorrowCoin,
                             oraclePrices
                           ) < 100 ||
-                            (tokenTypeSelected == "Native"
-                              ? currentBorrowCoin == "BTC" &&
+                          (tokenTypeSelected == "Native"
+                            ? currentBorrowCoin == "BTC" &&
                               currentCollateralCoin == "STRK"
-                              : currentBorrowCoin == "BTC" &&
+                            : currentBorrowCoin == "BTC" &&
                               rToken == "rSTRK") ? (
                             <RedinfoIcon />
                           ) : (
@@ -4128,25 +4234,26 @@ const getBoostedApr=(coin:any)=>{
                           currentBorrowCoin,
                           oraclePrices
                         ) < 100 ||
-                          (tokenTypeSelected == "Native"
-                            ? currentBorrowCoin == "BTC" &&
+                        (tokenTypeSelected == "Native"
+                          ? currentBorrowCoin == "BTC" &&
                             currentCollateralCoin == "STRK"
-                            : currentBorrowCoin == "BTC" && rToken == "rSTRK")
+                          : currentBorrowCoin == "BTC" && rToken == "rSTRK")
                           ? `The current collateral and borrowing market combination isn't allowed at this moment.`
                           : `You have selected a native token as collateral which will be
                     converted to rtokens 1r${currentCollateralCoin} =
-                    ${(stats.find(
-                            (val: any) =>
-                              val?.token == currentCollateralCoin.split(1)
-                          )?.exchangeRateRtokenToUnderlying
-                            ? numberFormatter(
-                              stats.find(
-                                (val: any) =>
-                                  val?.token == currentCollateralCoin.split(1)
-                              )?.exchangeRateRtokenToUnderlying
-                            )
-                            : "") + currentCollateralCoin?.split(1)
-                          }`}
+                    ${
+                      (stats.find(
+                        (val: any) =>
+                          val?.token == currentCollateralCoin.split(1)
+                      )?.exchangeRateRtokenToUnderlying
+                        ? numberFormatter(
+                            stats.find(
+                              (val: any) =>
+                                val?.token == currentCollateralCoin.split(1)
+                            )?.exchangeRateRtokenToUnderlying
+                          )
+                        : "") + currentCollateralCoin?.split(1)
+                    }`}
                         {/* <Box
                                 py="1"
                                 pl="4"
@@ -4159,29 +4266,33 @@ const getBoostedApr=(coin:any)=>{
                     </Box>
                   )}
                 {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
-                  (tokenTypeSelected == "Native"
-                    ? !(
+                (tokenTypeSelected == "Native"
+                  ? !(
                       currentBorrowCoin == "BTC" &&
                       currentCollateralCoin == "STRK"
                     )
-                    : !(currentBorrowCoin == "BTC" && rToken == "rSTRK")) &&
-                  (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
-                  ((inputBorrowAmount >= minimumLoanAmount &&
-                    inputBorrowAmount <= maximumLoanAmount) ||
-                    process.env.NEXT_PUBLIC_NODE_ENV == "testnet") &&
-                  inputBorrowAmount <= currentAvailableReserves &&
-                  (currentBorrowCoin==="USDT" ?currentPool!=="STRK/ETH":currentBorrowCoin==="BTC" ? currentPool!=="STRK/ETH":true) &&
-                  inputBorrowAmount > 0 &&
-                  ((tokenTypeSelected == "Native"
-                    ? inputCollateralAmount >= minimumDepositAmount &&
+                  : !(currentBorrowCoin == "BTC" && rToken == "rSTRK")) &&
+                (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
+                ((inputBorrowAmount >= minimumLoanAmount &&
+                  inputBorrowAmount <= maximumLoanAmount) ||
+                  process.env.NEXT_PUBLIC_NODE_ENV == "testnet") &&
+                inputBorrowAmount <= currentAvailableReserves &&
+                (currentBorrowCoin === "USDT"
+                  ? currentPool !== "STRK/ETH"
+                  : currentBorrowCoin === "BTC"
+                  ? currentPool !== "STRK/ETH"
+                  : true) &&
+                inputBorrowAmount > 0 &&
+                ((tokenTypeSelected == "Native"
+                  ? inputCollateralAmount >= minimumDepositAmount &&
                     inputCollateralAmount <= maximumDepositAmount
-                    : true) ||
-                    process.env.NEXT_PUBLIC_NODE_ENV == "testnet") &&
-                  inputCollateralAmount <= walletBalance &&
-                  inputBorrowAmountUSD <= 4.98 * inputCollateralAmountUSD &&
-                  currentDapp != "Select a dapp" &&
-                  (currentPool != "Select a pool" ||
-                    currentPoolCoin != "Select a pool") ? (
+                  : true) ||
+                  process.env.NEXT_PUBLIC_NODE_ENV == "testnet") &&
+                inputCollateralAmount <= walletBalance &&
+                inputBorrowAmountUSD <= 4.98 * inputCollateralAmountUSD &&
+                currentDapp != "Select a dapp" &&
+                (currentPool != "Select a pool" ||
+                  currentPoolCoin != "Select a pool") ? (
                   <Box
                     onClick={() => {
                       setTransactionStarted(true);

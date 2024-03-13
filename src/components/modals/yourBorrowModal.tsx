@@ -4345,7 +4345,7 @@ const YourBorrowModal = ({
                               <Text mt="0.10rem" color="white">
                                 {currentDapp}
                               </Text>
-                              {currentDapp == "Jediswap" &&
+                              {/* {currentDapp == "Jediswap" &&
                                 radioValue == "1" && (
                                   <Image
                                     src={"/strkReward.svg"}
@@ -4354,7 +4354,7 @@ const YourBorrowModal = ({
                                     height="15"
                                     style={{ marginTop: "0.2rem" }}
                                   />
-                                )}
+                                )} */}
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (
@@ -4419,7 +4419,7 @@ const YourBorrowModal = ({
                                         <Text pt="1" color="white">
                                           {dapp.name}
                                         </Text>
-                                        {dapp.name == "Jediswap" &&
+                                        {/* {dapp.name == "Jediswap" &&
                                           radioValue == "1" && (
                                             <Image
                                               src={"/strkReward.svg"}
@@ -4428,7 +4428,7 @@ const YourBorrowModal = ({
                                               height="15"
                                               style={{ marginTop: "0.3rem" }}
                                             />
-                                          )}
+                                          )} */}
                                       </Box>
                                       {dapp.status === "disable" && (
                                         <Text
@@ -4708,7 +4708,7 @@ const YourBorrowModal = ({
                                                 mt="5px"
                                                 fontWeight="medium"
                                               >
-                                                Stark APR:{" "}
+                                                $STRK APR:{" "}
                                                 {numberFormatterPercentage(
                                                   String(
                                                     (100 *

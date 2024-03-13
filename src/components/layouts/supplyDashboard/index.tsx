@@ -1,39 +1,44 @@
-import React, { use, useEffect, useState } from "react";
 import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  Wrap,
-  Text,
   Box,
-  HStack,
-  VStack,
   Button,
-  Spinner,
-  useTimeout,
+  HStack,
   Skeleton,
+  Spinner,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
   Tooltip,
+  Tr,
+  VStack,
+  Wrap,
+  useTimeout,
 } from "@chakra-ui/react";
+import React, { use, useEffect, useState } from "react";
 
-import Image from "next/image";
+import { IDeposit } from "@/Blockchain/interfaces/interfaces";
+import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
 import SupplyModal from "@/components/modals/SupplyModal";
 import YourSupplyModal from "@/components/modals/yourSupply";
-import { useAccount } from "@starknet-react/core";
-import { IDeposit } from "@/Blockchain/interfaces/interfaces";
+import {
+  selectOraclePrices,
+  selectProtocolStats,
+  selectUserDeposits,
+  setNetAprDeposits,
+} from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { useAccount } from "@starknet-react/core";
+import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { selectOraclePrices, selectProtocolStats, setNetAprDeposits } from "@/store/slices/readDataSlice";
-import { selectUserDeposits } from "@/store/slices/readDataSlice";
-import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
 
-import TableInfoIcon from "../table/tableIcons/infoIcon";
+import FireIcon from "@/assets/icons/fireIcon";
+import { selectStrkAprData } from "@/store/slices/userAccountSlice";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import posthog from "posthog-js";
-import { selectStrkAprData } from "@/store/slices/userAccountSlice";
+import TableInfoIcon from "../table/tableIcons/infoIcon";
 
 export interface ICoin {
   name: string;
@@ -140,27 +145,32 @@ const SupplyDashboard = ({
   };
   const [avgs, setAvgs] = useState<any>([]);
   const avgsData: any = [];
-  const strkData=useSelector(selectStrkAprData);
+  const strkData = useSelector(selectStrkAprData);
   const oraclePrices = useSelector(selectOraclePrices);
-  const getBoostedApr=(coin:any)=>{
-    if(strkData==null){
+  const getBoostedApr = (coin: any) => {
+    if (strkData == null) {
       return 0;
-    }else{
-      if(strkData?.[coin]){
-        if(oraclePrices==null){
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
           return 0;
-        }else{
-          let value=(strkData?.[coin] ? ((365*100*(strkData?.[coin][strkData[coin]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
-            (curr: any) => curr.name === "STRK"
-          )?.price)/strkData?.[coin][strkData[coin].length-1]?.supply_usd) :0)
+        } else {
+          let value = strkData?.[coin]
+            ? (365 *
+                100 *
+                strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
+                0.7 *
+                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  ?.price) /
+              strkData?.[coin][strkData[coin].length - 1]?.supply_usd
+            : 0;
           return value;
         }
-      }else{
+      } else {
         return 0;
       }
     }
-
-  }
+  };
   useEffect(() => {
     const getSupply = async () => {
       if (!userDeposits || !reduxProtocolStats) {
@@ -242,7 +252,7 @@ const SupplyDashboard = ({
 
         // dispatch(setUserDeposits(supply));
       } catch (err) {
-       //console.log("supplies", err);
+        //console.log("supplies", err);
       }
     };
     getSupply();
@@ -304,7 +314,7 @@ const SupplyDashboard = ({
           stats?.[5].supplyRate,
         ]);
       } catch (error) {
-       //console.log("error on getting protocol stats");
+        //console.log("error on getting protocol stats");
       }
     };
     getMarketData();
@@ -347,7 +357,7 @@ const SupplyDashboard = ({
       ////console.log("supply in supply dash: ", supply);
       if (!supply) return;
       let data: any = [];
-      let indexes: any = [2, 3, 0, 1, 4,5];
+      let indexes: any = [2, 3, 0, 1, 4, 5];
 
       indexes.forEach((index: number) => {
         if (
@@ -357,20 +367,21 @@ const SupplyDashboard = ({
           supply?.[index]?.rTokenStakedParsed !== 0
         ) {
           if (index == 2 || index == 3) {
-            if (supply?.[index]?.rTokenAmountParsed > 0.000001 ||
+            if (
+              supply?.[index]?.rTokenAmountParsed > 0.000001 ||
               supply?.[index]?.rTokenFreeParsed > 0.000001 ||
               supply?.[index]?.rTokenLockedParsed > 0.000001 ||
-              supply?.[index]?.rTokenStakedParsed > 0.000001) {
+              supply?.[index]?.rTokenStakedParsed > 0.000001
+            ) {
               data[index] = supply[index];
             }
           } else {
             data[index] = supply[index];
           }
-
         }
       });
       setSupplies(data);
-     //console.log(data, "loading - ", userDeposits);
+      //console.log(data, "loading - ", userDeposits);
       setLoading(false);
     }
   }, [userDeposits]);
@@ -382,27 +393,27 @@ const SupplyDashboard = ({
     " Annualised interest rate depending on the staked, unstaked and locked supply quantities .",
     "Track the borrowed amount's progress and key details within the protocol.",
   ];
-  useEffect(()=>{
+  useEffect(() => {
     let netApr: number = 0;
     const uniqueData: any[] = [];
     const seen = new Set();
-    let totalLength=0;
-    
-    avgs.forEach((item: { token: any; avg: any; }) => {
-        const tokenAvgString = `${item.token},${item.avg}`;
-        if (!seen.has(tokenAvgString)) {
-            uniqueData.push(item);
-            seen.add(tokenAvgString);
-        }
+    let totalLength = 0;
+
+    avgs.forEach((item: { token: any; avg: any }) => {
+      const tokenAvgString = `${item.token},${item.avg}`;
+      if (!seen.has(tokenAvgString)) {
+        uniqueData.push(item);
+        seen.add(tokenAvgString);
+      }
     });
     for(var i=0;i<uniqueData.length;i++){
       totalLength=totalLength+(!Number.isNaN(Number(uniqueData[i]?.avg))?1:0);
       netApr=netApr+(!Number.isNaN(Number(uniqueData[i]?.avg)) ? Number(uniqueData[i]?.avg):0)+(!Number.isNaN(Number(uniqueData[i]?.avg)) ?getBoostedApr(uniqueData[i]?.token) :0)
     }
-    if(netApr){
-      dispatch(setNetAprDeposits((netApr/totalLength).toFixed(2)))
+    if (netApr) {
+      dispatch(setNetAprDeposits((netApr / totalLength).toFixed(2)));
     }
-  },[avgs,strkData])
+  }, [avgs, strkData]);
 
   return loading ? (
     <>
@@ -447,7 +458,6 @@ const SupplyDashboard = ({
       w={width}
       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-
       color="white"
       borderRadius="md"
     >
@@ -459,9 +469,9 @@ const SupplyDashboard = ({
         // height={"100%"}
         padding={"1rem 1.5rem"}
         overflowX="hidden"
-      // m={0}
-      // mt={"3rem"}
-      // style={{ marginTop: "0.8rem" }}
+        // m={0}
+        // mt={"3rem"}
+        // style={{ marginTop: "0.8rem" }}
       >
         <Table variant="unstyled" width="100%" height="100%">
           <Thead width={"100%"} height={"5rem"}>
@@ -477,12 +487,12 @@ const SupplyDashboard = ({
                     idx1 == 0
                       ? "left"
                       : idx1 == columnItems.length - 1
-                        ? "right"
-                        : "center"
+                      ? "right"
+                      : "center"
                   }
                   pl={idx1 == 0 ? 22 : 0}
                   pr={idx1 == columnItems.length - 1 ? 12 : 0}
-                // border="1px solid blue"
+                  // border="1px solid blue"
                 >
                   <Text
                     whiteSpace="pre-wrap"
@@ -513,8 +523,8 @@ const SupplyDashboard = ({
                       border="1px solid"
                       borderColor="#23233D"
                       arrowShadowColor="#2B2F35"
-                    // maxW="222px"
-                    // mt="28px"
+                      // maxW="222px"
+                      // mt="28px"
                     >
                       {val}
                     </Tooltip>
@@ -526,9 +536,9 @@ const SupplyDashboard = ({
           <Tbody
             position="relative"
             overflowX="hidden"
-          //   display="flex"
-          //   flexDirection="column"
-          //   gap={"1rem"}
+            //   display="flex"
+            //   flexDirection="column"
+            //   gap={"1rem"}
           >
             {supplies
               ?.slice(lower_bound, upper_bound + 1)
@@ -585,9 +595,14 @@ const SupplyDashboard = ({
                           </HStack>
                           <Tooltip
                             hasArrow
-                            label={`Underlying Amount: ${(reduxProtocolStats?.find(
-                              (val: any) => val?.token == supply?.rToken.slice(1)
-                            )?.exchangeRateRtokenToUnderlying * (supply?.rTokenAmountParsed + supply?.rTokenStakedParsed)).toFixed(4)} ${supply?.rToken.slice(1)}`}
+                            label={`Underlying Amount: ${(
+                              reduxProtocolStats?.find(
+                                (val: any) =>
+                                  val?.token == supply?.rToken.slice(1)
+                              )?.exchangeRateRtokenToUnderlying *
+                              (supply?.rTokenAmountParsed +
+                                supply?.rTokenStakedParsed)
+                            ).toFixed(4)} ${supply?.rToken.slice(1)}`}
                             // arrowPadding={-5420}
                             placement="right"
                             rounded="md"
@@ -601,10 +616,10 @@ const SupplyDashboard = ({
                             border="1px solid"
                             borderColor="#23233D"
                             arrowShadowColor="#2B2F35"
-                          // cursor="context-menu"
-                          // marginRight={idx1 === 1 ? "52px" : ""}
-                          // maxW="222px"
-                          // mt="28px"
+                            // cursor="context-menu"
+                            // marginRight={idx1 === 1 ? "52px" : ""}
+                            // maxW="222px"
+                            // mt="28px"
                           >
                             <Text
                               fontSize="14px"
@@ -612,7 +627,8 @@ const SupplyDashboard = ({
                               color="#F7BB5B"
                             >
                               {numberFormatter(
-                                supply?.rTokenAmountParsed + supply?.rTokenStakedParsed
+                                supply?.rTokenAmountParsed +
+                                  supply?.rTokenStakedParsed
                                 // supply?.rTokenLockedParsed
                               )}
                             </Text>
@@ -620,6 +636,7 @@ const SupplyDashboard = ({
                         </VStack>
                       </Box>
                     </Td>
+
                     <Td
                       width={"12.5%"}
                       maxWidth={"3rem"}
@@ -646,7 +663,6 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          
                           Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
@@ -654,9 +670,9 @@ const SupplyDashboard = ({
                             })?.exchangeRateRtokenToUnderlying
                           )?.toFixed(3)
                         )}
-                        
                       </Text>
                     </Td>
+
                     <Td
                       width={"12.5%"}
                       maxWidth={"3rem"}
@@ -672,28 +688,85 @@ const SupplyDashboard = ({
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                        color={"white"}
+                        color="#00D395"
                       >
-                        {/* {checkGap(idx1, idx2)} */}
-                        {!protocolStats || !protocolStats[idx] ? (
-                          <Skeleton
-                            width="4rem"
-                            height="1.4rem"
-                            startColor="#101216"
-                            endColor="#2B2F35"
-                            borderRadius="6px"
-                          />
-                        ) : (
-                          // protocolStats[idx]?.supplyRate + "%"
-                          Number(
-                            protocolStats.find((stat: any) => {
-                              if (stat?.token === supply?.rToken?.slice(1))
-                                return stat;
-                            })?.supplyRate + getBoostedApr(supply?.rToken?.slice(1))
-                          )?.toFixed(3) + "%"
-                        )}
+                        <Tooltip
+                          hasArrow
+                          arrowShadowColor="#2B2F35"
+                          placement="bottom"
+                          boxShadow="dark-lg"
+                          label={
+                            <Box>
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                              >
+                                <Text>APR</Text>
+                                <Text>
+                                  {numberFormatterPercentage(
+                                    supplyAPRs[idx] +
+                                      getBoostedApr(supply?.rToken?.slice(1))
+                                  )}
+                                  %
+                                </Text>
+                              </Box>
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                              >
+                                <Text>Supply APR</Text>
+                                <Text>
+                                  {numberFormatterPercentage(supplyAPRs[idx])}%
+                                </Text>
+                              </Box>
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                              >
+                                <Text>Boosted APR</Text>
+                                <Text>
+                                  {numberFormatterPercentage(
+                                    getBoostedApr(supply?.rToken?.slice(1))
+                                  )}
+                                  %
+                                </Text>
+                              </Box>
+                            </Box>
+                          }
+                          bg="#02010F"
+                          fontSize={"13px"}
+                          fontWeight={"400"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                          color="#F0F0F5"
+                          border="1px solid"
+                          borderColor="#23233D"
+                        >
+                          {/* {checkGap(idx1, idx2)} */}
+                          {!protocolStats || !protocolStats[idx] ? (
+                            <Skeleton
+                              width="4rem"
+                              height="1.4rem"
+                              startColor="#101216"
+                              endColor="#2B2F35"
+                              borderRadius="6px"
+                            />
+                          ) : (
+                            Number(
+                              protocolStats.find((stat: any) => {
+                                if (stat?.token === supply?.rToken?.slice(1))
+                                  return stat;
+                              })?.supplyRate +
+                                getBoostedApr(supply?.rToken?.slice(1))
+                            )?.toFixed(3) + "%"
+                          )}
+                        </Tooltip>
+                        <Box ml="0.4rem">
+                          <FireIcon />
+                        </Box>
                       </Box>
                     </Td>
+
                     <Td
                       width={"12.5%"}
                       maxWidth={"3rem"}
@@ -721,9 +794,13 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />: */}
                         {avgs && avgs?.length > 0 ? (
-                          numberFormatterPercentage(Number(avgs?.find(
-                            (item: any) => item?.token == supply?.token
-                          )?.avg)+getBoostedApr(supply?.rToken?.slice(1))) + "%"
+                          numberFormatterPercentage(
+                            Number(
+                              avgs?.find(
+                                (item: any) => item?.token == supply?.token
+                              )?.avg
+                            ) + getBoostedApr(supply?.rToken?.slice(1))
+                          ) + "%"
                         ) : (
                           <Skeleton
                             width="4rem"
@@ -736,6 +813,7 @@ const SupplyDashboard = ({
                         {/* {supply?.token} */}
                       </Text>
                     </Td>
+
                     <Td
                       width={"12.5%"}
                       maxWidth={"3rem"}
@@ -761,18 +839,18 @@ const SupplyDashboard = ({
                         <HStack
                           // bgColor="red"
                           justifyContent="flex-start"
-                        // display={
-                        //   supply?.rTokenStakedParsed > 0 ||
-                        //   supply?.rTokenFreeParsed > 0
-                        //     ? "flex"
-                        //     : "none"
-                        // }
-                        // mx={
-                        //   supply?.rTokenStakedParsed <= 0 ||
-                        //   supply?.rTokenFreeParsed <= 0
-                        //     ? "30%"
-                        //     : "0"
-                        // }
+                          // display={
+                          //   supply?.rTokenStakedParsed > 0 ||
+                          //   supply?.rTokenFreeParsed > 0
+                          //     ? "flex"
+                          //     : "none"
+                          // }
+                          // mx={
+                          //   supply?.rTokenStakedParsed <= 0 ||
+                          //   supply?.rTokenFreeParsed <= 0
+                          //     ? "30%"
+                          //     : "0"
+                          // }
                         >
                           <HStack
                             onMouseEnter={() => handleStatusHover("0" + idx)}
@@ -888,6 +966,7 @@ const SupplyDashboard = ({
                         {/* {supply?.Status || "ACTIVE"} */}
                       </Box>
                     </Td>
+
                     <Td
                       width={"12.5%"}
                       maxWidth={"5rem"}
@@ -908,12 +987,9 @@ const SupplyDashboard = ({
                           setCurrentSelectedSupplyCoin(supply?.token);
                           setcurrentSelectedWithdrawlCoin(supply?.rToken);
                           setCurrentActionMarket(supply?.rToken);
-                          posthog.capture(
-                            "Your Supply Actions Clicked",
-                            {
-                              Clicked: true,
-                            }
-                          );
+                          posthog.capture("Your Supply Actions Clicked", {
+                            Clicked: true,
+                          });
                         }}
                       >
                         <YourSupplyModal
