@@ -1782,7 +1782,7 @@ const LiquidityProvisionModal = ({
                       fontWeight="400"
                       fontStyle="normal"
                     >
-                      Borrow apr:{" "}
+                      Borrow APR:{" "}
                     </Text>
                     <Tooltip
                       hasArrow
@@ -1840,13 +1840,13 @@ const LiquidityProvisionModal = ({
                       fontWeight="400"
                       fontStyle="normal"
                     >
-                      Boosted APR:{" "}
+                      STRK APR:{" "}
                     </Text>
                     <Tooltip
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="The annual interest rate charged on borrowed funds from the protocol."
+                      label="The annual percentage rate in which STRK is rewarded."
                       bg="#02010F"
                       fontSize={"13px"}
                       fontWeight={"400"}
@@ -1908,7 +1908,7 @@ const LiquidityProvisionModal = ({
                       fontWeight="400"
                       fontStyle="normal"
                     >
-                      Effective apr:{" "}
+                      Effective APR:{" "}
                     </Text>
                     <Tooltip
                       hasArrow

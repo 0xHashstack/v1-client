@@ -1,50 +1,21 @@
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Card,
-  Text,
-  Tooltip,
-  Box,
-  Portal,
-  Skeleton,
-} from "@chakra-ui/react";
-import TransactionFees from "../../../TransactionFees.json";
-import SliderTooltip from "../uiElements/sliders/sliderTooltip";
-import { useDisclosure } from "@chakra-ui/react";
-import InfoIcon from "@/assets/icons/infoIcon";
-import BTCLogo from "../../assets/icons/coins/btc";
+import useSwap from "@/Blockchain/hooks/Writes/useSwap";
+import ArrowUp from "@/assets/icons/arrowup";
+import DAILogo from "@/assets/icons/coins/dai";
+import ETHLogo from "@/assets/icons/coins/eth";
+import SmallEth from "@/assets/icons/coins/smallEth";
+import SmallJediswapLogo from "@/assets/icons/coins/smallJediswap";
+import SmallUsdt from "@/assets/icons/coins/smallUsdt";
+import STRKLogo from "@/assets/icons/coins/strk";
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
-import ETHLogo from "@/assets/icons/coins/eth";
-import SmallEth from "@/assets/icons/coins/smallEth";
-import SmallUsdt from "@/assets/icons/coins/smallUsdt";
-import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import SmallJediswapLogo from "@/assets/icons/coins/smallJediswap";
-import TableMySwap from "../layouts/table/tableIcons/mySwap";
-import TableMySwapDull from "../layouts/table/tableIcons/mySwapDull";
-import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
-import TableJediswapLogoDull from "../layouts/table/tableIcons/jediswapLogoDull";
+import InfoIcon from "@/assets/icons/infoIcon";
 import {
-  selectInputSupplyAmount,
-  setCoinSelectedSupplyModal,
-  selectWalletBalance,
-  setInputSupplyAmount,
-  selectSelectedDapp,
-  setTransactionStatus,
-  selectActiveTransactions,
-  setActiveTransactions,
-  setTransactionStartedAndModalClosed,
-  selectStrkAprData,
-  selectnetSpendBalance,
-} from "@/store/slices/userAccountSlice";
+  resetModalDropdowns,
+  selectModalDropDowns,
+  setModalDropdown,
+} from "@/store/slices/dropdownsSlice";
 import {
   selectAprAndHealthFactor,
   selectEffectiveApr,
@@ -52,28 +23,57 @@ import {
   selectHealthFactor,
   selectJediSwapPoolsSupported,
   selectMySwapPoolsSupported,
+  selectOraclePrices,
   selectUserLoans,
-  selectOraclePrices
 } from "@/store/slices/readDataSlice";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  setModalDropdown,
-  selectModalDropDowns,
-  resetModalDropdowns,
-} from "@/store/slices/dropdownsSlice";
-import ArrowUp from "@/assets/icons/arrowup";
-import useSwap from "@/Blockchain/hooks/Writes/useSwap";
+  selectActiveTransactions,
+  selectInputSupplyAmount,
+  selectSelectedDapp,
+  selectStrkAprData,
+  selectWalletBalance,
+  selectnetSpendBalance,
+  setActiveTransactions,
+  setCoinSelectedSupplyModal,
+  setInputSupplyAmount,
+  setTransactionStartedAndModalClosed,
+  setTransactionStatus,
+} from "@/store/slices/userAccountSlice";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import {
+  Box,
+  Button,
+  Card,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Portal,
+  Skeleton,
+  Text,
+  Tooltip,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useWaitForTransaction } from "@starknet-react/core";
+import mixpanel from "mixpanel-browser";
+import Image from "next/image";
+import posthog from "posthog-js";
+import React, { useEffect, useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import TransactionFees from "../../../TransactionFees.json";
+import BTCLogo from "../../assets/icons/coins/btc";
+import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
+import TableJediswapLogoDull from "../layouts/table/tableIcons/jediswapLogoDull";
+import TableMySwap from "../layouts/table/tableIcons/mySwap";
+import TableMySwapDull from "../layouts/table/tableIcons/mySwapDull";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
-import { useWaitForTransaction } from "@starknet-react/core";
-import { toast } from "react-toastify";
-import CopyToClipboard from "react-copy-to-clipboard";
-import Image from "next/image";
-import mixpanel from "mixpanel-browser";
-import posthog from "posthog-js";
-import STRKLogo from "@/assets/icons/coins/strk";
-import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -128,24 +128,19 @@ const SwapModal = ({
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "STRK"];
 
-  useEffect(() => { }, [currentSwap]);
+  useEffect(() => {}, [currentSwap]);
   const getBorrowAPR = (borrowMarket: string) => {
     switch (borrowMarket) {
       case "USDT":
         return borrowAPRs[0];
-        break;
       case "USDC":
         return borrowAPRs[1];
-        break;
       case "BTC":
         return borrowAPRs[2];
-        break;
       case "ETH":
         return borrowAPRs[3];
-        break;
       case "DAI":
         return borrowAPRs[4];
-        break;
 
       default:
         break;
@@ -155,22 +150,16 @@ const SwapModal = ({
     switch (CoinName) {
       case "BTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
-        break;
       case "USDC":
         return <USDCLogo height={"16px"} width={"16px"} />;
-        break;
       case "USDT":
         return <USDTLogo height={"16px"} width={"16px"} />;
-        break;
       case "ETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
-        break;
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
-        break;
       case "STRK":
         return <STRKLogo height={"16px"} width={"16px"} />;
-        break;
       default:
         break;
     }
@@ -406,9 +395,9 @@ const SwapModal = ({
   const poolsPairs = useSelector(selectJediSwapPoolsSupported);
   const [myswapPools, setmyswapPools] = useState([]);
   const [jediswapPools, setjediswapPools] = useState([]);
-  const fees = useSelector(selectFees)
+  const fees = useSelector(selectFees);
   const oraclePrices = useSelector(selectOraclePrices);
-  const strkData = useSelector(selectStrkAprData)
+  const strkData = useSelector(selectStrkAprData);
   const netSpendBalance = useSelector(selectnetSpendBalance);
 
   const [netStrkBorrow, setnetStrkBorrow] = useState(0);
@@ -418,16 +407,16 @@ const SwapModal = ({
       let netallocation = 0;
       for (let token in strkData) {
         if (strkData.hasOwnProperty(token)) {
-          strkData[token].forEach((info: { allocation: number; }) => {
+          strkData[token].forEach((info: { allocation: number }) => {
             netallocation += 0.3 * info.allocation;
           });
         }
       }
-      setnetStrkBorrow(netallocation)
+      setnetStrkBorrow(netallocation);
     } else {
       setnetStrkBorrow(0);
     }
-  }, [strkData])
+  }, [strkData]);
 
   const getBoostedAprSupply = (coin: any) => {
     if (strkData == null) {
@@ -437,17 +426,22 @@ const SwapModal = ({
         if (oraclePrices == null) {
           return 0;
         } else {
-          let value = (strkData?.[coin] ? ((365 * 100 * (strkData?.[coin][strkData[coin]?.length - 1]?.allocation) * 0.7 * oraclePrices?.find(
-            (curr: any) => curr.name === "STRK"
-          )?.price) / strkData?.[coin][strkData[coin].length - 1]?.supply_usd) : 0)
+          let value = strkData?.[coin]
+            ? (365 *
+                100 *
+                strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
+                0.7 *
+                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  ?.price) /
+              strkData?.[coin][strkData[coin].length - 1]?.supply_usd
+            : 0;
           return value;
         }
       } else {
         return 0;
       }
     }
-
-  }
+  };
 
   const getBoostedApr = (coin: any) => {
     if (strkData == null) {
@@ -459,9 +453,13 @@ const SwapModal = ({
         } else {
           if (netStrkBorrow != 0) {
             if (netSpendBalance) {
-              let value = (365 * 100 * netStrkBorrow * oraclePrices?.find(
-                (curr: any) => curr.name === "STRK"
-              )?.price / netSpendBalance)
+              let value =
+                (365 *
+                  100 *
+                  netStrkBorrow *
+                  oraclePrices?.find((curr: any) => curr.name === "STRK")
+                    ?.price) /
+                netSpendBalance;
               return value;
             } else {
               return 0;
@@ -474,17 +472,17 @@ const SwapModal = ({
         return 0;
       }
     }
-  }
+  };
 
   useEffect(() => {
     function findSideForMember(array: any, token: any) {
       const data: any = [];
       for (const obj of array) {
         const keyvalue = obj.keyvalue;
-        const [tokenA, tokenB] = keyvalue.split('/');
+        const [tokenA, tokenB] = keyvalue.split("/");
 
         if (tokenA === token) {
-          data.push(tokenB)
+          data.push(tokenB);
         } else if (tokenB === token) {
           data.push(tokenA);
         }
@@ -493,17 +491,17 @@ const SwapModal = ({
       // Token not found in any "keyvalue" pairs
     }
     findSideForMember(mySwapPoolPairs, currentBorrowMarketCoin);
-  }, [currentBorrowMarketCoin])
+  }, [currentBorrowMarketCoin]);
 
   useEffect(() => {
     function findSideForMember(array: any, token: any) {
       const data: any = [];
       for (const obj of array) {
         const keyvalue = obj.keyvalue;
-        const [tokenA, tokenB] = keyvalue.split('/');
+        const [tokenA, tokenB] = keyvalue.split("/");
 
         if (tokenA === token) {
-          data.push(tokenB)
+          data.push(tokenB);
         } else if (tokenB === token) {
           data.push(tokenA);
         }
@@ -512,7 +510,7 @@ const SwapModal = ({
       // Token not found in any "keyvalue" pairs
     }
     findSideForMember(poolsPairs, currentBorrowMarketCoin);
-  }, [currentBorrowMarketCoin])
+  }, [currentBorrowMarketCoin]);
 
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const resetStates = () => {
@@ -660,8 +658,12 @@ const SwapModal = ({
           </ModalHeader>
           <ModalCloseButton mt="1rem" mr="1rem" />
           <ModalBody>
-            <Card mb="0.5rem" p="1rem" background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))">
+            <Card
+              mb="0.5rem"
+              p="1rem"
+              background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+            >
               <Text color="#676D9A" display="flex" alignItems="center">
                 <Text mr="0.3rem" fontSize="12px">
                   Select Market
@@ -714,7 +716,12 @@ const SwapModal = ({
                     ""
                   )}
 
-                  <Text color="white">{(currentSelectedCoin == "BTC" || currentSelectedCoin == 'ETH') ? "w" + currentSelectedCoin : currentSelectedCoin}</Text>
+                  <Text color="white">
+                    {currentSelectedCoin == "BTC" ||
+                    currentSelectedCoin == "ETH"
+                      ? "w" + currentSelectedCoin
+                      : currentSelectedCoin}
+                  </Text>
                 </Box>
 
                 <Box pt="1" className="navbar-button">
@@ -735,12 +742,26 @@ const SwapModal = ({
                     boxShadow="dark-lg"
                   >
                     {coins?.map((coin: string, index: number) => {
-                      const matchingPair = myswapPools?.find((pair: any) => pair === coin);
-                      const matchingPairJedi = jediswapPools?.find((pair: any) => pair === coin);
-                      if (coin === currentBorrowMarketCoin || (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && currentSwap == "MySwap" && !matchingPair)) {
+                      const matchingPair = myswapPools?.find(
+                        (pair: any) => pair === coin
+                      );
+                      const matchingPairJedi = jediswapPools?.find(
+                        (pair: any) => pair === coin
+                      );
+                      if (
+                        coin === currentBorrowMarketCoin ||
+                        (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                          currentSwap == "MySwap" &&
+                          !matchingPair)
+                      ) {
                         return null;
                       }
-                      if (coin == currentBorrowMarketCoin || (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" && currentSwap == "Jediswap" && !matchingPairJedi)) {
+                      if (
+                        coin == currentBorrowMarketCoin ||
+                        (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" &&
+                          currentSwap == "Jediswap" &&
+                          !matchingPairJedi)
+                      ) {
                         return null;
                       }
                       return (
@@ -772,14 +793,19 @@ const SwapModal = ({
                             py="5px"
                             px={`${coin === currentSelectedCoin ? "1" : "5"}`}
                             gap="1"
-                            bg={`${coin === currentSelectedCoin
+                            bg={`${
+                              coin === currentSelectedCoin
                                 ? "#4D59E8"
                                 : "inherit"
-                              }`}
+                            }`}
                             borderRadius="md"
                           >
                             <Box p="1">{getCoin(coin)}</Box>
-                            <Text color="white">{(coin == 'BTC' || coin == "ETH") ? "w" + coin : coin}</Text>
+                            <Text color="white">
+                              {coin == "BTC" || coin == "ETH"
+                                ? "w" + coin
+                                : coin}
+                            </Text>
                           </Box>
                         </Box>
                       );
@@ -892,13 +918,15 @@ const SwapModal = ({
                             w="full"
                             display="flex"
                             py="5px"
-                            px={`${"ID - " + coin === currentBorrowId ? "2" : "5"
-                              }`}
+                            px={`${
+                              "ID - " + coin === currentBorrowId ? "2" : "5"
+                            }`}
                             gap="1"
-                            bg={`${"ID - " + coin === currentBorrowId
+                            bg={`${
+                              "ID - " + coin === currentBorrowId
                                 ? "#4D59E8"
                                 : "inherit"
-                              }`}
+                            }`}
                             borderRadius="md"
                           >
                             {/* <Box p="1">{getCoin(coin)}</Box> */}
@@ -1215,7 +1243,7 @@ const SwapModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    Borrow apr:{" "}
+                    Borrow APR:{" "}
                   </Text>
                   <Tooltip
                     hasArrow
@@ -1245,8 +1273,8 @@ const SwapModal = ({
                   fontStyle="normal"
                 >
                   {!borrowAPRs ||
-                    borrowAPRs.length === 0 ||
-                    !getBorrowAPR(currentBorrowMarketCoin) ? (
+                  borrowAPRs.length === 0 ||
+                  !getBorrowAPR(currentBorrowMarketCoin) ? (
                     <Box pt="2px">
                       <Skeleton
                         width="2.3rem"
@@ -1270,13 +1298,13 @@ const SwapModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    Boosted APR:{" "}
+                    STRK APR:{" "}
                   </Text>
                   <Tooltip
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="The annual interest rate charged on borrowed funds from the protocol."
+                    label="The annual percentage rate in which STRK is rewarded."
                     bg="#02010F"
                     fontSize={"13px"}
                     fontWeight={"400"}
@@ -1300,8 +1328,8 @@ const SwapModal = ({
                   fontStyle="normal"
                 >
                   {!borrowAPRs ||
-                    borrowAPRs.length === 0 ||
-                    !getBorrowAPR(currentBorrowMarketCoin) ? (
+                  borrowAPRs.length === 0 ||
+                  !getBorrowAPR(currentBorrowMarketCoin) ? (
                     <Box pt="2px">
                       <Skeleton
                         width="2.3rem"
@@ -1312,7 +1340,9 @@ const SwapModal = ({
                       />
                     </Box>
                   ) : (
-                    numberFormatterPercentage(getBoostedApr(currentBorrowMarketCoin)) + "%"
+                    numberFormatterPercentage(
+                      getBoostedApr(currentBorrowMarketCoin)
+                    ) + "%"
                   )}
                   {/* 5.56% */}
                 </Text>
@@ -1325,7 +1355,7 @@ const SwapModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    Effective apr:{" "}
+                    Effective APR:{" "}
                   </Text>
                   <Tooltip
                     hasArrow
@@ -1348,68 +1378,81 @@ const SwapModal = ({
                     </Box>
                   </Tooltip>
                 </Box>
-                {
-                  currentSelectedCoin == "Select a market" ?
-                    <Text
-                      color={avgs?.find(
+                {currentSelectedCoin == "Select a market" ? (
+                  <Text
+                    color={
+                      avgs?.find(
                         (item: any) =>
                           item?.loanId ==
                           currentBorrowId
                             .slice(currentBorrowId?.indexOf("-") + 1)
                             ?.trim()
-                      )?.avg < 0 ? "rgb(255 94 94)" : "#00D395"}
-                      fontSize="12px"
-                      fontWeight="400"
-                      fontStyle="normal"
-                    >
-                      {avgs?.find(
-                        (item: any) =>
-                          item?.loanId ==
-                          currentBorrowId
-                            .slice(currentBorrowId?.indexOf("-") + 1)
-                            ?.trim()
-                      )?.avg
-                        ? avgs?.find(
+                      )?.avg < 0
+                        ? "rgb(255 94 94)"
+                        : "#00D395"
+                    }
+                    fontSize="12px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                  >
+                    {avgs?.find(
+                      (item: any) =>
+                        item?.loanId ==
+                        currentBorrowId
+                          .slice(currentBorrowId?.indexOf("-") + 1)
+                          ?.trim()
+                    )?.avg
+                      ? avgs?.find(
                           (item: any) =>
                             item?.loanId ==
                             currentBorrowId
                               .slice(currentBorrowId?.indexOf("-") + 1)
                               ?.trim()
                         )?.avg
-                        : "3.2"}
-                      %
-                    </Text> :
-                    <Text
-                      color={Number(avgs?.find(
-                        (item: any) =>
-                          item?.loanId ==
-                          currentBorrowId
-                            .slice(currentBorrowId?.indexOf("-") + 1)
-                            ?.trim()
-                      )?.avg+getBoostedApr(currentBorrowMarketCoin)) < 0 ? "rgb(255 94 94)" : "#00D395"}
-                      fontSize="12px"
-                      fontWeight="400"
-                      fontStyle="normal"
-                    >
-                      {avgs?.find(
-                        (item: any) =>
-                          item?.loanId ==
-                          currentBorrowId
-                            .slice(currentBorrowId?.indexOf("-") + 1)
-                            ?.trim()
-                      )?.avg
-                        ? numberFormatterPercentage(Number(avgs?.find(
+                      : "3.2"}
+                    %
+                  </Text>
+                ) : (
+                  <Text
+                    color={
+                      Number(
+                        avgs?.find(
                           (item: any) =>
                             item?.loanId ==
                             currentBorrowId
                               .slice(currentBorrowId?.indexOf("-") + 1)
                               ?.trim()
-                        )?.avg)+getBoostedApr(currentBorrowMarketCoin))
-                        : "3.2"}
-                      %
-                    </Text>
-                }
-
+                        )?.avg + getBoostedApr(currentBorrowMarketCoin)
+                      ) < 0
+                        ? "rgb(255 94 94)"
+                        : "#00D395"
+                    }
+                    fontSize="12px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                  >
+                    {avgs?.find(
+                      (item: any) =>
+                        item?.loanId ==
+                        currentBorrowId
+                          .slice(currentBorrowId?.indexOf("-") + 1)
+                          ?.trim()
+                    )?.avg
+                      ? numberFormatterPercentage(
+                          Number(
+                            avgs?.find(
+                              (item: any) =>
+                                item?.loanId ==
+                                currentBorrowId
+                                  .slice(currentBorrowId?.indexOf("-") + 1)
+                                  ?.trim()
+                            )?.avg
+                          ) + getBoostedApr(currentBorrowMarketCoin)
+                        )
+                      : "3.2"}
+                    %
+                  </Text>
+                )}
               </Box>
               {/* <Box display="flex" justifyContent="space-between">
                 <Box display="flex">
@@ -1468,7 +1511,7 @@ const SwapModal = ({
               </Box> */}
             </Box>
             {currentSelectedCoin != "Select a market" &&
-              currentBorrowMarketCoin != currentSelectedCoin ? (
+            currentBorrowMarketCoin != currentSelectedCoin ? (
               <Box
                 onClick={() => {
                   setTransactionStarted(true);
@@ -1523,7 +1566,9 @@ const SwapModal = ({
                 mb="1.5rem"
                 background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                 border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
+                _hover={{
+                  bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
+                }}
               >
                 Spend Borrow
               </Button>
