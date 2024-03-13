@@ -1148,7 +1148,7 @@ const getBoostedApr=(coin:any)=>{
                                             mt="5px"
                                             fontWeight="medium"
                                           >
-                                            Stark APR: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, currentSwap)))}%
+                                            $STRK APR: {numberFormatterPercentage(String(100*365*(getStrkAlloaction(pool)*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, pool, currentSwap)))}%
                                           </Box>}                              
                               </Box>
 

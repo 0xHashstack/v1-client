@@ -19,7 +19,10 @@ import {
   selectProtocolStats,
   selectUserDeposits,
 } from "@/store/slices/readDataSlice";
-import { selectStrkAprData, selectUserUnspentLoans } from "@/store/slices/userAccountSlice";
+import {
+  selectStrkAprData,
+  selectUserUnspentLoans,
+} from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import {
   Box,
@@ -119,7 +122,7 @@ const StrkDashboard = () => {
   const { account, address } = useAccount();
   const poolApr = useSelector(selectJediswapPoolAprs);
   const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
-  const strkData=useSelector(selectStrkAprData);
+  const strkData = useSelector(selectStrkAprData);
   useEffect(() => {
     try {
       const fetchData = async () => {
@@ -130,7 +133,7 @@ const StrkDashboard = () => {
       };
       fetchData();
     } catch (err) {
-      console.log(err,"err in jedi");
+      console.log(err, "err in jedi");
     }
   }, []);
   const getStrkAlloaction = (pool: any) => {
@@ -151,27 +154,27 @@ const StrkDashboard = () => {
       if (item.name === "USDT/USDC") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "USDC/USDT" === pool
         );
       } else if (item.name == "ETH/STRK") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "STRK/ETH" === pool
         );
       } else if (item.name === "ETH/DAI") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "DAI/ETH" === pool
         );
@@ -179,9 +182,9 @@ const StrkDashboard = () => {
         return (
           item.name === pool &&
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap")
         );
@@ -195,27 +198,27 @@ const StrkDashboard = () => {
       if (item.name === "USDT/USDC") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "USDC/USDT" === pool
         );
       } else if (item.name == "ETH/STRK") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "STRK/ETH" === pool
         );
       } else if (item.name === "ETH/DAI") {
         return (
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap") && "DAI/ETH" === pool
         );
@@ -223,9 +226,9 @@ const StrkDashboard = () => {
         return (
           item.name === pool &&
           item.amm ===
-          (dapp == "Select a dapp"
-            ? "jedi"
-            : dapp == "Jediswap"
+            (dapp == "Select a dapp"
+              ? "jedi"
+              : dapp == "Jediswap"
               ? "jedi"
               : "myswap")
         );
@@ -384,7 +387,7 @@ const StrkDashboard = () => {
             Incentive Program!
           </Text>
         </Box>
-        <Box display="flex" gap="2rem" mr="1rem">
+        {/* <Box display="flex" gap="2rem" mr="1rem">
           <Box gap="0.2rem">
             <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
               STRK Reward
@@ -406,7 +409,7 @@ const StrkDashboard = () => {
           >
             Claim
           </Button>
-        </Box>
+        </Box> */}
       </Box>
       <Box
         mt="1rem"
@@ -497,7 +500,7 @@ const StrkDashboard = () => {
                               fontSize={"12px"}
                               fontWeight={400}
                               p={0}
-                            // bgColor="red"
+                              // bgColor="red"
                             >
                               <Text
                                 whiteSpace="pre-wrap"
@@ -509,8 +512,8 @@ const StrkDashboard = () => {
                                   idx1 == 0
                                     ? "left"
                                     : idx1 == columnItems.length - 1
-                                      ? "right"
-                                      : "center"
+                                    ? "right"
+                                    : "center"
                                 }
                                 pl={idx1 == 0 ? "3rem" : 0}
                                 pr={idx1 == columnItems.length - 1 ? 35 : 0}
@@ -537,8 +540,8 @@ const StrkDashboard = () => {
                                   border="1px solid"
                                   borderColor="#23233D"
                                   arrowShadowColor="#676D9A4D"
-                                // maxW="222px"
-                                // mt="28px"
+                                  // maxW="222px"
+                                  // mt="28px"
                                 >
                                   {val}
                                 </Tooltip>
@@ -627,10 +630,11 @@ const StrkDashboard = () => {
                                       color="#E6EDF3"
                                       textAlign="left"
                                     >
-                                      {`Borrow ID${borrow.loanId < 10
+                                      {`Borrow ID${
+                                        borrow.loanId < 10
                                           ? "0" + borrow.loanId
                                           : borrow.loanId
-                                        }`}{" "}
+                                      }`}{" "}
                                     </Text>
                                   </Box>
                                 </Td>
@@ -674,9 +678,9 @@ const StrkDashboard = () => {
                                       item?.loanId == borrow?.loanId
                                   )?.avg
                                     ? avgs?.find(
-                                      (item: any) =>
-                                        item?.loanId == borrow?.loanId
-                                    )?.avg
+                                        (item: any) =>
+                                          item?.loanId == borrow?.loanId
+                                      )?.avg
                                     : "3.2"}
                                   %
                                 </Td>
@@ -697,11 +701,11 @@ const StrkDashboard = () => {
                                     >
                                       {oraclePrices
                                         ? ltv
-                                          ?.find(
-                                            (val: any) =>
-                                              val?.[0] == borrow?.loanId
-                                          )?.[1]
-                                          ?.toFixed(3)
+                                            ?.find(
+                                              (val: any) =>
+                                                val?.[0] == borrow?.loanId
+                                            )?.[1]
+                                            ?.toFixed(3)
                                         : "-"}
                                     </Text>
                                   </Box>
@@ -713,7 +717,7 @@ const StrkDashboard = () => {
                                     // bgColor="blue"
                                     justifyContent="flex-end"
                                     pr="40px"
-                                  // pl="30px"
+                                    // pl="30px"
                                   >
                                     <Box
                                       height="100%"
@@ -749,10 +753,10 @@ const StrkDashboard = () => {
                                         border="1px solid"
                                         borderColor="#23233D"
                                         arrowShadowColor="#2B2F35"
-                                      // cursor="context-menu"
-                                      // marginRight={idx1 === 1 ? "52px" : ""}
-                                      // maxW="222px"
-                                      // mt="28px"
+                                        // cursor="context-menu"
+                                        // marginRight={idx1 === 1 ? "52px" : ""}
+                                        // maxW="222px"
+                                        // mt="28px"
                                       >
                                         {avgsLoneHealth?.find(
                                           (item: any) =>
@@ -839,7 +843,7 @@ const StrkDashboard = () => {
                     %
                   </Text>
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    Stark APR:{" "}
+                    Jedi Stark APR:{" "}
                     {numberFormatterPercentage(
                       String(
                         (100 *
@@ -848,7 +852,7 @@ const StrkDashboard = () => {
                             oraclePrices?.find(
                               (curr: any) => curr.name === "STRK"
                             )?.price)) /
-                        getTvlByPool(poolApr, pool, "Jediswap")
+                          getTvlByPool(poolApr, pool, "Jediswap")
                       )
                     )}
                     %
@@ -931,7 +935,8 @@ const StrkDashboard = () => {
           </Box>
         </Box>
       </Box>
-      <Box mt="1rem"
+      <Box
+        mt="1rem"
         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         width="100%"
@@ -940,7 +945,12 @@ const StrkDashboard = () => {
         padding="32px"
       >
         <Box>
-          <Text fontWeight="500" fontSize="16px" color="white" lineHeight="30px">
+          <Text
+            fontWeight="500"
+            fontSize="16px"
+            color="white"
+            lineHeight="30px"
+          >
             Supply Markets
           </Text>
           <Text fontSize="12px" fontWeight="400" color="#BDBFC1" mt="0.5rem">
@@ -948,11 +958,23 @@ const StrkDashboard = () => {
           </Text>
           <Box display="flex" gap="1.5rem" mt="2rem">
             {Coins.map((supplyCoin: any, idx: number) => (
-              <Box key={idx} bg="#34345633" paddingX="2rem"
-                paddingY="2rem" borderRadius="8px" justifyContent="center" alignItems="center" textAlign="center">
-                <Box display="flex" width="100%" justifyContent='center'>
+              <Box
+                key={idx}
+                bg="#34345633"
+                paddingX="2rem"
+                paddingY="2rem"
+                borderRadius="8px"
+                justifyContent="center"
+                alignItems="center"
+                textAlign="center"
+              >
+                <Box display="flex" width="100%" justifyContent="center">
                   <Image
-                    src={supplyCoin?.name == "DAI" ? `/${supplyCoin?.name}Disabled.svg` : `/${supplyCoin?.name}.svg`}
+                    src={
+                      supplyCoin?.name == "DAI"
+                        ? `/${supplyCoin?.name}Disabled.svg`
+                        : `/${supplyCoin?.name}.svg`
+                    }
                     alt={`Picture of the supplyCoin that I want to access ${supplyCoin?.name}`}
                     width="32"
                     height="32"
@@ -965,14 +987,26 @@ const StrkDashboard = () => {
                 </Box>
                 <Box display="flex" mt="0.5rem" gap="0.8rem">
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    Supply APR:{" "}
-                    {numberFormatterPercentage(supplyAPRs[idx])}%
+                    Supply APR: {numberFormatterPercentage(supplyAPRs[idx])}%
                   </Text>
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    Stark APR:{" "}
-                    {numberFormatterPercentage(strkData ? ((365*100*(strkData[supplyCoin?.name][strkData[supplyCoin?.name].length-1]?.allocation) *  0.7 *oraclePrices?.find(
+                    Jedi Stark APR:{" "}
+                    {numberFormatterPercentage(
+                      strkData
+                        ? (365 *
+                            100 *
+                            strkData[supplyCoin?.name][
+                              strkData[supplyCoin?.name].length - 1
+                            ]?.allocation *
+                            0.7 *
+                            oraclePrices?.find(
                               (curr: any) => curr.name === "STRK"
-                            )?.price)/strkData[supplyCoin?.name][strkData[supplyCoin?.name].length-1]?.supply_usd) :0)}
+                            )?.price) /
+                            strkData[supplyCoin?.name][
+                              strkData[supplyCoin?.name].length - 1
+                            ]?.supply_usd
+                        : 0
+                    )}
                     {/* {numberFormatterPercentage(
                       String(
                         (100 *
@@ -987,11 +1021,17 @@ const StrkDashboard = () => {
                     %
                   </Text>
                 </Box>
-                <Box mt="1rem" color="white" onClick={()=>{if(idx==3){
-                  setCurrentSupplyAPR(idx+1)
-                }else{
-                  setCurrentSupplyAPR(idx)
-                } }}>
+                <Box
+                  mt="1rem"
+                  color="white"
+                  onClick={() => {
+                    if (idx == 3) {
+                      setCurrentSupplyAPR(idx + 1);
+                    } else {
+                      setCurrentSupplyAPR(idx);
+                    }
+                  }}
+                >
                   <SupplyModal
                     buttonText="Supply"
                     cursor="pointer"
@@ -1009,7 +1049,6 @@ const StrkDashboard = () => {
                     currentSupplyAPR={currentSupplyAPR}
                     setCurrentSupplyAPR={setCurrentSupplyAPR}
                   />
-
                 </Box>
               </Box>
             ))}
