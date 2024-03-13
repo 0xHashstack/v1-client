@@ -1776,7 +1776,8 @@ const useDataLoader = () => {
             dataDeposit,
             userLoans,
             dataOraclePrices,
-            protocolStats
+            protocolStats,
+            strkData
           );
           const dataNetAprDeposit = await getNetAprDeposits(
             dataDeposit,

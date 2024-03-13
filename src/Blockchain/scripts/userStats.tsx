@@ -243,7 +243,8 @@ export async function getNetApr(
   deposits: IDeposit[],
   loans: ILoan[],
   oraclePrices: OraclePrice[],
-  marketInfos: IMarketInfo[]
+  marketInfos: IMarketInfo[],
+  strkData:any
 ) {
   let totalSupply = 0,
     netSupplyInterest = 0;
@@ -254,11 +255,11 @@ export async function getNetApr(
     let market_info = marketInfos.find(
       (market_info) => market_info?.tokenAddress === deposit?.tokenAddress
     );
-    if (oraclePrice && market_info) {
+    if (oraclePrice && market_info && strkData) {
       let depositAmountUsd =
         deposit.underlyingAssetAmountParsed * oraclePrice.price;
       totalSupply += depositAmountUsd;
-      netSupplyInterest += depositAmountUsd * market_info.supplyRate;
+      netSupplyInterest += depositAmountUsd * (market_info.supplyRate+getBoostedApr(deposit?.token,strkData,oraclePrices));
     }
   }
 
