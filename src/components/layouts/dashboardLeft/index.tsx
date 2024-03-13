@@ -30,7 +30,9 @@ import {
 import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import { useAccount } from "@starknet-react/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectStrkAprData } from "@/store/slices/userAccountSlice";
+import FireIcon from "@/assets/icons/fireIcon";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -158,10 +160,31 @@ const DashboardLeft = ({
     DAI: useBalanceOf(tokenAddressMap["DAI"]),
     STRK: useBalanceOf(tokenAddressMap["STRK"]),
   };
+  const strkData=useSelector(selectStrkAprData);
 
   useEffect(() => {
     ////console.log("supply apr", currentSupplyAPR);
   }, [supplyAPRs, currentSupplyAPR]);
+
+  const getBoostedApr=(coin:any)=>{
+    if(strkData==null){
+      return 0;
+    }else{
+      if(strkData?.[coin?.name]){
+        if(oraclePrices==null){
+          return 0;
+        }else{
+          let value=(strkData?.[coin?.name] ? ((365*100*(strkData?.[coin?.name][strkData[coin?.name]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
+            (curr: any) => curr.name === "STRK"
+          )?.price)/strkData?.[coin?.name][strkData[coin?.name].length-1]?.supply_usd) :0)
+          return value;
+        }
+      }else{
+        return 0;
+      }
+    }
+
+  }
 
   // useEffect(() => {
   //   if (isJSON(assetBalance)) {
@@ -485,11 +508,55 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    color={coin?.name == "DAI" ? "#3E415C" : "#00D395"}
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {supplyAPRs[idx] == null ? (
+                    <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="bottom"
+                      boxShadow="dark-lg"
+                      label={
+                        <Box>
+                          <Box display="flex" justifyContent="space-between">
+                            <Text>
+                              Supply APR + Boosted APR = 
+                            </Text>
+                            <Text>
+                              {numberFormatterPercentage(supplyAPRs[idx] +
+                              getBoostedApr(coin)
+                              )}%
+                            </Text>
+                          </Box>
+                          <Box display="flex" justifyContent="space-between">
+                            <Text>
+                              Supply APR 
+                            </Text>
+                            <Text>
+                              {numberFormatterPercentage(supplyAPRs[idx])}%
+                            </Text>
+                          </Box>
+                          <Box display="flex" justifyContent="space-between">
+                            <Text>
+                              Boosted APR 
+                            </Text>
+                            <Text>
+                              {numberFormatterPercentage(getBoostedApr(coin))}%
+                            </Text>
+                          </Box>
+                        </Box>
+                      }
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                    >
+                    {supplyAPRs[idx] == null  || oraclePrices?.length==0 ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -498,8 +565,18 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      numberFormatterPercentage(supplyAPRs[idx]) + "%"
+                      <Box>
+                        {numberFormatterPercentage(supplyAPRs[idx] +
+                          getBoostedApr(coin)
+                          )}%
+                      </Box>
                     )}
+                    </Tooltip>
+                    {(supplyAPRs[idx] != null) ? (coin.name!="BTC" && coin.name!=="DAI") &&
+                    <Box ml="0.4rem">
+                      <FireIcon/>
+                    </Box>:<>
+                    </>}
                   </Box>
                 </Td>
                 <Td

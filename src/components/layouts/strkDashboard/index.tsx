@@ -130,7 +130,7 @@ const StrkDashboard = () => {
       };
       fetchData();
     } catch (err) {
-      console.log(err);
+      console.log(err,"err in jedi");
     }
   }, []);
   const getStrkAlloaction = (pool: any) => {

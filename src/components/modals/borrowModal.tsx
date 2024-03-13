@@ -2208,7 +2208,7 @@ const BorrowModal = ({
                   )}
                   {/* 5.56% */}
                 </Text>
-              </Text>
+              </Text>             
               {collateralAmount > 0 && inputBorrowAmount > 0 && (
                 <Text
                   display="flex"
@@ -2325,7 +2325,7 @@ const BorrowModal = ({
                       ) : (
                         <Text
                           color={(
-                            (-(inputBorrowAmountUSD *
+                            ((-(inputBorrowAmountUSD *
                               protocolStats?.find(
                                 (stat: any) => stat?.token === currentBorrowCoin
                               )?.borrowRate) +
@@ -2333,13 +2333,13 @@ const BorrowModal = ({
                               protocolStats?.find(
                                 (stat: any) => stat?.token === rToken.slice(1)
                               )?.supplyRate) /
-                            inputBorrowAmountUSD
+                            inputBorrowAmountUSD)
                           ) < 0 ? "rgb(255 94 94)" : "#00D395"}
                         >
                           {/* 5.56% */}
                           {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                           {(
-                            (-(inputBorrowAmountUSD *
+                            ((-(inputBorrowAmountUSD *
                               protocolStats?.find(
                                 (stat: any) => stat?.token === currentBorrowCoin
                               )?.borrowRate) +
@@ -2347,7 +2347,7 @@ const BorrowModal = ({
                               protocolStats?.find(
                                 (stat: any) => stat?.token === rToken.slice(1)
                               )?.supplyRate) /
-                            inputBorrowAmountUSD
+                            inputBorrowAmountUSD)
                           ).toFixed(2)}%
                           {/* {
                             protocolStats?.find(

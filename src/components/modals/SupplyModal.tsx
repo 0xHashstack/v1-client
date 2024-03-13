@@ -226,6 +226,26 @@ const SupplyModal = ({
       )
       : 0
   );
+  const getBoostedApr=(coin:any)=>{
+    if(strkData==null){
+      return 0;
+    }else{
+      if(strkData?.[coin]){
+        if(oraclePrices==null){
+          return 0;
+        }else{
+          let value=(strkData?.[coin] ? ((365*100*(strkData?.[coin][strkData[coin]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
+            (curr: any) => curr.name === "STRK"
+          )?.price)/strkData?.[coin][strkData[coin].length-1]?.supply_usd) :0)
+          return value;
+        }
+      }else{
+        return 0;
+      }
+    }
+
+  }
+
   // useEffect(()=>{
   //  //console.log(
   //     Number(parseAmount(
@@ -1454,12 +1474,12 @@ const SupplyModal = ({
                     $ 0.90
                   </Text>
                 </Text> */}
-                <Text
+                                <Text
                   color="#8B949E"
                   display="flex"
                   justifyContent="space-between"
                   fontSize="12px"
-                  mb={ischecked ?"0.4rem":"0rem"}
+                  mb={"0.1rem"}
                 >
                   <Text display="flex" alignItems="center">
                     <Text
@@ -1469,7 +1489,7 @@ const SupplyModal = ({
                       font-size="12px"
                       color="#676D9A"
                     >
-                      Supply apr:
+                      APR:
                     </Text>
                     <Tooltip
                       hasArrow
@@ -1513,6 +1533,50 @@ const SupplyModal = ({
                         />
                       </Box>
                     ) : (
+                      numberFormatterPercentage(supplyAPRs[currentSupplyAPR] +getBoostedApr(currentSelectedCoin)) + "%"
+                    )}
+                    {/* 5.566% */}
+                  </Text>
+                </Text>
+                <Text
+                  color="#8B949E"
+                  display="flex"
+                  justifyContent="space-between"
+                  fontSize="12px"
+                  // mb={ischecked ?"0.4rem":"0rem"}
+                  mb={"0.1rem"}
+                  ml={"0.5rem"}
+                >
+                  <Text display="flex" alignItems="center">
+                    <Text
+                      mr="0.2rem"
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="12px"
+                      color="#676D9A"
+                    >
+                      Supply apr:
+                    </Text>
+                  </Text>
+                  <Text
+                    font-style="normal"
+                    font-weight="400"
+                    font-size="12px"
+                    color="#676D9A"
+                  >
+                    {!supplyAPRs ||
+                      supplyAPRs.length === 0 ||
+                      supplyAPRs[currentSupplyAPR] == null ? (
+                      <Box pt="3px">
+                        <Skeleton
+                          width="2.3rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="6px"
+                        />
+                      </Box>
+                    ) : (
                       supplyAPRs[currentSupplyAPR] + "%"
                     )}
                     {/* 5.566% */}
@@ -1523,8 +1587,9 @@ const SupplyModal = ({
                   display="flex"
                   justifyContent="space-between"
                   fontSize="12px"
-                  mt={ischecked ?"0rem": "0.4rem"}
+                  // mt={ischecked ?"0rem": "0.4rem"}
                   mb={ischecked ?"0.4rem":"0rem"}
+                  ml={"0.5rem"}
 
                 >
                   <Text display="flex" alignItems="center">
@@ -1535,33 +1600,11 @@ const SupplyModal = ({
                       font-size="12px"
                       color="#676D9A"
                     >
-                      Stark APR:
+                      Boosted APR:
                     </Text>
-                    <Tooltip
-                      hasArrow
-                      placement="right"
-                      boxShadow="dark-lg"
-                      label="Rewards earned in staking activities within the protocol."
-                      bg="#02010F"
-                      fontSize={"13px"}
-                      fontWeight={"400"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                      color="#F0F0F5"
-                      border="1px solid"
-                      borderColor="#23233D"
-                      arrowShadowColor="#2B2F35"
-                      maxW="282px"
-                    >
-                      <Box>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
                   </Text>
                   <Text color="#676D9A">
-                  {strkData?.[currentSelectedCoin] ? numberFormatterPercentage(strkData[currentSelectedCoin] ? ((365*100*(strkData[currentSelectedCoin][strkData[currentSelectedCoin]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
-                              (curr: any) => curr.name === "STRK"
-                            )?.price)/strkData[currentSelectedCoin][strkData[currentSelectedCoin].length-1]?.supply_usd) :0):0}%
+                  {strkData?.[currentSelectedCoin] ? numberFormatterPercentage(getBoostedApr(currentSelectedCoin)):0}%
                     {/* {protocolStats?.[0]?.stakingRate ? (
                               protocolStats?.[0]?.stakingRate
                             ) : (

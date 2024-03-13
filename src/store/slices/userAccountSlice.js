@@ -73,6 +73,9 @@ const initialState = {
   feesCount:-1,
   transactionCheck: [],
   lightModeSelected:false,
+  spendBalances:null,
+  netSpendBalance:null,
+  netStrkBorrow:null,
 
   // walletBalance: {
   //   BTC: 0,
@@ -280,6 +283,15 @@ export const userAccountSlice = createSlice({
     setStrkAprData(state,action){
       state.starkAprData=action.payload;
     },
+    setSpendBalances(state,action){
+      state.spendBalances=action.payload;
+    },
+    setNetSpendBalance(state,action){
+      state.netSpendBalance=action.payload;
+    },
+    setNetStrkBorrow(state,action){
+      state.netStrkBorrow=action.payload;
+    },
   setFeesCount(state,action){
     state.feesCount=action.payload;
   },
@@ -360,7 +372,10 @@ export const {
   setFeesCount,
   setTransactionCheck,
   setLightModeSelected,
-  setStrkAprData
+  setStrkAprData,
+  setSpendBalances,
+  setNetSpendBalance,
+  setNetStrkBorrow
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -473,5 +488,11 @@ export const selectLightModeSelected=(state)=>
   state.user_account.lightModeSelected;
   export const selectStrkAprData=(state)=>
   state.user_account.starkAprData;
+  export const selectSpendBalances=(state)=>
+  state.user_account.spendBalances;
+  export const selectnetSpendBalance=(state)=>
+  state.user_account.netSpendBalance;
+  export const selectnetStrkBorrow=(state)=>
+  state.user_account.netStrkBorrow;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

@@ -3,7 +3,7 @@ import { Contract, uint256 } from "starknet";
 import { ERC20Abi, contractsEnv, getProvider } from "../stark-constants";
 import { parseAmount } from "../utils/utils";
 
-export function getDebtBalance() {
+export function getSpendBalance() {
   const marketStats: any = [];
   const provider = getProvider();
 

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { capitalizeWords } from "../../../utils/functions/capitalizeWords";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import FireIcon from "@/assets/icons/fireIcon";
 
 const NavButtons = ({
   width,
@@ -109,6 +110,11 @@ const NavButtons = ({
                     : "back"
                   : getButtonLabel(option.path)
               )}
+              {option.path==="v1/strk-rewards" &&
+              <Box ml="0.5rem">
+                <FireIcon/>
+              </Box>
+              }
             </Button>
           </Box>
         ))}
