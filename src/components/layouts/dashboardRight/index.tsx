@@ -1,7 +1,11 @@
 import FireIcon from "@/assets/icons/fireIcon";
 import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
-import { selectStrkAprData, selectnetSpendBalance, selectnetStrkBorrow } from "@/store/slices/userAccountSlice";
+import {
+  selectStrkAprData,
+  selectnetSpendBalance,
+  selectnetStrkBorrow,
+} from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import {
@@ -98,27 +102,27 @@ const DashboardRight = ({
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
-  const strkData=useSelector(selectStrkAprData);
-  const netSpendBalance=useSelector(selectnetSpendBalance);
+  const strkData = useSelector(selectStrkAprData);
+  const netSpendBalance = useSelector(selectnetSpendBalance);
 
-   const [netStrkBorrow, setnetStrkBorrow] = useState(0) ;
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0);
 
-  useEffect(()=>{
-    if(strkData!=null){
-      let netallocation=0;
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0;
       for (let token in strkData) {
-          if (strkData.hasOwnProperty(token)) {
-              strkData[token].forEach((info: { allocation: number; }) => {
-                  netallocation += 0.3*info.allocation;
-              });
-          }
+        if (strkData.hasOwnProperty(token)) {
+          strkData[token].forEach((info: { allocation: number }) => {
+            netallocation += 0.3 * info.allocation;
+          });
+        }
       }
-      setnetStrkBorrow(netallocation)
-    }else{
+      setnetStrkBorrow(netallocation);
+    } else {
       setnetStrkBorrow(0);
     }
-  },[strkData])
-  
+  }, [strkData]);
+
   useEffect(() => {
     ////console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
   }, [currentBorrowMarketCoin]);
@@ -130,32 +134,36 @@ const DashboardRight = ({
     "The annual interest rate charged on borrowed funds from the protocol.",
   ];
 
-  const getBoostedApr=(coin:any)=>{
-    if(strkData==null){
+  const getBoostedApr = (coin: any) => {
+    if (strkData == null) {
       return 0;
-    }else{
-      if(strkData?.[coin?.name]){
-        if(oraclePrices==null){
+    } else {
+      if (strkData?.[coin?.name]) {
+        if (oraclePrices == null) {
           return 0;
-        }else{
-          if(netStrkBorrow!=0){
-            if(netSpendBalance){
-              let value=(365*100*netStrkBorrow*oraclePrices?.find(
-                (curr: any) => curr.name === "STRK"
-              )?.price/netSpendBalance)
+        } else {
+          if (netStrkBorrow != 0) {
+            if (netSpendBalance) {
+              let value =
+                (365 *
+                  100 *
+                  netStrkBorrow *
+                  oraclePrices?.find((curr: any) => curr.name === "STRK")
+                    ?.price) /
+                netSpendBalance;
               return value;
-            }else{
+            } else {
               return 0;
             }
-          }else{
+          } else {
             return 0;
           }
         }
-      }else{
+      } else {
         return 0;
       }
     }
-  }
+  };
   return (
     <TableContainer
       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
@@ -451,10 +459,16 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" :coin?.name=="BTC" ?"white": "#00D395"}
+                    color={
+                      coin?.name == "DAI"
+                        ? "#3E415C"
+                        : coin?.name == "BTC"
+                        ? "white"
+                        : "#00D395"
+                    }
                     // bgColor={"blue"}
                   >
-                                        <Tooltip
+                    <Tooltip
                       hasArrow
                       arrowShadowColor="#2B2F35"
                       placement="bottom"
@@ -462,25 +476,26 @@ const DashboardRight = ({
                       label={
                         <Box>
                           <Box display="flex" justifyContent="space-between">
+                            <Text>APR </Text>
                             <Text>
-                            Boosted APR - Borrow APR   = 
-                            </Text>
-                            <Text>
-                              { numberFormatterPercentage(Math.abs(getBoostedApr(coin)-borrowAPRs[idx]))}%
+                              {numberFormatterPercentage(
+                                Math.abs(getBoostedApr(coin) - borrowAPRs[idx])
+                              )}
+                              %
                             </Text>
                           </Box>
                           <Box display="flex" justifyContent="space-between">
-                            <Text>
-                              Borrow APR 
-                            </Text>
+                            <Text>Borrow APR</Text>
                             <Text>
                               {numberFormatterPercentage(borrowAPRs[idx])}%
                             </Text>
                           </Box>
-                          <Box display="flex" justifyContent="space-between">
-                            <Text>
-                              Boosted APR 
-                            </Text>
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            gap={4}
+                          >
+                            <Text>Boosted APR</Text>
                             <Text>
                               {numberFormatterPercentage(getBoostedApr(coin))}%
                             </Text>
@@ -496,23 +511,30 @@ const DashboardRight = ({
                       border="1px solid"
                       borderColor="#23233D"
                     >
-                    {borrowAPRs[idx] == null ? (
-                      <Skeleton
-                        width="6rem"
-                        height="1.4rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />
-                    ) : (
-                      numberFormatterPercentage(Math.abs( getBoostedApr(coin)-borrowAPRs[idx])) + "%"
-                    )}
+                      {borrowAPRs[idx] == null ? (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (
+                        numberFormatterPercentage(
+                          Math.abs(getBoostedApr(coin) - borrowAPRs[idx])
+                        ) + "%"
+                      )}
                     </Tooltip>
-                    {(borrowAPRs[idx] != null) ? (coin.name!="BTC" && coin.name!=="DAI") &&
-                    <Box ml="0.4rem">
-                      <FireIcon/>
-                    </Box>:<>
-                    </>}
+                    {borrowAPRs[idx] != null ? (
+                      coin.name != "BTC" &&
+                      coin.name !== "DAI" && (
+                        <Box ml="0.4rem">
+                          <FireIcon />
+                        </Box>
+                      )
+                    ) : (
+                      <></>
+                    )}
                     {/* {checkGap(idx1, idx2)} */}
                   </Box>
                 </Td>
