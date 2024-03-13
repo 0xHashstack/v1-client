@@ -4628,7 +4628,7 @@ const YourBorrowModal = ({
                                       >
                                         <Box
                                           display="flex"
-                                          // mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}
+                                          mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}
                                         >
                                           <Box p="1">{getCoin(pool)}</Box>
                                           <Tooltip

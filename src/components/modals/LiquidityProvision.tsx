@@ -51,6 +51,7 @@ import {
   selectOracleAndFairPrices,
   selectSelectedDapp,
   selectStrkAprData,
+  selectUserUnspentLoans,
   selectWalletBalance,
   selectnetSpendBalance,
   setActiveTransactions,
@@ -118,6 +119,7 @@ const LiquidityProvisionModal = ({
   currentSelectedPool,
   currentSelectedDapp,
   poolNumber,
+  collateralMarket
 }: any) => {
   ////console.log("liquidity found map: ", borrowIDCoinMap);
   ////console.log("liquidity found borrow ids: ", borrowIds);
@@ -164,7 +166,6 @@ const LiquidityProvisionModal = ({
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [walletBalance, setwalletBalance] = useState(BorrowBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
-  const userLoans = useSelector(selectUserLoans);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
   const [uniqueID, setUniqueID] = useState(0);
   const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
@@ -416,7 +417,17 @@ const LiquidityProvisionModal = ({
   const netSpendBalance = useSelector(selectnetSpendBalance);
 
   const [netStrkBorrow, setnetStrkBorrow] = useState(0);
-
+  const [currentCollateralCoin, setcurrentCollateralCoin] = useState(collateralMarket)
+  const userLoans=useSelector(selectUserUnspentLoans);
+  useEffect(()=>{
+    const result = userLoans.find(
+      (item: any) =>
+        item?.loanId ==
+        currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
+    );
+    setcurrentCollateralCoin(result?.collateralMarket)
+    
+  },[currentBorrowId])
   useEffect(() => {
     if (strkData != null) {
       let netallocation = 0;
@@ -1180,7 +1191,7 @@ const LiquidityProvisionModal = ({
                             >
                               <Box
                                 display="flex"
-                                // mt={ index<=2 && currentSwap=="Jediswap" ?"0.5rem":""}
+                                mt={ index<=2 && currentSwap=="Jediswap" ?"0.5rem":""}
                               >
                                 <Box p="1">{getCoin(pool)}</Box>
                                 <Tooltip
@@ -1883,17 +1894,17 @@ const LiquidityProvisionModal = ({
                         />
                       </Box>
                     ) : numberFormatterPercentage(
-                        getBoostedApr(currentBorrowMarketCoin)
+                        getBoostedApr(currentBorrowMarketCoin) +getBoostedAprSupply(currentCollateralCoin?.slice(1))
                       ) ? (
                       "" +
                       numberFormatterPercentage(
-                        getBoostedApr(currentBorrowMarketCoin)
+                        getBoostedApr(currentBorrowMarketCoin)+getBoostedAprSupply(currentCollateralCoin?.slice(1))
                       ) +
                       "%"
                     ) : (
                       "" +
                       numberFormatterPercentage(
-                        getBoostedApr(currentBorrowMarketCoin.slice(1))
+                        getBoostedApr(currentBorrowMarketCoin.slice(1))+getBoostedAprSupply(currentCollateralCoin?.slice(1))
                       ) +
                       "%"
                     )}

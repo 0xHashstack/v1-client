@@ -31,6 +31,7 @@ import {
   selectInputSupplyAmount,
   selectSelectedDapp,
   selectStrkAprData,
+  selectUserUnspentLoans,
   selectWalletBalance,
   selectnetSpendBalance,
   setActiveTransactions,
@@ -83,6 +84,7 @@ const SwapModal = ({
   currentSwap,
   setCurrentSwap,
   borrowAPRs,
+  collateralMarket
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -111,6 +113,7 @@ const SwapModal = ({
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
     useState(currentMarketCoin);
   const [currentBorrowId, setCurrentBorrowId] = useState(currentId);
+  const [currentCollateralCoin, setcurrentCollateralCoin] = useState(collateralMarket)
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
@@ -174,7 +177,6 @@ const SwapModal = ({
   //     "ID - 123459",
   //     "ID - 1234510",
   // ];
-  const userLoans = useSelector(selectUserLoans);
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
@@ -185,6 +187,15 @@ const SwapModal = ({
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
+  const userLoans=useSelector(selectUserUnspentLoans);
+  useEffect(()=>{
+    const result = userLoans.find(
+      (item: any) =>
+        item?.loanId ==
+        currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
+    );
+    setcurrentCollateralCoin(result?.collateralMarket)
+  },[currentBorrowId])
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -1341,7 +1352,7 @@ const SwapModal = ({
                     </Box>
                   ) : (
                     numberFormatterPercentage(
-                      getBoostedApr(currentBorrowMarketCoin)
+                      getBoostedApr(currentBorrowMarketCoin)+getBoostedAprSupply(currentCollateralCoin?.slice(1))
                     ) + "%"
                   )}
                   {/* 5.56% */}
@@ -1422,7 +1433,7 @@ const SwapModal = ({
                             currentBorrowId
                               .slice(currentBorrowId?.indexOf("-") + 1)
                               ?.trim()
-                        )?.avg + getBoostedApr(currentBorrowMarketCoin)
+                        )?.avg +getBoostedAprSupply(currentCollateralCoin.slice(1)) + getBoostedApr(currentBorrowMarketCoin) 
                       ) < 0
                         ? "rgb(255 94 94)"
                         : "#00D395"
@@ -1447,7 +1458,7 @@ const SwapModal = ({
                                   .slice(currentBorrowId?.indexOf("-") + 1)
                                   ?.trim()
                             )?.avg
-                          ) + getBoostedApr(currentBorrowMarketCoin)
+                          ) + getBoostedApr(currentBorrowMarketCoin) + getBoostedAprSupply(currentCollateralCoin.slice(1))
                         )
                       : "3.2"}
                     %
