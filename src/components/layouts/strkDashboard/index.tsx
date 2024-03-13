@@ -4,6 +4,7 @@ import InfoIcon from "@/assets/icons/infoIcon";
 import LowhealthFactor from "@/assets/icons/lowhealthFactor";
 import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
 import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
+import SupplyModal from "@/components/modals/SupplyModal";
 import TradeModal from "@/components/modals/tradeModal";
 import {
   selectModalDropDowns,
@@ -24,6 +25,7 @@ import {
   selectUserUnspentLoans,
 } from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import {
   Box,
   Button,
@@ -40,15 +42,13 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useAccount } from "@starknet-react/core";
+import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import PageCard from "../pageCard";
-import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
-import axios from "axios";
-import SupplyModal from "@/components/modals/SupplyModal";
 
 export interface ICoin {
   name: string;
@@ -843,7 +843,7 @@ const StrkDashboard = () => {
                     %
                   </Text>
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    Jedi Stark APR:{" "}
+                    $STRK APR:{" "}
                     {numberFormatterPercentage(
                       String(
                         (100 *
@@ -990,7 +990,7 @@ const StrkDashboard = () => {
                     Supply APR: {numberFormatterPercentage(supplyAPRs[idx])}%
                   </Text>
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    Jedi Stark APR:{" "}
+                    $STRK APR:{" "}
                     {numberFormatterPercentage(
                       strkData
                         ? (365 *

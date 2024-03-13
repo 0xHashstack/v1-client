@@ -4648,7 +4648,7 @@ const YourBorrowModal = ({
                                                 mt="5px"
                                                 fontWeight="medium"
                                               >
-                                                $STRK APR:{" "}
+                                                Jedi STRK APR:{" "}
                                                 {numberFormatterPercentage(
                                                   String(
                                                     (100 *
