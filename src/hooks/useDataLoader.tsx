@@ -2112,8 +2112,13 @@ const useDataLoader = () => {
         let netbalance=0;
         if(oraclePrices && spendBalances && protocolStats){
             for(var i=0;i<spendBalances?.length;i++){
-              let value=(protocolStats[i]?.totalBorrow- spendBalances[i]?.balance)*oraclePrices[i].price;
-              netbalance+=value;
+              if(spendBalances[i].token=="BTC" || spendBalances[i].token=="DAI"){
+                let value=0;
+                netbalance+=value;
+              }else{
+                let value=(protocolStats[i]?.totalBorrow- spendBalances[i]?.balance)*oraclePrices[i].price;
+                netbalance+=value;
+              }
             }
             if(netbalance>0){
               dispatch(setNetSpendBalance(netbalance));

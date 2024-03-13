@@ -3861,12 +3861,12 @@ const getBoostedApr=(coin:any)=>{
                                         poolAprs,
                                         currentPool,
                                         currentDapp
-                                      )+getBoostedApr(currentBorrowCoin)+getBoostedAprSupply(currentCollateralCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
-                                    inputCollateralAmountUSD *
-                                    protocolStats?.find(
+                                      )+getBoostedApr(currentBorrowCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                                    (inputCollateralAmountUSD *
+                                    (protocolStats?.find(
                                       (stat: any) =>
                                         stat?.token === currentCollateralCoin
-                                    )?.supplyRate) /
+                                    )?.supplyRate+getBoostedAprSupply(currentCollateralCoin)))) /
                                   inputCollateralAmountUSD
                                 ) < 0
                                   ? "rgb(255 94 94)"
@@ -3892,12 +3892,12 @@ const getBoostedApr=(coin:any)=>{
                                       poolAprs,
                                       currentPool,
                                       currentDapp
-                                    )+getBoostedApr(currentBorrowCoin)+getBoostedAprSupply(currentCollateralCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
-                                  inputCollateralAmountUSD *
-                                  protocolStats?.find(
+                                    )+getBoostedApr(currentBorrowCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                                  (inputCollateralAmountUSD *
+                                  (protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentCollateralCoin
-                                  )?.supplyRate) /
+                                  )?.supplyRate)+getBoostedAprSupply(currentCollateralCoin)) )/
                                 inputCollateralAmountUSD
                               ).toFixed(2)}
                               %
@@ -3976,12 +3976,12 @@ const getBoostedApr=(coin:any)=>{
                                         poolAprs,
                                         currentPool,
                                         currentDapp
-                                      )+getBoostedApr(currentBorrowCoin)+getBoostedAprSupply(currentCollateralCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                                      )+getBoostedApr(currentBorrowCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                                     inputCollateralAmountUSD *
-                                    protocolStats?.find(
+                                    (protocolStats?.find(
                                       (stat: any) =>
                                         stat?.token === rToken.slice(1)
-                                    )?.supplyRate) /
+                                    )?.supplyRate+getBoostedAprSupply(rToken.slice(1)))) /
                                   inputCollateralAmountUSD
                                 ) < 0
                                   ? "rgb(255 94 94)"
@@ -4001,12 +4001,12 @@ const getBoostedApr=(coin:any)=>{
                                       poolAprs,
                                       currentPool,
                                       currentDapp
-                                    )+getBoostedApr(currentBorrowCoin)+getBoostedAprSupply(currentCollateralCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                                    )+getBoostedApr(currentBorrowCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
                                   inputCollateralAmountUSD *
-                                  protocolStats?.find(
+                                  (protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === rToken.slice(1)
-                                  )?.supplyRate) /
+                                  )?.supplyRate+getBoostedAprSupply(rToken.slice(1)))) /
                                 inputCollateralAmountUSD
                               ).toFixed(2)}
                               %

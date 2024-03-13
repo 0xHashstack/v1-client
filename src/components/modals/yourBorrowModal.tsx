@@ -1807,10 +1807,7 @@ const YourBorrowModal = ({
                           stat?.token === currentBorrowMarketCoin1.slice(1)
                       )?.borrowRate +
                         getAprByPool(poolAprs, currentPool, currentDapp) +
-                        (getBoostedApr(currentBorrowMarketCoin1.slice(1)) +
-                          getBoostedAprSupply(
-                            borrow?.collateralMarket.slice(1)
-                          )) +
+                        (getBoostedApr(currentBorrowMarketCoin1.slice(1))) +
                         (100 *
                           365 *
                           (poolAllocatedData *
@@ -1827,10 +1824,13 @@ const YourBorrowModal = ({
                           (val: any) =>
                             val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying *
-                        reduxProtocolStats?.find(
+                        (reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.collateralMarket.slice(1)
-                        )?.supplyRate) /
+                        )?.supplyRate+
+                        getBoostedAprSupply(
+                          borrow?.collateralMarket.slice(1)
+                        ))) /
                       dollarConvertor(
                         borrow?.collateralAmountParsed,
                         borrow?.collateralMarket.slice(1),
@@ -1858,10 +1858,8 @@ const YourBorrowModal = ({
                           stat?.token === currentBorrowMarketCoin1.slice(1)
                       )?.borrowRate +
                         getAprByPool(poolAprs, currentPool, currentDapp) +
-                        (getBoostedApr(currentBorrowMarketCoin1.slice(1)) +
-                          getBoostedAprSupply(
-                            borrow?.collateralMarket.slice(1)
-                          )) +
+                        (getBoostedApr(currentBorrowMarketCoin1.slice(1)) 
+                          ) +
                         (100 *
                           365 *
                           (poolAllocatedData *
@@ -1878,10 +1876,12 @@ const YourBorrowModal = ({
                           (val: any) =>
                             val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying *
-                        reduxProtocolStats?.find(
+                        (reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.collateralMarket.slice(1)
-                        )?.supplyRate) /
+                        )?.supplyRate+getBoostedAprSupply(
+                          borrow?.collateralMarket.slice(1)
+                        ))) /
                     dollarConvertor(
                       borrow?.collateralAmountParsed,
                       borrow?.collateralMarket.slice(1),
@@ -1890,7 +1890,42 @@ const YourBorrowModal = ({
                   ).toFixed(2)}
                   %
                 </Text>
-              ) : radioValue == "2" && currentPoolCoin == "Select a pool" ? (
+              ) : radioValue=="1" && currentPool=="Select a pool" ?
+              <Text
+              color={
+                avgs?.find(
+                  (item: any) =>
+                    item?.loanId ==
+                    currentBorrowId1
+                      .slice(currentBorrowId1.indexOf("-") + 1)
+                      .trim()
+                )?.avg < 0
+                  ? "rgb(255 94 94)"
+                  : "#00D395"
+              }
+              fontSize="12px"
+              fontWeight="400"
+              fontStyle="normal"
+            >
+              {avgs?.find(
+                (item: any) =>
+                  item?.loanId ==
+                  currentBorrowId1
+                    .slice(currentBorrowId1.indexOf("-") + 1)
+                    .trim()
+              )?.avg
+                ? avgs?.find(
+                    (item: any) =>
+                      item?.loanId ==
+                      currentBorrowId1
+                        .slice(currentBorrowId1.indexOf("-") + 1)
+                        .trim()
+                  )?.avg
+                : "3.2"}
+              %
+            </Text>
+              
+              : radioValue == "2" && currentPoolCoin == "Select a pool" ? (
                 <Text
                   color={
                     avgs?.find(
@@ -1927,13 +1962,38 @@ const YourBorrowModal = ({
               ) : (
                 <Text
                   color={
-                    avgs?.find(
-                      (item: any) =>
-                        item?.loanId ==
-                        currentBorrowId1
-                          .slice(currentBorrowId1.indexOf("-") + 1)
-                          .trim()
-                    )?.avg < 0
+                    Number(
+                      avgs?.find(
+                        (item: any) =>
+                          item?.loanId ==
+                          currentBorrowId1
+                            .slice(currentBorrowId1.indexOf("-") + 1)
+                            .trim()
+                      )?.avg
+                    ) +
+                      getBoostedApr(currentBorrowMarketCoin1.slice(1)) +
+                      (getBoostedAprSupply(
+                        borrow?.collateralMarket.slice(1)
+                      ) *
+                        (dollarConvertor(
+                          borrow?.collateralAmountParsed,
+                          borrow?.collateralMarket.slice(1),
+                          oraclePrices
+                        ) *
+                          reduxProtocolStats.find(
+                            (val: any) =>
+                              val?.token ==
+                              borrow?.collateralMarket.slice(1)
+                          )?.exchangeRateRtokenToUnderlying)) /
+                        (dollarConvertor(
+                          borrow?.loanAmountParsed,
+                          borrow?.loanMarket.slice(1),
+                          oraclePrices
+                        ) *
+                          reduxProtocolStats?.find(
+                            (val: any) =>
+                              val?.token == borrow?.loanMarket.slice(1)
+                          )?.exchangeRateDTokenToUnderlying) < 0
                       ? "rgb(255 94 94)"
                       : "#00D395"
                   }

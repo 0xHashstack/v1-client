@@ -203,21 +203,41 @@ const SupplyDashboard = ({
         ////console.log(reduxProtocolStats,"supply stats")
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
-            const avg = await effectiveAprDeposit(
-              supply[i],
-              reduxProtocolStats
-            );
-            ////console.log(avg, "avg in supply dash");
-            const data = {
-              token: supply[i].token,
-              avg: avg?.toFixed(2),
-            };
-            // avgs.push(data)
-            avgsData.push(data);
-            // avgs.push()
+            if(supply[i].token!="USDC"){
+              const avg = await effectiveAprDeposit(
+                supply[i],
+                reduxProtocolStats
+              );
+              ////console.log(avg, "avg in supply dash");
+              const data = {
+                token: supply[i].token,
+                avg: avg?.toFixed(2),
+              };
+              // avgs.push(data)
+              avgsData.push(data);
+              // avgs.push()
+            }      
+            else{
+              if(supply[i].rTokenAmountParsed<= 0.000005){
+                continue;
+              }else{
+                const avg = await effectiveAprDeposit(
+                  supply[i],
+                  reduxProtocolStats
+                );
+                console.log(avg,supply[i],"data")
+                ////console.log(avg, "avg in supply dash");
+                const data = {
+                  token: supply[i].token,
+                  avg: avg?.toFixed(2),
+                };
+                // avgs.push(data)
+                avgsData.push(data);
+              }
+            }
           }
           setAvgs(avgsData);
-        }
+      }
         ////console.log(avgs, "avgs in supply");
 
         // dispatch(setUserDeposits(supply));
@@ -377,7 +397,7 @@ const SupplyDashboard = ({
     });
     for(var i=0;i<uniqueData.length;i++){
       totalLength=totalLength+(!Number.isNaN(Number(uniqueData[i]?.avg))?1:0);
-      netApr=netApr+(!Number.isNaN(Number(uniqueData[i]?.avg)) ? Number(uniqueData[i]?.avg):0)+getBoostedApr(uniqueData[i]?.token)
+      netApr=netApr+(!Number.isNaN(Number(uniqueData[i]?.avg)) ? Number(uniqueData[i]?.avg):0)+(!Number.isNaN(Number(uniqueData[i]?.avg)) ?getBoostedApr(uniqueData[i]?.token) :0)
     }
     if(netApr){
       dispatch(setNetAprDeposits((netApr/totalLength).toFixed(2)))
