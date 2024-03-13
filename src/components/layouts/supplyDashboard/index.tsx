@@ -213,21 +213,41 @@ const SupplyDashboard = ({
         ////console.log(reduxProtocolStats,"supply stats")
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
-            const avg = await effectiveAprDeposit(
-              supply[i],
-              reduxProtocolStats
-            );
-            ////console.log(avg, "avg in supply dash");
-            const data = {
-              token: supply[i].token,
-              avg: avg?.toFixed(2),
-            };
-            // avgs.push(data)
-            avgsData.push(data);
-            // avgs.push()
+            if(supply[i].token!="USDC"){
+              const avg = await effectiveAprDeposit(
+                supply[i],
+                reduxProtocolStats
+              );
+              ////console.log(avg, "avg in supply dash");
+              const data = {
+                token: supply[i].token,
+                avg: avg?.toFixed(2),
+              };
+              // avgs.push(data)
+              avgsData.push(data);
+              // avgs.push()
+            }      
+            else{
+              if(supply[i].rTokenAmountParsed<= 0.000005){
+                continue;
+              }else{
+                const avg = await effectiveAprDeposit(
+                  supply[i],
+                  reduxProtocolStats
+                );
+                console.log(avg,supply[i],"data")
+                ////console.log(avg, "avg in supply dash");
+                const data = {
+                  token: supply[i].token,
+                  avg: avg?.toFixed(2),
+                };
+                // avgs.push(data)
+                avgsData.push(data);
+              }
+            }
           }
           setAvgs(avgsData);
-        }
+      }
         ////console.log(avgs, "avgs in supply");
 
         // dispatch(setUserDeposits(supply));
@@ -373,34 +393,7 @@ const SupplyDashboard = ({
     " Annualised interest rate depending on the staked, unstaked and locked supply quantities .",
     "Track the borrowed amount's progress and key details within the protocol.",
   ];
-  useEffect(() => {
-    let netApr: number = 0;
-    const uniqueData: any[] = [];
-    const seen = new Set();
-    let totalLength = 0;
-
-    avgs.forEach((item: { token: any; avg: any }) => {
-      const tokenAvgString = `${item.token},${item.avg}`;
-      if (!seen.has(tokenAvgString)) {
-        uniqueData.push(item);
-        seen.add(tokenAvgString);
-      }
-    });
-    for (var i = 0; i < uniqueData.length; i++) {
-      totalLength =
-        totalLength + (!Number.isNaN(Number(uniqueData[i]?.avg)) ? 1 : 0);
-      netApr =
-        netApr +
-        (!Number.isNaN(Number(uniqueData[i]?.avg))
-          ? Number(uniqueData[i]?.avg)
-          : 0) +
-        getBoostedApr(uniqueData[i]?.token);
-    }
-    if (netApr) {
-      dispatch(setNetAprDeposits((netApr / totalLength).toFixed(2)));
-    }
-  }, [avgs, strkData]);
-
+  
   return loading ? (
     <>
       <Box

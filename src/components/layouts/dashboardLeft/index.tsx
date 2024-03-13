@@ -43,8 +43,8 @@ export const Coins: ICoin[] = [
   { name: "STRK", icon: "mdi-strk", symbol: "STRK" },
   { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },
   { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" },
-  { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
   { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
+  { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
   { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
 ];
 
