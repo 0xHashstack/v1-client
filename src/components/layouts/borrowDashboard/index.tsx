@@ -363,14 +363,14 @@ const getBoostedApr=(coin:any)=>{
           borrow?.spendType == "LIQUIDITY"
             ? Number(
                 avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
-              ) +
+              ) + getBoostedAprSupply(borrow?.collateralMarket.slice(1))+
               (((getAprByPool(
                 poolAprs,
                 allSplit?.[lower_bound + idx]?.tokenA +
                   "/" +
                   allSplit?.[lower_bound + idx]?.tokenB,
                 borrow?.l3App
-              )+((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
+              )+(getBoostedApr(borrow?.loanMarket.slice(1)))+((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
                 ?.tokenA +
                 "/" +
                 allSplit?.[lower_bound + idx]
@@ -393,17 +393,19 @@ const getBoostedApr=(coin:any)=>{
                     allSplit?.[lower_bound + idx]?.tokenB,
                     oraclePrices
                   ))) /
-                dollarConvertor(
+                (dollarConvertor(
                   borrow?.collateralAmountParsed,
                   borrow?.collateralMarket.slice(1),
                   oraclePrices
                 )) *
                 reduxProtocolStats?.find(
                   (val: any) => val?.token == borrow?.collateralMarket.slice(1)
-                )?.exchangeRateRtokenToUnderlying
-            : Number(
+                )?.exchangeRateRtokenToUnderlying)
+            :borrow?.spendType == "UNSPENT" ? (Number(
                 avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
-              );
+              )+getBoostedAprSupply(borrow?.collateralMarket.slice(1))):(Number(
+                avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
+              )+getBoostedAprSupply(borrow?.collateralMarket.slice(1))+getBoostedApr(borrow?.loanMarket.slice(1)));
         netApr = netApr + aprs;
       });
       if (netApr != 0) {
@@ -812,8 +814,8 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                               borderRadius="6px"
                             />
                           ) : (
-                            numberFormatterPercentage(
-                              getBorrowAPR(borrow?.loanMarket.slice(1))+getBoostedApr(borrow?.loanMarket.slice(1))
+                           - numberFormatterPercentage(
+                              getBorrowAPR(borrow?.loanMarket.slice(1))
                             ) + "%"
                           )}
                         </Text>
@@ -841,14 +843,14 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                     (item: any) =>
                                       item?.loanId == borrow?.loanId
                                   )?.avg
-                                ) +
-                                  ((getAprByPool(
+                                ) +((getBoostedAprSupply(borrow?.collateralMarket.slice(1))))+
+                                  (((getAprByPool(
                                     poolAprs,
                                     allSplit?.[lower_bound + idx]?.tokenA +
                                       "/" +
                                       allSplit?.[lower_bound + idx]?.tokenB,
                                     borrow?.l3App
-                                  ) *
+                                  )+getBoostedApr(borrow?.loanMarket.slice(1))) *
                                     (dollarConvertor(
                                       allSplit?.[lower_bound + idx]?.amountA,
                                       allSplit?.[lower_bound + idx]?.tokenA,
@@ -1279,19 +1281,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                             borrow?.l3App
                                           ) */}
                                 {
-                                  (allSplit?.[lower_bound + idx]?.tokenA +
-                                    "/" +
-                                    allSplit?.[lower_bound + idx]?.tokenB ===
-                                    "STRK/ETH" ||
-                                    allSplit?.[lower_bound + idx]?.tokenA +
-                                      "/" +
-                                      allSplit?.[lower_bound + idx]?.tokenB ===
-                                      "ETH/USDC" ||
-                                    allSplit?.[lower_bound + idx]?.tokenA +
-                                      "/" +
-                                      allSplit?.[lower_bound + idx]?.tokenB ===
-                                      "USDC/USDT")
-                                    ?  + (
+                                   (
                                       Number(
                                         avgs?.find(
                                           (item: any) =>
@@ -1340,56 +1330,57 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                         )?.exchangeRateRtokenToUnderlying)
                                     ).toFixed(3) +
                                     "%"
-                                    : "" +
-                                  (
-                                    Number(
-                                      avgs?.find(
-                                        (item: any) =>
-                                          item?.loanId == borrow?.loanId
-                                      )?.avg
-                                    ) +(getBoostedAprSupply(borrow?.collateralMarket.slice(1)))+
-                                    (((getAprByPool(
-                                      poolAprs,
-                                      allSplit?.[lower_bound + idx]?.tokenA +
-                                        "/" +
-                                        allSplit?.[lower_bound + idx]?.tokenB,
-                                      borrow?.l3App
-                                    )+(getBoostedApr(borrow?.loanMarket.slice(1)))+(100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                                      ?.tokenA +
-                                      "/" +
-                                      allSplit?.[lower_bound + idx]
-                                        ?.tokenB))/getTvlByPool(
-                                          poolAprs,
-                                          allSplit?.[lower_bound + idx]
-                                            ?.tokenA +
-                                            "/" +
-                                            allSplit?.[lower_bound + idx]
-                                              ?.tokenB,
-                                          borrow?.l3App
-                                        )) *
-                                      (dollarConvertor(
-                                        allSplit?.[lower_bound + idx]?.amountA,
-                                        allSplit?.[lower_bound + idx]?.tokenA,
-                                        oraclePrices
-                                      ) +
-                                        dollarConvertor(
-                                          allSplit?.[lower_bound + idx]
-                                            ?.amountB,
-                                          allSplit?.[lower_bound + idx]?.tokenB,
-                                          oraclePrices
-                                        ))) /
-                                      dollarConvertor(
-                                        borrow?.collateralAmountParsed,
-                                        borrow?.collateralMarket.slice(1),
-                                        oraclePrices
-                                      )) *
-                                      reduxProtocolStats?.find(
-                                        (val: any) =>
-                                          val?.token ==
-                                          borrow?.collateralMarket.slice(1)
-                                      )?.exchangeRateRtokenToUnderlying
-                                  ).toFixed(3) +
-                                  "%"}
+                                  //   : "" +
+                                  // (
+                                  //   Number(
+                                  //     avgs?.find(
+                                  //       (item: any) =>
+                                  //         item?.loanId == borrow?.loanId
+                                  //     )?.avg
+                                  //   ) +(getBoostedAprSupply(borrow?.collateralMarket.slice(1)))+
+                                  //   (((getAprByPool(
+                                  //     poolAprs,
+                                  //     allSplit?.[lower_bound + idx]?.tokenA +
+                                  //       "/" +
+                                  //       allSplit?.[lower_bound + idx]?.tokenB,
+                                  //     borrow?.l3App
+                                  //   )+(getBoostedApr(borrow?.loanMarket.slice(1)))+(100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
+                                  //     ?.tokenA +
+                                  //     "/" +
+                                  //     allSplit?.[lower_bound + idx]
+                                  //       ?.tokenB))/getTvlByPool(
+                                  //         poolAprs,
+                                  //         allSplit?.[lower_bound + idx]
+                                  //           ?.tokenA +
+                                  //           "/" +
+                                  //           allSplit?.[lower_bound + idx]
+                                  //             ?.tokenB,
+                                  //         borrow?.l3App
+                                  //       )) *
+                                  //     (dollarConvertor(
+                                  //       allSplit?.[lower_bound + idx]?.amountA,
+                                  //       allSplit?.[lower_bound + idx]?.tokenA,
+                                  //       oraclePrices
+                                  //     ) +
+                                  //       dollarConvertor(
+                                  //         allSplit?.[lower_bound + idx]
+                                  //           ?.amountB,
+                                  //         allSplit?.[lower_bound + idx]?.tokenB,
+                                  //         oraclePrices
+                                  //       ))) /
+                                  //     dollarConvertor(
+                                  //       borrow?.collateralAmountParsed,
+                                  //       borrow?.collateralMarket.slice(1),
+                                  //       oraclePrices
+                                  //     )) *
+                                  //     reduxProtocolStats?.find(
+                                  //       (val: any) =>
+                                  //         val?.token ==
+                                  //         borrow?.collateralMarket.slice(1)
+                                  //     )?.exchangeRateRtokenToUnderlying
+                                  // ).toFixed(3) +
+                                  // "%"
+                                  }
                               </Tooltip>
                             </Text>
                           ) : (
@@ -1454,13 +1445,29 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                     >
                                       Borrow:
                                       <Text>
-                                        
-                                        {numberFormatterPercentage(Math.abs(-getBorrowAPR(
-                                          borrow?.loanMarket.slice(1)
-                                        )+getBoostedApr(borrow?.loanMarket.slice(1))))}
+                                        -
+                                        {numberFormatterPercentage(getBorrowAPR(
+                                          borrow?.loanMarket.slice(1)))
+                                }
                                         %
                                       </Text>
                                     </Box>
+                                    {borrow?.spendType != "UNSPENT" &&
+                                      <Box
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        gap="10px"
+                                      >
+                                        Boosted:
+                                        <Text>
+                                          +
+                                          {numberFormatterPercentage(getBoostedApr(
+                                            borrow?.loanMarket.slice(1)))
+                                        }
+                                          %
+                                        </Text>
+                                      </Box>
+                                    }
                                     <Box
                                       display="flex"
                                       justifyContent="space-between"
@@ -1519,7 +1526,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                             (item: any) =>
                                               item?.loanId == borrow?.loanId
                                           )?.avg
-                                        )+ getBoostedApr(borrow?.loanMarket.slice(1))+((dollarConvertor(
+                                        )+ (borrow?.spendType == "UNSPENT" ?0:getBoostedApr(borrow?.loanMarket.slice(1)))+((dollarConvertor(
                                           borrow?.collateralAmountParsed,
                                           borrow?.collateralMarket.slice(1),
                                           oraclePrices
@@ -1537,7 +1544,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                               borrow?.collateralMarket.slice(
                                                 1
                                               )
-                                          )?.supplyRate+getBoostedAprSupply( borrow?.collateralMarket.slice(1)))) /
+                                          )?.supplyRate+ getBoostedAprSupply( borrow?.collateralMarket.slice(1)))) /
                                           (dollarConvertor(
                                             borrow?.loanAmountParsed,
                                             borrow?.loanMarket.slice(1),
@@ -1570,7 +1577,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                             (item: any) =>
                                               item?.loanId == borrow?.loanId
                                           )?.avg
-                                        )+ getBoostedApr(borrow?.loanMarket.slice(1))+((dollarConvertor(
+                                        )+ (borrow?.spendType == "UNSPENT" ?0:getBoostedApr(borrow?.loanMarket.slice(1)))+((dollarConvertor(
                                           borrow?.collateralAmountParsed,
                                           borrow?.collateralMarket.slice(1),
                                           oraclePrices

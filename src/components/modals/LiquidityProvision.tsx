@@ -56,6 +56,8 @@ import {
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
   selectOracleAndFairPrices,
+  selectStrkAprData,
+  selectnetSpendBalance,
 } from "@/store/slices/userAccountSlice";
 import {
   selectAprAndHealthFactor,
@@ -416,6 +418,75 @@ const LiquidityProvisionModal = ({
   const router = useRouter();
   const { pathname } = router;
   const fees = useSelector(selectFees);
+
+  const strkData=useSelector(selectStrkAprData)
+  const netSpendBalance=useSelector(selectnetSpendBalance);
+
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0) ;
+
+  useEffect(()=>{
+    if(strkData!=null){
+      let netallocation=0;
+      for (let token in strkData) {
+          if (strkData.hasOwnProperty(token)) {
+              strkData[token].forEach((info: { allocation: number; }) => {
+                  netallocation += 0.3*info.allocation;
+              });
+          }
+      }
+      setnetStrkBorrow(netallocation)
+    }else{
+      setnetStrkBorrow(0);
+    }
+  },[strkData])
+
+  const getBoostedAprSupply=(coin:any)=>{
+    if(strkData==null){
+      return 0;
+    }else{
+      if(strkData?.[coin]){
+        if(oraclePrices==null){
+          return 0;
+        }else{
+          let value=(strkData?.[coin] ? ((365*100*(strkData?.[coin][strkData[coin]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
+            (curr: any) => curr.name === "STRK"
+          )?.price)/strkData?.[coin][strkData[coin].length-1]?.supply_usd) :0)
+          return value;
+        }
+      }else{
+        return 0;
+      }
+    }
+
+  }
+
+const getBoostedApr=(coin:any)=>{
+  if(strkData==null){
+    return 0;
+  }else{
+    if(strkData?.[coin]){
+      if(oraclePrices==null){
+        return 0;
+      }else{
+        if(netStrkBorrow!=0){
+          if(netSpendBalance){
+            let value=(365*100*netStrkBorrow*oraclePrices?.find(
+              (curr: any) => curr.name === "STRK"
+            )?.price/netSpendBalance)
+            return value;
+          }else{
+            return 0;
+          }
+        }else{
+          return 0;
+        }
+      }
+    }else{
+      return 0;
+    }
+  }
+}
+
 
   useEffect(()=>{
     if(pathname==="/v1/strk-rewards"){
@@ -1647,6 +1718,64 @@ const LiquidityProvisionModal = ({
                       fontWeight="400"
                       fontStyle="normal"
                     >
+                      Boosted APR:{" "}
+                    </Text>
+                    <Tooltip
+                      hasArrow
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label="The annual interest rate charged on borrowed funds from the protocol."
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                      arrowShadowColor="#2B2F35"
+                      maxW="222px"
+                    >
+                      <Box ml="0.2rem" mt="0.2rem">
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Box>
+                  <Text
+                    color="#676D9A"
+                    fontSize="12px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                  >
+                    {!borrowAPRs ||
+                      borrowAPRs.length === 0 ||
+                      (!getBorrowAPR(currentBorrowMarketCoin) &&
+                        !getBorrowAPR(currentBorrowMarketCoin.slice(1))) ? (
+                      <Box pt="2px">
+                        <Skeleton
+                          width="2.3rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="6px"
+                        />
+                      </Box>
+                    ) : numberFormatterPercentage(getBoostedApr(currentBorrowMarketCoin)) ? (
+                      "" + numberFormatterPercentage(getBoostedApr(currentBorrowMarketCoin)) + "%"
+                    ) : (
+                      "" + numberFormatterPercentage(getBoostedApr(currentBorrowMarketCoin.slice(1))) + "%"
+                    )}
+                    {/* 5.56% */}
+                  </Text>
+                </Box>
+                <Box display="flex" justifyContent="space-between" mb="0.3rem">
+                  <Box display="flex">
+                    <Text
+                      color="#676D9A"
+                      fontSize="12px"
+                      fontWeight="400"
+                      fontStyle="normal"
+                    >
                       Effective apr:{" "} 
                     </Text>
                     <Tooltip
@@ -1680,7 +1809,7 @@ const LiquidityProvisionModal = ({
                         (-(reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.loanMarket.slice(1)
-                        )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap)))) +
+                        )?.borrowRate) +(getBoostedApr(borrow?.collateralMarket.slice(1)))+ getAprByPool(poolApr, currentPool, currentSwap)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap)))) +
                         dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                           (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying) *
@@ -1700,7 +1829,7 @@ const LiquidityProvisionModal = ({
                           (-(reduxProtocolStats?.find(
                             (stat: any) =>
                               stat?.token === borrow?.loanMarket.slice(1)
-                          )?.borrowRate) + getAprByPool(poolApr, currentPool, currentSwap)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap))) + 
+                          )?.borrowRate) +(getBoostedApr(borrow?.collateralMarket.slice(1)))+ getAprByPool(poolApr, currentPool, currentSwap)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolApr, currentPool, currentSwap))) + 
                           dollarConvertor(borrow?.collateralAmountParsed, borrow?.collateralMarket.slice(1), oraclePrices) * (reduxProtocolStats.find(
                             (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                           )?.exchangeRateRtokenToUnderlying) *

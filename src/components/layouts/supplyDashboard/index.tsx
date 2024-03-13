@@ -26,7 +26,7 @@ import { useAccount } from "@starknet-react/core";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useDispatch, useSelector } from "react-redux";
-import { selectOraclePrices, selectProtocolStats } from "@/store/slices/readDataSlice";
+import { selectOraclePrices, selectProtocolStats, setNetAprDeposits } from "@/store/slices/readDataSlice";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
 
@@ -362,6 +362,27 @@ const SupplyDashboard = ({
     " Annualised interest rate depending on the staked, unstaked and locked supply quantities .",
     "Track the borrowed amount's progress and key details within the protocol.",
   ];
+  useEffect(()=>{
+    let netApr: number = 0;
+    const uniqueData: any[] = [];
+    const seen = new Set();
+    let totalLength=0;
+    
+    avgs.forEach((item: { token: any; avg: any; }) => {
+        const tokenAvgString = `${item.token},${item.avg}`;
+        if (!seen.has(tokenAvgString)) {
+            uniqueData.push(item);
+            seen.add(tokenAvgString);
+        }
+    });
+    for(var i=0;i<uniqueData.length;i++){
+      totalLength=totalLength+(!Number.isNaN(Number(uniqueData[i]?.avg))?1:0);
+      netApr=netApr+(!Number.isNaN(Number(uniqueData[i]?.avg)) ? Number(uniqueData[i]?.avg):0)+getBoostedApr(uniqueData[i]?.token)
+    }
+    if(netApr){
+      dispatch(setNetAprDeposits((netApr/totalLength).toFixed(2)))
+    }
+  },[avgs,strkData])
 
   return loading ? (
     <>
@@ -631,7 +652,7 @@ const SupplyDashboard = ({
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                        color={supply?.rToken?.slice(1)=="BTC" ?"white": "#00D395"}
+                        color={"white"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         {!protocolStats || !protocolStats[idx] ? (
@@ -680,9 +701,9 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />: */}
                         {avgs && avgs?.length > 0 ? (
-                          avgs?.find(
+                          numberFormatterPercentage(Number(avgs?.find(
                             (item: any) => item?.token == supply?.token
-                          )?.avg + "%"
+                          )?.avg)+getBoostedApr(supply?.rToken?.slice(1))) + "%"
                         ) : (
                           <Skeleton
                             width="4rem"
