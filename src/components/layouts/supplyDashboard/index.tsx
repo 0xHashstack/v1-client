@@ -26,13 +26,14 @@ import { useAccount } from "@starknet-react/core";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useDispatch, useSelector } from "react-redux";
-import { selectProtocolStats } from "@/store/slices/readDataSlice";
+import { selectOraclePrices, selectProtocolStats } from "@/store/slices/readDataSlice";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
 
 import TableInfoIcon from "../table/tableIcons/infoIcon";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import posthog from "posthog-js";
+import { selectStrkAprData } from "@/store/slices/userAccountSlice";
 
 export interface ICoin {
   name: string;
@@ -139,7 +140,27 @@ const SupplyDashboard = ({
   };
   const [avgs, setAvgs] = useState<any>([]);
   const avgsData: any = [];
+  const strkData=useSelector(selectStrkAprData);
+  const oraclePrices = useSelector(selectOraclePrices);
+  const getBoostedApr=(coin:any)=>{
+    if(strkData==null){
+      return 0;
+    }else{
+      if(strkData?.[coin]){
+        if(oraclePrices==null){
+          return 0;
+        }else{
+          let value=(strkData?.[coin] ? ((365*100*(strkData?.[coin][strkData[coin]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
+            (curr: any) => curr.name === "STRK"
+          )?.price)/strkData?.[coin][strkData[coin].length-1]?.supply_usd) :0)
+          return value;
+        }
+      }else{
+        return 0;
+      }
+    }
 
+  }
   useEffect(() => {
     const getSupply = async () => {
       if (!userDeposits || !reduxProtocolStats) {
@@ -610,6 +631,7 @@ const SupplyDashboard = ({
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
+                        color={supply?.rToken?.slice(1)=="BTC" ?"white": "#00D395"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         {!protocolStats || !protocolStats[idx] ? (
@@ -626,7 +648,7 @@ const SupplyDashboard = ({
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
                                 return stat;
-                            })?.supplyRate
+                            })?.supplyRate + getBoostedApr(supply?.rToken?.slice(1))
                           )?.toFixed(3) + "%"
                         )}
                       </Box>

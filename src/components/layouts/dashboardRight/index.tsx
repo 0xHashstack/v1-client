@@ -451,7 +451,7 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" : "#00D395"}
+                    color={coin?.name == "DAI" ? "#3E415C" :coin?.name=="BTC" ?"white": "#00D395"}
                     // bgColor={"blue"}
                   >
                                         <Tooltip
