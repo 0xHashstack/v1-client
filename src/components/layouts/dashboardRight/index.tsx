@@ -112,9 +112,9 @@ const DashboardRight = ({
       let netallocation = 0;
       for (let token in strkData) {
         if (strkData.hasOwnProperty(token)) {
-          strkData[token].forEach((info: { allocation: number }) => {
-            netallocation += 0.3 * info.allocation;
-          });
+          const array = strkData[token];
+          const lastObject = array[array.length - 1]; 
+          netallocation += 0.3 * lastObject.allocation;
         }
       }
       setnetStrkBorrow(netallocation);

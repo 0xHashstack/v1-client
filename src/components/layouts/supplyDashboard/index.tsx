@@ -679,6 +679,7 @@ const SupplyDashboard = ({
                               <Box
                                 display="flex"
                                 justifyContent="space-between"
+                                gap={10}
                               >
                                 <Text>APR</Text>
                                 <Text>
@@ -692,6 +693,7 @@ const SupplyDashboard = ({
                               <Box
                                 display="flex"
                                 justifyContent="space-between"
+                                gap={10}
                               >
                                 <Text>Supply APR</Text>
                                 <Text>
@@ -701,6 +703,7 @@ const SupplyDashboard = ({
                               <Box
                                 display="flex"
                                 justifyContent="space-between"
+                                gap={10}
                               >
                                 <Text>STRK APR</Text>
                                 <Text>
