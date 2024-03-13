@@ -187,7 +187,6 @@ export async function getNetAprDeposits(
         deposit.underlyingAssetAmountParsed * oraclePrice.price;
       totalSupply += depositAmountUsd;
       netSupplyInterest += depositAmountUsd * (market_info.supplyRate+getBoostedApr(deposit?.token,strkData,oraclePrices));
-      console.log(netSupplyInterest,strkData,deposit?.token,getBoostedApr(strkData,deposit?.token,oraclePrices),"net supply ")
     }
   }
 
