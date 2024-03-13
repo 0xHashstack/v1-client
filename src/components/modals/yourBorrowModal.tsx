@@ -4629,6 +4629,8 @@ const YourBorrowModal = ({
                                             color="#B1B0B5"
                                             mt="5px"
                                             fontWeight="medium"
+                                            display="flex"
+                                            justifyContent="flex-end"
                                           >
                                             Pool APR:{" "}
                                             {numberFormatterPercentage(
