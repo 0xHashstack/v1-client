@@ -1,25 +1,28 @@
+import { IDeposit } from "@/Blockchain/interfaces/interfaces";
+import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import BorrowDashboard from "@/components/layouts/borrowDashboard";
 import NavButtons from "@/components/layouts/navButtons";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import PageCard from "@/components/layouts/pageCard";
 import StatsBoard from "@/components/layouts/statsBoard";
 import SupplyDashboard from "@/components/layouts/supplyDashboard";
+import YourSupplyModal from "@/components/modals/yourSupply";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import Pagination from "@/components/uiElements/pagination";
-import { Box, HStack, Stack, Text, VStack } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { Coins } from "@/utils/constants/coin";
-import YourSupplyModal from "@/components/modals/yourSupply";
-import { useDispatch } from "react-redux/es/hooks/useDispatch";
-import { useAccount } from "@starknet-react/core";
-import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
-import { selectYourSupply, selectNetAPR, selectnetAprDeposits } from "@/store/slices/readDataSlice";
-import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
-import { IDeposit } from "@/Blockchain/interfaces/interfaces";
-import { useSelector } from "react-redux";
-import { Skeleton } from "@chakra-ui/react";
-import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
+import {
+  selectNetAPR,
+  selectYourSupply,
+  selectnetAprDeposits,
+} from "@/store/slices/readDataSlice";
+import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
+import { Coins } from "@/utils/constants/coin";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import { Box, HStack, Skeleton, Stack, Text, VStack } from "@chakra-ui/react";
+import { useAccount } from "@starknet-react/core";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux/es/hooks/useDispatch";
 const YourSupply = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [
@@ -97,7 +100,7 @@ const YourSupply = () => {
             )}
           </VStack>
           <VStack gap={"3px"}>
-            <Text color="#6e7681" fontSize="14px" alignItems="center">
+            <Text color={"#6e7681"} fontSize="14px" alignItems="center">
               Net APR
             </Text>
             {netAPR == null ? (
@@ -109,7 +112,10 @@ const YourSupply = () => {
                 borderRadius="6px"
               />
             ) : (
-              <Text color="#e6edf3" fontSize="20px">
+              <Text
+                color={netAPR > 0 ? "#00D395" : "rgb(255 94 94)"}
+                fontSize="20px"
+              >
                 {netAPR ? `${netAPR}%` : "NA"}
               </Text>
             )}

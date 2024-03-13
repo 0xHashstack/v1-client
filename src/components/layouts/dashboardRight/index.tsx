@@ -475,8 +475,12 @@ const DashboardRight = ({
                       boxShadow="dark-lg"
                       label={
                         <Box>
-                          <Box display="flex" justifyContent="space-between">
-                            <Text>APR </Text>
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            gap={10}
+                          >
+                            <Text>APR</Text>
                             <Text>
                               {numberFormatterPercentage(
                                 Math.abs(getBoostedApr(coin) - borrowAPRs[idx])
@@ -484,18 +488,22 @@ const DashboardRight = ({
                               %
                             </Text>
                           </Box>
-                          <Box display="flex" justifyContent="space-between">
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            gap={10}
+                          >
                             <Text>Borrow APR</Text>
                             <Text>
-                              {numberFormatterPercentage(borrowAPRs[idx])}%
+                              -{numberFormatterPercentage(borrowAPRs[idx])}%
                             </Text>
                           </Box>
                           <Box
                             display="flex"
                             justifyContent="space-between"
-                            gap={4}
+                            gap={10}
                           >
-                            <Text>Boosted APR</Text>
+                            <Text>STRK APR</Text>
                             <Text>
                               {numberFormatterPercentage(getBoostedApr(coin))}%
                             </Text>

@@ -128,6 +128,7 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import axios from "axios";
 import mixpanel from "mixpanel-browser";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import posthog from "posthog-js";
 import { useEffect, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -137,7 +138,6 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
-import { useRouter } from "next/router";
 const TradeModal = ({
   buttonText,
   coin,
@@ -1411,7 +1411,6 @@ const TradeModal = ({
       }
     } catch (err) {
       return 0;
-      console.log(err);
     }
   };
   return (
@@ -3741,7 +3740,7 @@ const TradeModal = ({
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
                       <Text color="#676D9A" fontSize="xs">
-                        Borrow apr:{" "}
+                        Borrow APR:{" "}
                       </Text>
                       <Tooltip
                         hasArrow
@@ -3787,13 +3786,13 @@ const TradeModal = ({
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
                       <Text color="#676D9A" fontSize="xs">
-                        Boosted APR:{" "}
+                        STRK APR:{" "}
                       </Text>
                       <Tooltip
                         hasArrow
                         placement="right"
                         boxShadow="dark-lg"
-                        label="The annual interest rate charged on borrowed funds from the protocol."
+                        label="The annual percentage rate in which STRK is rewarded."
                         bg="#02010F"
                         fontSize={"13px"}
                         fontWeight={"400"}
@@ -3853,7 +3852,7 @@ const TradeModal = ({
                           lineHeight="16px"
                           color="#676D9A"
                         >
-                          Effective apr:
+                          Effective APR:
                         </Text>
                         <Tooltip
                           hasArrow

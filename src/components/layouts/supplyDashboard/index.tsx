@@ -709,7 +709,7 @@ const SupplyDashboard = ({
                                 display="flex"
                                 justifyContent="space-between"
                               >
-                                <Text>Boosted APR</Text>
+                                <Text>STRK APR</Text>
                                 <Text>
                                   {numberFormatterPercentage(
                                     getBoostedApr(supply?.rToken?.slice(1))

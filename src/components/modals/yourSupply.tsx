@@ -1410,7 +1410,7 @@ const YourSupplyModal = ({
                               font-size="12px"
                               color="#676D9A"
                             >
-                              Supply apr:
+                              Supply APR:
                             </Text>
                             <Tooltip
                               hasArrow

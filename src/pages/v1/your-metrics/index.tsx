@@ -79,7 +79,7 @@ const YourMetrics = () => {
           stats?.[0],
           stats?.[1],
           stats?.[4],
-          stats?.[5]
+          stats?.[5],
         ]);
       };
       fetchProtocolStats();
@@ -284,7 +284,7 @@ const YourMetrics = () => {
                     // p="13px 25px"
                   >
                     <Text color="#6e7681" fontSize="14px" alignItems="center">
-                      Average borrow apr
+                      Average borrow APR
                     </Text>
                     {avgBorrowApr == null ? (
                       <Skeleton
@@ -311,7 +311,7 @@ const YourMetrics = () => {
                     // p="13px 25px"
                   >
                     <Text color="#6e7681" fontSize="14px" alignItems="center">
-                      Effective apr
+                      Effective APR
                     </Text>
                     {netAPR == null ? (
                       <Skeleton
@@ -326,7 +326,10 @@ const YourMetrics = () => {
                         NA
                       </Text>
                     ) : (
-                      <Text color={netAPR<0 ?"rgb(255 94 94)":"#e6edf3"} fontSize="20px">
+                      <Text
+                        color={netAPR < 0 ? "rgb(255 94 94)" : "#e6edf3"}
+                        fontSize="20px"
+                      >
                         {netAPR}%
                       </Text>
                     )}

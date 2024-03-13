@@ -1623,7 +1623,7 @@ const YourBorrowModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  Borrow apr:{" "}
+                  Borrow APR:{" "}
                 </Text>
                 <Tooltip
                   hasArrow
@@ -1675,13 +1675,13 @@ const YourBorrowModal = ({
               <Box display="flex" justifyContent="space-between" mb="1">
                 <Box display="flex">
                   <Text color="#676D9A" fontSize="xs">
-                    Boosted APR:{" "}
+                    STRK APR:{" "}
                   </Text>
                   <Tooltip
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="The annual interest rate charged on borrowed funds from the protocol."
+                    label="The annual percentage rate in which STRK is rewarded."
                     bg="#02010F"
                     fontSize={"13px"}
                     fontWeight={"400"}
@@ -1767,7 +1767,7 @@ const YourBorrowModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  Effective apr:{" "}
+                  Effective APR:{" "}
                 </Text>
                 <Tooltip
                   hasArrow
@@ -6258,7 +6258,7 @@ const YourBorrowModal = ({
                             font-size="12px"
                             color="#676D9A"
                           >
-                            Borrow apr:
+                            Borrow APR:
                           </Text>
                           <Tooltip
                             color="#F0F0F5"
@@ -6305,13 +6305,13 @@ const YourBorrowModal = ({
                       <Box display="flex" justifyContent="space-between" mb="1">
                         <Box display="flex">
                           <Text color="#676D9A" fontSize="xs">
-                            Boosted APR:{" "}
+                            STRK APR:{" "}
                           </Text>
                           <Tooltip
                             hasArrow
                             placement="right"
                             boxShadow="dark-lg"
-                            label="The annual interest rate charged on borrowed funds from the protocol."
+                            label="The annual percentage rate in which STRK is rewarded."
                             bg="#02010F"
                             fontSize={"13px"}
                             fontWeight={"400"}
@@ -6406,7 +6406,7 @@ const YourBorrowModal = ({
                             lineHeight="16px"
                             color="#676D9A"
                           >
-                            Effective apr:
+                            Effective APR:
                           </Text>
                           <Tooltip
                             color="#F0F0F5"

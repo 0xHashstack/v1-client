@@ -347,7 +347,9 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   <Button
                     variant="ghost"
                     color="#0969DA"
-                    _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
+                    _hover={{
+                      bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
+                    }}
                     onClick={() => {
                       setinputAmount(walletBalance);
                       setSliderValue(100);
@@ -575,13 +577,13 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                       font-size="12px"
                       color="#6A737D"
                     >
-                      Supply apr:
+                      Supply APR:
                     </Text>
                     <Tooltip
                       hasArrow
                       placement="right"
                       boxShadow="dark-lg"
-                      label="Supply apr"
+                      label="Supply APR"
                       bg="#24292F"
                       fontSize={"smaller"}
                       fontWeight={"thin"}
@@ -649,7 +651,9 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   mt="1.5rem"
                   mb="1.5rem"
                   border="1px solid #2B2F35"
-                  _hover={{ bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))" }}
+                  _hover={{
+                    bg: "var(--surface-of-10, rgba(103, 109, 154, 0.10))",
+                  }}
                 >
                   Supply
                 </Button>
