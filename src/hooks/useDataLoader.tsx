@@ -42,6 +42,7 @@ import {
   selectProtocolStatsCount,
   selectSpendBalances,
   selectStakingSharesCount,
+  selectStrkAprData,
   selectTransactionStatus,
   selectUserDepositsCount,
   selectUserInfoCount,
@@ -230,6 +231,7 @@ const useDataLoader = () => {
   const transactionStatus = useSelector(selectTransactionStatus);
   const poolAprs=useSelector(selectJediswapPoolAprs);
   const spendBalances=useSelector(selectSpendBalances)
+  const strkData = useSelector(selectStrkAprData);
   const [poolsPairs, setPoolPairs] = useState<any>([
     {
       address: "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e",
@@ -1767,7 +1769,7 @@ const useDataLoader = () => {
           userLoansCount == transactionRefresh &&
           dataOraclePrices &&
           netAprCount < transactionRefresh
-          && effectiveApr
+          && effectiveApr && strkData
         ) {
          //console.log("user info called inside - transactionRefresh");
           const dataNetApr = await getNetApr(
@@ -1780,13 +1782,14 @@ const useDataLoader = () => {
             dataDeposit,
             dataOraclePrices,
             protocolStats,
+            strkData
           )
 
           const dataNetAprLoans = await getNetAprLoans(
             userLoans,
             dataOraclePrices,
             protocolStats,
-            effectiveApr
+            effectiveApr,
           )
           //@ts-ignore
           if (isNaN(dataNetAprLoans)) {
@@ -1827,7 +1830,8 @@ const useDataLoader = () => {
     dataOraclePrices,
     protocolStatsCount,
     transactionRefresh,,
-    effectiveApr
+    effectiveApr,
+    strkData
   ]);
 
   useEffect(() => {
