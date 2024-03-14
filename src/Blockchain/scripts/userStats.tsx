@@ -143,10 +143,35 @@ export async function getNetworth(
 
   return netWorth;
 }
+export const getBoostedApr = (coin: string,strkData:any,oraclePrices:any) => {
+  if (strkData == null) {
+    return 0;
+  } else {
+    if (strkData?.[coin]) {
+      if (oraclePrices == null) {
+        return 0;
+      } else {
+        let value = strkData?.[coin]
+          ? (365 *
+              100 *
+              strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
+              0.7 *
+              oraclePrices?.find((curr: any) => curr.name === "STRK")
+                ?.price) /
+            strkData?.[coin][strkData[coin].length - 1]?.supply_usd
+          : 0;
+        return value;
+      }
+    } else {
+      return 0;
+    }
+  }
+};
 export async function getNetAprDeposits(
   deposits: IDeposit[],
   oraclePrices: OraclePrice[],
-  marketInfos: IMarketInfo[]
+  marketInfos: IMarketInfo[],
+  strkData: any
 ) {
   let totalSupply = 0,
     netSupplyInterest = 0;
@@ -157,11 +182,11 @@ export async function getNetAprDeposits(
     let market_info = marketInfos.find(
       (market_info) => market_info?.tokenAddress === deposit?.tokenAddress
     );
-    if (oraclePrice && market_info) {
+    if (oraclePrice && market_info && strkData) {
       let depositAmountUsd =
         deposit.underlyingAssetAmountParsed * oraclePrice.price;
       totalSupply += depositAmountUsd;
-      netSupplyInterest += depositAmountUsd * market_info.supplyRate;
+      netSupplyInterest += depositAmountUsd * (market_info.supplyRate+getBoostedApr(deposit?.token,strkData,oraclePrices));
     }
   }
 
@@ -218,7 +243,8 @@ export async function getNetApr(
   deposits: IDeposit[],
   loans: ILoan[],
   oraclePrices: OraclePrice[],
-  marketInfos: IMarketInfo[]
+  marketInfos: IMarketInfo[],
+  strkData:any
 ) {
   let totalSupply = 0,
     netSupplyInterest = 0;
@@ -229,11 +255,11 @@ export async function getNetApr(
     let market_info = marketInfos.find(
       (market_info) => market_info?.tokenAddress === deposit?.tokenAddress
     );
-    if (oraclePrice && market_info) {
+    if (oraclePrice && market_info && strkData) {
       let depositAmountUsd =
         deposit.underlyingAssetAmountParsed * oraclePrice.price;
       totalSupply += depositAmountUsd;
-      netSupplyInterest += depositAmountUsd * market_info.supplyRate;
+      netSupplyInterest += depositAmountUsd * (market_info.supplyRate+getBoostedApr(deposit?.token,strkData,oraclePrices));
     }
   }
 

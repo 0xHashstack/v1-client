@@ -1,5 +1,11 @@
+import FireIcon from "@/assets/icons/fireIcon";
 import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
+import {
+  selectStrkAprData,
+  selectnetSpendBalance,
+  selectnetStrkBorrow,
+} from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import {
@@ -20,6 +26,7 @@ import {
 import html2canvas from "html2canvas";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -30,8 +37,8 @@ export const Coins: ICoin[] = [
   { name: "STRK", icon: "mdi-strk", symbol: "STRK" },
   { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },
   { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" },
-  { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
   { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
+  { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
   { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
 ];
 
@@ -95,6 +102,26 @@ const DashboardRight = ({
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
+  const strkData = useSelector(selectStrkAprData);
+  const netSpendBalance = useSelector(selectnetSpendBalance);
+
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0);
+
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0;
+      for (let token in strkData) {
+        if (strkData.hasOwnProperty(token)) {
+          const array = strkData[token];
+          const lastObject = array[array.length - 1]; 
+          netallocation += 0.3 * lastObject.allocation;
+        }
+      }
+      setnetStrkBorrow(netallocation);
+    } else {
+      setnetStrkBorrow(0);
+    }
+  }, [strkData]);
 
   useEffect(() => {
     ////console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
@@ -107,6 +134,36 @@ const DashboardRight = ({
     "The annual interest rate charged on borrowed funds from the protocol.",
   ];
 
+  const getBoostedApr = (coin: any) => {
+    if (strkData == null) {
+      return 0;
+    } else {
+      if (strkData?.[coin?.name]) {
+        if (oraclePrices == null) {
+          return 0;
+        } else {
+          if (netStrkBorrow != 0) {
+            if (netSpendBalance) {
+              let value =
+                (365 *
+                  100 *
+                  netStrkBorrow *
+                  oraclePrices?.find((curr: any) => curr.name === "STRK")
+                    ?.price) /
+                netSpendBalance;
+              return value;
+            } else {
+              return 0;
+            }
+          } else {
+            return 0;
+          }
+        }
+      } else {
+        return 0;
+      }
+    }
+  };
   return (
     <TableContainer
       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
@@ -402,21 +459,91 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == "DAI" ? "#3E415C" : "white"}
+                    color={
+                      coin?.name == "DAI"
+                        ? "#3E415C"
+                        : coin?.name == "BTC"
+                        ? "white"
+                        : "#00D395"
+                    }
                     // bgColor={"blue"}
                   >
-                    {/* {checkGap(idx1, idx2)} */}
-                    {borrowAPRs[idx] == null ? (
-                      <Skeleton
-                        width="6rem"
-                        height="1.4rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />
+                    <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="bottom"
+                      boxShadow="dark-lg"
+                      label={
+                        <Box>
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            gap={10}
+                          >
+                            <Text>APR</Text>
+                            <Text>
+                              {numberFormatterPercentage(
+                                Math.abs(getBoostedApr(coin) - borrowAPRs[idx])
+                              )}
+                              %
+                            </Text>
+                          </Box>
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            gap={10}
+                          >
+                            <Text>Borrow APR</Text>
+                            <Text>
+                              -{numberFormatterPercentage(borrowAPRs[idx])}%
+                            </Text>
+                          </Box>
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            gap={10}
+                          >
+                            <Text>STRK APR</Text>
+                            <Text>
+                              {numberFormatterPercentage(getBoostedApr(coin))}%
+                            </Text>
+                          </Box>
+                        </Box>
+                      }
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                    >
+                      {borrowAPRs[idx] == null ? (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (
+                        numberFormatterPercentage(
+                          Math.abs(getBoostedApr(coin) - borrowAPRs[idx])
+                        ) + "%"
+                      )}
+                    </Tooltip>
+                    {borrowAPRs[idx] != null ? (
+                      coin.name != "BTC" &&
+                      coin.name !== "DAI" && (
+                        <Box ml="0.4rem">
+                          <FireIcon />
+                        </Box>
+                      )
                     ) : (
-                      numberFormatterPercentage(borrowAPRs[idx]) + "%"
+                      <></>
                     )}
+                    {/* {checkGap(idx1, idx2)} */}
                   </Box>
                 </Td>
                 <Td

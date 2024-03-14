@@ -1,73 +1,90 @@
 import {
+  Box,
+  Button,
+  Card,
   Modal,
-  ModalOverlay,
-  ModalContent,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
-  Button,
-  Tooltip,
-  Box,
-  Text,
-  TabList,
-  Tab,
-  TabPanel,
-  Tabs,
-  TabPanels,
-  RadioGroup,
-  Radio,
-  NumberInput,
-  Slider,
-  SliderMark,
-  SliderTrack,
-  SliderThumb,
-  SliderFilledTrack,
-  NumberInputField,
-  Stack,
-  Card,
+  ModalContent,
   ModalHeader,
+  ModalOverlay,
+  NumberInput,
+  NumberInputField,
+  Radio,
+  RadioGroup,
   Skeleton,
+  Slider,
+  SliderFilledTrack,
+  SliderMark,
+  SliderThumb,
+  SliderTrack,
+  Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  Tooltip,
+  useDisclosure,
 } from "@chakra-ui/react";
 import TransactionFees from "../../../TransactionFees.json";
 /* Coins logo import  */
-import BTCLogo from "../../assets/icons/coins/btc";
-import USDCLogo from "@/assets/icons/coins/usdc";
-import USDTLogo from "@/assets/icons/coins/usdt";
-import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
-import SliderPointer from "@/assets/icons/sliderPointer";
-import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
-import AnimatedButton from "../uiElements/buttons/AnimationButton";
-import DropdownUp from "../../assets/icons/dropdownUpIcon";
-import InfoIcon from "../../assets/icons/infoIcon";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setModalDropdown,
-  selectNavDropdowns,
-  selectModalDropDowns,
-  resetModalDropdowns,
-} from "@/store/slices/dropdownsSlice";
-import { useEffect, useState } from "react";
-import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
-import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
+import ETHLogo from "@/assets/icons/coins/eth";
 import SmallEth from "@/assets/icons/coins/smallEth";
 import SmallUsdt from "@/assets/icons/coins/smallUsdt";
+import USDCLogo from "@/assets/icons/coins/usdc";
+import USDTLogo from "@/assets/icons/coins/usdt";
+import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
 import MySwapDisabled from "@/assets/icons/dapps/mySwapDisabled";
-import UsdcToUsdt from "@/assets/icons/pools/usdcToUsdt";
-import EthToUsdc from "@/assets/icons/pools/ethToUsdc";
-import DaiToEth from "@/assets/icons/pools/daiToEth";
 import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
-
+import DaiToEth from "@/assets/icons/pools/daiToEth";
+import EthToUsdc from "@/assets/icons/pools/ethToUsdc";
+import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
+import UsdcToUsdt from "@/assets/icons/pools/usdcToUsdt";
+import SliderPointer from "@/assets/icons/sliderPointer";
+import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import {
-  selectActiveTransactions,
-  selectWalletBalance,
-  setActiveTransactions,
-  // setCurrentTransactionStatus,
-  setInputYourBorrowModalRepayAmount,
-  setTransactionStartedAndModalClosed,
-  setTransactionStatus,
-} from "@/store/slices/userAccountSlice";
+  resetModalDropdowns,
+  selectModalDropDowns,
+  selectNavDropdowns,
+  setModalDropdown,
+} from "@/store/slices/dropdownsSlice";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import BTCLogo from "../../assets/icons/coins/btc";
+import DropdownUp from "../../assets/icons/dropdownUpIcon";
+import InfoIcon from "../../assets/icons/infoIcon";
+import AnimatedButton from "../uiElements/buttons/AnimationButton";
+
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import useAddCollateral from "@/Blockchain/hooks/Writes/useAddCollateral";
+import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
+import useRepay from "@/Blockchain/hooks/Writes/useRepay";
+import useRevertInteractWithL3 from "@/Blockchain/hooks/Writes/useRevertInteractWithL3";
+import { NativeToken } from "@/Blockchain/interfaces/interfaces";
+import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
+import { getrTokensMinted } from "@/Blockchain/scripts/Rewards";
+import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
+import { getTokenFromAddress } from "@/Blockchain/stark-constants";
+import {
+  getTokenFromName,
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
+import ArrowUp from "@/assets/icons/arrowup";
+import STRKLogo from "@/assets/icons/coins/strk";
+import WarningIcon from "@/assets/icons/coins/warningIcon";
+import MySwap from "@/assets/icons/dapps/mySwap";
+import BtcToDai from "@/assets/icons/pools/btcToDai";
+import BtcToUsdc from "@/assets/icons/pools/btcToUsdc";
+import StrkToEth from "@/assets/icons/pools/strkToEth";
+import UsdcToDai from "@/assets/icons/pools/usdcToDai";
+import UsdtToDai from "@/assets/icons/pools/usdtToDai";
+import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import {
   selectAprAndHealthFactor,
   selectEffectiveApr,
@@ -83,30 +100,30 @@ import {
   selectUserDeposits,
   selectUserLoans,
 } from "@/store/slices/readDataSlice";
-import SliderTooltip from "../uiElements/sliders/sliderTooltip";
-import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
-import SuccessButton from "../uiElements/buttons/SuccessButton";
-import ArrowUp from "@/assets/icons/arrowup";
-import useRepay from "@/Blockchain/hooks/Writes/useRepay";
-import ErrorButton from "../uiElements/buttons/ErrorButton";
-import useAddCollateral from "@/Blockchain/hooks/Writes/useAddCollateral";
-import useSwap from "../../Blockchain/hooks/Writes/useSwap";
-import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
-import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import {
-  getTokenFromName,
-  tokenAddressMap,
-  tokenDecimalsMap,
-} from "@/Blockchain/utils/addressServices";
-import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
-import { Account, uint256 } from "starknet";
+  selectActiveTransactions,
+  selectStrkAprData,
+  selectWalletBalance,
+  selectnetSpendBalance,
+  setActiveTransactions,
+  // setCurrentTransactionStatus,
+  setInputYourBorrowModalRepayAmount,
+  setTransactionStartedAndModalClosed,
+  setTransactionStatus,
+} from "@/store/slices/userAccountSlice";
+import dollarConvertor from "@/utils/functions/dollarConvertor";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import { useAccount, useWaitForTransaction } from "@starknet-react/core";
-import { toast } from "react-toastify";
-import CopyToClipboard from "react-copy-to-clipboard";
-import useRevertInteractWithL3 from "@/Blockchain/hooks/Writes/useRevertInteractWithL3";
-import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
-import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import axios from "axios";
+import { getAddress } from "ethers/lib/utils";
+import mixpanel from "mixpanel-browser";
+import Image from "next/image";
+import posthog from "posthog-js";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { toast } from "react-toastify";
+import { Account, uint256 } from "starknet";
+import useSwap from "../../Blockchain/hooks/Writes/useSwap";
 import {
   getJediEstimateLiquiditySplit,
   getJediEstimatedLiqALiqBfromLp,
@@ -114,24 +131,9 @@ import {
   getMySwapEstimateLiquiditySplit,
   getMySwapEstimatedLpAmountOut,
 } from "../../Blockchain/scripts/l3interaction";
-import { getAddress } from "ethers/lib/utils";
-import { getTokenFromAddress } from "@/Blockchain/stark-constants";
-import MySwap from "@/assets/icons/dapps/mySwap";
-import BtcToUsdc from "@/assets/icons/pools/btcToUsdc";
-import BtcToDai from "@/assets/icons/pools/btcToDai";
-import UsdtToDai from "@/assets/icons/pools/usdtToDai";
-import UsdcToDai from "@/assets/icons/pools/usdcToDai";
-import Image from "next/image";
-import mixpanel from "mixpanel-browser";
-import WarningIcon from "@/assets/icons/coins/warningIcon";
-import { getrTokensMinted } from "@/Blockchain/scripts/Rewards";
-import { NativeToken } from "@/Blockchain/interfaces/interfaces";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import dollarConvertor from "@/utils/functions/dollarConvertor";
-import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
-import posthog from "posthog-js";
-import STRKLogo from "@/assets/icons/coins/strk";
-import StrkToEth from "@/assets/icons/pools/strkToEth";
+import ErrorButton from "../uiElements/buttons/ErrorButton";
+import SuccessButton from "../uiElements/buttons/SuccessButton";
+import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -651,79 +653,54 @@ const YourBorrowModal = ({
     switch (CoinName) {
       case "BTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
-        break;
       case "USDC":
         return <USDCLogo height={"16px"} width={"16px"} />;
-        break;
       case "USDT":
         return <USDTLogo height={"16px"} width={"16px"} />;
-        break;
       case "ETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
-        break;
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
-        break;
       case "STRK":
         return <STRKLogo height={"16px"} width={"16px"} />;
-        break;
       case "dBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
-        break;
       case "dUSDC":
         return <USDCLogo height={"16px"} width={"16px"} />;
-        break;
       case "dUSDT":
         return <USDTLogo height={"16px"} width={"16px"} />;
-        break;
       case "dETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
-        break;
       case "dDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
-        break;
       case "dSTRK":
         return <STRKLogo height={"16px"} width={"16px"} />;
-        break;
       case "rBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
-        break;
       case "rUSDC":
         return <USDCLogo height={"16px"} width={"16px"} />;
-        break;
       case "rUSDT":
         return <USDTLogo height={"16px"} width={"16px"} />;
-        break;
       case "rETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
-        break;
       case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
-        break;
       case "rSTRK":
         return <STRKLogo height={"16px"} width={"16px"} />;
-        break;
       case "Jediswap":
         return <JediswapLogo />;
-        break;
       case "mySwap":
         return <MySwap />;
-        break;
       case "ETH/USDT":
         return <EthToUsdt />;
-        break;
       case "USDC/USDT":
         return <UsdcToUsdt />;
-        break;
       case "ETH/USDC":
         return <EthToUsdc />;
-        break;
       case "DAI/ETH":
         return <DaiToEth />;
-        break;
       case "BTC/ETH":
         return <BtcToEth />;
-        break;
       case "BTC/USDT":
         return <BtcToUsdt />;
       case "BTC/USDC":
@@ -734,10 +711,8 @@ const YourBorrowModal = ({
         return <UsdtToDai />;
       case "USDC/DAI":
         return <UsdcToDai />;
-        break;
       case "STRK/ETH":
         return <StrkToEth />;
-        break;
       default:
         break;
     }
@@ -766,19 +741,14 @@ const YourBorrowModal = ({
     switch (borrowMarket) {
       case "USDT":
         return borrowAPRs[0];
-        break;
       case "USDC":
         return borrowAPRs[1];
-        break;
       case "BTC":
         return borrowAPRs[2];
-        break;
       case "ETH":
         return borrowAPRs[3];
-        break;
       case "DAI":
         return borrowAPRs[4];
-        break;
 
       default:
         break;
@@ -1054,7 +1024,6 @@ const YourBorrowModal = ({
       }
     } catch (err) {
       return 0;
-      console.log(err);
     }
   };
   const hanldeTrade = async () => {
@@ -1645,6 +1614,7 @@ const YourBorrowModal = ({
                 {fees.l3interaction}%
               </Text>
             </Box>
+
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -1653,7 +1623,7 @@ const YourBorrowModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  Borrow apr:{" "}
+                  Borrow APR:{" "}
                 </Text>
                 <Tooltip
                   hasArrow
@@ -1700,6 +1670,55 @@ const YourBorrowModal = ({
                 )}
               </Text>
             </Box>
+
+            {currentAction === "Spend Borrow" && (
+              <Box display="flex" justifyContent="space-between" mb="1">
+                <Box display="flex">
+                  <Text color="#676D9A" fontSize="xs">
+                    STRK APR:{" "}
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="right"
+                    boxShadow="dark-lg"
+                    label="The annual percentage rate in which STRK is rewarded."
+                    bg="#02010F"
+                    fontSize={"13px"}
+                    fontWeight={"400"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                    color="#F0F0F5"
+                    border="1px solid"
+                    borderColor="#23233D"
+                    arrowShadowColor="#2B2F35"
+                    maxW="274px"
+                  >
+                    <Box p="1">
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Box>
+                <Text color="#676D9A" fontSize="xs">
+                  {!borrowAPRs || borrowAPRs.length === 0 ? (
+                    <Box pt="1px">
+                      <Skeleton
+                        width="2.3rem"
+                        height=".85rem"
+                        startColor="#2B2F35"
+                        endColor="#101216"
+                        borderRadius="6px"
+                      />
+                    </Box>
+                  ) : (
+                    numberFormatterPercentage(
+                      getBoostedApr(currentBorrowMarketCoin1.slice(1)) +
+                        getBoostedAprSupply(borrow?.collateralMarket.slice(1))
+                    ) + "%"
+                  )}
+                </Text>
+              </Box>
+            )}
+
             {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -1748,7 +1767,7 @@ const YourBorrowModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  Effective apr:{" "}
+                  Effective APR:{" "}
                 </Text>
                 <Tooltip
                   hasArrow
@@ -1788,6 +1807,7 @@ const YourBorrowModal = ({
                           stat?.token === currentBorrowMarketCoin1.slice(1)
                       )?.borrowRate +
                         getAprByPool(poolAprs, currentPool, currentDapp) +
+                        (getBoostedApr(currentBorrowMarketCoin1.slice(1))) +
                         (100 *
                           365 *
                           (poolAllocatedData *
@@ -1804,10 +1824,13 @@ const YourBorrowModal = ({
                           (val: any) =>
                             val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying *
-                        reduxProtocolStats?.find(
+                        (reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.collateralMarket.slice(1)
-                        )?.supplyRate) /
+                        )?.supplyRate+
+                        getBoostedAprSupply(
+                          borrow?.collateralMarket.slice(1)
+                        ))) /
                       dollarConvertor(
                         borrow?.collateralAmountParsed,
                         borrow?.collateralMarket.slice(1),
@@ -1835,6 +1858,8 @@ const YourBorrowModal = ({
                           stat?.token === currentBorrowMarketCoin1.slice(1)
                       )?.borrowRate +
                         getAprByPool(poolAprs, currentPool, currentDapp) +
+                        (getBoostedApr(currentBorrowMarketCoin1.slice(1)) 
+                          ) +
                         (100 *
                           365 *
                           (poolAllocatedData *
@@ -1851,10 +1876,12 @@ const YourBorrowModal = ({
                           (val: any) =>
                             val?.token == borrow?.collateralMarket.slice(1)
                         )?.exchangeRateRtokenToUnderlying *
-                        reduxProtocolStats?.find(
+                        (reduxProtocolStats?.find(
                           (stat: any) =>
                             stat?.token === borrow?.collateralMarket.slice(1)
-                        )?.supplyRate) /
+                        )?.supplyRate+getBoostedAprSupply(
+                          borrow?.collateralMarket.slice(1)
+                        ))) /
                     dollarConvertor(
                       borrow?.collateralAmountParsed,
                       borrow?.collateralMarket.slice(1),
@@ -1863,7 +1890,42 @@ const YourBorrowModal = ({
                   ).toFixed(2)}
                   %
                 </Text>
-              ) : (
+              ) : radioValue=="1" && currentPool=="Select a pool" ?
+              <Text
+              color={
+                avgs?.find(
+                  (item: any) =>
+                    item?.loanId ==
+                    currentBorrowId1
+                      .slice(currentBorrowId1.indexOf("-") + 1)
+                      .trim()
+                )?.avg < 0
+                  ? "rgb(255 94 94)"
+                  : "#00D395"
+              }
+              fontSize="12px"
+              fontWeight="400"
+              fontStyle="normal"
+            >
+              {avgs?.find(
+                (item: any) =>
+                  item?.loanId ==
+                  currentBorrowId1
+                    .slice(currentBorrowId1.indexOf("-") + 1)
+                    .trim()
+              )?.avg
+                ? avgs?.find(
+                    (item: any) =>
+                      item?.loanId ==
+                      currentBorrowId1
+                        .slice(currentBorrowId1.indexOf("-") + 1)
+                        .trim()
+                  )?.avg
+                : "3.2"}
+              %
+            </Text>
+              
+              : radioValue == "2" && currentPoolCoin == "Select a pool" ? (
                 <Text
                   color={
                     avgs?.find(
@@ -1894,6 +1956,92 @@ const YourBorrowModal = ({
                             .slice(currentBorrowId1.indexOf("-") + 1)
                             .trim()
                       )?.avg
+                    : "3.2"}
+                  %
+                </Text>
+              ) : (
+                <Text
+                  color={
+                    Number(
+                      avgs?.find(
+                        (item: any) =>
+                          item?.loanId ==
+                          currentBorrowId1
+                            .slice(currentBorrowId1.indexOf("-") + 1)
+                            .trim()
+                      )?.avg
+                    ) +
+                      getBoostedApr(currentBorrowMarketCoin1.slice(1)) +
+                      (getBoostedAprSupply(
+                        borrow?.collateralMarket.slice(1)
+                      ) *
+                        (dollarConvertor(
+                          borrow?.collateralAmountParsed,
+                          borrow?.collateralMarket.slice(1),
+                          oraclePrices
+                        ) *
+                          reduxProtocolStats.find(
+                            (val: any) =>
+                              val?.token ==
+                              borrow?.collateralMarket.slice(1)
+                          )?.exchangeRateRtokenToUnderlying)) /
+                        (dollarConvertor(
+                          borrow?.loanAmountParsed,
+                          borrow?.loanMarket.slice(1),
+                          oraclePrices
+                        ) *
+                          reduxProtocolStats?.find(
+                            (val: any) =>
+                              val?.token == borrow?.loanMarket.slice(1)
+                          )?.exchangeRateDTokenToUnderlying) < 0
+                      ? "rgb(255 94 94)"
+                      : "#00D395"
+                  }
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  {avgs?.find(
+                    (item: any) =>
+                      item?.loanId ==
+                      currentBorrowId1
+                        .slice(currentBorrowId1.indexOf("-") + 1)
+                        .trim()
+                  )?.avg
+                    ? numberFormatterPercentage(
+                        Number(
+                          avgs?.find(
+                            (item: any) =>
+                              item?.loanId ==
+                              currentBorrowId1
+                                .slice(currentBorrowId1.indexOf("-") + 1)
+                                .trim()
+                          )?.avg
+                        ) +
+                          getBoostedApr(currentBorrowMarketCoin1.slice(1)) +
+                          (getBoostedAprSupply(
+                            borrow?.collateralMarket.slice(1)
+                          ) *
+                            (dollarConvertor(
+                              borrow?.collateralAmountParsed,
+                              borrow?.collateralMarket.slice(1),
+                              oraclePrices
+                            ) *
+                              reduxProtocolStats.find(
+                                (val: any) =>
+                                  val?.token ==
+                                  borrow?.collateralMarket.slice(1)
+                              )?.exchangeRateRtokenToUnderlying)) /
+                            (dollarConvertor(
+                              borrow?.loanAmountParsed,
+                              borrow?.loanMarket.slice(1),
+                              oraclePrices
+                            ) *
+                              reduxProtocolStats?.find(
+                                (val: any) =>
+                                  val?.token == borrow?.loanMarket.slice(1)
+                              )?.exchangeRateDTokenToUnderlying)
+                      )
                     : "3.2"}
                   %
                 </Text>
@@ -1957,7 +2105,6 @@ const YourBorrowModal = ({
             </Box> */}
           </Box>
         );
-        break;
 
       case "Repay Borrow":
         return (
@@ -2163,7 +2310,6 @@ const YourBorrowModal = ({
             </Box> */}
           </Box>
         );
-        break;
 
       case "Zero Repay":
         return (
@@ -2354,7 +2500,6 @@ const YourBorrowModal = ({
             </Box> */}
           </Box>
         );
-        break;
 
       case "Convert to borrow market":
         return (
@@ -2498,7 +2643,6 @@ const YourBorrowModal = ({
             </Box> */}
           </Box>
         );
-        break;
 
       case "Select action":
         return (
@@ -2704,7 +2848,6 @@ const YourBorrowModal = ({
             </Box> */}
           </Box>
         );
-        break;
 
       default:
         break;
@@ -3092,6 +3235,83 @@ const YourBorrowModal = ({
     };
     fetchEstrTokens();
   }, [collateralBalance, inputCollateralAmount]);
+
+  const strkData = useSelector(selectStrkAprData);
+  const netSpendBalance = useSelector(selectnetSpendBalance);
+
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0);
+
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0;
+      for (let token in strkData) {
+        if (strkData.hasOwnProperty(token)) {
+          const array = strkData[token];
+          const lastObject = array[array.length - 1]; 
+          netallocation += 0.3 * lastObject.allocation;
+        }
+      }
+      setnetStrkBorrow(netallocation);
+    } else {
+      setnetStrkBorrow(0);
+    }
+  }, [strkData]);
+
+  const getBoostedAprSupply = (coin: any) => {
+    if (strkData == null) {
+      return 0;
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
+          return 0;
+        } else {
+          let value = strkData?.[coin]
+            ? (365 *
+                100 *
+                strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
+                0.7 *
+                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  ?.price) /
+              strkData?.[coin][strkData[coin].length - 1]?.supply_usd
+            : 0;
+          return value;
+        }
+      } else {
+        return 0;
+      }
+    }
+  };
+
+  const getBoostedApr = (coin: any) => {
+    if (strkData == null) {
+      return 0;
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
+          return 0;
+        } else {
+          if (netStrkBorrow != 0) {
+            if (netSpendBalance) {
+              let value =
+                (365 *
+                  100 *
+                  netStrkBorrow *
+                  oraclePrices?.find((curr: any) => curr.name === "STRK")
+                    ?.price) /
+                netSpendBalance;
+              return value;
+            } else {
+              return 0;
+            }
+          } else {
+            return 0;
+          }
+        }
+      } else {
+        return 0;
+      }
+    }
+  };
 
   return (
     <Box>
@@ -4125,7 +4345,7 @@ const YourBorrowModal = ({
                               <Text mt="0.10rem" color="white">
                                 {currentDapp}
                               </Text>
-                              {currentDapp == "Jediswap" &&
+                              {/* {currentDapp == "Jediswap" &&
                                 radioValue == "1" && (
                                   <Image
                                     src={"/strkReward.svg"}
@@ -4134,7 +4354,7 @@ const YourBorrowModal = ({
                                     height="15"
                                     style={{ marginTop: "0.2rem" }}
                                   />
-                                )}
+                                )} */}
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (
@@ -4199,7 +4419,7 @@ const YourBorrowModal = ({
                                         <Text pt="1" color="white">
                                           {dapp.name}
                                         </Text>
-                                        {dapp.name == "Jediswap" &&
+                                        {/* {dapp.name == "Jediswap" &&
                                           radioValue == "1" && (
                                             <Image
                                               src={"/strkReward.svg"}
@@ -4208,7 +4428,7 @@ const YourBorrowModal = ({
                                               height="15"
                                               style={{ marginTop: "0.3rem" }}
                                             />
-                                          )}
+                                          )} */}
                                       </Box>
                                       {dapp.status === "disable" && (
                                         <Text
@@ -4408,7 +4628,7 @@ const YourBorrowModal = ({
                                       >
                                         <Box
                                           display="flex"
-                                          // mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}
+                                          mt={ index<=2 && currentDapp=="Jediswap" ?"0.5rem":""}
                                         >
                                           <Box p="1">{getCoin(pool)}</Box>
                                           <Tooltip
@@ -4469,6 +4689,8 @@ const YourBorrowModal = ({
                                             color="#B1B0B5"
                                             mt="5px"
                                             fontWeight="medium"
+                                            display="flex"
+                                            justifyContent="flex-end"
                                           >
                                             Pool APR:{" "}
                                             {numberFormatterPercentage(
@@ -4488,7 +4710,7 @@ const YourBorrowModal = ({
                                                 mt="5px"
                                                 fontWeight="medium"
                                               >
-                                                Stark APR:{" "}
+                                                Jedi STRK APR:{" "}
                                                 {numberFormatterPercentage(
                                                   String(
                                                     (100 *
@@ -6082,6 +6304,7 @@ const YourBorrowModal = ({
                         </Text>
                         <Text color="#676D9A">{fees.supply}%</Text>
                       </Text>
+
                       <Text
                         color="#676D9A"
                         display="flex"
@@ -6097,7 +6320,7 @@ const YourBorrowModal = ({
                             font-size="12px"
                             color="#676D9A"
                           >
-                            Borrow apr:
+                            Borrow APR:
                           </Text>
                           <Tooltip
                             color="#F0F0F5"
@@ -6140,6 +6363,54 @@ const YourBorrowModal = ({
                           )}
                         </Text>
                       </Text>
+
+                      <Box display="flex" justifyContent="space-between" mb="1">
+                        <Box display="flex">
+                          <Text color="#676D9A" fontSize="xs">
+                            STRK APR:{" "}
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label="The annual percentage rate in which STRK is rewarded."
+                            bg="#02010F"
+                            fontSize={"13px"}
+                            fontWeight={"400"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                            maxW="274px"
+                          >
+                            <Box p="1">
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Box>
+                        <Text color="#676D9A" fontSize="xs">
+                          {!borrowAPRs || borrowAPRs.length === 0 ? (
+                            <Box pt="1px">
+                              <Skeleton
+                                width="2.3rem"
+                                height=".85rem"
+                                startColor="#2B2F35"
+                                endColor="#101216"
+                                borderRadius="6px"
+                              />
+                            </Box>
+                          ) : (
+                            numberFormatterPercentage(
+                              getBoostedApr(currentBorrowMarketCoin1.slice(1)) +
+                                getBoostedAprSupply(
+                                  borrow?.collateralMarket.slice(1)
+                                )
+                            ) + "%"
+                          )}
+                        </Text>
+                      </Box>
                       {/* <Text
                         display="flex"
                         justifyContent="space-between"
@@ -6197,7 +6468,7 @@ const YourBorrowModal = ({
                             lineHeight="16px"
                             color="#676D9A"
                           >
-                            Effective apr:
+                            Effective APR:
                           </Text>
                           <Tooltip
                             color="#F0F0F5"

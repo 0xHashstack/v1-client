@@ -4,6 +4,7 @@ import InfoIcon from "@/assets/icons/infoIcon";
 import LowhealthFactor from "@/assets/icons/lowhealthFactor";
 import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
 import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
+import SupplyModal from "@/components/modals/SupplyModal";
 import TradeModal from "@/components/modals/tradeModal";
 import {
   selectModalDropDowns,
@@ -19,8 +20,12 @@ import {
   selectProtocolStats,
   selectUserDeposits,
 } from "@/store/slices/readDataSlice";
-import { selectUserUnspentLoans } from "@/store/slices/userAccountSlice";
+import {
+  selectStrkAprData,
+  selectUserUnspentLoans,
+} from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import {
   Box,
   Button,
@@ -37,14 +42,13 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useAccount } from "@starknet-react/core";
+import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import PageCard from "../pageCard";
-import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
-import axios from "axios";
 
 export interface ICoin {
   name: string;
@@ -55,7 +59,7 @@ export const Coins: ICoin[] = [
   { name: "STRK", icon: "mdi-strk", symbol: "STRK" },
   { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },
   { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" },
-  { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
+  // { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
   { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
 ];
 const StrkDashboard = () => {
@@ -118,17 +122,18 @@ const StrkDashboard = () => {
   const { account, address } = useAccount();
   const poolApr = useSelector(selectJediswapPoolAprs);
   const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
+  const strkData = useSelector(selectStrkAprData);
   useEffect(() => {
     try {
       const fetchData = async () => {
         const res = await axios.get(
-          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json"
+          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_strk_grant.json"
         );
         setstrkTokenAlloactionData(res?.data?.Jediswap_v1);
       };
       fetchData();
     } catch (err) {
-      console.log(err);
+      console.log(err, "err in jedi");
     }
   }, []);
   const getStrkAlloaction = (pool: any) => {
@@ -831,14 +836,14 @@ const StrkDashboard = () => {
                 </Box>
                 <Box display="flex" mt="0.5rem" gap="0.8rem">
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    Pool Apr:{" "}
+                    Pool APR:{" "}
                     {numberFormatterPercentage(
                       getAprByPool(poolApr, pool, "Jediswap")
                     )}
                     %
                   </Text>
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    STRK Apr:{" "}
+                    $STRK APR:{" "}
                     {numberFormatterPercentage(
                       String(
                         (100 *
@@ -930,46 +935,126 @@ const StrkDashboard = () => {
           </Box>
         </Box>
       </Box>
-      {/* <Box mt="1rem"
-                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                width="100%"
-                // height={"37rem"}
+      <Box
+        mt="1rem"
+        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+        width="100%"
+        // height={"37rem"}
+        borderRadius="8px"
+        padding="32px"
+      >
+        <Box>
+          <Text
+            fontWeight="500"
+            fontSize="16px"
+            color="white"
+            lineHeight="30px"
+          >
+            Supply Markets
+          </Text>
+          <Text fontSize="12px" fontWeight="400" color="#BDBFC1" mt="0.5rem">
+            Supply your funds on these markets to receive the rewards.
+          </Text>
+          <Box display="flex" gap="1.5rem" mt="2rem">
+            {Coins.map((supplyCoin: any, idx: number) => (
+              <Box
+                key={idx}
+                bg="#34345633"
+                paddingX="2rem"
+                paddingY="2rem"
                 borderRadius="8px"
-                padding="32px"
-            >
-                <Box>
-                    <Text fontWeight="500" fontSize="16px" color="white" lineHeight="30px">
-                        Supply Markets
-                    </Text>
-                    <Text fontSize="12px" fontWeight="400" color="#BDBFC1" mt="0.5rem">
-                        Spend your borrowed funds on these Jediswap pools to receive the rewards.
-                    </Text>
-                    <Box display="flex" gap="5rem" mt="2rem">
-                        {Coins.map((coin: any, idx: number) => (
-                            <Box bg="#34345633" padding="64px" borderRadius="8px" justifyContent="center" alignItems="center" textAlign="center">
-                                <Box display="flex" width="100%" justifyContent='center'>
-                                <Image
-                        src={coin?.name == "DAI" ? `/${coin?.name}Disabled.svg` : `/${coin?.name}.svg`}
-                        alt={`Picture of the coin that I want to access ${coin?.name}`}
-                        width="32"
-                        height="32"
-                      />
-                                </Box>
-                                <Box mt="0.5rem">
-                                    <Text fontWeight="500" fontSize="16px" color="white">
-                                        {coin?.name}
-                                    </Text>
-                                </Box>
-                                <Box mt="1rem" color="white">
-                                    Supply
-
-                                </Box>
-                            </Box>
-                        ))}
-                    </Box>
+                justifyContent="center"
+                alignItems="center"
+                textAlign="center"
+              >
+                <Box display="flex" width="100%" justifyContent="center">
+                  <Image
+                    src={
+                      supplyCoin?.name == "DAI"
+                        ? `/${supplyCoin?.name}Disabled.svg`
+                        : `/${supplyCoin?.name}.svg`
+                    }
+                    alt={`Picture of the supplyCoin that I want to access ${supplyCoin?.name}`}
+                    width="32"
+                    height="32"
+                  />
                 </Box>
-            </Box> */}
+                <Box mt="0.5rem">
+                  <Text fontWeight="500" fontSize="16px" color="white">
+                    {supplyCoin?.name}
+                  </Text>
+                </Box>
+                <Box display="flex" mt="0.5rem" gap="0.8rem">
+                  <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
+                    Supply APR: {numberFormatterPercentage(supplyAPRs[idx])}%
+                  </Text>
+                  <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
+                    $STRK APR:{" "}
+                    {numberFormatterPercentage(
+                      strkData
+                        ? (365 *
+                            100 *
+                            strkData[supplyCoin?.name][
+                              strkData[supplyCoin?.name].length - 1
+                            ]?.allocation *
+                            0.7 *
+                            oraclePrices?.find(
+                              (curr: any) => curr.name === "STRK"
+                            )?.price) /
+                            strkData[supplyCoin?.name][
+                              strkData[supplyCoin?.name].length - 1
+                            ]?.supply_usd
+                        : 0
+                    )}
+                    {/* {numberFormatterPercentage(
+                      String(
+                        (100 *
+                          365 *
+                          (getStrkAlloaction(pool) *
+                            oraclePrices?.find(
+                              (curr: any) => curr.name === "STRK"
+                            )?.price)) /
+                        getTvlByPool(poolApr, pool, "Jediswap")
+                      )
+                    )} */}
+                    %
+                  </Text>
+                </Box>
+                <Box
+                  mt="1rem"
+                  color="white"
+                  onClick={() => {
+                    if (idx == 3) {
+                      setCurrentSupplyAPR(idx + 1);
+                    } else {
+                      setCurrentSupplyAPR(idx);
+                    }
+                  }}
+                >
+                  <SupplyModal
+                    buttonText="Supply"
+                    cursor="pointer"
+                    height={"2rem"}
+                    fontSize={"12px"}
+                    mt="0.5rem"
+                    padding="6px 12px"
+                    bg="linear-gradient(to right, #7956EC,#1B29AE);"
+                    _hover={{ bg: "white", color: "black" }}
+                    borderRadius={"6px"}
+                    color="white"
+                    backGroundOverLay="rgba(244, 242, 255, 0.5)"
+                    coin={supplyCoin}
+                    supplyAPRs={supplyAPRs}
+                    currentSupplyAPR={currentSupplyAPR}
+                    setCurrentSupplyAPR={setCurrentSupplyAPR}
+                  />
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      </Box>
     </VStack>
   );
 };

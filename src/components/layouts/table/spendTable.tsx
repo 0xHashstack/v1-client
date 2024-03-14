@@ -161,6 +161,7 @@ const SpendTable = () => {
   const [coins, setCoins] = useState([]);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const [tabIndex, setTabIndex] = useState(0);
+  const [collateralCoin, setcollateralCoin] = useState("")
   const [selectedIndex, setselectedIndex] = useState(0);
   let lower_bound = 3 * (currentPagination - 1);
   let upper_bound = lower_bound + 2;
@@ -507,6 +508,7 @@ const SpendTable = () => {
                           dispatch(setSpendBorrowSelectedDapp("trade"));
                           setCurrentLoanAmount(borrow?.currentLoanAmount);
                           setCurrentLoanMarket(borrow?.currentLoanMarket);
+                          setcollateralCoin(borrow?.collateralMarket)
                         }}
                       >
                         <Td borderLeftRadius="6px" pl="3rem">
@@ -876,6 +878,7 @@ const SpendTable = () => {
                       setCurrentLoanAmount={setCurrentLoanAmount}
                       setCurrentLoanMarket={setCurrentLoanMarket}
                       borrowAPRs={borrowAPRs}
+                      collateralMarket={collateralCoin}
                     />
                   </Box>
                 </TabPanel>
@@ -897,6 +900,7 @@ const SpendTable = () => {
                       currentSwap={currentSwap}
                       setCurrentSwap={setCurrentSwap}
                       borrowAPRs={borrowAPRs}
+                      collateralMarket={collateralCoin}
                     />
                   </Box>
                 </TabPanel>

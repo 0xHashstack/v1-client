@@ -40,7 +40,9 @@ import {
   selectNetAprCount,
   selectOraclePricesCount,
   selectProtocolStatsCount,
+  selectSpendBalances,
   selectStakingSharesCount,
+  selectStrkAprData,
   selectTransactionStatus,
   selectUserDepositsCount,
   selectUserInfoCount,
@@ -65,10 +67,14 @@ import {
   setMonthlyDataCount,
   setMySwapPoolsSupportedCount,
   setNetAprCount,
+  setNetSpendBalance,
+  setNetStrkBorrow,
   setOraclePricesCount,
   setProtocolReservesCount,
   setProtocolStatsCount,
+  setSpendBalances,
   setStakingSharesCount,
+  setStrkAprData,
   setUserDepositsCount,
   setUserInfoCount,
   setUserLoansCount,
@@ -177,6 +183,7 @@ import {
 import OffchainAPI from "@/services/offchainapi.service";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
 import { constants } from "@/Blockchain/utils/constants";
+import { getSpendBalance } from "@/Blockchain/scripts/debt";
 const useDataLoader = () => {
   const { address } = useAccount();
   const protocolReserves = useSelector(selectProtocolReserves);
@@ -223,6 +230,8 @@ const useDataLoader = () => {
   const mySwapPoolsSupportedCount = useSelector(selectMySwapPoolsSupportedCount);
   const transactionStatus = useSelector(selectTransactionStatus);
   const poolAprs=useSelector(selectJediswapPoolAprs);
+  const spendBalances=useSelector(selectSpendBalances)
+  const strkData = useSelector(selectStrkAprData);
   const [poolsPairs, setPoolPairs] = useState<any>([
     {
       address: "0x4e05550a4899cda3d22ff1db5fc83f02e086eafa37f3f73837b0be9e565369e",
@@ -1195,8 +1204,16 @@ const useDataLoader = () => {
         const count = getTransactionCount();
         dispatch(setProtocolStatsCount(count));
       };
+      const fetchSpends=async()=>{
+        const dataSpends=await getSpendBalance();
+        if (!dataSpends || (Array.isArray(dataSpends) && dataSpends?.length < 6)) {
+          return;
+        }
+        dispatch(setSpendBalances(dataSpends));
+      }
       if (protocolStatsCount < transactionRefresh) {
         fetchProtocolStats();
+        fetchSpends();
       }
     } catch (err) {
      //console.log("protocol stats - transactionRefresh error ", err);
@@ -1266,6 +1283,10 @@ const useDataLoader = () => {
         })
         try{
           const res=await axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`);
+          const res2=await axios.get('https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_lending_strk_grant.json')
+          if(res2?.data){
+            dispatch(setStrkAprData(res2?.data?.Hashstack));
+          }
           if(res?.data){
             dispatch(setJediSwapPoolAprs(res?.data));
           }
@@ -1748,26 +1769,28 @@ const useDataLoader = () => {
           userLoansCount == transactionRefresh &&
           dataOraclePrices &&
           netAprCount < transactionRefresh
-          && effectiveApr
+          && effectiveApr && strkData
         ) {
          //console.log("user info called inside - transactionRefresh");
           const dataNetApr = await getNetApr(
             dataDeposit,
             userLoans,
             dataOraclePrices,
-            protocolStats
+            protocolStats,
+            strkData
           );
           const dataNetAprDeposit = await getNetAprDeposits(
             dataDeposit,
             dataOraclePrices,
             protocolStats,
+            strkData
           )
 
           const dataNetAprLoans = await getNetAprLoans(
             userLoans,
             dataOraclePrices,
             protocolStats,
-            effectiveApr
+            effectiveApr,
           )
           //@ts-ignore
           if (isNaN(dataNetAprLoans)) {
@@ -1808,7 +1831,8 @@ const useDataLoader = () => {
     dataOraclePrices,
     protocolStatsCount,
     transactionRefresh,,
-    effectiveApr
+    effectiveApr,
+    strkData
   ]);
 
   useEffect(() => {
@@ -2087,6 +2111,30 @@ const useDataLoader = () => {
     }
   }, [userLoansCount, protocolStatsCount, oraclePrices, transactionRefresh]);
 
+  useEffect(()=>{
+    try{
+      const fetchnetSpendBalance=()=>{
+        let netbalance=0;
+        if(oraclePrices && spendBalances && protocolStats){
+            for(var i=0;i<spendBalances?.length;i++){
+              if(spendBalances[i].token=="BTC" || spendBalances[i].token=="DAI"){
+                let value=0;
+                netbalance+=value;
+              }else{
+                let value=(protocolStats[i]?.totalBorrow- spendBalances[i]?.balance)*oraclePrices[i].price;
+                netbalance+=value;
+              }
+            }
+            if(netbalance>0){
+              dispatch(setNetSpendBalance(netbalance));
+            }
+        }
+      }
+      fetchnetSpendBalance();
+    }catch(err){
+      console.log(err,"err in net spend balance")
+    }
+  },[transactionRefresh,spendBalances,protocolStats,oraclePrices])
   // useEffect(() => {
   //   try {
   //     const fetchNetApr = async () => {
