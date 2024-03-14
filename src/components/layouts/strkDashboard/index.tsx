@@ -21,8 +21,10 @@ import {
   selectUserDeposits,
 } from "@/store/slices/readDataSlice";
 import {
+  selectActiveTransactions,
   selectStrkAprData,
   selectUserUnspentLoans,
+  setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
@@ -49,6 +51,9 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import PageCard from "../pageCard";
+import useClaimStrk from "@/Blockchain/hooks/Writes/useStrkClaim";
+import posthog from "posthog-js";
+import { parseAmount } from "@/Blockchain/utils/utils";
 
 export interface ICoin {
   name: string;
@@ -123,6 +128,23 @@ const StrkDashboard = () => {
   const poolApr = useSelector(selectJediswapPoolAprs);
   const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
   const strkData = useSelector(selectStrkAprData);
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
+  const [toastId, setToastId] = useState<any>();
+  let activeTransactions = useSelector(selectActiveTransactions);
+
+  const {
+    datastrkClaim,
+    errorstrkClaim,
+    resetstrkClaim,
+    writestrkClaim,
+    writeAsyncstrkClaim,
+    isErrorstrkClaim,
+    isIdlestrkClaim,
+    isSuccessstrkClaim,
+    statusstrkClaim,
+  }=useClaimStrk();
+
   useEffect(() => {
     try {
       const fetchData = async () => {
@@ -136,6 +158,83 @@ const StrkDashboard = () => {
       console.log(err, "err in jedi");
     }
   }, []);
+  useEffect(()=>{
+    try{
+      const fetchStrk=async()=>{
+        const res=await axios.get('https://63w2b5a7be32oom24weumnu46a0cdicb.lambda-url.ap-southeast-1.on.aws/alloc/0x6b06f222e9f75e2a8316e9e49c887d0a9ab804afd98d588f107a8b61f69d8ef/1');
+      }
+      fetchStrk();
+    }catch(err){
+      console.log(err,"err in fetching strk allocation")
+    }
+  },[])
+
+  const handleClaimStrk = async () => {
+    try {
+      const getTokens = await writeAsyncstrkClaim();
+      posthog.capture("Claim Strk", {
+        "Clicked Claim":true
+      });
+      if (getTokens?.transaction_hash) {
+        const toastid = toast.info(
+          // `Please wait, your transaction is running in background ${coin} `,
+          `Transaction pending`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastId);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const uqID = getUniqueId();
+        const trans_data = {
+          transaction_hash: getTokens?.transaction_hash.toString(),
+          message: `Successfully minted TestToken : ${coin}`,
+          // message: `Transaction successful`,
+          toastId: toastid,
+          setCurrentTransactionStatus: () => {},
+          uniqueID: uqID,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        posthog.capture("Get Tokens Status", {
+          Status: "Success",
+        });
+        activeTransactions?.push(trans_data);
+
+        dispatch(setActiveTransactions(activeTransactions));
+      }
+      console.log(getTokens);
+      // dispatch(setTransactionStatus("success"));
+    } catch (err: any) {
+      console.log(err);
+      // dispatch(setTransactionStatus("failed"));
+      posthog.capture("Get Claim Status", {
+        Status: "Failure",
+      });
+      // dispatch(setTransactionStartedAndModalClosed(true));
+      const toastContent = (
+        <div>
+          Failed to Claim{" " + coin + " "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      });
+    }
+  };
+
   const getStrkAlloaction = (pool: any) => {
     try {
       if (strkTokenAlloactionData[pool]) {
@@ -149,6 +248,7 @@ const StrkDashboard = () => {
       return 0;
     }
   };
+
   const getAprByPool = (dataArray: any[], pool: string, dapp: string) => {
     const matchedObject = dataArray.find((item) => {
       if (item.name === "USDT/USDC") {
@@ -387,13 +487,13 @@ const StrkDashboard = () => {
             Incentive Program!
           </Text>
         </Box>
-        {/* <Box display="flex" gap="2rem" mr="1rem">
+        <Box display="flex" gap="2rem" mr="1rem">
           <Box gap="0.2rem">
             <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
               STRK Reward
             </Text>
-            <Text fontSize="16px" fontWeight="500" color="white">
-              {numberFormatter(0)} STRK
+            <Text fontSize="16px" fontWeight="500" color="white" textAlign="center">
+              - 
             </Text>
           </Box>
           <Button
@@ -406,10 +506,13 @@ const StrkDashboard = () => {
             _hover={{ bg: "transparent", color: "#3E415C" }}
             borderRadius={"6px"}
             color="#3E415C"
+            onClick={()=>{
+              // handleClaimStrk();
+            }}
           >
             Claim
           </Button>
-        </Box> */}
+        </Box>
       </Box>
       <Box
         mt="1rem"

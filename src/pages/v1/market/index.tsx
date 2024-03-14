@@ -64,7 +64,7 @@ const Market: NextPage = () => {
               $STRK Tokens
             </Text>
           </Box>
-          <Link href="https://twitter.com/0xHashstack/status/1764625609844838816" target="_blank">
+          <Link href="https://hashstack.medium.com/farm-strk-token-on-hashstack-v1-e2287d6f94f9" target="_blank">
           <Button
             marginTop="2.5"
             color="white"

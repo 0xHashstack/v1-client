@@ -1156,12 +1156,18 @@ const LiquidityProvisionModal = ({
                             alignItems="center"
                             gap="1"
                             pr="2"
+                            borderBottom={
+                              index == 2 && currentSwap == "Jediswap"
+                                ? "1px solid #30363D"
+                                : ""
+                            }
                             onClick={() => {
                               setCurrentPool(pool);
                               ////console.log(pool)
                               setToMarketA(pool.split("/")[0]);
                               setToMarketB(pool.split("/")[1]);
                             }}
+                            
                           >
                             {pool === currentPool && (
                               <Box
@@ -1183,15 +1189,10 @@ const LiquidityProvisionModal = ({
                                 pool === currentPool ? "#4D59E8" : "inherit"
                               }`}
                               borderRadius="md"
-                              borderBottom={
-                                index == 2 && currentSwap == "Jediswap"
-                                  ? "1px solid #30363D"
-                                  : ""
-                              }
                             >
                               <Box
                                 display="flex"
-                                mt={ index<=2 && currentSwap=="Jediswap" ?"0.5rem":""}
+                                mt={ index<=2 && currentSwap=="Jediswap" ?"0.2rem":""}
                               >
                                 <Box p="1">{getCoin(pool)}</Box>
                                 <Tooltip
@@ -1242,7 +1243,7 @@ const LiquidityProvisionModal = ({
                                         {(index<=2 && currentSwap=="Jediswap") ?"✨":"" }
                                     </Text> */}
                               </Box>
-                              <Box>
+                              <Box display="flex" flexDirection="column" justifyContent="center" alignItems="flex-end">
                                 <Box
                                   fontSize="10px"
                                   color="#B1B0B5"

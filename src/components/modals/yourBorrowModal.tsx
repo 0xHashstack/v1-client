@@ -4583,6 +4583,12 @@ const YourBorrowModal = ({
                                       alignItems="center"
                                       gap="1"
                                       pr="2"
+                                      borderBottom={
+                                        index == 2 &&
+                                        currentDapp == "Jediswap"
+                                          ? "1px solid #30363D"
+                                          : ""
+                                      }
                                       onClick={() => {
                                         setCurrentPool(pool);
                                         setToMarketA(pool.split("/")[0]);
@@ -4619,12 +4625,6 @@ const YourBorrowModal = ({
                                             : "inherit"
                                         }`}
                                         borderRadius="md"
-                                        borderBottom={
-                                          index == 2 &&
-                                          currentDapp == "Jediswap"
-                                            ? "1px solid #30363D"
-                                            : ""
-                                        }
                                       >
                                         <Box
                                           display="flex"
@@ -4683,11 +4683,11 @@ const YourBorrowModal = ({
                                               : ""}
                                           </Text> */}
                                         </Box>
-                                        <Box>
+                                        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="flex-end">
                                           <Box
                                             fontSize="10px"
                                             color="#B1B0B5"
-                                            mt="5px"
+                                            mt={index <= 2 ? "5px":"0px"}
                                             fontWeight="medium"
                                             display="flex"
                                             justifyContent="flex-end"
