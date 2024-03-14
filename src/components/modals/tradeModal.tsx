@@ -628,7 +628,7 @@ const TradeModal = ({
   useEffect(() => {
     setLoanMarket(coin ? coin.name : "BTC");
     setCollateralMarket(coin ? coin.name : "BTC");
-  }, [coin]);
+  }, [coin?.name]);
   useEffect(() => {
     setCurrentPool("Select a pool");
     setCurrentPoolCoin("Select a pool");
