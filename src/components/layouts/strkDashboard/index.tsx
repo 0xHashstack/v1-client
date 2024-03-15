@@ -1,3 +1,5 @@
+import useClaimStrk from "@/Blockchain/hooks/Writes/useStrkClaim";
+import { parseAmount } from "@/Blockchain/utils/utils";
 import ArrowUp from "@/assets/icons/arrowup";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -46,14 +48,12 @@ import {
 import { useAccount } from "@starknet-react/core";
 import axios from "axios";
 import Image from "next/image";
+import posthog from "posthog-js";
 import React, { useEffect, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import PageCard from "../pageCard";
-import useClaimStrk from "@/Blockchain/hooks/Writes/useStrkClaim";
-import posthog from "posthog-js";
-import { parseAmount } from "@/Blockchain/utils/utils";
 
 export interface ICoin {
   name: string;
@@ -143,7 +143,7 @@ const StrkDashboard = () => {
     isIdlestrkClaim,
     isSuccessstrkClaim,
     statusstrkClaim,
-  }=useClaimStrk();
+  } = useClaimStrk();
 
   useEffect(() => {
     try {
@@ -158,22 +158,24 @@ const StrkDashboard = () => {
       console.log(err, "err in jedi");
     }
   }, []);
-  useEffect(()=>{
-    try{
-      const fetchStrk=async()=>{
-        const res=await axios.get('https://63w2b5a7be32oom24weumnu46a0cdicb.lambda-url.ap-southeast-1.on.aws/alloc/0x6b06f222e9f75e2a8316e9e49c887d0a9ab804afd98d588f107a8b61f69d8ef/1');
-      }
+  useEffect(() => {
+    try {
+      const fetchStrk = async () => {
+        const res = await axios.get(
+          "https://63w2b5a7be32oom24weumnu46a0cdicb.lambda-url.ap-southeast-1.on.aws/alloc/0x6b06f222e9f75e2a8316e9e49c887d0a9ab804afd98d588f107a8b61f69d8ef/1"
+        );
+      };
       fetchStrk();
-    }catch(err){
-      console.log(err,"err in fetching strk allocation")
+    } catch (err) {
+      console.log(err, "err in fetching strk allocation");
     }
-  },[])
+  }, []);
 
   const handleClaimStrk = async () => {
     try {
       const getTokens = await writeAsyncstrkClaim();
       posthog.capture("Claim Strk", {
-        "Clicked Claim":true
+        "Clicked Claim": true,
       });
       if (getTokens?.transaction_hash) {
         const toastid = toast.info(
@@ -492,8 +494,13 @@ const StrkDashboard = () => {
             <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
               STRK Reward
             </Text>
-            <Text fontSize="16px" fontWeight="500" color="white" textAlign="center">
-              - 
+            <Text
+              fontSize="16px"
+              fontWeight="500"
+              color="white"
+              textAlign="center"
+            >
+              -
             </Text>
           </Box>
           <Button
@@ -501,12 +508,19 @@ const StrkDashboard = () => {
             fontSize={"12px"}
             mt="0.5rem"
             padding="6px 12px"
-            border="1px solid #3E415C"
-            bgColor="transparent"
-            _hover={{ bg: "transparent", color: "#3E415C" }}
+            border="1px solid #1B1F2426"
+            color="#2B2F35"
+            bgColor="#F3F4F6"
+            isDisabled={true}
+            _disabled={{
+              color: "#2B2F35",
+              bgColor: "#101216",
+              border: "1px solid #2B2F35",
+              _hover: { bgColor: "#101216" },
+            }}
+            fontWeight="semibold"
             borderRadius={"6px"}
-            color="#3E415C"
-            onClick={()=>{
+            onClick={() => {
               // handleClaimStrk();
             }}
           >
