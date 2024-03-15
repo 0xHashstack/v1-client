@@ -516,7 +516,7 @@ const StrkDashboard = () => {
               color: "#2B2F35",
               bgColor: "#101216",
               border: "1px solid #2B2F35",
-              _hover: { bgColor: "transparent" },
+              _hover: { bgColor: "#101216" },
             }}
             fontWeight="semibold"
             borderRadius={"6px"}

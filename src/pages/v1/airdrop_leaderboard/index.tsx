@@ -244,7 +244,7 @@ const Campaign: NextPage = () => {
     },
     {
       campaignName: "CCP",
-      timeline: "15 Feb 2024 - 4 Apr 2024",
+      timeline: "Coming soon",
     },
   ]);
 
