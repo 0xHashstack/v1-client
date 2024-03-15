@@ -2015,6 +2015,8 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                       </Td>
 
                       <Td>
+                        {
+                          oraclePrices!==null ?
                         <Box
                           width="100%"
                           display="flex"
@@ -2397,7 +2399,24 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                               %
                             </Text>
                           </Tooltip>
+                        </Box>:
+                        <Box
+                        width="100%"
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        height="3rem"
+                        >
+                          <Skeleton
+                                  width="6rem"
+                                  height="1.2rem"
+                                  startColor="#101216"
+                                  endColor="#2B2F35"
+                                  borderRadius="6px"
+                                />
                         </Box>
+                        }
                       </Td>
 
                       <Td

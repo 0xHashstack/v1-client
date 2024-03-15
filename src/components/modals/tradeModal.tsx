@@ -625,10 +625,17 @@ const TradeModal = ({
     ////console.log("radio value", radioValue, method);
   }, [radioValue]);
   const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
+  const router = useRouter();
+  const { pathname } = router;
   useEffect(() => {
-    setLoanMarket(coin ? coin.name : "BTC");
-    setCollateralMarket(coin ? coin.name : "BTC");
-  }, [coin?.name]);
+    if(pathname=="/v1/strk-rewards"){
+      // setLoanMarket(coin ? coin.name : "BTC");
+      // setCollateralMarket(coin ? coin.name : "BTC");      
+    }else{
+      setLoanMarket(coin ? coin.name : "BTC");
+      setCollateralMarket(coin ? coin.name : "BTC");
+    }
+  }, [coin]);
   useEffect(() => {
     setCurrentPool("Select a pool");
     setCurrentPoolCoin("Select a pool");
@@ -1251,13 +1258,13 @@ const TradeModal = ({
     try {
       const fetchData = async () => {
         const res = await axios.get(
-          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json"
+          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_strk_grant.json"
         );
         setstrkTokenAlloactionData(res?.data?.Jediswap_v1);
       };
       fetchData();
     } catch (err) {
-      console.log(err);
+      console.log(err,"err in fetching");
     }
   }, []);
 
@@ -1269,8 +1276,8 @@ const TradeModal = ({
         }
       }
     } catch (err) {
-      console.log("hi");
-      // console.log(err);
+      // console.log("hi");
+      console.log(err,"err in allocating");
     }
   }, [strkTokenAlloactionData, currentPool]);
 
@@ -1398,8 +1405,6 @@ const TradeModal = ({
       setToMarketLiqB(currentSelectedPool.split("/")[1]);
     }
   }, [poolNumber]);
-  const router = useRouter();
-  const { pathname } = router;
   const getStrkAlloaction = (pool: any) => {
     try {
       if (strkTokenAlloactionData[pool]) {
@@ -3346,7 +3351,7 @@ const TradeModal = ({
                                               (100 *
                                                 365 *
                                                 (getStrkAlloaction(pool) *
-                                                  oraclePrices.find(
+                                                  oraclePrices?.find(
                                                     (curr: any) =>
                                                       curr.name === "STRK"
                                                   )?.price)) /
