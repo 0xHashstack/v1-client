@@ -14,18 +14,13 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useAccount } from "@starknet-react/core";
+import axios from "axios";
 import Image from "next/image";
 import posthog from "posthog-js";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
-import {
-  getJediEstimatedLiqALiqBfromLp,
-  getMySwapEstimatedLiqALiqBfromLp,
-} from "@/Blockchain/scripts/l3interaction";
-import { processAddress } from "@/Blockchain/stark-constants";
-import { getTokenFromAddress } from "@/Blockchain/utils/addressServices";
 import ExpandedCoinIcon from "@/assets/expanded/ExpandedCoins";
 import ExpandedMarketIcon from "@/assets/expanded/ExpandedMarket";
 import DollarActiveRadioButton from "@/assets/icons/dollarActiveRadioButton";
@@ -44,12 +39,15 @@ import {
   selectUserLoans,
   setNetAprLoans,
 } from "@/store/slices/readDataSlice";
+import {
+  selectMySplit,
+  selectStrkAprData,
+  selectnetSpendBalance,
+} from "@/store/slices/userAccountSlice";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import TableInfoIcon from "../table/tableIcons/infoIcon";
-import axios from "axios";
-import { selectStrkAprData, selectnetSpendBalance } from "@/store/slices/userAccountSlice";
 
 export interface ICoin {
   name: string;
@@ -99,9 +97,9 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
   const [currentSpendStatus, setCurrentSpendStatus] = useState("");
   const [currentLoanAmount, setCurrentLoanAmount] = useState("");
   const [currentLoanMarket, setCurrentLoanMarket] = useState("");
-  const [allSplit, setAllSplit] = useState<any>([]);
   const [showEmptyNotification, setShowEmptyNotification] = useState(true);
   const avgs = useSelector(selectEffectiveApr);
+  const allSplit = useSelector(selectMySplit);
   const [loading, setLoading] = useState(true);
   const [coinPassed, setCoinPassed] = useState({
     name: "BTC",
@@ -148,54 +146,6 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
     } catch (err) {}
   };
 
-  const getSplit = async () => {
-    let temp: any = [];
-    const promises = [];
-    for (let i = 0; i < Borrows?.length; i++) {
-      if (Borrows[i]?.spendType === "LIQUIDITY") {
-        if (Borrows[i]?.l3App == "JEDI_SWAP") {
-          const data = getJediEstimatedLiqALiqBfromLp(
-            Borrows[i]?.currentLoanAmount,
-            Borrows[i]?.loanId,
-            Borrows[i]?.currentLoanMarketAddress,
-            Borrows[i]?.loanMarket
-          );
-          promises.push(data);
-        } else if (Borrows[i]?.l3App == "MY_SWAP") {
-          const data = getMySwapEstimatedLiqALiqBfromLp(
-            Borrows[i]?.currentLoanAmount,
-            Borrows[i]?.loanId,
-            Borrows[i]?.currentLoanMarketAddress,
-            Borrows[i]?.loanMarket
-          );
-          promises.push(data);
-        }
-      } else {
-        promises.push(Promise.resolve(null));
-      }
-    }
-
-    Promise.allSettled([...promises]).then((val) => {
-      temp = val.map((data, i) => {
-        if (data && data?.status == "fulfilled" && data?.value) {
-          return {
-            ...data?.value,
-            tokenA: getTokenFromAddress(
-              processAddress(data?.value?.tokenAAddress)
-            )?.name,
-            tokenB: getTokenFromAddress(
-              processAddress(data?.value?.tokenBAddress)
-            )?.name,
-            loanId: Borrows[i]?.loanId,
-          };
-        } else {
-          return "empty";
-        }
-      });
-      setAllSplit(temp);
-    });
-  };
-
   const handleStatusHover = (idx: string) => {
     setStatusHoverIndex(idx);
   };
@@ -217,7 +167,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
     } catch (error) {}
   };
 
-  const getBorrowAPR :any= (borrowMarket: string) => {
+  const getBorrowAPR: any = (borrowMarket: string) => {
     switch (borrowMarket) {
       case "USDT":
         return borrowAPRs[0];
@@ -237,73 +187,82 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
     }
   };
 
-  const strkData=useSelector(selectStrkAprData)
-  const netSpendBalance=useSelector(selectnetSpendBalance);
+  const strkData = useSelector(selectStrkAprData);
+  const netSpendBalance = useSelector(selectnetSpendBalance);
 
-  const [netStrkBorrow, setnetStrkBorrow] = useState(0) ;
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0);
 
-  useEffect(()=>{
-    if(strkData!=null){
-      let netallocation=0;
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0;
       for (let token in strkData) {
         if (strkData.hasOwnProperty(token)) {
           const array = strkData[token];
-          const lastObject = array[array.length - 1]; 
+          const lastObject = array[array.length - 1];
           netallocation += 0.3 * lastObject.allocation;
         }
       }
-      setnetStrkBorrow(netallocation)
-    }else{
+      setnetStrkBorrow(netallocation);
+    } else {
       setnetStrkBorrow(0);
     }
-  },[strkData])
+  }, [strkData]);
 
-  const getBoostedAprSupply=(coin:any)=>{
-    if(strkData==null){
+  const getBoostedAprSupply = (coin: any) => {
+    if (strkData == null) {
       return 0;
-    }else{
-      if(strkData?.[coin]){
-        if(oraclePrices==null){
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
           return 0;
-        }else{
-          let value=(strkData?.[coin] ? ((365*100*(strkData?.[coin][strkData[coin]?.length-1]?.allocation) *  0.7 *oraclePrices?.find(
-            (curr: any) => curr.name === "STRK"
-          )?.price)/strkData?.[coin][strkData[coin].length-1]?.supply_usd) :0)
+        } else {
+          let value = strkData?.[coin]
+            ? (365 *
+                100 *
+                strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
+                0.7 *
+                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  ?.price) /
+              strkData?.[coin][strkData[coin].length - 1]?.supply_usd
+            : 0;
           return value;
         }
-      }else{
+      } else {
         return 0;
       }
     }
+  };
 
-  }
-
-const getBoostedApr=(coin:any)=>{
-  if(strkData==null){
-    return 0;
-  }else{
-    if(strkData?.[coin]){
-      if(oraclePrices==null){
-        return 0;
-      }else{
-        if(netStrkBorrow!=0){
-          if(netSpendBalance){
-            let value=(365*100*netStrkBorrow*oraclePrices?.find(
-              (curr: any) => curr.name === "STRK"
-            )?.price/netSpendBalance)
-            return value;
-          }else{
+  const getBoostedApr = (coin: any) => {
+    if (strkData == null) {
+      return 0;
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
+          return 0;
+        } else {
+          if (netStrkBorrow != 0) {
+            if (netSpendBalance) {
+              let value =
+                (365 *
+                  100 *
+                  netStrkBorrow *
+                  oraclePrices?.find((curr: any) => curr.name === "STRK")
+                    ?.price) /
+                netSpendBalance;
+              return value;
+            } else {
+              return 0;
+            }
+          } else {
             return 0;
           }
-        }else{
-          return 0;
         }
+      } else {
+        return 0;
       }
-    }else{
-      return 0;
     }
-  }
-}
+  };
 
   const getAprByPool = (dataArray: any[], pool: string, l3App: string) => {
     const matchedObject = dataArray.find((item) => {
@@ -363,25 +322,31 @@ const getBoostedApr=(coin:any)=>{
           borrow?.spendType == "LIQUIDITY"
             ? Number(
                 avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
-              ) + getBoostedAprSupply(borrow?.collateralMarket.slice(1))+
+              ) +
+              getBoostedAprSupply(borrow?.collateralMarket.slice(1)) +
               (((getAprByPool(
                 poolAprs,
                 allSplit?.[lower_bound + idx]?.tokenA +
                   "/" +
                   allSplit?.[lower_bound + idx]?.tokenB,
                 borrow?.l3App
-              )+(getBoostedApr(borrow?.loanMarket.slice(1)))+((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                ?.tokenA +
-                "/" +
-                allSplit?.[lower_bound + idx]
-                  ?.tokenB))/getTvlByPool(
-                    poolAprs,
-                    allSplit?.[lower_bound + idx]
-                      ?.tokenA +
+              ) +
+                getBoostedApr(borrow?.loanMarket.slice(1)) +
+                (100 *
+                  365 *
+                  oraclePrices.find((curr: any) => curr.name === "STRK")
+                    ?.price *
+                  getStrkAlloaction(
+                    allSplit?.[lower_bound + idx]?.tokenA +
                       "/" +
-                      allSplit?.[lower_bound + idx]
-                        ?.tokenB,
-                    borrow?.l3App)
+                      allSplit?.[lower_bound + idx]?.tokenB
+                  )) /
+                  getTvlByPool(
+                    poolAprs,
+                    allSplit?.[lower_bound + idx]?.tokenA +
+                      "/" +
+                      allSplit?.[lower_bound + idx]?.tokenB,
+                    borrow?.l3App
                   )) *
                 (dollarConvertor(
                   allSplit?.[lower_bound + idx]?.amountA,
@@ -393,19 +358,23 @@ const getBoostedApr=(coin:any)=>{
                     allSplit?.[lower_bound + idx]?.tokenB,
                     oraclePrices
                   ))) /
-                (dollarConvertor(
+                dollarConvertor(
                   borrow?.collateralAmountParsed,
                   borrow?.collateralMarket.slice(1),
                   oraclePrices
                 )) *
                 reduxProtocolStats?.find(
                   (val: any) => val?.token == borrow?.collateralMarket.slice(1)
-                )?.exchangeRateRtokenToUnderlying)
-            :borrow?.spendType == "UNSPENT" ? (Number(
+                )?.exchangeRateRtokenToUnderlying
+            : borrow?.spendType == "UNSPENT"
+            ? Number(
                 avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
-              )+getBoostedAprSupply(borrow?.collateralMarket.slice(1))):(Number(
+              ) + getBoostedAprSupply(borrow?.collateralMarket.slice(1))
+            : Number(
                 avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
-              )+getBoostedAprSupply(borrow?.collateralMarket.slice(1))+getBoostedApr(borrow?.loanMarket.slice(1)));
+              ) +
+              getBoostedAprSupply(borrow?.collateralMarket.slice(1)) +
+              getBoostedApr(borrow?.loanMarket.slice(1));
         netApr = netApr + aprs;
       });
       if (netApr != 0) {
@@ -420,59 +389,56 @@ const getBoostedApr=(coin:any)=>{
   }, [avgs, poolAprs, Borrows, allSplit]);
 
   useEffect(() => {
-    if (Borrows) {
-      getSplit();
-    }
-  }, [Borrows]);
-
-  useEffect(() => {
     if (Borrows || Borrows?.length > 0) {
       setLoading(false);
     }
   }, [Borrows]);
 
   const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
-  const getStrkAlloaction=(pool:any)=>{
-    try{
-      if(strkTokenAlloactionData[pool]){
-        return strkTokenAlloactionData[pool][strkTokenAlloactionData[pool].length-1]?.allocation;
-      }else{
+  const getStrkAlloaction = (pool: any) => {
+    try {
+      if (strkTokenAlloactionData[pool]) {
+        return strkTokenAlloactionData[pool][
+          strkTokenAlloactionData[pool].length - 1
+        ]?.allocation;
+      } else {
         return 0;
       }
-    }catch(err){
+    } catch (err) {
       return 0;
     }
-    
-  }
-useEffect(()=>{
-  try{
-    const fetchData=async()=>{
-      const res=await axios.get('https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json')
-      setstrkTokenAlloactionData(res?.data?.Jediswap_v1)
+  };
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        const res = await axios.get(
+          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json"
+        );
+        setstrkTokenAlloactionData(res?.data?.Jediswap_v1);
+      };
+      fetchData();
+    } catch (err) {
+      console.log(err);
     }
-    fetchData()
-  }catch(err){
-    console.log(err)
-  }
-},[])
-const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
-  const matchedObject = dataArray.find((item) => {
-    if (item.name === "USDT/USDC") {
-      return item.amm === "jedi" && "USDC/USDT" === pool;
-    } else if (item.name == "ETH/STRK") {
-      return item.amm === "jedi" && "STRK/ETH" === pool;
-    } else if (item.name === "ETH/DAI") {
-      return item.amm === "jedi" && "DAI/ETH" === pool;
-    } else {
-      return (
-        item.name === pool &&
-        item.amm === (l3App == "JEDI_SWAP" ? "jedi" : "myswap")
-      );
-    }
-  });
-  return matchedObject ? matchedObject.tvl  : 0;
-};
-// console.log(strkTokenAlloactionData["STRK/ETH"][strkTokenAlloactionData["STRK/ETH"].length-1].allocation,"allocat")
+  }, []);
+  const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
+    const matchedObject = dataArray.find((item) => {
+      if (item.name === "USDT/USDC") {
+        return item.amm === "jedi" && "USDC/USDT" === pool;
+      } else if (item.name == "ETH/STRK") {
+        return item.amm === "jedi" && "STRK/ETH" === pool;
+      } else if (item.name === "ETH/DAI") {
+        return item.amm === "jedi" && "DAI/ETH" === pool;
+      } else {
+        return (
+          item.name === pool &&
+          item.amm === (l3App == "JEDI_SWAP" ? "jedi" : "myswap")
+        );
+      }
+    });
+    return matchedObject ? matchedObject.tvl : 0;
+  };
+  // console.log(strkTokenAlloactionData["STRK/ETH"][strkTokenAlloactionData["STRK/ETH"].length-1].allocation,"allocat")
 
   return loading ? (
     <Box
@@ -814,7 +780,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                               borderRadius="6px"
                             />
                           ) : (
-                           - numberFormatterPercentage(
+                            -numberFormatterPercentage(
                               getBorrowAPR(borrow?.loanMarket.slice(1))
                             ) + "%"
                           )}
@@ -843,14 +809,20 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                     (item: any) =>
                                       item?.loanId == borrow?.loanId
                                   )?.avg
-                                ) +((getBoostedAprSupply(borrow?.collateralMarket.slice(1))))+
+                                ) +
+                                  getBoostedAprSupply(
+                                    borrow?.collateralMarket.slice(1)
+                                  ) +
                                   (((getAprByPool(
                                     poolAprs,
                                     allSplit?.[lower_bound + idx]?.tokenA +
                                       "/" +
                                       allSplit?.[lower_bound + idx]?.tokenB,
                                     borrow?.l3App
-                                  )+getBoostedApr(borrow?.loanMarket.slice(1))) *
+                                  ) +
+                                    getBoostedApr(
+                                      borrow?.loanMarket.slice(1)
+                                    )) *
                                     (dollarConvertor(
                                       allSplit?.[lower_bound + idx]?.amountA,
                                       allSplit?.[lower_bound + idx]?.tokenA,
@@ -984,12 +956,15 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                             borrow?.loanAmountParsed,
                                             borrow?.loanMarket.slice(1),
                                             oraclePrices
-                                          ) * reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
+                                          ) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying *
+                                            getBoostedApr(
                                               borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying*
-                                            getBoostedApr(borrow?.loanMarket.slice(1))) /
+                                            )) /
                                             dollarConvertor(
                                               borrow?.collateralAmountParsed,
                                               borrow?.collateralMarket.slice(1),
@@ -1078,7 +1053,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                         %
                                       </Text>
                                     </Box>
-                                     <Box
+                                    <Box
                                       display="flex"
                                       justifyContent="space-between"
                                     >
@@ -1114,43 +1089,54 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                       </Text>
                                       <Text>
                                         +
-                                        {(((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                                                      ?.tokenA +
-                                                      "/" +
-                                                      allSplit?.[lower_bound + idx]
-                                                        ?.tokenB))/getTvlByPool(
-                                                    poolAprs,
-                                                    allSplit?.[lower_bound + idx]
-                                                      ?.tokenA +
-                                                      "/" +
-                                                      allSplit?.[lower_bound + idx]
-                                                        ?.tokenB,
-                                                    borrow?.l3App
-                                                  )*((dollarConvertor(
-                                                    allSplit?.[lower_bound + idx]
-                                                      ?.amountA,
-                                                    allSplit?.[lower_bound + idx]
-                                                      ?.tokenA,
-                                                    oraclePrices
-                                                  ) +
-                                                    dollarConvertor(
-                                                      allSplit?.[lower_bound + idx]
-                                                        ?.amountB,
-                                                      allSplit?.[lower_bound + idx]
-                                                        ?.tokenB,
-                                                      oraclePrices
-                                                    ))) /
-                                                  dollarConvertor(
-                                                    borrow?.collateralAmountParsed,
-                                                    borrow?.collateralMarket.slice(1),
-                                                    oraclePrices
-                                                  )) *
-                                                reduxProtocolStats?.find(
-                                                  (val: any) =>
-                                                    val?.token ==
-                                                    borrow?.collateralMarket.slice(1)
-                                                )?.exchangeRateRtokenToUnderlying).toFixed(2)
-                                              }
+                                        {(
+                                          ((((100 *
+                                            365 *
+                                            oraclePrices.find(
+                                              (curr: any) =>
+                                                curr.name === "STRK"
+                                            )?.price *
+                                            getStrkAlloaction(
+                                              allSplit?.[lower_bound + idx]
+                                                ?.tokenA +
+                                                "/" +
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenB
+                                            )) /
+                                            getTvlByPool(
+                                              poolAprs,
+                                              allSplit?.[lower_bound + idx]
+                                                ?.tokenA +
+                                                "/" +
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenB,
+                                              borrow?.l3App
+                                            )) *
+                                            (dollarConvertor(
+                                              allSplit?.[lower_bound + idx]
+                                                ?.amountA,
+                                              allSplit?.[lower_bound + idx]
+                                                ?.tokenA,
+                                              oraclePrices
+                                            ) +
+                                              dollarConvertor(
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.amountB,
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenB,
+                                                oraclePrices
+                                              ))) /
+                                            dollarConvertor(
+                                              borrow?.collateralAmountParsed,
+                                              borrow?.collateralMarket.slice(1),
+                                              oraclePrices
+                                            )) *
+                                          reduxProtocolStats?.find(
+                                            (val: any) =>
+                                              val?.token ==
+                                              borrow?.collateralMarket.slice(1)
+                                          )?.exchangeRateRtokenToUnderlying
+                                        ).toFixed(2)}
                                         %
                                       </Text>
                                     </Box>
@@ -1162,13 +1148,20 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                       <Text>Collateral:</Text>
                                       <Text>
                                         +
-                                        {
-                                          numberFormatterPercentage(Number(reduxProtocolStats?.find(
-                                            (stat: any) =>
-                                              stat?.token ===
+                                        {numberFormatterPercentage(
+                                          Number(
+                                            reduxProtocolStats?.find(
+                                              (stat: any) =>
+                                                stat?.token ===
+                                                borrow?.collateralMarket.slice(
+                                                  1
+                                                )
+                                            )?.supplyRate
+                                          ) +
+                                            getBoostedAprSupply(
                                               borrow?.collateralMarket.slice(1)
-                                          )?.supplyRate)+getBoostedAprSupply(borrow?.collateralMarket.slice(1)))
-                                        }
+                                            )
+                                        )}
                                         %
                                       </Text>
                                     </Box>
@@ -1188,7 +1181,10 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                               (item: any) =>
                                                 item?.loanId == borrow?.loanId
                                             )?.avg
-                                          ) + (getBoostedAprSupply(borrow?.collateralMarket.slice(1)))+
+                                          ) +
+                                          getBoostedAprSupply(
+                                            borrow?.collateralMarket.slice(1)
+                                          ) +
                                           (((getAprByPool(
                                             poolAprs,
                                             allSplit?.[lower_bound + idx]
@@ -1197,19 +1193,32 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                               allSplit?.[lower_bound + idx]
                                                 ?.tokenB,
                                             borrow?.l3App
-                                          )+(getBoostedApr(borrow?.loanMarket.slice(1)))+((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                                            ?.tokenA +
-                                            "/" +
-                                            allSplit?.[lower_bound + idx]
-                                              ?.tokenB))/getTvlByPool(
+                                          ) +
+                                            getBoostedApr(
+                                              borrow?.loanMarket.slice(1)
+                                            ) +
+                                            (100 *
+                                              365 *
+                                              oraclePrices.find(
+                                                (curr: any) =>
+                                                  curr.name === "STRK"
+                                              )?.price *
+                                              getStrkAlloaction(
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenA +
+                                                  "/" +
+                                                  allSplit?.[lower_bound + idx]
+                                                    ?.tokenB
+                                              )) /
+                                              getTvlByPool(
                                                 poolAprs,
                                                 allSplit?.[lower_bound + idx]
                                                   ?.tokenA +
                                                   "/" +
                                                   allSplit?.[lower_bound + idx]
                                                     ?.tokenB,
-                                                borrow?.l3App)
-                                              ) )*
+                                                borrow?.l3App
+                                              )) *
                                             (dollarConvertor(
                                               allSplit?.[lower_bound + idx]
                                                 ?.amountA,
@@ -1281,55 +1290,69 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                             borrow?.l3App
                                           ) */}
                                 {
-                                   (
-                                      Number(
-                                        avgs?.find(
-                                          (item: any) =>
-                                            item?.loanId == borrow?.loanId
-                                        )?.avg
-                                      ) +(getBoostedAprSupply(borrow?.collateralMarket.slice(1)))+
-                                      (((getAprByPool(
-                                        poolAprs,
-                                        allSplit?.[lower_bound + idx]?.tokenA +
-                                          "/" +
-                                          allSplit?.[lower_bound + idx]?.tokenB,
-                                        borrow?.l3App
-                                      )+(getBoostedApr(borrow?.loanMarket.slice(1)))+(100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                                        ?.tokenA +
+                                  (
+                                    Number(
+                                      avgs?.find(
+                                        (item: any) =>
+                                          item?.loanId == borrow?.loanId
+                                      )?.avg
+                                    ) +
+                                    getBoostedAprSupply(
+                                      borrow?.collateralMarket.slice(1)
+                                    ) +
+                                    (((getAprByPool(
+                                      poolAprs,
+                                      allSplit?.[lower_bound + idx]?.tokenA +
                                         "/" +
-                                        allSplit?.[lower_bound + idx]
-                                          ?.tokenB))/getTvlByPool(
-                                            poolAprs,
+                                        allSplit?.[lower_bound + idx]?.tokenB,
+                                      borrow?.l3App
+                                    ) +
+                                      getBoostedApr(
+                                        borrow?.loanMarket.slice(1)
+                                      ) +
+                                      (100 *
+                                        365 *
+                                        oraclePrices.find(
+                                          (curr: any) => curr.name === "STRK"
+                                        )?.price *
+                                        getStrkAlloaction(
+                                          allSplit?.[lower_bound + idx]
+                                            ?.tokenA +
+                                            "/" +
                                             allSplit?.[lower_bound + idx]
-                                              ?.tokenA +
-                                              "/" +
-                                              allSplit?.[lower_bound + idx]
-                                                ?.tokenB,
-                                            borrow?.l3App
-                                          )) *
-                                        (dollarConvertor(
-                                          allSplit?.[lower_bound + idx]?.amountA,
-                                          allSplit?.[lower_bound + idx]?.tokenA,
-                                          oraclePrices
-                                        ) +
-                                          dollarConvertor(
+                                              ?.tokenB
+                                        )) /
+                                        getTvlByPool(
+                                          poolAprs,
+                                          allSplit?.[lower_bound + idx]
+                                            ?.tokenA +
+                                            "/" +
                                             allSplit?.[lower_bound + idx]
-                                              ?.amountB,
-                                            allSplit?.[lower_bound + idx]?.tokenB,
-                                            oraclePrices
-                                          ))) /
+                                              ?.tokenB,
+                                          borrow?.l3App
+                                        )) *
+                                      (dollarConvertor(
+                                        allSplit?.[lower_bound + idx]?.amountA,
+                                        allSplit?.[lower_bound + idx]?.tokenA,
+                                        oraclePrices
+                                      ) +
                                         dollarConvertor(
-                                          borrow?.collateralAmountParsed,
-                                          borrow?.collateralMarket.slice(1),
+                                          allSplit?.[lower_bound + idx]
+                                            ?.amountB,
+                                          allSplit?.[lower_bound + idx]?.tokenB,
                                           oraclePrices
-                                        ) *
-                                        reduxProtocolStats?.find(
-                                          (val: any) =>
-                                            val?.token ==
-                                            borrow?.collateralMarket.slice(1)
-                                        )?.exchangeRateRtokenToUnderlying)
-                                    ).toFixed(3) +
-                                    "%"
+                                        ))) /
+                                      dollarConvertor(
+                                        borrow?.collateralAmountParsed,
+                                        borrow?.collateralMarket.slice(1),
+                                        oraclePrices
+                                      )) *
+                                      reduxProtocolStats?.find(
+                                        (val: any) =>
+                                          val?.token ==
+                                          borrow?.collateralMarket.slice(1)
+                                      )?.exchangeRateRtokenToUnderlying
+                                  ).toFixed(3) + "%"
                                   //   : "" +
                                   // (
                                   //   Number(
@@ -1380,7 +1403,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                   //     )?.exchangeRateRtokenToUnderlying
                                   // ).toFixed(3) +
                                   // "%"
-                                  }
+                                }
                               </Tooltip>
                             </Text>
                           ) : (
@@ -1389,40 +1412,42 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                               height="100%"
                               display="flex"
                               color={
-                                (Number(
+                                Number(
                                   avgs?.find(
                                     (item: any) =>
                                       item?.loanId == borrow?.loanId
                                   )?.avg
-                                )+ getBoostedApr(borrow?.loanMarket.slice(1))+((dollarConvertor(
-                                  borrow?.collateralAmountParsed,
-                                  borrow?.collateralMarket.slice(1),
-                                  oraclePrices
-                                ) *
-                                  reduxProtocolStats?.find(
-                                    (val: any) =>
-                                      val?.token ==
-                                      borrow?.collateralMarket.slice(
-                                        1
-                                      )
-                                  )?.exchangeRateRtokenToUnderlying *
-                                 (reduxProtocolStats?.find(
-                                    (stat: any) =>
-                                      stat?.token ===
-                                      borrow?.collateralMarket.slice(
-                                        1
-                                      )
-                                  )?.supplyRate+getBoostedAprSupply( borrow?.collateralMarket.slice(1)))) /
-                                  (dollarConvertor(
-                                    borrow?.loanAmountParsed,
-                                    borrow?.loanMarket.slice(1),
+                                ) +
+                                  getBoostedApr(borrow?.loanMarket.slice(1)) +
+                                  ((dollarConvertor(
+                                    borrow?.collateralAmountParsed,
+                                    borrow?.collateralMarket.slice(1),
                                     oraclePrices
-                                  )) *
-                                reduxProtocolStats?.find(
-                                  (val: any) =>
-                                    val?.token ==
-                                    borrow?.loanMarket.slice(1)
-                                )?.exchangeRateDTokenToUnderlying)) < 0
+                                  ) *
+                                    reduxProtocolStats?.find(
+                                      (val: any) =>
+                                        val?.token ==
+                                        borrow?.collateralMarket.slice(1)
+                                    )?.exchangeRateRtokenToUnderlying *
+                                    (reduxProtocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token ===
+                                        borrow?.collateralMarket.slice(1)
+                                    )?.supplyRate +
+                                      getBoostedAprSupply(
+                                        borrow?.collateralMarket.slice(1)
+                                      ))) /
+                                    dollarConvertor(
+                                      borrow?.loanAmountParsed,
+                                      borrow?.loanMarket.slice(1),
+                                      oraclePrices
+                                    )) *
+                                    reduxProtocolStats?.find(
+                                      (val: any) =>
+                                        val?.token ==
+                                        borrow?.loanMarket.slice(1)
+                                    )?.exchangeRateDTokenToUnderlying <
+                                0
                                   ? "rgb(255 94 94)"
                                   : "#00D395"
                               }
@@ -1446,13 +1471,15 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                       Borrow:
                                       <Text>
                                         -
-                                        {numberFormatterPercentage(getBorrowAPR(
-                                          borrow?.loanMarket.slice(1)))
-                                }
+                                        {numberFormatterPercentage(
+                                          getBorrowAPR(
+                                            borrow?.loanMarket.slice(1)
+                                          )
+                                        )}
                                         %
                                       </Text>
                                     </Box>
-                                    {borrow?.spendType != "UNSPENT" &&
+                                    {borrow?.spendType != "UNSPENT" && (
                                       <Box
                                         display="flex"
                                         justifyContent="space-between"
@@ -1461,13 +1488,15 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                         Boosted:
                                         <Text>
                                           +
-                                          {numberFormatterPercentage(getBoostedApr(
-                                            borrow?.loanMarket.slice(1)))
-                                        }
+                                          {numberFormatterPercentage(
+                                            getBoostedApr(
+                                              borrow?.loanMarket.slice(1)
+                                            )
+                                          )}
                                           %
                                         </Text>
                                       </Box>
-                                    }
+                                    )}
                                     <Box
                                       display="flex"
                                       justifyContent="space-between"
@@ -1490,14 +1519,19 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                                   1
                                                 )
                                             )?.exchangeRateRtokenToUnderlying *
-                                           (reduxProtocolStats?.find(
+                                            (reduxProtocolStats?.find(
                                               (stat: any) =>
                                                 stat?.token ===
                                                 borrow?.collateralMarket.slice(
                                                   1
                                                 )
-                                            )?.supplyRate+getBoostedAprSupply( borrow?.collateralMarket.slice(1)))) /
-                                            (dollarConvertor(
+                                            )?.supplyRate +
+                                              getBoostedAprSupply(
+                                                borrow?.collateralMarket.slice(
+                                                  1
+                                                )
+                                              ))) /
+                                            dollarConvertor(
                                               borrow?.loanAmountParsed,
                                               borrow?.loanMarket.slice(1),
                                               oraclePrices
@@ -1506,7 +1540,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                             (val: any) =>
                                               val?.token ==
                                               borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying)
+                                          )?.exchangeRateDTokenToUnderlying
                                         ).toFixed(2)}
                                         %
                                       </Text>
@@ -1521,40 +1555,53 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                     >
                                       <Text>Effective APR:</Text>
                                       <Text>
-                                        {(Number(
-                                          avgs?.find(
-                                            (item: any) =>
-                                              item?.loanId == borrow?.loanId
-                                          )?.avg
-                                        )+ (borrow?.spendType == "UNSPENT" ?0:getBoostedApr(borrow?.loanMarket.slice(1)))+((dollarConvertor(
-                                          borrow?.collateralAmountParsed,
-                                          borrow?.collateralMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.collateralMarket.slice(
-                                                1
-                                              )
-                                          )?.exchangeRateRtokenToUnderlying *
-                                         (reduxProtocolStats?.find(
-                                            (stat: any) =>
-                                              stat?.token ===
-                                              borrow?.collateralMarket.slice(
-                                                1
-                                              )
-                                          )?.supplyRate+ getBoostedAprSupply( borrow?.collateralMarket.slice(1)))) /
-                                          (dollarConvertor(
-                                            borrow?.loanAmountParsed,
-                                            borrow?.loanMarket.slice(1),
+                                        {(
+                                          Number(
+                                            avgs?.find(
+                                              (item: any) =>
+                                                item?.loanId == borrow?.loanId
+                                            )?.avg
+                                          ) +
+                                          (borrow?.spendType == "UNSPENT"
+                                            ? 0
+                                            : getBoostedApr(
+                                                borrow?.loanMarket.slice(1)
+                                              )) +
+                                          ((dollarConvertor(
+                                            borrow?.collateralAmountParsed,
+                                            borrow?.collateralMarket.slice(1),
                                             oraclePrices
-                                          )) *
-                                        reduxProtocolStats?.find(
-                                          (val: any) =>
-                                            val?.token ==
-                                            borrow?.loanMarket.slice(1)
-                                        )?.exchangeRateDTokenToUnderlying))?.toFixed(2) + "%"}
+                                          ) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.collateralMarket.slice(
+                                                  1
+                                                )
+                                            )?.exchangeRateRtokenToUnderlying *
+                                            (reduxProtocolStats?.find(
+                                              (stat: any) =>
+                                                stat?.token ===
+                                                borrow?.collateralMarket.slice(
+                                                  1
+                                                )
+                                            )?.supplyRate +
+                                              getBoostedAprSupply(
+                                                borrow?.collateralMarket.slice(
+                                                  1
+                                                )
+                                              ))) /
+                                            dollarConvertor(
+                                              borrow?.loanAmountParsed,
+                                              borrow?.loanMarket.slice(1),
+                                              oraclePrices
+                                            )) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying
+                                        )?.toFixed(2) + "%"}
                                       </Text>
                                     </Box>
                                   </Box>
@@ -1572,40 +1619,47 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                 borderColor="#23233D"
                                 arrowShadowColor="#2B2F35"
                               >
-                                          {(Number(
-                                          avgs?.find(
-                                            (item: any) =>
-                                              item?.loanId == borrow?.loanId
-                                          )?.avg
-                                        )+ (borrow?.spendType == "UNSPENT" ?0:getBoostedApr(borrow?.loanMarket.slice(1)))+((dollarConvertor(
-                                          borrow?.collateralAmountParsed,
-                                          borrow?.collateralMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.collateralMarket.slice(
-                                                1
-                                              )
-                                          )?.exchangeRateRtokenToUnderlying *
-                                         (reduxProtocolStats?.find(
-                                            (stat: any) =>
-                                              stat?.token ===
-                                              borrow?.collateralMarket.slice(
-                                                1
-                                              )
-                                          )?.supplyRate+getBoostedAprSupply( borrow?.collateralMarket.slice(1)))) /
-                                          (dollarConvertor(
-                                            borrow?.loanAmountParsed,
-                                            borrow?.loanMarket.slice(1),
-                                            oraclePrices
-                                          )) *
-                                        reduxProtocolStats?.find(
-                                          (val: any) =>
-                                            val?.token ==
-                                            borrow?.loanMarket.slice(1)
-                                        )?.exchangeRateDTokenToUnderlying))?.toFixed(2) + "%"}
+                                {(
+                                  Number(
+                                    avgs?.find(
+                                      (item: any) =>
+                                        item?.loanId == borrow?.loanId
+                                    )?.avg
+                                  ) +
+                                  (borrow?.spendType == "UNSPENT"
+                                    ? 0
+                                    : getBoostedApr(
+                                        borrow?.loanMarket.slice(1)
+                                      )) +
+                                  ((dollarConvertor(
+                                    borrow?.collateralAmountParsed,
+                                    borrow?.collateralMarket.slice(1),
+                                    oraclePrices
+                                  ) *
+                                    reduxProtocolStats?.find(
+                                      (val: any) =>
+                                        val?.token ==
+                                        borrow?.collateralMarket.slice(1)
+                                    )?.exchangeRateRtokenToUnderlying *
+                                    (reduxProtocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token ===
+                                        borrow?.collateralMarket.slice(1)
+                                    )?.supplyRate +
+                                      getBoostedAprSupply(
+                                        borrow?.collateralMarket.slice(1)
+                                      ))) /
+                                    dollarConvertor(
+                                      borrow?.loanAmountParsed,
+                                      borrow?.loanMarket.slice(1),
+                                      oraclePrices
+                                    )) *
+                                    reduxProtocolStats?.find(
+                                      (val: any) =>
+                                        val?.token ==
+                                        borrow?.loanMarket.slice(1)
+                                    )?.exchangeRateDTokenToUnderlying
+                                )?.toFixed(2) + "%"}
                               </Tooltip>
                             </Text>
                           )
@@ -1957,7 +2011,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                               </Box>
                               <Text fontSize="14px" fontWeight="400">
                                 {borrow.spendType == "LIQUIDITY" ? (
-                                  allSplit.length === 0 ? (
+                                  allSplit?.length === 0 ? (
                                     <Skeleton
                                       width="6rem"
                                       height="1.2rem"
@@ -1965,8 +2019,8 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                       endColor="#2B2F35"
                                       borderRadius="6px"
                                     />
-                                  ) : allSplit[lower_bound + idx] ===
-                                    "empty" ? (
+                                  ) : allSplit &&
+                                    allSplit[lower_bound + idx] === "empty" ? (
                                     "-"
                                   ) : dollarConversions == true ? (
                                     "$" +
@@ -1991,7 +2045,7 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                     ) +
                                     "/" +
                                     numberFormatter(
-                                      allSplit[lower_bound + idx]?.amountB
+                                      allSplit?.[lower_bound + idx]?.amountB
                                     )
                                   )
                                 ) : dollarConversions == true ? (
@@ -2015,172 +2069,238 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                       </Td>
 
                       <Td>
-                        {
-                          oraclePrices!==null ?
-                        <Box
-                          width="100%"
-                          display="flex"
-                          flexDirection="column"
-                          justifyContent="center"
-                          alignItems="center"
-                          height="3rem"
-                        >
-                          <Tooltip
-                            hasArrow
-                            label={
-                              <Box>
-                                Return:
-                                {borrow.spendType == "UNSPENT"
-                                  ? dollarConvertor(
-                                      borrow.currentLoanAmountParsed,
-                                      borrow?.loanMarket.slice(1),
-                                      oraclePrices
-                                    ) -
-                                      reduxProtocolStats?.find(
-                                        (val: any) =>
-                                          val?.token ==
-                                          borrow?.loanMarket.slice(1)
-                                      )?.exchangeRateDTokenToUnderlying *
-                                        dollarConvertor(
-                                          borrow.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) >=
-                                    0
-                                    ? "$"
-                                    : "-$"
-                                  : borrow.spendType == "LIQUIDITY"
-                                  ? dollarConvertor(
-                                      allSplit?.[lower_bound + idx]?.amountA,
-                                      allSplit?.[lower_bound + idx]?.tokenA,
-                                      oraclePrices
-                                    ) +
-                                      dollarConvertor(
-                                        allSplit?.[lower_bound + idx]?.amountB,
-                                        allSplit?.[lower_bound + idx]?.tokenB,
-                                        oraclePrices
-                                      ) -
-                                      dollarConvertor(
-                                        borrow.loanAmountParsed,
-                                        borrow?.loanMarket.slice(1),
-                                        oraclePrices
-                                      ) *
-                                        reduxProtocolStats?.find(
-                                          (val: any) =>
-                                            val?.token ==
-                                            borrow?.loanMarket.slice(1)
-                                        )?.exchangeRateDTokenToUnderlying >=
-                                    0
-                                    ? "$"
-                                    : "-$"
-                                  : borrow.spendType == "SWAP"
-                                  ? dollarConvertor(
-                                      borrow.currentLoanAmountParsed,
-                                      borrow?.currentLoanMarket,
-                                      oraclePrices
-                                    ) -
-                                      dollarConvertor(
-                                        borrow.loanAmountParsed,
-                                        borrow?.loanMarket.slice(1),
-                                        oraclePrices
-                                      ) *
-                                        reduxProtocolStats?.find(
-                                          (val: any) =>
-                                            val?.token ==
-                                            borrow?.loanMarket.slice(1)
-                                        )?.exchangeRateDTokenToUnderlying >=
-                                    0
-                                    ? "$"
-                                    : "-$"
-                                  : ""}
-                                {borrow.spendType == "UNSPENT"
-                                  ? numberFormatter(
-                                      Math.abs(
-                                        dollarConvertor(
-                                          borrow.currentLoanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) -
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying *
-                                            dollarConvertor(
-                                              borrow.loanAmountParsed,
-                                              borrow?.loanMarket.slice(1),
-                                              oraclePrices
-                                            )
-                                      )
-                                    )
-                                  : borrow.spendType == "LIQUIDITY"
-                                  ? numberFormatter(
-                                      Math.abs(
-                                        dollarConvertor(
-                                          borrow.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying -
-                                          (dollarConvertor(
-                                            allSplit?.[lower_bound + idx]
-                                              ?.amountA,
-                                            allSplit?.[lower_bound + idx]
-                                              ?.tokenA,
-                                            oraclePrices
-                                          ) +
-                                            dollarConvertor(
-                                              allSplit?.[lower_bound + idx]
-                                                ?.amountB,
-                                              allSplit?.[lower_bound + idx]
-                                                ?.tokenB,
-                                              oraclePrices
-                                            ))
-                                      )
-                                    )
-                                  : borrow.spendType == "SWAP"
-                                  ? numberFormatter(
-                                      Math.abs(
-                                        dollarConvertor(
-                                          borrow.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying -
-                                          dollarConvertor(
-                                            borrow.currentLoanAmountParsed,
-                                            borrow?.currentLoanMarket,
-                                            oraclePrices
-                                          )
-                                      )
-                                    )
-                                  : ""}
-                              </Box>
-                            }
-                            placement="right"
-                            rounded="md"
-                            boxShadow="dark-lg"
-                            bg="#02010F"
-                            fontSize={"13px"}
-                            fontWeight={"400"}
-                            borderRadius={"lg"}
-                            padding={"2"}
-                            color="#F0F0F5"
-                            border="1px solid"
-                            borderColor="#23233D"
-                            arrowShadowColor="#2B2F35"
+                        {oraclePrices !== null ? (
+                          <Box
+                            width="100%"
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            height="3rem"
                           >
-                            <Text
-                              color={
-                                borrow?.spendType == "UNSPENT"
+                            <Tooltip
+                              hasArrow
+                              label={
+                                <Box>
+                                  Return:
+                                  {borrow.spendType == "UNSPENT"
+                                    ? dollarConvertor(
+                                        borrow.currentLoanAmountParsed,
+                                        borrow?.loanMarket.slice(1),
+                                        oraclePrices
+                                      ) -
+                                        reduxProtocolStats?.find(
+                                          (val: any) =>
+                                            val?.token ==
+                                            borrow?.loanMarket.slice(1)
+                                        )?.exchangeRateDTokenToUnderlying *
+                                          dollarConvertor(
+                                            borrow.loanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) >=
+                                      0
+                                      ? "$"
+                                      : "-$"
+                                    : borrow.spendType == "LIQUIDITY"
+                                    ? dollarConvertor(
+                                        allSplit?.[lower_bound + idx]?.amountA,
+                                        allSplit?.[lower_bound + idx]?.tokenA,
+                                        oraclePrices
+                                      ) +
+                                        dollarConvertor(
+                                          allSplit?.[lower_bound + idx]
+                                            ?.amountB,
+                                          allSplit?.[lower_bound + idx]?.tokenB,
+                                          oraclePrices
+                                        ) -
+                                        dollarConvertor(
+                                          borrow.loanAmountParsed,
+                                          borrow?.loanMarket.slice(1),
+                                          oraclePrices
+                                        ) *
+                                          reduxProtocolStats?.find(
+                                            (val: any) =>
+                                              val?.token ==
+                                              borrow?.loanMarket.slice(1)
+                                          )?.exchangeRateDTokenToUnderlying >=
+                                      0
+                                      ? "$"
+                                      : "-$"
+                                    : borrow.spendType == "SWAP"
+                                    ? dollarConvertor(
+                                        borrow.currentLoanAmountParsed,
+                                        borrow?.currentLoanMarket,
+                                        oraclePrices
+                                      ) -
+                                        dollarConvertor(
+                                          borrow.loanAmountParsed,
+                                          borrow?.loanMarket.slice(1),
+                                          oraclePrices
+                                        ) *
+                                          reduxProtocolStats?.find(
+                                            (val: any) =>
+                                              val?.token ==
+                                              borrow?.loanMarket.slice(1)
+                                          )?.exchangeRateDTokenToUnderlying >=
+                                      0
+                                      ? "$"
+                                      : "-$"
+                                    : ""}
+                                  {borrow.spendType == "UNSPENT"
+                                    ? numberFormatter(
+                                        Math.abs(
+                                          dollarConvertor(
+                                            borrow.currentLoanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) -
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying *
+                                              dollarConvertor(
+                                                borrow.loanAmountParsed,
+                                                borrow?.loanMarket.slice(1),
+                                                oraclePrices
+                                              )
+                                        )
+                                      )
+                                    : borrow.spendType == "LIQUIDITY"
+                                    ? numberFormatter(
+                                        Math.abs(
+                                          dollarConvertor(
+                                            borrow.loanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying -
+                                            (dollarConvertor(
+                                              allSplit?.[lower_bound + idx]
+                                                ?.amountA,
+                                              allSplit?.[lower_bound + idx]
+                                                ?.tokenA,
+                                              oraclePrices
+                                            ) +
+                                              dollarConvertor(
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.amountB,
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenB,
+                                                oraclePrices
+                                              ))
+                                        )
+                                      )
+                                    : borrow.spendType == "SWAP"
+                                    ? numberFormatter(
+                                        Math.abs(
+                                          dollarConvertor(
+                                            borrow.loanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying -
+                                            dollarConvertor(
+                                              borrow.currentLoanAmountParsed,
+                                              borrow?.currentLoanMarket,
+                                              oraclePrices
+                                            )
+                                        )
+                                      )
+                                    : ""}
+                                </Box>
+                              }
+                              placement="right"
+                              rounded="md"
+                              boxShadow="dark-lg"
+                              bg="#02010F"
+                              fontSize={"13px"}
+                              fontWeight={"400"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                            >
+                              <Text
+                                color={
+                                  borrow?.spendType == "UNSPENT"
+                                    ? dollarConvertor(
+                                        borrow.currentLoanAmountParsed,
+                                        borrow?.loanMarket.slice(1),
+                                        oraclePrices
+                                      ) -
+                                        reduxProtocolStats?.find(
+                                          (val: any) =>
+                                            val?.token ==
+                                            borrow?.loanMarket.slice(1)
+                                        )?.exchangeRateDTokenToUnderlying *
+                                          dollarConvertor(
+                                            borrow.loanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) >=
+                                      0
+                                      ? "#00D395"
+                                      : "rgb(255 94 94)"
+                                    : borrow?.spendType == "LIQUIDITY"
+                                    ? dollarConvertor(
+                                        allSplit?.[lower_bound + idx]?.amountA,
+                                        allSplit?.[lower_bound + idx]?.tokenA,
+                                        oraclePrices
+                                      ) +
+                                        dollarConvertor(
+                                          allSplit?.[lower_bound + idx]
+                                            ?.amountB,
+                                          allSplit?.[lower_bound + idx]?.tokenB,
+                                          oraclePrices
+                                        ) -
+                                        dollarConvertor(
+                                          borrow.loanAmountParsed,
+                                          borrow?.loanMarket.slice(1),
+                                          oraclePrices
+                                        ) *
+                                          reduxProtocolStats?.find(
+                                            (val: any) =>
+                                              val?.token ==
+                                              borrow?.loanMarket.slice(1)
+                                          )?.exchangeRateDTokenToUnderlying >=
+                                      0
+                                      ? "#00D395"
+                                      : "rgb(255 94 94)"
+                                    : borrow.spendType == "SWAP"
+                                    ? dollarConvertor(
+                                        borrow.currentLoanAmountParsed,
+                                        borrow?.currentLoanMarket,
+                                        oraclePrices
+                                      ) -
+                                        dollarConvertor(
+                                          borrow.loanAmountParsed,
+                                          borrow?.loanMarket.slice(1),
+                                          oraclePrices
+                                        ) *
+                                          reduxProtocolStats?.find(
+                                            (val: any) =>
+                                              val?.token ==
+                                              borrow?.loanMarket.slice(1)
+                                          )?.exchangeRateDTokenToUnderlying >=
+                                      0
+                                      ? "#00D395"
+                                      : "rgb(255 94 94)"
+                                    : ""
+                                }
+                              >
+                                {borrow.spendType == "UNSPENT"
                                   ? dollarConvertor(
                                       borrow.currentLoanAmountParsed,
                                       borrow?.loanMarket.slice(1),
@@ -2197,9 +2317,9 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                           oraclePrices
                                         ) >=
                                     0
-                                    ? "#00D395"
-                                    : "rgb(255 94 94)"
-                                  : borrow?.spendType == "LIQUIDITY"
+                                    ? "+"
+                                    : "-"
+                                  : borrow.spendType == "LIQUIDITY"
                                   ? dollarConvertor(
                                       allSplit?.[lower_bound + idx]?.amountA,
                                       allSplit?.[lower_bound + idx]?.tokenA,
@@ -2221,8 +2341,8 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                             borrow?.loanMarket.slice(1)
                                         )?.exchangeRateDTokenToUnderlying >=
                                     0
-                                    ? "#00D395"
-                                    : "rgb(255 94 94)"
+                                    ? "+"
+                                    : "-"
                                   : borrow.spendType == "SWAP"
                                   ? dollarConvertor(
                                       borrow.currentLoanAmountParsed,
@@ -2240,183 +2360,119 @@ const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
                                             borrow?.loanMarket.slice(1)
                                         )?.exchangeRateDTokenToUnderlying >=
                                     0
-                                    ? "#00D395"
-                                    : "rgb(255 94 94)"
-                                  : ""
-                              }
-                            >
-                              {borrow.spendType == "UNSPENT"
-                                ? dollarConvertor(
-                                    borrow.currentLoanAmountParsed,
-                                    borrow?.loanMarket.slice(1),
-                                    oraclePrices
-                                  ) -
-                                    reduxProtocolStats?.find(
-                                      (val: any) =>
-                                        val?.token ==
-                                        borrow?.loanMarket.slice(1)
-                                    )?.exchangeRateDTokenToUnderlying *
-                                      dollarConvertor(
-                                        borrow.loanAmountParsed,
-                                        borrow?.loanMarket.slice(1),
-                                        oraclePrices
-                                      ) >=
-                                  0
-                                  ? "+"
-                                  : "-"
-                                : borrow.spendType == "LIQUIDITY"
-                                ? dollarConvertor(
-                                    allSplit?.[lower_bound + idx]?.amountA,
-                                    allSplit?.[lower_bound + idx]?.tokenA,
-                                    oraclePrices
-                                  ) +
-                                    dollarConvertor(
-                                      allSplit?.[lower_bound + idx]?.amountB,
-                                      allSplit?.[lower_bound + idx]?.tokenB,
-                                      oraclePrices
-                                    ) -
-                                    dollarConvertor(
-                                      borrow.loanAmountParsed,
-                                      borrow?.loanMarket.slice(1),
-                                      oraclePrices
-                                    ) *
-                                      reduxProtocolStats?.find(
-                                        (val: any) =>
-                                          val?.token ==
-                                          borrow?.loanMarket.slice(1)
-                                      )?.exchangeRateDTokenToUnderlying >=
-                                  0
-                                  ? "+"
-                                  : "-"
-                                : borrow.spendType == "SWAP"
-                                ? dollarConvertor(
-                                    borrow.currentLoanAmountParsed,
-                                    borrow?.currentLoanMarket,
-                                    oraclePrices
-                                  ) -
-                                    dollarConvertor(
-                                      borrow.loanAmountParsed,
-                                      borrow?.loanMarket.slice(1),
-                                      oraclePrices
-                                    ) *
-                                      reduxProtocolStats?.find(
-                                        (val: any) =>
-                                          val?.token ==
-                                          borrow?.loanMarket.slice(1)
-                                      )?.exchangeRateDTokenToUnderlying >=
-                                  0
-                                  ? "+"
-                                  : "-"
-                                : ""}
-                              {borrow.spendType == "UNSPENT"
-                                ? numberFormatterPercentage(
-                                    (100 *
-                                      Math.abs(
-                                        dollarConvertor(
-                                          borrow.currentLoanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) -
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying *
-                                            dollarConvertor(
-                                              borrow.loanAmountParsed,
-                                              borrow?.loanMarket.slice(1),
-                                              oraclePrices
-                                            )
-                                      )) /
-                                      dollarConvertor(
-                                        borrow?.collateralAmountParsed,
-                                        borrow?.collateralMarket.slice(1),
-                                        oraclePrices
-                                      )
-                                  )
-                                : borrow.spendType == "LIQUIDITY"
-                                ? numberFormatterPercentage(
-                                    (100 *
-                                      Math.abs(
-                                        dollarConvertor(
-                                          borrow.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying -
-                                          (dollarConvertor(
-                                            allSplit?.[lower_bound + idx]
-                                              ?.amountA,
-                                            allSplit?.[lower_bound + idx]
-                                              ?.tokenA,
-                                            oraclePrices
-                                          ) +
-                                            dollarConvertor(
-                                              allSplit?.[lower_bound + idx]
-                                                ?.amountB,
-                                              allSplit?.[lower_bound + idx]
-                                                ?.tokenB,
-                                              oraclePrices
-                                            ))
-                                      )) /
-                                      dollarConvertor(
-                                        borrow?.collateralAmountParsed,
-                                        borrow?.collateralMarket.slice(1),
-                                        oraclePrices
-                                      )
-                                  )
-                                : borrow.spendType == "SWAP"
-                                ? numberFormatterPercentage(
-                                    (100 *
-                                      Math.abs(
-                                        dollarConvertor(
-                                          borrow.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying -
+                                    ? "+"
+                                    : "-"
+                                  : ""}
+                                {borrow.spendType == "UNSPENT"
+                                  ? numberFormatterPercentage(
+                                      (100 *
+                                        Math.abs(
                                           dollarConvertor(
                                             borrow.currentLoanAmountParsed,
-                                            borrow?.currentLoanMarket,
+                                            borrow?.loanMarket.slice(1),
                                             oraclePrices
-                                          )
-                                      )) /
-                                      dollarConvertor(
-                                        borrow?.collateralAmountParsed,
-                                        borrow?.collateralMarket.slice(1),
-                                        oraclePrices
-                                      )
-                                  )
-                                : ""}
-                              %
-                            </Text>
-                          </Tooltip>
-                        </Box>:
-                        <Box
-                        width="100%"
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        height="3rem"
-                        >
-                          <Skeleton
-                                  width="6rem"
-                                  height="1.2rem"
-                                  startColor="#101216"
-                                  endColor="#2B2F35"
-                                  borderRadius="6px"
-                                />
-                        </Box>
-                        }
+                                          ) -
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying *
+                                              dollarConvertor(
+                                                borrow.loanAmountParsed,
+                                                borrow?.loanMarket.slice(1),
+                                                oraclePrices
+                                              )
+                                        )) /
+                                        dollarConvertor(
+                                          borrow?.collateralAmountParsed,
+                                          borrow?.collateralMarket.slice(1),
+                                          oraclePrices
+                                        )
+                                    )
+                                  : borrow.spendType == "LIQUIDITY"
+                                  ? numberFormatterPercentage(
+                                      (100 *
+                                        Math.abs(
+                                          dollarConvertor(
+                                            borrow.loanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying -
+                                            (dollarConvertor(
+                                              allSplit?.[lower_bound + idx]
+                                                ?.amountA,
+                                              allSplit?.[lower_bound + idx]
+                                                ?.tokenA,
+                                              oraclePrices
+                                            ) +
+                                              dollarConvertor(
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.amountB,
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenB,
+                                                oraclePrices
+                                              ))
+                                        )) /
+                                        dollarConvertor(
+                                          borrow?.collateralAmountParsed,
+                                          borrow?.collateralMarket.slice(1),
+                                          oraclePrices
+                                        )
+                                    )
+                                  : borrow.spendType == "SWAP"
+                                  ? numberFormatterPercentage(
+                                      (100 *
+                                        Math.abs(
+                                          dollarConvertor(
+                                            borrow.loanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying -
+                                            dollarConvertor(
+                                              borrow.currentLoanAmountParsed,
+                                              borrow?.currentLoanMarket,
+                                              oraclePrices
+                                            )
+                                        )) /
+                                        dollarConvertor(
+                                          borrow?.collateralAmountParsed,
+                                          borrow?.collateralMarket.slice(1),
+                                          oraclePrices
+                                        )
+                                    )
+                                  : ""}
+                                %
+                              </Text>
+                            </Tooltip>
+                          </Box>
+                        ) : (
+                          <Box
+                            width="100%"
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                            alignItems="center"
+                            height="3rem"
+                          >
+                            <Skeleton
+                              width="6rem"
+                              height="1.2rem"
+                              startColor="#101216"
+                              endColor="#2B2F35"
+                              borderRadius="6px"
+                            />
+                          </Box>
+                        )}
                       </Td>
 
                       <Td
