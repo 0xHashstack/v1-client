@@ -132,6 +132,7 @@ import {
   setMinMaxDepositCount,
   setMinMaxLoanCount,
   setMonthlyDataCount,
+  setMySplit,
   setMySwapPoolsSupportedCount,
   setNetAprCount,
   setNetSpendBalance,
@@ -166,6 +167,12 @@ import {
 } from "@/Blockchain/scripts/Rewards";
 import { getSpendBalance } from "@/Blockchain/scripts/debt";
 import {
+  getJediEstimatedLiqALiqBfromLp,
+  getMySwapEstimatedLiqALiqBfromLp,
+} from "@/Blockchain/scripts/l3interaction";
+import { processAddress } from "@/Blockchain/stark-constants";
+import {
+  getTokenFromAddress,
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
@@ -1571,6 +1578,59 @@ const useDataLoader = () => {
   }, [address, transactionRefresh]);
 
   useEffect(() => {
+    const getSplit = async () => {
+      let temp: any = [];
+      const promises = [];
+
+      for (let i = 0; i < userLoans?.length; i++) {
+        if (userLoans[i]?.spendType === "LIQUIDITY") {
+          if (userLoans[i]?.l3App == "JEDI_SWAP") {
+            const data = getJediEstimatedLiqALiqBfromLp(
+              userLoans[i]?.currentLoanAmount,
+              userLoans[i]?.loanId,
+              userLoans[i]?.currentLoanMarketAddress,
+              userLoans[i]?.loanMarket
+            );
+            promises.push(data);
+          } else if (userLoans[i]?.l3App == "MY_SWAP") {
+            const data = getMySwapEstimatedLiqALiqBfromLp(
+              userLoans[i]?.currentLoanAmount,
+              userLoans[i]?.loanId,
+              userLoans[i]?.currentLoanMarketAddress,
+              userLoans[i]?.loanMarket
+            );
+            promises.push(data);
+          }
+        } else {
+          promises.push(Promise.resolve(null));
+        }
+      }
+
+      Promise.allSettled([...promises]).then((val) => {
+        temp = val.map((data, i) => {
+          if (data && data?.status == "fulfilled" && data?.value) {
+            return {
+              ...data?.value,
+              tokenA: getTokenFromAddress(
+                processAddress(data?.value?.tokenAAddress)
+              )?.name,
+              tokenB: getTokenFromAddress(
+                processAddress(data?.value?.tokenBAddress)
+              )?.name,
+              loanId: userLoans[i]?.loanId,
+            };
+          } else {
+            return "empty";
+          }
+        });
+        dispatch(setMySplit(temp));
+      });
+    };
+
+    if (userLoans) getSplit();
+  }, [userLoans, transactionRefresh]);
+
+  useEffect(() => {
     try {
       const getMinDeposit = async () => {
         const promises = [
@@ -1780,7 +1840,6 @@ const useDataLoader = () => {
           return;
         }
         const userLoans = await getUserLoans(address);
-        //  console.log(userLoans,"data user loans")
         if (!userLoans) {
           return;
         }
