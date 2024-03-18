@@ -2349,9 +2349,9 @@ const YourBorrowModal = ({
               <Box display="flex" color="#676D9A" fontSize="xs" gap="2">
                 <Box display="flex" gap="2px">
                   <Box>
-                    <JediswapLogo />
+                    {borrow?.l3App=="JEDI_SWAP" ?<JediswapLogo />:<MySwap/>}
                   </Box>
-                  <Text>Jediswap</Text>
+                  <Text>{borrow?.l3App=="JEDI_SWAP" ? "Jediswap":"Myswap"}</Text>
                 </Box>
               </Box>
             </Box>
