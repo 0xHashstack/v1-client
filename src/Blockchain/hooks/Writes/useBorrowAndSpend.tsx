@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { selectMessageHash, selectNftBalance, selectNftCurrentAmount, selectNftMaxAmount, selectSignature, selectUserType, selectYourBorrow, selectYourSupply } from "@/store/slices/readDataSlice";
 
 const useBorrowAndSpend = () => {
-  const [loanMarket, setLoanMarket] = useState<NativeToken>("USDT"); // asset
+  const [loanMarket, setLoanMarket] = useState<NativeToken>("USDC"); // asset
   const [loanAmount, setLoanAmount] = useState<number>(0); // amount
 
   const [rToken, setRToken] = useState<RToken>("rBTC");

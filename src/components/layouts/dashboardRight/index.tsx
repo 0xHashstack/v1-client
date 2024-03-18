@@ -1,13 +1,3 @@
-import FireIcon from "@/assets/icons/fireIcon";
-import BorrowModal from "@/components/modals/borrowModal";
-import TradeModal from "@/components/modals/tradeModal";
-import {
-  selectStrkAprData,
-  selectnetSpendBalance,
-  selectnetStrkBorrow,
-} from "@/store/slices/userAccountSlice";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import {
   Box,
   Button,
@@ -23,10 +13,20 @@ import {
   Tr,
   useMediaQuery,
 } from "@chakra-ui/react";
-import html2canvas from "html2canvas";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+
+import StrkIcon from "@/assets/icons/strkIcon";
+import BorrowModal from "@/components/modals/borrowModal";
+import TradeModal from "@/components/modals/tradeModal";
+import {
+  selectStrkAprData,
+  selectnetSpendBalance,
+} from "@/store/slices/userAccountSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+
 export interface ICoin {
   name: string;
   symbol: string;
@@ -42,17 +42,7 @@ export const Coins: ICoin[] = [
   { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
 ];
 
-const DashboardRight = ({
-  width,
-  oraclePrices,
-  utilization,
-  totalBorrows,
-  availableReserves,
-  borrowAPRs,
-  supplyAPRs,
-  validRTokens,
-  protocolStats,
-}: {
+interface DashboardRightProps {
   width: string;
   oraclePrices: any;
   utilization: any;
@@ -62,77 +52,57 @@ const DashboardRight = ({
   validRTokens: any;
   supplyAPRs: any;
   protocolStats: any;
-  // gap: string;
-  // columnItems: Array<Array<string>>;
-  // rowItems: any;
+}
+
+const columnItems = [
+  "Market",
+  "Total borrow",
+  "Available",
+  "Utillization",
+  "Borrow APR",
+  "",
+  "",
+];
+
+const tooltips = [
+  "Available markets.",
+  "The number of tokens that are currently borrowed from the protocol.",
+  "The number of tokens that can be borrowed from the protocol.",
+  "Represents how much of a pool has been borrowed",
+  "The annual interest rate charged on borrowed funds from the protocol.",
+];
+
+const DashboardRight: React.FC<DashboardRightProps> = ({
+  width,
+  oraclePrices,
+  utilization,
+  totalBorrows,
+  availableReserves,
+  borrowAPRs,
+  supplyAPRs,
+  validRTokens,
+  protocolStats,
 }) => {
-  const columnItems = [
-    "Market",
-    "Total borrow",
-    "Available",
-    "Utillization",
-    "Borrow APR",
-    "",
-    "",
-  ];
+  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
+  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0);
+  const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
+  const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
+
+  const strkData = useSelector(selectStrkAprData);
+  const netSpendBalance = useSelector(selectnetSpendBalance);
+
   const coinPrices = Coins.map((coin) => {
     const matchingCoin = oraclePrices?.find(
       (c: { name: string }) =>
         c?.name?.toLowerCase() === coin?.name.toLowerCase()
     );
     if (matchingCoin) {
-      const formattedPrice = matchingCoin?.price.toFixed(3); // Format price to 3 decimal places
+      const formattedPrice = matchingCoin?.price.toFixed(3);
       return { name: coin?.name, price: formattedPrice };
     }
     return null;
   });
-
-  // const handleCaptureClick = async () => {
-  //   const element:any = document.getElementById('buttonclick');
-  //   html2canvas(element).then((canvas) => {
-  //     const screenshotDataUrl = canvas.toDataURL('image/png');
-  //    //console.log(screenshotDataUrl,"url")
-
-  //     // Now you have the screenshot in a data URL format
-  //     // You can send it to the backend using an HTTP request.
-  //   });
-  // };
-
-  const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
-  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
-  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
-  const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
-  const strkData = useSelector(selectStrkAprData);
-  const netSpendBalance = useSelector(selectnetSpendBalance);
-
-  const [netStrkBorrow, setnetStrkBorrow] = useState(0);
-
-  useEffect(() => {
-    if (strkData != null) {
-      let netallocation = 0;
-      for (let token in strkData) {
-        if (strkData.hasOwnProperty(token)) {
-          const array = strkData[token];
-          const lastObject = array[array.length - 1]; 
-          netallocation += 0.3 * lastObject.allocation;
-        }
-      }
-      setnetStrkBorrow(netallocation);
-    } else {
-      setnetStrkBorrow(0);
-    }
-  }, [strkData]);
-
-  useEffect(() => {
-    ////console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
-  }, [currentBorrowMarketCoin]);
-  const tooltips = [
-    "Available markets.",
-    "The number of tokens that are currently borrowed from the protocol.",
-    "The number of tokens that can be borrowed from the protocol.",
-    "Represents how much of a pool has been borrowed",
-    "The annual interest rate charged on borrowed funds from the protocol.",
-  ];
 
   const getBoostedApr = (coin: any) => {
     if (strkData == null) {
@@ -164,6 +134,23 @@ const DashboardRight = ({
       }
     }
   };
+
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0;
+      for (let token in strkData) {
+        if (strkData.hasOwnProperty(token)) {
+          const array = strkData[token];
+          const lastObject = array[array.length - 1];
+          netallocation += 0.3 * lastObject.allocation;
+        }
+      }
+      setnetStrkBorrow(netallocation);
+    } else {
+      setnetStrkBorrow(0);
+    }
+  }, [strkData]);
+
   return (
     <TableContainer
       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
@@ -174,37 +161,24 @@ const DashboardRight = ({
       display="flex"
       justifyContent="flex-start"
       alignItems="flex-start"
-      // bgColor={"yellow"}
       height={"100%"}
       paddingX={isLargerThan1280 ? "2rem" : "1rem"}
       pt={"1.7rem"}
-      // pb={"0.5rem"}
       overflowX="hidden"
     >
       <Table variant="unstyled" width="100%" height="100%">
         <Thead width={"100%"} height={"2.7rem"}>
           <Tr width={"100%"}>
             {columnItems.map((val, idx) => (
-              <Td
-                key={idx}
-                // width={`${gap2[idx]}%`}
-                // maxWidth={`${gap[idx1][idx2]}%`}
-                fontSize={"12px"}
-                fontWeight={400}
-                // border="1px solid blue"
-                padding={0}
-              >
+              <Td key={idx} fontSize={"12px"} fontWeight={400} padding={0}>
                 <Text
                   whiteSpace="pre-wrap"
                   overflowWrap="break-word"
-                  //   bgColor={"red"}
                   width={"100%"}
                   height={"2rem"}
-                  // textAlign="center"
                   textAlign={idx == 0 ? "left" : "center"}
                   color={"#CBCBD1"}
                   padding={0}
-                  // pl={idx == 0 ? 5 : 0}
                 >
                   <Tooltip
                     hasArrow
@@ -225,8 +199,6 @@ const DashboardRight = ({
                     border="1px solid"
                     borderColor="#23233D"
                     arrowShadowColor="#2B2F35"
-                    // maxW="222px"
-                    // mt="28px"
                   >
                     {val}
                   </Tooltip>
@@ -235,21 +207,14 @@ const DashboardRight = ({
             ))}
           </Tr>
         </Thead>
-        <Tbody
-          position="relative"
-          overflowX="hidden"
-          //   display="flex"
-          //   flexDirection="column"
-          //   gap={"1rem"}
-        >
+
+        <Tbody position="relative" overflowX="hidden">
           {Coins?.map((coin, idx) => (
             <>
               <Tr
                 key={idx}
                 width={"100%"}
                 height={"5rem"}
-                // bgColor="blue"
-                // borderBottom="1px solid #2b2f35"
                 position="relative"
                 bg={
                   coin?.name === "STRK"
@@ -259,12 +224,10 @@ const DashboardRight = ({
               >
                 <Td
                   width={"14%"}
-                  // maxWidth={`${gap[idx1][idx2]}%`}
                   fontSize={"12px"}
                   fontWeight={400}
                   padding={0}
                   textAlign="left"
-                  // bgColor={"red"}
                 >
                   <HStack gap="10px">
                     <Box height="32px" width="32px">
@@ -304,6 +267,7 @@ const DashboardRight = ({
                     </Box>
                   </HStack>
                 </Td>
+
                 <Td
                   width={"17%"}
                   maxWidth={"3rem"}
@@ -320,7 +284,6 @@ const DashboardRight = ({
                     justifyContent="center"
                     fontWeight="400"
                     color={coin?.name == "DAI" ? "#3E415C" : "white"}
-                    // bgColor={"blue"}
                   >
                     <Tooltip
                       hasArrow
@@ -343,7 +306,6 @@ const DashboardRight = ({
                       border="1px solid"
                       borderColor="#23233D"
                     >
-                      {/* {checkGap(idx1, idx2)} */}
                       {totalBorrows[idx] == null ? (
                         <Skeleton
                           width="6rem"
@@ -358,6 +320,7 @@ const DashboardRight = ({
                     </Tooltip>
                   </Box>
                 </Td>
+
                 <Td
                   width={"17%"}
                   maxWidth={"3rem"}
@@ -374,7 +337,6 @@ const DashboardRight = ({
                     justifyContent="center"
                     fontWeight="400"
                     color={coin?.name == "DAI" ? "#3E415C" : "white"}
-                    // bgColor={"blue"}
                   >
                     <Tooltip
                       hasArrow
@@ -412,6 +374,7 @@ const DashboardRight = ({
                     </Tooltip>
                   </Box>
                 </Td>
+
                 <Td
                   width={"15%"}
                   maxWidth={"3rem"}
@@ -428,9 +391,7 @@ const DashboardRight = ({
                     justifyContent="center"
                     fontWeight="400"
                     color={coin?.name == "DAI" ? "#3E415C" : "white"}
-                    // bgColor={"blue"}
                   >
-                    {/* {checkGap(idx1, idx2)} */}
                     {utilization[idx] == null ? (
                       <Skeleton
                         width="6rem"
@@ -444,6 +405,7 @@ const DashboardRight = ({
                     )}
                   </Box>
                 </Td>
+
                 <Td
                   width={"15%"}
                   maxWidth={"3rem"}
@@ -466,7 +428,6 @@ const DashboardRight = ({
                         ? "white"
                         : "#00D395"
                     }
-                    // bgColor={"blue"}
                   >
                     <Tooltip
                       hasArrow
@@ -528,36 +489,44 @@ const DashboardRight = ({
                           borderRadius="6px"
                         />
                       ) : (
-                        numberFormatterPercentage(
-                          Math.abs(getBoostedApr(coin) - borrowAPRs[idx])
-                        ) + "%"
+                        borrowAPRs[idx] !== null &&
+                        (coin.name != "BTC" && coin.name !== "DAI" ? (
+                          <Box
+                            display="flex"
+                            justifyContent="center"
+                            flexDirection="column"
+                            gap="1"
+                          >
+                            <Text color="#F0F0F5">
+                              {numberFormatterPercentage(borrowAPRs[idx])}%
+                            </Text>
+                            <Box
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              gap="1.5"
+                            >
+                              <StrkIcon />
+                              {numberFormatterPercentage(getBoostedApr(coin))}%
+                            </Box>
+                          </Box>
+                        ) : (
+                          <Text color="#F0F0F5">
+                            {numberFormatterPercentage(borrowAPRs[idx])}%
+                          </Text>
+                        ))
                       )}
                     </Tooltip>
-                    {borrowAPRs[idx] != null ? (
-                      coin.name != "BTC" &&
-                      coin.name !== "DAI" && (
-                        <Box ml="0.4rem">
-                          <FireIcon />
-                        </Box>
-                      )
-                    ) : (
-                      <></>
-                    )}
-                    {/* {checkGap(idx1, idx2)} */}
                   </Box>
                 </Td>
+
                 <Td
                   width={"8%"}
                   maxWidth={"5rem"}
                   fontSize={"14px"}
                   fontWeight={400}
-                  //   overflow={"hidden"}
                   textAlign={"center"}
-                  // bgColor={"red"}
-                  // p="0 2 0 0"
                   p={1.5}
-                  // pr={3}
-                  // pl={1}
                 >
                   <Box
                     width="100%"
@@ -571,7 +540,6 @@ const DashboardRight = ({
                       setCurrentSupplyAPR(idx);
                       setCurrentBorrowMarketCoin(coin?.name);
                     }}
-                    // bgColor={"blue"}
                   >
                     {coin?.name == "DAI" ? (
                       <Button
@@ -609,15 +577,12 @@ const DashboardRight = ({
                     )}
                   </Box>
                 </Td>
+
                 <Td
                   width={"8%"}
-                  //   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
-                  //   overflow={"hidden"}
                   textAlign={"center"}
-                  // bgColor={"green"}
-                  // p="0px 0px 12px 0px"
                   p={0}
                   pl={2}
                 >
@@ -652,6 +617,7 @@ const DashboardRight = ({
                   </Box>
                 </Td>
               </Tr>
+
               <Tr
                 style={{
                   position: "absolute",
@@ -659,7 +625,6 @@ const DashboardRight = ({
                   borderWidth: "0",
                   backgroundColor: "#2b2f35",
                   width: "100%",
-                  // left: "1.75%",
                   display: `${
                     idx == Coins.length - 1
                       ? "none"

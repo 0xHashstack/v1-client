@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 
 const initialState = {
+  mySplit: null,
   account: "",
   accountAddress: "",
   inputSupplyAmount: 0,
@@ -42,7 +43,7 @@ const initialState = {
     availableReserves: null,
     avgAssetUtilisation: null,
   },
-  starkAprData:null,
+  starkAprData: null,
   activeTransactions: [],
   transactionRefresh: 0,
   avgSupplyAPR: null,
@@ -58,24 +59,24 @@ const initialState = {
   healthFactorCount: -1,
   hourlyDataCount: -1,
   weeklyDataCount: -1,
-  monthlyDataCount:-1,
-  allDataCount:-1,
+  monthlyDataCount: -1,
+  allDataCount: -1,
   netAprCount: -1,
   avgBorrowAprCount: -1,
   avgSupplyAprCount: -1,
   yourMetricsSupplyCount: -1,
   yourMetricsBorrowCount: -1,
   stakingSharesCount: -1,
-  jediSwapPoolsSupportedCount:-1,
-  mySwapPoolsSupportedCount:-1,
-  minMaxDepositCount:-1,
-  minMaxLoanCount:-1,
-  feesCount:-1,
+  jediSwapPoolsSupportedCount: -1,
+  mySwapPoolsSupportedCount: -1,
+  minMaxDepositCount: -1,
+  minMaxLoanCount: -1,
+  feesCount: -1,
   transactionCheck: [],
-  lightModeSelected:false,
-  spendBalances:null,
-  netSpendBalance:null,
-  netStrkBorrow:null,
+  lightModeSelected: false,
+  spendBalances: null,
+  netSpendBalance: null,
+  netStrkBorrow: null,
 
   // walletBalance: {
   //   BTC: 0,
@@ -90,6 +91,9 @@ export const userAccountSlice = createSlice({
   name: "user_account",
   initialState,
   reducers: {
+    setMySplit(state, action) {
+      state.mySplit = action.payload;
+    },
     setAccount(state, action) {
       state.account = action.payload;
     },
@@ -234,11 +238,11 @@ export const userAccountSlice = createSlice({
     setWeeklyDataCount(state, action) {
       state.weeklyDataCount = action.payload;
     },
-    setMonthlyDataCount(state,action){
-      state.monthlyDataCount=action.payload;
+    setMonthlyDataCount(state, action) {
+      state.monthlyDataCount = action.payload;
     },
-    setAllDataCount(state,action){
-      state.allDataCount=action.payload;
+    setAllDataCount(state, action) {
+      state.allDataCount = action.payload;
     },
     setAccountReset(state, action) {
       return { ...initialState };
@@ -268,35 +272,35 @@ export const userAccountSlice = createSlice({
     setStakingSharesCount(state, action) {
       state.stakingSharesCount = action.payload;
     },
-    setJediSwapPoolsSupportedCount(state,action){
-      state.jediSwapPoolsSupportedCount=action.payload;
+    setJediSwapPoolsSupportedCount(state, action) {
+      state.jediSwapPoolsSupportedCount = action.payload;
     },
-    setMySwapPoolsSupportedCount(state,action){
-      state.mySwapPoolsSupportedCount=action.payload;
+    setMySwapPoolsSupportedCount(state, action) {
+      state.mySwapPoolsSupportedCount = action.payload;
     },
-    setMinMaxDepositCount(state,action){
-      state.minMaxDepositCount=action.payload;
+    setMinMaxDepositCount(state, action) {
+      state.minMaxDepositCount = action.payload;
     },
-    setMinMaxLoanCount(state,action){
-      state.minMaxLoanCount=action.payload;
+    setMinMaxLoanCount(state, action) {
+      state.minMaxLoanCount = action.payload;
     },
-    setStrkAprData(state,action){
-      state.starkAprData=action.payload;
+    setStrkAprData(state, action) {
+      state.starkAprData = action.payload;
     },
-    setSpendBalances(state,action){
-      state.spendBalances=action.payload;
+    setSpendBalances(state, action) {
+      state.spendBalances = action.payload;
     },
-    setNetSpendBalance(state,action){
-      state.netSpendBalance=action.payload;
+    setNetSpendBalance(state, action) {
+      state.netSpendBalance = action.payload;
     },
-    setNetStrkBorrow(state,action){
-      state.netStrkBorrow=action.payload;
+    setNetStrkBorrow(state, action) {
+      state.netStrkBorrow = action.payload;
     },
-  setFeesCount(state,action){
-    state.feesCount=action.payload;
-  },
-    setLightModeSelected(state,action){
-      state.lightModeSelected=action.payload;
+    setFeesCount(state, action) {
+      state.feesCount = action.payload;
+    },
+    setLightModeSelected(state, action) {
+      state.lightModeSelected = action.payload;
     },
     setTransactionCheck(state, action) {
       let data = state.transactionCheck;
@@ -327,6 +331,7 @@ export const userAccountSlice = createSlice({
 });
 
 export const {
+  setMySplit,
   setAccount,
   setAccountAddress,
   setCurrentPage,
@@ -375,7 +380,7 @@ export const {
   setStrkAprData,
   setSpendBalances,
   setNetSpendBalance,
-  setNetStrkBorrow
+  setNetStrkBorrow,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -393,6 +398,7 @@ export const { setCollateralCoinSelectedBorrowModal } =
   userAccountSlice.actions;
 export const { setBorrowCoinSelectedBorrowModal } = userAccountSlice.actions;
 export const { setInputYourBorrowModalRepayAmount } = userAccountSlice.actions;
+export const selectMySplit = (state) => state.user_account.mySplit;
 export const selectTransactionSuccessArray = (state) =>
   state.user_account.transactionSuccessArray;
 export const selectTransactionFailureArray = (state) =>
@@ -452,10 +458,9 @@ export const selectHourlyDataCount = (state) =>
   state.user_account.hourlyDataCount;
 export const selectWeeklyDataCount = (state) =>
   state.user_account.weeklyDataCount;
-  export const selectMonthlyDataCount = (state) =>
+export const selectMonthlyDataCount = (state) =>
   state.user_account.monthlyDataCount;
-  export const selectAllDataCount = (state) =>
-  state.user_account.allDataCount;
+export const selectAllDataCount = (state) => state.user_account.allDataCount;
 export const selectUserUnspentLoans = (state) =>
   state.user_account.userUnspentLoans;
 export const selectAprCount = (state) => state.user_account.aprCount;
@@ -472,27 +477,23 @@ export const selectYourMetricsBorrowCount = (state) =>
   state.user_account.yourMetricsBorrowCount;
 export const selectStakingSharesCount = (state) =>
   state.user_account.stakingSharesCount;
-  export const selectJediSwapPoolsSupportedCount = (state) =>
+export const selectJediSwapPoolsSupportedCount = (state) =>
   state.user_account.jediSwapPoolsSupportedCount;
-  export const selectMySwapPoolsSupportedCount = (state) =>
+export const selectMySwapPoolsSupportedCount = (state) =>
   state.user_account.mySwapPoolsSupportedCount;
-export const selectMinMaxDepositCount=(state)=>
+export const selectMinMaxDepositCount = (state) =>
   state.user_account.minMaxDepositCount;
-  export const selectMinMaxLoanCount=(state)=>
+export const selectMinMaxLoanCount = (state) =>
   state.user_account.minMaxLoanCount;
-export const selectFeesCount=(state)=>
-  state.user_account.feesCount;
+export const selectFeesCount = (state) => state.user_account.feesCount;
 export const selectTransactionCheck = (state) =>
   state.user_account.transactionCheck;
-export const selectLightModeSelected=(state)=>
+export const selectLightModeSelected = (state) =>
   state.user_account.lightModeSelected;
-  export const selectStrkAprData=(state)=>
-  state.user_account.starkAprData;
-  export const selectSpendBalances=(state)=>
-  state.user_account.spendBalances;
-  export const selectnetSpendBalance=(state)=>
+export const selectStrkAprData = (state) => state.user_account.starkAprData;
+export const selectSpendBalances = (state) => state.user_account.spendBalances;
+export const selectnetSpendBalance = (state) =>
   state.user_account.netSpendBalance;
-  export const selectnetStrkBorrow=(state)=>
-  state.user_account.netStrkBorrow;
+export const selectnetStrkBorrow = (state) => state.user_account.netStrkBorrow;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;
