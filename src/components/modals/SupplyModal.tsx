@@ -168,6 +168,7 @@ const SupplyModal = ({
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
   const [stakeCheck, setStakeCheck] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const coinIndex: any = [
     { token: "USDT", idx: 1 },
@@ -807,6 +808,21 @@ const SupplyModal = ({
     fetchData();
   }, []);
 
+  const handleClick = (e: any) => {
+    const dropdown = document.getElementById("coins-dropdown");
+    if (dropdown && !dropdown.contains(e.target)) {
+      handleDropdownClick("");
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, []);
+
   return (
     <div>
       <Button
@@ -933,10 +949,12 @@ const SupplyModal = ({
                   className="navbar"
                   cursor="pointer"
                   onClick={() => {
+                    setIsDropdownOpen(!isDropdownOpen);
                     if (transactionStarted) {
                       return;
                     } else {
-                      handleDropdownClick("supplyModalDropdown");
+                      !isDropdownOpen &&
+                        handleDropdownClick("supplyModalDropdown");
                     }
                   }}
                 >
@@ -955,6 +973,7 @@ const SupplyModal = ({
                   </Box>
                   {modalDropdowns.supplyModalDropdown && (
                     <Box
+                      id="coins-dropdown"
                       w="full"
                       left="0"
                       bg="#03060B"

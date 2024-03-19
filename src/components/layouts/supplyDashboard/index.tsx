@@ -213,7 +213,7 @@ const SupplyDashboard = ({
         ////console.log(reduxProtocolStats,"supply stats")
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
-            if(supply[i].token!="USDC"){
+            if (supply[i].token != "USDC") {
               const avg = await effectiveAprDeposit(
                 supply[i],
                 reduxProtocolStats
@@ -226,16 +226,15 @@ const SupplyDashboard = ({
               // avgs.push(data)
               avgsData.push(data);
               // avgs.push()
-            }      
-            else{
-              if(supply[i].rTokenAmountParsed<= 0.000005){
+            } else {
+              if (supply[i].rTokenAmountParsed <= 0.000005) {
                 continue;
-              }else{
+              } else {
                 const avg = await effectiveAprDeposit(
                   supply[i],
                   reduxProtocolStats
                 );
-                console.log(avg,supply[i],"data")
+                console.log(avg, supply[i], "data");
                 ////console.log(avg, "avg in supply dash");
                 const data = {
                   token: supply[i].token,
@@ -247,7 +246,7 @@ const SupplyDashboard = ({
             }
           }
           setAvgs(avgsData);
-      }
+        }
         ////console.log(avgs, "avgs in supply");
 
         // dispatch(setUserDeposits(supply));
@@ -393,7 +392,7 @@ const SupplyDashboard = ({
     " Annualised interest rate depending on the staked, unstaked and locked supply quantities .",
     "Track the borrowed amount's progress and key details within the protocol.",
   ];
-  
+
   return loading ? (
     <>
       <Box
@@ -668,6 +667,7 @@ const SupplyDashboard = ({
                         justifyContent="center"
                         fontWeight="400"
                         color="#00D395"
+                        paddingLeft="1.5"
                       >
                         <Tooltip
                           hasArrow

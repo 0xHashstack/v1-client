@@ -238,7 +238,9 @@ const useDataLoader = () => {
   // const stakingShares = useSelector(selectStakingShares);
   const stakingSharesCount = useSelector(selectStakingSharesCount);
   const feesCount = useSelector(selectFeesCount);
-  const jedistrkTokenAllocationCount=useSelector(selectJedistrkTokenAllocationCount)
+  const jedistrkTokenAllocationCount = useSelector(
+    selectJedistrkTokenAllocationCount
+  );
   const minMaxCount = useSelector(selectMinMaxDepositCount);
   const minMaxLoanCount = useSelector(selectMinMaxLoanCount);
   const jediSwapPoolsSupportedCount = useSelector(
@@ -251,10 +253,10 @@ const useDataLoader = () => {
   const poolAprs = useSelector(selectJediswapPoolAprs);
   const spendBalances = useSelector(selectSpendBalances);
   const strkData = useSelector(selectStrkAprData);
-  const allSplit=useSelector(selectMySplit)
-  const jedistrkTokenAllocation=useSelector(selectJedistrkTokenAllocation)
+  const allSplit = useSelector(selectMySplit);
+  const jedistrkTokenAllocation = useSelector(selectJedistrkTokenAllocation);
   const netSpendBalance = useSelector(selectnetSpendBalance);
-  const borrowEffectiveAprs=useSelector(selectBorrowEffectiveAprs)
+  const borrowEffectiveAprs = useSelector(selectBorrowEffectiveAprs);
   const [poolsPairs, setPoolPairs] = useState<any>([
     {
       address:
@@ -1852,7 +1854,9 @@ const useDataLoader = () => {
         if (!address) {
           return;
         }
-        const userLoans = await getUserLoans(address);
+        const userLoans = await getUserLoans(
+          "0x05970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4"
+        );
         if (!userLoans) {
           return;
         }
@@ -2007,7 +2011,10 @@ const useDataLoader = () => {
           dataOraclePrices &&
           netAprCount < transactionRefresh &&
           effectiveApr &&
-          strkData && poolAprs && allSplit && netSpendBalance 
+          strkData &&
+          poolAprs &&
+          allSplit &&
+          netSpendBalance
         ) {
           //console.log("user info called inside - transactionRefresh");
           const dataNetAprDeposit = await getNetAprDeposits(
@@ -2027,34 +2034,34 @@ const useDataLoader = () => {
             allSplit,
             jedistrkTokenAllocation,
             netSpendBalance
-            // res?.data?.Jediswap_v1,           
+            // res?.data?.Jediswap_v1,
           );
-        
+
           //@ts-ignore
           if (isNaN(dataNetAprLoans?.netApr)) {
             ////console.log("netApr", dataNetApr);
             dispatch(setNetAprLoans(0));
-            dispatch(setBorrowEffectiveAprs(dataNetAprLoans?.effectiveAprs))
+            dispatch(setBorrowEffectiveAprs(dataNetAprLoans?.effectiveAprs));
           } else {
-            dispatch(setBorrowEffectiveAprs(dataNetAprLoans?.effectiveAprs))
+            dispatch(setBorrowEffectiveAprs(dataNetAprLoans?.effectiveAprs));
             dispatch(setNetAprLoans(dataNetAprLoans?.netApr));
-          if(dataNetAprLoans?.effectiveAprs){
-            const dataNetApr = await getNetApr(
-              dataDeposit,
-              userLoans,
-              dataOraclePrices,
-              protocolStats,
-              strkData,
-              dataNetAprLoans?.effectiveAprs
-            );
-            //@ts-ignore
-            if (isNaN(dataNetApr)) {
-              ////console.log("netApr", dataNetApr);
-              dispatch(setNetAPR(0));
-            } else {
-              dispatch(setNetAPR(dataNetApr));
+            if (dataNetAprLoans?.effectiveAprs) {
+              const dataNetApr = await getNetApr(
+                dataDeposit,
+                userLoans,
+                dataOraclePrices,
+                protocolStats,
+                strkData,
+                dataNetAprLoans?.effectiveAprs
+              );
+              //@ts-ignore
+              if (isNaN(dataNetApr)) {
+                ////console.log("netApr", dataNetApr);
+                dispatch(setNetAPR(0));
+              } else {
+                dispatch(setNetAPR(dataNetApr));
+              }
             }
-          }
           }
           //@ts-ignore
           if (isNaN(dataNetAprDeposit)) {
@@ -2063,7 +2070,7 @@ const useDataLoader = () => {
           } else {
             dispatch(setNetAprDeposits(dataNetAprDeposit));
           }
-          
+
           const count = getTransactionCount();
           dispatch(setNetAprCount(count));
         }
@@ -2089,7 +2096,7 @@ const useDataLoader = () => {
     jedistrkTokenAllocation,
     netSpendBalance,
     jedistrkTokenAllocation,
-    borrowEffectiveAprs
+    borrowEffectiveAprs,
   ]);
 
   useEffect(() => {
@@ -2400,23 +2407,29 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchData = async () => {
-        console.log("entery")
-        const res = await axios.get(
+        console.log("entery");
+        const res: any = await axios.get(
           "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_strk_grant.json"
         );
+        // remove all the "\" "\n" from the string before parsing
+        const formattedRes = res?.data?.replace(/\\/g, "");
+        // replace all the NaN value to null in the string before parsing
+        const newRes = formattedRes?.replace(/NaN/g, '"null"');
+
+        const data = newRes && JSON.parse(newRes);
+        console.log("🚀 ~ fetchData ~ data:", data);
+
         const count = getTransactionCount();
-        const data=res?.data;
-        console.log(res?.data,"data")
-        if(res?.data){
-          dispatch(setJedistrkTokenAllocation(res?.data?.Jediswap_v1));
-          dispatch(setJedistrkTokenAllocationCount(count))
+        if (data) {
+          dispatch(setJedistrkTokenAllocation(data?.Jediswap_v1));
+          dispatch(setJedistrkTokenAllocationCount(count));
         }
       };
-      if(jedistrkTokenAllocationCount<transactionRefresh){
+      if (jedistrkTokenAllocationCount < transactionRefresh) {
         fetchData();
       }
     } catch (err) {
-      console.log(err,"err inf fetching jedi strk");
+      console.log(err, "err inf fetching jedi strk");
     }
   }, [transactionRefresh]);
   // useEffect(() => {

@@ -102,6 +102,7 @@ import {
 } from "@/store/slices/readDataSlice";
 import {
   selectActiveTransactions,
+  selectJedistrkTokenAllocation,
   selectStrkAprData,
   selectWalletBalance,
   selectnetSpendBalance,
@@ -803,23 +804,11 @@ const YourBorrowModal = ({
   //     }
   //   },
   // });
-  const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
+  const strkTokenAlloactionData: any = useSelector(
+    selectJedistrkTokenAllocation
+  );
   const [allocationData, setallocationData] = useState<any>();
   const [poolAllocatedData, setpoolAllocatedData] = useState<any>();
-
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const res = await axios.get(
-          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json"
-        );
-        setstrkTokenAlloactionData(res?.data?.Jediswap_v1);
-      };
-      fetchData();
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
 
   useEffect(() => {
     try {
@@ -2346,9 +2335,15 @@ const YourBorrowModal = ({
               <Box display="flex" color="#676D9A" fontSize="xs" gap="2">
                 <Box display="flex" gap="2px">
                   <Box>
-                    {borrow?.l3App=="JEDI_SWAP" ?<JediswapLogo />:<MySwap/>}
+                    {borrow?.l3App == "JEDI_SWAP" ? (
+                      <JediswapLogo />
+                    ) : (
+                      <MySwap />
+                    )}
                   </Box>
-                  <Text>{borrow?.l3App=="JEDI_SWAP" ? "Jediswap":"Myswap"}</Text>
+                  <Text>
+                    {borrow?.l3App == "JEDI_SWAP" ? "Jediswap" : "Myswap"}
+                  </Text>
                 </Box>
               </Box>
             </Box>
