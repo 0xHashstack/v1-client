@@ -2031,13 +2031,13 @@ const LiquidityProvisionModal = ({
                   ) : (
                     <Text
                       color={
-                        avgs?.find(
+                        Number(avgs?.find(
                           (item: any) =>
                             item?.loanId ==
                             currentBorrowId
                               .slice(currentBorrowId?.indexOf("-") + 1)
                               ?.trim()
-                        )?.avg < 0
+                        )?.avg)+getBoostedAprSupply(currentCollateralCoin?.slice(1)) < 0
                           ? "rgb(255 94 94)"
                           : "#00D395"
                       }
@@ -2052,13 +2052,13 @@ const LiquidityProvisionModal = ({
                             .slice(currentBorrowId?.indexOf("-") + 1)
                             ?.trim()
                       )?.avg
-                        ? avgs?.find(
+                        ? numberFormatterPercentage(Number(avgs?.find(
                             (item: any) =>
                               item?.loanId ==
                               currentBorrowId
                                 .slice(currentBorrowId?.indexOf("-") + 1)
                                 ?.trim()
-                          )?.avg
+                          )?.avg)+ getBoostedAprSupply(currentCollateralCoin?.slice(1)))
                         : "3.2"}
                       %
                     </Text>

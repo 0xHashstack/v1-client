@@ -24,6 +24,7 @@ import {
 } from "@/store/slices/readDataSlice";
 import {
   selectActiveTransactions,
+  selectJedistrkTokenAllocation,
   selectStrkAprData,
   selectUserUnspentLoans,
   setActiveTransactions,
@@ -118,6 +119,7 @@ const StrkDashboard = () => {
   const [borrowAPRs, setBorrowAPRs] = useState<any>([]);
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>(0);
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>(0);
+  const [collateralCoin, setcollateralCoin] = useState("")
   const [poolNumber, setpoolNumber] = useState(false);
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
   const coin = { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" };
@@ -126,7 +128,7 @@ const StrkDashboard = () => {
   const userDeposits = useSelector(selectUserDeposits);
   const { account, address } = useAccount();
   const poolApr = useSelector(selectJediswapPoolAprs);
-  const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
+  const strkTokenAlloactionData=useSelector(selectJedistrkTokenAllocation)
   const strkData = useSelector(selectStrkAprData);
   const [uniqueID, setUniqueID] = useState(0);
   const getUniqueId = () => uniqueID;
@@ -144,32 +146,6 @@ const StrkDashboard = () => {
     isSuccessstrkClaim,
     statusstrkClaim,
   } = useClaimStrk();
-
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const res = await axios.get(
-          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_strk_grant.json"
-        );
-        setstrkTokenAlloactionData(res?.data?.Jediswap_v1);
-      };
-      fetchData();
-    } catch (err) {
-      console.log(err, "err in jedi");
-    }
-  }, []);
-  useEffect(() => {
-    try {
-      const fetchStrk = async () => {
-        const res = await axios.get(
-          "https://63w2b5a7be32oom24weumnu46a0cdicb.lambda-url.ap-southeast-1.on.aws/alloc/0x6b06f222e9f75e2a8316e9e49c887d0a9ab804afd98d588f107a8b61f69d8ef/1"
-        );
-      };
-      fetchStrk();
-    } catch (err) {
-      console.log(err, "err in fetching strk allocation");
-    }
-  }, []);
 
   const handleClaimStrk = async () => {
     try {
@@ -692,6 +668,7 @@ const StrkDashboard = () => {
                                   setSelectedDapp("trade");
                                   setCurrentBorrow(borrow.loanId);
                                   setcurrentBorrowData(borrow);
+                                  setcollateralCoin(borrow?.collateralMarket)
                                   setBorrowAmount(
                                     borrow.currentLoanAmountParsed
                                   );
@@ -1029,6 +1006,7 @@ const StrkDashboard = () => {
                         currentSelectedDapp={"Jediswap"}
                         currentSelectedPool={pool}
                         poolNumber={poolNumber}
+                        collateralMarket={collateralCoin}
                       />
                     )
                   ) : (

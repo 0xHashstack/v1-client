@@ -47,6 +47,7 @@ import {
   selectActiveTransactions,
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
+  selectStrkAprData,
 } from "@/store/slices/userAccountSlice";
 
 import {
@@ -395,6 +396,31 @@ const BorrowModal = ({
     rToken,
     rTokenAmount,
   ]);
+  const strkData = useSelector(selectStrkAprData);
+  const getBoostedAprSupply = (coin: any) => {
+    if (strkData == null) {
+      return 0;
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
+          return 0;
+        } else {
+          let value = strkData?.[coin]
+            ? (365 *
+                100 *
+                strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
+                0.7 *
+                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  ?.price) /
+              strkData?.[coin][strkData[coin].length - 1]?.supply_usd
+            : 0;
+          return value;
+        }
+      } else {
+        return 0;
+      }
+    }
+  };
 
   const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0);
   const availableReserves = protocolStats?.find(
@@ -2374,10 +2400,10 @@ const BorrowModal = ({
                                 )?.borrowRate
                               ) +
                                 inputCollateralAmountUSD *
-                                  protocolStats?.find(
+                                  (protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentCollateralCoin
-                                  )?.supplyRate) /
+                                  )?.supplyRate+getBoostedAprSupply(currentCollateralCoin))) /
                                   inputCollateralAmountUSD
                             ) < 0
                               ? "rgb(255 94 94)"
@@ -2400,10 +2426,10 @@ const BorrowModal = ({
                               )?.borrowRate
                             ) +
                               inputCollateralAmountUSD *
-                                protocolStats?.find(
+                                (protocolStats?.find(
                                   (stat: any) =>
                                     stat?.token === currentCollateralCoin
-                                )?.supplyRate) /
+                                )?.supplyRate+getBoostedAprSupply(currentCollateralCoin))) /
                                 inputCollateralAmountUSD
                           ).toFixed(2)}
                           %
@@ -2432,9 +2458,9 @@ const BorrowModal = ({
                             )?.borrowRate
                           ) +
                             inputCollateralAmountUSD *
-                              protocolStats?.find(
+                              (protocolStats?.find(
                                 (stat: any) => stat?.token === rToken.slice(1)
-                              )?.supplyRate) /
+                              )?.supplyRate+getBoostedAprSupply(rToken.slice(1)))) /
                               inputCollateralAmountUSD <
                           0
                             ? "rgb(255 94 94)"
@@ -2451,9 +2477,9 @@ const BorrowModal = ({
                             )?.borrowRate
                           ) +
                             inputCollateralAmountUSD *
-                              protocolStats?.find(
+                              (protocolStats?.find(
                                 (stat: any) => stat?.token === rToken.slice(1)
-                              )?.supplyRate) /
+                              )?.supplyRate+getBoostedAprSupply(rToken.slice(1)))) /
                               inputCollateralAmountUSD
                         ).toFixed(2)}
                         %

@@ -2417,7 +2417,6 @@ const useDataLoader = () => {
         const newRes = formattedRes?.replace(/NaN/g, '"null"');
 
         const data = newRes && JSON.parse(newRes);
-        console.log("🚀 ~ fetchData ~ data:", data);
 
         const count = getTransactionCount();
         if (data) {
