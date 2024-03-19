@@ -901,6 +901,7 @@ const SpendTable = () => {
                       setCurrentSwap={setCurrentSwap}
                       borrowAPRs={borrowAPRs}
                       collateralMarket={collateralCoin}
+                      borrow={currentBorrowData}
                     />
                   </Box>
                 </TabPanel>

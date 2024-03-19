@@ -96,13 +96,17 @@ import {
   selectAprsAndHealthCount,
   selectAvgBorrowAprCount,
   selectAvgSupplyAprCount,
+  selectBorrowEffectiveAprs,
   selectFeesCount,
   selectHealthFactorCount,
   selectHourlyDataCount,
   selectJediSwapPoolsSupportedCount,
+  selectJedistrkTokenAllocation,
+  selectJedistrkTokenAllocationCount,
   selectMinMaxDepositCount,
   selectMinMaxLoanCount,
   selectMonthlyDataCount,
+  selectMySplit,
   selectMySwapPoolsSupportedCount,
   selectNetAprCount,
   selectOraclePricesCount,
@@ -117,6 +121,7 @@ import {
   selectWeeklyDataCount,
   selectYourMetricsBorrowCount,
   selectYourMetricsSupplyCount,
+  selectnetSpendBalance,
   selectprotocolReservesCount,
   setAllDataCount,
   setAprCount,
@@ -125,10 +130,13 @@ import {
   setAvgBorrowAprCount,
   setAvgSupplyAPR,
   setAvgSupplyAprCount,
+  setBorrowEffectiveAprs,
   setFeesCount,
   setHealthFactorCount,
   setHourlyDataCount,
   setJediSwapPoolsSupportedCount,
+  setJedistrkTokenAllocation,
+  setJedistrkTokenAllocationCount,
   setMinMaxDepositCount,
   setMinMaxLoanCount,
   setMonthlyDataCount,
@@ -230,6 +238,7 @@ const useDataLoader = () => {
   // const stakingShares = useSelector(selectStakingShares);
   const stakingSharesCount = useSelector(selectStakingSharesCount);
   const feesCount = useSelector(selectFeesCount);
+  const jedistrkTokenAllocationCount=useSelector(selectJedistrkTokenAllocationCount)
   const minMaxCount = useSelector(selectMinMaxDepositCount);
   const minMaxLoanCount = useSelector(selectMinMaxLoanCount);
   const jediSwapPoolsSupportedCount = useSelector(
@@ -242,6 +251,10 @@ const useDataLoader = () => {
   const poolAprs = useSelector(selectJediswapPoolAprs);
   const spendBalances = useSelector(selectSpendBalances);
   const strkData = useSelector(selectStrkAprData);
+  const allSplit=useSelector(selectMySplit)
+  const jedistrkTokenAllocation=useSelector(selectJedistrkTokenAllocation)
+  const netSpendBalance = useSelector(selectnetSpendBalance);
+  const borrowEffectiveAprs=useSelector(selectBorrowEffectiveAprs)
   const [poolsPairs, setPoolPairs] = useState<any>([
     {
       address:
@@ -1923,7 +1936,6 @@ const useDataLoader = () => {
           // if (data != null) {
           //   dispatch(setYourSupply(data));
           // }
-
           const dataBorrow = await getTotalBorrow(
             userLoans,
             dataOraclePrices,
@@ -1973,7 +1985,9 @@ const useDataLoader = () => {
     try {
       const fetchNetApr = async () => {
         ////console.log(getUserDeposits(address),"deposits in pagecard")
-
+        // const res = await axios.get(
+        //   "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json"
+        // );
         // const dataMarket=await getProtocolStats();
         // const dataOraclePrices=await getOraclePrices();
         ////console.log(dataMarket,"data market page")
@@ -1993,16 +2007,9 @@ const useDataLoader = () => {
           dataOraclePrices &&
           netAprCount < transactionRefresh &&
           effectiveApr &&
-          strkData
+          strkData && poolAprs && allSplit && netSpendBalance 
         ) {
           //console.log("user info called inside - transactionRefresh");
-          const dataNetApr = await getNetApr(
-            dataDeposit,
-            userLoans,
-            dataOraclePrices,
-            protocolStats,
-            strkData
-          );
           const dataNetAprDeposit = await getNetAprDeposits(
             dataDeposit,
             dataOraclePrices,
@@ -2014,14 +2021,40 @@ const useDataLoader = () => {
             userLoans,
             dataOraclePrices,
             protocolStats,
-            effectiveApr
+            effectiveApr,
+            strkData,
+            poolAprs,
+            allSplit,
+            jedistrkTokenAllocation,
+            netSpendBalance
+            // res?.data?.Jediswap_v1,           
           );
+        
           //@ts-ignore
-          if (isNaN(dataNetAprLoans)) {
+          if (isNaN(dataNetAprLoans?.netApr)) {
             ////console.log("netApr", dataNetApr);
             dispatch(setNetAprLoans(0));
+            dispatch(setBorrowEffectiveAprs(dataNetAprLoans?.effectiveAprs))
           } else {
-            // dispatch(setNetAprLoans(dataNetAprLoans));
+            dispatch(setBorrowEffectiveAprs(dataNetAprLoans?.effectiveAprs))
+            dispatch(setNetAprLoans(dataNetAprLoans?.netApr));
+          if(dataNetAprLoans?.effectiveAprs){
+            const dataNetApr = await getNetApr(
+              dataDeposit,
+              userLoans,
+              dataOraclePrices,
+              protocolStats,
+              strkData,
+              dataNetAprLoans?.effectiveAprs
+            );
+            //@ts-ignore
+            if (isNaN(dataNetApr)) {
+              ////console.log("netApr", dataNetApr);
+              dispatch(setNetAPR(0));
+            } else {
+              dispatch(setNetAPR(dataNetApr));
+            }
+          }
           }
           //@ts-ignore
           if (isNaN(dataNetAprDeposit)) {
@@ -2030,13 +2063,7 @@ const useDataLoader = () => {
           } else {
             dispatch(setNetAprDeposits(dataNetAprDeposit));
           }
-          //@ts-ignore
-          if (isNaN(dataNetApr)) {
-            ////console.log("netApr", dataNetApr);
-            dispatch(setNetAPR(0));
-          } else {
-            dispatch(setNetAPR(dataNetApr));
-          }
+          
           const count = getTransactionCount();
           dispatch(setNetAprCount(count));
         }
@@ -2055,9 +2082,14 @@ const useDataLoader = () => {
     dataOraclePrices,
     protocolStatsCount,
     transactionRefresh,
-    ,
+    poolAprs,
     effectiveApr,
     strkData,
+    allSplit,
+    jedistrkTokenAllocation,
+    netSpendBalance,
+    jedistrkTokenAllocation,
+    borrowEffectiveAprs
   ]);
 
   useEffect(() => {
@@ -2364,6 +2396,29 @@ const useDataLoader = () => {
       console.log(err, "err in net spend balance");
     }
   }, [transactionRefresh, spendBalances, protocolStats, oraclePrices]);
+
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        console.log("entery")
+        const res = await axios.get(
+          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_strk_grant.json"
+        );
+        const count = getTransactionCount();
+        const data=res?.data;
+        console.log(res?.data,"data")
+        if(res?.data){
+          dispatch(setJedistrkTokenAllocation(res?.data?.Jediswap_v1));
+          dispatch(setJedistrkTokenAllocationCount(count))
+        }
+      };
+      if(jedistrkTokenAllocationCount<transactionRefresh){
+        fetchData();
+      }
+    } catch (err) {
+      console.log(err,"err inf fetching jedi strk");
+    }
+  }, [transactionRefresh]);
   // useEffect(() => {
   //   try {
   //     const fetchNetApr = async () => {

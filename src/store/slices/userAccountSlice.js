@@ -72,11 +72,14 @@ const initialState = {
   minMaxDepositCount: -1,
   minMaxLoanCount: -1,
   feesCount: -1,
+  jedistrkTokenAllocationCount:-1,
   transactionCheck: [],
   lightModeSelected: false,
   spendBalances: null,
   netSpendBalance: null,
   netStrkBorrow: null,
+  borrowEffectiveAprs:null,
+  jedistrkTokenAllocation:null,
 
   // walletBalance: {
   //   BTC: 0,
@@ -284,6 +287,9 @@ export const userAccountSlice = createSlice({
     setMinMaxLoanCount(state, action) {
       state.minMaxLoanCount = action.payload;
     },
+    setJedistrkTokenAllocationCount(state,action){
+      state.jedistrkTokenAllocationCount=action.payload;
+    },
     setStrkAprData(state, action) {
       state.starkAprData = action.payload;
     },
@@ -301,6 +307,12 @@ export const userAccountSlice = createSlice({
     },
     setLightModeSelected(state, action) {
       state.lightModeSelected = action.payload;
+    },
+    setBorrowEffectiveAprs(state,action){
+      state.borrowEffectiveAprs=action.payload;
+    },
+    setJedistrkTokenAllocation(state,action){
+      state.jedistrkTokenAllocation=action.payload;
     },
     setTransactionCheck(state, action) {
       let data = state.transactionCheck;
@@ -375,12 +387,15 @@ export const {
   setMinMaxDepositCount,
   setMinMaxLoanCount,
   setFeesCount,
+  setJedistrkTokenAllocationCount,
   setTransactionCheck,
   setLightModeSelected,
   setStrkAprData,
   setSpendBalances,
   setNetSpendBalance,
   setNetStrkBorrow,
+  setBorrowEffectiveAprs,
+  setJedistrkTokenAllocation
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -486,6 +501,7 @@ export const selectMinMaxDepositCount = (state) =>
 export const selectMinMaxLoanCount = (state) =>
   state.user_account.minMaxLoanCount;
 export const selectFeesCount = (state) => state.user_account.feesCount;
+export const selectJedistrkTokenAllocationCount = (state) => state.user_account.jedistrkTokenAllocationCount;
 export const selectTransactionCheck = (state) =>
   state.user_account.transactionCheck;
 export const selectLightModeSelected = (state) =>
@@ -495,5 +511,7 @@ export const selectSpendBalances = (state) => state.user_account.spendBalances;
 export const selectnetSpendBalance = (state) =>
   state.user_account.netSpendBalance;
 export const selectnetStrkBorrow = (state) => state.user_account.netStrkBorrow;
+export const selectBorrowEffectiveAprs = (state) => state.user_account.borrowEffectiveAprs;
+export const selectJedistrkTokenAllocation = (state) => state.user_account.jedistrkTokenAllocation;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

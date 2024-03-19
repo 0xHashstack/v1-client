@@ -2378,7 +2378,7 @@ const BorrowModal = ({
                                     (stat: any) =>
                                       stat?.token === currentCollateralCoin
                                   )?.supplyRate) /
-                                inputBorrowAmountUSD
+                                  inputCollateralAmountUSD
                             ) < 0
                               ? "rgb(255 94 94)"
                               : "#00D395"
@@ -2404,7 +2404,7 @@ const BorrowModal = ({
                                   (stat: any) =>
                                     stat?.token === currentCollateralCoin
                                 )?.supplyRate) /
-                              inputBorrowAmountUSD
+                                inputCollateralAmountUSD
                           ).toFixed(2)}
                           %
                         </Text>
@@ -2435,7 +2435,7 @@ const BorrowModal = ({
                               protocolStats?.find(
                                 (stat: any) => stat?.token === rToken.slice(1)
                               )?.supplyRate) /
-                            inputBorrowAmountUSD <
+                              inputCollateralAmountUSD <
                           0
                             ? "rgb(255 94 94)"
                             : "#00D395"
@@ -2454,7 +2454,7 @@ const BorrowModal = ({
                               protocolStats?.find(
                                 (stat: any) => stat?.token === rToken.slice(1)
                               )?.supplyRate) /
-                          inputBorrowAmountUSD
+                              inputCollateralAmountUSD
                         ).toFixed(2)}
                         %
                         {/* {
