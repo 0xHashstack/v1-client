@@ -26,6 +26,7 @@ const NavButtons = ({
     { path: "v1/spend-borrow", label: "Spend Borrow" },
     { path: "v1/your-supply", label: "Your Supply" },
     { path: "v1/your-borrow", label: "Your Borrow" },
+    // { path: "v1/degen", label: "Degen" },
     { path: "v1/strk-rewards", label: "Farm STRK token" },
   ];
 
