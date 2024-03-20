@@ -297,20 +297,20 @@ const SupplyDashboard = ({
         ////console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
         setProtocolStats([
+          stats?.[5],
           stats?.[2],
           stats?.[3],
-          stats?.[0],
           stats?.[1],
+          stats?.[0],
           stats?.[4],
-          stats?.[5],
         ]);
         setSupplyAPRs([
+          stats?.[5].supplyRate,
           stats?.[2].supplyRate,
           stats?.[3].supplyRate,
-          stats?.[0].supplyRate,
           stats?.[1].supplyRate,
+          stats?.[0].supplyRate,
           stats?.[4].supplyRate,
-          stats?.[5].supplyRate,
         ]);
       } catch (error) {
         //console.log("error on getting protocol stats");
@@ -356,7 +356,7 @@ const SupplyDashboard = ({
       ////console.log("supply in supply dash: ", supply);
       if (!supply) return;
       let data: any = [];
-      let indexes: any = [2, 3, 0, 1, 4, 5];
+      let indexes: any = [5,2, 3, 1,0,4];
 
       indexes.forEach((index: number) => {
         if (
@@ -666,10 +666,46 @@ const SupplyDashboard = ({
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                        color="#00D395"
                         paddingLeft="1.5"
                       >
-                        <Tooltip
+                          {/* {checkGap(idx1, idx2)} */}
+                          {!protocolStats || !protocolStats[idx] ? (
+                            <Skeleton
+                              width="4rem"
+                              height="1.4rem"
+                              startColor="#101216"
+                              endColor="#2B2F35"
+                              borderRadius="6px"
+                            />
+                          ) : (
+                            Number(
+                              protocolStats.find((stat: any) => {
+                                if (stat?.token === supply?.rToken?.slice(1))
+                                  return stat;
+                              })?.supplyRate                                
+                            )?.toFixed(3) + "%"
+                          )}
+                      </Box>
+                    </Td>
+
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        color="#00D395"
+                      >
+                                                <Tooltip
                           hasArrow
                           arrowShadowColor="#2B2F35"
                           placement="bottom"
@@ -684,8 +720,11 @@ const SupplyDashboard = ({
                                 <Text>APR</Text>
                                 <Text>
                                   {numberFormatterPercentage(
-                                    supplyAPRs[idx] +
-                                      getBoostedApr(supply?.rToken?.slice(1))
+                                    Number(
+                                      avgs?.find(
+                                        (item: any) => item?.token == supply?.token
+                                      )?.avg
+                                    ) + getBoostedApr(supply?.rToken?.slice(1))
                                   )}
                                   %
                                 </Text>
@@ -697,7 +736,12 @@ const SupplyDashboard = ({
                               >
                                 <Text>Supply APR</Text>
                                 <Text>
-                                  {numberFormatterPercentage(supplyAPRs[idx])}%
+                                  {Number(
+                                      protocolStats.find((stat: any) => {
+                                        if (stat?.token === supply?.rToken?.slice(1))
+                                          return stat;
+                                      })?.supplyRate                                
+                                    )?.toFixed(3)}%
                                 </Text>
                               </Box>
                               <Box
@@ -724,8 +768,15 @@ const SupplyDashboard = ({
                           border="1px solid"
                           borderColor="#23233D"
                         >
-                          {/* {checkGap(idx1, idx2)} */}
-                          {!protocolStats || !protocolStats[idx] ? (
+                          {avgs && avgs?.length > 0 ? (
+                            numberFormatterPercentage(
+                              Number(
+                                avgs?.find(
+                                  (item: any) => item?.token == supply?.token
+                                )?.avg
+                              ) + getBoostedApr(supply?.rToken?.slice(1))
+                            ) + "%"
+                          ) : (
                             <Skeleton
                               width="4rem"
                               height="1.4rem"
@@ -733,38 +784,11 @@ const SupplyDashboard = ({
                               endColor="#2B2F35"
                               borderRadius="6px"
                             />
-                          ) : (
-                            Number(
-                              protocolStats.find((stat: any) => {
-                                if (stat?.token === supply?.rToken?.slice(1))
-                                  return stat;
-                              })?.supplyRate +
-                                getBoostedApr(supply?.rToken?.slice(1))
-                            )?.toFixed(3) + "%"
                           )}
                         </Tooltip>
                         <Box ml="0.4rem">
                           <FireIcon />
                         </Box>
-                      </Box>
-                    </Td>
-
-                    <Td
-                      width={"12.5%"}
-                      maxWidth={"3rem"}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      overflow={"hidden"}
-                      textAlign={"center"}
-                    >
-                      <Text
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        fontWeight="400"
-                      >
                         {/* {checkGap(idx1, idx2)} */}
                         {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
                         {/* {avgs[2]} */}
@@ -775,23 +799,7 @@ const SupplyDashboard = ({
                             endColor="#2B2F35"
                             borderRadius="6px"
                           />: */}
-                        {avgs && avgs?.length > 0 ? (
-                          numberFormatterPercentage(
-                            Number(
-                              avgs?.find(
-                                (item: any) => item?.token == supply?.token
-                              )?.avg
-                            ) + getBoostedApr(supply?.rToken?.slice(1))
-                          ) + "%"
-                        ) : (
-                          <Skeleton
-                            width="4rem"
-                            height="1.4rem"
-                            startColor="#101216"
-                            endColor="#2B2F35"
-                            borderRadius="6px"
-                          />
-                        )}
+
                         {/* {supply?.token} */}
                       </Text>
                     </Td>

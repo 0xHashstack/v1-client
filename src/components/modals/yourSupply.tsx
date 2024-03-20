@@ -687,24 +687,26 @@ const YourSupplyModal = ({
     setMinimumDepositAmount(minAmounts["r" + currentSelectedSupplyCoin])
     setmaximumDepositAmount(maxAmounts["r" + currentSelectedSupplyCoin])
   }, [currentSelectedSupplyCoin,minAmounts,maxAmounts])
-  
+
   const getBorrowAPR = (borrowMarket: string) => {
     switch (borrowMarket) {
       case "USDT":
-        return protocolStats[0]?.supplyRate;
-        break;
-      case "USDC":
         return protocolStats[1]?.supplyRate;
         break;
-      case "BTC":
+      case "USDC":
         return protocolStats[2]?.supplyRate;
+        break;
+      case "BTC":
+        return protocolStats[4]?.supplyRate;
         break;
       case "ETH":
         return protocolStats[3]?.supplyRate;
         break;
       case "DAI":
-        return protocolStats[4]?.supplyRate;
+        return protocolStats[5]?.supplyRate;
         break;
+      case "STRK":
+        return protocolStats[0]?.supplyRate;
 
       default:
         break;
