@@ -1,29 +1,28 @@
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import BorrowDashboard from "@/components/layouts/borrowDashboard";
 import MarketDashboard from "@/components/layouts/marketDashboard";
 import NavButtons from "@/components/layouts/navButtons";
 import Navbar from "@/components/layouts/navbar/Navbar";
-import { Stack } from "@chakra-ui/react";
+import PageCard from "@/components/layouts/pageCard";
 import StatsBoard from "@/components/layouts/statsBoard";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import Pagination from "@/components/uiElements/pagination";
-import YourBorrowModal from "@/components/modals/yourBorrowModal";
-import React, { useEffect, useState } from "react";
-import { HStack, VStack, Text, Box } from "@chakra-ui/react";
-import PageCard from "@/components/layouts/pageCard";
-import { Coins } from "@/utils/constants/coin";
-import { useDispatch, useSelector } from "react-redux";
-import { useAccount } from "@starknet-react/core";
-import {
-  selectYourBorrow,
-  selectNetAPR,
-  selectnetAprLoans,
-} from "@/store/slices/readDataSlice";
-import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
-import { getUserLoans } from "@/Blockchain/scripts/Loans";
-import { ILoan } from "@/Blockchain/interfaces/interfaces";
-import { Skeleton } from "@chakra-ui/react";
-import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
+import {
+  selectNetAPR,
+  selectUserLoans,
+  selectYourBorrow,
+  selectnetAprLoans,
+  setUserLoans,
+} from "@/store/slices/readDataSlice";
+import { Coins } from "@/utils/constants/coin";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import { Box, HStack, Skeleton, Stack, Text, VStack } from "@chakra-ui/react";
+import { useAccount } from "@starknet-react/core";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 const YourBorrow = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [

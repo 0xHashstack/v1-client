@@ -18,7 +18,7 @@ import {
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { Coins } from "@/utils/constants/coin";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { Box, HStack, Skeleton, Stack, Text, VStack } from "@chakra-ui/react";
+import { Box, HStack, Skeleton, Stack, Text, Tooltip, VStack } from "@chakra-ui/react";
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -100,9 +100,25 @@ const YourSupply = () => {
             )}
           </VStack>
           <VStack gap={"3px"}>
-            <Text color={"#6e7681"} fontSize="14px" alignItems="center">
-              Net APR
-            </Text>
+          <Tooltip
+                      hasArrow
+                      arrowShadowColor="#2B2F35"
+                      placement="bottom"
+                      boxShadow="dark-lg"
+                      label={"Net APR on your supply is calculated based on the effective APR of each assets, and the supply and collateral amount."}
+                      bg="#02010F"
+                      fontSize={"13px"}
+                      fontWeight={"400"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                      color="#F0F0F5"
+                      border="1px solid"
+                      borderColor="#23233D"
+                    >
+                <Text color={"#6e7681"} fontSize="14px" alignItems="center">
+                  Net APR
+                </Text>
+                    </Tooltip>
             {netAPR == null ? (
               <Skeleton
                 width="6rem"
