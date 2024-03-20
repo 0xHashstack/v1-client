@@ -824,7 +824,6 @@ const SupplyDashboard = ({
                       maxWidth={"3rem"}
                       fontSize={"14px"}
                       fontWeight={400}
-                      // overflow={"hidden"}
                       textAlign={"center"}
                     >
                       <Box
@@ -832,39 +831,17 @@ const SupplyDashboard = ({
                         height="100%"
                         display="flex"
                         flexDirection="column"
-                        // alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                        // bgColor={"blue"}
                         margin="0 auto"
                         gap={2}
                         pl="1.1rem"
                       >
-                        {/* {checkGap(idx1, idx2)} */}
-                        <HStack
-                          // bgColor="red"
-                          justifyContent="flex-start"
-                          // display={
-                          //   supply?.rTokenStakedParsed > 0 ||
-                          //   supply?.rTokenFreeParsed > 0
-                          //     ? "flex"
-                          //     : "none"
-                          // }
-                          // mx={
-                          //   supply?.rTokenStakedParsed <= 0 ||
-                          //   supply?.rTokenFreeParsed <= 0
-                          //     ? "30%"
-                          //     : "0"
-                          // }
-                        >
+                        <HStack justifyContent="flex-start">
                           <HStack
                             onMouseEnter={() => handleStatusHover("0" + idx)}
                             onMouseLeave={() => handleStatusHoverLeave()}
                             _hover={{ cursor: "pointer" }}
-                            // display={
-                            //   supply?.rTokenStakedParsed > 0 ? "flex" : "none"
-                            // }
-                            // bgColor="red"
                             mr="16px"
                             pl={2}
                             cursor="pointer"
@@ -893,10 +870,8 @@ const SupplyDashboard = ({
                               {numberFormatter(supply?.rTokenStakedParsed)}
                             </Text>
                           </HStack>
+
                           <HStack
-                            // display={
-                            //   supply?.rTokenFreeParsed > 0 ? "flex" : "none"
-                            // }
                             onMouseEnter={() => handleStatusHover("1" + idx)}
                             onMouseLeave={() => handleStatusHoverLeave()}
                             cursor="pointer"
@@ -918,7 +893,7 @@ const SupplyDashboard = ({
                                 p="0px 12px"
                                 fontSize="12px"
                               >
-                                Unstaked
+                                Available
                               </Text>
                             )}
                             <Text>
@@ -926,17 +901,8 @@ const SupplyDashboard = ({
                             </Text>
                           </HStack>
                         </HStack>
-                        <HStack
-                        // display={
-                        //   supply?.rTokenLockedParsed > 0 ? "flex" : "none"
-                        // }
-                        // mx={
-                        //   supply?.rTokenStakedParsed <= 0 ||
-                        //   supply?.rTokenFreeParsed <= 0
-                        //     ? "30%"
-                        //     : "0"
-                        // }
-                        >
+
+                        <HStack>
                           <HStack
                             pl={2}
                             onMouseEnter={() => handleStatusHover("2" + idx)}
@@ -960,7 +926,7 @@ const SupplyDashboard = ({
                                 p="0px 12px"
                                 fontSize="12px"
                               >
-                                Locked
+                                Collateral
                               </Text>
                             )}
                             <Text>
@@ -968,7 +934,6 @@ const SupplyDashboard = ({
                             </Text>
                           </HStack>
                         </HStack>
-                        {/* {supply?.Status || "ACTIVE"} */}
                       </Box>
                     </Td>
 
@@ -977,7 +942,6 @@ const SupplyDashboard = ({
                       maxWidth={"5rem"}
                       fontSize={"14px"}
                       fontWeight={400}
-                      //   overflow={"hidden"}
                       textAlign={"center"}
                     >
                       <Box
@@ -1015,6 +979,7 @@ const SupplyDashboard = ({
                       </Box>
                     </Td>
                   </Tr>
+
                   <Tr
                     style={{
                       position: "absolute",
