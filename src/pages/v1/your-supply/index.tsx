@@ -113,10 +113,10 @@ const YourSupply = () => {
               />
             ) : (
               <Text
-                color={netAPR > 0 ? "#00D395" : "rgb(255 94 94)"}
+                color={netAPR > 0 ? "#00D395" : netAPR==0?"white": "rgb(255 94 94)"}
                 fontSize="20px"
               >
-                {netAPR ? `${netAPR}%` : "NA"}
+                {netAPR!=0 ? `${netAPR}%` : "NA"}
               </Text>
             )}
           </VStack>

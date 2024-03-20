@@ -32,6 +32,7 @@ import TableInfoIcon from "./tableIcons/infoIcon";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectStrkAprData,
   selectUserUnspentLoans,
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
@@ -66,6 +67,7 @@ import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import LowhealthFactor from "@/assets/icons/lowhealthFactor";
 import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -250,6 +252,32 @@ const SpendTable = () => {
   // useEffect(()=>{
 
   // },[])
+  const strkData = useSelector(selectStrkAprData);
+  const getBoostedAprSupply = (coin: any) => {
+    if (strkData == null) {
+      return 0;
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
+          return 0;
+        } else {
+          let value = strkData?.[coin]
+            ? (365 *
+                100 *
+                strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
+                0.7 *
+                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  ?.price) /
+              strkData?.[coin][strkData[coin].length - 1]?.supply_usd
+            : 0;
+          return value;
+        }
+      } else {
+        return 0;
+      }
+    }
+  };
+
 
   useEffect(() => {
     fetchProtocolStats();
@@ -583,9 +611,9 @@ const SpendTable = () => {
                           {avgs?.find(
                             (item: any) => item?.loanId == borrow?.loanId
                           )?.avg
-                            ? avgs?.find(
+                            ? numberFormatterPercentage(Number(avgs?.find(
                                 (item: any) => item?.loanId == borrow?.loanId
-                              )?.avg
+                              )?.avg)+getBoostedAprSupply(borrow?.collateralMarket.slice(1)))
                             : "3.2"}
                           %
                         </Td>

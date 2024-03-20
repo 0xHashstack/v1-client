@@ -717,23 +717,6 @@ const SupplyDashboard = ({
                                 justifyContent="space-between"
                                 gap={10}
                               >
-                                <Text>APR</Text>
-                                <Text>
-                                  {numberFormatterPercentage(
-                                    Number(
-                                      avgs?.find(
-                                        (item: any) => item?.token == supply?.token
-                                      )?.avg
-                                    ) + getBoostedApr(supply?.rToken?.slice(1))
-                                  )}
-                                  %
-                                </Text>
-                              </Box>
-                              <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                gap={10}
-                              >
                                 <Text>Supply APR</Text>
                                 <Text>
                                   {Number(
@@ -748,11 +731,31 @@ const SupplyDashboard = ({
                                 display="flex"
                                 justifyContent="space-between"
                                 gap={10}
+                                mb="2"
                               >
                                 <Text>STRK APR</Text>
                                 <Text>
                                   {numberFormatterPercentage(
                                     getBoostedApr(supply?.rToken?.slice(1))
+                                  )}
+                                  %
+                                </Text>
+                              </Box>
+                              <hr/>
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                gap={10}
+                                mt="2"
+                              >
+                                <Text>Effective APR:</Text>
+                                <Text>
+                                  {numberFormatterPercentage(
+                                    Number(
+                                      avgs?.find(
+                                        (item: any) => item?.token == supply?.token
+                                      )?.avg
+                                    ) + getBoostedApr(supply?.rToken?.slice(1))
                                   )}
                                   %
                                 </Text>

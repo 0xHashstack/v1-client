@@ -1401,7 +1401,7 @@ const SwapModal = ({
                           currentBorrowId
                             .slice(currentBorrowId?.indexOf("-") + 1)
                             ?.trim()
-                      )?.avg)+getBoostedAprSupply(currentCollateralCoin.slice(1)) < 0
+                      )?.avg)+getBoostedAprSupply(currentCollateralCoin?.slice(1)) < 0
                         ? "rgb(255 94 94)"
                         : "#00D395"
                     }
@@ -1422,7 +1422,7 @@ const SwapModal = ({
                             currentBorrowId
                               .slice(currentBorrowId?.indexOf("-") + 1)
                               ?.trim()
-                        )?.avg)+getBoostedAprSupply(currentCollateralCoin.slice(1)))
+                        )?.avg)+getBoostedAprSupply(currentCollateralCoin?.slice(1)))
                       : "3.2"}
                     %
                   </Text>

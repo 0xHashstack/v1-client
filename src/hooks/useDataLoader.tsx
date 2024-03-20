@@ -2040,6 +2040,23 @@ const useDataLoader = () => {
             ////console.log("netApr", dataNetApr);
             dispatch(setNetAprLoans(0));
             dispatch(setBorrowEffectiveAprs(dataNetAprLoans?.effectiveAprs));
+            if (dataNetAprLoans?.effectiveAprs) {
+              const dataNetApr = await getNetApr(
+                dataDeposit,
+                userLoans,
+                dataOraclePrices,
+                protocolStats,
+                strkData,
+                dataNetAprLoans?.effectiveAprs
+              );
+              //@ts-ignore
+              if (isNaN(dataNetApr)) {
+                ////console.log("netApr", dataNetApr);
+                dispatch(setNetAPR(0));
+              } else {
+                dispatch(setNetAPR(dataNetApr));
+              }
+            }
           } else {
             dispatch(setBorrowEffectiveAprs(dataNetAprLoans?.effectiveAprs));
             dispatch(setNetAprLoans(dataNetAprLoans?.netApr));
@@ -2405,7 +2422,6 @@ const useDataLoader = () => {
   useEffect(() => {
     try {
       const fetchData = async () => {
-        console.log("entery");
         const res: any = await axios.get(
           "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_strk_grant.json"
         );

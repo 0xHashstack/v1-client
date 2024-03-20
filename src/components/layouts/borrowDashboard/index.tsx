@@ -1536,7 +1536,30 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                       justifyContent="space-between"
                                       gap="10px"
                                     >
-                                      Borrow:
+                                      Borrow (
+                                      {(
+                                        ((dollarConvertor(
+                                          borrow?.loanAmountParsed,
+                                          borrow?.loanMarket.slice(1),
+                                          oraclePrices
+                                        ) *
+                                          reduxProtocolStats?.find(
+                                            (val: any) =>
+                                              val?.token ==
+                                              borrow?.loanMarket.slice(1)
+                                          )?.exchangeRateDTokenToUnderlying) /
+                                          dollarConvertor(
+                                            borrow?.collateralAmountParsed,
+                                            borrow?.collateralMarket.slice(1),
+                                            oraclePrices
+                                          )) *
+                                        reduxProtocolStats?.find(
+                                          (val: any) =>
+                                            val?.token ==
+                                            borrow?.collateralMarket.slice(1)
+                                        )?.exchangeRateRtokenToUnderlying
+                                      ).toFixed(1)}
+                                      x):
                                       <Text>
                                         -
                                         {numberFormatterPercentage(
@@ -1575,7 +1598,30 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         justifyContent="space-between"
                                         gap="10px"
                                       >
-                                        Boosted:
+                                        Boosted (
+                                          {(
+                                        ((dollarConvertor(
+                                          borrow?.loanAmountParsed,
+                                          borrow?.loanMarket.slice(1),
+                                          oraclePrices
+                                        ) *
+                                          reduxProtocolStats?.find(
+                                            (val: any) =>
+                                              val?.token ==
+                                              borrow?.loanMarket.slice(1)
+                                          )?.exchangeRateDTokenToUnderlying) /
+                                          dollarConvertor(
+                                            borrow?.collateralAmountParsed,
+                                            borrow?.collateralMarket.slice(1),
+                                            oraclePrices
+                                          )) *
+                                        reduxProtocolStats?.find(
+                                          (val: any) =>
+                                            val?.token ==
+                                            borrow?.collateralMarket.slice(1)
+                                        )?.exchangeRateRtokenToUnderlying
+                                      ).toFixed(1)}
+                                      x):
                                         <Text>
                                           +
                                           {numberFormatterPercentage(

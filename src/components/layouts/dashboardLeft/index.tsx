@@ -398,20 +398,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                             justifyContent="space-between"
                             gap={10}
                           >
-                            <Text>APR</Text>
-                            <Text>
-                              {numberFormatterPercentage(
-                                supplyAPRs[idx] + getBoostedApr(coin)
-                              )}
-                              %
-                            </Text>
-                          </Box>
-                          <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            gap={10}
-                          >
-                            <Text>Supply APR</Text>
+                            <Text>Supply APR:</Text>
                             <Text>
                               {numberFormatterPercentage(supplyAPRs[idx])}%
                             </Text>
@@ -420,10 +407,26 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                             display="flex"
                             justifyContent="space-between"
                             gap={10}
+                            mb="2"
                           >
-                            <Text>STRK APR</Text>
+                            <Text>STRK APR:</Text>
                             <Text>
                               {numberFormatterPercentage(getBoostedApr(coin))}%
+                            </Text>
+                          </Box>
+                          <hr />
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            gap={10}
+                            mt="2"
+                          >
+                            <Text>Effective APR:</Text>
+                            <Text>
+                              {numberFormatterPercentage(
+                                supplyAPRs[idx] + getBoostedApr(coin)
+                              )}
+                              %
                             </Text>
                           </Box>
                         </Box>
@@ -468,7 +471,12 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                             </Box>
                           </Box>
                         ) : (
-                          <Text color="#F0F0F5">
+                          <Text color={coin?.name == "DAI"
+                          ? "#3E415C"
+                          : coin?.name == "BTC"
+                          ? "white"
+                          : "#00D395"
+                      }>
                             {numberFormatterPercentage(supplyAPRs[idx])}%
                           </Text>
                         ))

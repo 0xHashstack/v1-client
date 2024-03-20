@@ -750,7 +750,8 @@ const YourBorrowModal = ({
         return borrowAPRs[3];
       case "DAI":
         return borrowAPRs[4];
-
+      case "STRK":
+        return borrowAPRs[5];
       default:
         break;
     }
@@ -6493,25 +6494,43 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#676D9A">
-                          {" "}
-                          {avgs?.find(
-                            (item: any) =>
-                              item?.loanId ==
-                              currentBorrowId2
-                                .slice(currentBorrowId2.indexOf("-") + 1)
-                                .trim()
-                          )?.avg
-                            ? avgs?.find(
-                                (item: any) =>
-                                  item?.loanId ==
-                                  currentBorrowId2
-                                    .slice(currentBorrowId2.indexOf("-") + 1)
-                                    .trim()
-                              )?.avg
-                            : "3.2"}
-                          %
-                        </Text>
+                        <Text
+                  color={
+                    Number(avgs?.find(
+                      (item: any) =>
+                        item?.loanId ==
+                        currentBorrowId1
+                          .slice(currentBorrowId2.indexOf("-") + 1)
+                          .trim()
+                    )?.avg)+getBoostedAprSupply(
+                      collateralBalance.substring(spaceIndex + 2)
+                    ) < 0
+                      ? "rgb(255 94 94)"
+                      : "#00D395"
+                  }
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  {avgs?.find(
+                    (item: any) =>
+                      item?.loanId ==
+                      currentBorrowId2
+                        .slice(currentBorrowId2.indexOf("-") + 1)
+                        .trim()
+                  )?.avg
+                    ? numberFormatterPercentage(Number(avgs?.find(
+                        (item: any) =>
+                          item?.loanId ==
+                          currentBorrowId2
+                            .slice(currentBorrowId2.indexOf("-") + 1)
+                            .trim()
+                      )?.avg)+getBoostedAprSupply(
+                        collateralBalance.substring(spaceIndex + 2)
+                      ))
+                    : "3.2"}
+                  %
+                </Text>
                       </Text>
                       {/* <Text
                         display="flex"
