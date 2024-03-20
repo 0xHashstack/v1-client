@@ -17,6 +17,8 @@ import {
 } from "../stark-constants";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import { OraclePrice, getOraclePrices } from "./getOraclePrices";
+import dollarConvertor from "@/utils/functions/dollarConvertor";
+import { useState } from "react";
 
 // function parseUserStats(
 //   userStatsData: any,
@@ -143,7 +145,7 @@ export async function getNetworth(
 
   return netWorth;
 }
-export const getBoostedApr = (coin: string,strkData:any,oraclePrices:any) => {
+export const getBoostedAprSupply = (coin: string,strkData:any,oraclePrices:any) => {
   if (strkData == null) {
     return 0;
   } else {
@@ -167,6 +169,97 @@ export const getBoostedApr = (coin: string,strkData:any,oraclePrices:any) => {
     }
   }
 };
+export const getBoostedApr = (coin: any,strkData:any,oraclePrices:any,netSpendBalance:any) => {
+  let netStrkBorrow=0
+  if (strkData != null) {
+    let netallocation = 0;
+    for (let token in strkData) {
+      if (strkData.hasOwnProperty(token)) {
+        const array = strkData[token];
+        const lastObject = array[array.length - 1];
+        netallocation += 0.3 * lastObject.allocation;
+      }
+    }
+    netStrkBorrow=netallocation;
+  } else {
+    netStrkBorrow=0;
+  }
+  if (strkData == null) {
+    return 0;
+  } else {
+    if (strkData?.[coin]) {
+      if (oraclePrices == null) {
+        return 0;
+      } else {
+        if (netStrkBorrow != 0) {
+          if (netSpendBalance) {
+            let value =
+              (365 *
+                100 *
+                netStrkBorrow *
+                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  ?.price) /
+              netSpendBalance;
+            return value;
+          } else {
+            return 0;
+          }
+        } else {
+          return 0;
+        }
+      }
+    } else {
+      return 0;
+    }
+  }
+};
+export const getAprByPool = (dataArray: any[], pool: string, l3App: string) => {
+  const matchedObject = dataArray.find((item) => {
+    if (item.name === "USDT/USDC") {
+      return item.amm === "jedi" && "USDC/USDT" === pool;
+    } else if (item.name == "ETH/STRK") {
+      return item.amm === "jedi" && "STRK/ETH" === pool;
+    } else if (item.name === "ETH/DAI") {
+      return item.amm === "jedi" && "DAI/ETH" === pool;
+    } else {
+      return (
+        item.name === pool &&
+        item.amm === (l3App == "JEDI_SWAP" ? "jedi" : "myswap")
+      );
+    }
+  });
+  return matchedObject ? matchedObject.apr * 100 : 0;
+};
+export const getStrkAlloaction = (pool: any,strkTokenAlloactionData:any) => {
+  try {
+    if (strkTokenAlloactionData[pool]) {
+      return strkTokenAlloactionData[pool][
+        strkTokenAlloactionData[pool].length - 1
+      ]?.allocation;
+    } else {
+      return 0;
+    }
+  } catch (err) {
+    return 0;
+  }
+};
+export const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
+  const matchedObject = dataArray.find((item) => {
+    if (item.name === "USDT/USDC") {
+      return item.amm === "jedi" && "USDC/USDT" === pool;
+    } else if (item.name == "ETH/STRK") {
+      return item.amm === "jedi" && "STRK/ETH" === pool;
+    } else if (item.name === "ETH/DAI") {
+      return item.amm === "jedi" && "DAI/ETH" === pool;
+    } else {
+      return (
+        item.name === pool &&
+        item.amm === (l3App == "JEDI_SWAP" ? "jedi" : "myswap")
+      );
+    }
+  });
+  return matchedObject ? matchedObject.tvl : 0;
+};
 export async function getNetAprDeposits(
   deposits: IDeposit[],
   oraclePrices: OraclePrice[],
@@ -186,7 +279,7 @@ export async function getNetAprDeposits(
       let depositAmountUsd =
         deposit.underlyingAssetAmountParsed * oraclePrice.price;
       totalSupply += depositAmountUsd;
-      netSupplyInterest += depositAmountUsd * (market_info.supplyRate+getBoostedApr(deposit?.token,strkData,oraclePrices));
+      netSupplyInterest += depositAmountUsd * (market_info.supplyRate+getBoostedAprSupply(deposit?.token,strkData,oraclePrices));
     }
   }
 
@@ -199,18 +292,25 @@ export async function getNetAprDeposits(
   return netApr.toFixed(2);
 }
 export async function getNetAprLoans(
-  loans: ILoan[],
+  loans: any[],
   oraclePrices: OraclePrice[],
-  marketInfos: IMarketInfo[],
-  avgs:any
+  marketInfos: any,
+  avgs:any,
+  strkData:any,
+  poolAprs:any,
+  allSplit:any,
+  strkAllocationData:any,
+  netSpendBalance:any
 ) {
   
-  let totalBorrow = 0,
+  let totalBorrowCollateral = 0,
     netBorrowInterest = 0;
+    let netApr: number = 0;
+    let netaprs=[];
+    let effectiveaprs=[{}];
   for (let loan of loans) {
     if (
       loan.loanState === "REPAID" ||
-      loan.loanState === "LIQUIDATED" ||
       loan.loanState === null
     )
       continue;
@@ -219,32 +319,134 @@ export async function getNetAprLoans(
       (oraclePrice) => oraclePrice.address === loan.underlyingMarketAddress
     );
     let market_info = marketInfos.find(
-      (marketInfo) => marketInfo.tokenAddress === loan.underlyingMarketAddress
+      (marketInfo:any) => marketInfo.tokenAddress === loan.underlyingMarketAddress
     );
     let avgs_info = avgs?.find(
       (avgs:any) => avgs?.loanId === loan.loanId
     );
-    if (oraclePrice && market_info) {
-      let loanAmountUnderlying =
-        loan.loanAmountParsed * market_info.exchangeRateDTokenToUnderlying;
-      let loanAmountUsd = loanAmountUnderlying * oraclePrice.price;
-
-      totalBorrow += loanAmountUsd;
-      netBorrowInterest += loanAmountUsd * avgs_info?.avg;
-    }
-  }
-  let netApr =
-    (netBorrowInterest != 0 && totalBorrow != 0
-      ? netBorrowInterest / totalBorrow
-      : 0);
-  return netApr.toFixed(2);
+    let split_info=allSplit?.find(
+      (splits:any)=>splits.loanId === loan.loanId
+    )
+    let strk_price=oraclePrices?.find((curr: any) => curr.name === "STRK")?.price
+    // return 0;
+    let loanMarket=loan.loanMarket
+    if (oraclePrice && market_info && strkData && poolAprs) {
+      totalBorrowCollateral+=((dollarConvertor(
+        loan?.collateralAmountParsed,
+        loan?.collateralMarket.slice(1),
+        oraclePrices
+      )) *
+      marketInfos?.find(
+        (val: any) => val?.token == loan?.collateralMarket.slice(1)
+      )?.exchangeRateRtokenToUnderlying);
+      let aprs =
+      loan?.spendType == "LIQUIDITY"
+        ? Number(
+            avgs?.find((item: any) => item?.loanId == loan?.loanId)?.avg
+          ) +
+          getBoostedAprSupply(loan?.collateralMarket.slice(1),strkData,oraclePrices) +
+          ( ((getBoostedApr(loan?.loanMarket.slice(1),strkData,oraclePrices,netSpendBalance)*dollarConvertor(
+            loan?.loanAmountParsed,
+            loan?.loanMarket.slice(1),
+            oraclePrices
+          )) *
+          market_info?.exchangeRateDTokenToUnderlying/dollarConvertor(
+            loan?.collateralAmountParsed,
+            loan?.collateralMarket.slice(1),
+            oraclePrices
+          )) *
+          marketInfos?.find(
+            (val: any) => val?.token == loan?.collateralMarket.slice(1)
+          )?.exchangeRateRtokenToUnderlying)+
+          (((getAprByPool(
+            poolAprs,
+            split_info.tokenA +
+              "/" +
+              split_info.tokenB,
+            loan?.l3App
+          ) +
+            
+            (100 *
+              365 *
+              (strk_price ? strk_price:0) *
+              getStrkAlloaction(
+                split_info.tokenA +
+                  "/" +
+                  split_info.tokenB
+              ,strkAllocationData)) /
+              getTvlByPool(
+                poolAprs,
+                split_info.tokenA +
+                  "/" +
+                  split_info.tokenB,
+                loan?.l3App
+              )) *
+            (dollarConvertor(
+              split_info.amountA,
+              split_info.tokenA,
+              oraclePrices
+            ) +
+              dollarConvertor(
+                split_info.amountB,
+                split_info.tokenB,
+                oraclePrices
+              ))) /
+            dollarConvertor(
+              loan?.collateralAmountParsed,
+              loan?.collateralMarket.slice(1),
+              oraclePrices
+            )) *
+            marketInfos?.find(
+              (val: any) => val?.token == loan?.collateralMarket.slice(1)
+            )?.exchangeRateRtokenToUnderlying
+        : loan?.spendType == "UNSPENT"
+        ? Number(
+            avgs?.find((item: any) => item?.loanId == loan?.loanId)?.avg
+          ) + ((getBoostedAprSupply(loan?.collateralMarket.slice(1),strkData,oraclePrices)))
+        : loan?.spendType == "SWAP" ? Number(
+            avgs?.find((item: any) => item?.loanId == loan?.loanId)?.avg
+          ) +
+          ((getBoostedAprSupply(loan?.collateralMarket.slice(1),strkData,oraclePrices))) +
+          (((getBoostedApr(loan?.loanMarket.slice(1),strkData,oraclePrices,netSpendBalance)*dollarConvertor(
+            loan?.loanAmountParsed,
+            loan?.loanMarket.slice(1),
+            oraclePrices
+          )) *
+          market_info?.exchangeRateDTokenToUnderlying/dollarConvertor(
+            loan?.collateralAmountParsed,
+            loan?.collateralMarket.slice(1),
+            oraclePrices
+          )) *
+          marketInfos?.find(
+            (val: any) => val?.token == loan?.collateralMarket.slice(1)
+          )?.exchangeRateRtokenToUnderlying):0;
+          let data={
+            loanId:loan?.loanId,
+            apr:aprs
+          }
+          effectiveaprs.push(data)
+          netApr = netApr + ((aprs*dollarConvertor(
+            loan?.collateralAmountParsed,
+            loan?.collateralMarket.slice(1),
+            oraclePrices
+          )) *
+          marketInfos?.find(
+            (val: any) => val?.token == loan?.collateralMarket.slice(1)
+          )?.exchangeRateRtokenToUnderlying);
+        }
+      }
+  return {
+    netApr:(netApr/totalBorrowCollateral).toFixed(2),
+    effectiveAprs:effectiveaprs
+  };
 }
 export async function getNetApr(
   deposits: IDeposit[],
   loans: ILoan[],
   oraclePrices: OraclePrice[],
   marketInfos: IMarketInfo[],
-  strkData:any
+  strkData:any,
+  borrowEffectiveAprs:any
 ) {
   let totalSupply = 0,
     netSupplyInterest = 0;
@@ -256,45 +458,51 @@ export async function getNetApr(
       (market_info) => market_info?.tokenAddress === deposit?.tokenAddress
     );
     if (oraclePrice && market_info && strkData) {
-      let depositAmountUsd =
-        deposit.underlyingAssetAmountParsed * oraclePrice.price;
-      totalSupply += depositAmountUsd;
-      netSupplyInterest += depositAmountUsd * (market_info.supplyRate+getBoostedApr(deposit?.token,strkData,oraclePrices));
+      let depositAmountNotLockedUsd =
+        (deposit.rTokenFreeParsed+deposit.rTokenStakedParsed) * oraclePrice.price;
+      totalSupply += depositAmountNotLockedUsd;
+      netSupplyInterest += depositAmountNotLockedUsd * (market_info.supplyRate+getBoostedAprSupply(deposit?.token,strkData,oraclePrices));
     }
   }
 
   let totalBorrow = 0,
-    netBorrowInterest = 0;
+    netBorrowInterest = 0,
+    totalBorrowCollateral=0;
   for (let loan of loans) {
     if (
       loan.loanState === "REPAID" ||
-      loan.loanState === "LIQUIDATED" ||
       loan.loanState === null
-    )
+      )
       continue;
-
     const oraclePrice = oraclePrices.find(
-      (oraclePrice) => oraclePrice.address === loan.underlyingMarketAddress
+      (oraclePrice) => oraclePrice.name ===   (loan.collateralMarket ?loan.collateralMarket.slice(1):loan.collateralMarket)
     );
     let market_info = marketInfos.find(
-      (marketInfo) => marketInfo.tokenAddress === loan.underlyingMarketAddress
+      (marketInfo) => marketInfo.token=== (loan.collateralMarket ?loan.collateralMarket.slice(1):loan.collateralMarket)
     );
+    let effectiveaprinfo=borrowEffectiveAprs.find(
+      (apr: any)=>apr.loanId===loan.loanId
+    )
     if (oraclePrice && market_info) {
       let loanAmountUnderlying =
         loan.loanAmountParsed * market_info.exchangeRateDTokenToUnderlying;
       let loanAmountUsd = loanAmountUnderlying * oraclePrice.price;
+      let collateralAmountUnderlying=loan.collateralAmountParsed *market_info.exchangeRateRtokenToUnderlying;
+      let collateralAmountUsd=collateralAmountUnderlying* oraclePrice.price;
 
+
+      totalBorrowCollateral+=collateralAmountUsd;
       totalBorrow += loanAmountUsd;
-      netBorrowInterest += loanAmountUsd * market_info.borrowRate;
+      netBorrowInterest += (collateralAmountUsd * effectiveaprinfo.apr);
     }
   }
   let netApr =
-    (netSupplyInterest != 0 && totalSupply != 0
-      ? netSupplyInterest / totalSupply
-      : 0) -
-    (netBorrowInterest != 0 && totalBorrow != 0
-      ? netBorrowInterest / totalBorrow
-      : 0);
+    (((netSupplyInterest != 0 
+      ? netSupplyInterest 
+      : 0) +
+    (netBorrowInterest != 0 
+      ? netBorrowInterest 
+      : 0))/(totalSupply+totalBorrowCollateral));
 
 
   return netApr.toFixed(2);
@@ -347,7 +555,7 @@ export async function effectivAPRLoan(
     let collateralInterest =
       collateralAmountUsd * marketInfoCollateralMarket?.supplyRate;
 
-    let effectiveAPR = (-borrowInterest + collateralInterest) / loanAmountUsd;
+    let effectiveAPR = (-borrowInterest + collateralInterest) / collateralAmountUsd;
     let effectiveAprPool=(-borrowInterest+collateralInterest)/collateralAmountUsd;
     if(loan?.spendType=="LIQUIDITY"){
       return effectiveAprPool?.toFixed(2);

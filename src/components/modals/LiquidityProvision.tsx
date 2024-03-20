@@ -48,6 +48,7 @@ import {
 import {
   selectActiveTransactions,
   selectInputSupplyAmount,
+  selectJedistrkTokenAllocation,
   selectOracleAndFairPrices,
   selectSelectedDapp,
   selectStrkAprData,
@@ -168,7 +169,7 @@ const LiquidityProvisionModal = ({
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
   const [uniqueID, setUniqueID] = useState(0);
-  const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
+  const strkTokenAlloactionData=useSelector(selectJedistrkTokenAllocation)
   const [allocationData, setallocationData] = useState<any>();
   const [poolAllocatedData, setpoolAllocatedData] = useState<any>();
   const getUniqueId = () => uniqueID;
@@ -181,20 +182,6 @@ const LiquidityProvisionModal = ({
   // }, [userLoans]);
   ////console.log(userLoans)
   ////console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
-
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const res = await axios.get(
-          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com//starknet/fetchFile?file=qa_strk_grant.json"
-        );
-        setstrkTokenAlloactionData(res?.data?.Jediswap_v1);
-      };
-      fetchData();
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
 
   useEffect(() => {
     try {
@@ -2044,13 +2031,13 @@ const LiquidityProvisionModal = ({
                   ) : (
                     <Text
                       color={
-                        avgs?.find(
+                        Number(avgs?.find(
                           (item: any) =>
                             item?.loanId ==
                             currentBorrowId
                               .slice(currentBorrowId?.indexOf("-") + 1)
                               ?.trim()
-                        )?.avg < 0
+                        )?.avg)+getBoostedAprSupply(currentCollateralCoin?.slice(1)) < 0
                           ? "rgb(255 94 94)"
                           : "#00D395"
                       }
@@ -2065,13 +2052,13 @@ const LiquidityProvisionModal = ({
                             .slice(currentBorrowId?.indexOf("-") + 1)
                             ?.trim()
                       )?.avg
-                        ? avgs?.find(
+                        ? numberFormatterPercentage(Number(avgs?.find(
                             (item: any) =>
                               item?.loanId ==
                               currentBorrowId
                                 .slice(currentBorrowId?.indexOf("-") + 1)
                                 ?.trim()
-                          )?.avg
+                          )?.avg)+ getBoostedAprSupply(currentCollateralCoin?.slice(1)))
                         : "3.2"}
                       %
                     </Text>

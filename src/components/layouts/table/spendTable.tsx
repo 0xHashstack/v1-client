@@ -32,6 +32,7 @@ import TableInfoIcon from "./tableIcons/infoIcon";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectStrkAprData,
   selectUserUnspentLoans,
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
@@ -66,6 +67,7 @@ import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import LowhealthFactor from "@/assets/icons/lowhealthFactor";
 import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -216,7 +218,31 @@ const SpendTable = () => {
   const avgs = useSelector(selectEffectiveApr);
   const avgsLoneHealth = useSelector(selectHealthFactor);
   const [ltv, setLtv] = useState<any>([]);
-
+  const strkData = useSelector(selectStrkAprData);
+  const getBoostedAprSupply = (coin: any) => {
+    if (strkData == null) {
+      return 0;
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
+          return 0;
+        } else {
+          let value = strkData?.[coin]
+            ? (365 *
+                100 *
+                strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
+                0.7 *
+                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  ?.price) /
+              strkData?.[coin][strkData[coin].length - 1]?.supply_usd
+            : 0;
+          return value;
+        }
+      } else {
+        return 0;
+      }
+    }
+  };
   // useEffect(() => {
   //   const fetchAprs = async () => {
   //     if (avgs?.length == 0) {
@@ -337,48 +363,19 @@ const SpendTable = () => {
 
   return (
     <>
-      {showWarning && (
-        <Box display="flex" justifyContent="left" w="94%" pb="2">
-          <Box
-            display="flex"
-            bg="#222766"
-            fontSize="14px"
-            p="4"
-            fontStyle="normal"
-            fontWeight="400"
-            border="1px solid #3841AA"
-            borderRadius="6px"
-            // textAlign="center"
-            color="#F0F0F5"
-          >
-            <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
-              <TableInfoIcon />
-            </Box>
-            Only unspent loans are displayed here. For comprehensive list of
-            active loans go to
-            <Link
-              href="/v1/your-borrow"
-              onClick={() => {
-                dispatch(setCurrentPage("your borrow"));
-                localStorage.setItem("currentPage", "your borrow");
-              }}
-            >
-              <Box
-                ml="1"
-                as="span"
-                textDecoration="underline"
-                color="#4D59E8"
-                cursor="pointer"
-              >
-                your borrow
-              </Box>
-            </Link>
-            <Box py="1" pl="4" cursor="pointer" onClick={handleClick}>
-              <TableClose />
-            </Box>
-          </Box>
-        </Box>
-      )}
+        <Box
+        display="flex"
+        justifyContent="left"
+        w="94%"
+        mt="0.5rem"
+        mb="0.8rem"
+        color="#F0F0F5"
+        // opacity="0.9"
+        fontSize="sm"
+      >
+        You can find all your unspent borrowings from here. Select a borrowing
+        from the table row below to start spending them on a dapp.
+      </Box>
       {loading ? (
         <Box
           border="1px"
@@ -583,9 +580,9 @@ const SpendTable = () => {
                           {avgs?.find(
                             (item: any) => item?.loanId == borrow?.loanId
                           )?.avg
-                            ? avgs?.find(
+                            ? numberFormatterPercentage(Number(avgs?.find(
                                 (item: any) => item?.loanId == borrow?.loanId
-                              )?.avg
+                              )?.avg)+getBoostedAprSupply(borrow?.collateralMarket.slice(1)))
                             : "3.2"}
                           %
                         </Td>
@@ -901,6 +898,7 @@ const SpendTable = () => {
                       setCurrentSwap={setCurrentSwap}
                       borrowAPRs={borrowAPRs}
                       collateralMarket={collateralCoin}
+                      borrow={currentBorrowData}
                     />
                   </Box>
                 </TabPanel>

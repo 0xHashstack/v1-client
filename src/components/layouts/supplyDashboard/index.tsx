@@ -213,7 +213,7 @@ const SupplyDashboard = ({
         ////console.log(reduxProtocolStats,"supply stats")
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
-            if(supply[i].token!="USDC"){
+            if (supply[i].token != "USDC") {
               const avg = await effectiveAprDeposit(
                 supply[i],
                 reduxProtocolStats
@@ -226,16 +226,15 @@ const SupplyDashboard = ({
               // avgs.push(data)
               avgsData.push(data);
               // avgs.push()
-            }      
-            else{
-              if(supply[i].rTokenAmountParsed<= 0.000005){
+            } else {
+              if (supply[i].rTokenAmountParsed <= 0.000005) {
                 continue;
-              }else{
+              } else {
                 const avg = await effectiveAprDeposit(
                   supply[i],
                   reduxProtocolStats
                 );
-                console.log(avg,supply[i],"data")
+                console.log(avg, supply[i], "data");
                 ////console.log(avg, "avg in supply dash");
                 const data = {
                   token: supply[i].token,
@@ -247,7 +246,7 @@ const SupplyDashboard = ({
             }
           }
           setAvgs(avgsData);
-      }
+        }
         ////console.log(avgs, "avgs in supply");
 
         // dispatch(setUserDeposits(supply));
@@ -298,20 +297,20 @@ const SupplyDashboard = ({
         ////console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
         setProtocolStats([
+          stats?.[5],
           stats?.[2],
           stats?.[3],
-          stats?.[0],
           stats?.[1],
+          stats?.[0],
           stats?.[4],
-          stats?.[5],
         ]);
         setSupplyAPRs([
+          stats?.[5].supplyRate,
           stats?.[2].supplyRate,
           stats?.[3].supplyRate,
-          stats?.[0].supplyRate,
           stats?.[1].supplyRate,
+          stats?.[0].supplyRate,
           stats?.[4].supplyRate,
-          stats?.[5].supplyRate,
         ]);
       } catch (error) {
         //console.log("error on getting protocol stats");
@@ -357,7 +356,7 @@ const SupplyDashboard = ({
       ////console.log("supply in supply dash: ", supply);
       if (!supply) return;
       let data: any = [];
-      let indexes: any = [2, 3, 0, 1, 4, 5];
+      let indexes: any = [5,2, 3, 1,0,4];
 
       indexes.forEach((index: number) => {
         if (
@@ -393,7 +392,7 @@ const SupplyDashboard = ({
     " Annualised interest rate depending on the staked, unstaked and locked supply quantities .",
     "Track the borrowed amount's progress and key details within the protocol.",
   ];
-  
+
   return loading ? (
     <>
       <Box
@@ -667,63 +666,8 @@ const SupplyDashboard = ({
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                        color="#00D395"
+                        paddingLeft="1.5"
                       >
-                        <Tooltip
-                          hasArrow
-                          arrowShadowColor="#2B2F35"
-                          placement="bottom"
-                          boxShadow="dark-lg"
-                          label={
-                            <Box>
-                              <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                gap={10}
-                              >
-                                <Text>APR</Text>
-                                <Text>
-                                  {numberFormatterPercentage(
-                                    supplyAPRs[idx] +
-                                      getBoostedApr(supply?.rToken?.slice(1))
-                                  )}
-                                  %
-                                </Text>
-                              </Box>
-                              <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                gap={10}
-                              >
-                                <Text>Supply APR</Text>
-                                <Text>
-                                  {numberFormatterPercentage(supplyAPRs[idx])}%
-                                </Text>
-                              </Box>
-                              <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                gap={10}
-                              >
-                                <Text>STRK APR</Text>
-                                <Text>
-                                  {numberFormatterPercentage(
-                                    getBoostedApr(supply?.rToken?.slice(1))
-                                  )}
-                                  %
-                                </Text>
-                              </Box>
-                            </Box>
-                          }
-                          bg="#02010F"
-                          fontSize={"13px"}
-                          fontWeight={"400"}
-                          borderRadius={"lg"}
-                          padding={"2"}
-                          color="#F0F0F5"
-                          border="1px solid"
-                          borderColor="#23233D"
-                        >
                           {/* {checkGap(idx1, idx2)} */}
                           {!protocolStats || !protocolStats[idx] ? (
                             <Skeleton
@@ -738,14 +682,9 @@ const SupplyDashboard = ({
                               protocolStats.find((stat: any) => {
                                 if (stat?.token === supply?.rToken?.slice(1))
                                   return stat;
-                              })?.supplyRate +
-                                getBoostedApr(supply?.rToken?.slice(1))
+                              })?.supplyRate                                
                             )?.toFixed(3) + "%"
                           )}
-                        </Tooltip>
-                        <Box ml="0.4rem">
-                          <FireIcon />
-                        </Box>
                       </Box>
                     </Td>
 
@@ -764,7 +703,95 @@ const SupplyDashboard = ({
                         alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
+                        color="#00D395"
                       >
+                                                <Tooltip
+                          hasArrow
+                          arrowShadowColor="#2B2F35"
+                          placement="bottom"
+                          boxShadow="dark-lg"
+                          label={
+                            <Box>
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                gap={10}
+                              >
+                                <Text>Supply APR</Text>
+                                <Text>
+                                  {Number(
+                                      protocolStats.find((stat: any) => {
+                                        if (stat?.token === supply?.rToken?.slice(1))
+                                          return stat;
+                                      })?.supplyRate                                
+                                    )?.toFixed(3)}%
+                                </Text>
+                              </Box>
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                gap={10}
+                                mb="2"
+                              >
+                                <Text>STRK APR</Text>
+                                <Text>
+                                  {numberFormatterPercentage(
+                                    getBoostedApr(supply?.rToken?.slice(1))
+                                  )}
+                                  %
+                                </Text>
+                              </Box>
+                              <hr/>
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                gap={10}
+                                mt="2"
+                              >
+                                <Text>Effective APR:</Text>
+                                <Text>
+                                  {numberFormatterPercentage(
+                                    Number(
+                                      avgs?.find(
+                                        (item: any) => item?.token == supply?.token
+                                      )?.avg
+                                    ) + getBoostedApr(supply?.rToken?.slice(1))
+                                  )}
+                                  %
+                                </Text>
+                              </Box>
+                            </Box>
+                          }
+                          bg="#02010F"
+                          fontSize={"13px"}
+                          fontWeight={"400"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                          color="#F0F0F5"
+                          border="1px solid"
+                          borderColor="#23233D"
+                        >
+                          {avgs && avgs?.length > 0 ? (
+                            numberFormatterPercentage(
+                              Number(
+                                avgs?.find(
+                                  (item: any) => item?.token == supply?.token
+                                )?.avg
+                              ) + getBoostedApr(supply?.rToken?.slice(1))
+                            ) + "%"
+                          ) : (
+                            <Skeleton
+                              width="4rem"
+                              height="1.4rem"
+                              startColor="#101216"
+                              endColor="#2B2F35"
+                              borderRadius="6px"
+                            />
+                          )}
+                        </Tooltip>
+                        <Box ml="0.4rem">
+                          <FireIcon />
+                        </Box>
                         {/* {checkGap(idx1, idx2)} */}
                         {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
                         {/* {avgs[2]} */}
@@ -775,23 +802,7 @@ const SupplyDashboard = ({
                             endColor="#2B2F35"
                             borderRadius="6px"
                           />: */}
-                        {avgs && avgs?.length > 0 ? (
-                          numberFormatterPercentage(
-                            Number(
-                              avgs?.find(
-                                (item: any) => item?.token == supply?.token
-                              )?.avg
-                            ) + getBoostedApr(supply?.rToken?.slice(1))
-                          ) + "%"
-                        ) : (
-                          <Skeleton
-                            width="4rem"
-                            height="1.4rem"
-                            startColor="#101216"
-                            endColor="#2B2F35"
-                            borderRadius="6px"
-                          />
-                        )}
+
                         {/* {supply?.token} */}
                       </Text>
                     </Td>

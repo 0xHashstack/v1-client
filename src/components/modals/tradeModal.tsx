@@ -61,6 +61,7 @@ import {
 import {
   selectActiveTransactions,
   selectAssetWalletBalance,
+  selectJedistrkTokenAllocation,
   selectStrkAprData,
   selectWalletBalance,
   selectnetSpendBalance,
@@ -628,10 +629,10 @@ const TradeModal = ({
   const router = useRouter();
   const { pathname } = router;
   useEffect(() => {
-    if(pathname=="/v1/strk-rewards"){
+    if (pathname == "/v1/strk-rewards") {
       // setLoanMarket(coin ? coin.name : "BTC");
-      // setCollateralMarket(coin ? coin.name : "BTC");      
-    }else{
+      // setCollateralMarket(coin ? coin.name : "BTC");
+    } else {
       setLoanMarket(coin ? coin.name : "BTC");
       setCollateralMarket(coin ? coin.name : "BTC");
     }
@@ -1044,7 +1045,7 @@ const TradeModal = ({
       for (let token in strkData) {
         if (strkData.hasOwnProperty(token)) {
           const array = strkData[token];
-          const lastObject = array[array.length - 1]; 
+          const lastObject = array[array.length - 1];
           netallocation += 0.3 * lastObject.allocation;
         }
       }
@@ -1250,23 +1251,11 @@ const TradeModal = ({
     currentDapp,
   ]);
 
-  const [strkTokenAlloactionData, setstrkTokenAlloactionData] = useState<any>();
+  const strkTokenAlloactionData: any = useSelector(
+    selectJedistrkTokenAllocation
+  );
   const [allocationData, setallocationData] = useState<any>();
   const [poolAllocatedData, setpoolAllocatedData] = useState<any>();
-
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const res = await axios.get(
-          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_strk_grant.json"
-        );
-        setstrkTokenAlloactionData(res?.data?.Jediswap_v1);
-      };
-      fetchData();
-    } catch (err) {
-      console.log(err,"err in fetching");
-    }
-  }, []);
 
   useEffect(() => {
     try {
@@ -1277,7 +1266,7 @@ const TradeModal = ({
       }
     } catch (err) {
       // console.log("hi");
-      console.log(err,"err in allocating");
+      console.log(err, "err in allocating");
     }
   }, [strkTokenAlloactionData, currentPool]);
 
@@ -1415,6 +1404,7 @@ const TradeModal = ({
         return 0;
       }
     } catch (err) {
+      console.log(err, "er in strk alloc");
       return 0;
     }
   };
@@ -3268,9 +3258,12 @@ const TradeModal = ({
                                 >
                                   <Box
                                     display="flex"
-                                    mt={ index<=2 && currentDapp=="Jediswap" ?"0.2rem":""}
+                                    mt={
+                                      index <= 2 && currentDapp == "Jediswap"
+                                        ? "0.2rem"
+                                        : ""
+                                    }
                                   >
-                                    
                                     <Box p="1">{getCoin(pool)}</Box>
                                     <Tooltip
                                       hasArrow
@@ -3320,7 +3313,12 @@ const TradeModal = ({
                                       {(index <= 2 && currentDapp == "Jediswap") ? "✨" : ""}
                                     </Text> */}
                                   </Box>
-                                  <Box display="flex" flexDirection="column" justifyContent="center" alignItems="flex-end">
+                                  <Box
+                                    display="flex"
+                                    flexDirection="column"
+                                    justifyContent="center"
+                                    alignItems="flex-end"
+                                  >
                                     <Box
                                       fontSize="10px"
                                       color="#B1B0B5"
@@ -3904,22 +3902,21 @@ const TradeModal = ({
                             <Text
                               color={
                                 Number(
-                                  (-(
-                                    inputBorrowAmountUSD *
-                                    protocolStats?.find(
+                                  (inputBorrowAmountUSD *
+                                    (-protocolStats?.find(
                                       (stat: any) =>
                                         stat?.token === currentBorrowCoin
-                                    )?.borrowRate
-                                  ) +
+                                    )?.borrowRate +
+                                      getBoostedApr(currentBorrowCoin)) +
                                     inputCollateralAmountUSD *
-                                      protocolStats?.find(
+                                      (protocolStats?.find(
                                         (stat: any) =>
                                           stat?.token === currentCollateralCoin
-                                      )?.supplyRate) /
-                                    inputBorrowAmountUSD +
-                                    getBoostedApr(currentBorrowCoin) +
-                                    getBoostedAprSupply(currentCollateralCoin) /
-                                      inputBorrowAmountUSD
+                                      )?.supplyRate +
+                                        getBoostedAprSupply(
+                                          currentCollateralCoin
+                                        ))) /
+                                    inputCollateralAmountUSD
                                 ) < 0
                                   ? "rgb(255 94 94)"
                                   : "#00D395"
@@ -3934,22 +3931,21 @@ const TradeModal = ({
                           )?.supplyRate
                         } */}
                               {Number(
-                                (-(
-                                  inputBorrowAmountUSD *
-                                  protocolStats?.find(
+                                (inputBorrowAmountUSD *
+                                  (-protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentBorrowCoin
-                                  )?.borrowRate
-                                ) +
+                                  )?.borrowRate +
+                                    getBoostedApr(currentBorrowCoin)) +
                                   inputCollateralAmountUSD *
-                                    protocolStats?.find(
+                                    (protocolStats?.find(
                                       (stat: any) =>
                                         stat?.token === currentCollateralCoin
-                                    )?.supplyRate) /
-                                  inputBorrowAmountUSD +
-                                  getBoostedApr(currentBorrowCoin) +
-                                  getBoostedAprSupply(currentCollateralCoin) /
-                                    inputBorrowAmountUSD
+                                    )?.supplyRate +
+                                      getBoostedAprSupply(
+                                        currentCollateralCoin
+                                      ))) /
+                                  inputCollateralAmountUSD
                               ).toFixed(2)}
                               %
                             </Text>
@@ -3966,13 +3962,28 @@ const TradeModal = ({
                                         poolAprs,
                                         currentPool,
                                         currentDapp
-                                      )+getBoostedApr(currentBorrowCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
-                                    (inputCollateralAmountUSD *
-                                    (protocolStats?.find(
-                                      (stat: any) =>
-                                        stat?.token === currentCollateralCoin
-                                    )?.supplyRate+getBoostedAprSupply(currentCollateralCoin)))) /
-                                  inputCollateralAmountUSD
+                                      ) +
+                                      getBoostedApr(currentBorrowCoin) +
+                                      (100 *
+                                        365 *
+                                        (poolAllocatedData *
+                                          oraclePrices.find(
+                                            (curr: any) => curr.name === "STRK"
+                                          )?.price)) /
+                                        getTvlByPool(
+                                          poolAprs,
+                                          currentPool,
+                                          currentDapp
+                                        )) +
+                                    inputCollateralAmountUSD *
+                                      (protocolStats?.find(
+                                        (stat: any) =>
+                                          stat?.token === currentCollateralCoin
+                                      )?.supplyRate +
+                                        getBoostedAprSupply(
+                                          currentCollateralCoin
+                                        ))) /
+                                    inputCollateralAmountUSD
                                 ) < 0
                                   ? "rgb(255 94 94)"
                                   : "rgb(3 211 148)"
@@ -3997,13 +4008,28 @@ const TradeModal = ({
                                       poolAprs,
                                       currentPool,
                                       currentDapp
-                                    )+getBoostedApr(currentBorrowCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                                    ) +
+                                    getBoostedApr(currentBorrowCoin) +
+                                    (100 *
+                                      365 *
+                                      (poolAllocatedData *
+                                        oraclePrices.find(
+                                          (curr: any) => curr.name === "STRK"
+                                        )?.price)) /
+                                      getTvlByPool(
+                                        poolAprs,
+                                        currentPool,
+                                        currentDapp
+                                      )) +
                                   (inputCollateralAmountUSD *
-                                  (protocolStats?.find(
-                                    (stat: any) =>
-                                      stat?.token === currentCollateralCoin
-                                  )?.supplyRate)+getBoostedAprSupply(currentCollateralCoin)) )/
-                                inputCollateralAmountUSD
+                                    protocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token === currentCollateralCoin
+                                    )?.supplyRate +
+                                    getBoostedAprSupply(
+                                      currentCollateralCoin
+                                    ))) /
+                                  inputCollateralAmountUSD
                               ).toFixed(2)}
                               %
                             </Text>
@@ -4026,22 +4052,21 @@ const TradeModal = ({
                           <Text
                             color={
                               Number(
-                                (-(
-                                  inputBorrowAmountUSD *
-                                  protocolStats?.find(
+                                (inputBorrowAmountUSD *
+                                  (-protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === currentBorrowCoin
-                                  )?.borrowRate
-                                ) +
+                                  )?.borrowRate +
+                                    getBoostedApr(currentBorrowCoin)) +
                                   inputCollateralAmountUSD *
-                                    protocolStats?.find(
+                                    (protocolStats?.find(
                                       (stat: any) =>
                                         stat?.token === rToken.slice(1)
-                                    )?.supplyRate) /
-                                  inputBorrowAmountUSD +
-                                  getBoostedApr(currentBorrowCoin) +
-                                  getBoostedAprSupply(currentCollateralCoin) /
-                                    inputBorrowAmountUSD
+                                    )?.supplyRate +
+                                      getBoostedAprSupply(
+                                        currentCollateralCoin
+                                      ))) /
+                                  inputCollateralAmountUSD
                               ) < 0
                                 ? "rgb(255 94 94)"
                                 : "#00D395"
@@ -4050,22 +4075,21 @@ const TradeModal = ({
                             {/* 5.56% */}
                             {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                             {Number(
-                              (-(
-                                inputBorrowAmountUSD *
-                                protocolStats?.find(
+                              (inputBorrowAmountUSD *
+                                (-protocolStats?.find(
                                   (stat: any) =>
                                     stat?.token === currentBorrowCoin
-                                )?.borrowRate
-                              ) +
+                                )?.borrowRate +
+                                  getBoostedApr(currentBorrowCoin)) +
                                 inputCollateralAmountUSD *
-                                  protocolStats?.find(
+                                  (protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === rToken.slice(1)
-                                  )?.supplyRate) /
-                                inputBorrowAmountUSD +
-                                getBoostedApr(currentBorrowCoin) +
-                                getBoostedAprSupply(currentCollateralCoin) /
-                                  inputBorrowAmountUSD
+                                  )?.supplyRate +
+                                    getBoostedAprSupply(
+                                      currentCollateralCoin
+                                    ))) /
+                                inputCollateralAmountUSD
                             ).toFixed(2)}
                             %
                             {/* {
@@ -4073,36 +4097,11 @@ const TradeModal = ({
                               (stat: any) => stat?.token === currentCollateralCoin
                             )?.supplyRate
                           } */}
-                            </Text>
-                          ) : (
-                            <Text
-                              color={
-                                Number(
-                                  (inputBorrowAmountUSD *
-                                    (-protocolStats?.find(
-                                      (stat: any) =>
-                                        stat?.token === currentBorrowCoin
-                                    )?.borrowRate +
-                                      getAprByPool(
-                                        poolAprs,
-                                        currentPool,
-                                        currentDapp
-                                      )+getBoostedApr(currentBorrowCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
-                                    inputCollateralAmountUSD *
-                                    (protocolStats?.find(
-                                      (stat: any) =>
-                                        stat?.token === rToken.slice(1)
-                                    )?.supplyRate+getBoostedAprSupply(rToken.slice(1)))) /
-                                  inputCollateralAmountUSD
-                                ) < 0
-                                  ? "rgb(255 94 94)"
-                                  : "#00D395"
-                              }
-                            >
-                              {/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp)) */}
-                              {/* 5.56% */}
-                              {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                              {Number(
+                          </Text>
+                        ) : (
+                          <Text
+                            color={
+                              Number(
                                 (inputBorrowAmountUSD *
                                   (-protocolStats?.find(
                                     (stat: any) =>
@@ -4112,12 +4111,63 @@ const TradeModal = ({
                                       poolAprs,
                                       currentPool,
                                       currentDapp
-                                    )+getBoostedApr(currentBorrowCoin)+(100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp))) +
+                                    ) +
+                                    getBoostedApr(currentBorrowCoin) +
+                                    (100 *
+                                      365 *
+                                      (poolAllocatedData *
+                                        oraclePrices.find(
+                                          (curr: any) => curr.name === "STRK"
+                                        )?.price)) /
+                                      getTvlByPool(
+                                        poolAprs,
+                                        currentPool,
+                                        currentDapp
+                                      )) +
                                   inputCollateralAmountUSD *
+                                    (protocolStats?.find(
+                                      (stat: any) =>
+                                        stat?.token === rToken.slice(1)
+                                    )?.supplyRate +
+                                      getBoostedAprSupply(rToken.slice(1)))) /
+                                  inputCollateralAmountUSD
+                              ) < 0
+                                ? "rgb(255 94 94)"
+                                : "#00D395"
+                            }
+                          >
+                            {/* (100*365*(poolAllocatedData*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price))/getTvlByPool(poolAprs, currentPool, currentDapp)) */}
+                            {/* 5.56% */}
+                            {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                            {Number(
+                              (inputBorrowAmountUSD *
+                                (-protocolStats?.find(
+                                  (stat: any) =>
+                                    stat?.token === currentBorrowCoin
+                                )?.borrowRate +
+                                  getAprByPool(
+                                    poolAprs,
+                                    currentPool,
+                                    currentDapp
+                                  ) +
+                                  getBoostedApr(currentBorrowCoin) +
+                                  (100 *
+                                    365 *
+                                    (poolAllocatedData *
+                                      oraclePrices.find(
+                                        (curr: any) => curr.name === "STRK"
+                                      )?.price)) /
+                                    getTvlByPool(
+                                      poolAprs,
+                                      currentPool,
+                                      currentDapp
+                                    )) +
+                                inputCollateralAmountUSD *
                                   (protocolStats?.find(
                                     (stat: any) =>
                                       stat?.token === rToken.slice(1)
-                                  )?.supplyRate+getBoostedAprSupply(rToken.slice(1)))) /
+                                  )?.supplyRate +
+                                    getBoostedAprSupply(rToken.slice(1)))) /
                                 inputCollateralAmountUSD
                             ).toFixed(2)}
                             %

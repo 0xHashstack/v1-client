@@ -2,7 +2,7 @@ import BorrowDashboard from "@/components/layouts/borrowDashboard";
 import MarketDashboard from "@/components/layouts/marketDashboard";
 import NavButtons from "@/components/layouts/navButtons";
 import Navbar from "@/components/layouts/navbar/Navbar";
-import { Stack, Tooltip } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import StatsBoard from "@/components/layouts/statsBoard";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import Pagination from "@/components/uiElements/pagination";
@@ -20,33 +20,100 @@ import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { Skeleton } from "@chakra-ui/react";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
-const YourBorrow = () => {
+import DegenDashboard from "@/components/layouts/degenDashboard";
+const Degen = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [
-    "Borrow ID",
-    "Borrowed",
-    "Borrow APR",
-    "Effective APR",
+    "Strategy name",
+    "Type",
+    "Target Protocol",
     "Collateral",
-    "Spend status",
-    "Current ROE",
-    "Health Factor",
+    "Max leverage",
+    "Max APR",
     "",
   ];
 
   const dispatch = useDispatch();
   const { account, address } = useAccount();
   useDataLoader();
+
+  const data=[
+    {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"USDT",
+    maxLeverage:3,
+    maxApr:18,
+    actionType:"Swap"
+  },
+  {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"USDC",
+    maxLeverage:3,
+    maxApr:18,
+    actionType:"Liquidity provision"
+  },
+  {
+    protocol:"Myswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"DAI",
+    maxLeverage:3,
+    maxApr:18,
+    actionType:"Swap"
+  },
+  {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"BTC",
+    maxLeverage:3,
+    maxApr:18,
+    actionType:"Swap"
+  },
+  {
+    protocol:"Myswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"ETH",
+    maxLeverage:3,
+    maxApr:18,
+    actionType:"Swap"
+  },
+  {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"STRK",
+    maxLeverage:3,
+    maxApr:18,
+    actionType:"Swap"
+  },
+  {
+    protocol:"Myswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"USDT",
+    maxLeverage:3,
+    maxApr:18,
+    actionType:"Swap"
+  },
+  {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"USDT",
+    maxLeverage:3,
+    maxApr:18,
+    actionType:"Swap"
+  },
+  
+]
   const UserLoans = useSelector(selectUserLoans);
   useEffect(() => {
-    if (UserLoans) {
-      if (UserLoans?.length <= (currentPagination - 1) * 6) {
+    if (data) {
+      if (data?.length <= (currentPagination - 1) * 6) {
         if (currentPagination > 1) {
           setCurrentPagination(currentPagination - 1);
         }
       }
     }
-  }, [UserLoans]);
+  }, [data]);
 
   // useEffect(() => {
   //   const loan = async () => {
@@ -88,8 +155,6 @@ const YourBorrow = () => {
   //     loan();
   //   }
   // }, [account, UserLoans]);
-  const totalBorrow = useSelector(selectYourBorrow);
-  const netAPR = useSelector(selectnetAprLoans);
 
   return (
     <PageCard pt="6.5rem">
@@ -112,104 +177,39 @@ const YourBorrow = () => {
           justifyContent="space-between"
         > */}
         <NavButtons width={70} marginBottom={"0rem"} />
-        <HStack
-          width="13.5rem"
-          display="flex"
-          justifyContent="space-between"
-          alignItems="flex-end"
-          // bgColor="blue"
-        >
-          <VStack
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            gap={"3px"}
-          >
-            <Text color="#6e7681" fontSize="14px" alignItems="center">
-              Total Borrow
-            </Text>
-            {totalBorrow == null ? (
-              <Skeleton
-                width="6rem"
-                height="1.9rem"
-                startColor="#101216"
-                endColor="#2B2F35"
-                borderRadius="6px"
-              />
-            ) : (
-              <Text color="#e6edf3" fontSize="20px">
-                {totalBorrow ? `$${numberFormatter(totalBorrow)}` : "NA"}
-              </Text>
-            )}
-          </VStack>
-          <VStack gap={"3px"}>
-          <Tooltip
-                      hasArrow
-                      arrowShadowColor="#2B2F35"
-                      placement="bottom"
-                      boxShadow="dark-lg"
-                      label={" Net APR on your borrow is calculated based on the effective APR of each assets, and the collateral amount."}
-                      bg="#02010F"
-                      fontSize={"13px"}
-                      fontWeight={"400"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                      color="#F0F0F5"
-                      border="1px solid"
-                      borderColor="#23233D"
-                    >
-            <Text color="#6e7681" fontSize="14px" alignItems="center">
-              Net APR
-            </Text>
-                    </Tooltip>
-              {netAPR == null ? (
-                <Skeleton
-                  width="6rem"
-                  height="1.9rem"
-                  startColor="#101216"
-                  endColor="#2B2F35"
-                  borderRadius="6px"
-                />
-              ) : (
-                <Text color={Number(netAPR)<0 ?"rgb(255 94 94)": Number(netAPR)==0 ?"white":"#00D395"} fontSize="20px">
-                  {netAPR && !Number.isNaN(netAPR) ? `${netAPR}%` : "NA"}
-                </Text>
-              )}
-          </VStack>
-        </HStack>
         {/* </Box> */}
       </HStack>
-      <BorrowDashboard
+      {/* <DegenDashboard
         width={"95%"}
         currentPagination={currentPagination}
         setCurrentPagination={setCurrentPagination}
         Coins={Coins}
         columnItems={columnItems}
-        Borrows={UserLoans}
-        userLoans={UserLoans}
-      />
+        Borrows={data}
+        userLoans={data}
+      />       */}
       <Box
-        paddingY="1rem"
-        // height="2rem"
-        // bgColor={"blue"}
-        width="95%"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Box>
-          <Pagination
-            currentPagination={currentPagination}
-            setCurrentPagination={(x: any) => setCurrentPagination(x)}
-            max={UserLoans?.length || 0}
-            rows={6}
-          />
-        </Box>
-        {/* <LatestSyncedBlock width="16rem" height="100%" block={83207} /> */}
+      paddingY="1rem"
+      // height="2rem"
+      // bgColor={"blue"}
+      width="95%"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      <Box>
+        <Pagination
+          currentPagination={currentPagination}
+          setCurrentPagination={(x: any) => setCurrentPagination(x)}
+          max={data?.length || 0}
+          rows={6}
+        />
       </Box>
+      {/* <LatestSyncedBlock width="16rem" height="100%" block={83207} /> */}
+    </Box>
       {/* <SupplyModal /> */}
     </PageCard>
   );
 };
 
-export default YourBorrow;
+export default Degen;

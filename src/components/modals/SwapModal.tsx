@@ -24,6 +24,7 @@ import {
   selectJediSwapPoolsSupported,
   selectMySwapPoolsSupported,
   selectOraclePrices,
+  selectProtocolStats,
   selectUserLoans,
 } from "@/store/slices/readDataSlice";
 import {
@@ -75,6 +76,7 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+import dollarConvertor from "@/utils/functions/dollarConvertor";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -84,7 +86,8 @@ const SwapModal = ({
   currentSwap,
   setCurrentSwap,
   borrowAPRs,
-  collateralMarket
+  collateralMarket,
+  borrow,
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -113,7 +116,8 @@ const SwapModal = ({
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
     useState(currentMarketCoin);
   const [currentBorrowId, setCurrentBorrowId] = useState(currentId);
-  const [currentCollateralCoin, setcurrentCollateralCoin] = useState(collateralMarket)
+  const [currentCollateralCoin, setcurrentCollateralCoin] =
+    useState(collateralMarket);
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
@@ -187,15 +191,15 @@ const SwapModal = ({
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
-  const userLoans=useSelector(selectUserUnspentLoans);
-  useEffect(()=>{
+  const userLoans = useSelector(selectUserUnspentLoans);
+  useEffect(() => {
     const result = userLoans.find(
       (item: any) =>
         item?.loanId ==
         currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
     );
-    setcurrentCollateralCoin(result?.collateralMarket)
-  },[currentBorrowId])
+    setcurrentCollateralCoin(result?.collateralMarket);
+  }, [currentBorrowId]);
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -410,7 +414,7 @@ const SwapModal = ({
   const oraclePrices = useSelector(selectOraclePrices);
   const strkData = useSelector(selectStrkAprData);
   const netSpendBalance = useSelector(selectnetSpendBalance);
-
+  const reduxProtocolStats = useSelector(selectProtocolStats);
   const [netStrkBorrow, setnetStrkBorrow] = useState(0);
 
   useEffect(() => {
@@ -419,7 +423,7 @@ const SwapModal = ({
       for (let token in strkData) {
         if (strkData.hasOwnProperty(token)) {
           const array = strkData[token];
-          const lastObject = array[array.length - 1]; 
+          const lastObject = array[array.length - 1];
           netallocation += 0.3 * lastObject.allocation;
         }
       }
@@ -1352,7 +1356,8 @@ const SwapModal = ({
                     </Box>
                   ) : (
                     numberFormatterPercentage(
-                      getBoostedApr(currentBorrowMarketCoin)+getBoostedAprSupply(currentCollateralCoin?.slice(1))
+                      getBoostedApr(currentBorrowMarketCoin) +
+                        getBoostedAprSupply(currentCollateralCoin?.slice(1))
                     ) + "%"
                   )}
                   {/* 5.56% */}
@@ -1392,13 +1397,13 @@ const SwapModal = ({
                 {currentSelectedCoin == "Select a market" ? (
                   <Text
                     color={
-                      avgs?.find(
+                      Number(avgs?.find(
                         (item: any) =>
                           item?.loanId ==
                           currentBorrowId
                             .slice(currentBorrowId?.indexOf("-") + 1)
                             ?.trim()
-                      )?.avg < 0
+                      )?.avg)+getBoostedAprSupply(currentCollateralCoin?.slice(1)) < 0
                         ? "rgb(255 94 94)"
                         : "#00D395"
                     }
@@ -1413,13 +1418,13 @@ const SwapModal = ({
                           .slice(currentBorrowId?.indexOf("-") + 1)
                           ?.trim()
                     )?.avg
-                      ? avgs?.find(
+                      ? numberFormatterPercentage(Number(avgs?.find(
                           (item: any) =>
                             item?.loanId ==
                             currentBorrowId
                               .slice(currentBorrowId?.indexOf("-") + 1)
                               ?.trim()
-                        )?.avg
+                        )?.avg)+getBoostedAprSupply(currentCollateralCoin?.slice(1)))
                       : "3.2"}
                     %
                   </Text>
@@ -1433,8 +1438,29 @@ const SwapModal = ({
                             currentBorrowId
                               .slice(currentBorrowId?.indexOf("-") + 1)
                               ?.trim()
-                        )?.avg +getBoostedAprSupply(currentCollateralCoin.slice(1)) + getBoostedApr(currentBorrowMarketCoin) 
-                      ) < 0
+                        )?.avg
+                      ) +
+                        getBoostedAprSupply(currentCollateralCoin.slice(1)) +
+                        ((dollarConvertor(
+                          borrow?.loanAmountParsed,
+                          borrow?.loanMarket.slice(1),
+                          oraclePrices
+                        ) *
+                          reduxProtocolStats.find(
+                            (val: any) =>
+                              val?.token == borrow?.loanMarket.slice(1)
+                          )?.exchangeRateDTokenToUnderlying *
+                          getBoostedApr(currentBorrowMarketCoin)) /
+                          dollarConvertor(
+                            borrow?.collateralAmountParsed,
+                            borrow?.collateralMarket.slice(1),
+                            oraclePrices
+                          )) *
+                          reduxProtocolStats.find(
+                            (val: any) =>
+                              val?.token == borrow?.collateralMarket.slice(1)
+                          )?.exchangeRateRtokenToUnderlying <
+                      0
                         ? "rgb(255 94 94)"
                         : "#00D395"
                     }
@@ -1458,7 +1484,30 @@ const SwapModal = ({
                                   .slice(currentBorrowId?.indexOf("-") + 1)
                                   ?.trim()
                             )?.avg
-                          ) + getBoostedApr(currentBorrowMarketCoin) + getBoostedAprSupply(currentCollateralCoin.slice(1))
+                          ) +
+                            getBoostedAprSupply(
+                              currentCollateralCoin.slice(1)
+                            ) +
+                            ((dollarConvertor(
+                              borrow?.loanAmountParsed,
+                              borrow?.loanMarket.slice(1),
+                              oraclePrices
+                            ) *
+                              reduxProtocolStats.find(
+                                (val: any) =>
+                                  val?.token == borrow?.loanMarket.slice(1)
+                              )?.exchangeRateDTokenToUnderlying *
+                              getBoostedApr(currentBorrowMarketCoin)) /
+                              dollarConvertor(
+                                borrow?.collateralAmountParsed,
+                                borrow?.collateralMarket.slice(1),
+                                oraclePrices
+                              )) *
+                              reduxProtocolStats.find(
+                                (val: any) =>
+                                  val?.token ==
+                                  borrow?.collateralMarket.slice(1)
+                              )?.exchangeRateRtokenToUnderlying
                         )
                       : "3.2"}
                     %

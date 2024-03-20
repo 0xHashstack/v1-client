@@ -167,7 +167,6 @@ const SupplyModal = ({
   const [inputAmount, setinputAmount] = useState<number>(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
-  const [stakeCheck, setStakeCheck] = useState(true);
 
   const coinIndex: any = [
     { token: "USDT", idx: 1 },
