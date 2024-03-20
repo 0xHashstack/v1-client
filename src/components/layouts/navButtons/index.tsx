@@ -1,14 +1,23 @@
+import FireIcon from "@/assets/icons/fireIcon";
+import {
+  selectUserDeposits,
+  selectUserLoans,
+  selectUsersFilteredSupply,
+  selectYourBorrow,
+  selectYourSupply,
+  setUsersFilteredSupply,
+} from "@/store/slices/readDataSlice";
 import {
   selectCurrentPage,
+  selectUserUnspentLoans,
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
 import { Box, Button, ButtonGroup, HStack } from "@chakra-ui/react";
+import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { capitalizeWords } from "../../../utils/functions/capitalizeWords";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import FireIcon from "@/assets/icons/fireIcon";
 
 const NavButtons = ({
   width,
@@ -21,12 +30,30 @@ const NavButtons = ({
   const dispatch = useDispatch();
   const currentPage = useSelector(selectCurrentPage);
 
+  const userLoans = useSelector(selectUserLoans);
+  const usersFilteredSupply = useSelector(selectUsersFilteredSupply);
+  const userUnspentLoans = useSelector(selectUserUnspentLoans);
+
+  console.log(usersFilteredSupply, "usersFilteredSupply");
+
   const navOptions = [
-    { path: "v1/market", label: "Market" },
-    { path: "v1/spend-borrow", label: "Spend Borrow" },
-    { path: "v1/your-supply", label: "Your Supply" },
-    { path: "v1/your-borrow", label: "Your Borrow" },
-    { path: "v1/strk-rewards", label: "Farm STRK token" },
+    { path: "v1/market", label: "Market", count: 0 },
+    {
+      path: "v1/spend-borrow",
+      label: "Spend Borrow",
+      count: userUnspentLoans?.length ? userUnspentLoans.length : 0,
+    },
+    {
+      path: "v1/your-supply",
+      label: "Your Supply",
+      count: usersFilteredSupply?.length ? usersFilteredSupply.length : 0,
+    },
+    {
+      path: "v1/your-borrow",
+      label: "Your Borrow",
+      count: userLoans?.length ? userLoans.length : 0,
+    },
+    { path: "v1/strk-rewards", label: "Farm STRK token", count: 0 },
   ];
 
   const router = useRouter();
@@ -38,7 +65,7 @@ const NavButtons = ({
       dispatch(setCurrentPage(storedCurrentPage));
     }
   }, [dispatch]);
-  // const router = useRouter();
+
   const handleButtonClick = (val: string) => {
     dispatch(setCurrentPage(val));
     localStorage.setItem("currentPage", val);
@@ -54,11 +81,7 @@ const NavButtons = ({
     <HStack mb={marginBottom} width={`${width}%`}>
       <ButtonGroup>
         {navOptions.map((option, idx) => (
-          <Box
-            key={idx}
-            onClick={() => handleButtonClick(option.path)}
-            // href={`/${option.path}`}
-          >
+          <Box key={idx} onClick={() => handleButtonClick(option.path)}>
             <Button
               key={idx}
               bg="transparent"
@@ -70,7 +93,13 @@ const NavButtons = ({
               letterSpacing="-0.15px"
               padding="1.125rem 0.4rem"
               margin="2px"
-              color={pathname === `/${option.path}` ? "#ffffff" : option.path==="v1/strk-rewards" ?"#C7CBF6": "#676D9A"}
+              color={
+                pathname === `/${option.path}`
+                  ? "#ffffff"
+                  : option.path === "v1/strk-rewards"
+                  ? "#C7CBF6"
+                  : "#676D9A"
+              }
               borderBottom={
                 pathname === `/${option.path}` ? "2px solid #4D59E8" : ""
               }
@@ -99,7 +128,6 @@ const NavButtons = ({
                     style={{
                       cursor: "pointer",
                     }}
-                    // _hover={{ bg: "transparent", color: "#E6EDF3" }}
                   />
                 </Box>
               )}
@@ -110,11 +138,27 @@ const NavButtons = ({
                     : "back"
                   : getButtonLabel(option.path)
               )}
-              {option.path==="v1/strk-rewards" &&
-              <Box ml="0.5rem">
-                <FireIcon/>
-              </Box>
-              }
+              {option.count > 0 && (
+                <Box
+                  ml=".5rem"
+                  borderRadius="6px"
+                  border="1px solid #34345699"
+                  height="1.4rem"
+                  width="1.4rem"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  fontWeight="light"
+                  fontSize="12px"
+                >
+                  {option.count}
+                </Box>
+              )}
+              {option.path === "v1/strk-rewards" && (
+                <Box ml="0.5rem">
+                  <FireIcon />
+                </Box>
+              )}
             </Button>
           </Box>
         ))}

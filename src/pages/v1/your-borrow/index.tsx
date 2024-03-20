@@ -13,7 +13,11 @@ import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "@starknet-react/core";
-import { selectYourBorrow, selectNetAPR, selectnetAprLoans } from "@/store/slices/readDataSlice";
+import {
+  selectYourBorrow,
+  selectNetAPR,
+  selectnetAprLoans,
+} from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
@@ -155,7 +159,16 @@ const YourBorrow = () => {
                 borderRadius="6px"
               />
             ) : (
-              <Text color={Number(netAPR)<0 ?"rgb(255 94 94)": Number(netAPR)==0 ?"white":"#00D395"} fontSize="20px">
+              <Text
+                color={
+                  Number(netAPR) < 0
+                    ? "rgb(255 94 94)"
+                    : Number(netAPR) == 0
+                    ? "white"
+                    : "#00D395"
+                }
+                fontSize="20px"
+              >
                 {netAPR && !Number.isNaN(netAPR) ? `${netAPR}%` : "NA"}
               </Text>
             )}
