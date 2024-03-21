@@ -13,7 +13,7 @@ import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "@starknet-react/core";
-import { selectYourBorrow, selectNetAPR, selectnetAprLoans } from "@/store/slices/readDataSlice";
+import { selectYourBorrow, selectNetAPR, selectnetAprLoans, selectProtocolStats, selectYourSupply } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
@@ -43,7 +43,7 @@ const Degen = () => {
     stratergy:"USDC-BTC LP BTC+ETH",
     collateralCoin:"USDT",
     maxLeverage:3,
-    maxApr:18,
+    maxApr:28,
     actionType:"Swap"
   },
   {
@@ -59,7 +59,7 @@ const Degen = () => {
     stratergy:"USDC-BTC LP BTC+ETH",
     collateralCoin:"DAI",
     maxLeverage:3,
-    maxApr:18,
+    maxApr:10,
     actionType:"Swap"
   },
   {
@@ -67,7 +67,7 @@ const Degen = () => {
     stratergy:"USDC-BTC LP BTC+ETH",
     collateralCoin:"BTC",
     maxLeverage:3,
-    maxApr:18,
+    maxApr:180,
     actionType:"Swap"
   },
   {
@@ -104,6 +104,10 @@ const Degen = () => {
   },
   
 ]
+const stats = useSelector(selectProtocolStats);
+const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([]);
+const [borrowAPRs, setBorrowAPRs]: any = useState<(undefined | number)[]>([]);
+const totalSupply=useSelector(selectYourSupply);
   const UserLoans = useSelector(selectUserLoans);
   useEffect(() => {
     if (data) {
@@ -114,6 +118,37 @@ const Degen = () => {
       }
     }
   }, [data]);
+
+  useEffect(() => {
+    // fetchOraclePrices();
+    fetchProtocolStats();
+    // fetchProtocolReserves();
+    // fetchUserReserves();
+    // fetchUserLoans();
+  }, [stats]);
+  const fetchProtocolStats = async () => {
+    try {
+      setBorrowAPRs([
+        stats?.[5].borrowRate,
+        stats?.[2].borrowRate,
+        stats?.[3].borrowRate,
+        stats?.[1].borrowRate,
+        stats?.[0].borrowRate,
+        stats?.[4].borrowRate,
+      ]);
+      setSupplyAPRs([
+        stats?.[5].supplyRate,
+        stats?.[2].supplyRate,
+        stats?.[3].supplyRate,
+        stats?.[1].supplyRate,
+        stats?.[0].supplyRate,
+        stats?.[4].supplyRate,
+      ]);
+
+    } catch (error) {
+      ////console.log("error on getting protocol stats");
+    }
+  };
 
   // useEffect(() => {
   //   const loan = async () => {
@@ -179,7 +214,7 @@ const Degen = () => {
         <NavButtons width={70} marginBottom={"0rem"} />
         {/* </Box> */}
       </HStack>
-      {/* <DegenDashboard
+      <DegenDashboard
         width={"95%"}
         currentPagination={currentPagination}
         setCurrentPagination={setCurrentPagination}
@@ -187,7 +222,9 @@ const Degen = () => {
         columnItems={columnItems}
         Borrows={data}
         userLoans={data}
-      />       */}
+        borrowAPRs={borrowAPRs}
+        supplyAPRs={supplyAPRs}
+      />      
       <Box
       paddingY="1rem"
       // height="2rem"
@@ -197,14 +234,16 @@ const Degen = () => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Box>
-        <Pagination
-          currentPagination={currentPagination}
-          setCurrentPagination={(x: any) => setCurrentPagination(x)}
-          max={data?.length || 0}
-          rows={6}
-        />
-      </Box>
+      {totalSupply>=1000 &&
+        <Box>
+          <Pagination
+            currentPagination={currentPagination}
+            setCurrentPagination={(x: any) => setCurrentPagination(x)}
+            max={data?.length || 0}
+            rows={6}
+          />
+        </Box>
+      }
       {/* <LatestSyncedBlock width="16rem" height="100%" block={83207} /> */}
     </Box>
       {/* <SupplyModal /> */}

@@ -1444,7 +1444,7 @@ const useDataLoader = () => {
         });
         try {
           const res2 = await axios.get(
-            "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_lending_strk_grant.json"
+            "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=prod-api/lending/lending_strk_grant.json"
           );
           if (res2?.data) {
             dispatch(setStrkAprData(res2?.data?.Hashstack));
@@ -2449,9 +2449,8 @@ const useDataLoader = () => {
     try {
       const fetchData = async () => {
         const res: any = await axios.get(
-          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_strk_grant.json"
+          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=strk_grant.json"
         );
-        console.log(res?.data, "res in jedi strk");
         if (res?.data) {
           const count = getTransactionCount();
           dispatch(setJedistrkTokenAllocation(res?.data?.Jediswap_v1));
