@@ -2425,17 +2425,11 @@ const useDataLoader = () => {
         const res: any = await axios.get(
           "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=strk_grant.json"
         );
-        // remove all the "\" "\n" from the string before parsing
-        if(res?.data){
-          // const formattedRes = res?.data?.replace(/\\/g, "");
-          // // replace all the NaN value to null in the string before parsing
-          // const newRes = formattedRes?.replace(/NaN/g, '"null"');
-  
-          // const data = newRes && JSON.parse(newRes);
-  
+        console.log(res?.data, "res in jedi strk");
+        if (res?.data) {
           const count = getTransactionCount();
-            dispatch(setJedistrkTokenAllocation(res?.data?.Jediswap_v1));
-            dispatch(setJedistrkTokenAllocationCount(count));
+          dispatch(setJedistrkTokenAllocation(res?.data?.Jediswap_v1));
+          dispatch(setJedistrkTokenAllocationCount(count));
         }
       };
       if (jedistrkTokenAllocationCount < transactionRefresh) {
@@ -2445,60 +2439,6 @@ const useDataLoader = () => {
       console.log(err, "err inf fetching jedi strk");
     }
   }, [transactionRefresh]);
-  // useEffect(() => {
-  //   try {
-  //     const fetchNetApr = async () => {
-  //       ////console.log(getUserDeposits(address),"deposits in pagecard")
-
-  //       // const dataMarket=await getProtocolStats();
-  //       // const dataOraclePrices=await getOraclePrices();
-  //       ////console.log(dataMarket,"data market page")
-  //       ////console.log("user info called - transactionRefresh");
-  //       ////console.log(dataDeposit, "dataDeposit is here");
-  //       ////console.log(dataOraclePrices, "dataOraclePrices is here");
-  //       ////console.log(userLoans, "userLoans is here");
-  //       ////console.log(protocolStats, "protocolStats is here");
-  //       ////console.log(aprsAndHealth, "aprs and health is here");
-  //       if (
-  //         userDepositsCount == transactionRefresh &&
-  //         protocolStatsCount == transactionRefresh &&
-  //         userLoansCount == transactionRefresh &&
-  //         dataOraclePrices &&
-  //         userInfoCount < transactionRefresh
-  //       ) {
-  //        //console.log("user info called inside - transactionRefresh");
-  //         const dataNetApr = await getNetApr(
-  //           dataDeposit,
-  //           userLoans,
-  //           dataOraclePrices,
-  //           protocolStats
-  //         );
-  //        //console.log("netApr", dataNetApr);
-  //         //@ts-ignore
-  //         if (isNaN(dataNetApr)) {
-  //           dispatch(setNetAPR(0));
-  //         } else {
-  //           dispatch(setNetAPR(dataNetApr));
-  //         }
-  //         const count = getTransactionCount();
-  //         dispatch(setNetAprCount(count));
-  //       }
-  //     };
-
-  //    //console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
-  //     if (netAprCount < transactionRefresh) {
-  //       fetchNetApr();
-  //     }
-  //   } catch (err) {
-  //    //console.log(err, "error in user info");
-  //   }
-  // }, [
-  //   dataDeposit,
-  //   userLoans,
-  //   dataOraclePrices,
-  //   protocolStats,
-  //   transactionRefresh,
-  // ]);
 };
 
 export default useDataLoader;
