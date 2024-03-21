@@ -875,7 +875,7 @@ const SupplyModal = ({
               gap="2"
             >
               Supply
-              <Tooltip
+              {/* <Tooltip
                 hasArrow
                 arrowShadowColor="#2B2F35"
                 placement="right"
@@ -904,15 +904,9 @@ const SupplyModal = ({
                     stroke-linejoin="round"
                   />
                 </svg>
-              </Tooltip>
+              </Tooltip> */}
             </ModalHeader>
-            <ModalCloseButton
-              // onClick={() => {
-              //   if (setIsOpenCustom) setIsOpenCustom(false);
-              // }}
-              mt="1rem"
-              mr="1rem"
-            />
+            <ModalCloseButton mt="1rem" mr="1rem" />
             <ModalBody>
               <Card
                 background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
@@ -1511,8 +1505,8 @@ const SupplyModal = ({
               <Box
                 display="flex"
                 gap="2"
-                mb="1.4rem"
-                mt=".5rem"
+                mb="1rem"
+                mt="1rem"
                 alignItems="center"
                 justifyContent="center"
               >
@@ -1527,7 +1521,7 @@ const SupplyModal = ({
                   isChecked={ischecked}
                 />
                 <Text
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight="400"
                   color="#B1B0B5"
                   lineHeight="22px"
