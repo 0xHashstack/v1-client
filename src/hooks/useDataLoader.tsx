@@ -1418,7 +1418,7 @@ const useDataLoader = () => {
         });
         try {
           const res2 = await axios.get(
-            "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_lending_strk_grant.json"
+            "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=prod-api/lending/lending_strk_grant.json"
           );
           if (res2?.data) {
             dispatch(setStrkAprData(res2?.data?.Hashstack));
@@ -2423,19 +2423,19 @@ const useDataLoader = () => {
     try {
       const fetchData = async () => {
         const res: any = await axios.get(
-          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_strk_grant.json"
+          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=strk_grant.json"
         );
         // remove all the "\" "\n" from the string before parsing
-        const formattedRes = res?.data?.replace(/\\/g, "");
-        // replace all the NaN value to null in the string before parsing
-        const newRes = formattedRes?.replace(/NaN/g, '"null"');
-
-        const data = newRes && JSON.parse(newRes);
-
-        const count = getTransactionCount();
-        if (data) {
-          dispatch(setJedistrkTokenAllocation(data?.Jediswap_v1));
-          dispatch(setJedistrkTokenAllocationCount(count));
+        if(res?.data){
+          // const formattedRes = res?.data?.replace(/\\/g, "");
+          // // replace all the NaN value to null in the string before parsing
+          // const newRes = formattedRes?.replace(/NaN/g, '"null"');
+  
+          // const data = newRes && JSON.parse(newRes);
+  
+          const count = getTransactionCount();
+            dispatch(setJedistrkTokenAllocation(res?.data?.Jediswap_v1));
+            dispatch(setJedistrkTokenAllocationCount(count));
         }
       };
       if (jedistrkTokenAllocationCount < transactionRefresh) {
