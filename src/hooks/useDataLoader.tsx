@@ -2425,7 +2425,6 @@ const useDataLoader = () => {
         const res: any = await axios.get(
           "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=strk_grant.json"
         );
-        console.log(res?.data, "res in jedi strk");
         if (res?.data) {
           const count = getTransactionCount();
           dispatch(setJedistrkTokenAllocation(res?.data?.Jediswap_v1));
