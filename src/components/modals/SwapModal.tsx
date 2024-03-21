@@ -41,6 +41,7 @@ import {
   setTransactionStartedAndModalClosed,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
+import dollarConvertor from "@/utils/functions/dollarConvertor";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import {
   Box,
@@ -76,7 +77,6 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
-import dollarConvertor from "@/utils/functions/dollarConvertor";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -491,6 +491,7 @@ const SwapModal = ({
 
   useEffect(() => {
     function findSideForMember(array: any, token: any) {
+      if (!array) return;
       const data: any = [];
       for (const obj of array) {
         const keyvalue = obj.keyvalue;
@@ -1397,13 +1398,17 @@ const SwapModal = ({
                 {currentSelectedCoin == "Select a market" ? (
                   <Text
                     color={
-                      Number(avgs?.find(
-                        (item: any) =>
-                          item?.loanId ==
-                          currentBorrowId
-                            .slice(currentBorrowId?.indexOf("-") + 1)
-                            ?.trim()
-                      )?.avg)+getBoostedAprSupply(currentCollateralCoin?.slice(1)) < 0
+                      Number(
+                        avgs?.find(
+                          (item: any) =>
+                            item?.loanId ==
+                            currentBorrowId
+                              .slice(currentBorrowId?.indexOf("-") + 1)
+                              ?.trim()
+                        )?.avg
+                      ) +
+                        getBoostedAprSupply(currentCollateralCoin?.slice(1)) <
+                      0
                         ? "rgb(255 94 94)"
                         : "#00D395"
                     }
@@ -1418,13 +1423,18 @@ const SwapModal = ({
                           .slice(currentBorrowId?.indexOf("-") + 1)
                           ?.trim()
                     )?.avg
-                      ? numberFormatterPercentage(Number(avgs?.find(
-                          (item: any) =>
-                            item?.loanId ==
-                            currentBorrowId
-                              .slice(currentBorrowId?.indexOf("-") + 1)
-                              ?.trim()
-                        )?.avg)+getBoostedAprSupply(currentCollateralCoin?.slice(1)))
+                      ? numberFormatterPercentage(
+                          Number(
+                            avgs?.find(
+                              (item: any) =>
+                                item?.loanId ==
+                                currentBorrowId
+                                  .slice(currentBorrowId?.indexOf("-") + 1)
+                                  ?.trim()
+                            )?.avg
+                          ) +
+                            getBoostedAprSupply(currentCollateralCoin?.slice(1))
+                        )
                       : "3.2"}
                     %
                   </Text>

@@ -314,7 +314,7 @@ const SupplyModal = ({
 
   // // }
   // const { address: account } = useAccount();
-  const [ischecked, setIsChecked] = useState(true);
+  const [ischecked, setIsChecked] = useState(false);
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
 
@@ -870,8 +870,41 @@ const SupplyModal = ({
               fontWeight="600"
               fontStyle="normal"
               lineHeight="20px"
+              display="flex"
+              alignItems="center"
+              gap="2"
             >
               Supply
+              <Tooltip
+                hasArrow
+                arrowShadowColor="#2B2F35"
+                placement="right"
+                boxShadow="dark-lg"
+                label="Supply the tokens and receive the supply APR. Learn more."
+                bg="#02010F"
+                fontSize={"13px"}
+                fontWeight={"400"}
+                borderRadius={"lg"}
+                padding={"2"}
+                color="#F0F0F5"
+                border="1px solid"
+                borderColor="#23233D"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8.00001 8.00001L8.00001 11.2M8.00001 5.62813V5.60001M1.60001 8.00001C1.60001 4.46538 4.46538 1.60001 8.00001 1.60001C11.5346 1.60001 14.4 4.46538 14.4 8.00001C14.4 11.5346 11.5346 14.4 8.00001 14.4C4.46538 14.4 1.60001 11.5346 1.60001 8.00001Z"
+                    stroke="#CBCBD1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </Tooltip>
             </ModalHeader>
             <ModalCloseButton
               // onClick={() => {
@@ -1061,6 +1094,7 @@ const SupplyModal = ({
                     </Box>
                   )}
                 </Box>
+
                 <Text color="#676D9A" display="flex" alignItems="center">
                   <Text
                     mr="0.3rem"
@@ -1091,6 +1125,7 @@ const SupplyModal = ({
                     </Box>
                   </Tooltip>
                 </Text>
+
                 <Box
                   width="100%"
                   color="white"
@@ -1409,34 +1444,97 @@ const SupplyModal = ({
                   </Slider>
                 </Box>
               </Card>
-              <Box display="flex" gap="2">
+
+              {/* <Box
+                color="#676D9A"
+                display="flex"
+                alignItems="center"
+                mt="1rem"
+              >
+                <Text
+                  mr="0.3rem"
+                  fontSize="12px"
+                  fontStyle="normal"
+                  fontWeight="400"
+                >
+                  You will receive
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="right"
+                  boxShadow="dark-lg"
+                  label="The amount of rTokens you will receive"
+                  bg="#02010F"
+                  fontSize={"13px"}
+                  fontWeight={"400"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                  color="#F0F0F5"
+                  border="1px solid"
+                  borderColor="#23233D"
+                  arrowShadowColor="#2B2F35"
+                >
+                  <Box>
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box> */}
+              {/* You will receive  */}
+              {/* <Box
+                width="100%"
+                color="white"
+                borderRadius="6px"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                px="4"
+                py="1.5"
+                mt="0.3rem"
+                border="1px solid #676D9A4D"
+                backgroundColor="#676D9A4D"
+              >
+                <Box border="0px" color="#676D9A" fontSize="md" opacity="0.8">
+                  {depositAmount *
+                    protocolStats?.find(
+                      (stat: any) =>
+                        stat.token ==
+                        (currentSelectedCoin[0] == "r"
+                          ? currentSelectedCoin.slice(1)
+                          : currentSelectedCoin)
+                    )?.exchangeRateUnderlyingToRtoken}
+                </Box>
+                <Text color="#676D9A" fontSize="md" opacity="0.8">
+                  rUsdt
+                </Text>
+              </Box> */}
+
+              <Box
+                display="flex"
+                gap="2"
+                mb="1.4rem"
+                mt=".5rem"
+                alignItems="center"
+                justifyContent="center"
+              >
                 <Checkbox
                   size="md"
                   colorScheme="customPurple"
-                  defaultChecked
-                  mb="auto"
-                  mt="0.7rem"
                   borderColor="#2B2F35"
                   isDisabled={transactionStarted == true}
-                  // disabledColor="red"
-
-                  // _disabled={{
-                  //   colorScheme:"black",
-                  //   cursor: "pointer",
-                  //   iconColor: "black",
-                  //   bg: "black",
-                  // }}
                   onChange={() => {
                     setIsChecked(!ischecked);
                   }}
+                  isChecked={ischecked}
                 />
                 <Text
-                  fontSize="14px"
+                  fontSize="12px"
                   fontWeight="400"
                   color="#B1B0B5"
-                  mt="0.5rem"
                   lineHeight="22px"
                   width="100%"
+                  onClick={() => setIsChecked(!ischecked)}
+                  cursor="pointer"
+                  userSelect="none"
                 >
                   I would like to stake the rTokens.
                 </Text>
@@ -1789,6 +1887,7 @@ const SupplyModal = ({
                   </Text>
                 )}
               </Card>
+
               {depositAmount > 0 &&
               depositAmount <= walletBalance &&
               ((depositAmount > 0 && depositAmount >= minimumDepositAmount) ||

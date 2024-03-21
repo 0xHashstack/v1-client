@@ -34,8 +34,6 @@ const NavButtons = ({
   const usersFilteredSupply = useSelector(selectUsersFilteredSupply);
   const userUnspentLoans = useSelector(selectUserUnspentLoans);
 
-  console.log(usersFilteredSupply, "usersFilteredSupply");
-
   const navOptions = [
     { path: "v1/market", label: "Market", count: 0 },
     {
@@ -46,7 +44,7 @@ const NavButtons = ({
     {
       path: "v1/your-supply",
       label: "Your Supply",
-      count: usersFilteredSupply?.length ? usersFilteredSupply.length : 0,
+      count: usersFilteredSupply ? usersFilteredSupply : 0,
     },
     {
       path: "v1/your-borrow",
