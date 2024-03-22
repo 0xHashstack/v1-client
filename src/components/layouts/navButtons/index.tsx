@@ -51,6 +51,7 @@ const NavButtons = ({
       label: "Your Borrow",
       count: userLoans?.length ? userLoans.length : 0,
     },
+    // { path: "v1/degen", label: "Degen", count: 0 },
     { path: "v1/strk-rewards", label: "Farm STRK token", count: 0 },
   ];
 
@@ -150,6 +151,16 @@ const NavButtons = ({
                   fontSize="12px"
                 >
                   {option.count}
+                </Box>
+              )}
+                {option.path === "v1/degen" && (
+                <Box ml="0.5rem">
+                          <Image
+                            src={`/new.svg`}
+                            alt={`Picture of the coin that I want to access strk`}
+                            width="36"
+                            height="16"
+                          />
                 </Box>
               )}
               {option.path === "v1/strk-rewards" && (

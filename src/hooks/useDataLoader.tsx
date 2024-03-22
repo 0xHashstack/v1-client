@@ -2451,9 +2451,14 @@ const useDataLoader = () => {
         const res: any = await axios.get(
           "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=strk_grant.json"
         );
-        if (res?.data) {
+        const formattedRes = res?.data?.replace(/\\/g, "");
+        // replace all the NaN value to null in the string before parsing
+        const newRes = formattedRes?.replace(/NaN/g, '"null"');
+
+        const data = newRes && JSON.parse(newRes);
+        if (data) {
           const count = getTransactionCount();
-          dispatch(setJedistrkTokenAllocation(res?.data?.Jediswap_v1));
+          dispatch(setJedistrkTokenAllocation(data?.Jediswap_v1));
           dispatch(setJedistrkTokenAllocationCount(count));
         }
       };

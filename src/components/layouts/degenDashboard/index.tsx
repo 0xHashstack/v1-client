@@ -389,7 +389,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
           </Thead>
           <Tbody position="relative" overflowX="hidden">
             {Borrows?.slice(lower_bound, upper_bound + 1)
-            .sort((a: { maxApr: number; }, b: { maxApr: number; }) => b.maxApr - a.maxApr)
+            // .sort((a: { maxApr: number; }, b: { maxApr: number; }) => b.maxApr - a.maxApr)
             .map(
               (borrow: any, idx: any) => {
                 return (
@@ -646,6 +646,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               currentBorrowMarketCoin={currentBorrowMarketCoin}
                               suggestedBorrow={borrowcoin}
                               suggestedCollateral={coin}
+                              spendAction={borrow?.actionType=="Swap" ?"2":"1"}
+                              pool={"USDC/USDT"}
                             />
                             {/* <YourBorrowModal
                                 currentID={borrow.loanId}
