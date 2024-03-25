@@ -28,6 +28,7 @@ import {
   selectProtocolStats,
   selectUserDeposits,
   setNetAprDeposits,
+  setUsersFilteredSupply,
 } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useAccount } from "@starknet-react/core";
@@ -349,14 +350,10 @@ const SupplyDashboard = ({
   useEffect(() => {
     if (userDeposits) {
       const supply = userDeposits;
-      ////console.log("users deposits - ", userDeposits);
-
-      // const supply = await getUserDeposits(address);
-
-      ////console.log("supply in supply dash: ", supply);
       if (!supply) return;
       let data: any = [];
-      let indexes: any = [5,2, 3, 1,0,4];
+      let indexes: any = [5, 2, 3, 1, 0, 4];
+      let count = 0;
 
       indexes.forEach((index: number) => {
         if (
@@ -373,14 +370,22 @@ const SupplyDashboard = ({
               supply?.[index]?.rTokenStakedParsed > 0.000001
             ) {
               data[index] = supply[index];
+              count++;
             }
           } else {
             data[index] = supply[index];
+            count++;
           }
         }
       });
       setSupplies(data);
-      //console.log(data, "loading - ", userDeposits);
+      console.log(count, "count");
+      console.log(
+        data.filter((val: any) => val),
+        "supply filter dash"
+      );
+
+      dispatch(setUsersFilteredSupply(count));
       setLoading(false);
     }
   }, [userDeposits]);
@@ -511,13 +516,8 @@ const SupplyDashboard = ({
               ))}
             </Tr>
           </Thead>
-          <Tbody
-            position="relative"
-            overflowX="hidden"
-            //   display="flex"
-            //   flexDirection="column"
-            //   gap={"1rem"}
-          >
+
+          <Tbody position="relative" overflowX="hidden">
             {supplies
               ?.slice(lower_bound, upper_bound + 1)
               .map((supply: any, idx: number) => (
@@ -525,19 +525,14 @@ const SupplyDashboard = ({
                   <Tr
                     key={lower_bound + idx}
                     width={"100%"}
-                    // height={"5.2rem"}
                     height={"6rem"}
-                    // bgColor="blue"
-                    // borderBottom="1px solid #2b2f35"
                     position="relative"
                   >
                     <Td
                       width={"12.5%"}
-                      // maxWidth={"3rem"}
                       fontSize={"14px"}
                       fontWeight={400}
                       overflow={"hidden"}
-                      // textAlign={"left"}
                       pl={10}
                     >
                       <Box
@@ -549,7 +544,6 @@ const SupplyDashboard = ({
                         fontWeight="400"
                       >
                         <VStack
-                          // gap="3px"
                           width="100%"
                           display="flex"
                           justifyContent="center"
@@ -668,23 +662,23 @@ const SupplyDashboard = ({
                         fontWeight="400"
                         paddingLeft="1.5"
                       >
-                          {/* {checkGap(idx1, idx2)} */}
-                          {!protocolStats || !protocolStats[idx] ? (
-                            <Skeleton
-                              width="4rem"
-                              height="1.4rem"
-                              startColor="#101216"
-                              endColor="#2B2F35"
-                              borderRadius="6px"
-                            />
-                          ) : (
-                            Number(
-                              protocolStats.find((stat: any) => {
-                                if (stat?.token === supply?.rToken?.slice(1))
-                                  return stat;
-                              })?.supplyRate                                
-                            )?.toFixed(3) + "%"
-                          )}
+                        {/* {checkGap(idx1, idx2)} */}
+                        {!protocolStats || !protocolStats[idx] ? (
+                          <Skeleton
+                            width="4rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />
+                        ) : (
+                          Number(
+                            protocolStats.find((stat: any) => {
+                              if (stat?.token === supply?.rToken?.slice(1))
+                                return stat;
+                            })?.supplyRate
+                          )?.toFixed(3) + "%"
+                        )}
                       </Box>
                     </Td>
 
@@ -705,7 +699,7 @@ const SupplyDashboard = ({
                         fontWeight="400"
                         color="#00D395"
                       >
-                                                <Tooltip
+                        <Tooltip
                           hasArrow
                           arrowShadowColor="#2B2F35"
                           placement="bottom"
@@ -720,11 +714,14 @@ const SupplyDashboard = ({
                                 <Text>Supply APR</Text>
                                 <Text>
                                   {Number(
-                                      protocolStats.find((stat: any) => {
-                                        if (stat?.token === supply?.rToken?.slice(1))
-                                          return stat;
-                                      })?.supplyRate                                
-                                    )?.toFixed(3)}%
+                                    protocolStats.find((stat: any) => {
+                                      if (
+                                        stat?.token === supply?.rToken?.slice(1)
+                                      )
+                                        return stat;
+                                    })?.supplyRate
+                                  )?.toFixed(3)}
+                                  %
                                 </Text>
                               </Box>
                               <Box
@@ -741,7 +738,7 @@ const SupplyDashboard = ({
                                   %
                                 </Text>
                               </Box>
-                              <hr/>
+                              <hr />
                               <Box
                                 display="flex"
                                 justifyContent="space-between"
@@ -753,7 +750,8 @@ const SupplyDashboard = ({
                                   {numberFormatterPercentage(
                                     Number(
                                       avgs?.find(
-                                        (item: any) => item?.token == supply?.token
+                                        (item: any) =>
+                                          item?.token == supply?.token
                                       )?.avg
                                     ) + getBoostedApr(supply?.rToken?.slice(1))
                                   )}
@@ -812,151 +810,69 @@ const SupplyDashboard = ({
                       maxWidth={"3rem"}
                       fontSize={"14px"}
                       fontWeight={400}
-                      // overflow={"hidden"}
                       textAlign={"center"}
                     >
                       <Box
-                        width="90%"
+                        width="103%"
                         height="100%"
                         display="flex"
                         flexDirection="column"
-                        // alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                        // bgColor={"blue"}
                         margin="0 auto"
-                        gap={2}
+                        gap="2"
                         pl="1.1rem"
                       >
-                        {/* {checkGap(idx1, idx2)} */}
-                        <HStack
-                          // bgColor="red"
-                          justifyContent="flex-start"
-                          // display={
-                          //   supply?.rTokenStakedParsed > 0 ||
-                          //   supply?.rTokenFreeParsed > 0
-                          //     ? "flex"
-                          //     : "none"
-                          // }
-                          // mx={
-                          //   supply?.rTokenStakedParsed <= 0 ||
-                          //   supply?.rTokenFreeParsed <= 0
-                          //     ? "30%"
-                          //     : "0"
-                          // }
+                        <Box
+                          display="flex"
+                          justifyContent="space-between"
+                          alignItems="center"
+                          borderRadius="22px"
+                          bgColor="#0C521F"
+                          p="0px 12px"
+                          fontSize="12px"
+                          gap="2"
                         >
-                          <HStack
-                            onMouseEnter={() => handleStatusHover("0" + idx)}
-                            onMouseLeave={() => handleStatusHoverLeave()}
-                            _hover={{ cursor: "pointer" }}
-                            // display={
-                            //   supply?.rTokenStakedParsed > 0 ? "flex" : "none"
-                            // }
-                            // bgColor="red"
-                            mr="16px"
-                            pl={2}
-                            cursor="pointer"
-                          >
-                            {statusHoverIndex != "0" + idx ? (
-                              <Image
-                                src={`/stakeStatus.svg`}
-                                alt="Picture of the author"
-                                width="18"
-                                height="18"
-                              />
-                            ) : (
-                              <Text
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                                borderRadius="22px"
-                                bgColor="#0C521F"
-                                p="0px 12px"
-                                fontSize="12px"
-                              >
-                                Staked
-                              </Text>
-                            )}
-                            <Text>
-                              {numberFormatter(supply?.rTokenStakedParsed)}
-                            </Text>
-                          </HStack>
-                          <HStack
-                            // display={
-                            //   supply?.rTokenFreeParsed > 0 ? "flex" : "none"
-                            // }
-                            onMouseEnter={() => handleStatusHover("1" + idx)}
-                            onMouseLeave={() => handleStatusHoverLeave()}
-                            cursor="pointer"
-                          >
-                            {statusHoverIndex != "1" + idx ? (
-                              <Image
-                                src={`/freeStatus.svg`}
-                                alt="Picture of the author"
-                                width="18"
-                                height="18"
-                              />
-                            ) : (
-                              <Text
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                                borderRadius="22px"
-                                bgColor="#340c7e"
-                                p="0px 12px"
-                                fontSize="12px"
-                              >
-                                Unstaked
-                              </Text>
-                            )}
-                            <Text>
-                              {numberFormatter(supply?.rTokenFreeParsed)}
-                            </Text>
-                          </HStack>
-                        </HStack>
-                        <HStack
-                        // display={
-                        //   supply?.rTokenLockedParsed > 0 ? "flex" : "none"
-                        // }
-                        // mx={
-                        //   supply?.rTokenStakedParsed <= 0 ||
-                        //   supply?.rTokenFreeParsed <= 0
-                        //     ? "30%"
-                        //     : "0"
-                        // }
+                          Staked
+                          <Box>
+                            {numberFormatter(supply?.rTokenStakedParsed)}{" "}
+                            {supply?.rToken.slice(1)}
+                          </Box>
+                        </Box>
+
+                        <Box
+                          display="flex"
+                          justifyContent="space-between"
+                          alignItems="center"
+                          borderRadius="22px"
+                          bgColor="#404953"
+                          p="0px 12px"
+                          fontSize="12px"
+                          gap="2"
                         >
-                          <HStack
-                            pl={2}
-                            onMouseEnter={() => handleStatusHover("2" + idx)}
-                            onMouseLeave={() => handleStatusHoverLeave()}
-                            cursor="pointer"
-                          >
-                            {statusHoverIndex != "2" + idx ? (
-                              <Image
-                                src={`/lockedStatus.svg`}
-                                alt="Picture of the author"
-                                width="18"
-                                height="18"
-                              />
-                            ) : (
-                              <Text
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                                borderRadius="22px"
-                                bgColor="#404953"
-                                p="0px 12px"
-                                fontSize="12px"
-                              >
-                                Locked
-                              </Text>
-                            )}
-                            <Text>
-                              {numberFormatter(supply?.rTokenLockedParsed)}
-                            </Text>
-                          </HStack>
-                        </HStack>
-                        {/* {supply?.Status || "ACTIVE"} */}
+                          Collateral
+                          <Box>
+                            {numberFormatter(supply?.rTokenLockedParsed)}{" "}
+                            {supply?.rToken.slice(1)}
+                          </Box>
+                        </Box>
+
+                        <Box
+                          display="flex"
+                          justifyContent="space-between"
+                          alignItems="center"
+                          borderRadius="22px"
+                          bgColor="#340c7e"
+                          p="0px 12px"
+                          fontSize="12px"
+                          gap="2"
+                        >
+                          Available
+                          <Box>
+                            {numberFormatter(supply?.rTokenFreeParsed)}{" "}
+                            {supply?.rToken.slice(1)}
+                          </Box>
+                        </Box>
                       </Box>
                     </Td>
 
@@ -965,7 +881,6 @@ const SupplyDashboard = ({
                       maxWidth={"5rem"}
                       fontSize={"14px"}
                       fontWeight={400}
-                      //   overflow={"hidden"}
                       textAlign={"center"}
                     >
                       <Box
@@ -1003,6 +918,7 @@ const SupplyDashboard = ({
                       </Box>
                     </Td>
                   </Tr>
+
                   <Tr
                     style={{
                       position: "absolute",
@@ -1045,7 +961,6 @@ const SupplyDashboard = ({
             fontWeight="400"
             borderRadius="6px"
             border="1px solid #3841AA"
-            // textAlign="center"
             color="#F0F0F5"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
@@ -1053,7 +968,6 @@ const SupplyDashboard = ({
             </Box>
             You do not have active supply.
             <Box
-              // ml="1"
               mr="1"
               as="span"
               textDecoration="underline"
@@ -1077,32 +991,9 @@ const SupplyDashboard = ({
                 coin={coinPassed}
               />
             </Box>
-            {/* <Box
-              py="1"
-              pl="4"
-              cursor="pointer"
-              onClick={() => setShowEmptyNotification(!showEmptyNotification)}
-            >
-              <TableClose />
-            </Box> */}
           </Box>
         </Box>
       )}
-      {/* <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        width="95%"
-        height={"37rem"}
-        // height="552px"
-        bgColor="#101216"
-        borderRadius="8px"
-        gap="6px"
-      >
-        <Text color="#FFFFFF">You do not have active supply</Text>
-        
-      </Box> */}
     </>
   );
 };

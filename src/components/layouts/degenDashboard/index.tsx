@@ -37,6 +37,7 @@ import {
   selectProtocolStats,
   selectUserDeposits,
   selectUserLoans,
+  selectYourSupply,
   setNetAprLoans,
 } from "@/store/slices/readDataSlice";
 import {
@@ -50,6 +51,7 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import TableInfoIcon from "../table/tableIcons/infoIcon";
 import DegenModal from "@/components/modals/degenModal";
+import SupplyModal from "@/components/modals/SupplyModal";
 
 export interface ICoin {
   name: string;
@@ -90,8 +92,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   columnItems,
   Borrows,
 }) => {
-    const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
-    const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
+    const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>(0);
+    const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>(0);
     const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
   const [borrowIds, setBorrowIds] = useState([]);
@@ -107,26 +109,13 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   const [currentSpendStatus, setCurrentSpendStatus] = useState("");
   const [currentLoanAmount, setCurrentLoanAmount] = useState("");
   const [currentLoanMarket, setCurrentLoanMarket] = useState("");
-  const [showEmptyNotification, setShowEmptyNotification] = useState(true);
+  const [showEmptyNotification, setShowEmptyNotification] = useState(false);
   const avgs = useSelector(selectEffectiveApr);
   const allSplit = useSelector(selectMySplit);
   const [loading, setLoading] = useState(true);
-  const [coinPassed, setCoinPassed] = useState({
-    name: "BTC",
-    icon: "mdi-bitcoin",
-    symbol: "WBTC",
-  });
-  const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
-  const [dollarConversions, setDollarConversions] = useState(false);
-
-  const { account, address } = useAccount();
-  const userDeposits = useSelector(selectUserDeposits);
-  const reduxProtocolStats = useSelector(selectProtocolStats);
+  const [coinPassed, setCoinPassed] = useState({ name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },);
   const oraclePrices = useSelector(selectOraclePrices);
-  const avgsLoneHealth = useSelector(selectHealthFactor);
-  const stats = useSelector(selectProtocolStats);
-  const poolAprs = useSelector(selectJediswapPoolAprs);
-  const dispatch = useDispatch();
+  const totalSupply=useSelector(selectYourSupply);
 
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
@@ -156,6 +145,14 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   const netSpendBalance = useSelector(selectnetSpendBalance);
 
   const [netStrkBorrow, setnetStrkBorrow] = useState(0);
+
+  useEffect(()=>{
+    if(totalSupply){
+        if(totalSupply<1000){
+            setShowEmptyNotification(true)
+        }
+    }
+  },[totalSupply])
 
   useEffect(() => {
     if (strkData != null) {
@@ -269,8 +266,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       return 0;
     }
   };
-  const coin={ name: "STRK", icon: "mdi-strk", symbol: "STRK" }
-
+  const coin= { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" };
+  const borrowcoin= { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" };
   const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
     const matchedObject = dataArray.find((item) => {
       if (item.name === "USDT/USDC") {
@@ -310,7 +307,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
         size="xl"
       />
     </Box>
-  ) : upper_bound >= lower_bound && Borrows && Borrows?.length > 0 ? (
+  ) : upper_bound >= lower_bound && Borrows && Borrows?.length > 0 && totalSupply>=10 ? (
     <Box
       bg="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
       color="white"
@@ -391,7 +388,9 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
             </Tr>
           </Thead>
           <Tbody position="relative" overflowX="hidden">
-            {Borrows?.slice(lower_bound, upper_bound + 1).map(
+            {Borrows?.slice(lower_bound, upper_bound + 1)
+            // .sort((a: { maxApr: number; }, b: { maxApr: number; }) => b.maxApr - a.maxApr)
+            .map(
               (borrow: any, idx: any) => {
                 return (
                   <>
@@ -645,6 +644,10 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               setCurrentBorrowAPR={setCurrentBorrowAPR}
                               validRTokens={validRTokens}
                               currentBorrowMarketCoin={currentBorrowMarketCoin}
+                              suggestedBorrow={borrowcoin}
+                              suggestedCollateral={coin}
+                              spendAction={borrow?.actionType=="Swap" ?"2":"1"}
+                              pool={"USDC/USDT"}
                             />
                             {/* <YourBorrowModal
                                 currentID={borrow.loanId}
@@ -744,7 +747,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
             </Box>
-            You do not have active borrow.
+            To access the Degen page, please add more supplies as your current value is
+        less than $1000. 
             <Box
               mr="1"
               as="span"
@@ -752,8 +756,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
               color="#0C6AD9"
               cursor="pointer"
             >
-              <BorrowModal
-                buttonText="Click here to borrow"
+              <SupplyModal
+                buttonText="Click here to supply"
                 variant="link"
                 fontSize="16px"
                 fontWeight="400"
@@ -763,12 +767,11 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                 ml="0.3rem"
                 lineHeight="22px"
                 backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
-                borrowAPRs={borrowAPRs}
-                currentBorrowAPR={currentBorrowAPR}
-                validRTokens={validRTokens}
-                setCurrentBorrowAPR={setCurrentBorrowAPR}
+                supplyAPRs={supplyAPRs}
+                currentSupplyAPR={currentSupplyAPR}
+                setCurrentSupplyAPR={setCurrentSupplyAPR}
                 coin={coinPassed}
-              />
+                />
             </Box>
           </Box>
         </Box>

@@ -149,6 +149,11 @@ import {
     currentSelectedPool,
     currentSelectedDapp,
     poolNumber,
+    suggestedCollateral,
+    suggestedBorrow,
+    spendAction,
+    pool,
+
     ...restProps
   }: any) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -360,7 +365,7 @@ import {
     const [currentDapp, setCurrentDapp] = useState(
       currentSelectedDapp ? currentSelectedDapp : "Jediswap"
     );
-    const [currentPool, setCurrentPool] = useState("STRK/ETH");
+    const [currentPool, setCurrentPool] = useState(pool ?pool: "STRK/ETH");
     const [currentPoolCoin, setCurrentPoolCoin] = useState("STRK");
     const getCoin = (CoinName: string) => {
       switch (CoinName) {
@@ -478,12 +483,12 @@ import {
     const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI", "STRK"];
   
     const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
-      coin ? coin?.name : "BTC"
+      suggestedCollateral ? suggestedCollateral?.name : "BTC"
     );
   
     // const coinAlign = ["BTC", "USDT", "USDC", "ETH", "DAI"];
     const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
-      coin ? coin?.name : "BTC"
+      suggestedBorrow ? suggestedBorrow?.name : "BTC"
     );
     const [uniqueID, setUniqueID] = useState(0);
     const getUniqueId = () => uniqueID;
@@ -615,7 +620,7 @@ import {
       ////console.log(coins.indexOf(currentBorrowCoin));
     }, [protocolStats, currentBorrowCoin]);
   
-    const [radioValue, setRadioValue] = useState("1");
+    const [radioValue, setRadioValue] = useState(spendAction ? spendAction: "1");
   
     useEffect(() => {
       if (radioValue === "1") {
@@ -633,10 +638,10 @@ import {
         // setLoanMarket(coin ? coin.name : "BTC");
         // setCollateralMarket(coin ? coin.name : "BTC");
       } else {
-        setLoanMarket(coin ? coin.name : "BTC");
-        setCollateralMarket(coin ? coin.name : "BTC");
+        setLoanMarket(suggestedBorrow ? suggestedBorrow.name : "BTC");
+        setCollateralMarket(suggestedCollateral ? suggestedCollateral.name : "BTC");
       }
-    }, [coin]);
+    }, [suggestedCollateral]);
     const resetStates = () => {
       setSliderValue(0);
       setsliderValue2(0);
@@ -652,7 +657,7 @@ import {
       setCurrentBorrowCoin(coin ? coin.name : "BTC");
       setLoanMarket(coin ? coin.name : "BTC");
       // setCurrentPoolCoin("Select a pool");
-      setRadioValue("1");
+      setRadioValue(spendAction?spendAction: "1");
       setHealthFactor(undefined);
       setTokenTypeSelected("Native");
       // setTransactionStarted(false);
@@ -1377,15 +1382,17 @@ import {
     //   };
     //   fetchEstrTokens();
     // }, [collateralBalance, inputCollateralAmount]);
-    useEffect(() => {
-      if (pathname === "/v1/strk-rewards") {
-        setCurrentPool(currentSelectedPool);
-        setCurrentDapp("Jediswap");
-        setToMarketLiqA(currentSelectedPool.split("/")[0]);
-        //@ts-ignore
-        setToMarketLiqB(currentSelectedPool.split("/")[1]);
+
+    useEffect(()=>{
+      setToMarketLiqA(pool.split("/")[0]);
+      setToMarketLiqB(pool.split("/")[1]);
+      if(currentDapp=="Jediswap"){
+        setL3App("JEDI_SWAP")
+      }else{
+        setL3App("MY_SWAP")
       }
-    }, [poolNumber]);
+    },[poolNumber])
+
     const getStrkAlloaction = (pool: any) => {
       try {
         if (strkTokenAlloactionData[pool]) {
@@ -2834,7 +2841,7 @@ import {
                                         <Box display="flex" flexDirection="column" gap="1">
                       <Box display="flex">
                         <Text fontSize="xs" color="#676D9A">
-                          Stratergy selected
+                          Strategy selected
                         </Text>
                         <Tooltip
                           hasArrow

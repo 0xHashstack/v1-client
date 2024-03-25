@@ -85,6 +85,7 @@ import {
   setProtocolStats,
   setStakingShares,
   setUserType,
+  setUsersFilteredSupply,
   setYourBorrow,
   setYourMetricsBorrow,
   setYourMetricsSupply,
@@ -1266,7 +1267,6 @@ const useDataLoader = () => {
     try {
       const fetchProtocolStats = async () => {
         const dataStats = await getProtocolStats();
-        //  console.log("protocol stats - transactionRefresh done", dataStats);
         if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 6)) {
           return;
         }
@@ -1304,21 +1304,47 @@ const useDataLoader = () => {
         if (!data) {
           return;
         }
-        // console.log(data,"data deposit useffect")
-        ////console.log(data.length,"data length")
+
         if (data) {
           dispatch(setUserDeposits(data));
           const count = getTransactionCount();
           dispatch(setUserDepositsCount(count));
+
+          const supply: any = data;
+          if (!supply) return;
+          let indexes: any = [5, 2, 3, 1, 0, 4];
+          let supplyCount = 0;
+
+          indexes.forEach((index: number) => {
+            if (
+              supply?.[index]?.rTokenAmountParsed !== 0 ||
+              supply?.[index]?.rTokenFreeParsed !== 0 ||
+              supply?.[index]?.rTokenLockedParsed !== 0 ||
+              supply?.[index]?.rTokenStakedParsed !== 0
+            ) {
+              if (index == 2 || index == 3) {
+                if (
+                  supply?.[index]?.rTokenAmountParsed > 0.000001 ||
+                  supply?.[index]?.rTokenFreeParsed > 0.000001 ||
+                  supply?.[index]?.rTokenLockedParsed > 0.000001 ||
+                  supply?.[index]?.rTokenStakedParsed > 0.000001
+                ) {
+                  supplyCount++;
+                }
+              } else {
+                supplyCount++;
+              }
+            }
+          });
+          dispatch(setUsersFilteredSupply(supplyCount));
         }
       };
       if (userDepositsCount < transactionRefresh) {
         fetchUserDeposits();
       }
-    } catch (err) {
-      //console.log("user deposits - transactionRefresh error", err);
-    }
+    } catch (err) {}
   }, [address, transactionRefresh]);
+
   useEffect(() => {
     try {
       const fetchPools = async () => {
@@ -1418,7 +1444,7 @@ const useDataLoader = () => {
         });
         try {
           const res2 = await axios.get(
-            "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_lending_strk_grant.json"
+            "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=prod-api/lending/lending_strk_grant.json"
           );
           if (res2?.data) {
             dispatch(setStrkAprData(res2?.data?.Hashstack));
@@ -2423,17 +2449,15 @@ const useDataLoader = () => {
     try {
       const fetchData = async () => {
         const res: any = await axios.get(
-          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=qa_strk_grant.json"
+          "https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=strk_grant.json"
         );
-        // remove all the "\" "\n" from the string before parsing
         const formattedRes = res?.data?.replace(/\\/g, "");
         // replace all the NaN value to null in the string before parsing
         const newRes = formattedRes?.replace(/NaN/g, '"null"');
 
         const data = newRes && JSON.parse(newRes);
-
-        const count = getTransactionCount();
         if (data) {
+          const count = getTransactionCount();
           dispatch(setJedistrkTokenAllocation(data?.Jediswap_v1));
           dispatch(setJedistrkTokenAllocationCount(count));
         }
@@ -2445,60 +2469,6 @@ const useDataLoader = () => {
       console.log(err, "err inf fetching jedi strk");
     }
   }, [transactionRefresh]);
-  // useEffect(() => {
-  //   try {
-  //     const fetchNetApr = async () => {
-  //       ////console.log(getUserDeposits(address),"deposits in pagecard")
-
-  //       // const dataMarket=await getProtocolStats();
-  //       // const dataOraclePrices=await getOraclePrices();
-  //       ////console.log(dataMarket,"data market page")
-  //       ////console.log("user info called - transactionRefresh");
-  //       ////console.log(dataDeposit, "dataDeposit is here");
-  //       ////console.log(dataOraclePrices, "dataOraclePrices is here");
-  //       ////console.log(userLoans, "userLoans is here");
-  //       ////console.log(protocolStats, "protocolStats is here");
-  //       ////console.log(aprsAndHealth, "aprs and health is here");
-  //       if (
-  //         userDepositsCount == transactionRefresh &&
-  //         protocolStatsCount == transactionRefresh &&
-  //         userLoansCount == transactionRefresh &&
-  //         dataOraclePrices &&
-  //         userInfoCount < transactionRefresh
-  //       ) {
-  //        //console.log("user info called inside - transactionRefresh");
-  //         const dataNetApr = await getNetApr(
-  //           dataDeposit,
-  //           userLoans,
-  //           dataOraclePrices,
-  //           protocolStats
-  //         );
-  //        //console.log("netApr", dataNetApr);
-  //         //@ts-ignore
-  //         if (isNaN(dataNetApr)) {
-  //           dispatch(setNetAPR(0));
-  //         } else {
-  //           dispatch(setNetAPR(dataNetApr));
-  //         }
-  //         const count = getTransactionCount();
-  //         dispatch(setNetAprCount(count));
-  //       }
-  //     };
-
-  //    //console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
-  //     if (netAprCount < transactionRefresh) {
-  //       fetchNetApr();
-  //     }
-  //   } catch (err) {
-  //    //console.log(err, "error in user info");
-  //   }
-  // }, [
-  //   dataDeposit,
-  //   userLoans,
-  //   dataOraclePrices,
-  //   protocolStats,
-  //   transactionRefresh,
-  // ]);
 };
 
 export default useDataLoader;

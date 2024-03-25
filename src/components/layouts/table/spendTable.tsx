@@ -1,73 +1,73 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-  Text,
-  Tabs,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tab,
-  Td,
-  useTimeout,
-  Spinner,
-  Skeleton,
-  Tooltip,
-} from "@chakra-ui/react";
-import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
-import TableUsdtLogo from "./usdtLogo";
-import TableBtcLogo from "./btcLogo";
-import TableJediswapLogo from "./tableIcons/jediswapLogo";
-import TableYagiLogo from "./tableIcons/yagiLogo";
-import TableMySwap from "./tableIcons/mySwap";
+import HazardIcon from "@/assets/icons/hazardIcon";
 import InfoIcon from "@/assets/icons/infoIcon";
-import TableClose from "./tableIcons/close";
-import TableInfoIcon from "./tableIcons/infoIcon";
-import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
+import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
+import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
+import {
+  selectAprAndHealthFactor,
+  selectEffectiveApr,
+  selectHealthFactor,
+  selectOraclePrices,
+  selectProtocolStats,
+  selectUserLoans,
+} from "@/store/slices/readDataSlice";
 import {
   selectStrkAprData,
   selectUserUnspentLoans,
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
 import {
-  selectUserLoans,
-  selectProtocolStats,
-  selectOraclePrices,
-  selectAprAndHealthFactor,
-  selectEffectiveApr,
-  selectHealthFactor,
-} from "@/store/slices/readDataSlice";
-import HazardIcon from "@/assets/icons/hazardIcon";
-import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
-import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
-import TableMySwapDull from "./tableIcons/mySwapDull";
-import TableJediswapLogoDull from "./tableIcons/jediswapLogoDull";
+  Box,
+  Skeleton,
+  Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Table,
+  TableCaption,
+  TableContainer,
+  Tabs,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tooltip,
+  Tr,
+  useTimeout,
+} from "@chakra-ui/react";
 import Image from "next/image";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import TableBtcLogo from "./btcLogo";
+import TableClose from "./tableIcons/close";
+import TableInfoIcon from "./tableIcons/infoIcon";
+import TableJediswapLogo from "./tableIcons/jediswapLogo";
+import TableJediswapLogoDull from "./tableIcons/jediswapLogoDull";
+import TableMySwap from "./tableIcons/mySwap";
+import TableMySwapDull from "./tableIcons/mySwapDull";
+import TableYagiLogo from "./tableIcons/yagiLogo";
+import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
+import TableUsdtLogo from "./usdtLogo";
 // import StakeModal from "@/components/modals/StakeModal";
-import SwapModal from "@/components/modals/SwapModal";
-import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
-import { useRouter } from "next/router";
-import SmallEth from "@/assets/icons/coins/smallEth";
-import Pagination from "@/components/uiElements/pagination";
-import BorrowModal from "../../modals/borrowModal";
-import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
-import { useAccount } from "@starknet-react/core";
-import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
-import AlertTrade from "@/assets/icons/alertTrade";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
+import { getUserLoans } from "@/Blockchain/scripts/Loans";
+import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
-import numberFormatter from "@/utils/functions/numberFormatter";
+import AlertTrade from "@/assets/icons/alertTrade";
+import SmallEth from "@/assets/icons/coins/smallEth";
 import LowhealthFactor from "@/assets/icons/lowhealthFactor";
 import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
+import SwapModal from "@/components/modals/SwapModal";
+import Pagination from "@/components/uiElements/pagination";
+import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+import { useAccount } from "@starknet-react/core";
+import { useRouter } from "next/router";
+import BorrowModal from "../../modals/borrowModal";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -89,7 +89,7 @@ const SpendTable = () => {
   ];
   const { account, address, isConnected } = useAccount();
   const userLoans = useSelector(selectUserUnspentLoans);
-  
+
   ////console.log(getTokenFromAddress(
   //   getDTokenFromAddress(number.toHex(loanData?.market))
   //     ?.underlying_asset || ""
@@ -154,7 +154,7 @@ const SpendTable = () => {
   }
 
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
-  const [currentBorrowData, setcurrentBorrowData] = useState()
+  const [currentBorrowData, setcurrentBorrowData] = useState();
   const [borrowIds, setBorrowIds] = useState([]);
   const [currentId, setCurrentId] = useState("");
   const [currentMarketCoin, setCurrentMarketCoin] = useState("");
@@ -163,8 +163,10 @@ const SpendTable = () => {
   const [coins, setCoins] = useState([]);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const [tabIndex, setTabIndex] = useState(0);
-  const [collateralCoin, setcollateralCoin] = useState("")
+  const [collateralCoin, setcollateralCoin] = useState("");
   const [selectedIndex, setselectedIndex] = useState(0);
+  const [rowHover, setRowHover] = useState(false);
+
   let lower_bound = 3 * (currentPagination - 1);
   let upper_bound = lower_bound + 2;
   if (userLoans) {
@@ -294,7 +296,7 @@ const SpendTable = () => {
         stats?.[5]?.borrowRate,
       ]);
     } catch (error) {
-     //console.log("error on getting protocol stats");
+      //console.log("error on getting protocol stats");
     }
   };
 
@@ -363,7 +365,7 @@ const SpendTable = () => {
 
   return (
     <>
-        <Box
+      <Box
         display="flex"
         justifyContent="left"
         w="94%"
@@ -482,10 +484,12 @@ const SpendTable = () => {
                   return (
                     <>
                       <Tr
+                        onMouseOver={() => setRowHover(true)}
+                        onMouseOut={() => setRowHover(false)}
                         _hover={{
-                          // backgroundColor: "#676D9A4D",
-                          // width: "80%",
                           borderRadius: "0px",
+                          background:
+                            currentBorrow !== borrow.loanId && "#676D9A1A",
                         }}
                         position="relative"
                         height="4rem"
@@ -497,7 +501,7 @@ const SpendTable = () => {
                         // bgColor="green"
                         onClick={() => {
                           setSelectedDapp("trade");
-                          setcurrentBorrowData(borrow)
+                          setcurrentBorrowData(borrow);
                           setCurrentBorrow(borrow.loanId);
                           setBorrowAmount(borrow.currentLoanAmountParsed);
                           setCurrentId("ID - " + borrow.loanId);
@@ -505,7 +509,7 @@ const SpendTable = () => {
                           dispatch(setSpendBorrowSelectedDapp("trade"));
                           setCurrentLoanAmount(borrow?.currentLoanAmount);
                           setCurrentLoanMarket(borrow?.currentLoanMarket);
-                          setcollateralCoin(borrow?.collateralMarket)
+                          setcollateralCoin(borrow?.collateralMarket);
                         }}
                       >
                         <Td borderLeftRadius="6px" pl="3rem">
@@ -513,17 +517,26 @@ const SpendTable = () => {
                             position="absolute"
                             height="24px"
                             width="4px"
-                            // borderRadius="6px"
+                            borderRadius="4px"
                             bgColor="#676D9A4D"
                             left={-2}
                             display={
                               currentBorrow == borrow.loanId ? "block" : "none"
                             }
                           />
+                          {rowHover && currentBorrow !== borrow.loanId && (
+                            <Box
+                              position="absolute"
+                              height="24px"
+                              width="4px"
+                              bg="#676D9A1A"
+                              left={-2}
+                              borderRadius="4px"
+                            />
+                          )}
                           <Box
                             display="flex"
                             gap="2"
-                            // bgColor="blue"
                             justifyContent="flex-start"
                           >
                             <Text
@@ -580,9 +593,17 @@ const SpendTable = () => {
                           {avgs?.find(
                             (item: any) => item?.loanId == borrow?.loanId
                           )?.avg
-                            ? numberFormatterPercentage(Number(avgs?.find(
-                                (item: any) => item?.loanId == borrow?.loanId
-                              )?.avg)+getBoostedAprSupply(borrow?.collateralMarket.slice(1)))
+                            ? numberFormatterPercentage(
+                                Number(
+                                  avgs?.find(
+                                    (item: any) =>
+                                      item?.loanId == borrow?.loanId
+                                  )?.avg
+                                ) +
+                                  getBoostedAprSupply(
+                                    borrow?.collateralMarket.slice(1)
+                                  )
+                              )
                             : "3.2"}
                           %
                         </Td>
@@ -620,74 +641,90 @@ const SpendTable = () => {
                             pr="40px"
                             // pl="30px"
                           >
-                      <Box
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <Tooltip
-                              hasArrow
-                              label={
-                                <Box>
-                                  Health Factor : {avgsLoneHealth?.find(
-                            (item: any) => item?.loanId == borrow?.loanId
-                          )?.loanHealth}
-                          <br/>
-                          Liquidates below : 1.06
-                                </Box>
-                              }
-                              // arrowPadding={-5420}
-                              placement="bottom"
-                              rounded="md"
-                              boxShadow="dark-lg"
-                              bg="#02010F"
-                              fontSize={"13px"}
-                              fontWeight={"400"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                              color="#F0F0F5"
-                              border="1px solid"
-                              borderColor="#23233D"
-                              arrowShadowColor="#2B2F35"
-                            // cursor="context-menu"
-                            // marginRight={idx1 === 1 ? "52px" : ""}
-                            // maxW="222px"
-                            // mt="28px"
+                            <Box
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
                             >
-
-                        {avgsLoneHealth?.find(
-                                (item: any) => item?.loanId == borrow?.loanId
-                              )?.loanHealth
-                                ?
-                          (avgsLoneHealth?.find(
-                            (item: any) =>
-                              item?.loanId == borrow?.loanId
-                          )?.loanHealth) > 1.15      ?                   
-                        <Box
-                          width="68px"
-                          height="10px"
-                          // pl="45%"
-                          fontWeight="400"
-                          borderRadius="100px"
-                          background="linear-gradient(90deg, #00D395 78.68%, #D97008 389.71%, #CF222E 498.53%)"
-                        >
-                          {/* {checkGap(idx1, idx2)} */}
-                        </Box>
-                        :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth > 1.09 &&
-                        avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.15) ?
-                        <MediumHeathFactor/>
-                      :(avgsLoneHealth?.find((item:any) => item?.loanId === borrow?.loanId)?.loanHealth <= 1.09 ) ?
-                      <LowhealthFactor/>
-                        :"":<Skeleton
-                        width="6rem"
-                        height="1.2rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />}
-                            </Tooltip>
-                      </Box>
+                              <Tooltip
+                                hasArrow
+                                label={
+                                  <Box>
+                                    Health Factor :{" "}
+                                    {
+                                      avgsLoneHealth?.find(
+                                        (item: any) =>
+                                          item?.loanId == borrow?.loanId
+                                      )?.loanHealth
+                                    }
+                                    <br />
+                                    Liquidates below : 1.06
+                                  </Box>
+                                }
+                                // arrowPadding={-5420}
+                                placement="bottom"
+                                rounded="md"
+                                boxShadow="dark-lg"
+                                bg="#02010F"
+                                fontSize={"13px"}
+                                fontWeight={"400"}
+                                borderRadius={"lg"}
+                                padding={"2"}
+                                color="#F0F0F5"
+                                border="1px solid"
+                                borderColor="#23233D"
+                                arrowShadowColor="#2B2F35"
+                                // cursor="context-menu"
+                                // marginRight={idx1 === 1 ? "52px" : ""}
+                                // maxW="222px"
+                                // mt="28px"
+                              >
+                                {avgsLoneHealth?.find(
+                                  (item: any) => item?.loanId == borrow?.loanId
+                                )?.loanHealth ? (
+                                  avgsLoneHealth?.find(
+                                    (item: any) =>
+                                      item?.loanId == borrow?.loanId
+                                  )?.loanHealth > 1.15 ? (
+                                    <Box
+                                      width="68px"
+                                      height="10px"
+                                      // pl="45%"
+                                      fontWeight="400"
+                                      borderRadius="100px"
+                                      background="linear-gradient(90deg, #00D395 78.68%, #D97008 389.71%, #CF222E 498.53%)"
+                                    >
+                                      {/* {checkGap(idx1, idx2)} */}
+                                    </Box>
+                                  ) : avgsLoneHealth?.find(
+                                      (item: any) =>
+                                        item?.loanId === borrow?.loanId
+                                    )?.loanHealth > 1.09 &&
+                                    avgsLoneHealth?.find(
+                                      (item: any) =>
+                                        item?.loanId === borrow?.loanId
+                                    )?.loanHealth <= 1.15 ? (
+                                    <MediumHeathFactor />
+                                  ) : avgsLoneHealth?.find(
+                                      (item: any) =>
+                                        item?.loanId === borrow?.loanId
+                                    )?.loanHealth <= 1.09 ? (
+                                    <LowhealthFactor />
+                                  ) : (
+                                    ""
+                                  )
+                                ) : (
+                                  <Skeleton
+                                    width="6rem"
+                                    height="1.2rem"
+                                    startColor="#101216"
+                                    endColor="#2B2F35"
+                                    borderRadius="6px"
+                                  />
+                                )}
+                              </Tooltip>
+                            </Box>
                           </Box>
                         </Td>
                       </Tr>

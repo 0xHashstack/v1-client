@@ -1,25 +1,28 @@
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import BorrowDashboard from "@/components/layouts/borrowDashboard";
 import MarketDashboard from "@/components/layouts/marketDashboard";
 import NavButtons from "@/components/layouts/navButtons";
 import Navbar from "@/components/layouts/navbar/Navbar";
-import { Stack, Tooltip } from "@chakra-ui/react";
+import PageCard from "@/components/layouts/pageCard";
 import StatsBoard from "@/components/layouts/statsBoard";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import Pagination from "@/components/uiElements/pagination";
-import YourBorrowModal from "@/components/modals/yourBorrowModal";
-import React, { useEffect, useState } from "react";
-import { HStack, VStack, Text, Box } from "@chakra-ui/react";
-import PageCard from "@/components/layouts/pageCard";
-import { Coins } from "@/utils/constants/coin";
-import { useDispatch, useSelector } from "react-redux";
-import { useAccount } from "@starknet-react/core";
-import { selectYourBorrow, selectNetAPR, selectnetAprLoans } from "@/store/slices/readDataSlice";
-import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
-import { getUserLoans } from "@/Blockchain/scripts/Loans";
-import { ILoan } from "@/Blockchain/interfaces/interfaces";
-import { Skeleton } from "@chakra-ui/react";
-import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
+import {
+  selectNetAPR,
+  selectUserLoans,
+  selectYourBorrow,
+  selectnetAprLoans,
+  setUserLoans,
+} from "@/store/slices/readDataSlice";
+import { Coins } from "@/utils/constants/coin";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import { Box, HStack, Skeleton, Stack, Text, VStack } from "@chakra-ui/react";
+import { useAccount } from "@starknet-react/core";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 const YourBorrow = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [
@@ -143,38 +146,31 @@ const YourBorrow = () => {
             )}
           </VStack>
           <VStack gap={"3px"}>
-          <Tooltip
-                      hasArrow
-                      arrowShadowColor="#2B2F35"
-                      placement="bottom"
-                      boxShadow="dark-lg"
-                      label={" Net APR on your borrow is calculated based on the effective APR of each assets, and the collateral amount."}
-                      bg="#02010F"
-                      fontSize={"13px"}
-                      fontWeight={"400"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                      color="#F0F0F5"
-                      border="1px solid"
-                      borderColor="#23233D"
-                    >
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Net APR
             </Text>
-                    </Tooltip>
-              {netAPR == null ? (
-                <Skeleton
-                  width="6rem"
-                  height="1.9rem"
-                  startColor="#101216"
-                  endColor="#2B2F35"
-                  borderRadius="6px"
-                />
-              ) : (
-                <Text color={Number(netAPR)<0 ?"rgb(255 94 94)": Number(netAPR)==0 ?"white":"#00D395"} fontSize="20px">
-                  {netAPR && !Number.isNaN(netAPR) ? `${netAPR}%` : "NA"}
-                </Text>
-              )}
+            {netAPR == null ? (
+              <Skeleton
+                width="6rem"
+                height="1.9rem"
+                startColor="#101216"
+                endColor="#2B2F35"
+                borderRadius="6px"
+              />
+            ) : (
+              <Text
+                color={
+                  Number(netAPR) < 0
+                    ? "rgb(255 94 94)"
+                    : Number(netAPR) == 0
+                    ? "white"
+                    : "#00D395"
+                }
+                fontSize="20px"
+              >
+                {netAPR && !Number.isNaN(netAPR) ? `${netAPR}%` : "NA"}
+              </Text>
+            )}
           </VStack>
         </HStack>
         {/* </Box> */}
