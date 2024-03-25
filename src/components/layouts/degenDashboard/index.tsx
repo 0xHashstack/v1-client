@@ -1,6 +1,9 @@
 import {
   Box,
+  Button,
   HStack,
+  NumberInput,
+  NumberInputField,
   Skeleton,
   Spinner,
   Table,
@@ -17,7 +20,7 @@ import { useAccount } from "@starknet-react/core";
 import axios from "axios";
 import Image from "next/image";
 import posthog from "posthog-js";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
@@ -41,10 +44,14 @@ import {
   setNetAprLoans,
 } from "@/store/slices/readDataSlice";
 import {
+  selectActiveTransactions,
   selectJedistrkTokenAllocation,
   selectMySplit,
   selectStrkAprData,
   selectnetSpendBalance,
+  setActiveTransactions,
+  setTransactionStarted,
+  setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import dollarConvertor from "@/utils/functions/dollarConvertor";
 import numberFormatter from "@/utils/functions/numberFormatter";
@@ -52,6 +59,14 @@ import numberFormatterPercentage from "@/utils/functions/numberFormatterPercenta
 import TableInfoIcon from "../table/tableIcons/infoIcon";
 import DegenModal from "@/components/modals/degenModal";
 import SupplyModal from "@/components/modals/SupplyModal";
+import useBorrowAndSpend from "@/Blockchain/hooks/Writes/useBorrowAndSpend";
+import { toast } from "react-toastify";
+import CopyToClipboard from "react-copy-to-clipboard";
+import {
+  selectModalDropDowns,
+  setModalDropdown,
+} from "@/store/slices/dropdownsSlice";
+import DropdownUp from "@/assets/icons/dropdownUpIcon";
 
 export interface ICoin {
   name: string;
@@ -67,8 +82,8 @@ interface BorrowDashboardProps {
   columnItems: any;
   Borrows: any;
   userLoans: any;
-  supplyAPRs:any,
-  borrowAPRs:any,
+  supplyAPRs: any;
+  borrowAPRs: any;
 }
 
 const tooltips = [
@@ -87,14 +102,66 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   currentPagination,
   Coins,
   setCurrentPagination,
-  supplyAPRs ,
+  supplyAPRs,
   borrowAPRs,
   columnItems,
   Borrows,
 }) => {
-    const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>(0);
-    const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>(0);
-    const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
+  const {
+    loanMarket,
+    setLoanMarket,
+    loanAmount,
+    setLoanAmount,
+    rToken,
+    setRToken,
+    rTokenAmount,
+    setRTokenAmount, // done
+    collateralMarket,
+    setCollateralMarket,
+    collateralAmount,
+    setCollateralAmount, // done
+
+    l3App,
+    setL3App,
+    method,
+    setMethod,
+    toMarketSwap,
+    setToMarketSwap,
+
+    toMarketLiqA,
+    setToMarketLiqA,
+    toMarketLiqB,
+    setToMarketLiqB,
+
+    dataBorrowAndSpend,
+    errorBorrowAndSpend,
+    resetBorrowAndSpend,
+    writeAsyncBorrowAndSpend,
+    isErrorBorrowAndSpend,
+    isIdleBorrowAndSpend,
+    isSuccessBorrowAndSpend,
+    statusBorrowAndSpend,
+
+    dataBorrowAndSpendRToken,
+    errorBorrowAndSpendRToken,
+    resetBorrowAndSpendRToken,
+    writeAsyncBorrowAndSpendRToken,
+    isErrorBorrowAndSpendRToken,
+    isIdleBorrowAndSpendRToken,
+    isSuccessBorrowAndSpendRToken,
+    statusBorrowAndSpendRToken,
+  } = useBorrowAndSpend();
+  const [currentCollateralCoin, setCurrentCollateralCoin] = useState("BTC");
+  const [depositTransHash, setDepositTransHash] = useState("");
+  const [toastId, setToastId] = useState<any>();
+  let activeTransactions = useSelector(selectActiveTransactions);
+  const [uniqueID, setUniqueID] = useState(0);
+  const getUniqueId = () => uniqueID;
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
+  const dispatch = useDispatch();
+  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>(0);
+  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>(0);
+  const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
   const [borrowIds, setBorrowIds] = useState([]);
   const [borrowAmount, setBorrowAmount] = useState<number>(0);
@@ -112,15 +179,22 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   const [showEmptyNotification, setShowEmptyNotification] = useState(false);
   const avgs = useSelector(selectEffectiveApr);
   const allSplit = useSelector(selectMySplit);
-  const [loading, setLoading] = useState(true);
-  const [coinPassed, setCoinPassed] = useState({ name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },);
+  const [loading, setLoading] = useState(false);
+  const [coinPassed, setCoinPassed] = useState({
+    name: "USDT",
+    icon: "mdi-bitcoin",
+    symbol: "USDT",
+  });
+  const modalDropdowns = useSelector(selectModalDropDowns);
   const oraclePrices = useSelector(selectOraclePrices);
-  const totalSupply=useSelector(selectYourSupply);
-
+  const totalSupply = useSelector(selectYourSupply);
+  const stats = useSelector(selectProtocolStats);
+  const poolAprs = useSelector(selectJediswapPoolAprs);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Borrows ? Borrows.length - 1 : 0, upper_bound);
-
+  const [allocationData, setallocationData] = useState<any>();
+  const [poolAllocatedData, setpoolAllocatedData] = useState<any>();
   const getBorrowAPR: any = (borrowMarket: string) => {
     switch (borrowMarket) {
       case "USDT":
@@ -146,13 +220,13 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 
   const [netStrkBorrow, setnetStrkBorrow] = useState(0);
 
-  useEffect(()=>{
-    if(totalSupply){
-        if(totalSupply<1000){
-            setShowEmptyNotification(true)
-        }
+  useEffect(() => {
+    if (totalSupply) {
+      if (totalSupply < 1000) {
+        setShowEmptyNotification(true);
+      }
     }
-  },[totalSupply])
+  }, [totalSupply]);
 
   useEffect(() => {
     if (strkData != null) {
@@ -169,6 +243,39 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       setnetStrkBorrow(0);
     }
   }, [strkData]);
+
+  const [collateralAmounts, setCollateralAmounts] = useState<any>([]); // Initialize with default values
+  const [tokenSelection,setTokenSelection] = useState(Array(Borrows.length).fill(0));
+  useEffect(() => {
+    // Initialize collateralAmounts with the values from Borrows
+    setCollateralAmounts(
+      Borrows.map(
+        (borrow: {
+          collateralCoin: string;
+          maxLeverage: any;
+          collateralSuggestedAmount: any;
+        }) =>
+          borrow.collateralSuggestedAmount /
+            borrow?.maxLeverage /
+            oraclePrices?.find(
+              (curr: any) => curr.name === borrow?.collateralCoin
+            )?.price || 0
+      )
+    );
+  }, [Borrows]);
+
+  const handleTokenChange = (value: any, index: number) => {
+    const newTokenSelections = [...tokenSelection];
+    newTokenSelections[index] = value || 0; // Convert value to float or default to 0 if it's not a valid number
+    setTokenSelection(newTokenSelections);
+  };
+
+  const handleInputChange = (value: any, index: number) => {
+    const newCollateralAmounts = [...collateralAmounts];
+    newCollateralAmounts[index] = parseFloat(value) || 0; // Convert value to float or default to 0 if it's not a valid number
+    setCollateralAmounts(newCollateralAmounts);
+  };
+  console.log(collateralAmounts,"cr")
 
   const getBoostedAprSupply = (coin: any) => {
     if (strkData == null) {
@@ -194,7 +301,140 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       }
     }
   };
+  const getStrkAlloaction = (pool: any) => {
+    try {
+      if (strkTokenAlloactionData[pool]) {
+        return strkTokenAlloactionData[pool][
+          strkTokenAlloactionData[pool].length - 1
+        ]?.allocation;
+      } else {
+        return 0;
+      }
+    } catch (err) {
+      return 0;
+    }
+  };
+  const [selectedIndex, setselectedIndex] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState(null);
 
+  const handleDropdownClick = (dropdownId: any) => {
+    if (openDropdown === dropdownId) {
+      setOpenDropdown(null); // Close the dropdown if it's already open
+    } else {
+      setOpenDropdown(dropdownId); // Open the clicked dropdown
+    }
+  };
+  const handleBorrowAndSpend = async () => {
+    try {
+      if (tokenSelection[selectedIndex ?selectedIndex:0] != 1) {
+        const borrowAndSpend = await writeAsyncBorrowAndSpend();
+        setDepositTransHash(borrowAndSpend?.transaction_hash);
+        if (borrowAndSpend?.transaction_hash) {
+          const toastid = toast.info(
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const uqID = getUniqueId();
+          const trans_data = {
+            transaction_hash: borrowAndSpend?.transaction_hash.toString(),
+            // message: `You have successfully traded`,
+            message: `Transaction successful`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
+        }
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
+      } else if (tokenSelection[selectedIndex ?selectedIndex:0] == 1) {
+        const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
+        setDepositTransHash(borrowAndSpendR?.transaction_hash);
+        if (borrowAndSpendR?.transaction_hash) {
+          const toastid = toast.info(
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const uqID = getUniqueId();
+          const trans_data = {
+            transaction_hash: borrowAndSpendR?.transaction_hash.toString(),
+            // message: `You have successfully traded`,
+            message: `Transaction successful`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+            uniqueID: uqID,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
+        }
+        const uqID = getUniqueId();
+        let data: any = localStorage.getItem("transactionCheck");
+        data = data ? JSON.parse(data) : [];
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus("success"));
+        }
+      }
+    } catch (err: any) {
+      //console.log(err);
+      const uqID = getUniqueId();
+      let data: any = localStorage.getItem("transactionCheck");
+      data = data ? JSON.parse(data) : [];
+      if (data && data.includes(uqID)) {
+        // dispatch(setTransactionStatus("failed"));
+        setTransactionStarted(false);
+      }
+      const toastContent = (
+        <div>
+          Transaction declined{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      setselectedIndex(null);
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      });
+    }
+  };
   const getBoostedApr = (coin: any) => {
     if (strkData == null) {
       return 0;
@@ -244,30 +484,19 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
     return matchedObject ? matchedObject.apr * 100 : 0;
   };
 
+  const ddRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (Borrows || Borrows?.length > 0) {
-      setLoading(false);
+    if (selectedIndex != null) {
+      handleBorrowAndSpend();
     }
-  }, [Borrows]);
+  }, [selectedIndex]);
 
   const strkTokenAlloactionData: any = useSelector(
     selectJedistrkTokenAllocation
   );
-  const getStrkAlloaction = (pool: any) => {
-    try {
-      if (strkTokenAlloactionData[pool]) {
-        return strkTokenAlloactionData[pool][
-          strkTokenAlloactionData[pool].length - 1
-        ]?.allocation;
-      } else {
-        return 0;
-      }
-    } catch (err) {
-      return 0;
-    }
-  };
-  const coin= { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" };
-  const borrowcoin= { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" };
+  const coin = { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" };
+  const borrowcoin = { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" };
   const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
     const matchedObject = dataArray.find((item) => {
       if (item.name === "USDT/USDC") {
@@ -307,7 +536,10 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
         size="xl"
       />
     </Box>
-  ) : upper_bound >= lower_bound && Borrows && Borrows?.length > 0 && totalSupply>=10 ? (
+  ) : upper_bound >= lower_bound &&
+    Borrows &&
+    Borrows?.length > 0 &&
+    totalSupply >= 10 ? (
     <Box
       bg="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
       color="white"
@@ -389,9 +621,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
           </Thead>
           <Tbody position="relative" overflowX="hidden">
             {Borrows?.slice(lower_bound, upper_bound + 1)
-            // .sort((a: { maxApr: number; }, b: { maxApr: number; }) => b.maxApr - a.maxApr)
-            .map(
-              (borrow: any, idx: any) => {
+              // .sort((a: { maxApr: number; }, b: { maxApr: number; }) => b.maxApr - a.maxApr)
+              .map((borrow: any, idx: any) => {
                 return (
                   <>
                     <Tr
@@ -534,19 +765,186 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         >
                           <HStack
                             height="2rem"
-                            width="2rem"
+                            // width="2rem"
                             alignItems="center"
                             justifyContent="center"
                           >
-                            <Image
-                              src={`/${borrow?.collateralCoin}.svg`}
-                              alt="Picture of the author"
-                              width="32"
-                              height="32"
-                            />
-                            <Text fontSize="14px" fontWeight="400">
-                              {borrow?.collateralCoin}
-                            </Text>
+                            <Box
+                              display="flex"
+                              border="1px"
+                              borderColor="#2B2F35"
+                              justifyContent="space-between"
+                              ml="2rem"
+                              py="2"
+                              pl="3"
+                              pr="3"
+                              width="7rem"
+                              borderRadius="md"
+                              className="navbar"
+                              cursor="pointer"
+                              ref={ddRef}
+                              // gap="2rem"
+                              onClick={() => {
+                                handleDropdownClick(idx);
+                              }}
+                            >
+                              <Box display="flex" gap="1">
+                                <Image
+                                  src={`/${borrow?.collateralCoin}.svg`}
+                                  alt="Picture of the author"
+                                  width="16"
+                                  height="16"
+                                />
+                                <Text fontSize="14px" fontWeight="400">
+                                  {tokenSelection[lower_bound+idx]==0? borrow?.collateralCoin:"r"+borrow?.collateralCoin}
+                                </Text>
+                              </Box>
+
+                              <Box pt="0.5" className="navbar-button">
+                                <DropdownUp />
+                              </Box>
+
+                              {openDropdown === idx && (
+                                <Box
+                                  w="full"
+                                  left="0"
+                                  bg="#03060B"
+                                  py="2"
+                                  className="dropdown-container"
+                                  boxShadow="dark-lg"
+                                >
+                                  {[
+                                    borrow?.collateralCoin,
+                                    "r" + borrow?.collateralCoin,
+                                  ].map((item: string, index: number) => {
+                                    return (
+                                      <Box
+                                        key={index}
+                                        as="button"
+                                        w="full"
+                                        display="flex"
+                                        alignItems="center"
+                                        gap="1"
+                                        pr="2"
+                                        onClick={() => {
+                                          // setCurrentSelectedDrop(item);
+                                          handleTokenChange(index,lower_bound+idx)
+                                        }}
+                                        _hover={{
+                                          bg: "#171026",
+                                        }}
+                                      >
+                                        {item === borrow?.collateralCoin && (
+                                          <Box
+                                            w="3px"
+                                            h="28px"
+                                            bg="#4954DC"
+                                            borderRightRadius="md"
+                                          ></Box>
+                                        )}
+                                        <Box
+                                          w="full"
+                                          display="flex"
+                                          py="5px"
+                                          px={`${
+                                            item === borrow?.collateralCoin
+                                              ? "3"
+                                              : "5"
+                                          }`}
+                                          gap="1"
+                                          borderRadius="md"
+                                        >
+                                          <Image
+                                            src={`/${borrow?.collateralCoin}.svg`}
+                                            alt="Picture of the author"
+                                            width="16"
+                                            height="16"
+                                          />
+                                          <Text color="white">{item}</Text>
+                                        </Box>
+                                      </Box>
+                                    );
+                                  })}
+                                </Box>
+                              )}
+                            </Box>
+                          </HStack>
+                        </VStack>
+                      </Td>
+                      <Td
+                        width={"12.5%"}
+                        maxWidth={"5rem"}
+                        fontSize={"14px"}
+                        fontWeight={400}
+                        textAlign={"center"}
+                        pl="5rem"
+                      >
+                        <VStack
+                          width="100%"
+                          display="flex"
+                          alignItems="center"
+                          height="2.5rem"
+                        >
+                          <HStack
+                            height="2rem"
+                            // width="2rem"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <Box
+                              width="7rem"
+                              color="white"
+                              borderRadius="6px"
+                              display="flex"
+                              border="1px solid #2B2F35"
+                              // bg="black"
+                              justifyContent="space-between"
+                              mt="0.3rem"
+                              onClick={() => {
+                                // setselectedIndex(idx)
+                              }}
+                            >
+                              <NumberInput
+                                border="0px"
+                                min={0}
+                                keepWithinRange={true}
+                                color="white"
+                                // onChange={handleChange}
+                                value={
+                                  collateralAmounts[lower_bound + idx]
+                                    ? collateralAmounts[lower_bound + idx]
+                                    : ""
+                                }
+                                onChange={(e) =>
+                                  handleInputChange(e, lower_bound + idx)
+                                }
+                                // defaultValue={borrow?.collateralSuggestedAmount}
+                                // value={depositAmount ? depositAmount : ""}
+                                outline="none"
+                                precision={2}
+                                // step={parseFloat(`${depositAmount <= 99999 ? 0.1 : 0}`)}
+                                _disabled={{ cursor: "pointer" }}
+                              >
+                                <NumberInputField
+                                  placeholder={"min 1000$ collateral"}
+                                  _disabled={{ color: "#00D395" }}
+                                  border="0px"
+                                  _placeholder={{
+                                    color: "#3E415C",
+                                    fontSize: ".89rem",
+                                    fontWeight: "600",
+                                    outline: "none",
+                                  }}
+                                  _focus={{
+                                    outline: "0",
+                                    boxShadow: "none",
+                                  }}
+                                />
+                              </NumberInput>
+                              {/* <Text fontSize="14px" fontWeight="400">
+                              {borrow?.collateralSuggestedAmount}
+                            </Text> */}
+                            </Box>
                           </HStack>
                         </VStack>
                       </Td>
@@ -587,15 +985,54 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 " " +
                                 borrow.collateralMarket
                             );
-                            posthog.capture("Your Borrow Actions Clicked", {
-                              Clicked: true,
-                            });
                             setCurrentSpendStatus(borrow.spendType);
                             setCurrentLoanAmount(borrow?.currentLoanAmount);
                             setCurrentLoanMarket(borrow?.currentLoanMarket);
                           }}
                         >
-                          {numberFormatterPercentage(borrow.maxApr)}%
+                          {/* {numberFormatterPercentage(Number(
+                            ((5000 /oraclePrices.find(
+                                (curr: any) => curr.name === "USDT"
+                              )?.price) *
+                              (-stats?.find(
+                                (stat: any) => stat?.token === "USDT"
+                              )?.borrowRate +
+                                getAprByPool(
+                                  poolAprs,
+                                  "STRK/ETH",
+                                  "JEDI_SWAP"
+                                ) +
+                                getBoostedApr("USDT") +
+                                (100 *
+                                  365 *
+                                  (getStrkAlloaction("STRK/ETH") *
+                                    oraclePrices.find(
+                                      (curr: any) => curr.name === "STRK"
+                                    )?.price)) /
+                                  getTvlByPool(
+                                    poolAprs,
+                                    "STRK/ETH",
+                                    "JEDI_SWAP"
+                                  )) +
+                              collateralAmounts[lower_bound + idx] *
+                                oraclePrices.find(
+                                  (curr: any) =>
+                                    curr.name === borrow?.collateralCoin
+                                )?.price *
+                                (stats?.find(
+                                  (stat: any) =>
+                                    stat?.token === borrow?.collateralCoin
+                                )?.supplyRate +
+                                  getBoostedAprSupply(
+                                    borrow?.collateralCoin
+                                  ))) /
+                              (collateralAmounts[lower_bound + idx] *
+                                oraclePrices.find(
+                                  (curr: any) =>
+                                    curr.name === borrow?.collateralCoin
+                                )?.price)
+                          ))} */}
+                          %
                         </Box>
                       </Td>
 
@@ -606,7 +1043,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontWeight={400}
                         textAlign={"right"}
                         pr="1rem"
-                    
                       >
                         <Box
                           width="100%"
@@ -626,12 +1062,22 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 " " +
                                 borrow.collateralMarket
                             );
-                            posthog.capture("Your Borrow Actions Clicked", {
-                              Clicked: true,
-                            });
                             setCurrentSpendStatus(borrow.spendType);
                             setCurrentLoanAmount(borrow?.currentLoanAmount);
                             setCurrentLoanMarket(borrow?.currentLoanMarket);
+                            setselectedIndex(idx);
+                            setLoanMarket("USDT");
+                            setLoanAmount(5000);
+                            setCollateralMarket(borrow?.collateralCoin);
+                            let rtoken:any="r"+borrow?.collateralCoin
+                            setRToken(rtoken)
+                            setCollateralAmount(
+                              collateralAmounts[lower_bound + idx]
+                            );
+                            setL3App("JEDI_SWAP");
+                            setMethod("ADD_LIQUIDITY");
+                            setToMarketLiqA("ETH");
+                            setToMarketLiqB("USDC");
                           }}
                         >
                           <Box>
@@ -645,57 +1091,15 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               validRTokens={validRTokens}
                               currentBorrowMarketCoin={currentBorrowMarketCoin}
                               suggestedBorrow={borrowcoin}
-                              suggestedCollateral={coin}
+                              suggestedCollateral={borrow?.collateralCoin}
+                              collateralSuggestedAmount={collateralAmounts[lower_bound + idx]}
+                              borrowSuggestedAmount={5000/
+                              oraclePrices.find(
+                                (curr: any) => curr.name === "USDT"
+                              )?.price}
                               spendAction={borrow?.actionType=="Swap" ?"2":"1"}
                               pool={"USDC/USDT"}
                             />
-                            {/* <YourBorrowModal
-                                currentID={borrow.loanId}
-                                currentMarket={borrow.loanMarket}
-                                borrowIDCoinMap={borrowIDCoinMap}
-                                currentBorrowId1={currentBorrowId1}
-                                setCurrentBorrowId1={setCurrentBorrowId1}
-                                currentBorrowMarketCoin1={
-                                  currentBorrowMarketCoin1
-                                }
-                                setCurrentBorrowMarketCoin1={
-                                  setCurrentBorrowMarketCoin1
-                                }
-                                currentBorrowId2={currentBorrowId2}
-                                setCurrentBorrowId2={setCurrentBorrowId2}
-                                currentBorrowMarketCoin2={
-                                  currentBorrowMarketCoin2
-                                }
-                                setCurrentBorrowMarketCoin2={
-                                  setCurrentBorrowMarketCoin2
-                                }
-                                currentLoanAmount={currentLoanAmount}
-                                currentLoanAmountParsed={
-                                  borrow?.currentLoanAmountParsed
-                                }
-                                setCurrentLoanAmount={setCurrentLoanAmount}
-                                currentLoanMarket={currentLoanMarket}
-                                setCurrentLoanMarket={setCurrentLoanMarket}
-                                collateralBalance={collateralBalance}
-                                setCollateralBalance={setCollateralBalance}
-                                loan={borrow}
-                                borrowIds={borrowIds}
-                                BorrowBalance={borrowAmount}
-                                allSplit={allSplit}
-                                buttonText="Actions"
-                                height={"2rem"}
-                                fontSize={"12px"}
-                                padding="6px 12px"
-                                border="1px solid #BDBFC1"
-                                bgColor="#101216"
-                                _hover={{ bg: "white", color: "black" }}
-                                borderRadius={"6px"}
-                                color="#BDBFC1;"
-                                borrowAPRs={borrowAPRs}
-                                borrow={borrow}
-                                spendType={currentSpendStatus}
-                                setSpendType={setCurrentSpendStatus}
-                              /> */}
                           </Box>
                         </Box>
                       </Td>
@@ -712,8 +1116,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                     />
                   </>
                 );
-              }
-            )}
+              })}
             {(() => {
               const rows = [];
               for (
@@ -747,8 +1150,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
             </Box>
-            To access the Degen page, please add more supplies as your current value is
-        less than $1000. 
+            To access the Degen page, please add more supplies as your current
+            value is less than $1000.
             <Box
               mr="1"
               as="span"
@@ -771,7 +1174,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                 currentSupplyAPR={currentSupplyAPR}
                 setCurrentSupplyAPR={setCurrentSupplyAPR}
                 coin={coinPassed}
-                />
+              />
             </Box>
           </Box>
         </Box>
