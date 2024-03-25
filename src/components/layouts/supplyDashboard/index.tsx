@@ -235,7 +235,6 @@ const SupplyDashboard = ({
                   supply[i],
                   reduxProtocolStats
                 );
-                console.log(avg, supply[i], "data");
                 ////console.log(avg, "avg in supply dash");
                 const data = {
                   token: supply[i].token,
@@ -364,10 +363,10 @@ const SupplyDashboard = ({
         ) {
           if (index == 2 || index == 3) {
             if (
-              supply?.[index]?.rTokenAmountParsed > 0.000001 ||
-              supply?.[index]?.rTokenFreeParsed > 0.000001 ||
-              supply?.[index]?.rTokenLockedParsed > 0.000001 ||
-              supply?.[index]?.rTokenStakedParsed > 0.000001
+              supply?.[index]?.rTokenAmountParsed > 0.00001 ||
+              supply?.[index]?.rTokenFreeParsed > 0.00001 ||
+              supply?.[index]?.rTokenLockedParsed > 0.00001 ||
+              supply?.[index]?.rTokenStakedParsed > 0.00001
             ) {
               data[index] = supply[index];
               count++;
@@ -379,12 +378,6 @@ const SupplyDashboard = ({
         }
       });
       setSupplies(data);
-      console.log(count, "count");
-      console.log(
-        data.filter((val: any) => val),
-        "supply filter dash"
-      );
-
       dispatch(setUsersFilteredSupply(count));
       setLoading(false);
     }

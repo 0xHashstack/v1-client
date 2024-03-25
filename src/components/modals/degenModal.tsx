@@ -153,6 +153,8 @@ import {
     suggestedBorrow,
     spendAction,
     pool,
+    collateralSuggestedAmount,
+    borrowSuggestedAmount,
 
     ...restProps
   }: any) => {
@@ -210,8 +212,8 @@ import {
     const [sliderValue2, setsliderValue2] = useState(0);
     const dispatch = useDispatch();
     const [inputAmount, setinputAmount] = useState(0);
-    const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
-    const [inputBorrowAmount, setinputBorrowAmount] = useState<any>(0);
+    const [inputCollateralAmount, setinputCollateralAmount] = useState(collateralSuggestedAmount);
+    const [inputBorrowAmount, setinputBorrowAmount] = useState<any>(borrowSuggestedAmount);
     const modalDropdowns = useSelector(selectModalDropDowns);
     const [transactionStarted, setTransactionStarted] = useState(false);
   
@@ -242,19 +244,19 @@ import {
     const [walletBalance, setwalletBalance] = useState(0);
     useEffect(() => {
       setwalletBalance(
-        walletBalances[coin?.name]?.statusBalanceOf === "success"
+        walletBalances[suggestedCollateral]?.statusBalanceOf === "success"
           ? parseAmount(
               String(
                 uint256.uint256ToBN(
-                  walletBalances[coin?.name]?.dataBalanceOf?.balance
+                  walletBalances[suggestedCollateral]?.dataBalanceOf?.balance
                 )
               ),
-              tokenDecimalsMap[coin?.name]
+              tokenDecimalsMap[suggestedCollateral]
             )
           : 0
       );
       ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
-    }, [walletBalances[coin?.name]?.statusBalanceOf]);
+    }, [walletBalances[suggestedCollateral]?.statusBalanceOf]);
     const dapps = [
       { name: "Jediswap", status: "enable" },
       { name: "mySwap", status: "enable" },
@@ -483,7 +485,7 @@ import {
     const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI", "STRK"];
   
     const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
-      suggestedCollateral ? suggestedCollateral?.name : "BTC"
+      suggestedCollateral ? suggestedCollateral : "BTC"
     );
   
     // const coinAlign = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -639,7 +641,7 @@ import {
         // setCollateralMarket(coin ? coin.name : "BTC");
       } else {
         setLoanMarket(suggestedBorrow ? suggestedBorrow.name : "BTC");
-        setCollateralMarket(suggestedCollateral ? suggestedCollateral.name : "BTC");
+        setCollateralMarket(suggestedCollateral ? suggestedCollateral : "BTC");
       }
     }, [suggestedCollateral]);
     const resetStates = () => {
@@ -652,9 +654,9 @@ import {
       setLoanAmount(0);
       // setCurrentDapp("Select a dapp");
       // setCurrentPool("Select a pool");
-      setCurrentCollateralCoin(coin ? coin.name : "BTC");
-      setCollateralMarket(coin ? coin.name : "BTC");
-      setCurrentBorrowCoin(coin ? coin.name : "BTC");
+      setCurrentCollateralCoin(suggestedCollateral ? suggestedCollateral : "BTC");
+      setCollateralMarket(suggestedCollateral ? suggestedCollateral : "BTC");
+      setCurrentBorrowCoin(suggestedBorrow ? suggestedBorrow?.name : "BTC");
       setLoanMarket(coin ? coin.name : "BTC");
       // setCurrentPoolCoin("Select a pool");
       setRadioValue(spendAction?spendAction: "1");
@@ -663,14 +665,14 @@ import {
       // setTransactionStarted(false);
       dispatch(resetModalDropdowns());
       setwalletBalance(
-        walletBalances[coin?.name]?.statusBalanceOf === "success"
+        walletBalances[suggestedCollateral]?.statusBalanceOf === "success"
           ? parseAmount(
               String(
                 uint256.uint256ToBN(
-                  walletBalances[coin?.name]?.dataBalanceOf?.balance
+                  walletBalances[suggestedCollateral]?.dataBalanceOf?.balance
                 )
               ),
-              tokenDecimalsMap[coin?.name]
+              tokenDecimalsMap[suggestedCollateral]
             )
           : 0
       );
@@ -1812,11 +1814,11 @@ import {
                                             parseAmount(
                                               String(
                                                 uint256.uint256ToBN(
-                                                  walletBalances[coin]
+                                                  walletBalances[suggestedCollateral]
                                                     ?.dataBalanceOf?.balance
                                                 )
                                               ),
-                                              tokenDecimalsMap[coin]
+                                              tokenDecimalsMap[suggestedCollateral]
                                             )
                                           )
                                         : "-"}
@@ -1885,7 +1887,7 @@ import {
                           keepWithinRange={true}
                           onChange={handleChange}
                           value={
-                            inputCollateralAmount ? inputCollateralAmount : ""
+                            collateralSuggestedAmount ? collateralSuggestedAmount : ""
                           }
                           step={parseFloat(
                             `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
@@ -2460,8 +2462,8 @@ import {
                           border="0px"
                           min={0}
                           keepWithinRange={true}
-                          onChange={handleBorrowChange}
-                          value={inputBorrowAmount ? inputBorrowAmount : ""}
+                          // onChange={handleBorrowChange}
+                          value={borrowSuggestedAmount ? borrowSuggestedAmount : ""}
                           step={parseFloat(
                             `${inputBorrowAmount <= 99999 ? 0.1 : 0}`
                           )}
