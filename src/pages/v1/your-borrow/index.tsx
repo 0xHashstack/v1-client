@@ -32,6 +32,7 @@ import {
 import { useAccount } from '@starknet-react/core'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
 const YourBorrow = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1)
   const columnItems = [
@@ -105,7 +106,7 @@ const YourBorrow = () => {
             )}
           </VStack>
           <VStack gap={'3px'}>
-            <Text
+            <Box
               color="#6e7681"
               fontSize="14px"
               display="flex"
@@ -132,7 +133,7 @@ const YourBorrow = () => {
                   <InfoIconBig />
                 </Box>
               </Tooltip>
-            </Text>
+            </Box>
 
             {netAPR == null ? (
               <Skeleton

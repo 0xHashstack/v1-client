@@ -14,11 +14,10 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { useAccount } from '@starknet-react/core'
-import axios from 'axios'
 import Image from 'next/image'
 import posthog from 'posthog-js'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { ILoan } from '@/Blockchain/interfaces/interfaces'
 import ExpandedCoinIcon from '@/assets/expanded/ExpandedCoins'
@@ -37,7 +36,6 @@ import {
   selectProtocolStats,
   selectUserDeposits,
   selectUserLoans,
-  setNetAprLoans,
 } from '@/store/slices/readDataSlice'
 import {
   selectJedistrkTokenAllocation,
@@ -111,16 +109,21 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
   const [statusHoverIndex, setStatusHoverIndex] = useState('-1')
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<Number>(2)
   const [dollarConversions, setDollarConversions] = useState(false)
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0)
 
   const Borrows = useSelector(selectUserLoans)
-  const { account, address } = useAccount()
   const userDeposits = useSelector(selectUserDeposits)
   const reduxProtocolStats = useSelector(selectProtocolStats)
   const oraclePrices = useSelector(selectOraclePrices)
   const avgsLoneHealth = useSelector(selectHealthFactor)
   const stats = useSelector(selectProtocolStats)
   const poolAprs = useSelector(selectJediswapPoolAprs)
-  const dispatch = useDispatch()
+  const strkData = useSelector(selectStrkAprData)
+  const netSpendBalance = useSelector(selectnetSpendBalance)
+  const strkTokenAlloactionData: any = useSelector(
+    selectJedistrkTokenAllocation
+  )
+  const { account, address } = useAccount()
 
   let lower_bound = 6 * (currentPagination - 1)
   let upper_bound = lower_bound + 5
@@ -187,27 +190,6 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
         break
     }
   }
-
-  const strkData = useSelector(selectStrkAprData)
-  const netSpendBalance = useSelector(selectnetSpendBalance)
-
-  const [netStrkBorrow, setnetStrkBorrow] = useState(0)
-
-  useEffect(() => {
-    if (strkData != null) {
-      let netallocation = 0
-      for (let token in strkData) {
-        if (strkData.hasOwnProperty(token)) {
-          const array = strkData[token]
-          const lastObject = array[array.length - 1]
-          netallocation += 0.3 * lastObject.allocation
-        }
-      }
-      setnetStrkBorrow(netallocation)
-    } else {
-      setnetStrkBorrow(0)
-    }
-  }, [strkData])
 
   const getBoostedAprSupply = (coin: any) => {
     if (strkData == null) {
@@ -281,6 +263,38 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
       }
     })
     return matchedObject ? matchedObject.apr * 100 : 0
+  }
+
+  const getStrkAlloaction = (pool: any) => {
+    try {
+      if (strkTokenAlloactionData[pool]) {
+        return strkTokenAlloactionData[pool][
+          strkTokenAlloactionData[pool].length - 1
+        ]?.allocation
+      } else {
+        return 0
+      }
+    } catch (err) {
+      return 0
+    }
+  }
+
+  const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
+    const matchedObject = dataArray.find((item) => {
+      if (item.name === 'USDT/USDC') {
+        return item.amm === 'jedi' && 'USDC/USDT' === pool
+      } else if (item.name == 'ETH/STRK') {
+        return item.amm === 'jedi' && 'STRK/ETH' === pool
+      } else if (item.name === 'ETH/DAI') {
+        return item.amm === 'jedi' && 'DAI/ETH' === pool
+      } else {
+        return (
+          item.name === pool &&
+          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : 'myswap')
+        )
+      }
+    })
+    return matchedObject ? matchedObject.tvl : 0
   }
 
   useEffect(() => {
@@ -425,41 +439,21 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
     }
   }, [Borrows])
 
-  const strkTokenAlloactionData: any = useSelector(
-    selectJedistrkTokenAllocation
-  )
-
-  const getStrkAlloaction = (pool: any) => {
-    try {
-      if (strkTokenAlloactionData[pool]) {
-        return strkTokenAlloactionData[pool][
-          strkTokenAlloactionData[pool].length - 1
-        ]?.allocation
-      } else {
-        return 0
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0
+      for (let token in strkData) {
+        if (strkData.hasOwnProperty(token)) {
+          const array = strkData[token]
+          const lastObject = array[array.length - 1]
+          netallocation += 0.3 * lastObject.allocation
+        }
       }
-    } catch (err) {
-      return 0
+      setnetStrkBorrow(netallocation)
+    } else {
+      setnetStrkBorrow(0)
     }
-  }
-
-  const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
-    const matchedObject = dataArray.find((item) => {
-      if (item.name === 'USDT/USDC') {
-        return item.amm === 'jedi' && 'USDC/USDT' === pool
-      } else if (item.name == 'ETH/STRK') {
-        return item.amm === 'jedi' && 'STRK/ETH' === pool
-      } else if (item.name === 'ETH/DAI') {
-        return item.amm === 'jedi' && 'DAI/ETH' === pool
-      } else {
-        return (
-          item.name === pool &&
-          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : 'myswap')
-        )
-      }
-    })
-    return matchedObject ? matchedObject.tvl : 0
-  }
+  }, [strkData])
 
   return loading ? (
     <Box
@@ -543,7 +537,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                   fontWeight={400}
                   p={0}
                 >
-                  <Text
+                  <Box
                     whiteSpace="pre-wrap"
                     overflowWrap="break-word"
                     width={'100%'}
@@ -583,11 +577,12 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                     >
                       {val}
                     </Tooltip>
-                  </Text>
+                  </Box>
                 </Td>
               ))}
             </Tr>
           </Thead>
+
           <Tbody position="relative" overflowX="hidden">
             {Borrows?.slice(lower_bound, upper_bound + 1).map(
               (borrow: any, idx: any) => {
@@ -686,14 +681,15 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                 {borrow?.loanMarket}
                               </Text>
                             </HStack>
+
                             <HStack>
-                              <Text
+                              <Box
                                 fontSize="14px"
                                 fontWeight="500"
                                 color="#F7BB5B"
                                 width="4.6rem"
                               >
-                                <Text textAlign="left">
+                                <Box textAlign="left">
                                   <Tooltip
                                     hasArrow
                                     label={
@@ -767,8 +763,8 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                           borrow?.loanAmountParsed
                                         )}
                                   </Tooltip>
-                                </Text>
-                              </Text>
+                                </Box>
+                              </Box>
                             </HStack>
                           </VStack>
                         </Box>
@@ -820,7 +816,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                           (item: any) => item?.loanId == borrow?.loanId
                         )?.avg ? (
                           borrow?.spendType == 'LIQUIDITY' ? (
-                            <Text
+                            <Box
                               width="100%"
                               height="100%"
                               display="flex"
@@ -1392,9 +1388,9 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     )?.exchangeRateRtokenToUnderlying
                                 ).toFixed(3) + '%'}
                               </Tooltip>
-                            </Text>
+                            </Box>
                           ) : (
-                            <Text
+                            <Box
                               width="100%"
                               height="100%"
                               display="flex"
@@ -1740,7 +1736,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         )?.exchangeRateRtokenToUnderlying)
                                 )?.toFixed(2) + '%'}
                               </Tooltip>
-                            </Text>
+                            </Box>
                           )
                         ) : (
                           <Skeleton
@@ -1782,7 +1778,8 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               {borrow?.collateralMarket}
                             </Text>
                           </HStack>
-                          <Text
+
+                          <Box
                             fontSize="14px"
                             fontWeight="500"
                             color="#F7BB5B"
@@ -1862,7 +1859,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     )}
                               </Text>
                             </Tooltip>
-                          </Text>
+                          </Box>
                         </VStack>
                       </Td>
 
@@ -1894,6 +1891,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                 {borrow.spendType}
                               </Text>
                             </HStack>
+
                             <HStack
                               height="50%"
                               width="100%"
@@ -2088,7 +2086,8 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                   </Box>
                                 )}
                               </Box>
-                              <Text fontSize="14px" fontWeight="400">
+
+                              <Box fontSize="14px" fontWeight="400">
                                 {borrow.spendType == 'LIQUIDITY' ? (
                                   allSplit?.length === 0 ? (
                                     <Skeleton
@@ -2141,7 +2140,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     borrow?.currentLoanAmountParsed
                                   )
                                 )}
-                              </Text>
+                              </Box>
                             </HStack>
                           </Box>
                         )}
@@ -2750,6 +2749,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                 )
               }
             )}
+
             {(() => {
               const rows = []
               for (
