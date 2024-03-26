@@ -1386,7 +1386,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 )
                               : 0)*oraclePrices?.find(
                                 (curr: any) => curr.name === borrow?.collateral
-                              )?.price)<1000) && ((userDeposit?.find((item: any) => item?.rToken == "r"+borrow?.collateral)
+                              )?.price)<20) && ((userDeposit?.find((item: any) => item?.rToken == "r"+borrow?.collateral)
                               ?.rTokenFreeParsed*oraclePrices?.find(
                                 (curr: any) => curr.name === borrow?.collateral
                               )?.price)<1000)) 
@@ -1446,7 +1446,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               )
                             : 0)*oraclePrices?.find(
                               (curr: any) => curr.name === borrow?.collateral
-                            )?.price)>=1000) || ((userDeposit?.find((item: any) => item?.rToken == "r"+borrow?.collateral)
+                            )?.price)>=20) || ((userDeposit?.find((item: any) => item?.rToken == "r"+borrow?.collateral)
                             ?.rTokenFreeParsed*oraclePrices?.find(
                               (curr: any) => curr.name === borrow?.collateral
                             )?.price)>=1000)) ? (
