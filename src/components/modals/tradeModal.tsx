@@ -4365,11 +4365,6 @@ const TradeModal = ({
                   inputBorrowAmount <= maximumLoanAmount) ||
                   process.env.NEXT_PUBLIC_NODE_ENV == 'testnet') &&
                 inputBorrowAmount <= currentAvailableReserves &&
-                (currentBorrowCoin === 'USDT'
-                  ? currentPool !== 'STRK/ETH'
-                  : currentBorrowCoin === 'BTC'
-                    ? currentPool !== 'STRK/ETH'
-                    : true) &&
                 inputBorrowAmount > 0 &&
                 ((tokenTypeSelected == 'Native'
                   ? inputCollateralAmount >= minimumDepositAmount &&

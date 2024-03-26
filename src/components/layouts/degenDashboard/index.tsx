@@ -183,7 +183,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   const [showEmptyNotification, setShowEmptyNotification] = useState(false)
   const avgs = useSelector(selectEffectiveApr)
   const allSplit = useSelector(selectMySplit)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [coinPassed, setCoinPassed] = useState({
     name: 'USDT',
     icon: 'mdi-bitcoin',
@@ -285,7 +285,24 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   useEffect(() => {
     // Initialize collateralAmounts with the values from Borrows
     setCollateralAmounts(
-      Borrows.map(
+      Borrows.sort(
+        (
+          a: { collateralCoin: string },
+          b: { collateralCoin: string }
+        ) => {
+          // Check if 'coin' matches 'collateralcoin'
+          const isCollateralA = a.collateralCoin === maxSuppliedCoin
+          const isCollateralB = b.collateralCoin === maxSuppliedCoin
+
+          if (isCollateralA && !isCollateralB) {
+            return -1 // 'a' should come before 'b'
+          } else if (!isCollateralA && isCollateralB) {
+            return 1 // 'b' should come before 'a'
+          } else {
+            return 0 // No change in order
+          }
+        }
+      ).map(
         (borrow: {
           collateralCoin: string
           maxLeverage: any
@@ -300,15 +317,32 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
           ).toFixed(3) || 0
       )
     )
-  }, [Borrows])
+  }, [Borrows,maxSuppliedCoin])
 
   useEffect(() => {
     setcollateralMarkets(
-      Borrows.map(
+      Borrows.sort(
+        (
+          a: { collateralCoin: string },
+          b: { collateralCoin: string }
+        ) => {
+          // Check if 'coin' matches 'collateralcoin'
+          const isCollateralA = a.collateralCoin === maxSuppliedCoin
+          const isCollateralB = b.collateralCoin === maxSuppliedCoin
+
+          if (isCollateralA && !isCollateralB) {
+            return -1 // 'a' should come before 'b'
+          } else if (!isCollateralA && isCollateralB) {
+            return 1 // 'b' should come before 'a'
+          } else {
+            return 0 // No change in order
+          }
+        }
+      ).map(
         (borrow: { collateralCoin: string }) => borrow?.collateralCoin
       )
     )
-  }, [Borrows])
+  }, [Borrows,maxSuppliedCoin])
 
   const handleTokenChange = (value: any, index: number) => {
     const newTokenSelections = [...tokenSelection]
@@ -539,12 +573,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       handleBorrowAndSpend()
     }
   }, [selectedIndex])
-
-  useEffect(() => {
-    if (oraclePrices) {
-      setLoading(false)
-    }
-  }, [oraclePrices])
 
   const strkTokenAlloactionData: any = useSelector(
     selectJedistrkTokenAllocation
@@ -1304,6 +1332,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                           alignItems="center"
                           justifyContent="flex-end"
                           fontWeight="400"
+                        >
+                          <Box
                           onClick={() => {
                             setCurrentBorrowId1('ID - ' + borrow.loanId)
                             setCurrentBorrowMarketCoin1(borrow.loanMarket)
@@ -1361,10 +1391,9 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               setToMarketLiqB('USDC')
                             }
                           }}
-                        >
-                          <Box>
+                          >
                             {collateralAmounts[lower_bound + idx] *
-                              oraclePrices.find(
+                              oraclePrices?.find(
                                 (curr: any) =>
                                   curr.name ===
                                   collateralMarkets[lower_bound + idx]

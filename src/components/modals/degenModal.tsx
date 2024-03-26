@@ -2051,13 +2051,14 @@ const DegenModal = ({
                     </Box>
                   </Tooltip>
                 </Text>
+                <Box>
                 <Box display="flex" gap="0.2rem">
                   <Image
                     src={`/${'JEDI_SWAP'}.svg`}
                     alt="Picture of the author"
                     width="14"
                     height="14"
-                    style={{ marginBottom: '0.2rem' }}
+                    style={{ marginBottom: '0.1rem' }}
                   />
                   <Box>
                     <Text
@@ -2069,6 +2070,15 @@ const DegenModal = ({
                       Jediswap
                     </Text>
                   </Box>
+                </Box>
+                  <Text
+                      ml="1.2rem" 
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="14px"
+                      color="#676D9A">
+                    Strt
+                  </Text>
                 </Box>
               </Text>
               <Text

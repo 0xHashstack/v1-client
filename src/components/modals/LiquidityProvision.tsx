@@ -2122,12 +2122,7 @@ const LiquidityProvisionModal = ({
                   </Text>
                 </Box> */}
               </Box>
-              {currentPool != "Select a pool" &&
-              (currentBorrowMarketCoin === "USDT"
-                ? currentPool !== "STRK/ETH"
-                : currentBorrowMarketCoin === "BTC"
-                ? currentPool !== "STRK/ETH"
-                : true) ? (
+              {currentPool != "Select a pool"  ? (
                 <Box
                   onClick={() => {
                     setTransactionStarted(true);
