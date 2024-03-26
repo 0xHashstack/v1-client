@@ -17,6 +17,7 @@ import {
 } from '@/store/slices/readDataSlice'
 import { Coins } from '@/utils/constants/coin'
 import Link from 'next/link'
+import axios from 'axios'
 
 const data = [
   {
@@ -340,6 +341,21 @@ const Degen: NextPage = () => {
   const totalSupply = useSelector(selectYourSupply)
   const stats = useSelector(selectProtocolStats)
   let userDeposits = useSelector(selectUserDeposits)
+  const [strategies, setstrategies] = useState<any>([])
+
+  useEffect(()=>{
+    try{
+      const fetchStrats=async()=>{
+        const res=await axios.get('https://metricsapimainnet.hashstack.finance/api/degen/strategy')
+        if(res?.data){
+          setstrategies(res?.data);
+        }
+      }
+      fetchStrats();
+    }catch(err){
+      console.log(err,"err in fetching strategies")
+    }
+  },[])
 
   const fetchProtocolStats = async () => {
     try {
@@ -413,7 +429,7 @@ const Degen: NextPage = () => {
 
   return (
     <PageCard pt="6.5rem">
-      <Box
+      {totalSupply >= 0 && <Box
         position="relative"
         width={'95%'}
         height={'180px'}
@@ -460,7 +476,7 @@ const Degen: NextPage = () => {
             </Text>
           </Link>
         </Box>
-      </Box>
+      </Box>}
       <HStack
         display="flex"
         justifyContent="space-between"
@@ -471,7 +487,7 @@ const Degen: NextPage = () => {
       >
         <NavButtons width={70} marginBottom={'0rem'} />
       </HStack>
-      <Box
+      {totalSupply >= 0 &&<Box
         display="flex"
         justifyContent="left"
         w="94%"
@@ -481,15 +497,15 @@ const Degen: NextPage = () => {
         fontSize="sm"
       >
         The borrowing amount is fixed to $5000 worth of assets.
-      </Box>
+      </Box>}
       <DegenDashboard
         width={'95%'}
         currentPagination={currentPagination}
         setCurrentPagination={setCurrentPagination}
         Coins={Coins}
         columnItems={columnItems}
-        Borrows={data}
-        userLoans={data}
+        Borrows={strategies}
+        userLoans={strategies}
         borrowAPRs={borrowAPRs}
         supplyAPRs={supplyAPRs}
         supplies={supplies}
@@ -501,12 +517,12 @@ const Degen: NextPage = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        {totalSupply >= 10 && (
+        {totalSupply >= 0 && (
           <Box>
             <Pagination
               currentPagination={currentPagination}
               setCurrentPagination={(x: any) => setCurrentPagination(x)}
-              max={data?.length || 0}
+              max={strategies?.length || 0}
               rows={6}
             />
           </Box>

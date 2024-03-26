@@ -4902,7 +4902,11 @@ const YourBorrowModal = ({
                     )}
                     {currentAction == 'Spend Borrow' ? (
                       currentDapp != 'Select a dapp' &&
-                      
+                      (currentBorrowMarketCoin1 === 'dUSDT'
+                        ? currentPool !== 'STRK/ETH'
+                        : currentBorrowMarketCoin1 === 'dBTC'
+                          ? currentPool !== 'STRK/ETH'
+                          : true) &&
                       (currentPool != 'Select a pool' ||
                         currentPoolCoin != 'Select a pool') &&
                       spendType === 'UNSPENT' ? (

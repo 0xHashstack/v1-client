@@ -159,6 +159,7 @@ const DegenModal = ({
   collateralSuggestedAmount,
   borrowSuggestedAmount,
   suggestedLeverage,
+  suggestedStrategy,
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -1882,7 +1883,7 @@ const DegenModal = ({
                 </Text>
                 <Box display="flex" gap="0.2rem">
                   <Image
-                    src={`/${suggestedBorrow.name}.svg`}
+                    src={`/${suggestedBorrow}.svg`}
                     alt="Picture of the author"
                     width="14"
                     height="14"
@@ -1894,7 +1895,7 @@ const DegenModal = ({
                     font-size="14px"
                     color="#676D9A"
                   >
-                    {suggestedBorrow.name}
+                    {suggestedBorrow}
                   </Text>
                 </Box>
               </Text>
@@ -1995,7 +1996,7 @@ const DegenModal = ({
                   {numberFormatter(
                     (borrowSuggestedAmount *
                       oraclePrices?.find(
-                        (curr: any) => curr.name === suggestedBorrow.name
+                        (curr: any) => curr.name === suggestedBorrow
                       )?.price) /
                       (collateralSuggestedAmount *
                         oraclePrices?.find(
@@ -2051,7 +2052,7 @@ const DegenModal = ({
                     </Box>
                   </Tooltip>
                 </Text>
-                <Box>
+                <Box display="flex" flexDirection="column" alignItems="flex-end">
                 <Box display="flex" gap="0.2rem">
                   <Image
                     src={`/${'JEDI_SWAP'}.svg`}
@@ -2077,7 +2078,7 @@ const DegenModal = ({
                       font-weight="400"
                       font-size="14px"
                       color="#676D9A">
-                    Strt
+                    {suggestedStrategy.slice(9)}
                   </Text>
                 </Box>
               </Text>
@@ -2599,7 +2600,16 @@ const DegenModal = ({
                 <Box mt="3px">
                   <TableInfoIcon />
                 </Box>
-                Your leverage is set as per the collateral which is 3x
+                Your leverage is set as per the collateral which is {numberFormatter(
+                    (borrowSuggestedAmount *
+                      oraclePrices?.find(
+                        (curr: any) => curr.name === suggestedBorrow
+                      )?.price) /
+                      (collateralSuggestedAmount *
+                        oraclePrices?.find(
+                          (curr: any) => curr.name === suggestedCollateral
+                        )?.price)
+                  )}x
               </Box>
             </Box>
 
