@@ -85,7 +85,7 @@ interface BorrowDashboardProps {
   userLoans: any;
   supplyAPRs: any;
   borrowAPRs: any;
-  supplies:any;
+  supplies: any;
 }
 
 const tooltips = [
@@ -110,7 +110,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   Borrows,
   supplies,
 }) => {
-
   const {
     loanMarket,
     setLoanMarket,
@@ -155,7 +154,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
     isSuccessBorrowAndSpendRToken,
     statusBorrowAndSpendRToken,
   } = useBorrowAndSpend();
-   
+
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState("BTC");
   const [depositTransHash, setDepositTransHash] = useState("");
   const [toastId, setToastId] = useState<any>();
@@ -184,7 +183,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   const [showEmptyNotification, setShowEmptyNotification] = useState(false);
   const avgs = useSelector(selectEffectiveApr);
   const allSplit = useSelector(selectMySplit);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [coinPassed, setCoinPassed] = useState({
     name: "USDT",
     icon: "mdi-bitcoin",
@@ -201,24 +200,33 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   upper_bound = Math.min(Borrows ? Borrows.length - 1 : 0, upper_bound);
   const [allocationData, setallocationData] = useState<any>();
   const [poolAllocatedData, setpoolAllocatedData] = useState<any>();
-  
-  useEffect(()=>{
-    if(supplies){
-      let maxvalue=0;
-      let coinsuppliedvalue=0;
-      supplies.map((supply: { underlyingAssetAmountParsed: number; token: React.SetStateAction<string>; },idx: any)=>{
-        if(supply?.underlyingAssetAmountParsed>0){
-          coinsuppliedvalue=supply?.underlyingAssetAmountParsed*oraclePrices?.find(
-            (curr: any) => curr.name === supply?.token
-          )?.price
-          if(coinsuppliedvalue>maxvalue){
-            maxvalue=coinsuppliedvalue;
-            setmaxSuppliedCoin(supply?.token)
+
+  useEffect(() => {
+    if (supplies) {
+      let maxvalue = 0;
+      let coinsuppliedvalue = 0;
+      supplies.map(
+        (
+          supply: {
+            underlyingAssetAmountParsed: number;
+            token: React.SetStateAction<string>;
+          },
+          idx: any
+        ) => {
+          if (supply?.underlyingAssetAmountParsed > 0) {
+            coinsuppliedvalue =
+              supply?.underlyingAssetAmountParsed *
+              oraclePrices?.find((curr: any) => curr.name === supply?.token)
+                ?.price;
+            if (coinsuppliedvalue > maxvalue) {
+              maxvalue = coinsuppliedvalue;
+              setmaxSuppliedCoin(supply?.token);
+            }
           }
         }
-      })
+      );
     }
-  },[supplies])
+  }, [supplies]);
 
   const getBorrowAPR: any = (borrowMarket: string) => {
     switch (borrowMarket) {
@@ -270,8 +278,10 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   }, [strkData]);
 
   const [collateralAmounts, setCollateralAmounts] = useState<any>([]); // Initialize with default values
-  const [collateralMarkets, setcollateralMarkets] = useState<any>([])
-  const [tokenSelection,setTokenSelection] = useState(Array(Borrows.length).fill(0));
+  const [collateralMarkets, setcollateralMarkets] = useState<any>([]);
+  const [tokenSelection, setTokenSelection] = useState(
+    Array(Borrows.length).fill(0)
+  );
   useEffect(() => {
     // Initialize collateralAmounts with the values from Borrows
     setCollateralAmounts(
@@ -281,26 +291,24 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
           maxLeverage: any;
           collateralSuggestedAmount: any;
         }) =>
-          (borrow.collateralSuggestedAmount /
+          (
+            borrow.collateralSuggestedAmount /
             borrow?.maxLeverage /
             oraclePrices?.find(
               (curr: any) => curr.name === borrow?.collateralCoin
-            )?.price).toFixed(3) || 0
+            )?.price
+          ).toFixed(3) || 0
       )
     );
   }, [Borrows]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setcollateralMarkets(
       Borrows.map(
-        (borrow: {
-          collateralCoin: string;
-        }) =>
-          (borrow?.collateralCoin)
+        (borrow: { collateralCoin: string }) => borrow?.collateralCoin
       )
     );
-  },[Borrows])
-
+  }, [Borrows]);
 
   const handleTokenChange = (value: any, index: number) => {
     const newTokenSelections = [...tokenSelection];
@@ -363,7 +371,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   };
   const handleBorrowAndSpend = async () => {
     try {
-      if (tokenSelection[selectedIndex ?selectedIndex:0] != 1) {
+      if (tokenSelection[selectedIndex ? selectedIndex : 0] != 1) {
         const borrowAndSpend = await writeAsyncBorrowAndSpend();
         setDepositTransHash(borrowAndSpend?.transaction_hash);
         if (borrowAndSpend?.transaction_hash) {
@@ -406,7 +414,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
         // if (data && data.includes(uqID)) {
         //   dispatch(setTransactionStatus("success"));
         // }
-      } else if (tokenSelection[selectedIndex ?selectedIndex:0] == 1) {
+      } else if (tokenSelection[selectedIndex ? selectedIndex : 0] == 1) {
         const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
         setDepositTransHash(borrowAndSpendR?.transaction_hash);
         if (borrowAndSpendR?.transaction_hash) {
@@ -531,6 +539,12 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       handleBorrowAndSpend();
     }
   }, [selectedIndex]);
+
+  useEffect(() => {
+    if (oraclePrices) {
+      setLoading(false);
+    }
+  }, [oraclePrices]);
 
   const strkTokenAlloactionData: any = useSelector(
     selectJedistrkTokenAllocation
@@ -660,20 +674,25 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
             </Tr>
           </Thead>
           <Tbody position="relative" overflowX="hidden">
-            {Borrows
-            .sort((a: { collateralCoin: string; }, b: { collateralCoin: string; }) => {
-              // Check if 'coin' matches 'collateralcoin'
-              const isCollateralA = a.collateralCoin === maxSuppliedCoin;
-              const isCollateralB = b.collateralCoin === maxSuppliedCoin;
-        
-              if (isCollateralA && !isCollateralB) {
-                return -1; // 'a' should come before 'b'
-              } else if (!isCollateralA && isCollateralB) {
-                return 1; // 'b' should come before 'a'
-              } else {
-                return 0; // No change in order
+            {Borrows.sort(
+              (
+                a: { collateralCoin: string },
+                b: { collateralCoin: string }
+              ) => {
+                // Check if 'coin' matches 'collateralcoin'
+                const isCollateralA = a.collateralCoin === maxSuppliedCoin;
+                const isCollateralB = b.collateralCoin === maxSuppliedCoin;
+
+                if (isCollateralA && !isCollateralB) {
+                  return -1; // 'a' should come before 'b'
+                } else if (!isCollateralA && isCollateralB) {
+                  return 1; // 'b' should come before 'a'
+                } else {
+                  return 0; // No change in order
+                }
               }
-            }).slice(lower_bound, upper_bound + 1)
+            )
+              .slice(lower_bound, upper_bound + 1)
               // .sort((a: { maxApr: number; }, b: { maxApr: number; }) => b.maxApr - a.maxApr)
               .map((borrow: any, idx: any) => {
                 return (
@@ -713,9 +732,137 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               {borrow?.protocol}
                             </Text>
                           </HStack>
-                          <Box color="#B1B0B5" fontSize="12px">
-                            {borrow.stratergy}
-                          </Box>
+                          <Tooltip
+                            hasArrow
+                            label={
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                gap="2rem"
+                              >
+                                <Box>
+                                  <Text>Collateral</Text>
+                                  <Box display="flex" gap="0.2rem">
+                                    <Image
+                                      src={`/${borrow?.collateralCoin}.svg`}
+                                      alt="Picture of the author"
+                                      width="14"
+                                      height="14"
+                                    />
+                                    <Text fontSize="14px" fontWeight="400">
+                                      {tokenSelection[lower_bound + idx] == 0
+                                        ? borrow?.collateralCoin
+                                        : "r" + borrow?.collateralCoin}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                                <Box>
+                                  <Text>Borowed</Text>
+                                  <Box display="flex" gap="0.2rem">
+                                    <Image
+                                      src={`/${borrow?.collateralCoin}.svg`}
+                                      alt="Picture of the author"
+                                      width="14"
+                                      height="14"
+                                    />
+                                    <Text fontSize="14px" fontWeight="400">
+                                      {tokenSelection[lower_bound + idx] == 0
+                                        ? borrow?.collateralCoin
+                                        : "r" + borrow?.collateralCoin}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                                <Box>
+                                  <Text>Dapp</Text>
+                                  <Box display="flex" gap="0.2rem">
+                                    <Image
+                                      src={`/${borrow?.protocol}.svg`}
+                                      alt="Picture of the author"
+                                      width="14"
+                                      height="14"
+                                    />
+                                    <Text fontSize="14px" fontWeight="400">
+                                      {borrow?.protocol}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                                <Box>
+                                  <Text>Rewards</Text>
+                                  <Box display="flex" gap="0.2rem">
+                                    <Image
+                                      src={`/${"STRK"}.svg`}
+                                      alt="Picture of the author"
+                                      width="14"
+                                      height="14"
+                                    />
+                                    <Text fontSize="14px" fontWeight="400">
+                                      STRK
+                                    </Text>
+                                  </Box>
+                                </Box>
+                                <Box>
+                                  <Text>Total Rewards</Text>
+                                  <Box display="flex" gap="0.2rem">
+                                    <Text fontSize="14px" fontWeight="400" color="#00D395">
+                                      {numberFormatterPercentage(
+                                        Number(
+                                          4.98 *
+                                            (-stats?.find(
+                                              (stat: any) =>
+                                                stat?.token === "USDT"
+                                            )?.borrowRate +
+                                              getAprByPool(
+                                                poolAprs,
+                                                "STRK/ETH",
+                                                "JEDI_SWAP"
+                                              ) +
+                                              getBoostedApr("USDT") +
+                                              (100 *
+                                                365 *
+                                                (getStrkAlloaction("STRK/ETH") *
+                                                  oraclePrices?.find(
+                                                    (curr: any) =>
+                                                      curr.name === "STRK"
+                                                  )?.price)) /
+                                                getTvlByPool(
+                                                  poolAprs,
+                                                  "STRK/ETH",
+                                                  "JEDI_SWAP"
+                                                )) +
+                                            (stats?.find(
+                                              (stat: any) =>
+                                                stat?.token ===
+                                                borrow?.collateralCoin
+                                            )?.supplyRate +
+                                              getBoostedAprSupply(
+                                                borrow?.collateralCoin
+                                              ))
+                                        )
+                                      )}
+                                      %
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              </Box>
+                            }
+                            placement={"bottom"}
+                            rounded="md"
+                            boxShadow="dark-lg"
+                            bg="#02010F"
+                            fontSize={"13px"}
+                            fontWeight={"400"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                            maxWidth="100rem"
+                          >
+                            <Box color="#B1B0B5" fontSize="12px">
+                              {borrow.stratergy}
+                            </Box>
+                          </Tooltip>
                         </VStack>
                       </Td>
 
@@ -816,7 +963,9 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   height="16"
                                 />
                                 <Text fontSize="14px" fontWeight="400">
-                                  {tokenSelection[lower_bound+idx]==0? borrow?.collateralCoin:"r"+borrow?.collateralCoin}
+                                  {tokenSelection[lower_bound + idx] == 0
+                                    ? borrow?.collateralCoin
+                                    : "r" + borrow?.collateralCoin}
                                 </Text>
                               </Box>
 
@@ -848,13 +997,17 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                         pr="2"
                                         onClick={() => {
                                           // setCurrentSelectedDrop(item);
-                                          handleTokenChange(index,lower_bound+idx)
+                                          handleTokenChange(
+                                            index,
+                                            lower_bound + idx
+                                          );
                                         }}
                                         _hover={{
                                           bg: "#171026",
                                         }}
                                       >
-                                        {index === tokenSelection[selectedIndex ?selectedIndex:0] && (
+                                        {index ===
+                                          tokenSelection[lower_bound + idx] && (
                                           <Box
                                             w="3px"
                                             h="28px"
@@ -867,9 +1020,16 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                           display="flex"
                                           py="5px"
                                           px={`${
-                                            index === tokenSelection[selectedIndex ?selectedIndex:0]
+                                            index ===
+                                            tokenSelection[lower_bound + idx]
                                               ? "3"
                                               : "5"
+                                          }`}
+                                          bg={`${
+                                            index ===
+                                            tokenSelection[lower_bound + idx]
+                                              ? "#4D59E8"
+                                              : "inherit"
                                           }`}
                                           gap="1"
                                           borderRadius="md"
@@ -925,7 +1085,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               }}
                             >
                               <NumberInput
-                              paddingInlineEnd="0px"
+                                paddingInlineEnd="0px"
                                 border="0px"
                                 min={0}
                                 keepWithinRange={true}
@@ -947,7 +1107,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 _disabled={{ cursor: "pointer" }}
                               >
                                 <NumberInputField
-                                paddingInlineEnd="0px"
+                                  paddingInlineEnd="0px"
                                   placeholder={"min 1000$"}
                                   _disabled={{ color: "#00D395" }}
                                   border="0px"
@@ -990,26 +1150,27 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         textAlign={"center"}
                         pl="5rem"
                       >
-                                                  <HStack
-                            height="2rem"
-                            width="2rem"
-                            alignItems="center"
-                            justifyContent="flex-start"
-                          >
-                            <Image
-                              src={`/${borrow?.collateralCoin}.svg`}
-                              alt="Picture of the author"
-                              width="32"
-                              height="32"
-                            />
-                            <Text fontSize="14px" fontWeight="400" ml="-1">
-                            {
-                          numberFormatter(5000/oraclePrices?.find(
-                            (curr: any) => curr.name === "USDT"
-                          )?.price)
-                        } 
-                            </Text>
-                          </HStack>
+                        <HStack
+                          height="2rem"
+                          width="2rem"
+                          alignItems="center"
+                          justifyContent="flex-start"
+                        >
+                          <Image
+                            src={`/${borrow?.collateralCoin}.svg`}
+                            alt="Picture of the author"
+                            width="32"
+                            height="32"
+                          />
+                          <Text fontSize="14px" fontWeight="400" ml="-1">
+                            {numberFormatter(
+                              5000 /
+                                oraclePrices?.find(
+                                  (curr: any) => curr.name === "USDT"
+                                )?.price
+                            )}
+                          </Text>
+                        </HStack>
                       </Td>
                       <Td
                         maxWidth={"5rem"}
@@ -1042,36 +1203,36 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                             setCurrentLoanMarket(borrow?.currentLoanMarket);
                           }}
                         >
-                          {numberFormatterPercentage(Number(
-                            ((4.98 *
-                              (-stats?.find(
-                                (stat: any) => stat?.token === "USDT"
-                              )?.borrowRate +
-                                getAprByPool(
-                                  poolAprs,
-                                  "STRK/ETH",
-                                  "JEDI_SWAP"
-                                ) +
-                                getBoostedApr("USDT") +
-                                (100 *
-                                  365 *
-                                  (getStrkAlloaction("STRK/ETH") *
-                                    oraclePrices?.find(
-                                      (curr: any) => curr.name === "STRK"
-                                    )?.price)) /
-                                  getTvlByPool(
+                          {numberFormatterPercentage(
+                            Number(
+                              4.98 *
+                                (-stats?.find(
+                                  (stat: any) => stat?.token === "USDT"
+                                )?.borrowRate +
+                                  getAprByPool(
                                     poolAprs,
                                     "STRK/ETH",
                                     "JEDI_SWAP"
-                                  ))) +
+                                  ) +
+                                  getBoostedApr("USDT") +
+                                  (100 *
+                                    365 *
+                                    (getStrkAlloaction("STRK/ETH") *
+                                      oraclePrices?.find(
+                                        (curr: any) => curr.name === "STRK"
+                                      )?.price)) /
+                                    getTvlByPool(
+                                      poolAprs,
+                                      "STRK/ETH",
+                                      "JEDI_SWAP"
+                                    )) +
                                 (stats?.find(
                                   (stat: any) =>
                                     stat?.token === borrow?.collateralCoin
                                 )?.supplyRate +
-                                  getBoostedAprSupply(
-                                    borrow?.collateralCoin
-                                  )))
-                          ))}
+                                  getBoostedAprSupply(borrow?.collateralCoin))
+                            )
+                          )}
                           %
                         </Box>
                       </Td>
@@ -1102,48 +1263,104 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 " " +
                                 borrow.collateralMarket
                             );
-                            setRTokenAmount(collateralAmounts[lower_bound + idx])                           
-                            setCurrentSpendStatus(borrow.spendType);
-                            setCurrentLoanAmount(borrow?.currentLoanAmount);
-                            setCurrentLoanMarket(borrow?.currentLoanMarket);
-                            setselectedIndex(lower_bound+idx);
-                            setLoanMarket("USDT");
-                            setLoanAmount(5000/oraclePrices.find(
-                              (curr: any) => curr.name === "USDT"
-                            )?.price);
-                            setCollateralMarket(collateralMarkets[lower_bound+idx]);
-                            let rtoken:any="r"+collateralMarkets[lower_bound+idx]
-                            setRToken(rtoken)
-                            setCollateralAmount(
-                              collateralAmounts[lower_bound + idx]
-                            );
-                            setL3App("JEDI_SWAP");
-                            setMethod("ADD_LIQUIDITY");
-                            setToMarketLiqA("ETH");
-                            setToMarketLiqB("USDC");
+                            if (
+                              collateralAmounts[lower_bound + idx] *
+                                oraclePrices.find(
+                                  (curr: any) =>
+                                    curr.name ===
+                                    collateralMarkets[lower_bound + idx]
+                                )?.price <
+                              1000
+                            ) {
+                              toast.error(
+                                "Minimum Collateral Amount is 1000$",
+                                {
+                                  position: toast.POSITION.BOTTOM_RIGHT,
+                                  autoClose: false,
+                                }
+                              );
+                            } else {
+                              setRTokenAmount(
+                                collateralAmounts[lower_bound + idx]
+                              );
+                              setCurrentSpendStatus(borrow.spendType);
+                              setCurrentLoanAmount(borrow?.currentLoanAmount);
+                              setCurrentLoanMarket(borrow?.currentLoanMarket);
+                              setselectedIndex(lower_bound + idx);
+                              setLoanMarket("USDT");
+                              setLoanAmount(
+                                5000 /
+                                  oraclePrices.find(
+                                    (curr: any) => curr.name === "USDT"
+                                  )?.price
+                              );
+                              setCollateralMarket(
+                                collateralMarkets[lower_bound + idx]
+                              );
+                              let rtoken: any =
+                                "r" + collateralMarkets[lower_bound + idx];
+                              setRToken(rtoken);
+                              setCollateralAmount(
+                                collateralAmounts[lower_bound + idx]
+                              );
+                              setL3App("JEDI_SWAP");
+                              setMethod("ADD_LIQUIDITY");
+                              setToMarketLiqA("ETH");
+                              setToMarketLiqB("USDC");
+                            }
                           }}
                         >
                           <Box>
-                            <DegenModal
-                              coin={coin}
-                              borrowAPRs={borrowAPRs}
-                              currentBorrowAPR={currentBorrowAPR}
-                              supplyAPRs={supplyAPRs}
-                              currentSupplyAPR={currentSupplyAPR}
-                              setCurrentBorrowAPR={setCurrentBorrowAPR}
-                              validRTokens={validRTokens}
-                              currentBorrowMarketCoin={currentBorrowMarketCoin}
-                              suggestedBorrow={borrowcoin}
-                              suggestedCollateral={borrow?.collateralCoin}
-                              collateralSuggestedAmount={collateralAmounts[lower_bound + idx]}
-                              suggestedLeverage={borrow?.maxLeverage}
-                              borrowSuggestedAmount={5000/
-                              oraclePrices?.find(
-                                (curr: any) => curr.name === "USDT"
-                              )?.price}
-                              spendAction={borrow?.actionType=="Swap" ?"2":"1"}
-                              pool={"USDC/USDT"}
-                            />
+                            {collateralAmounts[lower_bound + idx] *
+                              oraclePrices.find(
+                                (curr: any) =>
+                                  curr.name ===
+                                  collateralMarkets[lower_bound + idx]
+                              )?.price >=
+                            1000 ? (
+                              <DegenModal
+                                coin={coin}
+                                borrowAPRs={borrowAPRs}
+                                currentBorrowAPR={currentBorrowAPR}
+                                supplyAPRs={supplyAPRs}
+                                currentSupplyAPR={currentSupplyAPR}
+                                setCurrentBorrowAPR={setCurrentBorrowAPR}
+                                validRTokens={validRTokens}
+                                currentBorrowMarketCoin={
+                                  currentBorrowMarketCoin
+                                }
+                                suggestedBorrow={borrowcoin}
+                                suggestedCollateral={borrow?.collateralCoin}
+                                collateralSuggestedAmount={
+                                  collateralAmounts[lower_bound + idx]
+                                }
+                                suggestedLeverage={borrow?.maxLeverage}
+                                borrowSuggestedAmount={
+                                  5000 /
+                                  oraclePrices?.find(
+                                    (curr: any) => curr.name === "USDT"
+                                  )?.price
+                                }
+                                spendAction={
+                                  borrow?.actionType == "Swap" ? "2" : "1"
+                                }
+                                pool={"USDC/USDT"}
+                              />
+                            ) : (
+                              <Button
+                                cursor="pointer"
+                                height={"2rem"}
+                                fontSize={"12px"}
+                                padding="6px 12px"
+                                border="1px solid white"
+                                bgColor="transparent"
+                                _hover={{ bg: "white", color: "black" }}
+                                borderRadius={"6px"}
+                                color="white"
+                              >
+                                Execute
+                              </Button>
+                            )}
                           </Box>
                         </Box>
                       </Td>
