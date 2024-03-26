@@ -13,10 +13,10 @@ import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "@starknet-react/core";
-import { selectYourBorrow, selectNetAPR, selectnetAprLoans, selectProtocolStats, selectYourSupply } from "@/store/slices/readDataSlice";
+import { selectYourBorrow, selectNetAPR, selectnetAprLoans, selectProtocolStats, selectYourSupply, selectUserDeposits } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
-import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import { IDeposit, ILoan } from "@/Blockchain/interfaces/interfaces";
 import { Skeleton } from "@chakra-ui/react";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
@@ -24,12 +24,12 @@ import DegenDashboard from "@/components/layouts/degenDashboard";
 const Degen = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [
-    "Strategy name",
+    "Strategy Name",
     "Type",
-    "Target Protocol",
     "Collateral",
-    "Suggested Collateral Amount",
-    "Max leverage",
+    "Collateral Amount",
+    "Suggested Leverage",
+    "Borrowed Amount",
     "Max APR",
     "",
   ];
@@ -255,6 +255,87 @@ const Degen = () => {
     actionType:"Swap",
     collateralSuggestedAmount:5000,
   },
+  {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"USDT",
+    maxLeverage:2,
+    maxApr:28,
+    actionType:"Swap",
+    collateralSuggestedAmount:5000,
+  },
+  {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"USDT",
+    maxLeverage:2,
+    maxApr:28,
+    actionType:"Swap",
+    collateralSuggestedAmount:5000,
+  },
+  {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"USDC",
+    maxLeverage:3,
+    maxApr:18,
+    actionType:"Liquidity provision",
+    collateralSuggestedAmount:5000,
+  },
+  {
+    protocol:"Myswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"DAI",
+    maxLeverage:4,
+    maxApr:10,
+    actionType:"Swap",
+    collateralSuggestedAmount:5000,
+  },
+  {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"BTC",
+    maxLeverage:5,
+    maxApr:180,
+    actionType:"Swap",
+    collateralSuggestedAmount:5000,
+  },
+  {
+    protocol:"Myswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"ETH",
+    maxLeverage:2,
+    maxApr:18,
+    actionType:"Swap",
+    collateralSuggestedAmount:5000,
+  },
+  {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"STRK",
+    maxLeverage:3,
+    maxApr:18,
+    actionType:"Swap",
+    collateralSuggestedAmount:5000,
+  },
+  {
+    protocol:"Myswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"USDT",
+    maxLeverage:1,
+    maxApr:18,
+    actionType:"Swap",
+    collateralSuggestedAmount:5000,
+  },
+  {
+    protocol:"Jediswap",
+    stratergy:"USDC-BTC LP BTC+ETH",
+    collateralCoin:"USDT",
+    maxLeverage:1,
+    maxApr:18,
+    actionType:"Swap",
+    collateralSuggestedAmount:5000,
+  },
   
 ]
 const stats = useSelector(selectProtocolStats);
@@ -302,6 +383,42 @@ const totalSupply=useSelector(selectYourSupply);
       ////console.log("error on getting protocol stats");
     }
   };
+  let userDeposits = useSelector(selectUserDeposits);
+  const [supplies, setSupplies] = useState<IDeposit[]>([]);
+  useEffect(() => {
+    if (userDeposits) {
+      const supply = userDeposits;
+      if (!supply) return;
+      let data: any = [];
+      let indexes: any = [5, 2, 3, 1, 0, 4];
+      let count = 0;
+
+      indexes.forEach((index: number) => {
+        if (
+          supply?.[index]?.rTokenAmountParsed !== 0 ||
+          supply?.[index]?.rTokenFreeParsed !== 0 ||
+          supply?.[index]?.rTokenLockedParsed !== 0 ||
+          supply?.[index]?.rTokenStakedParsed !== 0
+        ) {
+          if (index == 2 || index == 3) {
+            if (
+              supply?.[index]?.rTokenAmountParsed > 0.00001 ||
+              supply?.[index]?.rTokenFreeParsed > 0.00001 ||
+              supply?.[index]?.rTokenLockedParsed > 0.00001 ||
+              supply?.[index]?.rTokenStakedParsed > 0.00001
+            ) {
+              data[index] = supply[index];
+              count++;
+            }
+          } else {
+            data[index] = supply[index];
+            count++;
+          }
+        }
+      });
+      setSupplies(data);
+    }
+  }, [userDeposits]);
 
   // useEffect(() => {
   //   const loan = async () => {
@@ -367,6 +484,18 @@ const totalSupply=useSelector(selectYourSupply);
         <NavButtons width={70} marginBottom={"0rem"} />
         {/* </Box> */}
       </HStack>
+      <Box
+        display="flex"
+        justifyContent="left"
+        w="94%"
+        mt="0.5rem"
+        mb="0.8rem"
+        color="#F0F0F5"
+        // opacity="0.9"
+        fontSize="sm"
+      >
+        The borrowing amount is fixed to $5000 worth of assets.
+      </Box>
       <DegenDashboard
         width={"95%"}
         currentPagination={currentPagination}
@@ -377,6 +506,7 @@ const totalSupply=useSelector(selectYourSupply);
         userLoans={data}
         borrowAPRs={borrowAPRs}
         supplyAPRs={supplyAPRs}
+        supplies={supplies}
       />      
       <Box
       paddingY="1rem"
@@ -387,7 +517,7 @@ const totalSupply=useSelector(selectYourSupply);
       justifyContent="space-between"
       alignItems="center"
     >
-      {totalSupply>=1000 &&
+      {totalSupply>=10 &&
         <Box>
           <Pagination
             currentPagination={currentPagination}
