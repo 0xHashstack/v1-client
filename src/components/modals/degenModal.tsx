@@ -23,30 +23,30 @@ import {
   Text,
   Tooltip,
   useDisclosure,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
 /* Coins logo import  */
 import {
   getMaximumDepositAmount,
   getMaximumDynamicLoanAmount,
   getMinimumDepositAmount,
-} from "@/Blockchain/scripts/Rewards";
-import BTCLogo from "../../assets/icons/coins/btc";
+} from '@/Blockchain/scripts/Rewards'
+import BTCLogo from '../../assets/icons/coins/btc'
 
-import { constants } from "@/Blockchain/utils/constants";
-import DAILogo from "@/assets/icons/coins/dai";
-import ETHLogo from "@/assets/icons/coins/eth";
-import USDCLogo from "@/assets/icons/coins/usdc";
-import USDTLogo from "@/assets/icons/coins/usdt";
-import SliderPointer from "@/assets/icons/sliderPointer";
-import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
+import { constants } from '@/Blockchain/utils/constants'
+import DAILogo from '@/assets/icons/coins/dai'
+import ETHLogo from '@/assets/icons/coins/eth'
+import USDCLogo from '@/assets/icons/coins/usdc'
+import USDTLogo from '@/assets/icons/coins/usdt'
+import SliderPointer from '@/assets/icons/sliderPointer'
+import SliderPointerWhite from '@/assets/icons/sliderPointerWhite'
 import {
   resetModalDropdowns,
   selectModalDropDowns,
   selectNavDropdowns,
   setModalDropdown,
   setNavDropdown,
-} from "@/store/slices/dropdownsSlice";
+} from '@/store/slices/dropdownsSlice'
 import {
   selectFees,
   selectJediSwapPoolsSupported,
@@ -58,7 +58,7 @@ import {
   selectMySwapPoolsSupported,
   selectOraclePrices,
   selectProtocolStats,
-} from "@/store/slices/readDataSlice";
+} from '@/store/slices/readDataSlice'
 import {
   selectActiveTransactions,
   selectAssetWalletBalance,
@@ -71,75 +71,77 @@ import {
   setInputTradeModalCollateralAmount,
   setTransactionStartedAndModalClosed,
   setTransactionStatus,
-} from "@/store/slices/userAccountSlice";
-import { useDispatch, useSelector } from "react-redux";
-import TransactionFees from "../../../TransactionFees.json";
-import DropdownUp from "../../assets/icons/dropdownUpIcon";
-import InfoIcon from "../../assets/icons/infoIcon";
+} from '@/store/slices/userAccountSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import TransactionFees from '../../../TransactionFees.json'
+import DropdownUp from '../../assets/icons/dropdownUpIcon'
+import InfoIcon from '../../assets/icons/infoIcon'
 
-import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
-import useBorrowAndSpend from "@/Blockchain/hooks/Writes/useBorrowAndSpend";
-import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
+import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf'
+import useBorrowAndSpend from '@/Blockchain/hooks/Writes/useBorrowAndSpend'
+import { NativeToken, RToken } from '@/Blockchain/interfaces/interfaces'
 import {
   getLoanHealth_NativeCollateral,
   getLoanHealth_RTokenCollateral,
-} from "@/Blockchain/scripts/LoanHealth";
+} from '@/Blockchain/scripts/LoanHealth'
 import {
   getMaximumLoanAmount,
   getMinimumLoanAmount,
   getSupportedPools,
-} from "@/Blockchain/scripts/Rewards";
+} from '@/Blockchain/scripts/Rewards'
 import {
   getJediEstimateLiquiditySplit,
   getJediEstimatedLpAmountOut,
   getMySwapEstimateLiquiditySplit,
   getMySwapEstimatedLpAmountOut,
   getUSDValue,
-} from "@/Blockchain/scripts/l3interaction";
-import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+} from '@/Blockchain/scripts/l3interaction'
+import { getProtocolStats } from '@/Blockchain/scripts/protocolStats'
 import {
   tokenAddressMap,
   tokenDecimalsMap,
-} from "@/Blockchain/utils/addressServices";
-import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
-import ArrowUp from "@/assets/icons/arrowup";
-import BlueInfoIcon from "@/assets/icons/blueinfoicon";
-import SmallEth from "@/assets/icons/coins/smallEth";
-import SmallUsdt from "@/assets/icons/coins/smallUsdt";
-import STRKLogo from "@/assets/icons/coins/strk";
-import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
-import MySwap from "@/assets/icons/dapps/mySwap";
-import MySwapDisabled from "@/assets/icons/dapps/mySwapDisabled";
-import BtcToDai from "@/assets/icons/pools/btcToDai";
-import BtcToEth from "@/assets/icons/pools/btcToEth";
-import BtcToUsdc from "@/assets/icons/pools/btcToUsdc";
-import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
-import DaiToEth from "@/assets/icons/pools/daiToEth";
-import EthToUsdc from "@/assets/icons/pools/ethToUsdc";
-import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
-import StrkToEth from "@/assets/icons/pools/strkToEth";
-import UsdcToDai from "@/assets/icons/pools/usdcToDai";
-import UsdcToUsdt from "@/assets/icons/pools/usdcToUsdt";
-import UsdtToDai from "@/assets/icons/pools/usdtToDai";
-import RedinfoIcon from "@/assets/icons/redinfoicon";
-import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
-import dollarConvertor from "@/utils/functions/dollarConvertor";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
-import { useWaitForTransaction } from "@starknet-react/core";
-import axios from "axios";
-import mixpanel from "mixpanel-browser";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import posthog from "posthog-js";
-import { useEffect, useState } from "react";
-import CopyToClipboard from "react-copy-to-clipboard";
-import { toast } from "react-toastify";
-import { uint256 } from "starknet";
-import AnimatedButton from "../uiElements/buttons/AnimationButton";
-import ErrorButton from "../uiElements/buttons/ErrorButton";
-import SuccessButton from "../uiElements/buttons/SuccessButton";
-import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+} from '@/Blockchain/utils/addressServices'
+import { BNtoNum, parseAmount } from '@/Blockchain/utils/utils'
+import ArrowUp from '@/assets/icons/arrowup'
+import BlueInfoIcon from '@/assets/icons/blueinfoicon'
+import SmallEth from '@/assets/icons/coins/smallEth'
+import SmallUsdt from '@/assets/icons/coins/smallUsdt'
+import STRKLogo from '@/assets/icons/coins/strk'
+import JediswapLogo from '@/assets/icons/dapps/jediswapLogo'
+import MySwap from '@/assets/icons/dapps/mySwap'
+import MySwapDisabled from '@/assets/icons/dapps/mySwapDisabled'
+import InfoIconBig from '@/assets/icons/infoIconBig'
+import BtcToDai from '@/assets/icons/pools/btcToDai'
+import BtcToEth from '@/assets/icons/pools/btcToEth'
+import BtcToUsdc from '@/assets/icons/pools/btcToUsdc'
+import BtcToUsdt from '@/assets/icons/pools/btcToUsdt'
+import DaiToEth from '@/assets/icons/pools/daiToEth'
+import EthToUsdc from '@/assets/icons/pools/ethToUsdc'
+import EthToUsdt from '@/assets/icons/pools/ethToUsdt'
+import StrkToEth from '@/assets/icons/pools/strkToEth'
+import UsdcToDai from '@/assets/icons/pools/usdcToDai'
+import UsdcToUsdt from '@/assets/icons/pools/usdcToUsdt'
+import UsdtToDai from '@/assets/icons/pools/usdtToDai'
+import RedinfoIcon from '@/assets/icons/redinfoicon'
+import SmallErrorIcon from '@/assets/icons/smallErrorIcon'
+import dollarConvertor from '@/utils/functions/dollarConvertor'
+import numberFormatter from '@/utils/functions/numberFormatter'
+import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
+import { useWaitForTransaction } from '@starknet-react/core'
+import axios from 'axios'
+import mixpanel from 'mixpanel-browser'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import posthog from 'posthog-js'
+import { useEffect, useState } from 'react'
+import CopyToClipboard from 'react-copy-to-clipboard'
+import { toast } from 'react-toastify'
+import { uint256 } from 'starknet'
+import TableInfoIcon from '../layouts/table/tableIcons/infoIcon'
+import AnimatedButton from '../uiElements/buttons/AnimationButton'
+import ErrorButton from '../uiElements/buttons/ErrorButton'
+import SuccessButton from '../uiElements/buttons/SuccessButton'
+import SliderTooltip from '../uiElements/sliders/sliderTooltip'
 const DegenModal = ({
   buttonText,
   coin,
@@ -160,7 +162,7 @@ const DegenModal = ({
 
   ...restProps
 }: any) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure()
   //  //console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
   const {
     loanMarket,
@@ -205,52 +207,52 @@ const DegenModal = ({
     isIdleBorrowAndSpendRToken,
     isSuccessBorrowAndSpendRToken,
     statusBorrowAndSpendRToken,
-  } = useBorrowAndSpend();
+  } = useBorrowAndSpend()
 
-  const rTokens: RToken[] = ["rBTC", "rUSDT", "rETH"];
+  const rTokens: RToken[] = ['rBTC', 'rUSDT', 'rETH']
   // const transactionStarted = useSelector(selectTransactionStarted);
 
-  const [sliderValue, setSliderValue] = useState(0);
-  const [sliderValue2, setsliderValue2] = useState(0);
-  const dispatch = useDispatch();
-  const [inputAmount, setinputAmount] = useState(0);
+  const [sliderValue, setSliderValue] = useState(0)
+  const [sliderValue2, setsliderValue2] = useState(0)
+  const dispatch = useDispatch()
+  const [inputAmount, setinputAmount] = useState(0)
   const [inputCollateralAmount, setinputCollateralAmount] = useState(
     collateralSuggestedAmount
-  );
+  )
   const [inputBorrowAmount, setinputBorrowAmount] = useState<any>(
     borrowSuggestedAmount
-  );
-  const modalDropdowns = useSelector(selectModalDropDowns);
-  const [transactionStarted, setTransactionStarted] = useState(false);
+  )
+  const modalDropdowns = useSelector(selectModalDropDowns)
+  const [transactionStarted, setTransactionStarted] = useState(false)
 
-  let activeTransactions = useSelector(selectActiveTransactions);
+  let activeTransactions = useSelector(selectActiveTransactions)
 
   // const walletBalances=useSelector(selectAssetWalletBalance);
   interface assetB {
-    USDT: any;
-    USDC: any;
-    BTC: any;
-    ETH: any;
-    DAI: any;
+    USDT: any
+    USDC: any
+    BTC: any
+    ETH: any
+    DAI: any
   }
 
   const walletBalances: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"]),
-    USDC: useBalanceOf(tokenAddressMap["USDC"]),
-    BTC: useBalanceOf(tokenAddressMap["BTC"]),
-    ETH: useBalanceOf(tokenAddressMap["ETH"]),
-    DAI: useBalanceOf(tokenAddressMap["DAI"]),
-    STRK: useBalanceOf(tokenAddressMap["STRK"]),
-    rUSDT: useBalanceOf(tokenAddressMap["rUSDT"]),
-    rUSDC: useBalanceOf(tokenAddressMap["rUSDC"]),
-    rBTC: useBalanceOf(tokenAddressMap["rBTC"]),
-    rETH: useBalanceOf(tokenAddressMap["rETH"]),
-    rDAI: useBalanceOf(tokenAddressMap["rDAI"]),
-  };
-  const [walletBalance, setwalletBalance] = useState(0);
+    USDT: useBalanceOf(tokenAddressMap['USDT']),
+    USDC: useBalanceOf(tokenAddressMap['USDC']),
+    BTC: useBalanceOf(tokenAddressMap['BTC']),
+    ETH: useBalanceOf(tokenAddressMap['ETH']),
+    DAI: useBalanceOf(tokenAddressMap['DAI']),
+    STRK: useBalanceOf(tokenAddressMap['STRK']),
+    rUSDT: useBalanceOf(tokenAddressMap['rUSDT']),
+    rUSDC: useBalanceOf(tokenAddressMap['rUSDC']),
+    rBTC: useBalanceOf(tokenAddressMap['rBTC']),
+    rETH: useBalanceOf(tokenAddressMap['rETH']),
+    rDAI: useBalanceOf(tokenAddressMap['rDAI']),
+  }
+  const [walletBalance, setwalletBalance] = useState(0)
   useEffect(() => {
     setwalletBalance(
-      walletBalances[suggestedCollateral]?.statusBalanceOf === "success"
+      walletBalances[suggestedCollateral]?.statusBalanceOf === 'success'
         ? parseAmount(
             String(
               uint256.uint256ToBN(
@@ -260,248 +262,248 @@ const DegenModal = ({
             tokenDecimalsMap[suggestedCollateral]
           )
         : 0
-    );
+    )
     ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
-  }, [suggestedCollateral]);
+  }, [suggestedCollateral])
   const dapps = [
-    { name: "Jediswap", status: "enable" },
-    { name: "mySwap", status: "enable" },
-  ];
+    { name: 'Jediswap', status: 'enable' },
+    { name: 'mySwap', status: 'enable' },
+  ]
   const getAprByPool = (dataArray: any[], pool: string, dapp: string) => {
     const matchedObject = dataArray.find((item) => {
-      if (item.name === "USDT/USDC") {
+      if (item.name === 'USDT/USDC') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "USDC/USDT" === pool
-        );
-      } else if (item.name == "ETH/STRK") {
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'USDC/USDT' === pool
+        )
+      } else if (item.name == 'ETH/STRK') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "STRK/ETH" === pool
-        );
-      } else if (item.name === "ETH/DAI") {
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'STRK/ETH' === pool
+        )
+      } else if (item.name === 'ETH/DAI') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "DAI/ETH" === pool
-        );
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'DAI/ETH' === pool
+        )
       } else {
         return (
           item.name === pool &&
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap")
-        );
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap')
+        )
       }
-    });
+    })
 
-    return matchedObject ? matchedObject.apr * 100 : 0;
-  };
+    return matchedObject ? matchedObject.apr * 100 : 0
+  }
   const getTvlByPool = (dataArray: any[], pool: string, dapp: string) => {
     const matchedObject = dataArray.find((item) => {
-      if (item.name === "USDT/USDC") {
+      if (item.name === 'USDT/USDC') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "USDC/USDT" === pool
-        );
-      } else if (item.name == "ETH/STRK") {
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'USDC/USDT' === pool
+        )
+      } else if (item.name == 'ETH/STRK') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "STRK/ETH" === pool
-        );
-      } else if (item.name === "ETH/DAI") {
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'STRK/ETH' === pool
+        )
+      } else if (item.name === 'ETH/DAI') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "DAI/ETH" === pool
-        );
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'DAI/ETH' === pool
+        )
       } else {
         return (
           item.name === pool &&
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap")
-        );
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap')
+        )
       }
-    });
+    })
 
-    return matchedObject ? matchedObject.tvl : 0;
-  };
+    return matchedObject ? matchedObject.tvl : 0
+  }
   const pools = [
-    "STRK/ETH",
-    "USDC/USDT",
-    "ETH/USDC",
-    "ETH/USDT",
+    'STRK/ETH',
+    'USDC/USDT',
+    'ETH/USDC',
+    'ETH/USDT',
     // "DAI/ETH",
-    "BTC/ETH",
-    "BTC/USDT",
-    "BTC/USDC",
+    'BTC/ETH',
+    'BTC/USDT',
+    'BTC/USDC',
 
     // "BTC/DAI",
     // "USDT/DAI",
     // "USDC/DAI",
-  ];
+  ]
 
   const [currentDapp, setCurrentDapp] = useState(
-    currentSelectedDapp ? currentSelectedDapp : "Jediswap"
-  );
-  const [currentPool, setCurrentPool] = useState(pool ? pool : "STRK/ETH");
-  const [currentPoolCoin, setCurrentPoolCoin] = useState("STRK");
+    currentSelectedDapp ? currentSelectedDapp : 'Jediswap'
+  )
+  const [currentPool, setCurrentPool] = useState(pool ? pool : 'STRK/ETH')
+  const [currentPoolCoin, setCurrentPoolCoin] = useState('STRK')
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
-      case "BTC":
-        return <BTCLogo height={"16px"} width={"16px"} />;
-      case "rBTC":
-        return <BTCLogo height={"16px"} width={"16px"} />;
-      case "USDC":
-        return <USDCLogo height={"16px"} width={"16px"} />;
-      case "rUSDC":
-        return <USDCLogo height={"16px"} width={"16px"} />;
-      case "USDT":
-        return <USDTLogo height={"16px"} width={"16px"} />;
-      case "rUSDT":
-        return <USDTLogo height={"16px"} width={"16px"} />;
-      case "ETH":
-        return <ETHLogo height={"16px"} width={"16px"} />;
-      case "rETH":
-        return <ETHLogo height={"16px"} width={"16px"} />;
-      case "DAI":
-        return <DAILogo height={"16px"} width={"16px"} />;
-      case "STRK":
-        return <STRKLogo height={"16px"} width={"16px"} />;
-      case "rSTRK":
-        return <STRKLogo height={"16px"} width={"16px"} />;
-      case "rDAI":
-        return <DAILogo height={"16px"} width={"16px"} />;
-      case "Jediswap":
-        return <JediswapLogo />;
-      case "mySwap":
-        return <MySwap />;
-      case "ETH/USDT":
-        return <EthToUsdt />;
-      case "USDC/USDT":
-        return <UsdcToUsdt />;
-      case "ETH/USDC":
-        return <EthToUsdc />;
-      case "DAI/ETH":
-        return <DaiToEth />;
-      case "BTC/ETH":
-        return <BtcToEth />;
-      case "BTC/USDT":
-        return <BtcToUsdt />;
-      case "BTC/USDC":
-        return <BtcToUsdc />;
-      case "BTC/DAI":
-        return <BtcToDai />;
-      case "USDT/DAI":
-        return <UsdtToDai />;
-      case "USDC/DAI":
-        return <UsdcToDai />;
-      case "STRK/ETH":
-        return <StrkToEth />;
+      case 'BTC':
+        return <BTCLogo height={'16px'} width={'16px'} />
+      case 'rBTC':
+        return <BTCLogo height={'16px'} width={'16px'} />
+      case 'USDC':
+        return <USDCLogo height={'16px'} width={'16px'} />
+      case 'rUSDC':
+        return <USDCLogo height={'16px'} width={'16px'} />
+      case 'USDT':
+        return <USDTLogo height={'16px'} width={'16px'} />
+      case 'rUSDT':
+        return <USDTLogo height={'16px'} width={'16px'} />
+      case 'ETH':
+        return <ETHLogo height={'16px'} width={'16px'} />
+      case 'rETH':
+        return <ETHLogo height={'16px'} width={'16px'} />
+      case 'DAI':
+        return <DAILogo height={'16px'} width={'16px'} />
+      case 'STRK':
+        return <STRKLogo height={'16px'} width={'16px'} />
+      case 'rSTRK':
+        return <STRKLogo height={'16px'} width={'16px'} />
+      case 'rDAI':
+        return <DAILogo height={'16px'} width={'16px'} />
+      case 'Jediswap':
+        return <JediswapLogo />
+      case 'mySwap':
+        return <MySwap />
+      case 'ETH/USDT':
+        return <EthToUsdt />
+      case 'USDC/USDT':
+        return <UsdcToUsdt />
+      case 'ETH/USDC':
+        return <EthToUsdc />
+      case 'DAI/ETH':
+        return <DaiToEth />
+      case 'BTC/ETH':
+        return <BtcToEth />
+      case 'BTC/USDT':
+        return <BtcToUsdt />
+      case 'BTC/USDC':
+        return <BtcToUsdc />
+      case 'BTC/DAI':
+        return <BtcToDai />
+      case 'USDT/DAI':
+        return <UsdtToDai />
+      case 'USDC/DAI':
+        return <UsdcToDai />
+      case 'STRK/ETH':
+        return <StrkToEth />
       default:
-        break;
+        break
     }
-  };
+  }
 
-  const fees = useSelector(selectFees);
+  const fees = useSelector(selectFees)
 
   const handleDropdownClick = (dropdownName: any) => {
-    dispatch(setModalDropdown(dropdownName));
-  };
+    dispatch(setModalDropdown(dropdownName))
+  }
   const handleChange = (newValue: any) => {
-    if (newValue > 9_000_000_000) return;
-    var percentage = (newValue * 100) / walletBalance;
-    percentage = Math.max(0, percentage);
+    if (newValue > 9_000_000_000) return
+    var percentage = (newValue * 100) / walletBalance
+    percentage = Math.max(0, percentage)
     if (percentage > 100) {
-      setSliderValue(100);
-      setinputCollateralAmount(newValue);
-      setCollateralAmount(newValue);
-      setRTokenAmount(newValue);
-      dispatch(setInputTradeModalCollateralAmount(newValue));
+      setSliderValue(100)
+      setinputCollateralAmount(newValue)
+      setCollateralAmount(newValue)
+      setRTokenAmount(newValue)
+      dispatch(setInputTradeModalCollateralAmount(newValue))
     } else {
-      percentage = Math.round(percentage);
+      percentage = Math.round(percentage)
       if (isNaN(percentage)) {
       } else {
-        setSliderValue(percentage);
-        setinputCollateralAmount(newValue);
-        setCollateralAmount(newValue);
-        setRTokenAmount(newValue);
-        dispatch(setInputTradeModalCollateralAmount(newValue));
+        setSliderValue(percentage)
+        setinputCollateralAmount(newValue)
+        setCollateralAmount(newValue)
+        setRTokenAmount(newValue)
+        dispatch(setInputTradeModalCollateralAmount(newValue))
       }
       // dispatch((newValue));
     }
-  };
+  }
   const handleBorrowChange = (newValue: any) => {
-    if (newValue > 9_000_000_000) return;
+    if (newValue > 9_000_000_000) return
     if (inputCollateralAmountUSD > 0) {
       var percentage =
         (newValue * 100) /
         ((4.98 * inputCollateralAmountUSD) /
           oraclePrices.find((curr: any) => curr.name === currentBorrowCoin)
-            ?.price);
+            ?.price)
     }
-    var percentage = (newValue * 100) / walletBalance;
-    percentage = Math.max(0, percentage);
+    var percentage = (newValue * 100) / walletBalance
+    percentage = Math.max(0, percentage)
     if (percentage > 100) {
-      setsliderValue2(100);
-      setinputBorrowAmount(newValue);
-      setLoanAmount(newValue);
+      setsliderValue2(100)
+      setinputBorrowAmount(newValue)
+      setLoanAmount(newValue)
       // dispatch(setInputTradeModalCollateralAmount(newValue));
     } else {
-      percentage = Math.round(percentage);
+      percentage = Math.round(percentage)
       if (isNaN(percentage)) {
       } else {
-        setsliderValue2(percentage);
-        setinputBorrowAmount(newValue);
-        setLoanAmount(newValue);
+        setsliderValue2(percentage)
+        setinputBorrowAmount(newValue)
+        setLoanAmount(newValue)
       }
       // dispatch(setInputTradeModalCollateralAmount(newValue));
       // dispatch((newValue));
     }
-  };
-  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI", "STRK"];
+  }
+  const coins: NativeToken[] = ['BTC', 'USDT', 'USDC', 'ETH', 'DAI', 'STRK']
 
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
-    suggestedCollateral ? suggestedCollateral : "BTC"
-  );
+    suggestedCollateral ? suggestedCollateral : 'BTC'
+  )
 
   // const coinAlign = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
-    suggestedBorrow ? suggestedBorrow?.name : "BTC"
-  );
-  const [uniqueID, setUniqueID] = useState(0);
-  const getUniqueId = () => uniqueID;
-  const [protocolStats, setProtocolStats] = useState<any>([]);
-  const stats = useSelector(selectProtocolStats);
+    suggestedBorrow ? suggestedBorrow?.name : 'BTC'
+  )
+  const [uniqueID, setUniqueID] = useState(0)
+  const getUniqueId = () => uniqueID
+  const [protocolStats, setProtocolStats] = useState<any>([])
+  const stats = useSelector(selectProtocolStats)
   const fetchProtocolStats = async () => {
     if (stats)
       setProtocolStats([
@@ -511,53 +513,53 @@ const DegenModal = ({
         stats?.[1],
         stats?.[4],
         stats?.[5],
-      ]);
-  };
-  const poolsPairs = useSelector(selectJediSwapPoolsSupported);
-  const mySwapPoolPairs = useSelector(selectMySwapPoolsSupported);
-  const [myswapPools, setmyswapPools] = useState([]);
-  const [jediswapPools, setjediswapPools] = useState([]);
+      ])
+  }
+  const poolsPairs = useSelector(selectJediSwapPoolsSupported)
+  const mySwapPoolPairs = useSelector(selectMySwapPoolsSupported)
+  const [myswapPools, setmyswapPools] = useState([])
+  const [jediswapPools, setjediswapPools] = useState([])
   useEffect(() => {
     function findSideForMember(array: any, token: any) {
-      const data: any = [];
+      const data: any = []
       for (const obj of array) {
-        const keyvalue = obj.keyvalue;
-        const [tokenA, tokenB] = keyvalue.split("/");
+        const keyvalue = obj.keyvalue
+        const [tokenA, tokenB] = keyvalue.split('/')
 
         if (tokenA === token) {
-          data.push(tokenB);
+          data.push(tokenB)
         } else if (tokenB === token) {
-          data.push(tokenA);
+          data.push(tokenA)
         }
       }
-      setmyswapPools(data);
+      setmyswapPools(data)
       // Token not found in any "keyvalue" pairs
     }
     if (mySwapPoolPairs) {
-      findSideForMember(mySwapPoolPairs, currentBorrowCoin);
+      findSideForMember(mySwapPoolPairs, currentBorrowCoin)
     }
-  }, [currentBorrowCoin, mySwapPoolPairs]);
+  }, [currentBorrowCoin, mySwapPoolPairs])
 
   useEffect(() => {
     function findSideForMember(array: any, token: any) {
-      const data: any = [];
+      const data: any = []
       for (const obj of array) {
-        const keyvalue = obj.keyvalue;
-        const [tokenA, tokenB] = keyvalue.split("/");
+        const keyvalue = obj.keyvalue
+        const [tokenA, tokenB] = keyvalue.split('/')
 
         if (tokenA === token) {
-          data.push(tokenB);
+          data.push(tokenB)
         } else if (tokenB === token) {
-          data.push(tokenA);
+          data.push(tokenA)
         }
       }
-      setjediswapPools(data);
+      setjediswapPools(data)
       // Token not found in any "keyvalue" pairs
     }
     if (poolsPairs) {
-      findSideForMember(poolsPairs, currentBorrowCoin);
+      findSideForMember(poolsPairs, currentBorrowCoin)
     }
-  }, [currentBorrowCoin, poolsPairs]);
+  }, [currentBorrowCoin, poolsPairs])
 
   // const [poolsPairs,setPoolPairs] = useState<any>([
   //   {
@@ -607,71 +609,71 @@ const DegenModal = ({
 
   useEffect(() => {
     try {
-      fetchProtocolStats();
+      fetchProtocolStats()
       ////console.log("protocolStats", protocolStats);
     } catch (err: any) {
       //console.log("borrow modal : error fetching protocolStats");
     }
-  }, [stats]);
+  }, [stats])
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
     protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
       ?.availableReserves * 0.895
-  );
+  )
   useEffect(() => {
     ////console.log("currentAvailableReserve", currentAvailableReserves);
-  }, [currentAvailableReserves]);
+  }, [currentAvailableReserves])
 
   useEffect(() => {
     setCurrentAvailableReserves(
       protocolStats[coins.indexOf(currentBorrowCoin)]?.availableReserves * 0.895
-    );
+    )
     ////console.log(coins.indexOf(currentBorrowCoin));
-  }, [protocolStats, currentBorrowCoin]);
+  }, [protocolStats, currentBorrowCoin])
 
-  const [radioValue, setRadioValue] = useState("1");
+  const [radioValue, setRadioValue] = useState('1')
 
   useEffect(() => {
-    if (radioValue === "1") {
-      setMethod("ADD_LIQUIDITY");
-    } else if (radioValue === "2") {
-      setMethod("SWAP");
+    if (radioValue === '1') {
+      setMethod('ADD_LIQUIDITY')
+    } else if (radioValue === '2') {
+      setMethod('SWAP')
     }
     ////console.log("radio value", radioValue, method);
-  }, [radioValue]);
-  const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
-  const router = useRouter();
-  const { pathname } = router;
+  }, [radioValue])
+  const [tokenTypeSelected, setTokenTypeSelected] = useState('Native')
+  const router = useRouter()
+  const { pathname } = router
   useEffect(() => {
-    if (pathname == "/v1/strk-rewards") {
+    if (pathname == '/v1/strk-rewards') {
       // setLoanMarket(coin ? coin.name : "BTC");
       // setCollateralMarket(coin ? coin.name : "BTC");
     } else {
-      setLoanMarket(suggestedBorrow ? suggestedBorrow.name : "BTC");
-      setCollateralMarket(suggestedCollateral ? suggestedCollateral : "BTC");
+      setLoanMarket(suggestedBorrow ? suggestedBorrow.name : 'BTC')
+      setCollateralMarket(suggestedCollateral ? suggestedCollateral : 'BTC')
     }
-  }, [suggestedCollateral]);
+  }, [suggestedCollateral])
   const resetStates = () => {
-    setSliderValue(0);
-    setsliderValue2(0);
-    setinputCollateralAmount(0);
-    setCollateralAmount(0);
-    setRTokenAmount(0);
-    setinputBorrowAmount(0);
-    setLoanAmount(0);
+    setSliderValue(0)
+    setsliderValue2(0)
+    setinputCollateralAmount(0)
+    setCollateralAmount(0)
+    setRTokenAmount(0)
+    setinputBorrowAmount(0)
+    setLoanAmount(0)
     // setCurrentDapp("Select a dapp");
     // setCurrentPool("Select a pool");
-    setCurrentCollateralCoin(suggestedCollateral ? suggestedCollateral : "BTC");
-    setCollateralMarket(suggestedCollateral ? suggestedCollateral : "BTC");
-    setCurrentBorrowCoin(suggestedBorrow ? suggestedBorrow?.name : "BTC");
-    setLoanMarket(coin ? coin.name : "BTC");
+    setCurrentCollateralCoin(suggestedCollateral ? suggestedCollateral : 'BTC')
+    setCollateralMarket(suggestedCollateral ? suggestedCollateral : 'BTC')
+    setCurrentBorrowCoin(suggestedBorrow ? suggestedBorrow?.name : 'BTC')
+    setLoanMarket(coin ? coin.name : 'BTC')
     // setCurrentPoolCoin("Select a pool");
-    setRadioValue(spendAction ? spendAction : "1");
-    setHealthFactor(undefined);
-    setTokenTypeSelected("Native");
+    setRadioValue(spendAction ? spendAction : '1')
+    setHealthFactor(undefined)
+    setTokenTypeSelected('Native')
     // setTransactionStarted(false);
-    dispatch(resetModalDropdowns());
+    dispatch(resetModalDropdowns())
     setwalletBalance(
-      walletBalances[suggestedCollateral]?.statusBalanceOf === "success"
+      walletBalances[suggestedCollateral]?.statusBalanceOf === 'success'
         ? parseAmount(
             String(
               uint256.uint256ToBN(
@@ -681,41 +683,41 @@ const DegenModal = ({
             tokenDecimalsMap[suggestedCollateral]
           )
         : 0
-    );
+    )
     // if (transactionStarted) dispatch(setTransactionStarted(""));
-    setTransactionStarted(false);
-    dispatch(resetModalDropdowns());
-    dispatch(setTransactionStatus(""));
-    setCurrentTransactionStatus("");
-    setDepositTransHash("");
-  };
+    setTransactionStarted(false)
+    dispatch(resetModalDropdowns())
+    dispatch(setTransactionStatus(''))
+    setCurrentTransactionStatus('')
+    setDepositTransHash('')
+  }
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
-  );
+  )
 
   useEffect(() => {
-    setinputBorrowAmount(0);
-    setLoanAmount(0);
+    setinputBorrowAmount(0)
+    setLoanAmount(0)
     // setLoanAmount(0);
-    setsliderValue2(0);
+    setsliderValue2(0)
     // setCurrentPoolCoin("Select a pool");
     // setHealthFactor(undefined)
-  }, [currentBorrowCoin]);
+  }, [currentBorrowCoin])
 
   useEffect(() => {
-    setinputCollateralAmount(0);
-    setCollateralAmount(0);
-    setRTokenAmount(0);
-    setSliderValue(0);
+    setinputCollateralAmount(0)
+    setCollateralAmount(0)
+    setRTokenAmount(0)
+    setSliderValue(0)
     // setHealthFactor(undefined)
-  }, [currentCollateralCoin]);
+  }, [currentCollateralCoin])
 
-  const [depositTransHash, setDepositTransHash] = useState("");
+  const [depositTransHash, setDepositTransHash] = useState('')
 
-  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState('')
 
-  const [isToastDisplayed, setToastDisplayed] = useState(false);
-  const [toastId, setToastId] = useState<any>();
+  const [isToastDisplayed, setToastDisplayed] = useState(false)
+  const [toastId, setToastId] = useState<any>()
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -754,14 +756,14 @@ const DegenModal = ({
   //     }
   //   },
   // });
-  const oraclePrices = useSelector(selectOraclePrices);
-  const marketInfo = useSelector(selectProtocolStats);
-  const [healthFactor, setHealthFactor] = useState<number>();
+  const oraclePrices = useSelector(selectOraclePrices)
+  const marketInfo = useSelector(selectProtocolStats)
+  const [healthFactor, setHealthFactor] = useState<number>()
 
   useEffect(() => {
     try {
       const fetchHealthFactor = async () => {
-        if (tokenTypeSelected == "Native") {
+        if (tokenTypeSelected == 'Native') {
           if (
             inputBorrowAmount > 0 &&
             inputCollateralAmount > 0 &&
@@ -774,10 +776,10 @@ const DegenModal = ({
               inputCollateralAmount,
               currentCollateralCoin,
               oraclePrices
-            );
-            setHealthFactor(data);
+            )
+            setHealthFactor(data)
           }
-        } else if (tokenTypeSelected == "rToken") {
+        } else if (tokenTypeSelected == 'rToken') {
           if (
             inputBorrowAmount > 0 &&
             rTokenAmount > 0 &&
@@ -792,13 +794,13 @@ const DegenModal = ({
               currentCollateralCoin,
               oraclePrices,
               marketInfo
-            );
+            )
             ////console.log(data,"data in trade")
-            setHealthFactor(data);
+            setHealthFactor(data)
           }
         }
-      };
-      fetchHealthFactor();
+      }
+      fetchHealthFactor()
     } catch (err) {
       //console.log(err);
     }
@@ -808,15 +810,15 @@ const DegenModal = ({
     currentBorrowCoin,
     currentCollateralCoin,
     rTokenAmount,
-  ]);
-  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0);
-  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0);
-  const minAmounts = useSelector(selectMinimumDepositAmounts);
-  const maxAmounts = useSelector(selectMaximumDepositAmounts);
+  ])
+  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  const minAmounts = useSelector(selectMinimumDepositAmounts)
+  const maxAmounts = useSelector(selectMaximumDepositAmounts)
   useEffect(() => {
-    setMinimumDepositAmount(minAmounts["r" + currentCollateralCoin]);
-    setmaximumDepositAmount(maxAmounts["r" + currentCollateralCoin]);
-  }, [currentCollateralCoin, minAmounts, maxAmounts]);
+    setMinimumDepositAmount(minAmounts['r' + currentCollateralCoin])
+    setmaximumDepositAmount(maxAmounts['r' + currentCollateralCoin])
+  }, [currentCollateralCoin, minAmounts, maxAmounts])
 
   // useEffect(()=>{
   //   const fetchMinDeposit=async()=>{
@@ -832,17 +834,17 @@ const DegenModal = ({
   //   // setMinimumDepositAmount(2)
   // },[currentCollateralCoin])
   const coinIndex: any = [
-    { token: "USDT", idx: 0 },
-    { token: "USDC", idx: 1 },
-    { token: "BTC", idx: 2 },
-    { token: "ETH", idx: 3 },
-    { token: "DAI", idx: 4 },
-  ];
+    { token: 'USDT', idx: 0 },
+    { token: 'USDC', idx: 1 },
+    { token: 'BTC', idx: 2 },
+    { token: 'ETH', idx: 3 },
+    { token: 'DAI', idx: 4 },
+  ]
   const handleBorrowAndSpend = async () => {
     try {
-      if (currentCollateralCoin[0] != "r") {
-        const borrowAndSpend = await writeAsyncBorrowAndSpend();
-        setDepositTransHash(borrowAndSpend?.transaction_hash);
+      if (currentCollateralCoin[0] != 'r') {
+        const borrowAndSpend = await writeAsyncBorrowAndSpend()
+        setDepositTransHash(borrowAndSpend?.transaction_hash)
         if (borrowAndSpend?.transaction_hash) {
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
@@ -851,18 +853,18 @@ const DegenModal = ({
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
             }
-          );
-          setToastId(toastid);
+          )
+          setToastId(toastid)
           if (!activeTransactions) {
-            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+            activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
           } else if (
             Object.isFrozen(activeTransactions) ||
             Object.isSealed(activeTransactions)
           ) {
             // Check if activeTransactions is frozen or sealed
-            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+            activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
           }
-          const uqID = getUniqueId();
+          const uqID = getUniqueId()
           const trans_data = {
             transaction_hash: borrowAndSpend?.transaction_hash.toString(),
             // message: `You have successfully traded`,
@@ -870,30 +872,30 @@ const DegenModal = ({
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
             uniqueID: uqID,
-          };
+          }
           // addTransaction({ hash: deposit?.transaction_hash });
-          activeTransactions?.push(trans_data);
-          posthog.capture("Trade Modal Market Status", {
-            Status: "Failure",
+          activeTransactions?.push(trans_data)
+          posthog.capture('Trade Modal Market Status', {
+            Status: 'Failure',
             BorrowToken: currentBorrowCoin,
             BorrowAmount: inputBorrowAmount,
             CollateralToken: currentCollateralCoin,
             CollateralAmount: inputCollateralAmount,
-            "Pool Selected": currentPool,
-            "Dapp Selected": currentDapp,
-          });
+            'Pool Selected': currentPool,
+            'Dapp Selected': currentDapp,
+          })
 
-          dispatch(setActiveTransactions(activeTransactions));
+          dispatch(setActiveTransactions(activeTransactions))
         }
-        const uqID = getUniqueId();
-        let data: any = localStorage.getItem("transactionCheck");
-        data = data ? JSON.parse(data) : [];
+        const uqID = getUniqueId()
+        let data: any = localStorage.getItem('transactionCheck')
+        data = data ? JSON.parse(data) : []
         if (data && data.includes(uqID)) {
-          dispatch(setTransactionStatus("success"));
+          dispatch(setTransactionStatus('success'))
         }
-      } else if (currentCollateralCoin[0] == "r") {
-        const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
-        setDepositTransHash(borrowAndSpendR?.transaction_hash);
+      } else if (currentCollateralCoin[0] == 'r') {
+        const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken()
+        setDepositTransHash(borrowAndSpendR?.transaction_hash)
         if (borrowAndSpendR?.transaction_hash) {
           const toastid = toast.info(
             // `Please wait your transaction is running in background`,
@@ -902,18 +904,18 @@ const DegenModal = ({
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
             }
-          );
-          setToastId(toastid);
+          )
+          setToastId(toastid)
           if (!activeTransactions) {
-            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+            activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
           } else if (
             Object.isFrozen(activeTransactions) ||
             Object.isSealed(activeTransactions)
           ) {
             // Check if activeTransactions is frozen or sealed
-            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+            activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
           }
-          const uqID = getUniqueId();
+          const uqID = getUniqueId()
           const trans_data = {
             transaction_hash: borrowAndSpendR?.transaction_hash.toString(),
             // message: `You have successfully traded`,
@@ -921,86 +923,86 @@ const DegenModal = ({
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
             uniqueID: uqID,
-          };
+          }
           // addTransaction({ hash: deposit?.transaction_hash });
-          activeTransactions?.push(trans_data);
-          posthog.capture("Trade Modal Market Status", {
-            Status: "Failure",
+          activeTransactions?.push(trans_data)
+          posthog.capture('Trade Modal Market Status', {
+            Status: 'Failure',
             BorrowToken: currentBorrowCoin,
             BorrowAmount: inputBorrowAmount,
             CollateralToken: currentCollateralCoin,
             CollateralAmount: inputCollateralAmount,
-            "Pool Selected": currentPool,
-            "Dapp Selected": currentDapp,
-          });
+            'Pool Selected': currentPool,
+            'Dapp Selected': currentDapp,
+          })
 
-          dispatch(setActiveTransactions(activeTransactions));
+          dispatch(setActiveTransactions(activeTransactions))
         }
-        const uqID = getUniqueId();
-        let data: any = localStorage.getItem("transactionCheck");
-        data = data ? JSON.parse(data) : [];
+        const uqID = getUniqueId()
+        let data: any = localStorage.getItem('transactionCheck')
+        data = data ? JSON.parse(data) : []
         if (data && data.includes(uqID)) {
-          dispatch(setTransactionStatus("success"));
+          dispatch(setTransactionStatus('success'))
         }
       }
     } catch (err: any) {
       //console.log(err);
-      const uqID = getUniqueId();
-      let data: any = localStorage.getItem("transactionCheck");
-      data = data ? JSON.parse(data) : [];
+      const uqID = getUniqueId()
+      let data: any = localStorage.getItem('transactionCheck')
+      data = data ? JSON.parse(data) : []
       if (data && data.includes(uqID)) {
         // dispatch(setTransactionStatus("failed"));
-        setTransactionStarted(false);
+        setTransactionStarted(false)
       }
       const toastContent = (
         <div>
-          Transaction declined{" "}
+          Transaction declined{' '}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
         </div>
-      );
-      posthog.capture("Trade Modal Market Status", {
-        Status: "Failure",
-      });
+      )
+      posthog.capture('Trade Modal Market Status', {
+        Status: 'Failure',
+      })
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
-      });
+      })
     }
-  };
+  }
 
-  const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0);
+  const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0)
   const availableReserves = protocolStats?.find(
     (stat: any) => stat?.token === currentBorrowCoin
-  )?.availableReserves;
+  )?.availableReserves
   const [inputCollateralAmountUSD, setInputCollateralAmountUSD] =
-    useState<any>(0);
+    useState<any>(0)
   useEffect(() => {
-    fetchParsedUSDValueBorrow();
-  }, [inputBorrowAmount, currentBorrowCoin]);
+    fetchParsedUSDValueBorrow()
+  }, [inputBorrowAmount, currentBorrowCoin])
 
   useEffect(() => {
-    fetchParsedUSDValueCollateral();
-  }, [collateralAmount, currentCollateralCoin, rToken, rTokenAmount]);
+    fetchParsedUSDValueCollateral()
+  }, [collateralAmount, currentCollateralCoin, rToken, rTokenAmount])
 
   const fetchParsedUSDValueBorrow = async () => {
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
         ////console.log("got parsed zero borrow");
-        setInputBorrowAmountUSD(0);
-        return;
+        setInputBorrowAmountUSD(0)
+        return
       }
 
       const parsedBorrowAmount =
         oraclePrices.find((curr: any) => curr.name === currentBorrowCoin)
-          ?.price * inputBorrowAmount;
+          ?.price * inputBorrowAmount
       // const parsedBorrowAmount = await getUSDValue(
       //   currentBorrowCoin,
       //   inputBorrowAmount
       // );
       ////console.log("got parsed usdt borrow", parsedBorrowAmount);
-      setInputBorrowAmountUSD(parsedBorrowAmount);
+      setInputBorrowAmountUSD(parsedBorrowAmount)
       ////console.log(
       //   "effective apr values : ",
       //   "loan_usd_value",
@@ -1020,9 +1022,9 @@ const DegenModal = ({
     } catch (error) {
       //console.log(error);
     }
-  };
+  }
   // const [poolAprs, setPoolAprs] = useState<any>([])
-  const poolAprs = useSelector(selectJediswapPoolAprs);
+  const poolAprs = useSelector(selectJediswapPoolAprs)
   // useEffect(()=>{
   //   try{
   //       const fetchPoolData=async()=>{
@@ -1039,59 +1041,59 @@ const DegenModal = ({
   //     }
   // },[currentDapp])
 
-  const strkData = useSelector(selectStrkAprData);
-  const netSpendBalance = useSelector(selectnetSpendBalance);
+  const strkData = useSelector(selectStrkAprData)
+  const netSpendBalance = useSelector(selectnetSpendBalance)
 
-  const [netStrkBorrow, setnetStrkBorrow] = useState(0);
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0)
 
   useEffect(() => {
     if (strkData != null) {
-      let netallocation = 0;
+      let netallocation = 0
       for (let token in strkData) {
         if (strkData.hasOwnProperty(token)) {
-          const array = strkData[token];
-          const lastObject = array[array.length - 1];
-          netallocation += 0.3 * lastObject.allocation;
+          const array = strkData[token]
+          const lastObject = array[array.length - 1]
+          netallocation += 0.3 * lastObject.allocation
         }
       }
-      setnetStrkBorrow(netallocation);
+      setnetStrkBorrow(netallocation)
     } else {
-      setnetStrkBorrow(0);
+      setnetStrkBorrow(0)
     }
-  }, [strkData]);
+  }, [strkData])
 
   const getBoostedAprSupply = (coin: any) => {
     if (strkData == null) {
-      return 0;
+      return 0
     } else {
       if (strkData?.[coin]) {
         if (oraclePrices == null) {
-          return 0;
+          return 0
         } else {
           let value = strkData?.[coin]
             ? (365 *
                 100 *
                 strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
                 0.7 *
-                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                oraclePrices?.find((curr: any) => curr.name === 'STRK')
                   ?.price) /
               strkData?.[coin][strkData[coin].length - 1]?.supply_usd
-            : 0;
-          return value;
+            : 0
+          return value
         }
       } else {
-        return 0;
+        return 0
       }
     }
-  };
+  }
 
   const getBoostedApr = (coin: any) => {
     if (strkData == null) {
-      return 0;
+      return 0
     } else {
       if (strkData?.[coin]) {
         if (oraclePrices == null) {
-          return 0;
+          return 0
         } else {
           if (netStrkBorrow != 0) {
             if (netSpendBalance) {
@@ -1099,36 +1101,36 @@ const DegenModal = ({
                 (365 *
                   100 *
                   netStrkBorrow *
-                  oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  oraclePrices?.find((curr: any) => curr.name === 'STRK')
                     ?.price) /
-                netSpendBalance;
-              return value;
+                netSpendBalance
+              return value
             } else {
-              return 0;
+              return 0
             }
           } else {
-            return 0;
+            return 0
           }
         }
       } else {
-        return 0;
+        return 0
       }
     }
-  };
+  }
 
   const fetchParsedUSDValueCollateral = async () => {
     try {
       if (!oraclePrices || oraclePrices?.length === 0) {
-        setInputCollateralAmountUSD(0);
+        setInputCollateralAmountUSD(0)
         ////console.log("got parsed zero collateral");
 
-        return;
+        return
       }
 
-      if (tokenTypeSelected === "Native") {
+      if (tokenTypeSelected === 'Native') {
         const parsedBorrowAmount =
           oraclePrices.find((curr: any) => curr.name === currentCollateralCoin)
-            ?.price * collateralAmount;
+            ?.price * collateralAmount
         // const parsedBorrowAmount = await getUSDValue(
         //   currentBorrowCoin,
         //   inputBorrowAmount
@@ -1139,8 +1141,8 @@ const DegenModal = ({
         //   " max should be",
         //   5 * parsedBorrowAmount
         // );
-        setInputCollateralAmountUSD(parsedBorrowAmount);
-      } else if (tokenTypeSelected === "rToken") {
+        setInputCollateralAmountUSD(parsedBorrowAmount)
+      } else if (tokenTypeSelected === 'rToken') {
         ////console.log(
         //   "rToken parsing",
         //   rToken,
@@ -1156,7 +1158,7 @@ const DegenModal = ({
             ?.price *
           rTokenAmount *
           protocolStats.find((curr: any) => curr.token === rToken.slice(1))
-            ?.exchangeRateRtokenToUnderlying;
+            ?.exchangeRateRtokenToUnderlying
         // const parsedBorrowAmount = await getUSDValue(
         //   currentBorrowCoin,
         //   inputBorrowAmount
@@ -1167,53 +1169,48 @@ const DegenModal = ({
         //   " max should be",
         //   5 * parsedBorrowAmount
         // );
-        setInputCollateralAmountUSD(parsedBorrowAmount);
+        setInputCollateralAmountUSD(parsedBorrowAmount)
       }
     } catch (error) {
       //console.log(error);
     }
-  };
+  }
   const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
     Number | undefined | null
-  >();
+  >()
   const [currentSplit, setCurrentSplit] = useState<
     Number[] | undefined | null
-  >();
-  const [minimumLoanAmount, setMinimumLoanAmount] = useState<any>(0);
-  const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0);
-  const minLoanAmounts = useSelector(selectMinimumLoanAmounts);
-  const maxLoanAmounts = useSelector(selectMaximumLoanAmounts);
+  >()
+  const [minimumLoanAmount, setMinimumLoanAmount] = useState<any>(0)
+  const [maximumLoanAmount, setMaximumLoanAmount] = useState<any>(0)
+  const minLoanAmounts = useSelector(selectMinimumLoanAmounts)
+  const maxLoanAmounts = useSelector(selectMaximumLoanAmounts)
   useEffect(() => {
     const fecthLoanAmount = async () => {
       const dynamicdata = await getMaximumDynamicLoanAmount(
         collateralAmount,
         currentBorrowCoin,
-        currentCollateralCoin[0] == "r"
+        currentCollateralCoin[0] == 'r'
           ? currentCollateralCoin.slice(1)
           : currentCollateralCoin
-      );
+      )
       if (dynamicdata != undefined) {
-        const data = maxLoanAmounts["d" + currentBorrowCoin];
+        const data = maxLoanAmounts['d' + currentBorrowCoin]
         if (currentBorrowCoin == currentCollateralCoin) {
-          setMaximumLoanAmount(maxLoanAmounts["d" + currentBorrowCoin]);
+          setMaximumLoanAmount(maxLoanAmounts['d' + currentBorrowCoin])
         } else if (
-          currentCollateralCoin[0] == "r" &&
+          currentCollateralCoin[0] == 'r' &&
           currentCollateralCoin.slice(1) == currentBorrowCoin
         ) {
-          setMaximumLoanAmount(maxLoanAmounts["d" + currentBorrowCoin]);
+          setMaximumLoanAmount(maxLoanAmounts['d' + currentBorrowCoin])
         } else {
-          setMaximumLoanAmount(Math.min(dynamicdata, data));
+          setMaximumLoanAmount(Math.min(dynamicdata, data))
         }
       }
-    };
-    fecthLoanAmount();
-    setMinimumLoanAmount(minLoanAmounts["d" + currentBorrowCoin]);
-  }, [
-    currentBorrowCoin,
-    maxLoanAmounts,
-    minLoanAmounts,
-    currentCollateralCoin,
-  ]);
+    }
+    fecthLoanAmount()
+    setMinimumLoanAmount(minLoanAmounts['d' + currentBorrowCoin])
+  }, [currentBorrowCoin, maxLoanAmounts, minLoanAmounts, currentCollateralCoin])
   // useEffect(()=>{
   //   const fetchMinLoanAmount=async()=>{
   //     const data=await getMinimumLoanAmount("d"+currentBorrowCoin);
@@ -1235,74 +1232,74 @@ const DegenModal = ({
     //   toMarketLiqB
     //   // borrow
     // );
-    setCurrentSplit(null);
-    fetchLiquiditySplit();
+    setCurrentSplit(null)
+    fetchLiquiditySplit()
   }, [
     inputBorrowAmount,
     currentBorrowCoin,
     toMarketLiqA,
     toMarketLiqB,
     currentDapp,
-  ]);
+  ])
 
   useEffect(() => {
-    setCurrentLPTokenAmount(null);
-    fetchLPAmount();
+    setCurrentLPTokenAmount(null)
+    fetchLPAmount()
   }, [
     inputBorrowAmount,
     currentBorrowCoin,
     toMarketLiqA,
     toMarketLiqB,
     currentDapp,
-  ]);
+  ])
 
   const strkTokenAlloactionData: any = useSelector(
     selectJedistrkTokenAllocation
-  );
-  const [allocationData, setallocationData] = useState<any>();
-  const [poolAllocatedData, setpoolAllocatedData] = useState<any>();
+  )
+  const [allocationData, setallocationData] = useState<any>()
+  const [poolAllocatedData, setpoolAllocatedData] = useState<any>()
 
   useEffect(() => {
     try {
-      if (currentPool !== "Select a pool") {
+      if (currentPool !== 'Select a pool') {
         if (strkTokenAlloactionData[currentPool]) {
-          setallocationData(strkTokenAlloactionData[currentPool]);
+          setallocationData(strkTokenAlloactionData[currentPool])
         }
       }
     } catch (err) {
       // console.log("hi");
-      console.log(err, "err in allocating");
+      console.log(err, 'err in allocating')
     }
-  }, [strkTokenAlloactionData, currentPool]);
+  }, [strkTokenAlloactionData, currentPool])
 
   useEffect(() => {
     if (allocationData?.length > 0) {
       if (
-        currentPool === "STRK/ETH" ||
-        currentPool == "USDC/USDT" ||
-        currentPool == "ETH/USDC"
+        currentPool === 'STRK/ETH' ||
+        currentPool == 'USDC/USDT' ||
+        currentPool == 'ETH/USDC'
       ) {
         setpoolAllocatedData(
           allocationData[allocationData.length - 1]?.allocation
-        );
+        )
       } else {
-        setpoolAllocatedData(0);
+        setpoolAllocatedData(0)
       }
     }
-  }, [allocationData, currentPool]);
+  }, [allocationData, currentPool])
 
   const fetchLiquiditySplit = async () => {
     if (
-      currentDapp === "Select a dapp" ||
+      currentDapp === 'Select a dapp' ||
       !toMarketLiqA ||
       !toMarketLiqB ||
       !currentBorrowCoin ||
       !inputBorrowAmount ||
-      currentPool === "Select a pool"
+      currentPool === 'Select a pool'
     )
-      return;
+      return
 
-    if (currentDapp === "Jediswap") {
+    if (currentDapp === 'Jediswap') {
       const split = await getJediEstimateLiquiditySplit(
         currentBorrowCoin,
         (
@@ -1315,9 +1312,9 @@ const DegenModal = ({
         // 99,
         // "ETH",
         // "USDT"
-      );
-      setCurrentSplit(split);
-    } else if (currentDapp === "mySwap") {
+      )
+      setCurrentSplit(split)
+    } else if (currentDapp === 'mySwap') {
       const split = await getMySwapEstimateLiquiditySplit(
         currentBorrowCoin,
         (
@@ -1330,23 +1327,23 @@ const DegenModal = ({
         // 99,
         // "ETH",
         // "USDT"
-      );
-      setCurrentSplit(split);
+      )
+      setCurrentSplit(split)
     }
-  };
+  }
 
   const fetchLPAmount = async () => {
     if (
-      currentDapp === "Select a dapp" ||
+      currentDapp === 'Select a dapp' ||
       !toMarketLiqA ||
       !toMarketLiqB ||
       !currentBorrowCoin ||
       !inputBorrowAmount ||
-      currentPool === "Select a pool"
+      currentPool === 'Select a pool'
     )
-      return;
+      return
     ////console.log("inputBorrowAmount", Number(inputBorrowAmount));
-    if (currentDapp === "Jediswap") {
+    if (currentDapp === 'Jediswap') {
       const lp_tokon = await getJediEstimatedLpAmountOut(
         currentBorrowCoin,
         (
@@ -1359,9 +1356,9 @@ const DegenModal = ({
         // "99",
         // "ETH",
         // "USDT"
-      );
-      setCurrentLPTokenAmount(lp_tokon);
-    } else if (currentDapp === "mySwap") {
+      )
+      setCurrentLPTokenAmount(lp_tokon)
+    } else if (currentDapp === 'mySwap') {
       const lp_tokon = await getMySwapEstimatedLpAmountOut(
         currentBorrowCoin,
         (
@@ -1374,10 +1371,10 @@ const DegenModal = ({
         // "99",
         // "ETH",
         // "USDT"
-      );
-      setCurrentLPTokenAmount(lp_tokon);
+      )
+      setCurrentLPTokenAmount(lp_tokon)
     }
-  };
+  }
   // useEffect(() => {
   //   const fetchEstrTokens = async () => {
   //     const data = await getrTokensMinted(
@@ -1392,72 +1389,71 @@ const DegenModal = ({
   // }, [collateralBalance, inputCollateralAmount]);
 
   useEffect(() => {
-    setToMarketLiqA(pool.split("/")[0]);
-    setToMarketLiqB(pool.split("/")[1]);
-    if (currentDapp == "Jediswap") {
-      setL3App("JEDI_SWAP");
+    setToMarketLiqA(pool.split('/')[0])
+    setToMarketLiqB(pool.split('/')[1])
+    if (currentDapp == 'Jediswap') {
+      setL3App('JEDI_SWAP')
     } else {
-      setL3App("MY_SWAP");
+      setL3App('MY_SWAP')
     }
-  }, [poolNumber]);
+  }, [poolNumber])
 
   const getStrkAlloaction = (pool: any) => {
     try {
       if (strkTokenAlloactionData[pool]) {
         return strkTokenAlloactionData[pool][
           strkTokenAlloactionData[pool].length - 1
-        ]?.allocation;
+        ]?.allocation
       } else {
-        return 0;
+        return 0
       }
     } catch (err) {
-      console.log(err, "er in strk alloc");
-      return 0;
+      console.log(err, 'er in strk alloc')
+      return 0
     }
-  };
+  }
   return (
     <Box>
       <Button
         cursor="pointer"
-        height={"2rem"}
-        fontSize={"12px"}
+        height={'2rem'}
+        fontSize={'12px'}
         padding="6px 12px"
         border="1px solid white"
         bgColor="transparent"
-        _hover={{ bg: "white", color: "black" }}
-        borderRadius={"6px"}
+        _hover={{ bg: 'white', color: 'black' }}
+        borderRadius={'6px'}
         color="white"
         onClick={() => {
-          const uqID = Math.random();
-          setUniqueID(uqID);
-          let data: any = localStorage.getItem("transactionCheck");
-          data = data ? JSON.parse(data) : [];
+          const uqID = Math.random()
+          setUniqueID(uqID)
+          let data: any = localStorage.getItem('transactionCheck')
+          data = data ? JSON.parse(data) : []
           if (data && !data.includes(uqID)) {
-            data.push(uqID);
-            localStorage.setItem("transactionCheck", JSON.stringify(data));
+            data.push(uqID)
+            localStorage.setItem('transactionCheck', JSON.stringify(data))
           }
-          onOpen();
+          onOpen()
         }}
       >
         Execute
       </Button>
-      {/* <Button onClick={onOpen}>Open Modal</Button> */}
 
       <Modal
         isOpen={isOpen}
         onClose={() => {
-          const uqID = getUniqueId();
-          let data: any = localStorage.getItem("transactionCheck");
-          data = data ? JSON.parse(data) : [];
+          const uqID = getUniqueId()
+          let data: any = localStorage.getItem('transactionCheck')
+          data = data ? JSON.parse(data) : []
           ////console.log(uqID, "data here", data);
           if (data && data.includes(uqID)) {
-            data = data.filter((val: any) => val != uqID);
-            localStorage.setItem("transactionCheck", JSON.stringify(data));
+            data = data.filter((val: any) => val != uqID)
+            localStorage.setItem('transactionCheck', JSON.stringify(data))
           }
-          onClose();
-          resetStates();
+          onClose()
+          resetStates()
           if (transactionStarted) {
-            dispatch(setTransactionStartedAndModalClosed(true));
+            dispatch(setTransactionStartedAndModalClosed(true))
             // dispatch(setToastTransactionStarted(""));
           }
         }}
@@ -1465,7 +1461,8 @@ const DegenModal = ({
         scrollBehavior="inside"
       >
         <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
-        <ModalContent mt="8rem" bg={"#02010F"} maxW="464px">
+
+        <ModalContent mt="6rem" bg={'#02010F'} maxW="464px">
           <ModalHeader
             mt="1rem"
             fontSize="14px"
@@ -1473,20 +1470,39 @@ const DegenModal = ({
             fontStyle="normal"
             lineHeight="20px"
             color="white"
+            display="flex"
+            alignItems="center"
+            gap="2"
           >
             Strategy
+            <Tooltip
+              hasArrow
+              placement="right"
+              boxShadow="dark-lg"
+              label="strategy tooltip contents"
+              bg="#02010F"
+              fontSize={'13px'}
+              fontWeight={'400'}
+              borderRadius={'lg'}
+              padding={'2'}
+              color="#F0F0F5"
+              border="1px solid"
+              borderColor="#23233D"
+              arrowShadowColor="#2B2F35"
+            >
+              <Box>
+                <InfoIconBig />
+              </Box>
+            </Tooltip>
           </ModalHeader>
+
           <ModalCloseButton color="white" mt="1rem" mr="1rem" />
-          {/* <ModalHeader>Borrow</ModalHeader> */}
-          <ModalBody overflowY="auto" color={"#E6EDF3"}>
-            {/* <ModalCloseButton mt="1rem" mr="1rem" color="white" /> */}
-            {/* <button onClick={onClose}>Cancel</button> */}
+
+          <ModalBody overflowY="auto" color={'#E6EDF3'}>
             <Card
               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-              mt="1.5rem"
               p="0.8rem"
-
             >
               <Text
                 color="#8B949E"
@@ -1510,12 +1526,12 @@ const DegenModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
+                    label="Tokens held as security for borrowed funds."
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -1533,7 +1549,7 @@ const DegenModal = ({
                     alt="Picture of the author"
                     width="14"
                     height="14"
-                    style={{marginBottom:"0.1rem"}}
+                    style={{ marginBottom: '0.1rem' }}
                   />
                   <Text
                     font-style="normal"
@@ -1565,12 +1581,12 @@ const DegenModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="The annual interest rate charged on borrowed funds from the protocol."
+                    label="The amount of tokens used as security for borrowed funds."
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -1589,7 +1605,8 @@ const DegenModal = ({
                   font-family="Avenir"
                   color="#676D9A"
                 >
-                    {numberFormatter(collateralSuggestedAmount)} {suggestedCollateral}
+                  {numberFormatter(collateralSuggestedAmount)}{' '}
+                  {suggestedCollateral}
                   {/* 5.56% */}
                 </Text>
               </Text>
@@ -1603,7 +1620,7 @@ const DegenModal = ({
                   <Text
                     display="flex"
                     alignItems="center"
-                    key={"effective apr"}
+                    key={'effective apr'}
                   >
                     <Text
                       mr="0.2rem"
@@ -1621,10 +1638,10 @@ const DegenModal = ({
                       boxShadow="dark-lg"
                       label="If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying."
                       bg="#02010F"
-                      fontSize={"13px"}
-                      fontWeight={"400"}
-                      borderRadius={"lg"}
-                      padding={"2"}
+                      fontSize={'13px'}
+                      fontWeight={'400'}
+                      borderRadius={'lg'}
+                      padding={'2'}
                       color="#F0F0F5"
                       border="1px solid"
                       borderColor="#23233D"
@@ -1643,7 +1660,7 @@ const DegenModal = ({
                     font-size="14px"
                     color="#676D9A"
                   >
-                    {tokenTypeSelected === "Native" ? (
+                    {tokenTypeSelected === 'Native' ? (
                       inputBorrowAmount === 0 ||
                       collateralAmount === 0 ||
                       !borrowAPRs[currentBorrowAPR] ? (
@@ -1677,8 +1694,8 @@ const DegenModal = ({
                                     ))) /
                                 inputCollateralAmountUSD
                             ) < 0
-                              ? "rgb(255 94 94)"
-                              : "#00D395"
+                              ? 'rgb(255 94 94)'
+                              : '#00D395'
                           }
                         >
                           {/* 5.56% */}
@@ -1736,8 +1753,8 @@ const DegenModal = ({
                                 getBoostedAprSupply(rToken.slice(1)))) /
                             inputCollateralAmountUSD <
                           0
-                            ? "rgb(255 94 94)"
-                            : "#00D395"
+                            ? 'rgb(255 94 94)'
+                            : '#00D395'
                         }
                       >
                         {/* 5.56% */}
@@ -1767,7 +1784,7 @@ const DegenModal = ({
                   </Text>
                 </Text>
               )}
-              {healthFactor ? (
+              {/* {healthFactor ? (
                 <Text
                   color="#8B949E"
                   display="flex"
@@ -1790,10 +1807,10 @@ const DegenModal = ({
                       boxShadow="dark-lg"
                       label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
                       bg="#02010F"
-                      fontSize={"13px"}
-                      fontWeight={"400"}
-                      borderRadius={"lg"}
-                      padding={"2"}
+                      fontSize={'13px'}
+                      fontWeight={'400'}
+                      borderRadius={'lg'}
+                      padding={'2'}
                       color="#F0F0F5"
                       border="1px solid"
                       borderColor="#23233D"
@@ -1816,15 +1833,15 @@ const DegenModal = ({
                   </Text>
                 </Text>
               ) : (
-                ""
-              )}
+                ''
+              )} */}
             </Card>
+
             <Card
               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               mt="1.5rem"
               p="0.8rem"
-
             >
               <Text
                 color="#8B949E"
@@ -1848,12 +1865,12 @@ const DegenModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
+                    label="The token borrowed from the protocol."
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -1871,7 +1888,7 @@ const DegenModal = ({
                     alt="Picture of the author"
                     width="14"
                     height="14"
-                    style={{marginBottom:"0.2rem"}}
+                    style={{ marginBottom: '0.2rem' }}
                   />
                   <Text
                     font-style="normal"
@@ -1904,12 +1921,12 @@ const DegenModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="The annual interest rate charged on borrowed funds from the protocol."
+                    label="The quantity of tokens you want to borrow from the protocol."
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -1928,7 +1945,8 @@ const DegenModal = ({
                   font-family="Avenir"
                   color="#676D9A"
                 >
-                    {numberFormatter(borrowSuggestedAmount)} {suggestedBorrow.name}
+                  {numberFormatter(borrowSuggestedAmount)}{' '}
+                  {suggestedBorrow.name}
                   {/* 5.56% */}
                 </Text>
               </Text>
@@ -1954,10 +1972,10 @@ const DegenModal = ({
                     boxShadow="dark-lg"
                     label="The annual interest rate charged on borrowed funds from the protocol."
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -1976,17 +1994,16 @@ const DegenModal = ({
                   font-family="Avenir"
                   color="#676D9A"
                 >
-                    {suggestedLeverage}X
-                  {/* 5.56% */}
+                  {suggestedLeverage}X{/* 5.56% */}
                 </Text>
               </Text>
             </Card>
+
             <Card
               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               mt="1.5rem"
               p="0.8rem"
-
             >
               <Text
                 color="#8B949E"
@@ -2012,10 +2029,10 @@ const DegenModal = ({
                     boxShadow="dark-lg"
                     label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -2029,21 +2046,21 @@ const DegenModal = ({
                 </Text>
                 <Box display="flex" gap="0.2rem">
                   <Image
-                    src={`/${"JEDI_SWAP"}.svg`}
+                    src={`/${'JEDI_SWAP'}.svg`}
                     alt="Picture of the author"
                     width="14"
                     height="14"
-                    style={{marginBottom:"0.2rem"}}
+                    style={{ marginBottom: '0.2rem' }}
                   />
                   <Box>
-                  <Text
-                    font-style="normal"
-                    font-weight="400"
-                    font-size="14px"
-                    color="#676D9A"
-                  >
-                    Jediswap
-                  </Text>
+                    <Text
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="14px"
+                      color="#676D9A"
+                    >
+                      Jediswap
+                    </Text>
                   </Box>
                 </Box>
               </Text>
@@ -2070,10 +2087,10 @@ const DegenModal = ({
                     boxShadow="dark-lg"
                     label="The annual interest rate charged on borrowed funds from the protocol."
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -2092,23 +2109,23 @@ const DegenModal = ({
                   font-family="Avenir"
                   color="#676D9A"
                 >
-<Box display="flex" gap="0.2rem">
-                  <Image
-                    src={`/${"JEDI_SWAP"}.svg`}
-                    alt="Picture of the author"
-                    width="14"
-                    height="14"
-                    style={{marginBottom:"0.2rem"}}
-                  />
-                  <Text
-                    font-style="normal"
-                    font-weight="400"
-                    font-size="14px"
-                    color="#676D9A"
-                  >
-                    Jediswap
-                  </Text>
-                </Box>
+                  <Box display="flex" gap="0.2rem">
+                    <Image
+                      src={`/${'JEDI_SWAP'}.svg`}
+                      alt="Picture of the author"
+                      width="14"
+                      height="14"
+                      style={{ marginBottom: '0.2rem' }}
+                    />
+                    <Text
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="14px"
+                      color="#676D9A"
+                    >
+                      Jediswap
+                    </Text>
+                  </Box>
                 </Text>
               </Text>
               <Text
@@ -2133,10 +2150,10 @@ const DegenModal = ({
                     boxShadow="dark-lg"
                     label="The annual interest rate charged on borrowed funds from the protocol."
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -2149,25 +2166,25 @@ const DegenModal = ({
                   </Tooltip>
                 </Text>
                 <Box
-                          display="flex"
-                          gap="2"
-                          color="#676D9A"
-                          fontSize="12px"
-                          fontWeight="400"
-                          fontStyle="normal"
-                        >
-                          <Box display="flex" gap="2px">
-                            <Box mt="2px">
-                              {/* <SmallEth /> */}
-                              <Image
-                                src={`/${toMarketLiqA}.svg`}
-                                alt="liquidity split coin1"
-                                width="12"
-                                height="12"
-                              />
-                            </Box>
-                            <Text>
-                              {/* {currentSplit?.[0]?.toString() || (
+                  display="flex"
+                  gap="2"
+                  color="#676D9A"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  <Box display="flex" gap="2px">
+                    <Box mt="2px">
+                      {/* <SmallEth /> */}
+                      <Image
+                        src={`/${toMarketLiqA}.svg`}
+                        alt="liquidity split coin1"
+                        width="12"
+                        height="12"
+                      />
+                    </Box>
+                    <Text>
+                      {/* {currentSplit?.[0]?.toString() || (
                               <Skeleton
                                 width="2.3rem"
                                 height=".85rem"
@@ -2176,24 +2193,23 @@ const DegenModal = ({
                                 borderRadius="6px"
                               />
                             )} */}
-                            {toMarketLiqA}
-                              
-                            </Text>
-                          </Box>
-                          /
-                          <Box display="flex" gap="2px">
-                            <Box mt="2px">
-                              {/* <SmallUsdt /> */}
-                              <Image
-                                src={`/${toMarketLiqB}.svg`}
-                                alt="liquidity split coin1"
-                                width="12"
-                                height="12"
-                              />
-                            </Box>
-                            <Text>
-                              {toMarketLiqB}
-                              {/* {currentSplit?.[1].toString() || (
+                      {toMarketLiqA}
+                    </Text>
+                  </Box>
+                  /
+                  <Box display="flex" gap="2px">
+                    <Box mt="2px">
+                      {/* <SmallUsdt /> */}
+                      <Image
+                        src={`/${toMarketLiqB}.svg`}
+                        alt="liquidity split coin1"
+                        width="12"
+                        height="12"
+                      />
+                    </Box>
+                    <Text>
+                      {toMarketLiqB}
+                      {/* {currentSplit?.[1].toString() || (
                               <Skeleton
                                 width="2.3rem"
                                 height=".85rem"
@@ -2202,12 +2218,12 @@ const DegenModal = ({
                                 borderRadius="6px"
                               />
                             )} */}
-                              
-                            </Text>
-                          </Box>
-                        </Box>
+                    </Text>
+                  </Box>
+                </Box>
               </Text>
             </Card>
+
             <Card
               background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
@@ -2237,10 +2253,10 @@ const DegenModal = ({
                     boxShadow="dark-lg"
                     label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -2284,10 +2300,10 @@ const DegenModal = ({
                     boxShadow="dark-lg"
                     label="The annual interest rate charged on borrowed funds from the protocol."
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -2332,7 +2348,7 @@ const DegenModal = ({
                   <Text
                     display="flex"
                     alignItems="center"
-                    key={"effective apr"}
+                    key={'effective apr'}
                   >
                     <Text
                       mr="0.2rem"
@@ -2350,10 +2366,10 @@ const DegenModal = ({
                       boxShadow="dark-lg"
                       label="If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying."
                       bg="#02010F"
-                      fontSize={"13px"}
-                      fontWeight={"400"}
-                      borderRadius={"lg"}
-                      padding={"2"}
+                      fontSize={'13px'}
+                      fontWeight={'400'}
+                      borderRadius={'lg'}
+                      padding={'2'}
                       color="#F0F0F5"
                       border="1px solid"
                       borderColor="#23233D"
@@ -2372,7 +2388,7 @@ const DegenModal = ({
                     font-size="14px"
                     color="#676D9A"
                   >
-                    {tokenTypeSelected === "Native" ? (
+                    {tokenTypeSelected === 'Native' ? (
                       inputBorrowAmount === 0 ||
                       collateralAmount === 0 ||
                       !borrowAPRs[currentBorrowAPR] ? (
@@ -2406,8 +2422,8 @@ const DegenModal = ({
                                     ))) /
                                 inputCollateralAmountUSD
                             ) < 0
-                              ? "rgb(255 94 94)"
-                              : "#00D395"
+                              ? 'rgb(255 94 94)'
+                              : '#00D395'
                           }
                         >
                           {/* 5.56% */}
@@ -2465,8 +2481,8 @@ const DegenModal = ({
                                 getBoostedAprSupply(rToken.slice(1)))) /
                             inputCollateralAmountUSD <
                           0
-                            ? "rgb(255 94 94)"
-                            : "#00D395"
+                            ? 'rgb(255 94 94)'
+                            : '#00D395'
                         }
                       >
                         {/* 5.56% */}
@@ -2519,10 +2535,10 @@ const DegenModal = ({
                       boxShadow="dark-lg"
                       label="Loan risk metric comparing collateral value to borrowed amount to check potential liquidation."
                       bg="#02010F"
-                      fontSize={"13px"}
-                      fontWeight={"400"}
-                      borderRadius={"lg"}
-                      padding={"2"}
+                      fontSize={'13px'}
+                      fontWeight={'400'}
+                      borderRadius={'lg'}
+                      padding={'2'}
                       color="#F0F0F5"
                       border="1px solid"
                       borderColor="#23233D"
@@ -2545,35 +2561,53 @@ const DegenModal = ({
                   </Text>
                 </Text>
               ) : (
-                ""
+                ''
               )}
             </Card>
+
+            <Box display="flex" justifyContent="left" w="100%" pb="2" pt="5">
+              <Box
+                width="full"
+                display="flex"
+                bg="#676D9A4D"
+                fontSize="12px"
+                p="4"
+                fontStyle="normal"
+                fontWeight="400"
+                borderRadius="6px"
+                border="1px solid #3841AA"
+                color="#F0F0F5"
+                gap=".7rem"
+              >
+                <Box mt="3px">
+                  <TableInfoIcon />
+                </Box>
+                Your leverage is set as per the collateral which is 3x
+              </Box>
+            </Box>
+
             <Box>
               <AnimatedButton
                 border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 background="white"
                 opacity="100%"
-                // bgColor="red"
-                // p={0}
                 size="sm"
                 width="100%"
-                mt="1.5rem"
-                mb="1.5rem"
+                mt=".8rem"
+                mb=".8rem"
                 labelSuccessArray={[
-                  "Collateral received",
-                  "Processing the borrow request.",
-                  // <ErrorButton errorText="Transaction failed" />,
-                  // <ErrorButton errorText="Copy error!" />,
+                  'Collateral received',
+                  'Processing the borrow request.',
                   <SuccessButton
-                    key={"successButton"}
-                    successText={"Borrow successful."}
+                    key={'successButton'}
+                    successText={'Borrow successful.'}
                   />,
                 ]}
                 labelErrorArray={[
-                  <ErrorButton errorText="Transaction failed" key={"error1"} />,
-                  <ErrorButton errorText="Copy error!" key={"error2"} />,
+                  <ErrorButton errorText="Transaction failed" key={'error1'} />,
+                  <ErrorButton errorText="Copy error!" key={'error2'} />,
                 ]}
-                _disabled={{ bgColor: "white", color: "black" }}
+                _disabled={{ bgColor: 'white', color: 'black' }}
                 isDisabled={transactionStarted == true}
                 currentTransactionStatus={currentTransactionStatus}
                 setCurrentTransactionStatus={setCurrentTransactionStatus}
@@ -2582,17 +2616,10 @@ const DegenModal = ({
               </AnimatedButton>
             </Box>
           </ModalBody>
-
-          {/* <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Secondary Action</Button>
-          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </Box>
-  );
-};
+  )
+}
 
-export default DegenModal;
+export default DegenModal
