@@ -1515,7 +1515,7 @@ const TradeModal = ({
               alignItems="center"
               gap="2"
             >
-              Trade
+              Spend
               <Tooltip
                 hasArrow
                 placement="right"

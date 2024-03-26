@@ -2603,11 +2603,15 @@ const DegenModal = ({
                 mt=".8rem"
                 mb=".8rem"
                 labelSuccessArray={[
-                  'Collateral received',
-                  'Processing the borrow request.',
+                  'Collateral supplied.',
+                  `r${suggestedCollateral} locked.`,
+                  `Borrow processed`,
+                  `d${suggestedBorrow} minted.`,
+                  'Adding liquidity to BTC-ETH pool on Jediswap',
+                  'Strategy executed successfully.',
                   <SuccessButton
                     key={'successButton'}
-                    successText={'Borrow successful.'}
+                    successText={'Spend successful.'}
                   />,
                 ]}
                 labelErrorArray={[
