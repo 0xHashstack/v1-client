@@ -1968,7 +1968,7 @@ const DegenModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="The annual interest rate charged on borrowed funds from the protocol."
+                    label="Leverage is the proportion of loan amount to collateral value in protocol."
                     bg="#02010F"
                     fontSize={'13px'}
                     fontWeight={'400'}
@@ -2034,7 +2034,7 @@ const DegenModal = ({
                     hasArrow
                     placement="right"
                     boxShadow="dark-lg"
-                    label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
+                    label="Describes the specific dapp name, collateral, debt, type, and secondary market involved."
                     bg="#02010F"
                     fontSize={'13px'}
                     fontWeight={'400'}
