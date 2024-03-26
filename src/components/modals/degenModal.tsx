@@ -159,11 +159,9 @@ const DegenModal = ({
   collateralSuggestedAmount,
   borrowSuggestedAmount,
   suggestedLeverage,
-
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  //  //console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
   const {
     loanMarket,
     setLoanMarket,
@@ -995,7 +993,7 @@ const DegenModal = ({
       }
 
       const parsedBorrowAmount =
-        oraclePrices.find((curr: any) => curr.name === currentBorrowCoin)
+        oraclePrices?.find((curr: any) => curr.name === currentBorrowCoin)
           ?.price * inputBorrowAmount
       // const parsedBorrowAmount = await getUSDValue(
       //   currentBorrowCoin,
@@ -1129,7 +1127,7 @@ const DegenModal = ({
 
       if (tokenTypeSelected === 'Native') {
         const parsedBorrowAmount =
-          oraclePrices.find((curr: any) => curr.name === currentCollateralCoin)
+          oraclePrices?.find((curr: any) => curr.name === currentCollateralCoin)
             ?.price * collateralAmount
         // const parsedBorrowAmount = await getUSDValue(
         //   currentBorrowCoin,
@@ -1154,7 +1152,7 @@ const DegenModal = ({
         // );
 
         const parsedBorrowAmount =
-          oraclePrices.find((curr: any) => curr.name === rToken.slice(1))
+          oraclePrices?.find((curr: any) => curr.name === rToken.slice(1))
             ?.price *
           rTokenAmount *
           protocolStats.find((curr: any) => curr.token === rToken.slice(1))
@@ -1994,7 +1992,16 @@ const DegenModal = ({
                   font-family="Avenir"
                   color="#676D9A"
                 >
-                  {suggestedLeverage}X{/* 5.56% */}
+                  {numberFormatter(
+                    (borrowSuggestedAmount *
+                      oraclePrices?.find(
+                        (curr: any) => curr.name === suggestedBorrow.name
+                      )?.price) /
+                      (collateralSuggestedAmount *
+                        oraclePrices?.find(
+                          (curr: any) => curr.name === suggestedCollateral
+                        )?.price)
+                  )}
                 </Text>
               </Text>
             </Card>
