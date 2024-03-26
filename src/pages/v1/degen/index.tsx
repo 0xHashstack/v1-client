@@ -430,11 +430,11 @@ const Degen: NextPage = () => {
         <Image
           src="/degen_mode_banner2.svg"
           alt="Degen Mode Banner"
-          width={765}
-          height={139}
+          width={735}
+          height={109}
           style={{
             position: 'absolute',
-            top: '2px',
+            top: '12px',
             right: '2rem',
             objectFit: 'cover',
             borderRadius: '8px',
