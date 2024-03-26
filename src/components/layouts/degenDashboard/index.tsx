@@ -68,6 +68,11 @@ import {
   setModalDropdown,
 } from '@/store/slices/dropdownsSlice'
 import DropdownUp from '@/assets/icons/dropdownUpIcon'
+import TransactionCancelModal from '@/components/modals/TransactionCancelModal'
+import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf'
+import { tokenAddressMap, tokenDecimalsMap } from '@/Blockchain/utils/addressServices'
+import { parseAmount } from '@/Blockchain/utils/utils'
+import { uint256 } from 'starknet'
 
 export interface ICoin {
   name: string
@@ -189,6 +194,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
     icon: 'mdi-bitcoin',
     symbol: 'USDT',
   })
+  const userDeposit = useSelector(selectUserDeposits)
   const [maxSuppliedCoin, setmaxSuppliedCoin] = useState('USDT')
   const modalDropdowns = useSelector(selectModalDropDowns)
   const oraclePrices = useSelector(selectOraclePrices)
@@ -227,6 +233,23 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       )
     }
   }, [supplies])
+
+  interface assetB {
+    USDT: any
+    USDC: any
+    BTC: any
+    ETH: any
+    DAI: any
+    STRK: any
+  }
+  const walletBalances: assetB | any = {
+    USDT: useBalanceOf(tokenAddressMap['USDT']),
+    USDC: useBalanceOf(tokenAddressMap['USDC']),
+    BTC: useBalanceOf(tokenAddressMap['BTC']),
+    ETH: useBalanceOf(tokenAddressMap['ETH']),
+    DAI: useBalanceOf(tokenAddressMap['DAI']),
+    STRK: useBalanceOf(tokenAddressMap['STRK']),
+  }
 
   const getBorrowAPR: any = (borrowMarket: string) => {
     switch (borrowMarket) {
@@ -282,64 +305,68 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   const [tokenSelection, setTokenSelection] = useState(Array(44).fill(0))
   useEffect(() => {
     // Initialize collateralAmounts with the values from Borrows
-    setCollateralAmounts(
-      Borrows.sort(
-        (
-          a: { collateral: string },
-          b: { collateral: string }
-        ) => {
-          // Check if 'coin' matches 'collateralcoin'
-          const isCollateralA = a.collateral === maxSuppliedCoin
-          const isCollateralB = b.collateral === maxSuppliedCoin
-
-          if (isCollateralA && !isCollateralB) {
-            return -1 // 'a' should come before 'b'
-          } else if (!isCollateralA && isCollateralB) {
-            return 1 // 'b' should come before 'a'
-          } else {
-            return 0 // No change in order
-          }
-        }
-      ).map(
-        (borrow: {
-          collateral: string
-          leverage: any
-          collateralSuggestedAmount: any
-        }) =>
+    if(Borrows.length>0){
+      setCollateralAmounts(
+        Borrows.sort(
           (
-            5000 /
-            borrow?.leverage   /
-            oraclePrices?.find(
-              (curr: any) => curr.name === borrow?.collateral
-            )?.price
-          ).toFixed(3) || 0
+            a: { collateral: string },
+            b: { collateral: string }
+          ) => {
+            // Check if 'coin' matches 'collateralcoin'
+            const isCollateralA = a.collateral === maxSuppliedCoin
+            const isCollateralB = b.collateral === maxSuppliedCoin
+  
+            if (isCollateralA && !isCollateralB) {
+              return -1 // 'a' should come before 'b'
+            } else if (!isCollateralA && isCollateralB) {
+              return 1 // 'b' should come before 'a'
+            } else {
+              return 0 // No change in order
+            }
+          }
+        ).map(
+          (borrow: {
+            collateral: string
+            leverage: any
+            collateralSuggestedAmount: any
+          }) =>
+            (
+              5000 /
+              borrow?.leverage   /
+              oraclePrices?.find(
+                (curr: any) => curr.name === borrow?.collateral
+              )?.price
+            ).toFixed(3) || 0
+        )
       )
-    )
+    }
   }, [Borrows,maxSuppliedCoin])
 
   useEffect(() => {
-    setcollateralMarkets(
-      Borrows.sort(
-        (
-          a: { collateral: string },
-          b: { collateral: string }
-        ) => {
-          // Check if 'coin' matches 'collateralcoin'
-          const isCollateralA = a.collateral === maxSuppliedCoin
-          const isCollateralB = b.collateral === maxSuppliedCoin
-
-          if (isCollateralA && !isCollateralB) {
-            return -1 // 'a' should come before 'b'
-          } else if (!isCollateralA && isCollateralB) {
-            return 1 // 'b' should come before 'a'
-          } else {
-            return 0 // No change in order
+    if(Borrows.length>0){
+      setcollateralMarkets(
+        Borrows.sort(
+          (
+            a: { collateral: string },
+            b: { collateral: string }
+          ) => {
+            // Check if 'coin' matches 'collateralcoin'
+            const isCollateralA = a.collateral === maxSuppliedCoin
+            const isCollateralB = b.collateral === maxSuppliedCoin
+    
+            if (isCollateralA && !isCollateralB) {
+              return -1 // 'a' should come before 'b'
+            } else if (!isCollateralA && isCollateralB) {
+              return 1 // 'b' should come before 'a'
+            } else {
+              return 0 // No change in order
+            }
           }
-        }
-      ).map(
-        (borrow: { collateral: string }) => borrow?.collateral
+        ).map(
+          (borrow: { collateral: string }) => borrow?.collateral
+        )
       )
-    )
+    }
   }, [Borrows,maxSuppliedCoin])
 
   const handleTokenChange = (value: any, index: number) => {
@@ -1342,13 +1369,27 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 borrow.collateralMarket
                             )
                             if (
-                              collateralAmounts[lower_bound + idx] *
+                              (collateralAmounts[lower_bound + idx] *
                                 oraclePrices.find(
                                   (curr: any) =>
                                     curr.name ===
                                     collateralMarkets[lower_bound + idx]
                                 )?.price <
-                              1000
+                              1000) || ((((walletBalances[borrow?.collateral]?.statusBalanceOf === 'success'
+                              ? parseAmount(
+                                  String(
+                                    uint256.uint256ToBN(
+                                      walletBalances[borrow?.collateral]?.dataBalanceOf?.balance
+                                    )
+                                  ),
+                                  tokenDecimalsMap[borrow?.collateral]
+                                )
+                              : 0)*oraclePrices?.find(
+                                (curr: any) => curr.name === borrow?.collateral
+                              )?.price)<1000) && ((userDeposit?.find((item: any) => item?.rToken == "r"+borrow?.collateral)
+                              ?.rTokenFreeParsed*oraclePrices?.find(
+                                (curr: any) => curr.name === borrow?.collateral
+                              )?.price)<1000)) 
                             ) {
                               toast.error(
                                 'Minimum Collateral Amount is 1000$',
@@ -1394,7 +1435,21 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   curr.name ===
                                   collateralMarkets[lower_bound + idx]
                               )?.price >=
-                            1000 ? (
+                            1000 && ((((walletBalances[borrow?.collateral]?.statusBalanceOf === 'success'
+                            ? parseAmount(
+                                String(
+                                  uint256.uint256ToBN(
+                                    walletBalances[borrow?.collateral]?.dataBalanceOf?.balance
+                                  )
+                                ),
+                                tokenDecimalsMap[borrow?.collateral]
+                              )
+                            : 0)*oraclePrices?.find(
+                              (curr: any) => curr.name === borrow?.collateral
+                            )?.price)>=1000) || ((userDeposit?.find((item: any) => item?.rToken == "r"+borrow?.collateral)
+                            ?.rTokenFreeParsed*oraclePrices?.find(
+                              (curr: any) => curr.name === borrow?.collateral
+                            )?.price)>=1000)) ? (
                               <DegenModal
                                 coin={coin}
                                 borrowAPRs={borrowAPRs}
@@ -1425,20 +1480,14 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 suggestedStrategy={borrow?.format}
                               />
                             ) : (
-                              <Button
-                                cursor="pointer"
-                                height={'2rem'}
-                                fontSize={'12px'}
-                                padding="6px 12px"
-                                border="1px solid white"
-                                bgColor="transparent"
-                                _hover={{ bg: 'white', color: 'black' }}
-                                borderRadius={'6px'}
-                                color="white"
-                              >
-                                Execute
-                              </Button>
+                              <TransactionCancelModal
+                                supplyAPRs={supplyAPRs}
+                                currentSupplyAPR={currentSupplyAPR}
+                                setCurrentSupplyAPR={setCurrentSupplyAPR}
+                                coinPassed={coin}
+                              />
                             )}
+                            {/* <TransactionCancelModal/> */}
                           </Box>
                         </Box>
                       </Td>
@@ -1473,7 +1522,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
     </Box>
   ) : (
     <>
-      {showEmptyNotification && (
+      {/* {showEmptyNotification && (
         <Box display="flex" justifyContent="left" w="94%" pb="2">
           <Box
             display="flex"
@@ -1517,7 +1566,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
             </Box>
           </Box>
         </Box>
-      )}
+      )} */}
     </>
   )
 }
