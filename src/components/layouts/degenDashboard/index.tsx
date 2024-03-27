@@ -1541,13 +1541,13 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     )?.price <
                                     20)
                               ) {
-                                toast.error(
-                                  'Minimum Collateral Amount is 1000$',
-                                  {
-                                    position: toast.POSITION.BOTTOM_RIGHT,
-                                    autoClose: false,
-                                  }
-                                )
+                                // toast.error(
+                                //   'Minimum Collateral Amount is 1000$',
+                                //   {
+                                //     position: toast.POSITION.BOTTOM_RIGHT,
+                                //     autoClose: false,
+                                //   }
+                                // )
                               } else {
                                 setRTokenAmount(
                                   collateralAmounts[lower_bound + idx]

@@ -465,7 +465,7 @@ const Degen: NextPage = () => {
             gap="2"
             fontWeight="semibold"
           >
-            What is Degen mode?
+            What Is Degen mode?
           </Box>
 
           <Link href="#">
