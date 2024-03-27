@@ -80,6 +80,7 @@ import {
   selectFees,
   selectMaximumDepositAmounts,
   selectMinimumDepositAmounts,
+  selectStakingShares,
   selectUserDeposits,
 } from '@/store/slices/readDataSlice'
 import {
@@ -105,6 +106,7 @@ import TableInfoIcon from '../layouts/table/tableIcons/infoIcon'
 import AnimatedButton from '../uiElements/buttons/AnimationButton'
 import ErrorButton from '../uiElements/buttons/ErrorButton'
 import SuccessButton from '../uiElements/buttons/SuccessButton'
+import useWithdrawStake from '@/Blockchain/hooks/Writes/useWithdrawStake'
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -121,8 +123,10 @@ const YourSupplyModal = ({
   const [inputAmount, setinputAmount] = useState(0)
   const [inputSupplyAmount, setinputSupplyAmount] = useState(0)
   const [sliderValue2, setSliderValue2] = useState(0)
+  const [sliderValue3, setSliderValue3] = useState(0)
   const [transactionStarted, setTransactionStarted] = useState(false)
-
+  const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
+    useState(false)
   let activeTransactions = useSelector(selectActiveTransactions)
   const [uniqueID, setUniqueID] = useState(0)
   const getUniqueId = () => uniqueID
@@ -160,13 +164,20 @@ const YourSupplyModal = ({
           tokenDecimalsMap[currentSelectedSupplyCoin]
         )
       : 0
+  )  
+  const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] = useState(
+    "rUSDT"
   )
-
   const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
     userDeposit?.find(
       (item: any) => item?.rToken == currentSelectedWithdrawlCoin
     )?.rTokenFreeParsed
   )
+  useEffect(()=>{
+    setSliderValue3(0);
+    setRTokenToWithdraw(0);
+    setInputUnstakeAmount(0);
+  },[currentSelectedUnstakeCoin])
 
   useEffect(() => {
     setwalletBalance(
@@ -195,9 +206,28 @@ const YourSupplyModal = ({
     )
   }, [currentSelectedWithdrawlCoin])
 
+  let stakingShares = useSelector(selectStakingShares)
   const [ischecked, setIsChecked] = useState(true)
+  const [inputUnstakeAmount, setInputUnstakeAmount] = useState(0)
   const [withdrawTransactionStarted, setWithdrawTransactionStarted] =
     useState(false)
+    const [estrTokens, setEstrTokens] = useState<any>(0)
+    
+    const {
+      unstakeRToken,
+      setUnstakeRToken,
+      rTokenToWithdraw,
+      setRTokenToWithdraw,
+      dataWithdrawStake,
+      errorWithdrawStake,
+      resetWithdrawStake,
+      writeWithdrawStake,
+      writeAsyncWithdrawStake,
+      isErrorWithdrawStake,
+      isIdleWithdrawStake,
+      isSuccessWithdrawStake,
+      statusWithdrawStake,
+    } = useWithdrawStake()
 
   const {
     depositAmount,
@@ -221,6 +251,7 @@ const YourSupplyModal = ({
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit()
+
   const {
     asset, // this should be native token
     setAsset,
@@ -237,6 +268,137 @@ const YourSupplyModal = ({
     isSuccessWithdrawDeposit,
     statusWithdrawDeposit,
   } = useWithdrawDeposit()
+
+  const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
+    stakingShares[
+      currentSelectedUnstakeCoin[0] == 'r'
+        ? currentSelectedUnstakeCoin
+        : 'r' + currentSelectedUnstakeCoin
+    ] != null
+      ? stakingShares[
+          currentSelectedUnstakeCoin[0] == 'r'
+            ? currentSelectedUnstakeCoin
+            : 'r' + currentSelectedUnstakeCoin
+        ]
+      : 0
+  )
+
+  useEffect(() => {
+    setUnstakeWalletBalance(
+      stakingShares[
+        currentSelectedUnstakeCoin[0] == 'r'
+          ? currentSelectedUnstakeCoin
+          : 'r' + currentSelectedUnstakeCoin
+      ] != null
+        ? stakingShares[
+            currentSelectedUnstakeCoin[0] == 'r'
+              ? currentSelectedUnstakeCoin
+              : 'r' + currentSelectedUnstakeCoin
+          ]
+        : 0
+    )
+  }, [currentSelectedUnstakeCoin, userDeposit])
+
+
+  const hanldeUnstakeTransaction = async () => {
+    try {
+      const unstake = await writeAsyncWithdrawStake()
+      setDepositTransHash(unstake?.transaction_hash)
+      if (unstake?.transaction_hash) {
+        const toastid = toast.info(
+          // `Please wait your transaction is running in background : ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          `Transaction pending`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        )
+        setToastId(toastid)
+        if (!activeTransactions) {
+          activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
+        }
+        const uqID = getUniqueId()
+        const trans_data = {
+          transaction_hash: unstake?.transaction_hash.toString(),
+          message: `Successfully unstaked : ${rTokenToWithdraw} ${currentSelectedUnstakeCoin}`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+          uniqueID: uqID,
+        }
+        activeTransactions?.push(trans_data)
+        posthog.capture('Unstake Modal Market Page Status', {
+          Status: 'Success',
+          Token: currentSelectedUnstakeCoin,
+          TokenAmount: rTokenToWithdraw,
+        })
+
+        dispatch(setActiveTransactions(activeTransactions))
+      }
+      const uqID = getUniqueId()
+      let data: any = localStorage.getItem('transactionCheck')
+      data = data ? JSON.parse(data) : []
+      if (data && data.includes(uqID)) {
+        dispatch(setTransactionStatus('success'))
+      }
+    } catch (err: any) {
+      const uqID = getUniqueId()
+      let data: any = localStorage.getItem('transactionCheck')
+      data = data ? JSON.parse(data) : []
+      if (data && data.includes(uqID)) {
+        setUnstakeTransactionStarted(false)
+      }
+      const toastContent = (
+        <div>
+          Transaction declined{' '}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      )
+      posthog.capture('Unstake Modal Market Page Status', {
+        Status: 'Failure',
+      })
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      })
+    }
+  }
+
+  const handleUnstakeChange = (newValue: any) => {
+    if (newValue > 9_000_000_000) return
+
+    var percentage = (newValue * 100) / unstakeWalletBalance
+    if (percentage == 100) {
+      setSliderValue3(100)
+      setInputUnstakeAmount(unstakeWalletBalance)
+      setRTokenToWithdraw(unstakeWalletBalance)
+    } else {
+      percentage = Math.max(0, percentage)
+      if (unstakeWalletBalance == 0) {
+        setSliderValue3(0)
+        setInputUnstakeAmount(0)
+        setRTokenToWithdraw(0)
+      }
+      if (percentage > 100) {
+        setSliderValue3(100)
+        setRTokenToWithdraw(newValue)
+      } else {
+        percentage = Math.round(percentage)
+        if (isNaN(percentage)) {
+        } else {
+          setSliderValue3(percentage)
+          setRTokenToWithdraw(newValue)
+        }
+      }
+    }
+  }
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -283,6 +445,15 @@ const YourSupplyModal = ({
       default:
         break
     }
+  }
+
+  const coinsSupplied: any = {
+    rBTC: true,
+    rUSDT: true,
+    rUSDC: true,
+    rETH: true,
+    rDAI: true,
+    rSTRK: true,
   }
 
   const handleChange = (newValue: any) => {
@@ -351,6 +522,9 @@ const YourSupplyModal = ({
   const resetStates = () => {
     setSliderValue(0)
     setSliderValue2(0)
+    setSliderValue3(0);
+    setRTokenToWithdraw(0);
+    setInputUnstakeAmount(0)
     setinputSupplyAmount(0)
     setDepositAmount(0)
     setinputWithdrawlAmount(0)
@@ -753,11 +927,27 @@ const YourSupplyModal = ({
                         bg: '#4D59E8',
                         border: 'none',
                       }}
-                      isDisabled={withdrawTransactionStarted == true}
+                      isDisabled={withdrawTransactionStarted == true || unstakeTransactionStarted==true}
                     >
                       Add supply
                     </Tab>
-
+                    <Tab
+                      py="1"
+                      px="3"
+                      color="#676D9A"
+                      fontSize="sm"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                      // borderRightRadius="md"
+                      fontWeight="normal"
+                      _selected={{
+                        color: 'white',
+                        bg: '#4D59E8',
+                        border: 'none',
+                      }}
+                      isDisabled={transactionStarted == true}
+                    >
+                      Unstake
+                    </Tab>
                     <Tab
                       py="1"
                       px="3"
@@ -771,7 +961,7 @@ const YourSupplyModal = ({
                         bg: '#4D59E8',
                         border: 'none',
                       }}
-                      isDisabled={transactionStarted == true}
+                      isDisabled={transactionStarted == true || unstakeTransactionStarted==true}
                     >
                       Withdraw supply
                     </Tab>
@@ -1767,6 +1957,713 @@ const YourSupplyModal = ({
                           }}
                         >
                           Supply
+                        </Button>
+                      )}
+                    </TabPanel>
+
+                    <TabPanel p="0" m="0">
+                      <Card
+                        mb="0.5rem"
+                        p="1rem"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                        mt="1.5rem"
+                      >
+                        <Text
+                          color="#676D9A"
+                          display="flex"
+                          alignItems="center"
+                        >
+                          <Text
+                            mr="0.3rem"
+                            fontSize="12px"
+                            fontWeight="400"
+                            fontStyle="normal"
+                          >
+                            Select Market
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label="The token selected to unstake on the protocol."
+                            bg="#02010F"
+                            fontSize={'13px'}
+                            fontWeight={'400'}
+                            borderRadius={'lg'}
+                            padding={'2'}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                            maxW="272px"
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Text>
+
+                        <Box
+                          display="flex"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                          justifyContent="space-between"
+                          py="2"
+                          pl="3"
+                          pr="3"
+                          mb="1rem"
+                          mt="0.2rem"
+                          borderRadius="md"
+                          className="navbar"
+                          cursor="pointer"
+                          onClick={() => {
+                            if (unstakeTransactionStarted == true) {
+                              return
+                            } else {
+                              handleDropdownClick('yourSupplyUnstakeDropdown')
+                            }
+                          }}
+                        >
+                          <Box display="flex" gap="1">
+                            <Box p="1">
+                              {getCoin(currentSelectedUnstakeCoin)}
+                            </Box>
+                            <Text color="white" mt="0.1rem">
+                              {currentSelectedUnstakeCoin}
+                            </Text>
+                          </Box>
+                          <Box pt="1" className="navbar-button">
+                            {activeModal == 'yourSupplyUnstakeDropdown' ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
+                          </Box>
+
+                          {modalDropdowns.yourSupplyUnstakeDropdown&& (
+                            <Box
+                              w="full"
+                              left="0"
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                              bg="#03060B"
+                              py="2"
+                              className="dropdown-container"
+                              boxShadow="dark-lg"
+                            >
+                              {coins?.map((_coin: any, index: number) => {
+                                return (
+                                  <Box
+                                    key={index}
+                                    as="button"
+                                    w="full"
+                                    display="flex"
+                                    alignItems="center"
+                                    gap="1"
+                                    pr="2"
+                                    onClick={() => {
+                                      setcurrentSelectedUnstakeCoin(_coin)
+                                      setUnstakeRToken(_coin)
+                                    }}
+                                  >
+                                    {_coin === currentSelectedUnstakeCoin && (
+                                      <Box
+                                        w="3px"
+                                        h="28px"
+                                        bg="#4D59E8"
+                                        borderRightRadius="md"
+                                      ></Box>
+                                    )}
+                                    <Box
+                                      w="full"
+                                      display="flex"
+                                      py="5px"
+                                      pl={`${
+                                        _coin === currentSelectedUnstakeCoin
+                                          ? '1'
+                                          : '5'
+                                      }`}
+                                      pr="6px"
+                                      gap="1"
+                                      justifyContent="space-between"
+                                      bg={`${
+                                        _coin === currentSelectedUnstakeCoin
+                                          ? '#4D59E8'
+                                          : 'inherit'
+                                      }`}
+                                      borderRadius="md"
+                                    >
+                                      <Box display="flex">
+                                        <Box p="1">{getCoin(_coin)}</Box>
+                                        <Text color="white">{_coin}</Text>
+                                      </Box>
+                                      <Box
+                                        fontSize="9px"
+                                        color="white"
+                                        mt="6px"
+                                        fontWeight="thin"
+                                        display="flex"
+                                      >
+                                        Staking shares:{' '}
+                                        {stakingShares != null &&
+                                        stakingShares[_coin] != null &&
+                                        stakingShares[_coin] != undefined &&
+                                        !isNaN(stakingShares[_coin]) ? (
+                                          numberFormatter(stakingShares[_coin])
+                                        ) : (
+                                          <Skeleton
+                                            width="3rem"
+                                            height="1rem"
+                                            startColor="#1E212F"
+                                            endColor="#03060B"
+                                            borderRadius="6px"
+                                            ml={2}
+                                          />
+                                        )}
+                                      </Box>
+                                    </Box>
+                                  </Box>
+                                )
+                              })}
+                            </Box>
+                          )}
+                        </Box>
+
+                        <Text
+                          color="#676D9A"
+                          display="flex"
+                          alignItems="center"
+                        >
+                          <Text
+                            mr="0.3rem"
+                            fontSize="12px"
+                            fontWeight="400"
+                            fontStyle="normal"
+                          >
+                            Amount
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label="The unit of tokens to unstake from the protocol."
+                            bg="#02010F"
+                            fontSize={'13px'}
+                            fontWeight={'400'}
+                            borderRadius={'lg'}
+                            padding={'2'}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                            maxW="222px"
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Text>
+
+                        <Box
+                          width="100%"
+                          color="white"
+                          mt="0.2rem"
+                          border={`${
+                            rTokenToWithdraw > unstakeWalletBalance
+                              ? '1px solid #CF222E'
+                              : rTokenToWithdraw < 0
+                                ? '1px solid #CF222E'
+                                : rTokenToWithdraw > 0 &&
+                                    rTokenToWithdraw <= unstakeWalletBalance
+                                  ? '1px solid #00D395'
+                                  : '1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
+                          }`}
+                          borderRadius="6px"
+                          display="flex"
+                          justifyContent="space-between"
+                        >
+                          <NumberInput
+                            border="0px"
+                            min={0}
+                            keepWithinRange={true}
+                            onChange={handleUnstakeChange}
+                            value={rTokenToWithdraw ? rTokenToWithdraw : ''}
+                            outline="none"
+                            step={parseFloat(
+                              `${rTokenToWithdraw <= 99999 ? 0.1 : 0}`
+                            )}
+                            isDisabled={unstakeTransactionStarted == true}
+                            _disabled={{ cursor: 'pointer' }}
+                          >
+                            <NumberInputField
+                              placeholder={`0.01536 ${currentSelectedUnstakeCoin}`}
+                              color={`${
+                                rTokenToWithdraw > unstakeWalletBalance
+                                  ? '#CF222E'
+                                  : rTokenToWithdraw < 0
+                                    ? '#CF222E'
+                                    : rTokenToWithdraw == 0
+                                      ? 'white'
+                                      : '#00D395'
+                              }`}
+                              _disabled={{ cursor: 'pointer' }}
+                              border="0px"
+                              _placeholder={{
+                                color: '#393D4F',
+                                fontSize: '.89rem',
+                                fontWeight: '600',
+                                outline: 'none',
+                              }}
+                              _focus={{
+                                outline: '0',
+                                boxShadow: 'none',
+                              }}
+                            />
+                          </NumberInput>
+
+                          <Button
+                            variant="ghost"
+                            color={`${
+                              rTokenToWithdraw > unstakeWalletBalance
+                                ? '#CF222E'
+                                : rTokenToWithdraw < 0
+                                  ? '#CF222E'
+                                  : rTokenToWithdraw == 0
+                                    ? '#4D59E8'
+                                    : '#00D395'
+                            }`}
+                            _hover={{
+                              bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
+                            }}
+                            onClick={() => {
+                              setRTokenToWithdraw(unstakeWalletBalance)
+                              setSliderValue3(100)
+                            }}
+                            isDisabled={unstakeTransactionStarted == true}
+                            _disabled={{ cursor: 'pointer' }}
+                          >
+                            MAX
+                          </Button>
+                        </Box>
+
+                        {(rTokenToWithdraw > unstakeWalletBalance ||
+                          rTokenToWithdraw < 0) &&
+                        coinsSupplied[currentSelectedUnstakeCoin] ? (
+                          <Text
+                            display="flex"
+                            justifyContent="space-between"
+                            color="#E6EDF3"
+                            mt="0.4rem"
+                            fontSize="12px"
+                            fontWeight="500"
+                            fontStyle="normal"
+                            fontFamily="Inter"
+                            whiteSpace="nowrap"
+                          >
+                            <Text color="#CF222E" display="flex">
+                              <Text mt="0.2rem">
+                                <SmallErrorIcon />{' '}
+                              </Text>
+                              <Text ml="0.3rem">
+                                {rTokenToWithdraw > unstakeWalletBalance
+                                  ? 'Amount exceeds balance'
+                                  : 'Invalid Input'}{' '}
+                              </Text>
+                            </Text>
+                            <Text
+                              color="#C7CBF6"
+                              display="flex"
+                              justifyContent="flex-end"
+                            >
+                              Staking Shares:{' '}
+                              {stakingShares &&
+                              stakingShares[
+                                currentSelectedUnstakeCoin[0] == 'r'
+                                  ? currentSelectedUnstakeCoin
+                                  : 'r' + currentSelectedUnstakeCoin
+                              ] != null ? (
+                                numberFormatter(
+                                  stakingShares[
+                                    currentSelectedUnstakeCoin[0] == 'r'
+                                      ? currentSelectedUnstakeCoin
+                                      : 'r' + currentSelectedUnstakeCoin
+                                  ]
+                                )
+                              ) : (
+                                <Skeleton
+                                  width="3rem"
+                                  height="1rem"
+                                  startColor="#1E212F"
+                                  endColor="#03060B"
+                                  borderRadius="6px"
+                                  ml={2}
+                                />
+                              )}
+                              <Text color="#6E7781" ml="0.2rem">
+                                shares
+                              </Text>
+                            </Text>
+                          </Text>
+                        ) : (
+                          <Text
+                            color="#C7CBF6"
+                            display="flex"
+                            justifyContent="flex-end"
+                            mt="0.4rem"
+                            fontSize="12px"
+                            fontWeight="500"
+                            fontStyle="normal"
+                            fontFamily="Inter"
+                          >
+                            Staking Shares:{' '}
+                            {stakingShares &&
+                            stakingShares[
+                              currentSelectedUnstakeCoin[0] == 'r'
+                                ? currentSelectedUnstakeCoin
+                                : 'r' + currentSelectedUnstakeCoin
+                            ] != null ? (
+                              numberFormatter(
+                                stakingShares[
+                                  currentSelectedUnstakeCoin[0] == 'r'
+                                    ? currentSelectedUnstakeCoin
+                                    : 'r' + currentSelectedUnstakeCoin
+                                ]
+                              )
+                            ) : (
+                              <Skeleton
+                                width="3rem"
+                                height="1rem"
+                                startColor="#1E212F"
+                                endColor="#03060B"
+                                borderRadius="6px"
+                                ml={2}
+                              />
+                            )}
+                            <Text color="#676D9A" ml="0.4rem">
+                              {'shares'}
+                            </Text>
+                          </Text>
+                        )}
+
+                        <Box pt={5} pb={2} mt="1rem">
+                          <Slider
+                            aria-label="slider-ex-6"
+                            defaultValue={sliderValue3}
+                            value={sliderValue3}
+                            onChange={(val) => {
+                              setSliderValue3(val)
+                              if (val == 100) {
+                                setRTokenToWithdraw(unstakeWalletBalance)
+                              } else {
+                                var ans = (val / 100) * unstakeWalletBalance
+                                if (ans < 10) {
+                                  setRTokenToWithdraw(
+                                    parseFloat(ans.toFixed(7))
+                                  )
+                                } else {
+                                  ans = Math.round(ans * 100) / 100
+                                  setRTokenToWithdraw(ans)
+                                }
+                              }
+                            }}
+                            isDisabled={unstakeTransactionStarted == true}
+                            _disabled={{ cursor: 'pointer' }}
+                            focusThumbOnChange={false}
+                          >
+                            <SliderMark
+                              value={0}
+                              mt="-1.5"
+                              ml="-1.5"
+                              fontSize="sm"
+                              zIndex="1"
+                            >
+                              {sliderValue3 >= 0 ? (
+                                <SliderPointerWhite />
+                              ) : (
+                                <SliderPointer />
+                              )}
+                            </SliderMark>
+                            <SliderMark
+                              value={25}
+                              mt="-1.5"
+                              ml="-1.5"
+                              fontSize="sm"
+                              zIndex="1"
+                            >
+                              {sliderValue3 >= 25 ? (
+                                <SliderPointerWhite />
+                              ) : (
+                                <SliderPointer />
+                              )}
+                            </SliderMark>
+                            <SliderMark
+                              value={50}
+                              mt="-1.5"
+                              ml="-1.5"
+                              fontSize="sm"
+                              zIndex="1"
+                            >
+                              {sliderValue3 >= 50 ? (
+                                <SliderPointerWhite />
+                              ) : (
+                                <SliderPointer />
+                              )}
+                            </SliderMark>
+                            <SliderMark
+                              value={75}
+                              mt="-1.5"
+                              ml="-1.5"
+                              fontSize="sm"
+                              zIndex="1"
+                            >
+                              {sliderValue3 >= 75 ? (
+                                <SliderPointerWhite />
+                              ) : (
+                                <SliderPointer />
+                              )}
+                            </SliderMark>
+                            <SliderMark
+                              value={100}
+                              mt="-1.5"
+                              ml="-1.5"
+                              fontSize="sm"
+                              zIndex="1"
+                            >
+                              {sliderValue3 == 100 ? (
+                                <SliderPointerWhite />
+                              ) : (
+                                <SliderPointer />
+                              )}
+                            </SliderMark>
+                            <SliderMark
+                              value={sliderValue3}
+                              textAlign="center"
+                              // bg='blue.500'
+                              color="white"
+                              mt="-8"
+                              ml={sliderValue3 !== 100 ? '-5' : '-6'}
+                              w="12"
+                              fontSize="12px"
+                              fontWeight="400"
+                              lineHeight="20px"
+                              letterSpacing="0.25px"
+                            >
+                              {sliderValue3}%
+                            </SliderMark>
+                            <SliderTrack bg="#3E415C">
+                              <SliderFilledTrack
+                                bg="white"
+                                w={`${sliderValue3}`}
+                                _disabled={{ bg: 'white' }}
+                              />
+                            </SliderTrack>
+                            <SliderThumb />
+                          </Slider>
+                        </Box>
+                      </Card>
+
+                      <Card
+                        mt="1rem"
+                        p="1rem"
+                        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                      >
+                        <Text
+                          color="#676D9A"
+                          display="flex"
+                          justifyContent="space-between"
+                          fontSize="12px"
+                          mb="0.4rem"
+                        >
+                          <Text display="flex" alignItems="center">
+                            <Text
+                              mr="0.2rem"
+                              font-style="normal"
+                              font-weight="400"
+                              font-size="12px"
+                              color="#676D9A"
+                            >
+                              est. rTokens:
+                            </Text>
+                            <Tooltip
+                              hasArrow
+                              placement="right"
+                              boxShadow="dark-lg"
+                              label="Estimation of token amount you may receive after the transaction."
+                              bg="#02010F"
+                              fontSize={'13px'}
+                              fontWeight={'400'}
+                              borderRadius={'lg'}
+                              padding={'2'}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
+                            >
+                              <Box>
+                                <InfoIcon />
+                              </Box>
+                            </Tooltip>
+                          </Text>
+                          {unstakeWalletBalance ? (
+                            <Text color="#676D9A">
+                              {estrTokens?.toFixed(4)}
+                            </Text>
+                          ) : (
+                            <Text color="#676D9A">0</Text>
+                          )}
+                        </Text>
+                        {/* <Text
+                          color="#676D9A"
+                          display="flex"
+                          justifyContent="space-between"
+                          fontSize="12px"
+                          mb="0.4rem"
+                        >
+                          <Text display="flex" alignItems="center">
+                            <Text
+                              mr="0.2rem"
+                              font-style="normal"
+                              font-weight="400"
+                              font-size="12px"
+                              color="#676D9A"
+                            >
+                              Gas estimate:
+                            </Text>
+                            <Tooltip
+                              hasArrow
+                              placement="right"
+                              boxShadow="dark-lg"
+                              label="Estimation of resources & costs for blockchain transactions."
+                              bg="#010409"
+                              fontSize={"13px"}
+                              fontWeight={"thin"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                              border="1px solid"
+                              borderColor="#2B2F35"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
+                            >
+                              <Box>
+                                <InfoIcon />
+                              </Box>
+                            </Tooltip>
+                          </Text>
+                          <Text color="#676D9A">$ 0.91</Text>
+                        </Text> */}
+                        <Text
+                          color="#676D9A"
+                          display="flex"
+                          justifyContent="space-between"
+                          fontSize="12px"
+                        >
+                          <Text display="flex" alignItems="center">
+                            <Text
+                              mr="0.2rem"
+                              font-style="normal"
+                              font-weight="400"
+                              font-size="12px"
+                              color="#676D9A"
+                            >
+                              Fees:
+                            </Text>
+                            <Tooltip
+                              hasArrow
+                              placement="right"
+                              boxShadow="dark-lg"
+                              label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
+                              bg="#02010F"
+                              fontSize={'13px'}
+                              fontWeight={'400'}
+                              borderRadius={'lg'}
+                              padding={'2'}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                              arrowShadowColor="#2B2F35"
+                              maxW="222px"
+                            >
+                              <Box>
+                                <InfoIcon />
+                              </Box>
+                            </Tooltip>
+                          </Text>
+                          <Text color="#676D9A">{fees.unstake}%</Text>
+                        </Text>
+                      </Card>
+
+                      {rTokenToWithdraw > 0 &&
+                      rTokenToWithdraw <= unstakeWalletBalance ? (
+                        <Box
+                          onClick={() => {
+                            setUnstakeTransactionStarted(true)
+                            if (unstakeTransactionStarted == false) {
+                              posthog.capture(
+                                'Unstake Button Clicked Your Supply page',
+                                {
+                                  'Unstake Clicked': true,
+                                }
+                              )
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              )
+                              hanldeUnstakeTransaction()
+                            }
+                          }}
+                        >
+                          <AnimatedButton
+                            color="#676D9A"
+                            size="sm"
+                            width="100%"
+                            mt="1.5rem"
+                            mb="1.5rem"
+                            background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            labelSuccessArray={[
+                              'Processing',
+                              'Unstake amount matches staked rToken balance',
+                              'Unstaking the rTokens.',
+                              'Transferring to the user account',
+                              <SuccessButton
+                                key={'successButton'}
+                                successText={'Unstake successful.'}
+                              />,
+                            ]}
+                            labelErrorArray={[
+                              <ErrorButton
+                                errorText="Transaction failed"
+                                key={'error1'}
+                              />,
+                              <ErrorButton
+                                errorText="Copy error!"
+                                key={'error2'}
+                              />,
+                            ]}
+                            currentTransactionStatus={currentTransactionStatus}
+                            setCurrentTransactionStatus={
+                              setCurrentTransactionStatus
+                            }
+                            _disabled={{ bgColor: 'white', color: 'black' }}
+                            isDisabled={unstakeTransactionStarted == true}
+                          >
+                            Unstake
+                          </AnimatedButton>
+                        </Box>
+                      ) : (
+                        <Button
+                          color="#676D9A"
+                          size="sm"
+                          width="100%"
+                          mt="1.5rem"
+                          mb="1.5rem"
+                          background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                          _hover={{
+                            bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
+                          }}
+                        >
+                          Unstake
                         </Button>
                       )}
                     </TabPanel>
