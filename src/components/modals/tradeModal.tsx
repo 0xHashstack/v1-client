@@ -4275,7 +4275,10 @@ const TradeModal = ({
                           (tokenTypeSelected == 'Native'
                             ? currentBorrowCoin == 'BTC' &&
                               currentCollateralCoin == 'STRK'
-                            : currentBorrowCoin == 'BTC' && rToken == 'rSTRK')
+                            : currentBorrowCoin == 'BTC' && rToken == 'rSTRK') || (currentBorrowCoin === 'USDT'
+                            && currentPool == 'STRK/ETH') ||
+                            (currentBorrowCoin === 'BTC'
+                              && currentPool == 'STRK/ETH')
                             ? '#480C10'
                             : '#222766'
                         }
@@ -4291,7 +4294,10 @@ const TradeModal = ({
                           (tokenTypeSelected == 'Native'
                             ? currentBorrowCoin == 'BTC' &&
                               currentCollateralCoin == 'STRK'
-                            : currentBorrowCoin == 'BTC' && rToken == 'rSTRK')
+                            : currentBorrowCoin == 'BTC' && rToken == 'rSTRK') || (currentBorrowCoin === 'USDT'
+                            && currentPool == 'STRK/ETH') ||
+                            (currentBorrowCoin === 'BTC'
+                              && currentPool == 'STRK/ETH')
                             ? '1px solid #9B1A23'
                             : '1px solid #3841AA'
                         }
@@ -4311,7 +4317,10 @@ const TradeModal = ({
                             ? currentBorrowCoin == 'BTC' &&
                               currentCollateralCoin == 'STRK'
                             : currentBorrowCoin == 'BTC' &&
-                              rToken == 'rSTRK') ? (
+                              rToken == 'rSTRK') || ((currentBorrowCoin === 'USDT'
+                              && currentPool == 'STRK/ETH') ||
+                              (currentBorrowCoin === 'BTC'
+                                && currentPool == 'STRK/ETH')) ? (
                             <RedinfoIcon />
                           ) : (
                             <BlueInfoIcon />
@@ -4327,6 +4336,12 @@ const TradeModal = ({
                             currentCollateralCoin == 'STRK'
                           : currentBorrowCoin == 'BTC' && rToken == 'rSTRK')
                           ? `The current collateral and borrowing market combination isn't allowed at this moment.`
+                          :
+                          (currentBorrowCoin === 'USDT'
+                  && currentPool == 'STRK/ETH') ||
+                  (currentBorrowCoin === 'BTC'
+                    && currentPool == 'STRK/ETH')
+                    ?"The current borrow market and spend pool isn't allowed at this moment"
                           : `You have selected a native token as collateral which will be
                     converted to rtokens 1r${currentCollateralCoin} =
                     ${
