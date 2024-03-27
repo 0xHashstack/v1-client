@@ -447,7 +447,7 @@ const Degen: NextPage = () => {
           src="/degen_mode_banner2.svg"
           alt="Degen Mode Banner"
           width={735}
-          height={109}
+          height={129}
           style={{
             position: 'absolute',
             top: '12px',
@@ -456,7 +456,7 @@ const Degen: NextPage = () => {
             borderRadius: '8px',
           }}
         />
-        <Box position="absolute" top="4" left="7" maxWidth="35rem" width="full">
+        <Box position="absolute" top="4" left="7" maxWidth="45rem" width="full">
           <Box
             color="#E6EDF3"
             fontSize="2.1rem"
@@ -469,10 +469,8 @@ const Degen: NextPage = () => {
           </Box>
 
           <Link href="#">
-            <Text color="#E6EDF3" width="full" pt="8px">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque
-              doloremque quas eaque debitis dolorum reiciendis sunt, numquam
-              aperiam iste expedita?
+            <Text color="#E6EDF3" width="full" pt="8px" fontSize="15px">
+            These are the tailored strategies based on your supplied assets. The protocol provides a default leverage of 5x, which can be reduced by increasing the collateral. With this 1-click feature, provide the amount and collateral, and the protocol executes your chosen strategy, making your capital efficient.
             </Text>
           </Link>
         </Box>
