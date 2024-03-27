@@ -467,12 +467,12 @@ const Degen: NextPage = () => {
           >
             What Is Degen mode?
           </Box>
-
-          <Link href="#">
+          <Box>
             <Text color="#E6EDF3" width="full" pt="8px" fontSize="15px">
             These are the tailored strategies based on your supplied assets. The protocol provides a default leverage of 5x, which can be reduced by increasing the collateral. With this 1-click feature, provide the amount and collateral, and the protocol executes your chosen strategy, making your capital efficient.
             </Text>
-          </Link>
+          </Box>
+
         </Box>
       </Box>}
       <HStack

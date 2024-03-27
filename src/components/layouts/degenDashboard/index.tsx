@@ -1530,7 +1530,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     (curr: any) =>
                                       curr.name === borrow?.collateral
                                   )?.price <
-                                  20 &&
+                                  1000 &&
                                   userDeposit?.find(
                                     (item: any) =>
                                       item?.rToken == 'r' + borrow?.collateral
@@ -1539,7 +1539,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       (curr: any) =>
                                         curr.name === borrow?.collateral
                                     )?.price <
-                                    20)
+                                    1000)
                               ) {
                                 // toast.error(
                                 //   'Minimum Collateral Amount is 1000$',
@@ -1601,7 +1601,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               oraclePrices?.find(
                                 (curr: any) => curr.name === borrow?.collateral
                               )?.price >=
-                              20 ||
+                              1000 ||
                               userDeposit?.find(
                                 (item: any) =>
                                   item?.rToken == 'r' + borrow?.collateral
@@ -1610,7 +1610,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   (curr: any) =>
                                     curr.name === borrow?.collateral
                                 )?.price >=
-                                20) ? (
+                                1000) ? (
                               <DegenModal
                                 coin={coin}
                                 borrowAPRs={borrowAPRs}
