@@ -721,10 +721,14 @@ const APRByMarketChart = ({ color, curveColor, series }: any) => {
         } else if (currentSelectedCoin == 5) {
           monthlyStrkData?.dTokenExchangeRates
             ? (newData = [
-                {
-                  name: "Exchange Rate",
-                  data: monthlyStrkData?.dTokenExchangeRates,
-                },
+              {
+                name: "Supply Apr",
+                data: monthlyStrkData?.aprs,
+              },
+              {
+                name: "Borrow Apr",
+                data: monthlyStrkData?.apys,
+              },
               ])
             : (newData = [
                 {

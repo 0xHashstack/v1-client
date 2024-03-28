@@ -23,6 +23,7 @@ import {
   selectMonthlyBTCData,
   selectMonthlyDAIData,
   selectMonthlyETHData,
+  selectMonthlySTRKData,
   selectMonthlyUSDCData,
   selectMonthlyUSDTData,
 } from "@/store/slices/readDataSlice";
@@ -57,6 +58,7 @@ const BorrowChart = () => {
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
   const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
   const monthlyDaiData = useSelector(selectMonthlyDAIData);
+  const monthlyStrkData = useSelector(selectMonthlySTRKData);
   const allBtcData = useSelector(selectAllBTCData);
   const allEthData = useSelector(selectAllETHData);
   const allUsdtData = useSelector(selectAllUSDTData);
@@ -256,7 +258,8 @@ const BorrowChart = () => {
         monthlyEthData?.borrowAmounts &&
         monthlyUsdcData?.borrowAmounts &&
         monthlyUsdtData?.borrowAmounts &&
-        monthlyDaiData?.borrowAmounts
+        monthlyDaiData?.borrowAmounts &&
+        monthlyStrkData?.borrowAmounts
           ? (newData = [
               {
                 name: "wBTC",
@@ -277,6 +280,10 @@ const BorrowChart = () => {
               {
                 name: "DAI",
                 data: monthlyDaiData?.borrowAmounts,
+              },
+              {
+                name: "STRK",
+                data: monthlyStrkData?.borrowAmounts,
               },
             ]):
         newData = [

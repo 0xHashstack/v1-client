@@ -26,10 +26,9 @@ const useClaimStrk = () => {
       } = useContractWrite({
         calls: [
           {
-            contractAddress: "0x7e5561300d7cc1cc44900ede6d0d4892e6251e27d61f7707ba3a1b8d0fe99b8",
-            entrypoint: "request_airdrop",
+            contractAddress: "0x02e20db0cd0af6739ff3e3003ea6932409867040b227bf9ba822239e5ba0dcaf",
+            entrypoint: "claim",
             calldata: [
-              round,
               "100000000000000000000",
               "0",
               proof.length.toString(),

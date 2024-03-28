@@ -117,7 +117,8 @@ const TotalValueLockedMetrics = () => {
       monthlyEthData?.tvlAmounts[i] +
       monthlyUsdcData?.tvlAmounts[i] +
       monthlyUsdtData?.tvlAmounts[i] +
-      monthlyDaiData?.tvlAmounts[i];
+      monthlyDaiData?.tvlAmounts[i] +
+      monthlyStrkData?.tvlAmounts[i];
       ;
     tvlAmountsMonthly.push(data);
   }

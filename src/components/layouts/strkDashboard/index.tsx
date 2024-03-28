@@ -27,6 +27,7 @@ import {
   selectJedistrkTokenAllocation,
   selectStrkAprData,
   selectUserUnspentLoans,
+  selectnetSpendBalance,
   setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
@@ -55,6 +56,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import PageCard from "../pageCard";
+import { getUserSTRKClaimedAmount } from "@/Blockchain/scripts/Rewards";
 
 export interface ICoin {
   name: string;
@@ -133,7 +135,17 @@ const StrkDashboard = () => {
   const [uniqueID, setUniqueID] = useState(0);
   const getUniqueId = () => uniqueID;
   const [toastId, setToastId] = useState<any>();
+  const [strkRewards, setstrkRewards] = useState()
   let activeTransactions = useSelector(selectActiveTransactions);
+
+  useEffect(()=>{
+    const fetchClaimedBalance=async()=>{
+      if(address){
+        const data=await getUserSTRKClaimedAmount(address)
+      }
+    }
+    fetchClaimedBalance()
+  },[address])
 
   const {
     datastrkClaim,
