@@ -29,15 +29,19 @@ const useClaimStrk = () => {
             contractAddress: "0x02e20db0cd0af6739ff3e3003ea6932409867040b227bf9ba822239e5ba0dcaf",
             entrypoint: "claim",
             calldata: [
-              "100000000000000000000",
-              "0",
-              proof.length.toString(),
-              ...proof,
+              etherToWeiBN(strkAmount as number, "STRK").toString(),
+              proof,
             ],
           },
         ],
       });
       return {
+        round,
+        setRound,
+        strkAmount,
+        setstrkAmount,
+        proof,
+        setProof,
         datastrkClaim,
         errorstrkClaim,
         resetstrkClaim,
