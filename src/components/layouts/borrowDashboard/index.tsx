@@ -12,23 +12,22 @@ import {
   Tooltip,
   Tr,
   VStack,
-} from "@chakra-ui/react";
-import { useAccount } from "@starknet-react/core";
-import axios from "axios";
-import Image from "next/image";
-import posthog from "posthog-js";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+} from '@chakra-ui/react'
+import { useAccount } from '@starknet-react/core'
+import Image from 'next/image'
+import posthog from 'posthog-js'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
-import { ILoan } from "@/Blockchain/interfaces/interfaces";
-import ExpandedCoinIcon from "@/assets/expanded/ExpandedCoins";
-import ExpandedMarketIcon from "@/assets/expanded/ExpandedMarket";
-import DollarActiveRadioButton from "@/assets/icons/dollarActiveRadioButton";
-import DollarNonActiveRadioButton from "@/assets/icons/dollarNonActiveRadioButton";
-import LowhealthFactor from "@/assets/icons/lowhealthFactor";
-import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
-import BorrowModal from "@/components/modals/borrowModal";
-import YourBorrowModal from "@/components/modals/yourBorrowModal";
+import { ILoan } from '@/Blockchain/interfaces/interfaces'
+import ExpandedCoinIcon from '@/assets/expanded/ExpandedCoins'
+import ExpandedMarketIcon from '@/assets/expanded/ExpandedMarket'
+import DollarActiveRadioButton from '@/assets/icons/dollarActiveRadioButton'
+import DollarNonActiveRadioButton from '@/assets/icons/dollarNonActiveRadioButton'
+import LowhealthFactor from '@/assets/icons/lowhealthFactor'
+import MediumHeathFactor from '@/assets/icons/mediumHeathFactor'
+import BorrowModal from '@/components/modals/borrowModal'
+import YourBorrowModal from '@/components/modals/yourBorrowModal'
 import {
   selectEffectiveApr,
   selectHealthFactor,
@@ -37,45 +36,44 @@ import {
   selectProtocolStats,
   selectUserDeposits,
   selectUserLoans,
-  setNetAprLoans,
-} from "@/store/slices/readDataSlice";
+} from '@/store/slices/readDataSlice'
 import {
   selectJedistrkTokenAllocation,
   selectMySplit,
   selectStrkAprData,
   selectnetSpendBalance,
-} from "@/store/slices/userAccountSlice";
-import dollarConvertor from "@/utils/functions/dollarConvertor";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
-import TableInfoIcon from "../table/tableIcons/infoIcon";
+} from '@/store/slices/userAccountSlice'
+import dollarConvertor from '@/utils/functions/dollarConvertor'
+import numberFormatter from '@/utils/functions/numberFormatter'
+import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
+import TableInfoIcon from '../table/tableIcons/infoIcon'
 
 export interface ICoin {
-  name: string;
-  symbol: string;
-  icon: string;
+  name: string
+  symbol: string
+  icon: string
 }
 
 interface BorrowDashboardProps {
-  width: string;
-  currentPagination: any;
-  setCurrentPagination: any;
-  Coins: any;
-  columnItems: any;
-  Borrows: ILoan[];
-  userLoans: any;
+  width: string
+  currentPagination: any
+  setCurrentPagination: any
+  Coins: any
+  columnItems: any
+  Borrows: ILoan[]
+  userLoans: any
 }
 
 const tooltips = [
-  "A unique ID number assigned to a specific borrow within the protocol.",
-  "The unit of tokens borrowed from the protocol.",
-  "The annual interest rate charged on borrowed tokens from the protocol.",
-  "If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying.",
-  "Collateral are the tokens held as security for borrowed amount.",
-  "Shows if borrowed amount was used in other pools or dapps within the protocol.",
-  "This is return you would make if you closed the loan now. ROE is Return on equity.",
-  "Loan risk metric comparing collateral value to borrowed amount to check potential liquidation.",
-];
+  'A unique ID number assigned to a specific borrow within the protocol.',
+  'The unit of tokens borrowed from the protocol.',
+  'The annual interest rate charged on borrowed tokens from the protocol.',
+  'If positive, This is the yield earned by your loan at present. If negative, This is the interest you are paying.',
+  'Collateral are the tokens held as security for borrowed amount.',
+  'Shows if borrowed amount was used in other pools or dapps within the protocol.',
+  'This is return you would make if you closed the loan now. ROE is Return on equity.',
+  'Loan risk metric comparing collateral value to borrowed amount to check potential liquidation.',
+]
 
 const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
   width,
@@ -84,76 +82,81 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
   setCurrentPagination,
   columnItems,
 }) => {
-  const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
-  const [borrowIds, setBorrowIds] = useState([]);
-  const [borrowAmount, setBorrowAmount] = useState<number>(0);
-  const [currentBorrowId1, setCurrentBorrowId1] = useState("");
+  const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([])
+  const [borrowIds, setBorrowIds] = useState([])
+  const [borrowAmount, setBorrowAmount] = useState<number>(0)
+  const [currentBorrowId1, setCurrentBorrowId1] = useState('')
   const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
-    useState("BTC");
-  const [currentBorrowId2, setCurrentBorrowId2] = useState("");
+    useState('BTC')
+  const [currentBorrowId2, setCurrentBorrowId2] = useState('')
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
-    useState("BTC");
-  const [validRTokens, setValidRTokens] = useState([]);
-  const [collateralBalance, setCollateralBalance] = useState("123 eth");
-  const [currentSpendStatus, setCurrentSpendStatus] = useState("");
-  const [currentLoanAmount, setCurrentLoanAmount] = useState("");
-  const [currentLoanMarket, setCurrentLoanMarket] = useState("");
-  const [showEmptyNotification, setShowEmptyNotification] = useState(true);
-  const avgs = useSelector(selectEffectiveApr);
-  const allSplit = useSelector(selectMySplit);
-  const [loading, setLoading] = useState(true);
+    useState('BTC')
+  const [validRTokens, setValidRTokens] = useState([])
+  const [collateralBalance, setCollateralBalance] = useState('123 eth')
+  const [currentSpendStatus, setCurrentSpendStatus] = useState('')
+  const [currentLoanAmount, setCurrentLoanAmount] = useState('')
+  const [currentLoanMarket, setCurrentLoanMarket] = useState('')
+  const [showEmptyNotification, setShowEmptyNotification] = useState(true)
+  const avgs = useSelector(selectEffectiveApr)
+  const allSplit = useSelector(selectMySplit)
+  const [loading, setLoading] = useState(true)
   const [coinPassed, setCoinPassed] = useState({
-    name: "BTC",
-    icon: "mdi-bitcoin",
-    symbol: "WBTC",
-  });
-  const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
-  const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
-  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<Number>(2);
-  const [dollarConversions, setDollarConversions] = useState(false);
+    name: 'BTC',
+    icon: 'mdi-bitcoin',
+    symbol: 'WBTC',
+  })
+  const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([])
+  const [statusHoverIndex, setStatusHoverIndex] = useState('-1')
+  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<Number>(2)
+  const [dollarConversions, setDollarConversions] = useState(false)
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0)
 
-  const Borrows = useSelector(selectUserLoans);
-  const { account, address } = useAccount();
-  const userDeposits = useSelector(selectUserDeposits);
-  const reduxProtocolStats = useSelector(selectProtocolStats);
-  const oraclePrices = useSelector(selectOraclePrices);
-  const avgsLoneHealth = useSelector(selectHealthFactor);
-  const stats = useSelector(selectProtocolStats);
-  const poolAprs = useSelector(selectJediswapPoolAprs);
-  const dispatch = useDispatch();
+  const Borrows = useSelector(selectUserLoans)
+  const userDeposits = useSelector(selectUserDeposits)
+  const reduxProtocolStats = useSelector(selectProtocolStats)
+  const oraclePrices = useSelector(selectOraclePrices)
+  const avgsLoneHealth = useSelector(selectHealthFactor)
+  const stats = useSelector(selectProtocolStats)
+  const poolAprs = useSelector(selectJediswapPoolAprs)
+  const strkData = useSelector(selectStrkAprData)
+  const netSpendBalance = useSelector(selectnetSpendBalance)
+  const strkTokenAlloactionData: any = useSelector(
+    selectJedistrkTokenAllocation
+  )
+  const { account, address } = useAccount()
 
-  let lower_bound = 6 * (currentPagination - 1);
-  let upper_bound = lower_bound + 5;
-  upper_bound = Math.min(Borrows ? Borrows.length - 1 : 0, upper_bound);
+  let lower_bound = 6 * (currentPagination - 1)
+  let upper_bound = lower_bound + 5
+  upper_bound = Math.min(Borrows ? Borrows.length - 1 : 0, upper_bound)
 
   const fetchUserDeposits = async () => {
     try {
-      if (!account || userDeposits?.length <= 0) return;
-      const reserves = userDeposits;
+      if (!account || userDeposits?.length <= 0) return
+      const reserves = userDeposits
 
-      const rTokens: any = [];
+      const rTokens: any = []
       if (reserves) {
         reserves.map((reserve: any) => {
           if (reserve.rTokenFreeParsed > 0) {
             rTokens.push({
               rToken: reserve.rToken,
               rTokenAmount: reserve.rTokenFreeParsed,
-            });
+            })
           }
-        });
+        })
       }
-      if (rTokens.length === 0) return;
-      setValidRTokens(rTokens);
+      if (rTokens.length === 0) return
+      setValidRTokens(rTokens)
     } catch (err) {}
-  };
+  }
 
   const handleStatusHover = (idx: string) => {
-    setStatusHoverIndex(idx);
-  };
+    setStatusHoverIndex(idx)
+  }
 
   const handleStatusHoverLeave = () => {
-    setStatusHoverIndex("-1");
-  };
+    setStatusHoverIndex('-1')
+  }
 
   const fetchProtocolStats = async () => {
     try {
@@ -164,83 +167,62 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
         stats?.[1].borrowRate,
         stats?.[4].borrowRate,
         stats?.[5].borrowRate,
-      ]);
+      ])
     } catch (error) {}
-  };
+  }
 
   const getBorrowAPR: any = (borrowMarket: string) => {
     switch (borrowMarket) {
-      case "USDT":
-        return borrowAPRs[0];
-      case "USDC":
-        return borrowAPRs[1];
-      case "BTC":
-        return borrowAPRs[2];
-      case "ETH":
-        return borrowAPRs[3];
-      case "DAI":
-        return borrowAPRs[4];
-      case "STRK":
-        return borrowAPRs[5];
+      case 'USDT':
+        return borrowAPRs[0]
+      case 'USDC':
+        return borrowAPRs[1]
+      case 'BTC':
+        return borrowAPRs[2]
+      case 'ETH':
+        return borrowAPRs[3]
+      case 'DAI':
+        return borrowAPRs[4]
+      case 'STRK':
+        return borrowAPRs[5]
 
       default:
-        break;
+        break
     }
-  };
-
-  const strkData = useSelector(selectStrkAprData);
-  const netSpendBalance = useSelector(selectnetSpendBalance);
-
-  const [netStrkBorrow, setnetStrkBorrow] = useState(0);
-
-  useEffect(() => {
-    if (strkData != null) {
-      let netallocation = 0;
-      for (let token in strkData) {
-        if (strkData.hasOwnProperty(token)) {
-          const array = strkData[token];
-          const lastObject = array[array.length - 1];
-          netallocation += 0.3 * lastObject.allocation;
-        }
-      }
-      setnetStrkBorrow(netallocation);
-    } else {
-      setnetStrkBorrow(0);
-    }
-  }, [strkData]);
+  }
 
   const getBoostedAprSupply = (coin: any) => {
     if (strkData == null) {
-      return 0;
+      return 0
     } else {
       if (strkData?.[coin]) {
         if (oraclePrices == null) {
-          return 0;
+          return 0
         } else {
           let value = strkData?.[coin]
             ? (365 *
                 100 *
                 strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
                 0.7 *
-                oraclePrices?.find((curr: any) => curr.name === "STRK")
+                oraclePrices?.find((curr: any) => curr.name === 'STRK')
                   ?.price) /
               strkData?.[coin][strkData[coin].length - 1]?.supply_usd
-            : 0;
-          return value;
+            : 0
+          return value
         }
       } else {
-        return 0;
+        return 0
       }
     }
-  };
+  }
 
   const getBoostedApr = (coin: any) => {
     if (strkData == null) {
-      return 0;
+      return 0
     } else {
       if (strkData?.[coin]) {
         if (oraclePrices == null) {
-          return 0;
+          return 0
         } else {
           if (netStrkBorrow != 0) {
             if (netSpendBalance) {
@@ -248,44 +230,76 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                 (365 *
                   100 *
                   netStrkBorrow *
-                  oraclePrices?.find((curr: any) => curr.name === "STRK")
+                  oraclePrices?.find((curr: any) => curr.name === 'STRK')
                     ?.price) /
-                netSpendBalance;
-              return value;
+                netSpendBalance
+              return value
             } else {
-              return 0;
+              return 0
             }
           } else {
-            return 0;
+            return 0
           }
         }
       } else {
-        return 0;
+        return 0
       }
     }
-  };
+  }
 
   const getAprByPool = (dataArray: any[], pool: string, l3App: string) => {
     const matchedObject = dataArray.find((item) => {
-      if (item.name === "USDT/USDC") {
-        return item.amm === "jedi" && "USDC/USDT" === pool;
-      } else if (item.name == "ETH/STRK") {
-        return item.amm === "jedi" && "STRK/ETH" === pool;
-      } else if (item.name === "ETH/DAI") {
-        return item.amm === "jedi" && "DAI/ETH" === pool;
+      if (item.name === 'USDT/USDC') {
+        return item.amm === 'jedi' && 'USDC/USDT' === pool
+      } else if (item.name == 'ETH/STRK') {
+        return item.amm === 'jedi' && 'STRK/ETH' === pool
+      } else if (item.name === 'ETH/DAI') {
+        return item.amm === 'jedi' && 'DAI/ETH' === pool
       } else {
         return (
           item.name === pool &&
-          item.amm === (l3App == "JEDI_SWAP" ? "jedi" : "myswap")
-        );
+          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : 'myswap')
+        )
       }
-    });
-    return matchedObject ? matchedObject.apr * 100 : 0;
-  };
+    })
+    return matchedObject ? matchedObject.apr * 100 : 0
+  }
+
+  const getStrkAlloaction = (pool: any) => {
+    try {
+      if (strkTokenAlloactionData[pool]) {
+        return strkTokenAlloactionData[pool][
+          strkTokenAlloactionData[pool].length - 1
+        ]?.allocation
+      } else {
+        return 0
+      }
+    } catch (err) {
+      return 0
+    }
+  }
+
+  const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
+    const matchedObject = dataArray.find((item) => {
+      if (item.name === 'USDT/USDC') {
+        return item.amm === 'jedi' && 'USDC/USDT' === pool
+      } else if (item.name == 'ETH/STRK') {
+        return item.amm === 'jedi' && 'STRK/ETH' === pool
+      } else if (item.name === 'ETH/DAI') {
+        return item.amm === 'jedi' && 'DAI/ETH' === pool
+      } else {
+        return (
+          item.name === pool &&
+          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : 'myswap')
+        )
+      }
+    })
+    return matchedObject ? matchedObject.tvl : 0
+  }
 
   useEffect(() => {
-    let temp1: any = [];
-    let temp2: any = [];
+    let temp1: any = []
+    let temp2: any = []
 
     for (let i = 0; i < (Borrows ? Borrows?.length : 0); i++) {
       if (Borrows) {
@@ -294,33 +308,33 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
           name: Borrows[i].loanMarket,
           collateralBalance:
             Borrows[i].collateralAmountParsed +
-            " " +
+            ' ' +
             Borrows[i].collateralMarket,
           spendType: Borrows[i].spendType,
-        });
-        temp2.push(Borrows[i].loanId);
+        })
+        temp2.push(Borrows[i].loanId)
       }
     }
-    setBorrowIDCoinMap(temp1);
-    setBorrowIds(temp2);
-  }, [Borrows]);
+    setBorrowIDCoinMap(temp1)
+    setBorrowIds(temp2)
+  }, [Borrows])
 
   useEffect(() => {
     if (validRTokens.length === 0) {
-      fetchUserDeposits();
+      fetchUserDeposits()
     }
-  }, [userDeposits, validRTokens, address]);
+  }, [userDeposits, validRTokens, address])
 
   useEffect(() => {
-    fetchProtocolStats();
-  }, [stats]);
+    fetchProtocolStats()
+  }, [stats])
 
   useEffect(() => {
-    let netApr: number = 0;
+    let netApr: number = 0
     if (Borrows?.length > 0 && avgs) {
       Borrows.map((borrow: any, idx: any) => {
         let aprs =
-          borrow?.spendType == "LIQUIDITY"
+          borrow?.spendType == 'LIQUIDITY'
             ? Number(
                 avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
               ) +
@@ -328,24 +342,24 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
               (((getAprByPool(
                 poolAprs,
                 allSplit?.[lower_bound + idx]?.tokenA +
-                  "/" +
+                  '/' +
                   allSplit?.[lower_bound + idx]?.tokenB,
                 borrow?.l3App
               ) +
                 getBoostedApr(borrow?.loanMarket.slice(1)) +
                 (100 *
                   365 *
-                  oraclePrices.find((curr: any) => curr.name === "STRK")
+                  oraclePrices.find((curr: any) => curr.name === 'STRK')
                     ?.price *
                   getStrkAlloaction(
                     allSplit?.[lower_bound + idx]?.tokenA +
-                      "/" +
+                      '/' +
                       allSplit?.[lower_bound + idx]?.tokenB
                   )) /
                   getTvlByPool(
                     poolAprs,
                     allSplit?.[lower_bound + idx]?.tokenA +
-                      "/" +
+                      '/' +
                       allSplit?.[lower_bound + idx]?.tokenB,
                     borrow?.l3App
                   )) *
@@ -367,44 +381,47 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                 reduxProtocolStats?.find(
                   (val: any) => val?.token == borrow?.collateralMarket.slice(1)
                 )?.exchangeRateRtokenToUnderlying
-            : borrow?.spendType == "UNSPENT"
-            ? Number(
-                avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
-              ) +
-              (getBoostedAprSupply(borrow?.collateralMarket.slice(1)) /
-                dollarConvertor(
-                  borrow?.collateralAmountParsed,
-                  borrow?.collateralMarket.slice(1),
-                  oraclePrices
-                )) *
-                reduxProtocolStats?.find(
-                  (val: any) => val?.token == borrow?.collateralMarket.slice(1)
-                )?.exchangeRateRtokenToUnderlying
-            : borrow?.spendType == "SWAP"
-            ? Number(
-                avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
-              ) +
-              ((getBoostedAprSupply(borrow?.collateralMarket.slice(1)) *
-                dollarConvertor(
-                  borrow?.collateralAmountParsed,
-                  borrow?.collateralMarket.slice(1),
-                  oraclePrices
-                ) *
-                reduxProtocolStats?.find(
-                  (val: any) => val?.token == borrow?.collateralMarket.slice(1)
-                )?.exchangeRateRtokenToUnderlying) /
-                dollarConvertor(
-                  borrow?.loanAmountParsed,
-                  borrow?.loanMarket.slice(1),
-                  oraclePrices
-                )) *
-                reduxProtocolStats?.find(
-                  (val: any) => val?.token == borrow?.loanMarket.slice(1)
-                )?.exchangeRateDTokenToUnderlying +
-              getBoostedApr(borrow?.loanMarket.slice(1))
-            : 0;
-        netApr = netApr + aprs;
-      });
+            : borrow?.spendType == 'UNSPENT'
+              ? Number(
+                  avgs?.find((item: any) => item?.loanId == borrow?.loanId)?.avg
+                ) +
+                (getBoostedAprSupply(borrow?.collateralMarket.slice(1)) /
+                  dollarConvertor(
+                    borrow?.collateralAmountParsed,
+                    borrow?.collateralMarket.slice(1),
+                    oraclePrices
+                  )) *
+                  reduxProtocolStats?.find(
+                    (val: any) =>
+                      val?.token == borrow?.collateralMarket.slice(1)
+                  )?.exchangeRateRtokenToUnderlying
+              : borrow?.spendType == 'SWAP'
+                ? Number(
+                    avgs?.find((item: any) => item?.loanId == borrow?.loanId)
+                      ?.avg
+                  ) +
+                  ((getBoostedAprSupply(borrow?.collateralMarket.slice(1)) *
+                    dollarConvertor(
+                      borrow?.collateralAmountParsed,
+                      borrow?.collateralMarket.slice(1),
+                      oraclePrices
+                    ) *
+                    reduxProtocolStats?.find(
+                      (val: any) =>
+                        val?.token == borrow?.collateralMarket.slice(1)
+                    )?.exchangeRateRtokenToUnderlying) /
+                    dollarConvertor(
+                      borrow?.loanAmountParsed,
+                      borrow?.loanMarket.slice(1),
+                      oraclePrices
+                    )) *
+                    reduxProtocolStats?.find(
+                      (val: any) => val?.token == borrow?.loanMarket.slice(1)
+                    )?.exchangeRateDTokenToUnderlying +
+                  getBoostedApr(borrow?.loanMarket.slice(1))
+                : 0
+        netApr = netApr + aprs
+      })
       if (netApr != 0) {
         if (isNaN(netApr / Borrows?.length)) {
         } else {
@@ -414,49 +431,29 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
     } else if (Borrows?.length == 0) {
       // dispatch(setNetAprLoans(0));
     }
-  }, [avgs, poolAprs, Borrows, allSplit]);
+  }, [avgs, poolAprs, Borrows, allSplit])
 
   useEffect(() => {
     if (Borrows || Borrows?.length > 0) {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [Borrows]);
+  }, [Borrows])
 
-  const strkTokenAlloactionData: any = useSelector(
-    selectJedistrkTokenAllocation
-  );
-  const getStrkAlloaction = (pool: any) => {
-    try {
-      if (strkTokenAlloactionData[pool]) {
-        return strkTokenAlloactionData[pool][
-          strkTokenAlloactionData[pool].length - 1
-        ]?.allocation;
-      } else {
-        return 0;
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0
+      for (let token in strkData) {
+        if (strkData.hasOwnProperty(token)) {
+          const array = strkData[token]
+          const lastObject = array[array.length - 1]
+          netallocation += 0.3 * lastObject.allocation
+        }
       }
-    } catch (err) {
-      return 0;
+      setnetStrkBorrow(netallocation)
+    } else {
+      setnetStrkBorrow(0)
     }
-  };
-
-  const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
-    const matchedObject = dataArray.find((item) => {
-      if (item.name === "USDT/USDC") {
-        return item.amm === "jedi" && "USDC/USDT" === pool;
-      } else if (item.name == "ETH/STRK") {
-        return item.amm === "jedi" && "STRK/ETH" === pool;
-      } else if (item.name === "ETH/DAI") {
-        return item.amm === "jedi" && "DAI/ETH" === pool;
-      } else {
-        return (
-          item.name === pool &&
-          item.amm === (l3App == "JEDI_SWAP" ? "jedi" : "myswap")
-        );
-      }
-    });
-    return matchedObject ? matchedObject.tvl : 0;
-  };
-  // console.log(strkTokenAlloactionData["STRK/ETH"][strkTokenAlloactionData["STRK/ETH"].length-1].allocation,"allocat")
+  }, [strkData])
 
   return loading ? (
     <Box
@@ -465,9 +462,9 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
       justifyContent="center"
       alignItems="center"
       width="95%"
-      height={"37rem"}
+      height={'37rem'}
       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
-      bg={" var(--surface-of-10, rgba(103, 109, 154, 0.10)); "}
+      bg={' var(--surface-of-10, rgba(103, 109, 154, 0.10)); '}
       borderRadius="8px"
     >
       <Spinner
@@ -486,9 +483,9 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
       w={width}
       display="flex"
       flexDirection="column"
-      height={"40rem"}
+      height={'40rem'}
       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
-      padding={"1rem 2rem 0rem"}
+      padding={'1rem 2rem 0rem'}
       overflowX="hidden"
     >
       <Box width="100%" display="flex" justifyContent="flex-end">
@@ -497,7 +494,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
           mt="0.09rem"
           cursor="pointer"
           onClick={() => {
-            setDollarConversions(!dollarConversions);
+            setDollarConversions(!dollarConversions)
           }}
         >
           {dollarConversions == true ? (
@@ -526,53 +523,53 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
         display="flex"
         justifyContent="flex-start"
         alignItems="flex-start"
-        height={"37rem"}
+        height={'37rem'}
         overflow="none"
       >
         <Table variant="unstyled" width="100%" height="100%" mb="0.5rem">
-          <Thead width={"100%"} height={"5rem"}>
-            <Tr width={"100%"} height="2rem">
+          <Thead width={'100%'} height={'5rem'}>
+            <Tr width={'100%'} height="2rem">
               {columnItems.map((val: any, idx1: any) => (
                 <Td
                   key={idx1}
-                  width={"12.5%"}
-                  fontSize={"12px"}
+                  width={'12.5%'}
+                  fontSize={'12px'}
                   fontWeight={400}
                   p={0}
                 >
-                  <Text
+                  <Box
                     whiteSpace="pre-wrap"
                     overflowWrap="break-word"
-                    width={"100%"}
-                    height={"2rem"}
+                    width={'100%'}
+                    height={'2rem'}
                     fontSize="12px"
                     textAlign={
                       idx1 == 0 || idx1 == 1
-                        ? "left"
+                        ? 'left'
                         : idx1 == columnItems?.length - 1
-                        ? "right"
-                        : "center"
+                          ? 'right'
+                          : 'center'
                     }
-                    pl={idx1 == 0 ? 2 : idx1 == 1 ? "24%  " : 0}
+                    pl={idx1 == 0 ? 2 : idx1 == 1 ? '24%  ' : 0}
                     pr={idx1 == columnItems.length - 1 ? 5 : 0}
-                    color={"#BDBFC1"}
+                    color={'#BDBFC1'}
                     cursor="context-menu"
                   >
                     <Tooltip
                       hasArrow
                       label={tooltips[idx1]}
                       placement={
-                        (idx1 === 0 && "bottom-start") ||
-                        (idx1 === columnItems.length - 1 && "bottom-end") ||
-                        "bottom"
+                        (idx1 === 0 && 'bottom-start') ||
+                        (idx1 === columnItems.length - 1 && 'bottom-end') ||
+                        'bottom'
                       }
                       rounded="md"
                       boxShadow="dark-lg"
                       bg="#02010F"
-                      fontSize={"13px"}
-                      fontWeight={"400"}
-                      borderRadius={"lg"}
-                      padding={"2"}
+                      fontSize={'13px'}
+                      fontWeight={'400'}
+                      borderRadius={'lg'}
+                      padding={'2'}
                       color="#F0F0F5"
                       border="1px solid"
                       borderColor="#23233D"
@@ -580,11 +577,12 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                     >
                       {val}
                     </Tooltip>
-                  </Text>
+                  </Box>
                 </Td>
               ))}
             </Tr>
           </Thead>
+
           <Tbody position="relative" overflowX="hidden">
             {Borrows?.slice(lower_bound, upper_bound + 1).map(
               (borrow: any, idx: any) => {
@@ -592,13 +590,13 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                   <>
                     <Tr
                       key={lower_bound + borrow.idx}
-                      width={"100%"}
+                      width={'100%'}
                       position="relative"
                       p={0}
                     >
                       <Td
-                        width={"12.5%"}
-                        fontSize={"14px"}
+                        width={'12.5%'}
+                        fontSize={'14px'}
                         fontWeight={400}
                         padding={2}
                         textAlign="center"
@@ -614,36 +612,36 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                           color="#E6EDF3"
                         >
                           {`${
-                            borrow?.spendType == "LIQUIDITY" &&
+                            borrow?.spendType == 'LIQUIDITY' &&
                             (allSplit?.[lower_bound + idx]?.tokenA +
-                              "/" +
+                              '/' +
                               allSplit?.[lower_bound + idx]?.tokenB ===
-                              "STRK/ETH" ||
+                              'STRK/ETH' ||
                               allSplit?.[lower_bound + idx]?.tokenA +
-                                "/" +
+                                '/' +
                                 allSplit?.[lower_bound + idx]?.tokenB ===
-                                "ETH/USDC" ||
+                                'ETH/USDC' ||
                               allSplit?.[lower_bound + idx]?.tokenA +
-                                "/" +
+                                '/' +
                                 allSplit?.[lower_bound + idx]?.tokenB ===
-                                "USDC/USDT")
-                              ? "🥇 ID"
-                              : "ID"
+                                'USDC/USDT')
+                              ? '🥇 ID'
+                              : 'ID'
                           }
                           ${
                             borrow?.loanId < 10
-                              ? "0" + borrow?.loanId
+                              ? '0' + borrow?.loanId
                               : borrow?.loanId
                           }`}
                         </Text>
                       </Td>
 
                       <Td
-                        width={"12.5%"}
-                        fontSize={"14px"}
+                        width={'12.5%'}
+                        fontSize={'14px'}
                         fontWeight={400}
-                        overflow={"hidden"}
-                        textAlign={"center"}
+                        overflow={'hidden'}
+                        textAlign={'center'}
                       >
                         <Box
                           width="100%"
@@ -683,19 +681,20 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                 {borrow?.loanMarket}
                               </Text>
                             </HStack>
+
                             <HStack>
-                              <Text
+                              <Box
                                 fontSize="14px"
                                 fontWeight="500"
                                 color="#F7BB5B"
                                 width="4.6rem"
                               >
-                                <Text textAlign="left">
+                                <Box textAlign="left">
                                   <Tooltip
                                     hasArrow
                                     label={
                                       <Box>
-                                        Exchange rate:{" "}
+                                        Exchange rate:{' '}
                                         {reduxProtocolStats?.find(
                                           (val: any) =>
                                             val?.token ==
@@ -710,11 +709,11 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                               ?.exchangeRateDTokenToUnderlying.toFixed(
                                                 4
                                               )
-                                          : ""}{" "}
+                                          : ''}{' '}
                                         {borrow?.loanMarket.slice(1)} /
                                         {borrow?.loanMarket}
                                         <br />
-                                        Underlying Amount:{" "}
+                                        Underlying Amount:{' '}
                                         {reduxProtocolStats?.find(
                                           (val: any) =>
                                             val?.token ==
@@ -729,7 +728,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                                 ?.exchangeRateDTokenToUnderlying *
                                               borrow?.loanAmountParsed
                                             ).toFixed(4)
-                                          : ""}{" "}
+                                          : ''}{' '}
                                         {borrow?.loanMarket.slice(1)}
                                       </Box>
                                     }
@@ -737,17 +736,17 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     rounded="md"
                                     boxShadow="dark-lg"
                                     bg="#02010F"
-                                    fontSize={"13px"}
-                                    fontWeight={"400"}
-                                    borderRadius={"lg"}
-                                    padding={"2"}
+                                    fontSize={'13px'}
+                                    fontWeight={'400'}
+                                    borderRadius={'lg'}
+                                    padding={'2'}
                                     color="#F0F0F5"
                                     border="1px solid"
                                     borderColor="#23233D"
                                     arrowShadowColor="#2B2F35"
                                   >
                                     {dollarConversions == true
-                                      ? "$" +
+                                      ? '$' +
                                         numberFormatter(
                                           dollarConvertor(
                                             borrow?.loanAmountParsed,
@@ -764,20 +763,20 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                           borrow?.loanAmountParsed
                                         )}
                                   </Tooltip>
-                                </Text>
-                              </Text>
+                                </Box>
+                              </Box>
                             </HStack>
                           </VStack>
                         </Box>
                       </Td>
 
                       <Td
-                        width={"12.5%"}
-                        maxWidth={"3rem"}
-                        fontSize={"14px"}
+                        width={'12.5%'}
+                        maxWidth={'3rem'}
+                        fontSize={'14px'}
                         fontWeight={400}
-                        overflow={"hidden"}
-                        textAlign={"center"}
+                        overflow={'hidden'}
+                        textAlign={'center'}
                       >
                         <Text
                           width="100%"
@@ -800,24 +799,24 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                           ) : (
                             -numberFormatterPercentage(
                               getBorrowAPR(borrow?.loanMarket.slice(1))
-                            ) + "%"
+                            ) + '%'
                           )}
                         </Text>
                       </Td>
 
                       <Td
-                        width={"12.5%"}
-                        maxWidth={"3rem"}
-                        fontSize={"14px"}
+                        width={'12.5%'}
+                        maxWidth={'3rem'}
+                        fontSize={'14px'}
                         fontWeight={400}
-                        overflow={"hidden"}
-                        textAlign={"center"}
+                        overflow={'hidden'}
+                        textAlign={'center'}
                       >
                         {avgs?.find(
                           (item: any) => item?.loanId == borrow?.loanId
                         )?.avg ? (
-                          borrow?.spendType == "LIQUIDITY" ? (
-                            <Text
+                          borrow?.spendType == 'LIQUIDITY' ? (
+                            <Box
                               width="100%"
                               height="100%"
                               display="flex"
@@ -834,7 +833,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                   (((getAprByPool(
                                     poolAprs,
                                     allSplit?.[lower_bound + idx]?.tokenA +
-                                      "/" +
+                                      '/' +
                                       allSplit?.[lower_bound + idx]?.tokenB,
                                     borrow?.l3App
                                   ) +
@@ -862,8 +861,8 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         borrow?.collateralMarket.slice(1)
                                     )?.exchangeRateRtokenToUnderlying <
                                 0
-                                  ? "rgb(255 94 94)"
-                                  : "#00D395"
+                                  ? 'rgb(255 94 94)'
+                                  : '#00D395'
                               }
                               alignItems="center"
                               justifyContent="center"
@@ -1038,7 +1037,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                             poolAprs,
                                             allSplit?.[lower_bound + idx]
                                               ?.tokenA +
-                                              "/" +
+                                              '/' +
                                               allSplit?.[lower_bound + idx]
                                                 ?.tokenB,
                                             borrow?.l3App
@@ -1112,12 +1111,12 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                             365 *
                                             oraclePrices.find(
                                               (curr: any) =>
-                                                curr.name === "STRK"
+                                                curr.name === 'STRK'
                                             )?.price *
                                             getStrkAlloaction(
                                               allSplit?.[lower_bound + idx]
                                                 ?.tokenA +
-                                                "/" +
+                                                '/' +
                                                 allSplit?.[lower_bound + idx]
                                                   ?.tokenB
                                             )) /
@@ -1125,7 +1124,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                               poolAprs,
                                               allSplit?.[lower_bound + idx]
                                                 ?.tokenA +
-                                                "/" +
+                                                '/' +
                                                 allSplit?.[lower_bound + idx]
                                                   ?.tokenB,
                                               borrow?.l3App
@@ -1237,7 +1236,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                             poolAprs,
                                             allSplit?.[lower_bound + idx]
                                               ?.tokenA +
-                                              "/" +
+                                              '/' +
                                               allSplit?.[lower_bound + idx]
                                                 ?.tokenB,
                                             borrow?.l3App
@@ -1246,12 +1245,12 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                               365 *
                                               oraclePrices.find(
                                                 (curr: any) =>
-                                                  curr.name === "STRK"
+                                                  curr.name === 'STRK'
                                               )?.price *
                                               getStrkAlloaction(
                                                 allSplit?.[lower_bound + idx]
                                                   ?.tokenA +
-                                                  "/" +
+                                                  '/' +
                                                   allSplit?.[lower_bound + idx]
                                                     ?.tokenB
                                               )) /
@@ -1259,7 +1258,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                                 poolAprs,
                                                 allSplit?.[lower_bound + idx]
                                                   ?.tokenA +
-                                                  "/" +
+                                                  '/' +
                                                   allSplit?.[lower_bound + idx]
                                                     ?.tokenB,
                                                 borrow?.l3App
@@ -1290,191 +1289,108 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                                   1
                                                 )
                                             )?.exchangeRateRtokenToUnderlying
-                                        ).toFixed(2) + "%"}
+                                        ).toFixed(2) + '%'}
                                       </Text>
                                     </Box>
                                   </Box>
                                 }
-                                // ((100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                                //   ?.tokenA +
-                                //   "/" +
-                                //   allSplit?.[lower_bound + idx]
-                                //     ?.tokenB))/getTvlByPool(
-                                //       poolAprs,
-                                //       allSplit?.[lower_bound + idx]
-                                //         ?.tokenA +
-                                //         "/" +
-                                //         allSplit?.[lower_bound + idx]
-                                //           ?.tokenB,
-                                //       borrow?.l3App)
-                                //     )
                                 placement="right"
                                 rounded="md"
                                 boxShadow="dark-lg"
                                 bg="#02010F"
-                                fontSize={"13px"}
-                                fontWeight={"400"}
-                                borderRadius={"lg"}
-                                padding={"2"}
+                                fontSize={'13px'}
+                                fontWeight={'400'}
+                                borderRadius={'lg'}
+                                padding={'2'}
                                 color="#F0F0F5"
                                 border="1px solid"
                                 borderColor="#23233D"
                                 arrowShadowColor="#2B2F35"
                               >
-                                {/* (100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                                        ?.tokenA +
-                                        "/" +
-                                        allSplit?.[lower_bound + idx]
-                                          ?.tokenB))/getTvlByPool(
-                                            poolAprs,
-                                            allSplit?.[lower_bound + idx]
-                                              ?.tokenA +
-                                              "/" +
-                                              allSplit?.[lower_bound + idx]
-                                                ?.tokenB,
-                                            borrow?.l3App
-                                          ) */}
-                                {
-                                  (
-                                    Number(
-                                      avgs?.find(
-                                        (item: any) =>
-                                          item?.loanId == borrow?.loanId
-                                      )?.avg
-                                    ) +
-                                    +(
-                                      ((getBoostedApr(
-                                        borrow?.loanMarket.slice(1)
+                                {(
+                                  Number(
+                                    avgs?.find(
+                                      (item: any) =>
+                                        item?.loanId == borrow?.loanId
+                                    )?.avg
+                                  ) +
+                                  +(
+                                    ((getBoostedApr(
+                                      borrow?.loanMarket.slice(1)
+                                    ) *
+                                      dollarConvertor(
+                                        borrow?.loanAmountParsed,
+                                        borrow?.loanMarket.slice(1),
+                                        oraclePrices
                                       ) *
-                                        dollarConvertor(
-                                          borrow?.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                        reduxProtocolStats?.find(
-                                          (val: any) =>
-                                            val?.token ==
-                                            borrow?.loanMarket.slice(1)
-                                        )?.exchangeRateDTokenToUnderlying) /
-                                        dollarConvertor(
-                                          borrow?.collateralAmountParsed,
-                                          borrow?.collateralMarket.slice(1),
-                                          oraclePrices
-                                        )) *
                                       reduxProtocolStats?.find(
                                         (val: any) =>
                                           val?.token ==
-                                          borrow?.collateralMarket.slice(1)
-                                      )?.exchangeRateRtokenToUnderlying
-                                    ) +
-                                    getBoostedAprSupply(
-                                      borrow?.collateralMarket.slice(1)
-                                    ) +
-                                    (((getAprByPool(
-                                      poolAprs,
-                                      allSplit?.[lower_bound + idx]?.tokenA +
-                                        "/" +
-                                        allSplit?.[lower_bound + idx]?.tokenB,
-                                      borrow?.l3App
-                                    ) +
-                                      (100 *
-                                        365 *
-                                        oraclePrices.find(
-                                          (curr: any) => curr.name === "STRK"
-                                        )?.price *
-                                        getStrkAlloaction(
-                                          allSplit?.[lower_bound + idx]
-                                            ?.tokenA +
-                                            "/" +
-                                            allSplit?.[lower_bound + idx]
-                                              ?.tokenB
-                                        )) /
-                                        getTvlByPool(
-                                          poolAprs,
-                                          allSplit?.[lower_bound + idx]
-                                            ?.tokenA +
-                                            "/" +
-                                            allSplit?.[lower_bound + idx]
-                                              ?.tokenB,
-                                          borrow?.l3App
-                                        )) *
-                                      (dollarConvertor(
-                                        allSplit?.[lower_bound + idx]?.amountA,
-                                        allSplit?.[lower_bound + idx]?.tokenA,
-                                        oraclePrices
-                                      ) +
-                                        dollarConvertor(
-                                          allSplit?.[lower_bound + idx]
-                                            ?.amountB,
-                                          allSplit?.[lower_bound + idx]?.tokenB,
-                                          oraclePrices
-                                        ))) /
+                                          borrow?.loanMarket.slice(1)
+                                      )?.exchangeRateDTokenToUnderlying) /
                                       dollarConvertor(
                                         borrow?.collateralAmountParsed,
                                         borrow?.collateralMarket.slice(1),
                                         oraclePrices
                                       )) *
-                                      reduxProtocolStats?.find(
-                                        (val: any) =>
-                                          val?.token ==
-                                          borrow?.collateralMarket.slice(1)
-                                      )?.exchangeRateRtokenToUnderlying
-                                  ).toFixed(3) + "%"
-                                  //   : "" +
-                                  // (
-                                  //   Number(
-                                  //     avgs?.find(
-                                  //       (item: any) =>
-                                  //         item?.loanId == borrow?.loanId
-                                  //     )?.avg
-                                  //   ) +(getBoostedAprSupply(borrow?.collateralMarket.slice(1)))+
-                                  //   (((getAprByPool(
-                                  //     poolAprs,
-                                  //     allSplit?.[lower_bound + idx]?.tokenA +
-                                  //       "/" +
-                                  //       allSplit?.[lower_bound + idx]?.tokenB,
-                                  //     borrow?.l3App
-                                  //   )+(getBoostedApr(borrow?.loanMarket.slice(1)))+(100*365*(oraclePrices.find((curr: any) => curr.name === "STRK")?.price)*getStrkAlloaction(allSplit?.[lower_bound + idx]
-                                  //     ?.tokenA +
-                                  //     "/" +
-                                  //     allSplit?.[lower_bound + idx]
-                                  //       ?.tokenB))/getTvlByPool(
-                                  //         poolAprs,
-                                  //         allSplit?.[lower_bound + idx]
-                                  //           ?.tokenA +
-                                  //           "/" +
-                                  //           allSplit?.[lower_bound + idx]
-                                  //             ?.tokenB,
-                                  //         borrow?.l3App
-                                  //       )) *
-                                  //     (dollarConvertor(
-                                  //       allSplit?.[lower_bound + idx]?.amountA,
-                                  //       allSplit?.[lower_bound + idx]?.tokenA,
-                                  //       oraclePrices
-                                  //     ) +
-                                  //       dollarConvertor(
-                                  //         allSplit?.[lower_bound + idx]
-                                  //           ?.amountB,
-                                  //         allSplit?.[lower_bound + idx]?.tokenB,
-                                  //         oraclePrices
-                                  //       ))) /
-                                  //     dollarConvertor(
-                                  //       borrow?.collateralAmountParsed,
-                                  //       borrow?.collateralMarket.slice(1),
-                                  //       oraclePrices
-                                  //     )) *
-                                  //     reduxProtocolStats?.find(
-                                  //       (val: any) =>
-                                  //         val?.token ==
-                                  //         borrow?.collateralMarket.slice(1)
-                                  //     )?.exchangeRateRtokenToUnderlying
-                                  // ).toFixed(3) +
-                                  // "%"
-                                }
+                                    reduxProtocolStats?.find(
+                                      (val: any) =>
+                                        val?.token ==
+                                        borrow?.collateralMarket.slice(1)
+                                    )?.exchangeRateRtokenToUnderlying
+                                  ) +
+                                  getBoostedAprSupply(
+                                    borrow?.collateralMarket.slice(1)
+                                  ) +
+                                  (((getAprByPool(
+                                    poolAprs,
+                                    allSplit?.[lower_bound + idx]?.tokenA +
+                                      '/' +
+                                      allSplit?.[lower_bound + idx]?.tokenB,
+                                    borrow?.l3App
+                                  ) +
+                                    (100 *
+                                      365 *
+                                      oraclePrices.find(
+                                        (curr: any) => curr.name === 'STRK'
+                                      )?.price *
+                                      getStrkAlloaction(
+                                        allSplit?.[lower_bound + idx]?.tokenA +
+                                          '/' +
+                                          allSplit?.[lower_bound + idx]?.tokenB
+                                      )) /
+                                      getTvlByPool(
+                                        poolAprs,
+                                        allSplit?.[lower_bound + idx]?.tokenA +
+                                          '/' +
+                                          allSplit?.[lower_bound + idx]?.tokenB,
+                                        borrow?.l3App
+                                      )) *
+                                    (dollarConvertor(
+                                      allSplit?.[lower_bound + idx]?.amountA,
+                                      allSplit?.[lower_bound + idx]?.tokenA,
+                                      oraclePrices
+                                    ) +
+                                      dollarConvertor(
+                                        allSplit?.[lower_bound + idx]?.amountB,
+                                        allSplit?.[lower_bound + idx]?.tokenB,
+                                        oraclePrices
+                                      ))) /
+                                    dollarConvertor(
+                                      borrow?.collateralAmountParsed,
+                                      borrow?.collateralMarket.slice(1),
+                                      oraclePrices
+                                    )) *
+                                    reduxProtocolStats?.find(
+                                      (val: any) =>
+                                        val?.token ==
+                                        borrow?.collateralMarket.slice(1)
+                                    )?.exchangeRateRtokenToUnderlying
+                                ).toFixed(3) + '%'}
                               </Tooltip>
-                            </Text>
+                            </Box>
                           ) : (
-                            <Text
+                            <Box
                               width="100%"
                               height="100%"
                               display="flex"
@@ -1485,7 +1401,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                       item?.loanId == borrow?.loanId
                                   )?.avg
                                 ) +
-                                  (borrow?.spendType == "UNSPENT"
+                                  (borrow?.spendType == 'UNSPENT'
                                     ? getBoostedAprSupply(
                                         borrow?.collateralMarket.slice(1)
                                       )
@@ -1516,8 +1432,8 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                             borrow?.collateralMarket.slice(1)
                                         )?.exchangeRateRtokenToUnderlying) <
                                 0
-                                  ? "rgb(255 94 94)"
-                                  : "#00D395"
+                                  ? 'rgb(255 94 94)'
+                                  : '#00D395'
                               }
                               alignItems="center"
                               justifyContent="center"
@@ -1592,36 +1508,36 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         %
                                       </Text>
                                     </Box>
-                                    {borrow?.spendType != "UNSPENT" && (
+                                    {borrow?.spendType != 'UNSPENT' && (
                                       <Box
                                         display="flex"
                                         justifyContent="space-between"
                                         gap="10px"
                                       >
                                         Boosted (
-                                          {(
-                                        ((dollarConvertor(
-                                          borrow?.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) *
+                                        {(
+                                          ((dollarConvertor(
+                                            borrow?.loanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying) /
+                                            dollarConvertor(
+                                              borrow?.collateralAmountParsed,
+                                              borrow?.collateralMarket.slice(1),
+                                              oraclePrices
+                                            )) *
                                           reduxProtocolStats?.find(
                                             (val: any) =>
                                               val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying) /
-                                          dollarConvertor(
-                                            borrow?.collateralAmountParsed,
-                                            borrow?.collateralMarket.slice(1),
-                                            oraclePrices
-                                          )) *
-                                        reduxProtocolStats?.find(
-                                          (val: any) =>
-                                            val?.token ==
-                                            borrow?.collateralMarket.slice(1)
-                                        )?.exchangeRateRtokenToUnderlying
-                                      ).toFixed(1)}
-                                      x):
+                                              borrow?.collateralMarket.slice(1)
+                                          )?.exchangeRateRtokenToUnderlying
+                                        ).toFixed(1)}
+                                        x):
                                         <Text>
                                           +
                                           {numberFormatterPercentage(
@@ -1723,7 +1639,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                                 item?.loanId == borrow?.loanId
                                             )?.avg
                                           ) +
-                                          (borrow?.spendType == "UNSPENT"
+                                          (borrow?.spendType == 'UNSPENT'
                                             ? getBoostedAprSupply(
                                                 borrow?.collateralMarket.slice(
                                                   1
@@ -1763,7 +1679,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                                     )
                                                 )
                                                   ?.exchangeRateRtokenToUnderlying)
-                                        )?.toFixed(2) + "%"}
+                                        )?.toFixed(2) + '%'}
                                       </Text>
                                     </Box>
                                   </Box>
@@ -1772,10 +1688,10 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                 rounded="md"
                                 boxShadow="dark-lg"
                                 bg="#02010F"
-                                fontSize={"13px"}
-                                fontWeight={"400"}
-                                borderRadius={"lg"}
-                                padding={"2"}
+                                fontSize={'13px'}
+                                fontWeight={'400'}
+                                borderRadius={'lg'}
+                                padding={'2'}
                                 color="#F0F0F5"
                                 border="1px solid"
                                 borderColor="#23233D"
@@ -1788,7 +1704,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         item?.loanId == borrow?.loanId
                                     )?.avg
                                   ) +
-                                  (borrow?.spendType == "UNSPENT"
+                                  (borrow?.spendType == 'UNSPENT'
                                     ? getBoostedAprSupply(
                                         borrow?.collateralMarket.slice(1)
                                       )
@@ -1818,9 +1734,9 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                             val?.token ==
                                             borrow?.collateralMarket.slice(1)
                                         )?.exchangeRateRtokenToUnderlying)
-                                )?.toFixed(2) + "%"}
+                                )?.toFixed(2) + '%'}
                               </Tooltip>
-                            </Text>
+                            </Box>
                           )
                         ) : (
                           <Skeleton
@@ -1834,11 +1750,11 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                       </Td>
 
                       <Td
-                        width={"12.5%"}
-                        maxWidth={"5rem"}
-                        fontSize={"14px"}
+                        width={'12.5%'}
+                        maxWidth={'5rem'}
+                        fontSize={'14px'}
                         fontWeight={400}
-                        textAlign={"center"}
+                        textAlign={'center'}
                       >
                         <VStack
                           width="100%"
@@ -1862,7 +1778,8 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               {borrow?.collateralMarket}
                             </Text>
                           </HStack>
-                          <Text
+
+                          <Box
                             fontSize="14px"
                             fontWeight="500"
                             color="#F7BB5B"
@@ -1872,7 +1789,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               hasArrow
                               label={
                                 <Box>
-                                  Exchange rate:{" "}
+                                  Exchange rate:{' '}
                                   {reduxProtocolStats?.find(
                                     (val: any) =>
                                       val?.token ==
@@ -1887,11 +1804,11 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         ?.exchangeRateRtokenToUnderlying.toFixed(
                                           4
                                         )
-                                    : ""}{" "}
+                                    : ''}{' '}
                                   {borrow?.collateralMarket.slice(1)} /
                                   {borrow?.collateralMarket}
                                   <br />
-                                  Underlying Amount:{" "}
+                                  Underlying Amount:{' '}
                                   {reduxProtocolStats?.find(
                                     (val: any) =>
                                       val?.token ==
@@ -1905,7 +1822,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         )?.exchangeRateRtokenToUnderlying *
                                         borrow?.collateralAmountParsed
                                       ).toFixed(4)
-                                    : ""}{" "}
+                                    : ''}{' '}
                                   {borrow?.collateralMarket.slice(1)}
                                 </Box>
                               }
@@ -1913,10 +1830,10 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               rounded="md"
                               boxShadow="dark-lg"
                               bg="#02010F"
-                              fontSize={"13px"}
-                              fontWeight={"400"}
-                              borderRadius={"lg"}
-                              padding={"2"}
+                              fontSize={'13px'}
+                              fontWeight={'400'}
+                              borderRadius={'lg'}
+                              padding={'2'}
                               color="#F0F0F5"
                               border="1px solid"
                               borderColor="#23233D"
@@ -1924,7 +1841,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                             >
                               <Text>
                                 {dollarConversions == true
-                                  ? "$" +
+                                  ? '$' +
                                     numberFormatter(
                                       dollarConvertor(
                                         borrow?.collateralAmountParsed,
@@ -1942,17 +1859,17 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     )}
                               </Text>
                             </Tooltip>
-                          </Text>
+                          </Box>
                         </VStack>
                       </Td>
 
                       <Td
-                        maxWidth={"5rem"}
-                        fontSize={"14px"}
+                        maxWidth={'5rem'}
+                        fontSize={'14px'}
                         fontWeight={400}
-                        textAlign={"center"}
+                        textAlign={'center'}
                       >
-                        {borrow.loanState == "ACTIVE" ? (
+                        {borrow.loanState == 'ACTIVE' ? (
                           <Box
                             width="100%"
                             display="flex"
@@ -1965,15 +1882,16 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               height="50%"
                               width="150%"
                               alignItems="center"
-                              onMouseEnter={() => handleStatusHover("0" + idx)}
+                              onMouseEnter={() => handleStatusHover('0' + idx)}
                               onMouseLeave={() => handleStatusHoverLeave()}
-                              _hover={{ cursor: "pointer" }}
+                              _hover={{ cursor: 'pointer' }}
                               justifyContent="center"
                             >
                               <Text fontSize="14px" fontWeight="400">
                                 {borrow.spendType}
                               </Text>
                             </HStack>
+
                             <HStack
                               height="50%"
                               width="100%"
@@ -1983,15 +1901,15 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               <Box display="flex">
                                 <Box
                                   onMouseEnter={() =>
-                                    handleStatusHover("3" + idx)
+                                    handleStatusHover('3' + idx)
                                   }
                                   onMouseLeave={() => handleStatusHoverLeave()}
-                                  _hover={{ cursor: "pointer" }}
+                                  _hover={{ cursor: 'pointer' }}
                                   display="flex"
                                   gap={0.5}
-                                  minWidth={"16px"}
+                                  minWidth={'16px'}
                                 >
-                                  {statusHoverIndex != "3" + idx ? (
+                                  {statusHoverIndex != '3' + idx ? (
                                     <Image
                                       src={`/${borrow.currentLoanMarket}.svg`}
                                       alt="Picture of the author"
@@ -2007,7 +1925,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               </Box>
                               <Text fontSize="14px" fontWeight="400">
                                 {dollarConversions == true
-                                  ? "$" +
+                                  ? '$' +
                                     numberFormatter(
                                       dollarConvertor(
                                         borrow?.currentLoanAmountParsed,
@@ -2021,8 +1939,8 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               </Text>
                             </HStack>
                           </Box>
-                        ) : borrow.loanState == "REPAID" ||
-                          borrow.loanState == "LIQUIDATED" ? (
+                        ) : borrow.loanState == 'REPAID' ||
+                          borrow.loanState == 'LIQUIDATED' ? (
                           <Box
                             width="100%"
                             display="flex"
@@ -2046,12 +1964,12 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               height="50%"
                               width="150%"
                               alignItems="center"
-                              onMouseEnter={() => handleStatusHover("0" + idx)}
+                              onMouseEnter={() => handleStatusHover('0' + idx)}
                               onMouseLeave={() => handleStatusHoverLeave()}
-                              _hover={{ cursor: "pointer" }}
+                              _hover={{ cursor: 'pointer' }}
                               justifyContent="center"
                             >
-                              {statusHoverIndex != "0" + idx ? (
+                              {statusHoverIndex != '0' + idx ? (
                                 <Image
                                   src={`/${borrow.l3App}.svg`}
                                   alt="Picture of the author"
@@ -2073,21 +1991,21 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               justifyContent="center"
                             >
                               <Box display="flex">
-                                {borrow.spendType == "LIQUIDITY" ? (
+                                {borrow.spendType == 'LIQUIDITY' ? (
                                   allSplit?.[lower_bound + idx]?.tokenA &&
                                   allSplit?.[lower_bound + idx]?.tokenB && (
                                     <>
                                       <Box
                                         onMouseEnter={() =>
-                                          handleStatusHover("1" + idx)
+                                          handleStatusHover('1' + idx)
                                         }
                                         display="flex"
                                         gap={0.5}
-                                        _hover={{ cursor: "pointer" }}
+                                        _hover={{ cursor: 'pointer' }}
                                         maxHeight="16px"
-                                        minWidth={"16px"}
+                                        minWidth={'16px'}
                                       >
-                                        {statusHoverIndex != "1" + idx ? (
+                                        {statusHoverIndex != '1' + idx ? (
                                           <Image
                                             src={`/${
                                               allSplit?.[lower_bound + idx]
@@ -2108,17 +2026,17 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                       </Box>
                                       <Box
                                         onMouseEnter={() =>
-                                          handleStatusHover("2" + idx)
+                                          handleStatusHover('2' + idx)
                                         }
                                         onMouseLeave={() =>
                                           handleStatusHoverLeave()
                                         }
                                         display="flex"
                                         gap={0.5}
-                                        _hover={{ cursor: "pointer" }}
-                                        minWidth={"16px"}
+                                        _hover={{ cursor: 'pointer' }}
+                                        minWidth={'16px'}
                                       >
-                                        {statusHoverIndex != "2" + idx ? (
+                                        {statusHoverIndex != '2' + idx ? (
                                           <Image
                                             src={`/${
                                               allSplit?.[lower_bound + idx]
@@ -2142,17 +2060,17 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                 ) : (
                                   <Box
                                     onMouseEnter={() =>
-                                      handleStatusHover("3" + idx)
+                                      handleStatusHover('3' + idx)
                                     }
                                     onMouseLeave={() =>
                                       handleStatusHoverLeave()
                                     }
-                                    _hover={{ cursor: "pointer" }}
+                                    _hover={{ cursor: 'pointer' }}
                                     display="flex"
                                     gap={0.5}
-                                    minWidth={"16px"}
+                                    minWidth={'16px'}
                                   >
-                                    {statusHoverIndex != "3" + idx ? (
+                                    {statusHoverIndex != '3' + idx ? (
                                       <Image
                                         src={`/${borrow.currentLoanMarket}.svg`}
                                         alt="Picture of the author"
@@ -2168,8 +2086,9 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                   </Box>
                                 )}
                               </Box>
-                              <Text fontSize="14px" fontWeight="400">
-                                {borrow.spendType == "LIQUIDITY" ? (
+
+                              <Box fontSize="14px" fontWeight="400">
+                                {borrow.spendType == 'LIQUIDITY' ? (
                                   allSplit?.length === 0 ? (
                                     <Skeleton
                                       width="6rem"
@@ -2179,10 +2098,10 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                       borderRadius="6px"
                                     />
                                   ) : allSplit &&
-                                    allSplit[lower_bound + idx] === "empty" ? (
-                                    "-"
+                                    allSplit[lower_bound + idx] === 'empty' ? (
+                                    '-'
                                   ) : dollarConversions == true ? (
-                                    "$" +
+                                    '$' +
                                     numberFormatter(
                                       dollarConvertor(
                                         allSplit?.[lower_bound + idx]?.amountA,
@@ -2190,7 +2109,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         oraclePrices
                                       )
                                     ) +
-                                    "/$" +
+                                    '/$' +
                                     numberFormatter(
                                       dollarConvertor(
                                         allSplit?.[lower_bound + idx]?.amountB,
@@ -2202,13 +2121,13 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     numberFormatter(
                                       allSplit?.[lower_bound + idx]?.amountA
                                     ) +
-                                    "/" +
+                                    '/' +
                                     numberFormatter(
                                       allSplit?.[lower_bound + idx]?.amountB
                                     )
                                   )
                                 ) : dollarConversions == true ? (
-                                  "$" +
+                                  '$' +
                                   numberFormatter(
                                     dollarConvertor(
                                       borrow?.currentLoanAmountParsed,
@@ -2221,7 +2140,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     borrow?.currentLoanAmountParsed
                                   )
                                 )}
-                              </Text>
+                              </Box>
                             </HStack>
                           </Box>
                         )}
@@ -2242,7 +2161,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               label={
                                 <Box>
                                   Return:
-                                  {borrow.spendType == "UNSPENT"
+                                  {borrow.spendType == 'UNSPENT'
                                     ? dollarConvertor(
                                         borrow.currentLoanAmountParsed,
                                         borrow?.loanMarket.slice(1),
@@ -2259,54 +2178,57 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                             oraclePrices
                                           ) >=
                                       0
-                                      ? "$"
-                                      : "-$"
-                                    : borrow.spendType == "LIQUIDITY"
-                                    ? dollarConvertor(
-                                        allSplit?.[lower_bound + idx]?.amountA,
-                                        allSplit?.[lower_bound + idx]?.tokenA,
-                                        oraclePrices
-                                      ) +
-                                        dollarConvertor(
+                                      ? '$'
+                                      : '-$'
+                                    : borrow.spendType == 'LIQUIDITY'
+                                      ? dollarConvertor(
                                           allSplit?.[lower_bound + idx]
-                                            ?.amountB,
-                                          allSplit?.[lower_bound + idx]?.tokenB,
+                                            ?.amountA,
+                                          allSplit?.[lower_bound + idx]?.tokenA,
                                           oraclePrices
-                                        ) -
-                                        dollarConvertor(
-                                          borrow.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying >=
-                                      0
-                                      ? "$"
-                                      : "-$"
-                                    : borrow.spendType == "SWAP"
-                                    ? dollarConvertor(
-                                        borrow.currentLoanAmountParsed,
-                                        borrow?.currentLoanMarket,
-                                        oraclePrices
-                                      ) -
-                                        dollarConvertor(
-                                          borrow.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying >=
-                                      0
-                                      ? "$"
-                                      : "-$"
-                                    : ""}
-                                  {borrow.spendType == "UNSPENT"
+                                        ) +
+                                          dollarConvertor(
+                                            allSplit?.[lower_bound + idx]
+                                              ?.amountB,
+                                            allSplit?.[lower_bound + idx]
+                                              ?.tokenB,
+                                            oraclePrices
+                                          ) -
+                                          dollarConvertor(
+                                            borrow.loanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying >=
+                                        0
+                                        ? '$'
+                                        : '-$'
+                                      : borrow.spendType == 'SWAP'
+                                        ? dollarConvertor(
+                                            borrow.currentLoanAmountParsed,
+                                            borrow?.currentLoanMarket,
+                                            oraclePrices
+                                          ) -
+                                            dollarConvertor(
+                                              borrow.loanAmountParsed,
+                                              borrow?.loanMarket.slice(1),
+                                              oraclePrices
+                                            ) *
+                                              reduxProtocolStats?.find(
+                                                (val: any) =>
+                                                  val?.token ==
+                                                  borrow?.loanMarket.slice(1)
+                                              )
+                                                ?.exchangeRateDTokenToUnderlying >=
+                                          0
+                                          ? '$'
+                                          : '-$'
+                                        : ''}
+                                  {borrow.spendType == 'UNSPENT'
                                     ? numberFormatter(
                                         Math.abs(
                                           dollarConvertor(
@@ -2326,66 +2248,68 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                               )
                                         )
                                       )
-                                    : borrow.spendType == "LIQUIDITY"
-                                    ? numberFormatter(
-                                        Math.abs(
-                                          dollarConvertor(
-                                            borrow.loanAmountParsed,
-                                            borrow?.loanMarket.slice(1),
-                                            oraclePrices
-                                          ) *
-                                            reduxProtocolStats?.find(
-                                              (val: any) =>
-                                                val?.token ==
-                                                borrow?.loanMarket.slice(1)
-                                            )?.exchangeRateDTokenToUnderlying -
-                                            (dollarConvertor(
-                                              allSplit?.[lower_bound + idx]
-                                                ?.amountA,
-                                              allSplit?.[lower_bound + idx]
-                                                ?.tokenA,
-                                              oraclePrices
-                                            ) +
-                                              dollarConvertor(
-                                                allSplit?.[lower_bound + idx]
-                                                  ?.amountB,
-                                                allSplit?.[lower_bound + idx]
-                                                  ?.tokenB,
-                                                oraclePrices
-                                              ))
-                                        )
-                                      )
-                                    : borrow.spendType == "SWAP"
-                                    ? numberFormatter(
-                                        Math.abs(
-                                          dollarConvertor(
-                                            borrow.loanAmountParsed,
-                                            borrow?.loanMarket.slice(1),
-                                            oraclePrices
-                                          ) *
-                                            reduxProtocolStats?.find(
-                                              (val: any) =>
-                                                val?.token ==
-                                                borrow?.loanMarket.slice(1)
-                                            )?.exchangeRateDTokenToUnderlying -
+                                    : borrow.spendType == 'LIQUIDITY'
+                                      ? numberFormatter(
+                                          Math.abs(
                                             dollarConvertor(
-                                              borrow.currentLoanAmountParsed,
-                                              borrow?.currentLoanMarket,
+                                              borrow.loanAmountParsed,
+                                              borrow?.loanMarket.slice(1),
                                               oraclePrices
-                                            )
+                                            ) *
+                                              reduxProtocolStats?.find(
+                                                (val: any) =>
+                                                  val?.token ==
+                                                  borrow?.loanMarket.slice(1)
+                                              )
+                                                ?.exchangeRateDTokenToUnderlying -
+                                              (dollarConvertor(
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.amountA,
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenA,
+                                                oraclePrices
+                                              ) +
+                                                dollarConvertor(
+                                                  allSplit?.[lower_bound + idx]
+                                                    ?.amountB,
+                                                  allSplit?.[lower_bound + idx]
+                                                    ?.tokenB,
+                                                  oraclePrices
+                                                ))
+                                          )
                                         )
-                                      )
-                                    : ""}
+                                      : borrow.spendType == 'SWAP'
+                                        ? numberFormatter(
+                                            Math.abs(
+                                              dollarConvertor(
+                                                borrow.loanAmountParsed,
+                                                borrow?.loanMarket.slice(1),
+                                                oraclePrices
+                                              ) *
+                                                reduxProtocolStats?.find(
+                                                  (val: any) =>
+                                                    val?.token ==
+                                                    borrow?.loanMarket.slice(1)
+                                                )
+                                                  ?.exchangeRateDTokenToUnderlying -
+                                                dollarConvertor(
+                                                  borrow.currentLoanAmountParsed,
+                                                  borrow?.currentLoanMarket,
+                                                  oraclePrices
+                                                )
+                                            )
+                                          )
+                                        : ''}
                                 </Box>
                               }
                               placement="right"
                               rounded="md"
                               boxShadow="dark-lg"
                               bg="#02010F"
-                              fontSize={"13px"}
-                              fontWeight={"400"}
-                              borderRadius={"lg"}
-                              padding={"2"}
+                              fontSize={'13px'}
+                              fontWeight={'400'}
+                              borderRadius={'lg'}
+                              padding={'2'}
                               color="#F0F0F5"
                               border="1px solid"
                               borderColor="#23233D"
@@ -2393,7 +2317,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                             >
                               <Text
                                 color={
-                                  borrow?.spendType == "UNSPENT"
+                                  borrow?.spendType == 'UNSPENT'
                                     ? dollarConvertor(
                                         borrow.currentLoanAmountParsed,
                                         borrow?.loanMarket.slice(1),
@@ -2410,56 +2334,59 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                             oraclePrices
                                           ) >=
                                       0
-                                      ? "#00D395"
-                                      : "rgb(255 94 94)"
-                                    : borrow?.spendType == "LIQUIDITY"
-                                    ? dollarConvertor(
-                                        allSplit?.[lower_bound + idx]?.amountA,
-                                        allSplit?.[lower_bound + idx]?.tokenA,
-                                        oraclePrices
-                                      ) +
-                                        dollarConvertor(
+                                      ? '#00D395'
+                                      : 'rgb(255 94 94)'
+                                    : borrow?.spendType == 'LIQUIDITY'
+                                      ? dollarConvertor(
                                           allSplit?.[lower_bound + idx]
-                                            ?.amountB,
-                                          allSplit?.[lower_bound + idx]?.tokenB,
+                                            ?.amountA,
+                                          allSplit?.[lower_bound + idx]?.tokenA,
                                           oraclePrices
-                                        ) -
-                                        dollarConvertor(
-                                          borrow.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying >=
-                                      0
-                                      ? "#00D395"
-                                      : "rgb(255 94 94)"
-                                    : borrow.spendType == "SWAP"
-                                    ? dollarConvertor(
-                                        borrow.currentLoanAmountParsed,
-                                        borrow?.currentLoanMarket,
-                                        oraclePrices
-                                      ) -
-                                        dollarConvertor(
-                                          borrow.loanAmountParsed,
-                                          borrow?.loanMarket.slice(1),
-                                          oraclePrices
-                                        ) *
-                                          reduxProtocolStats?.find(
-                                            (val: any) =>
-                                              val?.token ==
-                                              borrow?.loanMarket.slice(1)
-                                          )?.exchangeRateDTokenToUnderlying >=
-                                      0
-                                      ? "#00D395"
-                                      : "rgb(255 94 94)"
-                                    : ""
+                                        ) +
+                                          dollarConvertor(
+                                            allSplit?.[lower_bound + idx]
+                                              ?.amountB,
+                                            allSplit?.[lower_bound + idx]
+                                              ?.tokenB,
+                                            oraclePrices
+                                          ) -
+                                          dollarConvertor(
+                                            borrow.loanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying >=
+                                        0
+                                        ? '#00D395'
+                                        : 'rgb(255 94 94)'
+                                      : borrow.spendType == 'SWAP'
+                                        ? dollarConvertor(
+                                            borrow.currentLoanAmountParsed,
+                                            borrow?.currentLoanMarket,
+                                            oraclePrices
+                                          ) -
+                                            dollarConvertor(
+                                              borrow.loanAmountParsed,
+                                              borrow?.loanMarket.slice(1),
+                                              oraclePrices
+                                            ) *
+                                              reduxProtocolStats?.find(
+                                                (val: any) =>
+                                                  val?.token ==
+                                                  borrow?.loanMarket.slice(1)
+                                              )
+                                                ?.exchangeRateDTokenToUnderlying >=
+                                          0
+                                          ? '#00D395'
+                                          : 'rgb(255 94 94)'
+                                        : ''
                                 }
                               >
-                                {borrow.spendType == "UNSPENT"
+                                {borrow.spendType == 'UNSPENT'
                                   ? dollarConvertor(
                                       borrow.currentLoanAmountParsed,
                                       borrow?.loanMarket.slice(1),
@@ -2476,53 +2403,54 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                           oraclePrices
                                         ) >=
                                     0
-                                    ? "+"
-                                    : "-"
-                                  : borrow.spendType == "LIQUIDITY"
-                                  ? dollarConvertor(
-                                      allSplit?.[lower_bound + idx]?.amountA,
-                                      allSplit?.[lower_bound + idx]?.tokenA,
-                                      oraclePrices
-                                    ) +
-                                      dollarConvertor(
-                                        allSplit?.[lower_bound + idx]?.amountB,
-                                        allSplit?.[lower_bound + idx]?.tokenB,
+                                    ? '+'
+                                    : '-'
+                                  : borrow.spendType == 'LIQUIDITY'
+                                    ? dollarConvertor(
+                                        allSplit?.[lower_bound + idx]?.amountA,
+                                        allSplit?.[lower_bound + idx]?.tokenA,
                                         oraclePrices
-                                      ) -
-                                      dollarConvertor(
-                                        borrow.loanAmountParsed,
-                                        borrow?.loanMarket.slice(1),
-                                        oraclePrices
-                                      ) *
-                                        reduxProtocolStats?.find(
-                                          (val: any) =>
-                                            val?.token ==
-                                            borrow?.loanMarket.slice(1)
-                                        )?.exchangeRateDTokenToUnderlying >=
-                                    0
-                                    ? "+"
-                                    : "-"
-                                  : borrow.spendType == "SWAP"
-                                  ? dollarConvertor(
-                                      borrow.currentLoanAmountParsed,
-                                      borrow?.currentLoanMarket,
-                                      oraclePrices
-                                    ) -
-                                      dollarConvertor(
-                                        borrow.loanAmountParsed,
-                                        borrow?.loanMarket.slice(1),
-                                        oraclePrices
-                                      ) *
-                                        reduxProtocolStats?.find(
-                                          (val: any) =>
-                                            val?.token ==
-                                            borrow?.loanMarket.slice(1)
-                                        )?.exchangeRateDTokenToUnderlying >=
-                                    0
-                                    ? "+"
-                                    : "-"
-                                  : ""}
-                                {borrow.spendType == "UNSPENT"
+                                      ) +
+                                        dollarConvertor(
+                                          allSplit?.[lower_bound + idx]
+                                            ?.amountB,
+                                          allSplit?.[lower_bound + idx]?.tokenB,
+                                          oraclePrices
+                                        ) -
+                                        dollarConvertor(
+                                          borrow.loanAmountParsed,
+                                          borrow?.loanMarket.slice(1),
+                                          oraclePrices
+                                        ) *
+                                          reduxProtocolStats?.find(
+                                            (val: any) =>
+                                              val?.token ==
+                                              borrow?.loanMarket.slice(1)
+                                          )?.exchangeRateDTokenToUnderlying >=
+                                      0
+                                      ? '+'
+                                      : '-'
+                                    : borrow.spendType == 'SWAP'
+                                      ? dollarConvertor(
+                                          borrow.currentLoanAmountParsed,
+                                          borrow?.currentLoanMarket,
+                                          oraclePrices
+                                        ) -
+                                          dollarConvertor(
+                                            borrow.loanAmountParsed,
+                                            borrow?.loanMarket.slice(1),
+                                            oraclePrices
+                                          ) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.loanMarket.slice(1)
+                                            )?.exchangeRateDTokenToUnderlying >=
+                                        0
+                                        ? '+'
+                                        : '-'
+                                      : ''}
+                                {borrow.spendType == 'UNSPENT'
                                   ? numberFormatterPercentage(
                                       (100 *
                                         Math.abs(
@@ -2548,68 +2476,70 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                           oraclePrices
                                         )
                                     )
-                                  : borrow.spendType == "LIQUIDITY"
-                                  ? numberFormatterPercentage(
-                                      (100 *
-                                        Math.abs(
-                                          dollarConvertor(
-                                            borrow.loanAmountParsed,
-                                            borrow?.loanMarket.slice(1),
-                                            oraclePrices
-                                          ) *
-                                            reduxProtocolStats?.find(
-                                              (val: any) =>
-                                                val?.token ==
-                                                borrow?.loanMarket.slice(1)
-                                            )?.exchangeRateDTokenToUnderlying -
-                                            (dollarConvertor(
-                                              allSplit?.[lower_bound + idx]
-                                                ?.amountA,
-                                              allSplit?.[lower_bound + idx]
-                                                ?.tokenA,
-                                              oraclePrices
-                                            ) +
-                                              dollarConvertor(
-                                                allSplit?.[lower_bound + idx]
-                                                  ?.amountB,
-                                                allSplit?.[lower_bound + idx]
-                                                  ?.tokenB,
-                                                oraclePrices
-                                              ))
-                                        )) /
-                                        dollarConvertor(
-                                          borrow?.collateralAmountParsed,
-                                          borrow?.collateralMarket.slice(1),
-                                          oraclePrices
-                                        )
-                                    )
-                                  : borrow.spendType == "SWAP"
-                                  ? numberFormatterPercentage(
-                                      (100 *
-                                        Math.abs(
-                                          dollarConvertor(
-                                            borrow.loanAmountParsed,
-                                            borrow?.loanMarket.slice(1),
-                                            oraclePrices
-                                          ) *
-                                            reduxProtocolStats?.find(
-                                              (val: any) =>
-                                                val?.token ==
-                                                borrow?.loanMarket.slice(1)
-                                            )?.exchangeRateDTokenToUnderlying -
+                                  : borrow.spendType == 'LIQUIDITY'
+                                    ? numberFormatterPercentage(
+                                        (100 *
+                                          Math.abs(
                                             dollarConvertor(
-                                              borrow.currentLoanAmountParsed,
-                                              borrow?.currentLoanMarket,
+                                              borrow.loanAmountParsed,
+                                              borrow?.loanMarket.slice(1),
+                                              oraclePrices
+                                            ) *
+                                              reduxProtocolStats?.find(
+                                                (val: any) =>
+                                                  val?.token ==
+                                                  borrow?.loanMarket.slice(1)
+                                              )
+                                                ?.exchangeRateDTokenToUnderlying -
+                                              (dollarConvertor(
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.amountA,
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenA,
+                                                oraclePrices
+                                              ) +
+                                                dollarConvertor(
+                                                  allSplit?.[lower_bound + idx]
+                                                    ?.amountB,
+                                                  allSplit?.[lower_bound + idx]
+                                                    ?.tokenB,
+                                                  oraclePrices
+                                                ))
+                                          )) /
+                                          dollarConvertor(
+                                            borrow?.collateralAmountParsed,
+                                            borrow?.collateralMarket.slice(1),
+                                            oraclePrices
+                                          )
+                                      )
+                                    : borrow.spendType == 'SWAP'
+                                      ? numberFormatterPercentage(
+                                          (100 *
+                                            Math.abs(
+                                              dollarConvertor(
+                                                borrow.loanAmountParsed,
+                                                borrow?.loanMarket.slice(1),
+                                                oraclePrices
+                                              ) *
+                                                reduxProtocolStats?.find(
+                                                  (val: any) =>
+                                                    val?.token ==
+                                                    borrow?.loanMarket.slice(1)
+                                                )
+                                                  ?.exchangeRateDTokenToUnderlying -
+                                                dollarConvertor(
+                                                  borrow.currentLoanAmountParsed,
+                                                  borrow?.currentLoanMarket,
+                                                  oraclePrices
+                                                )
+                                            )) /
+                                            dollarConvertor(
+                                              borrow?.collateralAmountParsed,
+                                              borrow?.collateralMarket.slice(1),
                                               oraclePrices
                                             )
-                                        )) /
-                                        dollarConvertor(
-                                          borrow?.collateralAmountParsed,
-                                          borrow?.collateralMarket.slice(1),
-                                          oraclePrices
                                         )
-                                    )
-                                  : ""}
+                                      : ''}
                                 %
                               </Text>
                             </Tooltip>
@@ -2635,12 +2565,12 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                       </Td>
 
                       <Td
-                        width={"12.5%"}
-                        maxWidth={"3rem"}
-                        fontSize={"14px"}
+                        width={'12.5%'}
+                        maxWidth={'3rem'}
+                        fontSize={'14px'}
                         fontWeight={400}
-                        overflow={"hidden"}
-                        textAlign={"center"}
+                        overflow={'hidden'}
+                        textAlign={'center'}
                       >
                         <Box
                           height="100%"
@@ -2652,7 +2582,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                             hasArrow
                             label={
                               <Box>
-                                Health Factor :{" "}
+                                Health Factor :{' '}
                                 {
                                   avgsLoneHealth?.find(
                                     (item: any) =>
@@ -2667,10 +2597,10 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                             rounded="md"
                             boxShadow="dark-lg"
                             bg="#02010F"
-                            fontSize={"13px"}
-                            fontWeight={"400"}
-                            borderRadius={"lg"}
-                            padding={"2"}
+                            fontSize={'13px'}
+                            fontWeight={'400'}
+                            borderRadius={'lg'}
+                            padding={'2'}
                             color="#F0F0F5"
                             border="1px solid"
                             borderColor="#23233D"
@@ -2720,11 +2650,11 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                       </Td>
 
                       <Td
-                        width={"12.5%"}
-                        maxWidth={"5rem"}
-                        fontSize={"14px"}
+                        width={'12.5%'}
+                        maxWidth={'5rem'}
+                        fontSize={'14px'}
                         fontWeight={400}
-                        textAlign={"right"}
+                        textAlign={'right'}
                         p={0}
                       >
                         <Box
@@ -2735,22 +2665,22 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                           justifyContent="flex-end"
                           fontWeight="400"
                           onClick={() => {
-                            setCurrentBorrowId1("ID - " + borrow.loanId);
-                            setCurrentBorrowMarketCoin1(borrow.loanMarket);
-                            setCurrentBorrowId2("ID - " + borrow.loanId);
-                            setCurrentBorrowMarketCoin2(borrow.loanMarket);
-                            setBorrowAmount(borrow.loanAmountParsed);
+                            setCurrentBorrowId1('ID - ' + borrow.loanId)
+                            setCurrentBorrowMarketCoin1(borrow.loanMarket)
+                            setCurrentBorrowId2('ID - ' + borrow.loanId)
+                            setCurrentBorrowMarketCoin2(borrow.loanMarket)
+                            setBorrowAmount(borrow.loanAmountParsed)
                             setCollateralBalance(
                               borrow.collateralAmountParsed +
-                                " " +
+                                ' ' +
                                 borrow.collateralMarket
-                            );
-                            posthog.capture("Your Borrow Actions Clicked", {
+                            )
+                            posthog.capture('Your Borrow Actions Clicked', {
                               Clicked: true,
-                            });
-                            setCurrentSpendStatus(borrow.spendType);
-                            setCurrentLoanAmount(borrow?.currentLoanAmount);
-                            setCurrentLoanMarket(borrow?.currentLoanMarket);
+                            })
+                            setCurrentSpendStatus(borrow.spendType)
+                            setCurrentLoanAmount(borrow?.currentLoanAmount)
+                            setCurrentLoanMarket(borrow?.currentLoanMarket)
                           }}
                         >
                           <Box>
@@ -2788,13 +2718,13 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               BorrowBalance={borrowAmount}
                               allSplit={allSplit}
                               buttonText="Actions"
-                              height={"2rem"}
-                              fontSize={"12px"}
+                              height={'2rem'}
+                              fontSize={'12px'}
                               padding="6px 12px"
                               border="1px solid #BDBFC1"
                               bgColor="#101216"
-                              _hover={{ bg: "white", color: "black" }}
-                              borderRadius={"6px"}
+                              _hover={{ bg: 'white', color: 'black' }}
+                              borderRadius={'6px'}
                               color="#BDBFC1;"
                               borrowAPRs={borrowAPRs}
                               borrow={borrow}
@@ -2808,27 +2738,28 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
 
                     <Tr
                       style={{
-                        position: "absolute",
-                        width: "100%",
-                        height: "1px",
-                        borderBottom: "1px solid #2b2f35",
-                        display: `${borrow.idx == 5 ? "none" : "block"}`,
+                        position: 'absolute',
+                        width: '100%',
+                        height: '1px',
+                        borderBottom: '1px solid #2b2f35',
+                        display: `${borrow.idx == 5 ? 'none' : 'block'}`,
                       }}
                     />
                   </>
-                );
+                )
               }
             )}
+
             {(() => {
-              const rows = [];
+              const rows = []
               for (
                 let i: number = 0;
                 i < 6 - (upper_bound - lower_bound + 1);
                 i++
               ) {
-                rows.push(<Tr height="5.15rem" bgColor="red"></Tr>);
+                rows.push(<Tr height="5.15rem" bgColor="red"></Tr>)
               }
-              return rows;
+              return rows
             })()}
           </Tbody>
         </Table>
@@ -2870,7 +2801,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                 cursor="pointer"
                 ml="0.3rem"
                 lineHeight="22px"
-                backGroundOverLay={"rgba(244, 242, 255, 0.5);"}
+                backGroundOverLay={'rgba(244, 242, 255, 0.5);'}
                 borrowAPRs={borrowAPRs}
                 currentBorrowAPR={currentBorrowAPR}
                 validRTokens={validRTokens}
@@ -2882,7 +2813,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
         </Box>
       )}
     </>
-  );
-};
+  )
+}
 
-export default BorrowDashboard;
+export default BorrowDashboard

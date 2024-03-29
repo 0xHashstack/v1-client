@@ -1,19 +1,19 @@
-import useClaimStrk from "@/Blockchain/hooks/Writes/useStrkClaim";
-import { parseAmount } from "@/Blockchain/utils/utils";
-import ArrowUp from "@/assets/icons/arrowup";
-import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import InfoIcon from "@/assets/icons/infoIcon";
-import LowhealthFactor from "@/assets/icons/lowhealthFactor";
-import MediumHeathFactor from "@/assets/icons/mediumHeathFactor";
-import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
-import SupplyModal from "@/components/modals/SupplyModal";
-import TradeModal from "@/components/modals/tradeModal";
+import useClaimStrk from '@/Blockchain/hooks/Writes/useStrkClaim'
+import { etherToWeiBN, parseAmount } from '@/Blockchain/utils/utils'
+import ArrowUp from '@/assets/icons/arrowup'
+import DropdownUp from '@/assets/icons/dropdownUpIcon'
+import InfoIcon from '@/assets/icons/infoIcon'
+import LowhealthFactor from '@/assets/icons/lowhealthFactor'
+import MediumHeathFactor from '@/assets/icons/mediumHeathFactor'
+import LiquidityProvisionModal from '@/components/modals/LiquidityProvision'
+import SupplyModal from '@/components/modals/SupplyModal'
+import TradeModal from '@/components/modals/tradeModal'
 import {
   selectModalDropDowns,
   selectNavDropdowns,
   setModalDropdown,
   setNavDropdown,
-} from "@/store/slices/dropdownsSlice";
+} from '@/store/slices/dropdownsSlice'
 import {
   selectEffectiveApr,
   selectHealthFactor,
@@ -21,16 +21,17 @@ import {
   selectOraclePrices,
   selectProtocolStats,
   selectUserDeposits,
-} from "@/store/slices/readDataSlice";
+} from '@/store/slices/readDataSlice'
 import {
   selectActiveTransactions,
   selectJedistrkTokenAllocation,
   selectStrkAprData,
   selectUserUnspentLoans,
+  selectnetSpendBalance,
   setActiveTransactions,
-} from "@/store/slices/userAccountSlice";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
+} from '@/store/slices/userAccountSlice'
+import numberFormatter from '@/utils/functions/numberFormatter'
+import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
 import {
   Box,
   Button,
@@ -45,97 +46,105 @@ import {
   Tooltip,
   Tr,
   VStack,
-} from "@chakra-ui/react";
-import { useAccount } from "@starknet-react/core";
-import axios from "axios";
-import Image from "next/image";
-import posthog from "posthog-js";
-import React, { useEffect, useState } from "react";
-import CopyToClipboard from "react-copy-to-clipboard";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import PageCard from "../pageCard";
-
+} from '@chakra-ui/react'
+import { useAccount } from '@starknet-react/core'
+import axios from 'axios'
+import Image from 'next/image'
+import posthog from 'posthog-js'
+import React, { useEffect, useState } from 'react'
+import CopyToClipboard from 'react-copy-to-clipboard'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import PageCard from '../pageCard'
+import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards'
+import dataStrkRewards from '../strkDashboard/round_1.json'
 export interface ICoin {
-  name: string;
-  symbol: string;
-  icon: string;
+  name: string
+  symbol: string
+  icon: string
 }
 export const Coins: ICoin[] = [
-  { name: "STRK", icon: "mdi-strk", symbol: "STRK" },
-  { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },
-  { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" },
+  { name: 'STRK', icon: 'mdi-strk', symbol: 'STRK' },
+  { name: 'USDT', icon: 'mdi-bitcoin', symbol: 'USDT' },
+  { name: 'USDC', icon: 'mdi-ethereum', symbol: 'USDC' },
   // { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
-  { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
-];
+  { name: 'ETH', icon: 'mdi-ethereum', symbol: 'WETH' },
+]
 const StrkDashboard = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const handleDropdownClick = (dropdownName: any) => {
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
-    dispatch(setNavDropdown(dropdownName));
-  };
-  const navDropdowns = useSelector(selectModalDropDowns);
+    dispatch(setNavDropdown(dropdownName))
+  }
+  const navDropdowns = useSelector(selectModalDropDowns)
   const activeModal = Object.keys(navDropdowns).find(
     (key) => navDropdowns[key] === true
-  );
-  const userLoans = useSelector(selectUserUnspentLoans);
+  )
+  const userLoans = useSelector(selectUserUnspentLoans)
   const columnItems = [
-    "Borrow ID",
-    "Borrowed",
-    "Effective APR",
-    "LTV",
-    "Health factor",
-  ];
-  const [showWarning, setShowWarning] = useState(true);
-  const [currentBorrow, setCurrentBorrow] = useState(-1);
-  const [selectedDapp, setSelectedDapp] = useState("");
-  const [tradeNote, setTradeNote] = useState(false);
+    'Borrow ID',
+    'Borrowed',
+    'Effective APR',
+    'LTV',
+    'Health factor',
+  ]
+  const [showWarning, setShowWarning] = useState(true)
+  const [currentBorrow, setCurrentBorrow] = useState(-1)
+  const [selectedDapp, setSelectedDapp] = useState('')
+  const [tradeNote, setTradeNote] = useState(false)
   const handleClick = () => {
     //   onClick={setShowWarning(() => false)}
-    setShowWarning(false);
-  };
-  const oraclePrices = useSelector(selectOraclePrices);
-  const reduxProtocolStats = useSelector(selectProtocolStats);
+    setShowWarning(false)
+  }
+  const oraclePrices = useSelector(selectOraclePrices)
+  const reduxProtocolStats = useSelector(selectProtocolStats)
   // const avgs = useSelector(selectAprAndHealthFactor);
-  const avgs = useSelector(selectEffectiveApr);
-  const avgsLoneHealth = useSelector(selectHealthFactor);
-  const [ltv, setLtv] = useState<any>([]);
-  const [borrowId, setborrowId] = useState("Select Existing borrow");
-  const [currentPool, setcurrentPool] = useState("Select a pool");
+  const avgs = useSelector(selectEffectiveApr)
+  const avgsLoneHealth = useSelector(selectHealthFactor)
+  const [ltv, setLtv] = useState<any>([])
+  const [borrowId, setborrowId] = useState('Select Existing borrow')
+  const [currentPool, setcurrentPool] = useState('Select a pool')
 
-  const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
-  const [currentBorrowData, setcurrentBorrowData] = useState();
-  const [borrowIds, setBorrowIds] = useState([]);
-  const [currentId, setCurrentId] = useState("");
-  const [currentMarketCoin, setCurrentMarketCoin] = useState("");
-  const [currentSwap, setCurrentSwap] = useState("");
-  const [borrowAmount, setBorrowAmount] = useState<number>(0);
-  const [coins, setCoins] = useState([]);
-  const [currentPagination, setCurrentPagination] = useState<number>(1);
-  const [tabIndex, setTabIndex] = useState(0);
-  const [selectedIndex, setselectedIndex] = useState(0);
-  const [currentLoanAmount, setCurrentLoanAmount] = useState("");
-  const [currentLoanMarket, setCurrentLoanMarket] = useState("");
-  const [borrowAPRs, setBorrowAPRs] = useState<any>([]);
-  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>(0);
-  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>(0);
-  const [collateralCoin, setcollateralCoin] = useState("")
-  const [poolNumber, setpoolNumber] = useState(false);
-  const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
-  const coin = { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" };
-  const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([]);
-  const [validRTokens, setValidRTokens] = useState([]);
-  const userDeposits = useSelector(selectUserDeposits);
-  const { account, address } = useAccount();
-  const poolApr = useSelector(selectJediswapPoolAprs);
-  const strkTokenAlloactionData=useSelector(selectJedistrkTokenAllocation)
-  const strkData = useSelector(selectStrkAprData);
-  const [uniqueID, setUniqueID] = useState(0);
-  const getUniqueId = () => uniqueID;
-  const [toastId, setToastId] = useState<any>();
-  let activeTransactions = useSelector(selectActiveTransactions);
+  const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([])
+  const [currentBorrowData, setcurrentBorrowData] = useState()
+  const [borrowIds, setBorrowIds] = useState([])
+  const [currentId, setCurrentId] = useState('')
+  const [currentMarketCoin, setCurrentMarketCoin] = useState('')
+  const [currentSwap, setCurrentSwap] = useState('')
+  const [borrowAmount, setBorrowAmount] = useState<number>(0)
+  const [coins, setCoins] = useState([])
+  const [currentPagination, setCurrentPagination] = useState<number>(1)
+  const [tabIndex, setTabIndex] = useState(0)
+  const [selectedIndex, setselectedIndex] = useState(0)
+  const [currentLoanAmount, setCurrentLoanAmount] = useState('')
+  const [currentLoanMarket, setCurrentLoanMarket] = useState('')
+  const [borrowAPRs, setBorrowAPRs] = useState<any>([])
+  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>(0)
+  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>(0)
+  const [collateralCoin, setcollateralCoin] = useState('')
+  const [poolNumber, setpoolNumber] = useState(false)
+  const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState('BTC')
+  const coin = { name: 'USDC', icon: 'mdi-ethereum', symbol: 'USDC' }
+  const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([])
+  const [validRTokens, setValidRTokens] = useState([])
+  const userDeposits = useSelector(selectUserDeposits)
+  const { account, address } = useAccount()
+  const poolApr = useSelector(selectJediswapPoolAprs)
+  const strkTokenAlloactionData = useSelector(selectJedistrkTokenAllocation)
+  const strkData = useSelector(selectStrkAprData)
+  const [uniqueID, setUniqueID] = useState(0)
+  const getUniqueId = () => uniqueID
+  const [toastId, setToastId] = useState<any>()
+  const [strkRewards, setstrkRewards] = useState<any>()
+  let activeTransactions = useSelector(selectActiveTransactions)
 
   const {
+    round,
+    setRound,
+    strkAmount,
+    setstrkAmount,
+    proof,
+    setProof,
     datastrkClaim,
     errorstrkClaim,
     resetstrkClaim,
@@ -145,14 +154,29 @@ const StrkDashboard = () => {
     isIdlestrkClaim,
     isSuccessstrkClaim,
     statusstrkClaim,
-  } = useClaimStrk();
+  } = useClaimStrk()
+
+  useEffect(() => {
+    const fetchClaimedBalance = async () => {
+      if (address) {
+        const data: any = await getUserSTRKClaimedAmount(address)
+        const dataAmount: any = (dataStrkRewards as any)[address]
+        if (dataAmount) {
+          setstrkAmount(dataAmount?.amount)
+          setProof(dataAmount?.proofs)
+          setstrkRewards(parseAmount(String(dataAmount?.amount), 18)-data)
+        }
+      }
+    }
+    fetchClaimedBalance()
+  }, [address])
 
   const handleClaimStrk = async () => {
     try {
-      const getTokens = await writeAsyncstrkClaim();
-      posthog.capture("Claim Strk", {
-        "Clicked Claim": true,
-      });
+      const getTokens = await writeAsyncstrkClaim()
+      posthog.capture('Claim Strk', {
+        'Clicked Claim': true,
+      })
       if (getTokens?.transaction_hash) {
         const toastid = toast.info(
           // `Please wait, your transaction is running in background ${coin} `,
@@ -161,200 +185,200 @@ const StrkDashboard = () => {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
           }
-        );
-        setToastId(toastId);
+        )
+        setToastId(toastId)
         if (!activeTransactions) {
-          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
         } else if (
           Object.isFrozen(activeTransactions) ||
           Object.isSealed(activeTransactions)
         ) {
           // Check if activeTransactions is frozen or sealed
-          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
         }
-        const uqID = getUniqueId();
+        const uqID = getUniqueId()
         const trans_data = {
           transaction_hash: getTokens?.transaction_hash.toString(),
-          message: `Successfully minted TestToken : ${coin}`,
+          message: `Successfully Claimed STRKToken`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: () => {},
           uniqueID: uqID,
-        };
+        }
         // addTransaction({ hash: deposit?.transaction_hash });
-        posthog.capture("Get Tokens Status", {
-          Status: "Success",
-        });
-        activeTransactions?.push(trans_data);
+        posthog.capture('Get Tokens Status', {
+          Status: 'Success',
+        })
+        activeTransactions?.push(trans_data)
 
-        dispatch(setActiveTransactions(activeTransactions));
+        dispatch(setActiveTransactions(activeTransactions))
       }
-      console.log(getTokens);
+      console.log(getTokens)
       // dispatch(setTransactionStatus("success"));
     } catch (err: any) {
-      console.log(err);
+      console.log(err)
       // dispatch(setTransactionStatus("failed"));
-      posthog.capture("Get Claim Status", {
-        Status: "Failure",
-      });
+      posthog.capture('Get Claim Status', {
+        Status: 'Failure',
+      })
       // dispatch(setTransactionStartedAndModalClosed(true));
       const toastContent = (
         <div>
-          Failed to Claim{" " + coin + " "}
+          Failed to Claim $STRK 
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
         </div>
-      );
+      )
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
-      });
+      })
     }
-  };
+  }
 
   const getStrkAlloaction = (pool: any) => {
     try {
       if (strkTokenAlloactionData[pool]) {
         return strkTokenAlloactionData[pool][
           strkTokenAlloactionData[pool].length - 1
-        ]?.allocation;
+        ]?.allocation
       } else {
-        return 0;
+        return 0
       }
     } catch (err) {
-      return 0;
+      return 0
     }
-  };
+  }
 
   const getAprByPool = (dataArray: any[], pool: string, dapp: string) => {
     const matchedObject = dataArray.find((item) => {
-      if (item.name === "USDT/USDC") {
+      if (item.name === 'USDT/USDC') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "USDC/USDT" === pool
-        );
-      } else if (item.name == "ETH/STRK") {
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'USDC/USDT' === pool
+        )
+      } else if (item.name == 'ETH/STRK') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "STRK/ETH" === pool
-        );
-      } else if (item.name === "ETH/DAI") {
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'STRK/ETH' === pool
+        )
+      } else if (item.name === 'ETH/DAI') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "DAI/ETH" === pool
-        );
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'DAI/ETH' === pool
+        )
       } else {
         return (
           item.name === pool &&
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap")
-        );
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap')
+        )
       }
-    });
+    })
 
-    return matchedObject ? matchedObject.apr * 100 : 0;
-  };
+    return matchedObject ? matchedObject.apr * 100 : 0
+  }
   const getTvlByPool = (dataArray: any[], pool: string, dapp: string) => {
     const matchedObject = dataArray.find((item) => {
-      if (item.name === "USDT/USDC") {
+      if (item.name === 'USDT/USDC') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "USDC/USDT" === pool
-        );
-      } else if (item.name == "ETH/STRK") {
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'USDC/USDT' === pool
+        )
+      } else if (item.name == 'ETH/STRK') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "STRK/ETH" === pool
-        );
-      } else if (item.name === "ETH/DAI") {
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'STRK/ETH' === pool
+        )
+      } else if (item.name === 'ETH/DAI') {
         return (
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap") && "DAI/ETH" === pool
-        );
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap') && 'DAI/ETH' === pool
+        )
       } else {
         return (
           item.name === pool &&
           item.amm ===
-            (dapp == "Select a dapp"
-              ? "jedi"
-              : dapp == "Jediswap"
-              ? "jedi"
-              : "myswap")
-        );
+            (dapp == 'Select a dapp'
+              ? 'jedi'
+              : dapp == 'Jediswap'
+                ? 'jedi'
+                : 'myswap')
+        )
       }
-    });
+    })
 
-    return matchedObject ? matchedObject.tvl : 0;
-  };
+    return matchedObject ? matchedObject.tvl : 0
+  }
   useEffect(() => {
     if (validRTokens.length === 0) {
-      fetchUserDeposits();
+      fetchUserDeposits()
     }
-  }, [userDeposits, validRTokens, address]);
+  }, [userDeposits, validRTokens, address])
 
   const fetchUserDeposits = async () => {
     try {
-      if (!account || userDeposits?.length <= 0) return;
+      if (!account || userDeposits?.length <= 0) return
       // const reserves = await getUserDeposits(address as string);
-      const reserves = userDeposits;
+      const reserves = userDeposits
       ////console.log("got reservers", reserves);
 
-      const rTokens: any = [];
+      const rTokens: any = []
       if (reserves) {
         reserves.map((reserve: any) => {
           if (reserve.rTokenFreeParsed > 0) {
             rTokens.push({
               rToken: reserve.rToken,
               rTokenAmount: reserve.rTokenFreeParsed,
-            });
+            })
           }
-        });
+        })
       }
       ////console.log("rtokens", rTokens);
-      if (rTokens.length === 0) return;
-      setValidRTokens(rTokens);
+      if (rTokens.length === 0) return
+      setValidRTokens(rTokens)
       ////console.log("valid rtoken", validRTokens);
       ////console.log("market page -user supply", reserves);
     } catch (err) {
       ////console.log("Error fetching protocol reserves", err);
     }
-  };
+  }
   useEffect(() => {
-    fetchProtocolStats();
-  }, [reduxProtocolStats]);
+    fetchProtocolStats()
+  }, [reduxProtocolStats])
 
   const fetchProtocolStats = async () => {
     try {
-      const stats = reduxProtocolStats;
+      const stats = reduxProtocolStats
       ////console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
         stats?.[5]?.borrowRate,
@@ -363,7 +387,7 @@ const StrkDashboard = () => {
         stats?.[0]?.borrowRate,
         stats?.[1]?.borrowRate,
         stats?.[4]?.borrowRate,
-      ]);
+      ])
       setSupplyAPRs([
         stats?.[5].supplyRate,
         stats?.[2].supplyRate,
@@ -371,17 +395,17 @@ const StrkDashboard = () => {
         stats?.[0].supplyRate,
         stats?.[1].supplyRate,
         stats?.[4].supplyRate,
-      ]);
+      ])
     } catch (error) {
       //console.log("error on getting protocol stats");
     }
-  };
+  }
   useEffect(() => {
     if (userLoans) {
-      let temp1: any = [];
-      let temp2: any = [];
-      let temp3: any = [];
-      let healths: any = [];
+      let temp1: any = []
+      let temp2: any = []
+      let temp3: any = []
+      let healths: any = []
       if (userLoans?.length != 0) {
         for (let i = 0; i < userLoans?.length; i++) {
           // const factor=await getExistingLoanHealth(userLoans[i]?.loanId)
@@ -392,53 +416,53 @@ const StrkDashboard = () => {
           temp1.push({
             id: userLoans[i]?.loanId,
             name: userLoans[i]?.loanMarket,
-          });
-          temp2.push(userLoans[i]?.loanId);
-          temp3.push(userLoans[i]?.loanMarket);
+          })
+          temp2.push(userLoans[i]?.loanId)
+          temp3.push(userLoans[i]?.loanMarket)
         }
       }
-      setBorrowIDCoinMap(temp1);
-      setBorrowIds(temp2);
-      setCoins(temp3);
+      setBorrowIDCoinMap(temp1)
+      setBorrowIds(temp2)
+      setCoins(temp3)
       if (
         userLoans?.length <= (currentPagination - 1) * 3 &&
         currentPagination > 1
       ) {
-        setCurrentPagination(currentPagination - 1);
+        setCurrentPagination(currentPagination - 1)
       }
       ////console.log("faisal coin mapping", borrowIDCoinMap);
     }
-  }, [userLoans]);
+  }, [userLoans])
 
   useEffect(() => {
     if (userLoans && oraclePrices) {
-      const ltv_ratio = [];
+      const ltv_ratio = []
       for (const loan of userLoans) {
         const loan_ltv1 =
           loan?.currentLoanAmountParsed *
           oraclePrices?.find((val: any) => val?.name == loan?.underlyingMarket)
-            ?.price;
+            ?.price
         const loan_ltv2 =
           loan?.collateralAmountParsed *
           oraclePrices?.find(
             (val: any) =>
               val?.name ==
-              (loan?.collateralMarket[0] == "r"
+              (loan?.collateralMarket[0] == 'r'
                 ? loan?.collateralMarket.slice(1)
                 : loan?.collateralMarket)
-          )?.price;
+          )?.price
         ltv_ratio.push([
           loan?.loanId,
           // loan_ltv1,
           // loan_ltv2,
           loan_ltv1 / loan_ltv2,
-        ]);
+        ])
       }
-      setLtv(ltv_ratio);
+      setLtv(ltv_ratio)
       ////console.log("spendtable ltv ", ltv);
     }
-  }, [userLoans, oraclePrices]);
-  const rewardPools = ["STRK/ETH", "USDC/USDT", "ETH/USDC"];
+  }, [userLoans, oraclePrices])
+  const rewardPools = ['STRK/ETH', 'USDC/USDT', 'ETH/USDC']
   return (
     <VStack
       w="95%"
@@ -470,34 +494,47 @@ const StrkDashboard = () => {
             <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
               STRK Reward
             </Text>
-            <Text
-              fontSize="16px"
-              fontWeight="500"
-              color="white"
-              textAlign="center"
-            >
-              -
-            </Text>
+            {strkRewards==null ? (
+              <Skeleton
+                width="6rem"
+                height="1.2rem"
+                startColor="#101216"
+                endColor="#2B2F35"
+                borderRadius="6px"
+              />
+            ) : (
+              <Text
+                fontSize="16px"
+                fontWeight="500"
+                color="white"
+                textAlign="center"
+              >
+                {numberFormatter(strkRewards)} STRK
+              </Text>
+            )}
           </Box>
           <Button
-            height={"2rem"}
-            fontSize={"12px"}
+            height={'2rem'}
+            fontSize={'12px'}
             mt="0.5rem"
             padding="6px 12px"
             border="1px solid #1B1F2426"
             color="#2B2F35"
             bgColor="#F3F4F6"
-            isDisabled={true}
+            isDisabled={strkRewards==0 ?true:false}
             _disabled={{
-              color: "#2B2F35",
-              bgColor: "#101216",
-              border: "1px solid #2B2F35",
-              _hover: { bgColor: "#101216" },
+              color: '#2B2F35',
+              bgColor: '#101216',
+              border: '1px solid #2B2F35',
+              _hover: { bgColor: '#101216' },
             }}
             fontWeight="semibold"
-            borderRadius={"6px"}
+            borderRadius={'6px'}
             onClick={() => {
-              // handleClaimStrk();
+              if(strkRewards==0){
+              }else{
+                handleClaimStrk()
+              }
             }}
           >
             Claim
@@ -552,7 +589,7 @@ const StrkDashboard = () => {
               className="navbar"
               cursor="pointer"
               onClick={() => {
-                dispatch(setModalDropdown("borrowDropdown"));
+                dispatch(setModalDropdown('borrowDropdown'))
               }}
             >
               <Box display="flex" gap="1">
@@ -584,13 +621,13 @@ const StrkDashboard = () => {
                   >
                     <Table variant="unstyled">
                       {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-                      <Thead width={"100%"}>
-                        <Tr width={"100%"} height="2rem">
+                      <Thead width={'100%'}>
+                        <Tr width={'100%'} height="2rem">
                           {columnItems.map((val: any, idx1: any) => (
                             <Td
                               key={idx1}
-                              width={"12.5%"}
-                              fontSize={"12px"}
+                              width={'12.5%'}
+                              fontSize={'12px'}
                               fontWeight={400}
                               p={0}
                               // bgColor="red"
@@ -598,37 +635,37 @@ const StrkDashboard = () => {
                               <Text
                                 whiteSpace="pre-wrap"
                                 overflowWrap="break-word"
-                                width={"100%"}
-                                height={"2rem"}
+                                width={'100%'}
+                                height={'2rem'}
                                 fontSize="12px"
                                 textAlign={
                                   idx1 == 0
-                                    ? "left"
+                                    ? 'left'
                                     : idx1 == columnItems.length - 1
-                                    ? "right"
-                                    : "center"
+                                      ? 'right'
+                                      : 'center'
                                 }
-                                pl={idx1 == 0 ? "3rem" : 0}
+                                pl={idx1 == 0 ? '3rem' : 0}
                                 pr={idx1 == columnItems.length - 1 ? 35 : 0}
-                                color={"#BDBFC1"}
+                                color={'#BDBFC1'}
                                 cursor="context-menu"
                               >
                                 <Tooltip
                                   hasArrow
-                                  label={"df"}
+                                  label={'df'}
                                   placement={
-                                    (idx1 === 0 && "bottom-start") ||
+                                    (idx1 === 0 && 'bottom-start') ||
                                     (idx1 === columnItems.length - 1 &&
-                                      "bottom-end") ||
-                                    "bottom"
+                                      'bottom-end') ||
+                                    'bottom'
                                   }
                                   rounded="md"
                                   boxShadow="dark-lg"
                                   bg="#02010F"
-                                  fontSize={"13px"}
-                                  fontWeight={"400"}
-                                  borderRadius={"lg"}
-                                  padding={"2"}
+                                  fontSize={'13px'}
+                                  fontWeight={'400'}
+                                  borderRadius={'lg'}
+                                  padding={'2'}
                                   color="#F0F0F5"
                                   border="1px solid"
                                   borderColor="#23233D"
@@ -652,7 +689,7 @@ const StrkDashboard = () => {
                                 _hover={{
                                   // backgroundColor: "#676D9A4D",
                                   // width: "80%",
-                                  borderRadius: "0px",
+                                  borderRadius: '0px',
                                 }}
                                 position="relative"
                                 height="4rem"
@@ -660,32 +697,28 @@ const StrkDashboard = () => {
                                 cursor="pointer"
                                 bgColor={
                                   currentBorrow == borrow.loanId
-                                    ? "#676D9A4D"
-                                    : "none "
+                                    ? '#676D9A4D'
+                                    : 'none '
                                 }
                                 // bgColor="green"
                                 onClick={() => {
-                                  setSelectedDapp("trade");
-                                  setCurrentBorrow(borrow.loanId);
-                                  setcurrentBorrowData(borrow);
+                                  setSelectedDapp('trade')
+                                  setCurrentBorrow(borrow.loanId)
+                                  setcurrentBorrowData(borrow)
                                   setcollateralCoin(borrow?.collateralMarket)
                                   setBorrowAmount(
                                     borrow.currentLoanAmountParsed
-                                  );
-                                  setCurrentMarketCoin(
-                                    borrow.currentLoanMarket
-                                  );
+                                  )
+                                  setCurrentMarketCoin(borrow.currentLoanMarket)
                                   setCurrentLoanAmount(
                                     borrow?.currentLoanAmount
-                                  );
+                                  )
                                   setCurrentLoanMarket(
                                     borrow?.currentLoanMarket
-                                  );
-                                  setCurrentMarketCoin(
-                                    borrow.currentLoanMarket
-                                  );
-                                  setCurrentId("ID - " + borrow.loanId);
-                                  setborrowId("Borrow ID " + borrow?.loanId);
+                                  )
+                                  setCurrentMarketCoin(borrow.currentLoanMarket)
+                                  setCurrentId('ID - ' + borrow.loanId)
+                                  setborrowId('Borrow ID ' + borrow?.loanId)
                                   //   setcurrentBorrowData(borrow)
                                   //   setCurrentBorrow(borrow.loanId);
                                   //   setBorrowAmount(borrow.currentLoanAmountParsed);
@@ -706,8 +739,8 @@ const StrkDashboard = () => {
                                     left={-2}
                                     display={
                                       currentBorrow == borrow.loanId
-                                        ? "block"
-                                        : "none"
+                                        ? 'block'
+                                        : 'none'
                                     }
                                   />
                                   <Box
@@ -726,9 +759,9 @@ const StrkDashboard = () => {
                                     >
                                       {`Borrow ID${
                                         borrow.loanId < 10
-                                          ? "0" + borrow.loanId
+                                          ? '0' + borrow.loanId
                                           : borrow.loanId
-                                      }`}{" "}
+                                      }`}{' '}
                                     </Text>
                                   </Box>
                                 </Td>
@@ -775,7 +808,7 @@ const StrkDashboard = () => {
                                         (item: any) =>
                                           item?.loanId == borrow?.loanId
                                       )?.avg
-                                    : "3.2"}
+                                    : '3.2'}
                                   %
                                 </Td>
                                 <Td textAlign="center">
@@ -800,7 +833,7 @@ const StrkDashboard = () => {
                                                 val?.[0] == borrow?.loanId
                                             )?.[1]
                                             ?.toFixed(3)
-                                        : "-"}
+                                        : '-'}
                                     </Text>
                                   </Box>
                                 </Td>
@@ -823,7 +856,7 @@ const StrkDashboard = () => {
                                         hasArrow
                                         label={
                                           <Box>
-                                            Health Factor :{" "}
+                                            Health Factor :{' '}
                                             {
                                               avgsLoneHealth?.find(
                                                 (item: any) =>
@@ -839,10 +872,10 @@ const StrkDashboard = () => {
                                         rounded="md"
                                         boxShadow="dark-lg"
                                         bg="#02010F"
-                                        fontSize={"13px"}
-                                        fontWeight={"400"}
-                                        borderRadius={"lg"}
-                                        padding={"2"}
+                                        fontSize={'13px'}
+                                        fontWeight={'400'}
+                                        borderRadius={'lg'}
+                                        padding={'2'}
                                         color="#F0F0F5"
                                         border="1px solid"
                                         borderColor="#23233D"
@@ -875,7 +908,7 @@ const StrkDashboard = () => {
                                 </Td>
                               </Tr>
                             </>
-                          );
+                          )
                         })}
                         {/* {(() => {
                 const rows2 = [];
@@ -906,18 +939,18 @@ const StrkDashboard = () => {
                 justifyContent="center"
                 textAlign="center"
                 onClick={() => {
-                  setcurrentPool(pool);
+                  setcurrentPool(pool)
                 }}
               >
                 <Box display="flex" width="100%" justifyContent="center">
                   <Image
-                    src={`/${pool.split("/")[0]}.svg`}
+                    src={`/${pool.split('/')[0]}.svg`}
                     alt="Picture of the author"
                     width="32"
                     height="32"
                   />
                   <Image
-                    src={`/${pool.split("/")[1]}.svg`}
+                    src={`/${pool.split('/')[1]}.svg`}
                     alt="Picture of the author"
                     width="32"
                     height="32"
@@ -930,23 +963,23 @@ const StrkDashboard = () => {
                 </Box>
                 <Box display="flex" mt="0.5rem" gap="0.8rem">
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    Pool APR:{" "}
+                    Pool APR:{' '}
                     {numberFormatterPercentage(
-                      getAprByPool(poolApr, pool, "Jediswap")
+                      getAprByPool(poolApr, pool, 'Jediswap')
                     )}
                     %
                   </Text>
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    $STRK APR:{" "}
+                    $STRK APR:{' '}
                     {numberFormatterPercentage(
                       String(
                         (100 *
                           365 *
                           (getStrkAlloaction(pool) *
                             oraclePrices?.find(
-                              (curr: any) => curr.name === "STRK"
+                              (curr: any) => curr.name === 'STRK'
                             )?.price)) /
-                          getTvlByPool(poolApr, pool, "Jediswap")
+                          getTvlByPool(poolApr, pool, 'Jediswap')
                       )
                     )}
                     %
@@ -955,34 +988,34 @@ const StrkDashboard = () => {
                 <Box
                   mt="0.5rem"
                   onClick={() => {
-                    setpoolNumber(!poolNumber);
+                    setpoolNumber(!poolNumber)
                   }}
                 >
                   {userLoans?.length > 0 ? (
-                    borrowId === "Select Existing borrow" ? (
+                    borrowId === 'Select Existing borrow' ? (
                       <Button
                         cursor="pointer"
-                        height={"2rem"}
-                        fontSize={"12px"}
+                        height={'2rem'}
+                        fontSize={'12px'}
                         mt="0.5rem"
                         padding="6px 12px"
                         bg="linear-gradient(to right, #7956EC,#1B29AE);"
-                        _hover={{ bg: "white", color: "black" }}
-                        borderRadius={"6px"}
+                        _hover={{ bg: 'white', color: 'black' }}
+                        borderRadius={'6px'}
                         color="white"
                         onClick={() => {
                           const toastContent = (
                             <div>
-                              Select Loan to Spend{" "}
+                              Select Loan to Spend{' '}
                               <CopyToClipboard text="Enter Loan ID">
                                 <Text as="u">copy error!</Text>
                               </CopyToClipboard>
                             </div>
-                          );
+                          )
                           toast.error(toastContent, {
                             position: toast.POSITION.BOTTOM_RIGHT,
                             autoClose: false,
-                          });
+                          })
                         }}
                       >
                         Spend
@@ -1003,7 +1036,7 @@ const StrkDashboard = () => {
                         setCurrentLoanAmount={setCurrentLoanAmount}
                         setCurrentLoanMarket={setCurrentLoanMarket}
                         borrowAPRs={borrowAPRs}
-                        currentSelectedDapp={"Jediswap"}
+                        currentSelectedDapp={'Jediswap'}
                         currentSelectedPool={pool}
                         poolNumber={poolNumber}
                         collateralMarket={collateralCoin}
@@ -1019,7 +1052,7 @@ const StrkDashboard = () => {
                       setCurrentBorrowAPR={setCurrentBorrowAPR}
                       validRTokens={validRTokens}
                       currentBorrowMarketCoin={currentBorrowMarketCoin}
-                      currentSelectedDapp={"Jediswap"}
+                      currentSelectedDapp={'Jediswap'}
                       currentSelectedPool={pool}
                       poolNumber={poolNumber}
                     />
@@ -1066,7 +1099,7 @@ const StrkDashboard = () => {
                 <Box display="flex" width="100%" justifyContent="center">
                   <Image
                     src={
-                      supplyCoin?.name == "DAI"
+                      supplyCoin?.name == 'DAI'
                         ? `/${supplyCoin?.name}Disabled.svg`
                         : `/${supplyCoin?.name}.svg`
                     }
@@ -1085,7 +1118,7 @@ const StrkDashboard = () => {
                     Supply APR: {numberFormatterPercentage(supplyAPRs[idx])}%
                   </Text>
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
-                    $STRK APR:{" "}
+                    $STRK APR:{' '}
                     {numberFormatterPercentage(
                       strkData
                         ? (365 *
@@ -1095,7 +1128,7 @@ const StrkDashboard = () => {
                             ]?.allocation *
                             0.7 *
                             oraclePrices?.find(
-                              (curr: any) => curr.name === "STRK"
+                              (curr: any) => curr.name === 'STRK'
                             )?.price) /
                             strkData[supplyCoin?.name][
                               strkData[supplyCoin?.name].length - 1
@@ -1121,22 +1154,22 @@ const StrkDashboard = () => {
                   color="white"
                   onClick={() => {
                     if (idx == 3) {
-                      setCurrentSupplyAPR(idx + 1);
+                      setCurrentSupplyAPR(idx + 1)
                     } else {
-                      setCurrentSupplyAPR(idx);
+                      setCurrentSupplyAPR(idx)
                     }
                   }}
                 >
                   <SupplyModal
                     buttonText="Supply"
                     cursor="pointer"
-                    height={"2rem"}
-                    fontSize={"12px"}
+                    height={'2rem'}
+                    fontSize={'12px'}
                     mt="0.5rem"
                     padding="6px 12px"
                     bg="linear-gradient(to right, #7956EC,#1B29AE);"
-                    _hover={{ bg: "white", color: "black" }}
-                    borderRadius={"6px"}
+                    _hover={{ bg: 'white', color: 'black' }}
+                    borderRadius={'6px'}
                     color="white"
                     backGroundOverLay="rgba(244, 242, 255, 0.5)"
                     coin={supplyCoin}
@@ -1151,7 +1184,7 @@ const StrkDashboard = () => {
         </Box>
       </Box>
     </VStack>
-  );
-};
+  )
+}
 
-export default StrkDashboard;
+export default StrkDashboard

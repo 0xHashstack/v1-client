@@ -24,6 +24,7 @@ import {
   selectMonthlyBTCData,
   selectMonthlyDAIData,
   selectMonthlyETHData,
+  selectMonthlySTRKData,
   selectMonthlyUSDCData,
   selectMonthlyUSDTData,
   selectProtocolReserves,
@@ -73,6 +74,7 @@ const SupplyChart = () => {
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
   const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
   const monthlyDaiData = useSelector(selectMonthlyDAIData);
+  const monthlyStrkData = useSelector(selectMonthlySTRKData);
   const allBtcData = useSelector(selectAllBTCData);
   const allEthData = useSelector(selectAllETHData);
   const allUsdtData = useSelector(selectAllUSDTData);
@@ -262,7 +264,8 @@ const SupplyChart = () => {
         monthlyEthData?.supplyAmounts &&
         monthlyUsdtData?.supplyAmounts &&
         monthlyUsdcData?.supplyAmounts &&
-        monthlyDaiData?.supplyAmounts
+        monthlyDaiData?.supplyAmounts &&
+        monthlyStrkData?.supplyAmounts
           ? (newData = [
               {
                 name: "wBTC",
@@ -284,6 +287,10 @@ const SupplyChart = () => {
               {
                 name: "DAI",
                 data: monthlyDaiData.supplyAmounts,
+              },
+              {
+                name: "STRK",
+                data: monthlyStrkData.supplyAmounts,
               },
             ]):
         newData = [
