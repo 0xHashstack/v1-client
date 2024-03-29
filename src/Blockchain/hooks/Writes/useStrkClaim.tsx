@@ -11,7 +11,7 @@ const useClaimStrk = () => {
     const [proof, setProof] = useState([
         '0x133dc8a91a6503962a20ffebf1c5974713e217a19932709d7e844740ff1242e',
         '0x7957d036cf1e60858a601df12e0fb2921114d4b5facccf638163e0bb2be3c34',
-        '0x1baa08224a2fbc4dc71734549e0ad1bbf85b3586014d3d7aa229b85474aae67'
+      '0x1baa08224a2fbc4dc71734549e0ad1bbf85b3586014d3d7aa229b85474aae67'
       ])
     const {
         data: datastrkClaim,
@@ -29,7 +29,7 @@ const useClaimStrk = () => {
             contractAddress: "0x02e20db0cd0af6739ff3e3003ea6932409867040b227bf9ba822239e5ba0dcaf",
             entrypoint: "claim",
             calldata: [
-              etherToWeiBN(strkAmount as number, "STRK").toString(),
+              strkAmount,
               proof,
             ],
           },

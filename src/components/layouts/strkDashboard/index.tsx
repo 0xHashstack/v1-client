@@ -162,7 +162,7 @@ const StrkDashboard = () => {
         const data: any = await getUserSTRKClaimedAmount(address)
         const dataAmount: any = (dataStrkRewards as any)[address]
         if (dataAmount) {
-          setstrkAmount(parseAmount(String(dataAmount?.amount), 18)-data)
+          setstrkAmount(dataAmount?.amount)
           setProof(dataAmount?.proofs)
           setstrkRewards(parseAmount(String(dataAmount?.amount), 18)-data)
         }
