@@ -334,7 +334,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
               oraclePrices?.find(
                 (curr: any) => curr.name === borrow?.collateral
               )?.price
-            ).toFixed(3) || 0
+            ).toFixed(4) || 0
         )
       )
     }
@@ -367,8 +367,9 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   }
 
   const handleInputChange = (value: any, index: number) => {
+    if (value > 9_000_000_000) return
     const newCollateralAmounts = [...collateralAmounts]
-    newCollateralAmounts[index] = parseFloat(value) || 0 // Convert value to float or default to 0 if it's not a valid number
+    newCollateralAmounts[index] = value || 0 // Convert value to float or default to 0 if it's not a valid number
     setCollateralAmounts(newCollateralAmounts)
   }
 
@@ -1195,14 +1196,14 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     ? collateralAmounts[lower_bound + idx]
                                     : ''
                                 }
-                                onChange={(e) =>
+                                onChange={(e:any) =>
                                   handleInputChange(e, lower_bound + idx)
                                 }
+                                step={parseFloat(`${collateralAmounts[lower_bound + idx] <= 99999 ? 0.1 : 0}`)}
                                 // defaultValue={borrow?.collateralSuggestedAmount}
                                 // value={depositAmount ? depositAmount : ""}
                                 outline="none"
-                                precision={2}
-                                // step={parseFloat(`${depositAmount <= 99999 ? 0.1 : 0}`)}
+                                precision={4}
                                 _disabled={{ cursor: 'pointer' }}
                               >
                                 <NumberInputField
@@ -1530,7 +1531,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     (curr: any) =>
                                       curr.name === borrow?.collateral
                                   )?.price <
-                                  1000 &&
+                                  10 &&
                                   userDeposit?.find(
                                     (item: any) =>
                                       item?.rToken == 'r' + borrow?.collateral
@@ -1539,7 +1540,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       (curr: any) =>
                                         curr.name === borrow?.collateral
                                     )?.price <
-                                    1000)
+                                    10)
                               ) {
                                 // toast.error(
                                 //   'Minimum Collateral Amount is 1000$',
@@ -1585,7 +1586,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   curr.name ===
                                   collateralMarkets[lower_bound + idx]
                               )?.price >=
-                              1000 &&
+                              10 &&
                             ((walletBalances[borrow?.collateral]
                               ?.statusBalanceOf === 'success'
                               ? parseAmount(
@@ -1601,7 +1602,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               oraclePrices?.find(
                                 (curr: any) => curr.name === borrow?.collateral
                               )?.price >=
-                              1000 ||
+                              10 ||
                               userDeposit?.find(
                                 (item: any) =>
                                   item?.rToken == 'r' + borrow?.collateral
@@ -1610,7 +1611,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   (curr: any) =>
                                     curr.name === borrow?.collateral
                                 )?.price >=
-                                1000) ? (
+                                10) ? (
                               <DegenModal
                                 coin={coin}
                                 borrowAPRs={borrowAPRs}
