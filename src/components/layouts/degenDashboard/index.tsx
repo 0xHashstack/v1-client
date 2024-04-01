@@ -646,7 +646,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       w={width}
       display="flex"
       flexDirection="column"
-      height={'40rem'}
+      height={'39rem'}
       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
       padding={'1rem 2rem 0rem'}
       overflowX="hidden"
@@ -660,7 +660,9 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
         justifyContent="flex-start"
         alignItems="flex-start"
         height={'37rem'}
-        overflow="none"
+        overflowX="visible"
+        overflowY="visible"
+        
       >
         <Table variant="unstyled" width="100%" height="100%" mb="0.5rem">
           <Thead width={'100%'} height={'5rem'}>
@@ -1659,7 +1661,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         width: '100%',
                         height: '1px',
                         borderBottom: '1px solid #2b2f35',
-                        display: `${borrow.idx == 5 ? 'none' : 'block'}`,
+                        display: `${idx == 5 ? 'none' : 'block'}`,
                       }}
                     />
                   </>
