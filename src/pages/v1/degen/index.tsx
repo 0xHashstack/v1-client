@@ -1,4 +1,5 @@
-import { Box, Button, HStack, Text } from '@chakra-ui/react'
+import { Box, HStack, Text } from '@chakra-ui/react'
+import axios from 'axios'
 import { NextPage } from 'next'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -16,8 +17,6 @@ import {
   selectYourSupply,
 } from '@/store/slices/readDataSlice'
 import { Coins } from '@/utils/constants/coin'
-import Link from 'next/link'
-import axios from 'axios'
 
 const data = [
   {
@@ -337,25 +336,11 @@ const Degen: NextPage = () => {
   const [borrowAPRs, setBorrowAPRs]: any = useState<(undefined | number)[]>([])
   const [currentPagination, setCurrentPagination] = useState<number>(1)
   const [supplies, setSupplies] = useState<IDeposit[]>([])
+  const [strategies, setstrategies] = useState<any>([])
 
   const totalSupply = useSelector(selectYourSupply)
   const stats = useSelector(selectProtocolStats)
   let userDeposits = useSelector(selectUserDeposits)
-  const [strategies, setstrategies] = useState<any>([])
-
-  useEffect(()=>{
-    try{
-      const fetchStrats=async()=>{
-        const res=await axios.get('https://metricsapimainnet.hashstack.finance/api/degen/strategy')
-        if(res?.data){
-          setstrategies(res?.data);
-        }
-      }
-      fetchStrats();
-    }catch(err){
-      console.log(err,"err in fetching strategies")
-    }
-  },[])
 
   const fetchProtocolStats = async () => {
     try {
@@ -377,6 +362,22 @@ const Degen: NextPage = () => {
       ])
     } catch (error) {}
   }
+
+  useEffect(() => {
+    try {
+      const fetchStrats = async () => {
+        const res = await axios.get(
+          'https://metricsapimainnet.hashstack.finance/api/degen/strategy'
+        )
+        if (res?.data) {
+          setstrategies(res?.data)
+        }
+      }
+      fetchStrats()
+    } catch (err) {
+      console.log(err, 'err in fetching strategies')
+    }
+  }, [])
 
   useEffect(() => {
     if (userDeposits) {
@@ -429,52 +430,66 @@ const Degen: NextPage = () => {
 
   return (
     <PageCard pt="6.5rem">
-      {totalSupply >= 0 && <Box
-        position="relative"
-        width={'95%'}
-        height={'180px'}
-        marginTop="0"
-        marginBottom="8"
-        paddingX="20"
-      >
-        <Image
-          src="/degen_mode_banner.svg"
-          alt="Degen Mode Banner"
-          fill
-          style={{ objectFit: 'cover', borderRadius: '8px' }}
-        />
-        <Image
-          src="/degen_mode_banner2.svg"
-          alt="Degen Mode Banner"
-          width={735}
-          height={129}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '2rem',
-            objectFit: 'cover',
-            borderRadius: '8px',
-          }}
-        />
-        <Box position="absolute" top="4" left="7" maxWidth="45rem" width="full">
+      {totalSupply >= 0 && (
+        <Box
+          position="relative"
+          width={'95%'}
+          height={'180px'}
+          marginTop="0"
+          marginBottom="8"
+          paddingX="20"
+        >
+          <Image
+            src="/degen_mode_banner.svg"
+            alt="Degen Mode Banner"
+            fill
+            style={{ objectFit: 'cover', borderRadius: '8px' }}
+          />
+          <Image
+            src="/degen_mode_banner2.svg"
+            alt="Degen Mode Banner"
+            width={735}
+            height={129}
+            style={{
+              position: 'absolute',
+              top: '12px',
+              right: '2rem',
+              objectFit: 'cover',
+              borderRadius: '8px',
+            }}
+          />
           <Box
-            color="#E6EDF3"
-            fontSize="2.1rem"
-            display="flex"
-            alignItems="center"
-            gap="2"
-            fontWeight="semibold"
+            position="absolute"
+            top="4"
+            left="7"
+            maxWidth={{
+              xl: '36rem',
+              '2xl': '42rem',
+            }}
+            width="full"
           >
-            What Is Degen mode?
+            <Box
+              color="#E6EDF3"
+              fontSize="2.1rem"
+              display="flex"
+              alignItems="center"
+              gap="2"
+              fontWeight="semibold"
+            >
+              What Is Degen mode?
+            </Box>
+            <Box>
+              <Text color="#E6EDF3" width="full" pt="8px" fontSize="15px">
+                These are the tailored strategies based on your supplied assets.
+                The protocol provides a default leverage of 5x, which can be
+                reduced by increasing the collateral. With this 1-click feature,
+                provide the amount and collateral, and the protocol executes
+                your chosen strategy, making your capital efficient.
+              </Text>
+            </Box>
           </Box>
-          <Box>
-            <Text color="#E6EDF3" width="full" pt="8px" fontSize="15px">
-            These are the tailored strategies based on your supplied assets. The protocol provides a default leverage of 5x, which can be reduced by increasing the collateral. With this 1-click feature, provide the amount and collateral, and the protocol executes your chosen strategy, making your capital efficient.
-            </Text>
-          </Box>
-
         </Box>
-      </Box>}
+      )}
       <HStack
         display="flex"
         justifyContent="space-between"
@@ -485,17 +500,19 @@ const Degen: NextPage = () => {
       >
         <NavButtons width={70} marginBottom={'0rem'} />
       </HStack>
-      {totalSupply >= 0 &&<Box
-        display="flex"
-        justifyContent="left"
-        w="94%"
-        mt="0.5rem"
-        mb="0.8rem"
-        color="#F0F0F5"
-        fontSize="sm"
-      >
-        The borrowing amount is fixed to $5000 worth of assets.
-      </Box>}
+      {totalSupply >= 0 && (
+        <Box
+          display="flex"
+          justifyContent="left"
+          w="94%"
+          mt="0.5rem"
+          mb="0.8rem"
+          color="#F0F0F5"
+          fontSize="sm"
+        >
+          The borrowing amount is fixed to $5000 worth of assets.
+        </Box>
+      )}
       <DegenDashboard
         width={'95%'}
         currentPagination={currentPagination}
