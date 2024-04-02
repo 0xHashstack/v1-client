@@ -798,15 +798,6 @@ const SupplyModal = ({
     setSliderValue(0)
   }, [currentSelectedCoin])
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await get_user_holding_zklend(
-        '0x05970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4'
-      )
-    }
-    fetchData()
-  }, [])
-
   return (
     <div>
       <Button
