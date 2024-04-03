@@ -51,7 +51,7 @@ const NavButtons = ({
       label: "Your Borrow",
       count: userLoans?.length ? userLoans.length : 0,
     },
-    // { path: "v1/degen", label: "Degen", count: 0 },
+    { path: "v1/degen", label: "Degen", count: 0 },
     { path: "v1/strk-rewards", label: "Farm STRK token", count: 0 },
   ];
 
@@ -134,7 +134,7 @@ const NavButtons = ({
                 option.path == "v1/market"
                   ? pathname === "/v1/market"
                     ? getButtonLabel(option.path)
-                    : "back"
+                    : "Market"
                   : getButtonLabel(option.path)
               )}
               {option.count > 0 && (

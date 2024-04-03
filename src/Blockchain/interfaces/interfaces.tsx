@@ -103,4 +103,16 @@ export interface IUserStats {
   netBorrowAPR: number; // usd terms
 }
 
+export interface OraclePrice {
+  name: string;
+  address: string;
+  price: number;
+  lastUpdated: Date;
+}
+
+export interface BorrowEffectiveApr{
+  loanId:number,
+  apr:number,
+}
+
 // Net apr = (total supply * supply apr - total borrow * borrow apr) / networth

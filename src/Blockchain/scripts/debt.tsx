@@ -2,13 +2,14 @@ import { Contract, uint256 } from "starknet";
 
 import { ERC20Abi, contractsEnv, getProvider } from "../stark-constants";
 import { parseAmount } from "../utils/utils";
+import { IMarketInfo } from "../interfaces/interfaces";
 
 export function getSpendBalance() {
-  const marketStats: any = [];
+  const marketStats: IMarketInfo[]=[];
   const provider = getProvider();
 
   try {
-    const promises: any = [];
+    const promises: Promise<any>[] = [];
     for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
       const token = contractsEnv.TOKENS[i];
       const contract = new Contract(ERC20Abi, token?.address, provider);

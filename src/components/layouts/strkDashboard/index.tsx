@@ -559,7 +559,7 @@ const StrkDashboard = () => {
           >
             Spending pools
           </Text>
-          <Text fontSize="12px" fontWeight="400" color="#BDBFC1" mt="0.5rem">
+          <Text fontSize="12px" fontWeight="400" color="#BDBFC1" mt="0.4rem">
             Spend your borrowed funds on these Jediswap pools to receive the
             rewards.
           </Text>
@@ -652,7 +652,7 @@ const StrkDashboard = () => {
                               >
                                 <Tooltip
                                   hasArrow
-                                  label={'df'}
+                                  // label={'df'}
                                   placement={
                                     (idx1 === 0 && 'bottom-start') ||
                                     (idx1 === columnItems.length - 1 &&
@@ -1064,7 +1064,7 @@ const StrkDashboard = () => {
         </Box>
       </Box>
       <Box
-        mt="1rem"
+        mt="2rem"
         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         width="100%"
@@ -1081,7 +1081,7 @@ const StrkDashboard = () => {
           >
             Supply Markets
           </Text>
-          <Text fontSize="12px" fontWeight="400" color="#BDBFC1" mt="0.5rem">
+          <Text fontSize="12px" fontWeight="400" color="#BDBFC1" mt="0.4rem">
             Supply your funds on these markets to receive the rewards.
           </Text>
           <Box display="flex" gap="1.5rem" mt="2rem">
