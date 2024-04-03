@@ -434,7 +434,7 @@ const Degen: NextPage = () => {
         <Box
           position="relative"
           width={'95%'}
-          height={'180px'}
+          height={'200px'}
           marginTop="0"
           marginBottom="8"
           paddingX="20"
@@ -448,12 +448,12 @@ const Degen: NextPage = () => {
           <Image
             src="/degen_mode_banner2.svg"
             alt="Degen Mode Banner"
-            width={735}
+            width={805}
             height={129}
             style={{
               position: 'absolute',
-              top: '12px',
-              right: '2rem',
+              top: '18px',
+              right: '1.5rem',
               objectFit: 'cover',
               borderRadius: '8px',
             }}
@@ -467,6 +467,8 @@ const Degen: NextPage = () => {
               '2xl': '42rem',
             }}
             width="full"
+            mt="0.4rem"
+            ml="0.4rem"
           >
             <Box
               color="#E6EDF3"
@@ -479,7 +481,7 @@ const Degen: NextPage = () => {
               What Is Degen mode?
             </Box>
             <Box>
-              <Text color="#E6EDF3" width="full" pt="8px" fontSize="15px">
+              <Text color="#E6EDF3" width="full" pt="8px" fontSize="16px" letterSpacing="-0.15px" lineHeight="20px">
                 These are the tailored strategies based on your supplied assets.
                 The protocol provides a default leverage of 5x, which can be
                 reduced by increasing the collateral. With this 1-click feature,

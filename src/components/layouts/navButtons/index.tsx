@@ -134,7 +134,7 @@ const NavButtons = ({
                 option.path == "v1/market"
                   ? pathname === "/v1/market"
                     ? getButtonLabel(option.path)
-                    : "back"
+                    : "Market"
                   : getButtonLabel(option.path)
               )}
               {option.count > 0 && (
