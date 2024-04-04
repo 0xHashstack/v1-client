@@ -587,7 +587,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           `} position={'fixed'} zIndex={3} >
               <Navbar validRTokens={validRTokens} />
             </Box>
-            <Box position={'fixed'} zIndex={0.5}>
+            <Box position={'fixed'} zIndex={0.5} onClick={()=>{
+              posthog.capture('Feedback Modal Clicked', {
+                Clicked: true,
+              })
+            }}>
               <FeedbackModal />
             </Box>
             <Stack
