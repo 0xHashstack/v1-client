@@ -137,7 +137,7 @@ const StrkDashboard = () => {
   const [toastId, setToastId] = useState<any>()
   const [strkRewards, setstrkRewards] = useState<any>()
   let activeTransactions = useSelector(selectActiveTransactions)
-
+  console.log(strkRewards,"ss")
   const {
     round,
     setRound,
@@ -165,6 +165,8 @@ const StrkDashboard = () => {
           setstrkAmount(dataAmount?.amount)
           setProof(dataAmount?.proofs)
           setstrkRewards(parseAmount(String(dataAmount?.amount), 18)-data)
+        }else{
+          setstrkRewards(0)
         }
       }
     }
