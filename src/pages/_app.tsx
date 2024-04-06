@@ -2,6 +2,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { goerli, mainnet } from "@starknet-react/chains";
 import {
   StarknetConfig,
+  alchemyProvider,
   argent,
   braavos,
   infuraProvider,
@@ -77,7 +78,7 @@ const theme = extendTheme({
 export default function App({ Component, pageProps }: AppProps) {
   const apikey: string = process.env.NEXT_PUBLIC_INFURA_MAINNET as string;
 
-  const provider = infuraProvider({ apiKey: apikey });
+  const provider = alchemyProvider({ apiKey: apikey.split('/v2/')[1] });
 
   const { connectors } = useInjectedConnectors({
     // Show these connectors if the user has no connector installed.
