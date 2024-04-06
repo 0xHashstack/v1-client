@@ -23,8 +23,8 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   );
 }
 export const getProvider = () => {
-  const rpctestnetUrl='https://starknet-goerli.infura.io/v3/'+String(process.env.NEXT_PUBLIC_INFURA_TESTNET);
-  const rpcUrl='https://starknet-mainnet.infura.io/v3/'+String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
+  const rpctestnetUrl=String(process.env.NEXT_PUBLIC_INFURA_TESTNET);
+  const rpcUrl=String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
   if (contractsEnv == DeployDetailsProd.goerli) {
     const provider = new RpcProvider({ nodeUrl: rpctestnetUrl});
     return provider;
