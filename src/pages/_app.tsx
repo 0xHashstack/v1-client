@@ -78,7 +78,7 @@ const theme = extendTheme({
 export default function App({ Component, pageProps }: AppProps) {
   const apikey: string = process.env.NEXT_PUBLIC_INFURA_MAINNET as string;
 
-  const provider = alchemyProvider({ apiKey: apikey.split('/v2/')[1] });
+  const provider = infuraProvider({ apiKey: apikey.split('/')[4]});
 
   const { connectors } = useInjectedConnectors({
     // Show these connectors if the user has no connector installed.

@@ -57,7 +57,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import PageCard from '../pageCard'
 import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards'
-import dataStrkRewards from '../strkDashboard/round_1.json'
+import dataStrkRewards from '../strkDashboard/round_2.json'
 export interface ICoin {
   name: string
   symbol: string
@@ -137,7 +137,6 @@ const StrkDashboard = () => {
   const [toastId, setToastId] = useState<any>()
   const [strkRewards, setstrkRewards] = useState<any>()
   let activeTransactions = useSelector(selectActiveTransactions)
-  console.log(strkRewards,"ss")
   const {
     round,
     setRound,

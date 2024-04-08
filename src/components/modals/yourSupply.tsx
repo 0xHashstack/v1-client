@@ -944,7 +944,7 @@ const YourSupplyModal = ({
                         bg: '#4D59E8',
                         border: 'none',
                       }}
-                      isDisabled={transactionStarted == true}
+                      isDisabled={transactionStarted == true || withdrawTransactionStarted == true}
                     >
                       Unstake
                     </Tab>
