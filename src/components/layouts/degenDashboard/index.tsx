@@ -453,6 +453,10 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
             setCurrentTransactionStatus: setCurrentTransactionStatus,
             uniqueID: uqID,
           }
+          posthog.capture('Degen Spend Successfully', {
+            Status: 'Success',
+            transaction_hash: borrowAndSpend?.transaction_hash.toString(),
+          })
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data)
 
@@ -497,6 +501,10 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
             uniqueID: uqID,
           }
           // addTransaction({ hash: deposit?.transaction_hash });
+          posthog.capture('Degen Spend Successfully', {
+            Status: 'Success',
+            transaction_hash: borrowAndSpendR?.transaction_hash.toString(),
+          })
           activeTransactions?.push(trans_data)
 
           dispatch(setActiveTransactions(activeTransactions))
@@ -526,6 +534,9 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
           </CopyToClipboard>
         </div>
       )
+      posthog.capture('Degen Spend failed', {
+        Status: 'Failure',
+      })
       setselectedIndex(null)
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
