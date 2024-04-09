@@ -1561,8 +1561,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     (curr: any) =>
                                       curr.name ===
                                       collateralMarkets[lower_bound + idx]
-                                  )?.price <
-                                  1000 ||
+                                  )?.price >=
+                                  1000 &&
                                 ((walletBalances[borrow?.collateral]
                                   ?.statusBalanceOf === 'success'
                                   ? parseAmount(
@@ -1578,8 +1578,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   oraclePrices?.find(
                                     (curr: any) =>
                                       curr.name === borrow?.collateral
-                                  )?.price <
-                                  1000 &&
+                                  )?.price >=
+                                  1000 ||
                                   userDeposit?.find(
                                     (item: any) =>
                                       item?.rToken == 'r' + borrow?.collateral
@@ -1587,17 +1587,9 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     oraclePrices?.find(
                                       (curr: any) =>
                                         curr.name === borrow?.collateral
-                                    )?.price <
+                                    )?.price >=
                                     1000)
                               ) {
-                                // toast.error(
-                                //   'Minimum Collateral Amount is 1000$',
-                                //   {
-                                //     position: toast.POSITION.BOTTOM_RIGHT,
-                                //     autoClose: false,
-                                //   }
-                                // )
-                              } else {
                                 setRTokenAmount(
                                   collateralAmounts[lower_bound + idx]
                                 )
@@ -1625,6 +1617,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 setMethod('ADD_LIQUIDITY')
                                 setToMarketLiqA(borrow?.secondary.split('/')[0])
                                 setToMarketLiqB(borrow?.secondary.split('/')[1])
+                              } else {
+
                               }
                             }}
                           >
