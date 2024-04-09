@@ -52,10 +52,10 @@ const useBorrowAndSpend = () => {
   ];
 
   type AddLiquidityCalldata = [
-    typeof constants.JEDI_SWAP | typeof constants.MY_SWAP,
+    typeof constants.JEDI_SWAP | typeof constants.MY_SWAP | typeof constants.ZKLEND,
     "3",
     typeof constants.ADD_LIQUIDITY,
-    NativeToken,
+     NativeToken,
     NativeToken
   ];
 
@@ -64,17 +64,17 @@ const useBorrowAndSpend = () => {
   const generateCalldata = (): L3Calldata => {
     let calldata: L3Calldata;
 
-    let integration: typeof constants.JEDI_SWAP | typeof constants.MY_SWAP;
+    let integration: typeof constants.JEDI_SWAP | typeof constants.MY_SWAP | typeof constants.ZKLEND;
     integration =
-      l3App === "JEDI_SWAP" ? constants.JEDI_SWAP : constants.MY_SWAP;
+      l3App === "JEDI_SWAP" ? constants.JEDI_SWAP : l3App==="MY_SWAP" ? constants.MY_SWAP:constants.ZKLEND;
 
     if (method === "ADD_LIQUIDITY") {
       calldata = [
         integration,
         "3",
         constants.ADD_LIQUIDITY,
-        tokenAddressMap[toMarketLiqA],
-        tokenAddressMap[toMarketLiqB],
+        l3App==="ZKLEND"? "0":tokenAddressMap[toMarketLiqA],
+        l3App==="ZKLEND"? "0":tokenAddressMap[toMarketLiqB],
       ];
     } else if (method === "SWAP") {
       calldata = [

@@ -6,7 +6,7 @@ export type Token = NativeToken | DToken | RToken;
 
 export type LoanState = "ACTIVE" | "SPENT" | "REPAID" | "LIQUIDATED" | null;
 export type SpendType = "UNSPENT" | "SWAP" | "LIQUIDITY" | null;
-export type L3App = "JEDI_SWAP" | "MY_SWAP" | "YAGI" | "NONE";
+export type L3App = "JEDI_SWAP" | "MY_SWAP" | "YAGI" | "NONE" | "ZKLEND";
 export type Method = "SWAP" | "ADD_LIQUIDITY";
 
 export type ItokenAddressMap = {
