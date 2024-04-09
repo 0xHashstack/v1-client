@@ -105,7 +105,7 @@ export const Banners = ({
         <Box pr="3" mt="0.9" cursor="pointer">
           <RedinfoIcon />
         </Box>
-        The current collateral and borrowing market combination isn't allowed at
+        The current collateral and borrowing market combination isn&apos;t allowed at
         this moment.
       </Box>
       <Box
