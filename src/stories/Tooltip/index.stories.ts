@@ -18,7 +18,8 @@ type Story = StoryObj<typeof meta>
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
   args: {
-    label: 'This is tooltip content',
+    label:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero voluptatem illum, animi nemo consectetur sint doloremque saepe earum placeat suscipit.',
     children: 'Hover over me!',
   },
 }
