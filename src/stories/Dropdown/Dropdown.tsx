@@ -8,6 +8,8 @@ import USDCLogo from '@/assets/icons/coins/usdc'
 import USDTLogo from '@/assets/icons/coins/usdt'
 import ArrowUp from '@/assets/icons/arrowup'
 import DropdownUp from '@/assets/icons/dropdownUpIcon'
+import { NativeToken } from '@/Blockchain/interfaces/interfaces'
+import numberFormatter from '@/utils/functions/numberFormatter'
 
 interface DropdownProps {
   /**
@@ -45,7 +47,7 @@ export const Dropdown = ({
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case 'BTC':
-        return <BTCLogo height={'28px'} width={'28px'} />
+        return <BTCLogo height={'16px'} width={'16px'} />
       case 'USDC':
         return <USDCLogo height={'16px'} width={'16px'} />
       case 'USDT':
@@ -61,83 +63,110 @@ export const Dropdown = ({
     }
   }
   const [openDropdown, setopenDropdown] = useState(false)
+  const coins: NativeToken[] = ['BTC', 'USDT', 'USDC', 'ETH', 'STRK']
   const mode = primary
     ? 'storybook-button--primary'
     : 'storybook-button--secondary'
   return (
-    <Box  flexDirection="column">
-      <Box
-        display="flex"
-        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-        justifyContent="space-between"
-        alignItems="center"
-        py="2"
-        pl="9"
-        pr="9"
-        mb="1rem"
-        mt="0.3rem"
-        borderRadius="6px"
-        className="navbar"
-        cursor="pointer"
-        onClick={() => {
-          setopenDropdown(!openDropdown)
-        }}
-      >
-        <Box display="flex" gap="8">
-          <Box p="1" mt="0.6rem">{getCoin('BTC')}</Box>
-          <Text color="white">BTC</Text>
-        </Box>
+    <Box  flexDirection="column" width="380px">
+                <Box
+                  display="flex"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                  justifyContent="space-between"
+                  py="2"
+                  pl="3"
+                  pr="3"
+                  mb="1rem"
+                  mt="0.3rem"
+                  borderRadius="md"
+                  className="navbar"
+                  cursor="pointer"
+                  onClick={()=>{
+                    setopenDropdown(!openDropdown)
+                  }}
+                
+                >
+                  <Box display="flex" gap="1">
+                    <Box p="1">{getCoin("ETH")}</Box>
+                    <Text color="white">
+                      ETH
+                    </Text>
+                  </Box>
 
-        <Box pt="1" ml="0.4rem"  className="navbar-button">
-          {openDropdown ? <ArrowUp />:<DropdownUp/>}
-        </Box>
-
-      </Box>
-        {openDropdown && (
-          <Box
-            as="button"
-            w="full"
-            // display="flex"
-            alignItems="center"
-            gap="1"
-            pr="2"
-            display={'flex'}
-          >
-            <Box w="3px" h="28px" bg="#4D59E8" borderRightRadius="md"></Box>
-            <Box
-              w="full"
-              display="flex"
-              py="5px"
-              pl="1"
-              pr="6px"
-              gap="1"
-              justifyContent="space-between"
-              bg="#4D59E8"
-              borderRadius="md"
-            >
-              <Box display="flex">
-                <Box p="1">{getCoin('USDT')}</Box>
-                <Text color="white">{'USDT'}</Text>
-              </Box>
-              <Box fontSize="9px" color="#E6EDF3" mt="6px" fontWeight="thin">
-                Wallet Balance:{' '}
-                {/* {assetBalance[coin]?.dataBalanceOf?.balance
-            ? numberFormatter(
-                parseAmount(
-                    String(
-                    uint256.uint256ToBN(
-                        assetBalance[coin]?.dataBalanceOf
-                        ?.balance
-                    )
-                    ),
-                    tokenDecimalsMap[coin]
-                )
-                )
-            : '-'} */}
-              </Box>
-            </Box>
-          </Box>
-        )}
+                  <Box pt="1" className="navbar-button">
+                    {openDropdown ? <ArrowUp /> : <DropdownUp />}
+                  </Box>
+                  {openDropdown && (
+                    <Box
+                      w="full"
+                      left="0"
+                      bg="#03060B"
+                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                      py="2"
+                      className="dropdown-container"
+                      boxShadow="dark-lg"
+                    >
+                      {coins?.map((coin: NativeToken, index: number) => {
+                        return (
+                          <Box
+                            key={index}
+                            as="button"
+                            w="full"
+                            // display="flex"
+                            alignItems="center"
+                            gap="1"
+                            pr="2"
+                            display={
+                              'flex'
+                            }
+                          >
+                            {coin === "ETH" && (
+                              <Box
+                                w="3px"
+                                h="28px"
+                                bg="#4D59E8"
+                                borderRightRadius="md"
+                              ></Box>
+                            )}
+                            <Box
+                              w="full"
+                              display="flex"
+                              py="5px"
+                              pl={`${coin === "ETH" ? '1' : '5'}`}
+                              pr="6px"
+                              gap="1"
+                              justifyContent="space-between"
+                              bg={`${
+                                coin === "ETH"
+                                  ? '#4D59E8'
+                                  : 'inherit'
+                              }`}
+                              borderRadius="md"
+                            >
+                              <Box display="flex">
+                                <Box p="1">{getCoin(coin)}</Box>
+                                <Text color="white">
+                                  {coin == 'BTC' || coin == 'ETH'
+                                    ? 'w' + coin
+                                    : coin}
+                                </Text>
+                              </Box>
+                              <Box
+                                fontSize="9px"
+                                color="#E6EDF3"
+                                mt="6px"
+                                fontWeight="thin"
+                              >
+                                Wallet Balance:{' '}
+                                {numberFormatter(1)} {coin}
+                              </Box>
+                            </Box>
+                          </Box>
+                        )
+                      })}
+                    </Box>
+                  )}
+                </Box>
     </Box>
   )
 }
