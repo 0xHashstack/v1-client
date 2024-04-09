@@ -46,8 +46,6 @@ jobs:
         run: yarn
       - name: Build
         run: NEXT_PUBLIC_APP_ENV=production yarn build
-      - name: Export
-        run: NEXT_PUBLIC_APP_ENV=production yarn export
       - name: Deploy
         run: aws s3 sync ./out s3://alpha.hashstack.finance
 
