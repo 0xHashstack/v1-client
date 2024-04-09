@@ -364,6 +364,35 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
   }
 }
 
+export async function getZklendusdSpendValue(loan_id:number) {
+  const provider = getProvider();
+  const abi=[{
+    "type": "function",
+    "name": "get_usd_value_zklend",
+    "inputs": [
+        {
+            "name": "loan_id",
+            "type": "core::felt252"
+        }
+    ],
+    "outputs": [
+        {
+            "type": "(core::integer::u256, core::integer::u8)"
+        }
+    ],
+    "state_mutability": "view"
+}]
+  try {
+    const l3Contract = new Contract(abi, l3DiamondAddress, provider);
+    const res:any = await l3Contract.call("get_usd_value_zklend", [loan_id], {
+      blockIdentifier: "pending",
+    });
+    ////console.log("supported pools for Jediswap: ", res);
+  } catch (error) {
+   //console.log("error in getSupportedPoolsJediSwap: ", error);
+  }
+}
+
 export async function getSupportedPoolsJediSwap() {
   const provider = getProvider();
   try {

@@ -4,6 +4,7 @@ const nextConfig = {
     unoptimized: true,
   },
   swcMinify: true,
+  output: 'export',
   async headers() {
     return [
       {
