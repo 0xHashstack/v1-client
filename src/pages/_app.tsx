@@ -18,7 +18,7 @@ import Layout from "@/components/layouts/toasts";
 import "@/styles/globals.css";
 import { store } from "../store/store";
 
-const theme = extendTheme({
+export const theme = extendTheme({
   components: {
     Tabs: {
       baseStyle: {
