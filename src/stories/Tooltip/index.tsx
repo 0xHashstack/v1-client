@@ -1,4 +1,4 @@
-import { Tooltip as Tt } from '@chakra-ui/react'
+import { Text, Tooltip as Tt } from '@chakra-ui/react'
 
 interface TooltipProps {
   label: string
@@ -17,13 +17,12 @@ export const Tooltip = ({ label, children, ...props }: TooltipProps) => {
       fontWeight={'400'}
       borderRadius={'lg'}
       padding={'2'}
-      color="#F0F0F5"
       border="1px solid"
       borderColor="#23233D"
       arrowShadowColor="#2B2F35"
       {...props}
     >
-      {children}
+      <Text color="#fff">{children}</Text>
     </Tt>
   )
 }

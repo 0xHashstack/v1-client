@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
 import { Box, Skeleton as SK } from '@chakra-ui/react'
+import React, { useState } from 'react'
 
 interface SkeletonProps {
   /**
@@ -39,7 +39,21 @@ export const Skeleton = ({
     ? 'storybook-button--primary'
     : 'storybook-button--secondary'
   return (
-    <Box flexDirection="column">
+    <Box display="flex" flexDirection="column" gap=".5rem">
+      <SK
+        width="6rem"
+        height="1.4rem"
+        startColor="#101216"
+        endColor="#2B2F35"
+        borderRadius="6px"
+      />
+      <SK
+        width="6rem"
+        height="1.4rem"
+        startColor="#101216"
+        endColor="#2B2F35"
+        borderRadius="6px"
+      />
       <SK
         width="6rem"
         height="1.4rem"

@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import { Box, Checkbox as Ch, Text } from '@chakra-ui/react'
+import AlertTrade from '@/assets/icons/alertTrade'
+import ArrowUp from '@/assets/icons/arrowup'
+import BlueInfoIcon from '@/assets/icons/blueinfoicon'
 import BTCLogo from '@/assets/icons/coins/btc'
 import DAILogo from '@/assets/icons/coins/dai'
 import ETHLogo from '@/assets/icons/coins/eth'
 import STRKLogo from '@/assets/icons/coins/strk'
 import USDCLogo from '@/assets/icons/coins/usdc'
 import USDTLogo from '@/assets/icons/coins/usdt'
-import ArrowUp from '@/assets/icons/arrowup'
 import DropdownUp from '@/assets/icons/dropdownUpIcon'
-import BlueInfoIcon from '@/assets/icons/blueinfoicon'
 import RedinfoIcon from '@/assets/icons/redinfoicon'
-import AlertTrade from '@/assets/icons/alertTrade'
 import TableClose from '@/components/layouts/table/tableIcons/close'
+import { Box, Checkbox as Ch, Text } from '@chakra-ui/react'
+import React, { useState } from 'react'
 
 interface CheckBoxProps {
   /**
@@ -64,81 +64,94 @@ export const Banners = ({
         break
     }
   }
-  const [openDropdown, setopenDropdown] = useState(false)
-  const mode = primary
-    ? 'storybook-button--primary'
-    : 'storybook-button--secondary'
+
   return (
     <Box display="flex" flexDirection="column" gap="2rem">
-      <Box
-        display="flex"
-        bg={'#222766'}
-        color="#F0F0F5"
-        fontSize="12px"
-        p="4"
-        border={'1px solid #3841AA'}
-        fontStyle="normal"
-        fontWeight="400"
-        lineHeight="18px"
-        borderRadius="6px"
-        // textAlign="center"
-      >
-        <Box pr="3" mt="0.6" cursor="pointer">
-          <BlueInfoIcon />
+      <Box display="flex" flexDirection="column" gap=".3rem">
+        <Text color="white" fontSize="sm">
+          Info
+        </Text>
+
+        <Box
+          display="flex"
+          bg={'#222766'}
+          color="#F0F0F5"
+          fontSize="12px"
+          p="4"
+          border={'1px solid #3841AA'}
+          fontStyle="normal"
+          fontWeight="400"
+          lineHeight="18px"
+          borderRadius="6px"
+        >
+          <Box pr="3" mt="0.6" cursor="pointer">
+            <BlueInfoIcon />
+          </Box>
+          You have selected a native token as collateral which will be converted
+          to rtokens 1rUSDC = 1.0255USDC
         </Box>
-        You have selected a native token as collateral which will be converted
-        to rtokens 1rUSDC = 1.0255USDC
       </Box>
-      <Box
-        display="flex"
-        bg={'#480C10'}
-        color="#F0F0F5"
-        fontSize="12px"
-        p="4"
-        border={'1px solid #9B1A23'}
-        fontStyle="normal"
-        fontWeight="400"
-        lineHeight="18px"
-        borderRadius="6px"
-        // textAlign="center"
-      >
-        <Box pr="3" mt="0.9" cursor="pointer">
-          <RedinfoIcon />
+
+      <Box display="flex" flexDirection="column" gap=".3rem">
+        <Text color="white" fontSize="sm">
+          Error
+        </Text>
+
+        <Box
+          display="flex"
+          bg={'#480C10'}
+          color="#F0F0F5"
+          fontSize="12px"
+          p="4"
+          border={'1px solid #9B1A23'}
+          fontStyle="normal"
+          fontWeight="400"
+          lineHeight="18px"
+          borderRadius="6px"
+        >
+          <Box pr="3" mt="0.9" cursor="pointer">
+            <RedinfoIcon />
+          </Box>
+          The current collateral and borrowing market combination isn&apos;t
+          allowed at this moment.
+          <Box></Box>
         </Box>
-        The current collateral and borrowing market combination isn&apos;t allowed at
-        this moment.
       </Box>
-      <Box
-                    display={ "flex"}
-                    bg="#4D3C03"
-                    fontSize="14px"
-                    p="8px"
-                    fontStyle="normal"
-                    fontWeight="400"
-                    borderRadius="6px"
-                    justifyContent="center"
-                    alignItems="flex-start"
-                    // textAlign="center"
-                    // bgColor="red"
-                  >
-                    <Box
-                      cursor="pointer"
-                      // bgColor="blue"
-                      display="flex"
-                      justifyContent="flex-start"
-                      alignItems="flex-start"
-                      pt="2px"
-                      pr="4px"
-                    >
-                      <AlertTrade />
-                    </Box>
-                    <Box p="6px 2px" display="flex">
-                      <Text mt="0.9" fontSize="sm" color="#F0F0F5">
-                        We are evaluating few promising DApps to integrate.
-                        Please check back at a late time.
-                      </Text>
-                    </Box>
-                  </Box>
+
+      <Box display="flex" flexDirection="column" gap=".3rem">
+        <Text color="white" fontSize="sm">
+          Warning
+        </Text>
+
+        <Box
+          display="flex"
+          bg="#4D3C03"
+          fontSize="14px"
+          p="8px"
+          fontStyle="normal"
+          fontWeight="400"
+          borderRadius="6px"
+          justifyContent="start"
+          alignItems="flex-start"
+        >
+          <Box
+            cursor="pointer"
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            pt="2px"
+            pr="4px"
+          >
+            <AlertTrade />
+          </Box>
+          <Box p="6px 2px" display="flex">
+            <Text mt="0.9" fontSize="sm" color="#F0F0F5">
+              We are evaluating few promising DApps to integrate. Please check
+              back at a late time.
+            </Text>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   )
 }
