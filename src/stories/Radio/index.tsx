@@ -42,7 +42,7 @@ export const Radio = ({
   return (
     <Box>
                     <RadioGroup onChange={setRadioValue} value={radioValue}>
-                      <Stack spacing={4} direction="row">
+                      <Stack spacing={4} direction="row" color="#fff">
                         <RD
                           // variant="primary"
                           value="1"

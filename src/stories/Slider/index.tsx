@@ -151,7 +151,7 @@ export const Slider = ({
                         <SliderTrack bg="#3E415C">
                         <SliderFilledTrack
                         cursor="pointer"
-                            bg="#000"
+                            bg="#fff"
                             width={"200px"}
                         />
                         </SliderTrack>
