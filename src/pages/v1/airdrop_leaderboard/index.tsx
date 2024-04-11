@@ -9,285 +9,280 @@ import {
   Text,
   Tooltip,
   VStack,
-} from "@chakra-ui/react";
-import { useAccount } from "@starknet-react/core";
-import axios from "axios";
-import { NextPage } from "next";
-import Link from "next/link";
-import { default as React, useEffect, useRef, useState } from "react";
-import CopyToClipboard from "react-copy-to-clipboard";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+} from '@chakra-ui/react'
+import { useAccount } from '@starknet-react/core'
+import axios from 'axios'
+import { NextPage } from 'next'
+import Link from 'next/link'
+import { default as React, useEffect, useRef, useState } from 'react'
+import CopyToClipboard from 'react-copy-to-clipboard'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
-import { processAddress } from "@/Blockchain/stark-constants";
-import BlueInfoIcon from "@/assets/icons/blueinfoicon";
-import CopyIcon from "@/assets/icons/copyIcon";
-import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import { default as LeaderboardDashboard } from "@/components/layouts/leaderboardDashboard";
-import { default as PageCard } from "@/components/layouts/pageCard";
-import UserCampaignData from "@/components/layouts/userCampaignData";
-import { default as useDataLoader } from "@/hooks/useDataLoader";
+import { processAddress } from '@/Blockchain/stark-constants'
+import BlueInfoIcon from '@/assets/icons/blueinfoicon'
+import CopyIcon from '@/assets/icons/copyIcon'
+import DropdownUp from '@/assets/icons/dropdownUpIcon'
+import { default as LeaderboardDashboard } from '@/components/layouts/leaderboardDashboard'
+import { default as PageCard } from '@/components/layouts/pageCard'
+import UserCampaignData from '@/components/layouts/userCampaignData'
+import RegisterCCPModal from '@/components/modals/RegisterCCPModal'
+import SubmissionCCPModal from '@/components/modals/SubmissionCCPModal'
+import { default as useDataLoader } from '@/hooks/useDataLoader'
 import {
   selectAirdropDropdowns,
   selectNavDropdowns,
   setAirdropDropdown,
-} from "@/store/slices/dropdownsSlice";
+} from '@/store/slices/dropdownsSlice'
 import {
   selectExistingLink,
   selectYourBorrow,
   selectYourSupply,
-} from "@/store/slices/readDataSlice";
-import { default as numberFormatter } from "@/utils/functions/numberFormatter";
+} from '@/store/slices/readDataSlice'
+import { default as numberFormatter } from '@/utils/functions/numberFormatter'
 
 const columnItemsLeaderBoard = [
-  "Rank",
-  "Account",
-  "Liquidity generated in ($)",
-  "Points",
-  "Hash Tokens",
-];
+  'Rank',
+  'Account',
+  'Liquidity generated in ($)',
+  'Points',
+  'Hash Tokens',
+]
 
-const columnItemsLeaderBoardCCp = [
-  "Rank",
-  "Account",
-  "Points",
-  "",
-];
+const columnItemsLeaderBoardCCp = ['Rank', 'Account', 'Points', '']
 
 const columnItemsPersonalStatsReferalCampaign = [
-  "Campaign Name",
-  "Duration",
-  "Total Hash Earned",
-  "",
-];
+  'Campaign Name',
+  'Duration',
+  'Total Hash Earned',
+  '',
+]
 
 const sampleDate: any = [
   {
     id: 0,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 1,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 2,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 3,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 4,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 5,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 6,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 7,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 8,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 10,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 20,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 30,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 40,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 50,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
   {
     id: 60,
-    start: "1 Mar",
-    end: "1 April",
+    start: '1 Mar',
+    end: '1 April',
     rank: 28,
-    account: "Braavos",
+    account: 'Braavos',
     liq: 500,
     pts: 100,
     est: 232,
   },
-];
+]
 
 const Campaign: NextPage = () => {
-  const [currentPagination, setCurrentPagination] = useState<number>(1);
-  const [daysLeft, setDaysLeft] = useState<number>(56);
-  const [leaderboardData, setLeaderboardData] = useState([]);
-  const [communityHash, setCommunityHash] = useState();
-  const [communityPoints, setCommunityPoints] = useState();
-  const [personalData, setPersonalData] = useState([]);
-  const [epoch, setEpoch] = useState(1);
-  const [snapshotNumber, setSnapshotNumber] = useState(0);
-  const [tabValue, setTabValue] = useState(1);
-  const [refferal, setRefferal] = useState("xyz");
-  const [currentSelectedDrop, setCurrentSelectedDrop] = useState("CCP 1");
-  const [epochsData, setepochsData] = useState([]);
-  const [snapshotData, setsnapshotData] = useState([]);
-  const [userPointsAllocated, setuserPointsAllocated] = useState<any>();
-  const [userHashAllocated, setuserHashAllocated] = useState<any>();
-  const [userccpData, setUserccpData] = useState([]);
-  const [ccpLeaderBoardData, setccpLeaderBoardData] = useState([]);
-  const [userRank, setuserRank] = useState<any>();
-  const [userPointsCCP, setuserPointsCCP] = useState<any>(0);
-  const [userHashCCP, setuserHashCCP] = useState<any>(0);
-  const [totalPointsCCP, settotalPointsCCP] = useState<any>(0);
-  const [userRankCCP, setuserRankCCP] = useState<any>(0);
+  const [currentPagination, setCurrentPagination] = useState<number>(1)
+  const [daysLeft, setDaysLeft] = useState<number>(56)
+  const [leaderboardData, setLeaderboardData] = useState([])
+  const [communityHash, setCommunityHash] = useState()
+  const [communityPoints, setCommunityPoints] = useState()
+  const [personalData, setPersonalData] = useState([])
+  const [epoch, setEpoch] = useState(1)
+  const [snapshotNumber, setSnapshotNumber] = useState(0)
+  const [tabValue, setTabValue] = useState(1)
+  const [refferal, setRefferal] = useState('xyz')
+  const [currentSelectedDrop, setCurrentSelectedDrop] = useState('CCP 1')
+  const [epochsData, setepochsData] = useState([])
+  const [snapshotData, setsnapshotData] = useState([])
+  const [userPointsAllocated, setuserPointsAllocated] = useState<any>()
+  const [userHashAllocated, setuserHashAllocated] = useState<any>()
+  const [userccpData, setUserccpData] = useState([])
+  const [ccpLeaderBoardData, setccpLeaderBoardData] = useState([])
+  const [userRank, setuserRank] = useState<any>()
+  const [userPointsCCP, setuserPointsCCP] = useState<any>(0)
+  const [userHashCCP, setuserHashCCP] = useState<any>(0)
+  const [totalPointsCCP, settotalPointsCCP] = useState<any>(0)
+  const [userRankCCP, setuserRankCCP] = useState<any>(0)
   const [campaignDetails, setCampaignDetails] = useState([
     {
-      campaignName: "Airdrop 01",
-      timeline: "27 Nov 2023 - 22 Jan 2024",
+      campaignName: 'Airdrop 01',
+      timeline: '27 Nov 2023 - 22 Jan 2024',
     },
     {
-      campaignName: "CCP",
-      timeline: "Coming soon",
+      campaignName: 'CCP',
+      timeline: 'Coming soon',
     },
-  ]);
+  ])
 
-  const totalBorrow = useSelector(selectYourBorrow);
-  const totalSupply = useSelector(selectYourSupply);
-  const exisitingLink = useSelector(selectExistingLink);
-  const airdropDropdowns = useSelector(selectAirdropDropdowns);
-  const navDropdowns = useSelector(selectNavDropdowns);
+  const totalBorrow = useSelector(selectYourBorrow)
+  const totalSupply = useSelector(selectYourSupply)
+  const exisitingLink = useSelector(selectExistingLink)
+  const airdropDropdowns = useSelector(selectAirdropDropdowns)
+  const navDropdowns = useSelector(selectNavDropdowns)
 
-  const dispatch = useDispatch();
-  const { address } = useAccount();
-  useDataLoader();
+  const dispatch = useDispatch()
+  const { address } = useAccount()
+  useDataLoader()
 
-  const ddRef = useRef<HTMLDivElement>(null);
+  const ddRef = useRef<HTMLDivElement>(null)
 
-  const startDate = new Date("2023-11-27");
-  const endDate = new Date(startDate);
-  endDate.setDate(startDate.getDate() + 55);
+  const startDate = new Date('2023-11-27')
+  const endDate = new Date(startDate)
+  endDate.setDate(startDate.getDate() + 55)
 
   useEffect(() => {
     const fetchDetails = async () => {
       if (address) {
         const res = await axios.get(
           `https://hstk.fi/api/temp-allocation/${address}`
-        );
-        setCommunityHash(
-          res?.data?.communityInfo?.estimatedHashTokensCommunity
-        );
-        setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints);
+        )
+        setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
+        setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
       }
-    };
-    fetchDetails();
-  }, []);
+    }
+    fetchDetails()
+  }, [])
 
   useEffect(() => {
     if (sampleDate) {
       if (sampleDate.length <= (currentPagination - 1) * 6) {
         if (currentPagination > 1) {
-          setCurrentPagination(currentPagination - 1);
+          setCurrentPagination(currentPagination - 1)
         }
       }
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     try {
@@ -295,101 +290,99 @@ const Campaign: NextPage = () => {
         if (address) {
           const res = await axios.get(
             `https://hstk.fi/api/get-epoch-wise-data/${address}`
-          );
-          const data = res?.data;
-          setepochsData(data?.finalSnapData);
+          )
+          const data = res?.data
+          setepochsData(data?.finalSnapData)
           if (data?.rank) {
-            setuserRank(data?.rank);
+            setuserRank(data?.rank)
           } else {
-            setuserRank("-");
+            setuserRank('-')
           }
-          let snaps = data?.epochWise;
+          let snaps = data?.epochWise
           snaps.sort(
             (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
-          );
-          setsnapshotData(data?.epochWise);
+          )
+          setsnapshotData(data?.epochWise)
         }
-      };
-      fetchData();
+      }
+      fetchData()
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  }, [address]);
+  }, [address])
 
   useEffect(() => {
     try {
       const fetchUserCCPData = async () => {
         const res = await axios.get(
           `https://hstk.fi/api/ccp/submission/${address}`
-        );
-        setUserccpData(res?.data);
-        let points = 0;
-        let hash = 0;
+        )
+        setUserccpData(res?.data)
+        let points = 0
+        let hash = 0
         if (res?.data) {
           res?.data.map((data: any) => {
-            points += Number(data["Recommended (Community Team)"])
-              ? Number(data["Recommended (Community Team)"])
-              : 0;
-            hash += Number(data["Allocated (Product Team)"])
-              ? Number(data["Allocated (Product Team)"])
-              : 0;
-          });
+            points += Number(data['Recommended (Community Team)'])
+              ? Number(data['Recommended (Community Team)'])
+              : 0
+            hash += Number(data['Allocated (Product Team)'])
+              ? Number(data['Allocated (Product Team)'])
+              : 0
+          })
         }
-        setuserPointsCCP(points);
-        setuserHashCCP(hash);
-      };
+        setuserPointsCCP(points)
+        setuserHashCCP(hash)
+      }
       if (address) {
-        fetchUserCCPData();
+        fetchUserCCPData()
       }
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  }, [address]);
+  }, [address])
 
   useEffect(() => {
     try {
       const fetchLeaderBoardDataCCP = async () => {
-        const res = await axios.get("https://hstk.fi/api/ccp/submissions");
-        let totalPoints = 0;
+        const res = await axios.get('https://hstk.fi/api/ccp/submissions')
+        let totalPoints = 0
         if (res?.data) {
           res?.data.map((data: any) => {
             if (address) {
               if (
-                address === processAddress(data["Wallet Address (StarkNet)"])
+                address === processAddress(data['Wallet Address (StarkNet)'])
               ) {
-                setuserRankCCP(data?.Rank);
+                setuserRankCCP(data?.Rank)
               }
             }
-            totalPoints += Number(data["Recommended (Community Team)"]);
-          });
+            totalPoints += Number(data['Recommended (Community Team)'])
+          })
         }
-        settotalPointsCCP(totalPoints);
-        setccpLeaderBoardData(res?.data);
-      };
-      fetchLeaderBoardDataCCP();
+        settotalPointsCCP(totalPoints)
+        setccpLeaderBoardData(res?.data)
+      }
+      fetchLeaderBoardDataCCP()
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  }, [address]);
+  }, [address])
 
   useEffect(() => {
     const fetchDetails = async () => {
       if (address) {
         const res = await axios.get(
           `https://hstk.fi/api/temp-allocation/${address}`
-        );
-        setCommunityHash(
-          res?.data?.communityInfo?.estimatedHashTokensCommunity
-        );
-        setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints);
-        setEpoch(res?.data?.communityInfo?.latestEpoch);
-        setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber);
-        let arr: any = [];
-        setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber);
+        )
+        setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
+        setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
+        setEpoch(res?.data?.communityInfo?.latestEpoch)
+        setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber)
+        let arr: any = []
+        setSnapshotNumber(res?.data?.communityInfo.latestSnapshotNumber)
         arr.push({
           id: 0,
-          start: "25th Nov",
-          end: "8th Dec",
+          start: '25th Nov',
+          end: '8th Dec',
           epoch: res?.data?.userInfo?.epoch,
           tradders: res?.data?.userInfo?.totalReferredAddresses,
           liq: res?.data?.userInfo?.selfValue,
@@ -402,76 +395,76 @@ const Campaign: NextPage = () => {
           referredpts: res?.data?.userInfo?.referralPoints,
           hashAllocated: res?.data?.userInfo?.allocatedData?.hashAllocated,
           est: res?.data?.userInfo?.estimatedHashTokensUser,
-        });
+        })
         if (res?.data?.userInfo?.allocatedData?.pointsAllocated == null) {
-          setuserPointsAllocated(0);
+          setuserPointsAllocated(0)
         } else {
           setuserPointsAllocated(
             res?.data?.userInfo?.allocatedData?.pointsAllocated
-          );
+          )
         }
         if (res?.data?.userInfo?.allocatedData?.hashAllocated == null) {
-          setuserHashAllocated(0);
+          setuserHashAllocated(0)
         } else {
           setuserHashAllocated(
             res?.data?.userInfo?.allocatedData?.hashAllocated
-          );
+          )
         }
 
-        setPersonalData(arr);
+        setPersonalData(arr)
       }
-    };
-    fetchDetails();
-  }, [address]);
+    }
+    fetchDetails()
+  }, [address])
 
   useEffect(() => {
     try {
       const fetchLeaderBoardData = async () => {
-        const res = await axios.get("https://hstk.fi/api/leaderboard");
-        setLeaderboardData(res?.data);
-      };
-      fetchLeaderBoardData();
+        const res = await axios.get('https://hstk.fi/api/leaderboard')
+        setLeaderboardData(res?.data)
+      }
+      fetchLeaderBoardData()
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscapeKey);
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleEscapeKey)
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscapeKey);
-    };
-  }, []);
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleEscapeKey)
+    }
+  }, [])
 
   useEffect(() => {
-    updateDaysLeft();
-  }, []);
+    updateDaysLeft()
+  }, [])
 
   // Update days left on page load and start an interval to update it daily
   useEffect(() => {
-    setCurrentPagination(1);
-  }, [tabValue]);
+    setCurrentPagination(1)
+  }, [tabValue])
 
   const handleClickOutside = (event: MouseEvent) => {
     if (ddRef.current && !ddRef.current.contains(event.target as Node)) {
-      dispatch(setAirdropDropdown(""));
+      dispatch(setAirdropDropdown(''))
     }
-  };
+  }
 
   const handleEscapeKey = (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      dispatch(setAirdropDropdown(""));
+    if (event.key === 'Escape') {
+      dispatch(setAirdropDropdown(''))
     }
-  };
+  }
 
   const updateDaysLeft = () => {
-    const now = new Date();
-    const timeDiff = endDate.getTime() - now.getTime();
-    const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    setDaysLeft(daysLeft);
-  };
+    const now = new Date()
+    const timeDiff = endDate.getTime() - now.getTime()
+    const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24))
+    setDaysLeft(daysLeft)
+  }
 
   const handleChange = async (e: any) => {
     if (exisitingLink != null) {
@@ -479,139 +472,63 @@ const Campaign: NextPage = () => {
       if (totalBorrow == 0 && totalSupply == 0) {
       } else {
         if (totalBorrow == 0 && totalSupply == 0) {
-          return;
+          return
         } else {
-          setRefferal(e.target.value);
+          setRefferal(e.target.value)
         }
       }
     }
-  };
+  }
 
   const handleCopyClick = async () => {
     try {
       if (exisitingLink) {
         await navigator.clipboard.writeText(
-          (process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
-            ? "https://testnet.hstk.fi/"
-            : "https://hstk.fi/") + exisitingLink
-        );
-        toast.success("Copied", {
+          (process.env.NEXT_PUBLIC_NODE_ENV == 'testnet'
+            ? 'https://testnet.hstk.fi/'
+            : 'https://hstk.fi/') + exisitingLink
+        )
+        toast.success('Copied', {
           position: toast.POSITION.BOTTOM_RIGHT,
-        });
+        })
       } else {
         if (totalBorrow > 0 || totalSupply > 0) {
           await navigator.clipboard.writeText(
-            (process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
-              ? "https://testnet.hstk.fi/"
-              : "https://hstk.fi/") + refferal
-          );
+            (process.env.NEXT_PUBLIC_NODE_ENV == 'testnet'
+              ? 'https://testnet.hstk.fi/'
+              : 'https://hstk.fi/') + refferal
+          )
           axios
             .post(
-              process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
-                ? "https://testnet.hstk.fi/shorten"
-                : "https://hstk.fi/shorten",
+              process.env.NEXT_PUBLIC_NODE_ENV == 'testnet'
+                ? 'https://testnet.hstk.fi/shorten'
+                : 'https://hstk.fi/shorten',
               { pseudo_name: refferal, address: address }
             )
             .then((response) => {
-              toast.success("Copied", {
+              toast.success('Copied', {
                 position: toast.POSITION.BOTTOM_RIGHT,
-              });
+              })
               //console.log(response, "response refer link"); // Log the response from the backend.
             })
             .catch((error) => {
               toast.error(error?.response?.data?.error, {
                 position: toast.POSITION.BOTTOM_RIGHT,
-              });
-              console.error("Error:", error?.response?.data?.error);
-            });
+              })
+              console.error('Error:', error?.response?.data?.error)
+            })
         }
       }
     } catch (error: any) {
       toast.error(error, {
         position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      console.error("Failed to copy text: ", error);
+      })
+      console.error('Failed to copy text: ', error)
     }
-  };
+  }
 
   return (
     <PageCard pt="6.5rem">
-      <Box
-        zIndex={
-          navDropdowns.walletConnectionDropdown |
-          navDropdowns.settingsDropdown |
-          navDropdowns.languagesDropdown
-            ? "0"
-            : "100"
-        }
-        width="100%"
-        bg="#FF8F8C"
-        position="fixed"
-        height="32px"
-        alignItems="center"
-        justifyContent="center"
-        display="flex"
-        top="3.8125rem"
-      >
-        <Text
-          color="#030210"
-          fontSize="14px"
-          fontWeight="600"
-          lineHeight="18px"
-          letterSpacing="-0.15px"
-        >
-          Register yourself in CCP from
-        </Text>
-        <Link href="https://forms.gle/zjQGYo5Nj1Wi3GLR8" target="_blank">
-          <Text
-            color="#030210"
-            fontSize="14px"
-            fontWeight="800"
-            lineHeight="18px"
-            letterSpacing="-0.15px"
-            ml="0.2rem"
-            textDecoration="underline"
-            cursor="pointer"
-          >
-            here
-          </Text>
-        </Link>
-        <Text
-          color="#030210"
-          fontSize="14px"
-          fontWeight="700"
-          lineHeight="18px"
-          letterSpacing="-0.15px"
-          ml="0.25rem"
-          mr="0.25rem"
-        >
-          |
-        </Text>
-        <Text
-          color="#030210"
-          fontSize="14px"
-          fontWeight="600"
-          lineHeight="18px"
-          letterSpacing="-0.15px"
-        >
-          Submit your Submission for CCP campaign
-        </Text>
-        <Link href={"https://forms.gle/Suuw8ZFT3E113EMc6"} target="_blank">
-          <Text
-            color="#030210"
-            fontSize="14px"
-            fontWeight="800"
-            lineHeight="18px"
-            letterSpacing="-0.15px"
-            ml="0.2rem"
-            textDecoration="underline"
-            cursor="pointer"
-          >
-            here
-          </Text>
-        </Link>
-      </Box>
-
       <HStack
         display="flex"
         justifyContent="space-between"
@@ -627,128 +544,149 @@ const Campaign: NextPage = () => {
           display="flex"
           justifyContent="center"
           alignItems="center"
+          width="full"
         >
-          <Button
-            bg="transparent"
-            fontStyle="normal"
-            fontWeight="600"
-            fontSize="14px"
-            lineHeight="20px"
+          <Box
+            display="flex"
+            justifyContent="flex-start"
             alignItems="center"
-            letterSpacing="-0.15px"
-            padding="1.125rem 0.4rem"
-            margin="2px"
-            color={tabValue == 1 ? "#fff" : "#676D9A"}
-            borderBottom={tabValue == 1 ? "2px solid #4D59E8" : ""}
-            borderRadius="0px"
-            _hover={{ bg: "transparent", color: "#E6EDF3" }}
-            onClick={() => {
-              setTabValue(1);
-            }}
+            gap="1rem"
           >
-            Your dashboard
-          </Button>
-
-          <Button
-            bg="transparent"
-            fontStyle="normal"
-            fontWeight="600"
-            fontSize="14px"
-            lineHeight="20px"
-            alignItems="center"
-            letterSpacing="-0.15px"
-            padding="1.125rem 0.4rem"
-            margin="2px"
-            color={tabValue == 2 ? "#fff" : "#676D9A"}
-            borderBottom={tabValue == 2 ? "2px solid #4D59E8" : ""}
-            borderRadius="0px"
-            _hover={{ bg: "transparent", color: "#E6EDF3" }}
-            onClick={() => {
-              setTabValue(2);
-            }}
-          >
-            LeaderBoard
-          </Button>
-
-          {/* Dropdown  */}
-          {tabValue === 2 && (
-            <Box
-              display="flex"
-              border="1px"
-              borderColor="#2B2F35"
-              justifyContent="space-between"
-              ml="2rem"
-              py="2"
-              pl="3"
-              pr="3"
-              width="16rem"
-              borderRadius="md"
-              className="navbar"
-              cursor="pointer"
-              ref={ddRef}
-              onClick={() =>
-                dispatch(setAirdropDropdown("airdropAndCcpDropdown"))
-              }
+            <Button
+              bg="transparent"
+              fontStyle="normal"
+              fontWeight="600"
+              fontSize="14px"
+              lineHeight="20px"
+              alignItems="center"
+              letterSpacing="-0.15px"
+              padding="1.125rem 0.4rem"
+              margin="2px"
+              color={tabValue == 1 ? '#fff' : '#676D9A'}
+              borderBottom={tabValue == 1 ? '2px solid #4D59E8' : ''}
+              borderRadius="0px"
+              _hover={{ bg: 'transparent', color: '#E6EDF3' }}
+              onClick={() => {
+                setTabValue(1)
+              }}
             >
-              <Box display="flex" gap="1">
-                <Text color="white">{currentSelectedDrop}</Text>
-              </Box>
+              Your dashboard
+            </Button>
 
-              <Box pt="1" className="navbar-button">
-                <DropdownUp />
-              </Box>
+            <Button
+              bg="transparent"
+              fontStyle="normal"
+              fontWeight="600"
+              fontSize="14px"
+              lineHeight="20px"
+              alignItems="center"
+              letterSpacing="-0.15px"
+              padding="1.125rem 0.4rem"
+              margin="2px"
+              color={tabValue == 2 ? '#fff' : '#676D9A'}
+              borderBottom={tabValue == 2 ? '2px solid #4D59E8' : ''}
+              borderRadius="0px"
+              _hover={{ bg: 'transparent', color: '#E6EDF3' }}
+              onClick={() => {
+                setTabValue(2)
+              }}
+            >
+              LeaderBoard
+            </Button>
 
-              {airdropDropdowns.airdropAndCcpDropdown && (
-                <Box
-                  w="full"
-                  left="0"
-                  bg="#03060B"
-                  py="2"
-                  className="dropdown-container"
-                  boxShadow="dark-lg"
-                >
-                  {["Airdrop 1", "CCP 1"].map((item: string, index: number) => {
-                    return (
-                      <Box
-                        key={index}
-                        as="button"
-                        w="full"
-                        display="flex"
-                        alignItems="center"
-                        gap="1"
-                        pr="2"
-                        onClick={() => {
-                          setCurrentSelectedDrop(item);
-                        }}
-                        _hover={{
-                          bg: "#171026",
-                        }}
-                      >
-                        {item === currentSelectedDrop && (
-                          <Box
-                            w="3px"
-                            h="28px"
-                            bg="#4954DC"
-                            borderRightRadius="md"
-                          ></Box>
-                        )}
-                        <Box
-                          w="full"
-                          display="flex"
-                          py="5px"
-                          px={`${item === currentSelectedDrop ? "3" : "5"}`}
-                          gap="1"
-                          borderRadius="md"
-                        >
-                          <Text color="white">{item}</Text>
-                        </Box>
-                      </Box>
-                    );
-                  })}
+            {/* Dropdown  */}
+            {tabValue === 2 && (
+              <Box
+                display="flex"
+                border="1px"
+                borderColor="#2B2F35"
+                justifyContent="space-between"
+                ml="2rem"
+                py="2"
+                pl="3"
+                pr="3"
+                width="16rem"
+                borderRadius="md"
+                className="navbar"
+                cursor="pointer"
+                ref={ddRef}
+                onClick={() =>
+                  dispatch(setAirdropDropdown('airdropAndCcpDropdown'))
+                }
+              >
+                <Box display="flex" gap="1">
+                  <Text color="white">{currentSelectedDrop}</Text>
                 </Box>
-              )}
-            </Box>
-          )}
+
+                <Box pt="1" className="navbar-button">
+                  <DropdownUp />
+                </Box>
+
+                {airdropDropdowns.airdropAndCcpDropdown && (
+                  <Box
+                    w="full"
+                    left="0"
+                    bg="#03060B"
+                    py="2"
+                    className="dropdown-container"
+                    boxShadow="dark-lg"
+                  >
+                    {['Airdrop 1', 'CCP 1'].map(
+                      (item: string, index: number) => {
+                        return (
+                          <Box
+                            key={index}
+                            as="button"
+                            w="full"
+                            display="flex"
+                            alignItems="center"
+                            gap="1"
+                            pr="2"
+                            onClick={() => {
+                              setCurrentSelectedDrop(item)
+                            }}
+                            _hover={{
+                              bg: '#171026',
+                            }}
+                          >
+                            {item === currentSelectedDrop && (
+                              <Box
+                                w="3px"
+                                h="28px"
+                                bg="#4954DC"
+                                borderRightRadius="md"
+                              ></Box>
+                            )}
+                            <Box
+                              w="full"
+                              display="flex"
+                              py="5px"
+                              px={`${item === currentSelectedDrop ? '3' : '5'}`}
+                              gap="1"
+                              borderRadius="md"
+                            >
+                              <Text color="white">{item}</Text>
+                            </Box>
+                          </Box>
+                        )
+                      }
+                    )}
+                  </Box>
+                )}
+              </Box>
+            )}
+          </Box>
+
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="center"
+            gap="1rem"
+            width="full"
+          >
+            <RegisterCCPModal />
+            <SubmissionCCPModal />
+          </Box>
         </HStack>
 
         {tabValue == 1 ? (
@@ -776,7 +714,7 @@ const Campaign: NextPage = () => {
                     display="flex"
                     justifyContent="center"
                     alignItems="flex-start"
-                    gap={"6px"}
+                    gap={'6px'}
                   >
                     <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                       Your Rank
@@ -796,7 +734,7 @@ const Campaign: NextPage = () => {
                     )}
                   </VStack>
                   <VStack
-                    gap={"6px"}
+                    gap={'6px'}
                     justifyContent="flex-start"
                     alignItems="flex-start"
                   >
@@ -887,9 +825,9 @@ const Campaign: NextPage = () => {
                     color="#4D59E8"
                     paddingInlineEnd="0"
                   >
-                    {process.env.NEXT_PUBLIC_NODE_ENV == "testnet"
-                      ? "https://testnet.hstk.fi/"
-                      : "https://hstk.fi/"}
+                    {process.env.NEXT_PUBLIC_NODE_ENV == 'testnet'
+                      ? 'https://testnet.hstk.fi/'
+                      : 'https://hstk.fi/'}
                   </InputLeftAddon>
 
                   {exisitingLink ? (
@@ -901,8 +839,8 @@ const Campaign: NextPage = () => {
                       value={exisitingLink}
                       paddingInlineStart="0"
                       _focus={{
-                        outline: "0",
-                        boxShadow: "none",
+                        outline: '0',
+                        boxShadow: 'none',
                       }}
                       onChange={handleChange}
                     />
@@ -913,12 +851,12 @@ const Campaign: NextPage = () => {
                       border="none"
                       color="#F0F0F5"
                       value={
-                        totalBorrow == 0 && totalSupply == 0 ? "****" : refferal
+                        totalBorrow == 0 && totalSupply == 0 ? '****' : refferal
                       }
                       paddingInlineStart="0"
                       _focus={{
-                        outline: "0",
-                        boxShadow: "none",
+                        outline: '0',
+                        boxShadow: 'none',
                       }}
                       onChange={handleChange}
                     />
@@ -927,7 +865,7 @@ const Campaign: NextPage = () => {
                 <Box
                   cursor="pointer"
                   onClick={() => {
-                    handleCopyClick();
+                    handleCopyClick()
                   }}
                 >
                   <CopyToClipboard text="Works">
@@ -994,12 +932,12 @@ const Campaign: NextPage = () => {
                   gap="6.3rem"
                   bg="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                 >
-                  {currentSelectedDrop === "Airdrop 1" && (
+                  {currentSelectedDrop === 'Airdrop 1' && (
                     <VStack
                       display="flex"
                       justifyContent="center"
                       alignItems="flex-start"
-                      gap={"6px"}
+                      gap={'6px'}
                     >
                       <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                         Campaign pool
@@ -1012,7 +950,7 @@ const Campaign: NextPage = () => {
                   )}
 
                   <VStack
-                    gap={"6px"}
+                    gap={'6px'}
                     justifyContent="flex-start"
                     alignItems="flex-start"
                   >
@@ -1022,7 +960,7 @@ const Campaign: NextPage = () => {
 
                     {communityPoints || totalPointsCCP ? (
                       <Text color="#00D395" fontSize="20px">
-                        {currentSelectedDrop == "Airdrop 1"
+                        {currentSelectedDrop == 'Airdrop 1'
                           ? numberFormatter(communityPoints)
                           : numberFormatter(totalPointsCCP)}
                       </Text>
@@ -1036,9 +974,9 @@ const Campaign: NextPage = () => {
                       />
                     )}
                   </VStack>
-                  {currentSelectedDrop == "Airdrop 1" && (
+                  {currentSelectedDrop == 'Airdrop 1' && (
                     <VStack
-                      gap={"6px"}
+                      gap={'6px'}
                       justifyContent="flex-start"
                       alignItems="flex-start"
                     >
@@ -1049,10 +987,10 @@ const Campaign: NextPage = () => {
                           placement="bottom"
                           boxShadow="dark-lg"
                           bg="#010409"
-                          fontSize={"13px"}
-                          fontWeight={"thin"}
-                          borderRadius={"lg"}
-                          padding={"2"}
+                          fontSize={'13px'}
+                          fontWeight={'thin'}
+                          borderRadius={'lg'}
+                          padding={'2'}
                           border="1px solid"
                           borderColor="#2B2F35"
                           arrowShadowColor="#2B2F35"
@@ -1116,8 +1054,8 @@ const Campaign: NextPage = () => {
         )}
 
         <Box
-          borderRadius={"lg"}
-          width={"100%"}
+          borderRadius={'lg'}
+          width={'100%'}
           background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
           mt="1rem"
@@ -1139,7 +1077,7 @@ const Campaign: NextPage = () => {
               userHashCCP={userHashCCP}
               userPointsCCP={userPointsCCP}
               leaderBoardData={
-                currentSelectedDrop == "CCP 1"
+                currentSelectedDrop == 'CCP 1'
                   ? ccpLeaderBoardData
                   : leaderboardData
               }
@@ -1147,7 +1085,7 @@ const Campaign: NextPage = () => {
               airdropCampaignUserRank={userRank}
               personalData={personalData}
               columnItems={
-                currentSelectedDrop == "Airdrop 1"
+                currentSelectedDrop == 'Airdrop 1'
                   ? columnItemsLeaderBoard
                   : columnItemsLeaderBoardCCp
               }
@@ -1156,7 +1094,7 @@ const Campaign: NextPage = () => {
         </Box>
       </HStack>
     </PageCard>
-  );
-};
+  )
+}
 
-export default Campaign;
+export default Campaign
