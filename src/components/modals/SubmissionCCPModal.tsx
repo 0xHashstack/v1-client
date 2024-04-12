@@ -25,6 +25,8 @@ import {
   selectCcpDropdowns,
   setCcpModalDropdown,
 } from '@/store/slices/dropdownsSlice'
+import { useAccount } from '@starknet-react/core'
+import axios from 'axios'
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon'
 
 const PlatformList = [
@@ -81,10 +83,14 @@ const PlatformList = [
 const SubmissionCCPModal: React.FC = () => {
   const [currentSelectedPlatform, setCurrentSelectedPlatform] =
     useState('Twitter (X) Post')
+  const [contentLink, setContentLink] = useState('')
+  const [platformName, setPlatformName] = useState('')
+  const [userHandle, setUserHandle] = useState('')
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const ccpDropdowns = useSelector(selectCcpDropdowns)
   const dispatch = useDispatch()
+  const { address } = useAccount()
 
   const activeModal = Object.keys(ccpDropdowns).find(
     (key) => ccpDropdowns[key] === true
@@ -92,6 +98,19 @@ const SubmissionCCPModal: React.FC = () => {
 
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setCcpModalDropdown(dropdownName))
+  }
+
+  const handleSubmissionSubmit = async () => {
+    try {
+      const res = await axios.post('http://localhost:3000/api/submission', {
+        address: address,
+        contentPlatform: currentSelectedPlatform,
+        contentLink: contentLink,
+      })
+      console.log(res)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -351,6 +370,8 @@ const SubmissionCCPModal: React.FC = () => {
                             fontSize="sm"
                             _placeholder={{ color: '#676D9A' }}
                             color="#f2f2f2"
+                            value={platformName}
+                            onChange={(e) => setPlatformName(e.target.value)}
                           />
                         </Box>
                       </Box>
@@ -401,6 +422,8 @@ const SubmissionCCPModal: React.FC = () => {
                             fontSize="sm"
                             _placeholder={{ color: '#676D9A' }}
                             color="#f2f2f2"
+                            value={userHandle}
+                            onChange={(e) => setUserHandle(e.target.value)}
                           />
                         </Box>
                       </Box>
@@ -453,6 +476,8 @@ const SubmissionCCPModal: React.FC = () => {
                         fontSize="sm"
                         _placeholder={{ color: '#676D9A' }}
                         color="#f2f2f2"
+                        value={contentLink}
+                        onChange={(e) => setContentLink(e.target.value)}
                       />
                     </Box>
                   </Box>
@@ -487,6 +512,15 @@ const SubmissionCCPModal: React.FC = () => {
                 size="sm"
                 width="full"
                 mt="1.5rem"
+                isDisabled={
+                  !contentLink ||
+                  currentSelectedPlatform === '' ||
+                  (currentSelectedPlatform === 'Other' && !platformName) ||
+                  (currentSelectedPlatform === 'Other' && !userHandle)
+                }
+                _hover={{ color: 'black', backgroundColor: 'white' }}
+                _disabled={{ opacity: '0.5', cursor: 'not-allowed' }}
+                onClick={handleSubmissionSubmit}
               >
                 Submit
               </Button>
