@@ -22,8 +22,8 @@ import DropdownUp from '@/assets/icons/dropdownUpIcon'
 import InfoIcon from '@/assets/icons/infoIcon'
 import InfoIconBig from '@/assets/icons/infoIconBig'
 import {
-  selectModalDropDowns,
-  setModalDropdown,
+  selectCcpDropdowns,
+  setCcpModalDropdown,
 } from '@/store/slices/dropdownsSlice'
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon'
 
@@ -83,15 +83,15 @@ const SubmissionCCPModal: React.FC = () => {
     useState('Twitter (X) Post')
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const modalDropdowns = useSelector(selectModalDropDowns)
+  const ccpDropdowns = useSelector(selectCcpDropdowns)
   const dispatch = useDispatch()
 
-  const activeModal = Object.keys(modalDropdowns).find(
-    (key) => modalDropdowns[key] === true
+  const activeModal = Object.keys(ccpDropdowns).find(
+    (key) => ccpDropdowns[key] === true
   )
 
   const handleDropdownClick = (dropdownName: any) => {
-    dispatch(setModalDropdown(dropdownName))
+    dispatch(setCcpModalDropdown(dropdownName))
   }
 
   return (
@@ -253,7 +253,7 @@ const SubmissionCCPModal: React.FC = () => {
                         {activeModal ? <ArrowUp /> : <DropdownUp />}
                       </Box>
 
-                      {modalDropdowns.submissionCCPDropdown && (
+                      {ccpDropdowns.submissionCCPDropdown && (
                         <Box
                           w="full"
                           left="0"

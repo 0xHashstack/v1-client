@@ -15,10 +15,17 @@ import {
   Tooltip,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import ArrowUp from '@/assets/icons/arrowup'
+import DropdownUp from '@/assets/icons/dropdownUpIcon'
 import InfoIcon from '@/assets/icons/infoIcon'
 import InfoIconBig from '@/assets/icons/infoIconBig'
+import {
+  selectCcpDropdowns,
+  setCcpModalDropdown,
+} from '@/store/slices/dropdownsSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const ApplicationList = [
   {
@@ -109,6 +116,21 @@ const RegisterCCPModal: React.FC = () => {
   const [count, setCount] = useState(1)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const ccpDropdowns = useSelector(selectCcpDropdowns)
+  const dispatch = useDispatch()
+
+  // const activeModal = Object.keys(ccpDropdowns).find(
+  //   (key) => ccpDropdowns[key] === true
+  // )
+
+  const handleDropdownClick = (dropdownName: any) => {
+    dispatch(setCcpModalDropdown(dropdownName))
+  }
+
+  useEffect(() => {
+    console.log(socialHandle)
+  }, [socialHandle])
 
   return (
     <div>
@@ -229,35 +251,93 @@ const RegisterCCPModal: React.FC = () => {
 
                       <Box
                         display="flex"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         justifyContent="space-between"
+                        py="2"
+                        pl="3"
+                        pr="3"
                         mb="1rem"
                         mt="0.3rem"
+                        borderRadius="md"
+                        className="navbar"
+                        cursor="pointer"
+                        fontSize="sm"
+                        onClick={() => {
+                          handleDropdownClick('registerCCPDropdown1')
+                        }}
                       >
-                        <Select
-                          placeholder="Select application"
-                          w="full"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          color="#f2f2f2"
-                          fontSize="sm"
-                          onChange={(e) => {
-                            setSocialHandle((prev) => {
-                              const copy = [...prev]
-                              copy[0] = {
-                                handle1: {
-                                  name: e.target.value,
-                                  handle: copy[0]?.handle1?.handle || '',
-                                },
-                              }
-                              return copy
-                            })
-                          }}
-                        >
-                          {ApplicationList.map(({ name, id }) => (
-                            <option key={id} value={name}>
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
+                        <Box display="flex" gap="1" userSelect="none">
+                          <Text color="white">
+                            {socialHandle[0]?.handle1?.name ||
+                              'Select Application'}
+                          </Text>
+                        </Box>
+
+                        <Box pt="1" className="navbar-button">
+                          {ccpDropdowns.registerCCPDropdown1 ? (
+                            <ArrowUp />
+                          ) : (
+                            <DropdownUp />
+                          )}
+                        </Box>
+
+                        {ccpDropdowns.registerCCPDropdown1 && (
+                          <Box
+                            w="full"
+                            left="0"
+                            bg="#03060B"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            py="2"
+                            className="dropdown-container"
+                            boxShadow="dark-lg"
+                            height="80px"
+                            overflowY="auto"
+                            userSelect="none"
+                          >
+                            {ApplicationList?.map(({ name, id }, index) => {
+                              return (
+                                <Box
+                                  key={index}
+                                  as="button"
+                                  w="full"
+                                  alignItems="center"
+                                  gap="1"
+                                  pr="2"
+                                  display="flex"
+                                  onClick={() => {
+                                    setSocialHandle((prev) => {
+                                      const copy = [...prev]
+                                      copy[0] = {
+                                        handle1: {
+                                          name: name,
+                                          handle:
+                                            copy[0]?.handle1?.handle || '',
+                                        },
+                                      }
+                                      return copy
+                                    })
+                                  }}
+                                >
+                                  <Box
+                                    w="full"
+                                    display="flex"
+                                    py="5px"
+                                    px="6px"
+                                    gap="1"
+                                    justifyContent="space-between"
+                                    borderRadius="md"
+                                    _hover={{ bg: '#676D9A4D' }}
+                                    ml=".4rem"
+                                  >
+                                    <Text color="white" ml=".6rem">
+                                      {name}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
                       </Box>
                     </Box>
 
@@ -433,35 +513,93 @@ const RegisterCCPModal: React.FC = () => {
 
                       <Box
                         display="flex"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         justifyContent="space-between"
+                        py="2"
+                        pl="3"
+                        pr="3"
                         mb="1rem"
                         mt="0.3rem"
+                        borderRadius="md"
+                        className="navbar"
+                        cursor="pointer"
+                        fontSize="sm"
+                        onClick={() => {
+                          handleDropdownClick('registerCCPDropdown2')
+                        }}
                       >
-                        <Select
-                          placeholder="Select application"
-                          w="full"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          color="#f2f2f2"
-                          fontSize="sm"
-                          onChange={(e) => {
-                            setSocialHandle((prev) => {
-                              const copy = [...prev]
-                              copy[1] = {
-                                handle2: {
-                                  name: e.target.value,
-                                  handle: copy[1]?.handle2?.handle || '',
-                                },
-                              }
-                              return copy
-                            })
-                          }}
-                        >
-                          {ApplicationList.map(({ name, id }) => (
-                            <option key={id} value={name}>
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
+                        <Box display="flex" gap="1" userSelect="none">
+                          <Text color="white">
+                            {socialHandle[1]?.handle2?.name ||
+                              'Select Application'}
+                          </Text>
+                        </Box>
+
+                        <Box pt="1" className="navbar-button">
+                          {ccpDropdowns.registerCCPDropdown2 ? (
+                            <ArrowUp />
+                          ) : (
+                            <DropdownUp />
+                          )}
+                        </Box>
+
+                        {ccpDropdowns.registerCCPDropdown2 && (
+                          <Box
+                            w="full"
+                            left="0"
+                            bg="#03060B"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            py="2"
+                            className="dropdown-container"
+                            boxShadow="dark-lg"
+                            height="80px"
+                            overflowY="auto"
+                            userSelect="none"
+                          >
+                            {ApplicationList?.map(({ name, id }, index) => {
+                              return (
+                                <Box
+                                  key={index}
+                                  as="button"
+                                  w="full"
+                                  alignItems="center"
+                                  gap="1"
+                                  pr="2"
+                                  display="flex"
+                                  onClick={() => {
+                                    setSocialHandle((prev) => {
+                                      const copy = [...prev]
+                                      copy[1] = {
+                                        handle2: {
+                                          name: name,
+                                          handle:
+                                            copy[1]?.handle2?.handle || '',
+                                        },
+                                      }
+                                      return copy
+                                    })
+                                  }}
+                                >
+                                  <Box
+                                    w="full"
+                                    display="flex"
+                                    py="5px"
+                                    px="6px"
+                                    gap="1"
+                                    justifyContent="space-between"
+                                    borderRadius="md"
+                                    _hover={{ bg: '#676D9A4D' }}
+                                    ml=".4rem"
+                                  >
+                                    <Text color="white" ml=".6rem">
+                                      {name}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
                       </Box>
                     </Box>
 
@@ -637,35 +775,93 @@ const RegisterCCPModal: React.FC = () => {
 
                       <Box
                         display="flex"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         justifyContent="space-between"
+                        py="2"
+                        pl="3"
+                        pr="3"
                         mb="1rem"
                         mt="0.3rem"
+                        borderRadius="md"
+                        className="navbar"
+                        cursor="pointer"
+                        fontSize="sm"
+                        onClick={() => {
+                          handleDropdownClick('registerCCPDropdown3')
+                        }}
                       >
-                        <Select
-                          placeholder="Select application"
-                          w="full"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          color="#f2f2f2"
-                          fontSize="sm"
-                          onChange={(e) => {
-                            setSocialHandle((prev) => {
-                              const copy = [...prev]
-                              copy[2] = {
-                                handle3: {
-                                  name: e.target.value,
-                                  handle: copy[2]?.handle3?.handle || '',
-                                },
-                              }
-                              return copy
-                            })
-                          }}
-                        >
-                          {ApplicationList.map(({ name, id }) => (
-                            <option key={id} value={name}>
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
+                        <Box display="flex" gap="1" userSelect="none">
+                          <Text color="white">
+                            {socialHandle[2]?.handle3?.name ||
+                              'Select Application'}
+                          </Text>
+                        </Box>
+
+                        <Box pt="1" className="navbar-button">
+                          {ccpDropdowns.registerCCPDropdown3 ? (
+                            <ArrowUp />
+                          ) : (
+                            <DropdownUp />
+                          )}
+                        </Box>
+
+                        {ccpDropdowns.registerCCPDropdown3 && (
+                          <Box
+                            w="full"
+                            left="0"
+                            bg="#03060B"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            py="2"
+                            className="dropdown-container"
+                            boxShadow="dark-lg"
+                            height="80px"
+                            overflowY="auto"
+                            userSelect="none"
+                          >
+                            {ApplicationList?.map(({ name, id }, index) => {
+                              return (
+                                <Box
+                                  key={index}
+                                  as="button"
+                                  w="full"
+                                  alignItems="center"
+                                  gap="1"
+                                  pr="2"
+                                  display="flex"
+                                  onClick={() => {
+                                    setSocialHandle((prev) => {
+                                      const copy = [...prev]
+                                      copy[2] = {
+                                        handle3: {
+                                          name: name,
+                                          handle:
+                                            copy[2]?.handle3?.handle || '',
+                                        },
+                                      }
+                                      return copy
+                                    })
+                                  }}
+                                >
+                                  <Box
+                                    w="full"
+                                    display="flex"
+                                    py="5px"
+                                    px="6px"
+                                    gap="1"
+                                    justifyContent="space-between"
+                                    borderRadius="md"
+                                    _hover={{ bg: '#676D9A4D' }}
+                                    ml=".4rem"
+                                  >
+                                    <Text color="white" ml=".6rem">
+                                      {name}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
                       </Box>
                     </Box>
 
@@ -840,35 +1036,93 @@ const RegisterCCPModal: React.FC = () => {
 
                       <Box
                         display="flex"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         justifyContent="space-between"
+                        py="2"
+                        pl="3"
+                        pr="3"
                         mb="1rem"
                         mt="0.3rem"
+                        borderRadius="md"
+                        className="navbar"
+                        cursor="pointer"
+                        fontSize="sm"
+                        onClick={() => {
+                          handleDropdownClick('registerCCPDropdown4')
+                        }}
                       >
-                        <Select
-                          placeholder="Select application"
-                          w="full"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          color="#f2f2f2"
-                          fontSize="sm"
-                          onChange={(e) => {
-                            setSocialHandle((prev) => {
-                              const copy = [...prev]
-                              copy[3] = {
-                                handle4: {
-                                  name: e.target.value,
-                                  handle: copy[3]?.handle4?.handle || '',
-                                },
-                              }
-                              return copy
-                            })
-                          }}
-                        >
-                          {ApplicationList.map(({ name, id }) => (
-                            <option key={id} value={name}>
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
+                        <Box display="flex" gap="1" userSelect="none">
+                          <Text color="white">
+                            {socialHandle[3]?.handle4?.name ||
+                              'Select Application'}
+                          </Text>
+                        </Box>
+
+                        <Box pt="1" className="navbar-button">
+                          {ccpDropdowns.registerCCPDropdown4 ? (
+                            <ArrowUp />
+                          ) : (
+                            <DropdownUp />
+                          )}
+                        </Box>
+
+                        {ccpDropdowns.registerCCPDropdown4 && (
+                          <Box
+                            w="full"
+                            left="0"
+                            bg="#03060B"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            py="2"
+                            className="dropdown-container"
+                            boxShadow="dark-lg"
+                            height="80px"
+                            overflowY="auto"
+                            userSelect="none"
+                          >
+                            {ApplicationList?.map(({ name, id }, index) => {
+                              return (
+                                <Box
+                                  key={index}
+                                  as="button"
+                                  w="full"
+                                  alignItems="center"
+                                  gap="1"
+                                  pr="2"
+                                  display="flex"
+                                  onClick={() => {
+                                    setSocialHandle((prev) => {
+                                      const copy = [...prev]
+                                      copy[3] = {
+                                        handle4: {
+                                          name: name,
+                                          handle:
+                                            copy[3]?.handle4?.handle || '',
+                                        },
+                                      }
+                                      return copy
+                                    })
+                                  }}
+                                >
+                                  <Box
+                                    w="full"
+                                    display="flex"
+                                    py="5px"
+                                    px="6px"
+                                    gap="1"
+                                    justifyContent="space-between"
+                                    borderRadius="md"
+                                    _hover={{ bg: '#676D9A4D' }}
+                                    ml=".4rem"
+                                  >
+                                    <Text color="white" ml=".6rem">
+                                      {name}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
                       </Box>
                     </Box>
 
@@ -1043,35 +1297,93 @@ const RegisterCCPModal: React.FC = () => {
 
                       <Box
                         display="flex"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         justifyContent="space-between"
+                        py="2"
+                        pl="3"
+                        pr="3"
                         mb="1rem"
                         mt="0.3rem"
+                        borderRadius="md"
+                        className="navbar"
+                        cursor="pointer"
+                        fontSize="sm"
+                        onClick={() => {
+                          handleDropdownClick('registerCCPDropdown5')
+                        }}
                       >
-                        <Select
-                          placeholder="Select application"
-                          w="full"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          color="#f2f2f2"
-                          fontSize="sm"
-                          onChange={(e) => {
-                            setSocialHandle((prev) => {
-                              const copy = [...prev]
-                              copy[4] = {
-                                handle5: {
-                                  name: e.target.value,
-                                  handle: copy[4]?.handle5?.handle || '',
-                                },
-                              }
-                              return copy
-                            })
-                          }}
-                        >
-                          {ApplicationList.map(({ name, id }) => (
-                            <option key={id} value={name}>
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
+                        <Box display="flex" gap="1" userSelect="none">
+                          <Text color="white">
+                            {socialHandle[4]?.handle5?.name ||
+                              'Select Application'}
+                          </Text>
+                        </Box>
+
+                        <Box pt="1" className="navbar-button">
+                          {ccpDropdowns.registerCCPDropdown5 ? (
+                            <ArrowUp />
+                          ) : (
+                            <DropdownUp />
+                          )}
+                        </Box>
+
+                        {ccpDropdowns.registerCCPDropdown5 && (
+                          <Box
+                            w="full"
+                            left="0"
+                            bg="#03060B"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            py="2"
+                            className="dropdown-container"
+                            boxShadow="dark-lg"
+                            height="80px"
+                            overflowY="auto"
+                            userSelect="none"
+                          >
+                            {ApplicationList?.map(({ name, id }, index) => {
+                              return (
+                                <Box
+                                  key={index}
+                                  as="button"
+                                  w="full"
+                                  alignItems="center"
+                                  gap="1"
+                                  pr="2"
+                                  display="flex"
+                                  onClick={() => {
+                                    setSocialHandle((prev) => {
+                                      const copy = [...prev]
+                                      copy[4] = {
+                                        handle5: {
+                                          name: name,
+                                          handle:
+                                            copy[4]?.handle5?.handle || '',
+                                        },
+                                      }
+                                      return copy
+                                    })
+                                  }}
+                                >
+                                  <Box
+                                    w="full"
+                                    display="flex"
+                                    py="5px"
+                                    px="6px"
+                                    gap="1"
+                                    justifyContent="space-between"
+                                    borderRadius="md"
+                                    _hover={{ bg: '#676D9A4D' }}
+                                    ml=".4rem"
+                                  >
+                                    <Text color="white" ml=".6rem">
+                                      {name}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
                       </Box>
                     </Box>
 
@@ -1246,35 +1558,93 @@ const RegisterCCPModal: React.FC = () => {
 
                       <Box
                         display="flex"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         justifyContent="space-between"
+                        py="2"
+                        pl="3"
+                        pr="3"
                         mb="1rem"
                         mt="0.3rem"
+                        borderRadius="md"
+                        className="navbar"
+                        cursor="pointer"
+                        fontSize="sm"
+                        onClick={() => {
+                          handleDropdownClick('registerCCPDropdown6')
+                        }}
                       >
-                        <Select
-                          placeholder="Select application"
-                          w="full"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          color="#f2f2f2"
-                          fontSize="sm"
-                          onChange={(e) => {
-                            setSocialHandle((prev) => {
-                              const copy = [...prev]
-                              copy[5] = {
-                                handle6: {
-                                  name: e.target.value,
-                                  handle: copy[5]?.handle6?.handle || '',
-                                },
-                              }
-                              return copy
-                            })
-                          }}
-                        >
-                          {ApplicationList.map(({ name, id }) => (
-                            <option key={id} value={name}>
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
+                        <Box display="flex" gap="1" userSelect="none">
+                          <Text color="white">
+                            {socialHandle[5]?.handle6?.name ||
+                              'Select Application'}
+                          </Text>
+                        </Box>
+
+                        <Box pt="1" className="navbar-button">
+                          {ccpDropdowns.registerCCPDropdown6 ? (
+                            <ArrowUp />
+                          ) : (
+                            <DropdownUp />
+                          )}
+                        </Box>
+
+                        {ccpDropdowns.registerCCPDropdown6 && (
+                          <Box
+                            w="full"
+                            left="0"
+                            bg="#03060B"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            py="2"
+                            className="dropdown-container"
+                            boxShadow="dark-lg"
+                            height="80px"
+                            overflowY="auto"
+                            userSelect="none"
+                          >
+                            {ApplicationList?.map(({ name, id }, index) => {
+                              return (
+                                <Box
+                                  key={index}
+                                  as="button"
+                                  w="full"
+                                  alignItems="center"
+                                  gap="1"
+                                  pr="2"
+                                  display="flex"
+                                  onClick={() => {
+                                    setSocialHandle((prev) => {
+                                      const copy = [...prev]
+                                      copy[5] = {
+                                        handle6: {
+                                          name: name,
+                                          handle:
+                                            copy[5]?.handle6?.handle || '',
+                                        },
+                                      }
+                                      return copy
+                                    })
+                                  }}
+                                >
+                                  <Box
+                                    w="full"
+                                    display="flex"
+                                    py="5px"
+                                    px="6px"
+                                    gap="1"
+                                    justifyContent="space-between"
+                                    borderRadius="md"
+                                    _hover={{ bg: '#676D9A4D' }}
+                                    ml=".4rem"
+                                  >
+                                    <Text color="white" ml=".6rem">
+                                      {name}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
                       </Box>
                     </Box>
 
@@ -1449,35 +1819,93 @@ const RegisterCCPModal: React.FC = () => {
 
                       <Box
                         display="flex"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         justifyContent="space-between"
+                        py="2"
+                        pl="3"
+                        pr="3"
                         mb="1rem"
                         mt="0.3rem"
+                        borderRadius="md"
+                        className="navbar"
+                        cursor="pointer"
+                        fontSize="sm"
+                        onClick={() => {
+                          handleDropdownClick('registerCCPDropdown7')
+                        }}
                       >
-                        <Select
-                          placeholder="Select application"
-                          w="full"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          color="#f2f2f2"
-                          fontSize="sm"
-                          onChange={(e) => {
-                            setSocialHandle((prev) => {
-                              const copy = [...prev]
-                              copy[6] = {
-                                handle7: {
-                                  name: e.target.value,
-                                  handle: copy[6]?.handle7?.handle || '',
-                                },
-                              }
-                              return copy
-                            })
-                          }}
-                        >
-                          {ApplicationList.map(({ name, id }) => (
-                            <option key={id} value={name}>
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
+                        <Box display="flex" gap="1" userSelect="none">
+                          <Text color="white">
+                            {socialHandle[6]?.handle7?.name ||
+                              'Select Application'}
+                          </Text>
+                        </Box>
+
+                        <Box pt="1" className="navbar-button">
+                          {ccpDropdowns.registerCCPDropdown7 ? (
+                            <ArrowUp />
+                          ) : (
+                            <DropdownUp />
+                          )}
+                        </Box>
+
+                        {ccpDropdowns.registerCCPDropdown7 && (
+                          <Box
+                            w="full"
+                            left="0"
+                            bg="#03060B"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            py="2"
+                            className="dropdown-container"
+                            boxShadow="dark-lg"
+                            height="80px"
+                            overflowY="auto"
+                            userSelect="none"
+                          >
+                            {ApplicationList?.map(({ name, id }, index) => {
+                              return (
+                                <Box
+                                  key={index}
+                                  as="button"
+                                  w="full"
+                                  alignItems="center"
+                                  gap="1"
+                                  pr="2"
+                                  display="flex"
+                                  onClick={() => {
+                                    setSocialHandle((prev) => {
+                                      const copy = [...prev]
+                                      copy[6] = {
+                                        handle7: {
+                                          name: name,
+                                          handle:
+                                            copy[6]?.handle7?.handle || '',
+                                        },
+                                      }
+                                      return copy
+                                    })
+                                  }}
+                                >
+                                  <Box
+                                    w="full"
+                                    display="flex"
+                                    py="5px"
+                                    px="6px"
+                                    gap="1"
+                                    justifyContent="space-between"
+                                    borderRadius="md"
+                                    _hover={{ bg: '#676D9A4D' }}
+                                    ml=".4rem"
+                                  >
+                                    <Text color="white" ml=".6rem">
+                                      {name}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
                       </Box>
                     </Box>
 
@@ -1652,35 +2080,93 @@ const RegisterCCPModal: React.FC = () => {
 
                       <Box
                         display="flex"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                         justifyContent="space-between"
+                        py="2"
+                        pl="3"
+                        pr="3"
                         mb="1rem"
                         mt="0.3rem"
+                        borderRadius="md"
+                        className="navbar"
+                        cursor="pointer"
+                        fontSize="sm"
+                        onClick={() => {
+                          handleDropdownClick('registerCCPDropdown8')
+                        }}
                       >
-                        <Select
-                          placeholder="Select application"
-                          w="full"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          color="#f2f2f2"
-                          fontSize="sm"
-                          onChange={(e) => {
-                            setSocialHandle((prev) => {
-                              const copy = [...prev]
-                              copy[7] = {
-                                handle8: {
-                                  name: e.target.value,
-                                  handle: copy[7]?.handle8?.handle || '',
-                                },
-                              }
-                              return copy
-                            })
-                          }}
-                        >
-                          {ApplicationList.map(({ name, id }) => (
-                            <option key={id} value={name}>
-                              {name}
-                            </option>
-                          ))}
-                        </Select>
+                        <Box display="flex" gap="1" userSelect="none">
+                          <Text color="white">
+                            {socialHandle[7]?.handle8?.name ||
+                              'Select Application'}
+                          </Text>
+                        </Box>
+
+                        <Box pt="1" className="navbar-button">
+                          {ccpDropdowns.registerCCPDropdown8 ? (
+                            <ArrowUp />
+                          ) : (
+                            <DropdownUp />
+                          )}
+                        </Box>
+
+                        {ccpDropdowns.registerCCPDropdown8 && (
+                          <Box
+                            w="full"
+                            left="0"
+                            bg="#03060B"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            py="2"
+                            className="dropdown-container"
+                            boxShadow="dark-lg"
+                            height="80px"
+                            overflowY="auto"
+                            userSelect="none"
+                          >
+                            {ApplicationList?.map(({ name, id }, index) => {
+                              return (
+                                <Box
+                                  key={index}
+                                  as="button"
+                                  w="full"
+                                  alignItems="center"
+                                  gap="1"
+                                  pr="2"
+                                  display="flex"
+                                  onClick={() => {
+                                    setSocialHandle((prev) => {
+                                      const copy = [...prev]
+                                      copy[7] = {
+                                        handle8: {
+                                          name: name,
+                                          handle:
+                                            copy[7]?.handle8?.handle || '',
+                                        },
+                                      }
+                                      return copy
+                                    })
+                                  }}
+                                >
+                                  <Box
+                                    w="full"
+                                    display="flex"
+                                    py="5px"
+                                    px="6px"
+                                    gap="1"
+                                    justifyContent="space-between"
+                                    borderRadius="md"
+                                    _hover={{ bg: '#676D9A4D' }}
+                                    ml=".4rem"
+                                  >
+                                    <Text color="white" ml=".6rem">
+                                      {name}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
                       </Box>
                     </Box>
 

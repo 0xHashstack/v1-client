@@ -12,7 +12,7 @@ const initialState = {
   },
   modalDropdowns: {
     // registerCCPDropdown: false,
-    submissionCCPDropdown: false,
+    // submissionCCPDropdown: false,
     borrowModalBorrowMarketDropdown: false,
     borrowModalCollateralMarketDropdown: false,
     tradeModalBorrowMarketDropdown: false,
@@ -59,12 +59,36 @@ const initialState = {
   airdropDropdowns: {
     airdropAndCcpDropdown: false,
   },
+  ccpDropdowns: {
+    registerCCPDropdown1: false,
+    registerCCPDropdown2: false,
+    registerCCPDropdown3: false,
+    registerCCPDropdown4: false,
+    registerCCPDropdown5: false,
+    registerCCPDropdown6: false,
+    registerCCPDropdown7: false,
+    registerCCPDropdown8: false,
+    submissionCCPDropdown: false,
+  },
 }
 
 export const dropdownSlice = createSlice({
   name: 'dropdowns',
   initialState,
   reducers: {
+    setCcpModalDropdown(state, action) {
+      const dropdownName = action.payload
+      const dropdowns = { ...state.ccpDropdowns }
+      Object.keys(dropdowns)?.forEach((key) => {
+        if (key == dropdownName) {
+          dropdowns[key] = !dropdowns[key]
+        } else {
+          dropdowns[key] = false
+        }
+      })
+      state.currentDropdown = dropdownName
+      state.ccpDropdowns = dropdowns
+    },
     setNavDropdown(state, action) {
       const dropdownName = action.payload
       const dropdowns = { ...state.navDropdowns }
@@ -142,10 +166,12 @@ export const dropdownSlice = createSlice({
   },
 })
 
+export const { setCcpModalDropdown } = dropdownSlice.actions
 export const { setNavDropdown, resetModalDropdowns } = dropdownSlice.actions
 export const { setModalDropdown } = dropdownSlice.actions
 export const { setMetricsDropdown } = dropdownSlice.actions
 export const { setAirdropDropdown } = dropdownSlice.actions
+export const selectCcpDropdowns = (state) => state.dropdowns.ccpDropdowns
 export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns
 export const selectCurrentDropdown = (state) => state.dropdowns.currentDropdown
 export const selectModalDropDowns = (state) => state.dropdowns.modalDropdowns
