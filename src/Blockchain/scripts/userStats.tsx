@@ -224,7 +224,7 @@ export const getAprByPool = (dataArray: any[], pool: string, l3App: string) => {
     } else {
       return (
         item.name === pool &&
-        item.amm === (l3App == "JEDI_SWAP" ? "jedi" : "myswap")
+        item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : l3App=='ZKLEND' ?'zklend': 'myswap')
       );
     }
   });
@@ -254,7 +254,7 @@ export const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
     } else {
       return (
         item.name === pool &&
-        item.amm === (l3App == "JEDI_SWAP" ? "jedi" : "myswap")
+        item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : l3App=='ZKLEND' ?'zklend': 'myswap')
       );
     }
   });
@@ -300,9 +300,9 @@ export async function getNetAprLoans(
   poolAprs:any,
   allSplit:any,
   strkAllocationData:any,
-  netSpendBalance:any
-) {
-  
+  netSpendBalance:any,
+  zkLendSpends:any,
+) { 
   let totalBorrowCollateral = 0,
     netBorrowInterest = 0;
     let netApr: number = 0;
@@ -360,9 +360,9 @@ export async function getNetAprLoans(
           )?.exchangeRateRtokenToUnderlying)+
           (((getAprByPool(
             poolAprs,
-            split_info.tokenA +
+            loan?.l3App=="ZKLEND" ?loan.loanMarket.slice(1): split_info?.tokenA +
               "/" +
-              split_info.tokenB,
+              split_info?.tokenB,
             loan?.l3App
           ) +
             
@@ -370,27 +370,31 @@ export async function getNetAprLoans(
               365 *
               (strk_price ? strk_price:0) *
               getStrkAlloaction(
-                split_info.tokenA +
+                split_info?.tokenA +
                   "/" +
-                  split_info.tokenB
+                  split_info?.tokenB
               ,strkAllocationData)) /
               getTvlByPool(
                 poolAprs,
-                split_info.tokenA +
+                loan?.l3App=="ZKLEND" ?loan.loanMarket.slice(1):split_info?.tokenA +
                   "/" +
-                  split_info.tokenB,
+                  split_info?.tokenB,
                 loan?.l3App
               )) *
-            (dollarConvertor(
-              split_info.amountA,
-              split_info.tokenA,
+            (loan?.l3App=="ZKLEND"?zkLendSpends?.find(
+              (val: any) =>
+                val?.BorrowId ==
+                loan?.loanId
+            )?.SpendValue:(dollarConvertor(
+              split_info?.amountA,
+              split_info?.tokenA,
               oraclePrices
             ) +
               dollarConvertor(
-                split_info.amountB,
-                split_info.tokenB,
+                split_info?.amountB,
+                split_info?.tokenB,
                 oraclePrices
-              ))) /
+              )))) /
             dollarConvertor(
               loan?.collateralAmountParsed,
               loan?.collateralMarket.slice(1),

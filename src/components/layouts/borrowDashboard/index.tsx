@@ -36,8 +36,10 @@ import {
   selectProtocolStats,
   selectUserDeposits,
   selectUserLoans,
+  selectZklendSpends,
 } from '@/store/slices/readDataSlice'
 import {
+  selectBorrowEffectiveAprs,
   selectJedistrkTokenAllocation,
   selectMySplit,
   selectStrkAprData,
@@ -259,7 +261,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
       } else {
         return (
           item.name === pool &&
-          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : 'myswap')
+          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : l3App=='ZKLEND' ?'zklend': 'myswap')
         )
       }
     })
@@ -291,7 +293,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
       } else {
         return (
           item.name === pool &&
-          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : 'myswap')
+          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : l3App=='ZKLEND' ?'zklend': 'myswap')
         )
       }
     })
@@ -456,27 +458,8 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
     }
   }, [strkData])
 
-  const [zkLendSpend, setzkLendSpend] = useState<any>([{}])
 
-  useEffect(()=>{
-    const fecth=async()=>{
-      Borrows.map(async (Borrow:any,idx:number)=>{
-        if(Borrow?.l3App==="ZKLEND"){
-          const usdspend=await getZklendusdSpendValue(Borrow?.loanId,Borrow?.loanMarket);
-          const val={
-            BorrowId:Borrow?.loanId,
-            SpendValue:usdspend
-          }
-          const arr=[]
-          arr.push(val);
-          setzkLendSpend(arr);
-        }
-      })
-    }
-    if(Borrows){
-      fecth()
-    }
-  },[Borrows])
+  const zkLendSpend=useSelector(selectZklendSpends)
 
   return loading ? (
     <Box
@@ -844,35 +827,95 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               height="100%"
                               display="flex"
                               color={
-                                Number(
-                                  avgs?.find(
-                                    (item: any) =>
-                                      item?.loanId == borrow?.loanId
-                                  )?.avg
-                                ) +
+                                  Number(
+                                    avgs?.find(
+                                      (item: any) =>
+                                        item?.loanId == borrow?.loanId
+                                    )?.avg
+                                  ) +
+                                  +(
+                                    ((getBoostedApr(
+                                      borrow?.loanMarket.slice(1)
+                                    ) *
+                                      dollarConvertor(
+                                        borrow?.loanAmountParsed,
+                                        borrow?.loanMarket.slice(1),
+                                        oraclePrices
+                                      ) *
+                                      reduxProtocolStats?.find(
+                                        (val: any) =>
+                                          val?.token ==
+                                          borrow?.loanMarket.slice(1)
+                                      )
+                                        ?.exchangeRateDTokenToUnderlying) /
+                                      dollarConvertor(
+                                        borrow?.collateralAmountParsed,
+                                        borrow?.collateralMarket.slice(
+                                          1
+                                        ),
+                                        oraclePrices
+                                      )) *
+                                    reduxProtocolStats?.find(
+                                      (val: any) =>
+                                        val?.token ==
+                                        borrow?.collateralMarket.slice(
+                                          1
+                                        )
+                                    )?.exchangeRateRtokenToUnderlying
+                                  ) +
                                   getBoostedAprSupply(
                                     borrow?.collateralMarket.slice(1)
                                   ) +
                                   (((getAprByPool(
                                     poolAprs,
-                                    allSplit?.[lower_bound + idx]?.tokenA +
+                                    borrow?.l3App=="ZKLEND" ?borrow?.loanMarket.slice(1):allSplit?.[lower_bound + idx]
+                                      ?.tokenA +
                                       '/' +
-                                      allSplit?.[lower_bound + idx]?.tokenB,
+                                      allSplit?.[lower_bound + idx]
+                                        ?.tokenB,
                                     borrow?.l3App
                                   ) +
-                                    getBoostedApr(
-                                      borrow?.loanMarket.slice(1)
-                                    )) *
-                                    (dollarConvertor(
-                                      allSplit?.[lower_bound + idx]?.amountA,
-                                      allSplit?.[lower_bound + idx]?.tokenA,
+                                    (100 *
+                                      365 *
+                                      oraclePrices.find(
+                                        (curr: any) =>
+                                          curr.name === 'STRK'
+                                      )?.price *
+                                      getStrkAlloaction(
+                                        allSplit?.[lower_bound + idx]
+                                          ?.tokenA +
+                                          '/' +
+                                          allSplit?.[lower_bound + idx]
+                                            ?.tokenB
+                                      )) /
+                                      getTvlByPool(
+                                        poolAprs,
+                                        borrow?.l3App=="ZKLEND" ?borrow?.loanMarket.slice(1): allSplit?.[lower_bound + idx]
+                                          ?.tokenA +
+                                          '/' +
+                                          allSplit?.[lower_bound + idx]
+                                            ?.tokenB,
+                                        borrow?.l3App
+                                      )) *
+                                    (borrow?.l3App=="ZKLEND" ?
+                                    zkLendSpend?.find(
+                                      (val: any) =>
+                                        val?.BorrowId ==
+                                        borrow?.loanId
+                                    )?.SpendValue:(dollarConvertor(
+                                      allSplit?.[lower_bound + idx]
+                                        ?.amountA,
+                                      allSplit?.[lower_bound + idx]
+                                        ?.tokenA,
                                       oraclePrices
                                     ) +
                                       dollarConvertor(
-                                        allSplit?.[lower_bound + idx]?.amountB,
-                                        allSplit?.[lower_bound + idx]?.tokenB,
+                                        allSplit?.[lower_bound + idx]
+                                          ?.amountB,
+                                        allSplit?.[lower_bound + idx]
+                                          ?.tokenB,
                                         oraclePrices
-                                      ))) /
+                                      )))) /
                                     dollarConvertor(
                                       borrow?.collateralAmountParsed,
                                       borrow?.collateralMarket.slice(1),
@@ -881,8 +924,11 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     reduxProtocolStats?.find(
                                       (val: any) =>
                                         val?.token ==
-                                        borrow?.collateralMarket.slice(1)
-                                    )?.exchangeRateRtokenToUnderlying <
+                                        borrow?.collateralMarket.slice(
+                                          1
+                                        )
+                                    )?.exchangeRateRtokenToUnderlying
+                                 <
                                 0
                                   ? 'rgb(255 94 94)'
                                   : '#00D395'
@@ -1069,7 +1115,28 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                       </Text>
                                       <Text>
                                         +
-                                        {(
+                                        {borrow?.l3App==="ZKLEND" ?(
+                                          ((getAprByPool(
+                                            poolAprs,
+                                            borrow?.loanMarket.slice(1),
+                                            borrow?.l3App
+                                          ) *
+                                          zkLendSpend?.find(
+                                            (val: any) =>
+                                              val?.BorrowId ==
+                                              borrow?.loanId
+                                          )?.SpendValue) /
+                                            dollarConvertor(
+                                              borrow?.collateralAmountParsed,
+                                              borrow?.collateralMarket.slice(1),
+                                              oraclePrices
+                                            )) *
+                                          reduxProtocolStats?.find(
+                                            (val: any) =>
+                                              val?.token ==
+                                              borrow?.collateralMarket.slice(1)
+                                          )?.exchangeRateRtokenToUnderlying
+                                        ).toFixed(2): (
                                           ((getAprByPool(
                                             poolAprs,
                                             allSplit?.[lower_bound + idx]
@@ -1286,7 +1353,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                           ) +
                                           (((getAprByPool(
                                             poolAprs,
-                                            allSplit?.[lower_bound + idx]
+                                            borrow?.l3App=="ZKLEND" ?borrow?.loanMarket.slice(1):allSplit?.[lower_bound + idx]
                                               ?.tokenA +
                                               '/' +
                                               allSplit?.[lower_bound + idx]
@@ -1308,14 +1375,19 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                               )) /
                                               getTvlByPool(
                                                 poolAprs,
-                                                allSplit?.[lower_bound + idx]
+                                                borrow?.l3App=="ZKLEND" ?borrow?.loanMarket.slice(1): allSplit?.[lower_bound + idx]
                                                   ?.tokenA +
                                                   '/' +
                                                   allSplit?.[lower_bound + idx]
                                                     ?.tokenB,
                                                 borrow?.l3App
                                               )) *
-                                            (dollarConvertor(
+                                            (borrow?.l3App=="ZKLEND" ?
+                                            zkLendSpend?.find(
+                                              (val: any) =>
+                                                val?.BorrowId ==
+                                                borrow?.loanId
+                                            )?.SpendValue:(dollarConvertor(
                                               allSplit?.[lower_bound + idx]
                                                 ?.amountA,
                                               allSplit?.[lower_bound + idx]
@@ -1328,7 +1400,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                                 allSplit?.[lower_bound + idx]
                                                   ?.tokenB,
                                                 oraclePrices
-                                              ))) /
+                                              )))) /
                                             dollarConvertor(
                                               borrow?.collateralAmountParsed,
                                               borrow?.collateralMarket.slice(1),
@@ -1359,86 +1431,109 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                 borderColor="#23233D"
                                 arrowShadowColor="#2B2F35"
                               >
-                                {(
-                                  Number(
-                                    avgs?.find(
-                                      (item: any) =>
-                                        item?.loanId == borrow?.loanId
-                                    )?.avg
-                                  ) +
-                                  +(
-                                    ((getBoostedApr(
-                                      borrow?.loanMarket.slice(1)
-                                    ) *
-                                      dollarConvertor(
-                                        borrow?.loanAmountParsed,
-                                        borrow?.loanMarket.slice(1),
-                                        oraclePrices
-                                      ) *
-                                      reduxProtocolStats?.find(
-                                        (val: any) =>
-                                          val?.token ==
-                                          borrow?.loanMarket.slice(1)
-                                      )?.exchangeRateDTokenToUnderlying) /
-                                      dollarConvertor(
-                                        borrow?.collateralAmountParsed,
-                                        borrow?.collateralMarket.slice(1),
-                                        oraclePrices
-                                      )) *
-                                    reduxProtocolStats?.find(
-                                      (val: any) =>
-                                        val?.token ==
-                                        borrow?.collateralMarket.slice(1)
-                                    )?.exchangeRateRtokenToUnderlying
-                                  ) +
-                                  getBoostedAprSupply(
-                                    borrow?.collateralMarket.slice(1)
-                                  ) +
-                                  (((getAprByPool(
-                                    poolAprs,
-                                    allSplit?.[lower_bound + idx]?.tokenA +
-                                      '/' +
-                                      allSplit?.[lower_bound + idx]?.tokenB,
-                                    borrow?.l3App
-                                  ) +
-                                    (100 *
-                                      365 *
-                                      oraclePrices.find(
-                                        (curr: any) => curr.name === 'STRK'
-                                      )?.price *
-                                      getStrkAlloaction(
-                                        allSplit?.[lower_bound + idx]?.tokenA +
-                                          '/' +
-                                          allSplit?.[lower_bound + idx]?.tokenB
-                                      )) /
-                                      getTvlByPool(
-                                        poolAprs,
-                                        allSplit?.[lower_bound + idx]?.tokenA +
-                                          '/' +
-                                          allSplit?.[lower_bound + idx]?.tokenB,
-                                        borrow?.l3App
-                                      )) *
-                                    (dollarConvertor(
-                                      allSplit?.[lower_bound + idx]?.amountA,
-                                      allSplit?.[lower_bound + idx]?.tokenA,
-                                      oraclePrices
-                                    ) +
-                                      dollarConvertor(
-                                        allSplit?.[lower_bound + idx]?.amountB,
-                                        allSplit?.[lower_bound + idx]?.tokenB,
-                                        oraclePrices
-                                      ))) /
-                                    dollarConvertor(
-                                      borrow?.collateralAmountParsed,
-                                      borrow?.collateralMarket.slice(1),
-                                      oraclePrices
-                                    )) *
-                                    reduxProtocolStats?.find(
-                                      (val: any) =>
-                                        val?.token ==
-                                        borrow?.collateralMarket.slice(1)
-                                    )?.exchangeRateRtokenToUnderlying
-                                ).toFixed(3) + '%'}
+                                        {(
+                                          Number(
+                                            avgs?.find(
+                                              (item: any) =>
+                                                item?.loanId == borrow?.loanId
+                                            )?.avg
+                                          ) +
+                                          +(
+                                            ((getBoostedApr(
+                                              borrow?.loanMarket.slice(1)
+                                            ) *
+                                              dollarConvertor(
+                                                borrow?.loanAmountParsed,
+                                                borrow?.loanMarket.slice(1),
+                                                oraclePrices
+                                              ) *
+                                              reduxProtocolStats?.find(
+                                                (val: any) =>
+                                                  val?.token ==
+                                                  borrow?.loanMarket.slice(1)
+                                              )
+                                                ?.exchangeRateDTokenToUnderlying) /
+                                              dollarConvertor(
+                                                borrow?.collateralAmountParsed,
+                                                borrow?.collateralMarket.slice(
+                                                  1
+                                                ),
+                                                oraclePrices
+                                              )) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.collateralMarket.slice(
+                                                  1
+                                                )
+                                            )?.exchangeRateRtokenToUnderlying
+                                          ) +
+                                          getBoostedAprSupply(
+                                            borrow?.collateralMarket.slice(1)
+                                          ) +
+                                          (((getAprByPool(
+                                            poolAprs,
+                                            borrow?.l3App=="ZKLEND" ?borrow?.loanMarket.slice(1):allSplit?.[lower_bound + idx]
+                                              ?.tokenA +
+                                              '/' +
+                                              allSplit?.[lower_bound + idx]
+                                                ?.tokenB,
+                                            borrow?.l3App
+                                          ) +
+                                            (100 *
+                                              365 *
+                                              oraclePrices.find(
+                                                (curr: any) =>
+                                                  curr.name === 'STRK'
+                                              )?.price *
+                                              getStrkAlloaction(
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenA +
+                                                  '/' +
+                                                  allSplit?.[lower_bound + idx]
+                                                    ?.tokenB
+                                              )) /
+                                              getTvlByPool(
+                                                poolAprs,
+                                                borrow?.l3App=="ZKLEND" ?borrow?.loanMarket.slice(1): allSplit?.[lower_bound + idx]
+                                                  ?.tokenA +
+                                                  '/' +
+                                                  allSplit?.[lower_bound + idx]
+                                                    ?.tokenB,
+                                                borrow?.l3App
+                                              )) *
+                                            (borrow?.l3App=="ZKLEND" ?
+                                            zkLendSpend?.find(
+                                              (val: any) =>
+                                                val?.BorrowId ==
+                                                borrow?.loanId
+                                            )?.SpendValue:(dollarConvertor(
+                                              allSplit?.[lower_bound + idx]
+                                                ?.amountA,
+                                              allSplit?.[lower_bound + idx]
+                                                ?.tokenA,
+                                              oraclePrices
+                                            ) +
+                                              dollarConvertor(
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.amountB,
+                                                allSplit?.[lower_bound + idx]
+                                                  ?.tokenB,
+                                                oraclePrices
+                                              )))) /
+                                            dollarConvertor(
+                                              borrow?.collateralAmountParsed,
+                                              borrow?.collateralMarket.slice(1),
+                                              oraclePrices
+                                            )) *
+                                            reduxProtocolStats?.find(
+                                              (val: any) =>
+                                                val?.token ==
+                                                borrow?.collateralMarket.slice(
+                                                  1
+                                                )
+                                            )?.exchangeRateRtokenToUnderlying
+                                        ).toFixed(2) + '%'}
                               </Tooltip>
                             </Box>
                           ) : (
@@ -2194,7 +2289,8 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     (val: any) =>
                                       val?.BorrowId ==
                                       borrow?.loanId
-                                  )?.SpendValue): numberFormatter(
+                                  )?.SpendValue/oraclePrices?.find((curr: any) => curr.name === borrow?.loanMarket.slice(1))
+                                  ?.price): numberFormatter(
                                     borrow?.currentLoanAmountParsed
                                   )
                                 )}

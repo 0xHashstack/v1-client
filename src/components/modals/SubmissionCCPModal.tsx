@@ -26,6 +26,8 @@ import {
   setModalDropdown,
 } from '@/store/slices/dropdownsSlice'
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon'
+import { useAccount } from '@starknet-react/core'
+import axios from 'axios'
 
 const PlatformList = [
   {
@@ -92,6 +94,16 @@ const SubmissionCCPModal: React.FC = () => {
 
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName))
+  }
+
+  const {address}=useAccount();
+
+  const handleSubmison=async()=>{
+    const data=await axios.post('/api/ccp/submission',{
+      address:address,
+      contentPlatform:currentSelectedPlatform,
+      contentLink
+    })
   }
 
   return (

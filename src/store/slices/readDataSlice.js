@@ -66,6 +66,7 @@ const initialState = {
   nftCurrentAmount: null,
   whitelisted: false,
   interactedAddress: false,
+  zklendSpends:[],
   jediSwapPoolAprs: [],
   stakingShares: {
     rBTC: null,
@@ -319,6 +320,9 @@ export const readDataSlice = createSlice({
     setJediSwapPoolAprs(state, action) {
       state.jediSwapPoolAprs = action.payload;
     },
+    setZklendSpends(state,action){
+      state.zklendSpends=action.payload;
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -398,6 +402,7 @@ export const {
   setUserWhiteListed,
   setInteractedAddress,
   setJediSwapPoolAprs,
+  setZklendSpends
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -480,4 +485,6 @@ export const selectInteractedAddress = (state) =>
   state.read_data.interactedAddress;
 export const selectJediswapPoolAprs = (state) =>
   state.read_data.jediSwapPoolAprs;
+export const selectZklendSpends=(state)=>
+  state.read_data.zklendSpends;
 export default readDataSlice.reducer;

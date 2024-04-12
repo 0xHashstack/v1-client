@@ -305,7 +305,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 
   const [collateralAmounts, setCollateralAmounts] = useState<any>([]) // Initialize with default values
   const [collateralMarkets, setcollateralMarkets] = useState<any>([])
-  const [tokenSelection, setTokenSelection] = useState(Array(28).fill(0))
+  const [tokenSelection, setTokenSelection] = useState(Array(40).fill(0))
   useEffect(() => {
     // Initialize collateralAmounts with the values from Borrows
     if (Borrows.length > 0 && oraclePrices != null) {
@@ -1563,7 +1563,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       curr.name ===
                                       collateralMarkets[lower_bound + idx]
                                   )?.price >=
-                                  1000 &&
+                                  10 &&
                                 ((walletBalances[borrow?.collateral]
                                   ?.statusBalanceOf === 'success'
                                   ? parseAmount(
@@ -1580,7 +1580,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     (curr: any) =>
                                       curr.name === borrow?.collateral
                                   )?.price >=
-                                  1000 ||
+                                  10 ||
                                   userDeposit?.find(
                                     (item: any) =>
                                       item?.rToken == 'r' + borrow?.collateral
@@ -1589,7 +1589,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       (curr: any) =>
                                         curr.name === borrow?.collateral
                                     )?.price >=
-                                    1000)
+                                    10)
                               ) {
                                 setRTokenAmount(
                                   collateralAmounts[lower_bound + idx]
@@ -1600,7 +1600,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 setselectedIndex(lower_bound + idx)
                                 setLoanMarket(borrow?.debt)
                                 setLoanAmount(
-                                  5000 /
+                                  110 /
                                     oraclePrices.find(
                                       (curr: any) => curr.name === borrow?.debt
                                     )?.price
@@ -1633,7 +1633,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   curr.name ===
                                   collateralMarkets[lower_bound + idx]
                               )?.price >=
-                              1000 &&
+                              10 &&
                             ((walletBalances[borrow?.collateral]
                               ?.statusBalanceOf === 'success'
                               ? parseAmount(
@@ -1649,7 +1649,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               oraclePrices?.find(
                                 (curr: any) => curr.name === borrow?.collateral
                               )?.price >=
-                              1000 ||
+                              10 ||
                               userDeposit?.find(
                                 (item: any) =>
                                   item?.rToken == 'r' + borrow?.collateral
@@ -1658,7 +1658,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   (curr: any) =>
                                     curr.name === borrow?.collateral
                                 )?.price >=
-                                1000) ? (
+                                10) ? (
                               <DegenModal
                                 coin={coin}
                                 borrowAPRs={borrowAPRs}
