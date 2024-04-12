@@ -8,9 +8,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const { address, contentPlatform, contentLink } = req.body
+    const { address, socialProfiles } = req.body
 
-    if (!address || !contentPlatform || !contentLink) {
+    if (!address || !socialProfiles) {
       return new NextResponse('Please fill all the fields', { status: 400 })
     }
 
@@ -39,11 +39,11 @@ export default async function handler(
 
     try {
       const response = await sheets.spreadsheets.values.append({
-        spreadsheetId: process.env.NEXT_PUBLIC_GOOGLE_SHEET_SUBMISSION_ID,
+        spreadsheetId: process.env.NEXT_PUBLIC_GOOGLE_SHEET_REGISTER_ID,
         range: 'A1:F1',
         valueInputOption: 'USER_ENTERED',
         requestBody: {
-          values: [[Datetime, address, contentPlatform, contentLink]],
+          values: [[Datetime, null, address, socialProfiles, null]],
         },
       })
 

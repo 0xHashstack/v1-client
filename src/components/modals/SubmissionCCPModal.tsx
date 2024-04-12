@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Box,
   Button,
@@ -10,12 +12,16 @@ import {
   ModalHeader,
   ModalOverlay,
   Portal,
+  Spinner,
   Text,
   Tooltip,
   useDisclosure,
 } from '@chakra-ui/react'
+import { useAccount } from '@starknet-react/core'
+import axios from 'axios'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
 import ArrowUp from '@/assets/icons/arrowup'
 import DropdownUp from '@/assets/icons/dropdownUpIcon'
@@ -25,9 +31,8 @@ import {
   selectCcpDropdowns,
   setCcpModalDropdown,
 } from '@/store/slices/dropdownsSlice'
-import { useAccount } from '@starknet-react/core'
-import axios from 'axios'
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon'
+import SpinnerLoader from '../uiElements/loaders/spinner'
 
 const PlatformList = [
   {
@@ -86,6 +91,7 @@ const SubmissionCCPModal: React.FC = () => {
   const [contentLink, setContentLink] = useState('')
   const [platformName, setPlatformName] = useState('')
   const [userHandle, setUserHandle] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const ccpDropdowns = useSelector(selectCcpDropdowns)
@@ -102,14 +108,23 @@ const SubmissionCCPModal: React.FC = () => {
 
   const handleSubmissionSubmit = async () => {
     try {
+      setLoading(true)
       const res = await axios.post('http://localhost:3000/api/submission', {
         address: address,
         contentPlatform: currentSelectedPlatform,
         contentLink: contentLink,
       })
-      console.log(res)
+
+      if (res.status === 200) {
+        toast.success('Form submitted successfully')
+      }
     } catch (error) {
+      setLoading(false)
+      toast.error('Error in submitting forms')
       console.error(error)
+    } finally {
+      setLoading(false)
+      onClose()
     }
   }
 
@@ -197,334 +212,353 @@ const SubmissionCCPModal: React.FC = () => {
 
             <ModalCloseButton mt="1rem" mr="1rem" />
 
-            <ModalBody pb="2rem">
-              <Card
-                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                p="1rem"
-                mt="-1.5"
-              >
-                <Box
-                  display="flex"
-                  flexDir="column"
-                  alignItems="center"
-                  gap="8px"
+            {!loading ? (
+              <ModalBody pb="2rem">
+                <Card
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                  p="1rem"
+                  mt="-1.5"
                 >
-                  <Box width="full">
-                    <Box
-                      color="#676D9A"
-                      display="flex"
-                      alignItems="center"
-                      userSelect="none"
-                    >
-                      <Text
-                        mr="0.3rem"
-                        fontSize="12px"
-                        fontStyle="normal"
-                        fontWeight="400"
-                      >
-                        Select content platform
-                      </Text>
-
-                      <Box>
-                        <Tooltip
-                          hasArrow
-                          arrowShadowColor="#2B2F35"
-                          placement="right"
-                          boxShadow="dark-lg"
-                          label="Select the platform where your content is hosted."
-                          bg="#02010F"
-                          fontSize={'13px'}
-                          fontWeight={'400'}
-                          borderRadius={'lg'}
-                          padding={'2'}
-                          color="#F0F0F5"
-                          border="1px solid"
-                          borderColor="#23233D"
-                        >
-                          <Box>
-                            <InfoIcon />
-                          </Box>
-                        </Tooltip>
-                      </Box>
-                    </Box>
-
-                    <Box
-                      display="flex"
-                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                      justifyContent="space-between"
-                      py="2"
-                      pl="3"
-                      pr="3"
-                      mt="0.3rem"
-                      borderRadius="md"
-                      className="navbar"
-                      cursor="pointer"
-                      onClick={() => {
-                        handleDropdownClick('submissionCCPDropdown')
-                      }}
-                    >
-                      <Box display="flex" gap="1" userSelect="none">
-                        <Text color="white">{currentSelectedPlatform}</Text>
-                      </Box>
-
-                      <Box pt="1" className="navbar-button">
-                        {activeModal ? <ArrowUp /> : <DropdownUp />}
-                      </Box>
-
-                      {ccpDropdowns.submissionCCPDropdown && (
-                        <Box
-                          w="full"
-                          left="0"
-                          bg="#03060B"
-                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                          py="2"
-                          className="dropdown-container"
-                          boxShadow="dark-lg"
-                          height="140px"
-                          overflowY="auto"
-                          userSelect="none"
-                        >
-                          {PlatformList?.map(({ name, id }, index) => {
-                            return (
-                              <Box
-                                key={index}
-                                as="button"
-                                w="full"
-                                alignItems="center"
-                                gap="1"
-                                pr="2"
-                                display="flex"
-                                onClick={() => {
-                                  setCurrentSelectedPlatform(name)
-                                }}
-                              >
-                                <Box
-                                  w="full"
-                                  display="flex"
-                                  py="5px"
-                                  px="6px"
-                                  gap="1"
-                                  justifyContent="space-between"
-                                  borderRadius="md"
-                                  _hover={{ bg: '#676D9A4D' }}
-                                  ml=".4rem"
-                                >
-                                  <Text color="white" ml=".6rem">
-                                    {name}
-                                  </Text>
-                                </Box>
-                              </Box>
-                            )
-                          })}
-                        </Box>
-                      )}
-                    </Box>
-                  </Box>
-
-                  {currentSelectedPlatform === 'Other' && (
-                    <>
-                      <Box width="full">
-                        <Box
-                          color="#676D9A"
-                          display="flex"
-                          alignItems="center"
-                          userSelect="none"
-                        >
-                          <Text
-                            mr="0.3rem"
-                            fontSize="12px"
-                            fontStyle="normal"
-                            fontWeight="400"
-                          >
-                            Application
-                          </Text>
-
-                          <Box>
-                            <Tooltip
-                              hasArrow
-                              arrowShadowColor="#2B2F35"
-                              placement="right"
-                              boxShadow="dark-lg"
-                              label="Platform name where your content is hosted."
-                              bg="#02010F"
-                              fontSize={'13px'}
-                              fontWeight={'400'}
-                              borderRadius={'lg'}
-                              padding={'2'}
-                              color="#F0F0F5"
-                              border="1px solid"
-                              borderColor="#23233D"
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                        </Box>
-
-                        <Box mt="0.3rem">
-                          <Input
-                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                            placeholder={'Enter platform name'}
-                            fontSize="sm"
-                            _placeholder={{ color: '#676D9A' }}
-                            color="#f2f2f2"
-                            value={platformName}
-                            onChange={(e) => setPlatformName(e.target.value)}
-                          />
-                        </Box>
-                      </Box>
-
-                      <Box width="full">
-                        <Box
-                          color="#676D9A"
-                          display="flex"
-                          alignItems="center"
-                          userSelect="none"
-                        >
-                          <Text
-                            mr="0.3rem"
-                            fontSize="12px"
-                            fontStyle="normal"
-                            fontWeight="400"
-                          >
-                            Enter user handle
-                          </Text>
-
-                          <Box>
-                            <Tooltip
-                              hasArrow
-                              arrowShadowColor="#2B2F35"
-                              placement="right"
-                              boxShadow="dark-lg"
-                              label="Your user handle on the platform."
-                              bg="#02010F"
-                              fontSize={'13px'}
-                              fontWeight={'400'}
-                              borderRadius={'lg'}
-                              padding={'2'}
-                              color="#F0F0F5"
-                              border="1px solid"
-                              borderColor="#23233D"
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                        </Box>
-
-                        <Box mt="0.3rem">
-                          <Input
-                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                            placeholder={'Enter your user handle'}
-                            fontSize="sm"
-                            _placeholder={{ color: '#676D9A' }}
-                            color="#f2f2f2"
-                            value={userHandle}
-                            onChange={(e) => setUserHandle(e.target.value)}
-                          />
-                        </Box>
-                      </Box>
-                    </>
-                  )}
-
-                  <Box width="full">
-                    <Box
-                      color="#676D9A"
-                      display="flex"
-                      alignItems="center"
-                      userSelect="none"
-                    >
-                      <Text
-                        mr="0.3rem"
-                        fontSize="12px"
-                        fontStyle="normal"
-                        fontWeight="400"
-                      >
-                        Enter link
-                      </Text>
-
-                      <Box>
-                        <Tooltip
-                          hasArrow
-                          arrowShadowColor="#2B2F35"
-                          placement="right"
-                          boxShadow="dark-lg"
-                          label="Enter link to your content."
-                          bg="#02010F"
-                          fontSize={'13px'}
-                          fontWeight={'400'}
-                          borderRadius={'lg'}
-                          padding={'2'}
-                          color="#F0F0F5"
-                          border="1px solid"
-                          borderColor="#23233D"
-                        >
-                          <Box>
-                            <InfoIcon />
-                          </Box>
-                        </Tooltip>
-                      </Box>
-                    </Box>
-
-                    <Box mb="1rem" mt="0.3rem">
-                      <Input
-                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                        placeholder={'Enter link to your content'}
-                        fontSize="sm"
-                        _placeholder={{ color: '#676D9A' }}
-                        color="#f2f2f2"
-                        value={contentLink}
-                        onChange={(e) => setContentLink(e.target.value)}
-                      />
-                    </Box>
-                  </Box>
-                </Box>
-
-                <Box display="flex" justifyContent="left" w="100%" mt="-.2rem">
                   <Box
-                    width="full"
                     display="flex"
-                    bg="#676D9A4D"
-                    fontSize="12px"
-                    p="4"
-                    fontStyle="normal"
-                    fontWeight="400"
-                    borderRadius="6px"
-                    border="1px solid #3841AA"
-                    color="#F0F0F5"
-                    gap=".7rem"
+                    flexDir="column"
+                    alignItems="center"
+                    gap="8px"
                   >
-                    <Box mt="3px">
-                      <TableInfoIcon />
-                    </Box>
-                    Make sure your content is publicly visible.
-                  </Box>
-                </Box>
-              </Card>
+                    <Box width="full">
+                      <Box
+                        color="#676D9A"
+                        display="flex"
+                        alignItems="center"
+                        userSelect="none"
+                      >
+                        <Text
+                          mr="0.3rem"
+                          fontSize="12px"
+                          fontStyle="normal"
+                          fontWeight="400"
+                        >
+                          Select content platform
+                        </Text>
 
-              <Button
-                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                color="#6E7681"
-                size="sm"
+                        <Box>
+                          <Tooltip
+                            hasArrow
+                            arrowShadowColor="#2B2F35"
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label="Select the platform where your content is hosted."
+                            bg="#02010F"
+                            fontSize={'13px'}
+                            fontWeight={'400'}
+                            borderRadius={'lg'}
+                            padding={'2'}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Box>
+                      </Box>
+
+                      <Box
+                        display="flex"
+                        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                        justifyContent="space-between"
+                        py="2"
+                        pl="3"
+                        pr="3"
+                        mt="0.3rem"
+                        borderRadius="md"
+                        className="navbar"
+                        cursor="pointer"
+                        onClick={() => {
+                          handleDropdownClick('submissionCCPDropdown')
+                        }}
+                      >
+                        <Box display="flex" gap="1" userSelect="none">
+                          <Text color="white">{currentSelectedPlatform}</Text>
+                        </Box>
+
+                        <Box pt="1" className="navbar-button">
+                          {activeModal ? <ArrowUp /> : <DropdownUp />}
+                        </Box>
+
+                        {ccpDropdowns.submissionCCPDropdown && (
+                          <Box
+                            w="full"
+                            left="0"
+                            bg="#03060B"
+                            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                            py="2"
+                            className="dropdown-container"
+                            boxShadow="dark-lg"
+                            height="140px"
+                            overflowY="auto"
+                            userSelect="none"
+                          >
+                            {PlatformList?.map(({ name, id }, index) => {
+                              return (
+                                <Box
+                                  key={index}
+                                  as="button"
+                                  w="full"
+                                  alignItems="center"
+                                  gap="1"
+                                  pr="2"
+                                  display="flex"
+                                  onClick={() => {
+                                    setCurrentSelectedPlatform(name)
+                                  }}
+                                >
+                                  <Box
+                                    w="full"
+                                    display="flex"
+                                    py="5px"
+                                    px="6px"
+                                    gap="1"
+                                    justifyContent="space-between"
+                                    borderRadius="md"
+                                    _hover={{ bg: '#676D9A4D' }}
+                                    ml=".4rem"
+                                  >
+                                    <Text color="white" ml=".6rem">
+                                      {name}
+                                    </Text>
+                                  </Box>
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
+                      </Box>
+                    </Box>
+
+                    {currentSelectedPlatform === 'Other' && (
+                      <>
+                        <Box width="full">
+                          <Box
+                            color="#676D9A"
+                            display="flex"
+                            alignItems="center"
+                            userSelect="none"
+                          >
+                            <Text
+                              mr="0.3rem"
+                              fontSize="12px"
+                              fontStyle="normal"
+                              fontWeight="400"
+                            >
+                              Application
+                            </Text>
+
+                            <Box>
+                              <Tooltip
+                                hasArrow
+                                arrowShadowColor="#2B2F35"
+                                placement="right"
+                                boxShadow="dark-lg"
+                                label="Platform name where your content is hosted."
+                                bg="#02010F"
+                                fontSize={'13px'}
+                                fontWeight={'400'}
+                                borderRadius={'lg'}
+                                padding={'2'}
+                                color="#F0F0F5"
+                                border="1px solid"
+                                borderColor="#23233D"
+                              >
+                                <Box>
+                                  <InfoIcon />
+                                </Box>
+                              </Tooltip>
+                            </Box>
+                          </Box>
+
+                          <Box mt="0.3rem">
+                            <Input
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                              placeholder={'Enter platform name'}
+                              fontSize="sm"
+                              _placeholder={{ color: '#676D9A' }}
+                              color="#f2f2f2"
+                              value={platformName}
+                              onChange={(e) => setPlatformName(e.target.value)}
+                            />
+                          </Box>
+                        </Box>
+
+                        <Box width="full">
+                          <Box
+                            color="#676D9A"
+                            display="flex"
+                            alignItems="center"
+                            userSelect="none"
+                          >
+                            <Text
+                              mr="0.3rem"
+                              fontSize="12px"
+                              fontStyle="normal"
+                              fontWeight="400"
+                            >
+                              Enter user handle
+                            </Text>
+
+                            <Box>
+                              <Tooltip
+                                hasArrow
+                                arrowShadowColor="#2B2F35"
+                                placement="right"
+                                boxShadow="dark-lg"
+                                label="Your user handle on the platform."
+                                bg="#02010F"
+                                fontSize={'13px'}
+                                fontWeight={'400'}
+                                borderRadius={'lg'}
+                                padding={'2'}
+                                color="#F0F0F5"
+                                border="1px solid"
+                                borderColor="#23233D"
+                              >
+                                <Box>
+                                  <InfoIcon />
+                                </Box>
+                              </Tooltip>
+                            </Box>
+                          </Box>
+
+                          <Box mt="0.3rem">
+                            <Input
+                              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                              placeholder={'Enter your user handle'}
+                              fontSize="sm"
+                              _placeholder={{ color: '#676D9A' }}
+                              color="#f2f2f2"
+                              value={userHandle}
+                              onChange={(e) => setUserHandle(e.target.value)}
+                            />
+                          </Box>
+                        </Box>
+                      </>
+                    )}
+
+                    <Box width="full">
+                      <Box
+                        color="#676D9A"
+                        display="flex"
+                        alignItems="center"
+                        userSelect="none"
+                      >
+                        <Text
+                          mr="0.3rem"
+                          fontSize="12px"
+                          fontStyle="normal"
+                          fontWeight="400"
+                        >
+                          Enter link
+                        </Text>
+
+                        <Box>
+                          <Tooltip
+                            hasArrow
+                            arrowShadowColor="#2B2F35"
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label="Enter link to your content."
+                            bg="#02010F"
+                            fontSize={'13px'}
+                            fontWeight={'400'}
+                            borderRadius={'lg'}
+                            padding={'2'}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Box>
+                      </Box>
+
+                      <Box mb="1rem" mt="0.3rem">
+                        <Input
+                          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                          placeholder={'Enter link to your content'}
+                          fontSize="sm"
+                          _placeholder={{ color: '#676D9A' }}
+                          color="#f2f2f2"
+                          value={contentLink}
+                          onChange={(e) => setContentLink(e.target.value)}
+                        />
+                      </Box>
+                    </Box>
+                  </Box>
+
+                  <Box
+                    display="flex"
+                    justifyContent="left"
+                    w="100%"
+                    mt="-.2rem"
+                  >
+                    <Box
+                      width="full"
+                      display="flex"
+                      bg="#676D9A4D"
+                      fontSize="12px"
+                      p="4"
+                      fontStyle="normal"
+                      fontWeight="400"
+                      borderRadius="6px"
+                      border="1px solid #3841AA"
+                      color="#F0F0F5"
+                      gap=".7rem"
+                    >
+                      <Box mt="3px">
+                        <TableInfoIcon />
+                      </Box>
+                      Make sure your content is publicly visible.
+                    </Box>
+                  </Box>
+                </Card>
+
+                <Button
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                  color="#6E7681"
+                  size="sm"
+                  width="full"
+                  mt="1.5rem"
+                  isDisabled={
+                    !contentLink ||
+                    currentSelectedPlatform === '' ||
+                    (currentSelectedPlatform === 'Other' && !platformName) ||
+                    (currentSelectedPlatform === 'Other' && !userHandle)
+                  }
+                  _hover={{ color: 'black', backgroundColor: 'white' }}
+                  _disabled={{ opacity: '0.5', cursor: 'not-allowed' }}
+                  onClick={handleSubmissionSubmit}
+                >
+                  Submit
+                </Button>
+              </ModalBody>
+            ) : (
+              <Box
                 width="full"
-                mt="1.5rem"
-                isDisabled={
-                  !contentLink ||
-                  currentSelectedPlatform === '' ||
-                  (currentSelectedPlatform === 'Other' && !platformName) ||
-                  (currentSelectedPlatform === 'Other' && !userHandle)
-                }
-                _hover={{ color: 'black', backgroundColor: 'white' }}
-                _disabled={{ opacity: '0.5', cursor: 'not-allowed' }}
-                onClick={handleSubmissionSubmit}
+                height="full"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                mt="3rem"
+                mb="4rem"
               >
-                Submit
-              </Button>
-            </ModalBody>
+                <Spinner color="white" size="xl" />
+              </Box>
+            )}
           </ModalContent>
         </Modal>
       </Portal>
