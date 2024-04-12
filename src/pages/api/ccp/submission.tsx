@@ -15,7 +15,7 @@ export default async function handler(
     }
 
     const time = new Date()
-    const Datetime = time.getTime()
+    const Datetime = time.toLocaleString()
 
     const auth = new google.auth.GoogleAuth({
       credentials: {
@@ -40,7 +40,7 @@ export default async function handler(
     try {
       const response = await sheets.spreadsheets.values.append({
         spreadsheetId: process.env.NEXT_PUBLIC_GOOGLE_SHEET_SUBMISSION_ID,
-        range: 'A1:D1',
+        range: 'A1:F1',
         valueInputOption: 'USER_ENTERED',
         requestBody: {
           values: [[Datetime, address, contentPlatform, contentLink]],
@@ -52,9 +52,9 @@ export default async function handler(
 
       
     } catch (err) {
-        return res.status(404).json({message:"No user found to follow"})
+        return res.status(404).json({message:"Error in submitting forms"})
     }
   } catch (error) {
-    return res.status(404).json({message:"No user found to follow"})
+    return res.status(404).json({message:"Something went wrong"})
   }
 }

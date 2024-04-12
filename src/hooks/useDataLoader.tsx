@@ -1451,11 +1451,7 @@ const useDataLoader = () => {
           if (res2?.data) {
             dispatch(setStrkAprData(res2?.data?.Hashstack))
           }
-          const [res, res3] = await Promise.all([
-            axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`),
-            axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`)
-        ]);
-        const concatenatedArray = res.data.concat(res3.data);
+          const res=await axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`)
           if (res?.data) {
             dispatch(setJediSwapPoolAprs(res?.data))
           }
@@ -2043,7 +2039,7 @@ const useDataLoader = () => {
           effectiveApr &&
           strkData &&
           poolAprs &&
-          zkLendSpends&&
+          zkLendSpends &&
           // allSplit &&
           netSpendBalance
         ) {

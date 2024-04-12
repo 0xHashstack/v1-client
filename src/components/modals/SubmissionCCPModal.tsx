@@ -28,8 +28,6 @@ import {
 import { useAccount } from '@starknet-react/core'
 import axios from 'axios'
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon'
-import { useAccount } from '@starknet-react/core'
-import axios from 'axios'
 
 const PlatformList = [
   {
@@ -102,27 +100,13 @@ const SubmissionCCPModal: React.FC = () => {
     dispatch(setCcpModalDropdown(dropdownName))
   }
 
-  const handleSubmissionSubmit = async () => {
-    try {
-      const res = await axios.post('http://localhost:3000/api/submission', {
-        address: address,
-        contentPlatform: currentSelectedPlatform,
-        contentLink: contentLink,
-      })
-      console.log(res)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const {address}=useAccount();
-
   const handleSubmison=async()=>{
     const data=await axios.post('/api/ccp/submission',{
       address:address,
       contentPlatform:currentSelectedPlatform,
-      contentLink
+      contentLink:contentLink
     })
+    console.log(data,"data")
   }
 
   return (
@@ -532,7 +516,7 @@ const SubmissionCCPModal: React.FC = () => {
                 }
                 _hover={{ color: 'black', backgroundColor: 'white' }}
                 _disabled={{ opacity: '0.5', cursor: 'not-allowed' }}
-                onClick={handleSubmissionSubmit}
+                onClick={handleSubmison}
               >
                 Submit
               </Button>

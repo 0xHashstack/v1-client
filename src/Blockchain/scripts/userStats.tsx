@@ -428,6 +428,7 @@ export async function getNetAprLoans(
             loanId:loan?.loanId,
             apr:aprs
           }
+          console.log(netApr,"aprs")
           effectiveaprs.push(data)
           netApr = netApr + ((aprs*dollarConvertor(
             loan?.collateralAmountParsed,
