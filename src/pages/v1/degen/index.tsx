@@ -367,7 +367,7 @@ const Degen: NextPage = () => {
     try {
       const fetchStrats = async () => {
         const res = await axios.get(
-          'https://metricsapimainnet.hashstack.finance/api/degen/strategy'
+          'https://8ad0-115-99-106-248.ngrok-free.app/api/degen/strategy'
         )
         if (res?.data) {
           setstrategies(res?.data)

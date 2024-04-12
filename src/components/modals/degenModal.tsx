@@ -160,6 +160,7 @@ const DegenModal = ({
   borrowSuggestedAmount,
   suggestedLeverage,
   suggestedStrategy,
+  suggestedProtocol,
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -2055,7 +2056,7 @@ const DegenModal = ({
                 <Box display="flex" flexDirection="column" alignItems="flex-end">
                 <Box display="flex" gap="0.2rem">
                   <Image
-                    src={`/${'JEDI_SWAP'}.svg`}
+                    src={`/${suggestedProtocol}.svg`}
                     alt="Picture of the author"
                     width="14"
                     height="14"
@@ -2068,7 +2069,7 @@ const DegenModal = ({
                       font-size="14px"
                       color="#676D9A"
                     >
-                      Jediswap
+                      {suggestedProtocol}
                     </Text>
                   </Box>
                 </Box>
@@ -2129,7 +2130,7 @@ const DegenModal = ({
                 >
                   <Box display="flex" gap="0.2rem">
                     <Image
-                      src={`/${'JEDI_SWAP'}.svg`}
+                      src={`/${suggestedProtocol}.svg`}
                       alt="Picture of the author"
                       width="14"
                       height="14"
@@ -2141,7 +2142,7 @@ const DegenModal = ({
                       font-size="14px"
                       color="#676D9A"
                     >
-                      Jediswap
+                      {suggestedProtocol}
                     </Text>
                   </Box>
                 </Text>
@@ -2627,7 +2628,7 @@ const DegenModal = ({
                   `r${suggestedCollateral} locked.`,
                   `Borrow processed`,
                   `d${suggestedBorrow} minted.`,
-                  'Adding liquidity to BTC-ETH pool on Jediswap',
+                  `Adding liquidity to ${toMarketLiqA} ${toMarketLiqB}  pool on ${suggestedProtocol}`,
                   'Strategy executed successfully.',
                   <SuccessButton
                     key={'successButton'}

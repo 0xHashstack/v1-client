@@ -47,6 +47,7 @@ import dollarConvertor from '@/utils/functions/dollarConvertor'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
 import TableInfoIcon from '../table/tableIcons/infoIcon'
+import { getZklendusdSpendValue } from '@/Blockchain/scripts/l3interaction'
 
 export interface ICoin {
   name: string
@@ -454,6 +455,28 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
       setnetStrkBorrow(0)
     }
   }, [strkData])
+
+  const [zkLendSpend, setzkLendSpend] = useState<any>([{}])
+
+  useEffect(()=>{
+    const fecth=async()=>{
+      Borrows.map(async (Borrow:any,idx:number)=>{
+        if(Borrow?.l3App==="ZKLEND"){
+          const usdspend=await getZklendusdSpendValue(Borrow?.loanId,Borrow?.loanMarket);
+          const val={
+            BorrowId:Borrow?.loanId,
+            SpendValue:usdspend
+          }
+          const arr=[]
+          arr.push(val);
+          setzkLendSpend(arr);
+        }
+      })
+    }
+    if(Borrows){
+      fecth()
+    }
+  },[Borrows])
 
   return loading ? (
     <Box
@@ -1002,7 +1025,21 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     >
                                       <Text>
                                         Pool (
-                                        {(
+                                        {borrow?.l3App=="ZKLEND" ?
+                                        (zkLendSpend?.find(
+                                          (val: any) =>
+                                            val?.BorrowId ==
+                                            borrow?.loanId
+                                        )?.SpendValue/dollarConvertor(
+                                          borrow?.collateralAmountParsed,
+                                          borrow?.collateralMarket.slice(1),
+                                          oraclePrices
+                                        ) *
+                                      reduxProtocolStats?.find(
+                                        (val: any) =>
+                                          val?.token ==
+                                          borrow?.collateralMarket.slice(1)
+                                      )?.exchangeRateRtokenToUnderlying).toFixed(1):(
                                           ((dollarConvertor(
                                             allSplit?.[lower_bound + idx]
                                               ?.amountA,
@@ -1075,8 +1112,23 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                       justifyContent="space-between"
                                     >
                                       <Text>
-                                        STRK (
-                                        {(
+                                         Jedi STRK (
+                                        {borrow?.l3App=="ZKLEND" ?
+                                        (zkLendSpend?.find(
+                                          (val: any) =>
+                                            val?.BorrowId ==
+                                            borrow?.loanId
+                                        )?.SpendValue/dollarConvertor(
+                                          borrow?.collateralAmountParsed,
+                                          borrow?.collateralMarket.slice(1),
+                                          oraclePrices
+                                        ) *
+                                      reduxProtocolStats?.find(
+                                        (val: any) =>
+                                          val?.token ==
+                                          borrow?.collateralMarket.slice(1)
+                                      )?.exchangeRateRtokenToUnderlying).toFixed(1)
+                                        : (
                                           ((dollarConvertor(
                                             allSplit?.[lower_bound + idx]
                                               ?.amountA,
@@ -1106,7 +1158,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                       </Text>
                                       <Text>
                                         +
-                                        {(
+                                        {borrow?.l3App=="ZKLEND" ?numberFormatterPercentage(0): (
                                           ((((100 *
                                             365 *
                                             oraclePrices.find(
@@ -1991,10 +2043,10 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                               justifyContent="center"
                             >
                               <Box display="flex">
-                                {borrow.spendType == 'LIQUIDITY' ? (
+                                {borrow.spendType == 'LIQUIDITY' &&borrow?.l3App!=="ZKLEND" ? (
                                   allSplit?.[lower_bound + idx]?.tokenA &&
                                   allSplit?.[lower_bound + idx]?.tokenB && (
-                                    <>
+                                     <>
                                       <Box
                                         onMouseEnter={() =>
                                           handleStatusHover('1' + idx)
@@ -2038,7 +2090,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                       >
                                         {statusHoverIndex != '2' + idx ? (
                                           <Image
-                                            src={`/${
+                                            src={ `/${
                                               allSplit?.[lower_bound + idx]
                                                 ?.tokenB
                                             }.svg`}
@@ -2072,7 +2124,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                   >
                                     {statusHoverIndex != '3' + idx ? (
                                       <Image
-                                        src={`/${borrow.currentLoanMarket}.svg`}
+                                        src={borrow?.l3App==="ZKLEND" ?`/${borrow?.loanMarket.slice(1)}.svg`:`/${borrow.currentLoanMarket}.svg`}
                                         alt="Picture of the author"
                                         width="16"
                                         height="16"
@@ -2080,15 +2132,17 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     ) : (
                                       // </Box>
                                       <ExpandedCoinIcon
-                                        asset={borrow.currentLoanMarket}
+                                        asset={borrow?.l3App==="ZKLEND" ?borrow.loanMarket.slice(1):borrow.currentLoanMarket}
                                       />
+                                      
                                     )}
                                   </Box>
                                 )}
                               </Box>
+                              
 
                               <Box fontSize="14px" fontWeight="400">
-                                {borrow.spendType == 'LIQUIDITY' ? (
+                                {borrow.spendType == 'LIQUIDITY' &&borrow?.l3App!=="ZKLEND" ? (
                                   allSplit?.length === 0 ? (
                                     <Skeleton
                                       width="6rem"
@@ -2136,7 +2190,11 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     )
                                   )
                                 ) : (
-                                  numberFormatter(
+                                   borrow?.l3App==="ZKLEND" ?numberFormatter(zkLendSpend?.find(
+                                    (val: any) =>
+                                      val?.BorrowId ==
+                                      borrow?.loanId
+                                  )?.SpendValue): numberFormatter(
                                     borrow?.currentLoanAmountParsed
                                   )
                                 )}
@@ -2181,7 +2239,22 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                       ? '$'
                                       : '-$'
                                     : borrow.spendType == 'LIQUIDITY'
-                                      ? dollarConvertor(
+                                      ? borrow?.l3App==="ZKLEND" ?
+                                      zkLendSpend?.find(
+                                        (val: any) =>
+                                          val?.BorrowId ==
+                                          borrow?.loanId
+                                      )?.SpendValue-dollarConvertor(
+                                        borrow.loanAmountParsed,
+                                        borrow?.loanMarket.slice(1),
+                                        oraclePrices
+                                      ) *
+                                        reduxProtocolStats?.find(
+                                          (val: any) =>
+                                            val?.token ==
+                                            borrow?.loanMarket.slice(1)
+                                        )?.exchangeRateDTokenToUnderlying>=0 ?'$':'-$'
+                                      : dollarConvertor(
                                           allSplit?.[lower_bound + idx]
                                             ?.amountA,
                                           allSplit?.[lower_bound + idx]?.tokenA,
@@ -2249,7 +2322,21 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         )
                                       )
                                     : borrow.spendType == 'LIQUIDITY'
-                                      ? numberFormatter(
+                                      ?borrow?.l3App==="ZKLEND" ?
+                                      numberFormatter(Math.abs(zkLendSpend?.find(
+                                        (val: any) =>
+                                          val?.BorrowId ==
+                                          borrow?.loanId
+                                      )?.SpendValue-(dollarConvertor(
+                                        borrow.loanAmountParsed,
+                                        borrow?.loanMarket.slice(1),
+                                        oraclePrices
+                                      ) *
+                                        reduxProtocolStats?.find(
+                                          (val: any) =>
+                                            val?.token ==
+                                            borrow?.loanMarket.slice(1)
+                                        )?.exchangeRateDTokenToUnderlying))): numberFormatter(
                                           Math.abs(
                                             dollarConvertor(
                                               borrow.loanAmountParsed,
@@ -2337,7 +2424,20 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                       ? '#00D395'
                                       : 'rgb(255 94 94)'
                                     : borrow?.spendType == 'LIQUIDITY'
-                                      ? dollarConvertor(
+                                      ? borrow?.l3App=="ZKLEND" ? zkLendSpend?.find(
+                                        (val: any) =>
+                                          val?.BorrowId ==
+                                          borrow?.loanId
+                                      )?.SpendValue-(dollarConvertor(
+                                        borrow.loanAmountParsed,
+                                        borrow?.loanMarket.slice(1),
+                                        oraclePrices
+                                      ) *
+                                        reduxProtocolStats?.find(
+                                          (val: any) =>
+                                            val?.token ==
+                                            borrow?.loanMarket.slice(1)
+                                        )?.exchangeRateDTokenToUnderlying)>=0?'#00D395':'rgb(255 94 94)' : dollarConvertor(
                                           allSplit?.[lower_bound + idx]
                                             ?.amountA,
                                           allSplit?.[lower_bound + idx]?.tokenA,
@@ -2406,7 +2506,20 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     ? '+'
                                     : '-'
                                   : borrow.spendType == 'LIQUIDITY'
-                                    ? dollarConvertor(
+                                    ? borrow?.l3App==="ZKLEND" ? zkLendSpend?.find(
+                                      (val: any) =>
+                                        val?.BorrowId ==
+                                        borrow?.loanId
+                                    )?.SpendValue-(dollarConvertor(
+                                      borrow.loanAmountParsed,
+                                      borrow?.loanMarket.slice(1),
+                                      oraclePrices
+                                    ) *
+                                      reduxProtocolStats?.find(
+                                        (val: any) =>
+                                          val?.token ==
+                                          borrow?.loanMarket.slice(1)
+                                      )?.exchangeRateDTokenToUnderlying)>=0 ?'+':'-': dollarConvertor(
                                         allSplit?.[lower_bound + idx]?.amountA,
                                         allSplit?.[lower_bound + idx]?.tokenA,
                                         oraclePrices
@@ -2477,7 +2590,25 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         )
                                     )
                                   : borrow.spendType == 'LIQUIDITY'
-                                    ? numberFormatterPercentage(
+                                    ? borrow?.l3App==="ZKLEND" ?numberFormatterPercentage(100*Math.abs((zkLendSpend?.find(
+                                      (val: any) =>
+                                        val?.BorrowId ==
+                                        borrow?.loanId
+                                    )?.SpendValue-(dollarConvertor(
+                                      borrow.loanAmountParsed,
+                                      borrow?.loanMarket.slice(1),
+                                      oraclePrices
+                                    ) *
+                                      reduxProtocolStats?.find(
+                                        (val: any) =>
+                                          val?.token ==
+                                          borrow?.loanMarket.slice(1)
+                                      )?.exchangeRateDTokenToUnderlying))/
+                                      dollarConvertor(
+                                        borrow?.collateralAmountParsed,
+                                        borrow?.collateralMarket.slice(1),
+                                        oraclePrices
+                                      ))): numberFormatterPercentage(
                                         (100 *
                                           Math.abs(
                                             dollarConvertor(

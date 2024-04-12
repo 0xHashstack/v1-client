@@ -82,6 +82,9 @@ function parseLoansData(loansData: any, collateralsData: any): ILoan[] {
           : num.toBigInt(loanData?.l3_integration).toString() ===
             "30814223327519088"
           ? "MY_SWAP"
+          :num.toBigInt(loanData?.l3_integration).toString() ===
+          "134601798676068" 
+          ?"ZKLEND"
           : num.toBigInt(loanData?.l3_integration).toString() ===
             "30814223327519089"
           ? "YAGI"

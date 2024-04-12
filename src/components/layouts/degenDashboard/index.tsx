@@ -305,7 +305,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 
   const [collateralAmounts, setCollateralAmounts] = useState<any>([]) // Initialize with default values
   const [collateralMarkets, setcollateralMarkets] = useState<any>([])
-  const [tokenSelection, setTokenSelection] = useState(Array(44).fill(0))
+  const [tokenSelection, setTokenSelection] = useState(Array(28).fill(0))
   useEffect(() => {
     // Initialize collateralAmounts with the values from Borrows
     if (Borrows.length > 0 && oraclePrices != null) {
@@ -622,7 +622,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
         )
       }
     })
-    return matchedObject ? matchedObject.tvl : 0
+    return matchedObject ? matchedObject.tvl : 1
   }
   // console.log(strkTokenAlloactionData["STRK/ETH"][strkTokenAlloactionData["STRK/ETH"].length-1].allocation,"allocat")
 
@@ -1454,6 +1454,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                           ))
                                     )
                                   )}
+                                  
                                   %
                                 </Text>
                               </Box>
@@ -1613,7 +1614,11 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 setCollateralAmount(
                                   collateralAmounts[lower_bound + idx]
                                 )
-                                setL3App('JEDI_SWAP')
+                                if(borrow?.dappName==="Jediswap"){
+                                  setL3App('JEDI_SWAP')
+                                }else if(borrow?.dappName=="ZKlend"){
+                                  setL3App("ZKLEND")
+                                }
                                 setMethod('ADD_LIQUIDITY')
                                 setToMarketLiqA(borrow?.secondary.split('/')[0])
                                 setToMarketLiqB(borrow?.secondary.split('/')[1])
@@ -1680,6 +1685,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 spendAction={'1'}
                                 pool={borrow?.secondary}
                                 suggestedStrategy={borrow?.format}
+                                suggestedProtocol={borrow?.dappName}
                               />
                             ) : (
                               <TransactionCancelModal
