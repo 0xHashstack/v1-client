@@ -526,7 +526,7 @@ const RegisterCCPModal: React.FC = () => {
 
     try {
       setLoading(true)
-      const res = await axios.post('http://localhost:3000/api/register', {
+      const res = await axios.post('/api/register', {
         address: address,
         socialProfiles: socialProfiles,
       })

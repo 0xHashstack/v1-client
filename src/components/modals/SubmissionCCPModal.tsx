@@ -109,7 +109,7 @@ const SubmissionCCPModal: React.FC = () => {
   const handleSubmissionSubmit = async () => {
     try {
       setLoading(true)
-      const res = await axios.post('http://localhost:3000/api/submission', {
+      const res = await axios.post('/api/submission', {
         address: address,
         contentPlatform: currentSelectedPlatform,
         contentLink: contentLink,
