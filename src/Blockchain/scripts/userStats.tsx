@@ -303,6 +303,7 @@ export async function getNetAprLoans(
   netSpendBalance:any,
   zkLendSpends:any,
 ) { 
+
   let totalBorrowCollateral = 0,
     netBorrowInterest = 0;
     let netApr: number = 0;
@@ -428,7 +429,6 @@ export async function getNetAprLoans(
             loanId:loan?.loanId,
             apr:aprs
           }
-          console.log(netApr,"aprs")
           effectiveaprs.push(data)
           netApr = netApr + ((aprs*dollarConvertor(
             loan?.collateralAmountParsed,
