@@ -530,7 +530,6 @@ const RegisterCCPModal: React.FC = () => {
         address: address,
         socialProfiles: socialProfiles,
       })
-      console.log(res)
       if (res.status === 200) {
         toast.success('Form submitted successfully')
       }
@@ -543,10 +542,6 @@ const RegisterCCPModal: React.FC = () => {
       onClose()
     }
   }
-
-  useEffect(() => {
-    console.log(socialHandle)
-  }, [socialHandle])
 
   const isDisabled = () => {
     for (let i = 0; i < count; i++) {
