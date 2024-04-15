@@ -587,7 +587,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       } else {
         return (
           item.name === pool &&
-          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : 'myswap')
+          item.amm === (l3App == 'Jediswap' ? 'jedi' : l3App=='ZKlend' ?'zklend': 'myswap')
         )
       }
     })
@@ -618,7 +618,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       } else {
         return (
           item.name === pool &&
-          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : 'myswap')
+          item.amm === (l3App == 'Jediswap' ? 'jedi' : l3App=='ZKlend' ?'zklend': 'myswap')
         )
       }
     })
@@ -921,7 +921,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                               getAprByPool(
                                                 poolAprs,
                                                 borrow?.secondary,
-                                                'JEDI_SWAP'
+                                                borrow?.dappName
                                               ) +
                                               getBoostedApr(borrow?.debt) +
                                               (100 *
@@ -936,7 +936,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                                 getTvlByPool(
                                                   poolAprs,
                                                   borrow?.secondary,
-                                                  'JEDI_SWAP'
+                                                  borrow?.dappName
                                                 )) +
                                             (stats?.find(
                                               (stat: any) =>
@@ -1362,7 +1362,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     getAprByPool(
                                       poolAprs,
                                       borrow?.secondary,
-                                      'JEDI_SWAP'
+                                      borrow?.dappName
                                     ) * borrow?.leverage
                                   )}
                                   %
@@ -1372,6 +1372,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 display="flex"
                                 justifyContent="space-between"
                                 gap={10}
+                                mb={borrow?.dappName==="ZKlend" ?"2":"0"}
                               >
                                 <Text>$STRK APR ({borrow?.leverage}x):</Text>
                                 <Text>
@@ -1382,7 +1383,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   %
                                 </Text>
                               </Box>
-                              <Box
+
+                              {borrow?.dappName==="Jediswap" && <Box
                                 display="flex"
                                 justifyContent="space-between"
                                 gap={10}
@@ -1402,13 +1404,13 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       getTvlByPool(
                                         poolAprs,
                                         borrow?.secondary,
-                                        'JEDI_SWAP'
+                                        borrow?.dappName
                                       )) *
                                       borrow?.leverage
                                   )}
                                   %
                                 </Text>
-                              </Box>
+                              </Box>}
                               <hr />
                               <Box
                                 display="flex"
@@ -1428,7 +1430,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                           getAprByPool(
                                             poolAprs,
                                             borrow?.secondary,
-                                            'JEDI_SWAP'
+                                            borrow?.dappName
                                           ) +
                                           getBoostedApr(borrow?.debt) +
                                           (100 *
@@ -1443,7 +1445,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                             getTvlByPool(
                                               poolAprs,
                                               borrow?.secondary,
-                                              'JEDI_SWAP'
+                                              borrow?.dappName
                                             )) +
                                         (stats?.find(
                                           (stat: any) =>
@@ -1502,7 +1504,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     getAprByPool(
                                       poolAprs,
                                       borrow?.secondary,
-                                      'JEDI_SWAP'
+                                      borrow?.dappName
                                     ) +
                                     getBoostedApr(borrow?.debt) +
                                     (100 *
@@ -1514,7 +1516,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       getTvlByPool(
                                         poolAprs,
                                         borrow?.secondary,
-                                        'JEDI_SWAP'
+                                        borrow?.dappName
                                       )) +
                                   (stats?.find(
                                     (stat: any) =>

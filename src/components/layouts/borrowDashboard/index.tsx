@@ -1174,7 +1174,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         %
                                       </Text>
                                     </Box>
-                                    <Box
+                                    {borrow?.l3App!=="ZKLEND" &&<Box
                                       display="flex"
                                       justifyContent="space-between"
                                     >
@@ -1275,7 +1275,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         ).toFixed(2)}
                                         %
                                       </Text>
-                                    </Box>
+                                    </Box>}
                                     <Box
                                       display="flex"
                                       justifyContent="space-between"
@@ -2251,7 +2251,8 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                     '-'
                                   ) : dollarConversions == true ? (
                                     '$' +
-                                    numberFormatter(
+
+                                    (numberFormatter(
                                       dollarConvertor(
                                         allSplit?.[lower_bound + idx]?.amountA,
                                         allSplit?.[lower_bound + idx]?.tokenA,
@@ -2265,7 +2266,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                         allSplit?.[lower_bound + idx]?.tokenB,
                                         oraclePrices
                                       )
-                                    )
+                                    ))
                                   ) : (
                                     numberFormatter(
                                       allSplit?.[lower_bound + idx]?.amountA
@@ -2277,13 +2278,17 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                                   )
                                 ) : dollarConversions == true ? (
                                   '$' +
-                                  numberFormatter(
+                                  (borrow?.l3App=="ZKLEND" ?numberFormatter(zkLendSpend?.find(
+                                    (val: any) =>
+                                      val?.BorrowId ==
+                                      borrow?.loanId
+                                  )?.SpendValue):numberFormatter(
                                     dollarConvertor(
                                       borrow?.currentLoanAmountParsed,
                                       borrow.currentLoanMarket,
                                       oraclePrices
                                     )
-                                  )
+                                  ))
                                 ) : (
                                    borrow?.l3App==="ZKLEND" ?numberFormatter(zkLendSpend?.find(
                                     (val: any) =>
