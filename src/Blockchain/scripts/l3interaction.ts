@@ -364,7 +364,7 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
   }
 }
 
-export async function getZklendusdSpendValue(loan_id:number) {
+export async function getZklendusdSpendValue(loan_id:number,coin: string | undefined) {
   const provider = getProvider();
   const abi=[{
     "type": "function",
@@ -387,6 +387,13 @@ export async function getZklendusdSpendValue(loan_id:number) {
     const res:any = await l3Contract.call("get_usd_value_zklend", [loan_id], {
       blockIdentifier: "pending",
     });
+    const uint256Obj = {
+      low: res[0],
+      high: 0
+  };
+  const amnt=parseAmount(uint256.uint256ToBN(uint256Obj).toString(),tokenDecimalsMap[coin as Token]);
+  return amnt;
+
     ////console.log("supported pools for Jediswap: ", res);
   } catch (error) {
    //console.log("error in getSupportedPoolsJediSwap: ", error);

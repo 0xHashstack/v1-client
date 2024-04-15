@@ -366,11 +366,13 @@ const Degen: NextPage = () => {
   useEffect(() => {
     try {
       const fetchStrats = async () => {
-        const res = await axios.get(
-          'https://metricsapimainnet.hashstack.finance/api/degen/strategy'
-        )
-        if (res?.data) {
-          setstrategies(res?.data)
+        const [res, res3] = await Promise.all([
+          axios.get(`https://metricsapimainnet.hashstack.finance/api/degen/strategy`),
+          axios.get(`https://metricsapimainnet.hashstack.finance/api/degen/strategy/zklend`)
+      ]);
+      const concatenatedArray = res.data.concat(res3.data);
+        if (concatenatedArray) {
+          setstrategies(concatenatedArray)
         }
       }
       fetchStrats()

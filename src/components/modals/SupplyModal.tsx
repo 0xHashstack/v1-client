@@ -845,7 +845,7 @@ const SupplyModal = ({
           }}
           size={{ width: '700px', height: '100px' }}
           isCentered
-          scrollBehavior='inside'
+          scrollBehavior="inside"
         >
           <ModalOverlay bg={backGroundOverLay} mt="3.8rem" />
           <ModalContent

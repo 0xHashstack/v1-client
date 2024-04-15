@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
+import { createSlice } from '@reduxjs/toolkit'
+import { HYDRATE } from 'next-redux-wrapper'
 
 const initialState = {
-  currentDropdown: "",
-  currentModalDropdown: "",
+  currentDropdown: '',
+  currentModalDropdown: '',
   navDropdowns: {
     moreButtonDropdown: false,
     walletConnectionDropdown: false,
@@ -11,6 +11,8 @@ const initialState = {
     languagesDropdown: false,
   },
   modalDropdowns: {
+    // registerCCPDropdown: false,
+    // submissionCCPDropdown: false,
     borrowModalBorrowMarketDropdown: false,
     borrowModalCollateralMarketDropdown: false,
     tradeModalBorrowMarketDropdown: false,
@@ -24,7 +26,7 @@ const initialState = {
     yourBorrowDappDropdown: false,
     yourBorrowPoolDropdown: false,
     yourSupplyAddsupplyDropdown: false,
-    yourSupplyUnstakeDropdown:false,
+    yourSupplyUnstakeDropdown: false,
     yourSupplyWithdrawlDropdown: false,
     spendBorrowBorrowIDDropdown: false,
     spendBorrowBorrowMarketDropdown: false,
@@ -48,8 +50,8 @@ const initialState = {
     coinSelectedAPRByMarket: false,
     coinSelectedExchangeRateRToken: false,
     liquidityMiningTenureDropDown: false,
-    borrowDropdown:false,
-    degenModeDropdown:false,
+    borrowDropdown: false,
+    degenModeDropdown: false,
   },
   metricsDropdowns: {
     yourMetricsMarketDropdown: false,
@@ -57,100 +59,126 @@ const initialState = {
   airdropDropdowns: {
     airdropAndCcpDropdown: false,
   },
-};
+  ccpDropdowns: {
+    registerCCPDropdown1: false,
+    registerCCPDropdown2: false,
+    registerCCPDropdown3: false,
+    registerCCPDropdown4: false,
+    registerCCPDropdown5: false,
+    registerCCPDropdown6: false,
+    registerCCPDropdown7: false,
+    registerCCPDropdown8: false,
+    submissionCCPDropdown: false,
+  },
+}
 
 export const dropdownSlice = createSlice({
-  name: "dropdowns",
+  name: 'dropdowns',
   initialState,
   reducers: {
-    setNavDropdown(state, action) {
-      const dropdownName = action.payload;
-      const dropdowns = { ...state.navDropdowns };
+    setCcpModalDropdown(state, action) {
+      const dropdownName = action.payload
+      const dropdowns = { ...state.ccpDropdowns }
       Object.keys(dropdowns)?.forEach((key) => {
         if (key == dropdownName) {
-          dropdowns[key] = !dropdowns[key];
+          dropdowns[key] = !dropdowns[key]
         } else {
-          dropdowns[key] = false;
+          dropdowns[key] = false
         }
-      });
-      state.currentDropdown = dropdownName;
+      })
+      state.currentDropdown = dropdownName
+      state.ccpDropdowns = dropdowns
+    },
+    setNavDropdown(state, action) {
+      const dropdownName = action.payload
+      const dropdowns = { ...state.navDropdowns }
+      Object.keys(dropdowns)?.forEach((key) => {
+        if (key == dropdownName) {
+          dropdowns[key] = !dropdowns[key]
+        } else {
+          dropdowns[key] = false
+        }
+      })
+      state.currentDropdown = dropdownName
 
-      state.navDropdowns = dropdowns;
+      state.navDropdowns = dropdowns
     },
     setModalDropdown(state, action) {
-      const dropdownName = action.payload;
-      const dropdowns = { ...state.modalDropdowns };
+      const dropdownName = action.payload
+      const dropdowns = { ...state.modalDropdowns }
       Object.keys(dropdowns)?.forEach((key) => {
         if (key === dropdownName) {
-          dropdowns[key] = !dropdowns[key];
+          dropdowns[key] = !dropdowns[key]
         } else {
-          dropdowns[key] = false;
+          dropdowns[key] = false
         }
-      });
-      state.currentDropdown = dropdownName;
+      })
+      state.currentDropdown = dropdownName
 
-      state.modalDropdowns = dropdowns;
+      state.modalDropdowns = dropdowns
     },
     setMetricsDropdown(state, action) {
-      const dropdownName = action.payload;
-      const dropdowns = { ...state.metricsDropdowns };
+      const dropdownName = action.payload
+      const dropdowns = { ...state.metricsDropdowns }
       Object.keys(dropdowns)?.forEach((key) => {
         if (key == dropdownName) {
-          dropdowns[key] = !dropdowns[key];
+          dropdowns[key] = !dropdowns[key]
         } else {
-          dropdowns[key] = false;
+          dropdowns[key] = false
         }
-      });
-      state.currentDropdown = dropdownName;
+      })
+      state.currentDropdown = dropdownName
       // alert(dropdownName);
-      state.metricsDropdowns = dropdowns;
+      state.metricsDropdowns = dropdowns
     },
     setAirdropDropdown(state, action) {
-      const dropdownName = action.payload;
-      const dropdowns = { ...state.airdropDropdowns };
+      const dropdownName = action.payload
+      const dropdowns = { ...state.airdropDropdowns }
       Object.keys(dropdowns)?.forEach((key) => {
         if (key == dropdownName) {
-          dropdowns[key] = !dropdowns[key];
+          dropdowns[key] = !dropdowns[key]
         } else {
-          dropdowns[key] = false;
+          dropdowns[key] = false
         }
-      });
-      state.currentDropdown = dropdownName;
-      state.airdropDropdowns = dropdowns;
+      })
+      state.currentDropdown = dropdownName
+      state.airdropDropdowns = dropdowns
     },
     resetModalDropdowns(state) {
-      state.modalDropdowns = initialState.modalDropdowns;
-      state.currentModalDropdown = initialState.currentModalDropdown;
+      state.modalDropdowns = initialState.modalDropdowns
+      state.currentModalDropdown = initialState.currentModalDropdown
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(resetModalDropdowns, (state) => {
-        state.navDropdowns = initialState.navDropdowns;
-        state.modalDropdowns = initialState.modalDropdowns;
-        state.currentModalDropdown = initialState.currentModalDropdown;
-        state.currentDropdown = initialState.currentDropdown;
+        state.navDropdowns = initialState.navDropdowns
+        state.modalDropdowns = initialState.modalDropdowns
+        state.currentModalDropdown = initialState.currentModalDropdown
+        state.currentDropdown = initialState.currentDropdown
       })
       .addCase(HYDRATE, (state, action) => {
         return {
           ...state,
           ...action.payload.dropdowns,
-        };
-      });
+        }
+      })
   },
-});
+})
 
-export const { setNavDropdown, resetModalDropdowns } = dropdownSlice.actions;
-export const { setModalDropdown } = dropdownSlice.actions;
-export const { setMetricsDropdown } = dropdownSlice.actions;
-export const { setAirdropDropdown } = dropdownSlice.actions;
-export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns;
-export const selectCurrentDropdown = (state) => state.dropdowns.currentDropdown;
-export const selectModalDropDowns = (state) => state.dropdowns.modalDropdowns;
+export const { setCcpModalDropdown } = dropdownSlice.actions
+export const { setNavDropdown, resetModalDropdowns } = dropdownSlice.actions
+export const { setModalDropdown } = dropdownSlice.actions
+export const { setMetricsDropdown } = dropdownSlice.actions
+export const { setAirdropDropdown } = dropdownSlice.actions
+export const selectCcpDropdowns = (state) => state.dropdowns.ccpDropdowns
+export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns
+export const selectCurrentDropdown = (state) => state.dropdowns.currentDropdown
+export const selectModalDropDowns = (state) => state.dropdowns.modalDropdowns
 export const selectCurrentModalDropdown = (state) =>
-  state.dropdowns.currentModalDropdown;
+  state.dropdowns.currentModalDropdown
 export const selectMetricsDropdowns = (state) =>
-  state.dropdowns.metricsDropdowns;
-export default dropdownSlice.reducer;
+  state.dropdowns.metricsDropdowns
+export default dropdownSlice.reducer
 export const selectAirdropDropdowns = (state) =>
-  state.dropdowns.airdropDropdowns;
+  state.dropdowns.airdropDropdowns

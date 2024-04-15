@@ -38,6 +38,7 @@ import {
   selectTransactionRefresh,
   selectYourBorrow,
   selectYourSupply,
+  selectZklendSpends,
   setAllBTCData,
   setAllDAIData,
   setAllETHData,
@@ -90,6 +91,7 @@ import {
   setYourMetricsBorrow,
   setYourMetricsSupply,
   setYourSupply,
+  setZklendSpends,
 } from '@/store/slices/readDataSlice'
 import {
   selectAllDataCount,
@@ -178,6 +180,7 @@ import { getSpendBalance } from '@/Blockchain/scripts/debt'
 import {
   getJediEstimatedLiqALiqBfromLp,
   getMySwapEstimatedLiqALiqBfromLp,
+  getZklendusdSpendValue,
 } from '@/Blockchain/scripts/l3interaction'
 import { processAddress } from '@/Blockchain/stark-constants'
 import {
@@ -256,6 +259,7 @@ const useDataLoader = () => {
   const jedistrkTokenAllocation = useSelector(selectJedistrkTokenAllocation)
   const netSpendBalance = useSelector(selectnetSpendBalance)
   const borrowEffectiveAprs = useSelector(selectBorrowEffectiveAprs)
+  const zkLendSpends=useSelector(selectZklendSpends);
   const [poolsPairs, setPoolPairs] = useState<any>([
     {
       address:
@@ -1447,9 +1451,8 @@ const useDataLoader = () => {
           if (res2?.data) {
             dispatch(setStrkAprData(res2?.data?.Hashstack))
           }
-          const res = await axios.get(
-            `https://metricsapimainnet.hashstack.finance/api/amm-aprs`
-          )
+          const res=await axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`);
+          console.log(res?.data,"data axios")
           if (res?.data) {
             dispatch(setJediSwapPoolAprs(res?.data))
           }
@@ -1639,6 +1642,8 @@ const useDataLoader = () => {
               userLoans[i]?.loanMarket
             )
             promises.push(data)
+          }else{
+            return;
           }
         } else {
           promises.push(Promise.resolve(null))
@@ -2034,8 +2039,9 @@ const useDataLoader = () => {
           netAprCount < transactionRefresh &&
           effectiveApr &&
           strkData &&
-          poolAprs &&
-          allSplit &&
+          poolAprs.length>0 &&
+          zkLendSpends&&
+          // allSplit &&
           netSpendBalance
         ) {
           //console.log("user info called inside - transactionRefresh");
@@ -2055,7 +2061,8 @@ const useDataLoader = () => {
             poolAprs,
             allSplit,
             jedistrkTokenAllocation,
-            netSpendBalance
+            netSpendBalance,
+            zkLendSpends,
             // res?.data?.Jediswap_v1,
           )
 
@@ -2136,6 +2143,7 @@ const useDataLoader = () => {
     netSpendBalance,
     jedistrkTokenAllocation,
     borrowEffectiveAprs,
+    zkLendSpends
   ])
 
   useEffect(() => {
@@ -2462,6 +2470,27 @@ const useDataLoader = () => {
       console.log(err, 'err inf fetching jedi strk')
     }
   }, [transactionRefresh])
+
+  useEffect(() => {
+    const fetch = async () => {
+        let arr:any = [];
+        await Promise.all(userLoans.map(async (Borrow:any, idx:number) => {
+            if (Borrow?.l3App === "ZKLEND") {
+                const usdspend = await getZklendusdSpendValue(Borrow?.loanId, Borrow?.loanMarket);
+                const val = {
+                    BorrowId: Borrow?.loanId,
+                    SpendValue: usdspend
+                };
+                arr.push(val);
+            }
+        }));
+        dispatch(setZklendSpends(arr));
+    };
+    if (userLoans) {
+        fetch();
+    }
+}, [userLoans]);
+
 }
 
 export default useDataLoader

@@ -305,7 +305,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 
   const [collateralAmounts, setCollateralAmounts] = useState<any>([]) // Initialize with default values
   const [collateralMarkets, setcollateralMarkets] = useState<any>([])
-  const [tokenSelection, setTokenSelection] = useState(Array(44).fill(0))
+  const [tokenSelection, setTokenSelection] = useState(Array(40).fill(0))
   useEffect(() => {
     // Initialize collateralAmounts with the values from Borrows
     if (Borrows.length > 0 && oraclePrices != null) {
@@ -587,7 +587,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       } else {
         return (
           item.name === pool &&
-          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : 'myswap')
+          item.amm === (l3App == 'Jediswap' ? 'jedi' : l3App=='ZKlend' ?'zklend': 'myswap')
         )
       }
     })
@@ -618,11 +618,11 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       } else {
         return (
           item.name === pool &&
-          item.amm === (l3App == 'JEDI_SWAP' ? 'jedi' : 'myswap')
+          item.amm === (l3App == 'Jediswap' ? 'jedi' : l3App=='ZKlend' ?'zklend': 'myswap')
         )
       }
     })
-    return matchedObject ? matchedObject.tvl : 0
+    return matchedObject ? matchedObject.tvl : 1
   }
   // console.log(strkTokenAlloactionData["STRK/ETH"][strkTokenAlloactionData["STRK/ETH"].length-1].allocation,"allocat")
 
@@ -921,7 +921,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                               getAprByPool(
                                                 poolAprs,
                                                 borrow?.secondary,
-                                                'JEDI_SWAP'
+                                                borrow?.dappName
                                               ) +
                                               getBoostedApr(borrow?.debt) +
                                               (100 *
@@ -936,7 +936,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                                 getTvlByPool(
                                                   poolAprs,
                                                   borrow?.secondary,
-                                                  'JEDI_SWAP'
+                                                  borrow?.dappName
                                                 )) +
                                             (stats?.find(
                                               (stat: any) =>
@@ -970,7 +970,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                             maxWidth="100rem"
                           >
                             <Box color="#B1B0B5" fontSize="12px">
-                              {borrow.format.slice(9)}
+                              {borrow?.dappName=="Jediswap" ? borrow.format.slice(9):borrow.format.slice(7)}
                             </Box>
                           </Tooltip>
                         </VStack>
@@ -1362,7 +1362,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     getAprByPool(
                                       poolAprs,
                                       borrow?.secondary,
-                                      'JEDI_SWAP'
+                                      borrow?.dappName
                                     ) * borrow?.leverage
                                   )}
                                   %
@@ -1372,6 +1372,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 display="flex"
                                 justifyContent="space-between"
                                 gap={10}
+                                mb={borrow?.dappName==="ZKlend" ?"2":"0"}
                               >
                                 <Text>$STRK APR ({borrow?.leverage}x):</Text>
                                 <Text>
@@ -1382,7 +1383,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   %
                                 </Text>
                               </Box>
-                              <Box
+
+                              {borrow?.dappName==="Jediswap" && <Box
                                 display="flex"
                                 justifyContent="space-between"
                                 gap={10}
@@ -1402,13 +1404,13 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       getTvlByPool(
                                         poolAprs,
                                         borrow?.secondary,
-                                        'JEDI_SWAP'
+                                        borrow?.dappName
                                       )) *
                                       borrow?.leverage
                                   )}
                                   %
                                 </Text>
-                              </Box>
+                              </Box>}
                               <hr />
                               <Box
                                 display="flex"
@@ -1428,7 +1430,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                           getAprByPool(
                                             poolAprs,
                                             borrow?.secondary,
-                                            'JEDI_SWAP'
+                                            borrow?.dappName
                                           ) +
                                           getBoostedApr(borrow?.debt) +
                                           (100 *
@@ -1443,7 +1445,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                             getTvlByPool(
                                               poolAprs,
                                               borrow?.secondary,
-                                              'JEDI_SWAP'
+                                              borrow?.dappName
                                             )) +
                                         (stats?.find(
                                           (stat: any) =>
@@ -1454,6 +1456,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                           ))
                                     )
                                   )}
+                                  
                                   %
                                 </Text>
                               </Box>
@@ -1501,7 +1504,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     getAprByPool(
                                       poolAprs,
                                       borrow?.secondary,
-                                      'JEDI_SWAP'
+                                      borrow?.dappName
                                     ) +
                                     getBoostedApr(borrow?.debt) +
                                     (100 *
@@ -1513,7 +1516,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       getTvlByPool(
                                         poolAprs,
                                         borrow?.secondary,
-                                        'JEDI_SWAP'
+                                        borrow?.dappName
                                       )) +
                                   (stats?.find(
                                     (stat: any) =>
@@ -1613,7 +1616,11 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 setCollateralAmount(
                                   collateralAmounts[lower_bound + idx]
                                 )
-                                setL3App('JEDI_SWAP')
+                                if(borrow?.dappName==="Jediswap"){
+                                  setL3App('JEDI_SWAP')
+                                }else if(borrow?.dappName=="ZKlend"){
+                                  setL3App("ZKLEND")
+                                }
                                 setMethod('ADD_LIQUIDITY')
                                 setToMarketLiqA(borrow?.secondary.split('/')[0])
                                 setToMarketLiqB(borrow?.secondary.split('/')[1])
@@ -1680,6 +1687,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 spendAction={'1'}
                                 pool={borrow?.secondary}
                                 suggestedStrategy={borrow?.format}
+                                suggestedProtocol={borrow?.dappName}
                               />
                             ) : (
                               <TransactionCancelModal
