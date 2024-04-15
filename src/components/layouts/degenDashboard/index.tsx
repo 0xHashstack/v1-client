@@ -970,7 +970,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                             maxWidth="100rem"
                           >
                             <Box color="#B1B0B5" fontSize="12px">
-                              {borrow.format.slice(9)}
+                              {borrow?.dappName=="Jediswap" ? borrow.format.slice(9):borrow.format.slice(7)}
                             </Box>
                           </Tooltip>
                         </VStack>

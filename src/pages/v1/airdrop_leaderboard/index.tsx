@@ -719,9 +719,9 @@ const Campaign: NextPage = () => {
                     <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                       Your Rank
                     </Text>
-                    {userRankCCP ? (
+                    {userRankCCP!==null ? (
                       <Text color="#00D395" fontSize="20px" textAlign="center">
-                        {userRankCCP}
+                        {userRankCCP===0 ? "-":userRankCCP}
                       </Text>
                     ) : (
                       <Skeleton
