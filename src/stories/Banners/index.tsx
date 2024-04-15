@@ -12,7 +12,7 @@ import RedinfoIcon from '@/assets/icons/redinfoicon'
 import TableClose from '@/components/layouts/table/tableIcons/close'
 import { Box, Checkbox as Ch, Text } from '@chakra-ui/react'
 import React, { useState } from 'react'
-
+import Image from 'next/image'
 interface CheckBoxProps {
   /**
    * Is this the principal call to action on the page?
@@ -152,6 +152,7 @@ export const Banners = ({
           </Box>
         </Box>
       </Box>
+
     </Box>
   )
 }

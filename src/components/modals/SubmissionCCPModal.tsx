@@ -109,18 +109,24 @@ const SubmissionCCPModal: React.FC = () => {
   const handleSubmissionSubmit = async () => {
     try {
       setLoading(true)
-      const res = await axios.post('/api/submission', {
+      const res = await axios.post('https://metricsapimainnet.hashstack.finance/api/ccp/submission', {
         address: address,
         contentPlatform: currentSelectedPlatform,
         contentLink: contentLink,
       })
 
       if (res.status === 200) {
-        toast.success('Form submitted successfully')
+        toast.success('Form submitted successfully',
+          {
+            position:'bottom-right'
+          }
+        )
       }
     } catch (error) {
       setLoading(false)
-      toast.error('Error in submitting forms')
+      toast.error('Error in submitting forms', {
+        position:'bottom-right'
+      })
       console.error(error)
     } finally {
       setLoading(false)

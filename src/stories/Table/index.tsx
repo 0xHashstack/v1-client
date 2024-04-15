@@ -345,6 +345,7 @@ export const Table = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
+                    cursor="pointer"
                   >
                     Supply
                   </Box>

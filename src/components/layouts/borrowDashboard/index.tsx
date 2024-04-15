@@ -2118,7 +2118,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                             >
                               {statusHoverIndex != '0' + idx ? (
                                 <Image
-                                  src={`/${borrow.l3App}.svg`}
+                                  src={borrow.l3App!=="ZKLEND" ? `/${borrow.l3App}.svg`:'/Zklend.svg'}
                                   alt="Picture of the author"
                                   width="16"
                                   height="16"
