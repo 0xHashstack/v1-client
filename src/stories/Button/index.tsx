@@ -60,75 +60,48 @@ export const Button = ({
       justify-content="center"
       alignItems="center"
       gap="1.5rem"
+      width="500px"
     >
+
+      <Box display="flex" gap="1rem" alignItems="center">
+        <Text color="grey">Disabled</Text>
+        <Btn
+          background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+          color="#6E7681"
+          size="sm"
+          width="200px"
+          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+          _hover={{
+            bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
+          }}
+        >
+          Supply
+        </Btn>
+      </Box>
+
+<Box display="flex" gap="1rem" alignItems="center">
+<Text color="grey">Hover</Text>
       <Btn
         height="2rem"
         fontSize="12px"
         padding="6px 12px"
-        border="1px solid #3E415C"
-        bgColor="transparent"
+        border="1px solid #6E7681"
+        width="200px"
+        bgColor="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
         _hover={{ bg: 'white', color: 'black' }}
         borderRadius="6px"
-        color="#3E415C"
-      >
-        Supply
-      </Btn>
-
-      <Box
-        key="borrow-details"
-        as="span"
-        position="relative"
-        color="#B1B0B5"
-        borderBottom="1px solid #B1B0B5"
-        fontSize="14px"
-        width="fit-content"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        fontWeight="400"
-        cursor="pointer"
-        _hover={{
-          '::before': {
-            content: '""',
-            position: 'absolute',
-            left: 0,
-            bottom: '-0px',
-            width: 'fit-content',
-            height: '0px',
-            backgroundColor: '#0969DA',
-          },
-        }}
-      >
-        Stake
-      </Box>
-
-      <Btn
-        color="white"
-        bgGradient="linear-gradient(#7956EC, #1B29AE)"
-        paddingY="0.3px"
-        fontSize="sm"
-        height="2rem"
-        _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
-      >
-        Learn more
-      </Btn>
-
-      <Btn
-        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
         color="#6E7681"
-        size="sm"
-        width="100%"
-        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-        _hover={{
-          bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
-        }}
       >
         Supply
       </Btn>
+</Box>
 
+<Box display="flex" gap="1rem" alignItems="center">
+<Text color="grey">Active</Text>
       <Btn
         height="2rem"
         fontSize="12px"
+        width="200px"
         padding="6px 12px"
         border="1px solid #3E415C"
         bgColor="white"
@@ -138,6 +111,42 @@ export const Button = ({
       >
         Supply
       </Btn>
+</Box>
+
+<Box display="flex" gap="1rem" alignItems="center">
+<Text color="grey">Pressed</Text>
+      <Btn
+        height="2rem"
+        fontSize="12px"
+        padding="6px 12px"
+        border="2px solid #6E7681"
+        _hover={{ background: 'white' }}
+        width="200px"
+        bgColor="white"
+        borderRadius="6px"
+        color="black"
+      >
+        Supply
+      </Btn>
+</Box>
+
+<Box display="flex" gap="1rem" alignItems="center">
+<Text color="grey">Progress</Text>
+      <Btn
+        height="2rem"
+        fontSize="12px"
+        width="200px"
+        padding="6px 12px"
+        border="1px solid #3E415C"
+        borderRadius="6px"
+        color="black"
+        style={{
+          background: 'linear-gradient(to right, #00D395 25%, white 25%)',
+        }}
+      >
+        Supply
+      </Btn>
+</Box>
     </Box>
   )
 }
