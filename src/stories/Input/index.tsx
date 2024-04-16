@@ -118,6 +118,7 @@ export const Input = ({ ...props }: InputProps) => {
               paddingInlineEnd="0px"
               placeholder="Enter the number value"
               _disabled={{ color: '#00D395' }}
+              color="#CF222E"
               border="0px"
               _placeholder={{
                 color: '#3E415C',
@@ -160,6 +161,7 @@ export const Input = ({ ...props }: InputProps) => {
               paddingInlineEnd="0px"
               placeholder="Enter the number value"
               _disabled={{ color: '#00D395' }}
+              color="#00D395"
               border="0px"
               _placeholder={{
                 color: '#3E415C',

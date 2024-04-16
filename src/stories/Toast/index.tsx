@@ -44,7 +44,7 @@ export const Toast = ({
       flexDir="column"
       gap="1.5rem"
     >
-      <ToastContainer theme="dark" limit={5} />
+      <ToastContainer theme="dark" limit={5} position="bottom-right" />
 
       <Button
         width="10rem"
@@ -58,7 +58,9 @@ export const Toast = ({
       <Button
         width="10rem"
         onClick={() => {
-          toast.error('Your transaction has been failed!')
+          toast.error('Your transaction has been failed!', {
+            autoClose: false,
+          })
         }}
       >
         Error Toast
@@ -67,28 +69,12 @@ export const Toast = ({
       <Button
         width="10rem"
         onClick={() => {
-          toast.warn('Your transaction is pending!')
-        }}
-      >
-        Warning Toast
-      </Button>
-
-      <Button
-        width="10rem"
-        onClick={() => {
-          toast.info('Your transaction is in progress!')
+          toast.info('Your transaction is in progress!', {
+            autoClose: false,
+          })
         }}
       >
         Info Toast
-      </Button>
-
-      <Button
-        width="10rem"
-        onClick={() => {
-          toast('Your transaction is in progress!')
-        }}
-      >
-        Default Toast
       </Button>
     </Box>
   )

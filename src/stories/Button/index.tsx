@@ -1,4 +1,4 @@
-import { Button as Btn } from '@chakra-ui/react'
+import { Box, Button as Btn, Text } from '@chakra-ui/react'
 import React from 'react'
 
 import './index.css'
@@ -39,6 +39,7 @@ export const Button = ({
   const mode = primary
     ? 'storybook-button--primary'
     : 'storybook-button--secondary'
+
   return (
     // <button
     //   type="button"
@@ -52,17 +53,53 @@ export const Button = ({
     //     }
     //   `}</style>
     // </button>
-    <Btn
-      height="2rem"
-      fontSize="12px"
-      padding="6px 12px"
-      border="1px solid #3E415C"
-      bgColor="transparent"
-      _hover={{ bg: 'white', color: 'black' }}
-      borderRadius="6px"
-      color="#3E415C"
+    <Box
+      display="flex"
+      flexDir="column"
+      justify-content="center"
+      alignItems="center"
+      gap="1.5rem"
     >
-      Supply
-    </Btn>
+      <Btn
+        height="2rem"
+        fontSize="12px"
+        padding="6px 12px"
+        border="1px solid #3E415C"
+        bgColor="transparent"
+        _hover={{ bg: 'white', color: 'black' }}
+        borderRadius="6px"
+        color="#3E415C"
+      >
+        Supply
+      </Btn>
+
+      <Box
+        key="borrow-details"
+        as="span"
+        position="relative"
+        color="#B1B0B5"
+        borderBottom="1px solid #B1B0B5"
+        fontSize="14px"
+        width="fit-content"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        fontWeight="400"
+        cursor="pointer"
+        _hover={{
+          '::before': {
+            content: '""',
+            position: 'absolute',
+            left: 0,
+            bottom: '-0px',
+            width: 'fit-content',
+            height: '0px',
+            backgroundColor: '#0969DA',
+          },
+        }}
+      >
+        Stake
+      </Box>
+    </Box>
   )
 }
