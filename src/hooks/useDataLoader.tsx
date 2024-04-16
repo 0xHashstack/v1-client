@@ -1642,8 +1642,8 @@ const useDataLoader = () => {
               userLoans[i]?.loanMarket
             )
             promises.push(data)
-          }else{
-            return;
+          }else if(userLoans[i]?.l3App == 'ZKLEND') {
+            
           }
         } else {
           promises.push(Promise.resolve(null))

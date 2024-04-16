@@ -391,7 +391,7 @@ export async function getZklendusdSpendValue(loan_id:number,coin: string | undef
       low: res[0],
       high: 0
   };
-  const amnt=parseAmount(uint256.uint256ToBN(uint256Obj).toString(),tokenDecimalsMap[coin as Token]);
+  const amnt=parseAmount(uint256.uint256ToBN(uint256Obj).toString(),6);
   return amnt;
 
     ////console.log("supported pools for Jediswap: ", res);
