@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Input } from '.'
+import { Header } from '.'
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Example/Input',
-  component: Input,
+  title: 'Example/Header',
+  component: Header,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-} satisfies Meta<typeof Input>
+} satisfies Meta<typeof Header>
 
 export default meta
 type Story = StoryObj<typeof meta>

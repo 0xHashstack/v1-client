@@ -13,6 +13,7 @@ import TableClose from '@/components/layouts/table/tableIcons/close'
 import { Box, Checkbox as Ch, Text } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import Image from 'next/image'
+import TableInfoIcon from '@/components/layouts/table/tableIcons/infoIcon'
 interface CheckBoxProps {
   /**
    * Is this the principal call to action on the page?
@@ -23,6 +24,13 @@ interface CheckBoxProps {
    * What background color to use
    */
   backgroundColor?: string
+
+  variants?:{
+    INFO: "info",
+    DANGER: "danger",
+    SUCCESS: "success",
+    WARNING: "warning",
+  }
   /**
    * How large should the button be?
    */
@@ -92,6 +100,39 @@ export const Banners = ({
           to rtokens 1rUSDC = 1.0255USDC
         </Box>
       </Box>
+
+      <Box
+                        display="flex"
+                        flexDirection='column'
+                        justifyContent="left"
+                        w="100%"
+                        pb="2"
+                        pt="4"
+                        gap=".3rem"
+                      >
+                                <Text color="white" fontSize="sm">
+          Info 2.0
+        </Text>
+                        <Box
+                          width="full"
+                          display="flex"
+                          bg="#676D9A4D"
+                          fontSize="12px"
+                          p="4"
+                          fontStyle="normal"
+                          fontWeight="400"
+                          borderRadius="6px"
+                          border="1px solid #3841AA"
+                          color="#F0F0F5"
+                          gap=".7rem"
+                        >
+                          <Box mt="3px">
+                            <TableInfoIcon />
+                          </Box>
+                          The staked rTokens cannot be used as collateral until
+                          unstaked.
+                        </Box>
+                      </Box>
 
       <Box display="flex" flexDirection="column" gap=".3rem">
         <Text color="white" fontSize="sm">
