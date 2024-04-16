@@ -15,8 +15,7 @@ export const Checkbox = ({ ...props }: CheckboxProps) => {
       {...props}
     >
       <Text fontSize="sm" color="#6E7681" fontStyle="normal" ml=".4rem">
-        Ticking would stake the received rTokens unchecking wouldn&apos;t stake
-        rTokens
+        I would like to stake the rTokens.
       </Text>
     </Cb>
   )
