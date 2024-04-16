@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {
   args: {
     label:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero voluptatem illum, animi nemo consectetur sint doloremque saepe earum placeat suscipit.',
-    children: 'Hover over me!',
+      'This is return you would make if you closed the loan now. ROE is Return on equity.',
+    children: 'Current ROE',
   },
 }

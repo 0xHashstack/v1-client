@@ -69,7 +69,7 @@ export const Toast = ({
       <Button
         width="10rem"
         onClick={() => {
-          toast.info('Your transaction is in progress!', {
+          toast.info('Your transaction is pending!', {
             autoClose: false,
           })
         }}
