@@ -1,55 +1,43 @@
-import { Box, NumberInput, NumberInputField, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Input as In,
+  NumberInput,
+  NumberInputField,
+  Text,
+} from '@chakra-ui/react'
 
 interface InputProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean
-
-  checked?:boolean
-
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large'
-  /**
-   * Button contents
-   */
-  label: string
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void
+  value: string | number
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export const Input = ({ ...props }: InputProps) => {
-  {
-    /* border={`${
-    depositAmount > walletBalance
-      ? 
-      : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-          depositAmount > maximumDepositAmount
-        ? '1px solid #CF222E'
-        : depositAmount < 0
-          ? '1px solid #CF222E'
-          : isNaN(depositAmount)
-            ? '1px solid #CF222E'
-            : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                depositAmount < minimumDepositAmount &&
-                depositAmount > 0
-              ? '1px solid #CF222E'
-              : depositAmount > 0 &&
-                  depositAmount <= walletBalance
-                ? '1px solid #00D395'
-                : '1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
-  }`} */
-  }
+export const Input = ({ value, onChange }: InputProps) => {
   return (
     <>
+      <Box display="flex" flexDirection="column" gap=".1rem" mt=".8rem">
+        <Text color="#f9f8f9" fontSize="sm">
+          Default (Text)
+        </Text>
+        <Box
+          width="16rem"
+          color="white"
+          borderRadius="6px"
+          border="1px solid #2B2F35"
+          justifyContent="space-between"
+          mt="0.3rem"
+        >
+          <In
+            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+            placeholder={'Enter the string value'}
+            fontSize="sm"
+            _placeholder={{ color: '#676D9A' }}
+            color="#f2f2f2"
+            value={value}
+            onChange={onChange}
+          />
+        </Box>
+      </Box>
+
       <Box display="flex" flexDirection="column" gap=".1rem" mt=".8rem">
         <Text color="#f9f8f9" fontSize="sm">
           Default

@@ -1,45 +1,27 @@
 import { Box, Checkbox as Cb, Text } from '@chakra-ui/react'
 
 interface CheckBoxProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean
-
-  checked?:boolean
-
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large'
-  /**
-   * Button contents
-   */
-  label: string
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void
+  label?: string
 }
 
-export const Checkbox = ({ ...props }: CheckBoxProps) => {
+export const Checkbox = ({ label }: CheckBoxProps) => {
   return (
     <Box display="flex" flexDirection="column" gap="1rem">
-    <Cb size="md" colorScheme="customPurple" borderColor="#2B2F35" {...props}>
-      <Text fontSize="sm" color="#6E7681" fontStyle="normal" ml=".2rem">
-        I would like to stake the rTokens.
-      </Text>
-    </Cb>
-    <Cb defaultChecked={true} size="md" colorScheme="customPurple" borderColor="#2B2F35" {...props}>
-      <Text fontSize="sm" color="#6E7681" fontStyle="normal" ml=".2rem">
-        I would like to stake the rTokens.
-      </Text>
-    </Cb>
-
+      <Cb size="md" colorScheme="customPurple" borderColor="#2B2F35">
+        <Text fontSize="sm" color="#6E7681" fontStyle="normal" ml=".2rem">
+          {label}
+        </Text>
+      </Cb>
+      <Cb
+        defaultChecked={true}
+        size="md"
+        colorScheme="customPurple"
+        borderColor="#2B2F35"
+      >
+        <Text fontSize="sm" color="#6E7681" fontStyle="normal" ml=".2rem">
+          {label}
+        </Text>
+      </Cb>
     </Box>
   )
 }

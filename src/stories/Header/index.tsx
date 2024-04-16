@@ -1,57 +1,11 @@
-import { Box, HStack, NumberInput, NumberInputField, Skeleton, Text } from '@chakra-ui/react'
-import Image from "next/image";
-import Link from "next/link";
-interface InputProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean
+import { Box, HStack, Skeleton, Text } from '@chakra-ui/react'
+import Image from 'next/image'
 
-  checked?:boolean
+export const Header = () => {
+  const account =
+    '0x003b9aeeb4e47e59cce59fb6b6892197e8143ceba85f5951ba95d303d67bd6c2'
 
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large'
-  /**
-   * Button contents
-   */
-  label: string
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void
-}
-
-export const Header = ({ ...props }: InputProps) => {
-  {
-    /* border={`${
-    depositAmount > walletBalance
-      ? 
-      : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-          depositAmount > maximumDepositAmount
-        ? '1px solid #CF222E'
-        : depositAmount < 0
-          ? '1px solid #CF222E'
-          : isNaN(depositAmount)
-            ? '1px solid #CF222E'
-            : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                depositAmount < minimumDepositAmount &&
-                depositAmount > 0
-              ? '1px solid #CF222E'
-              : depositAmount > 0 &&
-                  depositAmount <= walletBalance
-                ? '1px solid #00D395'
-                : '1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
-  }`} */
-  }
-  const account="0x003b9aeeb4e47e59cce59fb6b6892197e8143ceba85f5951ba95d303d67bd6c2"
   return (
-    <>
     <HStack
       zIndex="100"
       pos="fixed"
@@ -69,27 +23,27 @@ export const Header = ({ ...props }: InputProps) => {
     >
       <HStack
         display="flex"
-        justifyContent={"flex-start"}
+        justifyContent={'flex-start'}
         alignItems="center"
         width="60%"
-        gap={"4px"}
+        gap={'4px'}
         marginLeft="2rem"
       >
-          <Box
-            height="100%"
-            display="flex"
-            alignItems="center"
-            minWidth={"140px"}
-            marginRight="1.4em"
-            cursor="pointer"
-          >
-            <Image
-              src="/hashstackLogo.svg"
-              alt="Navbar Logo"
-              height="32"
-              width="140"
-            />
-          </Box>
+        <Box
+          height="100%"
+          display="flex"
+          alignItems="center"
+          minWidth={'140px'}
+          marginRight="1.4em"
+          cursor="pointer"
+        >
+          <Image
+            src="/hashstackLogo.svg"
+            alt="Navbar Logo"
+            height="32"
+            width="140"
+          />
+        </Box>
 
         <Box
           padding="16px 12px"
@@ -98,23 +52,21 @@ export const Header = ({ ...props }: InputProps) => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
-          color={
-              "#00D395"
-          }
+          color={'#00D395'}
         >
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            gap={"8px"}
+            gap={'8px'}
           >
-              <Image
-                src={"/dashboardIcon.svg"}
-                alt="Picture of the author"
-                width="16"
-                height="16"
-                style={{ cursor: "pointer" }}
-              />
+            <Image
+              src={'/dashboardIcon.svg'}
+              alt="Picture of the author"
+              width="16"
+              height="16"
+              style={{ cursor: 'pointer' }}
+            />
             <Text fontSize="14px">Dashboard</Text>
           </Box>
         </Box>
@@ -124,65 +76,63 @@ export const Header = ({ ...props }: InputProps) => {
             padding="16px 12px"
             fontSize="12px"
             borderRadius="5px"
-            cursor={ "pointer" }
+            cursor={'pointer'}
             marginBottom="0px"
             _hover={{
               color: `#6e7681`,
             }}
           >
-        <Box
-          cursor={ 'pointer' }
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          gap={'8px'}
-          color={ 'gray' }
-        >
-            <Image
-              src="/stake.svg"
-              alt="Picture of the author"
-              width="16"
-              height="16"
-              style={{ cursor: 'pointer'  }}
-            />
-          <Box fontSize="14px">
-            <Box position="relative" display="inline-block">
-              <Text color="#676D9A">Stake</Text>
+            <Box
+              cursor={'pointer'}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={'8px'}
+              color={'gray'}
+            >
+              <Image
+                src="/stake.svg"
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: 'pointer' }}
+              />
+              <Box fontSize="14px">
+                <Box position="relative" display="inline-block">
+                  <Text color="#676D9A">Stake</Text>
+                </Box>
+              </Box>
             </Box>
-          </Box>
-        </Box>
           </Box>
         }
 
-        {process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ? (
+        {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
           <Box
             padding="16px 12px"
             fontSize="12px"
             borderRadius="5px"
             cursor="pointer"
             marginBottom="0px"
-            color={`${
-              "#676D9A"
-            }`}
+            color={`${'#676D9A'}`}
           >
             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
-              gap={"8px"}
+              gap={'8px'}
             >
-                <Image
-                  src={"/contributeEarnIcon.svg"}
-                  alt="Picture of the author"
-                  width="16"
-                  height="16"
-                  style={{ cursor: "pointer" }}
-                />
+              <Image
+                src={'/contributeEarnIcon.svg'}
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: 'pointer' }}
+              />
               <Text fontSize="14px">More</Text>
             </Box>
           </Box>
         ) : (
-          ""
+          ''
         )}
       </HStack>
       <HStack
@@ -235,10 +185,10 @@ export const Header = ({ ...props }: InputProps) => {
                 >
                   <Image
                     alt=""
-                    src={"/starknetLogoBordered.svg"}
+                    src={'/starknetLogoBordered.svg'}
                     width="16"
                     height="16"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                   />
                   <Text
                     fontSize="14px"
@@ -249,28 +199,25 @@ export const Header = ({ ...props }: InputProps) => {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    {`${account.substring(
-                      0,
-                      3
-                    )}...${account.substring(
+                    {`${account.substring(0, 3)}...${account.substring(
                       account.length - 9,
                       account.length
-                    )}`}{" "}
+                    )}`}{' '}
                   </Text>
                 </Box>
               ) : (
                 <Skeleton width="7rem" height="100%" borderRadius="2px" />
               )}
               <Box position="absolute" right="0.7rem">
-                  <Image
-                    src={"/connectWalletArrowDown.svg"}
-                    alt="arrow"
-                    width="16"
-                    height="16"
-                    style={{
-                      cursor: "pointer",
-                    }}
-                  />
+                <Image
+                  src={'/connectWalletArrowDown.svg'}
+                  alt="arrow"
+                  width="16"
+                  height="16"
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                />
               </Box>
             </Box>
           </Box>
@@ -302,7 +249,7 @@ export const Header = ({ ...props }: InputProps) => {
                 width="18"
                 height="18"
                 style={{
-                  cursor: "pointer",
+                  cursor: 'pointer',
                 }}
               />
             </Box>
@@ -310,6 +257,5 @@ export const Header = ({ ...props }: InputProps) => {
         </HStack>
       </HStack>
     </HStack>
-    </>
   )
 }

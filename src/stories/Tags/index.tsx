@@ -1,40 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import Image from 'next/image'
 
-interface TabsProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large'
-  /**
-   * Button contents
-   */
-  label: string
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void
-}
-
-/**
- * Primary UI component for user interaction
- */
-
-export const Tags = ({
-  primary = false,
-  size = 'medium',
-  backgroundColor,
-  label,
-  ...props
-}: TabsProps) => {
+export const Tags = () => {
   return (
     <Box
       display="flex"

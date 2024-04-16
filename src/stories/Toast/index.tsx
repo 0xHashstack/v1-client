@@ -1,41 +1,7 @@
 import { Box, Button } from '@chakra-ui/react'
-import Image from 'next/image'
 import { ToastContainer, toast } from 'react-toastify'
 
-interface TabsProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large'
-  /**
-   * Button contents
-   */
-  label: string
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void
-}
-
-/**
- * Primary UI component for user interaction
- */
-
-export const Toast = ({
-  primary = false,
-  size = 'medium',
-  backgroundColor,
-  label,
-  ...props
-}: TabsProps) => {
+export const Toast = () => {
   return (
     <Box
       display="flex"

@@ -1,33 +1,7 @@
 import Stats from '@/components/layouts/stats'
-import { Checkbox as Cb, Flex, HStack, Text } from '@chakra-ui/react'
+import { Flex, HStack } from '@chakra-ui/react'
 
-interface CheckBoxProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean
-
-  checked?:boolean
-
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large'
-  /**
-   * Button contents
-   */
-  label: string
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void
-}
-
-export const Cards = ({ ...props }: CheckBoxProps) => {
+export const Cards = () => {
   return (
     <Flex
       display="flex"
@@ -46,20 +20,20 @@ export const Cards = ({ ...props }: CheckBoxProps) => {
         flexWrap="wrap"
       >
         <Stats
-          header={["Your Net Worth", "Your Supply", "Your Borrow", "Net APR"]}
-          statsData={[199,200,300,121.45]}
+          header={['Your Net Worth', 'Your Supply', 'Your Borrow', 'Net APR']}
+          statsData={[199, 200, 300, 121.45]}
           arrowHide={false}
-          onclick={()=>{}}
+          onclick={() => {}}
         />
         <Stats
           header={[
-            "Total Reserves",
-            "Available Reserves",
-            "Avg. Asset Utillization",
+            'Total Reserves',
+            'Available Reserves',
+            'Avg. Asset Utillization',
           ]}
-          statsData={[1000000,200000,80]}
+          statsData={[1000000, 200000, 80]}
           arrowHide={false}
-          onclick={()=>{}}
+          onclick={() => {}}
         />
       </HStack>
     </Flex>
