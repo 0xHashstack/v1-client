@@ -1,4 +1,4 @@
-import { Checkbox as Cb, Text } from '@chakra-ui/react'
+import { Box, Checkbox as Cb, Text } from '@chakra-ui/react'
 
 interface CheckBoxProps {
   /**
@@ -28,10 +28,18 @@ interface CheckBoxProps {
 
 export const Checkbox = ({ ...props }: CheckBoxProps) => {
   return (
+    <Box display="flex" flexDirection="column" gap="1rem">
     <Cb size="md" colorScheme="customPurple" borderColor="#2B2F35" {...props}>
       <Text fontSize="sm" color="#6E7681" fontStyle="normal" ml=".2rem">
         I would like to stake the rTokens.
       </Text>
     </Cb>
+    <Cb defaultChecked={true} size="md" colorScheme="customPurple" borderColor="#2B2F35" {...props}>
+      <Text fontSize="sm" color="#6E7681" fontStyle="normal" ml=".2rem">
+        I would like to stake the rTokens.
+      </Text>
+    </Cb>
+
+    </Box>
   )
 }

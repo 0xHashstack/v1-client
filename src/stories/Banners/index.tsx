@@ -25,11 +25,11 @@ interface CheckBoxProps {
    */
   backgroundColor?: string
 
-  variants?:{
-    INFO: "info",
-    DANGER: "danger",
-    SUCCESS: "success",
-    WARNING: "warning",
+  variants?: {
+    INFO: 'info'
+    DANGER: 'danger'
+    SUCCESS: 'success'
+    WARNING: 'warning'
   }
   /**
    * How large should the button be?
@@ -102,37 +102,36 @@ export const Banners = ({
       </Box>
 
       <Box
-                        display="flex"
-                        flexDirection='column'
-                        justifyContent="left"
-                        w="100%"
-                        pb="2"
-                        pt="4"
-                        gap=".3rem"
-                      >
-                                <Text color="white" fontSize="sm">
+        display="flex"
+        flexDirection="column"
+        justifyContent="left"
+        w="100%"
+        pb="2"
+        pt="4"
+        gap=".3rem"
+      >
+        <Text color="white" fontSize="sm">
           Info 2.0
         </Text>
-                        <Box
-                          width="full"
-                          display="flex"
-                          bg="#676D9A4D"
-                          fontSize="12px"
-                          p="4"
-                          fontStyle="normal"
-                          fontWeight="400"
-                          borderRadius="6px"
-                          border="1px solid #3841AA"
-                          color="#F0F0F5"
-                          gap=".7rem"
-                        >
-                          <Box mt="3px">
-                            <TableInfoIcon />
-                          </Box>
-                          The staked rTokens cannot be used as collateral until
-                          unstaked.
-                        </Box>
-                      </Box>
+        <Box
+          width="full"
+          display="flex"
+          bg="#676D9A4D"
+          fontSize="12px"
+          p="4"
+          fontStyle="normal"
+          fontWeight="400"
+          borderRadius="6px"
+          border="1px solid #3841AA"
+          color="#F0F0F5"
+          gap=".7rem"
+        >
+          <Box mt="3px">
+            <TableInfoIcon />
+          </Box>
+          The staked rTokens cannot be used as collateral until unstaked.
+        </Box>
+      </Box>
 
       <Box display="flex" flexDirection="column" gap=".3rem">
         <Text color="white" fontSize="sm">
@@ -167,7 +166,8 @@ export const Banners = ({
 
         <Box
           display="flex"
-          bg="#4D3C03"
+          border="1px solid #A48007"
+          bg="#A480074D"
           fontSize="14px"
           p="8px"
           fontStyle="normal"
@@ -194,7 +194,6 @@ export const Banners = ({
           </Box>
         </Box>
       </Box>
-
     </Box>
   )
 }
