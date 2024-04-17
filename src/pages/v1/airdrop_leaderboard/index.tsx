@@ -13,7 +13,6 @@ import {
 import { useAccount } from '@starknet-react/core'
 import axios from 'axios'
 import { NextPage } from 'next'
-import Link from 'next/link'
 import { default as React, useEffect, useRef, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
@@ -31,7 +30,6 @@ import SubmissionCCPModal from '@/components/modals/SubmissionCCPModal'
 import { default as useDataLoader } from '@/hooks/useDataLoader'
 import {
   selectAirdropDropdowns,
-  selectNavDropdowns,
   setAirdropDropdown,
 } from '@/store/slices/dropdownsSlice'
 import {
@@ -249,10 +247,10 @@ const Campaign: NextPage = () => {
   const totalSupply = useSelector(selectYourSupply)
   const exisitingLink = useSelector(selectExistingLink)
   const airdropDropdowns = useSelector(selectAirdropDropdowns)
-  const navDropdowns = useSelector(selectNavDropdowns)
 
   const dispatch = useDispatch()
   const { address } = useAccount()
+
   useDataLoader()
 
   const ddRef = useRef<HTMLDivElement>(null)
@@ -719,9 +717,9 @@ const Campaign: NextPage = () => {
                     <Text color="#B1B0B5" fontSize="14px" alignItems="center">
                       Your Rank
                     </Text>
-                    {userRankCCP!==null ? (
+                    {userRankCCP !== null ? (
                       <Text color="#00D395" fontSize="20px" textAlign="center">
-                        {userRankCCP===0 ? "-":userRankCCP}
+                        {userRankCCP === 0 ? '-' : userRankCCP}
                       </Text>
                     ) : (
                       <Skeleton
