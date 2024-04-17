@@ -1,5 +1,3 @@
-import SliderPointer from '@/assets/icons/sliderPointer'
-import SliderPointerWhite from '@/assets/icons/sliderPointerWhite'
 import {
   Box,
   Slider as SliderChakra,
@@ -7,47 +5,13 @@ import {
   SliderMark,
   SliderThumb,
   SliderTrack,
-  Spinner,
-  Tab,
-  TabList,
-  Tabs,
-  Text,
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
-interface TabsProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large'
-  /**
-   * Button contents
-   */
-  label: string
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void
-}
+import SliderPointer from '@/assets/icons/sliderPointer'
+import SliderPointerWhite from '@/assets/icons/sliderPointerWhite'
 
-/**
- * Primary UI component for user interaction
- */
-export const Slider = ({
-  primary = false,
-  size = 'medium',
-  backgroundColor,
-  label,
-  ...props
-}: TabsProps) => {
+export const Slider = () => {
   const [sliderValue, setSliderValue] = useState(50)
 
   return (

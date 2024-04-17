@@ -1,3 +1,6 @@
+import { Box, Text } from '@chakra-ui/react'
+import React, { useState } from 'react'
+
 import { NativeToken } from '@/Blockchain/interfaces/interfaces'
 import ArrowUp from '@/assets/icons/arrowup'
 import BTCLogo from '@/assets/icons/coins/btc'
@@ -8,42 +11,15 @@ import USDCLogo from '@/assets/icons/coins/usdc'
 import USDTLogo from '@/assets/icons/coins/usdt'
 import DropdownUp from '@/assets/icons/dropdownUpIcon'
 import numberFormatter from '@/utils/functions/numberFormatter'
-import { Box, Text } from '@chakra-ui/react'
-import React, { useState } from 'react'
 
 interface DropdownProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large'
-  /**
-   * Button contents
-   */
-  label: string
-  /**
-   * Optional click handler
-   */
   onClick?: () => void
 }
 
 /**
  * Primary UI component for user interaction
  */
-export const Dropdown = ({
-  primary = false,
-  size = 'medium',
-  backgroundColor,
-  label,
-  ...props
-}: DropdownProps) => {
+export const Dropdown = ({ onClick }: DropdownProps) => {
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case 'BTC':
@@ -66,7 +42,12 @@ export const Dropdown = ({
   const coins: NativeToken[] = ['BTC', 'USDT', 'USDC', 'ETH', 'STRK']
 
   return (
-    <Box flexDirection="column" width="380px" {...props} userSelect="none">
+    <Box
+      flexDirection="column"
+      width="380px"
+      userSelect="none"
+      onClick={onClick}
+    >
       <Box
         display="flex"
         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"

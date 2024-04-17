@@ -1,23 +1,27 @@
-import { Checkbox as Cb, Text } from '@chakra-ui/react'
+import { Box, Checkbox as Cb, Text } from '@chakra-ui/react'
 
-interface CheckboxProps {}
+interface CheckBoxProps {
+  label?: string
+}
 
-export const Checkbox = ({ ...props }: CheckboxProps) => {
+export const Checkbox = ({ label }: CheckBoxProps) => {
   return (
-    <Cb
-      defaultChecked
-      mt="0.7rem"
-      w="410px"
-      size="lg"
-      iconSize="1rem"
-      _focus={{ boxShadow: 'none' }}
-      borderColor="#2B2F35"
-      {...props}
-    >
-      <Text fontSize="sm" color="#6E7681" fontStyle="normal" ml=".4rem">
-        Ticking would stake the received rTokens unchecking wouldn&apos;t stake
-        rTokens
-      </Text>
-    </Cb>
+    <Box display="flex" flexDirection="column" gap="1rem">
+      <Cb size="md" colorScheme="customPurple" borderColor="#2B2F35">
+        <Text fontSize="sm" color="#6E7681" fontStyle="normal" ml=".2rem">
+          {label}
+        </Text>
+      </Cb>
+      <Cb
+        defaultChecked={true}
+        size="md"
+        colorScheme="customPurple"
+        borderColor="#2B2F35"
+      >
+        <Text fontSize="sm" color="#6E7681" fontStyle="normal" ml=".2rem">
+          {label}
+        </Text>
+      </Cb>
+    </Box>
   )
 }

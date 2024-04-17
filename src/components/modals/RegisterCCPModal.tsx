@@ -15,8 +15,12 @@ import {
   Tooltip,
   useDisclosure,
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useAccount } from '@starknet-react/core'
+import axios from 'axios'
+import posthog from 'posthog-js'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
 import ArrowUp from '@/assets/icons/arrowup'
 import DropdownUp from '@/assets/icons/dropdownUpIcon'
@@ -26,9 +30,6 @@ import {
   selectCcpDropdowns,
   setCcpModalDropdown,
 } from '@/store/slices/dropdownsSlice'
-import { useAccount } from '@starknet-react/core'
-import axios from 'axios'
-import { toast } from 'react-toastify'
 
 const ApplicationList = [
   {
@@ -126,6 +127,10 @@ const RegisterCCPModal: React.FC = () => {
   }
 
   const handleRegisterSubmit = async () => {
+    posthog.capture('Connect Socials Submit Button Clicked', {
+      Clicked: true,
+    })
+
     const finalLinkArray = []
     for (let i = 0; i < socialHandle.length; i++) {
       if (
@@ -526,19 +531,22 @@ const RegisterCCPModal: React.FC = () => {
 
     try {
       setLoading(true)
-      const res = await axios.post('https://metricsapimainnet.hashstack.finance/api/ccp/registration', {
-        address: address,
-        socialProfiles: socialProfiles,
-      })
+      const res = await axios.post(
+        'https://metricsapimainnet.hashstack.finance/api/ccp/registration',
+        {
+          address: address,
+          socialProfiles: socialProfiles,
+        }
+      )
       if (res.status === 200) {
-        toast.success('Form submitted successfully',          {
-          position:'bottom-right'
+        toast.success('Form submitted successfully', {
+          position: 'bottom-right',
         })
       }
     } catch (error) {
       setLoading(false)
-      toast.error('Error in submitting forms',          {
-        position:'bottom-right'
+      toast.error('Error in submitting forms', {
+        position: 'bottom-right',
       })
       console.error(error)
     } finally {
@@ -596,7 +604,12 @@ const RegisterCCPModal: React.FC = () => {
   return (
     <div>
       <Button
-        onClick={() => onOpen()}
+        onClick={() => {
+          posthog.capture('Connect Socials Clicked', {
+            Clicked: true,
+          })
+          onOpen()
+        }}
         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
         color="#f2f2f2"
         size="sm"

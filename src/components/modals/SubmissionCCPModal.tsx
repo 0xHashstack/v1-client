@@ -109,23 +109,24 @@ const SubmissionCCPModal: React.FC = () => {
   const handleSubmissionSubmit = async () => {
     try {
       setLoading(true)
-      const res = await axios.post('https://metricsapimainnet.hashstack.finance/api/ccp/submission', {
-        address: address,
-        contentPlatform: currentSelectedPlatform,
-        contentLink: contentLink,
-      })
+      const res = await axios.post(
+        'https://metricsapimainnet.hashstack.finance/api/ccp/submission',
+        {
+          address: address,
+          contentPlatform: currentSelectedPlatform,
+          contentLink: contentLink,
+        }
+      )
 
       if (res.status === 200) {
-        toast.success('Form submitted successfully',
-          {
-            position:'bottom-right'
-          }
-        )
+        toast.success('Form submitted successfully', {
+          position: 'bottom-right',
+        })
       }
     } catch (error) {
       setLoading(false)
       toast.error('Error in submitting forms', {
-        position:'bottom-right'
+        position: 'bottom-right',
       })
       console.error(error)
     } finally {
@@ -136,7 +137,7 @@ const SubmissionCCPModal: React.FC = () => {
 
   return (
     <div>
-      <Tooltip
+      {/* <Tooltip
         hasArrow
         label="register your social media to activate submission"
         rounded="md"
@@ -150,19 +151,19 @@ const SubmissionCCPModal: React.FC = () => {
         border="1px solid"
         borderColor="#23233D"
         arrowShadowColor="#2B2F35"
+      > */}
+      <Button
+        onClick={() => onOpen()}
+        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+        color="#f2f2f2"
+        size="sm"
+        width="100%"
+        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+        _hover={{ backgroundColor: 'transparent' }}
       >
-        <Button
-          onClick={() => onOpen()}
-          background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-          color="#f2f2f2"
-          size="sm"
-          width="100%"
-          border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-          _hover={{ backgroundColor: 'transparent' }}
-        >
-          Submit content for CCP
-        </Button>
-      </Tooltip>
+        Submit content for CCP
+      </Button>
+      {/* </Tooltip> */}
 
       <Portal>
         <Modal

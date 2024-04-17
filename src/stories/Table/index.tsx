@@ -2,11 +2,7 @@ import {
   Box,
   Table as ChakraTable,
   HStack,
-  Spinner,
-  Tab,
-  TabList,
   TableContainer,
-  Tabs,
   Tbody,
   Td,
   Text,
@@ -15,34 +11,6 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import Image from 'next/image'
-import React, { useState } from 'react'
-
-interface TabsProps {
-  /**
-   * Is this the principal call to action on the page?
-   */
-  primary?: boolean
-  /**
-   * What background color to use
-   */
-  backgroundColor?: string
-  /**
-   * How large should the button be?
-   */
-  size?: 'small' | 'medium' | 'large'
-  /**
-   * Button contents
-   */
-  label: string
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void
-}
-
-/**
- * Primary UI component for user interaction
- */
 
 const columnItems = ['Market', 'Price', 'Total Supply', 'Supply APR', '', '']
 
@@ -55,13 +23,7 @@ export const Coins: any = [
   { name: 'DAI', icon: 'mdi-dai', symbol: 'DAI' },
 ]
 
-export const Table = ({
-  primary = false,
-  size = 'medium',
-  backgroundColor,
-  label,
-  ...props
-}: TabsProps) => {
+export const Table = () => {
   return (
     <TableContainer
       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
