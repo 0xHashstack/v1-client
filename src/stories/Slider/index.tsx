@@ -25,15 +25,9 @@ export const Slider = () => {
             setSliderValue(val)
           }}
           focusThumbOnChange={false}
+          width="380px"
         >
-          <SliderMark
-            value={0}
-            mt="-1.5"
-            ml="-1.5"
-            cursor="pointer"
-            fontSize="14px"
-            zIndex="1"
-          >
+          <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize="sm" zIndex="1">
             {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
           </SliderMark>
           <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize="sm" zIndex="1">
@@ -53,7 +47,7 @@ export const Slider = () => {
             value={sliderValue}
             textAlign="center"
             color="white"
-            mt="-25"
+            mt="-32px"
             // mb="2rem"
             ml={sliderValue !== 100 ? '-5' : '-5'}
             w="12"
