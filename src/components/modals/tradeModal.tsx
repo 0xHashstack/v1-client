@@ -2920,6 +2920,7 @@ const TradeModal = ({
                             borderWidth: '5px',
                             borderColor: '#4D59E8',
                           }}
+                          bg="#676D9A1A"
                           _focus={{ boxShadow: 'none', outline: '0' }}
                           // onClick={() => {
                           //   setMethod("ADD_LIQUIDITY");
@@ -2940,6 +2941,7 @@ const TradeModal = ({
                             borderWidth: '5px',
                             borderColor: '#4D59E8',
                           }}
+                          bg="#676D9A1A"
                           _focus={{ boxShadow: 'none', outline: '0' }}
                           // onClick={() => {
                           //   setMethod("SWAP");
@@ -4279,8 +4281,8 @@ const TradeModal = ({
                             && currentPool == 'STRK/ETH') ||
                             (currentBorrowCoin === 'BTC'
                               && currentPool == 'STRK/ETH')
-                            ? '#480C10'
-                            : '#222766'
+                            ? '#480C104D'
+                            : '#676D9A4D'
                         }
                         color="#F0F0F5"
                         fontSize="12px"

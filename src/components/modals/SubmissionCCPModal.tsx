@@ -31,6 +31,7 @@ import {
   selectCcpDropdowns,
   setCcpModalDropdown,
 } from '@/store/slices/dropdownsSlice'
+import posthog from 'posthog-js'
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon'
 import SpinnerLoader from '../uiElements/loaders/spinner'
 
@@ -107,6 +108,10 @@ const SubmissionCCPModal: React.FC = () => {
   }
 
   const handleSubmissionSubmit = async () => {
+    posthog.capture('Submit content for CCP Submit Button Clicked', {
+      Clicked: true,
+    })
+
     try {
       setLoading(true)
       const res = await axios.post(
@@ -153,7 +158,12 @@ const SubmissionCCPModal: React.FC = () => {
         arrowShadowColor="#2B2F35"
       > */}
       <Button
-        onClick={() => onOpen()}
+        onClick={() => {
+          posthog.capture('Submit content for CCP Modal Button Clicked', {
+            Clicked: true,
+          })
+          onOpen()
+        }}
         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
         color="#f2f2f2"
         size="sm"

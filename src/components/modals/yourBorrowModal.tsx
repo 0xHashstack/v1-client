@@ -4278,6 +4278,7 @@ const YourBorrowModal = ({
                                 value="1"
                                 borderColor="#2B2F35"
                                 colorScheme="customPurple"
+                                bg="#676D9A1A"
                                 // bg="black"
                                 _checked={{
                                   bg: 'black',
@@ -4299,6 +4300,7 @@ const YourBorrowModal = ({
                                 value="2"
                                 borderColor="#2B2F35"
                                 colorScheme="customPurple"
+                                bg="#676D9A1A"
                                 // bg="black"
                                 _checked={{
                                   bg: 'black',

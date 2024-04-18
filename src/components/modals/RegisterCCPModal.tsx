@@ -605,7 +605,7 @@ const RegisterCCPModal: React.FC = () => {
     <div>
       <Button
         onClick={() => {
-          posthog.capture('Connect Socials Clicked', {
+          posthog.capture('Connect Socials Modal Button Clicked', {
             Clicked: true,
           })
           onOpen()

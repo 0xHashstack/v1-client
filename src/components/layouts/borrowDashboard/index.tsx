@@ -3003,7 +3003,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
         <Box display="flex" justifyContent="left" w="94%" pb="2">
           <Box
             display="flex"
-            bg="#222766"
+            bg="#676D9A4D"
             fontSize="14px"
             p="4"
             fontStyle="normal"

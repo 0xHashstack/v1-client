@@ -433,7 +433,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             lineHeight="20px"
                           >
                             <Text width={"10%"} textAlign="left"> {data["Content Platform"]}</Text>
-                            <Text textAlign="center">{data.Timestamp.slice(0,2)} {Months[data.Timestamp.slice(4,5)-1]} {data.Timestamp.slice(6,10)}</Text>
+                            <Text textAlign="center">{data.Timestamp}</Text>
                             <Text>
                               { numberFormatter(data["Recommended (Community Team)"] ? data["Recommended (Community Team)"]:0)} points
                               allocated
