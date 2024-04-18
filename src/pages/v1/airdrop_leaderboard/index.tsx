@@ -239,7 +239,7 @@ const Campaign: NextPage = () => {
     },
     {
       campaignName: 'CCP',
-      timeline: 'Coming soon',
+      timeline: '18 Apr 2024',
     },
   ])
 

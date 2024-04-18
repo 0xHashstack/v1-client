@@ -88,7 +88,7 @@ const TransactionCancelModal = ({
           <ModalBody>
           <Box display="flex" justifyContent="left" w="100%" pb="2">
           <Box
-            bg="#480C10"
+            bg="#480C104D"
             fontSize="14px"
             p="4"
             fontStyle="normal"

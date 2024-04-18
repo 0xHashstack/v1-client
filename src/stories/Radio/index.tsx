@@ -12,6 +12,7 @@ export const Radio = () => {
             value="1"
             borderColor="#2B2F35"
             colorScheme="customPurple"
+            bg="#676D9A1A"
             _checked={{
               bg: 'black',
               color: 'white',
@@ -27,6 +28,7 @@ export const Radio = () => {
             value="2"
             borderColor="#2B2F35"
             colorScheme="customPurple"
+            bg="#676D9A1A"
             _checked={{
               bg: 'black',
               color: 'white',

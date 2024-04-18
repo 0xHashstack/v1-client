@@ -34,7 +34,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
   const userUnspentLoans = useSelector(selectUserUnspentLoans)
 
   const navOptions = [
-    { path: 'v1/market', label: 'Market', count: 0 },
+    { path: 'v1/market', label: 'Markets', count: 0 },
     {
       path: 'v1/spend-borrow',
       label: 'Spend Borrow',
@@ -137,7 +137,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
                 option.path == 'v1/market'
                   ? pathname === '/v1/market'
                     ? getButtonLabel(option.path)
-                    : 'Market'
+                    : 'Markets'
                   : getButtonLabel(option.path)
               )}
               {option.count > 0 && (

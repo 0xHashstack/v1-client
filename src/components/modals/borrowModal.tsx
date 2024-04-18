@@ -2574,8 +2574,8 @@ const BorrowModal = ({
                         ? currentBorrowCoin == 'BTC' &&
                           currentCollateralCoin == 'STRK'
                         : currentBorrowCoin == 'BTC' && rToken == 'rSTRK')
-                        ? '#480C10'
-                        : '#222766'
+                        ? '#480C104D'
+                        : '#676D9A4D'
                     }
                     color="#F0F0F5"
                     fontSize="12px"

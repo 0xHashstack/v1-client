@@ -28,32 +28,6 @@ export const Banners = ({ variants, ...props }: CheckBoxProps) => {
   return (
     <Box display="flex" flexDirection="column" gap="2rem" {...props}>
       {variants.info.name === 'info' && (
-        <Box display="flex" flexDirection="column" gap=".3rem">
-          <Text color="white" fontSize="sm">
-            Info
-          </Text>
-
-          <Box
-            display="flex"
-            bg={'#222766'}
-            color="#F0F0F5"
-            fontSize="12px"
-            p="4"
-            border={'1px solid #3841AA'}
-            fontStyle="normal"
-            fontWeight="400"
-            lineHeight="18px"
-            borderRadius="6px"
-          >
-            <Box pr="3" mt="0.6" cursor="pointer">
-              <BlueInfoIcon />
-            </Box>
-            {variants.info.label}
-          </Box>
-        </Box>
-      )}
-
-      {variants.info.name === 'info' && (
         <Box
           display="flex"
           flexDirection="column"
@@ -64,7 +38,7 @@ export const Banners = ({ variants, ...props }: CheckBoxProps) => {
           gap=".3rem"
         >
           <Text color="white" fontSize="sm">
-            Info 2.0
+            Info 
           </Text>
           <Box
             width="full"
@@ -96,7 +70,7 @@ export const Banners = ({ variants, ...props }: CheckBoxProps) => {
 
           <Box
             display="flex"
-            bg={'#480C10'}
+            bg={'#480C104D'}
             color="#F0F0F5"
             fontSize="12px"
             p="4"
