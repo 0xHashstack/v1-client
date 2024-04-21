@@ -16,6 +16,7 @@ import React, { useState } from "react";
 
 import { processAddress } from "@/Blockchain/stark-constants";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import posthog from "posthog-js";
 
 const tooltips = [
   "",
@@ -702,6 +703,9 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       fontWeight={400}
                       padding={2}
                       textAlign="end"
+                      onClick={()=>{
+                        posthog.capture('User submisions from leaderboard clicked',{clicked:true})
+                      }}
                     >
                       <Link
                         href={`/v1/airdrop_leaderboard/submissions/?address=${processAddress(member["Wallet Address (StarkNet)"]
