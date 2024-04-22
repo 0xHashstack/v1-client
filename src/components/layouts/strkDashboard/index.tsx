@@ -57,7 +57,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import PageCard from '../pageCard'
 import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards'
-import dataStrkRewards from '../strkDashboard/round_2.json'
+import dataStrkRewards from '../strkDashboard/round_3.json'
 export interface ICoin {
   name: string
   symbol: string
