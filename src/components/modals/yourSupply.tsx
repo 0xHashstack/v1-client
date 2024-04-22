@@ -1547,7 +1547,7 @@ const YourSupplyModal = ({
                             )?.exchangeRateUnderlyingToRtoken}
                         </Box>
                         <Text color="#676D9A" fontSize="md" opacity="0.8">
-                          rUsdt
+                          r{currentSelectedSupplyCoin}
                         </Text>
                       </Box>
 
