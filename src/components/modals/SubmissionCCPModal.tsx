@@ -108,6 +108,41 @@ const SubmissionCCPModal: React.FC = () => {
   }
 
   const handleSubmissionSubmit = async () => {
+    let submissionCount: any = 0;
+    const submissionLimit = 3; 
+    let lastSubmissionTimestamp: number | null = null;
+    const storedCount = localStorage.getItem('submissionCount');
+    const storedTimestamp = localStorage.getItem('lastSubmissionTimestamp');
+    if (storedCount !== null) {
+      submissionCount = parseInt(storedCount, 10);
+    }
+    if (storedTimestamp !== null) {
+      lastSubmissionTimestamp = parseInt(storedTimestamp, 10);
+    }
+    // Check if the user has exceeded the submission limit
+    if (submissionCount >= submissionLimit) {
+      const currentTimestamp = Date.now();
+      const elapsedTimeSinceLastSubmission = currentTimestamp - (lastSubmissionTimestamp || 0);
+      const hoursSinceLastSubmission = elapsedTimeSinceLastSubmission / (1000 * 60 * 60); // Convert milliseconds to hours
+  
+      // Check if an hour has passed since the last submission
+      if (hoursSinceLastSubmission < 1) {
+        toast.error('You have reached the submission limit for this hour', {
+          position: 'bottom-right',autoClose:false
+        });
+        return;
+      } else {
+        // If an hour has passed, reset the submission count and update the last submission timestamp
+        submissionCount = 0;
+        localStorage.setItem('submissionCount', submissionCount.toString());
+      }
+    }
+  
+    // Increment submission count and update local storage
+    submissionCount++;
+    localStorage.setItem('submissionCount', submissionCount.toString());
+    localStorage.setItem('lastSubmissionTimestamp', Date.now().toString());
+  
     posthog.capture('Submit content for CCP Submit Button Clicked', {
       Clicked: true,
     })

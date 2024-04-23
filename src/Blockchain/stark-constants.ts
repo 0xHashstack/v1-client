@@ -15,7 +15,7 @@ export function processAddress(address: string) {
 //   process.env.NODE_ENV === "development"
 //     ? DeployDetailsDev.devn\et
 //     : DeployDetailsProd.goerli_2;
-let contractsEnv:any = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? DeployDetailsProd.goerli : DeployDetailsProd.mainnet;
+let contractsEnv:any = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? DeployDetailsProd.sepolia : DeployDetailsProd.mainnet;
 contractsEnv.DIAMOND_ADDRESS = contractsEnv.DIAMOND_ADDRESS;
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(
@@ -25,7 +25,7 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
 export const getProvider = () => {
   const rpctestnetUrl=String(process.env.NEXT_PUBLIC_INFURA_TESTNET);
   const rpcUrl=String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
-  if (contractsEnv == DeployDetailsProd.goerli) {
+  if (contractsEnv == DeployDetailsProd.sepolia) {
     const provider = new RpcProvider({ nodeUrl: rpctestnetUrl});
     return provider;
   }

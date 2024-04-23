@@ -691,13 +691,13 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                               toggleEpochSelection(idxEpoch);
                             }}
                           >
-                            <Text>Epoch {idxEpoch + 1}</Text>
+                            <Text>Epoch {epochs.epoch}</Text>
                             <Text>
-                              {idxEpoch == 0
+                              {epochs.epoch == 1
                                 ? "27 Nov 2023 - 11 Dec 2023"
-                                : idxEpoch == 1
+                                : epochs.epoch == 2
                                 ? "12 Dec 2023 - 25 Dec 2023"
-                                : idxEpoch == 2
+                                : epochs.epoch == 3
                                 ? "26 Dec 2023 - 8 Jan 2024"
                                 : "9 Jan 2024 - 22 Jan 2024"}
                             </Text>
@@ -756,7 +756,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                                     >
                                       <Text>Snapshot {idxSnap + 1}</Text>
                                       <Text>
-                                        {snapshotsDates[idxSnap + idxEpoch * 6]}
+                                        {snapshotsDates[idxSnap + (epochs.epoch-1) * 6]}
                                       </Text>
                                       <Text>
                                         $

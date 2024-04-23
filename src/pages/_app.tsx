@@ -1,5 +1,5 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { goerli, mainnet } from "@starknet-react/chains";
+import { goerli, mainnet,sepolia } from "@starknet-react/chains";
 import {
   StarknetConfig,
   alchemyProvider,
@@ -117,7 +117,7 @@ export default function App({ Component, pageProps }: AppProps) {
       >
         <ChakraProvider theme={theme}>
           <StarknetConfig
-            chains={[mainnet, goerli]}
+            chains={[mainnet, goerli,sepolia]}
             provider={provider}
             connectors={connectors}
           >

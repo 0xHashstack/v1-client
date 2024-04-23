@@ -52,7 +52,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const classes = [];
   const { account, address, status, isConnected } = useAccount();
-  const extendedAccount = account as ExtendedAccountInterface;
+  const extendedAccount:any = account as ExtendedAccountInterface;
   const [loading, setLoading] = useState(true);
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
@@ -222,13 +222,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            chain.network!="mainnet" && chain?.name!="Starknet Goerli Testnet"
+            // chain.network!="mainnet" && chain?.name!="Starknet Goerli Testnet"
+            extendedAccount?.provider.chainId==="0x534e5f5345504f4c4941"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            chain.network!="goerli" && chain?.name!="Starknet Goerli Testnet"
+            extendedAccount?.provider.chainId==="0x534e5f4d41494e"
           );
         }
       } else if (walletConnected == "argentX") {
@@ -238,13 +239,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
 
-            chain.network!="mainnet" && chain?.name!="Starknet Goerli Testnet"
+            extendedAccount?.provider.chainId==="0x534e5f5345504f4c4941"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            chain?.network!="goerli" && chain?.name!="Starknet Goerli Testnet"
+            extendedAccount?.provider.chainId==="0x534e5f4d41494e"
           );
         }
       }
