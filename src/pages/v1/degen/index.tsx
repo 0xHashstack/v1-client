@@ -327,6 +327,7 @@ const columnItems = [
   'Borrowed Amount',
   'Max APR',
   '',
+  ''
 ]
 
 const Degen: NextPage = () => {

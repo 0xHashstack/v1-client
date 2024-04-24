@@ -77,6 +77,7 @@ import {
 import { parseAmount } from '@/Blockchain/utils/utils'
 import { uint256 } from 'starknet'
 import { useRouter } from 'next/router'
+import ShareIcon from '@/assets/icons/shareIcon'
 
 export interface ICoin {
   name: string
@@ -728,6 +729,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
         display="flex"
         justifyContent="flex-start"
         alignItems="flex-start"
+        paddingX={'2rem'}
         height={'37rem'}
         overflowX="visible"
         overflowY="visible"
@@ -738,7 +740,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
               {columnItems.map((val: any, idx1: any) => (
                 <Td
                   key={idx1}
-                  width={'12.5%'}
+                  width={'14%'}
                   fontSize={'12px'}
                   fontWeight={400}
                   p={0}
@@ -876,44 +878,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                             <Text fontSize="14px" fontWeight="400">
                               {borrow?.dappName}
                             </Text>
-                            {!(degenId && lower_bound + idx === 0) && (
-                              <Box
-                                bg="#3E415C"
-                                lineHeight="20px"
-                                letterSpacing="-0.15px"
-                                padding="0px 6px"
-                                fontSize="12px"
-                                borderRightRadius="100px"
-                                borderLeftRadius="100px"
-                                cursor="pointer"
-                                _hover={{
-                                  background: '#4C59E8',
-                                }}
-                                onClick={() => {
-                                  navigator.clipboard.writeText(
-                                    `http://localhost:3000/v1/degen?degenId=${
-                                      borrow?.dappName == 'Jediswap'
-                                        ? borrow?.format
-                                            ?.slice(9)
-                                            .replace(/\s/g, '')
-                                            .replace(/\+/g, '-')
-                                        : borrow?.format
-                                            ?.slice(7)
-                                            .replace(/\s/g, '')
-                                            .replace(/\+/g, '-')
-                                    }`
-                                  )
-                                  toast.success(
-                                    'Share link copied to clipboard',
-                                    {
-                                      position: toast.POSITION.BOTTOM_RIGHT,
-                                    }
-                                  )
-                                }}
-                              >
-                                Share
-                              </Box>
-                            )}
                           </HStack>
                           <Tooltip
                             hasArrow
@@ -1429,7 +1393,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontSize={'14px'}
                         fontWeight={400}
                         textAlign={'center'}
-                        pl="5rem"
+                        pl="4rem"
                       >
                         {oraclePrices === null ? (
                           <Skeleton
@@ -1672,7 +1636,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontSize={'14px'}
                         fontWeight={400}
                         textAlign={'right'}
-                        pr="1rem"
+                        p="0"
                       >
                         <Box
                           width="100%"
@@ -1834,6 +1798,56 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                             )}
                             {/* <TransactionCancelModal/> */}
                           </Box>
+                        </Box>
+                      </Td>
+                      <Td
+                        p="0"
+                        width={'1rem'}
+                        fontSize={'14px'}
+                        fontWeight={400}
+                        overflow={'hidden'}
+                        textAlign="right"
+                      >
+                        <Box
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          fontWeight="400"
+                          textAlign="center"
+                          cursor="pointer"
+                        >
+                              <Box
+                                // lineHeight="20px"
+                                // letterSpacing="-0.15px"
+                                // padding="0px 6px"
+                                // fontSize="12px"
+                                // borderRightRadius="100px"
+                                // borderLeftRadius="100px"
+                                // cursor="pointer"
+                                onClick={() => {
+                                  navigator.clipboard.writeText(
+                                    `http://localhost:3000/v1/degen?degenId=${
+                                      borrow?.dappName == 'Jediswap'
+                                        ? borrow?.format
+                                            ?.slice(9)
+                                            .replace(/\s/g, '')
+                                            .replace(/\+/g, '-')
+                                        : borrow?.format
+                                            ?.slice(7)
+                                            .replace(/\s/g, '')
+                                            .replace(/\+/g, '-')
+                                    }`
+                                  )
+                                  toast.success(
+                                    'Share link copied to clipboard',
+                                    {
+                                      position: toast.POSITION.BOTTOM_RIGHT,
+                                    }
+                                  )
+                                }}
+                              >
+                                <ShareIcon/>
+                              </Box>
                         </Box>
                       </Td>
                     </Tr>
