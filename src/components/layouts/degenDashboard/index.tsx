@@ -316,24 +316,13 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       setCollateralAmounts(
         Borrows.sort(
           (
-            a: { collateral: string; format: string; dappName: string },
-            b: { collateral: string; format: string; dappName: string }
+            a: { collateral: string; id: string },
+            b: { collateral: string; id: string }
           ) => {
-            // Check if 'coin' matches 'collateralcoin'
-            let aFormat =
-              a?.dappName == 'Jediswap'
-                ? a?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
-                : a?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
-
-            let bFormat =
-              b?.dappName == 'Jediswap'
-                ? b?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
-                : b?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
-
             // Sorting based on degen ID
-            if (aFormat === degenId && bFormat !== degenId) {
+            if (a.id === degenId && b.id !== degenId) {
               return -1 // 'a' should come before 'b' if 'a' has the specific ID
-            } else if (aFormat !== degenId && bFormat === degenId) {
+            } else if (a.id !== degenId && b.id === degenId) {
               return 1 // 'b' should come before 'a' if 'b' has the specific ID
             }
             // Sorting based on collateral
@@ -371,25 +360,16 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       setcollateralMarkets(
         Borrows.sort(
           (
-            a: { collateralCoin: string; format: string; dappName: string },
-            b: { collateralCoin: string; format: string; dappName: string }
+            a: { collateralCoin: string; id: string },
+            b: { collateralCoin: string; id: string }
           ) => {
             // Check if 'coin' matches 'collateralcoin'
-            let aFormat =
-              a?.dappName == 'Jediswap'
-                ? a?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
-                : a?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
-
-            let bFormat =
-              b?.dappName == 'Jediswap'
-                ? b?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
-                : b?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
 
             // Sorting based on content ID
 
-            if (aFormat === degenId && bFormat !== degenId) {
+            if (a.id === degenId && b.id !== degenId) {
               return -1 // 'a' should come before 'b' if 'a' has the specific ID
-            } else if (aFormat !== degenId && bFormat === degenId) {
+            } else if (a.id !== degenId && b.id === degenId) {
               return 1 // 'b' should come before 'a' if 'b' has the specific ID
             }
 
@@ -684,6 +664,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
     return matchedObject ? matchedObject.tvl : 1
   }
   // console.log(strkTokenAlloactionData["STRK/ETH"][strkTokenAlloactionData["STRK/ETH"].length-1].allocation,"allocat")
+  console.log(Borrows, 'borrows')
+  console.log(router, 'path')
 
   return loading ? (
     <Box
@@ -795,24 +777,15 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
           <Tbody position="relative" overflowX="hidden">
             {Borrows.sort(
               (
-                a: { collateral: string; format: string; dappName: string },
-                b: { collateral: string; format: string; dappName: string }
+                a: { collateral: string; id: string },
+                b: { collateral: string; id: string }
               ) => {
                 // Check if 'coin' matches 'collateralcoin'
-                let aFormat =
-                  a?.dappName == 'Jediswap'
-                    ? a?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
-                    : a?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
-
-                let bFormat =
-                  b?.dappName == 'Jediswap'
-                    ? b?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
-                    : b?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
 
                 // Sorting based on content ID
-                if (aFormat === degenId && bFormat !== degenId) {
+                if (a.id === degenId && b.id !== degenId) {
                   return -1 // 'a' should come before 'b' if 'a' has the specific ID
-                } else if (aFormat !== degenId && bFormat === degenId) {
+                } else if (a.id !== degenId && b.id === degenId) {
                   return 1 // 'b' should come before 'a' if 'b' has the specific ID
                 }
 
@@ -1816,38 +1789,18 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                           textAlign="center"
                           cursor="pointer"
                         >
-                              <Box
-                                // lineHeight="20px"
-                                // letterSpacing="-0.15px"
-                                // padding="0px 6px"
-                                // fontSize="12px"
-                                // borderRightRadius="100px"
-                                // borderLeftRadius="100px"
-                                // cursor="pointer"
-                                onClick={() => {
-                                  navigator.clipboard.writeText(
-                                    `http://localhost:3000/v1/degen?degenId=${
-                                      borrow?.dappName == 'Jediswap'
-                                        ? borrow?.format
-                                            ?.slice(9)
-                                            .replace(/\s/g, '')
-                                            .replace(/\+/g, '-')
-                                        : borrow?.format
-                                            ?.slice(7)
-                                            .replace(/\s/g, '')
-                                            .replace(/\+/g, '-')
-                                    }`
-                                  )
-                                  toast.success(
-                                    'Share link copied to clipboard',
-                                    {
-                                      position: toast.POSITION.BOTTOM_RIGHT,
-                                    }
-                                  )
-                                }}
-                              >
-                                <ShareIcon/>
-                              </Box>
+                          <Box
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                `${window.location.origin}/v1/degen?degenId=${borrow?.id}`
+                              )
+                              toast.success('Share link copied to clipboard', {
+                                position: toast.POSITION.BOTTOM_RIGHT,
+                              })
+                            }}
+                          >
+                            <ShareIcon />
+                          </Box>
                         </Box>
                       </Td>
                     </Tr>
