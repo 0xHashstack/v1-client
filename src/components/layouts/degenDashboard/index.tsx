@@ -1792,7 +1792,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                           <Box
                             onClick={() => {
                               navigator.clipboard.writeText(
-                                `${window.location.origin}/v1/degen?degenId=${borrow?.id}`
+                                `${window.location.origin}/v1/degen/?degenId=${borrow?.id}`
                               )
                               toast.success('Share link copied to clipboard', {
                                 position: toast.POSITION.BOTTOM_RIGHT,
