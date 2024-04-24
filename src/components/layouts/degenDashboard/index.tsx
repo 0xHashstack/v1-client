@@ -76,6 +76,7 @@ import {
 } from '@/Blockchain/utils/addressServices'
 import { parseAmount } from '@/Blockchain/utils/utils'
 import { uint256 } from 'starknet'
+import { useRouter } from 'next/router'
 
 export interface ICoin {
   name: string
@@ -306,23 +307,48 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   const [collateralAmounts, setCollateralAmounts] = useState<any>([]) // Initialize with default values
   const [collateralMarkets, setcollateralMarkets] = useState<any>([])
   const [tokenSelection, setTokenSelection] = useState(Array(40).fill(0))
+  const router=useRouter();
+  const contentId=router.query.degenId;
   useEffect(() => {
     // Initialize collateralAmounts with the values from Borrows
     if (Borrows.length > 0 && oraclePrices != null) {
       setCollateralAmounts(
-        Borrows.sort((a: { collateral: string }, b: { collateral: string }) => {
-          // Check if 'coin' matches 'collateralcoin'
-          const isCollateralA = a.collateral === maxSuppliedCoin
-          const isCollateralB = b.collateral === maxSuppliedCoin
-
-          if (isCollateralA && !isCollateralB) {
-            return -1 // 'a' should come before 'b'
-          } else if (!isCollateralA && isCollateralB) {
-            return 1 // 'b' should come before 'a'
-          } else {
-            return 0 // No change in order
+        Borrows.sort(
+          (
+            a: { collateral: string; format: string; dappName: string },
+            b: { collateral: string; format: string; dappName: string }
+          ) => {
+            // Check if 'coin' matches 'collateralcoin'
+            let aFormat =
+              a?.dappName == 'Jediswap'
+                ? a?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
+                : a?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
+        
+            let bFormat =
+              b?.dappName == 'Jediswap'
+                ? b?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
+                : b?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
+            
+            // Sorting based on content ID
+              if (aFormat === contentId && bFormat !== contentId) {
+                return -1; // 'a' should come before 'b' if 'a' has the specific ID
+              } else if (aFormat !== contentId && bFormat === contentId) {
+                return 1; // 'b' should come before 'a' if 'b' has the specific ID
+              }
+              // Sorting based on collateral
+              const isCollateralA = a.collateral === maxSuppliedCoin;
+              const isCollateralB = b.collateral === maxSuppliedCoin;
+              
+              if (isCollateralA && !isCollateralB) {
+                return -1; // 'a' should come before 'b' if 'a' is collateral
+              } else if (!isCollateralA && isCollateralB) {
+                return 1; // 'b' should come before 'a' if 'b' is collateral
+              } else {
+                return 0; // No change in order
+              }
+        
           }
-        }).map(
+        ).map(
           (borrow: {
             collateral: string
             leverage: any
@@ -343,19 +369,42 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   useEffect(() => {
     if (Borrows.length > 0 && oraclePrices != null) {
       setcollateralMarkets(
-        Borrows.sort((a: { collateral: string }, b: { collateral: string }) => {
-          // Check if 'coin' matches 'collateralcoin'
-          const isCollateralA = a.collateral === maxSuppliedCoin
-          const isCollateralB = b.collateral === maxSuppliedCoin
+        Borrows.sort(
+          (
+            a: { collateralCoin: string; format: string; dappName: string },
+            b: { collateralCoin: string; format: string; dappName: string }
+          ) => {
+            // Check if 'coin' matches 'collateralcoin'
+            let aFormat =
+              a?.dappName == 'Jediswap'
+                ? a?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
+                : a?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
+        
+            let bFormat =
+              b?.dappName == 'Jediswap'
+                ? b?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
+                : b?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
+            
+            // Sorting based on content ID
 
-          if (isCollateralA && !isCollateralB) {
-            return -1 // 'a' should come before 'b'
-          } else if (!isCollateralA && isCollateralB) {
-            return 1 // 'b' should come before 'a'
-          } else {
-            return 0 // No change in order
+              if (aFormat === contentId && bFormat !== contentId) {
+                return -1; // 'a' should come before 'b' if 'a' has the specific ID
+              } else if (aFormat !== contentId && bFormat === contentId) {
+                return 1; // 'b' should come before 'a' if 'b' has the specific ID
+              }
+
+              const isCollateralA = a.collateralCoin === maxSuppliedCoin;
+              const isCollateralB = b.collateralCoin === maxSuppliedCoin;
+              
+              if (isCollateralA && !isCollateralB) {
+                return -1; // 'a' should come before 'b' if 'a' is collateral
+              } else if (!isCollateralA && isCollateralB) {
+                return 1; // 'b' should come before 'a' if 'b' is collateral
+              } else {
+                return 0; // No change in order
+              }
           }
-        }).map((borrow: { collateral: string }) => borrow?.collateral)
+        ).map((borrow: { collateral: string }) => borrow?.collateral)
       )
     }
   }, [Borrows, maxSuppliedCoin, oraclePrices])
@@ -732,23 +781,43 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
           </Thead>
           <Tbody position="relative" overflowX="hidden">
             {Borrows.sort(
-              (
-                a: { collateralCoin: string },
-                b: { collateralCoin: string }
-              ) => {
-                // Check if 'coin' matches 'collateralcoin'
-                const isCollateralA = a.collateralCoin === maxSuppliedCoin
-                const isCollateralB = b.collateralCoin === maxSuppliedCoin
+  (
+    a: { collateral: string; format: string; dappName: string },
+    b: { collateral: string; format: string; dappName: string }
+  ) => {
+    // Check if 'coin' matches 'collateralcoin'
+    let aFormat =
+      a?.dappName == 'Jediswap'
+        ? a?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
+        : a?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
 
-                if (isCollateralA && !isCollateralB) {
-                  return -1 // 'a' should come before 'b'
-                } else if (!isCollateralA && isCollateralB) {
-                  return 1 // 'b' should come before 'a'
-                } else {
-                  return 0 // No change in order
-                }
-              }
-            )
+    let bFormat =
+      b?.dappName == 'Jediswap'
+        ? b?.format?.slice(9).replace(/\s/g, '').replace(/\+/g, '-')
+        : b?.format?.slice(7).replace(/\s/g, '').replace(/\+/g, '-')
+    
+    // Sorting based on content ID
+      if (aFormat === contentId && bFormat !== contentId) {
+        return -1; // 'a' should come before 'b' if 'a' has the specific ID
+      } else if (aFormat !== contentId && bFormat === contentId) {
+        return 1; // 'b' should come before 'a' if 'b' has the specific ID
+      }
+
+      // Sorting based on collateral
+      const isCollateralA = a.collateral === maxSuppliedCoin;
+      const isCollateralB = b.collateral === maxSuppliedCoin;
+      
+      if (isCollateralA && !isCollateralB) {
+        return -1; // 'a' should come before 'b' if 'a' is collateral
+      } else if (!isCollateralA && isCollateralB) {
+        return 1; // 'b' should come before 'a' if 'b' is collateral
+      } else {
+        return 0; // No change in order
+      }
+
+
+  }
+)
               .slice(lower_bound, upper_bound + 1)
               // .sort((a: { maxApr: number; }, b: { maxApr: number; }) => b.maxApr - a.maxApr)
               .map((borrow: any, idx: any) => {
