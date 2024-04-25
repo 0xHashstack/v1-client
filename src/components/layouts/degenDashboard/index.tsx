@@ -76,6 +76,8 @@ import {
 } from '@/Blockchain/utils/addressServices'
 import { parseAmount } from '@/Blockchain/utils/utils'
 import { uint256 } from 'starknet'
+import { useRouter } from 'next/router'
+import ShareIcon from '@/assets/icons/shareIcon'
 
 export interface ICoin {
   name: string
@@ -306,23 +308,36 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   const [collateralAmounts, setCollateralAmounts] = useState<any>([]) // Initialize with default values
   const [collateralMarkets, setcollateralMarkets] = useState<any>([])
   const [tokenSelection, setTokenSelection] = useState(Array(40).fill(0))
+  const router = useRouter()
+  const degenId = router.query.degenId
   useEffect(() => {
     // Initialize collateralAmounts with the values from Borrows
     if (Borrows.length > 0 && oraclePrices != null) {
       setCollateralAmounts(
-        Borrows.sort((a: { collateral: string }, b: { collateral: string }) => {
-          // Check if 'coin' matches 'collateralcoin'
-          const isCollateralA = a.collateral === maxSuppliedCoin
-          const isCollateralB = b.collateral === maxSuppliedCoin
+        Borrows.sort(
+          (
+            a: { collateral: string; id: string },
+            b: { collateral: string; id: string }
+          ) => {
+            // Sorting based on degen ID
+            if (a.id === degenId && b.id !== degenId) {
+              return -1 // 'a' should come before 'b' if 'a' has the specific ID
+            } else if (a.id !== degenId && b.id === degenId) {
+              return 1 // 'b' should come before 'a' if 'b' has the specific ID
+            }
+            // Sorting based on collateral
+            const isCollateralA = a.collateral === maxSuppliedCoin
+            const isCollateralB = b.collateral === maxSuppliedCoin
 
-          if (isCollateralA && !isCollateralB) {
-            return -1 // 'a' should come before 'b'
-          } else if (!isCollateralA && isCollateralB) {
-            return 1 // 'b' should come before 'a'
-          } else {
-            return 0 // No change in order
+            if (isCollateralA && !isCollateralB) {
+              return -1 // 'a' should come before 'b' if 'a' is collateral
+            } else if (!isCollateralA && isCollateralB) {
+              return 1 // 'b' should come before 'a' if 'b' is collateral
+            } else {
+              return 0 // No change in order
+            }
           }
-        }).map(
+        ).map(
           (borrow: {
             collateral: string
             leverage: any
@@ -343,19 +358,33 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
   useEffect(() => {
     if (Borrows.length > 0 && oraclePrices != null) {
       setcollateralMarkets(
-        Borrows.sort((a: { collateral: string }, b: { collateral: string }) => {
-          // Check if 'coin' matches 'collateralcoin'
-          const isCollateralA = a.collateral === maxSuppliedCoin
-          const isCollateralB = b.collateral === maxSuppliedCoin
+        Borrows.sort(
+          (
+            a: { collateralCoin: string; id: string },
+            b: { collateralCoin: string; id: string }
+          ) => {
+            // Check if 'coin' matches 'collateralcoin'
 
-          if (isCollateralA && !isCollateralB) {
-            return -1 // 'a' should come before 'b'
-          } else if (!isCollateralA && isCollateralB) {
-            return 1 // 'b' should come before 'a'
-          } else {
-            return 0 // No change in order
+            // Sorting based on content ID
+
+            if (a.id === degenId && b.id !== degenId) {
+              return -1 // 'a' should come before 'b' if 'a' has the specific ID
+            } else if (a.id !== degenId && b.id === degenId) {
+              return 1 // 'b' should come before 'a' if 'b' has the specific ID
+            }
+
+            const isCollateralA = a.collateralCoin === maxSuppliedCoin
+            const isCollateralB = b.collateralCoin === maxSuppliedCoin
+
+            if (isCollateralA && !isCollateralB) {
+              return -1 // 'a' should come before 'b' if 'a' is collateral
+            } else if (!isCollateralA && isCollateralB) {
+              return 1 // 'b' should come before 'a' if 'b' is collateral
+            } else {
+              return 0 // No change in order
+            }
           }
-        }).map((borrow: { collateral: string }) => borrow?.collateral)
+        ).map((borrow: { collateral: string }) => borrow?.collateral)
       )
     }
   }, [Borrows, maxSuppliedCoin, oraclePrices])
@@ -587,7 +616,12 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       } else {
         return (
           item.name === pool &&
-          item.amm === (l3App == 'Jediswap' ? 'jedi' : l3App=='ZKlend' ?'zklend': 'myswap')
+          item.amm ===
+            (l3App == 'Jediswap'
+              ? 'jedi'
+              : l3App == 'ZKlend'
+                ? 'zklend'
+                : 'myswap')
         )
       }
     })
@@ -618,13 +652,20 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       } else {
         return (
           item.name === pool &&
-          item.amm === (l3App == 'Jediswap' ? 'jedi' : l3App=='ZKlend' ?'zklend': 'myswap')
+          item.amm ===
+            (l3App == 'Jediswap'
+              ? 'jedi'
+              : l3App == 'ZKlend'
+                ? 'zklend'
+                : 'myswap')
         )
       }
     })
     return matchedObject ? matchedObject.tvl : 1
   }
   // console.log(strkTokenAlloactionData["STRK/ETH"][strkTokenAlloactionData["STRK/ETH"].length-1].allocation,"allocat")
+  console.log(Borrows, 'borrows')
+  console.log(router, 'path')
 
   return loading ? (
     <Box
@@ -659,7 +700,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
       flexDirection="column"
       height={'39rem'}
       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) "
-      padding={'1rem 2rem 0rem'}
+      padding={'1rem 0rem 0rem'}
       overflowX="hidden"
     >
       <TableContainer
@@ -670,6 +711,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
         display="flex"
         justifyContent="flex-start"
         alignItems="flex-start"
+        paddingX={'2rem'}
         height={'37rem'}
         overflowX="visible"
         overflowY="visible"
@@ -680,10 +722,11 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
               {columnItems.map((val: any, idx1: any) => (
                 <Td
                   key={idx1}
-                  width={'12.5%'}
+                  width={'14%'}
                   fontSize={'12px'}
                   fontWeight={400}
                   p={0}
+                  px="2rem"
                 >
                   <Text
                     whiteSpace="pre-wrap"
@@ -730,27 +773,36 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
               ))}
             </Tr>
           </Thead>
+
           <Tbody position="relative" overflowX="hidden">
             {Borrows.sort(
               (
-                a: { collateralCoin: string },
-                b: { collateralCoin: string }
+                a: { collateral: string; id: string },
+                b: { collateral: string; id: string }
               ) => {
                 // Check if 'coin' matches 'collateralcoin'
-                const isCollateralA = a.collateralCoin === maxSuppliedCoin
-                const isCollateralB = b.collateralCoin === maxSuppliedCoin
+
+                // Sorting based on content ID
+                if (a.id === degenId && b.id !== degenId) {
+                  return -1 // 'a' should come before 'b' if 'a' has the specific ID
+                } else if (a.id !== degenId && b.id === degenId) {
+                  return 1 // 'b' should come before 'a' if 'b' has the specific ID
+                }
+
+                // Sorting based on collateral
+                const isCollateralA = a.collateral === maxSuppliedCoin
+                const isCollateralB = b.collateral === maxSuppliedCoin
 
                 if (isCollateralA && !isCollateralB) {
-                  return -1 // 'a' should come before 'b'
+                  return -1 // 'a' should come before 'b' if 'a' is collateral
                 } else if (!isCollateralA && isCollateralB) {
-                  return 1 // 'b' should come before 'a'
+                  return 1 // 'b' should come before 'a' if 'b' is collateral
                 } else {
                   return 0 // No change in order
                 }
               }
             )
               .slice(lower_bound, upper_bound + 1)
-              // .sort((a: { maxApr: number; }, b: { maxApr: number; }) => b.maxApr - a.maxApr)
               .map((borrow: any, idx: any) => {
                 return (
                   <>
@@ -759,6 +811,16 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                       width={'100%'}
                       position="relative"
                       p={0}
+                      bg={
+                        degenId && lower_bound + idx === 0
+                          ? 'linear-gradient(90deg, #34345600 0%, #34345688 50%, #34345600 100%, #34345600 100%)'
+                          : ''
+                      }
+                      border={
+                        degenId && lower_bound + idx === 0
+                          ? '1px solid #4c59e8'
+                          : ''
+                      }
                     >
                       <Td
                         width={'12.5%'}
@@ -766,6 +828,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontWeight={400}
                         padding={2}
                         textAlign="center"
+                        pl="2rem"
                       >
                         <VStack
                           width="100%"
@@ -970,7 +1033,9 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                             maxWidth="100rem"
                           >
                             <Box color="#B1B0B5" fontSize="12px">
-                              {borrow?.dappName=="Jediswap" ? borrow.format.slice(9):borrow.format.slice(7)}
+                              {borrow?.dappName == 'Jediswap'
+                                ? borrow.format.slice(9)
+                                : borrow.format.slice(7)}
                             </Box>
                           </Tooltip>
                         </VStack>
@@ -1264,26 +1329,27 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         textAlign={'center'}
                         pl="5rem"
                       >
-                      {oraclePrices === null ? 
-                            <Skeleton
-                              width="6rem"
-                              height="2rem"
-                              startColor="#101216"
-                              endColor="#2B2F35"
-                              borderRadius="6px"
-                            />:
-                        <HStack
-                          height="2rem"
-                          width="2rem"
-                          alignItems="center"
-                          justifyContent="flex-start"
-                        >
-                          <Image
-                            src={`/${borrow?.debt}.svg`}
-                            alt="Picture of the author"
-                            width="32"
-                            height="32"
+                        {oraclePrices === null ? (
+                          <Skeleton
+                            width="6rem"
+                            height="2rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
                           />
+                        ) : (
+                          <HStack
+                            height="2rem"
+                            width="2rem"
+                            alignItems="center"
+                            justifyContent="flex-start"
+                          >
+                            <Image
+                              src={`/${borrow?.debt}.svg`}
+                              alt="Picture of the author"
+                              width="32"
+                              height="32"
+                            />
                             <Text fontSize="14px" fontWeight="400" ml="-1">
                               {numberFormatter(
                                 5000 /
@@ -1292,242 +1358,249 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   )?.price
                               )}
                             </Text>
-                        </HStack>
-                       } 
+                          </HStack>
+                        )}
                       </Td>
                       <Td
                         maxWidth={'5rem'}
                         fontSize={'14px'}
                         fontWeight={400}
                         textAlign={'center'}
-                        pl="5rem"
+                        pl="4rem"
                       >
-                                              {oraclePrices === null ? 
-                            <Skeleton
-                              width="6rem"
-                              height="2rem"
-                              startColor="#101216"
-                              endColor="#2B2F35"
-                              borderRadius="6px"
-                            />:
-                        <Tooltip
-                          hasArrow
-                          arrowShadowColor="#2B2F35"
-                          placement="bottom"
-                          boxShadow="dark-lg"
-                          label={
-                            <Box>
-                              <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                gap={10}
-                              >
-                                <Text>Borrow APR ({borrow?.leverage}x):</Text>
-                                <Text>
-                                  -
-                                  {numberFormatterPercentage(
-                                    stats?.find(
-                                      (stat: any) =>
-                                        stat?.token === borrow?.debt
-                                    )?.borrowRate * borrow?.leverage
-                                  )}
-                                  %
-                                </Text>
-                              </Box>
-                              <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                gap={10}
-                              >
-                                <Text>Supply APR:</Text>
-                                <Text>
-                                  {numberFormatterPercentage(
-                                    stats?.find(
-                                      (stat: any) =>
-                                        stat?.token === borrow?.collateral
-                                    )?.supplyRate +
-                                      getBoostedAprSupply(borrow?.collateral)
-                                  )}
-                                  %
-                                </Text>
-                              </Box>
-                              <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                gap={10}
-                              >
-                                <Text>Pool APR ({borrow?.leverage}x):</Text>
-                                <Text>
-                                  {numberFormatterPercentage(
-                                    getAprByPool(
-                                      poolAprs,
-                                      borrow?.secondary,
-                                      borrow?.dappName
-                                    ) * borrow?.leverage
-                                  )}
-                                  %
-                                </Text>
-                              </Box>
-                              <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                gap={10}
-                                mb={borrow?.dappName==="ZKlend" ?"2":"0"}
-                              >
-                                <Text>$STRK APR ({borrow?.leverage}x):</Text>
-                                <Text>
-                                  {numberFormatterPercentage(
-                                    getBoostedApr(borrow?.debt) *
-                                      borrow?.leverage
-                                  )}
-                                  %
-                                </Text>
-                              </Box>
-
-                              {borrow?.dappName==="Jediswap" && <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                gap={10}
-                                mb="2"
-                              >
-                                <Text>
-                                  Jedi STRK APR ({borrow?.leverage}x):
-                                </Text>
-                                <Text>
-                                  {numberFormatterPercentage(
-                                    ((100 *
-                                      365 *
-                                      (getStrkAlloaction(borrow?.secondary) *
-                                        oraclePrices?.find(
-                                          (curr: any) => curr.name === 'STRK'
-                                        )?.price)) /
-                                      getTvlByPool(
+                        {oraclePrices === null ? (
+                          <Skeleton
+                            width="6rem"
+                            height="2rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />
+                        ) : (
+                          <Tooltip
+                            hasArrow
+                            arrowShadowColor="#2B2F35"
+                            placement="bottom"
+                            boxShadow="dark-lg"
+                            label={
+                              <Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="space-between"
+                                  gap={10}
+                                >
+                                  <Text>Borrow APR ({borrow?.leverage}x):</Text>
+                                  <Text>
+                                    -
+                                    {numberFormatterPercentage(
+                                      stats?.find(
+                                        (stat: any) =>
+                                          stat?.token === borrow?.debt
+                                      )?.borrowRate * borrow?.leverage
+                                    )}
+                                    %
+                                  </Text>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="space-between"
+                                  gap={10}
+                                >
+                                  <Text>Supply APR:</Text>
+                                  <Text>
+                                    {numberFormatterPercentage(
+                                      stats?.find(
+                                        (stat: any) =>
+                                          stat?.token === borrow?.collateral
+                                      )?.supplyRate +
+                                        getBoostedAprSupply(borrow?.collateral)
+                                    )}
+                                    %
+                                  </Text>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="space-between"
+                                  gap={10}
+                                >
+                                  <Text>Pool APR ({borrow?.leverage}x):</Text>
+                                  <Text>
+                                    {numberFormatterPercentage(
+                                      getAprByPool(
                                         poolAprs,
                                         borrow?.secondary,
                                         borrow?.dappName
-                                      )) *
-                                      borrow?.leverage
-                                  )}
-                                  %
-                                </Text>
-                              </Box>}
-                              <hr />
-                              <Box
-                                display="flex"
-                                justifyContent="space-between"
-                                gap={10}
-                                mt="2"
-                              >
-                                <Text>Effective APR:</Text>
-                                <Text>
-                                  {numberFormatterPercentage(
-                                    Number(
-                                      borrow?.leverage *
-                                        (-stats?.find(
-                                          (stat: any) =>
-                                            stat?.token === borrow?.debt
-                                        )?.borrowRate +
-                                          getAprByPool(
+                                      ) * borrow?.leverage
+                                    )}
+                                    %
+                                  </Text>
+                                </Box>
+                                <Box
+                                  display="flex"
+                                  justifyContent="space-between"
+                                  gap={10}
+                                  mb={borrow?.dappName === 'ZKlend' ? '2' : '0'}
+                                >
+                                  <Text>$STRK APR ({borrow?.leverage}x):</Text>
+                                  <Text>
+                                    {numberFormatterPercentage(
+                                      getBoostedApr(borrow?.debt) *
+                                        borrow?.leverage
+                                    )}
+                                    %
+                                  </Text>
+                                </Box>
+
+                                {borrow?.dappName === 'Jediswap' && (
+                                  <Box
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    gap={10}
+                                    mb="2"
+                                  >
+                                    <Text>
+                                      Jedi STRK APR ({borrow?.leverage}x):
+                                    </Text>
+                                    <Text>
+                                      {numberFormatterPercentage(
+                                        ((100 *
+                                          365 *
+                                          (getStrkAlloaction(
+                                            borrow?.secondary
+                                          ) *
+                                            oraclePrices?.find(
+                                              (curr: any) =>
+                                                curr.name === 'STRK'
+                                            )?.price)) /
+                                          getTvlByPool(
                                             poolAprs,
                                             borrow?.secondary,
                                             borrow?.dappName
-                                          ) +
-                                          getBoostedApr(borrow?.debt) +
-                                          (100 *
-                                            365 *
-                                            (getStrkAlloaction(
-                                              borrow?.secondary
-                                            ) *
-                                              oraclePrices?.find(
-                                                (curr: any) =>
-                                                  curr.name === 'STRK'
-                                              )?.price)) /
-                                            getTvlByPool(
+                                          )) *
+                                          borrow?.leverage
+                                      )}
+                                      %
+                                    </Text>
+                                  </Box>
+                                )}
+                                <hr />
+                                <Box
+                                  display="flex"
+                                  justifyContent="space-between"
+                                  gap={10}
+                                  mt="2"
+                                >
+                                  <Text>Effective APR:</Text>
+                                  <Text>
+                                    {numberFormatterPercentage(
+                                      Number(
+                                        borrow?.leverage *
+                                          (-stats?.find(
+                                            (stat: any) =>
+                                              stat?.token === borrow?.debt
+                                          )?.borrowRate +
+                                            getAprByPool(
                                               poolAprs,
                                               borrow?.secondary,
                                               borrow?.dappName
-                                            )) +
-                                        (stats?.find(
-                                          (stat: any) =>
-                                            stat?.token === borrow?.collateral
-                                        )?.supplyRate +
-                                          getBoostedAprSupply(
-                                            borrow?.collateral
-                                          ))
-                                    )
-                                  )}
-                                  
-                                  %
-                                </Text>
+                                            ) +
+                                            getBoostedApr(borrow?.debt) +
+                                            (100 *
+                                              365 *
+                                              (getStrkAlloaction(
+                                                borrow?.secondary
+                                              ) *
+                                                oraclePrices?.find(
+                                                  (curr: any) =>
+                                                    curr.name === 'STRK'
+                                                )?.price)) /
+                                              getTvlByPool(
+                                                poolAprs,
+                                                borrow?.secondary,
+                                                borrow?.dappName
+                                              )) +
+                                          (stats?.find(
+                                            (stat: any) =>
+                                              stat?.token === borrow?.collateral
+                                          )?.supplyRate +
+                                            getBoostedAprSupply(
+                                              borrow?.collateral
+                                            ))
+                                      )
+                                    )}
+                                    %
+                                  </Text>
+                                </Box>
                               </Box>
-                            </Box>
-                          }
-                          bg="#02010F"
-                          fontSize={'13px'}
-                          fontWeight={'400'}
-                          borderRadius={'lg'}
-                          padding={'2'}
-                          color="#F0F0F5"
-                          border="1px solid"
-                          borderColor="#23233D"
-                        >
-                          <Box
-                            width="100%"
-                            height="100%"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            fontWeight="400"
-                            color="#00D395"
-                            onClick={() => {
-                              setCurrentBorrowId1('ID - ' + borrow.loanId)
-                              setCurrentBorrowMarketCoin1(borrow.loanMarket)
-                              setCurrentBorrowId2('ID - ' + borrow.loanId)
-                              setCurrentBorrowMarketCoin2(borrow.loanMarket)
-                              setBorrowAmount(borrow.loanAmountParsed)
-                              setCollateralBalance(
-                                borrow.collateralAmountParsed +
-                                  ' ' +
-                                  borrow.collateralMarket
-                              )
-                              setCurrentSpendStatus(borrow.spendType)
-                              setCurrentLoanAmount(borrow?.currentLoanAmount)
-                              setCurrentLoanMarket(borrow?.currentLoanMarket)
-                            }}
+                            }
+                            bg="#02010F"
+                            fontSize={'13px'}
+                            fontWeight={'400'}
+                            borderRadius={'lg'}
+                            padding={'2'}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
                           >
-                            {numberFormatterPercentage(
-                              Number(
-                                borrow?.leverage *
-                                  (-stats?.find(
-                                    (stat: any) => stat?.token === borrow?.debt
-                                  )?.borrowRate +
-                                    getAprByPool(
-                                      poolAprs,
-                                      borrow?.secondary,
-                                      borrow?.dappName
-                                    ) +
-                                    getBoostedApr(borrow?.debt) +
-                                    (100 *
-                                      365 *
-                                      (getStrkAlloaction(borrow?.secondary) *
-                                        oraclePrices?.find(
-                                          (curr: any) => curr.name === 'STRK'
-                                        )?.price)) /
-                                      getTvlByPool(
+                            <Box
+                              width="100%"
+                              height="100%"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              fontWeight="400"
+                              color="#00D395"
+                              onClick={() => {
+                                setCurrentBorrowId1('ID - ' + borrow.loanId)
+                                setCurrentBorrowMarketCoin1(borrow.loanMarket)
+                                setCurrentBorrowId2('ID - ' + borrow.loanId)
+                                setCurrentBorrowMarketCoin2(borrow.loanMarket)
+                                setBorrowAmount(borrow.loanAmountParsed)
+                                setCollateralBalance(
+                                  borrow.collateralAmountParsed +
+                                    ' ' +
+                                    borrow.collateralMarket
+                                )
+                                setCurrentSpendStatus(borrow.spendType)
+                                setCurrentLoanAmount(borrow?.currentLoanAmount)
+                                setCurrentLoanMarket(borrow?.currentLoanMarket)
+                              }}
+                            >
+                              {numberFormatterPercentage(
+                                Number(
+                                  borrow?.leverage *
+                                    (-stats?.find(
+                                      (stat: any) =>
+                                        stat?.token === borrow?.debt
+                                    )?.borrowRate +
+                                      getAprByPool(
                                         poolAprs,
                                         borrow?.secondary,
                                         borrow?.dappName
-                                      )) +
-                                  (stats?.find(
-                                    (stat: any) =>
-                                      stat?.token === borrow?.collateral
-                                  )?.supplyRate +
-                                    getBoostedAprSupply(borrow?.collateral))
-                              )
-                            )}
-                            %
-                          </Box>
-                        </Tooltip>}
+                                      ) +
+                                      getBoostedApr(borrow?.debt) +
+                                      (100 *
+                                        365 *
+                                        (getStrkAlloaction(borrow?.secondary) *
+                                          oraclePrices?.find(
+                                            (curr: any) => curr.name === 'STRK'
+                                          )?.price)) /
+                                        getTvlByPool(
+                                          poolAprs,
+                                          borrow?.secondary,
+                                          borrow?.dappName
+                                        )) +
+                                    (stats?.find(
+                                      (stat: any) =>
+                                        stat?.token === borrow?.collateral
+                                    )?.supplyRate +
+                                      getBoostedAprSupply(borrow?.collateral))
+                                )
+                              )}
+                              %
+                            </Box>
+                          </Tooltip>
+                        )}
                       </Td>
 
                       <Td
@@ -1536,7 +1609,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontSize={'14px'}
                         fontWeight={400}
                         textAlign={'right'}
-                        pr="1rem"
+                        p="0"
                       >
                         <Box
                           width="100%"
@@ -1560,7 +1633,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               )
                               if (
                                 collateralAmounts[lower_bound + idx] *
-                                  oraclePrices.find(
+                                  oraclePrices?.find(
                                     (curr: any) =>
                                       curr.name ===
                                       collateralMarkets[lower_bound + idx]
@@ -1616,16 +1689,15 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 setCollateralAmount(
                                   collateralAmounts[lower_bound + idx]
                                 )
-                                if(borrow?.dappName==="Jediswap"){
+                                if (borrow?.dappName === 'Jediswap') {
                                   setL3App('JEDI_SWAP')
-                                }else if(borrow?.dappName=="ZKlend"){
-                                  setL3App("ZKLEND")
+                                } else if (borrow?.dappName == 'ZKlend') {
+                                  setL3App('ZKLEND')
                                 }
                                 setMethod('ADD_LIQUIDITY')
                                 setToMarketLiqA(borrow?.secondary.split('/')[0])
                                 setToMarketLiqB(borrow?.secondary.split('/')[1])
                               } else {
-
                               }
                             }}
                           >
@@ -1698,6 +1770,36 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               />
                             )}
                             {/* <TransactionCancelModal/> */}
+                          </Box>
+                        </Box>
+                      </Td>
+                      <Td
+                        p="0"
+                        width={'1rem'}
+                        fontSize={'14px'}
+                        fontWeight={400}
+                        overflow={'hidden'}
+                        textAlign="right"
+                      >
+                        <Box
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          fontWeight="400"
+                          textAlign="center"
+                          cursor="pointer"
+                        >
+                          <Box
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                `${window.location.origin}/v1/degen/?degenId=${borrow?.id}`
+                              )
+                              toast.success('Share link copied to clipboard', {
+                                position: toast.POSITION.BOTTOM_RIGHT,
+                              })
+                            }}
+                          >
+                            <ShareIcon />
                           </Box>
                         </Box>
                       </Td>
