@@ -252,51 +252,30 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       ////console.log("starknetAccount", account?.provider?.chainId);
     }
     setLoading(false)
-    // const isWhiteListed = async () => {
-    //   try {
-    //     if (!address) {
-    //       return;
-    //     }
-    //     if(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"){
-    //       setLoading(false)
-    //     }else{
-    //       const url = `https://hstk.fi/is-whitelisted/${address}`;
-    //       const response = await axios.get(url);
-    //       if (response.data) {
-    //         setWhitelisted(response.data?.isWhitelisted);
-    //         dispatch(setUserWhiteListed(response.data?.isWhitelisted))
-    //         if(response.data?.isWhitelisted==false){
-    //           await axios.post('https://hstk.fi/add-address', { address: address })
-    //           .then((response) => {
-    //            //console.log(response, "added to db");
-    //             // Log the response from the backend.
-    //           })
-    //           .catch((error) => {
-    //             console.error('Error in adding address:', error);
-    //           });
-    //         }
-    //         if (userType == "U1") {
-    //           await axios.post('https://hstk.fi/nft-sign', { address: address })
-    //             .then((response) => {
-    //              //console.log(response, "hash");
-    //               if (response) {
-    //                 dispatch(setMessageHash(response?.data?.msg_hash))
-    //                 dispatch(setSignature(response?.data?.signature))
-    //               }
-    //               // Log the response from the backend.
-    //             })
-    //             .catch((error) => {
-    //               console.error('Error:', error);
-    //             });
-    //         }
-    //       }
-    //       setLoading(false)
-    //     }
-    //   } catch (err) {
-    //    //console.log(err, "err in whitelist")
-    //   }
-    // }
-    // isWhiteListed()
+    const isWhiteListed = async () => {
+      try {
+        if (!address) {
+          return;
+        }
+            if (userType == "U1") {
+              await axios.post('https://hstk.fi/nft-sign', { address: address })
+                .then((response) => {
+                 //console.log(response, "hash");
+                  if (response) {
+                    dispatch(setMessageHash(response?.data?.msg_hash))
+                    dispatch(setSignature(response?.data?.signature))
+                  }
+                  // Log the response from the backend.
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+            }
+      } catch (err) {
+       //console.log(err, "err in whitelist")
+      }
+    }
+    isWhiteListed()
 
     const referal = async () => {
       try {
