@@ -38,6 +38,8 @@ import {
   selectYourSupply,
 } from '@/store/slices/readDataSlice'
 import { default as numberFormatter } from '@/utils/functions/numberFormatter'
+import ExternalLinkWhite from '@/assets/icons/externalLinkWhite'
+import Link from 'next/link'
 
 const columnItemsLeaderBoard = [
   'Rank',
@@ -290,7 +292,10 @@ const Campaign: NextPage = () => {
             `https://hstk.fi/api/get-epoch-wise-data/${address}`
           )
           const data = res?.data
-          setepochsData(data?.finalSnapData)
+          let dataepoch=data?.finalSnapData.sort(
+            (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
+          )
+          setepochsData(dataepoch)
           if (data?.rank) {
             setuserRank(data?.rank)
           } else {
@@ -526,7 +531,7 @@ const Campaign: NextPage = () => {
   }
 
   return (
-    <PageCard pt="6.5rem">
+    <PageCard pt="4rem">
       <HStack
         display="flex"
         justifyContent="space-between"
@@ -540,7 +545,7 @@ const Campaign: NextPage = () => {
         <HStack
           mt="3rem"
           display="flex"
-          justifyContent="center"
+          // justifyContent="center"
           alignItems="center"
           width="full"
         >
@@ -675,7 +680,7 @@ const Campaign: NextPage = () => {
             )}
           </Box>
 
-          <Box
+          {!(tabValue==2 &&currentSelectedDrop=="Airdrop 1") &&<Box
             display="flex"
             justifyContent="flex-end"
             alignItems="center"
@@ -684,7 +689,7 @@ const Campaign: NextPage = () => {
           >
             <RegisterCCPModal />
             <SubmissionCCPModal />
-          </Box>
+          </Box>}
         </HStack>
 
         {tabValue == 1 ? (
@@ -695,7 +700,7 @@ const Campaign: NextPage = () => {
             justifyContent="space-between"
           >
             <HStack
-              mt="6rem"
+              mt="5rem"
               display="flex"
               flexDirection="column"
               alignItems="flex-start"
@@ -794,7 +799,7 @@ const Campaign: NextPage = () => {
               </HStack>
             </HStack>
 
-            <Box mt="4rem" display="flex" flexDirection="column">
+            <Box mt="3rem" display="flex" flexDirection="column">
               <Text
                 color="#F0F0F5"
                 fontSize="16px"
@@ -1016,7 +1021,7 @@ const Campaign: NextPage = () => {
               </HStack>
             </HStack>
 
-            {/* <Box
+            <Box
               mt="6.5rem"
               display="flex"
               flexDirection="column"
@@ -1026,28 +1031,39 @@ const Campaign: NextPage = () => {
               lineHeight="20px"
               fontWeight="400"
             >
+              {currentSelectedDrop=="Airdrop 1" ?
               <Box display="flex">
                 <Link
-                  href={""}
+                  href={"https://hashstack.medium.com/completed-airdrop-phase-1-c57ae0ff0251"}
                   style={{ display: "flex", gap: "1rem" }}
                   target="_blank"
                 >
-                  <Text>Please check the airdrop announcement article</Text>
+                  <Text fontSize="14px" fontWeight="500" color="#B1B0B5">Airdrop Campaign Complete</Text>
+                  <ExternalLinkWhite />
+                </Link>
+              </Box>:<Box display="flex">
+                <Link
+                  href={"https://hashstack.medium.com/introducing-hashstacks-content-creator-program-ccp-435aea9c9d83"}
+                  style={{ display: "flex", gap: "1rem" }}
+                  target="_blank"
+                >
+                  <Text fontSize="14px" fontWeight="500" color="#B1B0B5">Read about Content Creator Program</Text>
                   <ExternalLinkWhite />
                 </Link>
               </Box>
+              }
 
-              <Box display="flex">
+              {currentSelectedDrop=="Airdrop 1"&&<Box display="flex">
                 <Link
-                  href={""}
+                  href={"https://hashstack.medium.com/launched-airdrop-for-hashstack-v1-d592ee7ff24e"}
                   style={{ display: "flex", gap: "1rem" }}
                   target="_blank"
                 >
-                  <Text>Please check the airdrop announcement article</Text>
+                  <Text fontSize="14px" fontWeight="500" color="#B1B0B5">Airdrop Launch</Text>
                   <ExternalLinkWhite />
                 </Link>
-              </Box>
-            </Box> */}
+              </Box>}
+            </Box>
           </HStack>
         )}
 

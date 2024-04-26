@@ -109,7 +109,7 @@ const SubmissionCCPModal: React.FC = () => {
 
   const handleSubmissionSubmit = async () => {
     let submissionCount: any = 0;
-    const submissionLimit = 3; 
+    const submissionLimit = 2; 
     let lastSubmissionTimestamp: number | null = null;
     const storedCount = localStorage.getItem('submissionCount');
     const storedTimestamp = localStorage.getItem('lastSubmissionTimestamp');

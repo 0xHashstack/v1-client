@@ -22,6 +22,7 @@ import Image from 'next/image'
 import posthog from 'posthog-js'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useMediaQuery } from '@chakra-ui/react'
 
 import { ILoan } from '@/Blockchain/interfaces/interfaces'
 import ExpandedCoinIcon from '@/assets/expanded/ExpandedCoins'
@@ -664,8 +665,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
     return matchedObject ? matchedObject.tvl : 1
   }
   // console.log(strkTokenAlloactionData["STRK/ETH"][strkTokenAlloactionData["STRK/ETH"].length-1].allocation,"allocat")
-  console.log(Borrows, 'borrows')
-  console.log(router, 'path')
 
   return loading ? (
     <Box
@@ -726,7 +725,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                   fontSize={'12px'}
                   fontWeight={400}
                   p={0}
-                  px="2rem"
+                  px={idx1==0 ?"1rem":"2rem"}
                 >
                   <Text
                     whiteSpace="pre-wrap"
@@ -735,13 +734,13 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                     height={'2rem'}
                     fontSize="12px"
                     textAlign={
-                      idx1 == 0 || idx1 == 1
+                      idx1 == 0 
                         ? 'left'
                         : idx1 == columnItems?.length - 1
                           ? 'right'
                           : 'center'
                     }
-                    pl={idx1 == 0 ? 2 : idx1 == 1 ? '55%' : '29%'}
+                    // pl={idx1 == 0 ? 2 : idx1 == 1 ? '55%' : '32%'}
                     pr={idx1 == columnItems.length - 1 ? 5 : 0}
                     color={'#BDBFC1'}
                     cursor="context-menu"
@@ -828,7 +827,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontWeight={400}
                         padding={2}
                         textAlign="center"
-                        pl="2rem"
                       >
                         <VStack
                           width="100%"
@@ -1047,7 +1045,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontWeight={400}
                         overflow={'hidden'}
                         textAlign={'center'}
-                        pl="5rem"
                       >
                         <Box
                           width="100%"
@@ -1099,7 +1096,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontSize={'14px'}
                         fontWeight={400}
                         textAlign={'center'}
-                        pl="5rem"
                       >
                         <VStack
                           width="100%"
@@ -1234,7 +1230,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontSize={'14px'}
                         fontWeight={400}
                         textAlign={'center'}
-                        pl="5rem"
                       >
                         <VStack
                           width="100%"
@@ -1316,7 +1311,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontWeight={400}
                         overflow={'hidden'}
                         textAlign={'center'}
-                        pl="5rem"
                       >
                         {borrow.leverage}x
                       </Td>
@@ -1326,8 +1320,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontSize={'14px'}
                         fontWeight={400}
                         overflow={'hidden'}
-                        textAlign={'center'}
-                        pl={{ md: '2rem', '2xl': '5rem' }}
+                        textAlign={'right'}
+                        pl={{ md: '3.5%', '2xl': '4.5%' }}
                       >
                         {oraclePrices === null ? (
                           <Skeleton
@@ -1362,11 +1356,14 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         )}
                       </Td>
                       <Td
-                        maxWidth={'5rem'}
+                        width={'12.5%'}
+                        maxWidth={'3rem'}
                         fontSize={'14px'}
                         fontWeight={400}
-                        textAlign={'center'}
-                        pl={{ md: '3rem', '2xl': '4rem' }}
+                        overflow={'hidden'}
+                        textAlign={'right'}
+                        // pr="6rem"
+                        pl={{ md: '3%','xl':'3.5%', '2xl': '4.5%' }}
                       >
                         {oraclePrices === null ? (
                           <Skeleton
@@ -1547,7 +1544,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               height="100%"
                               display="flex"
                               alignItems="center"
-                              justifyContent="center"
                               fontWeight="400"
                               color="#00D395"
                               onClick={() => {
@@ -1655,7 +1651,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     (curr: any) =>
                                       curr.name === borrow?.collateral
                                   )?.price >=
-                                  1000 ||
+                                  0 ||
                                   userDeposit?.find(
                                     (item: any) =>
                                       item?.rToken == 'r' + borrow?.collateral
@@ -1664,7 +1660,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       (curr: any) =>
                                         curr.name === borrow?.collateral
                                     )?.price >=
-                                    1000)
+                                    0)
                               ) {
                                 setRTokenAmount(
                                   collateralAmounts[lower_bound + idx]
@@ -1723,7 +1719,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               oraclePrices?.find(
                                 (curr: any) => curr.name === borrow?.collateral
                               )?.price >=
-                              1000 ||
+                              0 ||
                               userDeposit?.find(
                                 (item: any) =>
                                   item?.rToken == 'r' + borrow?.collateral
@@ -1732,7 +1728,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   (curr: any) =>
                                     curr.name === borrow?.collateral
                                 )?.price >=
-                                1000) ? (
+                                0) ? (
                               <DegenModal
                                 coin={coin}
                                 borrowAPRs={borrowAPRs}
