@@ -1316,7 +1316,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontWeight={400}
                         overflow={'hidden'}
                         textAlign={'center'}
-                        pl="5rem"
+                        pl={{ md: '2.8rem', '2xl': '5rem' }}
                       >
                         {borrow.leverage}x
                       </Td>
@@ -1326,8 +1326,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontSize={'14px'}
                         fontWeight={400}
                         overflow={'hidden'}
-                        textAlign={'center'}
-                        pl={{ md: '2rem', '2xl': '5rem' }}
+                        textAlign={'end'}
+                        pl={{ md: '2.8rem', '2xl': '5rem' }}
                       >
                         {oraclePrices === null ? (
                           <Skeleton
