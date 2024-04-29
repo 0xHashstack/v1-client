@@ -321,7 +321,6 @@ const Campaign: NextPage = () => {
         if(address){
           const res=await axios.get(`https://metricsapimainnet.hashstack.finance/ccp/register/${address}`)
           setuserSocialsData(res?.data?.response)
-          console.log(res?.data?.response,"data checks")
         }
       }
       fetchRegisterData()

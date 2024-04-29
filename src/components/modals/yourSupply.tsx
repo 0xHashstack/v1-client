@@ -47,7 +47,7 @@ import SliderWithInput from '../uiElements/sliders/sliderWithInput'
 import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf'
 import useDeposit from '@/Blockchain/hooks/Writes/useDeposit'
 import useWithdrawDeposit from '@/Blockchain/hooks/Writes/useWithdrawDeposit'
-import { getSupplyunlocked } from '@/Blockchain/scripts/Rewards'
+import { getSupplyunlocked,getEstrTokens } from '@/Blockchain/scripts/Rewards'
 import {
   tokenAddressMap,
   tokenDecimalsMap,
@@ -166,7 +166,7 @@ const YourSupplyModal = ({
       : 0
   )  
   const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] = useState(
-    "rUSDT"
+    currentSelectedWithdrawlCoin ?currentSelectedWithdrawlCoin:"rUSDT"
   )
   const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
     userDeposit?.find(
@@ -228,6 +228,17 @@ const YourSupplyModal = ({
       isSuccessWithdrawStake,
       statusWithdrawStake,
     } = useWithdrawStake()
+
+    useEffect(() => {
+      const fetchestrTokens = async () => {
+        const data = await getEstrTokens(
+          currentSelectedUnstakeCoin,
+          rTokenToWithdraw
+        )
+        setEstrTokens(data)
+      }
+      fetchestrTokens()
+    }, [rTokenToWithdraw])
 
   const {
     depositAmount,
@@ -523,6 +534,7 @@ const YourSupplyModal = ({
     setSliderValue(0)
     setSliderValue2(0)
     setSliderValue3(0);
+    setEstrTokens(0);
     setRTokenToWithdraw(0);
     setInputUnstakeAmount(0)
     setinputSupplyAmount(0)
