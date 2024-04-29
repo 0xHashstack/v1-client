@@ -30,6 +30,13 @@ import {
   selectCcpDropdowns,
   setCcpModalDropdown,
 } from '@/store/slices/dropdownsSlice'
+import RegisteredInstagramLogo from '@/assets/icons/registeredInstagramLogo'
+import RegisteredFacebookLogo from '@/assets/icons/registeredFacebookLogo'
+import RegisteredLinkedinLogo from '@/assets/icons/registeredLinkedinLogo'
+import RegisteredYoutubeLogo from '@/assets/icons/registeredYoutubeLogo'
+import RegisteredTikTokIcon from '@/assets/icons/registeredTikTokIcon'
+import RegisteredMediumIcon from '@/assets/icons/registeredMediumIcon'
+import RegisteredTwitterIcon from '@/assets/icons/registeredTwitterIcon'
 
 const ApplicationList = [
   {
@@ -133,59 +140,23 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({userSocialsData}) =>
 
     return usernames;
 }
-console.log(extractTwitterUsernames(userSocialsData),"tweet")
-  const resetStates=()=>{
-    setSocialHandle([
-      {
-        handle1: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle2: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle3: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle4: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle5: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle6: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle7: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle8: {
-          name: '',
-          handle: '',
-        },
-      },
-    ])
-  }
+function extractYoutubeUsernames(data: any[]) {
+  const usernames:any = [];
+
+  data.forEach((item:any) => {
+      const socials = item.socials.split(', ');
+
+      socials.forEach((social:any) => {
+          const twitterIndex = social.indexOf("youtube.com/");
+          if (twitterIndex !== -1) {
+              const username = social.substring(twitterIndex + "twitter.com/".length);
+              usernames.push(username);
+          }
+      });
+  });
+
+  return usernames;
+}
   const [count, setCount] = useState(1)
   const [loading, setLoading] = useState(false)
 
@@ -672,6 +643,59 @@ console.log(extractTwitterUsernames(userSocialsData),"tweet")
       )
         return true
     }
+  }
+  const resetStates=()=>{
+    setSocialHandle([
+      {
+        handle1: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle2: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle3: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle4: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle5: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle6: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle7: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle8: {
+          name: '',
+          handle: '',
+        },
+      },
+    ])
+    setCount(1);
   }
 
   return (
@@ -2588,6 +2612,63 @@ console.log(extractTwitterUsernames(userSocialsData),"tweet")
                     </Button>
                   </Box>
                 </Card>
+                {userSocialsData.length>0 && <Card
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                  p="1rem"
+                  mt="1rem"
+                >
+                    <Box display="flex" alignItems="center" gap="1rem">
+                      <Box minWidth="277px">
+                        <Box
+                          color="#676D9A"
+                          display="flex"
+                          alignItems="center"
+                          userSelect="none"
+                        >
+                          <Text
+                            mr="0.3rem"
+                            fontSize="12px"
+                            fontStyle="normal"
+                            fontWeight="400"
+                          >
+                            Your Registered Applications
+                          </Text>
+
+                          <Box>
+                            <Tooltip
+                              hasArrow
+                              arrowShadowColor="#2B2F35"
+                              placement="right"
+                              boxShadow="dark-lg"
+                              label="Applications you have already registered with"
+                              bg="#02010F"
+                              fontSize={'13px'}
+                              fontWeight={'400'}
+                              borderRadius={'lg'}
+                              padding={'2'}
+                              color="#F0F0F5"
+                              border="1px solid"
+                              borderColor="#23233D"
+                            >
+                              <Box>
+                                <InfoIcon />
+                              </Box>
+                            </Tooltip>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                    <Box display="flex" gap="0.5rem" mt="1rem" >
+                      <RegisteredInstagramLogo/>
+                      <RegisteredFacebookLogo/>
+                      <RegisteredLinkedinLogo/>
+                      <RegisteredYoutubeLogo/>
+                      <RegisteredTikTokIcon/>
+                      <RegisteredMediumIcon/>
+                      <RegisteredTwitterIcon/>
+                    </Box>
+                </Card>}
               </ModalBody>
             ) : (
               <Box

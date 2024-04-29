@@ -68,6 +68,7 @@ const initialState = {
   interactedAddress: false,
   zklendSpends:[],
   jediSwapPoolAprs: [],
+  connectedSocialsClicked:false,
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -323,6 +324,9 @@ export const readDataSlice = createSlice({
     setZklendSpends(state,action){
       state.zklendSpends=action.payload;
     },
+    setConnectedSocialsClicked(state,action){
+      state.connectedSocialsClicked=action.payload;
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -402,7 +406,8 @@ export const {
   setUserWhiteListed,
   setInteractedAddress,
   setJediSwapPoolAprs,
-  setZklendSpends
+  setZklendSpends,
+  setConnectedSocialsClicked
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -487,4 +492,5 @@ export const selectJediswapPoolAprs = (state) =>
   state.read_data.jediSwapPoolAprs;
 export const selectZklendSpends=(state)=>
   state.read_data.zklendSpends;
+export const selectConnectedSocialsClicked=(state)=>state.read_data.connectedSocialsClicked;
 export default readDataSlice.reducer;
