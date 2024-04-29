@@ -1651,7 +1651,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     (curr: any) =>
                                       curr.name === borrow?.collateral
                                   )?.price >=
-                                  1000 ||
+                                  0 ||
                                   userDeposit?.find(
                                     (item: any) =>
                                       item?.rToken == 'r' + borrow?.collateral
@@ -1660,7 +1660,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       (curr: any) =>
                                         curr.name === borrow?.collateral
                                     )?.price >=
-                                    1000)
+                                    0)
                               ) {
                                 setRTokenAmount(
                                   collateralAmounts[lower_bound + idx]
@@ -1719,7 +1719,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               oraclePrices?.find(
                                 (curr: any) => curr.name === borrow?.collateral
                               )?.price >=
-                              1000 ||
+                              0 ||
                               userDeposit?.find(
                                 (item: any) =>
                                   item?.rToken == 'r' + borrow?.collateral
@@ -1728,7 +1728,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   (curr: any) =>
                                     curr.name === borrow?.collateral
                                 )?.price >=
-                                1000) ? (
+                                0) ? (
                               <DegenModal
                                 coin={coin}
                                 borrowAPRs={borrowAPRs}

@@ -1,67 +1,74 @@
-import { Box, Button, HStack, Skeleton, Text } from "@chakra-ui/react";
-import axios from "axios";
-import { NextPage } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Box, Button, HStack, Skeleton, Text } from '@chakra-ui/react'
+import axios from 'axios'
+import { NextPage } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
-import PageCard from "@/components/layouts/pageCard";
+import PageCard from '@/components/layouts/pageCard'
+import numberFormatter from '@/utils/functions/numberFormatter'
 
 const filterButtons = [
-  "Medium Article",
-  "Twitter Tweet",
-  "Youtube Video",
-  "Telegram Post",
-  "Instagram Reels",
-  "Instagram Post",
-  "Reddit Post",
-  "TikTok Video",
-];
+  'Medium Article',
+  'Twitter Tweet',
+  'Twitter (X) Post',
+  'Twitter (X) Thread',
+  'Youtube Video',
+  'Telegram Post',
+  'Instagram Post',
+  'Instagram Reels',
+  'Reddit Post',
+  'TikTok Video',
+  'Memes',
+  'Others',
+]
 
 interface SubmissionData {
-  "Content Platform": string;
-  Link: string;
-  Timestamp: string;
-  "Wallet Address (StarkNet)": string;
-  Allocated: string;
-  "Recommended (Community Team)": string;
+  'Content Platform': string
+  Link: string
+  Timestamp: string
+  'Wallet Address (StarkNet)': string
+  Allocated: string
+  'Recommended (Community Team)': string
 }
 
 const CcpSubmissions: NextPage = () => {
-  const [selectedFilter, setSelectedFilter] = useState("");
-  const [submissionData, setSubmissionData] = useState<SubmissionData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [selectedFilter, setSelectedFilter] = useState('All')
+  const [submissionData, setSubmissionData] = useState<SubmissionData[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const router = useRouter();
-  const  walletAddress  = router.query?.address;
+  const router = useRouter()
+  const walletAddress = router.query?.address
 
   useEffect(() => {
     try {
-      setLoading(true);
+      setLoading(true)
       const fetchUserCCPData = async () => {
         const res = await axios.get(
           `https://hstk.fi/api/ccp/submission/${walletAddress}`
-        );
-        if (selectedFilter === "") {
-          setSubmissionData(res.data);
+        )
+
+        console.log(res.data, 'data')
+        if (selectedFilter === 'All') {
+          setSubmissionData(res.data)
         } else {
           const filteredData = res.data.filter(
             (item: SubmissionData) =>
-              item["Content Platform"] === selectedFilter
-          );
-          setSubmissionData(filteredData);
+              item['Content Platform'] === selectedFilter
+          )
+          setSubmissionData(filteredData)
         }
-      };
-      if (walletAddress) {
-        fetchUserCCPData();
       }
-      setLoading(false);
+      if (walletAddress) {
+        fetchUserCCPData()
+      }
+      setLoading(false)
     } catch (err) {
-      console.log(err);
-      setLoading(false);
+      console.log(err)
+      setLoading(false)
     }
-  }, [selectedFilter, walletAddress]);
+  }, [selectedFilter, walletAddress])
 
   return (
     <PageCard pt="6.5rem">
@@ -78,12 +85,12 @@ const CcpSubmissions: NextPage = () => {
           letterSpacing="-0.15px"
           padding="1.125rem 0.4rem"
           borderRadius="0px"
-          borderBottom={"2px solid #4D59E8"}
+          borderBottom={'2px solid #4D59E8'}
           color="#B1B0B5"
           marginTop=".5rem"
           display="flex"
         >
-          Leaderboard/Submissions/CCP/{" "}
+          Leaderboard/Submissions/CCP/{' '}
           <Text color="#fff">
             {walletAddress?.toString().substring(0, 5)}...
             {walletAddress
@@ -96,25 +103,38 @@ const CcpSubmissions: NextPage = () => {
           display="flex"
           alignItems="flex-start"
           flexWrap="wrap"
-          gap={{ base: ".5rem", sm: "1rem" }}
+          gap={{ base: '.5rem', sm: '1rem' }}
           marginTop="2.6rem"
           overflowX="auto"
           width="100%"
         >
+          <Button
+            color={selectedFilter === 'All' ? 'white' : '#676C9B'}
+            background={selectedFilter === 'All' ? '#4D59E8' : '#140E2D'}
+            padding={{ base: '0rem .5rem', sm: '0rem .7rem' }}
+            borderRadius="md"
+            fontSize={{ base: '12px', sm: '14px' }}
+            fontWeight="semibold"
+            height="2rem"
+            _hover={{ bg: '#4D59E8', color: 'white' }}
+            onClick={() => setSelectedFilter('All')}
+          >
+            All
+          </Button>
           {filterButtons.map((item, i) => (
             <Button
               key={i}
-              color={selectedFilter === item ? "white" : "#676C9B"}
-              background={selectedFilter === item ? "#4D59E8" : "#140E2D"}
-              padding={{ base: "0rem .5rem", sm: "0rem .7rem" }}
+              color={selectedFilter === item ? 'white' : '#676C9B'}
+              background={selectedFilter === item ? '#4D59E8' : '#140E2D'}
+              padding={{ base: '0rem .5rem', sm: '0rem .7rem' }}
               borderRadius="md"
-              fontSize={{ base: "12px", sm: "14px" }}
+              fontSize={{ base: '12px', sm: '14px' }}
               fontWeight="semibold"
               height="2rem"
-              _hover={{ bg: "#4D59E8", color: "white" }}
+              _hover={{ bg: '#4D59E8', color: 'white' }}
               onClick={() => setSelectedFilter(item)}
             >
-              {item === "Medium Article" ? "Article" : item}
+              {item === 'Medium Article' ? 'Article' : item}
             </Button>
           ))}
         </Box>
@@ -123,9 +143,9 @@ const CcpSubmissions: NextPage = () => {
       <HStack
         display="grid"
         gridTemplateColumns={{
-          sm: "auto",
-          md: "auto auto",
-          lg: "auto auto auto",
+          sm: 'auto',
+          md: 'auto auto',
+          lg: 'auto auto auto',
         }}
         gap="1.5rem"
         width="95%"
@@ -147,7 +167,7 @@ const CcpSubmissions: NextPage = () => {
               borderRadius="lg"
               border="1px solid #282A44"
               key={i}
-              maxWidth={submissionData.length > 1 ? "500" : ""}
+              maxWidth={submissionData.length > 1 ? '500' : ''}
             >
               <Box
                 height={200}
@@ -162,8 +182,8 @@ const CcpSubmissions: NextPage = () => {
                   height={81}
                   alt="img"
                   style={{
-                    borderTopLeftRadius: "8px",
-                    borderTopRightRadius: "8px",
+                    borderTopLeftRadius: '8px',
+                    borderTopRightRadius: '8px',
                   }}
                 />
               </Box>
@@ -182,7 +202,7 @@ const CcpSubmissions: NextPage = () => {
                   alignItems="center"
                   width="100%"
                 >
-                  <Text color="white">CCP 1 - {item["Content Platform"]}</Text>
+                  <Text color="white">CCP 1 - {item['Content Platform']}</Text>
                   <Box
                     color="black"
                     background="#B3894D"
@@ -192,7 +212,14 @@ const CcpSubmissions: NextPage = () => {
                     fontWeight="semibold"
                     borderRadius="md"
                   >
-                    Points - {item["Recommended (Community Team)"]}
+                    Points -{' '}
+                    {item['Recommended (Community Team)']
+                      ? numberFormatter(
+                          item['Recommended (Community Team)']
+                        ) === '0.0000'
+                        ? '0.000'
+                        : numberFormatter(item['Recommended (Community Team)'])
+                      : '0.000'}
                   </Box>
                 </Box>
                 <Link href={item.Link} target="_blank">
@@ -202,7 +229,7 @@ const CcpSubmissions: NextPage = () => {
                     // isTruncated={item.Link.length > 30}
                   >
                     {item.Link.length > 30
-                      ? item.Link.substring(0, 40) + "..."
+                      ? item.Link.substring(0, 40) + '...'
                       : item.Link}
                     {/* {item.Link} */}
                   </Text>
@@ -217,7 +244,7 @@ const CcpSubmissions: NextPage = () => {
         )}
       </HStack>
     </PageCard>
-  );
-};
+  )
+}
 
-export default CcpSubmissions;
+export default CcpSubmissions
