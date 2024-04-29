@@ -30,7 +30,10 @@ import {
   selectCcpDropdowns,
   setCcpModalDropdown,
 } from '@/store/slices/dropdownsSlice'
-import { selectConnectedSocialsClicked,setConnectedSocialsClicked } from '@/store/slices/readDataSlice'
+import {
+  selectConnectedSocialsClicked,
+  setConnectedSocialsClicked,
+} from '@/store/slices/readDataSlice'
 import RegisteredInstagramLogo from '@/assets/icons/registeredInstagramLogo'
 import RegisteredFacebookLogo from '@/assets/icons/registeredFacebookLogo'
 import RegisteredLinkedinLogo from '@/assets/icons/registeredLinkedinLogo'
@@ -306,7 +309,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
           socialHandle[i]?.handle1?.handle
         )
       ) {
-        toast.error('Twitte handle already exists', {
+        toast.error('Twitter handle already exists', {
           position: 'bottom-right',
         })
         return
@@ -467,7 +470,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
           socialHandle[i]?.handle2?.handle
         )
       ) {
-        toast.error('Twitte handle already exists', {
+        toast.error('Twitter handle already exists', {
           position: 'bottom-right',
         })
         return
@@ -628,7 +631,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
           socialHandle[i]?.handle3?.handle
         )
       ) {
-        toast.error('Twitte handle already exists', {
+        toast.error('Twitter handle already exists', {
           position: 'bottom-right',
         })
         return
@@ -789,7 +792,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
           socialHandle[i]?.handle4?.handle
         )
       ) {
-        toast.error('Twitte handle already exists', {
+        toast.error('Twitter handle already exists', {
           position: 'bottom-right',
         })
         return
@@ -950,7 +953,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
           socialHandle[i]?.handle5?.handle
         )
       ) {
-        toast.error('Twitte handle already exists', {
+        toast.error('Twitter handle already exists', {
           position: 'bottom-right',
         })
         return
@@ -1111,7 +1114,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
           socialHandle[i]?.handle6?.handle
         )
       ) {
-        toast.error('Twitte handle already exists', {
+        toast.error('Twitter handle already exists', {
           position: 'bottom-right',
         })
         return
@@ -1272,7 +1275,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
           socialHandle[i]?.handle7?.handle
         )
       ) {
-        toast.error('Twitte handle already exists', {
+        toast.error('Twitter handle already exists', {
           position: 'bottom-right',
         })
         return
