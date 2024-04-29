@@ -128,7 +128,6 @@ const SupplyDashboard = ({
   const [supplyMarkets, setSupplyMarkets] = useState([]);
   const [currentActionMarket, setCurrentActionMarket] = useState("rBTC");
   const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
-
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
   let userDeposits = useSelector(selectUserDeposits);
   let reduxProtocolStats = useSelector(selectProtocolStats);
@@ -888,7 +887,7 @@ const SupplyDashboard = ({
                         onClick={() => {
                           setCurrentSelectedSupplyCoin(supply?.token);
                           setcurrentSelectedWithdrawlCoin(supply?.rToken);
-                          setcurrentedSelectedUnstakeCoinModal(supply?.rtoken)
+                          setcurrentedSelectedUnstakeCoinModal(supply?.rToken)
                           setCurrentActionMarket(supply?.rToken);
                           posthog.capture("Your Supply Actions Clicked", {
                             Clicked: true,
