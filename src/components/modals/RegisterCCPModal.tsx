@@ -30,7 +30,7 @@ import {
   selectCcpDropdowns,
   setCcpModalDropdown,
 } from '@/store/slices/dropdownsSlice'
-import { selectConnectedSocialsClicked } from '@/store/slices/readDataSlice'
+import { selectConnectedSocialsClicked,setConnectedSocialsClicked } from '@/store/slices/readDataSlice'
 import RegisteredInstagramLogo from '@/assets/icons/registeredInstagramLogo'
 import RegisteredFacebookLogo from '@/assets/icons/registeredFacebookLogo'
 import RegisteredLinkedinLogo from '@/assets/icons/registeredLinkedinLogo'

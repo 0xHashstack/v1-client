@@ -33,6 +33,7 @@ import {
   setAirdropDropdown,
 } from '@/store/slices/dropdownsSlice'
 import {
+  selectConnectedSocialsClicked,
   selectExistingLink,
   selectYourBorrow,
   selectYourSupply,
