@@ -30,6 +30,7 @@ import {
   selectCcpDropdowns,
   setCcpModalDropdown,
 } from '@/store/slices/dropdownsSlice'
+import { selectConnectedSocialsClicked } from '@/store/slices/readDataSlice'
 import RegisteredInstagramLogo from '@/assets/icons/registeredInstagramLogo'
 import RegisteredFacebookLogo from '@/assets/icons/registeredFacebookLogo'
 import RegisteredLinkedinLogo from '@/assets/icons/registeredLinkedinLogo'
@@ -133,6 +134,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
   const { address } = useAccount()
 
   const ccpDropdowns = useSelector(selectCcpDropdowns)
+  const registeredClick = useSelector(selectConnectedSocialsClicked)
   const dispatch = useDispatch()
 
   function extractTwitterUsernames(data: any[]) {
@@ -1427,6 +1429,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
         }
       )
       if (res.status === 200) {
+        dispatch(setConnectedSocialsClicked(!registeredClick))
         toast.success('Form submitted successfully', {
           position: 'bottom-right',
         })
@@ -1488,7 +1491,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
         return true
     }
   }
-  const resetStates=()=>{
+  const resetStates = () => {
     setSocialHandle([
       {
         handle1: {
@@ -1539,7 +1542,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
         },
       },
     ])
-    setCount(1);
+    setCount(1)
   }
 
   return (
@@ -3456,12 +3459,13 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
                     </Button>
                   </Box>
                 </Card>
-                {userSocialsData.length>0 && <Card
-                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                  p="1rem"
-                  mt="1rem"
-                >
+                {userSocialsData.length > 0 && (
+                  <Card
+                    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                    p="1rem"
+                    mt="1rem"
+                  >
                     <Box display="flex" alignItems="center" gap="1rem">
                       <Box minWidth="277px">
                         <Box
@@ -3503,15 +3507,27 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
                         </Box>
                       </Box>
                     </Box>
-                    <Box display="flex" gap="0.5rem" mt="1rem" >
-                      {extractInstagramUsernames(userSocialsData).length>0 && <RegisteredInstagramLogo/>}
-                      {extractLinkedInUsernames(userSocialsData).length>0 && <RegisteredLinkedinLogo/>}
-                      {extractYoutubeUsernames(userSocialsData).length>0 && <RegisteredYoutubeLogo/>}
-                      {extractTikTokUsernames(userSocialsData).length>0 && <RegisteredTikTokIcon/>}
-                      {extractMediumUsernames(userSocialsData).length>0 && <RegisteredMediumIcon/>}
-                       {extractTwitterUsernames(userSocialsData).length>0 &&<RegisteredTwitterIcon/>}
+                    <Box display="flex" gap="0.5rem" mt="1rem">
+                      {extractInstagramUsernames(userSocialsData).length >
+                        0 && <RegisteredInstagramLogo />}
+                      {extractLinkedInUsernames(userSocialsData).length > 0 && (
+                        <RegisteredLinkedinLogo />
+                      )}
+                      {extractYoutubeUsernames(userSocialsData).length > 0 && (
+                        <RegisteredYoutubeLogo />
+                      )}
+                      {extractTikTokUsernames(userSocialsData).length > 0 && (
+                        <RegisteredTikTokIcon />
+                      )}
+                      {extractMediumUsernames(userSocialsData).length > 0 && (
+                        <RegisteredMediumIcon />
+                      )}
+                      {extractTwitterUsernames(userSocialsData).length > 0 && (
+                        <RegisteredTwitterIcon />
+                      )}
                     </Box>
-                </Card>}
+                  </Card>
+                )}
               </ModalBody>
             ) : (
               <Box

@@ -250,6 +250,7 @@ const Campaign: NextPage = () => {
   const totalSupply = useSelector(selectYourSupply)
   const exisitingLink = useSelector(selectExistingLink)
   const airdropDropdowns = useSelector(selectAirdropDropdowns)
+  const registeredClick = useSelector(selectConnectedSocialsClicked)
 
   const dispatch = useDispatch()
   const { address } = useAccount()
@@ -293,7 +294,7 @@ const Campaign: NextPage = () => {
             `https://hstk.fi/api/get-epoch-wise-data/${address}`
           )
           const data = res?.data
-          let dataepoch=data?.finalSnapData.sort(
+          let dataepoch = data?.finalSnapData.sort(
             (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
           )
           setepochsData(dataepoch)
@@ -315,19 +316,21 @@ const Campaign: NextPage = () => {
     }
   }, [address])
 
-  useEffect(()=>{
-    try{
-      const fetchRegisterData=async()=>{
-        if(address){
-          const res=await axios.get(`https://metricsapimainnet.hashstack.finance/ccp/register/${address}`)
+  useEffect(() => {
+    try {
+      const fetchRegisterData = async () => {
+        if (address) {
+          const res = await axios.get(
+            `https://metricsapimainnet.hashstack.finance/ccp/register/${address}`
+          )
           setuserSocialsData(res?.data?.response)
         }
       }
       fetchRegisterData()
-    }catch(err){
-      console.log(err,"err in fetching register data")
+    } catch (err) {
+      console.log(err, 'err in fetching register data')
     }
-  },[address])
+  }, [address, registeredClick])
 
   useEffect(() => {
     try {
@@ -695,16 +698,18 @@ const Campaign: NextPage = () => {
             )}
           </Box>
 
-          {!(tabValue==2 &&currentSelectedDrop=="Airdrop 1") &&<Box
-            display="flex"
-            justifyContent="flex-end"
-            alignItems="center"
-            gap="1rem"
-            width="full"
-          >
-            <RegisterCCPModal userSocialsData={userSocialsData}  />
-            <SubmissionCCPModal userSocialsData={userSocialsData} />
-          </Box>}
+          {!(tabValue == 2 && currentSelectedDrop == 'Airdrop 1') && (
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+              gap="1rem"
+              width="full"
+            >
+              <RegisterCCPModal userSocialsData={userSocialsData} />
+              <SubmissionCCPModal userSocialsData={userSocialsData} />
+            </Box>
+          )}
         </HStack>
 
         {tabValue == 1 ? (
@@ -1046,38 +1051,54 @@ const Campaign: NextPage = () => {
               lineHeight="20px"
               fontWeight="400"
             >
-              {currentSelectedDrop=="Airdrop 1" ?
-              <Box display="flex">
-                <Link
-                  href={"https://hashstack.medium.com/completed-airdrop-phase-1-c57ae0ff0251"}
-                  style={{ display: "flex", gap: "1rem" }}
-                  target="_blank"
-                >
-                  <Text fontSize="14px" fontWeight="500" color="#B1B0B5">Airdrop Campaign Complete</Text>
-                  <ExternalLinkWhite />
-                </Link>
-              </Box>:<Box display="flex">
-                <Link
-                  href={"https://hashstack.medium.com/introducing-hashstacks-content-creator-program-ccp-435aea9c9d83"}
-                  style={{ display: "flex", gap: "1rem" }}
-                  target="_blank"
-                >
-                  <Text fontSize="14px" fontWeight="500" color="#B1B0B5">Read about Content Creator Program</Text>
-                  <ExternalLinkWhite />
-                </Link>
-              </Box>
-              }
+              {currentSelectedDrop == 'Airdrop 1' ? (
+                <Box display="flex">
+                  <Link
+                    href={
+                      'https://hashstack.medium.com/completed-airdrop-phase-1-c57ae0ff0251'
+                    }
+                    style={{ display: 'flex', gap: '1rem' }}
+                    target="_blank"
+                  >
+                    <Text fontSize="14px" fontWeight="500" color="#B1B0B5">
+                      Airdrop Campaign Complete
+                    </Text>
+                    <ExternalLinkWhite />
+                  </Link>
+                </Box>
+              ) : (
+                <Box display="flex">
+                  <Link
+                    href={
+                      'https://hashstack.medium.com/introducing-hashstacks-content-creator-program-ccp-435aea9c9d83'
+                    }
+                    style={{ display: 'flex', gap: '1rem' }}
+                    target="_blank"
+                  >
+                    <Text fontSize="14px" fontWeight="500" color="#B1B0B5">
+                      Read about Content Creator Program
+                    </Text>
+                    <ExternalLinkWhite />
+                  </Link>
+                </Box>
+              )}
 
-              {currentSelectedDrop=="Airdrop 1"&&<Box display="flex">
-                <Link
-                  href={"https://hashstack.medium.com/launched-airdrop-for-hashstack-v1-d592ee7ff24e"}
-                  style={{ display: "flex", gap: "1rem" }}
-                  target="_blank"
-                >
-                  <Text fontSize="14px" fontWeight="500" color="#B1B0B5">Airdrop Launch</Text>
-                  <ExternalLinkWhite />
-                </Link>
-              </Box>}
+              {currentSelectedDrop == 'Airdrop 1' && (
+                <Box display="flex">
+                  <Link
+                    href={
+                      'https://hashstack.medium.com/launched-airdrop-for-hashstack-v1-d592ee7ff24e'
+                    }
+                    style={{ display: 'flex', gap: '1rem' }}
+                    target="_blank"
+                  >
+                    <Text fontSize="14px" fontWeight="500" color="#B1B0B5">
+                      Airdrop Launch
+                    </Text>
+                    <ExternalLinkWhite />
+                  </Link>
+                </Box>
+              )}
             </Box>
           </HStack>
         )}
