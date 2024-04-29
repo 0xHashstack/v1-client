@@ -234,6 +234,7 @@ const Campaign: NextPage = () => {
   const [userHashCCP, setuserHashCCP] = useState<any>(0)
   const [totalPointsCCP, settotalPointsCCP] = useState<any>(0)
   const [userRankCCP, setuserRankCCP] = useState<any>(0)
+  const [userSocialsData, setuserSocialsData] = useState<any>([])
   const [campaignDetails, setCampaignDetails] = useState([
     {
       campaignName: 'Airdrop 01',
@@ -313,6 +314,21 @@ const Campaign: NextPage = () => {
       console.log(err)
     }
   }, [address])
+
+  useEffect(()=>{
+    try{
+      const fetchRegisterData=async()=>{
+        if(address){
+          const res=await axios.get(`https://metricsapimainnet.hashstack.finance/ccp/register/${address}`)
+          setuserSocialsData(res?.data?.response)
+          console.log(res?.data?.response,"data checks")
+        }
+      }
+      fetchRegisterData()
+    }catch(err){
+      console.log(err,"err in fetching register data")
+    }
+  },[address])
 
   useEffect(() => {
     try {
@@ -687,8 +703,8 @@ const Campaign: NextPage = () => {
             gap="1rem"
             width="full"
           >
-            <RegisterCCPModal />
-            <SubmissionCCPModal />
+            <RegisterCCPModal userSocialsData={userSocialsData}  />
+            <SubmissionCCPModal userSocialsData={userSocialsData} />
           </Box>}
         </HStack>
 
