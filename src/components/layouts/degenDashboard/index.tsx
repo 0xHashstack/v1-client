@@ -725,7 +725,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                   fontSize={'12px'}
                   fontWeight={400}
                   p={0}
-                  px={idx1==0 ?"1rem":"2rem"}
+                  px={idx1 == 0 ? '1rem' : '2rem'}
                 >
                   <Text
                     whiteSpace="pre-wrap"
@@ -734,7 +734,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                     height={'2rem'}
                     fontSize="12px"
                     textAlign={
-                      idx1 == 0 
+                      idx1 == 0
                         ? 'left'
                         : idx1 == columnItems?.length - 1
                           ? 'right'
@@ -1363,7 +1363,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         overflow={'hidden'}
                         textAlign={'right'}
                         // pr="6rem"
-                        pl={{ md: '3%','xl':'3.5%', '2xl': '4.5%' }}
+                        pl={{ md: '3%', xl: '3.5%', '2xl': '4.5%' }}
                       >
                         {oraclePrices === null ? (
                           <Skeleton
