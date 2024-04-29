@@ -112,6 +112,8 @@ const YourSupplyModal = ({
   setCurrentSelectedSupplyCoin,
   currentSelectedWithdrawlCoin,
   setcurrentSelectedWithdrawlCoin,
+  currentedSelectedUnstakeCoinModal,
+  setcurrentedSelectedUnstakeCoinModal,
   currentActionMarket,
   coins,
   protocolStats,
@@ -166,7 +168,7 @@ const YourSupplyModal = ({
       : 0
   )  
   const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] = useState(
-    currentSelectedWithdrawlCoin ?currentSelectedWithdrawlCoin:"rUSDT"
+    currentedSelectedUnstakeCoinModal? currentedSelectedUnstakeCoinModal:"rUSDT"
   )
   const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
     userDeposit?.find(
@@ -543,6 +545,7 @@ const YourSupplyModal = ({
     setCurrentSelectedSupplyCoin('BTC')
     setSupplyAsset('BTC')
     setcurrentSelectedWithdrawlCoin('BTC')
+    setcurrentSelectedUnstakeCoin('rBTC')
     setAsset('BTC')
     setIsChecked(true)
     setTransactionStarted(false)
