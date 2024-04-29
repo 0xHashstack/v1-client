@@ -86,7 +86,13 @@ const PlatformList = [
   },
 ]
 
-const SubmissionCCPModal: React.FC = () => {
+interface SubmissionModalProps{
+  userSocialsData:any;
+}
+
+const SubmissionCCPModal: React.FC<SubmissionModalProps> = ({
+  userSocialsData
+}) => {
   const [currentSelectedPlatform, setCurrentSelectedPlatform] =
     useState('Twitter (X) Post')
   const [contentLink, setContentLink] = useState('')
@@ -105,6 +111,12 @@ const SubmissionCCPModal: React.FC = () => {
 
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setCcpModalDropdown(dropdownName))
+  }
+  const resetStates=()=>{
+    setContentLink('');
+    setCurrentSelectedPlatform('Twitter (X) Post')
+    setPlatformName('')
+    setUserHandle('')
   }
 
   const handleSubmissionSubmit = async () => {
@@ -177,7 +189,7 @@ const SubmissionCCPModal: React.FC = () => {
 
   return (
     <div>
-      {/* <Tooltip
+      <Tooltip
         hasArrow
         label="register your social media to activate submission"
         rounded="md"
@@ -191,7 +203,7 @@ const SubmissionCCPModal: React.FC = () => {
         border="1px solid"
         borderColor="#23233D"
         arrowShadowColor="#2B2F35"
-      > */}
+      >
       <Button
         onClick={() => {
           posthog.capture('Submit content for CCP Modal Button Clicked', {
@@ -199,21 +211,28 @@ const SubmissionCCPModal: React.FC = () => {
           })
           onOpen()
         }}
+        isDisabled={userSocialsData.length==0}
+        _disabled={{
+          backgroundColor:"#676D9A1A",
+          color:"#3E415C",
+          border:"1px solid #676D9A4D"
+        }}
         background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
         color="#f2f2f2"
         size="sm"
         width="100%"
         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-        _hover={{ backgroundColor: 'transparent' }}
+        _hover={{ backgroundColor: '#676D9A1A' }}
       >
         Submit content for CCP
       </Button>
-      {/* </Tooltip> */}
+      </Tooltip>
 
       <Portal>
         <Modal
           isOpen={isOpen}
           onClose={() => {
+            resetStates();
             onClose()
           }}
           isCentered

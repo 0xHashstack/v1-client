@@ -61,8 +61,11 @@ const ApplicationList = [
     name: 'LinkedIn',
   },
 ]
+interface RegisterCCPModalProps {
+  userSocialsData: any;
+}
 
-const RegisterCCPModal: React.FC = () => {
+const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({userSocialsData}) => {
   const [socialHandle, setSocialHandle] = useState([
     {
       handle1: {
@@ -113,6 +116,76 @@ const RegisterCCPModal: React.FC = () => {
       },
     },
   ])
+  function extractTwitterUsernames(data: any[]) {
+    const usernames:any = [];
+
+    data.forEach((item:any) => {
+        const socials = item.socials.split(', ');
+
+        socials.forEach((social:any) => {
+            const twitterIndex = social.indexOf("twitter.com/");
+            if (twitterIndex !== -1) {
+                const username = social.substring(twitterIndex + "twitter.com/".length);
+                usernames.push(username);
+            }
+        });
+    });
+
+    return usernames;
+}
+console.log(extractTwitterUsernames(userSocialsData),"tweet")
+  const resetStates=()=>{
+    setSocialHandle([
+      {
+        handle1: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle2: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle3: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle4: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle5: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle6: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle7: {
+          name: '',
+          handle: '',
+        },
+      },
+      {
+        handle8: {
+          name: '',
+          handle: '',
+        },
+      },
+    ])
+  }
   const [count, setCount] = useState(1)
   const [loading, setLoading] = useState(false)
 
@@ -131,7 +204,7 @@ const RegisterCCPModal: React.FC = () => {
       Clicked: true,
     })
 
-    const finalLinkArray = []
+    const finalLinkArray:any = []
     for (let i = 0; i < socialHandle.length; i++) {
       if (
         socialHandle[i]?.handle1?.name === 'Twitter (X)' &&
@@ -624,6 +697,7 @@ const RegisterCCPModal: React.FC = () => {
         <Modal
           isOpen={isOpen}
           onClose={() => {
+            resetStates()
             onClose()
           }}
           isCentered
@@ -2459,7 +2533,6 @@ const RegisterCCPModal: React.FC = () => {
                     display="flex"
                     alignItems="center"
                     justifyContent="flex-start"
-                    flexDir="column"
                     gap=".8rem"
                     mt=".8rem"
                   >
@@ -2504,6 +2577,7 @@ const RegisterCCPModal: React.FC = () => {
                       color="#6E7681"
                       size="sm"
                       width="16rem"
+                      height="2.3rem"
                       _hover={{ color: 'black', backgroundColor: 'white' }}
                       _disabled={{ opacity: '0.5', cursor: 'not-allowed' }}
                       alignSelf="flex-start"
