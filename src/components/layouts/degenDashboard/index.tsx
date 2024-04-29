@@ -1660,7 +1660,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       (curr: any) =>
                                         curr.name === borrow?.collateral
                                     )?.price >=
-                                    0)
+                                    1000)
                               ) {
                                 setRTokenAmount(
                                   collateralAmounts[lower_bound + idx]
