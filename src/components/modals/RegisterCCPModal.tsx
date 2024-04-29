@@ -18,7 +18,7 @@ import {
 import { useAccount } from '@starknet-react/core'
 import axios from 'axios'
 import posthog from 'posthog-js'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
@@ -61,11 +61,14 @@ const ApplicationList = [
     name: 'LinkedIn',
   },
 ]
+
 interface RegisterCCPModalProps {
-  userSocialsData: any;
+  userSocialsData: any
 }
 
-const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({userSocialsData}) => {
+const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
+  userSocialsData,
+}) => {
   const [socialHandle, setSocialHandle] = useState([
     {
       handle1: {
@@ -116,25 +119,157 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({userSocialsData}) =>
       },
     },
   ])
+  const [count, setCount] = useState(1)
+  const [loading, setLoading] = useState(false)
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { address } = useAccount()
+
+  const ccpDropdowns = useSelector(selectCcpDropdowns)
+  const dispatch = useDispatch()
+
   function extractTwitterUsernames(data: any[]) {
-    const usernames:any = [];
+    const usernames: any = []
 
-    data.forEach((item:any) => {
-        const socials = item.socials.split(', ');
+    data.forEach((item: any) => {
+      const socials = item.socials.split(', ')
 
-        socials.forEach((social:any) => {
-            const twitterIndex = social.indexOf("twitter.com/");
-            if (twitterIndex !== -1) {
-                const username = social.substring(twitterIndex + "twitter.com/".length);
-                usernames.push(username);
-            }
-        });
-    });
+      socials.forEach((social: any) => {
+        const twitterIndex = social.indexOf('twitter.com/')
 
-    return usernames;
-}
-console.log(extractTwitterUsernames(userSocialsData),"tweet")
-  const resetStates=()=>{
+        if (twitterIndex !== -1) {
+          const username = social.substring(
+            twitterIndex + 'twitter.com/'.length
+          )
+          usernames.push(username)
+        }
+      })
+    })
+
+    return usernames
+  }
+
+  function extractYoutubeUsernames(data: any[]) {
+    const usernames: any = []
+
+    data.forEach((item: any) => {
+      const socials = item.socials.split(', ')
+
+      socials.forEach((social: any) => {
+        const youtubeIndex = social.indexOf('youtube.com/')
+
+        if (youtubeIndex !== -1) {
+          const username = social.substring(
+            youtubeIndex + 'youtube.com/'.length
+          )
+          usernames.push(username)
+        }
+      })
+    })
+
+    return usernames
+  }
+
+  function extractMediumUsernames(data: any[]) {
+    const usernames: any = []
+
+    data.forEach((item: any) => {
+      const socials = item.socials.split(', ')
+
+      socials.forEach((social: any) => {
+        const mediumIndex = social.indexOf('medium.com/')
+
+        if (mediumIndex !== -1) {
+          const username = social.substring(mediumIndex + 'medium.com/'.length)
+          usernames.push(username)
+        }
+      })
+    })
+
+    return usernames
+  }
+
+  function extractRedditUsernames(data: any[]) {
+    const usernames: any = []
+
+    data.forEach((item: any) => {
+      const socials = item.socials.split(', ')
+
+      socials.forEach((social: any) => {
+        const redditIndex = social.indexOf('reddit.com/')
+
+        if (redditIndex !== -1) {
+          const username = social.substring(redditIndex + 'reddit.com/'.length)
+          usernames.push(username)
+        }
+      })
+    })
+
+    return usernames
+  }
+
+  function extractTikTokUsernames(data: any[]) {
+    const usernames: any = []
+
+    data.forEach((item: any) => {
+      const socials = item.socials.split(', ')
+
+      socials.forEach((social: any) => {
+        const tiktokIndex = social.indexOf('tiktok.com/')
+
+        if (tiktokIndex !== -1) {
+          const username = social.substring(tiktokIndex + 'tiktok.com/'.length)
+          usernames.push(username)
+        }
+      })
+    })
+
+    return usernames
+  }
+
+  function extractInstagramUsernames(data: any[]) {
+    const usernames: any = []
+
+    data.forEach((item: any) => {
+      const socials = item.socials.split(', ')
+
+      socials.forEach((social: any) => {
+        const instagramIndex = social.indexOf('instagram.com/')
+
+        if (instagramIndex !== -1) {
+          const username = social.substring(
+            instagramIndex + 'instagram.com/'.length
+          )
+          usernames.push(username)
+        }
+      })
+    })
+
+    return usernames
+  }
+
+  function extractLinkedInUsernames(data: any[]) {
+    const usernames: any = []
+
+    data.forEach((item: any) => {
+      const socials = item.socials.split(', ')
+
+      socials.forEach((social: any) => {
+        const linkedInIndex = social.indexOf('linkedin.com/')
+
+        if (linkedInIndex !== -1) {
+          const username = social.substring(
+            linkedInIndex + 'linkedin.com/in/'.length
+          )
+          usernames.push(username)
+        }
+      })
+    })
+
+    return usernames
+  }
+
+  const resetStates = () => {
     setSocialHandle([
       {
         handle1: {
@@ -186,14 +321,6 @@ console.log(extractTwitterUsernames(userSocialsData),"tweet")
       },
     ])
   }
-  const [count, setCount] = useState(1)
-  const [loading, setLoading] = useState(false)
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const { address } = useAccount()
-
-  const ccpDropdowns = useSelector(selectCcpDropdowns)
-  const dispatch = useDispatch()
 
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setCcpModalDropdown(dropdownName))
@@ -204,399 +331,1133 @@ console.log(extractTwitterUsernames(userSocialsData),"tweet")
       Clicked: true,
     })
 
-    const finalLinkArray:any = []
+    const finalLinkArray: any = []
     for (let i = 0; i < socialHandle.length; i++) {
       if (
         socialHandle[i]?.handle1?.name === 'Twitter (X)' &&
-        socialHandle[i]?.handle1?.handle !== ''
+        socialHandle[i]?.handle1?.handle !== '' &&
+        !extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://twitter.com/${socialHandle[i]?.handle1?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle1?.name === 'Twitter (X)' &&
+        socialHandle[i]?.handle1?.handle !== '' &&
+        extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
+      ) {
+        toast.error('Twitte handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle1?.name === 'Youtube' &&
-        socialHandle[i]?.handle1?.handle !== ''
+        socialHandle[i]?.handle1?.handle !== '' &&
+        !extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://youtube.com/${socialHandle[i]?.handle1?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle1?.name === 'Youtube' &&
+        socialHandle[i]?.handle1?.handle !== '' &&
+        extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
+      ) {
+        toast.error('Youtube handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle1?.name === 'Medium' &&
-        socialHandle[i]?.handle1?.handle !== ''
+        socialHandle[i]?.handle1?.handle !== '' &&
+        !extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://medium.com/${socialHandle[i]?.handle1?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle1?.name === 'Medium' &&
+        socialHandle[i]?.handle1?.handle !== '' &&
+        extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
+      ) {
+        toast.error('Medium handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle1?.name === 'Reddit' &&
-        socialHandle[i]?.handle1?.handle !== ''
+        socialHandle[i]?.handle1?.handle !== '' &&
+        !extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://reddit.com/${socialHandle[i]?.handle1?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle1?.name === 'Reddit' &&
+        socialHandle[i]?.handle1?.handle !== '' &&
+        extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
+      ) {
+        toast.error('Reddit handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle1?.name === 'TikTok' &&
-        socialHandle[i]?.handle1?.handle !== ''
+        socialHandle[i]?.handle1?.handle !== '' &&
+        !extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://tiktok.com/${socialHandle[i]?.handle1?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle1?.name === 'TikTok' &&
+        socialHandle[i]?.handle1?.handle !== '' &&
+        extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
+      ) {
+        toast.error('TikTok handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle1?.name === 'Instagram' &&
-        socialHandle[i]?.handle1?.handle !== ''
+        socialHandle[i]?.handle1?.handle !== '' &&
+        !extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://instagram.com/${socialHandle[i]?.handle1?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle1?.name === 'Instagram' &&
+        socialHandle[i]?.handle1?.handle !== '' &&
+        extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
+      ) {
+        toast.error('Instagram handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle1?.name === 'LinkedIn' &&
-        socialHandle[i]?.handle1?.handle !== ''
+        socialHandle[i]?.handle1?.handle !== '' &&
+        !extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://www.linkedin.com/in/${socialHandle[i]?.handle1?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle1?.name === 'LinkedIn' &&
+        socialHandle[i]?.handle1?.handle !== '' &&
+        extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle1?.handle
+        )
+      ) {
+        toast.error('LinkedIn handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle2?.name === 'Twitter (X)' &&
-        socialHandle[i]?.handle2?.handle !== ''
+        socialHandle[i]?.handle2?.handle !== '' &&
+        !extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://twitter.com/${socialHandle[i]?.handle2?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle2?.name === 'Twitter (X)' &&
+        socialHandle[i]?.handle2?.handle !== '' &&
+        extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
+      ) {
+        toast.error('Twitte handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle2?.name === 'Youtube' &&
-        socialHandle[i]?.handle2?.handle !== ''
+        socialHandle[i]?.handle2?.handle !== '' &&
+        !extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://youtube.com/${socialHandle[i]?.handle2?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle2?.name === 'Youtube' &&
+        socialHandle[i]?.handle2?.handle !== '' &&
+        extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
+      ) {
+        toast.error('Youtube handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle2?.name === 'Medium' &&
-        socialHandle[i]?.handle2?.handle !== ''
+        socialHandle[i]?.handle2?.handle !== '' &&
+        !extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://medium.com/${socialHandle[i]?.handle2?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle2?.name === 'Medium' &&
+        socialHandle[i]?.handle2?.handle !== '' &&
+        extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
+      ) {
+        toast.error('Medium handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle2?.name === 'Reddit' &&
-        socialHandle[i]?.handle2?.handle !== ''
+        socialHandle[i]?.handle2?.handle !== '' &&
+        !extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://reddit.com/${socialHandle[i]?.handle2?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle2?.name === 'Reddit' &&
+        socialHandle[i]?.handle2?.handle !== '' &&
+        extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
+      ) {
+        toast.error('Reddit handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle2?.name === 'TikTok' &&
-        socialHandle[i]?.handle2?.handle !== ''
+        socialHandle[i]?.handle2?.handle !== '' &&
+        !extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://tiktok.com/${socialHandle[i]?.handle2?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle2?.name === 'TikTok' &&
+        socialHandle[i]?.handle2?.handle !== '' &&
+        extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
+      ) {
+        toast.error('TikTok handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle2?.name === 'Instagram' &&
-        socialHandle[i]?.handle2?.handle !== ''
+        socialHandle[i]?.handle2?.handle !== '' &&
+        !extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://instagram.com/${socialHandle[i]?.handle2?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle2?.name === 'Instagram' &&
+        socialHandle[i]?.handle2?.handle !== '' &&
+        extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
+      ) {
+        toast.error('Instagram handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle2?.name === 'LinkedIn' &&
-        socialHandle[i]?.handle2?.handle !== ''
+        socialHandle[i]?.handle2?.handle !== '' &&
+        !extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://www.linkedin.com/in/${socialHandle[i]?.handle2?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle2?.name === 'LinkedIn' &&
+        socialHandle[i]?.handle2?.handle !== '' &&
+        extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle2?.handle
+        )
+      ) {
+        toast.error('LinkedIn handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle3?.name === 'Twitter (X)' &&
-        socialHandle[i]?.handle3?.handle !== ''
+        socialHandle[i]?.handle3?.handle !== '' &&
+        !extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://twitter.com/${socialHandle[i]?.handle3?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle3?.name === 'Twitter (X)' &&
+        socialHandle[i]?.handle3?.handle !== '' &&
+        extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
+      ) {
+        toast.error('Twitte handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle3?.name === 'Youtube' &&
-        socialHandle[i]?.handle3?.handle !== ''
+        socialHandle[i]?.handle3?.handle !== '' &&
+        !extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://youtube.com/${socialHandle[i]?.handle3?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle3?.name === 'Youtube' &&
+        socialHandle[i]?.handle3?.handle !== '' &&
+        extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
+      ) {
+        toast.error('Youtube handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle3?.name === 'Medium' &&
-        socialHandle[i]?.handle3?.handle !== ''
+        socialHandle[i]?.handle3?.handle !== '' &&
+        !extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://medium.com/${socialHandle[i]?.handle3?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle3?.name === 'Medium' &&
+        socialHandle[i]?.handle3?.handle !== '' &&
+        extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
+      ) {
+        toast.error('Medium handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle3?.name === 'Reddit' &&
-        socialHandle[i]?.handle3?.handle !== ''
+        socialHandle[i]?.handle3?.handle !== '' &&
+        !extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://reddit.com/${socialHandle[i]?.handle3?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle3?.name === 'Reddit' &&
+        socialHandle[i]?.handle3?.handle !== '' &&
+        extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
+      ) {
+        toast.error('Reddit handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle3?.name === 'TikTok' &&
-        socialHandle[i]?.handle3?.handle !== ''
+        socialHandle[i]?.handle3?.handle !== '' &&
+        !extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://tiktok.com/${socialHandle[i]?.handle3?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle3?.name === 'TikTok' &&
+        socialHandle[i]?.handle3?.handle !== '' &&
+        extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
+      ) {
+        toast.error('TikTok handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle3?.name === 'Instagram' &&
-        socialHandle[i]?.handle3?.handle !== ''
+        socialHandle[i]?.handle3?.handle !== '' &&
+        !extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://instagram.com/${socialHandle[i]?.handle3?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle3?.name === 'Instagram' &&
+        socialHandle[i]?.handle3?.handle !== '' &&
+        extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
+      ) {
+        toast.error('Instagram handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle3?.name === 'LinkedIn' &&
-        socialHandle[i]?.handle3?.handle !== ''
+        socialHandle[i]?.handle3?.handle !== '' &&
+        !extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://www.linkedin.com/in/${socialHandle[i]?.handle3?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle3?.name === 'LinkedIn' &&
+        socialHandle[i]?.handle3?.handle !== '' &&
+        extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle3?.handle
+        )
+      ) {
+        toast.error('LinkedIn handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle4?.name === 'Twitter (X)' &&
-        socialHandle[i]?.handle4?.handle !== ''
+        socialHandle[i]?.handle4?.handle !== '' &&
+        !extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://twitter.com/${socialHandle[i]?.handle4?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle4?.name === 'Twitter (X)' &&
+        socialHandle[i]?.handle4?.handle !== '' &&
+        extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
+      ) {
+        toast.error('Twitte handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle4?.name === 'Youtube' &&
-        socialHandle[i]?.handle4?.handle !== ''
+        socialHandle[i]?.handle4?.handle !== '' &&
+        !extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://youtube.com/${socialHandle[i]?.handle4?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle4?.name === 'Youtube' &&
+        socialHandle[i]?.handle4?.handle !== '' &&
+        extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
+      ) {
+        toast.error('Youtube handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle4?.name === 'Medium' &&
-        socialHandle[i]?.handle4?.handle !== ''
+        socialHandle[i]?.handle4?.handle !== '' &&
+        !extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://medium.com/${socialHandle[i]?.handle4?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle4?.name === 'Medium' &&
+        socialHandle[i]?.handle4?.handle !== '' &&
+        extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
+      ) {
+        toast.error('Medium handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle4?.name === 'Reddit' &&
-        socialHandle[i]?.handle4?.handle !== ''
+        socialHandle[i]?.handle4?.handle !== '' &&
+        !extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://reddit.com/${socialHandle[i]?.handle4?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle4?.name === 'Reddit' &&
+        socialHandle[i]?.handle4?.handle !== '' &&
+        extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
+      ) {
+        toast.error('Reddit handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle4?.name === 'TikTok' &&
-        socialHandle[i]?.handle4?.handle !== ''
+        socialHandle[i]?.handle4?.handle !== '' &&
+        !extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://tiktok.com/${socialHandle[i]?.handle4?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle4?.name === 'TikTok' &&
+        socialHandle[i]?.handle4?.handle !== '' &&
+        extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
+      ) {
+        toast.error('TikTok handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle4?.name === 'Instagram' &&
-        socialHandle[i]?.handle4?.handle !== ''
+        socialHandle[i]?.handle4?.handle !== '' &&
+        !extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://instagram.com/${socialHandle[i]?.handle4?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle4?.name === 'Instagram' &&
+        socialHandle[i]?.handle4?.handle !== '' &&
+        extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
+      ) {
+        toast.error('Instagram handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle4?.name === 'LinkedIn' &&
-        socialHandle[i]?.handle4?.handle !== ''
+        socialHandle[i]?.handle4?.handle !== '' &&
+        !extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://www.linkedin.com/in/${socialHandle[i]?.handle4?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle4?.name === 'LinkedIn' &&
+        socialHandle[i]?.handle4?.handle !== '' &&
+        extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle4?.handle
+        )
+      ) {
+        toast.error('LinkedIn handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle5?.name === 'Twitter (X)' &&
-        socialHandle[i]?.handle5?.handle !== ''
+        socialHandle[i]?.handle5?.handle !== '' &&
+        !extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://twitter.com/${socialHandle[i]?.handle5?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle5?.name === 'Twitter (X)' &&
+        socialHandle[i]?.handle5?.handle !== '' &&
+        extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
+      ) {
+        toast.error('Twitte handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle5?.name === 'Youtube' &&
-        socialHandle[i]?.handle5?.handle !== ''
+        socialHandle[i]?.handle5?.handle !== '' &&
+        !extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://youtube.com/${socialHandle[i]?.handle5?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle5?.name === 'Youtube' &&
+        socialHandle[i]?.handle5?.handle !== '' &&
+        extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
+      ) {
+        toast.error('Youtube handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle5?.name === 'Medium' &&
-        socialHandle[i]?.handle5?.handle !== ''
+        socialHandle[i]?.handle5?.handle !== '' &&
+        !extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://medium.com/${socialHandle[i]?.handle5?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle5?.name === 'Medium' &&
+        socialHandle[i]?.handle5?.handle !== '' &&
+        extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
+      ) {
+        toast.error('Medium handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle5?.name === 'Reddit' &&
-        socialHandle[i]?.handle5?.handle !== ''
+        socialHandle[i]?.handle5?.handle !== '' &&
+        !extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://reddit.com/${socialHandle[i]?.handle5?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle5?.name === 'Reddit' &&
+        socialHandle[i]?.handle5?.handle !== '' &&
+        extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
+      ) {
+        toast.error('Reddit handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle5?.name === 'TikTok' &&
-        socialHandle[i]?.handle5?.handle !== ''
+        socialHandle[i]?.handle5?.handle !== '' &&
+        !extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://tiktok.com/${socialHandle[i]?.handle5?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle5?.name === 'TikTok' &&
+        socialHandle[i]?.handle5?.handle !== '' &&
+        extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
+      ) {
+        toast.error('TikTok handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle5?.name === 'Instagram' &&
-        socialHandle[i]?.handle5?.handle !== ''
+        socialHandle[i]?.handle5?.handle !== '' &&
+        !extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://instagram.com/${socialHandle[i]?.handle5?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle5?.name === 'Instagram' &&
+        socialHandle[i]?.handle5?.handle !== '' &&
+        extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
+      ) {
+        toast.error('Instagram handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle5?.name === 'LinkedIn' &&
-        socialHandle[i]?.handle5?.handle !== ''
+        socialHandle[i]?.handle5?.handle !== '' &&
+        !extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://www.linkedin.com/in/${socialHandle[i]?.handle5?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle5?.name === 'LinkedIn' &&
+        socialHandle[i]?.handle5?.handle !== '' &&
+        extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle5?.handle
+        )
+      ) {
+        toast.error('LinkedIn handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle6?.name === 'Twitter (X)' &&
-        socialHandle[i]?.handle6?.handle !== ''
+        socialHandle[i]?.handle6?.handle !== '' &&
+        !extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://twitter.com/${socialHandle[i]?.handle6?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle6?.name === 'Twitter (X)' &&
+        socialHandle[i]?.handle6?.handle !== '' &&
+        extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
+      ) {
+        toast.error('Twitte handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle6?.name === 'Youtube' &&
-        socialHandle[i]?.handle6?.handle !== ''
+        socialHandle[i]?.handle6?.handle !== '' &&
+        !extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://youtube.com/${socialHandle[i]?.handle6?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle6?.name === 'Youtube' &&
+        socialHandle[i]?.handle6?.handle !== '' &&
+        extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
+      ) {
+        toast.error('Youtube handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle6?.name === 'Medium' &&
-        socialHandle[i]?.handle6?.handle !== ''
+        socialHandle[i]?.handle6?.handle !== '' &&
+        !extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://medium.com/${socialHandle[i]?.handle6?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle6?.name === 'Medium' &&
+        socialHandle[i]?.handle6?.handle !== '' &&
+        extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
+      ) {
+        toast.error('Medium handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle6?.name === 'Reddit' &&
-        socialHandle[i]?.handle6?.handle !== ''
+        socialHandle[i]?.handle6?.handle !== '' &&
+        !extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://reddit.com/${socialHandle[i]?.handle6?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle6?.name === 'Reddit' &&
+        socialHandle[i]?.handle6?.handle !== '' &&
+        extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
+      ) {
+        toast.error('Reddit handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle6?.name === 'TikTok' &&
-        socialHandle[i]?.handle6?.handle !== ''
+        socialHandle[i]?.handle6?.handle !== '' &&
+        !extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://tiktok.com/${socialHandle[i]?.handle6?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle6?.name === 'TikTok' &&
+        socialHandle[i]?.handle6?.handle !== '' &&
+        extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
+      ) {
+        toast.error('TikTok handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle6?.name === 'Instagram' &&
-        socialHandle[i]?.handle6?.handle !== ''
+        socialHandle[i]?.handle6?.handle !== '' &&
+        !extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://instagram.com/${socialHandle[i]?.handle6?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle6?.name === 'Instagram' &&
+        socialHandle[i]?.handle6?.handle !== '' &&
+        extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
+      ) {
+        toast.error('Instagram handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle6?.name === 'LinkedIn' &&
-        socialHandle[i]?.handle6?.handle !== ''
+        socialHandle[i]?.handle6?.handle !== '' &&
+        !extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://www.linkedin.com/in/${socialHandle[i]?.handle6?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle6?.name === 'LinkedIn' &&
+        socialHandle[i]?.handle6?.handle !== '' &&
+        extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle6?.handle
+        )
+      ) {
+        toast.error('LinkedIn handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle7?.name === 'Twitter (X)' &&
-        socialHandle[i]?.handle7?.handle !== ''
+        socialHandle[i]?.handle7?.handle !== '' &&
+        !extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://twitter.com/${socialHandle[i]?.handle7?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle7?.name === 'Twitter (X)' &&
+        socialHandle[i]?.handle7?.handle !== '' &&
+        extractTwitterUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
+      ) {
+        toast.error('Twitte handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle7?.name === 'Youtube' &&
-        socialHandle[i]?.handle7?.handle !== ''
+        socialHandle[i]?.handle7?.handle !== '' &&
+        !extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://youtube.com/${socialHandle[i]?.handle7?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle7?.name === 'Youtube' &&
+        socialHandle[i]?.handle7?.handle !== '' &&
+        extractYoutubeUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
+      ) {
+        toast.error('Youtube handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle7?.name === 'Medium' &&
-        socialHandle[i]?.handle7?.handle !== ''
+        socialHandle[i]?.handle7?.handle !== '' &&
+        !extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://medium.com/${socialHandle[i]?.handle7?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle7?.name === 'Medium' &&
+        socialHandle[i]?.handle7?.handle !== '' &&
+        extractMediumUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
+      ) {
+        toast.error('Medium handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle7?.name === 'Reddit' &&
-        socialHandle[i]?.handle7?.handle !== ''
+        socialHandle[i]?.handle7?.handle !== '' &&
+        !extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://reddit.com/${socialHandle[i]?.handle7?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle7?.name === 'Reddit' &&
+        socialHandle[i]?.handle7?.handle !== '' &&
+        extractRedditUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
+      ) {
+        toast.error('Reddit handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle7?.name === 'TikTok' &&
-        socialHandle[i]?.handle7?.handle !== ''
+        socialHandle[i]?.handle7?.handle !== '' &&
+        !extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://tiktok.com/${socialHandle[i]?.handle7?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle7?.name === 'TikTok' &&
+        socialHandle[i]?.handle7?.handle !== '' &&
+        extractTikTokUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
+      ) {
+        toast.error('TikTok handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle7?.name === 'Instagram' &&
-        socialHandle[i]?.handle7?.handle !== ''
+        socialHandle[i]?.handle7?.handle !== '' &&
+        !extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://instagram.com/${socialHandle[i]?.handle7?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle7?.name === 'Instagram' &&
+        socialHandle[i]?.handle7?.handle !== '' &&
+        extractInstagramUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
+      ) {
+        toast.error('Instagram handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
+
       if (
         socialHandle[i]?.handle7?.name === 'LinkedIn' &&
-        socialHandle[i]?.handle7?.handle !== ''
+        socialHandle[i]?.handle7?.handle !== '' &&
+        !extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
       ) {
         finalLinkArray.push(
           `https://www.linkedin.com/in/${socialHandle[i]?.handle7?.handle}`
         )
+      } else if (
+        socialHandle[i]?.handle7?.name === 'LinkedIn' &&
+        socialHandle[i]?.handle7?.handle !== '' &&
+        extractLinkedInUsernames(userSocialsData).includes(
+          socialHandle[i]?.handle7?.handle
+        )
+      ) {
+        toast.error('LinkedIn handle already exists', {
+          position: 'bottom-right',
+        })
+        return
       }
     }
 
