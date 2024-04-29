@@ -15,6 +15,7 @@ import {
   Tooltip,
   Tr,
   VStack,
+  useMediaQuery,
 } from '@chakra-ui/react'
 import { useAccount } from '@starknet-react/core'
 import axios from 'axios'
@@ -22,17 +23,32 @@ import Image from 'next/image'
 import posthog from 'posthog-js'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useMediaQuery } from '@chakra-ui/react'
 
+import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf'
+import useBorrowAndSpend from '@/Blockchain/hooks/Writes/useBorrowAndSpend'
 import { ILoan } from '@/Blockchain/interfaces/interfaces'
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from '@/Blockchain/utils/addressServices'
+import { parseAmount } from '@/Blockchain/utils/utils'
 import ExpandedCoinIcon from '@/assets/expanded/ExpandedCoins'
 import ExpandedMarketIcon from '@/assets/expanded/ExpandedMarket'
 import DollarActiveRadioButton from '@/assets/icons/dollarActiveRadioButton'
 import DollarNonActiveRadioButton from '@/assets/icons/dollarNonActiveRadioButton'
+import DropdownUp from '@/assets/icons/dropdownUpIcon'
 import LowhealthFactor from '@/assets/icons/lowhealthFactor'
 import MediumHeathFactor from '@/assets/icons/mediumHeathFactor'
+import ShareIcon from '@/assets/icons/shareIcon'
+import SupplyModal from '@/components/modals/SupplyModal'
+import TransactionCancelModal from '@/components/modals/TransactionCancelModal'
 import BorrowModal from '@/components/modals/borrowModal'
+import DegenModal from '@/components/modals/degenModal'
 import YourBorrowModal from '@/components/modals/yourBorrowModal'
+import {
+  selectModalDropDowns,
+  setModalDropdown,
+} from '@/store/slices/dropdownsSlice'
 import {
   selectEffectiveApr,
   selectHealthFactor,
@@ -58,27 +74,11 @@ import {
 import dollarConvertor from '@/utils/functions/dollarConvertor'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
-import TableInfoIcon from '../table/tableIcons/infoIcon'
-import DegenModal from '@/components/modals/degenModal'
-import SupplyModal from '@/components/modals/SupplyModal'
-import useBorrowAndSpend from '@/Blockchain/hooks/Writes/useBorrowAndSpend'
-import { toast } from 'react-toastify'
-import CopyToClipboard from 'react-copy-to-clipboard'
-import {
-  selectModalDropDowns,
-  setModalDropdown,
-} from '@/store/slices/dropdownsSlice'
-import DropdownUp from '@/assets/icons/dropdownUpIcon'
-import TransactionCancelModal from '@/components/modals/TransactionCancelModal'
-import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf'
-import {
-  tokenAddressMap,
-  tokenDecimalsMap,
-} from '@/Blockchain/utils/addressServices'
-import { parseAmount } from '@/Blockchain/utils/utils'
-import { uint256 } from 'starknet'
 import { useRouter } from 'next/router'
-import ShareIcon from '@/assets/icons/shareIcon'
+import CopyToClipboard from 'react-copy-to-clipboard'
+import { toast } from 'react-toastify'
+import { uint256 } from 'starknet'
+import TableInfoIcon from '../table/tableIcons/infoIcon'
 
 export interface ICoin {
   name: string
@@ -1651,7 +1651,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     (curr: any) =>
                                       curr.name === borrow?.collateral
                                   )?.price >=
-                                  0 ||
+                                  1000 ||
                                   userDeposit?.find(
                                     (item: any) =>
                                       item?.rToken == 'r' + borrow?.collateral
@@ -1719,7 +1719,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               oraclePrices?.find(
                                 (curr: any) => curr.name === borrow?.collateral
                               )?.price >=
-                              0 ||
+                              1000 ||
                               userDeposit?.find(
                                 (item: any) =>
                                   item?.rToken == 'r' + borrow?.collateral
@@ -1728,7 +1728,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   (curr: any) =>
                                     curr.name === borrow?.collateral
                                 )?.price >=
-                                0) ? (
+                                1000) ? (
                               <DegenModal
                                 coin={coin}
                                 borrowAPRs={borrowAPRs}

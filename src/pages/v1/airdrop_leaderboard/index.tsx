@@ -22,6 +22,7 @@ import { processAddress } from '@/Blockchain/stark-constants'
 import BlueInfoIcon from '@/assets/icons/blueinfoicon'
 import CopyIcon from '@/assets/icons/copyIcon'
 import DropdownUp from '@/assets/icons/dropdownUpIcon'
+import ExternalLinkWhite from '@/assets/icons/externalLinkWhite'
 import { default as LeaderboardDashboard } from '@/components/layouts/leaderboardDashboard'
 import { default as PageCard } from '@/components/layouts/pageCard'
 import UserCampaignData from '@/components/layouts/userCampaignData'
@@ -39,7 +40,6 @@ import {
   selectYourSupply,
 } from '@/store/slices/readDataSlice'
 import { default as numberFormatter } from '@/utils/functions/numberFormatter'
-import ExternalLinkWhite from '@/assets/icons/externalLinkWhite'
 import Link from 'next/link'
 
 const columnItemsLeaderBoard = [
@@ -550,7 +550,7 @@ const Campaign: NextPage = () => {
   }
 
   return (
-    <PageCard pt="4rem">
+    <PageCard pt="3rem">
       <HStack
         display="flex"
         justifyContent="space-between"
@@ -721,7 +721,7 @@ const Campaign: NextPage = () => {
             justifyContent="space-between"
           >
             <HStack
-              mt="5rem"
+              mt="2rem"
               display="flex"
               flexDirection="column"
               alignItems="flex-start"
@@ -820,7 +820,7 @@ const Campaign: NextPage = () => {
               </HStack>
             </HStack>
 
-            <Box mt="3rem" display="flex" flexDirection="column">
+            <Box mt="0rem" display="flex" flexDirection="column">
               <Text
                 color="#F0F0F5"
                 fontSize="16px"
@@ -911,7 +911,7 @@ const Campaign: NextPage = () => {
                   color="#B1B0B5"
                   fontSize="14px"
                   letterSpacing="-0.15px"
-                  mt="0.3rem"
+                  mt="1rem"
                 >
                   <Box pr="3" mt="0.5" cursor="pointer">
                     <BlueInfoIcon />
@@ -942,7 +942,7 @@ const Campaign: NextPage = () => {
             gap="5rem"
           >
             <HStack
-              mt="5rem"
+              mt="2rem"
               display="flex"
               flexDirection="column"
               alignItems="flex-start"
@@ -1043,7 +1043,7 @@ const Campaign: NextPage = () => {
             </HStack>
 
             <Box
-              mt="6.5rem"
+              mt="2.1rem"
               display="flex"
               flexDirection="column"
               gap="1.8rem"
