@@ -276,59 +276,6 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
     return usernames
   }
 
-  const resetStates = () => {
-    setSocialHandle([
-      {
-        handle1: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle2: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle3: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle4: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle5: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle6: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle7: {
-          name: '',
-          handle: '',
-        },
-      },
-      {
-        handle8: {
-          name: '',
-          handle: '',
-        },
-      },
-    ])
-  }
-
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setCcpModalDropdown(dropdownName))
   }
@@ -3557,13 +3504,12 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
                       </Box>
                     </Box>
                     <Box display="flex" gap="0.5rem" mt="1rem" >
-                      <RegisteredInstagramLogo/>
-                      <RegisteredFacebookLogo/>
-                      <RegisteredLinkedinLogo/>
-                      <RegisteredYoutubeLogo/>
-                      <RegisteredTikTokIcon/>
-                      <RegisteredMediumIcon/>
-                      <RegisteredTwitterIcon/>
+                      {extractInstagramUsernames(userSocialsData).length>0 && <RegisteredInstagramLogo/>}
+                      {extractLinkedInUsernames(userSocialsData).length>0 && <RegisteredLinkedinLogo/>}
+                      {extractYoutubeUsernames(userSocialsData).length>0 && <RegisteredYoutubeLogo/>}
+                      {extractTikTokUsernames(userSocialsData).length>0 && <RegisteredTikTokIcon/>}
+                      {extractMediumUsernames(userSocialsData).length>0 && <RegisteredMediumIcon/>}
+                       {extractTwitterUsernames(userSocialsData).length>0 &&<RegisteredTwitterIcon/>}
                     </Box>
                 </Card>}
               </ModalBody>
