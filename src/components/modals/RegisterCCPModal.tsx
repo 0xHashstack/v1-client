@@ -41,6 +41,7 @@ import RegisteredYoutubeLogo from '@/assets/icons/registeredYoutubeLogo'
 import RegisteredTikTokIcon from '@/assets/icons/registeredTikTokIcon'
 import RegisteredMediumIcon from '@/assets/icons/registeredMediumIcon'
 import RegisteredTwitterIcon from '@/assets/icons/registeredTwitterIcon'
+import RegisteredRedditIcon from '@/assets/icons/registeredRedditIcon'
 
 const ApplicationList = [
   {
@@ -204,7 +205,7 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
   function extractRedditUsernames(data: any[]) {
     const usernames: any = []
 
-    data.forEach((item: any) => {
+    data?.forEach((item: any) => {
       const socials = item.socials.split(', ')
 
       socials.forEach((social: any) => {
@@ -3528,6 +3529,11 @@ const RegisterCCPModal: React.FC<RegisterCCPModalProps> = ({
                       {extractTwitterUsernames(userSocialsData).length > 0 && (
                         <RegisteredTwitterIcon />
                       )}
+                      {extractRedditUsernames(userSocialsData).length>0 &&(
+                        <RegisteredRedditIcon/>
+                      )
+
+                      }
                     </Box>
                   </Card>
                 )}
