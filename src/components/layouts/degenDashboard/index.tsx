@@ -15,6 +15,7 @@ import {
   Tooltip,
   Tr,
   VStack,
+  useMediaQuery,
 } from '@chakra-ui/react'
 import { useAccount } from '@starknet-react/core'
 import axios from 'axios'
@@ -23,15 +24,31 @@ import posthog from 'posthog-js'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf'
+import useBorrowAndSpend from '@/Blockchain/hooks/Writes/useBorrowAndSpend'
 import { ILoan } from '@/Blockchain/interfaces/interfaces'
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from '@/Blockchain/utils/addressServices'
+import { parseAmount } from '@/Blockchain/utils/utils'
 import ExpandedCoinIcon from '@/assets/expanded/ExpandedCoins'
 import ExpandedMarketIcon from '@/assets/expanded/ExpandedMarket'
 import DollarActiveRadioButton from '@/assets/icons/dollarActiveRadioButton'
 import DollarNonActiveRadioButton from '@/assets/icons/dollarNonActiveRadioButton'
+import DropdownUp from '@/assets/icons/dropdownUpIcon'
 import LowhealthFactor from '@/assets/icons/lowhealthFactor'
 import MediumHeathFactor from '@/assets/icons/mediumHeathFactor'
+import ShareIcon from '@/assets/icons/shareIcon'
+import SupplyModal from '@/components/modals/SupplyModal'
+import TransactionCancelModal from '@/components/modals/TransactionCancelModal'
 import BorrowModal from '@/components/modals/borrowModal'
+import DegenModal from '@/components/modals/degenModal'
 import YourBorrowModal from '@/components/modals/yourBorrowModal'
+import {
+  selectModalDropDowns,
+  setModalDropdown,
+} from '@/store/slices/dropdownsSlice'
 import {
   selectEffectiveApr,
   selectHealthFactor,
@@ -57,27 +74,11 @@ import {
 import dollarConvertor from '@/utils/functions/dollarConvertor'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
-import TableInfoIcon from '../table/tableIcons/infoIcon'
-import DegenModal from '@/components/modals/degenModal'
-import SupplyModal from '@/components/modals/SupplyModal'
-import useBorrowAndSpend from '@/Blockchain/hooks/Writes/useBorrowAndSpend'
-import { toast } from 'react-toastify'
-import CopyToClipboard from 'react-copy-to-clipboard'
-import {
-  selectModalDropDowns,
-  setModalDropdown,
-} from '@/store/slices/dropdownsSlice'
-import DropdownUp from '@/assets/icons/dropdownUpIcon'
-import TransactionCancelModal from '@/components/modals/TransactionCancelModal'
-import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf'
-import {
-  tokenAddressMap,
-  tokenDecimalsMap,
-} from '@/Blockchain/utils/addressServices'
-import { parseAmount } from '@/Blockchain/utils/utils'
-import { uint256 } from 'starknet'
 import { useRouter } from 'next/router'
-import ShareIcon from '@/assets/icons/shareIcon'
+import CopyToClipboard from 'react-copy-to-clipboard'
+import { toast } from 'react-toastify'
+import { uint256 } from 'starknet'
+import TableInfoIcon from '../table/tableIcons/infoIcon'
 
 export interface ICoin {
   name: string
@@ -664,8 +665,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
     return matchedObject ? matchedObject.tvl : 1
   }
   // console.log(strkTokenAlloactionData["STRK/ETH"][strkTokenAlloactionData["STRK/ETH"].length-1].allocation,"allocat")
-  console.log(Borrows, 'borrows')
-  console.log(router, 'path')
 
   return loading ? (
     <Box
@@ -726,7 +725,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                   fontSize={'12px'}
                   fontWeight={400}
                   p={0}
-                  px="2rem"
+                  px={idx1 == 0 ? '1rem' : '2rem'}
                 >
                   <Text
                     whiteSpace="pre-wrap"
@@ -735,13 +734,13 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                     height={'2rem'}
                     fontSize="12px"
                     textAlign={
-                      idx1 == 0 || idx1 == 1
+                      idx1 == 0
                         ? 'left'
                         : idx1 == columnItems?.length - 1
                           ? 'right'
                           : 'center'
                     }
-                    pl={idx1 == 0 ? 2 : idx1 == 1 ? '55%' : '29%'}
+                    // pl={idx1 == 0 ? 2 : idx1 == 1 ? '55%' : '32%'}
                     pr={idx1 == columnItems.length - 1 ? 5 : 0}
                     color={'#BDBFC1'}
                     cursor="context-menu"
@@ -828,7 +827,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontWeight={400}
                         padding={2}
                         textAlign="center"
-                        pl="2rem"
                       >
                         <VStack
                           width="100%"
@@ -1047,7 +1045,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontWeight={400}
                         overflow={'hidden'}
                         textAlign={'center'}
-                        pl="5rem"
                       >
                         <Box
                           width="100%"
@@ -1099,7 +1096,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontSize={'14px'}
                         fontWeight={400}
                         textAlign={'center'}
-                        pl="5rem"
                       >
                         <VStack
                           width="100%"
@@ -1234,7 +1230,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontSize={'14px'}
                         fontWeight={400}
                         textAlign={'center'}
-                        pl="5rem"
                       >
                         <VStack
                           width="100%"
@@ -1316,7 +1311,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontWeight={400}
                         overflow={'hidden'}
                         textAlign={'center'}
-                        pl="5rem"
                       >
                         {borrow.leverage}x
                       </Td>
@@ -1326,8 +1320,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         fontSize={'14px'}
                         fontWeight={400}
                         overflow={'hidden'}
-                        textAlign={'center'}
-                        pl="5rem"
+                        textAlign={'right'}
+                        pl={{ md: '3.5%', '2xl': '4.5%' }}
                       >
                         {oraclePrices === null ? (
                           <Skeleton
@@ -1362,11 +1356,14 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         )}
                       </Td>
                       <Td
-                        maxWidth={'5rem'}
+                        width={'12.5%'}
+                        maxWidth={'3rem'}
                         fontSize={'14px'}
                         fontWeight={400}
-                        textAlign={'center'}
-                        pl="4rem"
+                        overflow={'hidden'}
+                        textAlign={'right'}
+                        // pr="6rem"
+                        pl={{ md: '3%', xl: '3.5%', '2xl': '4.5%' }}
                       >
                         {oraclePrices === null ? (
                           <Skeleton
@@ -1547,7 +1544,6 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                               height="100%"
                               display="flex"
                               alignItems="center"
-                              justifyContent="center"
                               fontWeight="400"
                               color="#00D395"
                               onClick={() => {

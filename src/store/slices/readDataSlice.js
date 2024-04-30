@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
+import { createSlice } from '@reduxjs/toolkit'
+import { HYDRATE } from 'next-redux-wrapper'
 
 const initialState = {
   userDeposits: null,
@@ -66,8 +66,9 @@ const initialState = {
   nftCurrentAmount: null,
   whitelisted: false,
   interactedAddress: false,
-  zklendSpends:[],
+  zklendSpends: [],
   jediSwapPoolAprs: [],
+  connectedSocialsClicked: false,
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -118,210 +119,213 @@ const initialState = {
     l3interaction: 0.1,
     repayLoan: 0,
   },
-};
+}
 
 export const readDataSlice = createSlice({
-  name: "read_data",
+  name: 'read_data',
   initialState,
   reducers: {
     setUserLoans(state, action) {
-      state.userLoans = action.payload;
+      state.userLoans = action.payload
     },
     setUserDeposits(state, action) {
-      state.userDeposits = action.payload;
+      state.userDeposits = action.payload
     },
     setProtocolStats(state, action) {
-      state.protocolStats = action.payload;
+      state.protocolStats = action.payload
     },
     setOraclePrices(state, action) {
-      state.oraclePrices = action.payload;
+      state.oraclePrices = action.payload
     },
     setProtocolReserves(state, action) {
-      return { ...state, protocolReserves: action.payload };
+      return { ...state, protocolReserves: action.payload }
     },
     setAprAndHealthFactor(state, action) {
-      state.aprAndHealthFactor = action.payload;
+      state.aprAndHealthFactor = action.payload
     },
     setNetWorth(state, action) {
-      state.netWorth = action.payload;
+      state.netWorth = action.payload
     },
     setYourSupply(state, action) {
-      state.yourSupply = action.payload;
+      state.yourSupply = action.payload
     },
     setUsersFilteredSupply(state, action) {
-      state.usersFilteredSupply = action.payload;
+      state.usersFilteredSupply = action.payload
     },
     setYourBorrow(state, action) {
-      state.yourBorrow = action.payload;
+      state.yourBorrow = action.payload
     },
     setNetAPR(state, action) {
-      state.netAPR = action.payload;
+      state.netAPR = action.payload
     },
     setNetAprDeposits(state, action) {
-      state.netAPRDeposits = action.payload;
+      state.netAPRDeposits = action.payload
     },
     setNetAprLoans(state, action) {
-      state.netAPRLoans = action.payload;
+      state.netAPRLoans = action.payload
     },
     setActiveTransactions(state, action) {
-      state.activeTransactions = action.payload;
+      state.activeTransactions = action.payload
     },
     setTransactionRefresh(state, action) {
-      const count = action.payload == "reset" ? -1 : state.transactionRefresh;
-      state.transactionRefresh = count + 1;
+      const count = action.payload == 'reset' ? -1 : state.transactionRefresh
+      state.transactionRefresh = count + 1
     },
     setBlock(state, action) {
-      state.block = action.payload;
+      state.block = action.payload
     },
     setCurrentNetwork(state, action) {
-      state.currentNetwork = action.payload;
+      state.currentNetwork = action.payload
     },
     setHourlyBTCData(state, action) {
-      state.hourlyBTCData = action.payload;
+      state.hourlyBTCData = action.payload
     },
     setHourlyETHData(state, action) {
-      state.hourlyETHData = action.payload;
+      state.hourlyETHData = action.payload
     },
     setHourlyUSDTData(state, action) {
-      state.hourlyUSDTData = action.payload;
+      state.hourlyUSDTData = action.payload
     },
     setHourlyUSDCData(state, action) {
-      state.hourlyUSDCData = action.payload;
+      state.hourlyUSDCData = action.payload
     },
     setHourlyDAIData(state, action) {
-      state.hourlyDAIData = action.payload;
+      state.hourlyDAIData = action.payload
     },
     setHourlySTRKData(state, action) {
-      state.hourlySTRKData = action.payload;
+      state.hourlySTRKData = action.payload
     },
     setDailyBTCData(state, action) {
-      state.dailyBTCData = action.payload;
+      state.dailyBTCData = action.payload
     },
     setDailyETHData(state, action) {
-      state.dailyETHData = action.payload;
+      state.dailyETHData = action.payload
     },
     setDailyUSDTData(state, action) {
-      state.dailyUSDTData = action.payload;
+      state.dailyUSDTData = action.payload
     },
     setDailyUSDCData(state, action) {
-      state.dailyUSDCData = action.payload;
+      state.dailyUSDCData = action.payload
     },
     setDailyDAIData(state, action) {
-      state.dailyDAIData = action.payload;
+      state.dailyDAIData = action.payload
     },
     setDailySTRKData(state, action) {
-      state.dailySTRKData = action.payload;
+      state.dailySTRKData = action.payload
     },
     setMonthlyBTCData(state, action) {
-      state.monthlyBTCData = action.payload;
+      state.monthlyBTCData = action.payload
     },
     setMonthlyETHData(state, action) {
-      state.monthlyETHData = action.payload;
+      state.monthlyETHData = action.payload
     },
     setMonthlyUSDTData(state, action) {
-      state.monthlyUSDTData = action.payload;
+      state.monthlyUSDTData = action.payload
     },
     setMonthlyUSDCData(state, action) {
-      state.monthlyUSDCData = action.payload;
+      state.monthlyUSDCData = action.payload
     },
     setMonthlyDAIData(state, action) {
-      state.monthlyDAIData = action.payload;
+      state.monthlyDAIData = action.payload
     },
     setMonthlySTRKData(state, action) {
-      state.monthlySTRKData = action.payload;
+      state.monthlySTRKData = action.payload
     },
     setAllBTCData(state, action) {
-      state.allBTCData = action.payload;
+      state.allBTCData = action.payload
     },
     setAllETHData(state, action) {
-      state.allETHData = action.payload;
+      state.allETHData = action.payload
     },
     setAllUSDTData(state, action) {
-      state.allUSDTData = action.payload;
+      state.allUSDTData = action.payload
     },
     setAllUSDCData(state, action) {
-      state.allUSDCData = action.payload;
+      state.allUSDCData = action.payload
     },
     setAllDAIData(state, action) {
-      state.allDAIData = action.payload;
+      state.allDAIData = action.payload
     },
     setAllSTRKData(state, action) {
-      state.allSTRKData = action.payload;
+      state.allSTRKData = action.payload
     },
     resetState(state, action) {
-      return { ...initialState };
+      return { ...initialState }
     },
     setEffectiveAPR(state, action) {
-      state.effectiveAPR = action.payload;
+      state.effectiveAPR = action.payload
     },
     setHealthFactor(state, action) {
-      state.healthFactor = action.payload;
+      state.healthFactor = action.payload
     },
     setYourMetricsSupply(state, action) {
-      state.yourMetricsSupply = action.payload;
+      state.yourMetricsSupply = action.payload
     },
     setYourMetricsBorrow(state, action) {
-      state.yourMetricsBorrow = action.payload;
+      state.yourMetricsBorrow = action.payload
     },
     setStakingShares(state, action) {
-      state.stakingShares = action.payload;
+      state.stakingShares = action.payload
     },
     setMinimumDepositAmounts(state, action) {
-      state.minDepositAmounts = action.payload;
+      state.minDepositAmounts = action.payload
     },
     setMaximumDepositAmounts(state, action) {
-      state.maxDepositAmounts = action.payload;
+      state.maxDepositAmounts = action.payload
     },
     setMinimumLoanAmounts(state, action) {
-      state.minLoanAmounts = action.payload;
+      state.minLoanAmounts = action.payload
     },
     setMaximumLoanAmounts(state, action) {
-      state.maxLoanAmounts = action.payload;
+      state.maxLoanAmounts = action.payload
     },
     setJediSwapPoolsSupported(state, action) {
-      state.jediSwapPoolsSupported = action.payload;
+      state.jediSwapPoolsSupported = action.payload
     },
     setMySwapPoolsSupported(state, action) {
-      state.mySwapPoolsSupported = action.payload;
+      state.mySwapPoolsSupported = action.payload
     },
     setNftBalance(state, action) {
-      state.nftBalance = action.payload;
+      state.nftBalance = action.payload
     },
     setReferral(state, action) {
-      state.referral = action.payload;
+      state.referral = action.payload
     },
     setUserType(state, action) {
-      state.userType = action.payload;
+      state.userType = action.payload
     },
     setExisitingLink(state, action) {
-      state.existingLink = action.payload;
+      state.existingLink = action.payload
     },
     setMessageHash(state, action) {
-      state.messageHash = action.payload;
+      state.messageHash = action.payload
     },
     setSignature(state, action) {
-      state.signature = action.payload;
+      state.signature = action.payload
     },
     setFees(state, action) {
-      state.fees = action.payload;
+      state.fees = action.payload
     },
     setNftMaxAmount(state, action) {
-      state.nftMaxAmount = action.payload;
+      state.nftMaxAmount = action.payload
     },
     setNftCurrentAmount(state, action) {
-      state.nftCurrentAmount = action.payload;
+      state.nftCurrentAmount = action.payload
     },
     setUserWhiteListed(state, action) {
-      state.whitelisted = action.payload;
+      state.whitelisted = action.payload
     },
     setInteractedAddress(state, action) {
-      state.interactedAddress = action.payload;
+      state.interactedAddress = action.payload
     },
     setJediSwapPoolAprs(state, action) {
-      state.jediSwapPoolAprs = action.payload;
+      state.jediSwapPoolAprs = action.payload
     },
-    setZklendSpends(state,action){
-      state.zklendSpends=action.payload;
+    setZklendSpends(state, action) {
+      state.zklendSpends = action.payload
+    },
+    setConnectedSocialsClicked(state, action) {
+      state.connectedSocialsClicked = action.payload
     },
 
     extraReducers: {
@@ -329,11 +333,11 @@ export const readDataSlice = createSlice({
         return {
           ...state,
           ...action.payload.read_data,
-        };
+        }
       },
     },
   },
-});
+})
 
 export const {
   setUserLoans,
@@ -402,89 +406,91 @@ export const {
   setUserWhiteListed,
   setInteractedAddress,
   setJediSwapPoolAprs,
-  setZklendSpends
-} = readDataSlice.actions;
+  setZklendSpends,
+  setConnectedSocialsClicked,
+} = readDataSlice.actions
 
-export const selectUserDeposits = (state) => state.read_data.userDeposits;
-export const selectProtocolStats = (state) => state.read_data.protocolStats;
-export const selectOraclePrices = (state) => state.read_data.oraclePrices;
-export const selectUserLoans = (state) => state.read_data.userLoans;
+export const selectUserDeposits = (state) => state.read_data.userDeposits
+export const selectProtocolStats = (state) => state.read_data.protocolStats
+export const selectOraclePrices = (state) => state.read_data.oraclePrices
+export const selectUserLoans = (state) => state.read_data.userLoans
 export const selectAprAndHealthFactor = (state) =>
-  state.read_data.aprAndHealthFactor;
+  state.read_data.aprAndHealthFactor
 export const selectProtocolReserves = (state) =>
-  state.read_data.protocolReserves;
-export const selectYourSupply = (state) => state.read_data.yourSupply;
+  state.read_data.protocolReserves
+export const selectYourSupply = (state) => state.read_data.yourSupply
 export const selectUsersFilteredSupply = (state) =>
-  state.read_data.usersFilteredSupply;
-export const selectYourBorrow = (state) => state.read_data.yourBorrow;
-export const selectNetWorth = (state) => state.read_data.netWorth;
-export const selectNetAPR = (state) => state.read_data.netAPR;
-export const selectnetAprDeposits = (state) => state.read_data.netAPRDeposits;
-export const selectnetAprLoans = (state) => state.read_data.netAPRLoans;
+  state.read_data.usersFilteredSupply
+export const selectYourBorrow = (state) => state.read_data.yourBorrow
+export const selectNetWorth = (state) => state.read_data.netWorth
+export const selectNetAPR = (state) => state.read_data.netAPR
+export const selectnetAprDeposits = (state) => state.read_data.netAPRDeposits
+export const selectnetAprLoans = (state) => state.read_data.netAPRLoans
 export const selectActiveTransactions = (state) =>
-  state.read_data.activeTransactions;
+  state.read_data.activeTransactions
 export const selectTransactionRefresh = (state) =>
-  state.read_data.transactionRefresh;
-export const selectBlock = (state) => state.read_data.block;
-export const selectCurrentNetwork = (state) => state.read_data.currentNetwork;
-export const selectEffectiveApr = (state) => state.read_data.effectiveAPR;
-export const selectHealthFactor = (state) => state.read_data.healthFactor;
-export const selectHourlyBTCData = (state) => state.read_data.hourlyBTCData;
-export const selectHourlyETHData = (state) => state.read_data.hourlyETHData;
-export const selectHourlyUSDTData = (state) => state.read_data.hourlyUSDTData;
-export const selectHourlyUSDCData = (state) => state.read_data.hourlyUSDCData;
-export const selectHourlyDAIData = (state) => state.read_data.hourlyDAIData;
-export const selectHourlySTRKData = (state) => state.read_data.hourlySTRKData;
-export const selectDailyBTCData = (state) => state.read_data.dailyBTCData;
-export const selectDailyETHData = (state) => state.read_data.dailyETHData;
-export const selectDailyUSDTData = (state) => state.read_data.dailyUSDTData;
-export const selectDailyUSDCData = (state) => state.read_data.dailyUSDCData;
-export const selectDailyDAIData = (state) => state.read_data.dailyDAIData;
-export const selectDailySTRKData = (state) => state.read_data.dailySTRKData;
-export const selectMonthlyBTCData = (state) => state.read_data.monthlyBTCData;
-export const selectMonthlyETHData = (state) => state.read_data.monthlyETHData;
-export const selectMonthlyUSDTData = (state) => state.read_data.monthlyUSDTData;
-export const selectMonthlyUSDCData = (state) => state.read_data.monthlyUSDCData;
-export const selectMonthlyDAIData = (state) => state.read_data.monthlyDAIData;
-export const selectMonthlySTRKData = (state) => state.read_data.monthlySTRKData;
-export const selectAllBTCData = (state) => state.read_data.allBTCData;
-export const selectAllETHData = (state) => state.read_data.allETHData;
-export const selectAllUSDTData = (state) => state.read_data.allUSDTData;
-export const selectAllUSDCData = (state) => state.read_data.allUSDCData;
-export const selectAllDAIData = (state) => state.read_data.allDAIData;
-export const selectAllSTRKData = (state) => state.read_data.allSTRKData;
+  state.read_data.transactionRefresh
+export const selectBlock = (state) => state.read_data.block
+export const selectCurrentNetwork = (state) => state.read_data.currentNetwork
+export const selectEffectiveApr = (state) => state.read_data.effectiveAPR
+export const selectHealthFactor = (state) => state.read_data.healthFactor
+export const selectHourlyBTCData = (state) => state.read_data.hourlyBTCData
+export const selectHourlyETHData = (state) => state.read_data.hourlyETHData
+export const selectHourlyUSDTData = (state) => state.read_data.hourlyUSDTData
+export const selectHourlyUSDCData = (state) => state.read_data.hourlyUSDCData
+export const selectHourlyDAIData = (state) => state.read_data.hourlyDAIData
+export const selectHourlySTRKData = (state) => state.read_data.hourlySTRKData
+export const selectDailyBTCData = (state) => state.read_data.dailyBTCData
+export const selectDailyETHData = (state) => state.read_data.dailyETHData
+export const selectDailyUSDTData = (state) => state.read_data.dailyUSDTData
+export const selectDailyUSDCData = (state) => state.read_data.dailyUSDCData
+export const selectDailyDAIData = (state) => state.read_data.dailyDAIData
+export const selectDailySTRKData = (state) => state.read_data.dailySTRKData
+export const selectMonthlyBTCData = (state) => state.read_data.monthlyBTCData
+export const selectMonthlyETHData = (state) => state.read_data.monthlyETHData
+export const selectMonthlyUSDTData = (state) => state.read_data.monthlyUSDTData
+export const selectMonthlyUSDCData = (state) => state.read_data.monthlyUSDCData
+export const selectMonthlyDAIData = (state) => state.read_data.monthlyDAIData
+export const selectMonthlySTRKData = (state) => state.read_data.monthlySTRKData
+export const selectAllBTCData = (state) => state.read_data.allBTCData
+export const selectAllETHData = (state) => state.read_data.allETHData
+export const selectAllUSDTData = (state) => state.read_data.allUSDTData
+export const selectAllUSDCData = (state) => state.read_data.allUSDCData
+export const selectAllDAIData = (state) => state.read_data.allDAIData
+export const selectAllSTRKData = (state) => state.read_data.allSTRKData
 export const selectYourMetricsSupply = (state) =>
-  state.read_data.yourMetricsSupply;
+  state.read_data.yourMetricsSupply
 export const selectYourMetricsBorrow = (state) =>
-  state.read_data.yourMetricsBorrow;
-export const selectStakingShares = (state) => state.read_data.stakingShares;
+  state.read_data.yourMetricsBorrow
+export const selectStakingShares = (state) => state.read_data.stakingShares
 export const selectMinimumDepositAmounts = (state) =>
-  state.read_data.minDepositAmounts;
+  state.read_data.minDepositAmounts
 export const selectMaximumDepositAmounts = (state) =>
-  state.read_data.maxDepositAmounts;
+  state.read_data.maxDepositAmounts
 export const selectMinimumLoanAmounts = (state) =>
-  state.read_data.minLoanAmounts;
+  state.read_data.minLoanAmounts
 export const selectMaximumLoanAmounts = (state) =>
-  state.read_data.maxLoanAmounts;
+  state.read_data.maxLoanAmounts
 export const selectJediSwapPoolsSupported = (state) =>
-  state.read_data.jediSwapPoolsSupported;
+  state.read_data.jediSwapPoolsSupported
 export const selectMySwapPoolsSupported = (state) =>
-  state.read_data.mySwapPoolsSupported;
-export const selectFees = (state) => state.read_data.fees;
-export const selectNftBalance = (state) => state.read_data.nftBalance;
-export const selectreferral = (state) => state.read_data.referral;
-export const selectUserType = (state) => state.read_data.userType;
-export const selectExistingLink = (state) => state.read_data.existingLink;
-export const selectMessageHash = (state) => state.read_data.messageHash;
-export const selectSignature = (state) => state.read_data.signature;
-export const selectNftMaxAmount = (state) => state.read_data.nftMaxAmount;
+  state.read_data.mySwapPoolsSupported
+export const selectFees = (state) => state.read_data.fees
+export const selectNftBalance = (state) => state.read_data.nftBalance
+export const selectreferral = (state) => state.read_data.referral
+export const selectUserType = (state) => state.read_data.userType
+export const selectExistingLink = (state) => state.read_data.existingLink
+export const selectMessageHash = (state) => state.read_data.messageHash
+export const selectSignature = (state) => state.read_data.signature
+export const selectNftMaxAmount = (state) => state.read_data.nftMaxAmount
 export const selectNftCurrentAmount = (state) =>
-  state.read_data.nftCurrentAmount;
-export const selectWhiteListed = (state) => state.read_data.whitelisted;
+  state.read_data.nftCurrentAmount
+export const selectWhiteListed = (state) => state.read_data.whitelisted
 export const selectInteractedAddress = (state) =>
-  state.read_data.interactedAddress;
+  state.read_data.interactedAddress
 export const selectJediswapPoolAprs = (state) =>
-  state.read_data.jediSwapPoolAprs;
-export const selectZklendSpends=(state)=>
-  state.read_data.zklendSpends;
-export default readDataSlice.reducer;
+  state.read_data.jediSwapPoolAprs
+export const selectZklendSpends = (state) => state.read_data.zklendSpends
+export const selectConnectedSocialsClicked = (state) =>
+  state.read_data.connectedSocialsClicked
+export default readDataSlice.reducer

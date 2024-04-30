@@ -124,10 +124,10 @@ const SupplyDashboard = ({
     useState("BTC");
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("rBTC");
+  const [currentedSelectedUnstakeCoinModal, setcurrentedSelectedUnstakeCoinModal] = useState("rBTC")
   const [supplyMarkets, setSupplyMarkets] = useState([]);
   const [currentActionMarket, setCurrentActionMarket] = useState("rBTC");
   const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
-
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
   let userDeposits = useSelector(selectUserDeposits);
   let reduxProtocolStats = useSelector(selectProtocolStats);
@@ -887,6 +887,7 @@ const SupplyDashboard = ({
                         onClick={() => {
                           setCurrentSelectedSupplyCoin(supply?.token);
                           setcurrentSelectedWithdrawlCoin(supply?.rToken);
+                          setcurrentedSelectedUnstakeCoinModal(supply?.rToken)
                           setCurrentActionMarket(supply?.rToken);
                           posthog.capture("Your Supply Actions Clicked", {
                             Clicked: true,
@@ -904,6 +905,8 @@ const SupplyDashboard = ({
                           setcurrentSelectedWithdrawlCoin={
                             setcurrentSelectedWithdrawlCoin
                           }
+                          currentedSelectedUnstakeCoinModal={currentedSelectedUnstakeCoinModal}
+                          setcurrentedSelectedUnstakeCoinModal={setcurrentedSelectedUnstakeCoinModal}
                           currentActionMarket={currentActionMarket}
                           coins={supplyMarkets}
                           protocolStats={protocolStats}

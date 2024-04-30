@@ -1,4 +1,4 @@
-import { Box, HStack, Text } from '@chakra-ui/react'
+import { Box, HStack, Text, useMediaQuery } from '@chakra-ui/react'
 import axios from 'axios'
 import { NextPage } from 'next'
 import Image from 'next/image'
@@ -430,6 +430,7 @@ const Degen: NextPage = () => {
   useEffect(() => {
     fetchProtocolStats()
   }, [stats])
+  const [isLessThan1350] = useMediaQuery('(max-width: 1350px)')
 
   return (
     <PageCard pt="6.5rem">
@@ -451,12 +452,12 @@ const Degen: NextPage = () => {
           <Image
             src="/degen_mode_banner2.svg"
             alt="Degen Mode Banner"
-            width={805}
+            width={765}
             height={129}
             style={{
               position: 'absolute',
-              top: '18px',
-              right: '1.5rem',
+              top: '25px',
+              right: '0rem',
               objectFit: 'cover',
               borderRadius: '8px',
             }}
@@ -466,7 +467,8 @@ const Degen: NextPage = () => {
             top="4"
             left="7"
             maxWidth={{
-              xl: '34rem',
+              md:'25rem',
+              xl: '30rem',
               '2xl': '40rem',
             }}
             width="full"
@@ -475,7 +477,7 @@ const Degen: NextPage = () => {
           >
             <Box
               color="#E6EDF3"
-              fontSize="2.1rem"
+              fontSize={"2.1rem"}
               display="flex"
               alignItems="center"
               gap="2"
@@ -488,7 +490,7 @@ const Degen: NextPage = () => {
                 color="#E6EDF3"
                 width="full"
                 pt="8px"
-                fontSize="16px"
+                fontSize={isLessThan1350 ?"0.8rem": "1rem"}
                 letterSpacing="-0.15px"
                 lineHeight="20px"
               >

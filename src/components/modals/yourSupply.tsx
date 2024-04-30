@@ -47,7 +47,7 @@ import SliderWithInput from '../uiElements/sliders/sliderWithInput'
 import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf'
 import useDeposit from '@/Blockchain/hooks/Writes/useDeposit'
 import useWithdrawDeposit from '@/Blockchain/hooks/Writes/useWithdrawDeposit'
-import { getSupplyunlocked } from '@/Blockchain/scripts/Rewards'
+import { getSupplyunlocked,getEstrTokens } from '@/Blockchain/scripts/Rewards'
 import {
   tokenAddressMap,
   tokenDecimalsMap,
@@ -112,6 +112,8 @@ const YourSupplyModal = ({
   setCurrentSelectedSupplyCoin,
   currentSelectedWithdrawlCoin,
   setcurrentSelectedWithdrawlCoin,
+  currentedSelectedUnstakeCoinModal,
+  setcurrentedSelectedUnstakeCoinModal,
   currentActionMarket,
   coins,
   protocolStats,
@@ -165,9 +167,7 @@ const YourSupplyModal = ({
         )
       : 0
   )  
-  const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] = useState(
-    "rUSDT"
-  )
+  console.log(currentedSelectedUnstakeCoinModal,currentedSelectedUnstakeCoinModal,"unstake")
   const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
     userDeposit?.find(
       (item: any) => item?.rToken == currentSelectedWithdrawlCoin
@@ -177,7 +177,8 @@ const YourSupplyModal = ({
     setSliderValue3(0);
     setRTokenToWithdraw(0);
     setInputUnstakeAmount(0);
-  },[currentSelectedUnstakeCoin])
+  },[currentedSelectedUnstakeCoinModal])
+
 
   useEffect(() => {
     setwalletBalance(
@@ -229,6 +230,17 @@ const YourSupplyModal = ({
       statusWithdrawStake,
     } = useWithdrawStake()
 
+    useEffect(() => {
+      const fetchestrTokens = async () => {
+        const data = await getEstrTokens(
+          currentedSelectedUnstakeCoinModal,
+          rTokenToWithdraw
+        )
+        setEstrTokens(data)
+      }
+      fetchestrTokens()
+    }, [rTokenToWithdraw])
+
   const {
     depositAmount,
     setDepositAmount,
@@ -271,14 +283,14 @@ const YourSupplyModal = ({
 
   const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
     stakingShares[
-      currentSelectedUnstakeCoin[0] == 'r'
-        ? currentSelectedUnstakeCoin
-        : 'r' + currentSelectedUnstakeCoin
+      currentedSelectedUnstakeCoinModal[0] == 'r'
+        ? currentedSelectedUnstakeCoinModal
+        : 'r' + currentedSelectedUnstakeCoinModal
     ] != null
       ? stakingShares[
-          currentSelectedUnstakeCoin[0] == 'r'
-            ? currentSelectedUnstakeCoin
-            : 'r' + currentSelectedUnstakeCoin
+          currentedSelectedUnstakeCoinModal[0] == 'r'
+            ? currentedSelectedUnstakeCoinModal
+            : 'r' + currentedSelectedUnstakeCoinModal
         ]
       : 0
   )
@@ -286,18 +298,18 @@ const YourSupplyModal = ({
   useEffect(() => {
     setUnstakeWalletBalance(
       stakingShares[
-        currentSelectedUnstakeCoin[0] == 'r'
-          ? currentSelectedUnstakeCoin
-          : 'r' + currentSelectedUnstakeCoin
+        currentedSelectedUnstakeCoinModal[0] == 'r'
+          ? currentedSelectedUnstakeCoinModal
+          : 'r' + currentedSelectedUnstakeCoinModal
       ] != null
         ? stakingShares[
-            currentSelectedUnstakeCoin[0] == 'r'
-              ? currentSelectedUnstakeCoin
-              : 'r' + currentSelectedUnstakeCoin
+            currentedSelectedUnstakeCoinModal[0] == 'r'
+              ? currentedSelectedUnstakeCoinModal
+              : 'r' + currentedSelectedUnstakeCoinModal
           ]
         : 0
     )
-  }, [currentSelectedUnstakeCoin, userDeposit])
+  }, [currentedSelectedUnstakeCoinModal, userDeposit])
 
 
   const hanldeUnstakeTransaction = async () => {
@@ -326,7 +338,7 @@ const YourSupplyModal = ({
         const uqID = getUniqueId()
         const trans_data = {
           transaction_hash: unstake?.transaction_hash.toString(),
-          message: `Successfully unstaked : ${rTokenToWithdraw} ${currentSelectedUnstakeCoin}`,
+          message: `Successfully unstaked : ${rTokenToWithdraw} ${currentedSelectedUnstakeCoinModal}`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
           uniqueID: uqID,
@@ -334,7 +346,7 @@ const YourSupplyModal = ({
         activeTransactions?.push(trans_data)
         posthog.capture('Unstake Modal Market Page Status', {
           Status: 'Success',
-          Token: currentSelectedUnstakeCoin,
+          Token: currentedSelectedUnstakeCoinModal,
           TokenAmount: rTokenToWithdraw,
         })
 
@@ -523,6 +535,7 @@ const YourSupplyModal = ({
     setSliderValue(0)
     setSliderValue2(0)
     setSliderValue3(0);
+    setEstrTokens(0);
     setRTokenToWithdraw(0);
     setInputUnstakeAmount(0)
     setinputSupplyAmount(0)
@@ -531,6 +544,7 @@ const YourSupplyModal = ({
     setCurrentSelectedSupplyCoin('BTC')
     setSupplyAsset('BTC')
     setcurrentSelectedWithdrawlCoin('BTC')
+    setcurrentedSelectedUnstakeCoinModal('BTC')
     setAsset('BTC')
     setIsChecked(true)
     setTransactionStarted(false)
@@ -2026,10 +2040,10 @@ const YourSupplyModal = ({
                         >
                           <Box display="flex" gap="1">
                             <Box p="1">
-                              {getCoin(currentSelectedUnstakeCoin)}
+                              {getCoin(currentedSelectedUnstakeCoinModal)}
                             </Box>
                             <Text color="white" mt="0.1rem">
-                              {currentSelectedUnstakeCoin}
+                              {currentedSelectedUnstakeCoinModal}
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
@@ -2061,11 +2075,11 @@ const YourSupplyModal = ({
                                     gap="1"
                                     pr="2"
                                     onClick={() => {
-                                      setcurrentSelectedUnstakeCoin(_coin)
+                                      setcurrentedSelectedUnstakeCoinModal(_coin)
                                       setUnstakeRToken(_coin)
                                     }}
                                   >
-                                    {_coin === currentSelectedUnstakeCoin && (
+                                    {_coin === currentedSelectedUnstakeCoinModal && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -2078,7 +2092,7 @@ const YourSupplyModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${
-                                        _coin === currentSelectedUnstakeCoin
+                                        _coin === currentedSelectedUnstakeCoinModal
                                           ? '1'
                                           : '5'
                                       }`}
@@ -2086,7 +2100,7 @@ const YourSupplyModal = ({
                                       gap="1"
                                       justifyContent="space-between"
                                       bg={`${
-                                        _coin === currentSelectedUnstakeCoin
+                                        _coin === currentedSelectedUnstakeCoinModal
                                           ? '#4D59E8'
                                           : 'inherit'
                                       }`}
@@ -2195,7 +2209,7 @@ const YourSupplyModal = ({
                             _disabled={{ cursor: 'pointer' }}
                           >
                             <NumberInputField
-                              placeholder={`0.01536 ${currentSelectedUnstakeCoin}`}
+                              placeholder={`0.01536 ${currentedSelectedUnstakeCoinModal}`}
                               color={`${
                                 rTokenToWithdraw > unstakeWalletBalance
                                   ? '#CF222E'
@@ -2247,7 +2261,7 @@ const YourSupplyModal = ({
 
                         {(rTokenToWithdraw > unstakeWalletBalance ||
                           rTokenToWithdraw < 0) &&
-                        coinsSupplied[currentSelectedUnstakeCoin] ? (
+                        coinsSupplied[currentedSelectedUnstakeCoinModal] ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -2277,15 +2291,15 @@ const YourSupplyModal = ({
                               Staking Shares:{' '}
                               {stakingShares &&
                               stakingShares[
-                                currentSelectedUnstakeCoin[0] == 'r'
-                                  ? currentSelectedUnstakeCoin
-                                  : 'r' + currentSelectedUnstakeCoin
+                                currentedSelectedUnstakeCoinModal[0] == 'r'
+                                  ? currentedSelectedUnstakeCoinModal
+                                  : 'r' + currentedSelectedUnstakeCoinModal
                               ] != null ? (
                                 numberFormatter(
                                   stakingShares[
-                                    currentSelectedUnstakeCoin[0] == 'r'
-                                      ? currentSelectedUnstakeCoin
-                                      : 'r' + currentSelectedUnstakeCoin
+                                    currentedSelectedUnstakeCoinModal[0] == 'r'
+                                      ? currentedSelectedUnstakeCoinModal
+                                      : 'r' + currentedSelectedUnstakeCoinModal
                                   ]
                                 )
                               ) : (
@@ -2317,15 +2331,15 @@ const YourSupplyModal = ({
                             Staking Shares:{' '}
                             {stakingShares &&
                             stakingShares[
-                              currentSelectedUnstakeCoin[0] == 'r'
-                                ? currentSelectedUnstakeCoin
-                                : 'r' + currentSelectedUnstakeCoin
+                              currentedSelectedUnstakeCoinModal[0] == 'r'
+                                ? currentedSelectedUnstakeCoinModal
+                                : 'r' + currentedSelectedUnstakeCoinModal
                             ] != null ? (
                               numberFormatter(
                                 stakingShares[
-                                  currentSelectedUnstakeCoin[0] == 'r'
-                                    ? currentSelectedUnstakeCoin
-                                    : 'r' + currentSelectedUnstakeCoin
+                                  currentedSelectedUnstakeCoinModal[0] == 'r'
+                                    ? currentedSelectedUnstakeCoinModal
+                                    : 'r' + currentedSelectedUnstakeCoinModal
                                 ]
                               )
                             ) : (

@@ -22,6 +22,7 @@ import { processAddress } from '@/Blockchain/stark-constants'
 import BlueInfoIcon from '@/assets/icons/blueinfoicon'
 import CopyIcon from '@/assets/icons/copyIcon'
 import DropdownUp from '@/assets/icons/dropdownUpIcon'
+import ExternalLinkWhite from '@/assets/icons/externalLinkWhite'
 import { default as LeaderboardDashboard } from '@/components/layouts/leaderboardDashboard'
 import { default as PageCard } from '@/components/layouts/pageCard'
 import UserCampaignData from '@/components/layouts/userCampaignData'
@@ -33,11 +34,13 @@ import {
   setAirdropDropdown,
 } from '@/store/slices/dropdownsSlice'
 import {
+  selectConnectedSocialsClicked,
   selectExistingLink,
   selectYourBorrow,
   selectYourSupply,
 } from '@/store/slices/readDataSlice'
 import { default as numberFormatter } from '@/utils/functions/numberFormatter'
+import Link from 'next/link'
 
 const columnItemsLeaderBoard = [
   'Rank',
@@ -232,6 +235,7 @@ const Campaign: NextPage = () => {
   const [userHashCCP, setuserHashCCP] = useState<any>(0)
   const [totalPointsCCP, settotalPointsCCP] = useState<any>(0)
   const [userRankCCP, setuserRankCCP] = useState<any>(0)
+  const [userSocialsData, setuserSocialsData] = useState<any>([])
   const [campaignDetails, setCampaignDetails] = useState([
     {
       campaignName: 'Airdrop 01',
@@ -247,6 +251,7 @@ const Campaign: NextPage = () => {
   const totalSupply = useSelector(selectYourSupply)
   const exisitingLink = useSelector(selectExistingLink)
   const airdropDropdowns = useSelector(selectAirdropDropdowns)
+  const registeredClick = useSelector(selectConnectedSocialsClicked)
 
   const dispatch = useDispatch()
   const { address } = useAccount()
@@ -290,7 +295,10 @@ const Campaign: NextPage = () => {
             `https://hstk.fi/api/get-epoch-wise-data/${address}`
           )
           const data = res?.data
-          setepochsData(data?.finalSnapData)
+          let dataepoch = data?.finalSnapData.sort(
+            (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
+          )
+          setepochsData(dataepoch)
           if (data?.rank) {
             setuserRank(data?.rank)
           } else {
@@ -308,6 +316,22 @@ const Campaign: NextPage = () => {
       console.log(err)
     }
   }, [address])
+
+  useEffect(() => {
+    try {
+      const fetchRegisterData = async () => {
+        if (address) {
+          const res = await axios.get(
+            `https://metricsapimainnet.hashstack.finance/ccp/register/${address}`
+          )
+          setuserSocialsData(res?.data?.response)
+        }
+      }
+      fetchRegisterData()
+    } catch (err) {
+      console.log(err, 'err in fetching register data')
+    }
+  }, [address, registeredClick])
 
   useEffect(() => {
     try {
@@ -526,7 +550,7 @@ const Campaign: NextPage = () => {
   }
 
   return (
-    <PageCard pt="6.5rem">
+    <PageCard pt="3rem">
       <HStack
         display="flex"
         justifyContent="space-between"
@@ -540,7 +564,7 @@ const Campaign: NextPage = () => {
         <HStack
           mt="3rem"
           display="flex"
-          justifyContent="center"
+          // justifyContent="center"
           alignItems="center"
           width="full"
         >
@@ -675,16 +699,18 @@ const Campaign: NextPage = () => {
             )}
           </Box>
 
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            alignItems="center"
-            gap="1rem"
-            width="full"
-          >
-            <RegisterCCPModal />
-            <SubmissionCCPModal />
-          </Box>
+          {!(tabValue == 2 && currentSelectedDrop == 'Airdrop 1') && (
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+              gap="1rem"
+              width="full"
+            >
+              <RegisterCCPModal userSocialsData={userSocialsData} />
+              <SubmissionCCPModal userSocialsData={userSocialsData} />
+            </Box>
+          )}
         </HStack>
 
         {tabValue == 1 ? (
@@ -695,7 +721,7 @@ const Campaign: NextPage = () => {
             justifyContent="space-between"
           >
             <HStack
-              mt="6rem"
+              mt="2rem"
               display="flex"
               flexDirection="column"
               alignItems="flex-start"
@@ -794,7 +820,7 @@ const Campaign: NextPage = () => {
               </HStack>
             </HStack>
 
-            <Box mt="4rem" display="flex" flexDirection="column">
+            <Box mt="0rem" display="flex" flexDirection="column">
               <Text
                 color="#F0F0F5"
                 fontSize="16px"
@@ -885,7 +911,7 @@ const Campaign: NextPage = () => {
                   color="#B1B0B5"
                   fontSize="14px"
                   letterSpacing="-0.15px"
-                  mt="0.3rem"
+                  mt="1rem"
                 >
                   <Box pr="3" mt="0.5" cursor="pointer">
                     <BlueInfoIcon />
@@ -916,7 +942,7 @@ const Campaign: NextPage = () => {
             gap="5rem"
           >
             <HStack
-              mt="5rem"
+              mt="2rem"
               display="flex"
               flexDirection="column"
               alignItems="flex-start"
@@ -1016,8 +1042,8 @@ const Campaign: NextPage = () => {
               </HStack>
             </HStack>
 
-            {/* <Box
-              mt="6.5rem"
+            <Box
+              mt="2.1rem"
               display="flex"
               flexDirection="column"
               gap="1.8rem"
@@ -1026,28 +1052,55 @@ const Campaign: NextPage = () => {
               lineHeight="20px"
               fontWeight="400"
             >
-              <Box display="flex">
-                <Link
-                  href={""}
-                  style={{ display: "flex", gap: "1rem" }}
-                  target="_blank"
-                >
-                  <Text>Please check the airdrop announcement article</Text>
-                  <ExternalLinkWhite />
-                </Link>
-              </Box>
+              {currentSelectedDrop == 'Airdrop 1' ? (
+                <Box display="flex">
+                  <Link
+                    href={
+                      'https://hashstack.medium.com/completed-airdrop-phase-1-c57ae0ff0251'
+                    }
+                    style={{ display: 'flex', gap: '1rem' }}
+                    target="_blank"
+                  >
+                    <Text fontSize="14px" fontWeight="500" color="#B1B0B5">
+                      Airdrop Campaign Complete
+                    </Text>
+                    <ExternalLinkWhite />
+                  </Link>
+                </Box>
+              ) : (
+                <Box display="flex">
+                  <Link
+                    href={
+                      'https://hashstack.medium.com/introducing-hashstacks-content-creator-program-ccp-435aea9c9d83'
+                    }
+                    style={{ display: 'flex', gap: '1rem' }}
+                    target="_blank"
+                  >
+                    <Text fontSize="14px" fontWeight="500" color="#B1B0B5">
+                      Read about Content Creator Program
+                    </Text>
+                    <ExternalLinkWhite />
+                  </Link>
+                </Box>
+              )}
 
-              <Box display="flex">
-                <Link
-                  href={""}
-                  style={{ display: "flex", gap: "1rem" }}
-                  target="_blank"
-                >
-                  <Text>Please check the airdrop announcement article</Text>
-                  <ExternalLinkWhite />
-                </Link>
-              </Box>
-            </Box> */}
+              {currentSelectedDrop == 'Airdrop 1' && (
+                <Box display="flex">
+                  <Link
+                    href={
+                      'https://hashstack.medium.com/launched-airdrop-for-hashstack-v1-d592ee7ff24e'
+                    }
+                    style={{ display: 'flex', gap: '1rem' }}
+                    target="_blank"
+                  >
+                    <Text fontSize="14px" fontWeight="500" color="#B1B0B5">
+                      Airdrop Launch
+                    </Text>
+                    <ExternalLinkWhite />
+                  </Link>
+                </Box>
+              )}
+            </Box>
           </HStack>
         )}
 

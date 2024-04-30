@@ -9,32 +9,32 @@ import {
   Thead,
   Tooltip,
   Tr,
-} from "@chakra-ui/react";
-import { useAccount } from "@starknet-react/core";
-import Link from "next/link";
-import React, { useState } from "react";
+} from '@chakra-ui/react'
+import { useAccount } from '@starknet-react/core'
+import Link from 'next/link'
+import React, { useState } from 'react'
 
-import { processAddress } from "@/Blockchain/stark-constants";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import posthog from "posthog-js";
+import { processAddress } from '@/Blockchain/stark-constants'
+import numberFormatter from '@/utils/functions/numberFormatter'
+import posthog from 'posthog-js'
 
 const tooltips = [
-  "",
-  "",
-  "Liquidity (Supply/Borrow,Referrals)",
-  "Points earned for rewards",
-  "Allocated $HASH",
-];
+  '',
+  '',
+  'Liquidity (Supply/Borrow,Referrals)',
+  'Points earned for rewards',
+  'Allocated $HASH',
+]
 
 interface LeaderboardDashboardProps {
-  leaderBoardData: any;
-  personalData: any;
-  columnItems: any;
-  currentSelectedDrop: string;
-  airdropCampaignUserRank: any;
-  userHashCCP: any;
-  userPointsCCP: any;
-  userRankCCP: any;
+  leaderBoardData: any
+  personalData: any
+  columnItems: any
+  currentSelectedDrop: string
+  airdropCampaignUserRank: any
+  userHashCCP: any
+  userPointsCCP: any
+  userRankCCP: any
 }
 
 const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
@@ -47,8 +47,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
   userPointsCCP,
   userRankCCP,
 }) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const { address } = useAccount();
+  const [loading, setLoading] = useState<boolean>(false)
+  const { address } = useAccount()
 
   return loading ? (
     <Box
@@ -57,7 +57,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
       justifyContent="center"
       alignItems="center"
       width="95%"
-      height={"37rem"}
+      height={'37rem'}
       bgColor="#101216"
       borderRadius="8px"
     >
@@ -77,58 +77,58 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
       display="flex"
       justifyContent="flex-start"
       alignItems="flex-start"
-      height={"34rem"}
-      padding={"1rem 2rem 0rem"}
+      height={'34rem'}
+      padding={'1rem 2rem 0rem'}
       overflowY="scroll"
     >
       <Table variant="unstyled" width="100%">
-        <Thead width={"100%"} height={"5rem"}>
-          <Tr width={"100%"} height="2rem">
+        <Thead width={'100%'} height={'5rem'}>
+          <Tr width={'100%'} height="2rem">
             {columnItems.map((val: any, idx1: any) => (
               <Td
                 key={idx1}
-                width={"16.6%"}
-                fontSize={"12px"}
+                width={'16.6%'}
+                fontSize={'12px'}
                 fontWeight={400}
                 p={0}
               >
                 <Text
                   whiteSpace="pre-wrap"
                   overflowWrap="break-word"
-                  width={"100%"}
-                  height={"2rem"}
+                  width={'100%'}
+                  height={'2rem'}
                   fontSize="12px"
                   textAlign={
                     idx1 == 0
-                      ? "left"
+                      ? 'left'
                       : idx1 == columnItems?.length - 1
-                      ? "right"
-                      : "center"
+                        ? 'right'
+                        : 'center'
                   }
                   pl={idx1 == 0 ? 2 : 0}
                   pr={idx1 == columnItems.length - 1 ? 10 : 0}
-                  color={"#BDBFC1"}
+                  color={'#BDBFC1'}
                   cursor="context-menu"
                 >
                   <Tooltip
                     hasArrow
                     label={
-                      currentSelectedDrop === "Airdrop 1"
+                      currentSelectedDrop === 'Airdrop 1'
                         ? tooltips[idx1]
                         : tooltips.filter((item) => item !== tooltips[2])[idx1]
                     }
                     placement={
-                      (idx1 === 0 && "bottom-start") ||
-                      (idx1 === columnItems.length - 1 && "bottom-end") ||
-                      "bottom"
+                      (idx1 === 0 && 'bottom-start') ||
+                      (idx1 === columnItems.length - 1 && 'bottom-end') ||
+                      'bottom'
                     }
                     rounded="md"
                     boxShadow="dark-lg"
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -142,21 +142,21 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
           </Tr>
         </Thead>
 
-        <Tbody position="relative" overflowX="hidden" alignContent={"center"}>
+        <Tbody position="relative" overflowX="hidden" alignContent={'center'}>
           {personalData.map((member: any, idx: any) => {
             return (
               <>
                 <Tr
                   key={idx}
-                  width={"100%"}
+                  width={'100%'}
                   height="4rem"
                   position="relative"
                   p={0}
                   background="#676D9A48"
                 >
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
@@ -166,22 +166,22 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       height="100%"
                       display="flex"
                       alignItems="center"
-                      justifyContent={"start"}
+                      justifyContent={'start'}
                       fontWeight="400"
                       fontSize="14px"
                       color="#E6EDF3"
                     >
-                      {currentSelectedDrop === "Airdrop 1"
+                      {currentSelectedDrop === 'Airdrop 1'
                         ? airdropCampaignUserRank
                         : userRankCCP
-                        ? userRankCCP
-                        : "-"}
+                          ? userRankCCP
+                          : '-'}
                     </Text>
                   </Td>
 
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
@@ -202,8 +202,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                   </Td>
 
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
@@ -222,7 +222,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         hasArrow
                         label={
                           <Box>
-                            {currentSelectedDrop === "Airdrop 1" ? (
+                            {currentSelectedDrop === 'Airdrop 1' ? (
                               <>
                                 Supply/Borrow: $
                                 {numberFormatter(
@@ -234,7 +234,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                               </>
                             ) : (
                               <>
-                                Points Allocated:{" "}
+                                Points Allocated:{' '}
                                 {numberFormatter(userPointsCCP)}
                                 <br />
                                 Points Estimated: {numberFormatter(member.pts)}
@@ -246,17 +246,17 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         rounded="md"
                         boxShadow="dark-lg"
                         bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
+                        fontSize={'13px'}
+                        fontWeight={'400'}
+                        borderRadius={'lg'}
+                        padding={'2'}
                         color="#F0F0F5"
                         border="1px solid"
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {currentSelectedDrop === "Airdrop 1"
+                          {currentSelectedDrop === 'Airdrop 1'
                             ? numberFormatter(
                                 Number(member.liq) + Number(member.referredliq)
                               )
@@ -265,75 +265,77 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       </Tooltip>
                     </Text>
                   </Td>
-                  {currentSelectedDrop=="Airdrop 1" && 
-                  <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    padding={2}
-                    textAlign="center"
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      fontSize="14px"
-                      color="#E6EDF3"
-                    >
-                      <Tooltip
-                        hasArrow
-                        label={
-                          currentSelectedDrop === "Airdrop 1" ? (
-                            <Box>
-                              Points Allocated:{" "}
-                              {numberFormatter(member.ptsAllocated)}
-                              <br />
-                              Points Estimated: {numberFormatter(member.pts)}
-                            </Box>
-                          ) : (
-                            <Box>
-                              HASH Allocated:{" "}
-                              {member.hashAllocated
-                                ? numberFormatter(userHashCCP)
-                                : 0}
-                              <br />
-                              HASH Estimated:{" "}
-                              {member.estimatedHash
-                                ? numberFormatter(member?.estimatedHash)
-                                : 0}
-                            </Box>
-                          )
-                        }
-                        placement="right"
-                        rounded="md"
-                        boxShadow="dark-lg"
-                        bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
-                        color="#F0F0F5"
-                        border="1px solid"
-                        borderColor="#23233D"
-                        arrowShadowColor="#2B2F35"
-                      >
-                        <Text>
-                          {currentSelectedDrop === "Airdrop 1"
-                            ? numberFormatter(member.pts + member.ptsAllocated)
-                            : numberFormatter(userHashCCP)}
-                        </Text>
-                      </Tooltip>
-                    </Text>
-                  </Td>}
-
-
-                  {currentSelectedDrop === "Airdrop 1" ? (
+                  {currentSelectedDrop == 'Airdrop 1' && (
                     <Td
-                      width={"16.6%"}
-                      fontSize={"14px"}
+                      width={'16.6%'}
+                      fontSize={'14px'}
+                      fontWeight={400}
+                      padding={2}
+                      textAlign="center"
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                      >
+                        <Tooltip
+                          hasArrow
+                          label={
+                            currentSelectedDrop === 'Airdrop 1' ? (
+                              <Box>
+                                Points Allocated:{' '}
+                                {numberFormatter(member.ptsAllocated)}
+                                <br />
+                                Points Estimated: {numberFormatter(member.pts)}
+                              </Box>
+                            ) : (
+                              <Box>
+                                HASH Allocated:{' '}
+                                {member.hashAllocated
+                                  ? numberFormatter(userHashCCP)
+                                  : 0}
+                                <br />
+                                HASH Estimated:{' '}
+                                {member.estimatedHash
+                                  ? numberFormatter(member?.estimatedHash)
+                                  : 0}
+                              </Box>
+                            )
+                          }
+                          placement="right"
+                          rounded="md"
+                          boxShadow="dark-lg"
+                          bg="#02010F"
+                          fontSize={'13px'}
+                          fontWeight={'400'}
+                          borderRadius={'lg'}
+                          padding={'2'}
+                          color="#F0F0F5"
+                          border="1px solid"
+                          borderColor="#23233D"
+                          arrowShadowColor="#2B2F35"
+                        >
+                          <Text>
+                            {currentSelectedDrop === 'Airdrop 1'
+                              ? numberFormatter(
+                                  member.pts + member.ptsAllocated
+                                )
+                              : numberFormatter(userHashCCP)}
+                          </Text>
+                        </Tooltip>
+                      </Text>
+                    </Td>
+                  )}
+
+                  {currentSelectedDrop === 'Airdrop 1' ? (
+                    <Td
+                      width={'16.6%'}
+                      fontSize={'14px'}
                       fontWeight={400}
                       padding={2}
                       textAlign="end"
@@ -353,12 +355,12 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                           hasArrow
                           label={
                             <Box>
-                              HASH Allocated:{" "}
+                              HASH Allocated:{' '}
                               {member.hashAllocated
                                 ? numberFormatter(member?.hashAllocated)
                                 : 0}
                               <br />
-                              HASH Estimated:{" "}
+                              HASH Estimated:{' '}
                               {member.est ? numberFormatter(member?.est) : 0}
                             </Box>
                           }
@@ -366,10 +368,10 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                           rounded="md"
                           boxShadow="dark-lg"
                           bg="#02010F"
-                          fontSize={"13px"}
-                          fontWeight={"400"}
-                          borderRadius={"lg"}
-                          padding={"2"}
+                          fontSize={'13px'}
+                          fontWeight={'400'}
+                          borderRadius={'lg'}
+                          padding={'2'}
                           color="#F0F0F5"
                           border="1px solid"
                           borderColor="#23233D"
@@ -381,8 +383,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     </Td>
                   ) : (
                     <Td
-                      width={"16.6%"}
-                      fontSize={"14px"}
+                      width={'16.6%'}
+                      fontSize={'14px'}
                       fontWeight={400}
                       padding={2}
                       textAlign="end"
@@ -404,7 +406,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                           textDecoration="underline"
                           cursor="pointer"
                         >
-                          Submission
+                          Submissions
                         </Text>
                       </Link>
                     </Td>
@@ -413,15 +415,15 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
 
                 <Tr
                   style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: "1px",
-                    borderBottom: "1px solid #2b2f35",
-                    display: `${member.id == 5 ? "none" : "block"}`,
+                    position: 'absolute',
+                    width: '100%',
+                    height: '1px',
+                    borderBottom: '1px solid #2b2f35',
+                    display: `${member.id == 5 ? 'none' : 'block'}`,
                   }}
                 />
               </>
-            );
+            )
           })}
 
           {leaderBoardData.map((member: any, idx: any) => {
@@ -429,14 +431,14 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
               <>
                 <Tr
                   key={idx}
-                  width={"100%"}
+                  width={'100%'}
                   height="4rem"
                   position="relative"
                   p={0}
                 >
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
@@ -446,7 +448,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       height="100%"
                       display="flex"
                       alignItems="center"
-                      justifyContent={"start"}
+                      justifyContent={'start'}
                       fontWeight="400"
                       fontSize="14px"
                       color="#E6EDF3"
@@ -456,13 +458,13 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                   </Td>
 
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
                   >
-                    {currentSelectedDrop == "Airdrop 1" ? (
+                    {currentSelectedDrop == 'Airdrop 1' ? (
                       <Text
                         width="100%"
                         height="100%"
@@ -490,18 +492,18 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         fontSize="14px"
                         color="#E6EDF3"
                       >
-                        {member["Wallet Address (StarkNet)"].substring(0, 5)}...
-                        {member["Wallet Address (StarkNet)"].substring(
-                          member["Wallet Address (StarkNet)"].length - 5,
-                          member["Wallet Address (StarkNet)"].length
+                        {member['Wallet Address (StarkNet)'].substring(0, 5)}...
+                        {member['Wallet Address (StarkNet)'].substring(
+                          member['Wallet Address (StarkNet)'].length - 5,
+                          member['Wallet Address (StarkNet)'].length
                         )}
                       </Text>
                     )}
                   </Td>
 
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
@@ -520,7 +522,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         hasArrow
                         label={
                           <Box>
-                            {currentSelectedDrop === "Airdrop 1" ? (
+                            {currentSelectedDrop === 'Airdrop 1' ? (
                               <>
                                 Supply/Borrow: $
                                 {numberFormatter(member.selfValue)}
@@ -531,16 +533,16 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                               </>
                             ) : (
                               <>
-                                Points Allocated:{" "}
+                                Points Allocated:{' '}
                                 {numberFormatter(
-                                  member["Recommended (Community Team)"]
+                                  member['Recommended (Community Team)']
                                 )
                                   ? numberFormatter(
-                                      member["Recommended (Community Team)"]
+                                      member['Recommended (Community Team)']
                                     )
                                   : 0}
                                 <br />
-                                Points Estimated:{" "}
+                                Points Estimated:{' '}
                                 {member.pointsEstimated
                                   ? numberFormatter(member?.pointsEstimated)
                                   : 0}
@@ -552,101 +554,102 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                         rounded="md"
                         boxShadow="dark-lg"
                         bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
+                        fontSize={'13px'}
+                        fontWeight={'400'}
+                        borderRadius={'lg'}
+                        padding={'2'}
                         color="#F0F0F5"
                         border="1px solid"
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {currentSelectedDrop == "Airdrop 1"
+                          {currentSelectedDrop == 'Airdrop 1'
                             ? numberFormatter(
                                 Number(member.selfValue) +
                                   Number(member.referralValue)
                               )
                             : numberFormatter(
-                                member["Recommended (Community Team)"]
+                                member['Recommended (Community Team)']
                               )}
                         </Text>
                       </Tooltip>
                     </Text>
                   </Td>
-                    {currentSelectedDrop === "Airdrop 1" &&                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    padding={2}
-                    textAlign="center"
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      fontSize="14px"
-                      color="#E6EDF3"
-                    >
-                      <Tooltip
-                        hasArrow
-                        label={
-                          currentSelectedDrop === "Airdrop 1" ? (
-                            <Box>
-                              Points Allocated:{" "}
-                              {member.pointsAllocated
-                                ? numberFormatter(member?.pointsAllocated)
-                                : 0}
-                              <br />
-                              Points Estimated:{" "}
-                              {member.pointsEstimated
-                                ? numberFormatter(member?.pointsEstimated)
-                                : 0}
-                            </Box>
-                          ) : (
-                            <Box>
-                              HASH Allocated:{" "}
-                              {member["Hash Allocated"]
-                                ? numberFormatter(member["Hash Allocated"])
-                                : 0}
-                              <br />
-                              HASH Estimated:{" "}
-                              {member.estimatedHash
-                                ? numberFormatter(member?.estimatedHash)
-                                : 0}
-                            </Box>
-                          )
-                        }
-                        placement="right"
-                        rounded="md"
-                        boxShadow="dark-lg"
-                        bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
-                        color="#F0F0F5"
-                        border="1px solid"
-                        borderColor="#23233D"
-                        arrowShadowColor="#2B2F35"
-                      >
-                        <Text>
-                          {currentSelectedDrop === "Airdrop 1"
-                            ? numberFormatter(member.netPoints)
-                            : numberFormatter(member["Hash Allocated"])}
-                        </Text>
-                      </Tooltip>
-                    </Text>
-                  </Td>}
-
-
-                  {currentSelectedDrop === "Airdrop 1" ? (
+                  {currentSelectedDrop === 'Airdrop 1' && (
                     <Td
-                      width={"16.6%"}
-                      fontSize={"14px"}
+                      width={'16.6%'}
+                      fontSize={'14px'}
+                      fontWeight={400}
+                      padding={2}
+                      textAlign="center"
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                      >
+                        <Tooltip
+                          hasArrow
+                          label={
+                            currentSelectedDrop === 'Airdrop 1' ? (
+                              <Box>
+                                Points Allocated:{' '}
+                                {member.pointsAllocated
+                                  ? numberFormatter(member?.pointsAllocated)
+                                  : 0}
+                                <br />
+                                Points Estimated:{' '}
+                                {member.pointsEstimated
+                                  ? numberFormatter(member?.pointsEstimated)
+                                  : 0}
+                              </Box>
+                            ) : (
+                              <Box>
+                                HASH Allocated:{' '}
+                                {member['Hash Allocated']
+                                  ? numberFormatter(member['Hash Allocated'])
+                                  : 0}
+                                <br />
+                                HASH Estimated:{' '}
+                                {member.estimatedHash
+                                  ? numberFormatter(member?.estimatedHash)
+                                  : 0}
+                              </Box>
+                            )
+                          }
+                          placement="right"
+                          rounded="md"
+                          boxShadow="dark-lg"
+                          bg="#02010F"
+                          fontSize={'13px'}
+                          fontWeight={'400'}
+                          borderRadius={'lg'}
+                          padding={'2'}
+                          color="#F0F0F5"
+                          border="1px solid"
+                          borderColor="#23233D"
+                          arrowShadowColor="#2B2F35"
+                        >
+                          <Text>
+                            {currentSelectedDrop === 'Airdrop 1'
+                              ? numberFormatter(member.netPoints)
+                              : numberFormatter(member['Hash Allocated'])}
+                          </Text>
+                        </Tooltip>
+                      </Text>
+                    </Td>
+                  )}
+
+                  {currentSelectedDrop === 'Airdrop 1' ? (
+                    <Td
+                      width={'16.6%'}
+                      fontSize={'14px'}
                       fontWeight={400}
                       padding={2}
                       textAlign="end"
@@ -666,12 +669,12 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                           hasArrow
                           label={
                             <Box>
-                              HASH Allocated:{" "}
+                              HASH Allocated:{' '}
                               {member.hashAllocated
                                 ? numberFormatter(member?.hashAllocated)
                                 : 0}
                               <br />
-                              HASH Estimated:{" "}
+                              HASH Estimated:{' '}
                               {member.estimatedHash
                                 ? numberFormatter(member?.estimatedHash)
                                 : 0}
@@ -681,10 +684,10 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                           rounded="md"
                           boxShadow="dark-lg"
                           bg="#02010F"
-                          fontSize={"13px"}
-                          fontWeight={"400"}
-                          borderRadius={"lg"}
-                          padding={"2"}
+                          fontSize={'13px'}
+                          fontWeight={'400'}
+                          borderRadius={'lg'}
+                          padding={'2'}
                           color="#F0F0F5"
                           border="1px solid"
                           borderColor="#23233D"
@@ -698,17 +701,21 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     </Td>
                   ) : (
                     <Td
-                      width={"16.6%"}
-                      fontSize={"14px"}
+                      width={'16.6%'}
+                      fontSize={'14px'}
                       fontWeight={400}
                       padding={2}
                       textAlign="end"
-                      onClick={()=>{
-                        posthog.capture('User submisions from leaderboard clicked',{clicked:true})
+                      onClick={() => {
+                        posthog.capture(
+                          'User submisions from leaderboard clicked',
+                          { clicked: true }
+                        )
                       }}
                     >
                       <Link
-                        href={`/v1/airdrop_leaderboard/submissions/?address=${processAddress(member["Wallet Address (StarkNet)"]
+                        href={`/v1/airdrop_leaderboard/submissions/?address=${processAddress(
+                          member['Wallet Address (StarkNet)']
                         )}`}
                         target="_blank"
                       >
@@ -725,7 +732,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                           textDecoration="underline"
                           cursor="pointer"
                         >
-                          Submission
+                          Submissions
                         </Text>
                       </Link>
                     </Td>
@@ -734,20 +741,20 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
 
                 <Tr
                   style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: "1px",
-                    borderBottom: "1px solid #2b2f35",
-                    display: `${member.id == 5 ? "none" : "block"}`,
+                    position: 'absolute',
+                    width: '100%',
+                    height: '1px',
+                    borderBottom: '1px solid #2b2f35',
+                    display: `${member.id == 5 ? 'none' : 'block'}`,
                   }}
                 />
               </>
-            );
+            )
           })}
         </Tbody>
       </Table>
     </TableContainer>
-  );
-};
+  )
+}
 
-export default LeaderboardDashboard;
+export default LeaderboardDashboard
