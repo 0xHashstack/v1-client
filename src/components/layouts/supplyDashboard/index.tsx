@@ -829,7 +829,7 @@ const SupplyDashboard = ({
                           Staked
                           <Box>
                             {numberFormatter(supply?.rTokenStakedParsed)}{" "}
-                            {supply?.rToken.slice(1)}
+                            {"r"+supply?.rToken.slice(1)}
                           </Box>
                         </Box>
 
@@ -846,7 +846,7 @@ const SupplyDashboard = ({
                           Collateral
                           <Box>
                             {numberFormatter(supply?.rTokenLockedParsed)}{" "}
-                            {supply?.rToken.slice(1)}
+                            {"r"+supply?.rToken.slice(1)}
                           </Box>
                         </Box>
 
@@ -863,7 +863,7 @@ const SupplyDashboard = ({
                           Available
                           <Box>
                             {numberFormatter(supply?.rTokenFreeParsed)}{" "}
-                            {supply?.rToken.slice(1)}
+                            {"r"+supply?.rToken.slice(1)}
                           </Box>
                         </Box>
                       </Box>
