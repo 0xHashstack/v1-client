@@ -242,10 +242,9 @@ export async function getMySwapEstimateLiquiditySplit(
 
     const split1 = parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8);
     const split2 = parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8);
-    ////console.log(split1,split2,"split amounts")
     return [split1, split2];
   } catch (error) {
-   //console.log("error in getJediEstimateLiquiditySplit: ", error);
+   console.log("error in getJediEstimateLiquiditySplit: ", error);
   }
 }
 
