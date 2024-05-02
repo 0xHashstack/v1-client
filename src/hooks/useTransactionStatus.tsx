@@ -12,10 +12,11 @@ function useTransactionStatus  ({transactionHash}:{transactionHash:string})  {
       } = useWaitForTransaction({
         hash:transactionHash ? transactionHash:"",
         watch: true,
+        enabled:true,
+        refetchInterval:4000,
+        retry:true,
+        retryDelay:4000,
       });
-      if (!data) {
-        return undefined;
-      }
   return {
     data,
     error,
