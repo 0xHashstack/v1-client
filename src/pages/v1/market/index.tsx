@@ -20,9 +20,9 @@ import useDataLoader from '@/hooks/useDataLoader'
 const Market: NextPage = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
-      loop: false,
+      loop: true,
     },
-    [Autoplay({ playOnInit: true, delay: 3000 })]
+    [Autoplay({ playOnInit: true, delay: 8000 })]
   )
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
@@ -93,8 +93,8 @@ const Market: NextPage = () => {
 
           <Box className="embla__slide" position="relative" height={'150px'}>
             <Image
-              src="/defi_spring_banner.svg"
-              alt="DeFi Spring"
+              src="/degen_banner.svg"
+              alt="Degen Mode"
               fill
               style={{ objectFit: 'cover', borderRadius: '8px' }}
             />
@@ -107,8 +107,8 @@ const Market: NextPage = () => {
                 gap="2"
                 fontWeight="bold"
               >
-                Starknet
-                <Text color="#7554E9">Defi Spring</Text>
+                Hashstack
+                <Text color="#7554E9">Degen Mode</Text>
                 Is Live!
               </Box>
               <Box
@@ -130,7 +130,63 @@ const Market: NextPage = () => {
                 </Text>
               </Box>
               <Link
-                href="https://hashstack.medium.com/farm-strk-token-on-hashstack-v1-e2287d6f94f9"
+                href="https://hashstack.medium.com/execute-optimal-strategies-with-degen-mode-eb63c6f23322"
+                target="_blank"
+              >
+                <Button
+                  marginTop="2.5"
+                  color="white"
+                  bgGradient="linear-gradient(#7956EC, #1B29AE)"
+                  paddingY="0.3px"
+                  fontSize="sm"
+                  height="2rem"
+                  _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
+                >
+                  Learn more
+                </Button>
+              </Link>
+            </Box>
+          </Box>
+          <Box className="embla__slide" position="relative" height={'150px'}>
+            <Image
+              src="/ccp_banner.svg"
+              alt="CCP Program"
+              fill
+              style={{ objectFit: 'cover', borderRadius: '8px' }}
+            />
+            <Box position="absolute" top="2" left="7">
+              <Box
+                color="#E6EDF3"
+                fontSize="2.1rem"
+                display="flex"
+                alignItems="center"
+                gap="2"
+                fontWeight="bold"
+              >
+                Hashstack
+                <Text color="#7554E9">CCP Program</Text>
+                Is Live!
+              </Box>
+              <Box
+                color="#BDBFC1"
+                fontSize="1.4rem"
+                display="flex"
+                alignItems="center"
+                gap="2"
+                fontWeight="normal"
+                marginTop="0"
+              >
+                Earn
+                <Text
+                  bgGradient="linear-gradient(#7554E9, #FFFFFF)"
+                  bgClip="text"
+                  fontWeight="bold"
+                >
+                  $HASH Tokens
+                </Text>
+              </Box>
+              <Link
+                href="https://hashstack.medium.com/introducing-hashstacks-content-creator-program-ccp-435aea9c9d83"
                 target="_blank"
               >
                 <Button
@@ -183,7 +239,7 @@ const Market: NextPage = () => {
               textDecoration="none"
               appearance="none"
               boxShadow={
-                index === selectedIndex ? 'inset 0 0 0 0.2rem #D9A2DB' : ''
+                index === selectedIndex ? 'inset 0 0 0 0.2rem #4D59E8' : ''
               }
             />
           ))}
