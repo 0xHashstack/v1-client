@@ -231,16 +231,17 @@ const Market: NextPage = () => {
               display="flex"
               alignItems="center"
               justifyContent="center"
+              
               cursor="pointer"
-              backgroundColor="#373A5D"
+              backgroundColor={index===selectedIndex ?"#4D59E8":"black"}
               padding="0"
               margin="0"
-              border="0"
+              border="1px solid #373A5D"
               textDecoration="none"
               appearance="none"
-              boxShadow={
-                index === selectedIndex ? 'inset 0 0 0 0.2rem #4D59E8' : ''
-              }
+              // boxShadow={
+              //   index === selectedIndex ? 'inset 0 0 0 0.2rem #4D59E8' : ''
+              // }
             />
           ))}
         </Box>
