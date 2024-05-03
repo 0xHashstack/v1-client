@@ -16,8 +16,10 @@ import {
   useDotButton,
 } from '@/components/uiElements/buttons/EmblaCarouselDotButton'
 import useDataLoader from '@/hooks/useDataLoader'
+import { useRouter } from 'next/router'
 
 const Market: NextPage = () => {
+  const router=useRouter();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
@@ -106,10 +108,8 @@ const Market: NextPage = () => {
                 alignItems="center"
                 gap="2"
                 fontWeight="bold"
-              >
-                Hashstack
-                <Text color="#7554E9">Degen Mode</Text>
-                Is Live!
+              >              
+                <Text color="#7554E9">Introducing Degen</Text>
               </Box>
               <Box
                 color="#BDBFC1"
@@ -120,19 +120,15 @@ const Market: NextPage = () => {
                 fontWeight="normal"
                 marginTop="0"
               >
-                Earn
+                
                 <Text
                   bgGradient="linear-gradient(#7554E9, #FFFFFF)"
                   bgClip="text"
                   fontWeight="bold"
                 >
-                  $STRK Tokens
+                  A high yield arbitrage strategy feature.
                 </Text>
               </Box>
-              <Link
-                href="https://hashstack.medium.com/execute-optimal-strategies-with-degen-mode-eb63c6f23322"
-                target="_blank"
-              >
                 <Button
                   marginTop="2.5"
                   color="white"
@@ -141,10 +137,10 @@ const Market: NextPage = () => {
                   fontSize="sm"
                   height="2rem"
                   _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
+                  onClick={()=>{router.push('/v1/degen')}}
                 >
-                  Learn more
+                  Explore
                 </Button>
-              </Link>
             </Box>
           </Box>
           <Box className="embla__slide" position="relative" height={'150px'}>
@@ -162,10 +158,8 @@ const Market: NextPage = () => {
                 alignItems="center"
                 gap="2"
                 fontWeight="bold"
-              >
-                Hashstack
-                <Text color="#7554E9">CCP Program</Text>
-                Is Live!
+              >                
+                <Text color="#7554E9">Content Creators Program</Text>                
               </Box>
               <Box
                 color="#BDBFC1"
@@ -176,19 +170,23 @@ const Market: NextPage = () => {
                 fontWeight="normal"
                 marginTop="0"
               >
-                Earn
+                Create content around 
                 <Text
                   bgGradient="linear-gradient(#7554E9, #FFFFFF)"
                   bgClip="text"
                   fontWeight="bold"
                 >
-                  $HASH Tokens
+                  Hashstack
+                </Text>
+                and 
+                <Text
+                  bgGradient="linear-gradient(#7554E9, #FFFFFF)"
+                  bgClip="text"
+                  fontWeight="bold"
+                >
+                  earn points
                 </Text>
               </Box>
-              <Link
-                href="https://hashstack.medium.com/introducing-hashstacks-content-creator-program-ccp-435aea9c9d83"
-                target="_blank"
-              >
                 <Button
                   marginTop="2.5"
                   color="white"
@@ -197,10 +195,12 @@ const Market: NextPage = () => {
                   fontSize="sm"
                   height="2rem"
                   _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
+                  onClick={()=>{
+                    router.push('/v1/airdrop_leaderboard')
+                  }}
                 >
-                  Learn more
+                  Get Started
                 </Button>
-              </Link>
             </Box>
           </Box>
         </Box>
