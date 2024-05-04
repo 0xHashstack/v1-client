@@ -74,6 +74,8 @@
     "@types/mixpanel-browser": "^2.47.0",
     "@types/react-copy-to-clipboard": "^5.0.4",
     "@types/react-stars": "^2.2.1",
+    "embla-carousel-autoplay": "^8.0.2",
+    "embla-carousel-react": "^8.0.2",
     "eslint-plugin-storybook": "^0.8.0",
     "prettier": "^3.2.5",
     "storybook": "^8.0.6"

@@ -1452,7 +1452,6 @@ const useDataLoader = () => {
             dispatch(setStrkAprData(res2?.data?.Hashstack))
           }
           const res=await axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`);
-          console.log(res?.data,"data axios")
           if (res?.data) {
             dispatch(setJediSwapPoolAprs(res?.data))
           }
