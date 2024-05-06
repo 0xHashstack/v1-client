@@ -530,6 +530,10 @@ const YourSupplyModal = ({
     fetchSupplyUnlocked()
   }, [currentSelectedWithdrawlCoin, inputWithdrawlAmount])
 
+  useEffect(()=>{
+    setUnstakeRToken(currentedSelectedUnstakeCoinModal)
+  },[currentedSelectedUnstakeCoinModal])
+
   const resetStates = () => {
     setSliderValue(0)
     setSliderValue2(0)
