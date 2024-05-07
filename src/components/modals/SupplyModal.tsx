@@ -70,6 +70,7 @@ import {
   Spinner,
   Text,
   Tooltip,
+  background,
   useDisclosure,
   useToast,
 } from '@chakra-ui/react'
@@ -1497,6 +1498,7 @@ const SupplyModal = ({
                   onChange={() => {
                     setIsChecked(!ischecked)
                   }}
+                  _disabled={{ backgroundColor: 'transparent' }}
                   isChecked={ischecked}
                 />
                 <Text
@@ -1875,6 +1877,7 @@ const SupplyModal = ({
                   <Box
                     onClick={() => {
                       // dispatch(setTransactionStarted(""));
+                      if (!ischecked) return
                       setTransactionStarted(true)
                       if (transactionStarted === false) {
                         dispatch(setTransactionStartedAndModalClosed(false))
