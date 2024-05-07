@@ -1493,6 +1493,9 @@ const SupplyModal = ({
                   size="md"
                   colorScheme="customPurple"
                   borderColor="#2B2F35"
+                  _disabled={{
+                    
+                  }}
                   isDisabled={transactionStarted == true}
                   onChange={() => {
                     setIsChecked(!ischecked)
