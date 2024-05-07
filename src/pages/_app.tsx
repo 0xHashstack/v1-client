@@ -81,7 +81,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const apikey: string = process.env.NEXT_PUBLIC_INFURA_MAINNET as string
 
   // const provider = infuraProvider({ apiKey: apikey.split('/')[4]});
-  const provider = publicProvider()
+  const provider = infuraProvider({ apiKey: apikey.split('/')[4]});
 
   const { connectors } = useInjectedConnectors({
     // Show these connectors if the user has no connector installed.
@@ -90,7 +90,8 @@ export default function App({ Component, pageProps }: AppProps) {
     includeRecommended: 'onlyIfNoConnectors',
     // Randomize the order of the connectors.
     order: 'random',
-  })
+  }) 
+
 
   const options = {
     api_host: process.env.NEXT_PUBLIC_HOSTHOG_HOST,

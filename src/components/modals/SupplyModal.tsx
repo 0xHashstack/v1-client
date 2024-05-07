@@ -1891,7 +1891,6 @@ const SupplyModal = ({
                   <Box
                     onClick={() => {
                       // dispatch(setTransactionStarted(""));
-                      if (!ischecked) return
                       setTransactionStarted(true)
                       if (transactionStarted === false) {
                         dispatch(setTransactionStartedAndModalClosed(false))
