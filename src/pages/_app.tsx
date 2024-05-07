@@ -55,7 +55,7 @@ export const theme = extendTheme({
             borderWidth: "0px",
             padding: "0px",
             color: "black",
-            bg: "#4D59E8",
+            bg: "transparent",
           },
         },
       },

@@ -226,7 +226,20 @@ const DegenModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false)
 
   let activeTransactions = useSelector(selectActiveTransactions)
-
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      let data: any = localStorage.getItem('transactionCheck')
+      let values = data.split(",");
+      let lastValue = values[values.length - 1];
+      if (String(activeTransactions[activeTransactions.length - 1]?.uniqueID)===lastValue.replace(/\[|\]/g, '')) {
+        if (activeTransactions[activeTransactions.length - 1]?.transaction_hash === '') {
+          onClose();
+        }
+      }
+    }, 7000); // 5000 milliseconds = 5 seconds
+  
+    return () => clearTimeout(timeoutId); // Cleanup function to clear the timeout when component unmounts or when activeTransactions changes
+  }, [activeTransactions]);
   // const walletBalances=useSelector(selectAssetWalletBalance);
   interface assetB {
     USDT: any
