@@ -225,8 +225,8 @@ const Market: NextPage = () => {
             <Box
               key={index}
               onClick={() => onDotButtonClick(index)}
-              width="1rem"
-              height="1rem"
+              width="0.8rem"
+              height="0.8rem"
               borderRadius="50%"
               display="flex"
               alignItems="center"
