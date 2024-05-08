@@ -183,6 +183,7 @@ const LiquidityProvisionModal = ({
       let lastValue = values[values.length - 1];
       if (String(activeTransactions[activeTransactions.length - 1]?.uniqueID)===lastValue.replace(/\[|\]/g, '')) {
         if (activeTransactions[activeTransactions.length - 1]?.transaction_hash === '') {
+          resetStates();
           onClose();
         }
       }
