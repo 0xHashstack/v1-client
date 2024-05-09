@@ -82,7 +82,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
       overflowY="scroll"
     >
       <Table variant="unstyled" width="100%">
-        <Thead width={'100%'} height={'5rem'}>
+        <Thead width={'100%'} height={'56px'}>
           <Tr width={'100%'} height="2rem">
             {columnItems.map((val: any, idx1: any) => (
               <Td
@@ -149,10 +149,9 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                 <Tr
                   key={idx}
                   width={'100%'}
-                  height="4rem"
+                  height="56px"
                   position="relative"
                   p={0}
-                  background="#676D9A48"
                 >
                   <Td
                     width={'16.6%'}
@@ -160,6 +159,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
+                    background="#676D9A48"
+                    borderRadius="6px 0 0 6px"
                   >
                     <Text
                       width="100%"
@@ -185,6 +186,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
+                    background="#676D9A48"
                   >
                     <Text
                       width="100%"
@@ -207,6 +209,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
+                    background="#676D9A48"
                   >
                     <Text
                       width="100%"
@@ -265,6 +268,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       </Tooltip>
                     </Text>
                   </Td>
+
                   {currentSelectedDrop == 'Airdrop 1' && (
                     <Td
                       width={'16.6%'}
@@ -272,6 +276,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       fontWeight={400}
                       padding={2}
                       textAlign="center"
+                      background="#676D9A48"
                     >
                       <Text
                         width="100%"
@@ -339,6 +344,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       fontWeight={400}
                       padding={2}
                       textAlign="end"
+                      background="#676D9A48"
+                      borderRadius="0 6px 6px 0"
                     >
                       <Text
                         width="100%"
@@ -388,6 +395,8 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       fontWeight={400}
                       padding={2}
                       textAlign="end"
+                      background="#676D9A48"
+                      borderRadius="0 6px 6px 0"
                     >
                       <Link
                         href={`/v1/airdrop_leaderboard/submissions/?address=${address}`}
@@ -413,7 +422,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                   )}
                 </Tr>
 
-                <Tr
+                {/* <Tr
                   style={{
                     position: 'absolute',
                     width: '100%',
@@ -421,7 +430,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                     borderBottom: '1px solid #2b2f35',
                     display: `${member.id == 5 ? 'none' : 'block'}`,
                   }}
-                />
+                /> */}
               </>
             )
           })}

@@ -9,67 +9,67 @@ import {
   Thead,
   Tooltip,
   Tr,
-} from "@chakra-ui/react";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+} from '@chakra-ui/react'
+import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
 
-import CircularDropDown from "@/assets/icons/circularDropDown";
-import CircularDropDownActive from "@/assets/icons/circularDropDownActive";
-import CircularDropDownClose from "@/assets/icons/circularDropDownClose";
-import ExternalLink from "@/assets/icons/externalLink";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import Link from "next/link";
+import CircularDropDown from '@/assets/icons/circularDropDown'
+import CircularDropDownActive from '@/assets/icons/circularDropDownActive'
+import CircularDropDownClose from '@/assets/icons/circularDropDownClose'
+import ExternalLink from '@/assets/icons/externalLink'
+import numberFormatter from '@/utils/functions/numberFormatter'
+import Link from 'next/link'
 
 const snapshotsDates = [
-  "30 Nov 2023",
-  "2 Nov 2023",
-  "4 Dec 2023",
-  "6 Dec 2023",
-  "8 Dec 2023",
-  "10 Dec 2023",
-  "14 Dec 2023",
-  "16 Dec 2023",
-  "18 Dec 2023",
-  "20 Dec 2023",
-  "22 Dec 2023",
-  "24 Dec 2023",
-  "28 Dec 2023",
-  "30 Dec 2023",
-  "1 Jan 2024",
-  "3 Jan 2024",
-  "5 Jan 2024",
-  "7 Jan 2024",
-  "11 Jan 2024",
-  "13 Jan 2024",
-  "15 Jan 2024",
-  "17 Jan 2024",
-  "19 Jan 2024",
-  "21 jan 2024",
-];
-const Months =[
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "June",
-  "July",
-  "Sept",
-  "Oct",
-  "Nov",
-  "Dec"
+  '30 Nov 2023',
+  '2 Nov 2023',
+  '4 Dec 2023',
+  '6 Dec 2023',
+  '8 Dec 2023',
+  '10 Dec 2023',
+  '14 Dec 2023',
+  '16 Dec 2023',
+  '18 Dec 2023',
+  '20 Dec 2023',
+  '22 Dec 2023',
+  '24 Dec 2023',
+  '28 Dec 2023',
+  '30 Dec 2023',
+  '1 Jan 2024',
+  '3 Jan 2024',
+  '5 Jan 2024',
+  '7 Jan 2024',
+  '11 Jan 2024',
+  '13 Jan 2024',
+  '15 Jan 2024',
+  '17 Jan 2024',
+  '19 Jan 2024',
+  '21 jan 2024',
 ]
-const tooltips = ["", "", "Allocated $HASH"];
+const Months = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'June',
+  'July',
+  'Sept',
+  'Oct',
+  'Nov',
+  'Dec',
+]
+const tooltips = ['', '', 'Allocated $HASH']
 
 interface UserCampaignDataProps {
-  leaderBoardData: any;
-  columnItems: any;
-  epochsData: any;
-  ccpUserData:any;
-  snapshotsData: any;
-  campaignDetails: any;
-  userHashCCP:any;
-  userPointsCCP:any;
+  leaderBoardData: any
+  columnItems: any
+  epochsData: any
+  ccpUserData: any
+  snapshotsData: any
+  campaignDetails: any
+  userHashCCP: any
+  userPointsCCP: any
 }
 
 const UserCampaignData: React.FC<UserCampaignDataProps> = ({
@@ -82,39 +82,38 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   userHashCCP,
   userPointsCCP,
 }) => {
-  const [epochDropdownSelected, setepochDropdownSelected] = useState(false);
-  const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [openEpochs, setOpenEpochs] = useState<any>([]);
-  const [ccpDropdownSelected, setccpDropdownSelected] = useState(false);
-  const [hoverEpochDrop, sethoverEpochDrop] = useState(false);
-  const [hoverccpDrop, sethoverccpDrop] = useState(false);
-  let topLength = ccpUserData.length * 5.15;
-
+  const [epochDropdownSelected, setepochDropdownSelected] = useState(false)
+  const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [openEpochs, setOpenEpochs] = useState<any>([])
+  const [ccpDropdownSelected, setccpDropdownSelected] = useState(false)
+  const [hoverEpochDrop, sethoverEpochDrop] = useState(false)
+  const [hoverccpDrop, sethoverccpDrop] = useState(false)
+  let topLength = ccpUserData.length * 5.15
 
   // Function to toggle the open state of an epoch
   const toggleEpochSelection = (idxEpoch: any) => {
     setOpenEpochs((prevOpenEpochs: any[]) => {
       if (prevOpenEpochs.includes(idxEpoch)) {
         // Remove the index if it's already open
-        return prevOpenEpochs.filter((index: any) => index !== idxEpoch);
+        return prevOpenEpochs.filter((index: any) => index !== idxEpoch)
       } else {
         // Add the index if it's not open
-        return [...prevOpenEpochs, idxEpoch];
+        return [...prevOpenEpochs, idxEpoch]
       }
-    });
-  };
+    })
+  }
 
   // Function to check whether an epoch is open
   const isEpochOpen = (idxEpoch: any) => {
-    return openEpochs.includes(idxEpoch);
-  };
+    return openEpochs.includes(idxEpoch)
+  }
 
   useEffect(() => {
-    const groupSize = 6;
+    const groupSize = 6
 
     // Calculate the number of groups needed
-    const numGroups = Math.ceil(snapshotsData.length / groupSize);
+    const numGroups = Math.ceil(snapshotsData.length / groupSize)
 
     // Initialize groupedSnapshots array
     const newGroupedSnapshots = Array.from(
@@ -123,10 +122,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
         snapshotsData
           .slice(groupIndex * groupSize, (groupIndex + 1) * groupSize)
           .sort((a: any, b: any) => a.snapshot_number - b.snapshot_number)
-    );
+    )
 
-    setGroupedSnapshots(newGroupedSnapshots);
-  }, [snapshotsData]);
+    setGroupedSnapshots(newGroupedSnapshots)
+  }, [snapshotsData])
 
   return loading ? (
     <Box
@@ -135,7 +134,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
       justifyContent="center"
       alignItems="center"
       width="95%"
-      height={"37rem"}
+      height={'37rem'}
       bgColor="#101216"
       borderRadius="8px"
     >
@@ -155,18 +154,18 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
       display="flex"
       justifyContent="flex-start"
       alignItems="flex-start"
-      height={"36rem"}
-      padding={"1rem 2rem 0rem"}
+      height={'36rem'}
+      padding={'1rem 2rem 0rem'}
       overflowY="scroll"
     >
       <Table variant="unstyled" width="100%">
-        <Thead width={"100%"} height={"5rem"}>
-          <Tr width={"100%"} height="2rem">
+        <Thead width={'100%'} height={'56px'}>
+          <Tr width={'100%'} height="56px">
             {columnItems.map((val: any, idx1: any) => (
               <Td
                 key={idx1}
-                width={"16.6%"}
-                fontSize={"12px"}
+                width={'16.6%'}
+                fontSize={'12px'}
                 fontWeight={400}
                 p={0}
                 cursor="pointer"
@@ -174,36 +173,36 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                 <Text
                   whiteSpace="pre-wrap"
                   overflowWrap="break-word"
-                  width={"100%"}
-                  height={"2rem"}
+                  width={'100%'}
+                  height={'2rem'}
                   fontSize="12px"
                   textAlign={
                     idx1 == columnItems?.length - 1
-                      ? "right"
+                      ? 'right'
                       : idx1 == 0
-                      ? "left"
-                      : "center"
+                        ? 'left'
+                        : 'center'
                   }
                   pl={idx1 == 0 ? 2 : 0}
                   pr={idx1 == columnItems.length - 1 ? 10 : 0}
-                  color={"#BDBFC1"}
+                  color={'#BDBFC1'}
                   cursor="context-menu"
                 >
                   <Tooltip
                     hasArrow
                     label={tooltips[idx1]}
                     placement={
-                      (idx1 === 0 && "bottom-start") ||
-                      (idx1 === columnItems.length - 1 && "bottom-end") ||
-                      "bottom"
+                      (idx1 === 0 && 'bottom-start') ||
+                      (idx1 === columnItems.length - 1 && 'bottom-end') ||
+                      'bottom'
                     }
                     rounded="md"
                     boxShadow="dark-lg"
                     bg="#02010F"
-                    fontSize={"13px"}
-                    fontWeight={"400"}
-                    borderRadius={"lg"}
-                    padding={"2"}
+                    fontSize={'13px'}
+                    fontWeight={'400'}
+                    borderRadius={'lg'}
+                    padding={'2'}
                     color="#F0F0F5"
                     border="1px solid"
                     borderColor="#23233D"
@@ -217,33 +216,32 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
           </Tr>
         </Thead>
 
-        <Tbody position="relative" alignContent={"center"}>
+        <Tbody position="relative" alignContent={'center'}>
           {leaderBoardData.map((member: any, idx: any) => {
             return (
               <>
                 <Tr
                   key={idx}
-                  width={"100%"}
-                  height="4rem"
-                  bg={"#676D9A48"}
+                  width={'100%'}
+                  height="56px"
                   position="relative"
                   cursor="pointer"
                   p={0}
-                  style={{ borderRadius: "6px" }}
                   onClick={() => {
-                    if(ccpUserData.length==0){
-
-                    }else{
-                      setccpDropdownSelected(!ccpDropdownSelected);
+                    if (ccpUserData.length == 0) {
+                    } else {
+                      setccpDropdownSelected(!ccpDropdownSelected)
                     }
                   }}
                 >
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
+                    bg={'#676D9A48'}
+                    borderRadius="6px 0 0 6px"
                   >
                     <Text
                       width="100%"
@@ -261,19 +259,21 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         width="8"
                         height="8"
                         style={{
-                          marginRight: "0.5rem",
-                          marginBottom: "0.1rem",
+                          marginRight: '0.5rem',
+                          marginBottom: '0.1rem',
                         }}
                       />
                       {campaignDetails[idx + 1]?.campaignName}
                     </Text>
                   </Td>
+
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
+                    bg={'#676D9A48'}
                   >
                     <Text
                       width="100%"
@@ -287,15 +287,15 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     >
                       <Tooltip
                         hasArrow
-                        label={""}
+                        label={''}
                         placement="right"
                         rounded="md"
                         boxShadow="dark-lg"
                         bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
+                        fontSize={'13px'}
+                        fontWeight={'400'}
+                        borderRadius={'lg'}
+                        padding={'2'}
                         color="#F0F0F5"
                         border="1px solid"
                         borderColor="#23233D"
@@ -305,12 +305,14 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       </Tooltip>
                     </Text>
                   </Td>
+
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
+                    bg={'#676D9A48'}
                   >
                     <Text
                       width="100%"
@@ -326,12 +328,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         hasArrow
                         label={
                           <Box>
-                            HASH Allocated:{" "}
-                            {userHashCCP
-                              ? numberFormatter(userHashCCP)
-                              : 0}
+                            HASH Allocated:{' '}
+                            {userHashCCP ? numberFormatter(userHashCCP) : 0}
                             <br />
-                            HASH Estimated:{" "}
+                            HASH Estimated:{' '}
                             {member.est ? numberFormatter(member?.est) : 0}
                           </Box>
                         }
@@ -339,27 +339,28 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         rounded="md"
                         boxShadow="dark-lg"
                         bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
+                        fontSize={'13px'}
+                        fontWeight={'400'}
+                        borderRadius={'lg'}
+                        padding={'2'}
                         color="#F0F0F5"
                         border="1px solid"
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                       >
-                        <Text>
-                          {numberFormatter(userHashCCP)}
-                        </Text>
+                        <Text>{numberFormatter(userHashCCP)}</Text>
                       </Tooltip>
                     </Text>
                   </Td>
+
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="end"
+                    bg={'#676D9A48'}
+                    borderRadius="0 6px 6px 0"
                   >
                     <Box
                       width="100%"
@@ -383,10 +384,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       <Box
                         cursor="pointer"
                         onMouseEnter={() => {
-                          sethoverccpDrop(true);
+                          sethoverccpDrop(true)
                         }}
                         onMouseLeave={() => {
-                          sethoverccpDrop(false);
+                          sethoverccpDrop(false)
                         }}
                       >
                         {ccpDropdownSelected ? (
@@ -403,8 +404,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 
                 <Tr
                   key={idx}
-                  
-                  width={"100%"}
+                  width={'100%'}
                   height="4rem"
                   position="absolute"
                   cursor="pointer"
@@ -416,9 +416,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       mt="1rem"
                       mr="2rem"
                       ml="2rem"
-                      border={
-                         "1px solid #676D9A48"
-                      }
+                      border={'1px solid #676D9A48'}
                     >
                       {ccpUserData.map((data: any, idxccp: any) => (
                         <Box key={idxccp}>
@@ -432,11 +430,18 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             fontWeight="400"
                             lineHeight="20px"
                           >
-                            <Text width={"10%"} textAlign="left"> {data["Content Platform"]}</Text>
+                            <Text width={'10%'} textAlign="left">
+                              {' '}
+                              {data['Content Platform']}
+                            </Text>
                             <Text textAlign="center">{data.Timestamp}</Text>
                             <Text>
-                              { numberFormatter(data["Recommended (Community Team)"] ? data["Recommended (Community Team)"]:0)} points
-                              allocated
+                              {numberFormatter(
+                                data['Recommended (Community Team)']
+                                  ? data['Recommended (Community Team)']
+                                  : 0
+                              )}{' '}
+                              points allocated
                             </Text>
                             {/* <Box display="flex" gap="1.5rem">
                               <Text>
@@ -446,8 +451,9 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                           </Box>
                           <Box
                             borderBottom={
-                              idxccp==ccpUserData.length-1 ?"0":
-                                  "1px solid #676D9A48"
+                              idxccp == ccpUserData.length - 1
+                                ? '0'
+                                : '1px solid #676D9A48'
                             }
                           ></Box>
                         </Box>
@@ -458,22 +464,26 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 
                 <Tr
                   key={idx}
-                  width={"100%"}
+                  width={'100%'}
                   height="4rem"
-                  bg={epochDropdownSelected ? "#676D9A48" : ""}
+                  bg={epochDropdownSelected ? '#676D9A48' : ''}
                   cursor="pointer"
                   position="relative"
                   onClick={() => {
                     epochsData.length > 0 &&
-                      setepochDropdownSelected(!epochDropdownSelected);
+                      setepochDropdownSelected(!epochDropdownSelected)
                   }}
                   p={0}
-                  top={ccpDropdownSelected ? `${(ccpUserData.length*68)+34}px` : "4px"}
-                  style={{ borderRadius: "6px" }}
+                  top={
+                    ccpDropdownSelected
+                      ? `${ccpUserData.length * 68 + 34}px`
+                      : '4px'
+                  }
+                  style={{ borderRadius: '6px' }}
                 >
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
@@ -492,8 +502,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     </Text>
                   </Td>
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
@@ -510,15 +520,15 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     >
                       <Tooltip
                         hasArrow
-                        label={""}
+                        label={''}
                         placement="right"
                         rounded="md"
                         boxShadow="dark-lg"
                         bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
+                        fontSize={'13px'}
+                        fontWeight={'400'}
+                        borderRadius={'lg'}
+                        padding={'2'}
                         color="#F0F0F5"
                         border="1px solid"
                         borderColor="#23233D"
@@ -529,8 +539,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     </Text>
                   </Td>
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
@@ -549,12 +559,12 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         hasArrow
                         label={
                           <Box>
-                            HASH Allocated:{" "}
+                            HASH Allocated:{' '}
                             {member.hashAllocated
                               ? numberFormatter(member?.hashAllocated)
                               : 0}
                             <br />
-                            HASH Estimated:{" "}
+                            HASH Estimated:{' '}
                             {member.est ? numberFormatter(member?.est) : 0}
                           </Box>
                         }
@@ -562,10 +572,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         rounded="md"
                         boxShadow="dark-lg"
                         bg="#02010F"
-                        fontSize={"13px"}
-                        fontWeight={"400"}
-                        borderRadius={"lg"}
-                        padding={"2"}
+                        fontSize={'13px'}
+                        fontWeight={'400'}
+                        borderRadius={'lg'}
+                        padding={'2'}
                         color="#F0F0F5"
                         border="1px solid"
                         borderColor="#23233D"
@@ -578,8 +588,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     </Text>
                   </Td>
                   <Td
-                    width={"16.6%"}
-                    fontSize={"14px"}
+                    width={'16.6%'}
+                    fontSize={'14px'}
                     fontWeight={400}
                     padding={2}
                     textAlign="end"
@@ -606,10 +616,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       <Box
                         cursor="pointer"
                         onMouseEnter={() => {
-                          sethoverEpochDrop(true);
+                          sethoverEpochDrop(true)
                         }}
                         onMouseLeave={() => {
-                          sethoverEpochDrop(false);
+                          sethoverEpochDrop(false)
                         }}
                       >
                         {epochDropdownSelected ? (
@@ -626,12 +636,18 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 
                 <Tr
                   key={idx}
-                  width={"100%"}
+                  width={'100%'}
                   height="4rem"
                   position="absolute"
                   cursor="pointer"
                   pl="1rem"
-                  top={ccpDropdownSelected ? epochDropdownSelected ? `${((ccpUserData.length*68)+(64*2)+(34))}px`:`${ccpUserData.length*68}px` : ""}
+                  top={
+                    ccpDropdownSelected
+                      ? epochDropdownSelected
+                        ? `${ccpUserData.length * 68 + 64 * 2 + 34}px`
+                        : `${ccpUserData.length * 68}px`
+                      : ''
+                  }
                 >
                   {epochDropdownSelected && (
                     <Box
@@ -640,10 +656,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       mr="2rem"
                       ml="2rem"
                       border={
-                        openEpochs.length > 0 ? "" : "1px solid #676D9A48"
+                        openEpochs.length > 0 ? '' : '1px solid #676D9A48'
                       }
                       borderBottom={
-                        openEpochs.length > 0 ? "1px solid #676D9A48" : ""
+                        openEpochs.length > 0 ? '1px solid #676D9A48' : ''
                       }
                     >
                       {epochsData.map((epochs: any, idxEpoch: any) => (
@@ -651,34 +667,34 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                           <Box
                             display="flex"
                             borderTop={
-                              openEpochs.length > 0 ? "1px solid #676D9A48" : ""
+                              openEpochs.length > 0 ? '1px solid #676D9A48' : ''
                             }
                             borderLeft={
-                              openEpochs.length > 0 ? "1px solid #676D9A48" : ""
+                              openEpochs.length > 0 ? '1px solid #676D9A48' : ''
                             }
                             borderBottom={
                               openEpochs.length > 0
                                 ? isEpochOpen(idxEpoch)
-                                  ? "1px solid #676D9A48"
-                                  : ""
-                                : ""
+                                  ? '1px solid #676D9A48'
+                                  : ''
+                                : ''
                             }
                             borderBottomRadius={
                               openEpochs.length > 0
                                 ? isEpochOpen(idxEpoch)
-                                  ? "6px"
-                                  : ""
-                                : "6px"
+                                  ? '6px'
+                                  : ''
+                                : '6px'
                             }
                             borderRight={
-                              openEpochs.length > 0 ? "1px solid #676D9A48" : ""
+                              openEpochs.length > 0 ? '1px solid #676D9A48' : ''
                             }
                             borderRadius={
                               openEpochs.length > 0
                                 ? isEpochOpen(idxEpoch)
-                                  ? "6px"
-                                  : ""
-                                : "6px"
+                                  ? '6px'
+                                  : ''
+                                : '6px'
                             }
                             justifyContent="space-between"
                             cursor="pointer"
@@ -688,18 +704,18 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             fontWeight="400"
                             lineHeight="20px"
                             onClick={() => {
-                              toggleEpochSelection(idxEpoch);
+                              toggleEpochSelection(idxEpoch)
                             }}
                           >
                             <Text>Epoch {epochs.epoch}</Text>
                             <Text>
                               {epochs.epoch == 1
-                                ? "27 Nov 2023 - 11 Dec 2023"
+                                ? '27 Nov 2023 - 11 Dec 2023'
                                 : epochs.epoch == 2
-                                ? "12 Dec 2023 - 25 Dec 2023"
-                                : epochs.epoch == 3
-                                ? "26 Dec 2023 - 8 Jan 2024"
-                                : "9 Jan 2024 - 22 Jan 2024"}
+                                  ? '12 Dec 2023 - 25 Dec 2023'
+                                  : epochs.epoch == 3
+                                    ? '26 Dec 2023 - 8 Jan 2024'
+                                    : '9 Jan 2024 - 22 Jan 2024'}
                             </Text>
                             <Text>
                               {numberFormatter(epochs?.pointsAllocated)} points
@@ -720,9 +736,9 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             borderBottom={
                               idxEpoch != 3
                                 ? isEpochOpen(idxEpoch)
-                                  ? ""
-                                  : "1px solid #676D9A48"
-                                : ""
+                                  ? ''
+                                  : '1px solid #676D9A48'
+                                : ''
                             }
                           ></Box>
                           {isEpochOpen(idxEpoch) && (
@@ -733,8 +749,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                                     key={idxSnap}
                                     bg={
                                       idxSnap % 2 == 0
-                                        ? "#676D9A16"
-                                        : "#676D9A32"
+                                        ? '#676D9A16'
+                                        : '#676D9A32'
                                     }
                                     mr="4rem"
                                     ml="4rem"
@@ -756,7 +772,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                                     >
                                       <Text>Snapshot {idxSnap + 1}</Text>
                                       <Text>
-                                        {snapshotsDates[idxSnap + (epochs.epoch-1) * 6]}
+                                        {
+                                          snapshotsDates[
+                                            idxSnap + (epochs.epoch - 1) * 6
+                                          ]
+                                        }
                                       </Text>
                                       <Text>
                                         $
@@ -764,18 +784,18 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                                           snapshot?.supplyValue +
                                             snapshot?.borrowValue +
                                             snapshot?.referralValue
-                                        )}{" "}
+                                        )}{' '}
                                         Liquidity generated
                                       </Text>
                                       <Text>
-                                        {numberFormatter(snapshot?.totalPoints)}{" "}
+                                        {numberFormatter(snapshot?.totalPoints)}{' '}
                                         points
                                       </Text>
                                       <Box display="flex" gap="1.5rem">
                                         <Text>
                                           {numberFormatter(
                                             snapshot?.estimatedHashTokensUser
-                                          )}{" "}
+                                          )}{' '}
                                           Hash tokens earned
                                         </Text>
                                         <Link
@@ -803,16 +823,20 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     width="100%"
                     height="1px"
                     borderTop="1px solid rgba(103, 109, 154, 0.30)"
-                    top={ccpDropdownSelected ? `${(ccpUserData.length *68)+(64*2.5)}px` : ""}
+                    top={
+                      ccpDropdownSelected
+                        ? `${ccpUserData.length * 68 + 64 * 2.5}px`
+                        : ''
+                    }
                   />
                 )}
               </>
-            );
+            )
           })}
         </Tbody>
       </Table>
     </TableContainer>
-  );
-};
+  )
+}
 
-export default UserCampaignData;
+export default UserCampaignData
