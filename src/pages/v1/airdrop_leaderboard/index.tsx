@@ -562,7 +562,7 @@ const Campaign: NextPage = () => {
         zIndex="1"
       >
         <HStack
-          mt="3rem"
+          mt="4rem"
           display="flex"
           // justifyContent="center"
           alignItems="center"
@@ -719,9 +719,10 @@ const Campaign: NextPage = () => {
             width="100%"
             alignItems="flex-start"
             justifyContent="space-between"
+            mt="1rem"
           >
             <HStack
-              mt="2rem"
+              mt="auto"
               display="flex"
               flexDirection="column"
               alignItems="flex-start"
@@ -820,8 +821,13 @@ const Campaign: NextPage = () => {
               </HStack>
             </HStack>
 
-            <Box mt="0rem" display="flex" flexDirection="column">
-              <Text
+            <Box
+              mt="0rem"
+              display="flex"
+              gap=".5rem"
+              flexDirection="column-reverse"
+            >
+              {/* <Text
                 color="#F0F0F5"
                 fontSize="16px"
                 fontWeight="400"
@@ -830,19 +836,23 @@ const Campaign: NextPage = () => {
                 mb="0.8rem"
               >
                 Your Referral Link
-              </Text>
+              </Text> */}
 
-              <Box display="flex" mt="0">
+              <Box
+                display="flex"
+                mt="0"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+              >
                 <InputGroup
                   width="550px"
                   mt="0rem"
-                  border="1px solid #676D9A"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                   borderRight="0px"
                   borderRadius="6px 0px 0px 6px"
-                  height="5.3rem"
+                  height="70px"
                 >
                   <InputLeftAddon
-                    height="80px"
+                    height="100%"
                     fontSize="20px"
                     border="none"
                     bg="none"
@@ -857,7 +867,7 @@ const Campaign: NextPage = () => {
                   {exisitingLink ? (
                     <Input
                       fontSize="20px"
-                      height="80px"
+                      height="100%"
                       border="none"
                       color="#F0F0F5"
                       value={exisitingLink}
@@ -871,7 +881,7 @@ const Campaign: NextPage = () => {
                   ) : (
                     <Input
                       fontSize="20px"
-                      height="80px"
+                      height="100%"
                       border="none"
                       color="#F0F0F5"
                       value={
@@ -1109,7 +1119,7 @@ const Campaign: NextPage = () => {
           width={'100%'}
           background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
           border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-          mt="1rem"
+          mt="2rem"
         >
           {tabValue == 1 ? (
             <UserCampaignData
