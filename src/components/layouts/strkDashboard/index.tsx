@@ -1,4 +1,5 @@
 import useClaimStrk from '@/Blockchain/hooks/Writes/useStrkClaim'
+import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards'
 import { etherToWeiBN, parseAmount } from '@/Blockchain/utils/utils'
 import ArrowUp from '@/assets/icons/arrowup'
 import DropdownUp from '@/assets/icons/dropdownUpIcon'
@@ -56,7 +57,6 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import PageCard from '../pageCard'
-import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards'
 import dataStrkRewards from '../strkDashboard/round_4.json'
 import dataStrkRewardsZklend from '../strkDashboard/zkLend_4.json'
 export interface ICoin {
@@ -105,6 +105,7 @@ const StrkDashboard = () => {
   const [ltv, setLtv] = useState<any>([])
   const [borrowId, setborrowId] = useState('Select Existing borrow')
   const [currentPool, setcurrentPool] = useState('Select a pool')
+  const [hashstackStrkReward, setHashstackStrkReward] = useState<number>()
 
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([])
   const [currentBorrowData, setcurrentBorrowData] = useState()
@@ -181,14 +182,29 @@ const StrkDashboard = () => {
         const matchedUser = dataStrkRewardsZklend.find(
           (userObj) => userObj.user === address
         )
-        if (matchedUser) {
+        console.log(dataAmount, 'huehue')
+        console.log(matchedUser, 'huehue1')
+        if (matchedUser && dataAmount) {
           setstrkRewardsZklend(parseAmount(String(matchedUser?.strk), 18))
+          setHashstackStrkReward(
+            parseAmount(
+              String(BigInt(dataAmount.amount) - BigInt(matchedUser?.strk)),
+              18
+            )
+          )
+          console.log(
+            parseAmount(
+              String(BigInt(dataAmount.amount) - BigInt(matchedUser?.strk)),
+              18
+            )
+          )
         } else {
           setstrkRewardsZklend(0)
         }
       }
     }
     if (address) {
+      console.log(hashstackStrkReward, 'hashstackStrkReward')
       fetchstrkrewards()
     }
   }, [address])
@@ -541,12 +557,12 @@ const StrkDashboard = () => {
               label={
                 <Box>
                   <Box display="flex" justifyContent="space-between" gap={3}>
-                    <Text>
-                      ZKlend Rewards: 
-                    </Text>
-                    <Text>
-                      {numberFormatter(strkRewardsZklend)} STRK
-                    </Text>
+                    <Text>Hashstack Rewards:</Text>
+                    <Text>{numberFormatter(hashstackStrkReward)} STRK</Text>
+                  </Box>
+                  <Box display="flex" justifyContent="space-between" gap={3}>
+                    <Text>ZKlend Rewards:</Text>
+                    <Text>{numberFormatter(strkRewardsZklend)} STRK</Text>
                   </Box>
                 </Box>
               }
