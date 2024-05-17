@@ -165,8 +165,8 @@ const StrkDashboard = () => {
         if (dataAmount) {
           setstrkAmount(dataAmount?.amount)
           setProof(dataAmount?.proofs)
-          setstrkRewards(parseAmount(String(dataAmount?.amount), 18)-data)
-        }else{
+          setstrkRewards(parseAmount(String(dataAmount?.amount), 18) - data)
+        } else {
           setstrkRewards(0)
         }
       }
@@ -174,21 +174,24 @@ const StrkDashboard = () => {
     fetchClaimedBalance()
   }, [address])
 
-  useEffect(()=>{
-    const fetchstrkrewards=async()=>{
-      if(address){
-        const matchedUser = dataStrkRewardsZklend.find(userObj => userObj.user === address);
-        if(matchedUser){
-          setstrkRewardsZklend(parseAmount(String(matchedUser?.strk),18));
-        }else{
-          setstrkRewardsZklend(0);
+  useEffect(() => {
+    const fetchstrkrewards = async () => {
+      if (address) {
+        const dataAmount: any = (dataStrkRewards as any)[address]
+        const matchedUser = dataStrkRewardsZklend.find(
+          (userObj) => userObj.user === address
+        )
+        if (matchedUser) {
+          setstrkRewardsZklend(parseAmount(String(matchedUser?.strk), 18))
+        } else {
+          setstrkRewardsZklend(0)
         }
       }
     }
-    if(address){
+    if (address) {
       fetchstrkrewards()
     }
-  },[address])
+  }, [address])
 
   // useEffect(()=>{
   //   try{
@@ -197,7 +200,7 @@ const StrkDashboard = () => {
   //       const year = today.getFullYear();
   //       const month = String(today.getMonth() + 1).padStart(2, '0');
   //       const day = String(today.getDate()).padStart(2, '0');
-        
+
   //       const formattedDate = `${year}-${month}-${day}`;
   //       const res=await axios.get(`https://hyena-social-oarfish.ngrok-free.app/api/defi-spring/alloc/${address}/2/${formattedDate}`)
   //       console.log(res,"data")
@@ -263,7 +266,7 @@ const StrkDashboard = () => {
       // dispatch(setTransactionStartedAndModalClosed(true));
       const toastContent = (
         <div>
-          Failed to Claim $STRK 
+          Failed to Claim $STRK
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -533,24 +536,54 @@ const StrkDashboard = () => {
             <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
               STRK Reward
             </Text>
-            {strkRewards==null ? (
-              <Skeleton
-                width="6rem"
-                height="1.2rem"
-                startColor="#101216"
-                endColor="#2B2F35"
-                borderRadius="6px"
-              />
-            ) : (
-              <Text
-                fontSize="16px"
-                fontWeight="500"
-                color="white"
-                textAlign="center"
-              >
-                {numberFormatter(strkRewards)} STRK
-              </Text>
-            )}
+            <Tooltip
+              hasArrow
+              label={
+                <Box>
+                  <Box display="flex" justifyContent="space-between" gap={3}>
+                    <Text>
+                      ZKlend Rewards: 
+                    </Text>
+                    <Text>
+                      {numberFormatter(strkRewardsZklend)} STRK
+                    </Text>
+                  </Box>
+                </Box>
+              }
+              placement={'bottom'}
+              rounded="md"
+              boxShadow="dark-lg"
+              bg="#02010F"
+              fontSize={'13px'}
+              fontWeight={'400'}
+              borderRadius={'lg'}
+              padding={'2'}
+              color="#F0F0F5"
+              border="1px solid"
+              borderColor="#23233D"
+              arrowShadowColor="#676D9A4D"
+              // maxW="222px"
+              // mt="28px"
+            >
+              {strkRewards == null ? (
+                <Skeleton
+                  width="6rem"
+                  height="1.2rem"
+                  startColor="#101216"
+                  endColor="#2B2F35"
+                  borderRadius="6px"
+                />
+              ) : (
+                <Text
+                  fontSize="16px"
+                  fontWeight="500"
+                  color="white"
+                  textAlign="center"
+                >
+                  {numberFormatter(strkRewards)} STRK
+                </Text>
+              )}
+            </Tooltip>
           </Box>
           <Button
             height={'2rem'}
@@ -560,7 +593,7 @@ const StrkDashboard = () => {
             border="1px solid #1B1F2426"
             color="#2B2F35"
             bgColor="#F3F4F6"
-            isDisabled={strkRewards==0 ?true:false}
+            isDisabled={strkRewards == 0 ? true : false}
             _disabled={{
               color: '#2B2F35',
               bgColor: '#101216',
@@ -570,8 +603,8 @@ const StrkDashboard = () => {
             fontWeight="semibold"
             borderRadius={'6px'}
             onClick={() => {
-              if(strkRewards==0){
-              }else{
+              if (strkRewards == 0) {
+              } else {
                 handleClaimStrk()
               }
             }}
