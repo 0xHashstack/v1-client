@@ -1448,8 +1448,10 @@ const useDataLoader = () => {
           const res2 = await axios.get(
             'https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=prod-api/lending/lending_strk_grant.json'
           )
-          if (res2?.data) {
-            dispatch(setStrkAprData(res2?.data?.Hashstack))
+          if (res2?.data && res2.data.Hashstack) {
+            const hashstackWithoutDAI = { ...res2.data.Hashstack };
+            delete hashstackWithoutDAI.DAI;
+            dispatch(setStrkAprData(hashstackWithoutDAI));
           }
           const res=await axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`);
           if (res?.data) {

@@ -166,7 +166,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
     statusBorrowAndSpendRToken,
   } = useBorrowAndSpend()
 
-  const { address } = useAccount();
+  const { address } = useAccount()
 
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState('BTC')
   const [depositTransHash, setDepositTransHash] = useState('')
@@ -487,11 +487,12 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
           }
           posthog.capture('Degen Spend Successfully', {
             Status: 'Success',
-            address:address,
-            LoanMarket:loanMarket,
-            LoanAmount:loanAmount,
-            Collateraltoken:rToken,
-            CollateralAmount:rTokenAmount!=0 ?rTokenAmount:collateralAmount,
+            address: address,
+            LoanMarket: loanMarket,
+            LoanAmount: loanAmount,
+            Collateraltoken: rToken,
+            CollateralAmount:
+              rTokenAmount != 0 ? rTokenAmount : collateralAmount,
             transaction_hash: borrowAndSpend?.transaction_hash.toString(),
           })
           // addTransaction({ hash: deposit?.transaction_hash });
@@ -540,11 +541,12 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
           // addTransaction({ hash: deposit?.transaction_hash });
           posthog.capture('Degen Spend Successfully', {
             Status: 'Success',
-            address:address,
-            LoanMarket:loanMarket,
-            LoanAmount:loanAmount,
-            Collateraltoken:rToken,
-            CollateralAmount:rTokenAmount!=0 ?rTokenAmount:collateralAmount,
+            address: address,
+            LoanMarket: loanMarket,
+            LoanAmount: loanAmount,
+            Collateraltoken: rToken,
+            CollateralAmount:
+              rTokenAmount != 0 ? rTokenAmount : collateralAmount,
             transaction_hash: borrowAndSpendR?.transaction_hash.toString(),
           })
           activeTransactions?.push(trans_data)
