@@ -58,6 +58,7 @@ import { toast } from 'react-toastify'
 import PageCard from '../pageCard'
 import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards'
 import dataStrkRewards from '../strkDashboard/round_4.json'
+import dataStrkRewardsZklend from '../strkDashboard/zkLend_4.json'
 export interface ICoin {
   name: string
   symbol: string
@@ -136,6 +137,7 @@ const StrkDashboard = () => {
   const getUniqueId = () => uniqueID
   const [toastId, setToastId] = useState<any>()
   const [strkRewards, setstrkRewards] = useState<any>()
+  const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>()
   let activeTransactions = useSelector(selectActiveTransactions)
   const {
     round,
@@ -171,6 +173,42 @@ const StrkDashboard = () => {
     }
     fetchClaimedBalance()
   }, [address])
+
+  useEffect(()=>{
+    const fetchstrkrewards=async()=>{
+      if(address){
+        const matchedUser = dataStrkRewardsZklend.find(userObj => userObj.user === address);
+        if(matchedUser){
+          setstrkRewardsZklend(parseAmount(String(matchedUser?.strk),18));
+        }else{
+          setstrkRewardsZklend(0);
+        }
+      }
+    }
+    if(address){
+      fetchstrkrewards()
+    }
+  },[address])
+
+  // useEffect(()=>{
+  //   try{
+  //     const fetchEstimatedClaim=async()=>{
+  //       const today = new Date();
+  //       const year = today.getFullYear();
+  //       const month = String(today.getMonth() + 1).padStart(2, '0');
+  //       const day = String(today.getDate()).padStart(2, '0');
+        
+  //       const formattedDate = `${year}-${month}-${day}`;
+  //       const res=await axios.get(`https://hyena-social-oarfish.ngrok-free.app/api/defi-spring/alloc/${address}/2/${formattedDate}`)
+  //       console.log(res,"data")
+  //     }
+  //     if(address){
+  //       fetchEstimatedClaim();
+  //     }
+  //   }catch(err){
+  //     console.log(err,'err in estimate strk')
+  //   }
+  // },[address])
 
   const handleClaimStrk = async () => {
     try {
