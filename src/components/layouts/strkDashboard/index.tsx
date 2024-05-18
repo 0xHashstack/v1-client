@@ -450,8 +450,8 @@ const StrkDashboard = () => {
         stats?.[5].supplyRate,
         stats?.[2].supplyRate,
         stats?.[3].supplyRate,
-        stats?.[0].supplyRate,
         stats?.[1].supplyRate,
+        stats?.[0].supplyRate,
         stats?.[4].supplyRate,
       ])
     } catch (error) {
