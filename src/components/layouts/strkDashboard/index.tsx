@@ -106,6 +106,7 @@ const StrkDashboard = () => {
   const [borrowId, setborrowId] = useState('Select Existing borrow')
   const [currentPool, setcurrentPool] = useState('Select a pool')
   const [hashstackStrkReward, setHashstackStrkReward] = useState<number>()
+  console.log(hashstackStrkReward,'s')
 
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([])
   const [currentBorrowData, setcurrentBorrowData] = useState()
@@ -182,8 +183,6 @@ const StrkDashboard = () => {
         const matchedUser = dataStrkRewardsZklend.find(
           (userObj) => userObj.user === address
         )
-        console.log(dataAmount, 'huehue')
-        console.log(matchedUser, 'huehue1')
         if (matchedUser && dataAmount) {
           setstrkRewardsZklend(parseAmount(String(matchedUser?.strk), 18))
           setHashstackStrkReward(
@@ -192,19 +191,13 @@ const StrkDashboard = () => {
               18
             )
           )
-          console.log(
-            parseAmount(
-              String(BigInt(dataAmount.amount) - BigInt(matchedUser?.strk)),
-              18
-            )
-          )
         } else {
+          setHashstackStrkReward(0);
           setstrkRewardsZklend(0)
         }
       }
     }
     if (address) {
-      console.log(hashstackStrkReward, 'hashstackStrkReward')
       fetchstrkrewards()
     }
   }, [address])
