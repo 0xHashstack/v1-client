@@ -183,7 +183,14 @@ const StrkDashboard = () => {
         const matchedUser = dataStrkRewardsZklend.find(
           (userObj) => userObj.user === address
         )
-        if (matchedUser && dataAmount) {
+        if(dataAmount && !matchedUser){
+          setHashstackStrkReward( parseAmount(
+            String(BigInt(dataAmount.amount)),
+            18
+          ))
+          setstrkRewardsZklend(0);
+        }
+        else if (matchedUser && dataAmount) {
           setstrkRewardsZklend(parseAmount(String(matchedUser?.strk), 18))
           setHashstackStrkReward(
             parseAmount(
@@ -191,9 +198,9 @@ const StrkDashboard = () => {
               18
             )
           )
-        } else {
+        }else{
+          setstrkRewardsZklend(0);
           setHashstackStrkReward(0);
-          setstrkRewardsZklend(0)
         }
       }
     }
