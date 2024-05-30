@@ -51,6 +51,7 @@ import {
 import { useAccount } from '@starknet-react/core'
 import axios from 'axios'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import posthog from 'posthog-js'
 import React, { useEffect, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
@@ -106,7 +107,6 @@ const StrkDashboard = () => {
   const [borrowId, setborrowId] = useState('Select Existing borrow')
   const [currentPool, setcurrentPool] = useState('Select a pool')
   const [hashstackStrkReward, setHashstackStrkReward] = useState<number>()
-  console.log(hashstackStrkReward,'s')
 
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([])
   const [currentBorrowData, setcurrentBorrowData] = useState()
@@ -139,7 +139,10 @@ const StrkDashboard = () => {
   const getUniqueId = () => uniqueID
   const [toastId, setToastId] = useState<any>()
   const [strkRewards, setstrkRewards] = useState<any>()
+  const [totalStrkRewards, settotalStrkRewards] = useState<any>()
   const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>()
+  const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>()
+  const router = useRouter()
   let activeTransactions = useSelector(selectActiveTransactions)
   const {
     round,
@@ -168,8 +171,11 @@ const StrkDashboard = () => {
           setstrkAmount(dataAmount?.amount)
           setProof(dataAmount?.proofs)
           setstrkRewards(parseAmount(String(dataAmount?.amount), 18) - data)
+          settotalStrkRewards(parseAmount(String(dataAmount?.amount), 18))
+          setstrkClaimedRewards(data)
         } else {
           setstrkRewards(0)
+          settotalStrkRewards(0)
         }
       }
     }
@@ -183,14 +189,12 @@ const StrkDashboard = () => {
         const matchedUser = dataStrkRewardsZklend.find(
           (userObj) => userObj.user === address
         )
-        if(dataAmount && !matchedUser){
-          setHashstackStrkReward( parseAmount(
-            String(BigInt(dataAmount.amount)),
-            18
-          ))
-          setstrkRewardsZklend(0);
-        }
-        else if (matchedUser && dataAmount) {
+        if (dataAmount && !matchedUser) {
+          setHashstackStrkReward(
+            parseAmount(String(BigInt(dataAmount.amount)), 18)
+          )
+          setstrkRewardsZklend(0)
+        } else if (matchedUser && dataAmount) {
           setstrkRewardsZklend(parseAmount(String(matchedUser?.strk), 18))
           setHashstackStrkReward(
             parseAmount(
@@ -198,9 +202,9 @@ const StrkDashboard = () => {
               18
             )
           )
-        }else{
-          setstrkRewardsZklend(0);
-          setHashstackStrkReward(0);
+        } else {
+          setstrkRewardsZklend(0)
+          setHashstackStrkReward(0)
         }
       }
     }
@@ -228,72 +232,6 @@ const StrkDashboard = () => {
   //     console.log(err,'err in estimate strk')
   //   }
   // },[address])
-
-  const handleClaimStrk = async () => {
-    try {
-      const getTokens = await writeAsyncstrkClaim()
-      posthog.capture('Claim Strk', {
-        'Clicked Claim': true,
-      })
-      if (getTokens?.transaction_hash) {
-        const toastid = toast.info(
-          // `Please wait, your transaction is running in background ${coin} `,
-          `Transaction pending`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-          }
-        )
-        setToastId(toastId)
-        if (!activeTransactions) {
-          activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
-        } else if (
-          Object.isFrozen(activeTransactions) ||
-          Object.isSealed(activeTransactions)
-        ) {
-          // Check if activeTransactions is frozen or sealed
-          activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
-        }
-        const uqID = getUniqueId()
-        const trans_data = {
-          transaction_hash: getTokens?.transaction_hash.toString(),
-          message: `Successfully Claimed STRKToken`,
-          // message: `Transaction successful`,
-          toastId: toastid,
-          setCurrentTransactionStatus: () => {},
-          uniqueID: uqID,
-        }
-        // addTransaction({ hash: deposit?.transaction_hash });
-        posthog.capture('Get Tokens Status', {
-          Status: 'Success',
-        })
-        activeTransactions?.push(trans_data)
-
-        dispatch(setActiveTransactions(activeTransactions))
-      }
-      console.log(getTokens)
-      // dispatch(setTransactionStatus("success"));
-    } catch (err: any) {
-      console.log(err)
-      // dispatch(setTransactionStatus("failed"));
-      posthog.capture('Get Claim Status', {
-        Status: 'Failure',
-      })
-      // dispatch(setTransactionStartedAndModalClosed(true));
-      const toastContent = (
-        <div>
-          Failed to Claim $STRK
-          <CopyToClipboard text={err}>
-            <Text as="u">copy error!</Text>
-          </CopyToClipboard>
-        </div>
-      )
-      toast.error(toastContent, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: false,
-      })
-    }
-  }
 
   const getStrkAlloaction = (pool: any) => {
     try {
@@ -550,7 +488,7 @@ const StrkDashboard = () => {
         <Box display="flex" gap="2rem" mr="1rem">
           <Box gap="0.2rem">
             <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
-              STRK Reward
+              Total STRK Reward
             </Text>
             <Tooltip
               hasArrow
@@ -581,7 +519,7 @@ const StrkDashboard = () => {
               // maxW="222px"
               // mt="28px"
             >
-              {strkRewards == null ? (
+              {totalStrkRewards == null ? (
                 <Skeleton
                   width="6rem"
                   height="1.2rem"
@@ -594,9 +532,52 @@ const StrkDashboard = () => {
                   fontSize="16px"
                   fontWeight="500"
                   color="white"
-                  textAlign="center"
+                  textAlign="left"
                 >
-                  {numberFormatter(strkRewards)} STRK
+                  {numberFormatter(totalStrkRewards)} STRK
+                </Text>
+              )}
+            </Tooltip>
+          </Box>
+          <Box gap="0.2rem">
+            <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
+              Claimed STRK Reward
+            </Text>
+            <Tooltip
+              hasArrow
+              label={''}
+              placement={'bottom'}
+              rounded="md"
+              boxShadow="dark-lg"
+              bg="#02010F"
+              fontSize={'13px'}
+              fontWeight={'400'}
+              borderRadius={'lg'}
+              padding={'2'}
+              color="#F0F0F5"
+              border="1px solid"
+              borderColor="#23233D"
+              arrowShadowColor="#676D9A4D"
+              textAlign="left"
+              // maxW="222px"
+              // mt="28px"
+            >
+              {strkClaimedRewards == null ? (
+                <Skeleton
+                  width="6rem"
+                  height="1.2rem"
+                  startColor="#101216"
+                  endColor="#2B2F35"
+                  borderRadius="6px"
+                />
+              ) : (
+                <Text
+                  fontSize="16px"
+                  fontWeight="500"
+                  color="white"
+                  textAlign="left"
+                >
+                  {numberFormatter(strkClaimedRewards)} STRK
                 </Text>
               )}
             </Tooltip>
@@ -606,26 +587,31 @@ const StrkDashboard = () => {
             fontSize={'12px'}
             mt="0.5rem"
             padding="6px 12px"
-            border="1px solid #1B1F2426"
-            color="#2B2F35"
-            bgColor="#F3F4F6"
-            isDisabled={strkRewards == 0 ? true : false}
+            border="1px solid #BDBFC1"
+            color="#BDBFC1"
+            bgColor="transparent"
+            // isDisabled={strkRewards == 0 ? true : false}
             _disabled={{
               color: '#2B2F35',
               bgColor: '#101216',
               border: '1px solid #2B2F35',
-              _hover: { bgColor: '#101216' },
+              _hover: { bgColor: '#101216', color: 'black' },
+            }}
+            _hover={{
+              bgColor: 'white',
+              color: 'black',
             }}
             fontWeight="semibold"
             borderRadius={'6px'}
             onClick={() => {
-              if (strkRewards == 0) {
-              } else {
-                handleClaimStrk()
-              }
+              router.push('/v1/campaigns')
+              // if (strkRewards == 0) {
+              // } else {
+              //   handleClaimStrk()
+              // }
             }}
           >
-            Claim
+            Go to Claim
           </Button>
         </Box>
       </Box>

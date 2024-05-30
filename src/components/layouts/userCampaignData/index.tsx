@@ -19,7 +19,20 @@ import CircularDropDownClose from '@/assets/icons/circularDropDownClose'
 import ExternalLink from '@/assets/icons/externalLink'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import Link from 'next/link'
-
+import useClaimStrk from '@/Blockchain/hooks/Writes/useStrkClaim'
+import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards'
+import { parseAmount } from '@/Blockchain/utils/utils'
+import { useAccount } from '@starknet-react/core'
+import dataStrkRewards from '../../layouts/strkDashboard/round_5.json'
+import dataStrkRewardsRound4 from '../../layouts/strkDashboard/round_4.json'
+import dataStrkRewardsRound3 from '../../layouts/strkDashboard/round_3.json'
+import dataStrkRewardsRound2 from '../../layouts/strkDashboard/round_2.json'
+import dataStrkRewardsRound1 from '../../layouts/strkDashboard/round_1.json'
+import posthog from 'posthog-js'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectActiveTransactions, setActiveTransactions } from '@/store/slices/readDataSlice'
+import CopyToClipboard from 'react-copy-to-clipboard'
+import { toast } from 'react-toastify'
 const snapshotsDates = [
   '30 Nov 2023',
   '2 Nov 2023',
@@ -83,13 +96,155 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   userPointsCCP,
 }) => {
   const [epochDropdownSelected, setepochDropdownSelected] = useState(false)
+  const [defiSpringDropdownSelected, setdefiSpringDropdownSelected] = useState(true)
   const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []])
   const [loading, setLoading] = useState<boolean>(false)
   const [openEpochs, setOpenEpochs] = useState<any>([])
   const [ccpDropdownSelected, setccpDropdownSelected] = useState(false)
   const [hoverEpochDrop, sethoverEpochDrop] = useState(false)
   const [hoverccpDrop, sethoverccpDrop] = useState(false)
+  const [hoverDefiDrop, sethoverDefiDrop] = useState(false)
+  const [defiSpringRoundCount, setDefiSpringRoundCount] = useState(new Array(5).fill(0));
   let topLength = ccpUserData.length * 5.15
+  const [strkRewards, setstrkRewards] = useState<any>()
+  const [totalStrkRewards, settotalStrkRewards] = useState<any>()
+  const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>()
+  const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>()
+  const [dataRoundwiseAlloc, setdataRoundwiseAlloc] = useState<any>([
+  ])
+  const dispatch = useDispatch()
+  const [uniqueID, setUniqueID] = useState(0)
+  const getUniqueId = () => uniqueID
+  const [toastId, setToastId] = useState<any>()
+  let activeTransactions = useSelector(selectActiveTransactions)
+  const datesDefiSpringRounds=[
+    '14 Mar 2024 - 28 Mar 2024',
+    '28 Mar 2024 - 4 Apr 2024',
+    '4 Apr 2024 - 18 Apr 2024',
+    '18 Apr 2024 - 2 May 2024',
+    '2 May 2024 - 16 May 2024'
+  ]
+  const  {address}  =useAccount()
+  const {
+    round,
+    setRound,
+    strkAmount,
+    setstrkAmount,
+    proof,
+    setProof,
+    datastrkClaim,
+    errorstrkClaim,
+    resetstrkClaim,
+    writestrkClaim,
+    writeAsyncstrkClaim,
+    isErrorstrkClaim,
+    isIdlestrkClaim,
+    isSuccessstrkClaim,
+    statusstrkClaim,
+  } = useClaimStrk()
+
+  const handleClaimStrk = async () => {
+    try {
+      const getTokens = await writeAsyncstrkClaim()
+      posthog.capture('Claim Strk', {
+        'Clicked Claim': true,
+      })
+      if (getTokens?.transaction_hash) {
+        const toastid = toast.info(
+          // `Please wait, your transaction is running in background ${coin} `,
+          `Transaction pending`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        )
+        setToastId(toastId)
+        if (!activeTransactions) {
+          activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
+        }
+        const uqID = getUniqueId()
+        const trans_data = {
+          transaction_hash: getTokens?.transaction_hash.toString(),
+          message: `Successfully Claimed STRKToken`,
+          // message: `Transaction successful`,
+          toastId: toastid,
+          setCurrentTransactionStatus: () => {},
+          uniqueID: uqID,
+        }
+        // addTransaction({ hash: deposit?.transaction_hash });
+        posthog.capture('Get Tokens Status', {
+          Status: 'Success',
+        })
+        activeTransactions?.push(trans_data)
+
+        dispatch(setActiveTransactions(activeTransactions))
+      }
+      console.log(getTokens)
+      // dispatch(setTransactionStatus("success"));
+    } catch (err: any) {
+      console.log(err)
+      // dispatch(setTransactionStatus("failed"));
+      posthog.capture('Get Claim Status', {
+        Status: 'Failure',
+      })
+      // dispatch(setTransactionStartedAndModalClosed(true));
+      const toastContent = (
+        <div>
+          Failed to Claim $STRK
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      )
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      })
+    }
+  }
+
+  useEffect(() => {
+    const fetchClaimedBalance = async () => {
+      if (address) {
+        const data: any = await getUserSTRKClaimedAmount(address)
+        const dataAmount: any = (dataStrkRewards as any)[address]
+        if (dataAmount) {
+          setstrkAmount(dataAmount?.amount)
+          setProof(dataAmount?.proofs)
+          setstrkRewards(parseAmount(String(dataAmount?.amount), 18) - data)
+          settotalStrkRewards(parseAmount(String(dataAmount?.amount),18))
+          setstrkClaimedRewards(data)
+        } else {
+          setstrkRewards(0)
+          settotalStrkRewards(0);
+        }
+      }
+    }
+    fetchClaimedBalance()
+  }, [address])
+
+  useEffect(()=>{
+    if(address){
+      const round_1:any=(dataStrkRewardsRound1 as any)[address]
+      const round_2=(dataStrkRewardsRound2 as any)[address]
+      const round_3=(dataStrkRewardsRound3 as any)[address]
+      const round_4=(dataStrkRewardsRound4 as any)[address]
+      const round_5=(dataStrkRewards as any)[address]
+      setdataRoundwiseAlloc([
+        parseAmount(round_1?.amount ? round_1?.amount:0 ,18),
+        parseAmount(round_2?.amount ? round_2?.amount:0,18)-parseAmount(round_1?.amount ? round_1?.amount:0 ,18),
+        parseAmount(round_3?.amount ? round_3?.amount:0,18)-parseAmount(round_2?.amount ? round_2?.amount:0 ,18),
+        parseAmount(round_4?.amount ? round_4?.amount:0,18)-parseAmount(round_3?.amount ? round_3?.amount:0 ,18),
+        parseAmount(round_5?.amount ? round_5?.amount:0,18)-parseAmount(round_4?.amount ? round_4?.amount:0 ,18)
+      ])
+    }
+  },[address])
 
   // Function to toggle the open state of an epoch
   const toggleEpochSelection = (idxEpoch: any) => {
@@ -348,7 +503,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                       >
-                        <Text>{numberFormatter(userHashCCP)}</Text>
+                        <Text>{numberFormatter(userHashCCP)} HASH</Text>
                       </Tooltip>
                     </Text>
                   </Td>
@@ -401,7 +556,6 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     </Box>
                   </Td>
                 </Tr>
-
                 <Tr
                   key={idx}
                   width={'100%'}
@@ -461,7 +615,306 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     </Box>
                   )}
                 </Tr>
+                <Tr
+                  key={idx}
+                  width={'100%'}
+                  height="56px"
+                  position="relative"
+                  cursor="pointer"
+                  top={ccpDropdownSelected ?`${(ccpUserData.length * 68) +34}px`: "0.5rem"}
+                  p={0}
+                  onClick={() => {
+                    setdefiSpringDropdownSelected(!defiSpringDropdownSelected)
+                    // if (ccpUserData.length == 0) {
+                    // } else {
+                    //   setccpDropdownSelected(!ccpDropdownSelected)
+                    // }
+                  }}
+                >
+                  <Td
+                    width={'16.6%'}
+                    fontSize={'14px'}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                    bg={'#676D9A48'}
+                    borderRadius="6px 0 0 6px"
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      ml="10"
+                      color="#E6EDF3"
+                    >
+                      <Image
+                        src="/latestSyncedBlockGreenDot.svg"
+                        alt="Picture of the author"
+                        width="8"
+                        height="8"
+                        style={{
+                          marginRight: '0.5rem',
+                          marginBottom: '0.1rem',
+                        }}
+                      />
+                      {campaignDetails[idx + 2]?.campaignName}
+                    </Text>
+                  </Td>
 
+                  <Td
+                    width={'16.6%'}
+                    fontSize={'14px'}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                    bg={'#676D9A48'}
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={''}
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={'13px'}
+                        fontWeight={'400'}
+                        borderRadius={'lg'}
+                        padding={'2'}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text>{campaignDetails[idx + 2]?.timeline}</Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={'16.6%'}
+                    fontSize={'14px'}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="center"
+                    bg={'#676D9A48'}
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={
+                          ""
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={'13px'}
+                        fontWeight={'400'}
+                        borderRadius={'lg'}
+                        padding={'2'}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text>{numberFormatter(totalStrkRewards)} STRK</Text>
+                      </Tooltip>
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={'16.6%'}
+                    fontSize={'14px'}
+                    fontWeight={400}
+                    padding={2}
+                    textAlign="end"
+                    bg={'#676D9A48'}
+                    borderRadius="0 6px 6px 0"
+                  >
+                    <Box
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="end"
+                      fontWeight="400"
+                      fontSize="14px"
+                      color="#E6EDF3"
+                      pr="10"
+                      gap="1rem"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={
+                          "Next Claim on 4 June"
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={'13px'}
+                        fontWeight={'400'}
+                        borderRadius={'lg'}
+                        padding={'2'}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
+                      >
+                        <Text
+                          textDecoration="underline"
+                          cursor="pointer"
+                          color={strkRewards==0?'#3E415C': "#F0F0F5"}
+                          onClick={()=>{
+                            if(strkRewards==0){
+
+                            }else{
+                              handleClaimStrk()
+                            }
+                          }}
+                        >
+                          Claim
+                        </Text>
+                      </Tooltip>
+                      <Box
+                        cursor="pointer"
+                        onMouseEnter={() => {
+                          sethoverDefiDrop(true)
+                        }}
+                        onMouseLeave={() => {
+                          sethoverDefiDrop(false)
+                        }}
+                      >
+                        {defiSpringDropdownSelected ? (
+                          <CircularDropDownClose />
+                        ) : hoverDefiDrop ? (
+                          <CircularDropDownActive />
+                        ) : (
+                          <CircularDropDown />
+                        )}
+                      </Box>
+                    </Box>
+                  </Td>
+                </Tr>
+                <Tr
+                  key={idx}
+                  width={'100%'}
+                  height="4rem"
+                  position="absolute"
+                  cursor="pointer"
+                  pl="1rem"
+                  top={
+                    ccpDropdownSelected
+                      ? defiSpringDropdownSelected
+                        ? `${ccpUserData.length * 68 + 64 * 1.7 + 34}px`
+                        : `${ccpUserData.length * 68}px`
+                      : `${2 * 68*0.9}px`
+                  }
+                >
+                  {defiSpringDropdownSelected && (
+                    <Box
+                      borderRadius="6px"
+                      mt="1rem"
+                      mr="2rem"
+                      ml="2rem"
+                      border={
+                        openEpochs.length > 0 ? '' : '1px solid #676D9A48'
+                      }
+                      borderBottom={
+                        openEpochs.length > 0 ? '1px solid #676D9A48' : ''
+                      }
+                    >
+                      {defiSpringRoundCount.map((epochs: any, idxDefi: any) => (
+                        <Box key={idxDefi}>
+                          <Box
+                            display="flex"
+                            borderTop={
+                              openEpochs.length > 0 ? '1px solid #676D9A48' : ''
+                            }
+                            borderLeft={
+                              openEpochs.length > 0 ? '1px solid #676D9A48' : ''
+                            }
+                            borderBottom={
+                              openEpochs.length > 0
+                                ? isEpochOpen(idxDefi)
+                                  ? '1px solid #676D9A48'
+                                  : ''
+                                : ''
+                            }
+                            borderBottomRadius={
+                              openEpochs.length > 0
+                                ? isEpochOpen(idxDefi)
+                                  ? '6px'
+                                  : ''
+                                : '6px'
+                            }
+                            borderRight={
+                              openEpochs.length > 0 ? '1px solid #676D9A48' : ''
+                            }
+                            borderRadius={
+                              openEpochs.length > 0
+                                ? isEpochOpen(idxDefi)
+                                  ? '6px'
+                                  : ''
+                                : '6px'
+                            }
+                            justifyContent="space-between"
+                            cursor="pointer"
+                            padding="24px 48px 24px 48px"
+                            color="#F0F0F5"
+                            fontSize="14px"
+                            fontWeight="400"
+                            lineHeight="20px"
+                            onClick={() => {
+                            }}
+                          >
+                            <Text>Round {idxDefi+1}</Text>
+                            <Text>
+                              {datesDefiSpringRounds[idxDefi]}
+                            </Text>
+                            <Box display="flex" gap="1.5rem">
+                              <Text>
+                                {numberFormatter(dataRoundwiseAlloc[idxDefi])} STRK
+                                tokens earned
+                              </Text>
+                            </Box>
+                          </Box>
+                          <Box
+                            borderBottom={
+                              idxDefi != 4
+                                ? isEpochOpen(idxDefi)
+                                  ? ''
+                                  : '1px solid #676D9A48'
+                                : ''
+                            }
+                          ></Box>
+                        </Box>
+                      ))}
+                    </Box>
+                  )}
+                </Tr>
                 <Tr
                   key={idx}
                   width={'100%'}
@@ -476,8 +929,9 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   p={0}
                   top={
                     ccpDropdownSelected
-                      ? `${ccpUserData.length * 68 + 34}px`
-                      : '4px'
+                      ? defiSpringDropdownSelected ?`${(5+ccpUserData.length) * 68 + 34*2}px`: `${ccpUserData.length * 68 + 34*1.2}px`
+                      : defiSpringDropdownSelected ?`${5 * 68 + 34*1.2}px`: epochDropdownSelected ?'16px':
+                       '4px'
                   }
                   style={{ borderRadius: '6px' }}
                 >
@@ -582,7 +1036,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {numberFormatter(member.est + member.hashAllocated)}
+                          {numberFormatter(member.est + member.hashAllocated)} HASH
                         </Text>
                       </Tooltip>
                     </Text>
@@ -643,10 +1097,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   pl="1rem"
                   top={
                     ccpDropdownSelected
-                      ? epochDropdownSelected
-                        ? `${ccpUserData.length * 68 + 64 * 2 + 34}px`
+                      ? defiSpringDropdownSelected ?`${(5+ccpUserData.length) * 68 + 64 * 3.4 + 34}px`: epochDropdownSelected
+                        ? `${ccpUserData.length * 68 + 64 * 2.8 + 34}px`
                         : `${ccpUserData.length * 68}px`
-                      : ''
+                      : defiSpringDropdownSelected ?`${5 * 68 + 64 * 2.9 + 34}px`:
+                       `${2 * 68  + 34*1.8}px`
                   }
                 >
                   {epochDropdownSelected && (
@@ -825,8 +1280,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     borderTop="1px solid rgba(103, 109, 154, 0.30)"
                     top={
                       ccpDropdownSelected
-                        ? `${ccpUserData.length * 68 + 64 * 2.5}px`
-                        : ''
+                        ? defiSpringDropdownSelected ?`${(ccpUserData.length+5) * 68  + 64 * 3.6}px`: `${ccpUserData.length * 68 + 64 * 3.2}px`
+                        : defiSpringDropdownSelected ?`${5 * 68 + 64 * 3.2}px`:''
                     }
                   />
                 )}

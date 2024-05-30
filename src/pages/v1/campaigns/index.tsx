@@ -55,7 +55,7 @@ const columnItemsLeaderBoardCCp = ['Rank', 'Account', 'Points', '']
 const columnItemsPersonalStatsReferalCampaign = [
   'Campaign Name',
   'Duration',
-  'Total Hash Earned',
+  'Total Tokens Earned',
   '',
 ]
 
@@ -236,6 +236,11 @@ const Campaign: NextPage = () => {
   const [totalPointsCCP, settotalPointsCCP] = useState<any>(0)
   const [userRankCCP, setuserRankCCP] = useState<any>(0)
   const [userSocialsData, setuserSocialsData] = useState<any>([])
+  const [strkRewards, setstrkRewards] = useState<any>()
+  const [totalStrkRewards, settotalStrkRewards] = useState<any>()
+  const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>()
+  const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>()
+  const { address } = useAccount()
   const [campaignDetails, setCampaignDetails] = useState([
     {
       campaignName: 'Airdrop 01',
@@ -245,6 +250,10 @@ const Campaign: NextPage = () => {
       campaignName: 'CCP',
       timeline: '18 Apr 2024',
     },
+    {
+      campaignName:'Defi spring',
+      timeline:'14 Mar 2024'
+    }
   ])
 
   const totalBorrow = useSelector(selectYourBorrow)
@@ -254,7 +263,7 @@ const Campaign: NextPage = () => {
   const registeredClick = useSelector(selectConnectedSocialsClicked)
 
   const dispatch = useDispatch()
-  const { address } = useAccount()
+  
 
   useDataLoader()
 

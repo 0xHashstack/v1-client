@@ -260,8 +260,7 @@ const Navbar = ({ validRTokens }: any) => {
           marginBottom="0px"
           className="button"
           color={
-            pathname !== '/v1/airdrop_leaderboard' &&
-            pathname !== '/v1/referral'
+            pathname !== '/v1/campaigns' && pathname !== '/v1/referral'
               ? '#00D395'
               : '#676D9A'
           }
@@ -279,7 +278,7 @@ const Navbar = ({ validRTokens }: any) => {
             alignItems="center"
             gap={'8px'}
           >
-            {router.pathname == '/v1/airdrop_leaderboard' ||
+            {router.pathname == '/v1/campaigns' ||
             router.pathname == '/v1/referral' ? (
               <Image
                 src={hoverDashboardIcon}
@@ -338,16 +337,14 @@ const Navbar = ({ validRTokens }: any) => {
             borderRadius="5px"
             cursor="pointer"
             marginBottom="0px"
-            color={`${
-              pathname == '/v1/airdrop_leaderboard' ? '#00D395' : '#676D9A'
-            }`}
+            color={`${pathname == '/v1/campaigns' ? '#00D395' : '#676D9A'}`}
             onMouseEnter={() => setCampaignHover(true)}
             onMouseLeave={() => setCampaignHover(false)}
             onClick={() => {
               posthog.capture('More Tab Clicked', {
                 Clicked: true,
               })
-              router.push('/v1/airdrop_leaderboard')
+              router.push('/v1/campaigns')
             }}
           >
             <Box
@@ -356,7 +353,7 @@ const Navbar = ({ validRTokens }: any) => {
               alignItems="center"
               gap={'8px'}
             >
-              {pathname == '/v1/airdrop_leaderboard' ? (
+              {pathname == '/v1/campaigns' ? (
                 <Image
                   src={hoverContributeEarnIcon}
                   alt="Picture of the author"
