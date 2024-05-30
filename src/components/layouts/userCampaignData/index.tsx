@@ -768,7 +768,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       <Tooltip
                         hasArrow
                         label={
-                          "Next Claim on 3 June"
+                          "Next Claim on 4 June"
                         }
                         placement="right"
                         rounded="md"
