@@ -399,7 +399,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       borderRadius="0 6px 6px 0"
                     >
                       <Link
-                        href={`/v1/airdrop_leaderboard/submissions/?address=${address}`}
+                        href={`/v1/campaigns/submissions/?address=${address}`}
                         target="_blank"
                       >
                         <Text
@@ -723,7 +723,7 @@ const LeaderboardDashboard: React.FC<LeaderboardDashboardProps> = ({
                       }}
                     >
                       <Link
-                        href={`/v1/airdrop_leaderboard/submissions/?address=${processAddress(
+                        href={`/v1/campaigns/submissions/?address=${processAddress(
                           member['Wallet Address (StarkNet)']
                         )}`}
                         target="_blank"

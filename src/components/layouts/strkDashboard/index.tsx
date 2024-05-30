@@ -51,6 +51,7 @@ import {
 import { useAccount } from '@starknet-react/core'
 import axios from 'axios'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import posthog from 'posthog-js'
 import React, { useEffect, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
@@ -59,7 +60,6 @@ import { toast } from 'react-toastify'
 import PageCard from '../pageCard'
 import dataStrkRewards from '../strkDashboard/round_5.json'
 import dataStrkRewardsZklend from '../strkDashboard/zkLend_5.json'
-import { useRouter } from 'next/router'
 export interface ICoin {
   name: string
   symbol: string
@@ -142,7 +142,7 @@ const StrkDashboard = () => {
   const [totalStrkRewards, settotalStrkRewards] = useState<any>()
   const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>()
   const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>()
-  const router=useRouter();
+  const router = useRouter()
   let activeTransactions = useSelector(selectActiveTransactions)
   const {
     round,
@@ -171,11 +171,11 @@ const StrkDashboard = () => {
           setstrkAmount(dataAmount?.amount)
           setProof(dataAmount?.proofs)
           setstrkRewards(parseAmount(String(dataAmount?.amount), 18) - data)
-          settotalStrkRewards(parseAmount(String(dataAmount?.amount),18))
+          settotalStrkRewards(parseAmount(String(dataAmount?.amount), 18))
           setstrkClaimedRewards(data)
         } else {
           setstrkRewards(0)
-          settotalStrkRewards(0);
+          settotalStrkRewards(0)
         }
       }
     }
@@ -189,14 +189,12 @@ const StrkDashboard = () => {
         const matchedUser = dataStrkRewardsZklend.find(
           (userObj) => userObj.user === address
         )
-        if(dataAmount && !matchedUser){
-          setHashstackStrkReward( parseAmount(
-            String(BigInt(dataAmount.amount)),
-            18
-          ))
-          setstrkRewardsZklend(0);
-        }
-        else if (matchedUser && dataAmount) {
+        if (dataAmount && !matchedUser) {
+          setHashstackStrkReward(
+            parseAmount(String(BigInt(dataAmount.amount)), 18)
+          )
+          setstrkRewardsZklend(0)
+        } else if (matchedUser && dataAmount) {
           setstrkRewardsZklend(parseAmount(String(matchedUser?.strk), 18))
           setHashstackStrkReward(
             parseAmount(
@@ -204,9 +202,9 @@ const StrkDashboard = () => {
               18
             )
           )
-        }else{
-          setstrkRewardsZklend(0);
-          setHashstackStrkReward(0);
+        } else {
+          setstrkRewardsZklend(0)
+          setHashstackStrkReward(0)
         }
       }
     }
@@ -521,7 +519,7 @@ const StrkDashboard = () => {
               // maxW="222px"
               // mt="28px"
             >
-              {totalStrkRewards== null ? (
+              {totalStrkRewards == null ? (
                 <Skeleton
                   width="6rem"
                   height="1.2rem"
@@ -547,7 +545,7 @@ const StrkDashboard = () => {
             </Text>
             <Tooltip
               hasArrow
-              label={""}
+              label={''}
               placement={'bottom'}
               rounded="md"
               boxShadow="dark-lg"
@@ -597,16 +595,16 @@ const StrkDashboard = () => {
               color: '#2B2F35',
               bgColor: '#101216',
               border: '1px solid #2B2F35',
-              _hover: { bgColor: '#101216',color:'black' },
+              _hover: { bgColor: '#101216', color: 'black' },
             }}
             _hover={{
-              "bgColor":"white",
-              "color":"black"
+              bgColor: 'white',
+              color: 'black',
             }}
             fontWeight="semibold"
             borderRadius={'6px'}
             onClick={() => {
-              router.push('/v1/airdrop_leaderboard')
+              router.push('/v1/campaigns')
               // if (strkRewards == 0) {
               // } else {
               //   handleClaimStrk()

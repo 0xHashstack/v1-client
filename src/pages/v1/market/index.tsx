@@ -19,7 +19,7 @@ import useDataLoader from '@/hooks/useDataLoader'
 import { useRouter } from 'next/router'
 
 const Market: NextPage = () => {
-  const router=useRouter();
+  const router = useRouter()
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
@@ -108,7 +108,7 @@ const Market: NextPage = () => {
                 alignItems="center"
                 gap="2"
                 fontWeight="bold"
-              >              
+              >
                 <Text color="#7554E9">Introducing Degen</Text>
               </Box>
               <Box
@@ -120,7 +120,6 @@ const Market: NextPage = () => {
                 fontWeight="normal"
                 marginTop="0"
               >
-                
                 <Text
                   bgGradient="linear-gradient(#7554E9, #FFFFFF)"
                   bgClip="text"
@@ -129,18 +128,20 @@ const Market: NextPage = () => {
                   A high yield arbitrage strategy feature.
                 </Text>
               </Box>
-                <Button
-                  marginTop="2.5"
-                  color="white"
-                  bgGradient="linear-gradient(#7956EC, #1B29AE)"
-                  paddingY="0.3px"
-                  fontSize="sm"
-                  height="2rem"
-                  _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
-                  onClick={()=>{router.push('/v1/degen')}}
-                >
-                  Explore
-                </Button>
+              <Button
+                marginTop="2.5"
+                color="white"
+                bgGradient="linear-gradient(#7956EC, #1B29AE)"
+                paddingY="0.3px"
+                fontSize="sm"
+                height="2rem"
+                _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
+                onClick={() => {
+                  router.push('/v1/degen')
+                }}
+              >
+                Explore
+              </Button>
             </Box>
           </Box>
           <Box className="embla__slide" position="relative" height={'150px'}>
@@ -158,8 +159,8 @@ const Market: NextPage = () => {
                 alignItems="center"
                 gap="2"
                 fontWeight="bold"
-              >                
-                <Text color="#7554E9">Content Creators Program</Text>                
+              >
+                <Text color="#7554E9">Content Creators Program</Text>
               </Box>
               <Box
                 color="#BDBFC1"
@@ -170,7 +171,7 @@ const Market: NextPage = () => {
                 fontWeight="normal"
                 marginTop="0"
               >
-                Create content around 
+                Create content around
                 <Text
                   bgGradient="linear-gradient(#7554E9, #FFFFFF)"
                   bgClip="text"
@@ -178,7 +179,7 @@ const Market: NextPage = () => {
                 >
                   Hashstack
                 </Text>
-                and 
+                and
                 <Text
                   bgGradient="linear-gradient(#7554E9, #FFFFFF)"
                   bgClip="text"
@@ -187,20 +188,20 @@ const Market: NextPage = () => {
                   earn points
                 </Text>
               </Box>
-                <Button
-                  marginTop="2.5"
-                  color="white"
-                  bgGradient="linear-gradient(#7956EC, #1B29AE)"
-                  paddingY="0.3px"
-                  fontSize="sm"
-                  height="2rem"
-                  _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
-                  onClick={()=>{
-                    router.push('/v1/airdrop_leaderboard')
-                  }}
-                >
-                  Get Started
-                </Button>
+              <Button
+                marginTop="2.5"
+                color="white"
+                bgGradient="linear-gradient(#7956EC, #1B29AE)"
+                paddingY="0.3px"
+                fontSize="sm"
+                height="2rem"
+                _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
+                onClick={() => {
+                  router.push('/v1/campaigns')
+                }}
+              >
+                Get Started
+              </Button>
             </Box>
           </Box>
         </Box>
@@ -231,9 +232,8 @@ const Market: NextPage = () => {
               display="flex"
               alignItems="center"
               justifyContent="center"
-              
               cursor="pointer"
-              backgroundColor={index===selectedIndex ?"#4D59E8":"black"}
+              backgroundColor={index === selectedIndex ? '#4D59E8' : 'black'}
               padding="0"
               margin="0"
               border="1px solid #373A5D"
