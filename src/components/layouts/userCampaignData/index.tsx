@@ -96,7 +96,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   userPointsCCP,
 }) => {
   const [epochDropdownSelected, setepochDropdownSelected] = useState(false)
-  const [defiSpringDropdownSelected, setdefiSpringDropdownSelected] = useState(false)
+  const [defiSpringDropdownSelected, setdefiSpringDropdownSelected] = useState(true)
   const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []])
   const [loading, setLoading] = useState<boolean>(false)
   const [openEpochs, setOpenEpochs] = useState<any>([])
@@ -119,10 +119,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   let activeTransactions = useSelector(selectActiveTransactions)
   const datesDefiSpringRounds=[
     '14 Mar 2024 - 28 Mar 2024',
-    '28 Mar 2024 - 11 Apr 2024',
-    '11 Apr 2024 - 25 Apr 2024',
-    '25 Apr 2024 - 6 May 2024',
-    '6 May 2024 - 22 May 2024'
+    '28 Mar 2024 - 4 Apr 2024',
+    '4 Apr 2024 - 18 Apr 2024',
+    '18 Apr 2024 - 2 May 2024',
+    '2 May 2024 - 16 May 2024'
   ]
   const  {address}  =useAccount()
   const {
@@ -765,20 +765,39 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       pr="10"
                       gap="1rem"
                     >
-                      <Text
-                        textDecoration="underline"
-                        cursor="pointer"
-                        color={strkRewards==0?'#3E415C': "#F0F0F5"}
-                        onClick={()=>{
-                          if(strkRewards==0){
-
-                          }else{
-                            handleClaimStrk()
-                          }
-                        }}
+                      <Tooltip
+                        hasArrow
+                        label={
+                          "Next Claim on 3 June"
+                        }
+                        placement="right"
+                        rounded="md"
+                        boxShadow="dark-lg"
+                        bg="#02010F"
+                        fontSize={'13px'}
+                        fontWeight={'400'}
+                        borderRadius={'lg'}
+                        padding={'2'}
+                        color="#F0F0F5"
+                        border="1px solid"
+                        borderColor="#23233D"
+                        arrowShadowColor="#2B2F35"
                       >
-                        Claim
-                      </Text>
+                        <Text
+                          textDecoration="underline"
+                          cursor="pointer"
+                          color={strkRewards==0?'#3E415C': "#F0F0F5"}
+                          onClick={()=>{
+                            if(strkRewards==0){
+
+                            }else{
+                              handleClaimStrk()
+                            }
+                          }}
+                        >
+                          Claim
+                        </Text>
+                      </Tooltip>
                       <Box
                         cursor="pointer"
                         onMouseEnter={() => {
