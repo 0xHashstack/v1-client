@@ -239,13 +239,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
 
-            extendedAccount?.provider.chainId==="0x534e5f5345504f4c4941"
+            extendedAccount?.provider?.chainId==="0x534e5f5345504f4c4941"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            extendedAccount?.provider.chainId==="0x534e5f4d41494e"
+            extendedAccount?.provider?.chainId==="0x534e5f4d41494e" || extendedAccount?.channel?.chainId==="0x534e5f4d41494e"
           );
         }
       }
