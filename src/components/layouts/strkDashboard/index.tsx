@@ -58,7 +58,7 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import PageCard from '../pageCard'
-import dataStrkRewards from '../strkDashboard/round_5.json'
+import dataStrkRewards from '../strkDashboard/round_6.json'
 import dataStrkRewardsZklend from '../strkDashboard/zkLend_5.json'
 export interface ICoin {
   name: string
