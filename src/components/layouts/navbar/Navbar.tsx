@@ -69,6 +69,7 @@ const Navbar = ({ validRTokens }: any) => {
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName))
   }
+  const [domainName, setDomainName] = useState('')
   const [justifyContent, setJustifyContent] = useState('flex-start')
   const [toggleDarkMode, setToggleDarkMode] = useState(true)
   const toggleMode = () => {
@@ -143,6 +144,22 @@ const Navbar = ({ validRTokens }: any) => {
       router.push('/v1/market')
     }
   }
+
+  useEffect(() => {
+    async function fetchDomainName() {
+      if (account?.address) {
+        try {
+          const res: any = await axios.get(
+            `https://api.starknet.id/addr_to_domain?addr=${account?.address}`
+          )
+          setDomainName(res?.data?.domain)
+        } catch (error) {
+          console.log('address to domain error', error)
+        }
+      }
+    }
+    fetchDomainName()
+  }, [account?.address, domainName])
 
   const extendedAccount = account as ExtendedAccountInterface
   const [isCorrectNetwork, setisCorrectNetwork] = useState(true)
@@ -463,13 +480,15 @@ const Navbar = ({ validRTokens }: any) => {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    {`${account.address.substring(
-                      0,
-                      3
-                    )}...${account.address.substring(
-                      account.address.length - 9,
-                      account.address.length
-                    )}`}{' '}
+                    {domainName
+                      ? domainName
+                      : `${account.address.substring(
+                          0,
+                          3
+                        )}...${account.address.substring(
+                          account.address.length - 9,
+                          account.address.length
+                        )}`}
                   </Text>
                 </Box>
               ) : (
