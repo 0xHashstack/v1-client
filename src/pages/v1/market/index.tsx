@@ -4,7 +4,8 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCallback } from 'react'
+import { useRouter } from 'next/router'
+import { posthog } from 'posthog-js'
 import 'react-toastify/dist/ReactToastify.css'
 
 import MarketDashboard from '@/components/layouts/marketDashboard'
@@ -16,7 +17,6 @@ import {
   useDotButton,
 } from '@/components/uiElements/buttons/EmblaCarouselDotButton'
 import useDataLoader from '@/hooks/useDataLoader'
-import { useRouter } from 'next/router'
 
 const Market: NextPage = () => {
   const router = useRouter()
@@ -56,6 +56,7 @@ const Market: NextPage = () => {
                 <Text color="#7554E9">Defi Spring</Text>
                 Is Live!
               </Box>
+
               <Box
                 color="#BDBFC1"
                 fontSize="1.4rem"
@@ -74,9 +75,18 @@ const Market: NextPage = () => {
                   $STRK Tokens
                 </Text>
               </Box>
+
               <Link
                 href="https://hashstack.medium.com/farm-strk-token-on-hashstack-v1-e2287d6f94f9"
                 target="_blank"
+                onClick={() => {
+                  posthog.capture(
+                    'Defi Spring banner clicked - "Learn more" button',
+                    {
+                      Clicked: true,
+                    }
+                  )
+                }}
               >
                 <Button
                   marginTop="2.5"
@@ -137,6 +147,12 @@ const Market: NextPage = () => {
                 height="2rem"
                 _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
                 onClick={() => {
+                  posthog.capture(
+                    'Introducing Degen banner clicked - "Explore" button',
+                    {
+                      Clicked: true,
+                    }
+                  )
                   router.push('/v1/degen')
                 }}
               >
@@ -197,6 +213,9 @@ const Market: NextPage = () => {
                 height="2rem"
                 _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
                 onClick={() => {
+                  posthog.capture('CCP banner clicked - "Get Started" button', {
+                    Clicked: true,
+                  })
                   router.push('/v1/campaigns')
                 }}
               >
