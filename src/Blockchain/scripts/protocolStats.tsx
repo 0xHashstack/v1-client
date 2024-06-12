@@ -16,7 +16,7 @@ import {
 } from "../interfaces/interfaces";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import BigNumber from "bignumber.js";
-
+import { Address, Metrics, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
   let marketInfo: IMarketInfo = {
     borrowRate: parseAmount(
@@ -81,6 +81,27 @@ function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
       ?.name as NativeToken,
   };
   return marketInfo;
+}
+
+export async function getStats(){
+  try {
+    const config = getSepoliaConfig(
+      './target/dev',
+      'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
+  );
+    const metrics = new Metrics(
+      config,
+      new Address('0x5e340f2868e3e51acb4274ec57f5056faa662091bd28af38e7215d8d276f059'),
+      new Address('0x177975265a7f166ef856f168df5f61bc0e921d441c6144c7dc0922f6c6f0a9d'),
+      new Address('0x4f9ea82707356d663d80d4064bb292db60108ac1022e7a15c341128dc647b42'),
+      new Address('0x5e8506f1754a634f3cf9391cfef47ff25293848c7677f2f9eec4f395798f7c3'),
+      contractsEnv.TOKENS
+    );
+    const res=await metrics?.get_protocol_stats(new Address('0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d'))
+    console.log(res,"data res")
+  } catch (error) {
+    console.log(error,'err in stats')
+  }
 }
 
 export async function getProtocolStats() {
