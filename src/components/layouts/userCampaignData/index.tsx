@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectActiveTransactions, setActiveTransactions } from '@/store/slices/readDataSlice'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import { toast } from 'react-toastify'
+import { processAddress } from '@/Blockchain/stark-constants'
 const snapshotsDates = [
   '30 Nov 2023',
   '2 Nov 2023',
@@ -214,8 +215,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   useEffect(() => {
     const fetchClaimedBalance = async () => {
       if (address) {
-        const data: any = await getUserSTRKClaimedAmount(address)
-        const dataAmount: any = (dataStrkRewards as any)[address]
+        const data: any = await getUserSTRKClaimedAmount(processAddress(address))
+        const dataAmount: any = (dataStrkRewards as any)[processAddress(address)]
         if (dataAmount) {
           setstrkAmount(dataAmount?.amount)
           setProof(dataAmount?.proofs)
@@ -233,12 +234,12 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 
   useEffect(()=>{
     if(address){
-      const round_1:any=(dataStrkRewardsRound1 as any)[address]
-      const round_2=(dataStrkRewardsRound2 as any)[address]
-      const round_3=(dataStrkRewardsRound3 as any)[address]
-      const round_4=(dataStrkRewardsRound4 as any)[address]
-      const round_5=(dataStrkRewardsRound5 as any)[address]
-      const round_6=(dataStrkRewards as any)[address]
+      const round_1:any=(dataStrkRewardsRound1 as any)[processAddress(address)]
+      const round_2=(dataStrkRewardsRound2 as any)[processAddress(address)]
+      const round_3=(dataStrkRewardsRound3 as any)[processAddress(address)]
+      const round_4=(dataStrkRewardsRound4 as any)[processAddress(address)]
+      const round_5=(dataStrkRewardsRound5 as any)[processAddress(address)]
+      const round_6=(dataStrkRewards as any)[processAddress(address)]
       setdataRoundwiseAlloc([
         parseAmount(round_1?.amount ? round_1?.amount:0 ,18),
         parseAmount(round_2?.amount ? round_2?.amount:0,18)-parseAmount(round_1?.amount ? round_1?.amount:0 ,18),

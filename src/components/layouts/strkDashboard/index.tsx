@@ -60,6 +60,7 @@ import { toast } from 'react-toastify'
 import PageCard from '../pageCard'
 import dataStrkRewards from '../strkDashboard/round_6.json'
 import dataStrkRewardsZklend from '../strkDashboard/zkLend_5.json'
+import { processAddress } from '@/Blockchain/stark-constants'
 export interface ICoin {
   name: string
   symbol: string
@@ -165,8 +166,8 @@ const StrkDashboard = () => {
   useEffect(() => {
     const fetchClaimedBalance = async () => {
       if (address) {
-        const data: any = await getUserSTRKClaimedAmount(address)
-        const dataAmount: any = (dataStrkRewards as any)[address]
+        const data: any = await getUserSTRKClaimedAmount(processAddress(address))
+        const dataAmount: any = (dataStrkRewards as any)[processAddress(address)]
         if (dataAmount) {
           setstrkAmount(dataAmount?.amount)
           setProof(dataAmount?.proofs)
@@ -185,9 +186,9 @@ const StrkDashboard = () => {
   useEffect(() => {
     const fetchstrkrewards = async () => {
       if (address) {
-        const dataAmount: any = (dataStrkRewards as any)[address]
+        const dataAmount: any = (dataStrkRewards as any)[processAddress(address)]
         const matchedUser = dataStrkRewardsZklend.find(
-          (userObj) => userObj.user === address
+          (userObj) => userObj.user === processAddress(address)
         )
         if (dataAmount && !matchedUser) {
           setHashstackStrkReward(
