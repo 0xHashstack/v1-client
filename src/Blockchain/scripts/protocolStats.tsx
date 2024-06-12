@@ -19,9 +19,9 @@ import BigNumber from "bignumber.js";
 import { Address, Metrics, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
   let marketInfo: IMarketInfo = {
-    borrowRate: Number(marketData?.borrow_rate),
-    supplyRate: Number(marketData?.supply_rate),
-    stakingRate:Number(marketData?.staking_rate),
+    borrowRate: Number(marketData?.borrow_rate)*100,
+    supplyRate: Number(marketData?.supply_rate)*100,
+    stakingRate:Number(marketData?.staking_rate)*100,
     totalSupply: Number(marketData?.total_supply),
     lentAssets: Number(marketData?.lent_assets),
     totalBorrow: Number(marketData?.total_borrow),
@@ -66,7 +66,7 @@ export async function getStats(){
       contractsEnv.TOKENS
     );
     const res=await metrics?.get_protocol_stats(new Address('0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb'))
-    console.log(res,"data res")
+    // console.log(res,"data res")
   } catch (error) {
     console.log(error,'err in stats')
   }
@@ -96,7 +96,7 @@ export async function getProtocolStats() {
     }
     return new Promise((resolve, reject) => {
       Promise.allSettled([...promises]).then((val) => {
-       console.log("protocol stats result - ", val);
+      //  console.log("protocol stats result - ", val);
         const results = val.map((stat, idx) => {
           if (
             stat?.status == "fulfilled" &&
@@ -122,22 +122,11 @@ export async function getProtocolStats() {
 function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
   try {
     let protocolReserves: IProtocolReserves = {
-      totalReserves: parseAmount(
-        uint256.uint256ToBN(protocolReservesData?.total_reserves).toString(),
-        8
-      ),
-      availableReserves: parseAmount(
-        uint256
-          .uint256ToBN(protocolReservesData?.available_reserves)
-          .toString(),
-        8
-      ),
-      avgAssetUtilisation: parseAmount(
-        uint256
-          .uint256ToBN(protocolReservesData?.avg_asset_utilisation)
-          .toString(),
-        2
-      ),
+      totalReserves: 
+        Number(protocolReservesData?.total_reserves),
+
+      availableReserves: Number(protocolReservesData?.available_reserves),
+      avgAssetUtilisation: Number(protocolReservesData?.avg_asset_utilisation),
     };
     return protocolReserves;
   } catch (error) {
@@ -149,15 +138,20 @@ function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
 export async function getProtocolReserves() {
   const provider = getProvider();
   try {
-    const metricsContract = new Contract(
-      metricsAbi,
-      metricsContractAddress,
-      provider
+    const config = getSepoliaConfig(
+      './target/dev',
+      'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
+  );
+    const metricsContract = new Metrics(
+      config,
+      new Address('0x6da033fdb9257dd035a4a4f80269ecd8c5045ef81cd756dad7a5d2553f0d30d'),
+      new Address('0x177975265a7f166ef856f168df5f61bc0e921d441c6144c7dc0922f6c6f0a9d'),
+      new Address('0x4f9ea82707356d663d80d4064bb292db60108ac1022e7a15c341128dc647b42'),
+      new Address('0x66bab31e89d426fbdfaa021be5bc71e785c13f9e9a6a10c89eaa8e1e0a9008f'),
+      contractsEnv.TOKENS
     );
-    const res:any = await metricsContract.call("get_protocol_reserves", [], {
-      blockIdentifier: "pending",
-    });
-    const protocolReserves = parseProtocolReserves(res?.protocol_reserves);
+    const res:any = await metricsContract.get_protocol_reserves();
+    const protocolReserves = parseProtocolReserves(res);
     return protocolReserves;
   } catch (e) {
    //console.log("get_protocol_reserves failed: ", e);

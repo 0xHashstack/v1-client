@@ -1159,8 +1159,7 @@ const useDataLoader = () => {
     try {
       const fetchOraclePrices = async () => {
         let data = await getOraclePrices()
-        console.log(data,"price")
-        if (!data || data?.length < 6) {
+        if (!data || data?.length < 5) {
           return
         }
         dispatch(setOraclePrices(data))
@@ -1171,7 +1170,7 @@ const useDataLoader = () => {
         fetchOraclePrices()
       }
     } catch (err) {
-      console.log("oracle prices - transactionRefresh error ", err);
+      //console.log("oracle prices - transactionRefresh error ", err);
     }
   }, [address, transactionRefresh])
 
@@ -1179,7 +1178,6 @@ const useDataLoader = () => {
     try {
       const fetchProtocolReserves = async () => {
         const reserves = await getProtocolReserves()
-        console.log(reserves,"protocol reserves")
         // dispatch(
         //   setProtocolReserves({
         //     totalReserves: 123,
@@ -1271,8 +1269,7 @@ const useDataLoader = () => {
     try {
       const fetchProtocolStats = async () => {
         const dataStats = await getProtocolStats()
-        console.log(dataStats,"stats")
-        if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 6)) {
+        if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 5)) {
           return
         }
         ////console.log(dataStats,"data market in pagecard")
@@ -1305,7 +1302,7 @@ const useDataLoader = () => {
         if (!address) {
           return
         }
-        const data = await getUserDeposits('https://863d-2401-4900-1c70-92c7-6cb3-cdf4-7986-f57d.ngrok-free.app')
+        const data = await getUserDeposits(address)
         if (!data) {
           return
         }

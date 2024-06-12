@@ -82,7 +82,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
     USDC: useBalanceOf(tokenAddressMap["USDC"]),
     BTC: useBalanceOf(tokenAddressMap["BTC"]),
     ETH: useBalanceOf(tokenAddressMap["ETH"]),
-    DAI: useBalanceOf(tokenAddressMap["DAI"]),
+    // DAI: useBalanceOf(tokenAddressMap["DAI"]),
     STRK: useBalanceOf(tokenAddressMap["STRK"]),
   };
 

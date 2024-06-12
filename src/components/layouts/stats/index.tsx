@@ -4,6 +4,7 @@ import Image from "next/image";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useRouter } from "next/router";
 import InfoIcon from "@/assets/icons/infoIcon";
+import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 const Stats = ({
   header,
   onclick,
@@ -89,7 +90,7 @@ const Stats = ({
                 <Box color={header[idx] == "Net APR" ? value >0 ?"#00D395": value<0 ?"rgb(255 94 94)":"#e6edf3":"#e6edf3"} fontSize="20px">
                   {value !== null ? (
                     value ? (
-                      `${value}%`
+                      `${numberFormatterPercentage(value)}%`
                     ) : (
                       "NA"
                     )
