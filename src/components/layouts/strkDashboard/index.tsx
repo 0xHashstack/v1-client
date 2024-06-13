@@ -458,7 +458,7 @@ const StrkDashboard = () => {
       ////console.log("spendtable ltv ", ltv);
     }
   }, [userLoans, oraclePrices])
-  console.log(address,"add")
+  
   const rewardPools = ['STRK/ETH', 'USDC/USDT', 'ETH/USDC']
   return (
     <VStack

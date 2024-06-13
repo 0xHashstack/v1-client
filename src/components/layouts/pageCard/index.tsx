@@ -670,7 +670,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
                   </Text>
                     </Box>
                   : <Text color="white" fontSize="25px">
-                    Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Goerli" : "Mainnet"} and refresh
+                    Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Sepolia" : "Mainnet"} and refresh
                   </Text>
                 }
 

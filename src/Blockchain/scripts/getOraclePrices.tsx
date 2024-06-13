@@ -47,7 +47,6 @@ export async function getOraclePrices() {
     }
     return prices;
   } catch (e) {
-    console.log(e,"rpice")
     ////console.log("getOraclePrices failed: ", e);
     return prices;
   }

@@ -1269,6 +1269,7 @@ const useDataLoader = () => {
     try {
       const fetchProtocolStats = async () => {
         const dataStats = await getProtocolStats()
+        console.log(dataStats,"stats")
         if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 5)) {
           return
         }
@@ -1303,6 +1304,7 @@ const useDataLoader = () => {
           return
         }
         const data = await getUserDeposits(address)
+        console.log(data,"data deposit")
         if (!data) {
           return
         }
@@ -1885,6 +1887,7 @@ const useDataLoader = () => {
           return
         }
         const userLoans = await getUserLoans(address)
+        console.log(userLoans,"loans")
         if (!userLoans) {
           return
         }

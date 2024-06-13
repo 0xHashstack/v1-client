@@ -408,7 +408,7 @@ const Navbar = ({ validRTokens }: any) => {
           alignItems="center"
           marginRight="1.2rem"
         >
-          {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
+          {/* {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
             ''
           ) : (
             <GetTokensModal
@@ -424,7 +424,7 @@ const Navbar = ({ validRTokens }: any) => {
               color="#E6EDF3"
               backGroundOverLay="rgba(244, 242, 255, 0.5)"
             />
-          )}
+          )} */}
           <Box
             fontSize="12px"
             color="#FFF"

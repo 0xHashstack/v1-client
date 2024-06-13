@@ -17,6 +17,7 @@ import {
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import BigNumber from "bignumber.js";
 import { Address, Metrics, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
+
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
   let marketInfo: IMarketInfo = {
     borrowRate: Number(marketData?.borrow_rate)*100,
@@ -25,13 +26,9 @@ function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
     totalSupply: Number(marketData?.total_supply),
     lentAssets: Number(marketData?.lent_assets),
     totalBorrow: Number(marketData?.total_borrow),
-    availableReserves: weiToEtherNumber(
-      new BigNumber(Number((marketData?.total_supply)))
-.minus(new BigNumber(Number((marketData?.total_borrow))))
-        .toString(),
-      getTokenFromAddress((marketData?.token_address?.address))
-        ?.name as Token
-    ),
+    availableReserves: 
+      Number(new BigNumber(Number((marketData?.total_supply)))
+    .minus(new BigNumber(Number((marketData?.total_borrow))))),
     utilisationPerMarket: 
       Number(marketData?.utilisation_per_market) ?Number(marketData?.utilisation_per_market):0 ,
 
@@ -65,10 +62,10 @@ export async function getStats(){
       new Address('0x66bab31e89d426fbdfaa021be5bc71e785c13f9e9a6a10c89eaa8e1e0a9008f'),
       contractsEnv.TOKENS
     );
-    const res=await metrics?.get_protocol_stats(new Address('0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb'))
-    // console.log(res,"data res")
+    const res=await metrics?.get_protocol_stats(new Address('0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7'))
+   
   } catch (error) {
-    console.log(error,'err in stats')
+    // console.log(error,'err in stats')
   }
 }
 

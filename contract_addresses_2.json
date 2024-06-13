@@ -528,33 +528,33 @@
         "name": "rBTC",
         "symbol": "rBTC",
         "decimals": 8,
-        "underlying_asset": "0x2a39a8cb51c341a267d3dc7bab63ad270fb8c5f5d8c0b145b0875b8599cf515",
-        "address": "0x56b84d35d8b12d6823aa0f1c4cc6ae7ef13289a6356f5a3f11c5f4dd0496424",
-        "NETWORK_TOKEN_ADDRESS": "0x2a39a8cb51c341a267d3dc7bab63ad270fb8c5f5d8c0b145b0875b8599cf515"
+        "underlying_asset": "0x00452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e",
+        "address": "0x13fcad879f13635bfbcf8b72f26d1a608715ebd6a34ad20e25701e953acb0d6",
+        "NETWORK_TOKEN_ADDRESS": "0x00452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e"
       },
       {
         "name": "rETH",
         "symbol": "rETH",
         "decimals": 18,
-        "underlying_asset": "0x23ed5f7fb8c9f6e11ff52d755b40f1e99b4d2e35421d0512295cf9d06ab0c31",
-        "address": "0x7f119772b14c642763120945d1ad61179eac3740db70ff669b3b185e26f47e3",
-        "NETWORK_TOKEN_ADDRESS": "0x23ed5f7fb8c9f6e11ff52d755b40f1e99b4d2e35421d0512295cf9d06ab0c31"
+        "underlying_asset": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+        "address": "0x314f8ceb80dea0efa4177f2a4447ac5e9a9f62014aece3ff01f4601bb3b23ed",
+        "NETWORK_TOKEN_ADDRESS": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
       },
       {
         "name": "rUSDT",
         "symbol": "rUSDT",
         "decimals": 6,
-        "underlying_asset": "0x3df66e5fb59fcc4594164991b2f31fa18d31f9e6141581bceec49d09df483b0",
-        "address": "0x72ca67ac9cd8e106b060eeebd5ae31f499267906d5718c0e5f22c7fb26f96d5",
-        "NETWORK_TOKEN_ADDRESS": "0x3df66e5fb59fcc4594164991b2f31fa18d31f9e6141581bceec49d09df483b0"
+        "underlying_asset": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb",
+        "address": "0x619932adbb16f366655d895cc68adcad2d7f8d796a8e6ed813a3233226682f7",
+        "NETWORK_TOKEN_ADDRESS": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb"
       },
       {
         "name": "rUSDC",
         "symbol": "rUSDC",
         "decimals": 6,
-        "underlying_asset": "0x4bec42b48094e55b7a9bfea60e90721de9310905631c1b31151e524a588b086",
-        "address": "0x3cae2c5a3ca931ff7144dd2d49878ba3702c66df966102731c874ec4a4736e3",
-        "NETWORK_TOKEN_ADDRESS": "0x4bec42b48094e55b7a9bfea60e90721de9310905631c1b31151e524a588b086"
+        "underlying_asset": "0x053b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080",
+        "address": "0x65ce1b9d1b701180fbf72de8474e7038ffe35d06d1d948f667eec747b5bf2ed",
+        "NETWORK_TOKEN_ADDRESS": "0x053b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080"
       },
       {
         "name": "rDAI",
@@ -563,6 +563,14 @@
         "underlying_asset": "0x41b14277b3ea39eadaa506c7c9a4483544d9eaae6ed417747fa19ae500297e4",
         "address": "0xd31ad226699be36f45169de7cac8af7dbd8ce67326c2a3a048db71a304a1ab",
         "NETWORK_TOKEN_ADDRESS": "0x41b14277b3ea39eadaa506c7c9a4483544d9eaae6ed417747fa19ae500297e4"
+      },
+      {
+        "name": "rSTRK",
+        "symbol": "rSTRK",
+        "decimals": 18,
+        "underlying_asset": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+        "address": "0x444f6a5237e3b84d067a8deb9f58399a5282ce271aec544dbfb89348f038570",
+        "NETWORK_TOKEN_ADDRESS": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
       }
     ],
     "dTOKENS": [
@@ -570,33 +578,33 @@
         "name": "dBTC",
         "symbol": "dBTC",
         "decimals": 8,
-        "underlying_asset": "0x2a39a8cb51c341a267d3dc7bab63ad270fb8c5f5d8c0b145b0875b8599cf515",
-        "address": "0x2e3d5980a1840856a7217c65c2a418143a3b70a15a07fb4db08e9a0d3b099b8",
-        "NETWORK_TOKEN_ADDRESS": "0x2a39a8cb51c341a267d3dc7bab63ad270fb8c5f5d8c0b145b0875b8599cf515"
+        "underlying_asset": "0x00452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e",
+        "address": "0x4ae2c89dd608cbb74d54b8f9131ef17325d4b1f556845e5675a88aa595494f8",
+        "NETWORK_TOKEN_ADDRESS": "0x00452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e"
       },
       {
         "name": "dETH",
         "symbol": "dETH",
         "decimals": 18,
-        "underlying_asset": "0x23ed5f7fb8c9f6e11ff52d755b40f1e99b4d2e35421d0512295cf9d06ab0c31",
-        "address": "0x7fb5911c692134f31548c70a96b587676d30c7c8ba13b86147b32f3fb3e5d40",
-        "NETWORK_TOKEN_ADDRESS": "0x23ed5f7fb8c9f6e11ff52d755b40f1e99b4d2e35421d0512295cf9d06ab0c31"
+        "underlying_asset": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+        "address": "0x5a69b3211a2078878364fd9b646c0b82199509284e10f77182f8f0d9c15f4ae",
+        "NETWORK_TOKEN_ADDRESS": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
       },
       {
         "name": "dUSDT",
         "symbol": "dUSDT",
         "decimals": 6,
-        "underlying_asset": "0x3df66e5fb59fcc4594164991b2f31fa18d31f9e6141581bceec49d09df483b0",
-        "address": "0x7df2e14d80221c58991a5d199b7ec6eb3224c45757935656ba82a106823ef65",
-        "NETWORK_TOKEN_ADDRESS": "0x3df66e5fb59fcc4594164991b2f31fa18d31f9e6141581bceec49d09df483b0"
+        "underlying_asset": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb",
+        "address": "0x779d4d190aba14634a24b4800993d7999fadd7cd43ec8b75634cd6395e51139",
+        "NETWORK_TOKEN_ADDRESS": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb"
       },
       {
         "name": "dUSDC",
         "symbol": "dUSDC",
         "decimals": 6,
-        "underlying_asset": "0x4bec42b48094e55b7a9bfea60e90721de9310905631c1b31151e524a588b086",
-        "address": "0x18a54608c25880b4121e84d5937f75a19c1dad3a3b6173196a98cf555d1e1c2",
-        "NETWORK_TOKEN_ADDRESS": "0x4bec42b48094e55b7a9bfea60e90721de9310905631c1b31151e524a588b086"
+        "underlying_asset": "0x053b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080",
+        "address": "0x35658a65c48b0fd3a5469c644d7ee49bd53ae79f8ebf2cfe02df46662f61e5d",
+        "NETWORK_TOKEN_ADDRESS": "0x053b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080"
       },
       {
         "name": "dDAI",
@@ -605,6 +613,14 @@
         "underlying_asset": "0x41b14277b3ea39eadaa506c7c9a4483544d9eaae6ed417747fa19ae500297e4",
         "address": "0x7455b130dbeabcea387d33fddc39078f2a3abcb990a2cd01b1602c78aaf0a4d",
         "NETWORK_TOKEN_ADDRESS": "0x41b14277b3ea39eadaa506c7c9a4483544d9eaae6ed417747fa19ae500297e4"
+      },
+      {
+        "name": "dSTRK",
+        "symbol": "dSTRK",
+        "decimals": 18,
+        "underlying_asset": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+        "address": "0x74d295c6305446b1061da861ebf4e1d07d524b8988f4c16353f7411a6a6b78",
+        "NETWORK_TOKEN_ADDRESS": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
       }
     ],
     "peripherals": {

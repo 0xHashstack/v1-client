@@ -326,7 +326,7 @@ export async function getMaximumDynamicLoanAmount(
     // );
     return res;
   } catch (err) {
-   console.log(err, "err in getMaximumDynamicDeposit");
+  //  console.log(err, "err in getMaximumDynamicDeposit");
   }
 }
 export async function getMinimumLoanAmount(
