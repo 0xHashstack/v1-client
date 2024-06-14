@@ -422,14 +422,14 @@ export async function getZklendusdSpendValue(amount:number,coin: string,decimals
     const spendcalls = new SpendView(
       config,
       tokens,
-      new Address(contractsEnv.EMPIRIC_PROXY_ADDRESS)
+      new Address('0x36031daa264c24520b11d93af622c848b2499b66b41d611bac95e13cfca131a')
     );
     const ztokens=await spendcalls.get_supported_zklend_tokens();
     const ztokenaddress=findZToken(ztokens,coin)
     const res:any = await spendcalls.get_usd_value_zklend(new Address(ztokenaddress),bignum)
     console.log(res,"responser")
   
-  return 0;
+  return Number(res);
 
     ////console.log("supported pools for Jediswap: ", res);
   } catch (error) {

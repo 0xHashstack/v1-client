@@ -71,10 +71,10 @@ const parseDeposit = (deposit: any) => {
   let token = getTokenFromAddress(tokenAddress)?.name as NativeToken;
 
   let rTokenFreeParsed = 
-    Number(depositData?.rToken_free)
+    Number(depositData?.rTokens?.free)
   ;
 
-  let rTokenLockedParsed = Number(depositData?.rToken_locked);
+  let rTokenLockedParsed = Number(depositData?.rTokens?.locked  );
 
   let rTokenStakedParsed = Number(depositData?.rTokens?.staked);
   let deposit_data: IDeposit = {
@@ -134,7 +134,6 @@ export async function getUserDeposits(account: string) {
     // return promises;
     return new Promise((resolve, reject) => {
       Promise.allSettled([...promises]).then((val) => {
-        console.log(val,'value')
         const results = val
           .filter((deposit, idx) => {
             return deposit?.status == "fulfilled" && deposit?.value;
