@@ -5,6 +5,7 @@ import {
   getJediEstimatedLpAmountOut,
   getMySwapEstimateLiquiditySplit,
   getMySwapEstimatedLpAmountOut,
+  getZklendCallData,
 } from "@/Blockchain/scripts/l3interaction";
 import ArrowUp from "@/assets/icons/arrowup";
 import DAILogo from "@/assets/icons/coins/dai";
@@ -137,6 +138,8 @@ const LiquidityProvisionModal = ({
 
     toMarketB,
     setToMarketB,
+    callData,
+    setcallData,
 
     dataJediSwap_addLiquidity,
     errorJediSwap_addLiquidity,
@@ -211,7 +214,15 @@ const LiquidityProvisionModal = ({
       // console.log(err);
     }
   }, [strkTokenAlloactionData, currentPool]);
-
+  
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const res=await getZklendCallData();
+      setcallData(res);
+    }
+    fetchData();
+  })
+  
   useEffect(() => {
     if (allocationData?.length > 0) {
       if (

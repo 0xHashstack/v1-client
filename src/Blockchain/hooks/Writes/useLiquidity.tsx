@@ -9,6 +9,7 @@ const useLiquidity = () => {
   const [liquidityLoanId, setLiquidityLoanId] = useState<string>("");
   const [toMarketA, setToMarketA] = useState<NativeToken | any>("ETH");
   const [toMarketB, setToMarketB] = useState<NativeToken | any>("USDT");
+  const [callData, setcallData] = useState<any>()
 
   const {
     data: dataJediSwap_addLiquidity,
@@ -62,6 +63,8 @@ const useLiquidity = () => {
 
     toMarketB,
     setToMarketB,
+    callData,
+    setcallData,
 
     dataJediSwap_addLiquidity,
     errorJediSwap_addLiquidity,

@@ -1,4 +1,4 @@
-import { Contract, number, uint256 } from "starknet";
+import { Contract, num, number, uint256 } from "starknet";
 // import jediSwapAbi from "../abis_upgrade/l3_jedi_swap_abi.json";
 // import pricerAbi from "../abis_upgrade/pricer_abi.json";
 // import mySwapAbi from "../abis_upgrade/l3_my_swap_abi.json";
@@ -6,6 +6,7 @@ import jediSwapAbi from "../abis_mainnet/l3_jedi_swap_abi.json";
 import pricerAbi from "../abis_mainnet/pricer_abi.json";
 import mySwapAbi from "../abis_mainnet/l3_my_swap_abi.json";
 import {
+  contractsEnv,
   diamondAddress,
   getProvider,
   getTokenFromAddress,
@@ -15,6 +16,8 @@ import {
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount, weiToEtherNumber } from "../utils/utils";
 import { NativeToken, Token } from "../interfaces/interfaces";
+import { Address, MyBigNumber, Spend, SpendView, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
+import BigNumber from "bignumber.js";
 
 type LiquiditySplit = {
   amountA: number;
@@ -248,6 +251,42 @@ export async function getMySwapEstimateLiquiditySplit(
   }
 }
 
+export async function getZklendCallData(){
+  try {
+    const config = getSepoliaConfig(
+      './target/dev',
+      'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
+  );
+    const spendcalls = new Spend(
+      config,
+      diamondAddress
+    );
+    const res=await spendcalls.getZkLendLiquidityCalldata("6")
+    return res;
+   
+  } catch (error) {
+    // console.log(error,'err in stats')
+  }
+}
+
+export async function getzklendRevertCallData(){
+  try {
+    const config = getSepoliaConfig(
+      './target/dev',
+      'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
+  );
+    const spendcalls = new Spend(
+      config,
+      diamondAddress
+    );
+    const res=await spendcalls.getRevertZkLendLiquidityCalldata("6")
+    return res;
+   
+  } catch (error) {
+    // console.log(error,'err in stats')
+  }
+}
+
 // before interaction
 export async function getMySwapEstimatedLpAmountOut(
   loanMarket: string,
@@ -363,39 +402,38 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
   }
 }
 
-export async function getZklendusdSpendValue(loan_id:number,coin: string | undefined) {
-  const provider = getProvider();
-  const abi=[{
-    "type": "function",
-    "name": "get_usd_value_zklend",
-    "inputs": [
-        {
-            "name": "loan_id",
-            "type": "core::felt252"
-        }
-    ],
-    "outputs": [
-        {
-            "type": "(core::integer::u256, core::integer::u8)"
-        }
-    ],
-    "state_mutability": "view"
-}]
+function findZToken(data: any, underlyingToken: any) {
+  for (let item of data) {
+      if (item.underlying?.address === underlyingToken) {
+          return item.zToken?.address;
+      }
+  }
+  return null;  // If no match is found
+}
+
+export async function getZklendusdSpendValue(amount:number,coin: string,decimals:number ) {
   try {
-    const l3Contract = new Contract(abi, l3DiamondAddress, provider);
-    const res:any = await l3Contract.call("get_usd_value_zklend", [loan_id], {
-      blockIdentifier: "pending",
-    });
-    const uint256Obj = {
-      low: res[0],
-      high: 0
-  };
-  const amnt=parseAmount(uint256.uint256ToBN(uint256Obj).toString(),6);
-  return amnt;
+    const config = getSepoliaConfig(
+      './target/dev',
+      'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
+  );
+  const tokens=contractsEnv.TOKENS
+  const bignum=new MyBigNumber(amount,decimals)
+    const spendcalls = new SpendView(
+      config,
+      tokens,
+      new Address(contractsEnv.EMPIRIC_PROXY_ADDRESS)
+    );
+    const ztokens=await spendcalls.get_supported_zklend_tokens();
+    const ztokenaddress=findZToken(ztokens,coin)
+    const res:any = await spendcalls.get_usd_value_zklend(new Address(ztokenaddress),bignum)
+    console.log(res,"responser")
+  
+  return 0;
 
     ////console.log("supported pools for Jediswap: ", res);
   } catch (error) {
-   //console.log("error in getSupportedPoolsJediSwap: ", error);
+   console.log("error in getZklendusdSpendValue ", error);
   }
 }
 

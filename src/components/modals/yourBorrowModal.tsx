@@ -132,6 +132,7 @@ import {
   getJediEstimatedLpAmountOut,
   getMySwapEstimateLiquiditySplit,
   getMySwapEstimatedLpAmountOut,
+  getzklendRevertCallData,
 } from '../../Blockchain/scripts/l3interaction'
 import ErrorButton from '../uiElements/buttons/ErrorButton'
 import SuccessButton from '../uiElements/buttons/SuccessButton'
@@ -361,6 +362,8 @@ const YourBorrowModal = ({
   const {
     revertLoanId,
     setRevertLoanId,
+    callData,
+    setcallData,
 
     dataRevertInteractWithL3,
     writeAsyncRevertInteractWithL3,
@@ -524,6 +527,14 @@ const YourBorrowModal = ({
   //     await getJediEstimatedLpAmountOut();
   //   };
   // }, []);
+  
+  useEffect(()=>{
+    const fetchRevertData=async()=>{
+      const res=await getzklendRevertCallData();
+      setcallData(res);
+    }
+    fetchRevertData();
+  },[])
 
   interface assetB {
     USDT: any

@@ -12,7 +12,7 @@ import {
   selectOraclePrices,
 } from "@/store/slices/readDataSlice";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
-import { getStats } from "@/Blockchain/scripts/protocolStats";
+import { getZklendCallData } from "@/Blockchain/scripts/protocolStats";
 const MarketDashboard = () => {
   // const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
   //   []
@@ -46,13 +46,6 @@ const MarketDashboard = () => {
       fetchUserDeposits();
     }
   }, [userDeposits, validRTokens, address]);
-
-  useEffect(()=>{
-    const fetchData=async()=>{
-      const res=await getStats();
-    }
-    fetchData();
-  })
 
   const fetchUserDeposits = async () => {
     try {
