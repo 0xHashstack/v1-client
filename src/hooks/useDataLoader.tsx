@@ -2480,7 +2480,7 @@ const useDataLoader = () => {
         let arr:any = [];
         await Promise.all(userLoans.map(async (Borrow:any, idx:number) => {
             if (Borrow?.l3App === "ZKLEND") {
-                const usdspend = await getZklendusdSpendValue(Borrow?.loanId, Borrow?.loanMarket);
+                const usdspend = await getZklendusdSpendValue(Borrow?.loanAmountParsed,tokenAddressMap[Borrow?.loanMarket.slice(1)],tokenDecimalsMap[Borrow?.loanMarket]);
                 const val = {
                     BorrowId: Borrow?.loanId,
                     SpendValue: usdspend
