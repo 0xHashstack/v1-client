@@ -580,7 +580,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               alignItems="center"
               minHeight={"100vh"}
 
-              pt="8rem"
+              pt="7rem"
               background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.15), transparent) top left,
             radial-gradient(circle 1300px at bottom right, rgba(115, 49, 234, 0.15), transparent) bottom right,

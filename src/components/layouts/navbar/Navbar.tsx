@@ -314,7 +314,7 @@ const Navbar = ({ validRTokens }: any) => {
               />
             )}
 
-            <Text fontSize="14px">Dashboard</Text>
+            <Text fontSize="14px">Markets</Text>
           </Box>
         </Box>
 

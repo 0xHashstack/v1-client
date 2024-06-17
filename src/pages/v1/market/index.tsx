@@ -34,7 +34,7 @@ const Market: NextPage = () => {
 
   return (
     <PageCard>
-      <Box className="embla" ref={emblaRef}>
+      {/* <Box className="embla" ref={emblaRef}>
         <Box className="embla__container">
           <Box className="embla__slide" position="relative" height={'150px'}>
             <Image
@@ -224,9 +224,9 @@ const Market: NextPage = () => {
             </Box>
           </Box>
         </Box>
-      </Box>
+      </Box> */}
 
-      <Box
+      {/* <Box
         display="grid"
         gridTemplateColumns="auto 1fr"
         justifyContent="space-between"
@@ -264,10 +264,10 @@ const Market: NextPage = () => {
             />
           ))}
         </Box>
-      </Box>
+      </Box> */}
 
-      <StatsBoard />
-      <NavButtons width={95} marginBottom="1.125rem" />
+      {/* <StatsBoard /> */}
+        <NavButtons width={95} marginBottom="1.125rem" />
       <MarketDashboard />
     </PageCard>
   )

@@ -190,16 +190,21 @@ const MarketDashboard = () => {
       alignItems="flex-start"
     >
       <DashboardLeft
-        width={"49%"}
+        width={"100%"}
         oraclePrices={oraclePrices}
         totalSupplies={totalSupplies}
+        borrowAPRs={borrowAPRs}
+        totalBorrows={totalBorrows}
+        availableReserves={availableReserves}
+        utilization={utilization}
         supplyAPRs={supplyAPRs}
         validRTokens={validRTokens}
+        protocolStats={protocolStats}
         // columnItems={dashboardItems1}
         // gap={"16.6"}
         // rowItems={rowItems1}
       />
-      <DashboardRight
+      {/* <DashboardRight
         width={"49%"}
         oraclePrices={oraclePrices}
         borrowAPRs={borrowAPRs}
@@ -213,7 +218,7 @@ const MarketDashboard = () => {
         // gap={"14.2"}
         // columnItems={dashboardItems2}
         // rowItems={rowItems2}
-      />
+      /> */}
     </HStack>
   );
 };

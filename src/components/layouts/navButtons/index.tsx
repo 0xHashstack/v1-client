@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, HStack } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, HStack,Text } from '@chakra-ui/react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import posthog from 'posthog-js'
@@ -7,8 +7,13 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import FireIcon from '@/assets/icons/fireIcon'
 import {
+  selectNetAPR,
+  selectNetWorth,
+  selectProtocolReserves,
   selectUserLoans,
   selectUsersFilteredSupply,
+  selectYourBorrow,
+  selectYourSupply,
 } from '@/store/slices/readDataSlice'
 import {
   selectCurrentPage,
@@ -16,6 +21,10 @@ import {
   setCurrentPage,
 } from '@/store/slices/userAccountSlice'
 import { capitalizeWords } from '../../../utils/functions/capitalizeWords'
+import numberFormatter from '@/utils/functions/numberFormatter'
+import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
+import PositiveApr from '@/assets/icons/PositiveApr'
+import NegativeApr from '@/assets/icons/NegativeApr'
 
 interface NavButtonsProps {
   width: number
@@ -32,7 +41,12 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
   const userLoans = useSelector(selectUserLoans)
   const usersFilteredSupply = useSelector(selectUsersFilteredSupply)
   const userUnspentLoans = useSelector(selectUserUnspentLoans)
-
+  const protocolReserves = useSelector(selectProtocolReserves);
+  const netWorth = useSelector(selectNetWorth);
+  const yourSupply = useSelector(selectYourSupply);
+  const yourBorrow = useSelector(selectYourBorrow);
+  const netAPR = useSelector(selectNetAPR);
+  
   const navOptions = [
     { path: 'v1/market', label: 'Markets', count: 0 },
     {
@@ -80,7 +94,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
   }
 
   return (
-    <HStack mb={marginBottom} width={`${width}%`}>
+    <HStack mb={marginBottom} width={`${width}%`} justifyContent="space-between">
       <ButtonGroup>
         {navOptions.map((option, idx) => (
           <Box key={idx} onClick={() => handleButtonClick(option.path)}>
@@ -175,6 +189,30 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
           </Box>
         ))}
       </ButtonGroup>
+      <Box display="flex" gap="1rem">
+        <Box display="flex" gap='0.4rem' justifyContent="center" alignItems="center">
+          <Text color="#CBCBD1" fontSize='14px'>
+            Your Net Worth
+          </Text>
+          <Text color="#E6EDF3" fontSize="18px">
+            ${numberFormatter(netWorth)}
+          </Text>
+        </Box>
+        <Box display="flex" gap='0.4rem'  justifyContent="center" alignItems="center">
+          <Text color="#CBCBD1" fontSize='14px'>
+            Net APR
+          </Text>
+          <Text color="#E6EDF3" fontSize="18px">
+            {numberFormatterPercentage(netAPR)}%
+          </Text>
+          <Box>
+            {netAPR>=0?<PositiveApr/>:<NegativeApr/>}
+          </Box>
+        </Box>
+        
+
+        
+      </Box>
     </HStack>
   )
 }
