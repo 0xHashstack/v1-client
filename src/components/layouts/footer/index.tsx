@@ -1,50 +1,83 @@
-import { Box, HStack, Skeleton, Text } from "@chakra-ui/react";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { AccountInterface, BlockNumber, ProviderInterface } from "starknet";
-import { useAccount, useBlockNumber, useNetwork } from "@starknet-react/core";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  Box,
+  Button,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuGroup,
+  MenuItem,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
+  Skeleton,
+  Text,
+} from '@chakra-ui/react'
+import { useAccount, useBlockNumber, useNetwork } from '@starknet-react/core'
+import 'keen-slider/keen-slider.min.css'
+import { useKeenSlider } from 'keen-slider/react'
+import Image from 'next/image'
+import Link from 'next/link'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { AccountInterface, BlockNumber } from 'starknet'
 
 import {
-  setBlock,
   selectBlock,
-  setCurrentNetwork,
   selectCurrentNetwork,
-} from "@/store/slices/readDataSlice";
+  setBlock,
+} from '@/store/slices/readDataSlice'
+
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
-    chainId: string;
-  };
+    chainId: string
+  }
 }
+
+const animation = { duration: 40000, easing: (t: number) => t }
+
 const Footer = () => {
-  const { account, connector } = useAccount();
-  const { data:block, isLoading, isError } = useBlockNumber({
-    blockIdentifier: 'latest' as BlockNumber
+  const { account } = useAccount()
+  const { data: block } = useBlockNumber({
+    blockIdentifier: 'latest' as BlockNumber,
   })
-  // const [walletConnected, setwalletConnected] = useState<any>()
-  // useEffect(()=>{
-  //   const walletConnected=localStorage.getItem('lastUsedConnector');
-  //   setwalletConnected(walletConnected);
-  // },[account])
-  const extendedAccount = account as ExtendedAccountInterface;
-  const currentBlock = useSelector(selectBlock);
-  const currentChainId = useSelector(selectCurrentNetwork);
-  const dispatch = useDispatch();
+  const extendedAccount = account as ExtendedAccountInterface
+  const currentBlock = useSelector(selectBlock)
+  const currentChainId = useSelector(selectCurrentNetwork)
+  const dispatch = useDispatch()
   const { chain } = useNetwork()
+
+  const [ref] = useKeenSlider<HTMLDivElement>({
+    loop: true,
+    // mode: "free",
+    slides: {
+      perView: 2,
+      spacing: 15,
+    },
+    renderMode: 'performance',
+    drag: false,
+    created(s) {
+      s.moveToIdx(5, true, animation)
+    },
+    updated(s) {
+      s.moveToIdx(s.track.details.abs + 5, true, animation)
+    },
+    animationEnded(s) {
+      s.moveToIdx(s.track.details.abs + 5, true, animation)
+    },
+  })
+
   useEffect(() => {
     if (!currentBlock || currentBlock < (block ? block : -1)) {
-      dispatch(setBlock(block));
+      dispatch(setBlock(block))
     }
-  }, [block]);
-  ////console.log(extendedAccount?.provider?.chainId,"footer")
-  ////console.log(walletConnected);
+  }, [block])
+
   return (
     <HStack
       zIndex="14"
       position="fixed"
       bottom="0"
-      // backgroundColor="#161B22"
       bgColor="#02010F"
       width="100vw"
       boxShadow="rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px"
@@ -53,12 +86,56 @@ const Footer = () => {
       alignItems="center"
       color="#FFF"
       height="2rem"
-      // bgColor="red"
       borderY="1px solid #2B2F35"
     >
+      <HStack
+        ref={ref}
+        className="keen-slider"
+        h="100%"
+        display="flex"
+        alignItems="center"
+        flex="1"
+      >
+        <Box
+          className="keen-slider__slide number-slide1 text_nowrap"
+          fontSize="sm"
+          display="flex"
+          alignItems="center"
+        >
+          Availables Reserves:
+          <Text color="#B0F1DE" ml="3">
+            $531,932.14
+          </Text>
+        </Box>
+
+        <Box
+          className="keen-slider__slide number-slide2 text_nowrap"
+          fontSize="sm"
+          display="flex"
+          alignItems="center"
+        >
+          Average Asset Utilisation:
+          <Text color="#B0F1DE" ml="3">
+            $531,932.14
+          </Text>
+        </Box>
+
+        <Box
+          className="keen-slider__slide number-slide3 text_nowrap"
+          fontSize="sm"
+          display="flex"
+          alignItems="center"
+        >
+          Availables Reserves:
+          <Text color="#B0F1DE" ml="3">
+            $531,932.14
+          </Text>
+        </Box>
+      </HStack>
+
       <HStack height="100%">
-        <Link href={"https://status.hashstack.finance/"} target="_blank">
-          <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 3.9rem">
+        <Link href={'https://status.hashstack.finance/'} target="_blank">
+          <HStack borderLeft="1px solid #2B2F35" h="100%" p="8px 3.9rem">
             <Box>
               <Image
                 src="/stableConnectionIcon.svg"
@@ -72,15 +149,116 @@ const Footer = () => {
             </Text>
           </HStack>
         </Link>
+      </HStack>
+
+      <HStack borderLeft="1px solid #2B2F35" h="100%">
+        <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
+          <Menu>
+            {({ isOpen }) => (
+              <>
+                <MenuButton>
+                  <Box display="flex" alignItems="center" gap="2">
+                    <Text color="#00D395" fontSize="12px">
+                      Earn
+                    </Text>
+
+                    <Image
+                      src="/upperarrow.svg"
+                      alt="Upper arrow"
+                      width="16"
+                      height="16"
+                      style={{
+                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                      }}
+                    />
+                  </Box>
+                </MenuButton>
+
+                <MenuList
+                  bgColor="#02010F"
+                  border="1px"
+                  borderColor="#34345699"
+                  p=".5rem"
+                  display="flex"
+                  flexDir="column"
+                  alignItems="center"
+                >
+                  <MenuItem
+                    _hover={{ color: '#00D395' }}
+                    fontSize="sm"
+                    fontWeight="medium"
+                    display="flex"
+                    alignItems="center"
+                    gap="4"
+                    bgColor="transparent"
+                    color="#676D9A"
+                    borderBottom="1px solid #34345699"
+                    py="3"
+                  >
+                    <Image
+                      src="/plusicon.svg"
+                      alt="Plus Icon"
+                      width="16"
+                      height="16"
+                    />
+                    Contribute-2-Earn
+                  </MenuItem>
+
+                  <MenuItem
+                    _hover={{ color: '#00D395' }}
+                    fontSize="sm"
+                    fontWeight="medium"
+                    display="flex"
+                    alignItems="center"
+                    gap="4"
+                    bgColor="transparent"
+                    color="#676D9A"
+                    borderBottom="1px solid #34345699"
+                    py="3"
+                  >
+                    <Image
+                      src="/plusicon.svg"
+                      alt="Plus Icon"
+                      width="16"
+                      height="16"
+                    />
+                    Contribute-2-Earn
+                  </MenuItem>
+
+                  <MenuItem
+                    _hover={{ color: '#00D395' }}
+                    fontSize="sm"
+                    fontWeight="medium"
+                    display="flex"
+                    alignItems="center"
+                    gap="4"
+                    bgColor="transparent"
+                    color="#676D9A"
+                    py="3"
+                  >
+                    <Image
+                      src="/plusicon.svg"
+                      alt="Plus Icon"
+                      width="16"
+                      height="16"
+                    />
+                    Contribute-2-Earn
+                  </MenuItem>
+                </MenuList>
+              </>
+            )}
+          </Menu>
+        </HStack>
+
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Text color="#676D9A" fontSize="12px">
             Latest Synced block:
           </Text>
           <Box
-            height={"100%"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
+            height={'100%'}
+            display={'flex'}
+            justifyContent={'center'}
+            alignItems={'center'}
             gap={1}
           >
             <Box color="#00D395" fontSize="12px">
@@ -91,7 +269,6 @@ const Footer = () => {
                   startColor="#101216"
                   endColor="#2B2F35"
                   borderRadius="6px"
-                  // mt="4px"
                 />
               )}
             </Box>
@@ -103,15 +280,19 @@ const Footer = () => {
             />
           </Box>
         </HStack>
-   
-      </HStack>
-      <HStack borderLeft="1px solid #2B2F35" h="100%" p="8px 2rem">
-          <Box color="#676D9A" fontSize="12px" display="flex">
+
+        <HStack display="flex" h="100%" px="2rem">
+          <Box
+            color="#676D9A"
+            fontSize="12px"
+            display="flex"
+            alignItems="center"
+          >
             Network:
-            {chain?.network === "goerli" ? (
-              " Starknet Goerli"
-            ) : chain?.network==="mainnet" ? (
-              " Starknet Mainnet"
+            {chain?.network === 'goerli' ? (
+              ' Starknet Goerli'
+            ) : chain?.network === 'mainnet' ? (
+              ' Starknet Mainnet'
             ) : (
               <Skeleton
                 width="4rem"
@@ -124,10 +305,10 @@ const Footer = () => {
             )}
           </Box>
           <Box
-            height={"100%"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
+            height={'100%'}
+            display={'flex'}
+            justifyContent={'center'}
+            alignItems={'center'}
             gap={1}
           >
             <Image
@@ -138,25 +319,9 @@ const Footer = () => {
             />
           </Box>
         </HStack>
-      {/* <HStack>
-        <HStack
-          borderX="1px solid #2B2F35"
-          h="100%"
-          p="8px 2rem"
-          cursor="pointer"
-        >
-          <Text color="#BDBFC1" fontSize="12px">
-            Announcement
-          </Text>
-        </HStack>
-        <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
-          <Text color="#BDBFC1" fontSize="12px">
-            Dummy copy
-          </Text>
-        </HStack>
-      </HStack> */}
+      </HStack>
     </HStack>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer
