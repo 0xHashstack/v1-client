@@ -17,7 +17,7 @@ import {
 } from "../interfaces/interfaces";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import BigNumber from "bignumber.js";
-import { Address, Metrics, Spend, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
+import { Address, Metrics, Spend, getMainnetConfig, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
 
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
   let marketInfo: IMarketInfo = {
@@ -51,16 +51,16 @@ function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
 
 export async function getProtocolStats() {
   const marketStats: IMarketInfo[] = [];
-  const config = getSepoliaConfig(
+  const config = getMainnetConfig(
     './target/dev',
-    'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
+    'https://starknet-mainnet.infura.io/v3/82802c15c3d242d2846e464a66238198'
 );
   const metricsContract = new Metrics(
     config,
-    new Address('0x6da033fdb9257dd035a4a4f80269ecd8c5045ef81cd756dad7a5d2553f0d30d'),
-    new Address('0x177975265a7f166ef856f168df5f61bc0e921d441c6144c7dc0922f6c6f0a9d'),
-    new Address('0x4f9ea82707356d663d80d4064bb292db60108ac1022e7a15c341128dc647b42'),
-    new Address('0x66bab31e89d426fbdfaa021be5bc71e785c13f9e9a6a10c89eaa8e1e0a9008f'),
+    new Address(contractsEnv?.DIALER_CONTRACT_ADDRESS),
+    new Address(contractsEnv?.peripherals?.STAKING_ADDRESS),
+    new Address(contractsEnv?.EMPIRIC_PROXY_ADDRESS),
+    new Address(contractsEnv?.DIAMOND_ADDRESS),
     contractsEnv.TOKENS
   );
   try {
@@ -115,16 +115,16 @@ function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
 export async function getProtocolReserves() {
   const provider = getProvider();
   try {
-    const config = getSepoliaConfig(
+    const config = getMainnetConfig(
       './target/dev',
-      'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
+      'https://starknet-mainnet.infura.io/v3/82802c15c3d242d2846e464a66238198'
   );
     const metricsContract = new Metrics(
       config,
-      new Address('0x6da033fdb9257dd035a4a4f80269ecd8c5045ef81cd756dad7a5d2553f0d30d'),
-      new Address('0x177975265a7f166ef856f168df5f61bc0e921d441c6144c7dc0922f6c6f0a9d'),
-      new Address('0x4f9ea82707356d663d80d4064bb292db60108ac1022e7a15c341128dc647b42'),
-      new Address('0x66bab31e89d426fbdfaa021be5bc71e785c13f9e9a6a10c89eaa8e1e0a9008f'),
+      new Address(contractsEnv?.DIALER_CONTRACT_ADDRESS),
+      new Address(contractsEnv?.peripherals?.STAKING_ADDRESS),
+      new Address(contractsEnv?.EMPIRIC_PROXY_ADDRESS),
+      new Address(contractsEnv?.DIAMOND_ADDRESS),
       contractsEnv.TOKENS
     );
     const res:any = await metricsContract.get_protocol_reserves();

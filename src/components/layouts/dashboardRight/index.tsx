@@ -39,7 +39,7 @@ export const Coins: ICoin[] = [
   { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" },
   { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
   { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
-  { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
+  // { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
 ];
 
 interface DashboardRightProps {
