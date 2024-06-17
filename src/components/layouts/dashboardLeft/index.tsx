@@ -208,7 +208,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                 position="relative"
               >
                 <Td
-                  width={"15%"}
+                  width={"12%"}
                   fontSize={"12px"}
                   fontWeight={400}
                   padding={0}
@@ -288,7 +288,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                 </Td>
 
                 <Td
-                  width={"2.5%"}
+                  width={"9.5%"}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
