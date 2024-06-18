@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, HStack, Text,Skeleton } from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, HStack, Text,Skeleton, useMediaQuery } from '@chakra-ui/react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import posthog from 'posthog-js'
@@ -92,12 +92,13 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
     const navOption = navOptions.find((option) => option.path === path)
     return navOption ? navOption.label : ''
   }
-
+  const [isLessThan1200] = useMediaQuery('(max-width: 1200px)')
   return (
     <HStack
       mb={marginBottom}
       width={`${width}%`}
       justifyContent="space-between"
+
     >
       <ButtonGroup>
         {navOptions.map((option, idx) => (
@@ -107,7 +108,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
               bg="transparent"
               fontStyle="normal"
               fontWeight={currentPage === option.path ? '600' : '400'}
-              fontSize="14px"
+               fontSize={isLessThan1200?"13px":"14px"}
               lineHeight="20px"
               alignItems="center"
               letterSpacing="-0.15px"
@@ -193,14 +194,14 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
           </Box>
         ))}
       </ButtonGroup>
-      <Box display="flex" gap="1rem">
+      <Box display="flex" gap={isLessThan1200?"1.5rem":"2rem"} >
         <Box
           display="flex"
           gap="0.4rem"
           justifyContent="center"
           alignItems="center"
         >
-          <Text color="#CBCBD1" fontSize="14px">
+          <Text color="#CBCBD1" fontSize={isLessThan1200?"13px":"14px"} whiteSpace="nowrap">
             Your Net Worth
           </Text>
           {netWorth === null ? (
@@ -212,7 +213,9 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
               borderRadius="6px"
             />
           ) : (
-            <Text color="#E6EDF3" fontSize="18px">
+            <Text color="#E6EDF3"  fontSize={isLessThan1200?"16px":"18px"} textDecoration="underline" cursor="pointer" onClick={()=>{
+              router.push('/v1/your-metrics')
+            }}>
               ${numberFormatter(netWorth)}
             </Text>
           )}
@@ -223,7 +226,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Text color="#CBCBD1" fontSize="14px">
+          <Text color="#CBCBD1"  fontSize={isLessThan1200?"13px":"14px"} whiteSpace="nowrap">
             Net APR
           </Text>
           {netAPR === null ? (
@@ -235,7 +238,9 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
               borderRadius="6px"
             />
           ) : (
-            <Text color="#E6EDF3" fontSize="18px">
+            <Text color="#E6EDF3"  fontSize={isLessThan1200?"16px":"18px"} textDecoration="underline" cursor="pointer" onClick={()=>{
+              router.push('/v1/your-metrics')
+            }}>
               {numberFormatterPercentage(netAPR)}%
             </Text>
           )}

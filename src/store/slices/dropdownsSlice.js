@@ -9,6 +9,7 @@ const initialState = {
     walletConnectionDropdown: false,
     settingsDropdown: false,
     languagesDropdown: false,
+    recentUpdatesDropdown:false
   },
   modalDropdowns: {
     // registerCCPDropdown: false,

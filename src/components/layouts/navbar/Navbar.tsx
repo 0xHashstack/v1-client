@@ -45,6 +45,7 @@ import hoverDashboardIcon from '../../../assets/images/hoverDashboardIcon.svg'
 import hoverStake from '../../../assets/images/hoverStakeIcon.svg'
 import tickMark from '../../../assets/images/tickMark.svg'
 import { Coins } from '../dashboardLeft'
+import BellIcon from '@/assets/icons/BellIcon'
 
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
@@ -87,6 +88,7 @@ const Navbar = ({ validRTokens }: any) => {
 
   const ref1 = useRef<HTMLDivElement>(null)
   const ref2 = useRef<HTMLDivElement>(null)
+  const ref3 = useRef<HTMLDivElement>(null)
   const nftBalance: any = useSelector(selectNftBalance)
 
   useOutsideClick({
@@ -95,8 +97,10 @@ const Navbar = ({ validRTokens }: any) => {
       if (
         ref1.current &&
         ref2.current &&
+        ref3.current &&
         !ref1.current.contains(e.target as Node) &&
         !ref2.current.contains(e.target as Node) &&
+        !ref3.current.contains(e.target as Node) &&
         currentDropdown != ''
       ) {
         dispatch(setNavDropdown(''))
@@ -105,13 +109,32 @@ const Navbar = ({ validRTokens }: any) => {
   })
 
   useOutsideClick({
-    ref: ref2,
+    ref: ref3,
     handler: (e) => {
       if (
         ref1.current &&
         ref2.current &&
+        ref3.current &&
         !ref1.current.contains(e.target as Node) &&
         !ref2.current.contains(e.target as Node) &&
+        !ref3.current.contains(e.target as Node) &&
+        currentDropdown != ''
+      ) {
+        dispatch(setNavDropdown(''))
+      }
+    },
+  })
+
+  useOutsideClick({
+    ref: ref3,
+    handler: (e) => {
+      if (
+        ref1.current &&
+        ref2.current &&
+        ref3.current &&
+        !ref1.current.contains(e.target as Node) &&
+        !ref2.current.contains(e.target as Node) &&
+        !ref3.current.contains(e.target as Node) &&
         currentDropdown != ''
       ) {
         dispatch(setNavDropdown(''))
@@ -598,6 +621,109 @@ const Navbar = ({ validRTokens }: any) => {
               </Box>
             )}
           </Box>
+          <Box
+            ml="0.5rem"
+            cursor="pointer"
+            ref={ref3}
+            onClick={() => {
+              dispatch(setNavDropdown('recentUpdatesDropdown'))
+            }}
+          >
+            <BellIcon />
+          </Box>
+          {navDropdowns.recentUpdatesDropdown && (
+            <Box
+              width="370px"
+              mr="10rem"
+              display="flex"
+              justifyContent="center"
+              flexDirection="column"
+              gap="18px"
+              padding="0.7rem 1rem"
+              boxShadow="1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409"
+              borderRadius="6px"
+              background="var(--Base_surface, #02010F)"
+              border="1px solid rgba(103, 109, 154, 0.30)"
+              className="dropdown-container"
+            >
+              <Box display="flex" gap="0.5rem">
+                <Image
+                  src={'/arrowNavLeftActive.svg'}
+                  alt="Arrow Navigation Left"
+                  width="6"
+                  height="6"
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                />
+                <Text fontSize="12px">Notifications</Text>
+              </Box>
+              <Box display="flex" flexDirection="column" gap="1.5rem">
+                <Box display="flex" gap="0.8rem">
+                  <Box width="120px">
+                    <Image
+                      src="/degen_banner.svg"
+                      alt="Degen Mode"
+                      width="120"
+                      height="58"
+                    />
+                  </Box>
+                  <Box  mt="-0.2rem">
+                    <Text fontSize="18px">Defi Spring</Text>
+                    <Text
+                      mt="0.2rem"
+                      fontSize="12px"
+                      lineHeight="18px"
+                      color="F0F0F5"
+                      whiteSpace="nowrap"
+                    >
+                      Earn $STRK Tokens.
+                    </Text>
+                    <Text
+                      textDecoration="underline"
+                      color="#4D59E8"
+                      fontSize="12px"
+                      cursor="pointer"
+                    >
+                      Explore
+                    </Text>
+                  </Box>
+                  
+                </Box>
+                <Box display="flex" gap="0.8rem">
+                  <Box width="120px">
+                    <Image
+                      src="/degen_banner.svg"
+                      alt="Degen Mode"
+                      width="120"
+                      height="58"
+                    />
+                  </Box>
+                  <Box  mt="-0.2rem">
+                    <Text fontSize="18px">Defi Spring</Text>
+                    <Text
+                      mt="0.2rem"
+                      fontSize="12px"
+                      lineHeight="18px"
+                      color="F0F0F5"
+                      whiteSpace="nowrap"
+                    >
+                      A high yield arbitrage strategy feature.
+                    </Text>
+                    <Text
+                      textDecoration="underline"
+                      color="#4D59E8"
+                      fontSize="12px"
+                      cursor="pointer"
+                    >
+                      Explore
+                    </Text>
+                  </Box>
+                  
+                </Box>
+              </Box>
+            </Box>
+          )}
           <Box
             borderRadius="6px"
             width="fit-content"

@@ -12,21 +12,26 @@ import {
   MenuOptionGroup,
   Skeleton,
   Text,
+  useMediaQuery,
 } from '@chakra-ui/react'
 import { useAccount, useBlockNumber, useNetwork } from '@starknet-react/core'
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AccountInterface, BlockNumber } from 'starknet'
 
 import {
   selectBlock,
   selectCurrentNetwork,
+  selectProtocolReserves,
   setBlock,
 } from '@/store/slices/readDataSlice'
+import numberFormatter from '@/utils/functions/numberFormatter'
+import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
+import { useRouter } from 'next/router'
 
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
@@ -46,23 +51,26 @@ const Footer = () => {
   const currentChainId = useSelector(selectCurrentNetwork)
   const dispatch = useDispatch()
   const { chain } = useNetwork()
-
+  const protocolReserves = useSelector(selectProtocolReserves)
+  const router=useRouter();
+  const [isLessThan1400] = useMediaQuery('(max-width: 1400px)')
+  const [perviewCount, setperviewCount] = useState<number>(2)
   const [ref] = useKeenSlider<HTMLDivElement>({
     loop: true,
     // mode: "free",
-    slides: {
-      perView: 2,
-      spacing: 15,
+     slides: {
+      perView: perviewCount,
+      spacing: 13,
     },
     renderMode: 'performance',
     drag: false,
-    created(s) {
+    created(s: { moveToIdx: (arg0: number, arg1: boolean, arg2: { duration: number; easing: (t: number) => number }) => void }) {
       s.moveToIdx(5, true, animation)
     },
-    updated(s) {
+    updated(s: { moveToIdx: (arg0: any, arg1: boolean, arg2: { duration: number; easing: (t: number) => number }) => void; track: { details: { abs: number } } }) {
       s.moveToIdx(s.track.details.abs + 5, true, animation)
     },
-    animationEnded(s) {
+    animationEnded(s: { moveToIdx: (arg0: any, arg1: boolean, arg2: { duration: number; easing: (t: number) => number }) => void; track: { details: { abs: number } } }) {
       s.moveToIdx(s.track.details.abs + 5, true, animation)
     },
   })
@@ -72,6 +80,14 @@ const Footer = () => {
       dispatch(setBlock(block))
     }
   }, [block])
+
+  useEffect(()=>{
+    if(isLessThan1400){
+      setperviewCount(1);
+    }else{
+      setperviewCount(2);
+    }
+  },[isLessThan1400])
 
   return (
     <HStack
@@ -94,8 +110,23 @@ const Footer = () => {
         h="100%"
         display="flex"
         alignItems="center"
+        cursor="pointer"
         flex="1"
+        pl="1rem"
+        pr="4rem"
+        onClick={()=>{router.push('/v1/protocol-metrics')}}
       >
+        <Box
+          className="keen-slider__slide number-slide3 text_nowrap"
+          fontSize="sm"
+          display="flex"
+          alignItems="center"
+        >
+          Total Reserves:
+          <Text color="#B0F1DE" ml="3">
+            ${numberFormatter(protocolReserves?.totalReserves)}
+          </Text>
+        </Box>
         <Box
           className="keen-slider__slide number-slide1 text_nowrap"
           fontSize="sm"
@@ -104,7 +135,7 @@ const Footer = () => {
         >
           Availables Reserves:
           <Text color="#B0F1DE" ml="3">
-            $531,932.14
+            ${numberFormatter(protocolReserves?.availableReserves)}
           </Text>
         </Box>
 
@@ -116,24 +147,47 @@ const Footer = () => {
         >
           Average Asset Utilisation:
           <Text color="#B0F1DE" ml="3">
-            $531,932.14
+            {numberFormatterPercentage(protocolReserves?.avgAssetUtilisation)}%
           </Text>
         </Box>
-
         <Box
           className="keen-slider__slide number-slide3 text_nowrap"
           fontSize="sm"
           display="flex"
           alignItems="center"
         >
-          Availables Reserves:
+          Total Reserves:
           <Text color="#B0F1DE" ml="3">
-            $531,932.14
+            ${numberFormatter(protocolReserves?.totalReserves)}
           </Text>
         </Box>
+        <Box
+          className="keen-slider__slide number-slide1 text_nowrap"
+          fontSize="sm"
+          display="flex"
+          alignItems="center"
+        >
+          Availables Reserves:
+          <Text color="#B0F1DE" ml="3">
+            ${numberFormatter(protocolReserves?.availableReserves)}
+          </Text>
+        </Box>
+
+        <Box
+          className="keen-slider__slide number-slide2 text_nowrap"
+          fontSize="sm"
+          display="flex"
+          alignItems="center"
+        >
+          Average Asset Utilisation:
+          <Text color="#B0F1DE" ml="3">
+            {numberFormatterPercentage(protocolReserves?.avgAssetUtilisation)}%
+          </Text>
+        </Box>
+
       </HStack>
 
-      <HStack height="100%">
+      {/* <HStack height="100%">
         <Link href={'https://status.hashstack.finance/'} target="_blank">
           <HStack borderLeft="1px solid #2B2F35" h="100%" p="8px 3.9rem">
             <Box>
@@ -149,9 +203,9 @@ const Footer = () => {
             </Text>
           </HStack>
         </Link>
-      </HStack>
+      </HStack> */}
 
-      <HStack borderLeft="1px solid #2B2F35" h="100%">
+      <HStack borderLeft="1px solid #2B2F35" h="100%" mr="20rem">
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Menu>
             {({ isOpen }) => (
