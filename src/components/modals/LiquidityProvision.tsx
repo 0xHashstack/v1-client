@@ -79,6 +79,7 @@ import {
   ModalOverlay,
   Portal,
   Skeleton,
+  Spinner,
   Text,
   Tooltip,
   useDisclosure,
@@ -105,6 +106,8 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+import BigNumber from "bignumber.js";
+import { uint256 } from "starknet";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -140,8 +143,8 @@ const LiquidityProvisionModal = ({
 
     toMarketB,
     setToMarketB,
-    callData,
-    setcallData,
+    callDataLiquidity,
+    setcallDataLiquidity,
 
     dataJediSwap_addLiquidity,
     errorJediSwap_addLiquidity,
@@ -167,7 +170,7 @@ const LiquidityProvisionModal = ({
   const [sliderValue, setSliderValue] = useState(0);
   const selectedDapp = useSelector(selectSelectedDapp);
   const [transactionStarted, setTransactionStarted] = useState(false);
-
+  const [refereshCallData, setrefereshCallData] = useState(true)
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [walletBalance, setwalletBalance] = useState(BorrowBalance);
@@ -219,21 +222,29 @@ const LiquidityProvisionModal = ({
   
   useEffect(()=>{
     const fetchData=async()=>{
+      setrefereshCallData(true)
       if(currentSwap == "Jediswap"){
         if(liquidityLoanId && toMarketA &&toMarketB){
           const res=await getJediswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB);
-          setcallData(res)
+          if(res){
+            setrefereshCallData(false)
+            setcallDataLiquidity(
+              res,
+            )
+          }
         }
       }else if(currentSwap==="MySwap"){
         if(liquidityLoanId && toMarketA &&toMarketB){
           const res=await getMyswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB);
-          setcallData(res)
+          if(res){
+            setrefereshCallData(false)
+            setcallDataLiquidity(res)
+          }
         }
       }
     }
     fetchData();
   },[liquidityLoanId,toMarketA,toMarketB])
-  
   useEffect(() => {
     if (allocationData?.length > 0) {
       if (
@@ -636,7 +647,7 @@ const LiquidityProvisionModal = ({
         }
       }
     } catch (err: any) {
-      //console.log(err);
+      console.log(err,"call error");
       const uqID = getUniqueId();
       let data: any = localStorage.getItem("transactionCheck");
       data = data ? JSON.parse(data) : [];
@@ -2168,13 +2179,15 @@ const LiquidityProvisionModal = ({
                 : true) ? (
                 <Box
                   onClick={() => {
-                    setTransactionStarted(true);
-                    if (transactionStarted == false) {
-                      posthog.capture("Liquidity Button Clicked Spend Borrow", {
-                        Clicked: true,
-                      });
-                      dispatch(setTransactionStartedAndModalClosed(false));
-                      handleLiquidity();
+                    if(!refereshCallData){
+                      setTransactionStarted(true);
+                      if (transactionStarted == false) {
+                        posthog.capture("Liquidity Button Clicked Spend Borrow", {
+                          Clicked: true,
+                        });
+                        dispatch(setTransactionStartedAndModalClosed(false));
+                        handleLiquidity();
+                      }
                     }
                   }}
                 >
@@ -2211,7 +2224,8 @@ const LiquidityProvisionModal = ({
                     currentTransactionStatus={currentTransactionStatus}
                     setCurrentTransactionStatus={setCurrentTransactionStatus}
                   >
-                    Spend Borrow
+                  {refereshCallData &&<Spinner/>}
+                  {!refereshCallData && `Spend Borrow`}
                   </AnimatedButton>
                 </Box>
               ) : (

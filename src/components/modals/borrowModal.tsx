@@ -298,7 +298,7 @@ const BorrowModal = ({
   
     return () => clearTimeout(timeoutId); // Cleanup function to clear the timeout when component unmounts or when activeTransactions changes
   }, [activeTransactions]);
-  const coinAlign = ['BTC', 'USDT', 'USDC', 'ETH', 'DAI', 'STRK']
+  const coinAlign = ['BTC', 'USDT', 'USDC', 'ETH', 'STRK']
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
     coin ? coin?.name : 'BTC'
   )
@@ -340,7 +340,6 @@ const BorrowModal = ({
     // const stats = await getProtocolStats();
     const stats = protocolStatsRedux
     ////console.log("stats in your borrow", stats);
-
     if (stats)
       setProtocolStats([
         stats?.[0],
@@ -348,7 +347,6 @@ const BorrowModal = ({
         stats?.[3],
         stats?.[1],
         stats?.[4],
-        stats?.[5],
       ])
   }
   useEffect(() => {
@@ -793,10 +791,9 @@ const BorrowModal = ({
   }
 
   const moreOptions = ['Liquidations', 'Dummy1', 'Dummy2', 'Dummy3']
-  const coins: NativeToken[] = ['BTC', 'USDT', 'USDC', 'ETH', 'DAI', 'STRK']
+  const coins: NativeToken[] = ['BTC', 'USDT', 'USDC', 'ETH', 'STRK']
   const minLoanAmounts = useSelector(selectMinimumLoanAmounts)
   const maxLoanAmounts = useSelector(selectMaximumLoanAmounts)
-
   useEffect(() => {
     const fecthLoanAmount = async () => {
       const dynamicdata = await getMaximumDynamicLoanAmount(
@@ -816,7 +813,8 @@ const BorrowModal = ({
         ) {
           setMaximumLoanAmount(maxLoanAmounts['d' + currentBorrowCoin])
         } else {
-          setMaximumLoanAmount(Math.min(dynamicdata, data))
+          setMaximumLoanAmount(maxLoanAmounts['d' + currentBorrowCoin])
+          // setMaximumLoanAmount(Math.min(dynamicdata, data))
         }
       }
     }

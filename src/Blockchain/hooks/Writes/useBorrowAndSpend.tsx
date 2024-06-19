@@ -41,6 +41,7 @@ const useBorrowAndSpend = () => {
   const totalBorrow=useSelector(selectYourBorrow)
   const nftMaxAmount=useSelector(selectNftMaxAmount);
   const nftCurrentAmount=useSelector(selectNftCurrentAmount);
+  const [callData, setcallData] = useState<any>()
 
   // -------------------------- Types --------------------------- //
 
@@ -124,7 +125,7 @@ const useBorrowAndSpend = () => {
           "0",
 
           recipient,
-          ...generateCalldata(),
+          [callData],
         ],
       },
       {
@@ -161,7 +162,7 @@ const useBorrowAndSpend = () => {
           "0",
 
           recipient,
-          ...generateCalldata(),
+          [callData],
         ],
       },
     ],
@@ -189,7 +190,7 @@ const useBorrowAndSpend = () => {
         etherToWeiBN(rTokenAmount, rToken).toString(),
         "0",
         recipient,
-        ...generateCalldata(),
+        [callData],
       ],
     },
     {
@@ -215,7 +216,7 @@ const useBorrowAndSpend = () => {
           etherToWeiBN(rTokenAmount, rToken).toString(),
           "0",
           recipient,
-          ...generateCalldata(),
+          [callData],
         ],
       }
     ]
@@ -246,6 +247,8 @@ const useBorrowAndSpend = () => {
     setToMarketLiqA,
     toMarketLiqB,
     setToMarketLiqB,
+    callData,
+    setcallData,
 
     dataBorrowAndSpend,
     errorBorrowAndSpend,

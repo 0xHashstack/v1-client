@@ -18,6 +18,7 @@ import {
   SliderMark,
   SliderThumb,
   SliderTrack,
+  Spinner,
   Stack,
   Tab,
   TabList,
@@ -130,8 +131,14 @@ import {
   getJediEstimateLiquiditySplit,
   getJediEstimatedLiqALiqBfromLp,
   getJediEstimatedLpAmountOut,
+  getJediSwapLiquidityRevertCalldata,
+  getJediSwapRevertCalldata,
+  getJediswapCallData,
+  getJediswapLiquidityCallData,
   getMySwapEstimateLiquiditySplit,
   getMySwapEstimatedLpAmountOut,
+  getMyswapCallData,
+  getMyswapLiquidityCallData,
   getzklendRevertCallData,
 } from '../../Blockchain/scripts/l3interaction'
 import ErrorButton from '../uiElements/buttons/ErrorButton'
@@ -320,7 +327,8 @@ const YourBorrowModal = ({
     setSwapLoanId,
     toMarket,
     setToMarket,
-
+    callDataSwap,
+    setcallDataSwap,
     dataJediSwap_swap,
     errorJediSwap_swap,
     writeJediSwap_swap,
@@ -344,7 +352,8 @@ const YourBorrowModal = ({
 
     toMarketB,
     setToMarketB,
-
+    callDataLiquidity,
+    setcallDataLiquidity,
     dataJediSwap_addLiquidity,
     errorJediSwap_addLiquidity,
     writeJediSwap_addLiquidity,
@@ -362,8 +371,6 @@ const YourBorrowModal = ({
   const {
     revertLoanId,
     setRevertLoanId,
-    callData,
-    setcallData,
 
     dataRevertInteractWithL3,
     writeAsyncRevertInteractWithL3,
@@ -527,14 +534,6 @@ const YourBorrowModal = ({
   //     await getJediEstimatedLpAmountOut();
   //   };
   // }, []);
-  
-  useEffect(()=>{
-    const fetchRevertData=async()=>{
-      const res=await getzklendRevertCallData();
-      setcallData(res);
-    }
-    fetchRevertData();
-  },[])
 
   interface assetB {
     USDT: any
@@ -628,6 +627,8 @@ const YourBorrowModal = ({
     collateralAsset,
     currentBorrowId2,
   ])
+
+
   useEffect(() => {
     if (loan) {
       setCollateralAsset(
@@ -3072,6 +3073,7 @@ const YourBorrowModal = ({
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState('BTC')
   const [tabValue, setTabValue] = useState(1)
   const [currentTokenSelected, setcurrentTokenSelected] = useState('rToken')
+  const [refereshCallData, setrefereshCallData] = useState(true)
   const tokensArray = ['rToken', 'Native Token']
   useEffect(() => {
     setCurrentPool('Select a pool')
@@ -3081,6 +3083,7 @@ const YourBorrowModal = ({
     try {
       setRadioValue('1')
       setCurrentAction('Select action')
+      setrefereshCallData(true);
       setCurrentBorrowMarketCoin1('BTC')
       setCurrentBorrowMarketCoin2('BTC')
       setCurrentBorrowId1('ID - ')
@@ -3302,6 +3305,52 @@ const YourBorrowModal = ({
       setnetStrkBorrow(0)
     }
   }, [strkData])
+  useEffect(()=>{
+    const fetchData=async()=>{
+      setrefereshCallData(false);
+      if(currentAction==="Spend Borrow"){
+        if(radioValue==='1'){
+          if(currentDapp==="Jediswap"){
+            if(currentPool!=="Select a pool"){
+              const res=await getJediswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB)
+              if(res){
+                setrefereshCallData(true);
+                setcallDataLiquidity(res);
+              }
+            }
+          }else if(currentDapp=="mySwap"){
+            if(currentPool!=="Select a pool"){
+              const res=await getMyswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB)
+              if(res){
+                setrefereshCallData(true);
+                setcallDataLiquidity(res);
+              }
+            }
+          }
+        }else{
+          if(currentDapp==="Jediswap"){
+            if(currentPoolCoin!=="Select a pool"){
+              const res=await getJediswapCallData(liquidityLoanId,toMarket)
+              console.log(res,"res")
+              if(res){
+                setrefereshCallData(true)
+                setcallDataSwap(res);
+              }
+            }
+          }else if(currentDapp=="mySwap"){
+            if(currentPoolCoin!=="Select a pool"){
+              const res=await getMyswapCallData(liquidityLoanId,toMarket)
+              if(res){
+                setrefereshCallData(true)
+                setcallDataSwap(res);
+              }
+            }
+          }
+        }
+      }
+    }
+    fetchData()
+  },[swapLoanId,liquidityLoanId,toMarketA,toMarketB,toMarket,currentAction,currentDapp])
 
   const getBoostedAprSupply = (coin: any) => {
     if (strkData == null) {
@@ -4940,21 +4989,23 @@ const YourBorrowModal = ({
                       spendType === 'UNSPENT' ? (
                         <Box
                           onClick={() => {
-                            setTransactionStarted(true)
-                            posthog.capture(
-                              'Spend Borrow Button Clicked Your Borrow',
-                              {
-                                Clicked: true,
-                              }
-                            )
-                            if (transactionStarted == false) {
-                              dispatch(
-                                setTransactionStartedAndModalClosed(false)
+                            if(!refereshCallData){
+                              setTransactionStarted(true)
+                              posthog.capture(
+                                'Spend Borrow Button Clicked Your Borrow',
+                                {
+                                  Clicked: true,
+                                }
                               )
-                              if (radioValue == '2') {
-                                hanldeTrade()
-                              } else {
-                                hanldeLiquidation()
+                              if (transactionStarted == false) {
+                                dispatch(
+                                  setTransactionStartedAndModalClosed(false)
+                                )
+                                if (radioValue == '2') {
+                                  hanldeTrade()
+                                } else {
+                                  hanldeLiquidation()
+                                }
                               }
                             }
                           }}
@@ -4996,7 +5047,8 @@ const YourBorrowModal = ({
                               setCurrentTransactionStatus
                             }
                           >
-                            Spend
+                  {refereshCallData &&<Spinner/>}
+                  {!refereshCallData && `Spend Borrow`}
                           </AnimatedButton>
                         </Box>
                       ) : (

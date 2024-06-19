@@ -278,7 +278,7 @@ export async function getJediswapCallData(Loan_id:string,toMarketSwap:NativeToke
     return res;
    
   } catch (error) {
-    // console.log(error,'err in stats')
+    console.log(error,'err in getJediswapCallData')
   }
 }
 
@@ -304,7 +304,8 @@ export async function getJediswapLiquidityCallData(Loan_id:string,toMarketLiqA:N
       diamondAddress,
       contractsEnv?.TOKENS
     );
-    const res=await spendcalls. getJediLiquidityCalldata(Loan_id,new Address(tokenAddressMap[toMarketLiqA]),new Address(tokenAddressMap[toMarketLiqB]))
+    console.log(Loan_id,toMarketLiqA,toMarketLiqB,"mm")
+    const res=await spendcalls.getJediLiquidityCalldata(Loan_id,new Address(tokenAddressMap[toMarketLiqA]),new Address(tokenAddressMap[toMarketLiqB]))
     return res;
    
   } catch (error) {

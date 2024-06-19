@@ -55,6 +55,7 @@ import {
   ModalOverlay,
   Portal,
   Skeleton,
+  Spinner,
   Text,
   Tooltip,
   useDisclosure,
@@ -96,8 +97,8 @@ const SwapModal = ({
     setSwapLoanId,
     toMarket,
     setToMarket,
-    callData,
-    setcallData,
+    callDataSwap,
+    setcallDataSwap,
 
     dataJediSwap_swap,
     errorJediSwap_swap,
@@ -116,15 +117,22 @@ const SwapModal = ({
 
   useEffect(()=>{
     const fetchData=async()=>{
+      setrefereshCallData(true)
       if(currentSwap==="Jediswap"){
         if(swapLoanId && toMarket){
           const res=await getJediswapCallData(swapLoanId,toMarket);
-          setcallData(res)
+          if(res){
+            setrefereshCallData(false)
+            setcallDataSwap(res)
+          }
         }
       }else if(currentSwap==="MySwap"){
         if(swapLoanId && toMarket){
           const res=await getMyswapCallData(swapLoanId,toMarket);
-          setcallData(res)
+          if(res){
+            setrefereshCallData(false)
+            setcallDataSwap(res)
+          }
         }
       }
     }
@@ -226,6 +234,7 @@ const SwapModal = ({
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
+  const [refereshCallData, setrefereshCallData] = useState(true)
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const userLoans = useSelector(selectUserUnspentLoans);
   useEffect(() => {
@@ -568,6 +577,7 @@ const SwapModal = ({
   const resetStates = () => {
     setSliderValue(0);
     setinputAmount(0);
+    setrefereshCallData(true);
     setCurrentBorrowMarketCoin(currentMarketCoin);
     setCurrentSelectedCoin("Select a market");
     setCurrentBorrowId(currentId);
@@ -1620,17 +1630,19 @@ const SwapModal = ({
             currentBorrowMarketCoin != currentSelectedCoin ? (
               <Box
                 onClick={() => {
-                  setTransactionStarted(true);
-                  if (transactionStarted == false) {
-                    posthog.capture("Swap Modal Button Clicked Spend Borrow", {
-                      Clicked: true,
-                    });
-                    dispatch(setTransactionStartedAndModalClosed(false));
-                    handleSwap();
+                  if(!refereshCallData){
+                    setTransactionStarted(true);
+                    if (transactionStarted == false) {
+                      posthog.capture("Swap Modal Button Clicked Spend Borrow", {
+                        Clicked: true,
+                      });
+                      dispatch(setTransactionStartedAndModalClosed(false));
+                        handleSwap();
+                    }
                   }
                 }}
               >
-                <AnimatedButton
+                {<AnimatedButton
                   // bgColor="red"
                   // p={0}
                   color="#676D9A"
@@ -1660,8 +1672,9 @@ const SwapModal = ({
                   currentTransactionStatus={currentTransactionStatus}
                   setCurrentTransactionStatus={setCurrentTransactionStatus}
                 >
-                  Spend Borrow
-                </AnimatedButton>
+                  {refereshCallData &&<Spinner/>}
+                  {!refereshCallData && `Spend Borrow`}
+                </AnimatedButton>}
               </Box>
             ) : (
               <Button

@@ -22,6 +22,7 @@ import {
   Text,
   Tooltip,
   useDisclosure,
+  Spinner
 } from '@chakra-ui/react'
 
 /* Coins logo import  */
@@ -91,8 +92,12 @@ import {
 import {
   getJediEstimateLiquiditySplit,
   getJediEstimatedLpAmountOut,
+  getJediswapCallData,
+  getJediswapLiquidityCallData,
   getMySwapEstimateLiquiditySplit,
   getMySwapEstimatedLpAmountOut,
+  getMyswapCallData,
+  getMyswapLiquidityCallData,
   getUSDValue,
 } from '@/Blockchain/scripts/l3interaction'
 import { getProtocolStats } from '@/Blockchain/scripts/protocolStats'
@@ -179,6 +184,8 @@ const TradeModal = ({
     setToMarketLiqA,
     toMarketLiqB,
     setToMarketLiqB,
+    callData,
+    setcallData,
 
     dataBorrowAndSpend,
     errorBorrowAndSpend,
@@ -378,6 +385,7 @@ const TradeModal = ({
     currentSelectedDapp ? currentSelectedDapp : 'Select a dapp'
   )
   const [currentPool, setCurrentPool] = useState('Select a pool')
+  const [refereshCallData, setrefereshCallData] = useState(true)
   const [currentPoolCoin, setCurrentPoolCoin] = useState('Select a pool')
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -492,7 +500,7 @@ const TradeModal = ({
       // dispatch((newValue));
     }
   }
-  const coins: NativeToken[] = ['BTC', 'USDT', 'USDC', 'ETH', 'DAI', 'STRK']
+  const coins: NativeToken[] = ['BTC', 'USDT', 'USDC', 'ETH', 'STRK']
 
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
     coin ? coin?.name : 'BTC'
@@ -514,7 +522,6 @@ const TradeModal = ({
         stats?.[3],
         stats?.[1],
         stats?.[4],
-        stats?.[5],
       ])
   }
   const poolsPairs = useSelector(selectJediSwapPoolsSupported)
@@ -1204,7 +1211,7 @@ const TradeModal = ({
           ? currentCollateralCoin.slice(1)
           : currentCollateralCoin
       )
-      if (dynamicdata != undefined) {
+      if (dynamicdata == undefined) {
         const data = maxLoanAmounts['d' + currentBorrowCoin]
         if (currentBorrowCoin == currentCollateralCoin) {
           setMaximumLoanAmount(maxLoanAmounts['d' + currentBorrowCoin])
@@ -1251,6 +1258,49 @@ const TradeModal = ({
     toMarketLiqB,
     currentDapp,
   ])
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      setrefereshCallData(true)
+      if(method==="ADD_LIQUIDITY"){
+        console.log('entry')
+        if(loanAmount>0 && rTokenAmount>0 &&collateralAmount>0 && l3App && currentPool !== 'Select a pool' ){
+          if(l3App==="JEDI_SWAP"){
+            const res=await getJediswapLiquidityCallData('0',toMarketLiqA,toMarketLiqB);
+            if(res){
+              setrefereshCallData(false)
+              setcallData(res);
+            }
+          }else if(l3App==='MY_SWAP'){
+            const res=await getMyswapLiquidityCallData('0',toMarketLiqA,toMarketLiqB)
+            if(res){
+              setrefereshCallData(false)
+              setcallData(res);
+            }
+          }
+        }
+      }else if(method==="SWAP"){
+        if(loanAmount>0 && rTokenAmount>0 &&collateralAmount>0 && l3App && currentPoolCoin !== 'Select a pool'){
+          console.log('chlo')
+          if(l3App==="JEDI_SWAP"){
+            const res=await getJediswapCallData('0',toMarketSwap);
+            console.log(res,"jawab")
+            if(res){
+              setrefereshCallData(false)
+              setcallData(res);
+            }
+          }else if(l3App==='MY_SWAP'){
+            const res=await getMyswapCallData('0',toMarketSwap)
+            if(res){
+              setrefereshCallData(false)
+              setcallData(res);
+            }
+          }
+        }
+    }     
+    }
+    fetchData();
+  },[loanAmount,loanAmount,rToken,rTokenAmount,collateralAmount,collateralMarket,l3App,method,toMarketLiqA,toMarketLiqB,toMarketSwap,method])
 
   useEffect(() => {
     setCurrentLPTokenAmount(null)
@@ -4418,39 +4468,15 @@ const TradeModal = ({
                   currentPoolCoin != 'Select a pool') ? (
                   <Box
                     onClick={() => {
-                      setTransactionStarted(true)
-                      ////console.log(
-                      //   "trade clicked",
-                      //   "rToken",
-                      //   rToken,
-                      //   "rTokenAmount",
-                      //   rTokenAmount,
-                      //   "collateralMarket",
-                      //   collateralMarket,
-                      //   "collateralAmount",
-                      //   collateralAmount,
-                      //   "loanMarket",
-                      //   loanMarket,
-                      //   "loanAmount",
-                      //   loanAmount,
-                      //   "method",
-                      //   method,
-                      //   "l3App",
-                      //   l3App,
-                      //   "toMarketSwap",
-                      //   toMarketSwap,
-                      //   "toMarketLiqA",
-                      //   toMarketLiqA,
-                      //   "toMarketLiqB",
-                      //   toMarketLiqB
-                      // );
-
-                      if (transactionStarted == false) {
-                        posthog.capture('Trade Button Clicked Market page', {
-                          Clicked: true,
-                        })
-                        dispatch(setTransactionStartedAndModalClosed(false))
-                        handleBorrowAndSpend()
+                      if(!refereshCallData){
+                        setTransactionStarted(true)
+                        if (transactionStarted == false) {
+                          posthog.capture('Trade Button Clicked Market page', {
+                            Clicked: true,
+                          })
+                          dispatch(setTransactionStartedAndModalClosed(false))
+                          handleBorrowAndSpend()
+                        }
                       }
                     }}
                   >
@@ -4489,7 +4515,8 @@ const TradeModal = ({
                       currentTransactionStatus={currentTransactionStatus}
                       setCurrentTransactionStatus={setCurrentTransactionStatus}
                     >
-                      Spend
+                            {refereshCallData &&<Spinner/>}
+                            {!refereshCallData && `Spend Borrow`}
                     </AnimatedButton>
                   </Box>
                 ) : (

@@ -585,7 +585,7 @@ const StakeUnstakeModal = ({
     return false
   }
 
-  const rcoins: RToken[] = ['rBTC', 'rUSDT', 'rUSDC', 'rETH', 'rDAI', 'rSTRK']
+  const rcoins: RToken[] = ['rBTC', 'rUSDT', 'rUSDC', 'rETH', 'rSTRK']
   const coinObj: any = coins?.find((obj) => coin?.name in obj)
   const rcoinValue = coinObj ? coinObj[coin.name] : 'rUSDT'
   const [isSupplied, setIsSupplied] = useState(false)

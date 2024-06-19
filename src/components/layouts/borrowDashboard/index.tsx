@@ -169,7 +169,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
         stats?.[0].borrowRate,
         stats?.[1].borrowRate,
         stats?.[4].borrowRate,
-        stats?.[5].borrowRate,
+        // stats?.[5].borrowRate,
       ])
     } catch (error) {}
   }
