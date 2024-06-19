@@ -7,6 +7,7 @@ import DeployDetailsProd from "../../contract_addresses_2.json";
 import ERC20Abi from "./abis_mainnet/erc20_abi.json";
 import { RpcProvider,num } from "starknet";
 import { UseWaitForTransactionResult } from "@starknet-react/core";
+import { getMainnetConfig, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
 
 export function processAddress(address: string) {
   return num.toHex(num.toBigInt(address));
@@ -22,6 +23,14 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
     contractsEnv.TOKENS[i].address
   );
 }
+export let config= process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? getSepoliaConfig(
+  './target/dev',
+  'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
+):   getMainnetConfig(
+  './target/dev',
+  'https://starknet-mainnet.public.blastapi.io/rpc/v0_7'
+);
+
 export const getProvider = () => {
   const rpctestnetUrl=String(process.env.NEXT_PUBLIC_INFURA_TESTNET);
   const rpcUrl=String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
@@ -80,6 +89,10 @@ export function isTransactionLoading(receipt: UseWaitForTransactionResult) {
 export function handleTransactionToast(receipt: UseWaitForTransactionResult) {}
 
 export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
+
+export const governorAddress:string=contractsEnv.GOVERNOR_CONTRACT_ADDRESS;
+
+export const dialerAddress:string=contractsEnv.GOVERNOR_DIALER_CONTRACT_ADDRESS;
 
 export const metricsContractAddress: string =
   contractsEnv.METRICS_CONTRACT_ADDRESS;

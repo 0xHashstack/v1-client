@@ -14,7 +14,8 @@ import {
   diamondAddress,
   getProvider,
   stakingContractAddress,
-  nftAddress
+  nftAddress,
+  governorAddress
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount } from "../utils/utils";
@@ -208,7 +209,7 @@ export async function getSupportedPools(
     const provider = getProvider();
     const governorContract = new Contract(
       governorAbi,
-      diamondAddress,
+      governorAddress,
       provider
     );
     const result:any = await governorContract.call(
@@ -231,7 +232,7 @@ export async function getMinimumDepositAmount(
     const provider = getProvider();
     const governorContract = new Contract(
       governorAbi,
-      diamondAddress,
+      governorAddress,
       provider
     );
     const result:any = await governorContract.call(
@@ -257,7 +258,7 @@ export async function getMaximumDepositAmount(
     const provider = getProvider();
     const governorContract = new Contract(
       governorAbi,
-      diamondAddress,
+      governorAddress,
       provider
     );
     const result:any = await governorContract.call(
@@ -283,7 +284,7 @@ export async function getMaximumLoanAmount(
     const provider = getProvider();
     const governorContract = new Contract(
       governorAbi,
-      diamondAddress,
+      governorAddress,
       provider
     );
     const result:any = await governorContract.call(
@@ -337,7 +338,7 @@ export async function getMinimumLoanAmount(
     const provider = getProvider();
     const governorContract = new Contract(
       governorAbi,
-      diamondAddress,
+      governorAddress,
       provider
     );
     const result:any = await governorContract.call(

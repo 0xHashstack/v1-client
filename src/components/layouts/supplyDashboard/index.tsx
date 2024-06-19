@@ -297,20 +297,18 @@ const SupplyDashboard = ({
         ////console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
         setProtocolStats([
-          stats?.[5],
+          stats?.[4],
           stats?.[2],
           stats?.[3],
           stats?.[1],
           stats?.[0],
-          stats?.[4],
         ]);
         setSupplyAPRs([
-          stats?.[5].supplyRate,
+          stats?.[4].supplyRate,
           stats?.[2].supplyRate,
           stats?.[3].supplyRate,
           stats?.[1].supplyRate,
           stats?.[0].supplyRate,
-          stats?.[4].supplyRate,
         ]);
       } catch (error) {
         //console.log("error on getting protocol stats");
@@ -351,7 +349,7 @@ const SupplyDashboard = ({
       const supply = userDeposits;
       if (!supply) return;
       let data: any = [];
-      let indexes: any = [5, 2, 3, 1, 0, 4];
+      let indexes: any = [4, 2, 3, 1, 0];
       let count = 0;
 
       indexes.forEach((index: number) => {
@@ -361,7 +359,7 @@ const SupplyDashboard = ({
           supply?.[index]?.rTokenLockedParsed !== 0 ||
           supply?.[index]?.rTokenStakedParsed !== 0
         ) {
-          if (index == 2 || index == 3) {
+          if (index == 1 || index == 2) {
             if (
               supply?.[index]?.rTokenAmountParsed > 0.00001 ||
               supply?.[index]?.rTokenFreeParsed > 0.00001 ||

@@ -796,6 +796,7 @@ const BorrowModal = ({
   const coins: NativeToken[] = ['BTC', 'USDT', 'USDC', 'ETH', 'DAI', 'STRK']
   const minLoanAmounts = useSelector(selectMinimumLoanAmounts)
   const maxLoanAmounts = useSelector(selectMaximumLoanAmounts)
+
   useEffect(() => {
     const fecthLoanAmount = async () => {
       const dynamicdata = await getMaximumDynamicLoanAmount(
@@ -805,7 +806,7 @@ const BorrowModal = ({
           ? currentCollateralCoin.slice(1)
           : currentCollateralCoin
       )
-      if (dynamicdata != undefined) {
+      if (dynamicdata == undefined) {
         const data = maxLoanAmounts['d' + currentBorrowCoin]
         if (currentBorrowCoin == currentCollateralCoin) {
           setMaximumLoanAmount(maxLoanAmounts['d' + currentBorrowCoin])

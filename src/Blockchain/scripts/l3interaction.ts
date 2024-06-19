@@ -6,6 +6,7 @@ import jediSwapAbi from "../abis_mainnet/l3_jedi_swap_abi.json";
 import pricerAbi from "../abis_mainnet/pricer_abi.json";
 import mySwapAbi from "../abis_mainnet/l3_my_swap_abi.json";
 import {
+  config,
   contractsEnv,
   diamondAddress,
   getProvider,
@@ -16,7 +17,7 @@ import {
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount, weiToEtherNumber } from "../utils/utils";
 import { NativeToken, Token } from "../interfaces/interfaces";
-import { Address, MyBigNumber, Spend, SpendView, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
+import { Address, MyBigNumber, Spend, SpendView, getMainnetConfig, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
 import BigNumber from "bignumber.js";
 
 type LiquiditySplit = {
@@ -251,17 +252,14 @@ export async function getMySwapEstimateLiquiditySplit(
   }
 }
 
-export async function getZklendCallData(){
+export async function getZklendCallData(Loan_id:string){
   try {
-    const config = getSepoliaConfig(
-      './target/dev',
-      'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
-  );
     const spendcalls = new Spend(
       config,
-      diamondAddress
+      diamondAddress,
+      contractsEnv?.TOKENS
     );
-    const res=await spendcalls.getZkLendLiquidityCalldata("6")
+    const res=await spendcalls.getZkLendLiquidityCalldata(Loan_id)
     return res;
    
   } catch (error) {
@@ -269,17 +267,134 @@ export async function getZklendCallData(){
   }
 }
 
-export async function getzklendRevertCallData(){
+export async function getJediswapCallData(Loan_id:string,toMarketSwap:NativeToken){
   try {
-    const config = getSepoliaConfig(
-      './target/dev',
-      'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
-  );
     const spendcalls = new Spend(
       config,
-      diamondAddress
+      diamondAddress,
+      contractsEnv?.TOKENS
     );
-    const res=await spendcalls.getRevertZkLendLiquidityCalldata("6")
+    const res=await spendcalls.getJediSwapCalldata(Loan_id,new Address(tokenAddressMap[toMarketSwap]),0.5)
+    return res;
+   
+  } catch (error) {
+    // console.log(error,'err in stats')
+  }
+}
+
+export async function getMyswapCallData(Loan_id:string,toMarketSwap:NativeToken){
+  try {
+    const spendcalls = new Spend(
+      config,
+      diamondAddress,
+      contractsEnv?.TOKENS
+    );
+    const res=await spendcalls.getMySwapCalldata(Loan_id,new Address(tokenAddressMap[toMarketSwap]),0.5)
+    return res;
+   
+  } catch (error) {
+    // console.log(error,'err in stats')
+  }
+}
+
+export async function getJediswapLiquidityCallData(Loan_id:string,toMarketLiqA:NativeToken,toMarketLiqB:NativeToken){
+  try {
+    const spendcalls = new Spend(
+      config,
+      diamondAddress,
+      contractsEnv?.TOKENS
+    );
+    const res=await spendcalls. getJediLiquidityCalldata(Loan_id,new Address(tokenAddressMap[toMarketLiqA]),new Address(tokenAddressMap[toMarketLiqB]))
+    return res;
+   
+  } catch (error) {
+    console.log(error,'err in getJediswapLiquidityCallData')
+  }
+}
+
+export async function getMyswapLiquidityCallData(Loan_id:string,toMarketLiqA:NativeToken,toMarketLiqB:NativeToken){
+  try {
+    const spendcalls = new Spend(
+      config,
+      diamondAddress,
+      contractsEnv?.TOKENS
+    );
+    const res=await spendcalls. getMySwapLiquidityCalldata(Loan_id,new Address(tokenAddressMap[toMarketLiqA]),new Address(tokenAddressMap[toMarketLiqB]))
+    return res;
+   
+  } catch (error) {
+    // console.log(error,'err in stats')
+  }
+}
+
+export async function getJediSwapRevertCalldata(Loan_id:string){
+  try {
+    const spendcalls = new Spend(
+      config,
+      diamondAddress,
+      contractsEnv?.TOKENS
+    );
+    const res=await spendcalls.getRevertJediSwapCalldata(Loan_id,0.5)
+    return res;
+   
+  } catch (error) {
+    // console.log(error,'err in stats')
+  }
+}
+
+export async function getJediSwapLiquidityRevertCalldata(Loan_id:string){
+  try {
+    const spendcalls = new Spend(
+      config,
+      diamondAddress,
+      contractsEnv?.TOKENS
+    );
+    const res=await spendcalls.getRevertJediLiquidityCalldata(Loan_id)
+    return res;
+   
+  } catch (error) {
+    // console.log(error,'err in stats')
+  }
+}
+
+export async function getMySwapLiquidityRevertCalldata(Loan_id:string,toMarketLiqA:NativeToken,toMarketLiqB:NativeToken){
+  try {
+    const spendcalls = new Spend(
+      config,
+      diamondAddress,
+      contractsEnv?.TOKENS
+    );
+    const res=await spendcalls.getRevertMySwapLiquidityCalldata(Loan_id)
+    return res;
+   
+  } catch (error) {
+    // console.log(error,'err in stats')
+  }
+}
+
+export async function getMySwapRevertCalldata(Loan_id:string){
+  try {
+    const spendcalls = new Spend(
+      config,
+      diamondAddress,
+      contractsEnv?.TOKENS
+    );
+    const res=await spendcalls.getRevertMySwapCalldata(Loan_id,0.5)
+    return res;
+   
+  } catch (error) {
+    // console.log(error,'err in stats')
+  }
+}
+
+export async function getzklendRevertCallData(Loan_id:string){
+  try {
+    const spendcalls = new Spend(
+      config,
+      diamondAddress,
+      contractsEnv?.TOKENS
+    );
+    const res=await spendcalls.getRevertZkLendLiquidityCalldata(Loan_id)
     return res;
    
   } catch (error) {
@@ -413,10 +528,6 @@ function findZToken(data: any, underlyingToken: any) {
 
 export async function getZklendusdSpendValue(amount:number,coin: string,decimals:number ) {
   try {
-    const config = getSepoliaConfig(
-      './target/dev',
-      'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
-  );
   const tokens=contractsEnv.TOKENS
   const bignum=new MyBigNumber(amount,decimals)
     const spendcalls = new SpendView(
@@ -427,7 +538,6 @@ export async function getZklendusdSpendValue(amount:number,coin: string,decimals
     const ztokens=await spendcalls.get_supported_zklend_tokens();
     const ztokenaddress=findZToken(ztokens,coin)
     const res:any = await spendcalls.get_usd_value_zklend(new Address(ztokenaddress),bignum)
-    console.log(res,"responser")
   
   return Number(res);
 

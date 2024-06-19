@@ -23,12 +23,7 @@ const useLiquidity = () => {
       contractAddress: diamondAddress,
       entrypoint: "interact_with_l3",
       calldata: [
-        constants.JEDI_SWAP,
-        "4",
-        liquidityLoanId,
-        constants.ADD_LIQUIDITY,
-        tokenAddressMap[toMarketA],
-        tokenAddressMap[toMarketB],
+        callData
       ],
     }],
   });
@@ -45,12 +40,7 @@ const useLiquidity = () => {
       contractAddress: diamondAddress,
       entrypoint: "interact_with_l3",
       calldata: [
-        constants.MY_SWAP,
-        "4",
-        liquidityLoanId,
-        constants.ADD_LIQUIDITY,
-        tokenAddressMap[toMarketA],
-        tokenAddressMap[toMarketB],
+        callData
       ],
     }],
   });

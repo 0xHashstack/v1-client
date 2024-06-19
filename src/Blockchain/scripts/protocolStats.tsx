@@ -1,5 +1,6 @@
 import { Contract, number, uint256 } from "starknet";
 import {
+  config,
   contractsEnv,
   diamondAddress,
   getProvider,
@@ -51,10 +52,6 @@ function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
 
 export async function getProtocolStats() {
   const marketStats: IMarketInfo[] = [];
-  const config = getMainnetConfig(
-    './target/dev',
-    'https://starknet-mainnet.infura.io/v3/82802c15c3d242d2846e464a66238198'
-);
   const metricsContract = new Metrics(
     config,
     new Address(contractsEnv?.DIALER_CONTRACT_ADDRESS),

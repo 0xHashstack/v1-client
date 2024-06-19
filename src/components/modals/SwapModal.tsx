@@ -77,6 +77,7 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+import { getJediswapCallData, getMyswapCallData } from "@/Blockchain/scripts/l3interaction";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -95,6 +96,8 @@ const SwapModal = ({
     setSwapLoanId,
     toMarket,
     setToMarket,
+    callData,
+    setcallData,
 
     dataJediSwap_swap,
     errorJediSwap_swap,
@@ -110,6 +113,23 @@ const SwapModal = ({
     isIdlemySwap_swap,
     statusmySwap_swap,
   } = useSwap();
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      if(currentSwap==="Jediswap"){
+        if(swapLoanId && toMarket){
+          const res=await getJediswapCallData(swapLoanId,toMarket);
+          setcallData(res)
+        }
+      }else if(currentSwap==="MySwap"){
+        if(swapLoanId && toMarket){
+          const res=await getMyswapCallData(swapLoanId,toMarket);
+          setcallData(res)
+        }
+      }
+    }
+    fetchData();
+  },[swapLoanId,toMarket])
 
   const [currentSelectedCoin, setCurrentSelectedCoin] =
     useState("Select a market");

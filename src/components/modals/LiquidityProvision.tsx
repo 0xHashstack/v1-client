@@ -3,8 +3,10 @@ import useSwap from "@/Blockchain/hooks/Writes/useSwap";
 import {
   getJediEstimateLiquiditySplit,
   getJediEstimatedLpAmountOut,
+  getJediswapLiquidityCallData,
   getMySwapEstimateLiquiditySplit,
   getMySwapEstimatedLpAmountOut,
+  getMyswapLiquidityCallData,
   getZklendCallData,
 } from "@/Blockchain/scripts/l3interaction";
 import ArrowUp from "@/assets/icons/arrowup";
@@ -217,11 +219,20 @@ const LiquidityProvisionModal = ({
   
   useEffect(()=>{
     const fetchData=async()=>{
-      const res=await getZklendCallData();
-      setcallData(res);
+      if(currentSwap == "Jediswap"){
+        if(liquidityLoanId && toMarketA &&toMarketB){
+          const res=await getJediswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB);
+          setcallData(res)
+        }
+      }else if(currentSwap==="MySwap"){
+        if(liquidityLoanId && toMarketA &&toMarketB){
+          const res=await getMyswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB);
+          setcallData(res)
+        }
+      }
     }
     fetchData();
-  })
+  },[liquidityLoanId,toMarketA,toMarketB])
   
   useEffect(() => {
     if (allocationData?.length > 0) {

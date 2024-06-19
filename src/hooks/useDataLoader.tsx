@@ -1270,7 +1270,6 @@ const useDataLoader = () => {
     try {
       const fetchProtocolStats = async () => {
         const dataStats = await getProtocolStats()
-        console.log(dataStats,"stats")
         if (!dataStats || (Array.isArray(dataStats) && dataStats?.length < 5)) {
           return
         }

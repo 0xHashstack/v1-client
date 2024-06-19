@@ -460,7 +460,6 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
 
 
   const zkLendSpend=useSelector(selectZklendSpends)
-  console.log(zkLendSpend,"spend")
 
   return loading ? (
     <Box
