@@ -3307,14 +3307,14 @@ const YourBorrowModal = ({
   }, [strkData])
   useEffect(()=>{
     const fetchData=async()=>{
-      setrefereshCallData(false);
+      setrefereshCallData(true);
       if(currentAction==="Spend Borrow"){
         if(radioValue==='1'){
           if(currentDapp==="Jediswap"){
             if(currentPool!=="Select a pool"){
               const res=await getJediswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB)
               if(res){
-                setrefereshCallData(true);
+                setrefereshCallData(false);
                 setcallDataLiquidity(res);
               }
             }
@@ -3331,9 +3331,8 @@ const YourBorrowModal = ({
           if(currentDapp==="Jediswap"){
             if(currentPoolCoin!=="Select a pool"){
               const res=await getJediswapCallData(liquidityLoanId,toMarket)
-              console.log(res,"res")
               if(res){
-                setrefereshCallData(true)
+                setrefereshCallData(false)
                 setcallDataSwap(res);
               }
             }
@@ -3341,7 +3340,7 @@ const YourBorrowModal = ({
             if(currentPoolCoin!=="Select a pool"){
               const res=await getMyswapCallData(liquidityLoanId,toMarket)
               if(res){
-                setrefereshCallData(true)
+                setrefereshCallData(false)
                 setcallDataSwap(res);
               }
             }
@@ -3350,7 +3349,7 @@ const YourBorrowModal = ({
       }
     }
     fetchData()
-  },[swapLoanId,liquidityLoanId,toMarketA,toMarketB,toMarket,currentAction,currentDapp])
+  },[swapLoanId,liquidityLoanId,currentPool,currentPoolCoin,currentAction,currentDapp])
 
   const getBoostedAprSupply = (coin: any) => {
     if (strkData == null) {

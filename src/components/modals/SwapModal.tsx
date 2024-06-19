@@ -79,6 +79,7 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { getJediswapCallData, getMyswapCallData } from "@/Blockchain/scripts/l3interaction";
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -119,8 +120,8 @@ const SwapModal = ({
     const fetchData=async()=>{
       setrefereshCallData(true)
       if(currentSwap==="Jediswap"){
-        if(swapLoanId && toMarket){
-          const res=await getJediswapCallData(swapLoanId,toMarket);
+        if(swapLoanId && toMarket &&currentLoan){
+          const res=await getJediswapCallData(currentLoan,toMarket);
           if(res){
             setrefereshCallData(false)
             setcallDataSwap(res)
@@ -128,7 +129,7 @@ const SwapModal = ({
         }
       }else if(currentSwap==="MySwap"){
         if(swapLoanId && toMarket){
-          const res=await getMyswapCallData(swapLoanId,toMarket);
+          const res=await getMyswapCallData(currentLoan,toMarket);
           if(res){
             setrefereshCallData(false)
             setcallDataSwap(res)
@@ -149,10 +150,10 @@ const SwapModal = ({
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
+  const [currentLoan, setcurrentLoan] = useState<ILoan>()
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
   const [uniqueID, setUniqueID] = useState(0);
   const getUniqueId = () => uniqueID;
-
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
@@ -437,6 +438,7 @@ const SwapModal = ({
       (item: any) =>
         item?.loanId == currentId?.slice(currentId.indexOf("-") + 1)?.trim()
     );
+    setcurrentLoan(result);
     setBorrowAmount(result?.loanAmountParsed);
     ////console.log(borrowAmount)
     // Rest of your code using the 'result' variable

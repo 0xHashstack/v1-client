@@ -16,7 +16,7 @@ import {
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount, weiToEtherNumber } from "../utils/utils";
-import { NativeToken, Token } from "../interfaces/interfaces";
+import { ILoan, NativeToken, Token } from "../interfaces/interfaces";
 import { Address, MyBigNumber, Spend, SpendView, getMainnetConfig, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
 import BigNumber from "bignumber.js";
 
@@ -252,14 +252,14 @@ export async function getMySwapEstimateLiquiditySplit(
   }
 }
 
-export async function getZklendCallData(Loan_id:string){
+export async function getZklendCallData(Loan:any){
   try {
     const spendcalls = new Spend(
       config,
       diamondAddress,
       contractsEnv?.TOKENS
     );
-    const res=await spendcalls.getZkLendLiquidityCalldata(Loan_id)
+    const res=await spendcalls.getZkLendLiquidityCalldata(Loan)
     return res;
    
   } catch (error) {
@@ -267,14 +267,31 @@ export async function getZklendCallData(Loan_id:string){
   }
 }
 
-export async function getJediswapCallData(Loan_id:string,toMarketSwap:NativeToken){
+export async function getJediswapCallData(Loan:any,toMarketSwap:NativeToken,typeCall:string='normal'){
   try {
     const spendcalls = new Spend(
       config,
       diamondAddress,
       contractsEnv?.TOKENS
     );
-    const res=await spendcalls.getJediSwapCalldata(Loan_id,new Address(tokenAddressMap[toMarketSwap]),0.5)
+    
+    const dataprocessedBorrowandSpend={
+      loan_id:'0',
+      underlyingMarket: new Address(tokenAddressMap[Loan?.underlyingMarket]),
+      underlyingDecimals: tokenDecimalsMap[Loan?.underlyingMarket],
+      currentMarket: new Address(tokenAddressMap[Loan?.underlyingMarket]),
+      currentAmount: new MyBigNumber(Loan?.currentLoanAmount,tokenDecimalsMap[Loan?.underlyingMarket]),
+      state: 1
+    }
+    const dataprocessedLoan={
+      loan_id:Loan?.loanId,
+      underlyingMarket: new Address(Loan?.underlyingMarketAddress),
+      underlyingDecimals: tokenDecimalsMap[Loan?.underlyingMarket as NativeToken],
+      currentMarket: new Address(Loan?.underlyingMarketAddress),
+      currentAmount: new MyBigNumber(Loan?.currentLoanAmount,tokenDecimalsMap[Loan?.underlyingMarket as NativeToken]),
+      state: 1
+    }
+    const res=await spendcalls.getJediSwapCalldata(typeCall==='normal'?dataprocessedLoan:dataprocessedBorrowandSpend,new Address(tokenAddressMap[toMarketSwap]),0.5)
     return res;
    
   } catch (error) {
@@ -282,30 +299,62 @@ export async function getJediswapCallData(Loan_id:string,toMarketSwap:NativeToke
   }
 }
 
-export async function getMyswapCallData(Loan_id:string,toMarketSwap:NativeToken){
+export async function getMyswapCallData(Loan:any,toMarketSwap:NativeToken,typeCall:string='normal'){
   try {
     const spendcalls = new Spend(
       config,
       diamondAddress,
       contractsEnv?.TOKENS
     );
-    const res=await spendcalls.getMySwapCalldata(Loan_id,new Address(tokenAddressMap[toMarketSwap]),0.5)
+    
+    const dataprocessedBorrowandSpend={
+      loan_id:'0',
+      underlyingMarket: new Address(tokenAddressMap[Loan?.underlyingMarket]),
+      underlyingDecimals: tokenDecimalsMap[Loan?.underlyingMarket],
+      currentMarket: new Address(tokenAddressMap[Loan?.underlyingMarket]),
+      currentAmount: new MyBigNumber(Loan?.currentLoanAmount,tokenDecimalsMap[Loan?.underlyingMarket]),
+      state: 1
+    }
+    const dataprocessedLoan={
+      loan_id:Loan?.loanId,
+      underlyingMarket: new Address(Loan?.underlyingMarketAddress),
+      underlyingDecimals: tokenDecimalsMap[Loan?.underlyingMarket as NativeToken],
+      currentMarket: new Address(Loan?.underlyingMarketAddress),
+      currentAmount: new MyBigNumber(Loan?.currentLoanAmount,tokenDecimalsMap[Loan?.underlyingMarket as NativeToken]),
+      state: 1
+    }
+    const res=await spendcalls.getMySwapCalldata(typeCall==='normal'?dataprocessedLoan:dataprocessedBorrowandSpend,new Address(tokenAddressMap[toMarketSwap]),100)
     return res;
    
   } catch (error) {
-    // console.log(error,'err in stats')
+    console.log(error,'err in getJediswapCallData')
   }
 }
 
-export async function getJediswapLiquidityCallData(Loan_id:string,toMarketLiqA:NativeToken,toMarketLiqB:NativeToken){
+export async function getJediswapLiquidityCallData(Loan:any,toMarketLiqA:NativeToken,toMarketLiqB:NativeToken,typeCall:string='normal'){
   try {
     const spendcalls = new Spend(
       config,
       diamondAddress,
       contractsEnv?.TOKENS
     );
-    console.log(Loan_id,toMarketLiqA,toMarketLiqB,"mm")
-    const res=await spendcalls.getJediLiquidityCalldata(Loan_id,new Address(tokenAddressMap[toMarketLiqA]),new Address(tokenAddressMap[toMarketLiqB]))
+    const dataprocessedBorrowandSpend={
+      loan_id:'0',
+      underlyingMarket: new Address(tokenAddressMap[Loan?.underlyingMarket]),
+      underlyingDecimals: tokenDecimalsMap[Loan?.underlyingMarket],
+      currentMarket: new Address(tokenAddressMap[Loan?.underlyingMarket]),
+      currentAmount: new MyBigNumber(Loan?.currentLoanAmount,tokenDecimalsMap[Loan?.underlyingMarket]),
+      state: 1
+    }
+    const dataprocessedLoan={
+      loan_id:Loan?.loanId,
+      underlyingMarket: new Address(Loan?.underlyingMarketAddress),
+      underlyingDecimals: tokenDecimalsMap[Loan?.underlyingMarket as NativeToken],
+      currentMarket: new Address(Loan?.underlyingMarketAddress),
+      currentAmount: new MyBigNumber(Loan?.currentLoanAmount,tokenDecimalsMap[Loan?.underlyingMarket as NativeToken]),
+      state: 1
+    }
+    const res=await spendcalls.getJediLiquidityCalldata(dataprocessedLoan,new Address(tokenAddressMap[toMarketLiqA]),new Address(tokenAddressMap[toMarketLiqB]))
     return res;
    
   } catch (error) {
@@ -328,14 +377,14 @@ export async function getMyswapLiquidityCallData(Loan_id:string,toMarketLiqA:Nat
   }
 }
 
-export async function getJediSwapRevertCalldata(Loan_id:string){
+export async function getJediSwapRevertCalldata(Loan:any){
   try {
     const spendcalls = new Spend(
       config,
       diamondAddress,
       contractsEnv?.TOKENS
     );
-    const res=await spendcalls.getRevertJediSwapCalldata(Loan_id,0.5)
+    const res=await spendcalls.getRevertJediSwapCalldata(Loan,0.5)
     return res;
    
   } catch (error) {
@@ -343,14 +392,14 @@ export async function getJediSwapRevertCalldata(Loan_id:string){
   }
 }
 
-export async function getJediSwapLiquidityRevertCalldata(Loan_id:string){
+export async function getJediSwapLiquidityRevertCalldata(Loan:any){
   try {
     const spendcalls = new Spend(
       config,
       diamondAddress,
       contractsEnv?.TOKENS
     );
-    const res=await spendcalls.getRevertJediLiquidityCalldata(Loan_id)
+    const res=await spendcalls.getRevertJediLiquidityCalldata(Loan)
     return res;
    
   } catch (error) {
@@ -358,14 +407,14 @@ export async function getJediSwapLiquidityRevertCalldata(Loan_id:string){
   }
 }
 
-export async function getMySwapLiquidityRevertCalldata(Loan_id:string,toMarketLiqA:NativeToken,toMarketLiqB:NativeToken){
+export async function getMySwapLiquidityRevertCalldata(Loan:any){
   try {
     const spendcalls = new Spend(
       config,
       diamondAddress,
       contractsEnv?.TOKENS
     );
-    const res=await spendcalls.getRevertMySwapLiquidityCalldata(Loan_id)
+    const res=await spendcalls.getRevertMySwapLiquidityCalldata(Loan)
     return res;
    
   } catch (error) {
@@ -373,14 +422,14 @@ export async function getMySwapLiquidityRevertCalldata(Loan_id:string,toMarketLi
   }
 }
 
-export async function getMySwapRevertCalldata(Loan_id:string){
+export async function getMySwapRevertCalldata(Loan:any){
   try {
     const spendcalls = new Spend(
       config,
       diamondAddress,
       contractsEnv?.TOKENS
     );
-    const res=await spendcalls.getRevertMySwapCalldata(Loan_id,0.5)
+    const res=await spendcalls.getRevertMySwapCalldata(Loan,0.5)
     return res;
    
   } catch (error) {

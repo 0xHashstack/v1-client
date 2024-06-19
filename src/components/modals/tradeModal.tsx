@@ -1263,7 +1263,6 @@ const TradeModal = ({
     const fetchData=async()=>{
       setrefereshCallData(true)
       if(method==="ADD_LIQUIDITY"){
-        console.log('entry')
         if(loanAmount>0 && rTokenAmount>0 &&collateralAmount>0 && l3App && currentPool !== 'Select a pool' ){
           if(l3App==="JEDI_SWAP"){
             const res=await getJediswapLiquidityCallData('0',toMarketLiqA,toMarketLiqB);
@@ -1281,10 +1280,14 @@ const TradeModal = ({
         }
       }else if(method==="SWAP"){
         if(loanAmount>0 && rTokenAmount>0 &&collateralAmount>0 && l3App && currentPoolCoin !== 'Select a pool'){
-          console.log('chlo')
           if(l3App==="JEDI_SWAP"){
-            const res=await getJediswapCallData('0',toMarketSwap);
-            console.log(res,"jawab")
+            const data={
+              underlyingMarket:loanMarket,
+              currentLoanAmount:loanAmount
+            }
+            console.log('entery')
+            const res=await getJediswapCallData(data,toMarketSwap,'borrowAndSpend');
+
             if(res){
               setrefereshCallData(false)
               setcallData(res);
@@ -1300,7 +1303,7 @@ const TradeModal = ({
     }     
     }
     fetchData();
-  },[loanAmount,loanAmount,rToken,rTokenAmount,collateralAmount,collateralMarket,l3App,method,toMarketLiqA,toMarketLiqB,toMarketSwap,method])
+  },[loanMarket,loanAmount,rToken,rTokenAmount,collateralAmount,collateralMarket,l3App,method,toMarketLiqA,toMarketLiqB,toMarketSwap,method])
 
   useEffect(() => {
     setCurrentLPTokenAmount(null)

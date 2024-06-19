@@ -108,6 +108,7 @@ import SuccessButton from "../uiElements/buttons/SuccessButton";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import BigNumber from "bignumber.js";
 import { uint256 } from "starknet";
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -181,7 +182,7 @@ const LiquidityProvisionModal = ({
   const [allocationData, setallocationData] = useState<any>();
   const [poolAllocatedData, setpoolAllocatedData] = useState<any>();
   const getUniqueId = () => uniqueID;
-
+  const [currentLoan, setcurrentLoan] = useState<ILoan>()
   let activeTransactions = useSelector(selectActiveTransactions);
 
   useEffect(() => {
@@ -225,7 +226,7 @@ const LiquidityProvisionModal = ({
       setrefereshCallData(true)
       if(currentSwap == "Jediswap"){
         if(liquidityLoanId && toMarketA &&toMarketB){
-          const res=await getJediswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB);
+          const res=await getJediswapLiquidityCallData(currentLoan,toMarketA,toMarketB);
           if(res){
             setrefereshCallData(false)
             setcallDataLiquidity(
@@ -266,6 +267,7 @@ const LiquidityProvisionModal = ({
       (item: any) =>
         item?.loanId == currentId?.slice(currentId?.indexOf("-") + 1)?.trim()
     );
+    setcurrentLoan(result)
     setBorrowAmount(result?.loanAmountParsed);
     ////console.log(borrowAmount)
     // Rest of your code using the 'result' variable
