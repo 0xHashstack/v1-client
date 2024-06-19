@@ -194,7 +194,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
           </Box>
         ))}
       </ButtonGroup>
-      <Box display="flex" gap={isLessThan1200?"1.5rem":"2rem"} >
+      {router.pathname==='/v1/market' &&<Box display="flex" gap={isLessThan1200?"1.5rem":"2rem"} >
         <Box
           display="flex"
           gap="0.4rem"
@@ -246,7 +246,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
           )}
           <Box>{netAPR >= 0 ? <PositiveApr /> : <NegativeApr />}</Box>
         </Box>
-      </Box>
+      </Box>}
     </HStack>
   )
 }
