@@ -65,7 +65,7 @@ import useAddCollateral from '@/Blockchain/hooks/Writes/useAddCollateral'
 import useLiquidity from '@/Blockchain/hooks/Writes/useLiquidity'
 import useRepay from '@/Blockchain/hooks/Writes/useRepay'
 import useRevertInteractWithL3 from '@/Blockchain/hooks/Writes/useRevertInteractWithL3'
-import { NativeToken } from '@/Blockchain/interfaces/interfaces'
+import { ILoan, NativeToken } from '@/Blockchain/interfaces/interfaces'
 import { getExistingLoanHealth } from '@/Blockchain/scripts/LoanHealth'
 import { getrTokensMinted } from '@/Blockchain/scripts/Rewards'
 import { effectivAPRLoan } from '@/Blockchain/scripts/userStats'
@@ -137,6 +137,8 @@ import {
   getJediswapLiquidityCallData,
   getMySwapEstimateLiquiditySplit,
   getMySwapEstimatedLpAmountOut,
+  getMySwapLiquidityRevertCalldata,
+  getMySwapRevertCalldata,
   getMyswapCallData,
   getMyswapLiquidityCallData,
   getzklendRevertCallData,
@@ -371,7 +373,8 @@ const YourBorrowModal = ({
   const {
     revertLoanId,
     setRevertLoanId,
-
+    revertcallData,
+    setrevertcallData,
     dataRevertInteractWithL3,
     writeAsyncRevertInteractWithL3,
     writeRevertInteractWithL3,
@@ -551,7 +554,7 @@ const YourBorrowModal = ({
     DAI: useBalanceOf(tokenAddressMap['DAI']),
     STRK: useBalanceOf(tokenAddressMap['STRK']),
   }
-
+  const [currentLoan, setcurrentLoan] = useState<ILoan>()
   const [walletBalance1, setwalletBalance1] = useState(
     walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
       ?.statusBalanceOf === 'success'
@@ -656,6 +659,7 @@ const YourBorrowModal = ({
         item?.loanId ==
         currentBorrowId1.slice(currentBorrowId1.indexOf('-') + 1).trim()
     )
+    setcurrentLoan(result);
     setLoan(result)
   }, [currentBorrowId1])
   ////console.log(userLoans);
@@ -3305,14 +3309,61 @@ const YourBorrowModal = ({
       setnetStrkBorrow(0)
     }
   }, [strkData])
+
+  useEffect(()=>{
+    const fetchRevertData=async()=>{
+      if(currentAction==="Convert to borrow market"){
+        setrefereshCallData(true);
+        if(currentLoan){
+          if(currentLoan?.l3App==="JEDI_SWAP"){
+            if(currentLoan?.spendType==="LIQUIDITY"){
+              const res=await getJediSwapLiquidityRevertCalldata(liquidityLoanId)
+              if(res){
+                setrefereshCallData(false);
+                setrevertcallData(res)
+              }
+            }else if(currentLoan?.spendType==='SWAP'){
+              const res=await getJediSwapRevertCalldata(liquidityLoanId);
+              if(res){
+                setrefereshCallData(false);
+                setrevertcallData(res)
+              }
+            }
+          }else if(currentLoan?.l3App==="MY_SWAP"){
+            if(currentLoan?.spendType==="LIQUIDITY"){
+              const res=await getMySwapLiquidityRevertCalldata(liquidityLoanId)
+              if(res){
+                setrefereshCallData(false);
+                setrevertcallData(res)
+              }
+            }else if(currentLoan?.spendType==='SWAP'){
+              const res=await getMySwapRevertCalldata(liquidityLoanId);
+              if(res){
+                setrefereshCallData(false);
+                setrevertcallData(res)
+              }
+            }
+          }else if(currentLoan?.l3App==='ZKLEND'){
+            const res=await getzklendRevertCallData(liquidityLoanId)
+            if(res){
+              setrefereshCallData(false);
+              setrevertcallData(res)
+            }
+          }
+        }
+      }
+    }
+    fetchRevertData();
+  },[currentLoan,currentAction])
+
   useEffect(()=>{
     const fetchData=async()=>{
-      setrefereshCallData(true);
       if(currentAction==="Spend Borrow"){
+        setrefereshCallData(true);
         if(radioValue==='1'){
           if(currentDapp==="Jediswap"){
             if(currentPool!=="Select a pool"){
-              const res=await getJediswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB)
+              const res=await getJediswapLiquidityCallData(currentLoan,toMarketA,toMarketB)
               if(res){
                 setrefereshCallData(false);
                 setcallDataLiquidity(res);
@@ -3320,7 +3371,7 @@ const YourBorrowModal = ({
             }
           }else if(currentDapp=="mySwap"){
             if(currentPool!=="Select a pool"){
-              const res=await getMyswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB)
+              const res=await getMyswapLiquidityCallData(currentLoan,toMarketA,toMarketB)
               if(res){
                 setrefereshCallData(true);
                 setcallDataLiquidity(res);
@@ -3330,7 +3381,7 @@ const YourBorrowModal = ({
         }else{
           if(currentDapp==="Jediswap"){
             if(currentPoolCoin!=="Select a pool"){
-              const res=await getJediswapCallData(liquidityLoanId,toMarket)
+              const res=await getJediswapCallData(currentLoan,toMarket)
               if(res){
                 setrefereshCallData(false)
                 setcallDataSwap(res);
@@ -3338,7 +3389,7 @@ const YourBorrowModal = ({
             }
           }else if(currentDapp=="mySwap"){
             if(currentPoolCoin!=="Select a pool"){
-              const res=await getMyswapCallData(liquidityLoanId,toMarket)
+              const res=await getMyswapCallData(currentLoan,toMarket)
               if(res){
                 setrefereshCallData(false)
                 setcallDataSwap(res);
@@ -5199,7 +5250,8 @@ const YourBorrowModal = ({
                             setCurrentTransactionStatus
                           }
                         >
-                          convert to borrow market
+                                            {refereshCallData &&<Spinner/>}
+                                            {!refereshCallData && `Convert to borrow market`}
                         </AnimatedButton>
                       </Box>
                     ) : (

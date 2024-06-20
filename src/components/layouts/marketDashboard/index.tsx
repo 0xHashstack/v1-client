@@ -105,7 +105,6 @@ const MarketDashboard = () => {
     // fetchUserReserves();
     // fetchUserLoans();
   }, [stats]);
-  console.log(stats,"stats")
   const fetchProtocolStats = async () => {
     try {
       ////console.log("fetchprotocolstats", stats); //23014

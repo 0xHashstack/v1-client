@@ -1316,7 +1316,7 @@ const useDataLoader = () => {
 
           const supply: any = data
           if (!supply) return
-          let indexes: any = [5, 2, 3, 1, 0, 4]
+          let indexes: any = [4, 2, 3, 1, 0]
           let supplyCount = 0
 
           indexes.forEach((index: number) => {
@@ -1326,7 +1326,7 @@ const useDataLoader = () => {
               supply?.[index]?.rTokenLockedParsed !== 0 ||
               supply?.[index]?.rTokenStakedParsed !== 0
             ) {
-              if (index == 2 || index == 3) {
+              if (index == 1 || index == 2) {
                 if (
                   supply?.[index]?.rTokenAmountParsed > 0.000001 ||
                   supply?.[index]?.rTokenFreeParsed > 0.000001 ||

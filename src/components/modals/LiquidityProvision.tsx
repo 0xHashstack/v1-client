@@ -236,7 +236,7 @@ const LiquidityProvisionModal = ({
         }
       }else if(currentSwap==="MySwap"){
         if(liquidityLoanId && toMarketA &&toMarketB){
-          const res=await getMyswapLiquidityCallData(liquidityLoanId,toMarketA,toMarketB);
+          const res=await getMyswapLiquidityCallData(currentLoan,toMarketA,toMarketB);
           if(res){
             setrefereshCallData(false)
             setcallDataLiquidity(res)

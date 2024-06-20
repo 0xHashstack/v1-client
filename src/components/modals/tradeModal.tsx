@@ -105,7 +105,7 @@ import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from '@/Blockchain/utils/addressServices'
-import { BNtoNum, parseAmount } from '@/Blockchain/utils/utils'
+import { BNtoNum, etherToWeiBN, parseAmount } from '@/Blockchain/utils/utils'
 import ArrowUp from '@/assets/icons/arrowup'
 import BlueInfoIcon from '@/assets/icons/blueinfoicon'
 import SmallEth from '@/assets/icons/coins/smallEth'
@@ -145,6 +145,9 @@ import AnimatedButton from '../uiElements/buttons/AnimationButton'
 import ErrorButton from '../uiElements/buttons/ErrorButton'
 import SuccessButton from '../uiElements/buttons/SuccessButton'
 import SliderTooltip from '../uiElements/sliders/sliderTooltip'
+import { Router, parseCalldataUint256 } from '@hashstackdev/itachi-sdk'
+import { config, diamondAddress } from '@/Blockchain/stark-constants'
+import { useAccount } from '@starknet-react/core'
 const TradeModal = ({
   buttonText,
   coin,
@@ -186,7 +189,8 @@ const TradeModal = ({
     setToMarketLiqB,
     callData,
     setcallData,
-
+    setcompleteCall,
+    completeCall,
     dataBorrowAndSpend,
     errorBorrowAndSpend,
     resetBorrowAndSpend,
@@ -832,6 +836,7 @@ const TradeModal = ({
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
   const minAmounts = useSelector(selectMinimumDepositAmounts)
   const maxAmounts = useSelector(selectMaximumDepositAmounts)
+  const { address: recipient } = useAccount()
   useEffect(() => {
     setMinimumDepositAmount(minAmounts['r' + currentCollateralCoin])
     setmaximumDepositAmount(maxAmounts['r' + currentCollateralCoin])
@@ -860,6 +865,22 @@ const TradeModal = ({
   const handleBorrowAndSpend = async () => {
     try {
       if (currentCollateralCoin[0] != 'r') {
+        // const call=new Router(
+        //   config,
+        //   diamondAddress
+        // )
+        // const Routercalls=await call.borrow_and_spend(
+        //         tokenAddressMap[loanMarket],
+        //         parseCalldataUint256([etherToWeiBN(loanAmount, loanMarket).toString(),0]),
+        //         tokenAddressMap[collateralMarket],
+        //         parseCalldataUint256([etherToWeiBN(collateralAmount, collateralMarket).toString(),0]),
+        //         recipient as string,
+        //         callData,
+        // )
+        // console.log(Routercalls,"calls")
+        // if(Routercalls){
+        //   setcompleteCall(Routercalls);
+        // }
         const borrowAndSpend = await writeAsyncBorrowAndSpend()
         setDepositTransHash(borrowAndSpend?.transaction_hash)
         if (borrowAndSpend?.transaction_hash) {
@@ -963,7 +984,7 @@ const TradeModal = ({
         }
       }
     } catch (err: any) {
-      //console.log(err);
+      // console.log(err,"err");
       const uqID = getUniqueId()
       let data: any = localStorage.getItem('transactionCheck')
       data = data ? JSON.parse(data) : []
@@ -1221,7 +1242,8 @@ const TradeModal = ({
         ) {
           setMaximumLoanAmount(maxLoanAmounts['d' + currentBorrowCoin])
         } else {
-          setMaximumLoanAmount(Math.min(dynamicdata, data))
+          setMaximumLoanAmount(maxLoanAmounts['d' + currentBorrowCoin])
+          // setMaximumLoanAmount(Math.min(dynamicdata, data))
         }
       }
     }
@@ -1263,15 +1285,23 @@ const TradeModal = ({
     const fetchData=async()=>{
       setrefereshCallData(true)
       if(method==="ADD_LIQUIDITY"){
-        if(loanAmount>0 && rTokenAmount>0 &&collateralAmount>0 && l3App && currentPool !== 'Select a pool' ){
+        if(loanAmount>0  && l3App && currentPool !== 'Select a pool' ){
           if(l3App==="JEDI_SWAP"){
-            const res=await getJediswapLiquidityCallData('0',toMarketLiqA,toMarketLiqB);
+            const data={
+              underlyingMarket:loanMarket,
+              currentLoanAmount:loanAmount
+            }
+            const res=await getJediswapLiquidityCallData(data,toMarketLiqA,toMarketLiqB,'borrowAndSpend');
             if(res){
               setrefereshCallData(false)
               setcallData(res);
             }
           }else if(l3App==='MY_SWAP'){
-            const res=await getMyswapLiquidityCallData('0',toMarketLiqA,toMarketLiqB)
+            const data={
+              underlyingMarket:loanMarket,
+              currentLoanAmount:loanAmount
+            }
+            const res=await getMyswapLiquidityCallData(data,toMarketLiqA,toMarketLiqB,'borrowAndSpend')
             if(res){
               setrefereshCallData(false)
               setcallData(res);
@@ -1279,13 +1309,12 @@ const TradeModal = ({
           }
         }
       }else if(method==="SWAP"){
-        if(loanAmount>0 && rTokenAmount>0 &&collateralAmount>0 && l3App && currentPoolCoin !== 'Select a pool'){
+        if(loanAmount>0  && currentPoolCoin !== 'Select a pool'){
           if(l3App==="JEDI_SWAP"){
             const data={
               underlyingMarket:loanMarket,
               currentLoanAmount:loanAmount
             }
-            console.log('entery')
             const res=await getJediswapCallData(data,toMarketSwap,'borrowAndSpend');
 
             if(res){
@@ -1293,7 +1322,11 @@ const TradeModal = ({
               setcallData(res);
             }
           }else if(l3App==='MY_SWAP'){
-            const res=await getMyswapCallData('0',toMarketSwap)
+            const data={
+              underlyingMarket:loanMarket,
+              currentLoanAmount:loanAmount
+            }
+            const res=await getMyswapCallData(data,toMarketSwap,'borrowAndSpend')
             if(res){
               setrefereshCallData(false)
               setcallData(res);

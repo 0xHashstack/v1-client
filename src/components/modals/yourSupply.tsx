@@ -118,7 +118,6 @@ const YourSupplyModal = ({
   coins,
   protocolStats,
 }: any) => {
-  console.log(protocolStats,"your")
   const { isOpen, onOpen, onClose } = useDisclosure()
   const dispatch = useDispatch()
   const [sliderValue, setSliderValue] = useState(0)

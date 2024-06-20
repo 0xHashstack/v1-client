@@ -185,9 +185,9 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
       case 'ETH':
         return borrowAPRs[3]
       case 'DAI':
-        return borrowAPRs[4]
-      case 'STRK':
         return borrowAPRs[5]
+      case 'STRK':
+        return borrowAPRs[4]
 
       default:
         break
