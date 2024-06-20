@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { memo, useEffect, useRef, useState } from 'react'
 
+import BellIcon from '@/assets/icons/BellIcon'
 import StakeUnstakeModal from '@/components/modals/StakeUnstakeModal'
 import TransferDepositModal from '@/components/modals/TransferDepositModal'
 import GetTokensModal from '@/components/modals/getTokens'
@@ -45,7 +46,6 @@ import hoverDashboardIcon from '../../../assets/images/hoverDashboardIcon.svg'
 import hoverStake from '../../../assets/images/hoverStakeIcon.svg'
 import tickMark from '../../../assets/images/tickMark.svg'
 import { Coins } from '../dashboardLeft'
-import BellIcon from '@/assets/icons/BellIcon'
 
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
@@ -645,30 +645,35 @@ const Navbar = ({ validRTokens }: any) => {
               background="var(--Base_surface, #02010F)"
               border="1px solid rgba(103, 109, 154, 0.30)"
               className="dropdown-container"
+              userSelect="none"
             >
-              <Box display="flex" gap="0.5rem">
+              <Box display="flex" gap="0.5rem" cursor="pointer" w="fit-content">
                 <Image
                   src={'/arrowNavLeftActive.svg'}
                   alt="Arrow Navigation Left"
                   width="6"
                   height="6"
-                  style={{
-                    cursor: 'pointer',
-                  }}
                 />
                 <Text fontSize="12px">Notifications</Text>
               </Box>
-              <Box display="flex" flexDirection="column" gap="1.5rem">
-                <Box display="flex" gap="0.8rem">
-                  <Box width="120px">
+
+              <Box display="flex" flexDirection="column" gap="1rem">
+                <Box
+                  display="flex"
+                  pb="0.8rem"
+                  gap="0.8rem"
+                  borderBottom="1px solid #34345699"
+                >
+                  <Box width="100px" height="60px" position="relative">
                     <Image
                       src="/degen_banner.svg"
                       alt="Degen Mode"
-                      width="120"
-                      height="58"
+                      fill
+                      objectFit="cover"
+                      style={{ borderRadius: '6px' }}
                     />
                   </Box>
-                  <Box  mt="-0.2rem">
+                  <Box mt="-0.2rem">
                     <Text fontSize="18px">Defi Spring</Text>
                     <Text
                       mt="0.2rem"
@@ -688,25 +693,61 @@ const Navbar = ({ validRTokens }: any) => {
                       Explore
                     </Text>
                   </Box>
-                  
                 </Box>
-                <Box display="flex" gap="0.8rem">
-                  <Box width="120px">
+
+                <Box
+                  display="flex"
+                  pb="0.8rem"
+                  gap="0.8rem"
+                  borderBottom="1px solid #34345699"
+                >
+                  <Box width="100px" height="60px" position="relative">
                     <Image
                       src="/degen_banner.svg"
                       alt="Degen Mode"
-                      width="120"
-                      height="58"
+                      fill
+                      objectFit="cover"
+                      style={{ borderRadius: '6px' }}
                     />
                   </Box>
-                  <Box  mt="-0.2rem">
+                  <Box mt="-0.2rem">
                     <Text fontSize="18px">Defi Spring</Text>
                     <Text
                       mt="0.2rem"
                       fontSize="12px"
                       lineHeight="18px"
                       color="F0F0F5"
-                      whiteSpace="nowrap"
+                    >
+                      A high yield arbitrage strategy feature.
+                    </Text>
+                    <Text
+                      textDecoration="underline"
+                      color="#4D59E8"
+                      fontSize="12px"
+                      cursor="pointer"
+                    >
+                      Link
+                    </Text>
+                  </Box>
+                </Box>
+
+                <Box display="flex" gap="0.8rem" pb="0.2rem">
+                  <Box width="100px" height="60px" position="relative">
+                    <Image
+                      src="/degen_banner.svg"
+                      alt="Degen Mode"
+                      fill
+                      objectFit="cover"
+                      style={{ borderRadius: '6px' }}
+                    />
+                  </Box>
+                  <Box mt="-0.2rem">
+                    <Text fontSize="18px">Defi Spring</Text>
+                    <Text
+                      mt="0.2rem"
+                      fontSize="12px"
+                      lineHeight="18px"
+                      color="F0F0F5"
                     >
                       A high yield arbitrage strategy feature.
                     </Text>
@@ -719,7 +760,6 @@ const Navbar = ({ validRTokens }: any) => {
                       Explore
                     </Text>
                   </Box>
-                  
                 </Box>
               </Box>
             </Box>
