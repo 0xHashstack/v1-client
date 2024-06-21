@@ -23,7 +23,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
         run: |
-          git clone https://x-access-token:${{ secrets.REPO_PAT }}@github.com:0xHashstack/v1-sdk-itachi.git
+          git clone https://x-access-token:${{ secrets.REPO_PAT }}@github.com/0xHashstack/v1-sdk-itachi.git
           cd v1-sdk-itachi
           yarn install
           yarn run build
