@@ -766,7 +766,7 @@ const LiquidityProvisionModal = ({
 
   const fetchLiquiditySplit = async () => {
     if (!toMarketA || !toMarketB || currentPool === "Select a pool") return;
-    if (currentSwap === "Jediswap" || currentSwap === "MySwap") {
+    if (currentSwap === "Jediswap" ) {
       const split = await getJediEstimateLiquiditySplit(
         currentLoanMarket,
         currentLoanAmount,
@@ -885,7 +885,7 @@ const LiquidityProvisionModal = ({
   const oraclePrices = useSelector(selectOraclePrices);
   const fetchLPAmount = async () => {
     if (!toMarketA || !toMarketB || currentPool === "Select a pool") return;
-    if (currentSwap === "Jediswap" || currentSwap === "MySwap") {
+    if (currentSwap === "Jediswap" ) {
       const lp_tokon = await getJediEstimatedLpAmountOut(
         currentLoanMarket,
         currentLoanAmount,
