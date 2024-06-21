@@ -1395,7 +1395,7 @@ const TradeModal = ({
     )
       return
 
-    if (currentDapp === 'Jediswap' || currentDapp==='mySwap') {
+    if (currentDapp === 'Jediswap' ) {
       const split = await getJediEstimateLiquiditySplit(
         currentBorrowCoin,
         (
@@ -1441,7 +1441,7 @@ const TradeModal = ({
     )
       return
     ////console.log("inputBorrowAmount", Number(inputBorrowAmount));
-    if (currentDapp === 'Jediswap' || currentDapp === 'mySwap') {
+    if (currentDapp === 'Jediswap' ) {
       const lp_tokon = await getJediEstimatedLpAmountOut(
         currentBorrowCoin,
         (

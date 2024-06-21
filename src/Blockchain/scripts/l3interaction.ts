@@ -12,6 +12,7 @@ import {
   getProvider,
   getTokenFromAddress,
   l3DiamondAddress,
+  pragmaAddress,
   processAddress,
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
@@ -29,7 +30,13 @@ type LiquiditySplit = {
   tokenBAddress: string;
   tokenB: NativeToken;
 };
-BigInt.prototype.toJSON = function() { return this.toString() }
+Object.defineProperty(BigInt.prototype, 'toJSON', {
+  value: function() {
+    return this.toString();
+  },
+  writable: true,
+  configurable: true
+});
 export async function getUSDValue(market: string, amount: number) {
   ////console.log("amount = ", amount * Math.pow(10, tokenDecimalsMap[market]));
   ////console.log("get_asset_usd_value", market, amount);
@@ -83,25 +90,20 @@ export async function getJediEstimateLiquiditySplit(
 
   const provider = getProvider();
   try {
-    const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
-
-    const res:any = await l3Contract.call(
-      "get_jedi_estimate_liquidity_split",
-      // [loanId, tokenAAddress, tokenBAddress],
-      [
-        tokenAddressMap[loanMarket],
-        uint256.bnToUint256(currentAmount),
-        tokenAddressMap[tokenA],
-        tokenAddressMap[tokenB],
-      ],
-      {
-        blockIdentifier: "pending",
-      }
+    const tokens=contractsEnv.TOKENS
+    const spendcalls = new SpendView(
+      config,
+      tokens,
+      new Address(pragmaAddress)
     );
-   
-    const split1 = parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8);
-    const split2 = parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8);
-    // console.log(split1,split2,"split amounts")
+
+    const res:any = await spendcalls.get_jedi_estimated_liquidity_split(new Address(tokenAddressMap[loanMarket]),
+    new MyBigNumber(currentAmount,tokenDecimalsMap[loanMarket]),
+      new Address(tokenAddressMap[tokenA]),
+     new Address(tokenAddressMap[tokenB]))
+      // [loanId, tokenAAddress, tokenBAddress],
+    const split1 = parseAmount(Number(res?.amountA).toString(), 6);
+    const split2 = parseAmount(Number(res?.amountB).toString(), 6);
     return [split1, split2];
   } catch (error) {
    console.log("error in getJediEstimateLiquiditySplit: ", error);
@@ -119,25 +121,18 @@ export async function getJediEstimatedLpAmountOut(
   if (!currentAmount) {
     return 0;
   }
-
-  const provider = getProvider();
   try {
-    const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
-    const res:any = await l3Contract.call(
-      "get_jedi_estimated_lp_amount_out",
-      // [loanId, tokenAAddress, tokenBAddress],
-      [
-        tokenAddressMap[loanMarket],
-        uint256.bnToUint256(currentAmount),
-        tokenAddressMap[tokenA],
-        tokenAddressMap[tokenB],
-      ],
-      {
-        blockIdentifier: "pending",
-      }
+    const tokens=contractsEnv.TOKENS
+    const spendcalls = new SpendView(
+      config,
+      tokens,
+      new Address(pragmaAddress)
     );
-  
-    return parseAmount(String(uint256.uint256ToBN(res?.lp_amount_out)), 18);
+    const res:any = await spendcalls.get_jedi_estimated_lp_amount_out(new Address(tokenAddressMap[loanMarket]),
+    new MyBigNumber(currentAmount,tokenDecimalsMap[loanMarket]),
+      new Address(tokenAddressMap[tokenA]),
+     new Address(tokenAddressMap[tokenB]))
+    return parseAmount(String(Number(res)), 18);
   } catch (error) {
    console.log("error in getJediEstimatedLpAmountOut: ", error);
   }
@@ -161,16 +156,17 @@ export async function getJediEstimatedLiqALiqBfromLp(
   // ]);
 
   try {
-    const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
-  //  console.log("split before calling",l3Contract,liquidity,pairAddress);
-    const res:any = await l3Contract.call(
-      "get_jedi_estimated_liqA_liqB_from_lp",
-      // [liquidity, pairAddress],
-      [uint256.bnToUint256(liquidity), pairAddress],
-      {
-        blockIdentifier: "pending",
-      }
+    const tokens=contractsEnv.TOKENS
+    const spendcalls = new SpendView(
+      config,
+      tokens,
+      new Address(pragmaAddress)
     );
+  //  console.log("split before calling",l3Contract,liquidity,pairAddress);
+    const res:any = await spendcalls.get_jedi_estimated_liqA_liqB_from_lp(
+
+      new MyBigNumber(liquidity,tokenDecimalsMap[loanMarket]), new Address(pairAddress)
+    )
   //  console.log("split after calling");
   //  console.log("split res", loanId, res);
 
@@ -184,8 +180,8 @@ export async function getJediEstimatedLiqALiqBfromLp(
     if (!res) {
       return {};
     }
-    const tokenA = getTokenFromAddress(processAddress(res?.token0))?.name;
-    const tokenB = getTokenFromAddress(processAddress(res?.token1))?.name;
+    const tokenA = getTokenFromAddress(processAddress(res?.tokenA?.address))?.name;
+    const tokenB = getTokenFromAddress(processAddress(res?.tokenB?.address))?.name;
     ////console.log(
     //   "split token A",
     //   tokenA,
@@ -201,21 +197,21 @@ export async function getJediEstimatedLiqALiqBfromLp(
 
     return {
       amountA: parseAmount(
-        String(uint256.uint256ToBN(res?.amountA)),
+        String((res?.tokenAAmount)),
         tokenDecimalsMap[tokenA as Token]
       ),
-      tokenAAddress: res?.token0,
-      tokenA: getTokenFromAddress(res?.token0)?.name as NativeToken,
+      tokenAAddress: res?.tokenA?.address,
+      tokenA: getTokenFromAddress(res?.tokenA)?.name as NativeToken,
 
       amountB: parseAmount(
-        String(uint256.uint256ToBN(res?.amountB)),
+        String((res?.tokenBAmount)),
         tokenDecimalsMap[tokenB as Token]
       ),
-      tokenBAddress: res?.token1,
-      tokenB: getTokenFromAddress(res?.token1)?.name as NativeToken,
+      tokenBAddress: res?.tokenB?.address,
+      tokenB: getTokenFromAddress(res?.tokenB)?.name as NativeToken,
     };
   } catch (error) {
-   
+   console.log(error,"from lpamount a b")
   }
 }
 export async function getMySwapEstimateLiquiditySplit(
@@ -228,24 +224,22 @@ export async function getMySwapEstimateLiquiditySplit(
 
   const provider = getProvider();
   try {
-    const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
-
-    const res:any = await l3Contract.call(
-      "get_myswap_estimate_liquidity_split",
-      // [loanId, tokenAAddress, tokenBAddress],
-      [
-        tokenAddressMap[loanMarket],
-        uint256.bnToUint256(currentAmount),
-        tokenAddressMap[tokenA],
-        tokenAddressMap[tokenB],
-      ],
-      {
-        blockIdentifier: "pending",
-      }
+    const tokens=contractsEnv.TOKENS
+    const spendcalls = new SpendView(
+      config,
+      tokens,
+      new Address(pragmaAddress)
     );
 
-    const split1 = parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8);
-    const split2 = parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8);
+    const res:any = await spendcalls.get_myswap_estimated_liquidity_split(
+      new Address(tokenAddressMap[loanMarket]),
+      new MyBigNumber(currentAmount,tokenDecimalsMap[loanMarket]),
+        new Address(tokenAddressMap[tokenA]),
+       new Address(tokenAddressMap[tokenB])
+    )
+
+    const split1 = parseAmount(Number(res?.amountA).toString(), 6);
+    const split2 = parseAmount(Number(res?.amountB).toString(), 6);
     return [split1, split2];
   } catch (error) {
    console.log("error in getJediEstimateLiquiditySplit: ", error);
@@ -485,28 +479,25 @@ export async function getMySwapEstimatedLpAmountOut(
     return 0;
   }
 
-  const provider = getProvider();
   try {
-    const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
-    const res:any = await l3Contract.call(
-      "get_myswap_estimated_lp_amount_out",
-      // [loanId, tokenAAddress, tokenBAddress],
-      [
-        tokenAddressMap[loanMarket],
-        uint256.bnToUint256(currentAmount),
-        tokenAddressMap[tokenA],
-        tokenAddressMap[tokenB],
-      ],
-      {
-        blockIdentifier: "pending",
-      }
+    const tokens=contractsEnv.TOKENS
+    const spendcalls = new SpendView(
+      config,
+      tokens,
+      new Address(pragmaAddress)
     );
+    const res:any = await spendcalls.get_myswap_estimated_lp_amount_out(
+      new Address(tokenAddressMap[loanMarket]),
+      new MyBigNumber(currentAmount,tokenDecimalsMap[loanMarket]),
+        new Address(tokenAddressMap[tokenA]),
+       new Address(tokenAddressMap[tokenB]))
+      return parseAmount(String(Number(res)), 18)
+
     ////console.log(
     //   "estimated lp amount out for loanId: ",
     //   " is: ",
     //   parseAmount(uint256.uint256ToBN(res?.lp_amount_out))
     // );
-    return parseAmount(String(uint256.uint256ToBN(res?.lp_amount_out)), 18);
   } catch (error) {
    //console.log("error in getJediEstimatedLpAmountOut: ", error);
   }
@@ -530,16 +521,16 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
   // ]);
 
   try {
-    const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
-   //console.log("split before calling");
-    const res:any = await l3Contract.call(
-      "get_myswap_estimated_liqA_liqB_from_lp",
-      // [liquidity, pairAddress],
-      [uint256.bnToUint256(liquidity), pairAddress],
-      {
-        blockIdentifier: "pending",
-      }
+    const tokens=contractsEnv.TOKENS
+    const spendcalls = new SpendView(
+      config,
+      tokens,
+      new Address(pragmaAddress)
     );
+   //console.log("split before calling");
+    const res:any = await spendcalls.get_myswap_estimated_liqA_liqB_from_lp(
+      new MyBigNumber(liquidity,tokenDecimalsMap[loanMarket]), new Address(pairAddress)
+    )
    //console.log("split after calling");
   //  console.log("split res", loanId, res);
 
@@ -553,8 +544,8 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
     if (!res) {
       return {};
     }
-    const tokenA = getTokenFromAddress(processAddress(res?.token0))?.name;
-    const tokenB = getTokenFromAddress(processAddress(res?.token1))?.name;
+    const tokenA = getTokenFromAddress(processAddress(res?.tokenA?.address))?.name;
+    const tokenB = getTokenFromAddress(processAddress(res?.tokenB?.address))?.name;
     ////console.log(
     //   "split token A",
     //   tokenA,
@@ -570,18 +561,18 @@ export async function getMySwapEstimatedLiqALiqBfromLp(
 
     return {
       amountA: parseAmount(
-        uint256.uint256ToBN(res?.amountA).toString(),
+        String((res?.tokenAAmount)),
         tokenDecimalsMap[tokenA as Token]
       ),
-      tokenAAddress: res?.token0,
-      tokenA: getTokenFromAddress(res?.token0)?.name as NativeToken,
+      tokenAAddress: res?.tokenA?.address,
+      tokenA: getTokenFromAddress(res?.tokenA)?.name as NativeToken,
 
       amountB: parseAmount(
-        uint256.uint256ToBN(res?.amountB).toString(),
+        String((res?.tokenBAmount)),
         tokenDecimalsMap[tokenB as Token]
       ),
-      tokenBAddress: res?.token1,
-      tokenB: getTokenFromAddress(res?.token1)?.name as NativeToken,
+      tokenBAddress: res?.tokenB?.address,
+      tokenB: getTokenFromAddress(res?.tokenB)?.name as NativeToken,
     };
   } catch (error) {
    console.log(error,"error in myswapliquidity")
