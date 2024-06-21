@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - sepolia-changes-actions-workflow
+      - sepolia-changes-actions-workflow-test
 
 jobs:
   deploy:
