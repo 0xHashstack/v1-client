@@ -633,7 +633,7 @@ const Navbar = ({ validRTokens }: any) => {
           </Box>
           {navDropdowns.recentUpdatesDropdown && (
             <Box
-              width="370px"
+              width="420px"
               mr="10rem"
               display="flex"
               justifyContent="center"
@@ -690,7 +690,7 @@ const Navbar = ({ validRTokens }: any) => {
                       fontSize="12px"
                       cursor="pointer"
                     >
-                      Explore
+                      Learn more
                     </Text>
                   </Box>
                 </Box>
@@ -711,38 +711,7 @@ const Navbar = ({ validRTokens }: any) => {
                     />
                   </Box>
                   <Box mt="-0.2rem">
-                    <Text fontSize="18px">Defi Spring</Text>
-                    <Text
-                      mt="0.2rem"
-                      fontSize="12px"
-                      lineHeight="18px"
-                      color="F0F0F5"
-                    >
-                      A high yield arbitrage strategy feature.
-                    </Text>
-                    <Text
-                      textDecoration="underline"
-                      color="#4D59E8"
-                      fontSize="12px"
-                      cursor="pointer"
-                    >
-                      Link
-                    </Text>
-                  </Box>
-                </Box>
-
-                <Box display="flex" gap="0.8rem" pb="0.2rem">
-                  <Box width="100px" height="60px" position="relative">
-                    <Image
-                      src="/degen_banner.svg"
-                      alt="Degen Mode"
-                      fill
-                      objectFit="cover"
-                      style={{ borderRadius: '6px' }}
-                    />
-                  </Box>
-                  <Box mt="-0.2rem">
-                    <Text fontSize="18px">Defi Spring</Text>
+                    <Text fontSize="18px">Introducing Degen</Text>
                     <Text
                       mt="0.2rem"
                       fontSize="12px"
@@ -758,6 +727,37 @@ const Navbar = ({ validRTokens }: any) => {
                       cursor="pointer"
                     >
                       Explore
+                    </Text>
+                  </Box>
+                </Box>
+
+                <Box display="flex" gap="0.8rem" pb="0.2rem">
+                  <Box width="100px" height="60px" position="relative">
+                    <Image
+                      src="/degen_banner.svg"
+                      alt="Degen Mode"
+                      fill
+                      objectFit="cover"
+                      style={{ borderRadius: '6px' }}
+                    />
+                  </Box>
+                  <Box mt="-0.2rem">
+                    <Text fontSize="18px">Content Creators Program</Text>
+                    <Text
+                      mt="0.2rem"
+                      fontSize="12px"
+                      lineHeight="18px"
+                      color="F0F0F5"
+                    >
+                      Create content around Hashstack and earn points.
+                    </Text>
+                    <Text
+                      textDecoration="underline"
+                      color="#4D59E8"
+                      fontSize="12px"
+                      cursor="pointer"
+                    >
+                      Get Started
                     </Text>
                   </Box>
                 </Box>
