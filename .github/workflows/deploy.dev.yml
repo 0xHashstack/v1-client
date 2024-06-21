@@ -19,11 +19,16 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-
 
       # clone itachi-sdk build in v1-client
-      - name: clone itachi-sdk
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPO_PAT }}
+
+      - name: Clone SDK Repository
+        uses: GuillaumeFalourd/clone-github-repo-action@v2.3
+        with:
+          owner: '0xHashstack'
+          repository: 'v1-sdk-itachi'
+          access-token: ${{ secrets.REPO_PAT }}
+        
+      - name: Build SDK
         run: |
-          git clone https://x-access-token:${{ secrets.REPO_PAT }}@github.com/0xHashstack/v1-sdk-itachi.git
           cd v1-sdk-itachi
           yarn install
           yarn run build

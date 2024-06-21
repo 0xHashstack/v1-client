@@ -3171,7 +3171,7 @@ const YourBorrowModal = ({
     )
       return
 
-    if (currentDapp === 'Jediswap' || currentDapp === 'mySwap') {
+    if (currentDapp === 'Jediswap' ) {
       const split = await getJediEstimateLiquiditySplit(
         currentLoanMarket,
         currentLoanAmount,
@@ -3251,7 +3251,7 @@ const YourBorrowModal = ({
       currentDapp === 'Select a dapp'
     )
       return
-    if (currentDapp === 'Jediswap' || currentDapp === 'mySwap') {
+    if (currentDapp === 'Jediswap' ) {
       const lp_tokon = await getJediEstimatedLpAmountOut(
         currentLoanMarket,
         currentLoanAmount,
