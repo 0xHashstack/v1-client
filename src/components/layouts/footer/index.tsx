@@ -22,7 +22,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AccountInterface, BlockNumber } from 'starknet'
-import hoverCampaign from '../../../assets/images/hoverContributeEarnIcon.svg'
+import hoverC2e from '../../../assets/images/hoverContributeEarnIcon.svg'
 import {
   selectBlock,
   selectCurrentNetwork,
@@ -56,6 +56,7 @@ const Footer = () => {
   const router=useRouter();
   const [isLessThan1400] = useMediaQuery('(max-width: 1400px)')
   const [hoverCampaigns, sethoverCampaigns] = useState(false)
+  const [hoverc2e, sethoverc2e] = useState(false)
   const [perviewCount, setperviewCount] = useState<number>(2)
   const [ref] = useKeenSlider<HTMLDivElement>({
     loop: true,
@@ -260,32 +261,36 @@ const Footer = () => {
                     }}
                   >
                     <Image
-                      src={ "/contributeEarnIcon.svg"}
+                      src={ hoverCampaigns?'/campaignsIconGreen.svg':"/campaignsIcon.svg"}
                       alt="Plus Icon"
-                      width="16"
-                      height="16"
+                      width="24"
+                      height="24"
                     />
                     Campaigns
                   </MenuItem>
-                  <MenuItem
-                    _hover={{ color: '#00D395' }}
-                    fontSize="sm"
-                    fontWeight="medium"
-                    display="flex"
-                    alignItems="center"
-                    gap="4"
-                    bgColor="transparent"
-                    color="#676D9A"
-                    py="3"
-                  >
-                    <Image
-                      src="/plusicon.svg"
-                      alt="Plus Icon"
-                      width="16"
-                      height="16"
-                    />
-                    Contribute-2-Earn
-                  </MenuItem>
+                  <Link href="https://hashstack.finance/c2e/" target='_blank' style={{marginRight:'1.3rem'}}>
+                    <MenuItem
+                      _hover={{ color: '#00D395' }}
+                      fontSize="sm"
+                      fontWeight="medium"
+                      display="flex"
+                      alignItems="center"
+                      gap="4"
+                      bgColor="transparent"
+                      color="#676D9A"
+                      py="3"
+                      onMouseEnter={() => sethoverc2e(true)}
+                      onMouseLeave={() => sethoverc2e(false)}
+                    >
+                      <Image
+                        src={hoverc2e?hoverC2e: "/plusicon.svg"}
+                        alt="Plus Icon"
+                        width="16"
+                        height="16"
+                      />
+                      Contribute-2-Earn
+                    </MenuItem>
+                  </Link>
                 </MenuList>
               </>
             )}
