@@ -1,8 +1,10 @@
+import { Link as ChakraLink } from '@chakra-ui/react'
 import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { memo, useEffect, useRef, useState } from 'react'
 
+import BellIcon from '@/assets/icons/BellIcon'
 import StakeUnstakeModal from '@/components/modals/StakeUnstakeModal'
 import TransferDepositModal from '@/components/modals/TransferDepositModal'
 import GetTokensModal from '@/components/modals/getTokens'
@@ -45,7 +47,6 @@ import hoverDashboardIcon from '../../../assets/images/hoverDashboardIcon.svg'
 import hoverStake from '../../../assets/images/hoverStakeIcon.svg'
 import tickMark from '../../../assets/images/tickMark.svg'
 import { Coins } from '../dashboardLeft'
-import BellIcon from '@/assets/icons/BellIcon'
 
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
@@ -631,9 +632,10 @@ const Navbar = ({ validRTokens }: any) => {
           >
             <BellIcon />
           </Box>
+
           {navDropdowns.recentUpdatesDropdown && (
             <Box
-              width="370px"
+              width="390px"
               mr="10rem"
               display="flex"
               justifyContent="center"
@@ -645,31 +647,49 @@ const Navbar = ({ validRTokens }: any) => {
               background="var(--Base_surface, #02010F)"
               border="1px solid rgba(103, 109, 154, 0.30)"
               className="dropdown-container"
+              userSelect="none"
             >
-              <Box display="flex" gap="0.5rem">
-                <Image
-                  src={'/arrowNavLeftActive.svg'}
-                  alt="Arrow Navigation Left"
-                  width="6"
-                  height="6"
-                  style={{
-                    cursor: 'pointer',
-                  }}
-                />
+              <Box
+                display="flex"
+                gap="0.5rem"
+                w="full"
+                justifyContent="space-between"
+              >
                 <Text fontSize="12px">Notifications</Text>
+                <Image
+                  style={{ cursor: 'pointer' }}
+                  src={'/cross.svg'}
+                  alt="Arrow Navigation Left"
+                  width="20"
+                  height="20"
+                />
               </Box>
-              <Box display="flex" flexDirection="column" gap="1.5rem">
-                <Box display="flex" gap="0.8rem">
-                  <Box width="120px">
+
+              <Box display="flex" flexDirection="column" gap="1rem">
+                <Box
+                  display="flex"
+                  pb="0.8rem"
+                  gap="0.8rem"
+                  borderBottom="1px solid #34345699"
+                >
+                  <Box width="120px" height="60px" position="relative">
                     <Image
-                      src="/degen_banner.svg"
+                      src="/defi_spring_noti_banner.svg"
                       alt="Degen Mode"
-                      width="120"
-                      height="58"
+                      fill
+                      objectFit="cover"
+                      style={{ borderRadius: '6px' }}
                     />
                   </Box>
-                  <Box  mt="-0.2rem">
-                    <Text fontSize="18px">Defi Spring</Text>
+                  <Box mt="-0.2rem">
+                    <Text
+                      fontSize="18px"
+                      lineHeight="6"
+                      fontWeight="bold"
+                      color="#BDBFC1"
+                    >
+                      Starknet DeFi Spring <br /> is Live!
+                    </Text>
                     <Text
                       mt="0.2rem"
                       fontSize="12px"
@@ -678,48 +698,101 @@ const Navbar = ({ validRTokens }: any) => {
                       whiteSpace="nowrap"
                     >
                       Earn $STRK Tokens.
-                    </Text>
-                    <Text
-                      textDecoration="underline"
-                      color="#4D59E8"
-                      fontSize="12px"
-                      cursor="pointer"
-                    >
-                      Explore
+                      <ChakraLink
+                        href="#"
+                        textDecoration="underline"
+                        color="#4D59E8"
+                        fontSize="12px"
+                        cursor="pointer"
+                        ml="1"
+                      >
+                        Learn more
+                      </ChakraLink>
                     </Text>
                   </Box>
-                  
                 </Box>
-                <Box display="flex" gap="0.8rem">
-                  <Box width="120px">
+
+                <Box
+                  display="flex"
+                  pb="0.8rem"
+                  gap="0.8rem"
+                  borderBottom="1px solid #34345699"
+                >
+                  <Box width="120px" height="60px" position="relative">
                     <Image
                       src="/degen_banner.svg"
                       alt="Degen Mode"
-                      width="120"
-                      height="58"
+                      fill
+                      objectFit="cover"
+                      style={{ borderRadius: '6px' }}
                     />
                   </Box>
-                  <Box  mt="-0.2rem">
-                    <Text fontSize="18px">Defi Spring</Text>
+                  <Box mt="-0.2rem">
+                    <Text
+                      fontSize="18px"
+                      lineHeight="6"
+                      fontWeight="bold"
+                      color="#BDBFC1"
+                    >
+                      Hashstack Degen Mode <br /> Is Live!
+                    </Text>
                     <Text
                       mt="0.2rem"
                       fontSize="12px"
                       lineHeight="18px"
                       color="F0F0F5"
-                      whiteSpace="nowrap"
                     >
-                      A high yield arbitrage strategy feature.
-                    </Text>
-                    <Text
-                      textDecoration="underline"
-                      color="#4D59E8"
-                      fontSize="12px"
-                      cursor="pointer"
-                    >
-                      Explore
+                      Earn $STRK Tokens.
+                      <ChakraLink
+                        textDecoration="underline"
+                        color="#4D59E8"
+                        fontSize="12px"
+                        cursor="pointer"
+                        ml="1"
+                      >
+                        Explore
+                      </ChakraLink>
                     </Text>
                   </Box>
-                  
+                </Box>
+
+                <Box display="flex" gap="0.8rem" pb="0.2rem">
+                  <Box width="120px" height="60px" position="relative">
+                    <Image
+                      src="/ccp_noti_banner.svg"
+                      alt="Degen Mode"
+                      fill
+                      objectFit="cover"
+                      style={{ borderRadius: '6px' }}
+                    />
+                  </Box>
+                  <Box mt="-0.2rem">
+                    <Text
+                      fontSize="18px"
+                      lineHeight="6"
+                      fontWeight="bold"
+                      color="#BDBFC1"
+                    >
+                      Content Creators <br /> Program
+                    </Text>
+                    <Text
+                      mt="0.2rem"
+                      fontSize="12px"
+                      lineHeight="18px"
+                      color="F0F0F5"
+                    >
+                      Create content and
+                      <ChakraLink
+                        textDecoration="underline"
+                        color="#4D59E8"
+                        fontSize="12px"
+                        cursor="pointer"
+                        ml="1"
+                      >
+                        Earn Points
+                      </ChakraLink>
+                    </Text>
+                  </Box>
                 </Box>
               </Box>
             </Box>
