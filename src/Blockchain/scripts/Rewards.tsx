@@ -9,11 +9,13 @@ import governorAbi from "../abis_mainnet/governor_abi.json";
 import comptrollerAbi from "../abis_mainnet/comptroller_abi.json";
 import nftAbi from "../abis_mainnet/nft_soul_abi.json";
 import borrowTokenAbi from "../abis_mainnet/dToken_abi.json";
+import claimStrkabi from "../abis_mainnet/claim_strk_abi.json"
 import {
   diamondAddress,
   getProvider,
   stakingContractAddress,
-  nftAddress
+  nftAddress,
+  governorAddress
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount } from "../utils/utils";
@@ -207,7 +209,7 @@ export async function getSupportedPools(
     const provider = getProvider();
     const governorContract = new Contract(
       governorAbi,
-      diamondAddress,
+      governorAddress,
       provider
     );
     const result:any = await governorContract.call(
@@ -230,7 +232,7 @@ export async function getMinimumDepositAmount(
     const provider = getProvider();
     const governorContract = new Contract(
       governorAbi,
-      diamondAddress,
+      governorAddress,
       provider
     );
     const result:any = await governorContract.call(
@@ -256,7 +258,7 @@ export async function getMaximumDepositAmount(
     const provider = getProvider();
     const governorContract = new Contract(
       governorAbi,
-      diamondAddress,
+      governorAddress,
       provider
     );
     const result:any = await governorContract.call(
@@ -282,7 +284,7 @@ export async function getMaximumLoanAmount(
     const provider = getProvider();
     const governorContract = new Contract(
       governorAbi,
-      diamondAddress,
+      governorAddress,
       provider
     );
     const result:any = await governorContract.call(
@@ -323,10 +325,9 @@ export async function getMaximumDynamicLoanAmount(
     //   uint256.uint256ToBN(result?._get_maximum_loan_amount).toString(),
     //   tokenDecimalsMap[dToken]
     // );
-    ////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
     return res;
   } catch (err) {
-   console.log(err, "err in getMaximumDynamicDeposit");
+  //  console.log(err, "err in getMaximumDynamicDeposit");
   }
 }
 export async function getMinimumLoanAmount(
@@ -337,7 +338,7 @@ export async function getMinimumLoanAmount(
     const provider = getProvider();
     const governorContract = new Contract(
       governorAbi,
-      diamondAddress,
+      governorAddress,
       provider
     );
     const result:any = await governorContract.call(
@@ -376,6 +377,25 @@ export async function getUserStakingShares(address: string, tokenName: RToken) {
     return res;
   } catch (err) {
    //console.log(err,"err in getUserStakingShares")
+  }
+}
+
+export async function getUserSTRKClaimedAmount(address: string) {
+  try {
+    const provider = getProvider();
+    const strkContract = new Contract(
+      claimStrkabi,
+      "0x02e20db0cd0af6739ff3e3003ea6932409867040b227bf9ba822239e5ba0dcaf",
+      provider
+    );
+    const result:any = await strkContract.call("amount_already_claimed", [
+      address,
+    ]);
+    const res = parseAmount(result.toString(),tokenDecimalsMap["STRK"])
+    ////console.log("getUserStakingShares ", res);
+    return res;
+  } catch (err) {
+   console.log(err,"err in getUserSTRKClaimedAmount")
   }
 }
 

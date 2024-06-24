@@ -110,39 +110,44 @@ const MarketDashboard = () => {
       ////console.log("fetchprotocolstats", stats); //23014
       // const temp: any = ;
       setProtocolStats([
+        stats?.[4],
         stats?.[2],
         stats?.[3],
-        stats?.[0],
         stats?.[1],
-        stats?.[4],
+        stats?.[0],
+        // stats?.[4],
       ]);
       setTotalSupplies([
+        stats?.[4].totalSupply,
         stats?.[2].totalSupply,
         stats?.[3].totalSupply,
-        stats?.[0].totalSupply,
         stats?.[1].totalSupply,
-        stats?.[4].totalSupply,
+        stats?.[0].totalSupply,
+        // stats?.[4].totalSupply,
       ]);
       setTotalBorrows([
+        stats?.[4].totalBorrow,
         stats?.[2].totalBorrow,
         stats?.[3].totalBorrow,
-        stats?.[0].totalBorrow,
         stats?.[1].totalBorrow,
-        stats?.[4].totalBorrow,
+        stats?.[0].totalBorrow,
+        // stats?.[4].totalBorrow,
       ]);
       setBorrowAPRs([
+        stats?.[4].borrowRate,
         stats?.[2].borrowRate,
         stats?.[3].borrowRate,
-        stats?.[0].borrowRate,
         stats?.[1].borrowRate,
-        stats?.[4].borrowRate,
+        stats?.[0].borrowRate,
+        // stats?.[4].borrowRate,
       ]);
       setAvailableReserves([
+        stats?.[4].availableReserves,
         stats?.[2].availableReserves,
         stats?.[3].availableReserves,
-        stats?.[0].availableReserves,
         stats?.[1].availableReserves,
-        stats?.[4].availableReserves,
+        stats?.[0].availableReserves,
+        // stats?.[4].availableReserves,
       ])
       const avg =
         (stats?.[4].borrowRate +
@@ -154,20 +159,22 @@ const MarketDashboard = () => {
       ////console.log(avg,"avg borrow")
       // dispatch(setAvgBorrowAPR(avg));
       setSupplyAPRs([
+        stats?.[4].supplyRate,
         stats?.[2].supplyRate,
         stats?.[3].supplyRate,
-        stats?.[0].supplyRate,
         stats?.[1].supplyRate,
-        stats?.[4].supplyRate,
+        stats?.[0].supplyRate,
+        // stats?.[4].supplyRate,
       ]);
      
       // dispatch(setAvgSupplyAPR(avgSupply));
       setUtilizations([
+        stats?.[4].utilisationPerMarket,
         stats?.[2].utilisationPerMarket,
         stats?.[3].utilisationPerMarket,
-        stats?.[0].utilisationPerMarket,
         stats?.[1].utilisationPerMarket,
-        stats?.[4].utilisationPerMarket,
+        stats?.[0].utilisationPerMarket,
+        // stats?.[4].utilisationPerMarket,
       ]);
     } catch (error) {
       ////console.log("error on getting protocol stats");

@@ -11,16 +11,19 @@ import {
   selectDailyBTCData,
   selectDailyDAIData,
   selectDailyETHData,
+  selectDailySTRKData,
   selectDailyUSDCData,
   selectDailyUSDTData,
   selectHourlyBTCData,
   selectHourlyDAIData,
   selectHourlyETHData,
+  selectHourlySTRKData,
   selectHourlyUSDCData,
   selectHourlyUSDTData,
   selectMonthlyBTCData,
   selectMonthlyDAIData,
   selectMonthlyETHData,
+  selectMonthlySTRKData,
   selectMonthlyUSDCData,
   selectMonthlyUSDTData,
   selectProtocolReserves,
@@ -47,16 +50,19 @@ const TotalValueLockedMetrics = () => {
   const usdtData = useSelector(selectHourlyUSDTData);
   const usdcData = useSelector(selectHourlyUSDCData);
   const daiData = useSelector(selectHourlyDAIData);
+  const strkData = useSelector(selectHourlySTRKData);
   const weeklyBtcData = useSelector(selectDailyBTCData);
   const weeklyEthData = useSelector(selectDailyETHData);
   const weeklyUsdtData = useSelector(selectDailyUSDTData);
   const weeklyUsdcData = useSelector(selectDailyUSDCData);
   const weeklyDaiData = useSelector(selectDailyDAIData);
+  const weeklyStrkData = useSelector(selectDailySTRKData);
   const monthlyBtcData = useSelector(selectMonthlyBTCData);
   const monthlyEthData = useSelector(selectMonthlyETHData);
   const monthlyUsdtData = useSelector(selectMonthlyUSDTData);
   const monthlyUsdcData = useSelector(selectMonthlyUSDCData);
   const monthlyDaiData = useSelector(selectMonthlyDAIData);
+  const monthlyStrkData = useSelector(selectMonthlySTRKData);
   const allBtcData = useSelector(selectAllBTCData);
   const allEthData = useSelector(selectAllETHData);
   const allUsdtData = useSelector(selectAllUSDTData);
@@ -91,7 +97,8 @@ const TotalValueLockedMetrics = () => {
       ethData?.tvlAmounts[i] +
       usdcData?.tvlAmounts[i] +
       usdtData?.tvlAmounts[i] +
-      daiData?.tvlAmounts[i];
+      daiData?.tvlAmounts[i] +
+      strkData?.tvlAmounts[i];
     tvlamounts.push(data);
   }
   for (let i = 0; i < weeklyBtcData?.tvlAmounts?.length; i++) {
@@ -100,7 +107,8 @@ const TotalValueLockedMetrics = () => {
       weeklyEthData?.tvlAmounts[i] +
       weeklyUsdcData?.tvlAmounts[i] +
       weeklyUsdtData?.tvlAmounts[i] +
-      weeklyDaiData?.tvlAmounts[i];
+      weeklyDaiData?.tvlAmounts[i] +
+      weeklyStrkData?.tvlAmounts[i];
     tvlAmountsWeekly.push(data);
   }
   for (let i = 0; i < monthlyBtcData?.tvlAmounts?.length; i++) {
@@ -109,7 +117,9 @@ const TotalValueLockedMetrics = () => {
       monthlyEthData?.tvlAmounts[i] +
       monthlyUsdcData?.tvlAmounts[i] +
       monthlyUsdtData?.tvlAmounts[i] +
-      monthlyDaiData?.tvlAmounts[i];
+      monthlyDaiData?.tvlAmounts[i] +
+      monthlyStrkData?.tvlAmounts[i];
+      ;
     tvlAmountsMonthly.push(data);
   }
   for (let i = 0; i < allBtcData?.tvlAmounts?.length; i++) {

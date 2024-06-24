@@ -8,6 +8,7 @@ import { Token } from "@/Blockchain/interfaces/interfaces";
 const useSwap = () => {
   const [swapLoanId, setSwapLoanId] = useState<string>("");
   const [toMarket, setToMarket] = useState<Token | any>("BTC");
+  const [callDataSwap, setcallDataSwap] = useState<any>()
 
   const {
     data: dataJediSwap_swap,
@@ -21,11 +22,7 @@ const useSwap = () => {
       contractAddress: diamondAddress,
       entrypoint: "interact_with_l3",
       calldata: [
-        constants.JEDI_SWAP,
-        "3",
-        swapLoanId,
-        constants.SWAP,
-        tokenAddressMap[toMarket],
+        callDataSwap
       ],
     }],
   });
@@ -42,11 +39,7 @@ const useSwap = () => {
       contractAddress: diamondAddress,
       entrypoint: "interact_with_l3",
       calldata: [
-        constants.MY_SWAP,
-        "3",
-        swapLoanId,
-        constants.SWAP,
-        tokenAddressMap[toMarket],
+        callDataSwap
       ],
     }],
   });
@@ -56,6 +49,8 @@ const useSwap = () => {
     setSwapLoanId,
     toMarket,
     setToMarket,
+    callDataSwap,
+    setcallDataSwap,
 
     dataJediSwap_swap,
     errorJediSwap_swap,

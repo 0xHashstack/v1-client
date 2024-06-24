@@ -4,6 +4,7 @@ import { useState } from "react";
 
 const useRevertInteractWithL3 = () => {
   const [ revertLoanId, setRevertLoanId] = useState<string>("");
+  const [revertcallData, setrevertcallData] = useState<any>()
 
   const {
     data: dataRevertInteractWithL3,
@@ -15,7 +16,7 @@ const useRevertInteractWithL3 = () => {
     calls: [{
       contractAddress: diamondAddress,
       entrypoint: "revert_interaction_with_l3",
-      calldata: [revertLoanId],
+      calldata: [revertcallData],
     }],
   });
 
@@ -23,6 +24,8 @@ const useRevertInteractWithL3 = () => {
     revertLoanId,
     setRevertLoanId,
     dataRevertInteractWithL3,
+    revertcallData,
+    setrevertcallData,
     writeAsyncRevertInteractWithL3,
     writeRevertInteractWithL3,
     errorRevertInteractWithL3,

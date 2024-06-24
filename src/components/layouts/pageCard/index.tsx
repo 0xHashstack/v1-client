@@ -52,7 +52,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const classes = [];
   const { account, address, status, isConnected } = useAccount();
-  const extendedAccount = account as ExtendedAccountInterface;
+  const extendedAccount:any = account as ExtendedAccountInterface;
   const [loading, setLoading] = useState(true);
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
@@ -222,13 +222,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            chain.network!="mainnet" && chain?.name!="Starknet Goerli Testnet"
+            // chain.network!="mainnet" && chain?.name!="Starknet Goerli Testnet"
+            extendedAccount?.provider.chainId==="0x534e5f5345504f4c4941"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            chain.network!="goerli" && chain?.name!="Starknet Goerli Testnet"
+            extendedAccount?.provider.chainId==="0x534e5f4d41494e"
           );
         }
       } else if (walletConnected == "argentX") {
@@ -238,64 +239,43 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
 
-            chain.network!="mainnet" && chain?.name!="Starknet Goerli Testnet"
+            extendedAccount?.provider?.chainId==="0x534e5f5345504f4c4941"
           );
         } else {
           return (
             // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
             // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-            chain?.network!="goerli" && chain?.name!="Starknet Goerli Testnet"
+            extendedAccount?.provider?.chainId==="0x534e5f4d41494e" || extendedAccount?.channel?.chainId==="0x534e5f4d41494e"
           );
         }
       }
       ////console.log("starknetAccount", account?.provider?.chainId);
     }
     setLoading(false)
-    // const isWhiteListed = async () => {
-    //   try {
-    //     if (!address) {
-    //       return;
-    //     }
-    //     if(process.env.NEXT_PUBLIC_NODE_ENV=="testnet"){
-    //       setLoading(false)
-    //     }else{
-    //       const url = `https://hstk.fi/is-whitelisted/${address}`;
-    //       const response = await axios.get(url);
-    //       if (response.data) {
-    //         setWhitelisted(response.data?.isWhitelisted);
-    //         dispatch(setUserWhiteListed(response.data?.isWhitelisted))
-    //         if(response.data?.isWhitelisted==false){
-    //           await axios.post('https://hstk.fi/add-address', { address: address })
-    //           .then((response) => {
-    //            //console.log(response, "added to db");
-    //             // Log the response from the backend.
-    //           })
-    //           .catch((error) => {
-    //             console.error('Error in adding address:', error);
-    //           });
-    //         }
-    //         if (userType == "U1") {
-    //           await axios.post('https://hstk.fi/nft-sign', { address: address })
-    //             .then((response) => {
-    //              //console.log(response, "hash");
-    //               if (response) {
-    //                 dispatch(setMessageHash(response?.data?.msg_hash))
-    //                 dispatch(setSignature(response?.data?.signature))
-    //               }
-    //               // Log the response from the backend.
-    //             })
-    //             .catch((error) => {
-    //               console.error('Error:', error);
-    //             });
-    //         }
-    //       }
-    //       setLoading(false)
-    //     }
-    //   } catch (err) {
-    //    //console.log(err, "err in whitelist")
-    //   }
-    // }
-    // isWhiteListed()
+    const isWhiteListed = async () => {
+      try {
+        if (!address) {
+          return;
+        }
+            if (userType == "U1") {
+              await axios.post('https://hstk.fi/nft-sign', { address: address })
+                .then((response) => {
+                 //console.log(response, "hash");
+                  if (response) {
+                    dispatch(setMessageHash(response?.data?.msg_hash))
+                    dispatch(setSignature(response?.data?.signature))
+                  }
+                  // Log the response from the backend.
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
+            }
+      } catch (err) {
+       //console.log(err, "err in whitelist")
+      }
+    }
+    isWhiteListed()
 
     const referal = async () => {
       try {
@@ -587,7 +567,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           `} position={'fixed'} zIndex={3} >
               <Navbar validRTokens={validRTokens} />
             </Box>
-            <Box position={'fixed'} zIndex={0.5}>
+            <Box position={'fixed'} zIndex={0.5} onClick={()=>{
+              posthog.capture('Feedback Modal Clicked', {
+                Clicked: true,
+              })
+            }}>
               <FeedbackModal />
             </Box>
             <Stack
@@ -686,7 +670,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
                   </Text>
                     </Box>
                   : <Text color="white" fontSize="25px">
-                    Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Goerli" : "Mainnet"} and refresh
+                    Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Sepolia" : "Mainnet"} and refresh
                   </Text>
                 }
 

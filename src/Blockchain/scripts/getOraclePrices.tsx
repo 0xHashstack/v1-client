@@ -8,11 +8,13 @@ export interface OraclePrice {
   name: string;
   address: string;
   price: number;
-  lastUpdated: Date;
 }
 
-export async function getOraclePrices(): Promise<OraclePrice[]> {
-  const MEDIAN_AGGREGATION_MODE = shortString.encodeShortString("MEDIAN");
+export async function getPrice() {
+  
+}
+
+export async function getOraclePrices() {
   ////console.log('Using aggregation mode:', MEDIAN_AGGREGATION_MODE);
   const prices: OraclePrice[] = [];
   const provider = getProvider();
@@ -24,16 +26,11 @@ export async function getOraclePrices(): Promise<OraclePrice[]> {
     );
     for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
       const token = contractsEnv.TOKENS[i];
-      const result:any = await empiricContract.call("get_spot", [
-        token.pontis_key,
-        MEDIAN_AGGREGATION_MODE,
+      const result:any = await empiricContract.call('get_asset_usd_price', [
+        token.address,
       ]);
-      const price = num.toBigInt(result.price.toString());
-      const decimals = num.toBigInt(result.decimals.toString());
-      const last_updated_timestamp = num.toBigInt(
-        result.last_updated_timestamp.toString()
-      );
-      const lastUpdated = new Date(Number(last_updated_timestamp) * 1000);
+      const price = result[0];
+      const decimals = result[1];
       const oraclePrice: OraclePrice = {
         name: token.name,
         address: token.address,
@@ -42,14 +39,12 @@ export async function getOraclePrices(): Promise<OraclePrice[]> {
             *(100)/(Math.pow(10,Number(decimals))))/100,
             // .div(new BigNumber(10).exponentiatedBy(decimals))
             // .toNumber() / 100,
-        lastUpdated,
       };
       // if (now.getTime() - lastUpdated.getTime() > MAX_ORACLE_LATENCY_MS) {
       //   Global.warning(`Oracle price for ${token.name} is too old: ${lastUpdated}`);
       // }
       prices.push(oraclePrice);
     }
-    console.log(prices,"price")
     return prices;
   } catch (e) {
     ////console.log("getOraclePrices failed: ", e);

@@ -394,134 +394,183 @@
     "LAST_DEPLOYMENT_STEP": 0,
     "DEPLOYER_ADDRESS_PK": "0x3ed29494c9d672179215897fd82aa4f472528353859cefaec955b3e9f6bb56c"
   },
-  "goerli_2": {
+  "sepolia": {
     "TOKENS": [
       {
         "name": "BTC",
         "symbol": "BTC",
         "decimals": 8,
-        "minDeposit": 0.0005,
-        "maxDeposit": 100000,
-        "minLoan": 0.0015,
-        "maxLoan": 100000,
-        "rToken": "0x1a542a2859369b78515fe0ea16647e094dac5dba307f0c656a25c2b260df6ad",
-        "dToken": "0x2880ea27d58d202ae78984f8462dd5b2808c3f6e7327af6deaa7ef454be58f",
-        "address": "0x25ef77455d671317799ecda57ee634633b2577d9f9f439c062d7e9c9e1fc29f",
+        "minDeposit": "5000",
+        "maxDeposit": "100000000000",
+        "minLoan": "5000",
+        "maxLoan": "6600000",
+        "rToken": "0x13fcad879f13635bfbcf8b72f26d1a608715ebd6a34ad20e25701e953acb0d6",
+        "dToken": "0x4ae2c89dd608cbb74d54b8f9131ef17325d4b1f556845e5675a88aa595494f8",
+        "address": "0x00452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e",
         "CEXSymbol": "BTCUSDT",
-        "pontis_key": "18669995996566340",
+        "pragmaKey": "18669995996566340",
         "mockPrice": 20000,
         "ethereumAddress": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "NETWORK_TOKEN_ADDRESS": "0x00452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e",
+        "base_apr": "400",
+        "apr_at_optimal_ur": "2000",
+        "optimal_ur": "4500",
+        "apr_max": "20000"
       },
       {
         "name": "ETH",
         "symbol": "ETH",
         "decimals": 18,
-        "minDeposit": 0.00625,
-        "maxDeposit": 100000,
-        "minLoan": 0.018,
-        "maxLoan": 100000,
-        "rToken": "0x5bac7932c6a6dc0578feab3643269fa3ce7bf2729a1ede9c37273dcb9b1eec1",
-        "dToken": "0x5b5dece096eaf569624f215fcf0ed8210a16f79dca691aef1a42c716bd37da0",
-        "address": "0x5d22cffa8d9538876d2b553e97c6067d34de78949c146d9d7e37b054403a536",
+        "minDeposit": "62500000000000",
+        "maxDeposit": "100000000000000000000000",
+        "minLoan": "66000000000000",
+        "maxLoan": "1040000000000000000",
+        "rToken": "0x314f8ceb80dea0efa4177f2a4447ac5e9a9f62014aece3ff01f4601bb3b23ed",
+        "dToken": "0x5a69b3211a2078878364fd9b646c0b82199509284e10f77182f8f0d9c15f4ae",
+        "address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
         "CEXSymbol": "ETHUSDT",
-        "pontis_key": "19514442401534788",
+        "pragmaKey": "19514442401534788",
         "mockPrice": 2000,
         "ethereumAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-        "NETWORK_TOKEN_ADDRESS": ""
-      },
+        "NETWORK_TOKEN_ADDRESS": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+        "base_apr": "200",
+        "apr_at_optimal_ur": "1200",
+        "optimal_ur": "6000",
+        "apr_max": "10000"
+    },
+    {
+      "name": "USDT",
+      "symbol": "USDT",
+      "decimals": 6,
+      "minDeposit": "100000",
+      "maxDeposit": "100000000000000",
+      "minLoan": "100000",
+      "maxLoan": "1550000000",
+      "rToken": "0x619932adbb16f366655d895cc68adcad2d7f8d796a8e6ed813a3233226682f7",
+      "dToken": "0x779d4d190aba14634a24b4800993d7999fadd7cd43ec8b75634cd6395e51139",
+      "address": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb",
+      "CEXSymbol": null,
+      "pragmaKey": "6148333044652921668",
+      "mockPrice": 1,
+      "ethereumAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "NETWORK_TOKEN_ADDRESS": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb",
+      "base_apr": "200",
+      "apr_at_optimal_ur": "1000",
+      "optimal_ur": "7500",
+      "apr_max": "10000"
+    },
+    {
+      "name": "USDC",
+      "symbol": "USDC",
+      "decimals": 6,
+      "minDeposit": "100000",
+      "maxDeposit": "100000000000000",
+      "minLoan": "100000",
+      "maxLoan": "1550000000",
+      "rToken": "0x65ce1b9d1b701180fbf72de8474e7038ffe35d06d1d948f667eec747b5bf2ed",
+      "dToken": "0x35658a65c48b0fd3a5469c644d7ee49bd53ae79f8ebf2cfe02df46662f61e5d",
+      "address": "0x053b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080",
+      "CEXSymbol": "USDCUSDT",
+      "pragmaKey": "6148332971638477636",
+      "mockPrice": 1,
+      "ethereumAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "NETWORK_TOKEN_ADDRESS": "0x053b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080",
+      "base_apr": "200",
+      "apr_at_optimal_ur": "1000",
+      "optimal_ur": "7500",
+      "apr_max": "10000"
+    },
+    {
+      "name": "DAI",
+      "symbol": "DAI",
+      "decimals": 6,
+      "minDeposit": "100000",
+      "maxDeposit": "100000000000000",
+      "minLoan": "100000",
+      "maxLoan": "1550000000",
+      "rToken": "0x619932adbb16f366655d895cc68adcad2d7f8d796a8e6ed813a3233226682f7",
+      "dToken": "0x779d4d190aba14634a24b4800993d7999fadd7cd43ec8b75634cd6395e51139",
+      "address": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb",
+      "CEXSymbol": null,
+      "pragmaKey": "6148333044652921668",
+      "mockPrice": 1,
+      "ethereumAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "NETWORK_TOKEN_ADDRESS": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb",
+      "base_apr": "200",
+      "apr_at_optimal_ur": "1000",
+      "optimal_ur": "7500",
+      "apr_max": "10000"
+    },
       {
-        "name": "USDT",
-        "symbol": "USDT",
-        "decimals": 6,
-        "minDeposit": 10,
-        "maxDeposit": 100000000,
-        "minLoan": 30,
-        "maxLoan": 300000000,
-        "rToken": "0x300f2c472ab337f55993a32fdf7c43016cb0d81c1d3e8b155b92fe6475086a1",
-        "dToken": "0x7a6a7296e19273a10b3d4834ae14bec18f075f7d77d998b072bd5e5a747ab20",
-        "address": "0x4b68b44da8123719395b1670c60e55f0a5e0571d0dbb33b2c2d991ee4a3f1c5",
-        "CEXSymbol": null,
-        "pontis_key": "6148333044652921668",
-        "mockPrice": 1,
-        "ethereumAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-        "NETWORK_TOKEN_ADDRESS": ""
-      },
-      {
-        "name": "USDC",
-        "symbol": "USDC",
-        "decimals": 6,
-        "minDeposit": 10,
-        "maxDeposit": 100000000,
-        "minLoan": 30,
-        "maxLoan": 300000000,
-        "rToken": "0x2fb267c4b264af1b8fea1052d3f8d853f438c7e2270eb39637375d3b5952a40",
-        "dToken": "0x3b8e16870d6eb725650d23a020883056a6f1093326fe547ac4d40e4c71052c9",
-        "address": "0x27d11831d1a104c63210944ee137375f8b0a2adcfa085453827cda2991454ca",
-        "CEXSymbol": "USDCUSDT",
-        "pontis_key": "6148332971638477636",
-        "mockPrice": 1,
-        "ethereumAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-        "NETWORK_TOKEN_ADDRESS": ""
-      },
-      {
-        "name": "DAI",
-        "symbol": "DAI",
+        "name": "STRK",
+        "symbol": "STRK",
         "decimals": 18,
-        "minDeposit": 10,
-        "maxDeposit": 100000000,
-        "minLoan": 30,
-        "maxLoan": 300000000,
-        "rToken": "0x1e8ca2770648c089818c047ee09395258fd2b1562a081c2e31788b86e2355ac",
-        "dToken": "0x4d84998c8cb5daa6664124c58d0006250c7631051a4b3abd61b03663ee1cc02",
-        "address": "0xc1e528bbbb53eeab7f89c00ad87aef8a12e4caf07832112febc53d76cfca16",
-        "CEXSymbol": "USDTDAI",
-        "pontis_key": "19212080998863684",
-        "mockPrice": 1,
-        "ethereumAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
-        "NETWORK_TOKEN_ADDRESS": ""
-      }
+        "minDeposit": "10000000000000000",
+        "maxDeposit": "500000000000000000000000",
+        "minLoan": "4000000000000000",
+        "maxLoan": "400000000000000000000",
+        "rToken": "0x444f6a5237e3b84d067a8deb9f58399a5282ce271aec544dbfb89348f038570",
+        "dToken": "0x74d295c6305446b1061da861ebf4e1d07d524b8988f4c16353f7411a6a6b78",
+        "address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+        "CEXSymbol": "STRKUSDT",
+        "pragmaKey": "6004514686061859652",
+        "mockPrice": 2,
+        "ethereumAddress": "0xCa14007Eff0dB1f8135f4C25B34De49AB0d42766",
+        "NETWORK_TOKEN_ADDRESS": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+        "base_apr": "200",
+        "apr_at_optimal_ur": "1500",
+        "optimal_ur": "5000",
+        "apr_max": "11000"
+    }
     ],
     "rTOKENS": [
       {
         "name": "rBTC",
         "symbol": "rBTC",
         "decimals": 8,
-        "underlying_asset": "0x25ef77455d671317799ecda57ee634633b2577d9f9f439c062d7e9c9e1fc29f",
-        "address": "0x1a542a2859369b78515fe0ea16647e094dac5dba307f0c656a25c2b260df6ad",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "underlying_asset": "0x00452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e",
+        "address": "0x13fcad879f13635bfbcf8b72f26d1a608715ebd6a34ad20e25701e953acb0d6",
+        "NETWORK_TOKEN_ADDRESS": "0x00452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e"
       },
       {
         "name": "rETH",
         "symbol": "rETH",
         "decimals": 18,
-        "underlying_asset": "0x5d22cffa8d9538876d2b553e97c6067d34de78949c146d9d7e37b054403a536",
-        "address": "0x5bac7932c6a6dc0578feab3643269fa3ce7bf2729a1ede9c37273dcb9b1eec1",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "underlying_asset": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+        "address": "0x314f8ceb80dea0efa4177f2a4447ac5e9a9f62014aece3ff01f4601bb3b23ed",
+        "NETWORK_TOKEN_ADDRESS": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
       },
       {
         "name": "rUSDT",
         "symbol": "rUSDT",
         "decimals": 6,
-        "underlying_asset": "0x4b68b44da8123719395b1670c60e55f0a5e0571d0dbb33b2c2d991ee4a3f1c5",
-        "address": "0x300f2c472ab337f55993a32fdf7c43016cb0d81c1d3e8b155b92fe6475086a1",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "underlying_asset": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb",
+        "address": "0x619932adbb16f366655d895cc68adcad2d7f8d796a8e6ed813a3233226682f7",
+        "NETWORK_TOKEN_ADDRESS": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb"
       },
       {
         "name": "rUSDC",
         "symbol": "rUSDC",
         "decimals": 6,
-        "underlying_asset": "0x27d11831d1a104c63210944ee137375f8b0a2adcfa085453827cda2991454ca",
-        "address": "0x2fb267c4b264af1b8fea1052d3f8d853f438c7e2270eb39637375d3b5952a40",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "underlying_asset": "0x053b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080",
+        "address": "0x65ce1b9d1b701180fbf72de8474e7038ffe35d06d1d948f667eec747b5bf2ed",
+        "NETWORK_TOKEN_ADDRESS": "0x053b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080"
       },
       {
         "name": "rDAI",
         "symbol": "rDAI",
         "decimals": 18,
-        "underlying_asset": "0xc1e528bbbb53eeab7f89c00ad87aef8a12e4caf07832112febc53d76cfca16",
-        "address": "0x1e8ca2770648c089818c047ee09395258fd2b1562a081c2e31788b86e2355ac",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "underlying_asset": "0x41b14277b3ea39eadaa506c7c9a4483544d9eaae6ed417747fa19ae500297e4",
+        "address": "0xd31ad226699be36f45169de7cac8af7dbd8ce67326c2a3a048db71a304a1ab",
+        "NETWORK_TOKEN_ADDRESS": "0x41b14277b3ea39eadaa506c7c9a4483544d9eaae6ed417747fa19ae500297e4"
+      },
+      {
+        "name": "rSTRK",
+        "symbol": "rSTRK",
+        "decimals": 18,
+        "underlying_asset": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+        "address": "0x444f6a5237e3b84d067a8deb9f58399a5282ce271aec544dbfb89348f038570",
+        "NETWORK_TOKEN_ADDRESS": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
       }
     ],
     "dTOKENS": [
@@ -529,61 +578,64 @@
         "name": "dBTC",
         "symbol": "dBTC",
         "decimals": 8,
-        "underlying_asset": "0x25ef77455d671317799ecda57ee634633b2577d9f9f439c062d7e9c9e1fc29f",
-        "address": "0x2880ea27d58d202ae78984f8462dd5b2808c3f6e7327af6deaa7ef454be58f",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "underlying_asset": "0x00452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e",
+        "address": "0x4ae2c89dd608cbb74d54b8f9131ef17325d4b1f556845e5675a88aa595494f8",
+        "NETWORK_TOKEN_ADDRESS": "0x00452bd5c0512a61df7c7be8cfea5e4f893cb40e126bdc40aee6054db955129e"
       },
       {
         "name": "dETH",
         "symbol": "dETH",
         "decimals": 18,
-        "underlying_asset": "0x5d22cffa8d9538876d2b553e97c6067d34de78949c146d9d7e37b054403a536",
-        "address": "0x5b5dece096eaf569624f215fcf0ed8210a16f79dca691aef1a42c716bd37da0",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "underlying_asset": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+        "address": "0x5a69b3211a2078878364fd9b646c0b82199509284e10f77182f8f0d9c15f4ae",
+        "NETWORK_TOKEN_ADDRESS": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
       },
       {
         "name": "dUSDT",
         "symbol": "dUSDT",
         "decimals": 6,
-        "underlying_asset": "0x4b68b44da8123719395b1670c60e55f0a5e0571d0dbb33b2c2d991ee4a3f1c5",
-        "address": "0x7a6a7296e19273a10b3d4834ae14bec18f075f7d77d998b072bd5e5a747ab20",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "underlying_asset": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb",
+        "address": "0x779d4d190aba14634a24b4800993d7999fadd7cd43ec8b75634cd6395e51139",
+        "NETWORK_TOKEN_ADDRESS": "0x02ab8758891e84b968ff11361789070c6b1af2df618d6d2f4a78b0757573c6eb"
       },
       {
         "name": "dUSDC",
         "symbol": "dUSDC",
         "decimals": 6,
-        "underlying_asset": "0x27d11831d1a104c63210944ee137375f8b0a2adcfa085453827cda2991454ca",
-        "address": "0x3b8e16870d6eb725650d23a020883056a6f1093326fe547ac4d40e4c71052c9",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "underlying_asset": "0x053b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080",
+        "address": "0x35658a65c48b0fd3a5469c644d7ee49bd53ae79f8ebf2cfe02df46662f61e5d",
+        "NETWORK_TOKEN_ADDRESS": "0x053b40a647cedfca6ca84f542a0fe36736031905a9639a7f19a3c1e66bfd5080"
       },
       {
         "name": "dDAI",
         "symbol": "dDAI",
         "decimals": 18,
-        "underlying_asset": "0xc1e528bbbb53eeab7f89c00ad87aef8a12e4caf07832112febc53d76cfca16",
-        "address": "0x4d84998c8cb5daa6664124c58d0006250c7631051a4b3abd61b03663ee1cc02",
-        "NETWORK_TOKEN_ADDRESS": ""
+        "underlying_asset": "0x41b14277b3ea39eadaa506c7c9a4483544d9eaae6ed417747fa19ae500297e4",
+        "address": "0x7455b130dbeabcea387d33fddc39078f2a3abcb990a2cd01b1602c78aaf0a4d",
+        "NETWORK_TOKEN_ADDRESS": "0x41b14277b3ea39eadaa506c7c9a4483544d9eaae6ed417747fa19ae500297e4"
+      },
+      {
+        "name": "dSTRK",
+        "symbol": "dSTRK",
+        "decimals": 18,
+        "underlying_asset": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+        "address": "0x74d295c6305446b1061da861ebf4e1d07d524b8988f4c16353f7411a6a6b78",
+        "NETWORK_TOKEN_ADDRESS": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
       }
     ],
     "peripherals": {
-      "INSURANCE_ADDRESS": "0x3593d413eaf7e43266e575cbfcf5c0520aa165f164d5302719055eda8ecc39b",
-      "TIER1_ADDRESS": "0x20e488ac2ce27897bd9a4a4a9986b238feca89abcbfccc352d4ec6699a938d",
-      "TREASURY_ADDRESS": "0x30b53204f6b3aa14e8068343d7adf675e1d0d96e00d277bfea7fd7fe6367f4a",
-      "COLLECTOR_ADDRESS": "0x26aafe1ad1bbf56fc6094cec5563edd389abdb998de1b85b77e63e6033c77d4",
-      "STAKING_ADDRESS": "0x73e84ffcc178373b80cf2109d0e9beb93da9710d32a93a45eeeada957c133bd"
+      "COLLECTOR_ADDRESS": "0x1c952b37e3715a666e89402cc25417068303377ef40a0a0d765ca723e3d6008",
+      "STAKING_ADDRESS": "0x177975265a7f166ef856f168df5f61bc0e921d441c6144c7dc0922f6c6f0a9d"
     },
-    "DEPLOYER_ADDRESS": "0x01ad42cd83da439ea01f5212249e482bcbc44efe58c9143f77319e02fed3402e",
-    "DEPLOYMENT_CONTRACT_ADDRESS": "0x5c82dd566d231a5221782ca592af40acfc7f27466e16c61c05a8e4b784e49e3",
-    "LAST_DEPLOYMENT_STEP": 22,
-    "DIAMOND_ADDRESS": "0x40ac8baf878c1bd7815e12c381c3ca827d7364501412bd9fc08c9aa8d6d0a0",
-    "ACCESS_CONTROL_ADDRESS": "0x66529e02c4fda353d7c3a7ed570edf4668a236bd90df8ff10af7ea63910569e",
-    "EMPIRIC_PROXY_ADDRESS": "0x446812BAC98C08190DEE8967180F4E3CDCD1DB9373CA269904ACB17F67F7093",
-    "JEDI_SWAP_ROUTER_ADDRESS": "0x6845886f8d5bebd655e69f6d77d5ad0df9fb58cfb14134d0c08499d57b8289",
-    "MYSWAP_ROUTER_ADDRESS": "0x18e875dddc363df85398a18f5f59f0c094d9c6793139a15697f210095f0d8b8",
-    "L3_DIAMOND_ADDRESS": "0x37de8a8277ebcae3463dcd910808807e4c61019293a877f56acf24eac708bba",
-    "FAUCET_ADDRESS": "0x16743390bac16d1c8298cac1f5c31c10e45d4d4b62d71215f2bd4539aafe9e",
-    "METRICS_CONTRACT_ADDRESS": "0x04e952fc494f6e6e936d1c84ff435b66cbf06940d9e996b7eb10e7e6e3e50024"
+    "LAST_DEPLOYMENT_STEP": 16,
+    "DIAMOND_ADDRESS": "0x66bab31e89d426fbdfaa021be5bc71e785c13f9e9a6a10c89eaa8e1e0a9008f",
+    "ACCESS_CONTROL_ADDRESS": "0x33c40b532554a992a5ea1449d43c745324f9704cce459160574fab7391eb3da",
+    "L3_DIAMOND_ADDRESS": "0x3241d3c0681a322fa8ed62f019ed946f082775f36e9538ccbd4414f5f65a20d",
+    "EMPIRIC_PROXY_ADDRESS": "0x4f9ea82707356d663d80d4064bb292db60108ac1022e7a15c341128dc647b42",
+    "JEDI_SWAP_ROUTER_ADDRESS": "0x01b78ac7d5c7e92de7eb9cce35ec2a6ba15af11d21939cca95557dacfac6f25e",
+    "FAUCET_ADDRESS": "0x4a2c4149ad529c9046a44673700efe3b659a31d6d380dc57d5859000620abf9",
+    "MYSWAP_ROUTER_ADDRESS": "0x010884171baf1914edc28d7afb619b40a4051cfae78a094a55d230f19e944a28",
+    "METRICS_CONTRACT_ADDRESS": "0x6e75f7fded3bc251e25556e2a96d6616f6e150499755c0cc92856dd5cf4189f"
   },
     "mainnet": {
       "TOKENS": [
@@ -595,11 +647,11 @@
           "maxDeposit": "100000000000",
           "minLoan": "380000",
           "maxLoan": "6600000",
-          "rToken": "0x1320a9910e78afc18be65e4080b51ecc0ee5c0a8b6cc7ef4e685e02b50e57ef",
-          "dToken": "0x2614c784267d2026042ab98588f90efbffaade8982567e93530db4ed41201cf",
+          "rToken": "0xa9b99c07405716c1170dab1a8afbe05588eb433f8b213db856e13f5ce5d474",
+          "dToken": "0x7afd16dd1654e70d2873741edc3866ede7d4ed0b2b93e905c3c30e372835926",
           "address": "0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
           "CEXSymbol": "BTCUSDT",
-          "pontis_key": "18669995996566340",
+          "pragmaKey": "18669995996566340",
           "mockPrice": 20000,
           "ethereumAddress": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
           "NETWORK_TOKEN_ADDRESS": "0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
@@ -616,11 +668,11 @@
           "maxDeposit": "100000000000000000000000",
           "minLoan": "66000000000000000",
           "maxLoan": "1040000000000000000",
-          "rToken": "0x436d8d078de345c11493bd91512eae60cd2713e05bcaa0bb9f0cba90358c6e",
-          "dToken": "0x1ef7f9f8bf01678dc6d27e2c26fb7e8eac3812a24752e6a1d6a49d153bec9f3",
+          "rToken": "0x52c7c5c6981470f584b8839d4d8b53e7b8dfa9e5c04d63ebe8f10c4ab60abef",
+          "dToken": "0x1c4a8e3d5c8789c7fc3b408a0be5376314f12cd69f659a0409809e41392489b",
           "address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
           "CEXSymbol": "ETHUSDT",
-          "pontis_key": "19514442401534788",
+          "pragmaKey": "19514442401534788",
           "mockPrice": 2000,
           "ethereumAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
           "NETWORK_TOKEN_ADDRESS": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
@@ -637,11 +689,11 @@
           "maxDeposit": "100000000000000",
           "minLoan": "100000000",
           "maxLoan": "1550000000",
-          "rToken": "0x5fa6cc6185eab4b0264a4134e2d4e74be11205351c7c91196cb27d5d97f8d21",
-          "dToken": "0x12b8185e237dd0340340faeb3351dbe53f8a42f5a9bf974ddf90ced56e301c7",
+          "rToken": "0x58aab0a95ed710e5faa8b421f0cf8526bffa57f180a08c9dd99460e2aee62e3",
+          "dToken": "0x5824ac348a3fbde971736c688a4d1de2b4686ff1835382ddacd7ddd8db93764",
           "address": "0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8",
           "CEXSymbol": null,
-          "pontis_key": "6148333044652921668",
+          "pragmaKey": "6148333044652921668",
           "mockPrice": 1,
           "ethereumAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
           "NETWORK_TOKEN_ADDRESS": "0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8",
@@ -658,11 +710,11 @@
           "maxDeposit": "100000000000000",
           "minLoan": "100000000",
           "maxLoan": "1270000000",
-          "rToken": "0x3bcecd40212e9b91d92bbe25bb3643ad93f0d230d93237c675f46fac5187e8c",
-          "dToken": "0x21d8d8519f5464ec63c6b9a80a5229c5ddeed57ecded4c8a9dfc34e31b49990",
+          "rToken": "0x4876ee45589e57f228829b7257728d293e3d1ef502e320435624575df3925bd",
+          "dToken": "0x4ffbab2bc8007b21030c1518f51fe82bb96cc187fa022ade505f5bb92abee41",
           "address": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
           "CEXSymbol": "USDCUSDT",
-          "pontis_key": "6148332971638477636",
+          "pragmaKey": "6148332971638477636",
           "mockPrice": 1,
           "ethereumAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
           "NETWORK_TOKEN_ADDRESS": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
@@ -672,25 +724,25 @@
           "apr_max": "10000"
         },
         {
-          "name": "DAI",
-          "symbol": "DAI",
+          "name": "STRK",
+          "symbol": "STRK",
           "decimals": 18,
           "minDeposit": "10000000000000000000",
-          "maxDeposit": "100000000000000000000000000",
-          "minLoan": "100000000000000000000",
-          "maxLoan": "1275000000000000000000",
-          "rToken": "0x19c981ec23aa9cbac1cc1eb7f92cf09ea2816db9cbd932e251c86a2e8fb725f",
-          "dToken": "0x7eeed99c095f83716e465e2c52a3ec8f47b323041ddc4f97778ac0393b7f358",
-          "address": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
-          "CEXSymbol": "USDTDAI",
-          "pontis_key": "19212080998863684",
-          "mockPrice": 1,
-          "ethereumAddress": "0x6b175474e89094c44da98b954eedeac495271d0f",
-          "NETWORK_TOKEN_ADDRESS": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
-          "base_apr": "300",
+          "maxDeposit": "500000000000000000000000",
+          "minLoan": "40000000000000000000",
+          "maxLoan": "400000000000000000000",
+          "rToken": "0x797805a1634f8aea416ad93fc9e0dca3013ca10b768ef235a4e76145954b2b",
+          "dToken": "0x25bbef96ec501cfe2ee9559dec83eebba4e7da3b9886d10e05603261beb7c43",
+          "address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "CEXSymbol": "STRKUSDT",
+          "pragmaKey": "6004514686061859652",
+          "mockPrice": 2,
+          "ethereumAddress": "0xCa14007Eff0dB1f8135f4C25B34De49AB0d42766",
+          "NETWORK_TOKEN_ADDRESS": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "base_apr": "200",
           "apr_at_optimal_ur": "1500",
           "optimal_ur": "5000",
-          "apr_max": "15000"
+          "apr_max": "11000"
         }
       ],
       "rTOKENS": [
@@ -699,7 +751,7 @@
           "symbol": "rBTC",
           "decimals": 8,
           "underlying_asset": "0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
-          "address": "0x1320a9910e78afc18be65e4080b51ecc0ee5c0a8b6cc7ef4e685e02b50e57ef",
+          "address": "0xa9b99c07405716c1170dab1a8afbe05588eb433f8b213db856e13f5ce5d474",
           "NETWORK_TOKEN_ADDRESS": "0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac"
         },
         {
@@ -707,7 +759,7 @@
           "symbol": "rETH",
           "decimals": 18,
           "underlying_asset": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
-          "address": "0x436d8d078de345c11493bd91512eae60cd2713e05bcaa0bb9f0cba90358c6e",
+          "address": "0x52c7c5c6981470f584b8839d4d8b53e7b8dfa9e5c04d63ebe8f10c4ab60abef",
           "NETWORK_TOKEN_ADDRESS": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
         },
         {
@@ -715,7 +767,7 @@
           "symbol": "rUSDT",
           "decimals": 6,
           "underlying_asset": "0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8",
-          "address": "0x5fa6cc6185eab4b0264a4134e2d4e74be11205351c7c91196cb27d5d97f8d21",
+          "address": "0x58aab0a95ed710e5faa8b421f0cf8526bffa57f180a08c9dd99460e2aee62e3",
           "NETWORK_TOKEN_ADDRESS": "0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8"
         },
         {
@@ -723,16 +775,16 @@
           "symbol": "rUSDC",
           "decimals": 6,
           "underlying_asset": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
-          "address": "0x3bcecd40212e9b91d92bbe25bb3643ad93f0d230d93237c675f46fac5187e8c",
-          "NETWORK_TOKEN_ADDRESS": ""
+          "address": "0x4876ee45589e57f228829b7257728d293e3d1ef502e320435624575df3925bd",
+          "NETWORK_TOKEN_ADDRESS": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
         },
         {
-          "name": "rDAI",
-          "symbol": "rDAI",
+          "name": "rSTRK",
+          "symbol": "rSTRK",
           "decimals": 18,
-          "underlying_asset": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
-          "address": "0x19c981ec23aa9cbac1cc1eb7f92cf09ea2816db9cbd932e251c86a2e8fb725f",
-          "NETWORK_TOKEN_ADDRESS": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3"
+          "underlying_asset": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "address": "0x797805a1634f8aea416ad93fc9e0dca3013ca10b768ef235a4e76145954b2b",
+          "NETWORK_TOKEN_ADDRESS": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
         }
       ],
       "dTOKENS": [
@@ -741,7 +793,7 @@
           "symbol": "dBTC",
           "decimals": 8,
           "underlying_asset": "0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
-          "address": "0x2614c784267d2026042ab98588f90efbffaade8982567e93530db4ed41201cf",
+          "address": "0x7afd16dd1654e70d2873741edc3866ede7d4ed0b2b93e905c3c30e372835926",
           "NETWORK_TOKEN_ADDRESS": "0x3fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac"
         },
         {
@@ -749,7 +801,7 @@
           "symbol": "dETH",
           "decimals": 18,
           "underlying_asset": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
-          "address": "0x1ef7f9f8bf01678dc6d27e2c26fb7e8eac3812a24752e6a1d6a49d153bec9f3",
+          "address": "0x1c4a8e3d5c8789c7fc3b408a0be5376314f12cd69f659a0409809e41392489b",
           "NETWORK_TOKEN_ADDRESS": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
         },
         {
@@ -757,7 +809,7 @@
           "symbol": "dUSDT",
           "decimals": 6,
           "underlying_asset": "0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8",
-          "address": "0x12b8185e237dd0340340faeb3351dbe53f8a42f5a9bf974ddf90ced56e301c7",
+          "address": "0x5824ac348a3fbde971736c688a4d1de2b4686ff1835382ddacd7ddd8db93764",
           "NETWORK_TOKEN_ADDRESS": "0x68f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8"
         },
         {
@@ -765,31 +817,34 @@
           "symbol": "dUSDC",
           "decimals": 6,
           "underlying_asset": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
-          "address": "0x21d8d8519f5464ec63c6b9a80a5229c5ddeed57ecded4c8a9dfc34e31b49990",
+          "address": "0x4ffbab2bc8007b21030c1518f51fe82bb96cc187fa022ade505f5bb92abee41",
           "NETWORK_TOKEN_ADDRESS": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
         },
         {
-          "name": "dDAI",
-          "symbol": "dDAI",
+          "name": "dSTRK",
+          "symbol": "dSTRK",
           "decimals": 18,
-          "underlying_asset": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
-          "address": "0x7eeed99c095f83716e465e2c52a3ec8f47b323041ddc4f97778ac0393b7f358",
-          "NETWORK_TOKEN_ADDRESS": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3"
+          "underlying_asset": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "address": "0x25bbef96ec501cfe2ee9559dec83eebba4e7da3b9886d10e05603261beb7c43",
+          "NETWORK_TOKEN_ADDRESS": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"
         }
       ],
       "peripherals": {
-        "COLLECTOR_ADDRESS": "0x16559762e7d0b0fc6f01088ffacaea9c02685d3d8fb2a151d0f9fa0ca215d44",
-        "STAKING_ADDRESS": "0x5950cbbb7dbdb2303671515bb9e41ca0bf8937dc5ba929eebd276a3db3f854"
+        "COLLECTOR_ADDRESS": "0x49ab7aaa603d5f6714c1ef0d781b6566aa649338db15076eca1f47ca096cb40",
+        "STAKING_ADDRESS": "0x60a4e52f7b2772e91d671fc3824c0b6ca6c96f041af2bcc308ab96e08ea2eb9"
       },
-      "DIAMOND_ADDRESS": "0x1b862c518939339b950d0d21a3d4cc8ead102d6270850ac8544636e558fab68",
+      "DIAMOND_ADDRESS": "0x3c5406ba7e5a38f89934d8fb1c098750b0128756909e53163dfaba667b041a0",
       "LAST_DEPLOYMENT_STEP": 21,
-      "EMPIRIC_PROXY_ADDRESS": "0x0346c57f094d641ad94e43468628d8e9c574dcb2803ec372576ccc60a40be2c4",
+      "EMPIRIC_PROXY_ADDRESS": "0x6f0bd3ea3239121e7e22c85dedd3f8a0aacfec6c1e833fe8f80dc6dfc9f8a35",
       "JEDI_SWAP_ROUTER_ADDRESS": "0x041fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
       "MYSWAP_ROUTER_ADDRESS": "0x010884171baf1914edc28d7afb619b40a4051cfae78a094a55d230f19e944a28",
       "ACCESS_CONTROL_ADDRESS": "0x070eb1763b19e5692ac30d204e2b087d0a7a47c51f4810cc4ecb2841c7482ea1",
       "L3_DIAMOND_ADDRESS": "0x5bc2d5f739fd82c176fc420b7acdbbf856d35597bdc575338664e84379245df",
       "FAUCET_ADDRESS": "0x16743390bac16d1c8298cac1f5c31c10e45d4d4b62d71215f2bd4539aafe9e",
       "METRICS_CONTRACT_ADDRESS": "0x548f38cb45720a101a1ec2edfaf608b47d2b39d137d0d3134087315f1b5f4a5",
-      "NFT_CONTRACT_ADDRESS":"0x02911b39aeb8ab26f4a04b49b28d665dd076654203f805a3ba4bdb545fed5194"
+      "NFT_CONTRACT_ADDRESS":"0x02911b39aeb8ab26f4a04b49b28d665dd076654203f805a3ba4bdb545fed5194",
+      "DIALER_CONTRACT_ADDRESS":"0x5911625bf42fdcceea7a367b10eed2308b91fdc2995048de9e31a0f658e90f",
+      "GOVERNOR_CONTRACT_ADDRESS":"0x33d1d7ac1639aaf49acbfb8903174abebaddeee4bbbb6c87e6876f3f2b4f0c5",
+      "PRAGMA_ADDRESS":"0x2a85bd616f912537c50a49a4076db02c00b29b2cdc8a197ce92ed1837fa875b"
     }
 }

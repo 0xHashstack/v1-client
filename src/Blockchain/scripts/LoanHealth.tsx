@@ -21,7 +21,7 @@ export async function getExistingLoanHealth(loanId: string) {
   const provider = getProvider();
   try {
     const routerContract = new Contract(routerAbi, diamondAddress, provider);
-    const res:any = await routerContract.call("get_health_factor", [loanId], {
+    const res:any = await routerContract.call("get_health_factor", [loanId,[]], {
       blockIdentifier: "pending",
     });
     ////console.log(
@@ -31,9 +31,9 @@ export async function getExistingLoanHealth(loanId: string) {
     //   parseAmount(res?.factor, 5)
     // );
     ////console.log(BNtoNum())
-    return BNtoNum(res?.factor, 5);
+    return BNtoNum(res, 5);
   } catch (error) {
-   //console.log("health factor error: ", error);
+   console.log("health factor error: ", error);
   }
 }
 

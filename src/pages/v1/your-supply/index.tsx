@@ -1,60 +1,36 @@
-import BorrowDashboard from "@/components/layouts/borrowDashboard";
-import NavButtons from "@/components/layouts/navButtons";
-import Navbar from "@/components/layouts/navbar/Navbar";
-import PageCard from "@/components/layouts/pageCard";
-import StatsBoard from "@/components/layouts/statsBoard";
-import SupplyDashboard from "@/components/layouts/supplyDashboard";
-import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
-import Pagination from "@/components/uiElements/pagination";
-import { Box, HStack, Stack, Text, VStack } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { Coins } from "@/utils/constants/coin";
-import YourSupplyModal from "@/components/modals/yourSupply";
-import { useDispatch } from "react-redux/es/hooks/useDispatch";
-import { useAccount } from "@starknet-react/core";
-import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
-import { selectYourSupply, selectNetAPR, selectnetAprDeposits } from "@/store/slices/readDataSlice";
-import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
-import { IDeposit } from "@/Blockchain/interfaces/interfaces";
-import { useSelector } from "react-redux";
-import { Skeleton } from "@chakra-ui/react";
-import numberFormatter from "@/utils/functions/numberFormatter";
-import useDataLoader from "@/hooks/useDataLoader";
-const YourSupply = () => {
-  const [currentPagination, setCurrentPagination] = useState<number>(1);
-  const columnItems = [
-    "rToken amount",
-    "Exchange rate",
-    "Supply APR",
-    "Effective APR",
-    "Status",
-    "",
-  ];
-  const { account, address } = useAccount();
-  useDataLoader();
-  // useEffect(()=>{
-  //   const walletConnected = localStorage.getItem('lastUsedConnector');
-  //   if(walletConnected=="braavos"){
-  //     connect(connectors[0]);
-  //   }else if(walletConnected=="argentx"){
-  //     connect(connectors[1]);
-  //   }
-  // },[])
-  // const [userDeposits, setUserDeposits] = useState<IDeposit[]>([]);
-  // useEffect(() => {
-  //   const getSupply = async () => {
-  //    //console.log("all deposits calling started");
-  //     try {
-  //       const supply = await getUserDeposits(address || "");
-  //       setUserDeposits(supply);
-  //     } catch (err) {
-  //      //console.log("supplies", err);
-  //     }
-  //   };
-  //   getSupply();
-  // }, []);
-  const totalSupply = useSelector(selectYourSupply);
-  const netAPR = useSelector(selectnetAprDeposits);
+import { Box, HStack, Skeleton, Text, Tooltip, VStack } from '@chakra-ui/react'
+import { NextPage } from 'next'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
+
+import InfoIconBig from '@/assets/icons/infoIconBig'
+import NavButtons from '@/components/layouts/navButtons'
+import PageCard from '@/components/layouts/pageCard'
+import SupplyDashboard from '@/components/layouts/supplyDashboard'
+import useDataLoader from '@/hooks/useDataLoader'
+import {
+  selectYourSupply,
+  selectnetAprDeposits,
+} from '@/store/slices/readDataSlice'
+import { Coins } from '@/utils/constants/coin'
+import numberFormatter from '@/utils/functions/numberFormatter'
+
+const columnItems = [
+  'rToken amount',
+  'Exchange rate',
+  'Supply APR',
+  'Effective APR',
+  'Assets Distribution',
+  '',
+]
+
+const YourSupply: NextPage = () => {
+  const [currentPagination, setCurrentPagination] = useState<number>(1)
+
+  const totalSupply = useSelector(selectYourSupply)
+  const netAPR = useSelector(selectnetAprDeposits)
+
+  useDataLoader()
 
   return (
     <PageCard pt="6.5rem">
@@ -66,7 +42,8 @@ const YourSupply = () => {
         pr="3rem"
         mb="1rem"
       >
-        <NavButtons width={70} marginBottom={"0rem"} />
+        <NavButtons width={70} marginBottom={'0rem'} />
+
         <HStack
           width="13.5rem"
           display="flex"
@@ -77,11 +54,12 @@ const YourSupply = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            gap={"3px"}
+            gap={'3px'}
           >
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Total Supply
             </Text>
+
             {totalSupply == null ? (
               <Skeleton
                 width="6rem"
@@ -92,14 +70,41 @@ const YourSupply = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalSupply ? `$${numberFormatter(totalSupply)}` : "NA"}
+                {totalSupply ? `$${numberFormatter(totalSupply)}` : 'NA'}
               </Text>
             )}
           </VStack>
-          <VStack gap={"3px"}>
-            <Text color="#6e7681" fontSize="14px" alignItems="center">
+
+          <VStack gap={'3px'}>
+            <Box
+              color={'#6e7681'}
+              fontSize="14px"
+              display="flex"
+              alignItems="center"
+              gap="2"
+            >
               Net APR
-            </Text>
+              <Tooltip
+                hasArrow
+                placement="right"
+                boxShadow="dark-lg"
+                label="Net APR on your supply is calculated based on the effective APR of each assets, and the supply and collateral amount."
+                bg="#02010F"
+                fontSize={'13px'}
+                fontWeight={'400'}
+                borderRadius={'lg'}
+                padding={'2'}
+                color="#F0F0F5"
+                border="1px solid"
+                borderColor="#23233D"
+                arrowShadowColor="#2B2F35"
+              >
+                <Box>
+                  <InfoIconBig />
+                </Box>
+              </Tooltip>
+            </Box>
+
             {netAPR == null ? (
               <Skeleton
                 width="6rem"
@@ -109,39 +114,31 @@ const YourSupply = () => {
                 borderRadius="6px"
               />
             ) : (
-              <Text color="#e6edf3" fontSize="20px">
-                {netAPR ? `${netAPR}%` : "NA"}
+              <Text
+                color={
+                  netAPR > 0
+                    ? '#00D395'
+                    : netAPR == 0
+                      ? 'white'
+                      : 'rgb(255 94 94)'
+                }
+                fontSize="20px"
+              >
+                {netAPR != 0 ? `${netAPR}%` : 'NA'}
               </Text>
             )}
           </VStack>
         </HStack>
       </HStack>
+
       <SupplyDashboard
-        width={"95%"}
+        width={'95%'}
         currentPagination={currentPagination}
         Coins={Coins}
         columnItems={columnItems}
       />
-      {/* <Box
-        paddingY="1rem"
-        width="95%"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Box>
-          <Pagination
-            currentPagination={currentPagination}
-            setCurrentPagination={(x: any) => setCurrentPagination(x)}
-            max={Coins.length}
-            rows={6}
-          />
-        </Box>
-        <LatestSyncedBlock width="16rem" height="100%" block={83207} />
-      </Box> */}
-      {/* <SupplyModal /> */}
     </PageCard>
-  );
-};
+  )
+}
 
-export default YourSupply;
+export default YourSupply

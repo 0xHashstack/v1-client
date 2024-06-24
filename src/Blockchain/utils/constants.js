@@ -21,6 +21,7 @@ export const constants = {
 
   JEDI_SWAP: "1962660952167394271600", // str_to_felt("jedi_swap")
   MY_SWAP: "30814223327519088", // str_to_felt("my_swap")
+  ZKLEND:"134601798676068",
   YAGI: "2036426601", // str_to_felt("yagi") 
   NONE: "1852796517",
 }

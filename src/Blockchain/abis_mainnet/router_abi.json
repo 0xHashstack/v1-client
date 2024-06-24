@@ -665,22 +665,25 @@
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
         "name": "get_health_factor",
-        "outputs": [
-            {
-                "name": "factor",
-                "type": "felt"
-            }
+        "type": "function",
+        "inputs": [
+          {
+            "name": "loan_id",
+            "type": "core::felt252"
+          },
+          {
+            "name": "additional_params",
+            "type": "core::array::Array::<core::felt252>"
+          }
         ],
-        "stateMutability": "view",
-        "type": "function"
-    },
+        "outputs": [
+          {
+            "type": "core::integer::u32"
+          }
+        ],
+        "state_mutability": "view"
+      },
     {
         "inputs": [],
         "name": "get_loans_len",

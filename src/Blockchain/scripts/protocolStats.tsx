@@ -1,6 +1,8 @@
 import { Contract, number, uint256 } from "starknet";
 import {
+  config,
   contractsEnv,
+  diamondAddress,
   getProvider,
   getTokenFromAddress,
   metricsContractAddress,
@@ -16,68 +18,33 @@ import {
 } from "../interfaces/interfaces";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import BigNumber from "bignumber.js";
+import { Address, Metrics, Spend, getMainnetConfig, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
 
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
   let marketInfo: IMarketInfo = {
-    borrowRate: parseAmount(
-      uint256.uint256ToBN(marketData?.borrow_rate).toString(),
-      2
-    ),
-    supplyRate: parseAmount(
-      uint256.uint256ToBN(marketData?.supply_rate).toString(),
-      2
-    ),
-    stakingRate: parseAmount(
-      uint256.uint256ToBN(marketData?.staking_rate).toString(),
-      2
-    ),
+    borrowRate: Number(marketData?.borrow_rate)*100,
+    supplyRate: Number(marketData?.supply_rate)*100,
+    stakingRate:Number(marketData?.staking_rate)*100,
+    totalSupply: Number(marketData?.total_supply),
+    lentAssets: Number(marketData?.lent_assets),
+    totalBorrow: Number(marketData?.total_borrow),
+    availableReserves: 
+      Number(new BigNumber(Number((marketData?.total_supply)))
+    .minus(new BigNumber(Number((marketData?.total_borrow))))),
+    utilisationPerMarket: 
+      Number(marketData?.utilisation_per_market) ?Number(marketData?.utilisation_per_market):0 ,
 
-    totalSupply: weiToEtherNumber(
-      uint256.uint256ToBN(marketData?.total_supply).toString(),
-      getTokenFromAddress(number.toHex(marketData?.token_address))
-        ?.name as Token
-    ),
-    lentAssets: weiToEtherNumber(
-      uint256.uint256ToBN(marketData?.lent_assets).toString(),
-      getTokenFromAddress(number.toHex(marketData?.token_address))
-        ?.name as Token
-    ),
-    totalBorrow: weiToEtherNumber(
-      uint256.uint256ToBN(marketData?.total_borrow).toString(),
-      getTokenFromAddress(number.toHex(marketData?.token_address))
-        ?.name as Token
-    ),
-    availableReserves: weiToEtherNumber(
-      new BigNumber(Number(uint256.uint256ToBN(marketData?.total_supply)))
-.minus(new BigNumber(Number(uint256.uint256ToBN(marketData?.total_borrow))))
-        .toString(),
-      getTokenFromAddress(number.toHex(marketData?.token_address))
-        ?.name as Token
-    ),
-    utilisationPerMarket: parseAmount(
-      uint256.uint256ToBN(marketData?.utilisation_per_market).toString(),
-      2
-    ),
+    exchangeRateRtokenToUnderlying: 
+      Number(marketData?.exchange_rate_rToken_to_asset),
+    exchangeRateDTokenToUnderlying: 
+      Number(marketData?.exchange_rate_dToken_to_asset),
+    exchangeRateUnderlyingToRtoken: 
+      Number(marketData?.exchange_rate_asset_to_rToken),
+    exchangeRateUnderlyingToDtoken: 
+      Number(marketData?.exchange_rate_asset_to_dToken),
 
-    exchangeRateRtokenToUnderlying: parseAmount(
-      uint256.uint256ToBN(marketData?.exchange_rate_rToken_to_asset).toString(),
-      18
-    ),
-    exchangeRateDTokenToUnderlying: parseAmount(
-      uint256.uint256ToBN(marketData?.exchange_rate_dToken_to_asset).toString(),
-      decimal
-    ),
-    exchangeRateUnderlyingToRtoken: parseAmount(
-      uint256.uint256ToBN(marketData?.exchange_rate_asset_to_rToken).toString(),
-      18
-    ),
-    exchangeRateUnderlyingToDtoken: parseAmount(
-      uint256.uint256ToBN(marketData?.exchange_rate_asset_to_dToken).toString(),
-      decimal
-    ),
-
-    tokenAddress: number.toHex(marketData?.token_address),
-    token: getTokenFromAddress(number.toHex(marketData?.token_address))
+    tokenAddress: marketData?.token_address?.address,
+    token: getTokenFromAddress(marketData?.token_address?.address)
       ?.name as NativeToken,
   };
   return marketInfo;
@@ -85,20 +52,20 @@ function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
 
 export async function getProtocolStats() {
   const marketStats: IMarketInfo[] = [];
-  const provider = getProvider();
-  const metricsContract = new Contract(
-    metricsAbi,
-    metricsContractAddress,
-    provider
+  const metricsContract = new Metrics(
+    config,
+    new Address(contractsEnv?.DIALER_CONTRACT_ADDRESS),
+    new Address(contractsEnv?.peripherals?.STAKING_ADDRESS),
+    new Address(contractsEnv?.EMPIRIC_PROXY_ADDRESS),
+    new Address(contractsEnv?.DIAMOND_ADDRESS),
+    contractsEnv.TOKENS
   );
   try {
     const promises: any = [];
     for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
       const token = contractsEnv.TOKENS[i];
 
-      const res = metricsContract.call("get_protocol_stats", [token.address], {
-        blockIdentifier: "pending",
-      });
+      const res =metricsContract.get_protocol_stats(new Address(token.address))
       promises.push(res);
     }
     return new Promise((resolve, reject) => {
@@ -107,11 +74,10 @@ export async function getProtocolStats() {
         const results = val.map((stat, idx) => {
           if (
             stat?.status == "fulfilled" &&
-            stat?.value &&
-            stat?.value?.market_info
+            stat?.value 
           )
             return parseProtocolStat(
-              stat?.value?.market_info,
+              stat?.value,
               contractsEnv?.TOKENS[idx]?.decimals
             );
           else return marketStats;
@@ -130,22 +96,11 @@ export async function getProtocolStats() {
 function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
   try {
     let protocolReserves: IProtocolReserves = {
-      totalReserves: parseAmount(
-        uint256.uint256ToBN(protocolReservesData?.total_reserves).toString(),
-        8
-      ),
-      availableReserves: parseAmount(
-        uint256
-          .uint256ToBN(protocolReservesData?.available_reserves)
-          .toString(),
-        8
-      ),
-      avgAssetUtilisation: parseAmount(
-        uint256
-          .uint256ToBN(protocolReservesData?.avg_asset_utilisation)
-          .toString(),
-        2
-      ),
+      totalReserves: 
+        Number(protocolReservesData?.total_reserves),
+
+      availableReserves: Number(protocolReservesData?.available_reserves),
+      avgAssetUtilisation: Number(protocolReservesData?.avg_asset_utilisation),
     };
     return protocolReserves;
   } catch (error) {
@@ -157,15 +112,20 @@ function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
 export async function getProtocolReserves() {
   const provider = getProvider();
   try {
-    const metricsContract = new Contract(
-      metricsAbi,
-      metricsContractAddress,
-      provider
+    const config = getMainnetConfig(
+      './target/dev',
+      'https://starknet-mainnet.infura.io/v3/82802c15c3d242d2846e464a66238198'
+  );
+    const metricsContract = new Metrics(
+      config,
+      new Address(contractsEnv?.DIALER_CONTRACT_ADDRESS),
+      new Address(contractsEnv?.peripherals?.STAKING_ADDRESS),
+      new Address(contractsEnv?.EMPIRIC_PROXY_ADDRESS),
+      new Address(contractsEnv?.DIAMOND_ADDRESS),
+      contractsEnv.TOKENS
     );
-    const res:any = await metricsContract.call("get_protocol_reserves", [], {
-      blockIdentifier: "pending",
-    });
-    const protocolReserves = parseProtocolReserves(res?.protocol_reserves);
+    const res:any = await metricsContract.get_protocol_reserves();
+    const protocolReserves = parseProtocolReserves(res);
     return protocolReserves;
   } catch (e) {
    //console.log("get_protocol_reserves failed: ", e);

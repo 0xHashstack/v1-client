@@ -80,6 +80,7 @@ import CaptureBugIcon from "@/assets/icons/captureBugIcon";
 import AddFiles from "@/assets/icons/addFiles";
 import CancelIcon from "@/assets/icons/cancelIcon";
 import CancelIconSmall from "@/assets/icons/cancelIconSmall";
+import posthog from "posthog-js";
 const FeedbackModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -476,6 +477,9 @@ const FeedbackModal = ({
                     cursor="pointer"
                     onClick={() => {
                       setFeedbackSelected("rating");
+                      posthog.capture('Feedback Modal Rating Feature selected', {
+                        Clicked: true,
+                      })
                     }}
                   >
                     <Box mt="1.2rem" ml="1rem">
@@ -509,6 +513,9 @@ const FeedbackModal = ({
                     cursor="pointer"
                     onClick={() => {
                       setFeedbackSelected("reportIssue");
+                      posthog.capture('Feedback Modal Report Issue Feature selected', {
+                        Clicked: true,
+                      })
                     }}
                   >
                     <Box mt="1.2rem" ml="1rem">
@@ -542,6 +549,9 @@ const FeedbackModal = ({
                     cursor="pointer"
                     onClick={() => {
                       setFeedbackSelected("suggestion");
+                      posthog.capture('Feedback Modal Suggestion Feature selected', {
+                        Clicked: true,
+                      })
                     }}
                   >
                     <Box mt="1.2rem" ml="1.5rem">

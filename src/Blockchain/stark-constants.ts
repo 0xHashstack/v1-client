@@ -7,6 +7,7 @@ import DeployDetailsProd from "../../contract_addresses_2.json";
 import ERC20Abi from "./abis_mainnet/erc20_abi.json";
 import { RpcProvider,num } from "starknet";
 import { UseWaitForTransactionResult } from "@starknet-react/core";
+import { getMainnetConfig, getSepoliaConfig } from "@hashstackdev/itachi-sdk";
 
 export function processAddress(address: string) {
   return num.toHex(num.toBigInt(address));
@@ -15,17 +16,25 @@ export function processAddress(address: string) {
 //   process.env.NODE_ENV === "development"
 //     ? DeployDetailsDev.devn\et
 //     : DeployDetailsProd.goerli_2;
-let contractsEnv:any = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? DeployDetailsProd.goerli : DeployDetailsProd.mainnet;
+let contractsEnv:any = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? DeployDetailsProd.sepolia : DeployDetailsProd.mainnet;
 contractsEnv.DIAMOND_ADDRESS = contractsEnv.DIAMOND_ADDRESS;
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(
     contractsEnv.TOKENS[i].address
   );
 }
+export let config= process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? getSepoliaConfig(
+  './target/dev',
+  'https://starknet-sepolia.public.blastapi.io/rpc/v0_6'
+):   getMainnetConfig(
+  './target/dev',
+  'https://starknet-mainnet.public.blastapi.io/rpc/v0_7'
+);
+
 export const getProvider = () => {
-  const rpctestnetUrl='https://starknet-goerli.infura.io/v3/'+String(process.env.NEXT_PUBLIC_INFURA_TESTNET);
-  const rpcUrl='https://starknet-mainnet.infura.io/v3/'+String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
-  if (contractsEnv == DeployDetailsProd.goerli) {
+  const rpctestnetUrl=String(process.env.NEXT_PUBLIC_INFURA_TESTNET);
+  const rpcUrl=String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
+  if (contractsEnv == DeployDetailsProd.sepolia) {
     const provider = new RpcProvider({ nodeUrl: rpctestnetUrl});
     return provider;
   }
@@ -81,11 +90,18 @@ export function handleTransactionToast(receipt: UseWaitForTransactionResult) {}
 
 export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
 
+export const governorAddress:string=contractsEnv.GOVERNOR_CONTRACT_ADDRESS;
+
+export const dialerAddress:string=contractsEnv.GOVERNOR_DIALER_CONTRACT_ADDRESS;
+
 export const metricsContractAddress: string =
   contractsEnv.METRICS_CONTRACT_ADDRESS;
 
 export const stakingContractAddress: string =
   contractsEnv.peripherals.STAKING_ADDRESS;
+
+export const pragmaAddress:string=
+  contractsEnv.PRAGMA_ADDRESS;
 
 export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 

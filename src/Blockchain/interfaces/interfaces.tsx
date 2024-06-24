@@ -1,12 +1,12 @@
-export type NativeToken = "BTC" | "ETH" | "DAI" | "USDC" | "USDT";
-export type DToken = "dBTC" | "dETH" | "dDAI" | "dUSDC" | "dUSDT";
-export type RToken = "rBTC" | "rETH" | "rDAI" | "rUSDC" | "rUSDT";
+export type NativeToken = "BTC" | "ETH" | "DAI" | "USDC" | "USDT" | "STRK";
+export type DToken = "dBTC" | "dETH" | "dDAI" | "dUSDC" | "dUSDT" | "dSTRK";
+export type RToken = "rBTC" | "rETH" | "rDAI" | "rUSDC" | "rUSDT" | "rSTRK";
 
 export type Token = NativeToken | DToken | RToken;
 
 export type LoanState = "ACTIVE" | "SPENT" | "REPAID" | "LIQUIDATED" | null;
 export type SpendType = "UNSPENT" | "SWAP" | "LIQUIDITY" | null;
-export type L3App = "JEDI_SWAP" | "MY_SWAP" | "YAGI" | "NONE";
+export type L3App = "JEDI_SWAP" | "MY_SWAP" | "YAGI" | "NONE" | "ZKLEND";
 export type Method = "SWAP" | "ADD_LIQUIDITY";
 
 export type ItokenAddressMap = {
@@ -101,6 +101,18 @@ export interface IUserStats {
   yourBorrow: number; // usd terms
   netSupplyAPR: number; // usd terms
   netBorrowAPR: number; // usd terms
+}
+
+export interface OraclePrice {
+  name: string;
+  address: string;
+  price: number;
+  lastUpdated: Date;
+}
+
+export interface BorrowEffectiveApr{
+  loanId:number,
+  apr:number,
 }
 
 // Net apr = (total supply * supply apr - total borrow * borrow apr) / networth

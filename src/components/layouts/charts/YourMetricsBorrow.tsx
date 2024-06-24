@@ -24,6 +24,7 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
     USDT: 0,
     USDC: 0,
     DAI: 0,
+    STRK:0,
   };
   // const [totalBorrow, setTotalBorrow] = useState<any>({
   //   BTC: 0,
@@ -101,7 +102,7 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
       },
       categories: categories
         ? categories
-        : ["wBTC", "wETH", "USDT", "USDC", "DAI"],
+        : ["wBTC", "wETH", "USDT", "USDC", "DAI","STRK"],
     },
     plotOptions: {
       bar: {
@@ -185,6 +186,11 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
       name: "DAI",
       data: [0, 0, 0, 0, totalBorrow?.DAI ? totalBorrow?.DAI : "0"],
       color: "#A48007",
+    },
+    {
+      name: "STRK",
+      data: [0, 0, 0, 0,0, totalBorrow?.STRK ? totalBorrow?.STRK : "0"],
+      color: "#0C0C4F",
     },
   ];
 

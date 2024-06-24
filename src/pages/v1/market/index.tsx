@@ -1,157 +1,257 @@
-import { Inter } from "next/font/google";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectAccount,
-  selectAccountAddress,
-  selectOffchainCurrentBlock,
-  selectOracleAndFairPrices,
-  selectReserves,
-  setAccountAddress,
-  setOffchainCurrentBlock,
-  setOracleAndFairPrices,
-  setReserves,
-} from "@/store/slices/userAccountSlice";
-import SupplyModal from "@/components/modals/SupplyModal";
-import Navbar from "@/components/layouts/navbar/Navbar";
-import StatsBoard from "@/components/layouts/statsBoard";
-import { Box, Stack, VStack } from "@chakra-ui/react";
-import NavButtons from "@/components/layouts/navButtons";
-import MarketDashboard from "@/components/layouts/marketDashboard";
-import { useEffect, useState } from "react";
-// import useBalanceOf from "../../Blockchain/hooks/Reads/useBalanceOf";
-import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
-// import { dataInitializer } from "@/utils/functions/dataInitializer";
-// import OffchainAPI from "@/services/offchainapi.service";
-import Link from "next/link";
-import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
-import PageCard from "@/components/layouts/pageCard";
-import { useRouter } from "next/router";
-import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
-import { useAccount } from "@starknet-react/core";
-import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
-import { getUserLoans } from "@/Blockchain/scripts/Loans";
-import {
-  getProtocolReserves,
-  getProtocolStats,
-} from "@/Blockchain/scripts/protocolStats";
-import SuccessToast from "@/components/uiElements/toasts/SuccessToast";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
-import useDataLoader from "@/hooks/useDataLoader";
-import { getSupplyunlocked, getrTokensMinted } from "@/Blockchain/scripts/Rewards";
-import { uint256 } from "starknet";
-import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
-import { setOraclePrices } from "@/store/slices/readDataSlice";
-const inter = Inter({ subsets: ["latin"] });
+import { Box, Button, Text } from '@chakra-ui/react'
+import Autoplay from 'embla-carousel-autoplay'
+import useEmblaCarousel from 'embla-carousel-react'
+import { NextPage } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useCallback } from 'react'
+import 'react-toastify/dist/ReactToastify.css'
 
-export default function Market() {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const [prices, setPrices] = useState([]);
-  const reserves = useSelector(selectReserves);
-  const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
-  const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
-  const [parsedAccount, setParsedAccount] = useState<any>();
-  const { address, account } = useAccount();
-  const [render, setRender] = useState(true);
-  // useEffect(()=>{
-  //   const fetchToken=async()=>{
-  //     const data=await getrTokensMinted("rUSDT",30.0);
-  //     ////console.log(parseAmount(uint256.uint256ToBN));
-  //   }
-  //   const fetchSupply=async()=>{
-  //     const data=await getSupplyunlocked("rUSDT",30.0);
+import MarketDashboard from '@/components/layouts/marketDashboard'
+import NavButtons from '@/components/layouts/navButtons'
+import PageCard from '@/components/layouts/pageCard'
+import StatsBoard from '@/components/layouts/statsBoard'
+import {
+  DotButton,
+  useDotButton,
+} from '@/components/uiElements/buttons/EmblaCarouselDotButton'
+import useDataLoader from '@/hooks/useDataLoader'
+import { useRouter } from 'next/router'
 
-  //   }
-  //   fetchSupply()
-  //   fetchToken();
-  // },[])
-  useDataLoader();
-  ////console.log(account.address)
-  // const { dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, refetchBalanceOf, statusBalanceOf }=useBalanceOf("0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7");
-  ////console.log(JSON.stringify(dataBalanceOf) ,"data")
-  // useEffect(()=>{
-  //   const storedAccount = localStorage.getItem("account");
-  //   if(!storedAccount){
-  //     router.push('/')
-  //   }
-  // },[])
-  // ////console.log("degug2", offchainCurrentBlock);
-  // useEffect(() => {
-  //   const loans = async () => {
-  //     // const reserves = await getProtocolReserves();
-  //     // const reserves = await getProtocolStats();
-  //     const reserves = await getProtocolStats();
-  //    //console.log("reserves - ", reserves);
-  //   };
-  //   if (account) {
-  //     loans();
-  //   }
-  //   // setRender(true);
-  // }, [account]);
+const Market: NextPage = () => {
+  const router = useRouter()
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+    },
+    [Autoplay({ playOnInit: true, delay: 8000 })]
+  )
+
+  const { selectedIndex, scrollSnaps, onDotButtonClick } =
+    useDotButton(emblaApi)
+
+  useDataLoader()
 
   return (
-    <PageCard >
-      <StatsBoard />
-      <NavButtons width={95} marginBottom={"1.125rem"}  />
-      <MarketDashboard  />
-      {/* <SupplyModal /> */}
-      {/* <Box
-        paddingY="1rem"
-        // height="2rem"
-        // bgColor={"blue"}
-        width="95%"
-        display="flex"
-        justifyContent="flex-end"
-        alignItems="center"
-      >
-        <LatestSyncedBlock width="16rem" height="100%" block={83207} />
-      </Box> */}
-      {/* <SuccessToast/> */}
-      {/* <CopyToClipboard text="error found">
-        <Text as="u">Underline</Text>
-      </CopyToClipboard> */}
-    </PageCard>
-  );
-}
-// Code for fetching data
+    <PageCard>
+      <Box className="embla" ref={emblaRef}>
+        <Box className="embla__container">
+          <Box className="embla__slide" position="relative" height={'150px'}>
+            <Image
+              src="/defi_spring_banner.svg"
+              alt="DeFi Spring"
+              fill
+              style={{ objectFit: 'cover', borderRadius: '8px' }}
+            />
+            <Box position="absolute" top="2" left="7">
+              <Box
+                color="#E6EDF3"
+                fontSize="2.1rem"
+                display="flex"
+                alignItems="center"
+                gap="2"
+                fontWeight="bold"
+              >
+                Starknet
+                <Text color="#7554E9">Defi Spring</Text>
+                Is Live!
+              </Box>
+              <Box
+                color="#BDBFC1"
+                fontSize="1.4rem"
+                display="flex"
+                alignItems="center"
+                gap="2"
+                fontWeight="normal"
+                marginTop="0"
+              >
+                Earn
+                <Text
+                  bgGradient="linear-gradient(#7554E9, #FFFFFF)"
+                  bgClip="text"
+                  fontWeight="bold"
+                >
+                  $STRK Tokens
+                </Text>
+              </Box>
+              <Link
+                href="https://hashstack.medium.com/farm-strk-token-on-hashstack-v1-e2287d6f94f9"
+                target="_blank"
+              >
+                <Button
+                  marginTop="2.5"
+                  color="white"
+                  bgGradient="linear-gradient(#7956EC, #1B29AE)"
+                  paddingY="0.3px"
+                  fontSize="sm"
+                  height="2rem"
+                  _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
+                >
+                  Learn more
+                </Button>
+              </Link>
+            </Box>
+          </Box>
 
-// useEffect(() => {
-//   setRender(true);
-//   const dispatch = useDispatch();
-//   const getReserves = async () => {
-//     try {
-//       const res = await OffchainAPI.getReserves();
-//       ////console.log("degug1", res);
-//       dispatch(setReserves(res?.reserves));
-//     } catch (error) {
-//      //console.log("getReserves failed market page", error);
-//     }
-//   };
-//   getReserves();
-//   const getPrices = () => {
-//     OffchainAPI.getOraclePrices()
-//       .then((prices) => {
-//         ////console.log("prices", prices);
-//         dispatch(setOracleAndFairPrices(prices));
-//       })
-//       .catch((error) => {
-//        //console.log("oraclePrices failed market page", error);
-//       });
-//   };
-//   getPrices();
-//   OffchainAPI.getDashboardStats()
-//     .then(
-//       (stats) => {
-//         dispatch(setOffchainCurrentBlock(stats));
-//       },
-//       (err) => {
-//         console.error(err);
-//       }
-//     )
-//     .catch((error) => {
-//      //console.log("getDashboardStats failed market page", error);
-//     });
-// }, []);
+          <Box className="embla__slide" position="relative" height={'150px'}>
+            <Image
+              src="/degen_banner.svg"
+              alt="Degen Mode"
+              fill
+              style={{ objectFit: 'cover', borderRadius: '8px' }}
+            />
+            <Box position="absolute" top="2" left="7">
+              <Box
+                color="#E6EDF3"
+                fontSize="2.1rem"
+                display="flex"
+                alignItems="center"
+                gap="2"
+                fontWeight="bold"
+              >
+                <Text color="#7554E9">Introducing Degen</Text>
+              </Box>
+              <Box
+                color="#BDBFC1"
+                fontSize="1.4rem"
+                display="flex"
+                alignItems="center"
+                gap="2"
+                fontWeight="normal"
+                marginTop="0"
+              >
+                <Text
+                  bgGradient="linear-gradient(#7554E9, #FFFFFF)"
+                  bgClip="text"
+                  fontWeight="bold"
+                >
+                  A high yield arbitrage strategy feature.
+                </Text>
+              </Box>
+              <Button
+                marginTop="2.5"
+                color="white"
+                bgGradient="linear-gradient(#7956EC, #1B29AE)"
+                paddingY="0.3px"
+                fontSize="sm"
+                height="2rem"
+                _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
+                onClick={() => {
+                  router.push('/v1/degen')
+                }}
+              >
+                Explore
+              </Button>
+            </Box>
+          </Box>
+          <Box className="embla__slide" position="relative" height={'150px'}>
+            <Image
+              src="/ccp_banner.svg"
+              alt="CCP Program"
+              fill
+              style={{ objectFit: 'cover', borderRadius: '8px' }}
+            />
+            <Box position="absolute" top="2" left="7">
+              <Box
+                color="#E6EDF3"
+                fontSize="2.1rem"
+                display="flex"
+                alignItems="center"
+                gap="2"
+                fontWeight="bold"
+              >
+                <Text color="#7554E9">Content Creators Program</Text>
+              </Box>
+              <Box
+                color="#BDBFC1"
+                fontSize="1.4rem"
+                display="flex"
+                alignItems="center"
+                gap="2"
+                fontWeight="normal"
+                marginTop="0"
+              >
+                Create content around
+                <Text
+                  bgGradient="linear-gradient(#7554E9, #FFFFFF)"
+                  bgClip="text"
+                  fontWeight="bold"
+                >
+                  Hashstack
+                </Text>
+                and
+                <Text
+                  bgGradient="linear-gradient(#7554E9, #FFFFFF)"
+                  bgClip="text"
+                  fontWeight="bold"
+                >
+                  earn points
+                </Text>
+              </Box>
+              <Button
+                marginTop="2.5"
+                color="white"
+                bgGradient="linear-gradient(#7956EC, #1B29AE)"
+                paddingY="0.3px"
+                fontSize="sm"
+                height="2rem"
+                _hover={{ bgGradient: 'linear-gradient(#1B29AE, #7956EC)' }}
+                onClick={() => {
+                  router.push('/v1/campaigns')
+                }}
+              >
+                Get Started
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box
+        display="grid"
+        gridTemplateColumns="auto 1fr"
+        justifyContent="space-between"
+        gap="1.2rem"
+        mb="1.5rem"
+      >
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="flex-end"
+          alignItems="center"
+          marginRight="calc((2.6rem - 1.4rem) / 2 * -1)"
+          gap=".5rem"
+        >
+          {scrollSnaps.map((_, index) => (
+            <Box
+              key={index}
+              onClick={() => onDotButtonClick(index)}
+              width="0.8rem"
+              height="0.8rem"
+              borderRadius="50%"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              cursor="pointer"
+              backgroundColor={index === selectedIndex ? '#4D59E8' : 'black'}
+              padding="0"
+              margin="0"
+              border="1px solid #373A5D"
+              textDecoration="none"
+              appearance="none"
+              // boxShadow={
+              //   index === selectedIndex ? 'inset 0 0 0 0.2rem #4D59E8' : ''
+              // }
+            />
+          ))}
+        </Box>
+      </Box>
+
+      <StatsBoard />
+      <NavButtons width={95} marginBottom="1.125rem" />
+      <MarketDashboard />
+    </PageCard>
+  )
+}
+
+export default Market

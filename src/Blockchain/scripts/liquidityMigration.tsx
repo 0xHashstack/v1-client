@@ -47,6 +47,6 @@ export async function get_user_holding_zklend(address:any) {
     // console.log(parseAmount(res[0][0].toString(),18),"called")
     ////console.log(res, "data in rewards");
   } catch (err) {
-   console.log(err,"err in migration");
+  //  console.log(err,"err in migration");
   }
 }

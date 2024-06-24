@@ -82,6 +82,9 @@ function parseLoansData(loansData: any, collateralsData: any): ILoan[] {
           : num.toBigInt(loanData?.l3_integration).toString() ===
             "30814223327519088"
           ? "MY_SWAP"
+          :num.toBigInt(loanData?.l3_integration).toString() ===
+          "134601798676068" 
+          ?"ZKLEND"
           : num.toBigInt(loanData?.l3_integration).toString() ===
             "30814223327519089"
           ? "YAGI"
@@ -116,6 +119,6 @@ export async function getUserLoans(account: string) {
     ////console.log(res, "loans called");
     return parseLoansData(res?.loans, res?.collaterals);
   } catch (error) {
-   //console.log(error);
+   console.log(error,"err in loans");
   }
 }

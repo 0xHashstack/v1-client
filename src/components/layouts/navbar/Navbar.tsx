@@ -1,16 +1,16 @@
-import axios from "axios";
-import Image from "next/image";
-import Link from "next/link";
-import React, { memo, useEffect, useRef, useState } from "react";
+import axios from 'axios'
+import Image from 'next/image'
+import Link from 'next/link'
+import React, { memo, useEffect, useRef, useState } from 'react'
 
-import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
-import TransferDepositModal from "@/components/modals/TransferDepositModal";
-import GetTokensModal from "@/components/modals/getTokens";
+import StakeUnstakeModal from '@/components/modals/StakeUnstakeModal'
+import TransferDepositModal from '@/components/modals/TransferDepositModal'
+import GetTokensModal from '@/components/modals/getTokens'
 import {
   selectCurrentDropdown,
   selectNavDropdowns,
   setNavDropdown,
-} from "@/store/slices/dropdownsSlice";
+} from '@/store/slices/dropdownsSlice'
 import {
   resetState,
   selectCurrentNetwork,
@@ -21,72 +21,73 @@ import {
   selectYourBorrow,
   selectYourSupply,
   setInteractedAddress,
-} from "@/store/slices/readDataSlice";
+} from '@/store/slices/readDataSlice'
 import {
   selectAccountAddress,
   selectLanguage,
   setAccountReset,
   setLanguage,
-} from "@/store/slices/userAccountSlice";
-import { languages } from "@/utils/constants/languages";
-import { Box, HStack, Skeleton, Text, useOutsideClick } from "@chakra-ui/react";
-import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
-import mixpanel from "mixpanel-browser";
-import { useRouter } from "next/router";
-import posthog from "posthog-js";
-import { useDispatch, useSelector } from "react-redux";
-import { AccountInterface, ProviderInterface, number } from "starknet";
-import arrowNavLeft from "../../../assets/images/arrowNavLeft.svg";
-import arrowNavRight from "../../../assets/images/arrowNavRight.svg";
-import darkModeOff from "../../../assets/images/darkModeOff.svg";
-import darkModeOn from "../../../assets/images/darkModeOn.svg";
-import hoverContributeEarnIcon from "../../../assets/images/hoverContributeEarnIcon.svg";
-import hoverDashboardIcon from "../../../assets/images/hoverDashboardIcon.svg";
-import hoverStake from "../../../assets/images/hoverStakeIcon.svg";
-import tickMark from "../../../assets/images/tickMark.svg";
-import { Coins } from "../dashboardLeft";
+} from '@/store/slices/userAccountSlice'
+import { languages } from '@/utils/constants/languages'
+import { Box, HStack, Skeleton, Text, useOutsideClick } from '@chakra-ui/react'
+import { useAccount, useConnect, useDisconnect } from '@starknet-react/core'
+import mixpanel from 'mixpanel-browser'
+import { useRouter } from 'next/router'
+import posthog from 'posthog-js'
+import { useDispatch, useSelector } from 'react-redux'
+import { AccountInterface, ProviderInterface, number } from 'starknet'
+import arrowNavLeft from '../../../assets/images/arrowNavLeft.svg'
+import arrowNavRight from '../../../assets/images/arrowNavRight.svg'
+import darkModeOff from '../../../assets/images/darkModeOff.svg'
+import darkModeOn from '../../../assets/images/darkModeOn.svg'
+import hoverContributeEarnIcon from '../../../assets/images/hoverContributeEarnIcon.svg'
+import hoverDashboardIcon from '../../../assets/images/hoverDashboardIcon.svg'
+import hoverStake from '../../../assets/images/hoverStakeIcon.svg'
+import tickMark from '../../../assets/images/tickMark.svg'
+import { Coins } from '../dashboardLeft'
 
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
-    chainId: string;
-  };
+    chainId: string
+  }
 }
 
 const Navbar = ({ validRTokens }: any) => {
-  const dispatch = useDispatch();
-  const navDropdowns = useSelector(selectNavDropdowns);
-  const language = useSelector(selectLanguage);
-  const currentDropdown = useSelector(selectCurrentDropdown);
-  const { account } = useAccount();
-  const currentChainId = useSelector(selectCurrentNetwork);
-  const [dashboardHover, setDashboardHover] = useState(false);
-  const [campaignHover, setCampaignHover] = useState(false);
-  const [contibutionHover, setContibutionHover] = useState(false);
-  const [transferDepositHover, setTransferDepositHover] = useState(false);
-  const [stakeHover, setStakeHover] = useState(false);
-  const { connect, connectors } = useConnect();
-  const { disconnect } = useDisconnect();
+  const dispatch = useDispatch()
+  const navDropdowns = useSelector(selectNavDropdowns)
+  const language = useSelector(selectLanguage)
+  const currentDropdown = useSelector(selectCurrentDropdown)
+  const { account } = useAccount()
+  const currentChainId = useSelector(selectCurrentNetwork)
+  const [dashboardHover, setDashboardHover] = useState(false)
+  const [campaignHover, setCampaignHover] = useState(false)
+  const [contibutionHover, setContibutionHover] = useState(false)
+  const [transferDepositHover, setTransferDepositHover] = useState(false)
+  const [stakeHover, setStakeHover] = useState(false)
+  const { connect, connectors } = useConnect()
+  const { disconnect } = useDisconnect()
   const handleDropdownClick = (dropdownName: string) => {
-    dispatch(setNavDropdown(dropdownName));
-  };
-  const [justifyContent, setJustifyContent] = useState("flex-start");
-  const [toggleDarkMode, setToggleDarkMode] = useState(true);
+    dispatch(setNavDropdown(dropdownName))
+  }
+  const [domainName, setDomainName] = useState('')
+  const [justifyContent, setJustifyContent] = useState('flex-start')
+  const [toggleDarkMode, setToggleDarkMode] = useState(true)
   const toggleMode = () => {
     setJustifyContent(
-      justifyContent === "flex-start" ? "flex-end" : "flex-start"
-    );
-  };
-  const totalBorrow = useSelector(selectYourBorrow);
-  const totalSupply = useSelector(selectYourSupply);
+      justifyContent === 'flex-start' ? 'flex-end' : 'flex-start'
+    )
+  }
+  const totalBorrow = useSelector(selectYourBorrow)
+  const totalSupply = useSelector(selectYourSupply)
 
-  const { connector } = useAccount();
+  const { connector } = useAccount()
 
-  const router = useRouter();
-  const { pathname } = router;
+  const router = useRouter()
+  const { pathname } = router
 
-  const ref1 = useRef<HTMLDivElement>(null);
-  const ref2 = useRef<HTMLDivElement>(null);
-  const nftBalance: any = useSelector(selectNftBalance);
+  const ref1 = useRef<HTMLDivElement>(null)
+  const ref2 = useRef<HTMLDivElement>(null)
+  const nftBalance: any = useSelector(selectNftBalance)
 
   useOutsideClick({
     ref: ref1,
@@ -96,12 +97,12 @@ const Navbar = ({ validRTokens }: any) => {
         ref2.current &&
         !ref1.current.contains(e.target as Node) &&
         !ref2.current.contains(e.target as Node) &&
-        currentDropdown != ""
+        currentDropdown != ''
       ) {
-        dispatch(setNavDropdown(""));
+        dispatch(setNavDropdown(''))
       }
     },
-  });
+  })
 
   useOutsideClick({
     ref: ref2,
@@ -111,79 +112,95 @@ const Navbar = ({ validRTokens }: any) => {
         ref2.current &&
         !ref1.current.contains(e.target as Node) &&
         !ref2.current.contains(e.target as Node) &&
-        currentDropdown != ""
+        currentDropdown != ''
       ) {
-        dispatch(setNavDropdown(""));
+        dispatch(setNavDropdown(''))
       }
     },
-  });
+  })
 
   const switchWallet = () => {
-    if (connectors[0]?.id == "braavos") {
-      dispatch(resetState(null));
-      dispatch(setAccountReset(null));
-      localStorage.setItem("lastUsedConnector", "argentX");
-      localStorage.setItem("connected", "argentX");
+    if (connectors[0]?.id == 'braavos') {
+      dispatch(resetState(null))
+      dispatch(setAccountReset(null))
+      localStorage.setItem('lastUsedConnector', 'argentX')
+      localStorage.setItem('connected', 'argentX')
       connectors.map((connector: any) => {
-        if (connector.id == "argentX") {
-          connect({ connector });
+        if (connector.id == 'argentX') {
+          connect({ connector })
         }
-      });
-      router.push("/v1/market");
+      })
+      router.push('/v1/market')
     } else {
-      dispatch(resetState(null));
-      dispatch(setAccountReset(null));
-      localStorage.setItem("lastUsedConnector", "braavos");
-      localStorage.setItem("connected", "braavos");
+      dispatch(resetState(null))
+      dispatch(setAccountReset(null))
+      localStorage.setItem('lastUsedConnector', 'braavos')
+      localStorage.setItem('connected', 'braavos')
       connectors.map((connector: any) => {
-        if (connector.id == "braavos") {
-          connect({ connector });
+        if (connector.id == 'braavos') {
+          connect({ connector })
         }
-      });
-      router.push("/v1/market");
+      })
+      router.push('/v1/market')
     }
-  };
+  }
 
-  const extendedAccount = account as ExtendedAccountInterface;
-  const [isCorrectNetwork, setisCorrectNetwork] = useState(true);
-  const { address, status, isConnected } = useAccount();
+  useEffect(() => {
+    async function fetchDomainName() {
+      if (account?.address) {
+        try {
+          const res: any = await axios.get(
+            `https://api.starknet.id/addr_to_domain?addr=${account?.address}`
+          )
+          setDomainName(res?.data?.domain)
+        } catch (error) {
+          console.log('address to domain error', error)
+        }
+      }
+    }
+    fetchDomainName()
+  }, [account?.address, domainName])
 
-  const [whitelisted, setWhitelisted] = useState(true);
-  const [uniqueToken, setUniqueToken] = useState("");
-  const [referralLinked, setRefferalLinked] = useState(false);
-  const userType = useSelector(selectUserType);
-  const [Render, setRender] = useState(true);
-  const userWhitelisted = useSelector(selectWhiteListed);
+  const extendedAccount = account as ExtendedAccountInterface
+  const [isCorrectNetwork, setisCorrectNetwork] = useState(true)
+  const { address, status, isConnected } = useAccount()
+
+  const [whitelisted, setWhitelisted] = useState(true)
+  const [uniqueToken, setUniqueToken] = useState('')
+  const [referralLinked, setRefferalLinked] = useState(false)
+  const userType = useSelector(selectUserType)
+  const [Render, setRender] = useState(true)
+  const userWhitelisted = useSelector(selectWhiteListed)
 
   useEffect(() => {
     function isCorrectNetwork() {
-      const walletConnected = localStorage.getItem("lastUsedConnector");
-      const network = process.env.NEXT_PUBLIC_NODE_ENV;
+      const walletConnected = localStorage.getItem('lastUsedConnector')
+      const network = process.env.NEXT_PUBLIC_NODE_ENV
 
-      if (walletConnected == "braavos") {
-        if (network == "testnet") {
+      if (walletConnected == 'braavos') {
+        if (network == 'testnet') {
           return (
             extendedAccount.provider?.chainId ==
             process.env.NEXT_PUBLIC_TESTNET_CHAINID
-          );
+          )
         } else {
           return (
             extendedAccount.provider?.chainId ==
             process.env.NEXT_PUBLIC_MAINNET_CHAINID
-          );
+          )
         }
-      } else if (walletConnected == "argentX") {
+      } else if (walletConnected == 'argentX') {
         // Your code here
-        if (network == "testnet") {
+        if (network == 'testnet') {
           return (
             extendedAccount.provider?.chainId ===
             process.env.NEXT_PUBLIC_TESTNET_CHAINID
-          );
+          )
         } else {
           return (
             extendedAccount.provider?.chainId ===
             process.env.NEXT_PUBLIC_MAINNET_CHAINID
-          );
+          )
         }
       }
     }
@@ -191,28 +208,28 @@ const Navbar = ({ validRTokens }: any) => {
     const isWhiteListed = async () => {
       try {
         if (!address) {
-          return;
+          return
         }
-        const url = `https://hstk.fi/is-whitelisted/${address}`;
-        const response = await axios.get(url);
-        setWhitelisted(response.data?.isWhitelisted);
+        const url = `https://hstk.fi/is-whitelisted/${address}`
+        const response = await axios.get(url)
+        setWhitelisted(response.data?.isWhitelisted)
       } catch (err) {}
-    };
-    isWhiteListed();
+    }
+    isWhiteListed()
 
     if (account && !isCorrectNetwork()) {
-      setRender(false);
+      setRender(false)
     } else {
-      setRender(true);
+      setRender(true)
     }
-  }, [account, whitelisted, userWhitelisted, referralLinked]);
-  const [allowedReferral, setAllowedReferral] = useState(false);
-  const interactedAddress = useSelector(selectInteractedAddress);
+  }, [account, whitelisted, userWhitelisted, referralLinked])
+  const [allowedReferral, setAllowedReferral] = useState(false)
+  const interactedAddress = useSelector(selectInteractedAddress)
 
   return (
     <HStack
       zIndex="100"
-      pt={"4px"}
+      pt={'4px'}
       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
       width="100vw"
       boxShadow="rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px"
@@ -225,22 +242,22 @@ const Navbar = ({ validRTokens }: any) => {
     >
       <HStack
         display="flex"
-        justifyContent={"flex-start"}
+        justifyContent={'flex-start'}
         alignItems="center"
         width="60%"
-        gap={"4px"}
+        gap={'4px'}
         marginLeft="2rem"
       >
         <Link
           href={
-            router.pathname != "/v1/waitlist" ? "/v1/market" : "/v1/waitlist"
+            router.pathname != '/v1/waitlist' ? '/v1/market' : '/v1/waitlist'
           }
         >
           <Box
             height="100%"
             display="flex"
             alignItems="center"
-            minWidth={"140px"}
+            minWidth={'140px'}
             marginRight="1.4em"
           >
             <Image
@@ -260,14 +277,13 @@ const Navbar = ({ validRTokens }: any) => {
           marginBottom="0px"
           className="button"
           color={
-            pathname !== "/v1/airdrop_leaderboard" &&
-            pathname !== "/v1/referral"
-              ? "#00D395"
-              : "#676D9A"
+            pathname !== '/v1/campaigns' && pathname !== '/v1/referral'
+              ? '#00D395'
+              : '#676D9A'
           }
           onClick={() => {
-            if (router.pathname != "/waitlist") {
-              router.push("/v1/market");
+            if (router.pathname != '/waitlist') {
+              router.push('/v1/market')
             }
           }}
           onMouseEnter={() => setDashboardHover(true)}
@@ -277,24 +293,24 @@ const Navbar = ({ validRTokens }: any) => {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            gap={"8px"}
+            gap={'8px'}
           >
-            {router.pathname == "/v1/airdrop_leaderboard" ||
-            router.pathname == "/v1/referral" ? (
+            {router.pathname == '/v1/campaigns' ||
+            router.pathname == '/v1/referral' ? (
               <Image
                 src={hoverDashboardIcon}
                 alt="Picture of the author"
                 width="16"
                 height="16"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: 'pointer' }}
               />
             ) : (
               <Image
-                src={"/dashboardIcon.svg"}
+                src={'/dashboardIcon.svg'}
                 alt="Picture of the author"
                 width="16"
                 height="16"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: 'pointer' }}
               />
             )}
 
@@ -307,17 +323,17 @@ const Navbar = ({ validRTokens }: any) => {
             padding="16px 12px"
             fontSize="12px"
             borderRadius="5px"
-            cursor={Render ? "pointer" : "not-allowed"}
+            cursor={Render ? 'pointer' : 'not-allowed'}
             marginBottom="0px"
             _hover={{
-              color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
+              color: `${router.pathname != '/waitlist' ? '#6e7681' : ''}`,
             }}
             onMouseEnter={() => setStakeHover(true)}
             onMouseLeave={() => setStakeHover(false)}
             onClick={() => {
-              posthog.capture("Stake Button Clicked Navbar", {
+              posthog.capture('Stake Button Clicked Navbar', {
                 Clicked: true,
-              });
+              })
             }}
           >
             <StakeUnstakeModal
@@ -331,43 +347,44 @@ const Navbar = ({ validRTokens }: any) => {
           </Box>
         }
 
-        {process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ? (
+        {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
           <Box
             padding="16px 12px"
             fontSize="12px"
             borderRadius="5px"
             cursor="pointer"
             marginBottom="0px"
-            color={`${
-              pathname == "/v1/airdrop_leaderboard" ? "#00D395" : "#676D9A"
-            }`}
+            color={`${pathname == '/v1/campaigns' ? '#00D395' : '#676D9A'}`}
             onMouseEnter={() => setCampaignHover(true)}
             onMouseLeave={() => setCampaignHover(false)}
             onClick={() => {
-              router.push("/v1/airdrop_leaderboard");
+              posthog.capture('More Tab Clicked', {
+                Clicked: true,
+              })
+              router.push('/v1/campaigns')
             }}
           >
             <Box
               display="flex"
               justifyContent="space-between"
               alignItems="center"
-              gap={"8px"}
+              gap={'8px'}
             >
-              {pathname == "/v1/airdrop_leaderboard" ? (
+              {pathname == '/v1/campaigns' ? (
                 <Image
                   src={hoverContributeEarnIcon}
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                 />
               ) : (
                 <Image
-                  src={"/contributeEarnIcon.svg"}
+                  src={'/contributeEarnIcon.svg'}
                   alt="Picture of the author"
                   width="16"
                   height="16"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                 />
               )}
 
@@ -375,7 +392,7 @@ const Navbar = ({ validRTokens }: any) => {
             </Box>
           </Box>
         ) : (
-          ""
+          ''
         )}
       </HStack>
       <HStack
@@ -391,23 +408,23 @@ const Navbar = ({ validRTokens }: any) => {
           alignItems="center"
           marginRight="1.2rem"
         >
-          {process.env.NEXT_PUBLIC_NODE_ENV == "mainnet" ? (
-            ""
+          {/* {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
+            ''
           ) : (
             <GetTokensModal
               buttonText="Get Tokens"
-              height={"2rem"}
-              fontSize={"14px"}
+              height={'2rem'}
+              fontSize={'14px'}
               lineHeight="14px"
               padding="6px 12px"
               border="1px solid #676D9A"
               bgColor="transparent"
-              _hover={{ bg: "white", color: "black" }}
-              borderRadius={"6px"}
+              _hover={{ bg: 'white', color: 'black' }}
+              borderRadius={'6px'}
               color="#E6EDF3"
               backGroundOverLay="rgba(244, 242, 255, 0.5)"
             />
-          )}
+          )} */}
           <Box
             fontSize="12px"
             color="#FFF"
@@ -436,7 +453,7 @@ const Navbar = ({ validRTokens }: any) => {
               height="100%"
               className="navbar-button"
               onClick={() => {
-                dispatch(setNavDropdown("walletConnectionDropdown"));
+                dispatch(setNavDropdown('walletConnectionDropdown'))
               }}
             >
               {account ? (
@@ -449,10 +466,10 @@ const Navbar = ({ validRTokens }: any) => {
                 >
                   <Image
                     alt=""
-                    src={"/starknetLogoBordered.svg"}
+                    src={'/starknetLogoBordered.svg'}
                     width="16"
                     height="16"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                   />
                   <Text
                     fontSize="14px"
@@ -463,13 +480,15 @@ const Navbar = ({ validRTokens }: any) => {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    {`${account.address.substring(
-                      0,
-                      3
-                    )}...${account.address.substring(
-                      account.address.length - 9,
-                      account.address.length
-                    )}`}{" "}
+                    {domainName
+                      ? domainName
+                      : `${account.address.substring(
+                          0,
+                          3
+                        )}...${account.address.substring(
+                          account.address.length - 9,
+                          account.address.length
+                        )}`}
                   </Text>
                 </Box>
               ) : (
@@ -478,22 +497,22 @@ const Navbar = ({ validRTokens }: any) => {
               <Box position="absolute" right="0.7rem">
                 {!navDropdowns.walletConnectionDropdown ? (
                   <Image
-                    src={"/connectWalletArrowDown.svg"}
+                    src={'/connectWalletArrowDown.svg'}
                     alt="arrow"
                     width="16"
                     height="16"
                     style={{
-                      cursor: "pointer",
+                      cursor: 'pointer',
                     }}
                   />
                 ) : (
                   <Image
-                    src={"/connectWalletArrowDown.svg"}
+                    src={'/connectWalletArrowDown.svg'}
                     alt="arrow"
                     width="16"
                     height="16"
                     style={{
-                      cursor: "pointer",
+                      cursor: 'pointer',
                     }}
                   />
                 )}
@@ -523,13 +542,13 @@ const Navbar = ({ validRTokens }: any) => {
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                       border="1px solid #2B2F35"
                       onClick={() => {
-                        dispatch(resetState(null));
-                        dispatch(setAccountReset(null));
-                        localStorage.setItem("lastUsedConnector", "");
-                        localStorage.setItem("connected", "");
-                        dispatch(setNavDropdown(""));
-                        router.push("./");
-                        disconnect();
+                        dispatch(resetState(null))
+                        dispatch(setAccountReset(null))
+                        localStorage.setItem('lastUsedConnector', '')
+                        localStorage.setItem('connected', '')
+                        dispatch(setNavDropdown(''))
+                        router.push('./')
+                        disconnect()
                       }}
                     >
                       Disconnect
@@ -541,8 +560,8 @@ const Navbar = ({ validRTokens }: any) => {
                       border="1px solid #2B2F35"
                       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                       onClick={() => {
-                        dispatch(setNavDropdown(""));
-                        switchWallet();
+                        dispatch(setNavDropdown(''))
+                        switchWallet()
                       }}
                     >
                       Switch Wallet
@@ -556,20 +575,20 @@ const Navbar = ({ validRTokens }: any) => {
                     border="1px solid #2B2F35"
                     background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                     onClick={() => {
-                      if (connectors[0]?.id == "braavos") {
-                        disconnect();
+                      if (connectors[0]?.id == 'braavos') {
+                        disconnect()
                         connectors.map((connector: any) => {
-                          if (connector.id == "braavos") {
-                            connect(connector);
+                          if (connector.id == 'braavos') {
+                            connect(connector)
                           }
-                        });
+                        })
                       } else {
-                        disconnect();
+                        disconnect()
                         connectors.map((connector: any) => {
-                          if (connector.id == "argentX") {
-                            connect({ connector });
+                          if (connector.id == 'argentX') {
+                            connect({ connector })
                           }
-                        });
+                        })
                       }
                     }}
                   >
@@ -602,7 +621,7 @@ const Navbar = ({ validRTokens }: any) => {
               className="navbar-button"
               mr="0.5rem"
               onClick={() => {
-                dispatch(setNavDropdown("settingsDropdown"));
+                dispatch(setNavDropdown('settingsDropdown'))
               }}
             >
               <Image
@@ -611,7 +630,7 @@ const Navbar = ({ validRTokens }: any) => {
                 width="18"
                 height="18"
                 style={{
-                  cursor: "pointer",
+                  cursor: 'pointer',
                 }}
               />
             </Box>
@@ -640,16 +659,16 @@ const Navbar = ({ validRTokens }: any) => {
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
-                  width={"100%"}
+                  width={'100%'}
                   paddingX="8px"
                 ></HStack>
                 <hr
                   style={{
-                    height: "1px",
-                    borderWidth: "0",
-                    backgroundColor: "#2B2F35",
-                    width: "96%",
-                    marginRight: "5.1px",
+                    height: '1px',
+                    borderWidth: '0',
+                    backgroundColor: '#2B2F35',
+                    width: '96%',
+                    marginRight: '5.1px',
                   }}
                 />
                 <HStack
@@ -668,12 +687,12 @@ const Navbar = ({ validRTokens }: any) => {
                     Language
                   </Text>
                   <Text
-                    fontSize={"12px"}
+                    fontSize={'12px'}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
                     onClick={() => {
-                      dispatch(setNavDropdown("languagesDropdown"));
+                      dispatch(setNavDropdown('languagesDropdown'))
                     }}
                   >
                     {language}
@@ -682,7 +701,7 @@ const Navbar = ({ validRTokens }: any) => {
                       alt="Picture of the author"
                       width="16"
                       height="16"
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                     />
                   </Text>
                 </HStack>
@@ -707,12 +726,12 @@ const Navbar = ({ validRTokens }: any) => {
                 className="dropdown-container"
               >
                 <Text
-                  fontSize={"12px"}
+                  fontSize={'12px'}
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
                   onClick={() => {
-                    dispatch(setNavDropdown("settingsDropdown"));
+                    dispatch(setNavDropdown('settingsDropdown'))
                   }}
                   gap="8px"
                   padding="0.5rem 0.7rem"
@@ -723,7 +742,7 @@ const Navbar = ({ validRTokens }: any) => {
                     alt="Picture of the author"
                     width="7"
                     height="7"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                   />
                   Select Language
                 </Text>
@@ -737,22 +756,22 @@ const Navbar = ({ validRTokens }: any) => {
                       justifyContent="space-between"
                       width="100%"
                       onClick={() => {
-                        if (!val.name.includes("Coming soon"))
-                          dispatch(setLanguage(`${val.name}`));
+                        if (!val.name.includes('Coming soon'))
+                          dispatch(setLanguage(`${val.name}`))
                       }}
                     >
                       <Box
-                        display={"flex"}
-                        justifyContent={"flex-start"}
+                        display={'flex'}
+                        justifyContent={'flex-start'}
                         gap={4}
-                        alignItems={"center"}
+                        alignItems={'center'}
                       >
                         <Image
                           src={val.icon}
                           alt="Picture of the author"
                           width="20"
                           height="20"
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: 'pointer' }}
                         />
                         <Text>{val.name}</Text>
                       </Box>
@@ -762,20 +781,20 @@ const Navbar = ({ validRTokens }: any) => {
                           alt="Picture of the author"
                           width="15"
                           height="15"
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: 'pointer' }}
                         />
                       )}
                     </HStack>
                     <hr
                       style={{
-                        height: "1px",
-                        borderWidth: "0",
-                        backgroundColor: "#2B2F35",
-                        width: "95%",
-                        marginLeft: "6px",
-                        color: "#2A2E3F",
+                        height: '1px',
+                        borderWidth: '0',
+                        backgroundColor: '#2B2F35',
+                        width: '95%',
+                        marginLeft: '6px',
+                        color: '#2A2E3F',
                         display: `${
-                          idx == languages.length - 1 ? "none" : "block"
+                          idx == languages.length - 1 ? 'none' : 'block'
                         }`,
                       }}
                     />
@@ -787,7 +806,7 @@ const Navbar = ({ validRTokens }: any) => {
         </HStack>
       </HStack>
     </HStack>
-  );
-};
+  )
+}
 
-export default memo(Navbar);
+export default memo(Navbar)
