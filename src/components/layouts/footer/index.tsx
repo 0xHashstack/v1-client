@@ -22,7 +22,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AccountInterface, BlockNumber } from 'starknet'
-
+import hoverCampaign from '../../../assets/images/hoverContributeEarnIcon.svg'
 import {
   selectBlock,
   selectCurrentNetwork,
@@ -32,6 +32,7 @@ import {
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
 import { useRouter } from 'next/router'
+import posthog from 'posthog-js'
 
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
@@ -54,6 +55,7 @@ const Footer = () => {
   const protocolReserves = useSelector(selectProtocolReserves)
   const router=useRouter();
   const [isLessThan1400] = useMediaQuery('(max-width: 1400px)')
+  const [hoverCampaigns, sethoverCampaigns] = useState(false)
   const [perviewCount, setperviewCount] = useState<number>(2)
   const [ref] = useKeenSlider<HTMLDivElement>({
     loop: true,
@@ -237,7 +239,7 @@ const Footer = () => {
                   flexDir="column"
                   alignItems="center"
                 >
-                  <MenuItem
+                                    <MenuItem
                     _hover={{ color: '#00D395' }}
                     fontSize="sm"
                     fontWeight="medium"
@@ -248,37 +250,23 @@ const Footer = () => {
                     color="#676D9A"
                     borderBottom="1px solid #34345699"
                     py="3"
+                    onMouseEnter={() => sethoverCampaigns(true)}
+                    onMouseLeave={() => sethoverCampaigns(false)}
+                    onClick={()=>{
+                      posthog.capture('More Tab Clicked', {
+                        Clicked: true,
+                      })
+                      router.push('/v1/campaigns')
+                    }}
                   >
                     <Image
-                      src="/plusicon.svg"
+                      src={ "/contributeEarnIcon.svg"}
                       alt="Plus Icon"
                       width="16"
                       height="16"
                     />
-                    Contribute-2-Earn
+                    Campaigns
                   </MenuItem>
-
-                  <MenuItem
-                    _hover={{ color: '#00D395' }}
-                    fontSize="sm"
-                    fontWeight="medium"
-                    display="flex"
-                    alignItems="center"
-                    gap="4"
-                    bgColor="transparent"
-                    color="#676D9A"
-                    borderBottom="1px solid #34345699"
-                    py="3"
-                  >
-                    <Image
-                      src="/plusicon.svg"
-                      alt="Plus Icon"
-                      width="16"
-                      height="16"
-                    />
-                    Contribute-2-Earn
-                  </MenuItem>
-
                   <MenuItem
                     _hover={{ color: '#00D395' }}
                     fontSize="sm"
