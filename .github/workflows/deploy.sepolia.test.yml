@@ -32,17 +32,12 @@ jobs:
         run: |
           cd v1-sdk-itachi
           yarn install
-          yarn run build:iife
-          yarn run build:dts
-          yarn pack --filename sdk_build.tgz
+          yarn run build
+          yarn link
     
-      - name: Move SDK Tarball
+      - name: Link SDK in Fronten
         run: |
-           mv v1-sdk-itachi/sdk_build.tgz ./sdk_build.tgz
-    
-      - name: Install SDK in Frontend
-        run: |
-          yarn add ./sdk_build.tgz
+          yarn link @hashstackdev/itachi-sdk
 
       - name: Use Node.js 16.14.0
         uses: actions/setup-node@v1
