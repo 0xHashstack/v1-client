@@ -32,7 +32,7 @@ jobs:
         run: |
           cd v1-sdk-itachi
           yarn install
-          yarn run build
+          yarn run build:iife
           yarn pack --filename sdk_build.tgz
     
       - name: Move SDK Tarball
