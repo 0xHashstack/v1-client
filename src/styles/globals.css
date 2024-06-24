@@ -97,3 +97,7 @@ body {
   width: 95%;
   flex: 0 0 100%;
 }
+
+.text_nowrap {
+  text-wrap: nowrap;
+}

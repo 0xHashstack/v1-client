@@ -1,8 +1,10 @@
+import { Link as ChakraLink } from '@chakra-ui/react'
 import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { memo, useEffect, useRef, useState } from 'react'
 
+import BellIcon from '@/assets/icons/BellIcon'
 import StakeUnstakeModal from '@/components/modals/StakeUnstakeModal'
 import TransferDepositModal from '@/components/modals/TransferDepositModal'
 import GetTokensModal from '@/components/modals/getTokens'
@@ -87,6 +89,7 @@ const Navbar = ({ validRTokens }: any) => {
 
   const ref1 = useRef<HTMLDivElement>(null)
   const ref2 = useRef<HTMLDivElement>(null)
+  const ref3 = useRef<HTMLDivElement>(null)
   const nftBalance: any = useSelector(selectNftBalance)
 
   useOutsideClick({
@@ -95,8 +98,10 @@ const Navbar = ({ validRTokens }: any) => {
       if (
         ref1.current &&
         ref2.current &&
+        ref3.current &&
         !ref1.current.contains(e.target as Node) &&
         !ref2.current.contains(e.target as Node) &&
+        !ref3.current.contains(e.target as Node) &&
         currentDropdown != ''
       ) {
         dispatch(setNavDropdown(''))
@@ -105,13 +110,32 @@ const Navbar = ({ validRTokens }: any) => {
   })
 
   useOutsideClick({
-    ref: ref2,
+    ref: ref3,
     handler: (e) => {
       if (
         ref1.current &&
         ref2.current &&
+        ref3.current &&
         !ref1.current.contains(e.target as Node) &&
         !ref2.current.contains(e.target as Node) &&
+        !ref3.current.contains(e.target as Node) &&
+        currentDropdown != ''
+      ) {
+        dispatch(setNavDropdown(''))
+      }
+    },
+  })
+
+  useOutsideClick({
+    ref: ref3,
+    handler: (e) => {
+      if (
+        ref1.current &&
+        ref2.current &&
+        ref3.current &&
+        !ref1.current.contains(e.target as Node) &&
+        !ref2.current.contains(e.target as Node) &&
+        !ref3.current.contains(e.target as Node) &&
         currentDropdown != ''
       ) {
         dispatch(setNavDropdown(''))
@@ -314,7 +338,7 @@ const Navbar = ({ validRTokens }: any) => {
               />
             )}
 
-            <Text fontSize="14px">Dashboard</Text>
+            <Text fontSize="14px">Markets</Text>
           </Box>
         </Box>
 
@@ -347,7 +371,7 @@ const Navbar = ({ validRTokens }: any) => {
           </Box>
         }
 
-        {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
+        {/* {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
           <Box
             padding="16px 12px"
             fontSize="12px"
@@ -393,7 +417,7 @@ const Navbar = ({ validRTokens }: any) => {
           </Box>
         ) : (
           ''
-        )}
+        )} */}
       </HStack>
       <HStack
         width="50%"
@@ -598,6 +622,181 @@ const Navbar = ({ validRTokens }: any) => {
               </Box>
             )}
           </Box>
+          <Box
+            ml="0.5rem"
+            cursor="pointer"
+            ref={ref3}
+            onClick={() => {
+              dispatch(setNavDropdown('recentUpdatesDropdown'))
+            }}
+          >
+            <BellIcon />
+          </Box>
+
+          {navDropdowns.recentUpdatesDropdown && (
+            <Box
+              width="390px"
+              mr="10rem"
+              display="flex"
+              justifyContent="center"
+              flexDirection="column"
+              gap="18px"
+              padding="0.7rem 1rem"
+              boxShadow="1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409"
+              borderRadius="6px"
+              background="var(--Base_surface, #02010F)"
+              border="1px solid rgba(103, 109, 154, 0.30)"
+              className="dropdown-container"
+              userSelect="none"
+            >
+              <Box
+                display="flex"
+                gap="0.5rem"
+                w="full"
+                justifyContent="space-between"
+              >
+                <Text fontSize="12px">Notifications</Text>
+                <Image
+                  style={{ cursor: 'pointer' }}
+                  src={'/cross.svg'}
+                  alt="Arrow Navigation Left"
+                  width="20"
+                  height="20"
+                />
+              </Box>
+
+              <Box display="flex" flexDirection="column" gap="1rem">
+                <Box
+                  display="flex"
+                  pb="0.8rem"
+                  gap="0.8rem"
+                  borderBottom="1px solid #34345699"
+                >
+                  <Box width="120px" height="60px" position="relative">
+                    <Image
+                      src="/defi_spring_noti_banner.svg"
+                      alt="Degen Mode"
+                      fill
+                      objectFit="cover"
+                      style={{ borderRadius: '6px' }}
+                    />
+                  </Box>
+                  <Box mt="-0.2rem">
+                    <Text
+                      fontSize="18px"
+                      lineHeight="6"
+                      fontWeight="bold"
+                      color="#BDBFC1"
+                    >
+                      Starknet DeFi Spring <br /> is Live!
+                    </Text>
+                    <Text
+                      mt="0.2rem"
+                      fontSize="12px"
+                      lineHeight="18px"
+                      color="F0F0F5"
+                      whiteSpace="nowrap"
+                    >
+                      Earn $STRK Tokens.
+                      <ChakraLink
+                        href="#"
+                        textDecoration="underline"
+                        color="#4D59E8"
+                        fontSize="12px"
+                        cursor="pointer"
+                        ml="1"
+                      >
+                        Learn more
+                      </ChakraLink>
+                    </Text>
+                  </Box>
+                </Box>
+
+                <Box
+                  display="flex"
+                  pb="0.8rem"
+                  gap="0.8rem"
+                  borderBottom="1px solid #34345699"
+                >
+                  <Box width="120px" height="60px" position="relative">
+                    <Image
+                      src="/degen_banner.svg"
+                      alt="Degen Mode"
+                      fill
+                      objectFit="cover"
+                      style={{ borderRadius: '6px' }}
+                    />
+                  </Box>
+                  <Box mt="-0.2rem">
+                    <Text
+                      fontSize="18px"
+                      lineHeight="6"
+                      fontWeight="bold"
+                      color="#BDBFC1"
+                    >
+                      Hashstack Degen Mode <br /> Is Live!
+                    </Text>
+                    <Text
+                      mt="0.2rem"
+                      fontSize="12px"
+                      lineHeight="18px"
+                      color="F0F0F5"
+                    >
+                      Earn $STRK Tokens.
+                      <ChakraLink
+                        textDecoration="underline"
+                        color="#4D59E8"
+                        fontSize="12px"
+                        cursor="pointer"
+                        ml="1"
+                      >
+                        Explore
+                      </ChakraLink>
+                    </Text>
+                  </Box>
+                </Box>
+
+                <Box display="flex" gap="0.8rem" pb="0.2rem">
+                  <Box width="120px" height="60px" position="relative">
+                    <Image
+                      src="/ccp_noti_banner.svg"
+                      alt="Degen Mode"
+                      fill
+                      objectFit="cover"
+                      style={{ borderRadius: '6px' }}
+                    />
+                  </Box>
+                  <Box mt="-0.2rem">
+                    <Text
+                      fontSize="18px"
+                      lineHeight="6"
+                      fontWeight="bold"
+                      color="#BDBFC1"
+                    >
+                      Content Creators <br /> Program
+                    </Text>
+                    <Text
+                      mt="0.2rem"
+                      fontSize="12px"
+                      lineHeight="18px"
+                      color="F0F0F5"
+                    >
+                      Create content and
+                      <ChakraLink
+                        textDecoration="underline"
+                        color="#4D59E8"
+                        fontSize="12px"
+                        cursor="pointer"
+                        ml="1"
+                      >
+                        Earn Points
+                      </ChakraLink>
+                    </Text>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          )}
           <Box
             borderRadius="6px"
             width="fit-content"
