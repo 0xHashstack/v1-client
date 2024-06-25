@@ -560,9 +560,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       <>
         {render && (process.env.NEXT_PUBLIC_NODE_ENV == "mainnet "?whitelisted:true) ? (
           <>
-            <Box position="fixed" color="white" zIndex="10" height="32px"  width="100%" fontSize="14px" fontWeight="500" display="flex" alignItems="center" justifyContent="center" bg="#190b3c">
+            {/* <Box position="fixed" color="white" zIndex="10" height="32px"  width="100%" fontSize="14px" fontWeight="500" display="flex" alignItems="center" justifyContent="center" bg="#190b3c">
               We are currently experiencing issues with our RPC provider, which may delay data loading. Thank you for your patience.
-            </Box>
+            </Box> */}
             <Box background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
             radial-gradient(circle 1200px at bottom right, rgba(115, 49, 234, 0.10), transparent) bottom right,
@@ -583,7 +583,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               alignItems="center"
               minHeight={"100vh"}
 
-              pt="9rem"
+              pt="7rem"
               background={`
             radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.15), transparent) top left,
             radial-gradient(circle 1300px at bottom right, rgba(115, 49, 234, 0.15), transparent) bottom right,
