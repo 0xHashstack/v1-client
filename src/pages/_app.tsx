@@ -6,6 +6,7 @@ import {
   argent,
   braavos,
   infuraProvider,
+  nethermindProvider,
   publicProvider,
   useInjectedConnectors,
 } from '@starknet-react/core'
@@ -81,7 +82,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const apikey: string = process.env.NEXT_PUBLIC_INFURA_MAINNET as string
 
   // const provider = infuraProvider({ apiKey: apikey.split('/')[4]});
-  const provider = infuraProvider({ apiKey: apikey.split('/')[4]});
+  const provider = nethermindProvider({ apiKey: apikey.split('/')[4].split('apikey=')[1]});
 
   const { connectors } = useInjectedConnectors({
     // Show these connectors if the user has no connector installed.
