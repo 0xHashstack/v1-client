@@ -26,21 +26,18 @@ jobs:
           owner: '0xHashstack'
           repository: 'v1-sdk-itachi'
           access-token: ${{ secrets.REPO_PAT }}
+          branch: 'frontend-sepolia'
         
       - name: Build SDK
         run: |
           cd v1-sdk-itachi
           yarn install
           yarn run build
-          yarn pack --filename sdk_build.tgz
+          yarn link
     
-      - name: Move SDK Tarball
+      - name: Link SDK in Frontend
         run: |
-           mv v1-sdk-itachi/sdk_build.tgz ./sdk_build.tgz
-    
-      - name: Install SDK in Frontend
-        run: |
-          yarn add ./sdk_build.tgz
+          yarn link @hashstackdev/itachi-sdk
 
       # IAM User: starknet_codedeploy
       - name: Configure AWS credentials
@@ -73,8 +70,8 @@ jobs:
     
       - name: Build
         run: yarn build
-      - name: Export
-        run: yarn export
+      # - name: Export
+      #   run: yarn export
 
         # Deploys to 
         # http://starknetdev.hashstack.finance
