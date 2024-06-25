@@ -27,6 +27,7 @@ jobs:
           owner: '0xHashstack'
           repository: 'v1-sdk-itachi'
           access-token: ${{ secrets.REPO_PAT }}
+          branch: 'frontend-sepolia'
         
       - name: Build SDK
         run: |
