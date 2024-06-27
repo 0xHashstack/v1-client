@@ -371,7 +371,7 @@ const Navbar = ({ validRTokens }: any) => {
           </Box>
         }
 
-        {/* {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
+        {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
           <Box
             padding="16px 12px"
             fontSize="12px"
@@ -417,7 +417,7 @@ const Navbar = ({ validRTokens }: any) => {
           </Box>
         ) : (
           ''
-        )} */}
+        )}
       </HStack>
       <HStack
         width="50%"
@@ -699,7 +699,8 @@ const Navbar = ({ validRTokens }: any) => {
                     >
                       Earn $STRK Tokens.
                       <ChakraLink
-                        href="#"
+                        href="https://hashstack.medium.com/farm-strk-token-on-hashstack-v1-e2287d6f94f9"
+                        target="_blank"
                         textDecoration="underline"
                         color="#4D59E8"
                         fontSize="12px"
@@ -744,6 +745,7 @@ const Navbar = ({ validRTokens }: any) => {
                     >
                       Earn $STRK Tokens.
                       <ChakraLink
+                        href="https://app.hashstack.finance/v1/degen/"
                         textDecoration="underline"
                         color="#4D59E8"
                         fontSize="12px"
@@ -783,6 +785,7 @@ const Navbar = ({ validRTokens }: any) => {
                     >
                       Create content and
                       <ChakraLink
+                        href="https://app.hashstack.finance/v1/campaigns/"
                         textDecoration="underline"
                         color="#4D59E8"
                         fontSize="12px"
