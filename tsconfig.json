@@ -25,6 +25,6 @@
     "src/utils/functions/numberFormatter.tsx",
     "src/components/uiElements/buttons/AnimationButton.tsx",
     "src/utils/functions/apiCaller.tsx"
-  ],
+, "tests/pricer.test.js"  ],
   "exclude": ["node_modules"]
 }
