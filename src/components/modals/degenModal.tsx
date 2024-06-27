@@ -2210,7 +2210,7 @@ const DegenModal = ({
                     <Box mt="2px">
                       {/* <SmallEth /> */}
                       <Image
-                        src={`/${toMarketLiqA}.svg`}
+                        src={`/${pool.split('/')[0]}.svg`}
                         alt="liquidity split coin1"
                         width="12"
                         height="12"
@@ -2226,22 +2226,22 @@ const DegenModal = ({
                                 borderRadius="6px"
                               />
                             )} */}
-                      {toMarketLiqA}
+                      {pool.split('/')[0]}
                     </Text>
                   </Box>
-                  /
-                  <Box display="flex" gap="2px">
+                  {suggestedProtocol!=='ZKlend'&&'/'}
+                 {suggestedProtocol!=='ZKlend'&&<Box display="flex" gap="2px">
                     <Box mt="2px">
                       {/* <SmallUsdt /> */}
                       <Image
-                        src={`/${toMarketLiqB}.svg`}
+                        src={`/${pool.split('/')[1]}.svg`}
                         alt="liquidity split coin1"
                         width="12"
                         height="12"
                       />
                     </Box>
                     <Text>
-                      {toMarketLiqB}
+                      {pool.split('/')[1]}
                       {/* {currentSplit?.[1].toString() || (
                               <Skeleton
                                 width="2.3rem"
@@ -2252,7 +2252,7 @@ const DegenModal = ({
                               />
                             )} */}
                     </Text>
-                  </Box>
+                  </Box>}
                 </Box>
               </Text>
             </Card>

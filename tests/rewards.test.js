@@ -19,7 +19,7 @@ describe("Get estimated values", () => {
     const expectedRTokensMinted = "144.4";
     const rToken = "rUSDT";
     const collateralAmount = "144.67";
-    const provider = getProvider();
+     const provider = new RpcProvider({ nodeUrl: rpcUrl});;
     const supplyContract = new Contract(
       supplyABI,
       tokenAddressMap[rToken],

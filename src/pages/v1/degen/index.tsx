@@ -12,11 +12,14 @@ import PageCard from '@/components/layouts/pageCard'
 import Pagination from '@/components/uiElements/pagination'
 import useDataLoader from '@/hooks/useDataLoader'
 import {
+  selectJediswapPoolAprs,
+  selectOraclePrices,
   selectProtocolStats,
   selectUserDeposits,
   selectYourSupply,
 } from '@/store/slices/readDataSlice'
 import { Coins } from '@/utils/constants/coin'
+import { selectJedistrkTokenAllocation, selectStrkAprData, selectnetSpendBalance } from '@/store/slices/userAccountSlice'
 
 const data = [
   {
@@ -341,8 +344,127 @@ const Degen: NextPage = () => {
 
   const totalSupply = useSelector(selectYourSupply)
   const stats = useSelector(selectProtocolStats)
+  const strkData = useSelector(selectStrkAprData)
+  const netSpendBalance = useSelector(selectnetSpendBalance)
+  const oraclePrices = useSelector(selectOraclePrices)
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0)
   let userDeposits = useSelector(selectUserDeposits)
+  const strkTokenAlloactionData: any = useSelector(
+    selectJedistrkTokenAllocation
+  )
+  const getAprByPool = (dataArray: any[], pool: string, l3App: string) => {
+    const matchedObject = dataArray.find((item) => {
+      if (item.name === 'USDT/USDC') {
+        return item.amm === 'jedi' && 'USDC/USDT' === pool
+      } else if (item.name == 'ETH/STRK') {
+        return item.amm === 'jedi' && 'STRK/ETH' === pool
+      } else if (item.name === 'ETH/DAI') {
+        return item.amm === 'jedi' && 'DAI/ETH' === pool
+      } else {
+        return (
+          item.name === pool &&
+          item.amm ===
+            (l3App == 'Jediswap'
+              ? 'jedi'
+              : l3App == 'ZKlend'
+                ? 'zklend'
+                : 'myswap')
+        )
+      }
+    })
+    return matchedObject ? matchedObject.apr * 100 : 0
+  }
+  const getBoostedApr = (coin: any) => {
+    if (strkData == null) {
+      return 0
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
+          return 0
+        } else {
+          if (netStrkBorrow != 0) {
+            if (netSpendBalance) {
+              let value =
+                (365 *
+                  100 *
+                  netStrkBorrow *
+                  oraclePrices?.find((curr: any) => curr.name === 'STRK')
+                    ?.price) /
+                netSpendBalance
+              return value
+            } else {
+              return 0
+            }
+          } else {
+            return 0
+          }
+        }
+      } else {
+        return 0
+      }
+    }
+  }
+  const getStrkAlloaction = (pool: any) => {
+    try {
+      if (strkTokenAlloactionData[pool]) {
+        return strkTokenAlloactionData[pool][
+          strkTokenAlloactionData[pool].length - 1
+        ]?.allocation
+      } else {
+        return 0
+      }
+    } catch (err) {
+      return 0
+    }
+  }
 
+  const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
+    const matchedObject = dataArray.find((item) => {
+      if (item.name === 'USDT/USDC') {
+        return item.amm === 'jedi' && 'USDC/USDT' === pool
+      } else if (item.name == 'ETH/STRK') {
+        return item.amm === 'jedi' && 'STRK/ETH' === pool
+      } else if (item.name === 'ETH/DAI') {
+        return item.amm === 'jedi' && 'DAI/ETH' === pool
+      } else {
+        return (
+          item.name === pool &&
+          item.amm ===
+            (l3App == 'Jediswap'
+              ? 'jedi'
+              : l3App == 'ZKlend'
+                ? 'zklend'
+                : 'myswap')
+        )
+      }
+    })
+    return matchedObject ? matchedObject.tvl : 1
+  }
+  const getBoostedAprSupply = (coin: any) => {
+    if (strkData == null) {
+      return 0
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
+          return 0
+        } else {
+          let value = strkData?.[coin]
+            ? (365 *
+                100 *
+                strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
+                0.7 *
+                oraclePrices?.find((curr: any) => curr.name === 'STRK')
+                  ?.price) /
+              strkData?.[coin][strkData[coin].length - 1]?.supply_usd
+            : 0
+          return value
+        }
+      } else {
+        return 0
+      }
+    }
+  }
+  const poolAprs = useSelector(selectJediswapPoolAprs)
   const fetchProtocolStats = async () => {
     try {
       setBorrowAPRs([
@@ -373,14 +495,44 @@ const Degen: NextPage = () => {
       ]);
       const concatenatedArray = res.data.concat(res3.data);
         if (concatenatedArray) {
-          setstrategies(concatenatedArray)
+          setstrategies(concatenatedArray.filter((borrow:any)=>{
+            return Number(
+              borrow?.leverage *
+                (-stats?.find(
+                  (stat: any) =>
+                    stat?.token === borrow?.debt
+                )?.borrowRate +
+                  getAprByPool(
+                    poolAprs,
+                    borrow?.secondary,
+                    borrow?.dappName
+                  ) +
+                  getBoostedApr(borrow?.debt) +
+                  (100 *
+                    365 *
+                    (getStrkAlloaction(borrow?.secondary) *
+                      oraclePrices?.find(
+                        (curr: any) => curr.name === 'STRK'
+                      )?.price)) /
+                    getTvlByPool(
+                      poolAprs,
+                      borrow?.secondary,
+                      borrow?.dappName
+                    )) +
+                (stats?.find(
+                  (stat: any) =>
+                    stat?.token === borrow?.collateral
+                )?.supplyRate +
+                  getBoostedAprSupply(borrow?.collateral))
+            )>0
+          }))
         }
       }
       fetchStrats()
     } catch (err) {
       console.log(err, 'err in fetching strategies')
     }
-  }, [])
+  }, [poolAprs])
 
   useEffect(() => {
     if (userDeposits) {
