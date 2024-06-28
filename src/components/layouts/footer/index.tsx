@@ -19,10 +19,12 @@ import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import posthog from 'posthog-js'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AccountInterface, BlockNumber } from 'starknet'
-import hoverC2e from '../../../assets/images/hoverContributeEarnIcon.svg'
+
 import {
   selectBlock,
   selectCurrentNetwork,
@@ -31,8 +33,7 @@ import {
 } from '@/store/slices/readDataSlice'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
-import { useRouter } from 'next/router'
-import posthog from 'posthog-js'
+import hoverC2e from '../../../assets/images/hoverContributeEarnIcon.svg'
 
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
@@ -53,27 +54,48 @@ const Footer = () => {
   const dispatch = useDispatch()
   const { chain } = useNetwork()
   const protocolReserves = useSelector(selectProtocolReserves)
-  const router=useRouter();
+  const router = useRouter()
   const [isLessThan1400] = useMediaQuery('(max-width: 1400px)')
   const [hoverCampaigns, sethoverCampaigns] = useState(false)
   const [hoverc2e, sethoverc2e] = useState(false)
   const [perviewCount, setperviewCount] = useState<number>(2)
+
   const [ref] = useKeenSlider<HTMLDivElement>({
     loop: true,
     // mode: "free",
-     slides: {
+    slides: {
       perView: perviewCount,
       spacing: 13,
     },
     renderMode: 'performance',
     drag: false,
-    created(s: { moveToIdx: (arg0: number, arg1: boolean, arg2: { duration: number; easing: (t: number) => number }) => void }) {
+    created(s: {
+      moveToIdx: (
+        arg0: number,
+        arg1: boolean,
+        arg2: { duration: number; easing: (t: number) => number }
+      ) => void
+    }) {
       s.moveToIdx(5, true, animation)
     },
-    updated(s: { moveToIdx: (arg0: any, arg1: boolean, arg2: { duration: number; easing: (t: number) => number }) => void; track: { details: { abs: number } } }) {
+    updated(s: {
+      moveToIdx: (
+        arg0: any,
+        arg1: boolean,
+        arg2: { duration: number; easing: (t: number) => number }
+      ) => void
+      track: { details: { abs: number } }
+    }) {
       s.moveToIdx(s.track.details.abs + 5, true, animation)
     },
-    animationEnded(s: { moveToIdx: (arg0: any, arg1: boolean, arg2: { duration: number; easing: (t: number) => number }) => void; track: { details: { abs: number } } }) {
+    animationEnded(s: {
+      moveToIdx: (
+        arg0: any,
+        arg1: boolean,
+        arg2: { duration: number; easing: (t: number) => number }
+      ) => void
+      track: { details: { abs: number } }
+    }) {
       s.moveToIdx(s.track.details.abs + 5, true, animation)
     },
   })
@@ -84,13 +106,13 @@ const Footer = () => {
     }
   }, [block])
 
-  useEffect(()=>{
-    if(isLessThan1400){
-      setperviewCount(1);
-    }else{
-      setperviewCount(2);
+  useEffect(() => {
+    if (isLessThan1400) {
+      setperviewCount(1)
+    } else {
+      setperviewCount(2)
     }
-  },[isLessThan1400])
+  }, [isLessThan1400])
 
   return (
     <HStack
@@ -117,7 +139,9 @@ const Footer = () => {
         flex="1"
         pl="1rem"
         pr="4rem"
-        onClick={()=>{router.push('/v1/protocol-metrics')}}
+        onClick={() => {
+          router.push('/v1/protocol-metrics')
+        }}
       >
         <Box
           className="keen-slider__slide number-slide3 text_nowrap"
@@ -187,7 +211,6 @@ const Footer = () => {
             {numberFormatterPercentage(protocolReserves?.avgAssetUtilisation)}%
           </Text>
         </Box>
-
       </HStack>
 
       {/* <HStack height="100%">
@@ -208,7 +231,7 @@ const Footer = () => {
         </Link>
       </HStack> */}
 
-      <HStack borderLeft="1px solid #2B2F35" h="100%" mr="20rem">
+      <HStack borderLeft="1px solid #2B2F35" h="100%" mr="auto">
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Menu>
             {({ isOpen }) => (
@@ -240,7 +263,7 @@ const Footer = () => {
                   flexDir="column"
                   alignItems="center"
                 >
-                                    <MenuItem
+                  <MenuItem
                     _hover={{ color: '#00D395' }}
                     fontSize="sm"
                     fontWeight="medium"
@@ -253,7 +276,7 @@ const Footer = () => {
                     py="3"
                     onMouseEnter={() => sethoverCampaigns(true)}
                     onMouseLeave={() => sethoverCampaigns(false)}
-                    onClick={()=>{
+                    onClick={() => {
                       posthog.capture('More Tab Clicked', {
                         Clicked: true,
                       })
@@ -261,14 +284,22 @@ const Footer = () => {
                     }}
                   >
                     <Image
-                      src={ hoverCampaigns?'/campaignsIconGreen.svg':"/campaignsIcon.svg"}
+                      src={
+                        hoverCampaigns
+                          ? '/campaignsIconGreen.svg'
+                          : '/campaignsIcon.svg'
+                      }
                       alt="Plus Icon"
                       width="24"
                       height="24"
                     />
                     Campaigns
                   </MenuItem>
-                  <Link href="https://hashstack.finance/c2e/" target='_blank' style={{marginRight:'1.3rem'}}>
+                  <Link
+                    href="https://hashstack.finance/c2e/"
+                    target="_blank"
+                    style={{ marginRight: '1.3rem' }}
+                  >
                     <MenuItem
                       _hover={{ color: '#00D395' }}
                       fontSize="sm"
@@ -283,7 +314,7 @@ const Footer = () => {
                       onMouseLeave={() => sethoverc2e(false)}
                     >
                       <Image
-                        src={hoverc2e?hoverC2e: "/plusicon.svg"}
+                        src={hoverc2e ? hoverC2e : '/plusicon.svg'}
                         alt="Plus Icon"
                         width="16"
                         height="16"

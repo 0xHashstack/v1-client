@@ -636,7 +636,8 @@ const Navbar = ({ validRTokens }: any) => {
           {navDropdowns.recentUpdatesDropdown && (
             <Box
               width="390px"
-              mr="10rem"
+              mr="8rem"
+              mt="-1.1rem"
               display="flex"
               justifyContent="center"
               flexDirection="column"
@@ -692,18 +693,19 @@ const Navbar = ({ validRTokens }: any) => {
                     </Text>
                     <Text
                       mt="0.2rem"
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="18px"
                       color="F0F0F5"
                       whiteSpace="nowrap"
                     >
-                      Earn $STRK Tokens.
+                      Earn $STRK tokens
                       <ChakraLink
                         href="https://hashstack.medium.com/farm-strk-token-on-hashstack-v1-e2287d6f94f9"
                         target="_blank"
                         textDecoration="underline"
                         color="#4D59E8"
-                        fontSize="12px"
+                        fontSize="14px"
+                        fontWeight="semibold"
                         cursor="pointer"
                         ml="1"
                       >
@@ -739,16 +741,17 @@ const Navbar = ({ validRTokens }: any) => {
                     </Text>
                     <Text
                       mt="0.2rem"
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="18px"
                       color="F0F0F5"
                     >
-                      Earn $STRK Tokens.
+                      Earn $STRK tokens
                       <ChakraLink
                         href="https://app.hashstack.finance/v1/degen/"
                         textDecoration="underline"
                         color="#4D59E8"
-                        fontSize="12px"
+                        fontSize="14px"
+                        fontWeight="semibold"
                         cursor="pointer"
                         ml="1"
                       >
@@ -779,7 +782,7 @@ const Navbar = ({ validRTokens }: any) => {
                     </Text>
                     <Text
                       mt="0.2rem"
-                      fontSize="12px"
+                      fontSize="14px"
                       lineHeight="18px"
                       color="F0F0F5"
                     >
@@ -788,7 +791,8 @@ const Navbar = ({ validRTokens }: any) => {
                         href="https://app.hashstack.finance/v1/campaigns/"
                         textDecoration="underline"
                         color="#4D59E8"
-                        fontSize="12px"
+                        fontSize="14px"
+                        fontWeight="semibold"
                         cursor="pointer"
                         ml="1"
                       >
@@ -800,6 +804,7 @@ const Navbar = ({ validRTokens }: any) => {
               </Box>
             </Box>
           )}
+
           <Box
             borderRadius="6px"
             width="fit-content"
@@ -814,6 +819,7 @@ const Navbar = ({ validRTokens }: any) => {
             className="button navbar"
             ref={ref1}
             ml="0.4rem"
+            userSelect="none"
           >
             <Box
               display="flex"
@@ -838,7 +844,7 @@ const Navbar = ({ validRTokens }: any) => {
             </Box>
             {navDropdowns.settingsDropdown && (
               <Box
-                style={{}}
+                mt="3px"
                 width="10rem"
                 display="flex"
                 justifyContent="center"
