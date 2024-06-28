@@ -21,7 +21,8 @@ module.exports = {
 
     // Handle image imports
     // https://jestjs.io/docs/webpack#handling-static-assets
-    '^.+\\.(png|jpg|jpeg|gif|webp|avif|ico|bmp)$/i': '<rootDir>/__mocks__/fileMock.js',
+    '^.+\\.(png|jpg|jpeg|gif|webp|avif|ico|bmp)$/i':
+      '<rootDir>/__mocks__/fileMock.js',
 
     // Handle module aliases
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -41,4 +42,8 @@ module.exports = {
     '^.+\\.module\\.(css|sass|scss)$',
     '^.+\\.svg$',
   ],
-};
+
+  globals: {
+    Uint8Array: Uint8Array,
+  },
+}
