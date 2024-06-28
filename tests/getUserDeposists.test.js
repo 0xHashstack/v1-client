@@ -2,7 +2,7 @@ import { TextDecoder, TextEncoder } from 'util'
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder
 
-const { Contract,RpcProvider } = require('starknet')
+const { Contract, RpcProvider } = require('starknet')
 
 const {
   getProvider,
@@ -12,11 +12,13 @@ const {
 const metricsAbi = require('../src/Blockchain/abis_mainnet/metrics_abi.json')
 
 describe('Get user deposits', () => {
-  it('displays user deposits', async() => {
+  it('displays user deposits', async () => {
     const accountAddress =
       '0x05d3a8f378500497479d3a16cfcd54657246dc37da8270b52e49319fac139939'
 
-      const provider = new RpcProvider({ nodeUrl: 'https://starknet-mainnet.public.blastapi.io/rpc/v0_7' });
+    const provider = new RpcProvider({
+      nodeUrl: 'https://starknet-mainnet.public.blastapi.io/rpc/v0_7',
+    })
 
     const metricsContract = new Contract(
       metricsAbi,
@@ -24,23 +26,22 @@ describe('Get user deposits', () => {
       provider
     )
 
-
-
     const tokens = contractsEnv?.TOKENS
-    const deposits= []
+    const deposits = []
 
     for (let i = 0; i < tokens.length; ++i) {
       const token = tokens[i]
-      const res =await metricsContract.call(
+      const res = await metricsContract.call(
         'get_user_deposit',
         [token?.rToken, accountAddress],
         {
           blockIdentifier: 'pending',
         }
       )
+      deposits.push(res)
     }
 
-    // expect(promises.length).toEqual(0)
+    expect(deposits.length).toEqual(0)
 
     // const deposits = getUserDeposits(accountAddress)
 
@@ -61,5 +62,5 @@ describe('Get user deposits', () => {
     //     resolve(results)
     //   })
     // })
-  })
+  }, 10000)
 })
