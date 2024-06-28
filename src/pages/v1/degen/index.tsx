@@ -528,11 +528,13 @@ const Degen: NextPage = () => {
           }))
         }
       }
-      fetchStrats()
+      if(poolAprs && strkData && strkTokenAlloactionData && netSpendBalance){
+        fetchStrats()
+      }
     } catch (err) {
       console.log(err, 'err in fetching strategies')
     }
-  }, [poolAprs])
+  }, [poolAprs,strkData,strkTokenAlloactionData,netSpendBalance])
 
   useEffect(() => {
     if (userDeposits) {
