@@ -371,7 +371,7 @@ const Navbar = ({ validRTokens }: any) => {
           </Box>
         }
 
-        {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
+        {/* {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
           <Box
             padding="16px 12px"
             fontSize="12px"
@@ -417,7 +417,7 @@ const Navbar = ({ validRTokens }: any) => {
           </Box>
         ) : (
           ''
-        )}
+        )} */}
       </HStack>
       <HStack
         width="50%"

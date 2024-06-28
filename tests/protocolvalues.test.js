@@ -101,6 +101,33 @@ function parseProtocolStat(marketData, decimal) {
     return marketInfo;
   }
 
+function parseProtocolReserves(protocolReservesData) {
+    try {
+      let protocolReserves= {
+        totalReserves: parseAmount(
+          uint256.uint256ToBN(protocolReservesData?.total_reserves).toString(),
+          8
+        ),
+        availableReserves: parseAmount(
+          uint256
+            .uint256ToBN(protocolReservesData?.available_reserves)
+            .toString(),
+          8
+        ),
+        avgAssetUtilisation: parseAmount(
+          uint256
+            .uint256ToBN(protocolReservesData?.avg_asset_utilisation)
+            .toString(),
+          2
+        ),
+      };
+      return protocolReserves;
+    } catch (error) {
+      console.warn("getProtocol reserves: ", error);
+      throw "get protocol stat error";
+    }
+  }
+
 describe('Get protocol metrics', () => {
   let marketStats = []
   beforeAll(async () => {
@@ -128,7 +155,7 @@ describe('Get protocol metrics', () => {
     }
     
   });
-  it('Get protocol stats',()=>{
+  it('Get protocol stats array',()=>{
     expect(marketStats.length).toBe(6);
   })
   it('Check structure of marketStats objects', () => {
@@ -176,4 +203,32 @@ describe('Get protocol metrics', () => {
       expect(typeof marketStat.token).toBe('string');
     });
   });
+})
+
+describe('Get protocol reserves',()=>{
+  let reserves;
+  beforeAll(async()=>{
+    const provider = new RpcProvider({
+      nodeUrl: 'https://starknet-mainnet.public.blastapi.io/rpc/v0_7',
+    })
+      const metricsContract = new Contract(
+        metricsAbi,
+        metricsContractAddress,
+        provider
+      );
+      const res = await metricsContract.call("get_protocol_reserves", [], {
+        blockIdentifier: "pending",
+      });
+      reserves = parseProtocolReserves(res?.protocol_reserves);
+  })
+  it('Check structure of protocol reserves objects ',()=>{
+    expect(reserves).toHaveProperty('totalReserves')
+    expect(reserves).toHaveProperty('availableReserves')
+    expect(reserves).toHaveProperty('avgAssetUtilisation')
+
+    expect(typeof reserves.totalReserves).toBe('number')
+    expect(typeof reserves.availableReserves).toBe('number')
+    expect(typeof reserves.avgAssetUtilisation).toBe('number')
+  })
+   //console.log("get_protocol_reserves failed: ", e);
 })
