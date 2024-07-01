@@ -1,17 +1,36 @@
+import BigNumber from 'bignumber.js'
 import { TextDecoder, TextEncoder } from 'util'
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder
 
-import routerAbi from '../src/Blockchain/abis_mainnet/router_abi.json'
-import {
+const routerAbi = require('../src/Blockchain/abis_mainnet/router_abi.json')
+const {
   diamondAddress,
   getDTokenFromAddress,
   getRTokenFromAddress,
   getTokenFromAddress,
-} from '../src/Blockchain/stark-constants'
-import { BNtoNum, weiToEtherNumber } from '../src/Blockchain/utils/utils'
+} =require( '../src/Blockchain/stark-constants')
+const { tokenDecimalsMap,tokenAddressMap }= require('@/Blockchain/utils/addressServices')
+const { Contract, RpcProvider, uint256, num } = require('starknet')
 
-const { Contract, RpcProvider, uint256, num, number } = require('starknet')
+// export const BNtoNum = (value, decimal = 18) => {
+//   const val = new value.shiftedBy(-decimal)
+//   return val < 1 ? val.toPrecision() : fixedSpecial(val, 0).toFixed(4)
+// }
+
+export const weiToEtherNumber = (amount, tokenName) => {
+  const decimals = tokenDecimalsMap[tokenName];
+  if (!decimals) {
+    return 0;
+  } // @todo should avoid using 18 default
+  const factor = new BigNumber(1000000);
+  const amountBN = new BigNumber(amount)
+    .times(factor)
+    .dividedBy(new BigNumber(10).exponentiatedBy(decimals));
+    const result = amountBN.dividedBy(factor).toNumber();
+    const truncatedResult = Math.trunc(result * 1e6) / 1e6; // Keep six digits after the decimal point without rounding
+    return truncatedResult;;
+};
 
 function parseLoansData(loansData, collateralsData) {
   const loans = []
@@ -20,31 +39,31 @@ function parseLoansData(loansData, collateralsData) {
     let loanData = loansData[i]
     let collateralData = collateralsData[i]
     let loan = {
-      loanId: Number(BNtoNum(loanData?.loan_id, 0)),
-      borrower: number.toHex(loanData?.borrower),
+      loanId: Number(loanData?.loan_id, 0),
+      borrower: num.toHex(loanData?.borrower),
 
-      loanMarket: getDTokenFromAddress(number.toHex(loanData?.market))?.name,
-      loanMarketAddress: number.toHex(loanData?.market),
+      loanMarket: getDTokenFromAddress(num.toHex(loanData?.market))?.name,
+      loanMarketAddress: num.toHex(loanData?.market),
       underlyingMarket: getTokenFromAddress(
-        getDTokenFromAddress(number.toHex(loanData?.market))
+        getDTokenFromAddress(num.toHex(loanData?.market))
           ?.underlying_asset || ''
       )?.name,
       underlyingMarketAddress: getDTokenFromAddress(
-        number.toHex(loanData?.market)
+        num.toHex(loanData?.market)
       )?.underlying_asset,
       currentLoanMarket: getTokenFromAddress(
-        number.toHex(loanData?.current_market)
+        num.toHex(loanData?.current_market)
       )?.name, // Borrow market(current)
-      currentLoanMarketAddress: number.toHex(loanData?.current_market),
+      currentLoanMarketAddress: num.toHex(loanData?.current_market),
       collateralMarket: getRTokenFromAddress(
-        number.toHex(collateralData?.collateral_token)
+        num.toHex(collateralData?.collateral_token)
       )?.name, //  Collateral Market
-      collateralMarketAddress: number.toHex(collateralData?.collateral_token),
+      collateralMarketAddress: num.toHex(collateralData?.collateral_token),
 
       loanAmount: uint256.uint256ToBN(loanData?.amount).toString(), //  Amount
       loanAmountParsed: weiToEtherNumber(
         uint256.uint256ToBN(loanData?.amount).toString(),
-        getDTokenFromAddress(number.toHex(loanData?.market))?.name
+        getDTokenFromAddress(num.toHex(loanData?.market))?.name
       ),
 
       currentLoanAmount: uint256
@@ -52,13 +71,13 @@ function parseLoansData(loansData, collateralsData) {
         .toString(), //  Amount
       currentLoanAmountParsed: weiToEtherNumber(
         uint256.uint256ToBN(loanData?.current_amount).toString(),
-        getTokenFromAddress(number.toHex(loanData?.current_market))?.name
+        getTokenFromAddress(num.toHex(loanData?.current_market))?.name
       ),
 
       collateralAmount: uint256.uint256ToBN(collateralData?.amount).toString(), // 5 Collateral Amount
       collateralAmountParsed: weiToEtherNumber(
         uint256.uint256ToBN(collateralData?.amount).toString(),
-        getRTokenFromAddress(number.toHex(collateralData?.collateral_token))
+        getRTokenFromAddress(num.toHex(collateralData?.collateral_token))
           ?.name
       ),
 
@@ -110,15 +129,12 @@ function parseLoansData(loansData, collateralsData) {
 
 describe('Get user loans', () => {
   it('displays user loans', async () => {
-    const accountAddress =
-      '0x05d3a8f378500497479d3a16cfcd54657246dc37da8270b52e49319fac139939'
-
     const provider = new RpcProvider({
       nodeUrl: 'https://starknet-mainnet.public.blastapi.io/rpc/v0_7',
     })
 
     const routerContract = new Contract(routerAbi, diamondAddress, provider)
-    const res = await routerContract.call('get_user_loans', [account], {
+    const res = await routerContract.call('get_user_loans', ['0x05970da1011e2f8dc15bc12fc1b0eb8e382300a334de06ad17d1404384b168e4'], {
       blockIdentifier: 'pending',
     })
 
