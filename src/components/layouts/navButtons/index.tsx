@@ -1,10 +1,20 @@
-import { Box, Button, ButtonGroup, HStack, Text,Skeleton, useMediaQuery } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  HStack,
+  Skeleton,
+  Text,
+  useMediaQuery,
+} from '@chakra-ui/react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import posthog from 'posthog-js'
 import React, { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import NegativeApr from '@/assets/icons/NegativeApr'
+import PositiveApr from '@/assets/icons/PositiveApr'
 import FireIcon from '@/assets/icons/fireIcon'
 import {
   selectNetAPR,
@@ -20,11 +30,9 @@ import {
   selectUserUnspentLoans,
   setCurrentPage,
 } from '@/store/slices/userAccountSlice'
-import { capitalizeWords } from '../../../utils/functions/capitalizeWords'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
-import PositiveApr from '@/assets/icons/PositiveApr'
-import NegativeApr from '@/assets/icons/NegativeApr'
+import { capitalizeWords } from '../../../utils/functions/capitalizeWords'
 
 interface NavButtonsProps {
   width: number
@@ -98,7 +106,6 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
       mb={marginBottom}
       width={`${width}%`}
       justifyContent="space-between"
-
     >
       <ButtonGroup>
         {navOptions.map((option, idx) => (
@@ -108,7 +115,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
               bg="transparent"
               fontStyle="normal"
               fontWeight={currentPage === option.path ? '600' : '400'}
-               fontSize={isLessThan1200?"13px":"14px"}
+              fontSize={isLessThan1200 ? '13px' : '14px'}
               lineHeight="20px"
               alignItems="center"
               letterSpacing="-0.15px"
@@ -194,59 +201,79 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
           </Box>
         ))}
       </ButtonGroup>
-      {router.pathname==='/v1/market' &&<Box display="flex" gap={isLessThan1200?"1.5rem":"2rem"} >
-        <Box
-          display="flex"
-          gap="0.4rem"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Text color="#CBCBD1" fontSize={isLessThan1200?"13px":"14px"} whiteSpace="nowrap">
-            Your Net Worth
-          </Text>
-          {netWorth === null ? (
-            <Skeleton
-              width="6rem"
-              height="1.4rem"
-              startColor="#101216"
-              endColor="#2B2F35"
-              borderRadius="6px"
-            />
-          ) : (
-            <Text color="#E6EDF3"  fontSize={isLessThan1200?"16px":"18px"} textDecoration="underline" cursor="pointer" onClick={()=>{
-              router.push('/v1/your-metrics')
-            }}>
-              ${numberFormatter(netWorth)}
+      {router.pathname === '/v1/market' && (
+        <Box display="flex" gap={isLessThan1200 ? '1.5rem' : '2rem'}>
+          <Box
+            display="flex"
+            gap="0.4rem"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Text
+              color="#676D9A"
+              fontSize={isLessThan1200 ? '13px' : '14px'}
+              whiteSpace="nowrap"
+            >
+              Your Net Worth
             </Text>
-          )}
-        </Box>
-        <Box
-          display="flex"
-          gap="0.4rem"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Text color="#CBCBD1"  fontSize={isLessThan1200?"13px":"14px"} whiteSpace="nowrap">
-            Net APR
-          </Text>
-          {netAPR === null ? (
-            <Skeleton
-              width="6rem"
-              height="1.4rem"
-              startColor="#101216"
-              endColor="#2B2F35"
-              borderRadius="6px"
-            />
-          ) : (
-            <Text color="#E6EDF3"  fontSize={isLessThan1200?"16px":"18px"} textDecoration="underline" cursor="pointer" onClick={()=>{
-              router.push('/v1/your-metrics')
-            }}>
-              {numberFormatterPercentage(netAPR)}%
+            {netWorth === null ? (
+              <Skeleton
+                width="6rem"
+                height="1.4rem"
+                startColor="#101216"
+                endColor="#2B2F35"
+                borderRadius="6px"
+              />
+            ) : (
+              <Text
+                color="#E6EDF3"
+                fontSize={isLessThan1200 ? '16px' : '18px'}
+                cursor="pointer"
+                onClick={() => {
+                  router.push('/v1/your-metrics')
+                }}
+              >
+                ${numberFormatter(netWorth)}
+              </Text>
+            )}
+          </Box>
+          <Box
+            display="flex"
+            gap="0.4rem"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Text
+              color="#676D9A"
+              fontSize={isLessThan1200 ? '13px' : '14px'}
+              whiteSpace="nowrap"
+            >
+              Net APR
             </Text>
-          )}
-          <Box>{netAPR >= 0 ? <PositiveApr /> : <NegativeApr />}</Box>
+            {netAPR === null ? (
+              <Skeleton
+                width="6rem"
+                height="1.4rem"
+                startColor="#101216"
+                endColor="#2B2F35"
+                borderRadius="6px"
+              />
+            ) : (
+              <Text
+                color="#E6EDF3"
+                fontSize={isLessThan1200 ? '16px' : '18px'}
+                cursor="pointer"
+                onClick={() => {
+                  router.push('/v1/your-metrics')
+                }}
+              >
+                {numberFormatterPercentage(netAPR)}%
+              </Text>
+            )}
+            <Box>{netAPR >= 0 ? <PositiveApr /> : <NegativeApr />}</Box>
+          </Box>
         </Box>
-      </Box>}
+      )}
     </HStack>
   )
 }
