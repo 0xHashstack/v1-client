@@ -42,25 +42,5 @@ describe('Get user deposits', () => {
     }
 
     expect(deposits.length).toEqual(6)
-
-    // const deposits = getUserDeposits(accountAddress)
-
-    // expect(deposits.length).toEqual(0)
-
-    // return new Promise((resolve, reject) => {
-    //   Promise.allSettled([...promises]).then((val) => {
-    //     const results = val
-    //       .filter((deposit, idx) => {
-    //         return deposit?.status == 'fulfilled' && deposit?.value
-    //       })
-    //       .map((deposit, idx) => {
-    //         if (deposit?.status == 'fulfilled' && deposit?.value)
-    //           return parseDeposit(deposit?.value?.deposit)
-    //         else return {}
-    //       })
-    //     //console.log("supplies result: ", results);
-    //     resolve(results)
-    //   })
-    // })
-  }, 20000)
+  }, 10000)
 })
