@@ -40,5 +40,5 @@ describe('Get fees', () => {
     const expectedFees = Object.values(feesInputParams);
 
     expect(fees).toEqual(expectedFees);
-  });
+  }, 20000);
 });

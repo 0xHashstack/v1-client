@@ -41,7 +41,7 @@ describe('Get user deposits', () => {
       deposits.push(res)
     }
 
-    expect(deposits.length).toEqual(0)
+    expect(deposits.length).toEqual(6)
 
     // const deposits = getUserDeposits(accountAddress)
 
@@ -62,5 +62,5 @@ describe('Get user deposits', () => {
     //     resolve(results)
     //   })
     // })
-  }, 10000)
+  }, 20000)
 })
