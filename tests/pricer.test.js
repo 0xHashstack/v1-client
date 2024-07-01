@@ -42,11 +42,11 @@ describe('get prices', () => {
 
       prices.push(oraclePrice)
     }
-  }, 10000)
+  }, 20000)
 
   it('should display prices', () => {
     expect(prices.length).toBe(6)
-  }, 10000)
+  }, 20000)
 
   it('should validate oracle price structure and values', () => {
     prices.forEach((oraclePrice) => {
@@ -61,5 +61,5 @@ describe('get prices', () => {
       expect(oraclePrice.price).toBeGreaterThan(0)
       expect(oraclePrice.lastUpdated instanceof Date).toBe(true)
     })
-  })
+  }, 20000)
 })

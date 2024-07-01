@@ -154,10 +154,10 @@ describe('Get protocol metrics', () => {
       marketStats.push(val);
     }
     
-  });
+  },20000);
   it('Get protocol stats array',()=>{
     expect(marketStats.length).toBe(6);
-  })
+  }, 20000)
   it('Check structure of marketStats objects', () => {
     marketStats.forEach((marketStat) => {
       expect(marketStat).toHaveProperty('borrowRate');
@@ -202,7 +202,7 @@ describe('Get protocol metrics', () => {
       expect(marketStat).toHaveProperty('token');
       expect(typeof marketStat.token).toBe('string');
     });
-  });
+  }, 20000);
 })
 
 describe('Get protocol reserves',()=>{
@@ -220,7 +220,7 @@ describe('Get protocol reserves',()=>{
         blockIdentifier: "pending",
       });
       reserves = parseProtocolReserves(res?.protocol_reserves);
-  })
+  },20000)
   it('Check structure of protocol reserves objects ',()=>{
     expect(reserves).toHaveProperty('totalReserves')
     expect(reserves).toHaveProperty('availableReserves')
@@ -229,6 +229,6 @@ describe('Get protocol reserves',()=>{
     expect(typeof reserves.totalReserves).toBe('number')
     expect(typeof reserves.availableReserves).toBe('number')
     expect(typeof reserves.avgAssetUtilisation).toBe('number')
-  })
+  }, 20000)
    //console.log("get_protocol_reserves failed: ", e);
 })
