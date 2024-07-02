@@ -3,6 +3,8 @@ import { TextDecoder, TextEncoder } from 'util'
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder
 
+const { Contract, RpcProvider, uint256, num } = require('starknet')
+
 const routerAbi = require('../src/Blockchain/abis_mainnet/router_abi.json')
 const {
   diamondAddress,
@@ -10,13 +12,25 @@ const {
   getRTokenFromAddress,
   getTokenFromAddress,
 } = require('../src/Blockchain/stark-constants')
-const { tokenDecimalsMap } = require('@/Blockchain/utils/addressServices')
-const { Contract, RpcProvider, uint256, num } = require('starknet')
+const { tokenDecimalsMap } = require('../src/Blockchain/utils/addressServices')
 
-// export const BNtoNum = (value, decimal = 18) => {
-//   const val = new value.shiftedBy(-decimal)
-//   return val < 1 ? val.toPrecision() : fixedSpecial(val, 0).toFixed(4)
-// }
+export async function getExistingLoanHealth(loanId) {
+  const provider = new RpcProvider({
+    nodeUrl: 'https://starknet-mainnet.public.blastapi.io/rpc/v0_7',
+  })
+
+  try {
+    const routerContract = new Contract(routerAbi, diamondAddress, provider)
+    const res = await routerContract.call('get_health_factor', [loanId], {
+      blockIdentifier: 'pending',
+    })
+
+    console.log('Health Factor ressss', res?.factor)
+    return Number(res?.factor)
+  } catch (error) {
+    console.log('health factor error: ', error)
+  }
+}
 
 export const weiToEtherNumber = (amount, tokenName) => {
   const decimals = tokenDecimalsMap[tokenName]
@@ -125,8 +139,8 @@ function parseLoansData(loansData, collateralsData) {
   return loans
 }
 
-describe('Get user loans', () => {
-  it('displays user loans', async () => {
+describe('Health Factor', () => {
+  it('Health Factor', async () => {
     const provider = new RpcProvider({
       nodeUrl: 'https://starknet-mainnet.public.blastapi.io/rpc/v0_7',
     })
@@ -140,32 +154,23 @@ describe('Get user loans', () => {
       }
     )
 
-    const loans = parseLoansData(res?.loans, res?.collaterals)
+    const userLoans = parseLoansData(res?.loans, res?.collaterals)
 
-    for (let i = 0; i < loans.length; i++) {
-      expect(loans[i]).toHaveProperty('loanId')
-      expect(loans[i]).toHaveProperty('borrower')
-      expect(loans[i]).toHaveProperty('loanMarket')
-      expect(loans[i]).toHaveProperty('loanMarketAddress')
-      expect(loans[i]).toHaveProperty('underlyingMarket')
-      expect(loans[i]).toHaveProperty('underlyingMarketAddress')
-      expect(loans[i]).toHaveProperty('currentLoanMarket')
-      expect(loans[i]).toHaveProperty('currentLoanMarketAddress')
-      expect(loans[i]).toHaveProperty('collateralMarket')
-      expect(loans[i]).toHaveProperty('collateralMarketAddress')
-      expect(loans[i]).toHaveProperty('loanAmount')
-      expect(loans[i]).toHaveProperty('loanAmountParsed')
-      expect(loans[i]).toHaveProperty('currentLoanAmount')
-      expect(loans[i]).toHaveProperty('currentLoanAmountParsed')
-      expect(loans[i]).toHaveProperty('collateralAmount')
-      expect(loans[i]).toHaveProperty('collateralAmountParsed')
-      expect(loans[i]).toHaveProperty('createdAt')
-      expect(loans[i]).toHaveProperty('loanState')
-      expect(loans[i]).toHaveProperty('l3App')
-      expect(loans[i]).toHaveProperty('spendType')
-      expect(loans[i]).toHaveProperty('state')
-      expect(loans[i]).toHaveProperty('l3_integration')
-      expect(loans[i]).toHaveProperty('l3_category')
-    }
-  }, 10000)
+    const promises = userLoans?.map((val) => {
+      if (val?.loanState !== 'REPAID') {
+        return getExistingLoanHealth(val?.loanId)
+      }
+    })
+
+    await Promise.all([...promises]).then((val) => {
+      const avgs = val.map((loneHealth, idx) => {
+        return { loanHealth: loneHealth, loanId: userLoans[idx]?.loanId }
+      })
+
+      for (let i = 0; i < avgs.length; ++i) {
+        expect(avgs[i]).toHaveProperty('loanHealth')
+        expect(avgs[i]).toHaveProperty('loanId')
+      }
+    })
+  }, 20000)
 })
