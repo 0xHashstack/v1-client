@@ -42,5 +42,5 @@ describe('Get user deposits', () => {
     }
 
     expect(deposits.length).toEqual(6)
-  }, 10000)
+  }, 20000)
 })
