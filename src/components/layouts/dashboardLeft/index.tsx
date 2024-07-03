@@ -747,9 +747,9 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                           >
                             <Text>Effective APR:</Text>
                             <Text>
-                              {numberFormatterPercentage(
-                                getBoostedAprBorrow(coin?.name) - borrowAPRs[idx]
-                              )}
+                              {
+                                (getBoostedAprBorrow(coin?.name) - borrowAPRs[idx]).toFixed(3)
+                              }
                               %
                             </Text>
                           </Box>
