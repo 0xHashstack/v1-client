@@ -48,9 +48,13 @@ jobs:
           echo 'NEXT_PUBLIC_HOSTHOG_HOST=${{secrets.NEXT_PUBLIC_HOSTHOG_HOST}}' >> .env
     
       - name: Build
-        run: yarn build
+        run: |
+          export NODE_OPTIONS=--max_old_space_size=4096
+          NEXT_PUBLIC_APP_ENV=production yarn build
       - name: Export
         run: yarn export
+      - name: Test
+        run: yarn test
 
         # Deploys to 
         # http://starknetdev.hashstack.finance
