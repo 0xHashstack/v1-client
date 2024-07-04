@@ -50,6 +50,7 @@ jobs:
           NEXT_PUBLIC_APP_ENV=production yarn build
       - name: Test
         run: yarn test
+
       - name: Deploy
         run: aws s3 sync ./out s3://www.app.hashstack.finance
 

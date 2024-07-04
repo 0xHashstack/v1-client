@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { useAccount } from '@starknet-react/core'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { uint256 } from 'starknet'
 
@@ -29,7 +29,7 @@ import StrkIcon from '@/assets/icons/strkIcon'
 import StakeUnstakeModal from '@/components/modals/StakeUnstakeModal'
 import SupplyModal from '@/components/modals/SupplyModal'
 import BorrowModal from '@/components/modals/borrowModal'
-import { selectStrkAprData } from '@/store/slices/userAccountSlice'
+import { selectStrkAprData, selectnetSpendBalance } from '@/store/slices/userAccountSlice'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
 
@@ -124,7 +124,25 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
     }
     return null
   })
+  const netSpendBalance = useSelector(selectnetSpendBalance)
 
+  const [netStrkBorrow, setnetStrkBorrow] = useState(0)
+
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0
+      for (let token in strkData) {
+        if (strkData.hasOwnProperty(token)) {
+          const array = strkData[token]
+          const lastObject = array[array.length - 1]
+          netallocation += 0.3 * lastObject.allocation
+        }
+      }
+      setnetStrkBorrow(netallocation)
+    } else {
+      setnetStrkBorrow(0)
+    }
+  }, [strkData])
   const getBoostedApr = (coin: any) => {
     if (strkData == null) {
       return 0
@@ -145,6 +163,36 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                 ?.supply_usd
             : 0
           return value
+        }
+      } else {
+        return 0
+      }
+    }
+  }
+  const getBoostedAprBorrow = (coin: any) => {
+    if (strkData == null) {
+      return 0
+    } else {
+      if (strkData?.[coin]) {
+        if (oraclePrices == null) {
+          return 0
+        } else {
+          if (netStrkBorrow != 0) {
+            if (netSpendBalance) {
+              let value =
+                (365 *
+                  100 *
+                  netStrkBorrow *
+                  oraclePrices?.find((curr: any) => curr.name === 'STRK')
+                    ?.price) /
+                netSpendBalance
+              return value
+            } else {
+              return 0
+            }
+          } else {
+            return 0
+          }
         }
       } else {
         return 0
@@ -687,7 +735,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                           >
                             <Text>STRK APR:</Text>
                             <Text>
-                              {numberFormatterPercentage(getBoostedApr(coin))}%
+                              {numberFormatterPercentage(getBoostedAprBorrow(coin?.name))}%
                             </Text>
                           </Box>
                           <hr />
@@ -699,9 +747,9 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                           >
                             <Text>Effective APR:</Text>
                             <Text>
-                              {numberFormatterPercentage(
-                                Math.abs(getBoostedApr(coin) - borrowAPRs[idx])
-                              )}
+                              {
+                                (getBoostedAprBorrow(coin?.name) - borrowAPRs[idx]).toFixed(3)
+                              }
                               %
                             </Text>
                           </Box>
@@ -747,7 +795,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                               gap="1.5"
                             >
                               <StrkIcon />
-                              {numberFormatterPercentage(getBoostedApr(coin))}%
+                              {numberFormatterPercentage(getBoostedAprBorrow(coin?.name))}%
                             </Box>
                           </Box>
                         ) : (

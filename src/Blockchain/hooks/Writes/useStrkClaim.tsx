@@ -3,7 +3,9 @@ import {
     useContractWrite,
   } from "@starknet-react/core";
 import { etherToWeiBN } from '@/Blockchain/utils/utils';
-
+import { Contract, uint256 } from 'starknet';
+import ClaimAbi from '../../abis_mainnet/claim_abi.json'
+import { getProvider } from '@/Blockchain/stark-constants';
 const useClaimStrk = () => {
     const [round, setRound] = useState("1")
     const [strkAmount, setstrkAmount] = useState<number>(100)
@@ -13,6 +15,9 @@ const useClaimStrk = () => {
         '0x7957d036cf1e60858a601df12e0fb2921114d4b5facccf638163e0bb2be3c34',
       '0x1baa08224a2fbc4dc71734549e0ad1bbf85b3586014d3d7aa229b85474aae67'
       ])
+      const provider=getProvider();
+      const claimContract = new Contract(ClaimAbi, '0x02e20db0cd0af6739ff3e3003ea6932409867040b227bf9ba822239e5ba0dcaf', provider)
+      const call = claimContract.populate('claim', {amount:strkAmount, proof: proof})
     const {
         data: datastrkClaim,
         error: errorstrkClaim,
@@ -25,15 +30,19 @@ const useClaimStrk = () => {
         status: statusstrkClaim,
       } = useContractWrite({
         calls: [
-          {
-            contractAddress: "0x02e20db0cd0af6739ff3e3003ea6932409867040b227bf9ba822239e5ba0dcaf",
-            entrypoint: "claim",
-            calldata: [
-              strkAmount,
-              proof,
-            ],
-          },
-        ],
+          call
+        ]
+        // [
+        //   {
+        //     contractAddress: "0x02e20db0cd0af6739ff3e3003ea6932409867040b227bf9ba822239e5ba0dcaf",
+        //     entrypoint: "claim",
+        //     calldata: [
+        //       strkAmount,
+        //       proof.length,
+        //       proof,
+        //     ].flat(),
+        //   },
+        // ],
       });
       return {
         round,
