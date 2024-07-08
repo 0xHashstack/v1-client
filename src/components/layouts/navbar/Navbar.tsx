@@ -671,9 +671,10 @@ const Navbar = ({ validRTokens }: any) => {
                   display="flex"
                   pb="0.8rem"
                   gap="0.8rem"
+                  alignItems="center"
                   borderBottom="1px solid #34345699"
                 >
-                  <Box width="120px" height="60px" position="relative">
+                  <Box width="120px" height="60px" position="relative" mt="0.2rem">
                     <Image
                       src="/defi_spring_noti_banner.svg"
                       alt="Degen Mode"

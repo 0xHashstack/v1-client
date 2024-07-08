@@ -173,8 +173,17 @@ const StrkDashboard = () => {
           setProof(dataAmount?.proofs)
           setstrkRewards(parseAmount(String(dataAmount?.amount), 18) - data)
           settotalStrkRewards(parseAmount(String(dataAmount?.amount), 18))
-          setstrkClaimedRewards(data)
+          if(data){
+            setstrkClaimedRewards(data)
+          }else{
+            setstrkClaimedRewards(0);
+          }
         } else {
+          if(data){
+            setstrkClaimedRewards(data)
+          }else{
+            setstrkClaimedRewards(0);
+          }
           setstrkRewards(0)
           settotalStrkRewards(0)
         }

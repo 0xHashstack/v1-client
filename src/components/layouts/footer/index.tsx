@@ -12,6 +12,7 @@ import {
   MenuOptionGroup,
   Skeleton,
   Text,
+  Tooltip,
   useMediaQuery,
 } from '@chakra-ui/react'
 import { useAccount, useBlockNumber, useNetwork } from '@starknet-react/core'
@@ -150,9 +151,29 @@ const Footer = () => {
           alignItems="center"
         >
           Total Reserves:
-          <Text color="#B0F1DE" ml="3">
-            ${numberFormatter(protocolReserves?.totalReserves)}
-          </Text>
+          <Tooltip
+            hasArrow
+            arrowShadowColor="#2B2F35"
+            placement="bottom"
+            boxShadow="dark-lg"
+            label="Click here for protocol metrics."
+            bg="#02010F"
+            fontSize={'13px'}
+            fontWeight={'400'}
+            borderRadius={'lg'}
+            padding={'2'}
+            color="#F0F0F5"
+            border="1px solid"
+            borderColor="#23233D"
+          >
+            <Text
+              color="#B0F1DE"
+              ml="3"
+              _hover={{ textDecoration: 'underline' }}
+            >
+              ${numberFormatter(protocolReserves?.totalReserves)}
+            </Text>
+          </Tooltip>
         </Box>
         <Box
           className="keen-slider__slide number-slide1 text_nowrap"
@@ -161,9 +182,25 @@ const Footer = () => {
           alignItems="center"
         >
           Availables Reserves:
-          <Text color="#B0F1DE" ml="3">
-            ${numberFormatter(protocolReserves?.availableReserves)}
-          </Text>
+          <Tooltip
+            hasArrow
+            arrowShadowColor="#2B2F35"
+            placement="bottom"
+            boxShadow="dark-lg"
+            label="Click here for protocol metrics."
+            bg="#02010F"
+            fontSize={'13px'}
+            fontWeight={'400'}
+            borderRadius={'lg'}
+            padding={'2'}
+            color="#F0F0F5"
+            border="1px solid"
+            borderColor="#23233D"
+          >
+            <Text color="#B0F1DE" ml="3" _hover={{ textDecoration: 'underline' }}>
+              ${numberFormatter(protocolReserves?.availableReserves)}
+            </Text>
+          </Tooltip>
         </Box>
 
         <Box
@@ -173,9 +210,25 @@ const Footer = () => {
           alignItems="center"
         >
           Average Asset Utilisation:
-          <Text color="#B0F1DE" ml="3">
-            {numberFormatterPercentage(protocolReserves?.avgAssetUtilisation)}%
-          </Text>
+          <Tooltip
+            hasArrow
+            arrowShadowColor="#2B2F35"
+            placement="bottom"
+            boxShadow="dark-lg"
+            label="Click here for protocol metrics."
+            bg="#02010F"
+            fontSize={'13px'}
+            fontWeight={'400'}
+            borderRadius={'lg'}
+            padding={'2'}
+            color="#F0F0F5"
+            border="1px solid"
+            borderColor="#23233D"
+          >
+            <Text color="#B0F1DE" ml="3" _hover={{ textDecoration: 'underline' }}>
+              {numberFormatterPercentage(protocolReserves?.avgAssetUtilisation)}%
+            </Text>
+          </Tooltip>
         </Box>
         <Box
           className="keen-slider__slide number-slide3 text_nowrap"
@@ -184,9 +237,25 @@ const Footer = () => {
           alignItems="center"
         >
           Total Reserves:
-          <Text color="#B0F1DE" ml="3">
-            ${numberFormatter(protocolReserves?.totalReserves)}
-          </Text>
+          <Tooltip
+            hasArrow
+            arrowShadowColor="#2B2F35"
+            placement="bottom"
+            boxShadow="dark-lg"
+            label="Click here for protocol metrics."
+            bg="#02010F"
+            fontSize={'13px'}
+            fontWeight={'400'}
+            borderRadius={'lg'}
+            padding={'2'}
+            color="#F0F0F5"
+            border="1px solid"
+            borderColor="#23233D"
+          >
+            <Text color="#B0F1DE" ml="3" _hover={{ textDecoration: 'underline' }}>
+              ${numberFormatter(protocolReserves?.totalReserves)}
+            </Text>
+          </Tooltip>
         </Box>
         <Box
           className="keen-slider__slide number-slide1 text_nowrap"
@@ -195,9 +264,25 @@ const Footer = () => {
           alignItems="center"
         >
           Availables Reserves:
-          <Text color="#B0F1DE" ml="3">
-            ${numberFormatter(protocolReserves?.availableReserves)}
-          </Text>
+          <Tooltip
+            hasArrow
+            arrowShadowColor="#2B2F35"
+            placement="bottom"
+            boxShadow="dark-lg"
+            label="Click here for protocol metrics."
+            bg="#02010F"
+            fontSize={'13px'}
+            fontWeight={'400'}
+            borderRadius={'lg'}
+            padding={'2'}
+            color="#F0F0F5"
+            border="1px solid"
+            borderColor="#23233D"
+          >
+            <Text color="#B0F1DE" ml="3" _hover={{ textDecoration: 'underline' }}>
+              ${numberFormatter(protocolReserves?.availableReserves)}
+            </Text>
+          </Tooltip>
         </Box>
 
         <Box
@@ -207,9 +292,25 @@ const Footer = () => {
           alignItems="center"
         >
           Average Asset Utilisation:
-          <Text color="#B0F1DE" ml="3">
-            {numberFormatterPercentage(protocolReserves?.avgAssetUtilisation)}%
-          </Text>
+          <Tooltip
+            hasArrow
+            arrowShadowColor="#2B2F35"
+            placement="bottom"
+            boxShadow="dark-lg"
+            label="Click here for protocol metrics."
+            bg="#02010F"
+            fontSize={'13px'}
+            fontWeight={'400'}
+            borderRadius={'lg'}
+            padding={'2'}
+            color="#F0F0F5"
+            border="1px solid"
+            borderColor="#23233D"
+          >
+            <Text color="#B0F1DE" ml="3" _hover={{ textDecoration: 'underline' }}>
+              {numberFormatterPercentage(protocolReserves?.avgAssetUtilisation)}%
+            </Text>
+          </Tooltip>
         </Box>
       </HStack>
 
@@ -238,7 +339,7 @@ const Footer = () => {
               <>
                 <MenuButton>
                   <Box display="flex" alignItems="center" gap="2">
-                    <Text color="#00D395" fontSize="12px">
+                    <Text color="#2BC8BF" fontSize="12px">
                       Earn
                     </Text>
 
@@ -339,7 +440,13 @@ const Footer = () => {
             alignItems={'center'}
             gap={1}
           >
-            <Box color="#00D395" fontSize="12px">
+            <Image
+              src="/latestSyncedBlockGreenDot.svg"
+              alt="Picture of the author"
+              width="16"
+              height="16"
+            />
+            <Box color="#2BC8BF" fontSize="12px">
               {currentBlock || (
                 <Skeleton
                   width="3rem"
@@ -350,12 +457,6 @@ const Footer = () => {
                 />
               )}
             </Box>
-            <Image
-              src="/latestSyncedBlockGreenDot.svg"
-              alt="Picture of the author"
-              width="6"
-              height="6"
-            />
           </Box>
         </HStack>
 
@@ -390,9 +491,9 @@ const Footer = () => {
             gap={1}
           >
             <Image
-              src="/latestSyncedBlockGreenDot.svg"
+              src="/footerNetwork.svg"
               alt="Picture of the author"
-              width="6"
+              width="16"
               height="6"
             />
           </Box>
