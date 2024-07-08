@@ -377,7 +377,7 @@ const Footer = () => {
 
         <HStack borderLeft="1px solid #2B2F35" h="100%" mr="auto">
           <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
-            <Menu placement="top-end">
+            <Menu placement="top">
               {({ isOpen }) => (
                 <>
                   <MenuButton>
@@ -406,6 +406,8 @@ const Footer = () => {
                     display="flex"
                     flexDir="column"
                     alignItems="center"
+                    position="relative"
+                    right="3.3rem"
                   >
                     <MenuItem
                       _hover={{ color: '#00D395' }}
