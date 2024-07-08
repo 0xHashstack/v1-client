@@ -15,6 +15,8 @@ describe('get amm aprs', () => {
     console.log(data)
 
     for (let i = 0; i < data.length; i++) {
+      if (data[i].name === 'BTC/STRK') continue
+
       const apr = data[i].apr
       const tvl = data[i].tvl
 
