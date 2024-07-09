@@ -24,8 +24,6 @@ export async function getExistingLoanHealth(loanId) {
     const res = await routerContract.call('get_health_factor', [loanId], {
       blockIdentifier: 'pending',
     })
-
-    console.log('Health Factor ressss', res?.factor)
     return Number(res?.factor)
   } catch (error) {
     console.log('health factor error: ', error)
