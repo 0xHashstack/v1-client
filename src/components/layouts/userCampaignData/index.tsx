@@ -422,7 +422,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       color="#E6EDF3"
                     >
                       <Image
-                        src="/latestSyncedBlockGreenDot.svg"
+                        src="/activeCampaignsIcon.svg"
                         alt="Picture of the author"
                         width="8"
                         height="8"
@@ -664,7 +664,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       color="#E6EDF3"
                     >
                       <Image
-                        src="/latestSyncedBlockGreenDot.svg"
+                        src="/activeCampaignsIcon.svg"
                         alt="Picture of the author"
                         width="8"
                         height="8"
