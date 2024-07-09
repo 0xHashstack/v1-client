@@ -343,23 +343,24 @@ const FeedbackModal = ({
       <Box>
         <Button
           position="fixed"
-          color="#F0F0F5"
-          border="1px solid var(--Blue-dark, #3841AA)"
-          bg="#4D59E8"
-          top="42vh"
+          top="86vh"
+          padding="0px"
           right="0"
+          bg="transparent"
           fontSize="14px"
           fontStyle="normal"
           fontWeight="500"
           lineHeight="20px"
-          borderBottomRightRadius="0px"
-          borderBottomLeftRadius="0px"
-          transform="rotate(-90deg)"
-          _hover={{ backgroundColor: "#4D59E8" }}
-          transformOrigin="bottom right"
+          // transform="rotate(-90deg)"
           onClick={onOpen}
         >
-          Feedback
+                                <Image
+                        src={"/feedbackIcon.svg"}
+                        alt="Picture of the author"
+                        width="36"
+                        height="36"
+                        style={{ cursor: "pointer" }}
+                      />
         </Button>
         <Modal
           isOpen={isOpen}
