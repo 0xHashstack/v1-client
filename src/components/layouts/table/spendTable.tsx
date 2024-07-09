@@ -365,19 +365,42 @@ const SpendTable = () => {
 
   return (
     <>
-      <Box
-        display="flex"
-        justifyContent="left"
-        w="94%"
-        mt="0.5rem"
-        mb="0.8rem"
-        color="#F0F0F5"
-        // opacity="0.9"
-        fontSize="sm"
-      >
-        You can find all your unspent borrowings from here. Select a borrowing
-        from the table row below to start spending them on a dapp.
-      </Box>
+        <Box display="flex" justifyContent="left" w="94%" pb="2">
+          <Box
+            display="flex"
+            bg="#676D9A4D"
+            fontSize="14px"
+            p="4"
+            fontStyle="normal"
+            fontWeight="400"
+            borderRadius="6px"
+            border="1px solid #3841AA"
+            color="#F0F0F5"
+          >
+            <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
+              <TableInfoIcon />
+            </Box>
+            Only unspent loans are displayed here. For comprehensive list of
+            active loans go to
+            <Link
+              href="/v1/your-borrow"
+              onClick={() => {
+                dispatch(setCurrentPage("your borrow"));
+                localStorage.setItem("currentPage", "your borrow");
+              }}
+            >
+              <Box
+                ml="1"
+                as="span"
+                textDecoration="underline"
+                color="#4D59E8"
+                cursor="pointer"
+              >
+                your borrow
+              </Box>
+            </Link>
+          </Box>
+        </Box>
       {loading ? (
         <Box
           border="1px"

@@ -12,6 +12,7 @@ import {
   MenuOptionGroup,
   Skeleton,
   Text,
+  Tooltip,
   useMediaQuery,
 } from '@chakra-ui/react'
 import { useAccount, useBlockNumber, useNetwork } from '@starknet-react/core'
@@ -60,9 +61,9 @@ const Footer = () => {
   const [hoverc2e, sethoverc2e] = useState(false)
   const [perviewCount, setperviewCount] = useState<number>(2)
 
-  const [ref] = useKeenSlider<HTMLDivElement>({
+  const [ref, slider] = useKeenSlider<HTMLDivElement>({
     loop: true,
-    // mode: "free",
+    mode: 'free',
     slides: {
       perView: perviewCount,
       spacing: 13,
@@ -122,98 +123,241 @@ const Footer = () => {
       bgColor="#02010F"
       width="100vw"
       boxShadow="rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
       color="#FFF"
       height="2rem"
       borderY="1px solid #2B2F35"
+      // px="1rem"
     >
-      <HStack
-        ref={ref}
-        className="keen-slider"
-        h="100%"
+      <Box
+        width="95%"
         display="flex"
+        justifyContent="space-between"
         alignItems="center"
-        cursor="pointer"
-        flex="1"
-        pl="1rem"
-        pr="4rem"
-        onClick={() => {
-          router.push('/v1/protocol-metrics')
-        }}
+        mx="auto"
       >
-        <Box
-          className="keen-slider__slide number-slide3 text_nowrap"
-          fontSize="sm"
+        <HStack
+          ref={ref}
+          className="keen-slider"
+          h="100%"
           display="flex"
           alignItems="center"
+          cursor="pointer"
+          flex="1"
+          pl="1rem"
+          pr="4rem"
+          onClick={() => {
+            router.push('/v1/protocol-metrics')
+          }}
+          onMouseOver={() => {
+            slider.current?.animator.stop()
+          }}
+          onMouseLeave={() => {
+            slider.current?.animator.start([
+              {
+                distance: 0,
+                duration: 5,
+                easing: animation.easing,
+              },
+            ])
+          }}
         >
-          Total Reserves:
-          <Text color="#B0F1DE" ml="3">
-            ${numberFormatter(protocolReserves?.totalReserves)}
-          </Text>
-        </Box>
-        <Box
-          className="keen-slider__slide number-slide1 text_nowrap"
-          fontSize="sm"
-          display="flex"
-          alignItems="center"
-        >
-          Availables Reserves:
-          <Text color="#B0F1DE" ml="3">
-            ${numberFormatter(protocolReserves?.availableReserves)}
-          </Text>
-        </Box>
+          <Box
+            className="keen-slider__slide number-slide3 text_nowrap"
+            fontSize="sm"
+            display="flex"
+            alignItems="center"
+          >
+            Total Reserves:
+            <Tooltip
+              hasArrow
+              arrowShadowColor="#2B2F35"
+              placement="bottom"
+              boxShadow="dark-lg"
+              label="Click here for protocol metrics."
+              bg="#02010F"
+              fontSize={'13px'}
+              fontWeight={'400'}
+              borderRadius={'lg'}
+              padding={'2'}
+              color="#F0F0F5"
+              border="1px solid"
+              borderColor="#23233D"
+            >
+              <Text
+                color="#B0F1DE"
+                ml="3"
+                _hover={{ textDecoration: 'underline' }}
+              >
+                ${numberFormatter(protocolReserves?.totalReserves)}
+              </Text>
+            </Tooltip>
+          </Box>
+          <Box
+            className="keen-slider__slide number-slide1 text_nowrap"
+            fontSize="sm"
+            display="flex"
+            alignItems="center"
+          >
+            Availables Reserves:
+            <Tooltip
+              hasArrow
+              arrowShadowColor="#2B2F35"
+              placement="bottom"
+              boxShadow="dark-lg"
+              label="Click here for protocol metrics."
+              bg="#02010F"
+              fontSize={'13px'}
+              fontWeight={'400'}
+              borderRadius={'lg'}
+              padding={'2'}
+              color="#F0F0F5"
+              border="1px solid"
+              borderColor="#23233D"
+            >
+              <Text
+                color="#B0F1DE"
+                ml="3"
+                _hover={{ textDecoration: 'underline' }}
+              >
+                ${numberFormatter(protocolReserves?.availableReserves)}
+              </Text>
+            </Tooltip>
+          </Box>
 
-        <Box
-          className="keen-slider__slide number-slide2 text_nowrap"
-          fontSize="sm"
-          display="flex"
-          alignItems="center"
-        >
-          Average Asset Utilisation:
-          <Text color="#B0F1DE" ml="3">
-            {numberFormatterPercentage(protocolReserves?.avgAssetUtilisation)}%
-          </Text>
-        </Box>
-        <Box
-          className="keen-slider__slide number-slide3 text_nowrap"
-          fontSize="sm"
-          display="flex"
-          alignItems="center"
-        >
-          Total Reserves:
-          <Text color="#B0F1DE" ml="3">
-            ${numberFormatter(protocolReserves?.totalReserves)}
-          </Text>
-        </Box>
-        <Box
-          className="keen-slider__slide number-slide1 text_nowrap"
-          fontSize="sm"
-          display="flex"
-          alignItems="center"
-        >
-          Availables Reserves:
-          <Text color="#B0F1DE" ml="3">
-            ${numberFormatter(protocolReserves?.availableReserves)}
-          </Text>
-        </Box>
+          <Box
+            className="keen-slider__slide number-slide2 text_nowrap"
+            fontSize="sm"
+            display="flex"
+            alignItems="center"
+          >
+            Average Asset Utilisation:
+            <Tooltip
+              hasArrow
+              arrowShadowColor="#2B2F35"
+              placement="bottom"
+              boxShadow="dark-lg"
+              label="Click here for protocol metrics."
+              bg="#02010F"
+              fontSize={'13px'}
+              fontWeight={'400'}
+              borderRadius={'lg'}
+              padding={'2'}
+              color="#F0F0F5"
+              border="1px solid"
+              borderColor="#23233D"
+            >
+              <Text
+                color="#B0F1DE"
+                ml="3"
+                _hover={{ textDecoration: 'underline' }}
+              >
+                {numberFormatterPercentage(
+                  protocolReserves?.avgAssetUtilisation
+                )}
+                %
+              </Text>
+            </Tooltip>
+          </Box>
+          <Box
+            className="keen-slider__slide number-slide3 text_nowrap"
+            fontSize="sm"
+            display="flex"
+            alignItems="center"
+          >
+            Total Reserves:
+            <Tooltip
+              hasArrow
+              arrowShadowColor="#2B2F35"
+              placement="bottom"
+              boxShadow="dark-lg"
+              label="Click here for protocol metrics."
+              bg="#02010F"
+              fontSize={'13px'}
+              fontWeight={'400'}
+              borderRadius={'lg'}
+              padding={'2'}
+              color="#F0F0F5"
+              border="1px solid"
+              borderColor="#23233D"
+            >
+              <Text
+                color="#B0F1DE"
+                ml="3"
+                _hover={{ textDecoration: 'underline' }}
+              >
+                ${numberFormatter(protocolReserves?.totalReserves)}
+              </Text>
+            </Tooltip>
+          </Box>
+          <Box
+            className="keen-slider__slide number-slide1 text_nowrap"
+            fontSize="sm"
+            display="flex"
+            alignItems="center"
+          >
+            Availables Reserves:
+            <Tooltip
+              hasArrow
+              arrowShadowColor="#2B2F35"
+              placement="bottom"
+              boxShadow="dark-lg"
+              label="Click here for protocol metrics."
+              bg="#02010F"
+              fontSize={'13px'}
+              fontWeight={'400'}
+              borderRadius={'lg'}
+              padding={'2'}
+              color="#F0F0F5"
+              border="1px solid"
+              borderColor="#23233D"
+            >
+              <Text
+                color="#B0F1DE"
+                ml="3"
+                _hover={{ textDecoration: 'underline' }}
+              >
+                ${numberFormatter(protocolReserves?.availableReserves)}
+              </Text>
+            </Tooltip>
+          </Box>
 
-        <Box
-          className="keen-slider__slide number-slide2 text_nowrap"
-          fontSize="sm"
-          display="flex"
-          alignItems="center"
-        >
-          Average Asset Utilisation:
-          <Text color="#B0F1DE" ml="3">
-            {numberFormatterPercentage(protocolReserves?.avgAssetUtilisation)}%
-          </Text>
-        </Box>
-      </HStack>
+          <Box
+            className="keen-slider__slide number-slide2 text_nowrap"
+            fontSize="sm"
+            display="flex"
+            alignItems="center"
+          >
+            Average Asset Utilisation:
+            <Tooltip
+              hasArrow
+              arrowShadowColor="#2B2F35"
+              placement="bottom"
+              boxShadow="dark-lg"
+              label="Click here for protocol metrics."
+              bg="#02010F"
+              fontSize={'13px'}
+              fontWeight={'400'}
+              borderRadius={'lg'}
+              padding={'2'}
+              color="#F0F0F5"
+              border="1px solid"
+              borderColor="#23233D"
+            >
+              <Text
+                color="#B0F1DE"
+                ml="3"
+                _hover={{ textDecoration: 'underline' }}
+              >
+                {numberFormatterPercentage(
+                  protocolReserves?.avgAssetUtilisation
+                )}
+                %
+              </Text>
+            </Tooltip>
+          </Box>
+        </HStack>
 
-      {/* <HStack height="100%">
+        {/* <HStack height="100%">
         <Link href={'https://status.hashstack.finance/'} target="_blank">
           <HStack borderLeft="1px solid #2B2F35" h="100%" p="8px 3.9rem">
             <Box>
@@ -231,74 +375,39 @@ const Footer = () => {
         </Link>
       </HStack> */}
 
-      <HStack borderLeft="1px solid #2B2F35" h="100%" mr="auto">
-        <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
-          <Menu>
-            {({ isOpen }) => (
-              <>
-                <MenuButton>
-                  <Box display="flex" alignItems="center" gap="2">
-                    <Text color="#00D395" fontSize="12px">
-                      Earn
-                    </Text>
+        <HStack borderLeft="1px solid #2B2F35" h="100%" mr="auto">
+          <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
+            <Menu placement="top">
+              {({ isOpen }) => (
+                <>
+                  <MenuButton>
+                    <Box display="flex" alignItems="center" gap="2">
+                      <Text color="#2BC8BF" fontSize="12px">
+                        Earn
+                      </Text>
 
-                    <Image
-                      src="/upperarrow.svg"
-                      alt="Upper arrow"
-                      width="16"
-                      height="16"
-                      style={{
-                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                      }}
-                    />
-                  </Box>
-                </MenuButton>
+                      <Image
+                        src="/upperarrow.svg"
+                        alt="Upper arrow"
+                        width="16"
+                        height="16"
+                        style={{
+                          transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                        }}
+                      />
+                    </Box>
+                  </MenuButton>
 
-                <MenuList
-                  bgColor="#02010F"
-                  border="1px"
-                  borderColor="#34345699"
-                  p=".5rem"
-                  display="flex"
-                  flexDir="column"
-                  alignItems="center"
-                >
-                  <MenuItem
-                    _hover={{ color: '#00D395' }}
-                    fontSize="sm"
-                    fontWeight="medium"
+                  <MenuList
+                    bgColor="#02010F"
+                    border="1px"
+                    borderColor="#34345699"
+                    p=".5rem"
                     display="flex"
+                    flexDir="column"
                     alignItems="center"
-                    gap="4"
-                    bgColor="transparent"
-                    color="#676D9A"
-                    borderBottom="1px solid #34345699"
-                    py="3"
-                    onMouseEnter={() => sethoverCampaigns(true)}
-                    onMouseLeave={() => sethoverCampaigns(false)}
-                    onClick={() => {
-                      posthog.capture('More Tab Clicked', {
-                        Clicked: true,
-                      })
-                      router.push('/v1/campaigns')
-                    }}
-                  >
-                    <Image
-                      src={
-                        hoverCampaigns
-                          ? '/campaignsIconGreen.svg'
-                          : '/campaignsIcon.svg'
-                      }
-                      alt="Plus Icon"
-                      width="24"
-                      height="24"
-                    />
-                    Campaigns
-                  </MenuItem>
-                  <Link
-                    href="https://hashstack.finance/c2e/"
-                    target="_blank"
-                    style={{ marginRight: '1.3rem' }}
+                    position="relative"
+                    right="3.3rem"
                   >
                     <MenuItem
                       _hover={{ color: '#00D395' }}
@@ -309,95 +418,133 @@ const Footer = () => {
                       gap="4"
                       bgColor="transparent"
                       color="#676D9A"
+                      borderBottom="1px solid #34345699"
                       py="3"
-                      onMouseEnter={() => sethoverc2e(true)}
-                      onMouseLeave={() => sethoverc2e(false)}
+                      onMouseEnter={() => sethoverCampaigns(true)}
+                      onMouseLeave={() => sethoverCampaigns(false)}
+                      onClick={() => {
+                        posthog.capture('More Tab Clicked', {
+                          Clicked: true,
+                        })
+                        router.push('/v1/campaigns')
+                      }}
                     >
                       <Image
-                        src={hoverc2e ? hoverC2e : '/plusicon.svg'}
+                        src={
+                          hoverCampaigns
+                            ? '/campaignsIconGreen.svg'
+                            : '/campaignsIcon.svg'
+                        }
                         alt="Plus Icon"
-                        width="16"
-                        height="16"
+                        width="24"
+                        height="24"
                       />
-                      Contribute-2-Earn
+                      Campaigns
                     </MenuItem>
-                  </Link>
-                </MenuList>
-              </>
-            )}
-          </Menu>
-        </HStack>
+                    <Link
+                      href="https://hashstack.finance/c2e/"
+                      target="_blank"
+                      style={{ marginRight: '1.3rem' }}
+                    >
+                      <MenuItem
+                        _hover={{ color: '#00D395' }}
+                        fontSize="sm"
+                        fontWeight="medium"
+                        display="flex"
+                        alignItems="center"
+                        gap="4"
+                        bgColor="transparent"
+                        color="#676D9A"
+                        py="3"
+                        onMouseEnter={() => sethoverc2e(true)}
+                        onMouseLeave={() => sethoverc2e(false)}
+                      >
+                        <Image
+                          src={hoverc2e ? hoverC2e : '/plusicon.svg'}
+                          alt="Plus Icon"
+                          width="16"
+                          height="16"
+                        />
+                        Contribute-2-Earn
+                      </MenuItem>
+                    </Link>
+                  </MenuList>
+                </>
+              )}
+            </Menu>
+          </HStack>
 
-        <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
-          <Text color="#676D9A" fontSize="12px">
-            Latest Synced block:
-          </Text>
-          <Box
-            height={'100%'}
-            display={'flex'}
-            justifyContent={'center'}
-            alignItems={'center'}
-            gap={1}
-          >
-            <Box color="#00D395" fontSize="12px">
-              {currentBlock || (
+          <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
+            <Text color="#676D9A" fontSize="12px">
+              Latest Synced block:
+            </Text>
+            <Box
+              height={'100%'}
+              display={'flex'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              gap={1}
+            >
+              <Image
+                src="/latestSyncedBlockGreenDot.svg"
+                alt="Picture of the author"
+                width="16"
+                height="16"
+              />
+              <Box color="#2BC8BF" fontSize="12px">
+                {currentBlock || (
+                  <Skeleton
+                    width="3rem"
+                    height="0.8rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                  />
+                )}
+              </Box>
+            </Box>
+          </HStack>
+
+          <HStack display="flex" h="100%" pl="1rem">
+            <Box
+              color="#676D9A"
+              fontSize="12px"
+              display="flex"
+              alignItems="center"
+            >
+              Network:
+              {chain?.network === 'goerli' ? (
+                ' Starknet Goerli'
+              ) : chain?.network === 'mainnet' ? (
+                ' Starknet Mainnet'
+              ) : (
                 <Skeleton
-                  width="3rem"
+                  width="4rem"
                   height="0.8rem"
                   startColor="#101216"
                   endColor="#2B2F35"
                   borderRadius="6px"
+                  ml={2}
                 />
               )}
             </Box>
-            <Image
-              src="/latestSyncedBlockGreenDot.svg"
-              alt="Picture of the author"
-              width="6"
-              height="6"
-            />
-          </Box>
-        </HStack>
-
-        <HStack display="flex" h="100%" px="2rem">
-          <Box
-            color="#676D9A"
-            fontSize="12px"
-            display="flex"
-            alignItems="center"
-          >
-            Network:
-            {chain?.network === 'goerli' ? (
-              ' Starknet Goerli'
-            ) : chain?.network === 'mainnet' ? (
-              ' Starknet Mainnet'
-            ) : (
-              <Skeleton
-                width="4rem"
-                height="0.8rem"
-                startColor="#101216"
-                endColor="#2B2F35"
-                borderRadius="6px"
-                ml={2}
+            <Box
+              height={'100%'}
+              display={'flex'}
+              justifyContent={'center'}
+              alignItems={'center'}
+              gap={1}
+            >
+              <Image
+                src="/footerNetwork.svg"
+                alt="Picture of the author"
+                width="16"
+                height="6"
               />
-            )}
-          </Box>
-          <Box
-            height={'100%'}
-            display={'flex'}
-            justifyContent={'center'}
-            alignItems={'center'}
-            gap={1}
-          >
-            <Image
-              src="/latestSyncedBlockGreenDot.svg"
-              alt="Picture of the author"
-              width="6"
-              height="6"
-            />
-          </Box>
+            </Box>
+          </HStack>
         </HStack>
-      </HStack>
+      </Box>
     </HStack>
   )
 }

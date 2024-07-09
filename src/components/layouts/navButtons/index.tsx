@@ -5,6 +5,7 @@ import {
   HStack,
   Skeleton,
   Text,
+  Tooltip,
   useMediaQuery,
 } from '@chakra-ui/react'
 import Image from 'next/image'
@@ -225,16 +226,35 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
                 borderRadius="6px"
               />
             ) : (
-              <Text
-                color="#E6EDF3"
-                fontSize={isLessThan1200 ? '16px' : '18px'}
-                cursor="pointer"
-                onClick={() => {
-                  router.push('/v1/your-metrics')
-                }}
-              >
-                ${numberFormatter(netWorth)}
-              </Text>
+              <Box>
+                <Tooltip
+                  hasArrow
+                  arrowShadowColor="#2B2F35"
+                  placement="bottom"
+                  boxShadow="dark-lg"
+                  label="Click here for your metrics."
+                  bg="#02010F"
+                  fontSize={'13px'}
+                  fontWeight={'400'}
+                  borderRadius={'lg'}
+                  padding={'2'}
+                  color="#F0F0F5"
+                  border="1px solid"
+                  borderColor="#23233D"
+                >
+                  <Text
+                    color="#E6EDF3"
+                    fontSize={isLessThan1200 ? '16px' : '18px'}
+                    cursor="pointer"
+                    onClick={() => {
+                      router.push('/v1/your-metrics')
+                    }}
+                    _hover={{ textDecoration: 'underline' }}
+                  >
+                    ${numberFormatter(netWorth)}
+                  </Text>
+                </Tooltip>
+              </Box>
             )}
           </Box>
           <Box
@@ -259,16 +279,35 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
                 borderRadius="6px"
               />
             ) : (
-              <Text
-                color="#E6EDF3"
-                fontSize={isLessThan1200 ? '16px' : '18px'}
-                cursor="pointer"
-                onClick={() => {
-                  router.push('/v1/your-metrics')
-                }}
-              >
-                {numberFormatterPercentage(netAPR)}%
-              </Text>
+              <Box>
+                <Tooltip
+                  hasArrow
+                  arrowShadowColor="#2B2F35"
+                  placement="bottom"
+                  boxShadow="dark-lg"
+                  label="Click here for your metrics."
+                  bg="#02010F"
+                  fontSize={'13px'}
+                  fontWeight={'400'}
+                  borderRadius={'lg'}
+                  padding={'2'}
+                  color="#F0F0F5"
+                  border="1px solid"
+                  borderColor="#23233D"
+                >
+                  <Text
+                    color="#E6EDF3"
+                    fontSize={isLessThan1200 ? '16px' : '18px'}
+                    cursor="pointer"
+                    onClick={() => {
+                      router.push('/v1/your-metrics')
+                    }}
+                    _hover={{ textDecoration: 'underline' }}
+                  >
+                    {numberFormatterPercentage(netAPR)}%
+                  </Text>
+                </Tooltip>
+              </Box>
             )}
             <Box>{netAPR >= 0 ? <PositiveApr /> : <NegativeApr />}</Box>
           </Box>

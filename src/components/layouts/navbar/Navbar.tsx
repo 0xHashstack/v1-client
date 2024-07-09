@@ -262,6 +262,7 @@ const Navbar = ({ validRTokens }: any) => {
       alignItems="center"
       color="#FFF"
       height="3.8125rem"
+      px=".5rem"
       className="navbar"
     >
       <HStack
@@ -419,6 +420,7 @@ const Navbar = ({ validRTokens }: any) => {
           ''
         )} */}
       </HStack>
+
       <HStack
         width="50%"
         display="flex"
@@ -671,6 +673,7 @@ const Navbar = ({ validRTokens }: any) => {
                   display="flex"
                   pb="0.8rem"
                   gap="0.8rem"
+                  alignItems="center"
                   borderBottom="1px solid #34345699"
                 >
                   <Box width="120px" height="60px" position="relative">
@@ -682,18 +685,24 @@ const Navbar = ({ validRTokens }: any) => {
                       style={{ borderRadius: '6px' }}
                     />
                   </Box>
-                  <Box mt="-0.2rem">
+                  <Box
+                    display="flex"
+                    flexDir="column"
+                    justifyContent="center"
+                    alignItems="start"
+                    height="full"
+                    gap="1"
+                  >
                     <Text
-                      fontSize="18px"
-                      lineHeight="6"
+                      fontSize="16px"
+                      lineHeight="5"
                       fontWeight="bold"
                       color="#BDBFC1"
                     >
                       Starknet DeFi Spring <br /> is Live!
                     </Text>
                     <Text
-                      mt="0.2rem"
-                      fontSize="14px"
+                      fontSize="12px"
                       lineHeight="18px"
                       color="F0F0F5"
                       whiteSpace="nowrap"
@@ -704,7 +713,7 @@ const Navbar = ({ validRTokens }: any) => {
                         target="_blank"
                         textDecoration="underline"
                         color="#4D59E8"
-                        fontSize="14px"
+                        fontSize="12px"
                         fontWeight="semibold"
                         cursor="pointer"
                         ml="1"
@@ -730,27 +739,29 @@ const Navbar = ({ validRTokens }: any) => {
                       style={{ borderRadius: '6px' }}
                     />
                   </Box>
-                  <Box mt="-0.2rem">
+                  <Box
+                    display="flex"
+                    flexDir="column"
+                    justifyContent="center"
+                    alignItems="start"
+                    height="full"
+                    gap="1"
+                  >
                     <Text
-                      fontSize="18px"
-                      lineHeight="6"
+                      fontSize="16px"
+                      lineHeight="5"
                       fontWeight="bold"
                       color="#BDBFC1"
                     >
                       Hashstack Degen Mode <br /> Is Live!
                     </Text>
-                    <Text
-                      mt="0.2rem"
-                      fontSize="14px"
-                      lineHeight="18px"
-                      color="F0F0F5"
-                    >
+                    <Text fontSize="12px" lineHeight="18px" color="F0F0F5">
                       Earn $STRK tokens
                       <ChakraLink
                         href="https://app.hashstack.finance/v1/degen/"
                         textDecoration="underline"
                         color="#4D59E8"
-                        fontSize="14px"
+                        fontSize="12px"
                         fontWeight="semibold"
                         cursor="pointer"
                         ml="1"
@@ -771,27 +782,29 @@ const Navbar = ({ validRTokens }: any) => {
                       style={{ borderRadius: '6px' }}
                     />
                   </Box>
-                  <Box mt="-0.2rem">
+                  <Box
+                    display="flex"
+                    flexDir="column"
+                    justifyContent="center"
+                    alignItems="start"
+                    height="full"
+                    gap="1"
+                  >
                     <Text
-                      fontSize="18px"
-                      lineHeight="6"
+                      fontSize="16px"
+                      lineHeight="5"
                       fontWeight="bold"
                       color="#BDBFC1"
                     >
                       Content Creators <br /> Program
                     </Text>
-                    <Text
-                      mt="0.2rem"
-                      fontSize="14px"
-                      lineHeight="18px"
-                      color="F0F0F5"
-                    >
+                    <Text fontSize="12px" lineHeight="18px" color="F0F0F5">
                       Create content and
                       <ChakraLink
                         href="https://app.hashstack.finance/v1/campaigns/"
                         textDecoration="underline"
                         color="#4D59E8"
-                        fontSize="14px"
+                        fontSize="12px"
                         fontWeight="semibold"
                         cursor="pointer"
                         ml="1"
