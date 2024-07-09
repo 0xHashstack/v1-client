@@ -12,8 +12,6 @@ describe('get amm aprs', () => {
       'https://metricsapimainnet.hashstack.finance/api/amm-aprs'
     )
 
-    console.log(data)
-
     for (let i = 0; i < data.length; i++) {
       if (data[i].name === 'BTC/STRK') continue
 
@@ -23,7 +21,5 @@ describe('get amm aprs', () => {
       expect(apr).toBeGreaterThan(0)
       expect(tvl).toBeGreaterThan(0)
     }
-
-    console.log(data)
   }, 20000)
 })
