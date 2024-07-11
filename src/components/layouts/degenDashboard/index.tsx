@@ -348,7 +348,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
           }) =>
             (
               5000 /
-              borrow?.leverage /
+              (borrow?.leverage ===5 ?4.98:borrow?.leverage )/
               oraclePrices?.find(
                 (curr: any) => curr.name === borrow?.collateral
               )?.price
@@ -967,7 +967,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   </Box>
                                   <Text color="#00D395">
                                     {numberFormatterPercentage(
-                                      borrow?.leverage *
+                                      borrow?.leverage ===5 ?4.98:borrow?.leverage *
                                         getBoostedApr(borrow?.debt) +
                                         getBoostedAprSupply(borrow?.collateral)
                                     )}
@@ -988,7 +988,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     >
                                       {numberFormatterPercentage(
                                         Number(
-                                          borrow?.leverage *
+                                          borrow?.leverage ===5 ?4.98:borrow?.leverage *
                                             (-stats?.find(
                                               (stat: any) =>
                                                 stat?.token === borrow?.debt
@@ -1326,7 +1326,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         overflow={'hidden'}
                         textAlign={'center'}
                       >
-                        {borrow.leverage}x
+                        {borrow?.leverage ===5 ?4.98:borrow?.leverage}x
                       </Td>
                       <Td
                         width={'12.5%'}
@@ -1400,14 +1400,14 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   justifyContent="space-between"
                                   gap={10}
                                 >
-                                  <Text>Borrow APR ({borrow?.leverage}x):</Text>
+                                  <Text>Borrow APR ({borrow?.leverage ===5 ?4.98:borrow?.leverage}x):</Text>
                                   <Text>
                                     -
                                     {numberFormatterPercentage(
                                       stats?.find(
                                         (stat: any) =>
                                           stat?.token === borrow?.debt
-                                      )?.borrowRate * borrow?.leverage
+                                      )?.borrowRate * borrow?.leverage ===5 ?4.98:borrow?.leverage
                                     )}
                                     %
                                   </Text>
@@ -1434,14 +1434,14 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   justifyContent="space-between"
                                   gap={10}
                                 >
-                                  <Text>Pool APR ({borrow?.leverage}x):</Text>
+                                  <Text>Pool APR ({borrow?.leverage ===5 ?4.98:borrow?.leverage}x):</Text>
                                   <Text>
                                     {numberFormatterPercentage(
                                       getAprByPool(
                                         poolAprs,
                                         borrow?.secondary,
                                         borrow?.dappName
-                                      ) * borrow?.leverage
+                                      ) * borrow?.leverage ===5 ?4.98:borrow?.leverage
                                     )}
                                     %
                                   </Text>
@@ -1452,11 +1452,11 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   gap={10}
                                   mb={borrow?.dappName === 'ZKlend' ? '2' : '0'}
                                 >
-                                  <Text>$STRK APR ({borrow?.leverage}x):</Text>
+                                  <Text>$STRK APR ({borrow?.leverage ===5 ?4.98:borrow?.leverage}x):</Text>
                                   <Text>
                                     {numberFormatterPercentage(
                                       getBoostedApr(borrow?.debt) *
-                                        borrow?.leverage
+                                        borrow?.leverage ===5 ?4.98:borrow?.leverage
                                     )}
                                     %
                                   </Text>
@@ -1470,7 +1470,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     mb="2"
                                   >
                                     <Text>
-                                      Jedi STRK APR ({borrow?.leverage}x):
+                                      Jedi STRK APR ({borrow?.leverage ===5 ?4.98:borrow?.leverage}x):
                                     </Text>
                                     <Text>
                                       {numberFormatterPercentage(
@@ -1488,7 +1488,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                             borrow?.secondary,
                                             borrow?.dappName
                                           )) *
-                                          borrow?.leverage
+                                          borrow?.leverage ===5 ?4.98:borrow?.leverage
                                       )}
                                       %
                                     </Text>
@@ -1505,7 +1505,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   <Text>
                                     {numberFormatterPercentage(
                                       Number(
-                                        borrow?.leverage *
+                                        borrow?.leverage ===5 ?4.98:borrow?.leverage *
                                           (-stats?.find(
                                             (stat: any) =>
                                               stat?.token === borrow?.debt
@@ -1578,7 +1578,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                             >
                               {numberFormatterPercentage(
                                 Number(
-                                  borrow?.leverage *
+                                  borrow?.leverage ===5 ?4.98:borrow?.leverage *
                                     (-stats?.find(
                                       (stat: any) =>
                                         stat?.token === borrow?.debt
@@ -1759,7 +1759,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                 collateralSuggestedAmount={
                                   collateralAmounts[lower_bound + idx]
                                 }
-                                suggestedLeverage={borrow?.leverage}
+                                suggestedLeverage={borrow?.leverage ===5 ?4.98:borrow?.leverage}
                                 borrowSuggestedAmount={
                                   5000 /
                                   oraclePrices?.find(
