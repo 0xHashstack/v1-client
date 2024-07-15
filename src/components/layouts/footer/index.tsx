@@ -66,7 +66,7 @@ const Footer = () => {
     mode: 'free',
     slides: {
       perView: perviewCount,
-      spacing: 13,
+      spacing: 11,
     },
     renderMode: 'performance',
     drag: false,
@@ -166,6 +166,7 @@ const Footer = () => {
             fontSize="sm"
             display="flex"
             alignItems="center"
+            _hover={{ textDecoration: 'underline' }}
           >
             Total Reserves:
             <Tooltip
@@ -197,6 +198,7 @@ const Footer = () => {
             fontSize="sm"
             display="flex"
             alignItems="center"
+            _hover={{ textDecoration: 'underline' }}
           >
             Availables Reserves:
             <Tooltip
@@ -229,6 +231,7 @@ const Footer = () => {
             fontSize="sm"
             display="flex"
             alignItems="center"
+            _hover={{ textDecoration: 'underline' }}
           >
             Average Asset Utilisation:
             <Tooltip
@@ -263,6 +266,7 @@ const Footer = () => {
             fontSize="sm"
             display="flex"
             alignItems="center"
+            _hover={{ textDecoration: 'underline' }}
           >
             Total Reserves:
             <Tooltip
@@ -294,6 +298,7 @@ const Footer = () => {
             fontSize="sm"
             display="flex"
             alignItems="center"
+            _hover={{ textDecoration: 'underline' }}
           >
             Availables Reserves:
             <Tooltip
@@ -326,6 +331,7 @@ const Footer = () => {
             fontSize="sm"
             display="flex"
             alignItems="center"
+            _hover={{ textDecoration: 'underline' }}
           >
             Average Asset Utilisation:
             <Tooltip

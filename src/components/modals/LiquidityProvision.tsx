@@ -698,6 +698,8 @@ const LiquidityProvisionModal = ({
         return borrowAPRs[3];
       case "DAI":
         return borrowAPRs[4];
+      case "STRK":
+        return borrowAPRs[5];
 
       default:
         break;
