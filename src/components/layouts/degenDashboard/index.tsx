@@ -967,7 +967,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   </Box>
                                   <Text color="#00D395">
                                     {numberFormatterPercentage(
-                                      borrow?.leverage ===5 ?4.98:borrow?.leverage *
+                                      (borrow?.leverage ===5 ?4.98:borrow?.leverage) *
                                         getBoostedApr(borrow?.debt) +
                                         getBoostedAprSupply(borrow?.collateral)
                                     )}
@@ -988,7 +988,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                     >
                                       {numberFormatterPercentage(
                                         Number(
-                                          borrow?.leverage ===5 ?4.98:borrow?.leverage *
+                                          (borrow?.leverage ===5 ?4.98:borrow?.leverage) *
                                             (-stats?.find(
                                               (stat: any) =>
                                                 stat?.token === borrow?.debt
@@ -1407,7 +1407,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       stats?.find(
                                         (stat: any) =>
                                           stat?.token === borrow?.debt
-                                      )?.borrowRate * borrow?.leverage ===5 ?4.98:borrow?.leverage
+                                      )?.borrowRate * (borrow?.leverage ===5 ?4.98:borrow?.leverage)
                                     )}
                                     %
                                   </Text>
@@ -1441,7 +1441,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                         poolAprs,
                                         borrow?.secondary,
                                         borrow?.dappName
-                                      ) * borrow?.leverage ===5 ?4.98:borrow?.leverage
+                                      ) * (borrow?.leverage ===5 ?4.98:borrow?.leverage)
                                     )}
                                     %
                                   </Text>
@@ -1456,7 +1456,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   <Text>
                                     {numberFormatterPercentage(
                                       getBoostedApr(borrow?.debt) *
-                                        borrow?.leverage ===5 ?4.98:borrow?.leverage
+                                        (borrow?.leverage ===5 ?4.98:borrow?.leverage)
                                     )}
                                     %
                                   </Text>
@@ -1488,7 +1488,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                             borrow?.secondary,
                                             borrow?.dappName
                                           )) *
-                                          borrow?.leverage ===5 ?4.98:borrow?.leverage
+                                          (borrow?.leverage ===5 ?4.98:borrow?.leverage)
                                       )}
                                       %
                                     </Text>
@@ -1505,7 +1505,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   <Text>
                                     {numberFormatterPercentage(
                                       Number(
-                                        borrow?.leverage ===5 ?4.98:borrow?.leverage *
+                                        (borrow?.leverage ===5 ?4.98:borrow?.leverage) *
                                           (-stats?.find(
                                             (stat: any) =>
                                               stat?.token === borrow?.debt
@@ -1578,7 +1578,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                             >
                               {numberFormatterPercentage(
                                 Number(
-                                  borrow?.leverage ===5 ?4.98:borrow?.leverage *
+                                  (borrow?.leverage ===5 ?4.98:borrow?.leverage) *
                                     (-stats?.find(
                                       (stat: any) =>
                                         stat?.token === borrow?.debt
