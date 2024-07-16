@@ -4103,7 +4103,7 @@ const YourBorrowModal = ({
                               >
                                 Wallet Balance:{' '}
                                 {numberFormatter(walletBalance1)}
-                                <Text color="#6E7781" ml="0.2rem">
+                                <Text color="#676D9A" ml="0.2rem">
                                   {` ${currentBorrowMarketCoin1.slice(1)}`}
                                 </Text>
                               </Text>
@@ -4120,7 +4120,7 @@ const YourBorrowModal = ({
                               fontFamily="Inter"
                             >
                               Wallet Balance: {numberFormatter(walletBalance1)}
-                              <Text color="#6E7781" ml="0.2rem">
+                              <Text color="#676D9A" ml="0.2rem">
                                 {` ${currentBorrowMarketCoin1.slice(1)}`}
                               </Text>
                             </Text>
@@ -6039,7 +6039,7 @@ const YourBorrowModal = ({
                                       )
                                   )?.rTokenFreeParsed
                                 )}
-                            <Text color="#6E7781" ml="0.2rem">
+                            <Text color="#676D9A" ml="0.2rem">
                               {currentTokenSelected == 'Native Token'
                                 ? collateralAsset
                                 : `r${collateralAsset}`}
@@ -6066,7 +6066,7 @@ const YourBorrowModal = ({
                                     collateralBalance.substring(spaceIndex + 1)
                                 )?.rTokenFreeParsed
                               )}
-                          <Text color="#6E7781" ml="0.2rem">
+                          <Text color="#676D9A" ml="0.2rem">
                             {currentTokenSelected == 'Native Token'
                               ? collateralAsset
                               : `r${collateralAsset}`}

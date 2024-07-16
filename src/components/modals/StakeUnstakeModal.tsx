@@ -979,7 +979,7 @@ const StakeUnstakeModal = ({
                         mb="0.5rem"
                         p="1rem"
                         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                        mt="1.5rem"
+                        mt="1rem"
                       >
                         <Text
                           color="#676D9A"
