@@ -22,13 +22,13 @@ const useLoanRequest = () => {
   const [amount, setAmount] = useState<number>(0);
 
   // Collateral - rToken
-  const [rToken, setRToken] = useState<RToken>("rBTC");
-  const [rTokenAmount, setRTokenAmount] = useState<number>(0);
+  const [rTokenCollateral, setRTokenCollateral] = useState<RToken>("rBTC");
+  const [rTokenAmountCollateral, setRTokenAmountCollateral] = useState<number>(0);
   const balance=useSelector(selectNftBalance);
 
   // Collateral - native token Market
-  const [collateralMarket, setCollateralMarket] = useState<NativeToken>("BTC");
-  const [collateralAmount, setCollateralAmount] = useState<number>(0);
+  const [collateralMarketNative, setCollateralMarketNative] = useState<NativeToken>("BTC");
+  const [collateralAmountNative, setCollateralAmountNative] = useState<number>(0);
 
   const [transLoanRequestHash, setIsLoanRequestHash] = useState("");
   const user=useSelector(selectUserType)
@@ -67,11 +67,11 @@ const useLoanRequest = () => {
   } = useContractWrite({
     calls:  balance==0  &&user=="U1" && ( amount>100 ) && nftCurrentAmount<nftMaxAmount ? [
       {
-        contractAddress: tokenAddressMap[collateralMarket] || "",
+        contractAddress: tokenAddressMap[collateralMarketNative] || "",
         entrypoint: "approve",
         calldata: [
           diamondAddress,
-          etherToWeiBN(collateralAmount, collateralMarket).toString(),
+          etherToWeiBN(collateralAmountNative, collateralMarketNative).toString(),
           "0",
         ],
       },
@@ -82,8 +82,8 @@ const useLoanRequest = () => {
           tokenAddressMap[market] || "",
           etherToWeiBN(amount as number, market).toString(),
           0,
-          tokenAddressMap[collateralMarket] || "",
-          etherToWeiBN(collateralAmount as number, collateralMarket).toString(),
+          tokenAddressMap[collateralMarketNative] || "",
+          etherToWeiBN(collateralAmountNative as number, collateralMarketNative).toString(),
           0,
           account,
         ],
@@ -101,11 +101,11 @@ const useLoanRequest = () => {
       },
     ]:[
       {
-        contractAddress: tokenAddressMap[collateralMarket] || "",
+        contractAddress: tokenAddressMap[collateralMarketNative] || "",
         entrypoint: "approve",
         calldata: [
           diamondAddress,
-          etherToWeiBN(collateralAmount, collateralMarket).toString(),
+          etherToWeiBN(collateralAmountNative, collateralMarketNative).toString(),
           "0",
         ],
       },
@@ -116,8 +116,8 @@ const useLoanRequest = () => {
           tokenAddressMap[market] || "",
           etherToWeiBN(amount as number, market).toString(),
           0,
-          tokenAddressMap[collateralMarket] || "",
-          etherToWeiBN(collateralAmount as number, collateralMarket).toString(),
+          tokenAddressMap[collateralMarketNative] || "",
+          etherToWeiBN(collateralAmountNative as number, collateralMarketNative).toString(),
           0,
           account,
         ],
@@ -144,8 +144,8 @@ const useLoanRequest = () => {
           tokenAddressMap[market] || "",
           etherToWeiBN(amount, market).toString(),
           0,
-          tokenAddressMap[rToken] || "",
-          etherToWeiBN(rTokenAmount, rToken).toString(),
+          tokenAddressMap[rTokenCollateral] || "",
+          etherToWeiBN(rTokenAmountCollateral, rTokenCollateral).toString(),
           0,
           account,
         ],
@@ -169,8 +169,8 @@ const useLoanRequest = () => {
           tokenAddressMap[market] || "",
           etherToWeiBN(amount, market).toString(),
           0,
-          tokenAddressMap[rToken] || "",
-          etherToWeiBN(rTokenAmount, rToken).toString(),
+          tokenAddressMap[rTokenCollateral] || "",
+          etherToWeiBN(rTokenAmountCollateral, rTokenCollateral).toString(),
           0,
           account,
         ],
@@ -184,15 +184,15 @@ const useLoanRequest = () => {
     amount,
     setAmount,
 
-    rToken,
-    setRToken,
-    rTokenAmount,
-    setRTokenAmount,
+    rTokenCollateral,
+    setRTokenCollateral,
+    rTokenAmountCollateral,
+    setRTokenAmountCollateral,
 
-    collateralMarket,
-    setCollateralMarket,
-    collateralAmount,
-    setCollateralAmount,
+    collateralMarketNative,
+    setCollateralMarketNative,
+    collateralAmountNative,
+    setCollateralAmountNative,
     transLoanRequestHash,
     setIsLoanRequestHash,
 
