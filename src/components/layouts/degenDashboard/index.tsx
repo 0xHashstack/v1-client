@@ -1820,7 +1820,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                         position: 'absolute',
                         width: '100%',
                         height: '1px',
-                        borderBottom: '1px solid #2b2f35',
+                        borderBottom: '1px solid #34345699',
                         display: `${idx == 5 ? 'none' : 'block'}`,
                       }}
                     />
