@@ -468,7 +468,6 @@ const [currentSplit, setCurrentSplit] = useState<
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
   const minAmounts = useSelector(selectMinimumDepositAmounts)
   const maxAmounts = useSelector(selectMaximumDepositAmounts)
-  console.log(minimumDepositAmount,inputCollateralAmount,maximumDepositAmount,"amts")
   useEffect(() => {
     setMinimumDepositAmount(minAmounts['r' + currentCollateralCoin])
     setmaximumDepositAmount(maxAmounts['r' + currentCollateralCoin])
@@ -1533,7 +1532,33 @@ const [currentSplit, setCurrentSplit] = useState<
             alignItems="center"
             gap="2"
           >
-            <Tabs variant="unstyled">
+            {actionSelected === 'Borrow' ? 'Borrow' : 'Trade'}
+            <Tooltip
+              hasArrow
+              placement="right"
+              boxShadow="dark-lg"
+              label="Select the collateral token and the token you want to borrow, and spend."
+              bg="#02010F"
+              fontSize={'13px'}
+              fontWeight={'400'}
+              borderRadius={'lg'}
+              padding={'2'}
+              color="#F0F0F5"
+              border="1px solid"
+              borderColor="#23233D"
+              arrowShadowColor="#2B2F35"
+            >
+              <Box>
+                <InfoIconBig />
+              </Box>
+            </Tooltip>
+          </ModalHeader>
+          <ModalCloseButton color="white" mt="1rem" mr="1rem" />
+          {/* <ModalHeader>Borrow</ModalHeader> */}
+          <ModalBody overflowY="auto" color={'#E6EDF3'}>
+            {/* <ModalCloseButton mt="1rem" mr="1rem" color="white" /> */}
+            {/* <button onClick={onClose}>Cancel</button> */}
+            <Tabs variant="unstyled" mb="1rem">
               <TabList borderRadius="md">
                 <Tab
                   py="1"
@@ -1576,32 +1601,6 @@ const [currentSplit, setCurrentSplit] = useState<
                 </Tab>
               </TabList>
             </Tabs>
-            <Tooltip
-              hasArrow
-              placement="right"
-              boxShadow="dark-lg"
-              label="Select the collateral token and the token you want to borrow, and spend."
-              bg="#02010F"
-              fontSize={'13px'}
-              fontWeight={'400'}
-              borderRadius={'lg'}
-              padding={'2'}
-              color="#F0F0F5"
-              border="1px solid"
-              borderColor="#23233D"
-              arrowShadowColor="#2B2F35"
-            >
-              <Box>
-                <InfoIconBig />
-              </Box>
-            </Tooltip>
-          </ModalHeader>
-          <ModalCloseButton color="white" mt="1rem" mr="1rem" />
-          {/* <ModalHeader>Borrow</ModalHeader> */}
-          <ModalBody overflowY="auto" color={'#E6EDF3'}>
-            {/* <ModalCloseButton mt="1rem" mr="1rem" color="white" /> */}
-            {/* <button onClick={onClose}>Cancel</button> */}
-
             <Box
               display="flex"
               flexDirection="column"
@@ -2070,7 +2069,7 @@ const [currentSplit, setCurrentSplit] = useState<
                       {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5
                         ? numberFormatter(walletBalance)
                         : numberFormatter(walletBalance)}
-                      <Text color="#6E7781" ml="0.2rem">
+                      <Text color="#676D9A" ml="0.2rem">
                         {` ${currentCollateralCoin}`}
                       </Text>
                     </Text>
@@ -2097,7 +2096,7 @@ const [currentSplit, setCurrentSplit] = useState<
                     {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
                       ? Math.floor(walletBalance)
                       : walletBalance} */}
-                    <Text color="#6E7781" ml="0.2rem">
+                    <Text color="#676D9A" ml="0.2rem">
                       {` ${currentCollateralCoin}`}
                     </Text>
                   </Text>
@@ -2681,7 +2680,7 @@ const [currentSplit, setCurrentSplit] = useState<
                       ) : (
                         numberFormatter(currentAvailableReserves)
                       )}
-                      <Text color="#6E7781" ml="0.2rem">
+                      <Text color="#676D9A" ml="0.2rem">
                         {` ${currentBorrowCoin}`}
                       </Text>
                     </Box>
@@ -2710,7 +2709,7 @@ const [currentSplit, setCurrentSplit] = useState<
                     ) : (
                       numberFormatter(currentAvailableReserves)
                     )}
-                    <Text color="#6E7781" ml="0.2rem">
+                    <Text color="#676D9A" ml="0.2rem">
                       {` ${currentBorrowCoin}`}
                     </Text>
                   </Box>

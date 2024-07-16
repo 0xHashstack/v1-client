@@ -1030,7 +1030,7 @@ const SwapModal = ({
                 fontFamily="Inter"
               >
                 Borrow Balance: {borrowAmount}
-                <Text color="#6E7781" ml="0.2rem">
+                <Text color="#676D9A" ml="0.2rem">
                   {` ${currentBorrowMarketCoin}`}
                 </Text>
               </Text>
