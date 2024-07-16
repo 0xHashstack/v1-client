@@ -920,7 +920,7 @@ const SupplyDashboard = ({
                       position: "absolute",
                       height: "1px",
                       borderWidth: "0",
-                      backgroundColor: "#2b2f35",
+                      backgroundColor: "#34345699",
                       width: "100%",
                       // left: "3%",
                       display: `${idx == 4 ? "none" : "block"}`,
