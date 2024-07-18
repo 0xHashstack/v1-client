@@ -521,6 +521,10 @@ const TradeModal = ({
   const mySwapPoolPairs = useSelector(selectMySwapPoolsSupported)
   const [myswapPools, setmyswapPools] = useState([])
   const [jediswapPools, setjediswapPools] = useState([])
+  const [collateralHoverIndex, setcollateralHoverIndex] = useState<Number>(-1)
+  const [borrowHoverIndex, setborrowHoverIndex] = useState<Number>(-1)
+  const [dappHoverIndex, setdappHoverIndex] = useState<Number>(-1)
+  const [poolHoverIndex, setpoolHoverIndex] = useState<Number>(-1)
   useEffect(() => {
     function findSideForMember(array: any, token: any) {
       const data: any = []
@@ -1745,16 +1749,23 @@ const TradeModal = ({
                                     alignItems="center"
                                     gap="1"
                                     pr="2"
+                                    onMouseEnter={()=>{
+                                      setcollateralHoverIndex(index+6)
+                                    }}
+                                    onMouseLeave={()=>{
+                                      setcollateralHoverIndex(-1)
+                                    }}
                                     onClick={() => {
                                       setCurrentCollateralCoin(coin)
                                       setCollateralMarket(coin)
                                       setTokenTypeSelected('rToken')
+                                      setcollateralHoverIndex(-1)
                                       setRToken(coin)
                                       setwalletBalance(amount)
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
-                                    {coin === currentCollateralCoin && (
+                                    {(collateralHoverIndex===-1? coin === currentCollateralCoin:collateralHoverIndex===(index+6)) && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -1767,7 +1778,7 @@ const TradeModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${
-                                        coin === currentCollateralCoin
+                                        (coin === currentCollateralCoin && collateralHoverIndex===-1) || collateralHoverIndex===(index+6)
                                           ? '1'
                                           : '5'
                                       }`}
@@ -1775,10 +1786,11 @@ const TradeModal = ({
                                       gap="1"
                                       justifyContent="space-between"
                                       bg={`${
-                                        coin === currentCollateralCoin
+                                        (coin === currentCollateralCoin && collateralHoverIndex===-1) || collateralHoverIndex===(index+6)
                                           ? '#4D59E8'
                                           : 'inherit'
                                       }`}
+                                      transition="ease .1s"
                                       borderRadius="md"
                                     >
                                       <Box display="flex">
@@ -1827,10 +1839,17 @@ const TradeModal = ({
                                 alignItems="center"
                                 gap="1"
                                 pr="2"
+                                onMouseEnter={()=>{
+                                  setcollateralHoverIndex(index)
+                                }}
+                                onMouseLeave={()=>{
+                                  setcollateralHoverIndex(-1)
+                                }}
                                 onClick={() => {
                                   setCurrentCollateralCoin(coin)
                                   setCollateralMarket(coin)
                                   setRToken('rBTC')
+                                  setcollateralHoverIndex(index)
                                   setTokenTypeSelected('Native')
                                   setwalletBalance(
                                     walletBalances[coin]?.statusBalanceOf ===
@@ -1848,7 +1867,7 @@ const TradeModal = ({
                                   )
                                 }}
                               >
-                                {coin === currentCollateralCoin && (
+                                {(collateralHoverIndex===-1? coin === currentCollateralCoin:collateralHoverIndex===index) && (
                                   <Box
                                     w="3px"
                                     h="28px"
@@ -1861,16 +1880,17 @@ const TradeModal = ({
                                   display="flex"
                                   py="5px"
                                   pl={`${
-                                    coin === currentCollateralCoin ? '1' : '5'
+                                    (coin === currentCollateralCoin && collateralHoverIndex==-1) || collateralHoverIndex===index ? '1' : '5'
                                   }`}
                                   pr="6px"
                                   gap="1"
                                   bg={`${
-                                    coin === currentCollateralCoin
+                                    (coin === currentCollateralCoin && collateralHoverIndex==-1) || collateralHoverIndex===index
                                       ? '#4D59E8'
                                       : 'inherit'
                                   }`}
                                   borderRadius="md"
+                                  transition="ease .1s"
                                   justifyContent="space-between"
                                 >
                                   <Box display="flex">
@@ -2410,6 +2430,12 @@ const TradeModal = ({
                                 alignItems="center"
                                 gap="1"
                                 pr="2"
+                                onMouseEnter={()=>{
+                                  setborrowHoverIndex(index)
+                                }}
+                                onMouseLeave={()=>{
+                                  setborrowHoverIndex(-1)
+                                }}
                                 onClick={() => {
                                   setCurrentBorrowCoin(coin)
                                   setCurrentAvailableReserves(
@@ -2421,12 +2447,13 @@ const TradeModal = ({
                                       (curr: any) => curr?.token === coin
                                     )?.idx
                                   )
+                                  setborrowHoverIndex(-1)
                                   setLoanMarket(coin)
                                   // setMarket(coin);
                                   // setMarket(coin);
                                 }}
                               >
-                                {coin === currentBorrowCoin && (
+                                {(borrowHoverIndex===-1? coin === currentBorrowCoin:borrowHoverIndex===index) && (
                                   <Box
                                     w="3px"
                                     h="28px"
@@ -2439,15 +2466,16 @@ const TradeModal = ({
                                   display="flex"
                                   py="5px"
                                   pl={`${
-                                    coin === currentBorrowCoin ? '1' : '5'
+                                    (coin === currentBorrowCoin && borrowHoverIndex===-1) || borrowHoverIndex===index ? '1' : '5'
                                   }`}
                                   pr="6px"
                                   gap="1"
                                   bg={`${
-                                    coin === currentBorrowCoin
+                                    (coin === currentBorrowCoin && borrowHoverIndex===-1) || borrowHoverIndex===index
                                       ? '#4D59E8'
                                       : 'inherit'
                                   }`}
+                                  transition="ease .1s"
                                   borderRadius="md"
                                   justifyContent="space-between"
                                 >
@@ -3075,8 +3103,15 @@ const TradeModal = ({
                                 gap="1"
                                 pr="2"
                                 bg="inherit"
+                                onMouseEnter={()=>{
+                                  setdappHoverIndex(index)
+                                }}
+                                onMouseLeave={()=>{
+                                  setdappHoverIndex(-1)
+                                }}
                                 onClick={() => {
                                   setCurrentDapp(dapp.name)
+                                  setdappHoverIndex(-1);
                                   if (dapp.name === 'Jediswap') {
                                     setL3App('JEDI_SWAP')
                                   } else if (dapp.name === 'mySwap') {
@@ -3088,7 +3123,7 @@ const TradeModal = ({
                                 _disabled={{ cursor: 'pointer' }}
                                 isDisabled={dapp.status === 'disable'}
                               >
-                                {dapp.name === currentDapp && (
+                                {(dappHoverIndex===-1? dapp.name === currentDapp:dappHoverIndex===index) && (
                                   <Box
                                     w="3px"
                                     h="28px"
@@ -3101,11 +3136,11 @@ const TradeModal = ({
                                   display="flex"
                                   py="5px"
                                   px={`${
-                                    dapp.name === currentDapp ? '1' : '5'
+                                    (dapp.name === currentDapp && dappHoverIndex===-1) || dappHoverIndex===index ? '1' : '5'
                                   }`}
                                   gap="1"
                                   bg={`${
-                                    dapp.name === currentDapp
+                                    (dapp.name === currentDapp && dappHoverIndex===-1) || dappHoverIndex===index
                                       ? '#4D59E8'
                                       : 'inherit'
                                   }`}
@@ -3274,8 +3309,15 @@ const TradeModal = ({
                                 alignItems="center"
                                 gap="1"
                                 pr="2"
+                                onMouseEnter={()=>{
+                                  setpoolHoverIndex(index)
+                                }}
+                                onMouseLeave={()=>{
+                                  setpoolHoverIndex(-1)
+                                }}
                                 onClick={() => {
                                   setCurrentPool(pool)
+                                  setpoolHoverIndex(-1)
                                   //set type for pools as native token[]
                                   //@ts-ignore
                                   setToMarketLiqA(pool.split('/')[0])
@@ -3288,7 +3330,7 @@ const TradeModal = ({
                                     : ''
                                 }
                               >
-                                {pool === currentPool && (
+                                {(poolHoverIndex===-1? pool === currentPool:poolHoverIndex===index) && (
                                   <Box
                                     w="3px"
                                     h="28px"
@@ -3302,10 +3344,10 @@ const TradeModal = ({
                                   justifyContent="space-between"
                                   py="5px"
                                   pr="2"
-                                  pl={`${pool === currentPool ? '1' : '4'}`}
+                                  pl={`${(pool === currentPool && poolHoverIndex===-1) || poolHoverIndex===index ? '1' : '4'}`}
                                   gap="1"
                                   bg={`${
-                                    pool === currentPool ? '#4D59E8' : 'inherit'
+                                    (pool === currentPool && poolHoverIndex===-1) || poolHoverIndex===index ? '#4D59E8' : 'inherit'
                                   }`}
                                   borderRadius="md"
                                 >
@@ -3467,12 +3509,19 @@ const TradeModal = ({
                                 alignItems="center"
                                 gap="1"
                                 pr="2"
+                                onMouseEnter={()=>{
+                                  setpoolHoverIndex(index)
+                                }}
+                                onMouseLeave={()=>{
+                                  setpoolHoverIndex(-1)
+                                }}
                                 onClick={() => {
                                   setCurrentPoolCoin(coin)
                                   setToMarketSwap(coin)
+                                  setpoolHoverIndex(-1)
                                 }}
                               >
-                                {coin === currentPoolCoin && (
+                                {(poolHoverIndex===-1? coin === currentPoolCoin:poolHoverIndex===index) && (
                                   <Box
                                     w="3px"
                                     h="28px"
@@ -3484,10 +3533,10 @@ const TradeModal = ({
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  px={`${coin === currentPoolCoin ? '1' : '5'}`}
+                                  px={`${(coin === currentPoolCoin && poolHoverIndex===-1) || poolHoverIndex===index ? '1' : '5'}`}
                                   gap="1"
                                   bg={`${
-                                    coin === currentPoolCoin
+                                    (coin === currentPoolCoin && poolHoverIndex===-1) || poolHoverIndex===index
                                       ? '#4D59E8'
                                       : 'inherit'
                                   }`}

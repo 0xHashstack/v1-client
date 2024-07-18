@@ -137,6 +137,7 @@ const SupplyModal = ({
   // };
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState('')
   const [transactionStarted, setTransactionStarted] = useState(false)
+  const [collateralMarketHoverIndex, setcollateralMarketHoverIndex] = useState<Number>(-1)
   const [toastId, setToastId] = useState<any>()
   const [uniqueID, setUniqueID] = useState(0)
   const {
@@ -1001,6 +1002,12 @@ const SupplyModal = ({
                               assetBalance[coin]?.dataBalanceOf?.balance &&
                               'flex'
                             }
+                            onMouseEnter={()=>{
+                              setcollateralMarketHoverIndex(index);
+                            }}
+                            onMouseLeave={()=>{
+                              setcollateralMarketHoverIndex(-1);
+                            }}
                             onClick={() => {
                               setCurrentSelectedCoin(coin)
                               setAsset(coin)
@@ -1009,6 +1016,7 @@ const SupplyModal = ({
                                   (curr: any) => curr?.token === coin
                                 )?.idx
                               )
+                              setcollateralMarketHoverIndex(-1);
                               ////console.log(coin,"coin in supply modal")
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
@@ -1027,7 +1035,7 @@ const SupplyModal = ({
                               dispatch(setCoinSelectedSupplyModal(coin))
                             }}
                           >
-                            {coin === currentSelectedCoin && (
+                            { (collateralMarketHoverIndex===-1 ?coin === currentSelectedCoin:collateralMarketHoverIndex===index) && (
                               <Box
                                 w="3px"
                                 h="28px"
@@ -1039,12 +1047,13 @@ const SupplyModal = ({
                               w="full"
                               display="flex"
                               py="5px"
-                              pl={`${coin === currentSelectedCoin ? '1' : '5'}`}
+                              pl={`${ (coin === currentSelectedCoin && collateralMarketHoverIndex===-1) || collateralMarketHoverIndex===index ? '1' : '5'}`}
                               pr="6px"
                               gap="1"
                               justifyContent="space-between"
+                              transition="ease .1s"
                               bg={`${
-                                coin === currentSelectedCoin
+                                (coin === currentSelectedCoin && collateralMarketHoverIndex===-1) || collateralMarketHoverIndex===index
                                   ? '#4D59E8'
                                   : 'inherit'
                               }`}

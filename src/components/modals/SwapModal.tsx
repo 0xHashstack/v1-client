@@ -123,6 +123,8 @@ const SwapModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
   const [uniqueID, setUniqueID] = useState(0);
+  const [poolHoverIndex, setpoolHoverIndex] = useState<Number>(-1)
+  const [hoverBorrowIdIndex, sethoverBorrowIdIndex] = useState<Number>(-1)
   const getUniqueId = () => uniqueID;
 
   const dispatch = useDispatch();
@@ -807,13 +809,20 @@ const SwapModal = ({
                           alignItems="center"
                           gap="1"
                           pr="2"
+                          onMouseEnter={()=>{
+                            setpoolHoverIndex(index)
+                          }}
+                          onMouseLeave={()=>{
+                            setpoolHoverIndex(-1)
+                          }}
                           onClick={() => {
                             setCurrentSelectedCoin(coin);
                             setToMarket(coin);
                             dispatch(setCoinSelectedSupplyModal(coin));
+                            setpoolHoverIndex(-1)
                           }}
                         >
-                          {coin === currentSelectedCoin && (
+                          {(poolHoverIndex===-1? coin === currentSelectedCoin:poolHoverIndex===index) && (
                             <Box
                               w="3px"
                               h="28px"
@@ -825,13 +834,14 @@ const SwapModal = ({
                             w="full"
                             display="flex"
                             py="5px"
-                            px={`${coin === currentSelectedCoin ? "1" : "5"}`}
+                            px={`${(coin === currentSelectedCoin && poolHoverIndex===-1) || poolHoverIndex===index ? "1" : "5"}`}
                             gap="1"
                             bg={`${
-                              coin === currentSelectedCoin
+                              (coin === currentSelectedCoin && poolHoverIndex===-1) || poolHoverIndex===index
                                 ? "#4D59E8"
                                 : "inherit"
                             }`}
+                            transition="ease .1s"
                             borderRadius="md"
                           >
                             <Box p="1">{getCoin(coin)}</Box>
@@ -924,9 +934,16 @@ const SwapModal = ({
                           alignItems="center"
                           gap="1"
                           px="2"
+                          onMouseEnter={()=>{
+                            sethoverBorrowIdIndex(index)
+                          }}
+                          onMouseLeave={()=>{
+                            sethoverBorrowIdIndex(-1);
+                          }}
                           onClick={() => {
                             setCurrentBorrowId("ID - " + coin);
                             handleBorrowMarketCoinChange(coin);
+                            sethoverBorrowIdIndex(-1);
                             setSwapLoanId(coin);
                             const borrowIdString = String(coin);
                             const result = userLoans.find(
@@ -940,7 +957,7 @@ const SwapModal = ({
                             setBorrowAmount(result?.loanAmountParsed);
                           }}
                         >
-                          {coin === currentBorrowId && (
+                          {(hoverBorrowIdIndex===-1? coin === currentBorrowId:hoverBorrowIdIndex===index) && (
                             <Box
                               w="3px"
                               h="28px"
@@ -953,11 +970,11 @@ const SwapModal = ({
                             display="flex"
                             py="5px"
                             px={`${
-                              "ID - " + coin === currentBorrowId ? "2" : "5"
+                              "ID - " + (coin === currentBorrowId && hoverBorrowIdIndex===-1) || hoverBorrowIdIndex===index ? "2" : "5"
                             }`}
                             gap="1"
                             bg={`${
-                              "ID - " + coin === currentBorrowId
+                              "ID - " + (coin === currentBorrowId && hoverBorrowIdIndex===-1) || hoverBorrowIdIndex===index
                                 ? "#4D59E8"
                                 : "inherit"
                             }`}

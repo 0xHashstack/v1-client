@@ -179,6 +179,10 @@ const YourBorrowModal = ({
   const dispatch = useDispatch()
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
   const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  const [borrowIdHoverIndex, setborrowIdHoverIndex] = useState<Number>(-1)
+  const [actionsHoverindex, setactionsHoverindex] = useState<Number>(-1)
+  const [poolIndex, setpoolIndex] = useState<Number>(-1)
+  const [addCollateralIndex, setaddCollateralIndex] = useState<Number>(-1);
   const [sliderValue1, setSliderValue1] = useState(0)
   const modalDropdowns = useSelector(selectModalDropDowns)
   const [inputAmount1, setinputAmount1] = useState(0)
@@ -3624,15 +3628,22 @@ const YourBorrowModal = ({
                                     alignItems="center"
                                     gap="1"
                                     pr="2"
+                                    onMouseEnter={()=>{
+                                      setactionsHoverindex(index)
+                                    }}
+                                    onMouseDown={()=>{
+                                      setactionsHoverindex(-1)
+                                    }}
                                     onClick={() => {
                                       if (action === 'Zero Repay') {
                                         setRepayAmount(0)
                                         setSliderValue(0)
                                       }
+                                      setactionsHoverindex(-1)
                                       setCurrentAction(action)
                                     }}
                                   >
-                                    {action === currentAction && (
+                                    {(actionsHoverindex===-1? action === currentAction:actionsHoverindex===index) && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -3645,14 +3656,15 @@ const YourBorrowModal = ({
                                       display="flex"
                                       py="5px"
                                       px={`${
-                                        action === currentAction ? '2' : '5'
+                                        (action === currentAction && actionsHoverindex===-1) || actionsHoverindex===index ? '2' : '5'
                                       }`}
                                       gap="1"
                                       bg={`${
-                                        action === currentAction
+                                        (action === currentAction && actionsHoverindex===-1) || actionsHoverindex===index
                                           ? '#4D59E8'
                                           : 'inherit'
                                       }`}
+                                      transition="ease .1s"
                                       borderRadius="md"
                                     >
                                       {/* <Box p="1">{getCoin(action)}</Box> */}
@@ -3767,9 +3779,15 @@ const YourBorrowModal = ({
                                         alignItems="center"
                                         gap="1"
                                         pr="2"
+                                        onMouseEnter={()=>{
+                                          setborrowIdHoverIndex(index)
+                                        }}
+                                        onMouseLeave={()=>{
+                                          setborrowIdHoverIndex(-1)
+                                        }}
                                         onClick={() => {
                                           setCurrentBorrowId1('ID - ' + coin)
-
+                                          setborrowIdHoverIndex(-1)
                                           handleBorrowMarketCoinChange1(coin)
                                           setLoanId(coin)
                                           setSwapLoanId(coin)
@@ -3778,8 +3796,8 @@ const YourBorrowModal = ({
                                           //console.log(liquidityLoanId);
                                         }}
                                       >
-                                        {'ID - ' + coin ===
-                                          currentBorrowId1 && (
+                                        {  (borrowIdHoverIndex===-1?('ID - ' + coin ===
+                                          currentBorrowId1): borrowIdHoverIndex===index) && (
                                           <Box
                                             w="3px"
                                             h="28px"
@@ -3792,13 +3810,13 @@ const YourBorrowModal = ({
                                           display="flex"
                                           py="5px"
                                           px={`${
-                                            'ID - ' + coin === currentBorrowId1
+                                            (('ID - '+coin) === currentBorrowId1 &&borrowIdHoverIndex===-1) || borrowIdHoverIndex===index
                                               ? '2'
                                               : '5'
                                           }`}
                                           gap="1"
                                           bg={`${
-                                            'ID - ' + coin === currentBorrowId1
+                                            (('ID - '+coin) === currentBorrowId1 &&borrowIdHoverIndex===-1) || borrowIdHoverIndex===index
                                               ? '#4D59E8'
                                               : 'inherit'
                                           }`}
@@ -5317,9 +5335,16 @@ const YourBorrowModal = ({
                                     alignItems="center"
                                     gap="1"
                                     pr="2"
+                                    onMouseEnter={()=>{
+                                      setborrowIdHoverIndex(index)
+                                    }}
+                                    onMouseLeave={()=>{
+                                      setborrowIdHoverIndex(-1)
+                                    }}
                                     onClick={() => {
                                       setCurrentBorrowId2('ID - ' + coin)
                                       handleBorrowMarketCoinChange2(coin)
+                                      setborrowIdHoverIndex(-1)
                                       setCollateralAsset(
                                         currentBorrowMarketCoin2.slice(1)
                                       )
@@ -5328,7 +5353,7 @@ const YourBorrowModal = ({
                                       )
                                     }}
                                   >
-                                    {'ID - ' + coin === currentBorrowId2 && (
+                                    {(borrowIdHoverIndex===-1?('ID - ' + coin === currentBorrowId2):borrowIdHoverIndex===index) && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -5341,13 +5366,13 @@ const YourBorrowModal = ({
                                       display="flex"
                                       py="5px"
                                       px={`${
-                                        'ID - ' + coin === currentBorrowId2
+                                        (('ID - '+coin) === currentBorrowId2 &&borrowIdHoverIndex===-1) || borrowIdHoverIndex===index
                                           ? '2'
                                           : '5'
                                       }`}
                                       gap="1"
                                       bg={`${
-                                        'ID - ' + coin === currentBorrowId2
+                                        (('ID - '+coin) === currentBorrowId2 &&borrowIdHoverIndex===-1) || borrowIdHoverIndex===index
                                           ? '#4D59E8'
                                           : 'inherit'
                                       }`}
@@ -5588,11 +5613,18 @@ const YourBorrowModal = ({
                                       alignItems="center"
                                       gap="1"
                                       pr="2"
+                                      onMouseEnter={()=>{
+                                        setaddCollateralIndex(index)
+                                      }}
+                                      onMouseLeave={()=>{
+                                        setaddCollateralIndex(-1)
+                                      }}
                                       onClick={() => {
                                         setcurrentTokenSelected(coin)
+                                        setaddCollateralIndex(-1)
                                       }}
                                     >
-                                      {coin === currentTokenSelected && (
+                                      {(addCollateralIndex===-1? coin === currentTokenSelected:addCollateralIndex===index) && (
                                         <Box
                                           w="3px"
                                           h="28px"
@@ -5605,14 +5637,14 @@ const YourBorrowModal = ({
                                         display="flex"
                                         py="5px"
                                         px={`${
-                                          coin === currentTokenSelected
+                                          (coin === currentTokenSelected && addCollateralIndex===-1) || addCollateralIndex===index
                                             ? '2'
                                             : '5'
                                         }`}
                                         gap="1"
                                         justifyContent="space-between"
                                         bg={`${
-                                          coin === currentTokenSelected
+                                          (coin === currentTokenSelected && addCollateralIndex===-1) || addCollateralIndex===index
                                             ? '#4D59E8'
                                             : 'inherit'
                                         }`}

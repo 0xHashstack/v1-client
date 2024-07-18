@@ -374,7 +374,10 @@ const [currentSplit, setCurrentSplit] = useState<
 
   const [borrowTransHash, setBorrowTransHash] = useState('')
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState('')
-
+  const [collateralMarketIndex, setcollateralMarketIndex] = useState<Number>(-1)
+  const [borrowMarketIndex, setborrowMarketIndex] = useState<Number>(-1)
+  const [dappHoverIndex, setdappHoverIndex] = useState<Number>(-1)
+  const [poolHoverIndex, setpoolHoverIndex] = useState<Number>(-1)
   const [isToastDisplayed, setToastDisplayed] = useState(false)
   const [showToast, setShowToast] = useState('true')
   const [toastId, setToastId] = useState<any>()
@@ -1699,12 +1702,19 @@ const [currentSplit, setCurrentSplit] = useState<
                                 alignItems="center"
                                 gap="1"
                                 pr="2"
+                                onMouseEnter={()=>{
+                                  setcollateralMarketIndex(index+6);
+                                }}
+                                onMouseLeave={()=>{
+                                  setcollateralMarketIndex(-1);
+                                }}
                                 onClick={() => {
                                   setCurrentCollateralCoin(coin)
                                   setRToken(coin)
                                   setRTokenCollateral(coin)
                                   setTokenTypeSelected('rToken')
                                   setwalletBalance(amount)
+                                  setcollateralMarketIndex(-1);
                                   // setCurrentBorrowAPR(
                                   //   coinIndex.find(
                                   //     (curr: any) =>
@@ -1714,7 +1724,7 @@ const [currentSplit, setCurrentSplit] = useState<
                                   // dispatch(setCoinSelectedSupplyModal(coin))
                                 }}
                               >
-                                {coin === currentCollateralCoin && (
+                                {(collateralMarketIndex===-1 ?coin === currentCollateralCoin:collateralMarketIndex===(index+6)) && (
                                   <Box
                                     w="3px"
                                     h="28px"
@@ -1727,13 +1737,14 @@ const [currentSplit, setCurrentSplit] = useState<
                                   display="flex"
                                   py="5px"
                                   pl={`${
-                                    coin === currentCollateralCoin ? '1' : '5'
+                                    (coin === currentCollateralCoin && collateralMarketIndex===-1) || collateralMarketIndex===(index+6) ? '1' : '5'
                                   }`}
                                   pr="6px"
                                   gap="1"
                                   justifyContent="space-between"
+                                  transition="ease .1s"
                                   bg={`${
-                                    coin === currentCollateralCoin
+                                    (coin === currentCollateralCoin && collateralMarketIndex===-1) || collateralMarketIndex===(index+6)
                                       ? '#4D59E8'
                                       : 'inherit'
                                   }`}
@@ -1794,11 +1805,18 @@ const [currentSplit, setCurrentSplit] = useState<
                             alignItems="center"
                             gap="1"
                             pr="2"
+                            onMouseEnter={()=>{
+                              setcollateralMarketIndex(index);
+                            }}
+                            onMouseLeave={()=>{
+                              setcollateralMarketIndex(-1);
+                            }}
                             onClick={() => {
                               setCurrentCollateralCoin(coin)
                               setCollateralMarket(coin)
                               setCollateralMarketNative(coin)
                               setTokenTypeSelected('Native')
+                              setcollateralMarketIndex(-1);
                               // setCurrentBorrowAPR(
                               //   coinIndex.find(
                               //     (curr: any) => curr?.token === coin
@@ -1821,7 +1839,7 @@ const [currentSplit, setCurrentSplit] = useState<
                               )
                             }}
                           >
-                            {coin === currentCollateralCoin && (
+                            {(collateralMarketIndex===-1 ?coin === currentCollateralCoin:collateralMarketIndex===index) && (
                               <Box
                                 w="3px"
                                 h="28px"
@@ -1834,12 +1852,13 @@ const [currentSplit, setCurrentSplit] = useState<
                               display="flex"
                               py="5px"
                               pl={`${
-                                coin === currentCollateralCoin ? '1' : '5'
+                                (coin === currentCollateralCoin && collateralMarketIndex===-1) || collateralMarketIndex===index ? '1' : '5'
                               }`}
                               pr="6px"
                               gap="1"
+                              transition="ease .1s"
                               bg={`${
-                                coin === currentCollateralCoin
+                                (coin === currentCollateralCoin && collateralMarketIndex===-1) || collateralMarketIndex===index
                                   ? '#4D59E8'
                                   : 'inherit'
                               }`}
@@ -2358,12 +2377,19 @@ const [currentSplit, setCurrentSplit] = useState<
                             alignItems="center"
                             gap="1"
                             pr="2"
+                            onMouseEnter={()=>{
+                              setborrowMarketIndex(index)
+                            }}
+                            onMouseLeave={()=>{
+                              setborrowMarketIndex(-1)
+                            }}
                             onClick={() => {
                               setCurrentBorrowCoin(coin)
                               setCurrentAvailableReserves(
                                 protocolStats?.[index]?.availableReserves *
                                   0.895
                               )
+                              setborrowMarketIndex(-1)
                               // setMarket(coin);
                               setMarket(coin)
                               setLoanMarket(coin as NativeToken)
@@ -2374,7 +2400,7 @@ const [currentSplit, setCurrentSplit] = useState<
                               )
                             }}
                           >
-                            {coin === currentBorrowCoin && (
+                            {(borrowMarketIndex===-1 ? coin === currentBorrowCoin:borrowMarketIndex===index) && (
                               <Box
                                 w="3px"
                                 h="28px"
@@ -2386,14 +2412,15 @@ const [currentSplit, setCurrentSplit] = useState<
                               w="full"
                               display="flex"
                               py="5px"
-                              pl={`${coin === currentBorrowCoin ? '1' : '5'}`}
+                              pl={`${(coin === currentBorrowCoin && borrowMarketIndex===-1) || borrowMarketIndex===index ? '1' : '5'}`}
                               pr="6px"
                               gap="1"
                               bg={`${
-                                coin === currentBorrowCoin
+                                (coin === currentBorrowCoin && borrowMarketIndex===-1) || borrowMarketIndex===index
                                   ? '#4D59E8'
                                   : 'inherit'
                               }`}
+                              transition="ease .1s"
                               borderRadius="md"
                               justifyContent="space-between"
                             >
@@ -3023,6 +3050,12 @@ const [currentSplit, setCurrentSplit] = useState<
                                 gap="1"
                                 pr="2"
                                 bg="inherit"
+                                onMouseEnter={()=>{
+                                  setdappHoverIndex(index)
+                                }}
+                                onMouseDown={()=>{
+                                  setdappHoverIndex(-1);
+                                }}
                                 onClick={() => {
                                   setCurrentDapp(dapp.name)
                                   if (dapp.name === 'Jediswap') {
@@ -3036,7 +3069,7 @@ const [currentSplit, setCurrentSplit] = useState<
                                 _disabled={{ cursor: 'pointer' }}
                                 isDisabled={dapp.status === 'disable'}
                               >
-                                {dapp.name === currentDapp && (
+                                {(dappHoverIndex===-1 ? dapp.name === currentDapp:dappHoverIndex===index) && (
                                   <Box
                                     w="3px"
                                     h="28px"
@@ -3049,11 +3082,11 @@ const [currentSplit, setCurrentSplit] = useState<
                                   display="flex"
                                   py="5px"
                                   px={`${
-                                    dapp.name === currentDapp ? '1' : '5'
+                                    (dapp.name === currentDapp && dappHoverIndex===-1) || dappHoverIndex===index ? '1' : '5'
                                   }`}
                                   gap="1"
                                   bg={`${
-                                    dapp.name === currentDapp
+                                    (dapp.name === currentDapp && dappHoverIndex===-1) || dappHoverIndex===index
                                       ? '#4D59E8'
                                       : 'inherit'
                                   }`}
@@ -3222,8 +3255,15 @@ const [currentSplit, setCurrentSplit] = useState<
                                 alignItems="center"
                                 gap="1"
                                 pr="2"
+                                onMouseEnter={()=>{
+                                  setpoolHoverIndex(index);
+                                }}
+                                onMouseLeave={()=>{
+                                  setpoolHoverIndex(-1);
+                                }}
                                 onClick={() => {
                                   setCurrentPool(pool)
+                                  setpoolHoverIndex(-1);
                                   //set type for pools as native token[]
                                   //@ts-ignore
                                   setToMarketLiqA(pool.split('/')[0])
@@ -3236,7 +3276,7 @@ const [currentSplit, setCurrentSplit] = useState<
                                     : ''
                                 }
                               >
-                                {pool === currentPool && (
+                                {(poolHoverIndex===-1? pool === currentPool:poolHoverIndex===index) && (
                                   <Box
                                     w="3px"
                                     h="28px"
@@ -3250,11 +3290,12 @@ const [currentSplit, setCurrentSplit] = useState<
                                   justifyContent="space-between"
                                   py="5px"
                                   pr="2"
-                                  pl={`${pool === currentPool ? '1' : '4'}`}
+                                  pl={`${(pool === currentPool && poolHoverIndex===-1) || poolHoverIndex===index ? '1' : '4'}`}
                                   gap="1"
                                   bg={`${
-                                    pool === currentPool ? '#4D59E8' : 'inherit'
+                                    (pool === currentPool && poolHoverIndex===-1) || poolHoverIndex===index ? '#4D59E8' : 'inherit'
                                   }`}
+                                  transition="ease .1s"
                                   borderRadius="md"
                                 >
                                   <Box
@@ -3390,9 +3431,6 @@ const [currentSplit, setCurrentSplit] = useState<
                             const matchingPairJedi = jediswapPools?.find(
                               (pair: any) => pair === coin
                             )
-                            console.log(matchingPair,matchingPairJedi,
-                              "value"
-                            )
                             if (
                               coin == currentBorrowCoin ||
                               (process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
@@ -3418,12 +3456,20 @@ const [currentSplit, setCurrentSplit] = useState<
                                 alignItems="center"
                                 gap="1"
                                 pr="2"
+                                onMouseEnter={()=>{
+                                  setpoolHoverIndex(index)
+                                }}
+                                onMouseLeave={()=>{
+                                  setpoolHoverIndex(-1);
+                                }}
+
                                 onClick={() => {
                                   setCurrentPoolCoin(coin)
                                   setToMarketSwap(coin)
+                                  setpoolHoverIndex(-1);
                                 }}
                               >
-                                {coin === currentPoolCoin && (
+                                {(poolHoverIndex===-1? coin === currentPoolCoin:poolHoverIndex===index) && (
                                   <Box
                                     w="3px"
                                     h="28px"
@@ -3435,13 +3481,14 @@ const [currentSplit, setCurrentSplit] = useState<
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  px={`${coin === currentPoolCoin ? '1' : '5'}`}
+                                  px={`${(coin === currentPoolCoin && poolHoverIndex===-1) || poolHoverIndex===index ? '1' : '5'}`}
                                   gap="1"
                                   bg={`${
-                                    coin === currentPoolCoin
+                                    (coin === currentPoolCoin && poolHoverIndex===-1) || poolHoverIndex===index
                                       ? '#4D59E8'
                                       : 'inherit'
                                   }`}
+                                  transition="ease .1s"
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
