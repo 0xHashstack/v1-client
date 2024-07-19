@@ -1159,7 +1159,6 @@ const useDataLoader = () => {
     try {
       const fetchOraclePrices = async () => {
         let data = await getOraclePrices()
-        console.log(data,"data")
         if (!data || data?.length < 5) {
           return
         }
