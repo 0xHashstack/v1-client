@@ -5,6 +5,7 @@ import {
   getRTokenFromAddress,
   getTokenFromAddress,
   metricsContractAddress,
+  config,
 } from "../stark-constants";
 // import metricsAbi from "../abis_upgrade/metrics_abi.json";
 import metricsAbi from "../abis_mainnet/metrics_abi.json"
@@ -113,10 +114,6 @@ export async function getUserDeposits(account: string) {
   try {
     const tokens = contractsEnv?.TOKENS;
     const promises: any = [];
-    const config = getMainnetConfig(
-      './target/dev',
-      'https://starknet-mainnet.infura.io/v3/82802c15c3d242d2846e464a66238198'
-  );
     const metricsContract = new Metrics(
       config,
       new Address(contractsEnv?.DIALER_CONTRACT_ADDRESS),
