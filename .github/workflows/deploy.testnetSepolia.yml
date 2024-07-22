@@ -57,7 +57,7 @@ jobs:
         run: |
           touch .env
           echo 'NEXT_PUBLIC_APP_ENV=production' >> .env
-          echo 'NEXT_PUBLIC_NODE_ENV=mainnet' >> .env
+          echo 'NEXT_PUBLIC_NODE_ENV=testnet' >> .env
           echo 'NEXT_PUBLIC_TESTNET_CHAINID=0x534e5f474f45524c49' >> .env
           echo 'NEXT_PUBLIC_MAINNET_CHAINID=0x534e5f4d41494e' >> .env
           echo 'NEXT_PUBLIC_METRICS_API=https://5c8l45vyxb.execute-api.ap-southeast-1.amazonaws.com/' >> .env
