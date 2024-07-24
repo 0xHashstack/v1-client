@@ -491,12 +491,9 @@ const Footer = () => {
               alignItems={'center'}
               gap={1}
             >
-              <Image
-                src="/latestSyncedBlockGreenDot.svg"
-                alt="Picture of the author"
-                width="16"
-                height="16"
-              />
+              <Box className="pulsatingDot" mr="0.2rem">
+
+              </Box>
               <Box color="#2BC8BF" fontSize="12px">
                 {currentBlock || (
                   <Skeleton

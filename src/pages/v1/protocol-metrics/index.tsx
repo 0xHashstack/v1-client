@@ -36,6 +36,7 @@ import {
 import useDataLoader from "@/hooks/useDataLoader";
 import UtilisationRateChart from "@/components/layouts/charts/utilisationRateChart";
 import Image from "next/image";
+import TableInfoIcon from "@/components/layouts/table/tableIcons/infoIcon";
 const ProtocolMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -82,106 +83,133 @@ const ProtocolMetrics = () => {
 
   return (
     <PageCard pt="8rem">
-      <Box
-        width="95%"
-        p="2rem 4rem"
-        display="flex"
-        borderRadius="5px"
-        background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-        border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-      >
-        {!loading ? (
-          <Box width="100%">
-            <HStack
-              justifyContent="flex-start"
-              mb="4rem"
-              alignItems="center"
-              gap={4}
-            >
-              <Link href={"/v1/market"}>
-                <Box
-                  marginRight={1.5}
-                  display="flex"
-                  bg="transparent"
-                  fontStyle="normal"
-                  fontWeight="400"
-                  fontSize="14px"
-                  lineHeight="20px"
-                  alignItems="center"
-                  letterSpacing="-0.15px"
-                  // padding="1.125rem 0.4rem"
-                  margin="2px"
-                  color="#676D9A"
-                  // borderBottom={
-                  //   pathname === `/${option.path}` ? "2px solid #F9826C" : ""
-                  // }
-                  borderRadius="0px"
-                  // _hover={{ bg: "transparent", color: "#E6EDF3" }}
-                  gap={2}
-                >
-                  <Image
-                    src={"/arrowNavLeft.svg"}
-                    alt="Arrow Navigation Left"
-                    width="6"
-                    height="6"
-                    style={{
-                      cursor: "pointer",
-                    }}
-                    // _hover={{ bg: "transparent", color: "#E6EDF3" }}
-                  />
-                  back
-                </Box>
-              </Link>
-              <Text
-                color="#FFF"
-                fontSize="14px"
-                // bgColor="blue"
-                alignItems="center"
-                textAlign="center"
-                mt={0.5}
-                py="6px"
-                px="6px"
-                fontWeight="600"
-                borderBottom="2px solid #4D59E8"
-              >
-                Protocol metrics
-              </Text>
-              {/* <Link href={"/v1/market"}>
-              <Box cursor="pointer">
-                <CancelIcon />
-              </Box>
-            </Link> */}
-            </HStack>
-            <Box display="flex" flexDir="column" gap="64px">
-              <Box display="flex" gap="30px" w="full" mb="4rem">
-                <TotalValueLockedMetrics />
-              </Box>
-              {/* <UtilisationRateChart/> */}
-            </Box>
-            <SupplyMetrics />
-            {/* <BorrowMetrics/> */}
-            {/* <MarketInformation/>
-          <TotalCommunityActivity/> */}
-          </Box>
-        ) : (
+        <Box display="flex" flexDirection="column">
           <Box
-            width="100%"
-            height="68vh"
             display="flex"
-            justifyContent="center"
-            alignItems="center"
+            flexDirection="column"
+            bg="#222766"
+            fontSize="14px"
+            p="4"
+            fontStyle="normal"
+            fontWeight="400"
+            borderRadius="6px"
+            border="1px solid #3841AA"
+            color="#B1B0B5"
           >
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="#010409"
-              size="xl"
-            />
+            <Box display="flex">
+              <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
+                <TableInfoIcon />
+              </Box>
+                This page is under maintenance. Our team is actively working on resolving this issue.
+            </Box>
+              <Text ml="1.7rem" mt="0.2rem">
+                Thank you for your patience.
+              </Text>
           </Box>
-        )}
-      </Box>
+        </Box>
+
     </PageCard>
+    // <PageCard pt="8rem">
+    //   <Box
+    //     width="95%"
+    //     p="2rem 4rem"
+    //     display="flex"
+    //     borderRadius="5px"
+    //     background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+    //     border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+    //   >
+    //     {!loading ? (
+    //       <Box width="100%">
+    //         <HStack
+    //           justifyContent="flex-start"
+    //           mb="4rem"
+    //           alignItems="center"
+    //           gap={4}
+    //         >
+    //           <Link href={"/v1/market"}>
+    //             <Box
+    //               marginRight={1.5}
+    //               display="flex"
+    //               bg="transparent"
+    //               fontStyle="normal"
+    //               fontWeight="400"
+    //               fontSize="14px"
+    //               lineHeight="20px"
+    //               alignItems="center"
+    //               letterSpacing="-0.15px"
+    //               // padding="1.125rem 0.4rem"
+    //               margin="2px"
+    //               color="#676D9A"
+    //               // borderBottom={
+    //               //   pathname === `/${option.path}` ? "2px solid #F9826C" : ""
+    //               // }
+    //               borderRadius="0px"
+    //               // _hover={{ bg: "transparent", color: "#E6EDF3" }}
+    //               gap={2}
+    //             >
+    //               <Image
+    //                 src={"/arrowNavLeft.svg"}
+    //                 alt="Arrow Navigation Left"
+    //                 width="6"
+    //                 height="6"
+    //                 style={{
+    //                   cursor: "pointer",
+    //                 }}
+    //                 // _hover={{ bg: "transparent", color: "#E6EDF3" }}
+    //               />
+    //               back
+    //             </Box>
+    //           </Link>
+    //           <Text
+    //             color="#FFF"
+    //             fontSize="14px"
+    //             // bgColor="blue"
+    //             alignItems="center"
+    //             textAlign="center"
+    //             mt={0.5}
+    //             py="6px"
+    //             px="6px"
+    //             fontWeight="600"
+    //             borderBottom="2px solid #4D59E8"
+    //           >
+    //             Protocol metrics
+    //           </Text>
+    //           {/* <Link href={"/v1/market"}>
+    //           <Box cursor="pointer">
+    //             <CancelIcon />
+    //           </Box>
+    //         </Link> */}
+    //         </HStack>
+    //         <Box display="flex" flexDir="column" gap="64px">
+    //           <Box display="flex" gap="30px" w="full" mb="4rem">
+    //             <TotalValueLockedMetrics />
+    //           </Box>
+    //           {/* <UtilisationRateChart/> */}
+    //         </Box>
+    //         <SupplyMetrics />
+    //         {/* <BorrowMetrics/> */}
+    //         {/* <MarketInformation/>
+    //       <TotalCommunityActivity/> */}
+    //       </Box>
+    //     ) : (
+    //       <Box
+    //         width="100%"
+    //         height="68vh"
+    //         display="flex"
+    //         justifyContent="center"
+    //         alignItems="center"
+    //       >
+    //         <Spinner
+    //           thickness="4px"
+    //           speed="0.65s"
+    //           emptyColor="gray.200"
+    //           color="#010409"
+    //           size="xl"
+    //         />
+    //       </Box>
+    //     )}
+    //   </Box>
+    // </PageCard>
   );
 };
 

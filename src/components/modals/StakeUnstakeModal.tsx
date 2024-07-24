@@ -589,6 +589,8 @@ const StakeUnstakeModal = ({
   const coinObj: any = coins?.find((obj) => coin?.name in obj)
   const rcoinValue = coinObj ? coinObj[coin.name] : 'rUSDT'
   const [isSupplied, setIsSupplied] = useState(false)
+  const [stakeHoverIndex, setstakeHoverIndex] = useState<Number>(-1)
+  const [unstakeHoverIndex, setunstakeHoverIndex] = useState<Number>(-1)
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState('BTC')
   const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] = useState(
@@ -1075,6 +1077,12 @@ const StakeUnstakeModal = ({
                                     alignItems="center"
                                     gap="1"
                                     pr="2"
+                                    onMouseEnter={()=>{
+                                      setstakeHoverIndex(index)
+                                    }}
+                                    onMouseLeave={()=>{
+                                      setstakeHoverIndex(-1);
+                                    }}
                                     onClick={() => {
                                       setCurrentSelectedStakeCoin(_coin)
                                       setRToken(_coin)
@@ -1094,10 +1102,11 @@ const StakeUnstakeModal = ({
                                             )
                                           : 0
                                       )
+                                      setstakeHoverIndex(-1);
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
-                                    {_coin === currentSelectedStakeCoin && (
+                                    {(stakeHoverIndex===-1 ? _coin === currentSelectedStakeCoin:stakeHoverIndex===index) && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -1110,7 +1119,7 @@ const StakeUnstakeModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${
-                                        _coin === currentSelectedStakeCoin
+                                        (_coin === currentSelectedStakeCoin && stakeHoverIndex===-1) ||stakeHoverIndex===index
                                           ? '1'
                                           : '5'
                                       }`}
@@ -1118,10 +1127,11 @@ const StakeUnstakeModal = ({
                                       gap="1"
                                       justifyContent="space-between"
                                       bg={`${
-                                        _coin === currentSelectedStakeCoin
+                                        (_coin === currentSelectedStakeCoin && stakeHoverIndex===-1) ||stakeHoverIndex===index
                                           ? '#4D59E8'
                                           : 'inherit'
                                       }`}
+                                      transition="ease .1s"
                                       borderRadius="md"
                                     >
                                       <Box display="flex">
@@ -2026,12 +2036,19 @@ const StakeUnstakeModal = ({
                                     alignItems="center"
                                     gap="1"
                                     pr="2"
+                                    onMouseEnter={()=>{
+                                      setunstakeHoverIndex(index);
+                                    }}
+                                    onMouseLeave={()=>{
+                                      setunstakeHoverIndex(-1);
+                                    }}
                                     onClick={() => {
                                       setcurrentSelectedUnstakeCoin(_coin)
                                       setUnstakeRToken(_coin)
+                                      setunstakeHoverIndex(-1);
                                     }}
                                   >
-                                    {_coin === currentSelectedUnstakeCoin && (
+                                    {(unstakeHoverIndex===-1? _coin === currentSelectedUnstakeCoin:unstakeHoverIndex===index) && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -2044,7 +2061,7 @@ const StakeUnstakeModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${
-                                        _coin === currentSelectedUnstakeCoin
+                                        (_coin === currentSelectedUnstakeCoin &&unstakeHoverIndex===-1) || unstakeHoverIndex===index
                                           ? '1'
                                           : '5'
                                       }`}
@@ -2052,10 +2069,11 @@ const StakeUnstakeModal = ({
                                       gap="1"
                                       justifyContent="space-between"
                                       bg={`${
-                                        _coin === currentSelectedUnstakeCoin
+                                        (_coin === currentSelectedUnstakeCoin &&unstakeHoverIndex===-1) || unstakeHoverIndex===index
                                           ? '#4D59E8'
                                           : 'inherit'
                                       }`}
+                                      transition="ease .1s"
                                       borderRadius="md"
                                     >
                                       <Box display="flex">

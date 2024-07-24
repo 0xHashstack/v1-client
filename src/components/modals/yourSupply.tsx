@@ -228,6 +228,9 @@ const YourSupplyModal = ({
   const [withdrawTransactionStarted, setWithdrawTransactionStarted] =
     useState(false)
     const [estrTokens, setEstrTokens] = useState<any>(0)
+    const [addSupplyHoverIndex, setaddSupplyHoverIndex] = useState<Number>(-1)
+    const [unstakeHoverIndex, setunstakeHoverIndex] = useState<Number>(-1)
+    const [withdrawHoverIndex, setwithdrawHoverIndex] = useState<Number>(-1)
     
     const {
       unstakeRToken,
@@ -1098,16 +1101,23 @@ const YourSupplyModal = ({
                                     alignItems="center"
                                     gap="1"
                                     pr="2"
+                                    onMouseEnter={()=>{
+                                      setaddSupplyHoverIndex(index)
+                                    }}
+                                    onMouseLeave={()=>{
+                                      setaddSupplyHoverIndex(-1);
+                                    }}
                                     onClick={() => {
                                       setCurrentSelectedSupplyCoin(
                                         coin.substring(1)
                                       )
+                                      setaddSupplyHoverIndex(-1);
                                       setSupplyAsset(coin)
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
-                                    {coin.substring(1) ===
-                                      currentSelectedSupplyCoin && (
+                                    {(addSupplyHoverIndex===-1? coin.substring(1) ===
+                                      currentSelectedSupplyCoin:addSupplyHoverIndex===index) && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -1120,16 +1130,16 @@ const YourSupplyModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${
-                                        coin.substring(1) ===
-                                        currentSelectedSupplyCoin
+                                        (coin.substring(1) ===
+                                        currentSelectedSupplyCoin && addSupplyHoverIndex===-1) || addSupplyHoverIndex===index
                                           ? '1'
                                           : '5'
                                       }`}
                                       pr="6px"
                                       gap="1"
                                       bg={`${
-                                        coin.substring(1) ===
-                                        currentSelectedSupplyCoin
+                                        (coin.substring(1) ===
+                                        currentSelectedSupplyCoin && addSupplyHoverIndex===-1) || addSupplyHoverIndex===index
                                           ? '#4D59E8'
                                           : 'inherit'
                                       }`}
@@ -2093,12 +2103,19 @@ const YourSupplyModal = ({
                                     alignItems="center"
                                     gap="1"
                                     pr="2"
+                                    onMouseEnter={()=>{
+                                      setunstakeHoverIndex(index)
+                                    }}
+                                    onMouseLeave={()=>{
+                                      setunstakeHoverIndex(-1);
+                                    }}
                                     onClick={() => {
                                       setcurrentedSelectedUnstakeCoinModal(_coin)
                                       setUnstakeRToken(_coin)
+                                      setunstakeHoverIndex(-1);
                                     }}
                                   >
-                                    {_coin === currentedSelectedUnstakeCoinModal && (
+                                    {(unstakeHoverIndex===-1? _coin === currentedSelectedUnstakeCoinModal:unstakeHoverIndex===index) && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -2111,7 +2128,7 @@ const YourSupplyModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${
-                                        _coin === currentedSelectedUnstakeCoinModal
+                                        (_coin === currentedSelectedUnstakeCoinModal && unstakeHoverIndex===-1) || unstakeHoverIndex===index
                                           ? '1'
                                           : '5'
                                       }`}
@@ -2119,10 +2136,11 @@ const YourSupplyModal = ({
                                       gap="1"
                                       justifyContent="space-between"
                                       bg={`${
-                                        _coin === currentedSelectedUnstakeCoinModal
+                                        (_coin === currentedSelectedUnstakeCoinModal && unstakeHoverIndex===-1) || unstakeHoverIndex===index
                                           ? '#4D59E8'
                                           : 'inherit'
                                       }`}
+                                      transition="ease .1s"
                                       borderRadius="md"
                                     >
                                       <Box display="flex">
@@ -2793,7 +2811,14 @@ const YourSupplyModal = ({
                                     alignItems="center"
                                     gap="1"
                                     pr="2"
+                                    onMouseEnter={()=>{
+                                      setwithdrawHoverIndex(index)
+                                    }}
+                                    onMouseLeave={()=>{
+                                      setwithdrawHoverIndex(-1)
+                                    }}
                                     onClick={() => {
+                                      setwithdrawHoverIndex(-1)
                                       setcurrentSelectedWithdrawlCoin(coin)
                                       setAsset(
                                         coin[0] == 'r' ? coin.slice(1) : coin
@@ -2801,7 +2826,7 @@ const YourSupplyModal = ({
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
-                                    {coin === currentSelectedWithdrawlCoin && (
+                                    {(withdrawHoverIndex===-1?coin === currentSelectedWithdrawlCoin:withdrawHoverIndex===index) && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -2814,14 +2839,14 @@ const YourSupplyModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${
-                                        coin === currentSelectedWithdrawlCoin
+                                        (coin === currentSelectedWithdrawlCoin && withdrawHoverIndex===-1) || withdrawHoverIndex===index
                                           ? '1'
                                           : '5'
                                       }`}
                                       pr="6px"
                                       gap="1"
                                       bg={`${
-                                        coin === currentSelectedWithdrawlCoin
+                                        (coin === currentSelectedWithdrawlCoin && withdrawHoverIndex===-1) || withdrawHoverIndex===index
                                           ? '#4D59E8'
                                           : 'inherit'
                                       }`}
