@@ -190,7 +190,6 @@ const BorrowModal = ({
   const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
   Number | undefined | null
 >()
-console.log(poolAprs,"pool")
 const [currentSplit, setCurrentSplit] = useState<
   Number[] | undefined | null
 >()
