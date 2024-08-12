@@ -23,7 +23,8 @@ import useClaimStrk from '@/Blockchain/hooks/Writes/useStrkClaim'
 import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards'
 import { parseAmount } from '@/Blockchain/utils/utils'
 import { useAccount } from '@starknet-react/core'
-import dataStrkRewards from '../../layouts/strkDashboard/round_11.json'
+import dataStrkRewards from '../../layouts/strkDashboard/round_12.json'
+import dataStrkRewards11 from '../../layouts/strkDashboard/round_11.json'
 import dataStrkRewards10 from '../../layouts/strkDashboard/round_10.json'
 import dataStrkRewards9 from '../../layouts/strkDashboard/round_9.json'
 import dataStrkRewards8 from '../../layouts/strkDashboard/round_8.json'
@@ -111,7 +112,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   const [hoverEpochDrop, sethoverEpochDrop] = useState(false)
   const [hoverccpDrop, sethoverccpDrop] = useState(false)
   const [hoverDefiDrop, sethoverDefiDrop] = useState(false)
-  const [defiSpringRoundCount, setDefiSpringRoundCount] = useState(new Array(11).fill(0));
+  const [defiSpringRoundCount, setDefiSpringRoundCount] = useState(new Array(12).fill(0));
   let topLength = ccpUserData.length * 5.15
   const [strkRewards, setstrkRewards] = useState<any>()
   const [totalStrkRewards, settotalStrkRewards] = useState<any>()
@@ -135,7 +136,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
     '13 June 2024 - 27 June 2024',
     '27 June 2024 - 11 July 2024',
     '11 July 2024 - 25 July 2024',
-    '25 July 2024 - 1 Aug 2024' 
+    '25 July 2024 - 1 Aug 2024',
+    '1 Aug 2024 - 8 Aug 2024'
   ]
   const  {address}  =useAccount()
   const {
@@ -254,7 +256,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
       const round_8=(dataStrkRewards8 as any)[processAddress(address)]
       const round_9=(dataStrkRewards9 as any)[processAddress(address)]
       const round_10=(dataStrkRewards10 as any)[processAddress(address)]
-      const round_11=(dataStrkRewards as any)[processAddress(address)]
+      const round_11=(dataStrkRewards11 as any)[processAddress(address)]
+      const round_12=(dataStrkRewards as any)[processAddress(address)]
       setdataRoundwiseAlloc([
         parseAmount(round_1?.amount ? round_1?.amount:0 ,18),
         parseAmount(round_2?.amount ? round_2?.amount:0,18)-parseAmount(round_1?.amount ? round_1?.amount:0 ,18),
@@ -267,6 +270,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
         parseAmount(round_9?.amount ? round_9?.amount:0,18)-parseAmount(round_8?.amount ? round_8?.amount:0 ,18),
         parseAmount(round_10?.amount ? round_10?.amount:0,18)-parseAmount(round_9?.amount ? round_9?.amount:0 ,18),
         parseAmount(round_11?.amount ? round_11?.amount:0,18)-parseAmount(round_10?.amount ? round_10?.amount:0 ,18),
+        parseAmount(round_12?.amount ? round_12?.amount:0,18)-parseAmount(round_11?.amount ? round_11?.amount:0 ,18),
       ])
     }
   },[address])
@@ -793,7 +797,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       <Tooltip
                         hasArrow
                         label={
-                          "Next Claim on 9 August"
+                          "Next Claim on 16 August"
                         }
                         placement="right"
                         rounded="md"
@@ -914,7 +918,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                           </Box>
                           <Box
                             borderBottom={
-                              idxDefi != 10
+                              idxDefi != 11
                                 ? isEpochOpen(idxDefi)
                                   ? ''
                                   : '1px solid #676D9A48'
@@ -940,8 +944,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   p={0}
                   top={
                     ccpDropdownSelected
-                      ? defiSpringDropdownSelected ?`${(11+ccpUserData.length) * 68 + 34*2}px`: `${ccpUserData.length * 68 + 34*1.2}px`
-                      : defiSpringDropdownSelected ?`${11 * 68 + 34*1.4}px`:epochDropdownSelected ?'16px':
+                      ? defiSpringDropdownSelected ?`${(12+ccpUserData.length) * 68 + 34*2}px`: `${ccpUserData.length * 68 + 34*1.2}px`
+                      : defiSpringDropdownSelected ?`${12 * 68 + 34*1.4}px`:epochDropdownSelected ?'16px':
                        '4px'
                   }
                   style={{ borderRadius: '6px' }}
@@ -1108,10 +1112,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   pl="1rem"
                   top={
                     ccpDropdownSelected
-                      ? defiSpringDropdownSelected ?`${(11+ccpUserData.length) * 68 + 64 * 3.3 + 34}px`: epochDropdownSelected
+                      ? defiSpringDropdownSelected ?`${(12+ccpUserData.length) * 68 + 64 * 3.3 + 34}px`: epochDropdownSelected
                         ? `${ccpUserData.length * 68 + 64 * 2.8 + 34}px`
                         : `${ccpUserData.length * 68}px`
-                      : defiSpringDropdownSelected ?`${11 * 68 + 64 * 2.9 + 34}px`:
+                      : defiSpringDropdownSelected ?`${12 * 68 + 64 * 2.9 + 34}px`:
                        `${2 * 68  + 34*1.8}px`
                   }
                 >
@@ -1292,7 +1296,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     top={
                       ccpDropdownSelected
                         ? defiSpringDropdownSelected ?`${(ccpUserData.length+10) * 68  + 64 * 3.6}px`: `${ccpUserData.length * 68 + 64 * 3.2}px`
-                        : defiSpringDropdownSelected ?`${11 * 68 + 64 * 3.2}px`:''
+                        : defiSpringDropdownSelected ?`${12 * 68 + 64 * 3.2}px`:''
                     }
                   />
                 )}
