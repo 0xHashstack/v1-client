@@ -191,18 +191,30 @@ export default function Home() {
                 boxShadow="dark-lg"
               >
                 <>
-                  {networks.map((network,index)=>(
+                  {networks.map((networkOptions: any, index) => (
                     <Box
-                    padding="4px 11px"
-                    marginRight="8px"
-                    borderRadius="6px"
-                    color="white"
-                    onClick={() => {
-                      setnetwork(network?.name)
-                    }}
-                  >
-                    {network.name}
-                  </Box>
+                      key={index}
+                      padding="4px 11px"
+                      marginRight="8px"
+                      borderRadius="6px"
+                      color="white"
+                      onClick={() => {
+                        setnetwork(networkOptions?.name)
+                      }}
+                      bg={`${
+                        network === networkOptions?.name ? '#4D59E8' : 'inherit'
+                      }`}
+                    >
+                      {network === networkOptions?.name && (
+                        <Box
+                          w="3px"
+                          // h="12px"
+                          bg="#4D59E8"
+                          borderRightRadius="md"
+                        ></Box>
+                      )}
+                      {networkOptions.name}
+                    </Box>
                   ))}
                 </>
               </Box>
