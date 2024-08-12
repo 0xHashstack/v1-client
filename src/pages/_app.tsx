@@ -9,16 +9,19 @@ import {
   publicProvider,
   useInjectedConnectors,
 } from '@starknet-react/core'
+import { mainnet as mainnetWagmi } from "wagmi/chains";
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { PostHogProvider } from 'posthog-js/react'
 import { useState } from 'react'
 import { Provider } from 'react-redux'
-
+import {WagmiProvider, createConfig, } from "wagmi";
 import Layout from '@/components/layouts/toasts'
 import '@/styles/globals.css'
 import { store } from '../store/store'
-
+import { ConnectKitProvider, getDefaultConfig } from "connectkit";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { coinbaseWallet, metaMask } from '@wagmi/connectors';
 export const theme = extendTheme({
   components: {
     Tabs: {
@@ -82,7 +85,24 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // const provider = infuraProvider({ apiKey: apikey.split('/')[4]});
   const provider = infuraProvider({ apiKey: apikey.split('/')[4]});
+  const config = createConfig(
+    getDefaultConfig({
+      // Your dApps chains
+      chains: [mainnetWagmi],
 
+      // Required App Info
+      appName: "Your App Name",
+      connectors:[coinbaseWallet()],
+
+      walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID as string,
+  
+      // Optional App Info
+      appDescription: "Your App Description",
+      appUrl: "https://family.co", // your app's url
+      appIcon: "https://family.co/logo.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
+    }),
+  );
+  const queryClient = new QueryClient();
   const { connectors } = useInjectedConnectors({
     // Show these connectors if the user has no connector installed.
     recommended: [argent(), braavos()],
@@ -90,6 +110,7 @@ export default function App({ Component, pageProps }: AppProps) {
     includeRecommended: 'onlyIfNoConnectors',
     // Randomize the order of the connectors.
     order: 'random',
+    
   }) 
 
 
@@ -125,11 +146,15 @@ export default function App({ Component, pageProps }: AppProps) {
             provider={provider}
             connectors={connectors}
           >
-            <Provider store={store}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </Provider>
+            <WagmiProvider config={config}>
+              <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </Provider>
+              </QueryClientProvider>
+            </WagmiProvider>
           </StarknetConfig>
         </ChakraProvider>
       </PostHogProvider>

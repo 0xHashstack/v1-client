@@ -69,6 +69,7 @@ const initialState = {
   zklendSpends: [],
   jediSwapPoolAprs: [],
   connectedSocialsClicked: false,
+  protocolnetworkSelected:'Starknet',
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -327,6 +328,9 @@ export const readDataSlice = createSlice({
     setConnectedSocialsClicked(state, action) {
       state.connectedSocialsClicked = action.payload
     },
+    setProtocolnetworkSelected(state,action){
+      state.protocolnetworkSelected=action.payload
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -408,6 +412,7 @@ export const {
   setJediSwapPoolAprs,
   setZklendSpends,
   setConnectedSocialsClicked,
+  setProtocolnetworkSelected
 } = readDataSlice.actions
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits
@@ -493,4 +498,5 @@ export const selectJediswapPoolAprs = (state) =>
 export const selectZklendSpends = (state) => state.read_data.zklendSpends
 export const selectConnectedSocialsClicked = (state) =>
   state.read_data.connectedSocialsClicked
+export const selectprotocolNetworkSelected=(state)=>state.read_data.protocolnetworkSelected
 export default readDataSlice.reducer

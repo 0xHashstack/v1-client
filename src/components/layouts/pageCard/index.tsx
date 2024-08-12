@@ -139,7 +139,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             }
           })
         } else {
-          router.push("/v1");
+          // router.push("/v1");
         }
         // disconnect();
         // connect(connectors[0]);

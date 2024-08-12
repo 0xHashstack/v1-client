@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import FireIcon from '@/assets/icons/fireIcon'
 import {
+  selectprotocolNetworkSelected,
   selectUserLoans,
   selectUsersFilteredSupply,
 } from '@/store/slices/readDataSlice'
@@ -32,6 +33,8 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
   const userLoans = useSelector(selectUserLoans)
   const usersFilteredSupply = useSelector(selectUsersFilteredSupply)
   const userUnspentLoans = useSelector(selectUserUnspentLoans)
+  const protocolNetwork=useSelector(selectprotocolNetworkSelected)
+  console.log(protocolNetwork,"network")
 
   const navOptions = [
     { path: 'v1/market', label: 'Markets', count: 0 },
