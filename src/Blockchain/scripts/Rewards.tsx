@@ -15,7 +15,9 @@ import {
   getProvider,
   stakingContractAddress,
   nftAddress,
-  governorAddress
+  governorAddress,
+  config,
+  comptrollerAddress
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { etherToWeiBN, parseAmount } from "../utils/utils";
@@ -23,6 +25,7 @@ import { etherToWeiBN, parseAmount } from "../utils/utils";
 import { useState } from "react";
 import { RToken } from "../interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
+import { Comptroller, Governor } from "@hashstackdev/itachi-sdk";
 // const { address } = useAccount();
 interface ResultObject{
   [key: string]: any;
@@ -125,19 +128,19 @@ export async function getEstrTokens(rToken: any, amount: any) {
 }
 export async function getFees(modalFees:any){
   try{
-    const provider=getProvider();
-    const governorContract=new Contract(
+    const provider = getProvider();
+    const comptrollerContract=new Contract(
       comptrollerAbi,
-      diamondAddress,
+      comptrollerAddress,
       provider
     )
-    const result :any= await governorContract.call(
+    const result :any= await comptrollerContract.call(
       modalFees
-    );
+    )
     const res = result?.fees;
    return Number(res.toString())/100;
   }catch(err){
-   //console.log(err,"err in getFees")
+   console.log(err,"err in getFees")
   }
 }
 export async function getNFTMaxAmount(){

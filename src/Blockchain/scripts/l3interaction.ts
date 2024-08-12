@@ -101,6 +101,7 @@ export async function getJediEstimateLiquiditySplit(
     new MyBigNumber(currentAmount,tokenDecimalsMap[loanMarket]),
       new Address(tokenAddressMap[tokenA]),
      new Address(tokenAddressMap[tokenB]))
+     console.log(Number(res?.amountA),Number(res?.amountB),"split l3")
       // [loanId, tokenAAddress, tokenBAddress],
     const split1 = parseAmount(Number(res?.amountA).toString(), 6);
     const split2 = parseAmount(Number(res?.amountB).toString(), 6);

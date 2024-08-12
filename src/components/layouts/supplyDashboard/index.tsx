@@ -428,7 +428,7 @@ const SupplyDashboard = ({
     </>
   ) : upper_bound >= lower_bound && supplies?.length > 0 ? (
     <Box
-      height={"37rem"}
+      // height={"37rem"}
       w={width}
       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
       border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"

@@ -94,6 +94,8 @@ export const governorAddress:string=contractsEnv.GOVERNOR_CONTRACT_ADDRESS;
 
 export const dialerAddress:string=contractsEnv.GOVERNOR_DIALER_CONTRACT_ADDRESS;
 
+export const comptrollerAddress:string=contractsEnv.COMPTROLLER_ADDRESS;
+
 export const metricsContractAddress: string =
   contractsEnv.METRICS_CONTRACT_ADDRESS;
 

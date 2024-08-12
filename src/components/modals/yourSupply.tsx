@@ -2540,7 +2540,7 @@ const YourSupplyModal = ({
                           </Text>
                           {unstakeWalletBalance ? (
                             <Text color="#676D9A">
-                              {estrTokens?.toFixed(4)}
+                              {estrTokens}
                             </Text>
                           ) : (
                             <Text color="#676D9A">0</Text>
