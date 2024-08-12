@@ -1,131 +1,139 @@
-import { Box, Button, Card, Skeleton, Text } from "@chakra-ui/react";
-import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import posthog from "posthog-js";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Box, Button, Card, Skeleton, Text } from '@chakra-ui/react'
+import { useAccount, useConnect, useDisconnect } from '@starknet-react/core'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import posthog from 'posthog-js'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import BTCLogo from "@/assets/icons/coins/btc";
-import DAILogo from "@/assets/icons/coins/dai";
-import ETHLogo from "@/assets/icons/coins/eth";
-import EthWalletLogo from "@/assets/icons/coins/ethwallet";
-import StarknetLogo from "@/assets/icons/coins/starknet";
-import USDCLogo from "@/assets/icons/coins/usdc";
-import USDTLogo from "@/assets/icons/coins/usdt";
-import BravosIcon from "@/assets/icons/wallets/bravos";
+import BTCLogo from '@/assets/icons/coins/btc'
+import DAILogo from '@/assets/icons/coins/dai'
+import ETHLogo from '@/assets/icons/coins/eth'
+import EthWalletLogo from '@/assets/icons/coins/ethwallet'
+import StarknetLogo from '@/assets/icons/coins/starknet'
+import USDCLogo from '@/assets/icons/coins/usdc'
+import USDTLogo from '@/assets/icons/coins/usdt'
+import BravosIcon from '@/assets/icons/wallets/bravos'
 import {
   setReferral,
   setTransactionRefresh,
-} from "@/store/slices/readDataSlice";
-import { selectWalletBalance } from "@/store/slices/userAccountSlice";
+} from '@/store/slices/readDataSlice'
+import { selectWalletBalance } from '@/store/slices/userAccountSlice'
+import {
+  selectNavDropdowns,
+  setNavDropdown,
+} from '@/store/slices/dropdownsSlice'
+import ArrowUp from '@/assets/icons/arrowup'
+import DropdownUp from '@/assets/icons/dropdownUpIcon'
 
 export default function Home() {
-  const { account, address, status, isConnected } = useAccount();
-  const { connect, connectors } = useConnect();
-  const { disconnect } = useDisconnect();
+  const { account, address, status, isConnected } = useAccount()
+  const { connect, connectors } = useConnect()
+  const { disconnect } = useDisconnect()
 
-  const [isWaitListed, setIsWaitListed] = useState(true);
-  const [availableDataLoading, setAvailableDataLoading] = useState(true);
+  const [isWaitListed, setIsWaitListed] = useState(true)
+  const [availableDataLoading, setAvailableDataLoading] = useState(true)
+  const [network, setnetwork] = useState<string>('Starknet')
 
-  const router = useRouter();
-  const waitlistHref = "/v1/waitlist";
-  const marketHref2 = "/v1/market";
-  const whitelistHref = "/v1/whitelist";
-  const dispatch = useDispatch();
-  const walletBalance = useSelector(selectWalletBalance);
+  const router = useRouter()
+  const waitlistHref = '/v1/waitlist'
+  const marketHref2 = '/v1/market'
+  const whitelistHref = '/v1/whitelist'
+  const dispatch = useDispatch()
+  const walletBalance = useSelector(selectWalletBalance)
+  const navDropdowns = useSelector(selectNavDropdowns)
 
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coins = ['BTC', 'USDT', 'USDC', 'ETH', 'DAI']
   const networks = [
-    { name: "Starknet", status: "enable" },
-    { name: "Ethereum (Coming soon)", status: "disable" },
-  ];
+    { name: 'Starknet', status: 'enable' },
+    { name: 'Base', status: 'enable' },
+  ]
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setAvailableDataLoading(false);
-    }, 600);
+      setAvailableDataLoading(false)
+    }, 600)
 
-    return () => clearTimeout(timeout);
-  }, []);
+    return () => clearTimeout(timeout)
+  }, [])
 
   useEffect(() => {
-    localStorage.setItem("connected", "");
-  }, []);
+    localStorage.setItem('connected', '')
+  }, [])
 
-  const { ref } = router.query;
+  const { ref } = router.query
   if (ref) {
-    dispatch(setReferral(ref));
+    dispatch(setReferral(ref))
   }
 
   useEffect(() => {
-    const hasVisited = localStorage.getItem("visited");
-    const walletConnected = localStorage.getItem("lastUsedConnector");
+    const hasVisited = localStorage.getItem('visited')
+    const walletConnected = localStorage.getItem('lastUsedConnector')
 
-    localStorage.setItem("transactionCheck", JSON.stringify([]));
-    if (walletConnected == "braavos") {
-      disconnect();
+    localStorage.setItem('transactionCheck', JSON.stringify([]))
+    if (walletConnected == 'braavos') {
+      disconnect()
       connectors.map((connector: any) => {
-        if (connector.id == "braavos") {
-          connect(connector);
+        if (connector.id == 'braavos') {
+          connect(connector)
         }
-      });
+      })
 
       if (!account) {
-        return;
+        return
       } else {
         if (!isWaitListed) {
-          router.replace(waitlistHref);
+          router.replace(waitlistHref)
         } else {
-          router.replace(marketHref2);
+          router.replace(marketHref2)
         }
       }
-    } else if (walletConnected == "argentX") {
-      disconnect();
+    } else if (walletConnected == 'argentX') {
+      disconnect()
       connectors.map((connector) => {
-        if (connector.id == "argentX") {
-          connect({ connector });
+        if (connector.id == 'argentX') {
+          connect({ connector })
         }
-      });
+      })
       if (!account) {
-        return;
+        return
       } else {
         if (!isWaitListed) {
-          router.replace(waitlistHref);
+          router.replace(waitlistHref)
         } else {
-          router.replace(marketHref2);
+          router.replace(marketHref2)
         }
       }
     } else {
-      return;
+      return
     }
     if (walletConnected) {
-      localStorage.setItem("connected", walletConnected);
-      posthog.capture("Connect Wallet", {
-        "Wallet address": address,
-        "Wallet Connected": walletConnected,
-      });
+      localStorage.setItem('connected', walletConnected)
+      posthog.capture('Connect Wallet', {
+        'Wallet address': address,
+        'Wallet Connected': walletConnected,
+      })
     }
     if (!hasVisited) {
       // Set a local storage item to indicate the user has visited
-      localStorage.setItem("visited", "true");
+      localStorage.setItem('visited', 'true')
     }
-  }, [status, isConnected]);
+  }, [status, isConnected])
 
-  const [bravoosAvailable, setbravoosAvailable] = useState(true);
-  const [argentAvailable, setargentAvailable] = useState(true);
+  const [bravoosAvailable, setbravoosAvailable] = useState(true)
+  const [argentAvailable, setargentAvailable] = useState(true)
 
   useEffect(() => {
     connectors.map((connector) => {
-      if (connector.id == "braavos") {
-        setbravoosAvailable(connector.available());
-      } else if (connector.id == "argentX") {
-        setargentAvailable(connector.available());
+      if (connector.id == 'braavos') {
+        setbravoosAvailable(connector.available())
+      } else if (connector.id == 'argentX') {
+        setargentAvailable(connector.available())
       }
-      return true;
-    });
-  }, []);
+      return true
+    })
+  }, [])
 
   return (
     <Box
@@ -153,27 +161,75 @@ export default function Home() {
           width="400px"
           mt="8px"
         >
-          {(connectors[0]?.id == "braavos" || connectors[1]?.id == "braavos") &&
+          <Box
+            display="flex"
+            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+            justifyContent="space-between"
+            py="2"
+            mt="0.3rem"
+            borderRadius="md"
+            className="navbar"
+            cursor="pointer"
+            onClick={() => {
+              dispatch(setNavDropdown('networkDropdown'))
+            }}
+          >
+            <Box ml="1rem" color="white">
+              {network}
+            </Box>
+            <Box pt="1" className="navbar-button" mr="1rem">
+              {navDropdowns.networkDropdown ? <ArrowUp /> : <DropdownUp />}
+            </Box>
+            {navDropdowns.networkDropdown && (
+              <Box
+                w="full"
+                left="0"
+                bg="#03060B"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                py="2"
+                className="dropdown-container"
+                boxShadow="dark-lg"
+              >
+                <>
+                  {networks.map((network,index)=>(
+                    <Box
+                    padding="4px 11px"
+                    marginRight="8px"
+                    borderRadius="6px"
+                    color="white"
+                    onClick={() => {
+                      setnetwork(network?.name)
+                    }}
+                  >
+                    {network.name}
+                  </Box>
+                  ))}
+                </>
+              </Box>
+            )}
+          </Box>
+          {(connectors[0]?.id == 'braavos' || connectors[1]?.id == 'braavos') &&
           bravoosAvailable ? (
             <Box
               w="full"
               border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
               py="2"
+              mt="1rem"
               borderRadius="6px"
               gap="3px"
               display="flex"
               justifyContent="space-between"
               cursor="pointer"
               onClick={() => {
-                localStorage.setItem("lastUsedConnector", "braavos");
-                localStorage.setItem("connected", "braavos");
-                disconnect();
+                localStorage.setItem('lastUsedConnector', 'braavos')
+                localStorage.setItem('connected', 'braavos')
+                disconnect()
                 connectors.map((connector) => {
-                  if (connector.id == "braavos") {
-                    connect({ connector });
+                  if (connector.id == 'braavos') {
+                    connect({ connector })
                   }
-                });
-                dispatch(setTransactionRefresh("reset"));
+                })
+                dispatch(setTransactionRefresh('reset'))
               }}
             >
               <Box ml="1rem" color="white">
@@ -185,12 +241,12 @@ export default function Home() {
                     endColor="#2B2F35"
                     borderRadius="6px"
                   />
-                ) : (connectors[0]?.id == "braavos" ||
-                    connectors[1]?.id == "braavos") &&
+                ) : (connectors[0]?.id == 'braavos' ||
+                    connectors[1]?.id == 'braavos') &&
                   bravoosAvailable ? (
-                  "Braavos Wallet"
+                  'Braavos Wallet'
                 ) : (
-                  "Download Braavos Wallet"
+                  'Download Braavos Wallet'
                 )}
               </Box>
               <Box p="1" mr="16px">
@@ -203,6 +259,7 @@ export default function Home() {
                 w="full"
                 border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                 py="2"
+                mt="1rem"
                 borderRadius="6px"
                 gap="3px"
                 display="flex"
@@ -218,12 +275,12 @@ export default function Home() {
                       endColor="#2B2F35"
                       borderRadius="6px"
                     />
-                  ) : (connectors[0]?.id == "braavos" ||
-                      connectors[1]?.id == "braavos") &&
+                  ) : (connectors[0]?.id == 'braavos' ||
+                      connectors[1]?.id == 'braavos') &&
                     bravoosAvailable ? (
-                    "Braavos Wallet"
+                    'Braavos Wallet'
                   ) : (
-                    "Download Braavos Wallet"
+                    'Download Braavos Wallet'
                   )}
                 </Box>
                 <Box p="1" mr="16px">
@@ -233,7 +290,7 @@ export default function Home() {
             </Link>
           )}
 
-          {(connectors[1]?.id == "argentX" || connectors[0]?.id == "argentX") &&
+          {(connectors[1]?.id == 'argentX' || connectors[0]?.id == 'argentX') &&
           argentAvailable ? (
             <Box
               w="full"
@@ -246,15 +303,15 @@ export default function Home() {
               justifyContent="space-between"
               cursor="pointer"
               onClick={() => {
-                localStorage.setItem("lastUsedConnector", "argentX");
-                localStorage.setItem("connected", "argentX");
-                disconnect();
+                localStorage.setItem('lastUsedConnector', 'argentX')
+                localStorage.setItem('connected', 'argentX')
+                disconnect()
                 connectors.map((connector) => {
-                  if (connector.id == "argentX") {
-                    connect({ connector });
+                  if (connector.id == 'argentX') {
+                    connect({ connector })
                   }
-                });
-                dispatch(setTransactionRefresh("reset"));
+                })
+                dispatch(setTransactionRefresh('reset'))
               }}
             >
               <Box ml="1rem" color="white">
@@ -266,11 +323,11 @@ export default function Home() {
                     endColor="#2B2F35"
                     borderRadius="6px"
                   />
-                ) : connectors[0]?.id == "argentX" ||
-                  (connectors[1]?.id == "argentX" && argentAvailable) ? (
-                  "Argent X Wallet"
+                ) : connectors[0]?.id == 'argentX' ||
+                  (connectors[1]?.id == 'argentX' && argentAvailable) ? (
+                  'Argent X Wallet'
                 ) : (
-                  "Download Argent X Wallet"
+                  'Download Argent X Wallet'
                 )}
               </Box>
               <Box p="1" mr="16px">
@@ -279,7 +336,7 @@ export default function Home() {
                   alt="Picture of the author"
                   width="15"
                   height="15"
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                 />
               </Box>
             </Box>
@@ -305,12 +362,12 @@ export default function Home() {
                       endColor="#2B2F35"
                       borderRadius="6px"
                     />
-                  ) : (connectors[1]?.id == "argentX" ||
-                      connectors[0]?.id == "argentX") &&
+                  ) : (connectors[1]?.id == 'argentX' ||
+                      connectors[0]?.id == 'argentX') &&
                     argentAvailable ? (
-                    "Argent X Wallet"
+                    'Argent X Wallet'
                   ) : (
-                    "Download Argent X Wallet"
+                    'Download Argent X Wallet'
                   )}
                 </Box>
                 <Box p="1" mr="16px">
@@ -319,7 +376,7 @@ export default function Home() {
                     alt="Picture of the author"
                     width="15"
                     height="15"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                   />
                 </Box>
               </Box>
@@ -380,5 +437,5 @@ export default function Home() {
         </Box>
       </Box>
     </Box>
-  );
+  )
 }
