@@ -15,7 +15,12 @@ export function processAddress(address: string) {
 //   process.env.NODE_ENV === "development"
 //     ? DeployDetailsDev.devn\et
 //     : DeployDetailsProd.goerli_2;
-let contractsEnv:any = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? DeployDetailsProd.sepolia : DeployDetailsProd.mainnet;
+let walletConnected: string | null = null;
+
+if (typeof window !== "undefined") {
+  walletConnected = localStorage.getItem("lastUsedConnector");
+}
+let contractsEnv:any = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?  DeployDetailsProd.sepolia:walletConnected==='MetaMask'? DeployDetailsProd.mainnet: DeployDetailsProd.mainnet;
 contractsEnv.DIAMOND_ADDRESS = contractsEnv.DIAMOND_ADDRESS;
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(

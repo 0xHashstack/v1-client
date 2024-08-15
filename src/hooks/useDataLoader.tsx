@@ -32,6 +32,7 @@ import {
   selectNetAPR,
   selectNetWorth,
   selectOraclePrices,
+  selectProtocolNetworkSelected,
   selectProtocolReserves,
   selectProtocolStats,
   selectStakingShares,
@@ -260,6 +261,7 @@ const useDataLoader = () => {
   const netSpendBalance = useSelector(selectnetSpendBalance)
   const borrowEffectiveAprs = useSelector(selectBorrowEffectiveAprs)
   const zkLendSpends=useSelector(selectZklendSpends);
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
   const [poolsPairs, setPoolPairs] = useState<any>([
     {
       address:
@@ -671,7 +673,7 @@ const useDataLoader = () => {
         //console.log(err, "err in hourly data");
       }
     }
-    if (hourlyDataCount < transactionRefresh && oraclePrices) {
+    if (hourlyDataCount < transactionRefresh && oraclePrices && protocolNetwork==='Starknet') {
       fetchHourlyData()
     }
   }, [oraclePrices])
@@ -832,7 +834,7 @@ const useDataLoader = () => {
         //console.log(err, "err in hourly data");
       }
     }
-    if (weeklyDataCount < transactionRefresh && oraclePrices) {
+    if (weeklyDataCount < transactionRefresh && oraclePrices && protocolNetwork==='Starknet') {
       fetchDailyData()
     }
   }, [oraclePrices])
@@ -994,7 +996,7 @@ const useDataLoader = () => {
         //console.log(err, "err in hourly data");
       }
     }
-    if (monthlyDataCount < transactionRefresh && oraclePrices) {
+    if (monthlyDataCount < transactionRefresh && oraclePrices && protocolNetwork==='Starknet') {
       fetchMonthlyData()
     }
   }, [oraclePrices])
@@ -1151,7 +1153,7 @@ const useDataLoader = () => {
         //console.log(err, "err in hourly data");
       }
     }
-    if (allDataCount < transactionRefresh && oraclePrices) {
+    if (allDataCount < transactionRefresh && oraclePrices && protocolNetwork==='Starknet') {
       fetchAllData()
     }
   }, [oraclePrices])
@@ -1189,7 +1191,7 @@ const useDataLoader = () => {
         const count = getTransactionCount()
         dispatch(setProtocolReservesCount(count))
       }
-      if (protocolReservesCount < transactionRefresh) {
+      if (protocolReservesCount < transactionRefresh && protocolNetwork==='Starknet') {
         fetchProtocolReserves()
       }
     } catch (err) {
@@ -1258,7 +1260,7 @@ const useDataLoader = () => {
           }
         }
       }
-      if (feesCount < transactionRefresh) {
+      if (feesCount < transactionRefresh && protocolNetwork==='Starknet') {
         fetchFees()
       }
     } catch (err) {
@@ -1287,7 +1289,7 @@ const useDataLoader = () => {
         }
         dispatch(setSpendBalances(dataSpends))
       }
-      if (protocolStatsCount < transactionRefresh) {
+      if (protocolStatsCount < transactionRefresh && protocolNetwork==='Starknet') {
         fetchProtocolStats()
         fetchSpends()
       }
@@ -1478,7 +1480,7 @@ const useDataLoader = () => {
         // }
         ////console.log(data, "data");
       }
-      if (jediSwapPoolsSupportedCount < transactionRefresh) {
+      if (jediSwapPoolsSupportedCount < transactionRefresh && protocolNetwork==='Starknet') {
         fetchPools()
       }
     } catch (err) {
@@ -1578,7 +1580,7 @@ const useDataLoader = () => {
           dispatch(setMySwapPoolsSupportedCount(count))
         })
       }
-      if (mySwapPoolsSupportedCount < transactionRefresh) {
+      if (mySwapPoolsSupportedCount < transactionRefresh && protocolNetwork==='Starknet') {
         fetchMySwapPools()
       }
     } catch (err) {
@@ -1612,7 +1614,7 @@ const useDataLoader = () => {
           dispatch(setStakingSharesCount(count))
         })
       }
-      if (stakingSharesCount < transactionRefresh) {
+      if (stakingSharesCount < transactionRefresh && protocolNetwork==='Starknet') {
         getStakingShares()
       }
     } catch (err) {
@@ -1672,7 +1674,7 @@ const useDataLoader = () => {
       })
     }
 
-    if (userLoans) getSplit()
+    if (userLoans && protocolNetwork==='Starknet') getSplit()
   }, [userLoans, transactionRefresh])
 
   useEffect(() => {
@@ -1798,6 +1800,7 @@ const useDataLoader = () => {
         userLoansCount == transactionRefresh &&
         protocolStatsCount == transactionRefresh &&
         effectiveAprCount < transactionRefresh
+        && protocolNetwork==='Starknet'
       ) {
         fetchEffectiveApr()
       }
@@ -1825,6 +1828,7 @@ const useDataLoader = () => {
         userLoans &&
         userLoansCount == transactionRefresh &&
         healthFactorCount < transactionRefresh
+        && protocolNetwork==='Starknet'
       ) {
         fetchHealthFactor()
       }
@@ -1949,6 +1953,7 @@ const useDataLoader = () => {
           userLoansCount == transactionRefresh &&
           dataOraclePrices &&
           userInfoCount < transactionRefresh
+          && protocolNetwork==='Starknet'
         ) {
           // const dataNetApr = await getNetApr(
           //   dataDeposit,
@@ -1989,7 +1994,7 @@ const useDataLoader = () => {
       }
 
       ////console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
-      if (userInfoCount < transactionRefresh) {
+      if (userInfoCount < transactionRefresh && protocolNetwork==='Starknet') {
         fetchUserSupply()
       }
     } catch (err) {
@@ -2042,6 +2047,7 @@ const useDataLoader = () => {
           strkData &&
           poolAprs.length>0 &&
           zkLendSpends&&
+         protocolNetwork==='Starknet' &&
           // allSplit &&
           netSpendBalance
         ) {
@@ -2414,6 +2420,7 @@ const useDataLoader = () => {
         protocolStatsCount == transactionRefresh &&
         oraclePrices &&
         yourMetricsBorrowCount < transactionRefresh
+        && protocolNetwork==='Starknet'
       ) {
         fetchBorrowData()
       }
@@ -2441,7 +2448,7 @@ const useDataLoader = () => {
               netbalance += value
             }
           }
-          if (netbalance > 0) {
+          if (netbalance > 0 && protocolNetwork==='Starknet') {
             dispatch(setNetSpendBalance(netbalance))
           }
         }
@@ -2487,7 +2494,7 @@ const useDataLoader = () => {
         }));
         dispatch(setZklendSpends(arr));
     };
-    if (userLoans) {
+    if (userLoans && protocolNetwork==='Starknet') {
         fetch();
     }
 }, [userLoans]);

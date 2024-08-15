@@ -17,6 +17,9 @@ import {
   useDotButton,
 } from '@/components/uiElements/buttons/EmblaCarouselDotButton'
 import useDataLoader from '@/hooks/useDataLoader'
+import { useSIWE } from 'connectkit'
+import { useSelector } from 'react-redux'
+import { selectProtocolNetworkSelected } from '@/store/slices/readDataSlice'
 
 const Market: NextPage = () => {
   const router = useRouter()
@@ -29,6 +32,7 @@ const Market: NextPage = () => {
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi)
+    const protocolNetwork=useSelector(selectProtocolNetworkSelected)
 
   useDataLoader()
 
@@ -267,7 +271,7 @@ const Market: NextPage = () => {
       </Box> */}
 
       {/* <StatsBoard /> */}
-        <NavButtons width={95} marginBottom="1.125rem" />
+        {protocolNetwork ==='Starknet' &&<NavButtons width={95} marginBottom="1.125rem" />}
       <MarketDashboard />
     </PageCard>
   )

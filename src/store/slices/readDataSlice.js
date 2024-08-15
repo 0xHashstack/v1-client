@@ -119,6 +119,7 @@ const initialState = {
     l3interaction: 0.1,
     repayLoan: 0,
   },
+  protocolnetworkSelected:'Starknet'
 }
 
 export const readDataSlice = createSlice({
@@ -327,6 +328,9 @@ export const readDataSlice = createSlice({
     setConnectedSocialsClicked(state, action) {
       state.connectedSocialsClicked = action.payload
     },
+    setprotocolNetworkSelected(state,action){
+      state.protocolnetworkSelected=action.payload
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -408,6 +412,7 @@ export const {
   setJediSwapPoolAprs,
   setZklendSpends,
   setConnectedSocialsClicked,
+  setprotocolNetworkSelected
 } = readDataSlice.actions
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits
@@ -493,4 +498,5 @@ export const selectJediswapPoolAprs = (state) =>
 export const selectZklendSpends = (state) => state.read_data.zklendSpends
 export const selectConnectedSocialsClicked = (state) =>
   state.read_data.connectedSocialsClicked
+export const selectProtocolNetworkSelected=(state)=>state.read_data.protocolnetworkSelected
 export default readDataSlice.reducer

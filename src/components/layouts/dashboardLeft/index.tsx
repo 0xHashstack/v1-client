@@ -32,6 +32,9 @@ import BorrowModal from '@/components/modals/borrowModal'
 import { selectStrkAprData, selectnetSpendBalance } from '@/store/slices/userAccountSlice'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
+import { selectProtocolNetworkSelected } from '@/store/slices/readDataSlice'
+import { useBalance } from 'wagmi'
+import useBalanceofWagmi from '@/Blockchain/hooks/Reads/usebalanceofWagmi'
 
 export interface ICoin {
   name: string
@@ -63,27 +66,6 @@ const tooltips = [
   'The annual interest rate charged on borrowed funds from the protocol.',
 ]
 
-const columnItems = [
-  'Market',
-  'Price',
-  'Total Supply',
-  'Total Borrow',
-  'Available',
-  'Utillization',
-  'Supply APR',
-  'Borrow APR',
-  '',
-  '',
-]
-
-export const Coins: ICoin[] = [
-  { name: 'STRK', icon: 'mdi-strk', symbol: 'STRK' },
-  { name: 'USDT', icon: 'mdi-bitcoin', symbol: 'USDT' },
-  { name: 'USDC', icon: 'mdi-ethereum', symbol: 'USDC' },
-  { name: 'ETH', icon: 'mdi-ethereum', symbol: 'WETH' },
-  { name: 'BTC', icon: 'mdi-bitcoin', symbol: 'WBTC' },
-  { name: 'DAI', icon: 'mdi-dai', symbol: 'DAI' },
-]
 
 const DashboardLeft: React.FC<DashboardLeftProps> = ({
   width,
@@ -97,6 +79,42 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
   validRTokens,
   protocolStats,
 }) => {
+  const protocolnetwork=useSelector(selectProtocolNetworkSelected)
+  const Coins: ICoin[] =protocolnetwork==='Starknet'? [
+    { name: 'STRK', icon: 'mdi-strk', symbol: 'STRK' },
+    { name: 'USDT', icon: 'mdi-bitcoin', symbol: 'USDT' },
+    { name: 'USDC', icon: 'mdi-ethereum', symbol: 'USDC' },
+    { name: 'ETH', icon: 'mdi-ethereum', symbol: 'WETH' },
+    { name: 'BTC', icon: 'mdi-bitcoin', symbol: 'WBTC' },
+    { name: 'DAI', icon: 'mdi-dai', symbol: 'DAI' },
+  ]:[
+    // { name: 'STRK', icon: 'mdi-strk', symbol: 'STRK' },
+    { name: 'USDT', icon: 'mdi-bitcoin', symbol: 'USDT' },
+    { name: 'USDC', icon: 'mdi-ethereum', symbol: 'USDC' },
+    { name: 'ETH', icon: 'mdi-ethereum', symbol: 'WETH' },
+    // { name: 'BTC', icon: 'mdi-bitcoin', symbol: 'WBTC' },
+    // { name: 'DAI', icon: 'mdi-dai', symbol: 'DAI' },
+  ]
+  
+
+  const columnItems =protocolnetwork==='Starknet'? [
+    'Market',
+    'Price',
+    'Total Supply',
+    'Total Borrow',
+    'Available',
+    'Utillization',
+    'Supply APR',
+    'Borrow APR',
+    '',
+    '',
+  ]:[
+    'Market',
+    'Price',
+    'Total Supply',
+    '',
+  ]
+
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<Number>()
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>()
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState('BTC')
@@ -104,15 +122,18 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
 
   const [isLargerThan1280] = useMediaQuery('(min-width: 1248px)')
 
-  const assetBalance: any = {
+  const assetBalance: any =protocolnetwork==='Starknet'? {
     USDT: useBalanceOf(tokenAddressMap['USDT']),
     USDC: useBalanceOf(tokenAddressMap['USDC']),
     BTC: useBalanceOf(tokenAddressMap['BTC']),
     ETH: useBalanceOf(tokenAddressMap['ETH']),
     DAI: useBalanceOf(tokenAddressMap['DAI']),
     STRK: useBalanceOf(tokenAddressMap['STRK']),
+  }:{
+    USDT: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
+    USDC: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
+    ETH: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
   }
-
   const coinPrices = Coins.map((coin) => {
     const matchingCoin = oraclePrices?.find(
       (c: { name: string }) =>
@@ -323,7 +344,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}
-                          {numberFormatter(
+                          {protocolnetwork==='Starknet'? numberFormatter(
                             parseAmount(
                               String(
                                 uint256.uint256ToBN(
@@ -333,6 +354,9 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                               ),
                               tokenDecimalsMap[coin?.name]
                             )
+                          ):numberFormatter(
+                            assetBalance[coin?.name]?.dataBalanceOf
+                                    ?.formatted
                           )}
                           {/* )} */}
                         </Text>
@@ -427,7 +451,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                     </Tooltip>
                   </Box>
                 </Td>
-                <Td
+                {protocolnetwork==='Starknet'&&<Td
                   width={'10%'}
                   maxWidth={'3rem'}
                   fontSize={'14px'}
@@ -478,8 +502,8 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                       )}
                     </Tooltip>
                   </Box>
-                </Td>
-                <Td
+                </Td>}
+                {protocolnetwork==='Starknet'&&<Td
                   width={'12%'}
                   maxWidth={'3rem'}
                   fontSize={'14px'}
@@ -531,8 +555,8 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                       )}
                     </Tooltip>
                   </Box>
-                </Td>
-                <Td
+                </Td>}
+                {protocolnetwork==='Starknet'&&<Td
                   width={'12%'}
                   maxWidth={'3rem'}
                   fontSize={'14px'}
@@ -561,8 +585,8 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                       numberFormatterPercentage(utilization[idx]) + '%'
                     )}
                   </Box>
-                </Td>
-                <Td
+                </Td>}
+                {protocolnetwork==='Starknet'&&<Td
                   width={'12%'}
                   maxWidth={'3rem'}
                   fontSize={'14px'}
@@ -685,9 +709,9 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                       )}
                     </Tooltip>
                   </Box>
-                </Td>
+                </Td>}
 
-                <Td
+                {protocolnetwork==='Starknet'&&<Td
                   width={'15%'}
                   maxWidth={'3rem'}
                   fontSize={'14px'}
@@ -814,7 +838,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                       )}
                     </Tooltip>
                   </Box>
-                </Td>
+                </Td>}
                 <Td
                   width={'4%'}
                   maxWidth={'5rem'}
@@ -868,7 +892,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                   </Box>
                 </Td>
 
-                <Td
+                {protocolnetwork==='Starknet'&&<Td
                   width={'8%'}
                   maxWidth={'5rem'}
                   fontSize={'14px'}
@@ -925,7 +949,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                       />
                     )}
                   </Box>
-                </Td>
+                </Td>}
               </Tr>
 
               <Tr

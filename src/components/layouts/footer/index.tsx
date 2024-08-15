@@ -29,13 +29,14 @@ import { AccountInterface, BlockNumber } from 'starknet'
 import {
   selectBlock,
   selectCurrentNetwork,
+  selectProtocolNetworkSelected,
   selectProtocolReserves,
   setBlock,
 } from '@/store/slices/readDataSlice'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
 import hoverC2e from '../../../assets/images/hoverContributeEarnIcon.svg'
-
+import { useChainId,useBlockNumber as useBlockNumberWagmi } from 'wagmi'
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string
@@ -49,11 +50,14 @@ const Footer = () => {
   const { data: block } = useBlockNumber({
     blockIdentifier: 'latest' as BlockNumber,
   })
+  const blockNumber=useBlockNumberWagmi()
   const extendedAccount = account as ExtendedAccountInterface
   const currentBlock = useSelector(selectBlock)
   const currentChainId = useSelector(selectCurrentNetwork)
   const dispatch = useDispatch()
   const { chain } = useNetwork()
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
+  const chainId = useChainId()
   const protocolReserves = useSelector(selectProtocolReserves)
   const router = useRouter()
   const [isLessThan1400] = useMediaQuery('(max-width: 1400px)')
@@ -131,11 +135,11 @@ const Footer = () => {
       <Box
         width="95%"
         display="flex"
-        justifyContent="space-between"
-        alignItems="center"
+        justifyContent={ "space-between"}
+        alignItems={"center"}
         mx="auto"
       >
-        <HStack
+        {<HStack
           ref={ref}
           className="keen-slider"
           h="100%"
@@ -361,7 +365,8 @@ const Footer = () => {
               </Text>
             </Tooltip>
           </Box>
-        </HStack>
+        </HStack>}
+        
 
         {/* <HStack height="100%">
         <Link href={'https://status.hashstack.finance/'} target="_blank">
@@ -381,7 +386,7 @@ const Footer = () => {
         </Link>
       </HStack> */}
 
-        <HStack borderLeft="1px solid #2B2F35" h="100%" mr="auto">
+        <HStack borderLeft="1px solid #2B2F35" h="100%" mr="auto" >
           <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
             <Menu placement="top">
               {({ isOpen }) => (
@@ -415,7 +420,7 @@ const Footer = () => {
                     position="relative"
                     right="3.3rem"
                   >
-                    <MenuItem
+                    {protocolNetwork==='Starknet'&&<MenuItem
                       _hover={{ color: '#00D395' }}
                       fontSize="sm"
                       fontWeight="medium"
@@ -446,7 +451,7 @@ const Footer = () => {
                         height="24"
                       />
                       Campaigns
-                    </MenuItem>
+                    </MenuItem>}
                     <Link
                       href="https://hashstack.finance/c2e/"
                       target="_blank"
@@ -492,9 +497,9 @@ const Footer = () => {
               gap={1}
             >
               <Box className="pulsatingDot" mr="0.2rem">
-
+              
               </Box>
-              <Box color="#2BC8BF" fontSize="12px">
+              {protocolNetwork==='Starknet'?<Box color="#2BC8BF" fontSize="12px">
                 {currentBlock || (
                   <Skeleton
                     width="3rem"
@@ -504,12 +509,22 @@ const Footer = () => {
                     borderRadius="6px"
                   />
                 )}
-              </Box>
+              </Box>:<Box color="#2BC8BF" fontSize="12px">
+                {Number(blockNumber?.data)|| (
+                  <Skeleton
+                    width="3rem"
+                    height="0.8rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                  />
+                )}
+              </Box>}
             </Box>
           </HStack>
 
           <HStack display="flex" h="100%" pl="1rem">
-            <Box
+            {protocolNetwork==='Starknet'?<Box
               color="#676D9A"
               fontSize="12px"
               display="flex"
@@ -530,7 +545,14 @@ const Footer = () => {
                   ml={2}
                 />
               )}
-            </Box>
+            </Box>:            <Box
+              color="#676D9A"
+              fontSize="12px"
+              display="flex"
+              alignItems="center"
+            >
+              Network:Base {chainId===84532 ?'Sepolia':'Mainnet'}
+            </Box>}
             <Box
               height={'100%'}
               display={'flex'}

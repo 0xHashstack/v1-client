@@ -9,6 +9,7 @@ import {
 } from '@/Blockchain/utils/addressServices'
 import {
   BNtoNum,
+  etherToWeiBN,
   parseAmount,
   weiToEtherNumber,
 } from '@/Blockchain/utils/utils'
@@ -99,10 +100,6 @@ import {
   getNFTMaxAmount,
 } from '@/Blockchain/scripts/Rewards'
 import { get_user_holding_zklend } from '@/Blockchain/scripts/liquidityMigration'
-import {
-  getDTokenFromAddress,
-  getTokenFromAddress,
-} from '@/Blockchain/stark-constants'
 import STRKLogo from '@/assets/icons/coins/strk'
 import InfoIconBig from '@/assets/icons/infoIconBig'
 import {
@@ -111,6 +108,7 @@ import {
   selectMinimumDepositAmounts,
   selectNftBalance,
   selectOraclePrices,
+  selectProtocolNetworkSelected,
   selectProtocolStats,
   selectTransactionRefresh,
   setMaximumDepositAmounts,
@@ -120,6 +118,14 @@ import numberFormatterPercentage from '@/utils/functions/numberFormatterPercenta
 import mixpanel from 'mixpanel-browser'
 import posthog from 'posthog-js'
 import TransactionFees from '../../../TransactionFees.json'
+import useBalanceofWagmi from '@/Blockchain/hooks/Reads/usebalanceofWagmi'
+import { getTokenFromAddress } from '@/Blockchain/stark-constants'
+import { multicall } from '@wagmi/core'
+import { config } from '@/services/wagmi/config'
+import { useWriteContract} from 'wagmi'
+import { erc20Abi } from 'viem'
+import { baseSepolia } from 'viem/chains'
+import { trialabi } from '@/Blockchain/abis_mainnet/trialabi'
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -140,6 +146,7 @@ const SupplyModal = ({
   const [collateralMarketHoverIndex, setcollateralMarketHoverIndex] = useState<Number>(-1)
   const [toastId, setToastId] = useState<any>()
   const [uniqueID, setUniqueID] = useState(0)
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
   const {
     depositAmount,
     setDepositAmount,
@@ -196,23 +203,34 @@ const SupplyModal = ({
     ETH: any
     DAI: any
   }
-  const walletBalances: assetB | any = {
+  const walletBalances: assetB | any = protocolNetwork==='Starknet'? {
     USDT: useBalanceOf(tokenAddressMap['USDT']),
     USDC: useBalanceOf(tokenAddressMap['USDC']),
     BTC: useBalanceOf(tokenAddressMap['BTC']),
     ETH: useBalanceOf(tokenAddressMap['ETH']),
     DAI: useBalanceOf(tokenAddressMap['DAI']),
     STRK: useBalanceOf(tokenAddressMap['STRK']),
+  }:{
+    USDT: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
+    USDC: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
+    ETH: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
   }
-
-  const assetBalance: assetB | any = {
+  const assetBalance: assetB | any =protocolNetwork==='Starknet'? {
     USDT: useBalanceOf(tokenAddressMap['USDT']),
     USDC: useBalanceOf(tokenAddressMap['USDC']),
     BTC: useBalanceOf(tokenAddressMap['BTC']),
     ETH: useBalanceOf(tokenAddressMap['ETH']),
     DAI: useBalanceOf(tokenAddressMap['DAI']),
     STRK: useBalanceOf(tokenAddressMap['STRK']),
+  }:{
+    USDT: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
+    USDC: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
+    ETH: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
   }
+  const { writeContract,writeContractAsync,data,error} = useWriteContract({
+    config
+  })
+  console.log(error,"error")
   ////console.log(walletBalances,"wallet balances in supply modal")
 
   // const transactionStarted = useSelector(selectTransactionStarted);
@@ -238,7 +256,7 @@ const SupplyModal = ({
   const fees = useSelector(selectFees)
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === 'success'
-      ? parseAmount(
+      ?protocolNetwork==='Starknet'? parseAmount(
           String(
             uint256.uint256ToBN(
               walletBalances[coin?.name]?.dataBalanceOf?.balance
@@ -246,7 +264,7 @@ const SupplyModal = ({
           ),
           tokenDecimalsMap[coin?.name]
         )
-      : 0
+      : Number(walletBalances[coin?.name]?.dataBalanceOf?.formatted):0
   )
   const getBoostedApr = (coin: any) => {
     if (strkData == null) {
@@ -286,7 +304,7 @@ const SupplyModal = ({
   useEffect(() => {
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === 'success'
-        ? parseAmount(
+        ?protocolNetwork==='Starknet'? parseAmount(
             String(
               uint256.uint256ToBN(
                 walletBalances[coin?.name]?.dataBalanceOf?.balance
@@ -294,7 +312,7 @@ const SupplyModal = ({
             ),
             tokenDecimalsMap[coin?.name]
           )
-        : 0
+        : Number(walletBalances[coin?.name]?.dataBalanceOf?.formatted):0
     )
     ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf])
@@ -790,7 +808,7 @@ const SupplyModal = ({
     setIsChecked(true)
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === 'success'
-        ? parseAmount(
+        ? protocolNetwork==='Starknet'? parseAmount(
             String(
               uint256.uint256ToBN(
                 walletBalances[coin?.name]?.dataBalanceOf?.balance
@@ -798,7 +816,7 @@ const SupplyModal = ({
             ),
             tokenDecimalsMap[coin?.name]
           )
-        : 0
+        :Number(walletBalances[coin?.name]?.dataBalanceOf?.formatted): 0
     )
 
     // if (transactionStarted) dispatch(setTransactionStarted(""));
@@ -999,7 +1017,7 @@ const SupplyModal = ({
                             gap="1"
                             pr="2"
                             display={
-                              assetBalance[coin]?.dataBalanceOf?.balance &&
+                              (protocolNetwork==='Starknet' ?assetBalance[coin]?.dataBalanceOf?.balance:assetBalance[coin]?.dataBalanceOf?.formatted) &&
                               'flex'
                             }
                             onMouseEnter={()=>{
@@ -1067,7 +1085,7 @@ const SupplyModal = ({
                                     : coin}
                                 </Text>
                               </Box>
-                              <Box
+                              {protocolNetwork==='Starknet' ?<Box
                                 fontSize="9px"
                                 color="#E6EDF3"
                                 mt="6px"
@@ -1087,7 +1105,19 @@ const SupplyModal = ({
                                       )
                                     )
                                   : '-'}
-                              </Box>
+                              </Box>:<Box
+                                fontSize="9px"
+                                color="#E6EDF3"
+                                mt="6px"
+                                fontWeight="thin"
+                              >
+                                Wallet Balance:{' '}
+                                {assetBalance[coin]?.dataBalanceOf?.formatted
+                                  ? numberFormatter(
+                                      assetBalance[coin]?.dataBalanceOf?.formatted
+                                    )
+                                  : '-'}
+                              </Box>}
                             </Box>
                           </Box>
                         )
@@ -1889,7 +1919,7 @@ const SupplyModal = ({
 
               {depositAmount > 0 &&
               depositAmount <= walletBalance &&
-              ((depositAmount > 0 && depositAmount >= minimumDepositAmount) ||
+              ((depositAmount > 0) ||
                 process.env.NEXT_PUBLIC_NODE_ENV == 'testnet') &&
               (process.env.NEXT_PUBLIC_NODE_ENV == 'testnet' ||
                 depositAmount <= maximumDepositAmount) ? (
@@ -1900,6 +1930,16 @@ const SupplyModal = ({
                 ) : (
                   <Box
                     onClick={() => {
+                    //   writeContractAsync({ 
+                    //     abi:trialabi,
+                    //     address: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
+                    //     functionName: 'approve',
+                    //     args: [
+                    //       '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
+                    //       BigInt(etherToWeiBN(depositAmount, asset).toString())
+                    //     ],
+                    //     chain:baseSepolia
+                    //  })
                       // dispatch(setTransactionStarted(""));
                       setTransactionStarted(true)
                       if (transactionStarted === false) {

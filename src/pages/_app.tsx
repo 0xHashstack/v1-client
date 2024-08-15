@@ -19,7 +19,10 @@ import { Provider } from 'react-redux'
 import Layout from '@/components/layouts/toasts'
 import '@/styles/globals.css'
 import { store } from '../store/store'
-
+import { createConfig, http, WagmiProvider } from 'wagmi'
+import { mainnet as mainnetWagmi,baseSepolia } from "wagmi/chains";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { injected } from 'wagmi/connectors'
 export const theme = extendTheme({
   components: {
     Tabs: {
@@ -84,6 +87,17 @@ export default function App({ Component, pageProps }: AppProps) {
   const provider = infuraProvider({ apiKey: apikey.split('/')[4]});
   // const provider = nethermindProvider({ apiKey: apikey.split('/')[4].split('apikey=')[1]});
 
+  const config = createConfig({
+    chains: [baseSepolia],
+    connectors:[
+      injected()
+    ],
+    transports: {
+      [baseSepolia.id]: http(),
+    },
+  })
+  const queryClient = new QueryClient();
+
   const { connectors } = useInjectedConnectors({
     // Show these connectors if the user has no connector installed.
     recommended: [argent(), braavos()],
@@ -126,11 +140,15 @@ export default function App({ Component, pageProps }: AppProps) {
             provider={provider}
             connectors={connectors}
           >
-            <Provider store={store}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </Provider>
+            <WagmiProvider config={config}>
+              <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </Provider>
+              </QueryClientProvider>
+            </WagmiProvider>
           </StarknetConfig>
         </ChakraProvider>
       </PostHogProvider>

@@ -1,4 +1,4 @@
-import { HStack } from "@chakra-ui/react";
+import { Box, HStack, Text, useMediaQuery } from "@chakra-ui/react";
 import React from "react";
 import { useState, useEffect } from "react";
 import DashboardLeft from "../dashboardLeft";
@@ -10,8 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectProtocolStats,
   selectOraclePrices,
+  selectProtocolNetworkSelected,
 } from "@/store/slices/readDataSlice";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import HashstackAirdropIcon from "@/assets/icons/hashstackAirdropIcon";
 const MarketDashboard = () => {
   // const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
   //   []
@@ -98,6 +101,8 @@ const MarketDashboard = () => {
   const [protocolStats, setProtocolStats]: any = useState([]);
 
   const stats = useSelector(selectProtocolStats);
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
+  const [isLargerThan1280] = useMediaQuery('(min-width: 1248px)')
   useEffect(() => {
     // fetchOraclePrices();
     fetchProtocolStats();
@@ -188,9 +193,10 @@ const MarketDashboard = () => {
       display="flex"
       justifyContent="space-between"
       alignItems="flex-start"
+      gap="1rem"
     >
       <DashboardLeft
-        width={"100%"}
+        width={protocolNetwork==='Starknet'? "100%":'65%'}
         oraclePrices={oraclePrices}
         totalSupplies={totalSupplies}
         borrowAPRs={borrowAPRs}
@@ -204,6 +210,35 @@ const MarketDashboard = () => {
         // gap={"16.6"}
         // rowItems={rowItems1}
       />
+      {protocolNetwork==='Base'&&<Box width="35%"       
+      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+      border="1px solid var(--stroke-of-30, rgba(52, 52, 86, 0.6))"
+      paddingX={isLargerThan1280 ? '2rem' : '1rem'}
+      borderRadius="md"
+      height={'34.57rem'}
+      >
+        <Box padding="1.5rem">
+          <Box display='flex' gap="0.5rem" textAlign="center" alignItems="center" bg="#34345626" border="1px solid #34345696" padding="1.5rem" borderRadius="md" justifyContent="flex-end">
+            <Text fontSize="16px" color="#676D9A">
+              Your supply
+            </Text>
+            <Text color="#F0F0F5" fontSize="24px">
+              ${numberFormatter(23)}
+            </Text>
+
+          </Box>
+          <Box padding="0rem 2rem 1.5rem 2rem" textAlign='center' display="flex" justifyContent='center'  bg="#120026" border="1px solid #34345696" borderRadius="md" mt="2rem">
+            <Box >
+              <HashstackAirdropIcon/>
+              <Text color="#F0F0F5">
+              Airdrop to the one who supplies more
+              </Text>
+            </Box>
+
+          </Box>
+        </Box>
+
+      </Box>}
       {/* <DashboardRight
         width={"49%"}
         oraclePrices={oraclePrices}
