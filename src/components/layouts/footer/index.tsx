@@ -139,7 +139,7 @@ const Footer = () => {
         alignItems={"center"}
         mx="auto"
       >
-        {<HStack
+        {protocolNetwork==='Starknet'&&<HStack
           ref={ref}
           className="keen-slider"
           h="100%"
@@ -386,7 +386,7 @@ const Footer = () => {
         </Link>
       </HStack> */}
 
-        <HStack borderLeft="1px solid #2B2F35" h="100%" mr="auto" >
+        <HStack borderLeft="1px solid #2B2F35" h="100%" mr="auto">
           <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
             <Menu placement="top">
               {({ isOpen }) => (
@@ -418,6 +418,7 @@ const Footer = () => {
                     flexDir="column"
                     alignItems="center"
                     position="relative"
+                    marginLeft={protocolNetwork==='Base' ? "5.4rem":'0rem'}
                     right="3.3rem"
                   >
                     {protocolNetwork==='Starknet'&&<MenuItem

@@ -223,7 +223,7 @@ const MarketDashboard = () => {
               Your supply
             </Text>
             <Text color="#F0F0F5" fontSize="24px">
-              ${numberFormatter(23)}
+              ${numberFormatter(0)}
             </Text>
 
           </Box>

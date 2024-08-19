@@ -260,12 +260,14 @@ export default function Home() {
                 onClick={() => {
                   localStorage.setItem('lastUsedConnector', 'braavos')
                   localStorage.setItem('connected', 'braavos')
+                  dispatch(setprotocolNetworkSelected('Starknet'))
                   disconnect()
                   connectors.map((connector) => {
                     if (connector.id == 'braavos') {
                       connect({ connector })
                     }
                   })
+                  
                   dispatch(setTransactionRefresh('reset'))
                 }}
               >
@@ -342,6 +344,7 @@ export default function Home() {
                 onClick={() => {
                   localStorage.setItem('lastUsedConnector', 'argentX')
                   localStorage.setItem('connected', 'argentX')
+                  dispatch(setprotocolNetworkSelected('Starknet'))
                   disconnect()
                   connectors.map((connector) => {
                     if (connector.id == 'argentX') {

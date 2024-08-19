@@ -4,6 +4,7 @@ import { contractsEnv, getProvider } from "../stark-constants";
 // import EmpiricAbi from "../abis_upgrade/empiric_proxy.json";
 import EmpiricAbi from "../abis_mainnet/empiric_proxy.json";
 import BigNumber from "bignumber.js";
+import strkTokens from '../../../contract_addresses_2.json'
 export interface OraclePrice {
   name: string;
   address: string;
@@ -19,11 +20,11 @@ export async function getOraclePrices(): Promise<OraclePrice[]> {
   try {
     const empiricContract = new Contract(
       EmpiricAbi.abi,
-      contractsEnv.EMPIRIC_PROXY_ADDRESS,
+      strkTokens?.mainnet?.EMPIRIC_PROXY_ADDRESS,
       provider
     );
-    for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
-      const token = contractsEnv.TOKENS[i];
+    for (let i = 0; i < strkTokens?.mainnet?.TOKENS.length; ++i) {
+      const token = strkTokens?.mainnet?.TOKENS[i];
       const result:any = await empiricContract.call("get_spot", [
         token.pontis_key,
         MEDIAN_AGGREGATION_MODE,
