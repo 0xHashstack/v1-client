@@ -15,6 +15,7 @@ import {
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import HashstackAirdropIcon from "@/assets/icons/hashstackAirdropIcon";
+import { supplyAsset } from "@/Blockchain/scripts/protocolStats";
 const MarketDashboard = () => {
   // const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
   //   []
@@ -105,7 +106,9 @@ const MarketDashboard = () => {
   const [isLargerThan1280] = useMediaQuery('(min-width: 1248px)')
   useEffect(() => {
     // fetchOraclePrices();
-    fetchProtocolStats();
+    if(protocolNetwork==='Starknet'){
+      fetchProtocolStats();
+    }
     // fetchProtocolReserves();
     // fetchUserReserves();
     // fetchUserLoans();
@@ -185,6 +188,21 @@ const MarketDashboard = () => {
       ////console.log("error on getting protocol stats");
     }
   };
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const res=await supplyAsset('USDT')
+      setTotalSupplies([
+        res,
+        res,
+        res,
+        res,
+        res,
+        res
+      ]);
+    }
+    fetchData()
+  },[])
 
   return (
     <HStack

@@ -97,11 +97,14 @@ import ErrorToast from '../uiElements/toasts/ErrorToast'
 import SuccessToast from '../uiElements/toasts/SuccessToast'
 // import { useFetchToastStatus } from "../layouts/toasts";
 import {
+  getExchangeRate,
   getFees,
   getMaximumDepositAmount,
   getMinimumDepositAmount,
   getNFTBalance,
   getNFTMaxAmount,
+  getSupplyunlocked,
+  getSupplyunlockedBase,
 } from '@/Blockchain/scripts/Rewards'
 import { get_user_holding_zklend } from '@/Blockchain/scripts/liquidityMigration'
 import STRKLogo from '@/assets/icons/coins/strk'
@@ -116,6 +119,7 @@ import {
   selectProtocolStats,
   selectTransactionRefresh,
   setMaximumDepositAmounts,
+  setTransactionRefresh,
 } from '@/store/slices/readDataSlice'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
@@ -126,10 +130,11 @@ import useBalanceofWagmi from '@/Blockchain/hooks/Reads/usebalanceofWagmi'
 import { getTokenFromAddress } from '@/Blockchain/stark-constants'
 import { multicall } from '@wagmi/core'
 import { config } from '@/services/wagmi/config'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import { useWaitForTransactionReceipt, useWriteContract ,useAccount as useAccountWagmi} from 'wagmi'
 import { erc20Abi } from 'viem'
 import { baseSepolia } from 'viem/chains'
 import { trialabi } from '@/Blockchain/abis_mainnet/trialabi'
+import supplyproxyAbi from '../../Blockchain/abis_base_sepolia/supply_proxy_abi.json'
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -221,9 +226,9 @@ const SupplyModal = ({
           STRK: useBalanceOf(tokenAddressMap['STRK']),
         }
       : {
-          USDT: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
-          USDC: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
-          ETH: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
+          USDT: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
+          USDC: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
+          ETH: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
         }
   const assetBalance: assetB | any =
     protocolNetwork === 'Starknet'
@@ -236,11 +241,15 @@ const SupplyModal = ({
           STRK: useBalanceOf(tokenAddressMap['STRK']),
         }
       : {
-          USDT: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
-          USDC: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
-          ETH: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
+        USDT: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
+        USDC: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
+        ETH: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
         }
-  const { writeContractAsync:writeContractAsyncApprove, data:dataApprove, error } = useWriteContract({
+  const withdrawBalances:any={
+    USDT:useBalanceofWagmi('0x9d02822936761269684c22bf230304dFbDbC889D'),
+    USDC:useBalanceofWagmi('0x9d02822936761269684c22bf230304dFbDbC889D'),
+  }
+  const { writeContractAsync:writeContractAsyncApprove, data:dataApprove, error,status:statusApprove } = useWriteContract({
     config,
   })
   const { writeContractAsync:writeContractAsyncDeposit, data:dataDepositBase } = useWriteContract({
@@ -249,7 +258,6 @@ const SupplyModal = ({
   const { writeContractAsync:writeContractAsyncWithdraw, data:dataWithdraw } = useWriteContract({
     config,
   })
-  console.log(error, 'error')
   ////console.log(walletBalances,"wallet balances in supply modal")
 
   // const transactionStarted = useSelector(selectTransactionStarted);
@@ -285,6 +293,11 @@ const SupplyModal = ({
             tokenDecimalsMap[coin?.name]
           )
         : Number(walletBalances[coin?.name]?.dataBalanceOf?.formatted)
+      : 0
+  )
+  const [withdrawwalletBalance, setwithdrawwalletBalance] = useState(
+    withdrawBalances[coin?.name]?.statusBalanceOf === 'success'
+        ? Number(withdrawBalances[coin?.name]?.dataBalanceOf?.formatted)
       : 0
   )
   const getBoostedApr = (coin: any) => {
@@ -339,6 +352,10 @@ const SupplyModal = ({
     )
     ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
   }, [walletBalances[coin?.name]?.statusBalanceOf])
+
+  useEffect(()=>{
+    setwithdrawwalletBalance(Number(withdrawBalances[coin?.name]?.dataBalanceOf?.formatted))
+  },[withdrawBalances[coin?.name]?.statusBalanceOf])
   // useEffect(()=>{
 
   // },[currentSelectedCoin])
@@ -361,7 +378,11 @@ const SupplyModal = ({
   const [ischecked, setIsChecked] = useState(false)
   const [depositTransHash, setDepositTransHash] = useState('')
   const [isToastDisplayed, setToastDisplayed] = useState(false)
-
+  const [txStatus , settxStatus  ] = useState(false);
+  const [txloading, setTxloading] = useState(false);
+  const [declined, setDeclined] = useState(false);
+  const [enteredtransaction, setenteredtransaction] = useState(false)
+  const {address:addressbase}=useAccountWagmi()
   let activeTransactions = useSelector(selectActiveTransactions)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -380,7 +401,7 @@ const SupplyModal = ({
           onClose()
         }
       }
-    }, 7000) // 5000 milliseconds = 5 seconds
+    }, 15000) // 5000 milliseconds = 5 seconds
 
     return () => clearTimeout(timeoutId) // Cleanup function to clear the timeout when component unmounts or when activeTransactions changes
   }, [activeTransactions])
@@ -748,26 +769,36 @@ const SupplyModal = ({
       {
         const approve=await writeContractAsyncApprove({
           abi:trialabi,
-          address: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
+          address: '0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3',
           functionName: 'approve',
           args: [
-            '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
+            '0x9d02822936761269684c22bf230304dFbDbC889D',
             BigInt(etherToWeiBN(depositAmount, asset).toString())
           ],
           chain:baseSepolia
        })
-        setDepositTransHash(dataApprove as any)
-        const uqID = getUniqueId()
-        let data: any = localStorage.getItem('transactionCheck')
-        data = data ? JSON.parse(data) : []
-        if (data && data.includes(uqID)) {
-          dispatch(setTransactionStatus('success'))
+       const toastid = toast.info(
+        // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+        `Transaction pending`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
         }
+      )
+      setToastId(toastid)
+        setDepositTransHash(approve as any)
+        // const uqID = getUniqueId()
+        // let data: any = localStorage.getItem('transactionCheck')
+        // data = data ? JSON.parse(data) : []
+        // if (data && data.includes(uqID)) {
+        //   dispatch(setTransactionStatus('success'))
+        // }
         ////console.log("Status transaction", deposit);
         //console.log(isSuccessDeposit, "success ?");
       }
     } catch (err: any) {
       // setTransactionFailed(true);
+      // console.log(err,"approve err")
       const uqID = getUniqueId()
       let data: any = localStorage.getItem('transactionCheck')
       data = data ? JSON.parse(data) : []
@@ -826,10 +857,252 @@ const SupplyModal = ({
       // });
     }
   }
+  const handleTransactionDeposit = async () => {
+    try {
+      {
+        const approve=await writeContractAsyncDeposit({
+          abi:supplyproxyAbi,
+          address: '0x9d02822936761269684c22bf230304dFbDbC889D',
+          functionName: 'deposit',
+          args: [
+            BigInt(etherToWeiBN(depositAmount, asset).toString()),
+            addressbase,
+          ],
+          chain:baseSepolia
+       },
+      )
+      if (!activeTransactions) {
+        activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
+      } else if (
+        Object.isFrozen(activeTransactions) ||
+        Object.isSealed(activeTransactions)
+      ) {
+        // Check if activeTransactions is frozen or sealed
+        activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
+      }
+      const uqID = getUniqueId()
+      const trans_data = {
+        transaction_hash: dataWithdraw,
+        message: `Successfully deposited ${depositAmount} ${currentSelectedCoin}`,
+        // message: `Transaction successful`,
+        toastId: 2,
+        setCurrentTransactionStatus: setCurrentTransactionStatus,
+        uniqueID: uqID,
+      }
+      activeTransactions?.push(trans_data)
+      dispatch(setActiveTransactions(activeTransactions))
+        let data: any = localStorage.getItem('transactionCheck')
+        data = data ? JSON.parse(data) : []
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus('success'))
+        }
+        ////console.log("Status transaction", deposit);
+        //console.log(isSuccessDeposit, "success ?");
+      }
+    } catch (err: any) {
+      setDeclined(true)
+      setTransactionStarted(false)
+      // setTransactionFailed(true);
+      //console.log(uqID, "transaction check supply transaction failed : ", err);
 
-  const { isLoading:approveLoading, isSuccess:approveSuccess } = useWaitForTransactionReceipt({
+      const toastContent = (
+        <div>
+          Transaction declined{' '}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      )
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      })
+      //console.log("supply", err);
+      // toast({
+      //   description: "An error occurred while handling the transaction. " + err,
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   status: "error",
+      //   isClosable: true,
+      // });
+      // toast({
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   render: () => (
+      //     <Box
+      //       display="flex"
+      //       flexDirection="row"
+      //       justifyContent="center"
+      //       alignItems="center"
+      //       bg="rgba(40, 167, 69, 0.5)"
+      //       height="48px"
+      //       borderRadius="6px"
+      //       border="1px solid rgba(74, 194, 107, 0.4)"
+      //       padding="8px"
+      //     >
+      //       <Box>
+      //         <SuccessTick />
+      //       </Box>
+      //       <Text>You have successfully supplied 1000USDT to check go to </Text>
+      //       <Button variant="link">Your Supply</Button>
+      //       <Box>
+      //         <CancelSuccessToast />
+      //       </Box>
+      //     </Box>
+      //   ),
+      //   isClosable: true,
+      // });
+    }
+  }
+  const handleTransactionWithdraw = async () => {
+    try {
+      {
+        const dataWithdraw=await writeContractAsyncWithdraw({
+          abi:supplyproxyAbi,
+          address: '0x9d02822936761269684c22bf230304dFbDbC889D',
+          functionName: 'withdraw',
+          args: [
+            BigInt(etherToWeiBN(withdrawAmount, asset).toString()),
+            addressbase,
+            addressbase
+          ],
+          chain:baseSepolia
+       },
+      )
+
+       const toastid = toast.info(
+        // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+        `Transaction pending`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+        }
+      )
+      setToastId(toastid)
+      if (!activeTransactions) {
+        activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
+      } else if (
+        Object.isFrozen(activeTransactions) ||
+        Object.isSealed(activeTransactions)
+      ) {
+        // Check if activeTransactions is frozen or sealed
+        activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
+      }
+      const uqID = getUniqueId()
+      const trans_data = {
+        transaction_hash: dataWithdraw,
+        message: `Successfully withdraw ${withdrawAmount} ${currentSelectedCoin}`,
+        // message: `Transaction successful`,
+        toastId: toastid,
+        setCurrentTransactionStatus: setCurrentTransactionStatus,
+        uniqueID: uqID,
+      }
+      activeTransactions?.push(trans_data)
+
+      dispatch(setActiveTransactions(activeTransactions))
+      setDepositTransHash(dataWithdraw)
+        let data: any = localStorage.getItem('transactionCheck')
+        data = data ? JSON.parse(data) : []
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus('success'))
+        }
+        ////console.log("Status transaction", deposit);
+        //console.log(isSuccessDeposit, "success ?");
+      }
+    } catch (err: any) {
+      // setTransactionFailed(true);
+      console.log(err,"approve err")
+      const uqID = getUniqueId()
+      let data: any = localStorage.getItem('transactionCheck')
+      data = data ? JSON.parse(data) : []
+      if (data && data.includes(uqID)) {
+        setTransactionStarted(false)
+        // dispatch(setTransactionStatus("failed"));
+      }
+      //console.log(uqID, "transaction check supply transaction failed : ", err);
+
+      const toastContent = (
+        <div>
+          Transaction declined{' '}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      )
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      })
+      // toast({
+      //   description: "An error occurred while handling the transaction. " + err,
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   status: "error",
+      //   isClosable: true,
+      // });
+      // toast({
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   render: () => (
+      //     <Box
+      //       display="flex"
+      //       flexDirection="row"
+      //       justifyContent="center"
+      //       alignItems="center"
+      //       bg="rgba(40, 167, 69, 0.5)"
+      //       height="48px"
+      //       borderRadius="6px"
+      //       border="1px solid rgba(74, 194, 107, 0.4)"
+      //       padding="8px"
+      //     >
+      //       <Box>
+      //         <SuccessTick />
+      //       </Box>
+      //       <Text>You have successfully supplied 1000USDT to check go to </Text>
+      //       <Button variant="link">Your Supply</Button>
+      //       <Box>
+      //         <CancelSuccessToast />
+      //       </Box>
+      //     </Box>
+      //   ),
+      //   isClosable: true,
+      // });
+    }
+  }
+
+  const { isLoading:approveLoading, isSuccess:approveSuccess,data } = useWaitForTransactionReceipt({
     hash: dataApprove,
   })
+
+  const { isLoading:approveLoadingDeposit, isSuccess:approveSuccessDeposit } = useWaitForTransactionReceipt({
+    hash: dataDepositBase,
+  })
+
+  useEffect(()=>{
+    if(approveSuccess && !approveLoading){
+      settxStatus(true);
+      setTxloading(false);
+    }
+  
+  },[approveSuccess]);
+
+  // useEffect(()=>{
+  //   if(approveSuccessDeposit &&!approveLoadingDeposit){
+  //     console.log('2nd')
+  //     dispatch(setTransactionStatus("success"))
+  //     toast.success(`Successfully supplied ${depositAmount} ${currentSelectedCoin}`,            
+  //       {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //     })
+  //   }
+  // },[approveSuccessDeposit])
+
+  useEffect(()=>{
+    if((approveSuccess ) && txStatus && !txloading && !declined &&!enteredtransaction){
+      setenteredtransaction(true)
+      handleTransactionDeposit()
+    }
+  },[approveSuccess,txStatus,txloading])
 
   
 
@@ -852,6 +1125,26 @@ const SupplyModal = ({
     }
   }
 
+  const [estSupply, setEstSupply] = useState<any>()
+
+  useEffect(() => {
+    const fetchSupplyUnlocked = async () => {
+      try {
+        if (asset && withdrawAmount > 0) {
+          const data = await getSupplyunlockedBase(
+            asset,
+            withdrawAmount
+          )
+          ////console.log(data, "data in your supply");
+          setEstSupply(data)
+        }
+      } catch (err) {
+        //console.log(err, "err in you supply");
+      }
+    }
+    fetchSupplyUnlocked()
+  }, [asset, withdrawAmount])
+
   // useEffect(() => {
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
   // }, [])
@@ -861,9 +1154,23 @@ const SupplyModal = ({
   const minAmounts = useSelector(selectMinimumDepositAmounts)
   const maxAmounts = useSelector(selectMaximumDepositAmounts)
   useEffect(() => {
-    setMinimumDepositAmount(minAmounts['r' + currentSelectedCoin])
+    if(protocolNetwork==='Starknet'){
+      setMinimumDepositAmount(minAmounts['r' + currentSelectedCoin])
+    }
     setmaximumDepositAmount(maxAmounts['r' + currentSelectedCoin])
   }, [currentSelectedCoin, minAmounts, maxAmounts])
+
+  const [exchangeRate, setexchangeRate] = useState<any>()
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const res=await getExchangeRate()
+      if(res){
+        setexchangeRate(res)
+      }
+    }
+    fetchData()
+  },[])
   ////console.log(nft,"nft")
   // useEffect(()=>{
   //     const data=useSelector(selectMinimumDepositAmounts);
@@ -920,7 +1227,7 @@ const SupplyModal = ({
     if (newValue > 9_000_000_000) return
     // check if newValue is float, if it is then round off to 6 decimals
 
-    var percentage = (newValue * 100) / walletBalance
+    var percentage = (newValue * 100) / withdrawwalletBalance
     // if (walletBalance == 0) {
     //   setDepositAmount(0);
     //   setinputAmount(0);
@@ -941,7 +1248,7 @@ const SupplyModal = ({
     }
   }
 
-  const coins: NativeToken[] =protocolNetwork==='Starknet'? ['BTC', 'USDT', 'USDC', 'ETH', 'STRK']:[ 'USDT', 'USDC',]
+  const coins: NativeToken[] =protocolNetwork==='Starknet'? ['BTC', 'USDT', 'USDC', 'ETH', 'STRK']:[ 'USDT', ]
   const [selectedTab, setSelectedTab] = useState('supply')
   const resetStates = () => {
     setDepositAmount(0)
@@ -949,6 +1256,11 @@ const SupplyModal = ({
     setSliderValue(0)
     setsliderWithdrawValue(0)
     setToastDisplayed(false)
+    settxStatus(false)
+    setTxloading(false)
+    setDeclined(false)
+    setenteredtransaction(false)
+    setEstSupply(undefined)
     setAsset(coin ? coin?.name : 'BTC')
     setCurrentSelectedCoin(coin ? coin?.name : 'BTC')
     setIsChecked(true)
@@ -966,6 +1278,7 @@ const SupplyModal = ({
           : Number(walletBalances[coin?.name]?.dataBalanceOf?.formatted)
         : 0
     )
+    setwithdrawwalletBalance(Number(withdrawBalances[coin?.name]?.dataBalanceOf?.formatted))
 
     // if (transactionStarted) dispatch(setTransactionStarted(""));
     setTransactionStarted(false)
@@ -1758,13 +2071,13 @@ const SupplyModal = ({
                         opacity="0.8"
                       >
                         {depositAmount *
-                          protocolStats?.find(
+                          (protocolNetwork==='Starknet'? protocolStats?.find(
                             (stat: any) =>
                               stat.token ==
                               (currentSelectedCoin[0] == 'r'
                                 ? currentSelectedCoin.slice(1)
                                 : currentSelectedCoin)
-                          )?.exchangeRateUnderlyingToRtoken}
+                          )?.exchangeRateUnderlyingToRtoken:exchangeRate)}
                       </Box>
                       <Text color="#676D9A" fontSize="md" opacity="0.8">
                         r{currentSelectedCoin}
@@ -2366,19 +2679,7 @@ const SupplyModal = ({
                                     )
                                     setcollateralMarketHoverIndex(-1)
                                     ////console.log(coin,"coin in supply modal")
-                                    setwalletBalance(
-                                      walletBalances[coin]?.statusBalanceOf ===
-                                        'success'
-                                        ? parseAmount(
-                                            String(
-                                              uint256.uint256ToBN(
-                                                walletBalances[coin]
-                                                  ?.dataBalanceOf?.balance
-                                              )
-                                            ),
-                                            tokenDecimalsMap[coin]
-                                          )
-                                        : 0
+                                    setwithdrawwalletBalance(Number(withdrawBalances[coin]?.dataBalanceOf?.formatted)
                                     )
                                     dispatch(setCoinSelectedSupplyModal(coin))
                                   }}
@@ -2426,7 +2727,7 @@ const SupplyModal = ({
                                         mt="6px"
                                         fontWeight="thin"
                                       >
-                                        Wallet Balance:{' '}
+                                        Available:{' '}
                                         {assetBalance[coin]?.dataBalanceOf
                                           ?.balance
                                           ? numberFormatter(
@@ -2449,11 +2750,11 @@ const SupplyModal = ({
                                         mt="6px"
                                         fontWeight="thin"
                                       >
-                                        Wallet Balance:{' '}
-                                        {assetBalance[coin]?.dataBalanceOf
+                                        Available:{' '}
+                                        {withdrawBalances[coin]?.dataBalanceOf
                                           ?.formatted
                                           ? numberFormatter(
-                                              assetBalance[coin]?.dataBalanceOf
+                                              withdrawBalances[coin]?.dataBalanceOf
                                                 ?.formatted
                                             )
                                           : '-'}
@@ -2502,7 +2803,7 @@ const SupplyModal = ({
                         width="100%"
                         color="white"
                         border={`${
-                          withdrawAmount > walletBalance
+                          withdrawAmount > withdrawwalletBalance
                             ? '1px solid #CF222E'
                             : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
                                 withdrawAmount > maximumDepositAmount
@@ -2517,7 +2818,7 @@ const SupplyModal = ({
                                       withdrawAmount > 0
                                     ? '1px solid #CF222E'
                                     : withdrawAmount > 0 &&
-                                        withdrawAmount <= walletBalance
+                                        withdrawAmount <= withdrawwalletBalance
                                       ? '1px solid #00D395'
                                       : '1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
                         }`}
@@ -2551,7 +2852,7 @@ const SupplyModal = ({
                                   } ${currentSelectedCoin}`
                             }
                             color={`${
-                              withdrawAmount > walletBalance
+                              withdrawAmount > withdrawwalletBalance
                                 ? '#CF222E'
                                 : process.env.NEXT_PUBLIC_NODE_ENV ==
                                       'mainnet' &&
@@ -2587,7 +2888,7 @@ const SupplyModal = ({
                         <Button
                           variant="ghost"
                           color={`${
-                            withdrawAmount > walletBalance
+                            withdrawAmount > withdrawwalletBalance
                               ? '#CF222E'
                               : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
                                   withdrawAmount > maximumDepositAmount
@@ -2610,10 +2911,10 @@ const SupplyModal = ({
                             bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
                           }}
                           onClick={() => {
-                            setwithdrawAmount(walletBalance)
-                            setinputAmount(walletBalance)
+                            setwithdrawAmount(withdrawwalletBalance)
+                            setinputAmount(withdrawwalletBalance)
                             setsliderWithdrawValue(100)
-                            dispatch(setInputSupplyAmount(walletBalance))
+                            dispatch(setInputSupplyAmount(withdrawwalletBalance))
                           }}
                           isDisabled={transactionStarted == true}
                           _disabled={{ cursor: 'pointer' }}
@@ -2621,13 +2922,10 @@ const SupplyModal = ({
                           MAX
                         </Button>
                       </Box>
-                      {withdrawAmount > walletBalance ||
+                      {withdrawAmount > withdrawwalletBalance ||
                       (process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
                         withdrawAmount > maximumDepositAmount) ||
                       withdrawAmount < 0 ||
-                      (withdrawAmount < minimumDepositAmount &&
-                        process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                        withdrawAmount > 0) ||
                       isNaN(withdrawAmount) ? (
                         <Text
                           display="flex"
@@ -2649,16 +2947,12 @@ const SupplyModal = ({
                               <SmallErrorIcon />{' '}
                             </Text>
                             <Text ml="0.3rem">
-                              {depositAmount > walletBalance
+                              {withdrawAmount > withdrawwalletBalance
                                 ? 'Amount exceeds balance'
                                 : process.env.NEXT_PUBLIC_NODE_ENV ==
                                       'mainnet' &&
-                                    depositAmount > maximumDepositAmount
+                                    withdrawAmount > maximumDepositAmount
                                   ? 'More than max amount'
-                                  : process.env.NEXT_PUBLIC_NODE_ENV ==
-                                        'mainnet' &&
-                                      depositAmount < minimumDepositAmount
-                                    ? 'Less than min amount'
                                     : ''}
                             </Text>
                           </Text>
@@ -2668,11 +2962,11 @@ const SupplyModal = ({
                             justifyContent="flex-end"
                             flexDirection="row"
                           >
-                            Wallet Balance:{' '}
-                            {walletBalance.toFixed(5).replace(/\.?0+$/, '')
+                            Available:{' '}
+                            {withdrawwalletBalance.toFixed(5).replace(/\.?0+$/, '')
                               .length > 5
-                              ? numberFormatter(walletBalance)
-                              : numberFormatter(walletBalance)}
+                              ? numberFormatter(withdrawwalletBalance)
+                              : numberFormatter(withdrawwalletBalance)}
                             <Text color="#676D9A" ml="0.2rem">
                               {` ${currentSelectedCoin}`}
                             </Text>
@@ -2689,11 +2983,11 @@ const SupplyModal = ({
                           fontStyle="normal"
                           fontFamily="Inter"
                         >
-                          Wallet Balance:{' '}
-                          {walletBalance.toFixed(5).replace(/\.?0+$/, '')
+                          Available:{' '}
+                          {withdrawwalletBalance.toFixed(5).replace(/\.?0+$/, '')
                             .length > 5
-                            ? numberFormatter(walletBalance)
-                            : numberFormatter(walletBalance)}
+                            ? numberFormatter(withdrawwalletBalance)
+                            : numberFormatter(withdrawwalletBalance)}
                           <Text color="#676D9A" ml="0.2rem">
                             {` ${currentSelectedCoin}`}
                           </Text>
@@ -2716,11 +3010,11 @@ const SupplyModal = ({
                           value={sliderWithdrawValue}
                           onChange={(val) => {
                             setsliderWithdrawValue(val)
-                            var ans = (val / 100) * walletBalance
+                            var ans = (val / 100) * withdrawwalletBalance
                             ////console.log(ans);
                             if (val == 100) {
-                              setwithdrawAmount(walletBalance)
-                              setinputAmount(walletBalance)
+                              setwithdrawAmount(withdrawwalletBalance)
+                              setinputAmount(withdrawwalletBalance)
                             } else {
                               // ans = Math.round(ans * 100) / 100;
                               if (ans < 10) {
@@ -2877,7 +3171,7 @@ const SupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          {!selectedTab ? (
+                          {!estSupply ? (
                             <Skeleton
                               width="3rem"
                               height="1rem"
@@ -2887,7 +3181,7 @@ const SupplyModal = ({
                               ml={2}
                             />
                           ) : (
-                            <Text color="#676D9A"> 0</Text>
+                            <Text color="#676D9A"> {estSupply}</Text>
                           )}
                         </Text>
                         {/* <Text
@@ -3030,7 +3324,7 @@ const SupplyModal = ({
                       </Card>
 
                     {withdrawAmount > 0 &&
-                    withdrawAmount <= walletBalance  &&
+                    withdrawAmount <= withdrawwalletBalance  &&
                     (withdrawAmount > 0 ||
                       process.env.NEXT_PUBLIC_NODE_ENV == 'testnet')  ? (
                       buttonId == 1 ? (
@@ -3056,6 +3350,8 @@ const SupplyModal = ({
                               dispatch(
                                 setTransactionStartedAndModalClosed(false)
                               )
+                              handleTransactionWithdraw()
+
 
                               // handleTransaction()
                               posthog.capture('Supply Market Clicked Button', {

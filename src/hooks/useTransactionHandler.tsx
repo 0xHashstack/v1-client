@@ -3,7 +3,7 @@ import {
   setActiveTransactions,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
-import {  setTransactionRefresh } from "@/store/slices/readDataSlice";
+import {  selectProtocolNetworkSelected, setTransactionRefresh } from "@/store/slices/readDataSlice";
 import { Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -16,6 +16,7 @@ import useTransactionStatus from "./useTransactionStatus";
 const useTransactionHandler = () => {
   let activeTransactions = useSelector(selectActiveTransactions);
   const [transactions, setTransactions] = useState([]);
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
   const dispatch = useDispatch();
   const toastHash = [""];
   // console.log(transactionsData,"redux")
@@ -60,9 +61,9 @@ const useTransactionHandler = () => {
       // transaction.refetch();
       const transaction_hash =
         //@ts-ignore
-        transaction?.data?.transaction?.transaction_hash;
+        protocolNetwork==='Starknet'? transaction?.data?.transaction?.transaction_hash:transaction?.data?.transaction?.transactionHash;
       //@ts-ignore
-      const transaction_status = transaction?.data?.finality_status;
+      const transaction_status =protocolNetwork==='Starknet'? transaction?.data?.finality_status:transaction?.data?.status;
       //@ts-ignore
       const transaction_error = transaction?.error;
       if (transaction_hash == "" || activeTransactions.transaction_hash == "") {
@@ -70,7 +71,7 @@ const useTransactionHandler = () => {
       }
       const transaction_hxh = activeTransactions[transactions.length-1]?.transaction_hash;
       if (
-        transaction_status == "ACCEPTED_ON_L2"
+        transaction_status == "ACCEPTED_ON_L2" || transaction_status==='success'
       ) {
         if (!toastHash.includes(transaction_hxh)) {
           if (data && data.includes(activeTransactions[transactions.length-1]?.uniqueID)) {
@@ -117,7 +118,8 @@ const useTransactionHandler = () => {
       if (
         transaction_status == "ACCEPTED_ON_L2" ||
         transaction_status == "ACCEPTED_ON_L1" ||
-        transaction_status == "REJECTED"
+        transaction_status == "REJECTED" || 
+        transaction_status == 'success'
       ) {
         if (activeTransactions[transactions.length-1].transaction_hash == "") {
           return false;

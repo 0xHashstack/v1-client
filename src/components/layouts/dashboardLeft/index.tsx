@@ -35,6 +35,7 @@ import numberFormatterPercentage from '@/utils/functions/numberFormatterPercenta
 import { selectProtocolNetworkSelected } from '@/store/slices/readDataSlice'
 import { useBalance } from 'wagmi'
 import useBalanceofWagmi from '@/Blockchain/hooks/Reads/usebalanceofWagmi'
+import { supplyAsset } from '@/Blockchain/scripts/protocolStats'
 
 export interface ICoin {
   name: string
@@ -90,8 +91,8 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
   ]:[
     // { name: 'STRK', icon: 'mdi-strk', symbol: 'STRK' },
     { name: 'USDT', icon: 'mdi-bitcoin', symbol: 'USDT' },
-    { name: 'USDC', icon: 'mdi-ethereum', symbol: 'USDC' },
-    { name: 'ETH', icon: 'mdi-ethereum', symbol: 'WETH' },
+    // { name: 'USDC', icon: 'mdi-ethereum', symbol: 'USDC' },
+    // { name: 'ETH', icon: 'mdi-ethereum', symbol: 'WETH' },
     // { name: 'BTC', icon: 'mdi-bitcoin', symbol: 'WBTC' },
     // { name: 'DAI', icon: 'mdi-dai', symbol: 'DAI' },
   ]
@@ -130,9 +131,9 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
     DAI: useBalanceOf(tokenAddressMap['DAI']),
     STRK: useBalanceOf(tokenAddressMap['STRK']),
   }:{
-    USDT: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
-    USDC: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
-    ETH: useBalanceofWagmi('0x036CbD53842c5426634e7929541eC2318f3dCF7e'),
+    USDT: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
+    USDC: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
+    ETH: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
   }
   const coinPrices = Coins.map((coin) => {
     const matchingCoin = oraclePrices?.find(

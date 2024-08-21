@@ -15,7 +15,11 @@ import StarknetLogo from '@/assets/icons/coins/starknet'
 import USDCLogo from '@/assets/icons/coins/usdc'
 import USDTLogo from '@/assets/icons/coins/usdt'
 import BravosIcon from '@/assets/icons/wallets/bravos'
-import { useAccount as useAccountWagmi, useConnect as useConnectWagmi,useDisconnect as useDisconnectWagmi } from 'wagmi'
+import {
+  useAccount as useAccountWagmi,
+  useConnect as useConnectWagmi,
+  useDisconnect as useDisconnectWagmi,
+} from 'wagmi'
 import {
   setprotocolNetworkSelected,
   setReferral,
@@ -37,10 +41,13 @@ export default function Home() {
 
   const [isWaitListed, setIsWaitListed] = useState(true)
   const [availableDataLoading, setAvailableDataLoading] = useState(true)
-  const [network, setnetwork] = useState<string>('Starknet')
-  const { connect: connectWagmi, connectors: wagmiConnectors, error} = useConnectWagmi()
-  console.log(wagmiConnectors,"wagmi")
-  const {address:addressbase}=useAccountWagmi()
+  const [network, setnetwork] = useState<string>('Base')
+  const {
+    connect: connectWagmi,
+    connectors: wagmiConnectors,
+    error,
+  } = useConnectWagmi()
+  const { address: addressbase } = useAccountWagmi()
   const router = useRouter()
   const waitlistHref = '/v1/waitlist'
   const marketHref2 = '/v1/market'
@@ -48,13 +55,12 @@ export default function Home() {
   const dispatch = useDispatch()
   const walletBalance = useSelector(selectWalletBalance)
   const navDropdowns = useSelector(selectNavDropdowns)
-  const {disconnect:disconnectWagmi} = useDisconnectWagmi();
+  const { disconnect: disconnectWagmi } = useDisconnectWagmi()
   const coins = ['BTC', 'USDT', 'USDC', 'ETH', 'DAI']
   const networks = [
-    { name: 'Starknet', status: 'enable' },
     { name: 'Base', status: 'enable' },
+    { name: 'Starknet', status: 'enable' },
   ]
-  console.log(addressbase,"base")
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -111,7 +117,7 @@ export default function Home() {
           router.replace(marketHref2)
         }
       }
-    }else if (walletConnected == 'MetaMask') {
+    } else if (walletConnected == 'MetaMask') {
       disconnectWagmi()
       dispatch(setprotocolNetworkSelected('Base'))
       wagmiConnectors.map((connector) => {
@@ -223,7 +229,9 @@ export default function Home() {
                       color="white"
                       onClick={() => {
                         setnetwork(networkOptions?.name)
-                        dispatch(setprotocolNetworkSelected(networkOptions?.name))
+                        dispatch(
+                          setprotocolNetworkSelected(networkOptions?.name)
+                        )
                       }}
                       bg={`${
                         network === networkOptions?.name ? '#4D59E8' : 'inherit'
@@ -244,56 +252,11 @@ export default function Home() {
               </Box>
             )}
           </Box>
-          {network==="Starknet"?<Box>
-            {(connectors[0]?.id == 'braavos' || connectors[1]?.id == 'braavos') &&
-            bravoosAvailable ? (
-              <Box
-                w="full"
-                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                py="2"
-                mt="1rem"
-                borderRadius="6px"
-                gap="3px"
-                display="flex"
-                justifyContent="space-between"
-                cursor="pointer"
-                onClick={() => {
-                  localStorage.setItem('lastUsedConnector', 'braavos')
-                  localStorage.setItem('connected', 'braavos')
-                  dispatch(setprotocolNetworkSelected('Starknet'))
-                  disconnect()
-                  connectors.map((connector) => {
-                    if (connector.id == 'braavos') {
-                      connect({ connector })
-                    }
-                  })
-                  
-                  dispatch(setTransactionRefresh('reset'))
-                }}
-              >
-                <Box ml="1rem" color="white">
-                  {availableDataLoading ? (
-                    <Skeleton
-                      width="6rem"
-                      height="1.4rem"
-                      startColor="#101216"
-                      endColor="#2B2F35"
-                      borderRadius="6px"
-                    />
-                  ) : (connectors[0]?.id == 'braavos' ||
-                      connectors[1]?.id == 'braavos') &&
-                    bravoosAvailable ? (
-                    'Braavos Wallet'
-                  ) : (
-                    'Download Braavos Wallet'
-                  )}
-                </Box>
-                <Box p="1" mr="16px">
-                  <BravosIcon />
-                </Box>
-              </Box>
-            ) : (
-              <Link href="https://braavos.app" target="_blank">
+          {network === 'Starknet' ? (
+            <Box>
+              {(connectors[0]?.id == 'braavos' ||
+                connectors[1]?.id == 'braavos') &&
+              bravoosAvailable ? (
                 <Box
                   w="full"
                   border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
@@ -304,6 +267,19 @@ export default function Home() {
                   display="flex"
                   justifyContent="space-between"
                   cursor="pointer"
+                  onClick={() => {
+                    localStorage.setItem('lastUsedConnector', 'braavos')
+                    localStorage.setItem('connected', 'braavos')
+                    dispatch(setprotocolNetworkSelected('Starknet'))
+                    disconnect()
+                    connectors.map((connector) => {
+                      if (connector.id == 'braavos') {
+                        connect({ connector })
+                      }
+                    })
+
+                    dispatch(setTransactionRefresh('reset'))
+                  }}
                 >
                   <Box ml="1rem" color="white">
                     {availableDataLoading ? (
@@ -326,72 +302,68 @@ export default function Home() {
                     <BravosIcon />
                   </Box>
                 </Box>
-              </Link>
-            )}
+              ) : (
+                <Link href="https://braavos.app" target="_blank">
+                  <Box
+                    w="full"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                    py="2"
+                    mt="1rem"
+                    borderRadius="6px"
+                    gap="3px"
+                    display="flex"
+                    justifyContent="space-between"
+                    cursor="pointer"
+                  >
+                    <Box ml="1rem" color="white">
+                      {availableDataLoading ? (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (connectors[0]?.id == 'braavos' ||
+                          connectors[1]?.id == 'braavos') &&
+                        bravoosAvailable ? (
+                        'Braavos Wallet'
+                      ) : (
+                        'Download Braavos Wallet'
+                      )}
+                    </Box>
+                    <Box p="1" mr="16px">
+                      <BravosIcon />
+                    </Box>
+                  </Box>
+                </Link>
+              )}
 
-            {(connectors[1]?.id == 'argentX' || connectors[0]?.id == 'argentX') &&
-            argentAvailable ? (
-              <Box
-                w="full"
-                py="2"
-                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                borderRadius="6px"
-                gap="3px"
-                mt="1rem"
-                display="flex"
-                justifyContent="space-between"
-                cursor="pointer"
-                onClick={() => {
-                  localStorage.setItem('lastUsedConnector', 'argentX')
-                  localStorage.setItem('connected', 'argentX')
-                  dispatch(setprotocolNetworkSelected('Starknet'))
-                  disconnect()
-                  connectors.map((connector) => {
-                    if (connector.id == 'argentX') {
-                      connect({ connector })
-                    }
-                  })
-                  dispatch(setTransactionRefresh('reset'))
-                }}
-              >
-                <Box ml="1rem" color="white">
-                  {availableDataLoading ? (
-                    <Skeleton
-                      width="6rem"
-                      height="1.4rem"
-                      startColor="#101216"
-                      endColor="#2B2F35"
-                      borderRadius="6px"
-                    />
-                  ) : connectors[0]?.id == 'argentX' ||
-                    (connectors[1]?.id == 'argentX' && argentAvailable) ? (
-                    'Argent X Wallet'
-                  ) : (
-                    'Download Argent X Wallet'
-                  )}
-                </Box>
-                <Box p="1" mr="16px">
-                  <Image
-                    src="/ArgentXlogo.svg"
-                    alt="Picture of the author"
-                    width="15"
-                    height="15"
-                    style={{ cursor: 'pointer' }}
-                  />
-                </Box>
-              </Box>
-            ) : (
-              <Link href="https://www.argent.xyz/argent-x" target="_black">
+              {(connectors[1]?.id == 'argentX' ||
+                connectors[0]?.id == 'argentX') &&
+              argentAvailable ? (
                 <Box
                   w="full"
                   py="2"
-                  border="1px solid #2B2F35"
+                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                   borderRadius="6px"
                   gap="3px"
                   mt="1rem"
                   display="flex"
                   justifyContent="space-between"
                   cursor="pointer"
+                  onClick={() => {
+                    localStorage.setItem('lastUsedConnector', 'argentX')
+                    localStorage.setItem('connected', 'argentX')
+                    dispatch(setprotocolNetworkSelected('Starknet'))
+                    disconnect()
+                    connectors.map((connector) => {
+                      if (connector.id == 'argentX') {
+                        connect({ connector })
+                      }
+                    })
+                    dispatch(setTransactionRefresh('reset'))
+                  }}
                 >
                   <Box ml="1rem" color="white">
                     {availableDataLoading ? (
@@ -402,9 +374,8 @@ export default function Home() {
                         endColor="#2B2F35"
                         borderRadius="6px"
                       />
-                    ) : (connectors[1]?.id == 'argentX' ||
-                        connectors[0]?.id == 'argentX') &&
-                      argentAvailable ? (
+                    ) : connectors[0]?.id == 'argentX' ||
+                      (connectors[1]?.id == 'argentX' && argentAvailable) ? (
                       'Argent X Wallet'
                     ) : (
                       'Download Argent X Wallet'
@@ -420,59 +391,115 @@ export default function Home() {
                     />
                   </Box>
                 </Box>
-              </Link>
-            )}
-          </Box>:<Box>
-          {wagmiConnectors.map((connector: any) => (
-
-            <Box
-              w="full"
-              border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-              py="2"
-              mt="1rem"
-              borderRadius="6px"
-              gap="3px"
-              display="flex"
-              justifyContent="space-between"
-              cursor="pointer"
-              mb="16px"
-              // onClick={() => router.push("/market")}
-              key={connector.id}
-              onClick={() => {
-                localStorage.setItem('lastUsedConnector', connector.id == "io.metamask" ?
-                  "MetaMask":"coinbaseWallet")
-                localStorage.setItem('connected', connector.id == "io.metamask" ?
-                  "MetaMask":"coinbaseWallet")
-                connectWagmi({ connector })
-                router.replace(marketHref2)
-              }
-              }
-            >
-              <Box ml="1rem" color="white">
-                {availableDataLoading ? (
-                  <Skeleton
-                    width="6rem"
-                    height="1.4rem"
-                    startColor="#101216"
-                    endColor="#2B2F35"
+              ) : (
+                <Link href="https://www.argent.xyz/argent-x" target="_black">
+                  <Box
+                    w="full"
+                    py="2"
+                    border="1px solid #2B2F35"
                     borderRadius="6px"
-                  />
-                ) : connector.id == "io.metamask" ?
-                  "MetaMask"
-                  : (
-                    connector.id == "coinbaseWalletSDK" ?
-                      "Coinbase" : "Wallet Connect"
-                  )}
-              </Box>
-              <Box p="1" mr="16px">
-                {connector.id == "io.metamask"
-                  ? <MetamaskIcon /> : <CoinbaseIcon />
-                }
-
-              </Box>
+                    gap="3px"
+                    mt="1rem"
+                    display="flex"
+                    justifyContent="space-between"
+                    cursor="pointer"
+                  >
+                    <Box ml="1rem" color="white">
+                      {availableDataLoading ? (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (connectors[1]?.id == 'argentX' ||
+                          connectors[0]?.id == 'argentX') &&
+                        argentAvailable ? (
+                        'Argent X Wallet'
+                      ) : (
+                        'Download Argent X Wallet'
+                      )}
+                    </Box>
+                    <Box p="1" mr="16px">
+                      <Image
+                        src="/ArgentXlogo.svg"
+                        alt="Picture of the author"
+                        width="15"
+                        height="15"
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </Box>
+                  </Box>
+                </Link>
+              )}
             </Box>
-          ))}
-            </Box>}
+          ) : (
+            <Box>
+              {availableDataLoading ? (
+                // Always render this loading state until data is fully loaded
+                <></>
+              ) : (
+                wagmiConnectors.map((connector: any) => (
+                  <Box
+                    w="full"
+                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                    py="2"
+                    mt="1rem"
+                    borderRadius="6px"
+                    gap="3px"
+                    display="flex"
+                    justifyContent="space-between"
+                    cursor="pointer"
+                    // mb="16px"
+                    // onClick={() => router.push("/market")}
+                    key={connector.id}
+                    onClick={() => {
+                      localStorage.setItem(
+                        'lastUsedConnector',
+                        connector.id == 'io.metamask'
+                          ? 'MetaMask'
+                          : 'coinbaseWallet'
+                      )
+                      localStorage.setItem(
+                        'connected',
+                        connector.id == 'io.metamask'
+                          ? 'MetaMask'
+                          : 'coinbaseWallet'
+                      )
+                      connectWagmi({ connector })
+                      router.replace(marketHref2)
+                    }}
+                  >
+                    <Box ml="1rem" color="white">
+                      {availableDataLoading ? (
+                        <Skeleton
+                          width="6rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : connector.id == 'io.metamask' ? (
+                        'MetaMask'
+                      ) : connector.id == 'coinbaseWalletSDK' ? (
+                        'Coinbase'
+                      ) : (
+                        'Wallet Connect'
+                      )}
+                    </Box>
+                    <Box p="1" mr="16px">
+                      {connector.id == 'io.metamask' ? (
+                        <MetamaskIcon />
+                      ) : (
+                        <CoinbaseIcon />
+                      )}
+                    </Box>
+                  </Box>
+                ))
+              )}
+            </Box>
+          )}
         </Card>
         <Box
           display="flex"
