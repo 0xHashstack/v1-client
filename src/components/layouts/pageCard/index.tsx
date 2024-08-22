@@ -2,7 +2,7 @@ import Navbar from "@/components/layouts/navbar/Navbar";
 import { Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, Stack, StackProps, Text, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAccount as useAccountWagmi, useConnect as useConnectWagmi,useDisconnect as useDisconnectWagmi } from 'wagmi'
+import { useAccount as useAccountWagmi, useConnect as useConnectWagmi,useDisconnect as useDisconnectWagmi, useWaitForTransactionReceipt } from 'wagmi'
 import { useAccount, useConnect, useDisconnect, useNetwork, useWaitForTransaction} from "@starknet-react/core";
 import {
   selectToastTransactionStarted,
@@ -61,7 +61,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   if (className) classes.push(className);
   const router = useRouter();
   const {pathname}=router;
-  const { connect: connectWagmi, connectors: wagmiConnectors, error} = useConnectWagmi()
+  const { connect: connectWagmi, connectors: wagmiConnectors} = useConnectWagmi()
   const protocolNetwork=useSelector(selectProtocolNetworkSelected)
   const {address:addressbase}=useAccountWagmi()
   useTransactionHandler();
@@ -127,11 +127,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         localStorage.setItem("connected", "MetaMask");
         dispatch(setprotocolNetworkSelected('Base'))
         // disconnect();
-        wagmiConnectors.map((connector) => {
-          if (connector.id == 'io.metamask') {
-            connectWagmi({ connector })
-          }
-        })
+        // wagmiConnectors.map((connector) => {
+        //   if (connector.id == 'io.metamask') {
+        //     connectWagmi({ connector })
+        //   }
+        // })
       } else {
         if (connected == "braavos") {
           localStorage.setItem("lastUsedConnector", "braavos");
@@ -155,11 +155,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           localStorage.setItem("lastUsedConnector", "MetaMask");
           // disconnect();
           dispatch(setprotocolNetworkSelected('Base'))
-          wagmiConnectors.map((connector) => {
-            if (connector.id == 'io.metamask') {
-              connectWagmi({ connector })
-            }
-          })
+          // wagmiConnectors.map((connector) => {
+          //   if (connector.id == 'io.metamask') {
+          //     connectWagmi({ connector })
+          //   }
+          // })
         } else {
           router.push("/v1");
         }
@@ -171,6 +171,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   }, [account,addressbase]);
   const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
   const ref = useSelector(selectreferral)
+  
   // useEffect(() => {
   //   const loan = async () => {
   //     try {

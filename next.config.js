@@ -1,10 +1,11 @@
+const isCI = process.env.NEXT_PUBLIC_BUILD_ENV === 'ci';
 const nextConfig = {
   reactStrictMode: true,
   images: {
     unoptimized: true,
   },
   swcMinify: true,
-  output: 'export',
+  ...(isCI && { output: 'export' }),
   async headers() {
     return [
       {

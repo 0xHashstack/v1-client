@@ -3376,16 +3376,31 @@ const SupplyModal = ({
                             mt="1.5rem"
                             mb="1.5rem"
                             labelSuccessArray={[
-                              'Deposit Amount approved',
-                              'Successfully transferred to Hashstack’s supply vault.',
-                              'Determining the rToken amount to mint.',
-                              'rTokens have been minted successfully.',
-                              'Transaction complete.',
+                              'Checking if sufficient rTokens are available',
+                              <Text key={0} display="flex">
+                                Fetching the exchange between{' '}
+                                <Text ml="0.4rem" mr="0.1rem">
+                                  {getCoin(asset)}
+                                </Text>{' '}
+                                {'r'+asset} &
+                                <Text key={1} ml="0.3rem" mr="0.1rem">
+                                  {getCoin(asset)}
+                                </Text>
+                                {asset}
+                              </Text>,
+                              <Text key={2} display="flex">
+                                Burning {withdrawAmount}
+                                <Text ml="0.5rem" mr="0.1rem">
+                                  {getCoin(asset)}
+                                </Text>{' '}
+                                {'r'+asset}
+                              </Text>,
+                              'Processing Withdrawal',
                               // <ErrorButton errorText="Transaction failed" />,
                               // <ErrorButton errorText="Copy error!" />,
                               <SuccessButton
                                 key={'successButton'}
-                                successText={'Supply success'}
+                                successText={'Withdrawal Succesful'}
                               />,
                             ]}
                             labelErrorArray={[

@@ -23,6 +23,7 @@ import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mainnet as mainnetWagmi,baseSepolia } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { injected } from 'wagmi/connectors'
+import { Providers } from '@/services/wagmi/providers'
 export const theme = extendTheme({
   components: {
     Tabs: {
@@ -140,15 +141,13 @@ export default function App({ Component, pageProps }: AppProps) {
             provider={provider}
             connectors={connectors}
           >
-            <WagmiProvider config={config}>
-              <QueryClientProvider client={queryClient}>
+            <Providers initialState={pageProps.initialState}>
                 <Provider store={store}>
                   <Layout>
                     <Component {...pageProps} />
                   </Layout>
                 </Provider>
-              </QueryClientProvider>
-            </WagmiProvider>
+            </Providers>
           </StarknetConfig>
         </ChakraProvider>
       </PostHogProvider>
