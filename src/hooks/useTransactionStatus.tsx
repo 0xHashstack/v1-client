@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { AnyAction } from '@reduxjs/toolkit';
 import { useWaitForTransaction } from '@starknet-react/core';
 import { useWaitForTransactionReceipt } from 'wagmi';

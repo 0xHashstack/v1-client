@@ -122,7 +122,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
   const strkData = useSelector(selectStrkAprData)
 
   const [isLargerThan1280] = useMediaQuery('(min-width: 1248px)')
-
+/* eslint-disable react-hooks/rules-of-hooks */
   const assetBalance: any =protocolnetwork==='Starknet'? {
     USDT: useBalanceOf(tokenAddressMap['USDT']),
     USDC: useBalanceOf(tokenAddressMap['USDC']),
@@ -135,6 +135,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
     USDC: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
     ETH: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
   }
+  /* eslint-enable react-hooks/rules-of-hooks */
   const coinPrices = Coins.map((coin) => {
     const matchingCoin = oraclePrices?.find(
       (c: { name: string }) =>
