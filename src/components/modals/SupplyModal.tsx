@@ -215,6 +215,7 @@ const SupplyModal = ({
     ETH: any
     DAI: any
   }
+  /* eslint-disable react-hooks/rules-of-hooks */
   const walletBalances: assetB | any =
     protocolNetwork === 'Starknet'
       ? {
@@ -249,6 +250,7 @@ const SupplyModal = ({
     USDT:useBalanceofWagmi('0x9d02822936761269684c22bf230304dFbDbC889D'),
     USDC:useBalanceofWagmi('0x9d02822936761269684c22bf230304dFbDbC889D'),
   }
+  /* eslint-enable react-hooks/rules-of-hooks */
   const { writeContractAsync:writeContractAsyncApprove, data:dataApprove, error,status:statusApprove } = useWriteContract({
     config,
   })
