@@ -97,7 +97,6 @@ const AssetUtilizationChart = ({
 
   return (
 <Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px">
-// @ts-ignore
   <ApexCharts
     options={splineChartData.options}
     series={splineChartData.series}

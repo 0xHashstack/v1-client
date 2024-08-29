@@ -8,9 +8,9 @@ function useTransactionStatus  ({transactionHash,protocolNetwork}:{transactionHa
   if (typeof window !== "undefined") {
     walletConnected = localStorage.getItem("lastUsedConnector");
   }
-  if(walletConnected===''){
-    return;
-  }
+  // if(walletConnected===''){
+  //   return;
+  // }
   const {
         data,
         error,
