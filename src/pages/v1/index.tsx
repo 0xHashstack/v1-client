@@ -16,6 +16,7 @@ import USDCLogo from '@/assets/icons/coins/usdc'
 import USDTLogo from '@/assets/icons/coins/usdt'
 import BravosIcon from '@/assets/icons/wallets/bravos'
 import {
+  cookieToInitialState,
   useAccount as useAccountWagmi,
   useConnect as useConnectWagmi,
   useDisconnect as useDisconnectWagmi,
@@ -34,6 +35,8 @@ import ArrowUp from '@/assets/icons/arrowup'
 import DropdownUp from '@/assets/icons/dropdownUpIcon'
 import MetamaskIcon from '@/assets/icons/metamaskIcon'
 import CoinbaseIcon from '@/assets/icons/coinbaseIcon'
+import { GetServerSideProps } from 'next'
+import { config } from '@/services/wagmi/config'
 export default function Home() {
   const { account, address, status, isConnected } = useAccount()
   const { connect, connectors } = useConnect()
@@ -558,3 +561,25 @@ export default function Home() {
     </Box>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  let initialState: any = cookieToInitialState(config, context.req.headers.cookie);
+
+  if (initialState) {
+    // Handle connections Map serialization
+    if (initialState.connections instanceof Map) {
+      initialState.connections = Array.from(initialState.connections.entries());
+    }
+
+    // Replace undefined values with null for JSON serialization
+    initialState = JSON.parse(JSON.stringify(initialState, (key, value) =>
+      value === undefined ? null : value
+    ));
+  }
+
+  return {
+    props: {
+      initialState: initialState || {},
+    },
+  };
+};
