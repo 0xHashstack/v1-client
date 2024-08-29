@@ -562,24 +562,3 @@ export default function Home() {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  let initialState: any = cookieToInitialState(config, context.req.headers.cookie);
-
-  if (initialState) {
-    // Handle connections Map serialization
-    if (initialState.connections instanceof Map) {
-      initialState.connections = Array.from(initialState.connections.entries());
-    }
-
-    // Replace undefined values with null for JSON serialization
-    initialState = JSON.parse(JSON.stringify(initialState, (key, value) =>
-      value === undefined ? null : value
-    ));
-  }
-
-  return {
-    props: {
-      initialState: initialState || {},
-    },
-  };
-};
