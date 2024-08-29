@@ -4,8 +4,9 @@ frontend:
     preBuild:
       commands:
         - rm -rf node_modules
-        - npm i
+        - nvm i
         - nvm use 20.15
+        - npm i
         - npm ci
     build:
       commands:
