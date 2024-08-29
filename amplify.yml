@@ -3,12 +3,13 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm use 20
+        - rm -rf node_modules
+        - nvm use 20.15
         - npm i
         - npm ci
     build:
       commands:
-        - nvm use 20
+        - nvm use 20.15
         - npm run build
   artifacts:
     baseDirectory: .next
