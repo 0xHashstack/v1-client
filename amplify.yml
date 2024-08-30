@@ -7,7 +7,6 @@ frontend:
         - nvm i 20.15
         - nvm use 20.15
         - npm i
-        - npm ci
     build:
       commands:
         - nvm use 20.15
