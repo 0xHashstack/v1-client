@@ -6,7 +6,7 @@ import React, { memo, useEffect, useRef, useState } from 'react'
 
 import BellIcon from '@/assets/icons/BellIcon'
 import StakeUnstakeModal from '@/components/modals/StakeUnstakeModal'
-import TransferDepositModal from '@/components/modals/TransferDepositModal'
+import TransferDepositModal, { ICoin } from '@/components/modals/TransferDepositModal'
 import GetTokensModal from '@/components/modals/getTokens'
 import {
   selectCurrentDropdown,
@@ -18,6 +18,7 @@ import {
   selectCurrentNetwork,
   selectInteractedAddress,
   selectNftBalance,
+  selectProtocolNetworkSelected,
   selectUserType,
   selectWhiteListed,
   selectYourBorrow,
@@ -46,8 +47,7 @@ import hoverContributeEarnIcon from '../../../assets/images/hoverContributeEarnI
 import hoverDashboardIcon from '../../../assets/images/hoverDashboardIcon.svg'
 import hoverStake from '../../../assets/images/hoverStakeIcon.svg'
 import tickMark from '../../../assets/images/tickMark.svg'
-import { Coins } from '../dashboardLeft'
-
+import { useAccount as useAccountWagmi, useConnect as useConnectWagmi,useDisconnect as useDisconnectWagmi } from 'wagmi'
 interface ExtendedAccountInterface extends AccountInterface {
   provider?: {
     chainId: string
@@ -55,6 +55,14 @@ interface ExtendedAccountInterface extends AccountInterface {
 }
 
 const Navbar = ({ validRTokens }: any) => {
+  const Coins: ICoin[] = [
+    { name: 'STRK', icon: 'mdi-strk', symbol: 'STRK' },
+    { name: 'USDT', icon: 'mdi-bitcoin', symbol: 'USDT' },
+    { name: 'USDC', icon: 'mdi-ethereum', symbol: 'USDC' },
+    { name: 'ETH', icon: 'mdi-ethereum', symbol: 'WETH' },
+    { name: 'BTC', icon: 'mdi-bitcoin', symbol: 'WBTC' },
+    { name: 'DAI', icon: 'mdi-dai', symbol: 'DAI' },
+  ]
   const dispatch = useDispatch()
   const navDropdowns = useSelector(selectNavDropdowns)
   const language = useSelector(selectLanguage)
@@ -188,7 +196,9 @@ const Navbar = ({ validRTokens }: any) => {
   const extendedAccount = account as ExtendedAccountInterface
   const [isCorrectNetwork, setisCorrectNetwork] = useState(true)
   const { address, status, isConnected } = useAccount()
-
+  const {address:addressbase}=useAccountWagmi()
+  const {disconnect:disconnectWagmi} = useDisconnectWagmi();
+  const protocolnetwork=useSelector(selectProtocolNetworkSelected)
   const [whitelisted, setWhitelisted] = useState(true)
   const [uniqueToken, setUniqueToken] = useState('')
   const [referralLinked, setRefferalLinked] = useState(false)
@@ -343,7 +353,7 @@ const Navbar = ({ validRTokens }: any) => {
           </Box>
         </Box>
 
-        {
+        {protocolnetwork ==='Starknet' &&
           <Box
             padding="16px 12px"
             fontSize="12px"
@@ -451,7 +461,7 @@ const Navbar = ({ validRTokens }: any) => {
               backGroundOverLay="rgba(244, 242, 255, 0.5)"
             />
           )}
-          <Box
+          {protocolnetwork==='Starknet' ?<Box
             fontSize="12px"
             color="#FFF"
             height="2rem"
@@ -623,7 +633,178 @@ const Navbar = ({ validRTokens }: any) => {
                 )}
               </Box>
             )}
+          </Box>:          <Box
+          fontSize="12px"
+          color="#FFF"
+          height="2rem"
+          cursor="pointer"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          gap="1px"
+          flexGrow="1"
+          className="button navbar"
+          ref={ref2}
+        >
+          <Box
+            display="flex"
+            border="1px solid #676D9A"
+            borderRadius="6px"
+            flexDirection="row"
+            paddingY="6px"
+            pr="2.2rem"
+            pl="1rem"
+            justifyContent="flex-start"
+            alignItems="center"
+            width="100%"
+            height="100%"
+            className="navbar-button"
+            onClick={() => {
+              dispatch(setNavDropdown('walletConnectionDropdown'))
+            }}
+          >
+            {addressbase ? (
+              <Box
+                width="100%"
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="center"
+                gap={2.5}
+              >
+                <Image
+                  alt=""
+                  src={'/starknetLogoBordered.svg'}
+                  width="16"
+                  height="16"
+                  style={{ cursor: 'pointer' }}
+                />
+                <Text
+                  fontSize="14px"
+                  fontWeight="500"
+                  color="#FFFFFF"
+                  lineHeight="20px"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  { `${addressbase.substring(
+                        0,
+                        3
+                      )}...${addressbase.substring(
+                        addressbase.length - 9,
+                        addressbase.length
+                      )}`}
+                </Text>
+              </Box>
+            ) : (
+              <Skeleton width="7rem" height="100%" borderRadius="2px" />
+            )}
+            <Box position="absolute" right="0.7rem">
+              {!navDropdowns.walletConnectionDropdown ? (
+                <Image
+                  src={'/connectWalletArrowDown.svg'}
+                  alt="arrow"
+                  width="16"
+                  height="16"
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                />
+              ) : (
+                <Image
+                  src={'/connectWalletArrowDown.svg'}
+                  alt="arrow"
+                  width="16"
+                  height="16"
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                />
+              )}
+            </Box>
           </Box>
+          {navDropdowns.walletConnectionDropdown && (
+            <Box
+              width="100%"
+              display="flex"
+              justifyContent="center"
+              flexDirection="column"
+              alignItems="flex-end"
+              gap="7px"
+              padding="0.5rem 0"
+              boxShadow="1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409"
+              borderRadius="6px"
+              background="var(--Base_surface, #02010F)"
+              border="1px solid rgba(103, 109, 154, 0.30)"
+              className="dropdown-container"
+            >
+              {addressbase ? (
+                <>
+                  <Box
+                    padding="4px 11px"
+                    marginRight="8px"
+                    borderRadius="6px"
+                    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                    border="1px solid #2B2F35"
+                    onClick={() => {
+                      localStorage.setItem('lastUsedConnector', '')
+                      localStorage.setItem('connected', '')
+                      dispatch(setNavDropdown(''))
+                      disconnectWagmi()
+                      router.push('./')
+                    }}
+                  >
+                    Disconnect
+                  </Box>
+                  <Box
+                    padding="4px 11px"
+                    marginRight="8px"
+                    borderRadius="6px"
+                    border="1px solid #2B2F35"
+                    background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                    onClick={() => {
+                      localStorage.setItem('lastUsedConnector', '')
+                      localStorage.setItem('connected', '')
+                      dispatch(setNavDropdown(''))
+                      disconnectWagmi()
+                      router.push('./')
+                    }}
+                  >
+                    Switch Network
+                  </Box>
+                </>
+              ) : (
+                <Box
+                  padding="4px 11px"
+                  marginRight="8px"
+                  borderRadius="6px"
+                  border="1px solid #2B2F35"
+                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                  onClick={() => {
+                    if (connectors[0]?.id == 'braavos') {
+                      disconnect()
+                      connectors.map((connector: any) => {
+                        if (connector.id == 'braavos') {
+                          connect(connector)
+                        }
+                      })
+                    } else {
+                      disconnect()
+                      connectors.map((connector: any) => {
+                        if (connector.id == 'argentX') {
+                          connect({ connector })
+                        }
+                      })
+                    }
+                  }}
+                >
+                  Connect
+                </Box>
+              )}
+            </Box>
+          )}
+        </Box>}
           <Box
             ml="0.5rem"
             cursor="pointer"

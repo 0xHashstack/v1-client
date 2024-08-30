@@ -10,6 +10,7 @@ import comptrollerAbi from "../abis_mainnet/comptroller_abi.json";
 import nftAbi from "../abis_mainnet/nft_soul_abi.json";
 import borrowTokenAbi from "../abis_mainnet/dToken_abi.json";
 import claimStrkabi from "../abis_mainnet/claim_strk_abi.json"
+import supplyproxyAbi from '../abis_base_sepolia/supply_proxy_abi.json'
 import {
   diamondAddress,
   getProvider,
@@ -22,6 +23,7 @@ import { etherToWeiBN, parseAmount } from "../utils/utils";
 import { useState } from "react";
 import { RToken } from "../interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
+import { ethers } from "ethers";
 // const { address } = useAccount();
 interface ResultObject{
   [key: string]: any;
@@ -92,6 +94,44 @@ export async function getSupplyunlocked(rToken: any, amount: any) {
    //console.log(err, "err in getSupplyUnlocked");
   }
 }
+
+export async function getSupplyunlockedBase(rToken: any, amount: any) {
+  try {
+    const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_TESTNET_BASE);
+    const contractAddress = '0x9d02822936761269684c22bf230304dFbDbC889D';
+    const parsedAmount = etherToWeiBN(amount, rToken).toString();
+    const contract = new ethers.Contract(contractAddress, supplyproxyAbi, provider);
+  
+    const storedData = await contract.previewRedeem(parsedAmount);
+    const data=parseAmount(
+      storedData.toString(),
+      tokenDecimalsMap[rToken]
+    )
+    return data
+    ////console.log(res, "data in est supply");
+    ////console.log(parseAmount(uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),8),"parsed")
+  } catch (err) {
+   console.log(err, "err in getSupplyUnlocked base");
+  }
+}
+
+export async function getExchangeRate() {
+  try {
+    const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_TESTNET_BASE);
+    const contractAddress = '0x9d02822936761269684c22bf230304dFbDbC889D';
+    const contract = new ethers.Contract(contractAddress, supplyproxyAbi, provider);
+  
+    const storedData = await contract.exchange_rate();
+    const data=
+      storedData
+    return parseAmount(data[0].toString(),18)
+    ////console.log(res, "data in est supply");
+    ////console.log(parseAmount(uint256.uint256ToBN(res?.asset_amount_to_withdraw).toString(),8),"parsed")
+  } catch (err) {
+   console.log(err, "err in get Exchange rate");
+  }
+}
+
 export async function getEstrTokens(rToken: any, amount: any) {
   try {
     const provider = getProvider();
