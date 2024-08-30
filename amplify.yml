@@ -10,7 +10,7 @@ frontend:
     build:
       commands:
         - nvm use 20.15
-        - npm run dev
+        - npm run build
   artifacts:
     baseDirectory: .next
     files:
