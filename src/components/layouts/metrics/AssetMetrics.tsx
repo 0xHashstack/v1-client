@@ -23,7 +23,7 @@ const AssetMetrics = () => {
         >
           Total Value Locked: {tvl ? tvl : "$8932.14"}
         </Box>
-        <AssetUtilizationChart
+        {/* <AssetUtilizationChart
           series={[
             {
               name: "Series 1",
@@ -37,7 +37,7 @@ const AssetMetrics = () => {
           }}
           color={"#0FCA7A"}
           categories={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]}
-        />
+        /> */}
       </Box>
       <Box display="flex" gap="30px">
         <Box display="flex" flexDirection="column" gap="8px" width="100%">
@@ -57,7 +57,7 @@ const AssetMetrics = () => {
           >
             Media Supply:
           </Box>
-          <AssetUtilizationChart color={"#4c60ee"} />
+          {/* <AssetUtilizationChart color={"#4c60ee"} /> */}
         </Box>
         <Box display="flex" flexDirection="column" gap="8px" width="100%">
           <Box
@@ -76,7 +76,7 @@ const AssetMetrics = () => {
           >
             Media Borrow:
           </Box>
-          <AssetUtilizationChart color={"#4852a4"} />
+          {/* <AssetUtilizationChart color={"#4852a4"} /> */}
         </Box>
       </Box>
     </Box>
