@@ -7,27 +7,6 @@ frontend:
         - nvm i 20.15
         - nvm use 20.15
         - npm i
-        - touch .env.local
-        - echo 'NEXT_PUBLIC_MIXPANEL_KEY=eb921da4a666a145e3b36930d7d984c2' >> .env.local
-        - echo 'NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL=trialaccount@feedback-form-398111.iam.gserviceaccount.com' >> .env.local
-        - echo 'NEXT_PUBLIC_GOOGLE_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCWWSAEJY26r6eo\n6skBOX0rnq7eDZRVNwnj8Q3CAo4vt+u09qma51Kz+wz6FLNedL10k0S6AQ2AT5VT\nueNIokB9LUEE9a8aQlE1LhQ8pE/6WBqmT5DozJ6aIdE1pHe579Wp83wT4xb5v0I7\nXa7uBycXh0p2oP2MHi2l4sZ4nE6Ms1IrCkmmY6SsLQktL9taUwNFtcemyH8ARDKE\nWWYXNsazfUonZiZXoykd2lByuVs73bvq5HnoytlQTZMSsoz1f6raYZsSvDV/9CIp\nzlYiRsQI6oL2oFz/WwHlieAIFJuNlP+mo1dYo/h0wQl2UxHrWXHAFr6b/2mUrGez\nQhiu2YQ3AgMBAAECggEABMgz7P3WyrPQlN5W41uVQCBtdnGfILC990qRAfU72Yez\njw9zaJJn/oKDMKcc52m2JvGSM4paCBU/7ihQ8tv6SiD42vQHjEHEvHjJOv6M7q0D\nt/t64/SyLLvboCWpizf2J1Avx6Am+G2daS77I+YFV8m9VBWdyumg0RBr+KUcGHyF\nIWRAGcR8FXPAFJMyAhVikoutx1+XVsJegGSftNp/NLCP14XyWS92vaakNGssruiq\nEM8xgxqpleLoNNgQ5ooz2bGUjIqvZqU3uftb9DUs5z+dAH09DaV6M+TcrElV7Uxs\nO89Kw3lJtOASOOkrQ4GrwOV0uvv7iv7pIkf1MEzklQKBgQDUGYevisd/3aTDJFOR\nIF4uGkNR9Eoa3Qb5kEFwjc0WTrCCNvFmCmid6R1p5lbv/kg/W7tYM5/aOdFHUUgH\nTC4xjcYZIKJnpEGWkcbg6lXXvVoU6NLCD7tsJ1ZS8hwfC5nZ0hNq57XNgjDONsSZ\nldy79dg9i45sxEQkqFfWEO71KwKBgQC1d5S3tAIYaRxRifZwQ3zD/BKQ1QUHEKtK\nbADbv8sSMKI5GXCHq2L1LZFhuH0OcknmPdPsL9W9/eyYa5lYNU91/v/Qh6f3FQkk\nl5a5nbxYn7/N5T70awt+PYx1TbnTkH3A6Y9M8CgNFZeG1z3ia9jJXsI0IVz3Sk2Y\njp5tka+/JQKBgQCs8lBYjGIWWmXiFTnrCaiiERo5tmfCtd3dG4qwu3+yo+F7nE+E\ntBIQSSiJ1J+pPAAvYZ5G0nmTGTgT3ixMfwrfr0oL7TdgKWit3Rp9BbePnj/Y8uv/\n/5IFI6JZKkBR9ES0f38D2gK9m14umCwBTFjcDyAPNz+gYv1pordUvyQKVwKBgCNk\ndT72/smgBoPosoXmw7i9uylAQsDEAYR8WBaD66lajukwCwCK7rv+7THv94QPylX7\njQ+trLRnh/OaWMgZbawH1gDn1FyeX7AhWKZPG2L1lUUlBwhIsG8otfJS/IFE1yH+\n65IH7OfQZENKS6mTey6bKqlcMHOSrFuqxT99gJd5AoGBALjQA3f1qsyGvciQp5/f\npY19NevJ2s47GtrCCnSmZALC2y6SnUBQQFSUeCrp26ZARNQyWCWfIKN+cokKTuzg\n5ZKA5mV8ldwMpIfYNfh4y282VLFdb2oUenOlJXhBoBX31wA7AsmAGyZ/+nWv3ABU\nwpWYv9f1Ef7m1ions/ehajLC\n-----END PRIVATE KEY-----\n' >> .env.local
-        - echo 'NEXT_PUBLIC_GOOGLE_SHEET_ID=1wrfZVXCdDHgemM3kfTRe4HPAJdhYLm90z8GHXd_AOTw' >> .env.local
-        - echo 'NEXT_PUBLIC_AWS_ACCESS_KEY_ID=AKIA3X62J57E2QG2XZ77' >> .env.local
-        - echo 'NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY=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' >> .env.local
-        - echo 'NEXT_PUBLIC_GOOGLE_SHEET_ID_BUGS=1IbDqMPz7S6haGe2aj4cvOfNAcGv6ckRo6nLAE3ngEMc' >> .env.local
-        - echo 'NEXT_PUBLIC_GOOGLE_SHEET_ID_SUGGESTIONS=1izyJKiQ5V2Ac8Yte6LOnVa2AFtGexASrEIUULHqbBvM' >> .env.local
-        - echo 'NEXT_PUBLIC_NODE_ENV=mainnet' >> .env.local
-        - echo 'NEXT_PUBLIC_METRICS_API=https://metricsapimainnet.hashstack.finance' >> .env.local
-        - echo 'NEXT_PUBLIC_FEEDBACK_API=https://5c8l45vyxb.execute-api.ap-southeast-1.amazonaws.com' >> .env.local
-        - echo 'NEXT_PUBLIC_TESTNET_CHAINID=0x534e5f474f45524c49 >> .env.local
-        - echo 'NEXT_PUBLIC_MAINNET_CHAINID=0x534e5f4d41494e >> .env.local
-        - echo 'NEXT_PUBLIC_APP_ENV=production >> .env.local
-        - echo 'NEXT_PUBLIC_INFURA_MAINNET=https://starknet-mainnet.infura.io/v3/82802c15c3d242d2846e464a66238198 >> .env.local
-        - echo 'NEXT_PUBLIC_INFURA_TESTNET=https://starknet-sepolia.infura.io/v3/82802c15c3d242d2846e464a66238198 >> .env.local
-        - echo 'NEXT_PUBLIC_POSTHOG_KEY=phc_8Gtb5tJJu7YTcjEI4X5nl1t1IFYQQvnEHN2KJeNK0L3 >> .env.local
-        - echo 'NEXT_PUBLIC_HOSTHOG_HOST=https://us.posthog.com >> .env.local
-        - echo 'NEXT_PUBLIC_GOOGLE_SHEET_SUBMISSION_ID=1pzzM5QUdD7Me6TIvSXaqItn2szsfMYZN5Ednl8Yucso >> .env.local
-        - echo 'NEXT_PUBLIC_GOOGLE_SHEET_REGISTER_ID=1kWihCHus95yFnmP1T5mS0Tzdi >> .env.local
     build:
       commands:
         - nvm use 20.15
