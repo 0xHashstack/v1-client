@@ -418,6 +418,22 @@ const Degen: NextPage = () => {
     }
   }
 
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0
+      for (let token in strkData) {
+        if (strkData.hasOwnProperty(token)) {
+          const array = strkData[token]
+          const lastObject = array[array.length - 1]
+          netallocation += 0.3 * lastObject.allocation
+        }
+      }
+      setnetStrkBorrow(netallocation)
+    } else {
+      setnetStrkBorrow(0)
+    }
+  }, [strkData])
+
   const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
     const matchedObject = dataArray.find((item) => {
       if (item.name === 'USDT/USDC') {
