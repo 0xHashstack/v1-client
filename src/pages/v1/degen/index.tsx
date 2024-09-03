@@ -418,6 +418,22 @@ const Degen: NextPage = () => {
     }
   }
 
+  useEffect(() => {
+    if (strkData != null) {
+      let netallocation = 0
+      for (let token in strkData) {
+        if (strkData.hasOwnProperty(token)) {
+          const array = strkData[token]
+          const lastObject = array[array.length - 1]
+          netallocation += 0.3 * lastObject.allocation
+        }
+      }
+      setnetStrkBorrow(netallocation)
+    } else {
+      setnetStrkBorrow(0)
+    }
+  }, [strkData])
+
   const getTvlByPool = (dataArray: any[], pool: string, l3App: string) => {
     const matchedObject = dataArray.find((item) => {
       if (item.name === 'USDT/USDC') {
@@ -496,6 +512,35 @@ const Degen: NextPage = () => {
       const concatenatedArray = res.data.concat(res3.data);
         if (concatenatedArray) {
           setstrategies(concatenatedArray.filter((borrow:any)=>{
+            console.log(Number(
+              borrow?.leverage *
+                (-stats?.find(
+                  (stat: any) =>
+                    stat?.token === borrow?.debt
+                )?.borrowRate +
+                  getAprByPool(
+                    poolAprs,
+                    borrow?.secondary,
+                    borrow?.dappName
+                  ) +
+                  getBoostedApr(borrow?.debt) +
+                  (100 *
+                    365 *
+                    (getStrkAlloaction(borrow?.secondary) *
+                      oraclePrices?.find(
+                        (curr: any) => curr.name === 'STRK'
+                      )?.price)) /
+                    getTvlByPool(
+                      poolAprs,
+                      borrow?.secondary,
+                      borrow?.dappName
+                    )) +
+                (stats?.find(
+                  (stat: any) =>
+                    stat?.token === borrow?.collateral
+                )?.supplyRate +
+                  getBoostedAprSupply(borrow?.collateral))
+            ),'checls',borrow?.id)
             return Number(
               borrow?.leverage *
                 (-stats?.find(
