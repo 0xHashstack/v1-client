@@ -11,12 +11,15 @@ import {
   selectProtocolStats,
   selectOraclePrices,
   selectProtocolNetworkSelected,
+  selectTransactionRefresh,
 } from "@/store/slices/readDataSlice";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import HashstackAirdropIcon from "@/assets/icons/hashstackAirdropIcon";
 import { supplyAsset } from "@/Blockchain/scripts/protocolStats";
 import { contractsEnv } from "@/Blockchain/stark-constants";
+import useBalanceofWagmi from "@/Blockchain/hooks/Reads/usebalanceofWagmi";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 const MarketDashboard = () => {
   // const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
   //   []
@@ -38,6 +41,19 @@ const MarketDashboard = () => {
   const { account, address } = useAccount();
   const userDeposits = useSelector(selectUserDeposits);
   const oraclePrices = useSelector(selectOraclePrices);
+  const withdrawBalances:any={
+    USDT:useBalanceofWagmi(tokenAddressMap['rUSDT']),
+    USDC:useBalanceofWagmi(tokenAddressMap['rUSDC']),
+    DAI:useBalanceofWagmi(tokenAddressMap['rDAI']),
+  }
+  const [userTotalSupply, setuserTotalSupply] = useState<number>(0)
+  useEffect(()=>{
+    let totalSupply=0;
+    if(withdrawBalances){
+      totalSupply+= Number(withdrawBalances['USDC'].dataBalanceOf?.formatted)+Number(withdrawBalances['USDT'].dataBalanceOf?.formatted)+Number(withdrawBalances['DAI'].dataBalanceOf?.formatted)
+    }
+    setuserTotalSupply(totalSupply)
+  },[withdrawBalances])
   ////console.log(account,"Market Page")
 
   // useEffect(()=>{
@@ -189,6 +205,7 @@ const MarketDashboard = () => {
       ////console.log("error on getting protocol stats");
     }
   };
+  const transactionRefresh = useSelector(selectTransactionRefresh)
 
   useEffect(()=>{
     const fetchData=async()=>{
@@ -202,7 +219,7 @@ const MarketDashboard = () => {
       }
     }
     fetchData()
-  },[])
+  },[transactionRefresh])
 
   return (
     <HStack
@@ -241,7 +258,7 @@ const MarketDashboard = () => {
               Your supply
             </Text>
             <Text color="#F0F0F5" fontSize="24px">
-              ${numberFormatter(0)}
+              ${numberFormatter(userTotalSupply)}
             </Text>
 
           </Box>

@@ -43,7 +43,7 @@ import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useToast } from "@chakra-ui/react";
-import { BNtoNum } from "@/Blockchain/utils/utils";
+import { BNtoNum, etherToWeiBN } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
@@ -65,12 +65,20 @@ import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import mixpanel from "mixpanel-browser";
 import posthog from "posthog-js";
+import { selectProtocolNetworkSelected } from "@/store/slices/readDataSlice";
+import { useWaitForTransactionReceipt, useWriteContract ,useAccount as useAccountWagmi} from 'wagmi'
+import { config } from "@/services/wagmi/config";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import erc20MockAbi from '../../Blockchain/abis_base_sepolia/mockErc20_abi.json'
+import { baseSepolia } from "viem/chains";
+
 const GetTokensModal = ({
   buttonText,
   backGroundOverLay,
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -105,7 +113,7 @@ const GetTokensModal = ({
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState<any>("");
-
+  const {address:addressbase}=useAccountWagmi()
   let activeTransactions = useSelector(selectActiveTransactions);
 
   const [uniqueID, setUniqueID] = useState(0);
@@ -134,9 +142,18 @@ const GetTokensModal = ({
 
   useEffect(()=>{
     if(currentSelectedCoin){
-        handleGetToken(currentSelectedCoin);}
+      if(protocolNetwork==='Starknet'){
+        handleGetToken(currentSelectedCoin);
+      }else{
+        handleTransaction(currentSelectedCoin)
+      }
+      }
 
   },[currentSelectedCoin])
+
+  const { writeContractAsync:writeContractAsyncApprove, data:dataApprove, error,status:statusApprove } = useWriteContract({
+    config,
+  })
 
   const handleGetToken = async (coin: any) => {
     try {
@@ -204,6 +221,127 @@ const GetTokensModal = ({
     }
   };
 
+  const handleTransaction = async (coin:any) => {
+    try {
+      {
+        const approve=await writeContractAsyncApprove({
+          abi:erc20MockAbi,
+          address: tokenAddressMap[token],
+          functionName: 'mint',
+          args: [
+            addressbase,
+            BigInt(etherToWeiBN(100, token).toString())
+          ],
+          chain:baseSepolia
+       })
+       if(approve){
+         const toastid = toast.info(
+          // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+          `Transaction pending`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        )
+        setToastId(toastid)
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const uqID = getUniqueId();
+        const trans_data = {
+          transaction_hash: approve.toString(),
+          message: `Successfully minted TestToken : ${coin}`,
+          // message: `Transaction successful`,
+          toastId: toastid,
+          setCurrentTransactionStatus: () => {},
+          uniqueID: uqID,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        posthog.capture("Get Tokens Status", {
+          Status: "Success",
+        });
+        activeTransactions?.push(trans_data);
+
+        dispatch(setActiveTransactions(activeTransactions));
+       }
+        // const uqID = getUniqueId()
+        // let data: any = localStorage.getItem('transactionCheck')
+        // data = data ? JSON.parse(data) : []
+        // if (data && data.includes(uqID)) {
+        //   dispatch(setTransactionStatus('success'))
+        // }
+        ////console.log("Status transaction", deposit);
+        //console.log(isSuccessDeposit, "success ?");
+      }
+    } catch (err: any) {
+      console.log(err,"err tokens")
+      // setTransactionFailed(true);
+      // console.log(err,"approve err")
+      const uqID = getUniqueId()
+      let data: any = localStorage.getItem('transactionCheck')
+      data = data ? JSON.parse(data) : []
+      if (data && data.includes(uqID)) {
+        // setTransactionStarted(false)
+        // dispatch(setTransactionStatus("failed"));
+      }
+      //console.log(uqID, "transaction check supply transaction failed : ", err);
+
+      const toastContent = (
+        <div>
+          Transaction declined{' '}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      )
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      })
+      //console.log("supply", err);
+      // toast({
+      //   description: "An error occurred while handling the transaction. " + err,
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   status: "error",
+      //   isClosable: true,
+      // });
+      // toast({
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   render: () => (
+      //     <Box
+      //       display="flex"
+      //       flexDirection="row"
+      //       justifyContent="center"
+      //       alignItems="center"
+      //       bg="rgba(40, 167, 69, 0.5)"
+      //       height="48px"
+      //       borderRadius="6px"
+      //       border="1px solid rgba(74, 194, 107, 0.4)"
+      //       padding="8px"
+      //     >
+      //       <Box>
+      //         <SuccessTick />
+      //       </Box>
+      //       <Text>You have successfully supplied 1000USDT to check go to </Text>
+      //       <Button variant="link">Your Supply</Button>
+      //       <Box>
+      //         <CancelSuccessToast />
+      //       </Box>
+      //     </Box>
+      //   ),
+      //   isClosable: true,
+      // });
+    }
+  }
+
   // const { } = useBalanceOf();
   // const { } = useTransfer();
 
@@ -256,7 +394,7 @@ const GetTokensModal = ({
                 justifyContent="space-between"
                 gap="20px"
               >
-                <Button
+                {protocolNetwork==='Starknet' &&<Button
                 background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                 color="#6E7681"
                   size="sm"
@@ -272,8 +410,8 @@ const GetTokensModal = ({
                   }}
                 >
                   wBTC
-                </Button>
-                <Button
+                </Button>}
+                {protocolNetwork==='Starknet'&&<Button
                 background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                 color="#6E7681"
                   size="sm"
@@ -290,7 +428,7 @@ const GetTokensModal = ({
                   }}
                 >
                   wETH
-                </Button>
+                </Button>}
                 <Button
                 background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
                 color="#6E7681"
@@ -359,7 +497,7 @@ const GetTokensModal = ({
                 border="1px solid #101216"
                 borderRadius="6px"
               >
-                <Link href="https://faucet.goerli.starknet.io/" target="_blank">
+                <Link href={protocolNetwork==='Starknet'? "https://faucet.goerli.starknet.io/":'https://faucets.chain.link/base-sepolia'} target="_blank">
                   <Text>Get test ETH</Text>
                 </Link>
               </Box>

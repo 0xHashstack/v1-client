@@ -1157,7 +1157,7 @@ const SupplyModal = ({
   // }, [])
   ////console.log(inputAmount);
   const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
-  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
+  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(20000)
   const minAmounts = useSelector(selectMinimumDepositAmounts)
   const maxAmounts = useSelector(selectMaximumDepositAmounts)
   useEffect(() => {
@@ -2930,8 +2930,6 @@ const SupplyModal = ({
                         </Button>
                       </Box>
                       {withdrawAmount > withdrawwalletBalance ||
-                      (process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                        withdrawAmount > maximumDepositAmount) ||
                       withdrawAmount < 0 ||
                       isNaN(withdrawAmount) ? (
                         <Text

@@ -444,7 +444,7 @@ const Navbar = ({ validRTokens }: any) => {
           alignItems="center"
           marginRight="1.2rem"
         >
-          {process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' ? (
+          {protocolnetwork ==='Starknet' ? (
             ''
           ) : (
             <GetTokensModal
