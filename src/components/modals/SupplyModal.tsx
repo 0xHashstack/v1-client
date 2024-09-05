@@ -127,7 +127,7 @@ import mixpanel from 'mixpanel-browser'
 import posthog from 'posthog-js'
 import TransactionFees from '../../../TransactionFees.json'
 import useBalanceofWagmi from '@/Blockchain/hooks/Reads/usebalanceofWagmi'
-import { getTokenFromAddress } from '@/Blockchain/stark-constants'
+import { diamondAddress, getTokenFromAddress } from '@/Blockchain/stark-constants'
 import { multicall } from '@wagmi/core'
 import { config } from '@/services/wagmi/config'
 import { useWaitForTransactionReceipt, useWriteContract ,useAccount as useAccountWagmi} from 'wagmi'
@@ -227,9 +227,9 @@ const SupplyModal = ({
           STRK: useBalanceOf(tokenAddressMap['STRK']),
         }
       : {
-          USDT: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
-          USDC: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
-          ETH: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
+        USDT:useBalanceofWagmi(tokenAddressMap['USDT']),
+        USDC:useBalanceofWagmi(tokenAddressMap['USDC']),
+        DAI:useBalanceofWagmi(tokenAddressMap['DAI']),
         }
   const assetBalance: assetB | any =
     protocolNetwork === 'Starknet'
@@ -242,13 +242,14 @@ const SupplyModal = ({
           STRK: useBalanceOf(tokenAddressMap['STRK']),
         }
       : {
-        USDT: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
-        USDC: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
-        ETH: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
+        USDT:useBalanceofWagmi(tokenAddressMap['USDT']),
+        USDC:useBalanceofWagmi(tokenAddressMap['USDC']),
+        DAI:useBalanceofWagmi(tokenAddressMap['DAI']),
         }
   const withdrawBalances:any={
-    USDT:useBalanceofWagmi('0x9d02822936761269684c22bf230304dFbDbC889D'),
-    USDC:useBalanceofWagmi('0x9d02822936761269684c22bf230304dFbDbC889D'),
+    USDT:useBalanceofWagmi(tokenAddressMap['rUSDT']),
+    USDC:useBalanceofWagmi(tokenAddressMap['rUSDC']),
+    DAI:useBalanceofWagmi(tokenAddressMap['rDAI']),
   }
   /* eslint-enable react-hooks/rules-of-hooks */
   const { writeContractAsync:writeContractAsyncApprove, data:dataApprove, error,status:statusApprove } = useWriteContract({
@@ -771,10 +772,10 @@ const SupplyModal = ({
       {
         const approve=await writeContractAsyncApprove({
           abi:trialabi,
-          address: '0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3',
+          address: tokenAddressMap[asset],
           functionName: 'approve',
           args: [
-            '0x9d02822936761269684c22bf230304dFbDbC889D',
+            diamondAddress,
             BigInt(etherToWeiBN(depositAmount, asset).toString())
           ],
           chain:baseSepolia
@@ -799,6 +800,7 @@ const SupplyModal = ({
         //console.log(isSuccessDeposit, "success ?");
       }
     } catch (err: any) {
+      console.log(err,"err approve")
       // setTransactionFailed(true);
       // console.log(err,"approve err")
       const uqID = getUniqueId()
@@ -864,9 +866,10 @@ const SupplyModal = ({
       {
         const approve=await writeContractAsyncDeposit({
           abi:supplyproxyAbi,
-          address: '0x9d02822936761269684c22bf230304dFbDbC889D',
+          address: diamondAddress as any,
           functionName: 'deposit',
           args: [
+            tokenAddressMap[asset],
             BigInt(etherToWeiBN(depositAmount, asset).toString()),
             addressbase,
           ],
@@ -884,7 +887,7 @@ const SupplyModal = ({
       }
       const uqID = getUniqueId()
       const trans_data = {
-        transaction_hash: dataWithdraw,
+        transaction_hash: approve,
         message: `Successfully deposited ${depositAmount} ${currentSelectedCoin}`,
         // message: `Transaction successful`,
         toastId: 2,
@@ -902,6 +905,7 @@ const SupplyModal = ({
         //console.log(isSuccessDeposit, "success ?");
       }
     } catch (err: any) {
+      console.log(err,"err deposit")
       setDeclined(true)
       setTransactionStarted(false)
       // setTransactionFailed(true);
@@ -961,9 +965,10 @@ const SupplyModal = ({
       {
         const dataWithdraw=await writeContractAsyncWithdraw({
           abi:supplyproxyAbi,
-          address: '0x9d02822936761269684c22bf230304dFbDbC889D',
-          functionName: 'withdraw',
+          address: diamondAddress as any,
+          functionName: 'withdrawDeposit',
           args: [
+            tokenAddressMap[asset],
             BigInt(etherToWeiBN(withdrawAmount, asset).toString()),
             addressbase,
             addressbase
@@ -1013,7 +1018,7 @@ const SupplyModal = ({
       }
     } catch (err: any) {
       // setTransactionFailed(true);
-      console.log(err,"approve err")
+      console.log(err,"withdraw err")
       const uqID = getUniqueId()
       let data: any = localStorage.getItem('transactionCheck')
       data = data ? JSON.parse(data) : []
@@ -1158,21 +1163,21 @@ const SupplyModal = ({
   useEffect(() => {
     if(protocolNetwork==='Starknet'){
       setMinimumDepositAmount(minAmounts['r' + currentSelectedCoin])
+      setmaximumDepositAmount(maxAmounts['r' + currentSelectedCoin])
     }
-    setmaximumDepositAmount(maxAmounts['r' + currentSelectedCoin])
   }, [currentSelectedCoin, minAmounts, maxAmounts])
 
   const [exchangeRate, setexchangeRate] = useState<any>()
 
   useEffect(()=>{
     const fetchData=async()=>{
-      const res=await getExchangeRate()
+      const res=await getExchangeRate(asset)
       if(res){
         setexchangeRate(res)
       }
     }
     fetchData()
-  },[])
+  },[asset])
   ////console.log(nft,"nft")
   // useEffect(()=>{
   //     const data=useSelector(selectMinimumDepositAmounts);
@@ -1250,7 +1255,7 @@ const SupplyModal = ({
     }
   }
 
-  const coins: NativeToken[] =protocolNetwork==='Starknet'? ['BTC', 'USDT', 'USDC', 'ETH', 'STRK']:[ 'USDT', ]
+  const coins: NativeToken[] =protocolNetwork==='Starknet'? ['BTC', 'USDT', 'USDC', 'ETH', 'STRK']:[ 'USDT', 'USDC','DAI']
   const [selectedTab, setSelectedTab] = useState('supply')
   const resetStates = () => {
     setDepositAmount(0)
@@ -1552,7 +1557,7 @@ const SupplyModal = ({
                                     setcollateralMarketHoverIndex(-1)
                                     ////console.log(coin,"coin in supply modal")
                                     setwalletBalance(
-                                      walletBalances[coin]?.statusBalanceOf ===
+                                      protocolNetwork==='Starknet'? walletBalances[coin]?.statusBalanceOf ===
                                         'success'
                                         ? parseAmount(
                                             String(
@@ -1563,7 +1568,7 @@ const SupplyModal = ({
                                             ),
                                             tokenDecimalsMap[coin]
                                           )
-                                        : 0
+                                        : 0:Number(walletBalances[coin]?.dataBalanceOf?.formatted)
                                     )
                                     dispatch(setCoinSelectedSupplyModal(coin))
                                   }}

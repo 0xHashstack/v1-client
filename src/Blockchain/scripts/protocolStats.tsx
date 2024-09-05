@@ -18,7 +18,8 @@ import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import BigNumber from "bignumber.js";
 import { ethers } from "ethers";
 import supplyproxyAbi from '../abis_base_sepolia/supply_proxy_abi.json'
-import { tokenDecimalsMap } from "../utils/addressServices";
+import rtokenAbi from '../abis_base_sepolia/rtoken_abi.json'
+import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
   let marketInfo: IMarketInfo = {
@@ -157,22 +158,23 @@ function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
   }
 }
 
-export async function supplyAsset(asset:NativeToken) {
+export async function supplyAsset() {
   try{
     const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_TESTNET_BASE);
-
-    const contractAddress = '0x9d02822936761269684c22bf230304dFbDbC889D';
-  
-    const contract = new ethers.Contract(contractAddress, supplyproxyAbi, provider);
-  
-    const storedData = await contract.totalSupply();
-
-    const data=parseAmount(
-      storedData.toString(),
-      tokenDecimalsMap['USDT']
-    )
-  
-    return data
+    const Supplies=[];
+    for(let i=0;i<contractsEnv.TOKENS.length;i++){
+      const token = contractsEnv.TOKENS[i];
+      const contract = new ethers.Contract(token?.rToken, rtokenAbi, provider);
+      const storedData = await contract.totalSupply();
+      const data=parseAmount(
+        storedData.toString(),
+        tokenDecimalsMap[token.name]
+      )
+      Supplies.push({supply:data,
+        token:token.name
+      })
+    }
+    return Supplies
   }catch(err){
     console.log(err,"err in supply asset")
   }

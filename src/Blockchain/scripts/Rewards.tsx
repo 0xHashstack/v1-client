@@ -11,6 +11,7 @@ import nftAbi from "../abis_mainnet/nft_soul_abi.json";
 import borrowTokenAbi from "../abis_mainnet/dToken_abi.json";
 import claimStrkabi from "../abis_mainnet/claim_strk_abi.json"
 import supplyproxyAbi from '../abis_base_sepolia/supply_proxy_abi.json'
+import rtokenAbi from '../abis_base_sepolia/rtoken_abi.json'
 import {
   diamondAddress,
   getProvider,
@@ -98,9 +99,9 @@ export async function getSupplyunlocked(rToken: any, amount: any) {
 export async function getSupplyunlockedBase(rToken: any, amount: any) {
   try {
     const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_TESTNET_BASE);
-    const contractAddress = '0x9d02822936761269684c22bf230304dFbDbC889D';
+    const contractAddress = tokenAddressMap['r'+rToken];
     const parsedAmount = etherToWeiBN(amount, rToken).toString();
-    const contract = new ethers.Contract(contractAddress, supplyproxyAbi, provider);
+    const contract = new ethers.Contract(contractAddress, rtokenAbi, provider);
   
     const storedData = await contract.previewRedeem(parsedAmount);
     const data=parseAmount(
@@ -115,11 +116,11 @@ export async function getSupplyunlockedBase(rToken: any, amount: any) {
   }
 }
 
-export async function getExchangeRate() {
+export async function getExchangeRate(asset:String) {
   try {
     const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_TESTNET_BASE);
-    const contractAddress = '0x9d02822936761269684c22bf230304dFbDbC889D';
-    const contract = new ethers.Contract(contractAddress, supplyproxyAbi, provider);
+    const contractAddress = tokenAddressMap['r'+asset];
+    const contract = new ethers.Contract(contractAddress, rtokenAbi, provider);
   
     const storedData = await contract.exchange_rate();
     const data=

@@ -263,7 +263,6 @@ const BorrowAPRChart = () => {
         height="72px"
         border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
         color="#E6EDF3"
-        // padding="24px 24px 16px"
         px="24px"
         fontSize="20px"
         fontStyle="normal"

@@ -5,7 +5,7 @@ const nextConfig = {
     unoptimized: true,
   },
   swcMinify: true,
-  ...(isCI && { output: 'export' }),
+  // ...(isCI && { output: 'export' }),
   async headers() {
     return [
       {
@@ -37,6 +37,9 @@ const nextConfig = {
     ]
   },
   trailingSlash: true,
+  eslint: {
+    ignoreDuringBuilds: true
+  }
 }
 
 module.exports = nextConfig

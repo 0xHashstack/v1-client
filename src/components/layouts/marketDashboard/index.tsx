@@ -16,6 +16,7 @@ import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import HashstackAirdropIcon from "@/assets/icons/hashstackAirdropIcon";
 import { supplyAsset } from "@/Blockchain/scripts/protocolStats";
+import { contractsEnv } from "@/Blockchain/stark-constants";
 const MarketDashboard = () => {
   // const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
   //   []
@@ -191,15 +192,14 @@ const MarketDashboard = () => {
 
   useEffect(()=>{
     const fetchData=async()=>{
-      const res=await supplyAsset('USDT')
-      setTotalSupplies([
-        res,
-        res,
-        res,
-        res,
-        res,
-        res
-      ]);
+      const res=await supplyAsset()
+      if(res){
+        setTotalSupplies([
+          res[0].supply,
+          res[1].supply,
+          res[2].supply
+        ])
+      }
     }
     fetchData()
   },[])

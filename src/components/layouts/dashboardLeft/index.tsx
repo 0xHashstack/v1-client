@@ -91,10 +91,10 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
   ]:[
     // { name: 'STRK', icon: 'mdi-strk', symbol: 'STRK' },
     { name: 'USDT', icon: 'mdi-bitcoin', symbol: 'USDT' },
-    // { name: 'USDC', icon: 'mdi-ethereum', symbol: 'USDC' },
+    { name: 'USDC', icon: 'mdi-ethereum', symbol: 'USDC' },
     // { name: 'ETH', icon: 'mdi-ethereum', symbol: 'WETH' },
     // { name: 'BTC', icon: 'mdi-bitcoin', symbol: 'WBTC' },
-    // { name: 'DAI', icon: 'mdi-dai', symbol: 'DAI' },
+    { name: 'DAI', icon: 'mdi-dai', symbol: 'DAI' },
   ]
   
 
@@ -131,9 +131,9 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
     DAI: useBalanceOf(tokenAddressMap['DAI']),
     STRK: useBalanceOf(tokenAddressMap['STRK']),
   }:{
-    USDT: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
-    USDC: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
-    ETH: useBalanceofWagmi('0x82426494326A5870d9AE0D3145F441bA0D5Ca4A3'),
+    USDT:useBalanceofWagmi(tokenAddressMap['USDT']),
+    USDC:useBalanceofWagmi(tokenAddressMap['USDC']),
+    DAI:useBalanceofWagmi(tokenAddressMap['DAI']),
   }
   /* eslint-enable react-hooks/rules-of-hooks */
   const coinPrices = Coins.map((coin) => {
@@ -299,7 +299,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                     <Box height="2rem" width="2rem">
                       <Image
                         src={
-                          coin?.name == 'DAI'
+                          coin?.name == 'DAI' && protocolnetwork==='Starknet'
                             ? `/${coin?.name}Disabled.svg`
                             : `/${coin?.name}.svg`
                         }
@@ -322,7 +322,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                             ? 'w' + coin?.name
                             : coin?.name}
                         </Text>
-                        {coin?.name == 'DAI' && (
+                        {coin?.name == 'DAI' && protocolnetwork==='Starknet' && (
                           <Image
                             src={`/paused.svg`}
                             alt={`Picture of the coin that I want to access ${coin?.name}`}
@@ -382,7 +382,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == 'DAI' ? '#3E415C' : 'white'}
+                    color={coin?.name == 'DAI'  && protocolnetwork==='Starknet'? '#3E415C' : 'white'}
                   >
                     {coinPrices[idx] === null ? (
                       <Skeleton
@@ -415,7 +415,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == 'DAI' ? '#3E415C' : 'white'}
+                    color={coin?.name == 'DAI' && protocolnetwork==='Starknet' ? '#3E415C' : 'white'}
                   >
                     <Tooltip
                       hasArrow
@@ -468,7 +468,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == 'DAI' ? '#3E415C' : 'white'}
+                    color={coin?.name == 'DAI'  && protocolnetwork==='Starknet'? '#3E415C' : 'white'}
                   >
                     <Tooltip
                       hasArrow
@@ -520,7 +520,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == 'DAI' ? '#3E415C' : 'white'}
+                    color={coin?.name == 'DAI' && protocolnetwork==='Starknet' ? '#3E415C' : 'white'}
                   >
                     <Tooltip
                       hasArrow
@@ -573,7 +573,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    color={coin?.name == 'DAI' ? '#3E415C' : 'white'}
+                    color={coin?.name == 'DAI' && protocolnetwork==='Starknet' ? '#3E415C' : 'white'}
                   >
                     {utilization[idx] == null ? (
                       <Skeleton
@@ -604,7 +604,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                     justifyContent="center"
                     fontWeight="400"
                     color={
-                      coin?.name == 'DAI'
+                      coin?.name == 'DAI' && protocolnetwork==='Starknet'
                         ? '#3E415C'
                         : coin?.name == 'BTC'
                           ? 'white'
@@ -698,7 +698,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                         ) : (
                           <Text
                             color={
-                              coin?.name == 'DAI'
+                              coin?.name == 'DAI' && protocolnetwork==='Starknet'
                                 ? '#3E415C'
                                 : coin?.name == 'BTC'
                                   ? 'white'
@@ -729,7 +729,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                     justifyContent="center"
                     fontWeight="400"
                     color={
-                      coin?.name == 'DAI'
+                      coin?.name == 'DAI' && protocolnetwork==='Starknet'
                         ? '#3E415C'
                         : coin?.name == 'BTC'
                           ? 'white'
@@ -827,7 +827,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                         ) : (
                           <Text
                             color={
-                              coin?.name == 'DAI'
+                              coin?.name == 'DAI' && protocolnetwork==='Starknet'
                                 ? '#3E415C'
                                 : coin?.name == 'BTC'
                                   ? 'white'
@@ -861,7 +861,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                       setCurrentSupplyAPR(idx)
                     }}
                   >
-                    {coin?.name == 'DAI' ? (
+                    {coin?.name == 'DAI' && protocolnetwork==='Starknet' ? (
                       <Button
                         height={'2rem'}
                         fontSize={'12px'}
@@ -915,7 +915,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                       setCurrentBorrowMarketCoin(coin?.name)
                     }}
                   >
-                    {coin?.name == 'DAI' ? (
+                    {coin?.name == 'DAI' && protocolnetwork==='Starknet' ? (
                       <Button
                         height={'2rem'}
                         fontSize={'12px'}

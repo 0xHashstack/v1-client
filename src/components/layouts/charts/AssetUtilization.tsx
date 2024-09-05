@@ -1,7 +1,8 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import ApexCharts from "react-apexcharts";
-// const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+import dynamic from "next/dynamic";
+import { ApexOptions } from "apexcharts";
+const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const AssetUtilizationChart = ({
   series,
@@ -92,6 +93,12 @@ const AssetUtilizationChart = ({
           },
         ],
       },
+    },
+  };
+  const options: ApexOptions = {
+    ...splineChartData.options,
+    stroke: {
+      curve: "smooth",
     },
   };
 
