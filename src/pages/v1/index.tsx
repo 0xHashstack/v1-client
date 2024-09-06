@@ -51,7 +51,7 @@ export default function Home() {
     error,
   } = useConnectWagmi()
   const { address: addressbase } = useAccountWagmi()
-  console.log(addressbase,"base")
+  console.log(wagmiConnectors,"base")
   const router = useRouter()
   const waitlistHref = '/v1/waitlist'
   const marketHref2 = '/v1/market'
@@ -125,7 +125,7 @@ export default function Home() {
       disconnectWagmi()
       dispatch(setprotocolNetworkSelected('Base'))
       wagmiConnectors.map((connector) => {
-        if (connector.id == 'io.metamask') {
+        if (connector.id == 'metaMaskSDK') {
           connectWagmi({ connector })
         }
       })
@@ -444,7 +444,9 @@ export default function Home() {
                 // Always render this loading state until data is fully loaded
                 <></>
               ) : (
-                wagmiConnectors.map((connector: any) => (
+                wagmiConnectors.filter((connector: any) => 
+                  connector.id === 'metaMaskSDK' || connector.id === 'coinbaseWalletSDK'
+                ).map((connector: any) => (
                   <Box
                     w="full"
                     border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
@@ -461,16 +463,13 @@ export default function Home() {
                     onClick={() => {
                       localStorage.setItem(
                         'lastUsedConnector',
-                        connector.id == 'io.metamask'
-                          ? 'MetaMask'
-                          : 'coinbaseWallet'
+                        'MetaMask'
                       )
                       localStorage.setItem(
                         'connected',
-                        connector.id == 'io.metamask'
-                          ? 'MetaMask'
-                          : 'coinbaseWallet'
+                        'MetaMask'
                       )
+                      localStorage.setItem('networkConnected','Base')
                       connectWagmi({ connector })
                       router.replace(marketHref2)
                     }}
@@ -484,7 +483,7 @@ export default function Home() {
                           endColor="#2B2F35"
                           borderRadius="6px"
                         />
-                      ) : connector.id == 'io.metamask' ? (
+                      ) : connector.id == 'metaMaskSDK' ? (
                         'MetaMask'
                       ) : connector.id == 'coinbaseWalletSDK' ? (
                         'Coinbase'
@@ -493,7 +492,7 @@ export default function Home() {
                       )}
                     </Box>
                     <Box p="1" mr="16px">
-                      {connector.id == 'io.metamask' ? (
+                      {connector.id == 'metaMaskSDK' ? (
                         <MetamaskIcon />
                       ) : (
                         <CoinbaseIcon />

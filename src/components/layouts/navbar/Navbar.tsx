@@ -205,6 +205,7 @@ const Navbar = ({ validRTokens }: any) => {
   const userType = useSelector(selectUserType)
   const [Render, setRender] = useState(true)
   const userWhitelisted = useSelector(selectWhiteListed)
+  const accountBase=useAccountWagmi()
 
   useEffect(() => {
     function isCorrectNetwork() {
@@ -444,7 +445,7 @@ const Navbar = ({ validRTokens }: any) => {
           alignItems="center"
           marginRight="1.2rem"
         >
-          {protocolnetwork ==='Starknet' ? (
+          {(protocolnetwork ==='Starknet' || accountBase.chainId!==84532) ? (
             ''
           ) : (
             <GetTokensModal

@@ -64,6 +64,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const { connect: connectWagmi, connectors: wagmiConnectors} = useConnectWagmi()
   const protocolNetwork=useSelector(selectProtocolNetworkSelected)
   const {address:addressbase}=useAccountWagmi()
+  const accountBase=useAccountWagmi()
   useTransactionHandler();
   // const handleRouteChange = () => {
   //   if (!_account) {
@@ -125,6 +126,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         })
       }else if (walletConnected == "MetaMask") {
         localStorage.setItem("connected", "MetaMask");
+        localStorage.setItem('networkConnected','Base')
         dispatch(setprotocolNetworkSelected('Base'))
         // disconnect();
         // wagmiConnectors.map((connector) => {
@@ -153,6 +155,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           })
         }else if (connected == "MetaMask") {
           localStorage.setItem("lastUsedConnector", "MetaMask");
+          localStorage.setItem('networkConnected','Base')
           // disconnect();
           dispatch(setprotocolNetworkSelected('Base'))
           // wagmiConnectors.map((connector) => {
@@ -271,6 +274,24 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             extendedAccount?.provider?.chainId==="0x534e5f4d41494e" || extendedAccount?.channel?.chainId==="0x534e5f4d41494e"
           );
         }
+      }else if (walletConnected == "MetaMask") {
+        // Your code here
+        if(addressbase){
+          if (network == "testnet") {
+            return (
+              // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+              // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+  
+              accountBase.chainId===84532
+            );
+          } else {
+            return (
+              // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+              // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+              accountBase.chainId===8453
+            );
+          }
+        }
       }
       ////console.log("starknetAccount", account?.provider?.chainId);
     }
@@ -335,12 +356,20 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
 
     }
     referal();
-    if ((account && !isCorrectNetwork())) {
-      setRender(false);
-    } else {
-        setRender(true);
+    if(protocolNetwork==='Starknet'){
+      if ((account && !isCorrectNetwork())) {
+        setRender(false);
+      } else {
+          setRender(true);
+      }
+    }else{
+      if ((accountBase && !isCorrectNetwork())) {
+        setRender(false);
+      } else {
+          setRender(true);
+      }
     }
-  }, [account, whitelisted, referralLinked, userType]);
+  }, [account, whitelisted, referralLinked, userType,accountBase]);
 
   const [validRTokens, setValidRTokens] = useState([]);
   const userDepositsRedux = useSelector(selectUserDeposits);
@@ -696,7 +725,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
                   </Text>
                     </Box>
                   : <Text color="white" fontSize="25px">
-                    Please switch to Starknet {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Goerli" : "Mainnet"} and refresh
+                    Please switch to {protocolNetwork==='Starknet'? 'Starknet':'Base'} {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Sepolia" : "Mainnet"} and refresh
                   </Text>
                 }
 

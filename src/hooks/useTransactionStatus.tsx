@@ -6,7 +6,7 @@ import { useWaitForTransactionReceipt } from 'wagmi';
 function useTransactionStatus  ({transactionHash,protocolNetwork}:{transactionHash:string | undefined,protocolNetwork:string})  {
   let walletConnected: string | null = null;
   if (typeof window !== "undefined") {
-    walletConnected = localStorage.getItem("lastUsedConnector");
+    walletConnected = localStorage.getItem("networkConnected");
   }
   // if(walletConnected===''){
   //   return;
@@ -19,7 +19,7 @@ function useTransactionStatus  ({transactionHash,protocolNetwork}:{transactionHa
         isSuccess,
         isPending,
 
-      } =walletConnected!=='MetaMask'?  useWaitForTransaction({
+      } =walletConnected!=='Base'?  useWaitForTransaction({
         hash:transactionHash ? transactionHash:"",
         watch: true,
         enabled:true,

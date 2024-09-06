@@ -18,9 +18,9 @@ export function processAddress(address: string) {
 let walletConnected: string | null = null;
 
 if (typeof window !== "undefined") {
-  walletConnected = localStorage.getItem("lastUsedConnector");
+  walletConnected = localStorage.getItem("networkConnected");
 }
-let contractsEnv:any = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ?  DeployDetailsProd.sepolia:walletConnected==='MetaMask'? DeployDetailsProd.sepolia_base: DeployDetailsProd.mainnet;
+let contractsEnv:any = process.env.NEXT_PUBLIC_NODE_ENV=="testnet" ? walletConnected==='Base'? DeployDetailsProd.sepolia_base: DeployDetailsProd.sepolia:walletConnected==='MetaMask'? DeployDetailsProd.sepolia_base: DeployDetailsProd.mainnet;
 contractsEnv.DIAMOND_ADDRESS = contractsEnv.DIAMOND_ADDRESS;
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(
