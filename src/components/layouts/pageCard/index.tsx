@@ -380,6 +380,29 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   }, [validRTokens, userDepositsRedux, address]);
   // const [dataDeposit, setDataDeposit] = useState<any>()
 
+  const addNetwork = async () => {
+    try {
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId: '0x14a34', // Chain ID for Sepolia is 0xaa36a7
+            chainName: 'Base Sepolia',
+            nativeCurrency: {
+              name: 'SepoliaETH',
+              symbol: 'ETH', // Symbol for Sepolia ETH
+              decimals: 18,
+            },
+            rpcUrls: ['https://sepolia.base.org'], // Replace with the actual RPC URL
+            blockExplorerUrls: ['https://sepolia.etherscan.io'], // Replace with the actual block explorer URL
+          },
+        ],
+      });
+    } catch (error) {
+      console.error('Failed to add network', error);
+    }
+  }
+
   const fetchUserDeposits = async () => {
     try {
       if (!address) {
@@ -724,9 +747,17 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
                     {` `}to get an instant access.
                   </Text>
                     </Box>
-                  : <Text color="white" fontSize="25px">
-                    Please switch to {protocolNetwork==='Starknet'? 'Starknet':'Base'} {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Sepolia" : "Mainnet"} and refresh
-                  </Text>
+                  : 
+                  <Box textAlign="center">
+                    <Text color="white" fontSize="25px">
+                      Please switch to {protocolNetwork==='Starknet'? 'Starknet':'Base'} {process.env.NEXT_PUBLIC_NODE_ENV == "testnet" ? "Sepolia" : "Mainnet"} and refresh
+                    </Text>
+                    <Button onClick={()=>{
+                      addNetwork()
+                    }} mt="1rem">
+                      Add Network
+                    </Button>
+                  </Box>
                 }
 
               </Box>
