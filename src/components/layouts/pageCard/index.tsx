@@ -382,26 +382,49 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
 
   const addNetwork = async () => {
     try {
-      await window.ethereum.request({
-        method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: '0x14a34', // Chain ID for Sepolia is 0xaa36a7
-            chainName: 'Base Sepolia',
-            nativeCurrency: {
-              name: 'SepoliaETH',
-              symbol: 'ETH', // Symbol for Sepolia ETH
-              decimals: 18,
+      // Check if window.ethereum is available
+      if (window.ethereum) {
+        let provider;
+  
+        // Check if multiple providers are present (MetaMask, Coinbase, etc.)
+        if (window.ethereum.providers && window.ethereum.providers.length) {
+          // Try to find the Coinbase Wallet provider
+          provider = window.ethereum.providers.find((p: any) => p.isCoinbaseWallet) || window.ethereum.providers.find((p:any) => p.isMetaMask) || window.ethereum;
+        } else {
+          // Fallback to the default provider if there's no array of providers
+          provider = window.ethereum;
+        }
+  
+        // Log the detected provider to help troubleshoot
+        console.log('Using provider:', provider.isCoinbaseWallet ? 'Coinbase Wallet' : provider.isMetaMask ? 'MetaMask' : 'Other');
+  
+        // Request to add the network using the detected provider
+        await provider.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0x14a34', // Chain ID for Base Sepolia
+              chainName: 'Base Sepolia',
+              nativeCurrency: {
+                name: 'SepoliaETH',
+                symbol: 'ETH', // Symbol for Sepolia ETH
+                decimals: 18,
+              },
+              rpcUrls: ['https://sepolia.base.org'], // Replace with the actual RPC URL
+              blockExplorerUrls: ['https://sepolia.etherscan.io'], // Replace with the actual block explorer URL
             },
-            rpcUrls: ['https://sepolia.base.org'], // Replace with the actual RPC URL
-            blockExplorerUrls: ['https://sepolia.etherscan.io'], // Replace with the actual block explorer URL
-          },
-        ],
-      });
+          ],
+        });
+  
+      } else {
+        console.error('No Ethereum provider found. Please install MetaMask or Coinbase Wallet.');
+      }
     } catch (error) {
-      console.error('Failed to add network', error);
+      console.error('Failed to add network:', error);
     }
-  }
+  };
+  
+  
 
   const fetchUserDeposits = async () => {
     try {
