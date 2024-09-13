@@ -51,7 +51,6 @@ export default function Home() {
     error,
   } = useConnectWagmi()
   const { address: addressbase } = useAccountWagmi()
-  console.log(wagmiConnectors,"base")
   const router = useRouter()
   const waitlistHref = '/v1/waitlist'
   const marketHref2 = '/v1/market'
