@@ -47,13 +47,6 @@ const MarketDashboard = () => {
     DAI:useBalanceofWagmi(tokenAddressMap['rDAI']),
   }
   const [userTotalSupply, setuserTotalSupply] = useState<number>(0)
-  useEffect(()=>{
-    let totalSupply=0;
-    if(withdrawBalances){
-      totalSupply+= Number(withdrawBalances['USDC'].dataBalanceOf?.formatted)+Number(withdrawBalances['USDT'].dataBalanceOf?.formatted)+Number(withdrawBalances['DAI'].dataBalanceOf?.formatted)
-    }
-    setuserTotalSupply(totalSupply)
-  },[withdrawBalances])
   ////console.log(account,"Market Page")
 
   // useEffect(()=>{
@@ -206,6 +199,14 @@ const MarketDashboard = () => {
     }
   };
   const transactionRefresh = useSelector(selectTransactionRefresh)
+
+  useEffect(()=>{
+    let totalSupply=0;
+    if(withdrawBalances){
+      totalSupply+= Number(withdrawBalances['USDC'].dataBalanceOf?.formatted)+Number(withdrawBalances['USDT'].dataBalanceOf?.formatted)+Number(withdrawBalances['DAI'].dataBalanceOf?.formatted)
+    }
+    setuserTotalSupply(totalSupply)
+  },[withdrawBalances,transactionRefresh])
 
   useEffect(()=>{
     const fetchData=async()=>{

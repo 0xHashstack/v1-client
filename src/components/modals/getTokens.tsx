@@ -140,16 +140,43 @@ const GetTokensModal = ({
   const [toastId, setToastId] = useState<any>();
 
 
-  useEffect(()=>{
-    if(currentSelectedCoin){
-      if(protocolNetwork==='Starknet'){
+  useEffect(() => {
+    if (currentSelectedCoin) {
+      if (protocolNetwork === 'Starknet') {
         handleGetToken(currentSelectedCoin);
-      }else{
-        handleTransaction(currentSelectedCoin)
+      } else {
+        // Retrieve the last response time based on the selected coin
+        const lastResponseTime = currentSelectedCoin === "USDC"
+          ? localStorage.getItem("MintingTimeUSDC")
+          : currentSelectedCoin === 'DAI'
+          ? localStorage.getItem("MintingTimeDAI")
+          : localStorage.getItem("MintingTimeUSDT");
+  
+        if (!lastResponseTime) {
+          // If no minting time is stored, proceed with transaction
+          handleTransaction(currentSelectedCoin);
+        } else {
+          // Calculate the 24-hour window
+          const twentyFourHoursAgo = new Date();
+          twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24); // Subtract 24 hours from current time
+  
+          // Compare the last response time with 24-hour window
+          if (new Date(lastResponseTime) <= twentyFourHoursAgo) {
+            // If more than 24 hours have passed, proceed with transaction
+            handleTransaction(currentSelectedCoin);
+          } else {
+            // If less than 24 hours have passed, show error
+            toast.error("Please try again after 24 hours", {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            });
+          }
+        }
       }
-      }
-
-  },[currentSelectedCoin])
+    }
+  }, [currentSelectedCoin, protocolNetwork]);
+  
+  
 
   const { writeContractAsync:writeContractAsyncApprove, data:dataApprove, error,status:statusApprove } = useWriteContract({
     config,
@@ -183,7 +210,7 @@ const GetTokensModal = ({
         const uqID = getUniqueId();
         const trans_data = {
           transaction_hash: getTokens?.transaction_hash.toString(),
-          message: `Successfully minted TestToken : ${coin}`,
+          message: `Successfully minted TestToken : 10000 ${coin}`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: () => {},
@@ -228,10 +255,9 @@ const GetTokensModal = ({
           abi:erc20MockAbi,
           address: tokenAddressMap[token],
           functionName: 'mint',
-          args: [
-            addressbase,
-            BigInt(etherToWeiBN(100, token).toString())
-          ],
+          // args: [
+          //   addressbase,
+          // ],
           chain:baseSepolia
        })
        if(approve){
@@ -254,9 +280,17 @@ const GetTokensModal = ({
           activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
         }
         const uqID = getUniqueId();
+        const currentTime = new Date();
+        if(currentSelectedCoin==='USDC'){
+          localStorage.setItem("MintingTimeUSDC", currentTime.toISOString());
+        }else if(currentSelectedCoin==='USDT'){
+          localStorage.setItem("MintingTimeUSDT", currentTime.toISOString());
+        }else if(currentSelectedCoin==='DAI'){
+          localStorage.setItem("MintingTimeDAI", currentTime.toISOString());
+        }
         const trans_data = {
           transaction_hash: approve.toString(),
-          message: `Successfully minted TestToken : ${coin}`,
+          message: `Successfully minted TestToken : 10000 ${coin}`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: () => {},
