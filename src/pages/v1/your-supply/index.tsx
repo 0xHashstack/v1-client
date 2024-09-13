@@ -9,6 +9,7 @@ import PageCard from '@/components/layouts/pageCard'
 import SupplyDashboard from '@/components/layouts/supplyDashboard'
 import useDataLoader from '@/hooks/useDataLoader'
 import {
+  selectProtocolNetworkSelected,
   selectYourSupply,
   selectnetAprDeposits,
 } from '@/store/slices/readDataSlice'
@@ -29,6 +30,7 @@ const YourSupply: NextPage = () => {
 
   const totalSupply = useSelector(selectYourSupply)
   const netAPR = useSelector(selectnetAprDeposits)
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
 
   useDataLoader()
 
@@ -124,7 +126,7 @@ const YourSupply: NextPage = () => {
                 }
                 fontSize="20px"
               >
-                {netAPR != 0 ? `${netAPR}%` : 'NA'}
+                {protocolNetwork!=='Starknet'?'NA': netAPR != 0 ? `${netAPR}%` : 'NA'}
               </Text>
             )}
           </VStack>

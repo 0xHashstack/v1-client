@@ -20,6 +20,7 @@ import FireIcon from '@/assets/icons/fireIcon'
 import {
   selectNetAPR,
   selectNetWorth,
+  selectProtocolNetworkSelected,
   selectProtocolReserves,
   selectUserLoans,
   selectUsersFilteredSupply,
@@ -55,8 +56,9 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
   const yourSupply = useSelector(selectYourSupply)
   const yourBorrow = useSelector(selectYourBorrow)
   const netAPR = useSelector(selectNetAPR)
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
 
-  const navOptions = [
+  const navOptions = protocolNetwork==='Starknet'? [
     { path: 'v1/market', label: 'Markets', count: 0 },
     {
       path: 'v1/spend-borrow',
@@ -75,7 +77,14 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
     },
     { path: 'v1/degen', label: 'Degen', count: 0 },
     { path: 'v1/strk-rewards', label: 'Farm STRK token', count: 0 },
-  ]
+  ]:[
+  { path: 'v1/market', label: 'Markets', count: 0 },
+  {
+    path: 'v1/your-supply',
+    label: 'Your Supply',
+    count: usersFilteredSupply ? usersFilteredSupply : 0,
+  },
+]
 
   const { pathname } = router
 
