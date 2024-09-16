@@ -211,7 +211,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
           </Box>
         ))}
       </ButtonGroup>
-      {router.pathname === '/v1/market' && (
+      {router.pathname === '/v1/market' &&protocolNetwork==='Starknet' && (
         <Box display="flex" gap={isLessThan1200 ? '1.5rem' : '2rem'}>
           <Box
             display="flex"
@@ -279,7 +279,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
             >
               Net APR
             </Text>
-            {netAPR === null ? (
+            {(netAPR === null &&protocolNetwork==='Starknet') ? (
               <Skeleton
                 width="6rem"
                 height="1.4rem"
@@ -313,7 +313,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
                     }}
                     _hover={{ textDecoration: 'underline' }}
                   >
-                    {numberFormatterPercentage(netAPR)}%
+                    {protocolNetwork==='Starknet'? numberFormatterPercentage(netAPR):numberFormatterPercentage(0)}%
                   </Text>
                 </Tooltip>
               </Box>

@@ -25,6 +25,7 @@ import SupplyModal from "@/components/modals/SupplyModal";
 import YourSupplyModal from "@/components/modals/yourSupply";
 import {
   selectOraclePrices,
+  selectProtocolNetworkSelected,
   selectProtocolStats,
   selectUserDeposits,
   setNetAprDeposits,
@@ -40,6 +41,9 @@ import { selectStrkAprData } from "@/store/slices/userAccountSlice";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
 import posthog from "posthog-js";
 import TableInfoIcon from "../table/tableIcons/infoIcon";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import useBalanceofWagmi from "@/Blockchain/hooks/Reads/usebalanceofWagmi";
+import { contractsEnv } from "@/Blockchain/stark-constants";
 
 export interface ICoin {
   name: string;
@@ -119,6 +123,11 @@ const SupplyDashboard = ({
 }) => {
   const { address } = useAccount();
   const [showEmptyNotification, setShowEmptyNotification] = useState(true);
+  const tokenBalances:any={
+    USDT:useBalanceofWagmi(tokenAddressMap['rUSDT']),
+    USDC:useBalanceofWagmi(tokenAddressMap['rUSDC']),
+    DAI:useBalanceofWagmi(tokenAddressMap['rDAI']),
+  }
 
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("BTC");
@@ -131,6 +140,7 @@ const SupplyDashboard = ({
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
   let userDeposits = useSelector(selectUserDeposits);
   let reduxProtocolStats = useSelector(selectProtocolStats);
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
   const [coinPassed, setCoinPassed] = useState({
     name: "BTC",
     icon: "mdi-bitcoin",
@@ -329,10 +339,36 @@ const SupplyDashboard = ({
     });
     setSupplyMarkets(temp);
   }, [supplies]);
+
+  useEffect(()=>{
+    if(protocolNetwork!=='Starknet'){
+      var supplyStats:any=[]
+        for(const token in tokenBalances){
+          const dataStats={
+            tokenAddress:tokenAddressMap[token],
+            token:token,
+            rTokenAddress:tokenAddressMap['r'+token],
+            rToken:'r'+token,
+            rTokenFreeParsed:Number(tokenBalances[token]?.dataBalanceOf?.formatted),
+            rTokenLockedParsed:0,
+            rTokenStakedParsed:0,
+            rTokenAmountParsed:Number(tokenBalances[token]?.dataBalanceOf?.formatted),
+            underlyingAssetAmount:Number(tokenBalances[token]?.dataBalanceOf?.value),
+            underlyingAssetAmountParsed:Number(tokenBalances[token]?.dataBalanceOf?.formatted)
+          }
+          supplyStats.push(dataStats)
+        }
+        if(supplyStats.length===3){
+          setSupplies(supplyStats)
+          setLoading(false);
+        }
+    }
+  },[protocolNetwork,tokenBalances['USDC'].dataBalanceOf,tokenBalances['DAI'].dataBalanceOf,tokenBalances['USDT'].dataBalanceOf])
+
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   ////console.log(userDeposits?.length,"length supply");
-  upper_bound = Math.min(userDeposits?.length - 1, upper_bound);
+  upper_bound = Math.min(supplies?.length - 1, upper_bound);
   // useEffect(() => {
   //   try {
   //     const supply = async () => {
@@ -560,14 +596,14 @@ const SupplyDashboard = ({
                           </HStack>
                           <Tooltip
                             hasArrow
-                            label={`Underlying Amount: ${(
+                            label={protocolNetwork==='Starknet'? `Underlying Amount:  ${(
                               reduxProtocolStats?.find(
                                 (val: any) =>
                                   val?.token == supply?.rToken.slice(1)
                               )?.exchangeRateRtokenToUnderlying *
                               (supply?.rTokenAmountParsed +
                                 supply?.rTokenStakedParsed)
-                            ).toFixed(4)} ${supply?.rToken.slice(1)}`}
+                            ).toFixed(4)} ${supply?.rToken.slice(1)}`:`Underlying Amount: ${supply.underlyingAssetAmountParsed} ${supply?.rToken.slice(1)}` }
                             // arrowPadding={-5420}
                             placement="right"
                             rounded="md"
@@ -619,7 +655,7 @@ const SupplyDashboard = ({
                         fontWeight="400"
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        {!protocolStats || !protocolStats[idx] ? (
+                        {!protocolStats || !protocolStats[idx] &&protocolNetwork==='Starknet'? (
                           <Skeleton
                             width="4rem"
                             height="1.4rem"
@@ -628,12 +664,12 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          Number(
+                          protocolNetwork==='Starknet'?Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
                                 return stat;
                             })?.exchangeRateRtokenToUnderlying
-                          )?.toFixed(3)
+                          )?.toFixed(3):numberFormatter(1)
                         )}
                       </Text>
                     </Td>
@@ -656,7 +692,7 @@ const SupplyDashboard = ({
                         paddingLeft="1.5"
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        {!protocolStats || !protocolStats[idx] ? (
+                        {!protocolStats || !protocolStats[idx] &&protocolNetwork==='Starknet' ? (
                           <Skeleton
                             width="4rem"
                             height="1.4rem"
@@ -665,12 +701,12 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          Number(
+                          protocolNetwork==='Starknet' ?Number(
                             protocolStats.find((stat: any) => {
                               if (stat?.token === supply?.rToken?.slice(1))
                                 return stat;
                             })?.supplyRate
-                          )?.toFixed(3) + "%"
+                          )?.toFixed(3) + "%":numberFormatterPercentage(0)+'%'
                         )}
                       </Box>
                     </Td>
@@ -683,7 +719,7 @@ const SupplyDashboard = ({
                       overflow={"hidden"}
                       textAlign={"center"}
                     >
-                      <Text
+                      {protocolNetwork==='Starknet'?<Text
                         width="100%"
                         height="100%"
                         display="flex"
@@ -698,7 +734,7 @@ const SupplyDashboard = ({
                           placement="bottom"
                           boxShadow="dark-lg"
                           label={
-                            <Box>
+                            protocolNetwork==='Starknet'?<Box>
                               <Box
                                 display="flex"
                                 justifyContent="space-between"
@@ -751,7 +787,7 @@ const SupplyDashboard = ({
                                   %
                                 </Text>
                               </Box>
-                            </Box>
+                            </Box>:<></>
                           }
                           bg="#02010F"
                           fontSize={"13px"}
@@ -762,7 +798,7 @@ const SupplyDashboard = ({
                           border="1px solid"
                           borderColor="#23233D"
                         >
-                          {avgs && avgs?.length > 0 ? (
+                           {avgs && avgs?.length > 0 ? (
                             numberFormatterPercentage(
                               Number(
                                 avgs?.find(
@@ -795,7 +831,32 @@ const SupplyDashboard = ({
                           />: */}
 
                         {/* {supply?.token} */}
-                      </Text>
+                      </Text>:                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        color="#00D395"
+                      >
+                           {numberFormatterPercentage(0)+'%'}
+                        <Box ml="0.4rem">
+                          <FireIcon />
+                        </Box>
+                        {/* {checkGap(idx1, idx2)} */}
+                        {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
+                        {/* {avgs[2]} */}
+                        {/* { avgs.length>0? <Skeleton
+                            width="4rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />: */}
+
+                        {/* {supply?.token} */}
+                      </Text>}
                     </Td>
 
                     <Td
@@ -923,7 +984,7 @@ const SupplyDashboard = ({
                       backgroundColor: "#34345699",
                       width: "100%",
                       // left: "3%",
-                      display: `${idx == 4 ? "none" : "block"}`,
+                      display: `${idx == 4 ? userDeposits.length-1 : "block"}`,
                     }}
                   />
                 </>

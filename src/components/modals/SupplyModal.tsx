@@ -772,11 +772,11 @@ const SupplyModal = ({
       {
         const approve=await writeContractAsyncApprove({
           abi:trialabi,
-          address: tokenAddressMap[asset],
+          address: tokenAddressMap[currentSelectedCoin],
           functionName: 'approve',
           args: [
             diamondAddress,
-            BigInt(etherToWeiBN(depositAmount, asset).toString())
+            BigInt(etherToWeiBN(depositAmount, currentSelectedCoin).toString())
           ],
           chain:baseSepolia
        })
@@ -869,8 +869,8 @@ const SupplyModal = ({
           address: diamondAddress as any,
           functionName: 'deposit',
           args: [
-            tokenAddressMap[asset],
-            BigInt(etherToWeiBN(depositAmount, asset).toString()),
+            tokenAddressMap[currentSelectedCoin],
+            BigInt(etherToWeiBN(depositAmount, currentSelectedCoin).toString()),
             addressbase,
           ],
           chain:baseSepolia
@@ -1138,12 +1138,21 @@ const SupplyModal = ({
     const fetchSupplyUnlocked = async () => {
       try {
         if (asset && withdrawAmount > 0) {
-          const data = await getSupplyunlockedBase(
-            asset,
-            withdrawAmount
-          )
-          ////console.log(data, "data in your supply");
-          setEstSupply(data)
+          if(protocolNetwork==='Starknet'){
+            const data = await getSupplyunlocked(
+              asset,
+              withdrawAmount
+            )
+            ////console.log(data, "data in your supply");
+            setEstSupply(data)
+          }else{
+            const data = await getSupplyunlockedBase(
+              asset,
+              withdrawAmount
+            )
+            ////console.log(data, "data in your supply");
+            setEstSupply(data)
+          }
         }
       } catch (err) {
         //console.log(err, "err in you supply");
@@ -1395,51 +1404,6 @@ const SupplyModal = ({
             <ModalCloseButton mt="1rem" mr="1rem" />
             <ModalBody>
               <Tabs variant="unstyled">
-                {protocolNetwork==='Base' &&<TabList borderRadius="md" mb="2rem">
-                  <Tab
-                    py="1"
-                    px="3"
-                    color="#676D9A"
-                    fontSize="sm"
-                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                    borderLeftRadius="md"
-                    fontWeight="normal"
-                    _selected={{
-                      color: 'white',
-                      bg: '#4D59E8',
-                      border: 'none',
-                    }}
-                    onClick={()=>{
-                      setSelectedTab('supply')
-                      resetStates()
-                    }}
-                    // isDisabled={unstakeTransactionStarted == true}
-                  >
-                    Supply
-                  </Tab>
-
-                  <Tab
-                    py="1"
-                    px="3"
-                    color="#676D9A"
-                    fontSize="sm"
-                    border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                    borderRightRadius="md"
-                    fontWeight="normal"
-                    _selected={{
-                      color: 'white',
-                      bg: '#4D59E8',
-                      border: 'none',
-                    }}
-                    // isDisabled={transactionStarted == true}
-                    onClick={()=>{
-                      setSelectedTab('withdraw')
-                      resetStates()
-                    }}
-                  >
-                    Withdraw
-                  </Tab>
-                </TabList>}
                 <TabPanels>
                   <TabPanel p="0" m="0">
                     <Card
