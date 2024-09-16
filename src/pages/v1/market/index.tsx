@@ -271,7 +271,7 @@ const Market: NextPage = () => {
       </Box> */}
 
       {/* <StatsBoard /> */}
-        {protocolNetwork ==='Starknet' &&<NavButtons width={95} marginBottom="1.125rem" />}
+        {<NavButtons width={95} marginBottom="1.125rem" />}
       <MarketDashboard />
     </PageCard>
   )

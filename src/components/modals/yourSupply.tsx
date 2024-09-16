@@ -47,12 +47,12 @@ import SliderWithInput from '../uiElements/sliders/sliderWithInput'
 import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf'
 import useDeposit from '@/Blockchain/hooks/Writes/useDeposit'
 import useWithdrawDeposit from '@/Blockchain/hooks/Writes/useWithdrawDeposit'
-import { getSupplyunlocked,getEstrTokens } from '@/Blockchain/scripts/Rewards'
+import { getSupplyunlocked,getEstrTokens, getExchangeRate, getSupplyunlockedBase } from '@/Blockchain/scripts/Rewards'
 import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from '@/Blockchain/utils/addressServices'
-import { BNtoNum, parseAmount } from '@/Blockchain/utils/utils'
+import { BNtoNum, etherToWeiBN, parseAmount } from '@/Blockchain/utils/utils'
 import ArrowUp from '@/assets/icons/arrowup'
 import BlueInfoIcon from '@/assets/icons/blueinfoicon'
 import SmallEth from '@/assets/icons/coins/smallEth'
@@ -80,6 +80,7 @@ import {
   selectFees,
   selectMaximumDepositAmounts,
   selectMinimumDepositAmounts,
+  selectProtocolNetworkSelected,
   selectStakingShares,
   selectUserDeposits,
 } from '@/store/slices/readDataSlice'
@@ -107,6 +108,13 @@ import AnimatedButton from '../uiElements/buttons/AnimationButton'
 import ErrorButton from '../uiElements/buttons/ErrorButton'
 import SuccessButton from '../uiElements/buttons/SuccessButton'
 import useWithdrawStake from '@/Blockchain/hooks/Writes/useWithdrawStake'
+import useBalanceofWagmi from '@/Blockchain/hooks/Reads/usebalanceofWagmi'
+import { useWaitForTransactionReceipt, useWriteContract,useAccount as useAccountWagmi } from 'wagmi'
+import { config } from '@/services/wagmi/config'
+import { diamondAddress } from '@/Blockchain/stark-constants'
+import { baseSepolia } from 'viem/chains'
+import { trialabi } from '@/Blockchain/abis_mainnet/trialabi'
+import supplyproxyAbi from '../../Blockchain/abis_base_sepolia/supply_proxy_abi.json'
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -130,6 +138,7 @@ const YourSupplyModal = ({
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
     useState(false)
   let activeTransactions = useSelector(selectActiveTransactions)
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
   const [uniqueID, setUniqueID] = useState(0)
   const getUniqueId = () => uniqueID
 
@@ -156,7 +165,8 @@ const YourSupplyModal = ({
     ETH: any
     DAI: any
   }
-  const walletBalances: assetB | any = {
+  /* eslint-disable react-hooks/rules-of-hooks */
+  const walletBalances: assetB | any = protocolNetwork==='Starknet'? {
     USDT: useBalanceOf(tokenAddressMap['USDT']),
     USDC: useBalanceOf(tokenAddressMap['USDC']),
     BTC: useBalanceOf(tokenAddressMap['BTC']),
@@ -169,24 +179,32 @@ const YourSupplyModal = ({
     rETH: useBalanceOf(tokenAddressMap['rETH']),
     rDAI: useBalanceOf(tokenAddressMap['rDAI']),
     rSTRK: useBalanceOf(tokenAddressMap['rSTRK']),
-  }
+  }:{
+    USDT:useBalanceofWagmi(tokenAddressMap['USDT']),
+    USDC:useBalanceofWagmi(tokenAddressMap['USDC']),
+    DAI:useBalanceofWagmi(tokenAddressMap['DAI']),
+    rUSDT: useBalanceofWagmi(tokenAddressMap['rUSDT']),
+    rUSDC: useBalanceofWagmi(tokenAddressMap['rUSDC']),
+    rDAI: useBalanceofWagmi(tokenAddressMap['rDAI']),
+    }
+    /* eslint-enable react-hooks/rules-of-hooks */
   const userDeposit = useSelector(selectUserDeposits)
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === 'success'
-      ? parseAmount(
+      ? protocolNetwork==='Starknet'? parseAmount(
           String(
             uint256.uint256ToBN(
               walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
             )
           ),
           tokenDecimalsMap[currentSelectedSupplyCoin]
-        )
+        ):Number(walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.formatted)
       : 0
   )  
   const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
-    userDeposit?.find(
+    protocolNetwork==='Starknet'? userDeposit?.find(
       (item: any) => item?.rToken == currentSelectedWithdrawlCoin
-    )?.rTokenFreeParsed
+    )?.rTokenFreeParsed:Number(walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf?.formatted)
   )
   useEffect(()=>{
     setSliderValue3(0);
@@ -194,11 +212,10 @@ const YourSupplyModal = ({
     setInputUnstakeAmount(0);
   },[currentedSelectedUnstakeCoinModal])
 
-
   useEffect(() => {
     setwalletBalance(
       walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === 'success'
-        ? parseAmount(
+        ? protocolNetwork==='Starknet'? parseAmount(
             String(
               uint256.uint256ToBN(
                 walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf
@@ -206,7 +223,7 @@ const YourSupplyModal = ({
               )
             ),
             tokenDecimalsMap[currentSelectedSupplyCoin]
-          )
+          ):Number(walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.formatted)
         : 0
     )
   }, [
@@ -216,9 +233,9 @@ const YourSupplyModal = ({
 
   useEffect(() => {
     setWithdrawWalletBalance(
-      userDeposit?.find(
+      protocolNetwork==='Starknet'? userDeposit?.find(
         (item: any) => item?.rToken == currentSelectedWithdrawlCoin
-      )?.rTokenFreeParsed
+      )?.rTokenFreeParsed:Number(walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf?.formatted)
     )
   }, [currentSelectedWithdrawlCoin])
 
@@ -231,7 +248,11 @@ const YourSupplyModal = ({
     const [addSupplyHoverIndex, setaddSupplyHoverIndex] = useState<Number>(-1)
     const [unstakeHoverIndex, setunstakeHoverIndex] = useState<Number>(-1)
     const [withdrawHoverIndex, setwithdrawHoverIndex] = useState<Number>(-1)
-    
+    const [enteredtransaction, setenteredtransaction] = useState(false)
+    const [txStatus , settxStatus  ] = useState(false);
+    const [txloading, setTxloading] = useState(false);
+    const [declined, setDeclined] = useState(false);
+    const [exchangeRate, setexchangeRate] = useState<any>()
     const {
       unstakeRToken,
       setUnstakeRToken,
@@ -328,7 +349,7 @@ const YourSupplyModal = ({
         : 0
     )
   }, [currentedSelectedUnstakeCoinModal, userDeposit])
-
+  const {address:addressbase}=useAccountWagmi()
 
   const hanldeUnstakeTransaction = async () => {
     try {
@@ -400,6 +421,358 @@ const YourSupplyModal = ({
       })
     }
   }
+  const { writeContractAsync:writeContractAsyncApprove, data:dataApprove, error,status:statusApprove } = useWriteContract({
+    config,
+  })
+  const { writeContractAsync:writeContractAsyncDeposit, data:dataDepositBase } = useWriteContract({
+    config,
+  })
+  const { writeContractAsync:writeContractAsyncWithdraw, data:dataWithdraw } = useWriteContract({
+    config,
+  })
+  const handleTransactionApprove = async () => {
+    try {
+      {
+        const approve=await writeContractAsyncApprove({
+          abi:trialabi,
+          address: tokenAddressMap[currentSelectedSupplyCoin],
+          functionName: 'approve',
+          args: [
+            diamondAddress,
+            BigInt(etherToWeiBN(depositAmount, currentSelectedSupplyCoin).toString())
+          ],
+          chain:baseSepolia
+       })
+       const toastid = toast.info(
+        // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+        `Transaction pending`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+        }
+      )
+      setToastId(toastid)
+        setDepositTransHash(approve as any)
+        // const uqID = getUniqueId()
+        // let data: any = localStorage.getItem('transactionCheck')
+        // data = data ? JSON.parse(data) : []
+        // if (data && data.includes(uqID)) {
+        //   dispatch(setTransactionStatus('success'))
+        // }
+        ////console.log("Status transaction", deposit);
+        //console.log(isSuccessDeposit, "success ?");
+      }
+    } catch (err: any) {
+      console.log(err,"err approve")
+      // setTransactionFailed(true);
+      // console.log(err,"approve err")
+      const uqID = getUniqueId()
+      let data: any = localStorage.getItem('transactionCheck')
+      data = data ? JSON.parse(data) : []
+      if (data && data.includes(uqID)) {
+        setTransactionStarted(false)
+        // dispatch(setTransactionStatus("failed"));
+      }
+      //console.log(uqID, "transaction check supply transaction failed : ", err);
+
+      const toastContent = (
+        <div>
+          Transaction declined{' '}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      )
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      })
+      //console.log("supply", err);
+      // toast({
+      //   description: "An error occurred while handling the transaction. " + err,
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   status: "error",
+      //   isClosable: true,
+      // });
+      // toast({
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   render: () => (
+      //     <Box
+      //       display="flex"
+      //       flexDirection="row"
+      //       justifyContent="center"
+      //       alignItems="center"
+      //       bg="rgba(40, 167, 69, 0.5)"
+      //       height="48px"
+      //       borderRadius="6px"
+      //       border="1px solid rgba(74, 194, 107, 0.4)"
+      //       padding="8px"
+      //     >
+      //       <Box>
+      //         <SuccessTick />
+      //       </Box>
+      //       <Text>You have successfully supplied 1000USDT to check go to </Text>
+      //       <Button variant="link">Your Supply</Button>
+      //       <Box>
+      //         <CancelSuccessToast />
+      //       </Box>
+      //     </Box>
+      //   ),
+      //   isClosable: true,
+      // });
+    }
+  }
+  const handleTransactionDeposit = async () => {
+    try {
+      {
+        const approve=await writeContractAsyncDeposit({
+          abi:supplyproxyAbi,
+          address: diamondAddress as any,
+          functionName: 'deposit',
+          args: [
+            tokenAddressMap[currentSelectedSupplyCoin],
+            BigInt(etherToWeiBN(depositAmount, currentSelectedSupplyCoin).toString()),
+            addressbase,
+          ],
+          chain:baseSepolia
+       },
+      )
+      if (!activeTransactions) {
+        activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
+      } else if (
+        Object.isFrozen(activeTransactions) ||
+        Object.isSealed(activeTransactions)
+      ) {
+        // Check if activeTransactions is frozen or sealed
+        activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
+      }
+      const uqID = getUniqueId()
+      const trans_data = {
+        transaction_hash: approve,
+        message: `Successfully deposited ${depositAmount} ${currentSelectedSupplyCoin}`,
+        // message: `Transaction successful`,
+        toastId: 2,
+        setCurrentTransactionStatus: setCurrentTransactionStatus,
+        uniqueID: uqID,
+      }
+      activeTransactions?.push(trans_data)
+      dispatch(setActiveTransactions(activeTransactions))
+        let data: any = localStorage.getItem('transactionCheck')
+        data = data ? JSON.parse(data) : []
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus('success'))
+        }
+        ////console.log("Status transaction", deposit);
+        //console.log(isSuccessDeposit, "success ?");
+      }
+    } catch (err: any) {
+      console.log(err,"err deposit")
+      // setDeclined(true)
+      setTransactionStarted(false)
+      // setTransactionFailed(true);
+      //console.log(uqID, "transaction check supply transaction failed : ", err);
+
+      const toastContent = (
+        <div>
+          Transaction declined{' '}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      )
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      })
+      //console.log("supply", err);
+      // toast({
+      //   description: "An error occurred while handling the transaction. " + err,
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   status: "error",
+      //   isClosable: true,
+      // });
+      // toast({
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   render: () => (
+      //     <Box
+      //       display="flex"
+      //       flexDirection="row"
+      //       justifyContent="center"
+      //       alignItems="center"
+      //       bg="rgba(40, 167, 69, 0.5)"
+      //       height="48px"
+      //       borderRadius="6px"
+      //       border="1px solid rgba(74, 194, 107, 0.4)"
+      //       padding="8px"
+      //     >
+      //       <Box>
+      //         <SuccessTick />
+      //       </Box>
+      //       <Text>You have successfully supplied 1000USDT to check go to </Text>
+      //       <Button variant="link">Your Supply</Button>
+      //       <Box>
+      //         <CancelSuccessToast />
+      //       </Box>
+      //     </Box>
+      //   ),
+      //   isClosable: true,
+      // });
+    }
+  }
+  const handleTransactionWithdraw = async () => {
+    try {
+      {
+        const dataWithdraw=await writeContractAsyncWithdraw({
+          abi:supplyproxyAbi,
+          address: diamondAddress as any,
+          functionName: 'withdrawDeposit',
+          args: [
+            tokenAddressMap[currentSelectedWithdrawlCoin.slice(1)],
+            BigInt(etherToWeiBN(inputWithdrawlAmount, currentSelectedWithdrawlCoin.slice(1)).toString()),
+            addressbase,
+            addressbase
+          ],
+          chain:baseSepolia
+       },
+      )
+
+       const toastid = toast.info(
+        // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+        `Transaction pending`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+        }
+      )
+      setToastId(toastid)
+      if (!activeTransactions) {
+        activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
+      } else if (
+        Object.isFrozen(activeTransactions) ||
+        Object.isSealed(activeTransactions)
+      ) {
+        // Check if activeTransactions is frozen or sealed
+        activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
+      }
+      const uqID = getUniqueId()
+      const trans_data = {
+        transaction_hash: dataWithdraw,
+        message: `Successfully withdraw ${inputWithdrawlAmount} ${currentSelectedWithdrawlCoin.slice(1)}`,
+        // message: `Transaction successful`,
+        toastId: toastid,
+        setCurrentTransactionStatus: setCurrentTransactionStatus,
+        uniqueID: uqID,
+      }
+      activeTransactions?.push(trans_data)
+
+      dispatch(setActiveTransactions(activeTransactions))
+      setDepositTransHash(dataWithdraw)
+        let data: any = localStorage.getItem('transactionCheck')
+        data = data ? JSON.parse(data) : []
+        if (data && data.includes(uqID)) {
+          dispatch(setTransactionStatus('success'))
+        }
+        ////console.log("Status transaction", deposit);
+        //console.log(isSuccessDeposit, "success ?");
+      }
+    } catch (err: any) {
+      // setTransactionFailed(true);
+      console.log(err,"withdraw err")
+      setWithdrawTransactionStarted(false)
+      const uqID = getUniqueId()
+      let data: any = localStorage.getItem('transactionCheck')
+      data = data ? JSON.parse(data) : []
+      if (data && data.includes(uqID)) {
+        setTransactionStarted(false)
+        // dispatch(setTransactionStatus("failed"));
+      }
+      //console.log(uqID, "transaction check supply transaction failed : ", err);
+
+      const toastContent = (
+        <div>
+          Transaction declined{' '}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      )
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      })
+      // toast({
+      //   description: "An error occurred while handling the transaction. " + err,
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   status: "error",
+      //   isClosable: true,
+      // });
+      // toast({
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   render: () => (
+      //     <Box
+      //       display="flex"
+      //       flexDirection="row"
+      //       justifyContent="center"
+      //       alignItems="center"
+      //       bg="rgba(40, 167, 69, 0.5)"
+      //       height="48px"
+      //       borderRadius="6px"
+      //       border="1px solid rgba(74, 194, 107, 0.4)"
+      //       padding="8px"
+      //     >
+      //       <Box>
+      //         <SuccessTick />
+      //       </Box>
+      //       <Text>You have successfully supplied 1000USDT to check go to </Text>
+      //       <Button variant="link">Your Supply</Button>
+      //       <Box>
+      //         <CancelSuccessToast />
+      //       </Box>
+      //     </Box>
+      //   ),
+      //   isClosable: true,
+      // });
+    }
+  }
+
+  const { isLoading:approveLoading, isSuccess:approveSuccess,data } = useWaitForTransactionReceipt({
+    hash: dataApprove,
+  })
+
+  const { isLoading:approveLoadingDeposit, isSuccess:approveSuccessDeposit } = useWaitForTransactionReceipt({
+    hash: dataDepositBase,
+  })
+
+  useEffect(()=>{
+    const fetchData=async()=>{
+      const res=await getExchangeRate(asset)
+      if(res){
+        setexchangeRate(res)
+      }
+    }
+    fetchData()
+  },[asset])
+
+  useEffect(()=>{
+    if(approveSuccess && !approveLoading){
+      settxStatus(true);
+      setTxloading(false);
+    }
+  
+  },[approveSuccess]);
+
+  useEffect(()=>{
+    if((approveSuccess ) && txStatus && !txloading && !declined &&!enteredtransaction){
+      setenteredtransaction(true)
+      handleTransactionDeposit()
+    }
+  },[approveSuccess,txStatus,txloading])
 
   const handleUnstakeChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return
@@ -535,12 +908,22 @@ const YourSupplyModal = ({
     const fetchSupplyUnlocked = async () => {
       try {
         if (currentSelectedWithdrawlCoin && inputWithdrawlAmount > 0) {
-          const data = await getSupplyunlocked(
-            currentSelectedWithdrawlCoin,
-            inputWithdrawlAmount
-          )
-          ////console.log(data, "data in your supply");
-          setEstSupply(data)
+          if(protocolNetwork==='Starknet'){
+            const data = await getSupplyunlocked(
+              currentSelectedWithdrawlCoin,
+              inputWithdrawlAmount
+            )
+            ////console.log(data, "data in your supply");
+            setEstSupply(data)
+          }else{
+            const data = await getSupplyunlockedBase(
+              currentSelectedWithdrawlCoin.slice(1),
+              inputWithdrawlAmount
+            )
+            console.log(data,"base withdraw")
+            ////console.log(data, "data in your supply");
+            setEstSupply(data)
+          }
         }
       } catch (err) {
         //console.log(err, "err in you supply");
@@ -790,6 +1173,7 @@ const YourSupplyModal = ({
       }
     } catch (err) {
       //console.log("Unable to add supply ", err);
+      console.log(err,"err in supply")
       const uqID = getUniqueId()
       let data: any = localStorage.getItem('transactionCheck')
       //console.log("data check", data);
@@ -967,7 +1351,7 @@ const YourSupplyModal = ({
                     >
                       Add supply
                     </Tab>
-                    <Tab
+                    {protocolNetwork==='Starknet'&&<Tab
                       py="1"
                       px="3"
                       color="#676D9A"
@@ -983,7 +1367,7 @@ const YourSupplyModal = ({
                       isDisabled={transactionStarted == true || withdrawTransactionStarted == true}
                     >
                       Unstake
-                    </Tab>
+                    </Tab>}
                     <Tab
                       py="1"
                       px="3"
@@ -1165,8 +1549,8 @@ const YourSupplyModal = ({
                                       >
                                         Wallet Balance:{' '}
                                         {walletBalances[coin.substring(1)]
-                                          ?.dataBalanceOf?.balance
-                                          ? numberFormatter(
+                                          ?.dataBalanceOf
+                                          ? protocolNetwork==='Starknet'? numberFormatter(
                                               parseAmount(
                                                 String(
                                                   uint256.uint256ToBN(
@@ -1179,7 +1563,7 @@ const YourSupplyModal = ({
                                                   coin.substring(1)
                                                 ]
                                               )
-                                            )
+                                            ):numberFormatter(String(Number(walletBalances[coin.substring(1)]?.dataBalanceOf?.formatted)))
                                           : '-'}
                                       </Box>
                                     </Box>
@@ -1581,20 +1965,20 @@ const YourSupplyModal = ({
                           opacity="0.8"
                         >
                           {depositAmount *
-                            protocolStats?.find(
+                            (protocolNetwork==='Starknet'? protocolStats?.find(
                               (stat: any) =>
-                                stat.token ==
+                                stat?.token ==
                                 (currentSelectedSupplyCoin[0] == 'r'
                                   ? currentSelectedSupplyCoin.slice(1)
                                   : currentSelectedSupplyCoin)
-                            )?.exchangeRateUnderlyingToRtoken}
+                            )?.exchangeRateUnderlyingToRtoken:exchangeRate)}
                         </Box>
                         <Text color="#676D9A" fontSize="md" opacity="0.8">
                           r{currentSelectedSupplyCoin}
                         </Text>
                       </Box>
 
-                      <Box
+                      {protocolNetwork==='Starknet' &&<Box
                         display="flex"
                         gap="2"
                         mb="1rem"
@@ -1624,7 +2008,7 @@ const YourSupplyModal = ({
                         >
                           I would like to stake the rTokens.
                         </Text>
-                      </Box>
+                      </Box>}
 
                       <Card
                         mt="1rem"
@@ -1637,7 +2021,7 @@ const YourSupplyModal = ({
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
-                          mb="0.4rem"
+                          mb={protocolNetwork==='Starknet'?"0.4rem":"0rem"}
                         >
                           <Text display="flex" alignItems="center">
                             <Text
@@ -1712,7 +2096,7 @@ const YourSupplyModal = ({
                           </Text>
                           <Text color="#676D9A">$ 0.91</Text>
                         </Text> */}
-                        <Text
+                        {protocolNetwork==='Starknet'&&<Text
                           color="#676D9A"
                           display="flex"
                           justifyContent="space-between"
@@ -1769,8 +2153,8 @@ const YourSupplyModal = ({
 
                             {/* 7.75% */}
                           </Text>
-                        </Text>
-                        {ischecked && (
+                        </Text>}
+                        {ischecked &&protocolNetwork==='Starknet' && (
                           <Text
                             color="#8B949E"
                             display="flex"
@@ -1843,7 +2227,7 @@ const YourSupplyModal = ({
                             </Text>
                           </Text>
                         )}
-                        {ischecked && (
+                        {ischecked &&protocolNetwork==='Starknet' && (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -1925,7 +2309,7 @@ const YourSupplyModal = ({
                       )}
 
                       {inputSupplyAmount > 0 &&
-                      supplyAsset != 'DAI' &&
+                      (protocolNetwork==='Starknet'? supplyAsset != 'DAI':true) &&
                       ((inputSupplyAmount > 0 &&
                         inputSupplyAmount >= minimumDepositAmount) ||
                         process.env.NEXT_PUBLIC_NODE_ENV == 'testnet') &&
@@ -1945,7 +2329,11 @@ const YourSupplyModal = ({
                               dispatch(
                                 setTransactionStartedAndModalClosed(false)
                               )
-                              handleAddSupply()
+                              if(protocolNetwork==='Starknet'){
+                                handleAddSupply()
+                              }else{
+                                handleTransactionApprove()
+                              }
                             }
                           }}
                         >
@@ -2004,7 +2392,7 @@ const YourSupplyModal = ({
                       )}
                     </TabPanel>
 
-                    <TabPanel p="0" m="0">
+                    {protocolNetwork==='Starknet' && <TabPanel p="0" m="0">
                       <Card
                         mb="0.5rem"
                         p="1rem"
@@ -2717,7 +3105,7 @@ const YourSupplyModal = ({
                           Unstake
                         </Button>
                       )}
-                    </TabPanel>
+                    </TabPanel>}
 
                     <TabPanel p="0" m="0">
                       <Card
@@ -2864,10 +3252,10 @@ const YourSupplyModal = ({
                                         fontWeight="thin"
                                       >
                                         Available:{' '}
-                                        {
+                                        {protocolNetwork==='Starknet'?
                                           userDeposit?.find(
                                             (item: any) => item?.rToken == coin
-                                          )?.rTokenFreeParsed
+                                          )?.rTokenFreeParsed:numberFormatter(String(Number(walletBalances[coin]?.dataBalanceOf?.formatted)))
                                         }
                                       </Box>
                                     </Box>
@@ -3361,7 +3749,7 @@ const YourSupplyModal = ({
                         </Text>
                       </Card>
 
-                      <Box
+                      {protocolNetwork==='Starknet'&&<Box
                         display="flex"
                         justifyContent="left"
                         w="100%"
@@ -3387,7 +3775,7 @@ const YourSupplyModal = ({
                           Please unstake the staked funds before proceeding with
                           the withdrawal.
                         </Box>
-                      </Box>
+                      </Box>}
 
                       {inputWithdrawlAmount > 0 &&
                       inputWithdrawlAmount <= withdrawWalletBalance ? (
@@ -3404,7 +3792,11 @@ const YourSupplyModal = ({
                               dispatch(
                                 setTransactionStartedAndModalClosed(false)
                               )
-                              handleWithdrawSupply()
+                              if(protocolNetwork==='Starknet'){
+                                handleWithdrawSupply()
+                              }else{
+                                handleTransactionWithdraw()
+                              }
                             }
                           }}
                         >

@@ -1,6 +1,6 @@
 import { Box, HStack, Skeleton, Text, Tooltip, VStack } from '@chakra-ui/react'
 import { NextPage } from 'next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import InfoIconBig from '@/assets/icons/infoIconBig'
@@ -9,11 +9,15 @@ import PageCard from '@/components/layouts/pageCard'
 import SupplyDashboard from '@/components/layouts/supplyDashboard'
 import useDataLoader from '@/hooks/useDataLoader'
 import {
+  selectProtocolNetworkSelected,
+  selectTransactionRefresh,
   selectYourSupply,
   selectnetAprDeposits,
 } from '@/store/slices/readDataSlice'
 import { Coins } from '@/utils/constants/coin'
 import numberFormatter from '@/utils/functions/numberFormatter'
+import { tokenAddressMap } from '@/Blockchain/utils/addressServices'
+import useBalanceofWagmi from '@/Blockchain/hooks/Reads/usebalanceofWagmi'
 
 const columnItems = [
   'rToken amount',
@@ -29,8 +33,24 @@ const YourSupply: NextPage = () => {
 
   const totalSupply = useSelector(selectYourSupply)
   const netAPR = useSelector(selectnetAprDeposits)
+  const protocolNetwork=useSelector(selectProtocolNetworkSelected)
+  const transactionRefresh = useSelector(selectTransactionRefresh)
 
+  const withdrawBalances:any={
+    USDT:useBalanceofWagmi(tokenAddressMap['rUSDT']),
+    USDC:useBalanceofWagmi(tokenAddressMap['rUSDC']),
+    DAI:useBalanceofWagmi(tokenAddressMap['rDAI']),
+  }
+  const [userTotalSupply, setuserTotalSupply] = useState<number>(0)
   useDataLoader()
+
+  useEffect(()=>{
+    let totalSupply=0;
+    if(withdrawBalances){
+      totalSupply+= Number(withdrawBalances['USDC'].dataBalanceOf?.formatted)+Number(withdrawBalances['USDT'].dataBalanceOf?.formatted)+Number(withdrawBalances['DAI'].dataBalanceOf?.formatted)
+    }
+    setuserTotalSupply(totalSupply)
+  },[withdrawBalances,transactionRefresh])
 
   return (
     <PageCard pt="6.5rem">
@@ -60,7 +80,7 @@ const YourSupply: NextPage = () => {
               Total Supply
             </Text>
 
-            {totalSupply == null ? (
+            {totalSupply == null &&protocolNetwork==='Starknet'? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -70,7 +90,7 @@ const YourSupply: NextPage = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {totalSupply ? `$${numberFormatter(totalSupply)}` : 'NA'}
+                {protocolNetwork!=='Starknet'?`$${numberFormatter(userTotalSupply)}`: totalSupply ? `$${numberFormatter(totalSupply)}` : 'NA'}
               </Text>
             )}
           </VStack>
@@ -105,7 +125,7 @@ const YourSupply: NextPage = () => {
               </Tooltip>
             </Box>
 
-            {netAPR == null ? (
+            {netAPR == null  &&protocolNetwork==='Starknet'? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -116,15 +136,15 @@ const YourSupply: NextPage = () => {
             ) : (
               <Text
                 color={
-                  netAPR > 0
+                  protocolNetwork==='Starknet'? netAPR > 0
                     ? '#00D395'
                     : netAPR == 0
                       ? 'white'
-                      : 'rgb(255 94 94)'
+                      : 'rgb(255 94 94)':'white'
                 }
                 fontSize="20px"
               >
-                {netAPR != 0 ? `${netAPR}%` : 'NA'}
+                {protocolNetwork!=='Starknet'?'NA': netAPR != 0 ? `${netAPR}%` : 'NA'}
               </Text>
             )}
           </VStack>
