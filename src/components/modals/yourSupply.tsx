@@ -153,7 +153,7 @@ const YourSupplyModal = ({
           onClose();
         }
       }
-    }, 7000); // 5000 milliseconds = 5 seconds
+    }, 15000); // 5000 milliseconds = 5 seconds
   
     return () => clearTimeout(timeoutId); // Cleanup function to clear the timeout when component unmounts or when activeTransactions changes
   }, [activeTransactions]);
