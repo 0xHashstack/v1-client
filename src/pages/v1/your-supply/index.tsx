@@ -90,7 +90,7 @@ const YourSupply: NextPage = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {protocolNetwork!=='Starknet'?`$${numberFormatter(userTotalSupply)}`: totalSupply ? `$${numberFormatter(totalSupply)}` : 'NA'}
+                {protocolNetwork!=='Starknet'?`$${numberFormatter(userTotalSupply? userTotalSupply:0)}`: totalSupply ? `$${numberFormatter(totalSupply)}` : 'NA'}
               </Text>
             )}
           </VStack>

@@ -259,7 +259,7 @@ const MarketDashboard = () => {
               Your supply
             </Text>
             <Text color="#F0F0F5" fontSize="24px">
-              ${numberFormatter(userTotalSupply)}
+              ${numberFormatter(userTotalSupply? userTotalSupply:0)}
             </Text>
 
           </Box>

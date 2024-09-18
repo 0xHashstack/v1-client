@@ -356,12 +356,12 @@ const SupplyDashboard = ({
             underlyingAssetAmount:Number(tokenBalances[token]?.dataBalanceOf?.value),
             underlyingAssetAmountParsed:Number(tokenBalances[token]?.dataBalanceOf?.formatted)
           }
-          supplyStats.push(dataStats)
+          if(Number(tokenBalances[token]?.dataBalanceOf?.formatted)!==0 &&Number(tokenBalances[token]?.dataBalanceOf?.formatted)){
+            supplyStats.push(dataStats)
+          }
         }
-        if(supplyStats.length===3){
           setSupplies(supplyStats)
           setLoading(false);
-        }
     }
   },[protocolNetwork,tokenBalances['USDC'].dataBalanceOf,tokenBalances['DAI'].dataBalanceOf,tokenBalances['USDT'].dataBalanceOf])
 
