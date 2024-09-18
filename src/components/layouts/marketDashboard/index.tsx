@@ -232,7 +232,7 @@ const MarketDashboard = () => {
       gap="1rem"
     >
       <DashboardLeft
-        width={protocolNetwork==='Starknet'? "100%":'65%'}
+        width={protocolNetwork==='Starknet'? "100%":'70%'}
         oraclePrices={oraclePrices}
         totalSupplies={totalSupplies}
         borrowAPRs={borrowAPRs}
@@ -246,15 +246,15 @@ const MarketDashboard = () => {
         // gap={"16.6"}
         // rowItems={rowItems1}
       />
-      {protocolNetwork==='Base'&&<Box width="35%"       
+      {protocolNetwork==='Base'&&<Box width="30%"       
       background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
       border="1px solid var(--stroke-of-30, rgba(52, 52, 86, 0.6))"
       paddingX={isLargerThan1280 ? '2rem' : '1rem'}
       borderRadius="md"
-      height={'34.57rem'}
+      height={'33rem'}
       >
-        <Box padding="1.5rem">
-          <Box display='flex' gap="0.5rem" textAlign="center" alignItems="center" bg="#34345626" border="1px solid #34345696" padding="1.5rem" borderRadius="md" justifyContent="flex-end">
+        <Box paddingTop="1.5rem">
+          <Box display='flex' gap="0.5rem" textAlign="center" alignItems="center" bg="#34345626" border="1px solid #34345696" padding="1.5rem" borderRadius="md" justifyContent="space-between">
             <Text fontSize="16px" color="#676D9A">
               Your supply
             </Text>
