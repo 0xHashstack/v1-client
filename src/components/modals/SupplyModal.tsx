@@ -1470,7 +1470,7 @@ const SupplyModal = ({
                             {currentSelectedCoin == 'BTC' ||
                             currentSelectedCoin == 'ETH'
                               ? 'w' + currentSelectedCoin
-                              : currentSelectedCoin}
+                              : protocolNetwork==='Starknet'?''+currentSelectedCoin:'t'+ currentSelectedCoin}
                           </Text>
                         </Box>
 
@@ -1570,7 +1570,7 @@ const SupplyModal = ({
                                       <Text color="white">
                                         {coin == 'BTC' || coin == 'ETH'
                                           ? 'w' + coin
-                                          : coin}
+                                          : protocolNetwork==='Starknet'?''+coin:'t'+ coin}
                                       </Text>
                                     </Box>
                                     {protocolNetwork === 'Starknet' ? (
@@ -1828,7 +1828,7 @@ const SupplyModal = ({
                               ? numberFormatter(walletBalance)
                               : numberFormatter(walletBalance)}
                             <Text color="#676D9A" ml="0.2rem">
-                              {` ${currentSelectedCoin}`}
+                              {`${protocolNetwork!=='Starknet'?'t':''}${currentSelectedCoin}`}
                             </Text>
                           </Text>
                         </Text>
@@ -1849,7 +1849,7 @@ const SupplyModal = ({
                             ? numberFormatter(walletBalance)
                             : numberFormatter(walletBalance)}
                           <Text color="#676D9A" ml="0.2rem">
-                            {` ${currentSelectedCoin}`}
+                            {` ${protocolNetwork!=='Starknet'?'t':''}${currentSelectedCoin}`}
                           </Text>
                         </Text>
                       )}

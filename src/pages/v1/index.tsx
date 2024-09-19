@@ -203,15 +203,23 @@ export default function Home() {
             className="navbar"
             cursor="pointer"
             onClick={() => {
-              dispatch(setNavDropdown('networkDropdown'))
+              if(process.env.NEXT_PUBLIC_NODE_ENV!=='testnet'){
+                dispatch(setNavDropdown('networkDropdown'))
+              }
             }}
           >
             <Box ml="1rem" color="white">
               {network}
             </Box>
             <Box pt="1" className="navbar-button" mr="1rem">
-              {navDropdowns.networkDropdown ? <ArrowUp /> : <DropdownUp />}
-            </Box>
+               {process.env.NEXT_PUBLIC_NODE_ENV==='testnet'?                    <Image
+                      src="/Base.png"
+                      alt="Picture of the author"
+                      width="22"
+                      height="22"
+                      style={{ cursor: 'pointer',marginRight:'0.2rem' }}
+                    />: navDropdowns.networkDropdown ? <ArrowUp /> : <DropdownUp />}
+            </Box> 
             {navDropdowns.networkDropdown && (
               <Box
                 w="full"

@@ -320,7 +320,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                         <Text fontSize="14px" fontWeight="400">
                           {coin?.name == 'BTC' || coin?.name == 'ETH'
                             ? 'w' + coin?.name
-                            : coin?.name}
+                            : protocolnetwork==='Starknet'?''+coin?.name:'t'+coin?.name}
                         </Text>
                         {coin?.name == 'DAI' && protocolnetwork==='Starknet' && (
                           <Image

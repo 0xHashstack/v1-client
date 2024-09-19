@@ -290,7 +290,7 @@ const GetTokensModal = ({
         }
         const trans_data = {
           transaction_hash: approve.toString(),
-          message: `Successfully minted TestToken : 10000 ${coin}`,
+          message: `Successfully minted TestToken : 10000 ${protocolNetwork!=='Starknet'?'t':''}${coin}`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: () => {},
@@ -422,6 +422,21 @@ const GetTokensModal = ({
               mr="1rem"
             />
             <ModalBody>
+              <Link href={protocolNetwork==='Starknet'? "https://faucet.goerli.starknet.io/":'https://docs.base.org/docs/tools/network-faucets/'} target="_blank">
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                mt="0.5rem"
+                mb="0.5rem"
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                padding="8px"
+                border="1px solid #101216"
+                borderRadius="6px"
+              >
+                  <Text>Get testnet ETH</Text>
+              </Box>
+                </Link>
               <Box
                 display="flex"
                 flexDirection="row"
@@ -479,7 +494,7 @@ const GetTokensModal = ({
                     // handleGetToken("USDT");
                   }}
                 >
-                  USDT
+                 {protocolNetwork!=='Starknet'?'t':''}USDT
                 </Button>
 
                 <Button
@@ -498,7 +513,7 @@ const GetTokensModal = ({
                     // handleGetToken("USDC");
                   }}
                 >
-                  USDC
+                  {protocolNetwork!=='Starknet'?'t':''}USDC
                 </Button>
 
                 <Button
@@ -517,23 +532,8 @@ const GetTokensModal = ({
                     // handleGetToken("DAI");
                   }}
                 >
-                  DAI
+                  {protocolNetwork!=='Starknet'?'t':''}DAI
                 </Button>
-              </Box>
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                mt="0.5rem"
-                mb="2rem"
-                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                padding="8px"
-                border="1px solid #101216"
-                borderRadius="6px"
-              >
-                <Link href={protocolNetwork==='Starknet'? "https://faucet.goerli.starknet.io/":'https://faucets.chain.link/base-sepolia'} target="_blank">
-                  <Text>Get test ETH</Text>
-                </Link>
               </Box>
             </ModalBody>
           </ModalContent>

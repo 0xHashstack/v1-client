@@ -263,12 +263,12 @@ const MarketDashboard = () => {
             </Text>
 
           </Box>
-          <Box padding="0rem 2rem 1.5rem 2rem" textAlign='center' display="flex" justifyContent='center'  bg="#120026" border="1px solid #34345696" borderRadius="md" mt="2rem">
+          <Box padding="1rem 2rem 1.5rem 2rem" textAlign='center' display="flex" justifyContent='center'  bg="#120026" border="1px solid #34345696" borderRadius="md" mt="2rem">
             <Box >
               <HashstackAirdropIcon/>
-              <Text color="#F0F0F5">
+              {/* <Text color="#F0F0F5">
               Airdrop to the one who supplies more
-              </Text>
+              </Text> */}
             </Box>
 
           </Box>
