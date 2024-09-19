@@ -1455,7 +1455,7 @@ const YourSupplyModal = ({
                               {currentSelectedSupplyCoin == 'BTC' ||
                               currentSelectedSupplyCoin == 'ETH'
                                 ? 'w' + currentSelectedSupplyCoin
-                                : currentSelectedSupplyCoin}
+                                :protocolNetwork==='Starknet'?''+currentSelectedSupplyCoin:'t'+currentSelectedSupplyCoin}
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
@@ -1538,7 +1538,7 @@ const YourSupplyModal = ({
                                           {coin.substring(1) == 'BTC' ||
                                           coin.substring(1) == 'ETH'
                                             ? 'w' + coin.substring(1)
-                                            : coin.substring(1)}
+                                            : protocolNetwork==='Starknet'?''+coin.substring(1):'t'+coin.substring(1)}
                                         </Text>
                                       </Box>
                                       <Box
@@ -1768,7 +1768,7 @@ const YourSupplyModal = ({
                             >
                               Wallet Balance: {numberFormatter(walletBalance)}
                               <Text color="#676D9A" ml="0.2rem">
-                                {` ${currentSelectedSupplyCoin}`}
+                                {` ${protocolNetwork!=='Starknet'?'t':''}${currentSelectedSupplyCoin}`}
                               </Text>
                             </Text>
                           </Box>
@@ -1785,7 +1785,7 @@ const YourSupplyModal = ({
                           >
                             Wallet Balance: {numberFormatter(walletBalance)}
                             <Text color="#676D9A" ml="0.2rem">
-                              {` ${currentSelectedSupplyCoin}`}
+                              {` ${protocolNetwork!=='Starknet'?'t':''}${currentSelectedSupplyCoin}`}
                             </Text>
                           </Box>
                         )}
