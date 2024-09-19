@@ -195,10 +195,11 @@ export default function Home() {
         >
           <Box
             display="flex"
-            border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+            border= {process.env.NEXT_PUBLIC_NODE_ENV!=='testnet'? "1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))":"0px"}
             justifyContent="space-between"
             py="2"
-            mt="0.3rem"
+            // mt="0.3rem"
+            mb={ process.env.NEXT_PUBLIC_NODE_ENV!=='testnet'?'0rem':"0.5rem"}
             borderRadius="md"
             className="navbar"
             cursor="pointer"
@@ -208,18 +209,12 @@ export default function Home() {
               }
             }}
           >
-            <Box ml="1rem" color="white">
-              {network}
+            <Box ml="0.4rem" fontSize="24px" color="white" textTransform="capitalize">
+              {network.toUpperCase()}
             </Box>
-            <Box pt="1" className="navbar-button" mr="1rem">
-               {process.env.NEXT_PUBLIC_NODE_ENV==='testnet'?                    <Image
-                      src="/Base.png"
-                      alt="Picture of the author"
-                      width="22"
-                      height="22"
-                      style={{ cursor: 'pointer',marginRight:'0.2rem' }}
-                    />: navDropdowns.networkDropdown ? <ArrowUp /> : <DropdownUp />}
-            </Box> 
+            {process.env.NEXT_PUBLIC_NODE_ENV!=='testnet'&& <Box pt="1" className="navbar-button" mr="1rem">
+               {navDropdowns.networkDropdown ? <ArrowUp /> : <DropdownUp />}
+            </Box>}
             {navDropdowns.networkDropdown && (
               <Box
                 w="full"
