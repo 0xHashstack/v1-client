@@ -10,8 +10,10 @@ import {
 import metricsAbi from "../abis_mainnet/metrics_abi.json"
 // import metricsAbi from "../abi_new/metrics_abi.json";
 import { IDeposit, NativeToken, RToken, Token } from "../interfaces/interfaces";
-import { weiToEtherNumber } from "../utils/utils";
-
+import { parseAmount, weiToEtherNumber } from "../utils/utils";
+import { ethers } from "ethers";
+import erc20abi from '../abis_base_sepolia/mockErc20_abi.json'
+import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 function parseDeposits(deposits: any): IDeposit[] {
   const parsedDeposits: IDeposit[] = [];
   ////console.log("deposits - ", deposits);
@@ -110,6 +112,17 @@ const parseDeposit = (deposit: any) => {
   };
   return deposit_data;
 };
+
+export async function assetBalance(account:string,asset:string){
+  try {
+    const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_INFURA_TESTNET_BASE);
+    const contract = new ethers.Contract(tokenAddressMap[asset], erc20abi, provider);
+    const balance=await contract.balanceOf(account)
+    return parseAmount(String( Number(balance)),tokenDecimalsMap[asset])
+  } catch (error) {
+    console.log(error,'err in balance')
+  }
+}
 
 export async function getUserDeposits(account: string) {
   const provider = getProvider();

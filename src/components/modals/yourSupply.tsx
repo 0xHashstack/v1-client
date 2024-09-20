@@ -252,7 +252,7 @@ const YourSupplyModal = ({
     const [txStatus , settxStatus  ] = useState(false);
     const [txloading, setTxloading] = useState(false);
     const [declined, setDeclined] = useState(false);
-    const [exchangeRate, setexchangeRate] = useState<any>()
+    const [exchangeRate, setexchangeRate] = useState<any>(1)
     const {
       unstakeRToken,
       setUnstakeRToken,
@@ -1245,7 +1245,7 @@ const YourSupplyModal = ({
         fontSize={'12px'}
         padding="6px 12px"
         border="1px solid #BDBFC1;"
-        bgColor="#101216"
+        bgColor="transparent"
         _hover={{ bg: 'white', color: 'black' }}
         borderRadius={'6px'}
         color="#BDBFC1"
@@ -1909,7 +1909,7 @@ const YourSupplyModal = ({
                           </Slider>
                         </Box>
                       </Card>
-
+{/* 
                       <Box
                         color="#676D9A"
                         display="flex"
@@ -1976,7 +1976,7 @@ const YourSupplyModal = ({
                         <Text color="#676D9A" fontSize="md" opacity="0.8">
                           r{currentSelectedSupplyCoin}
                         </Text>
-                      </Box>
+                      </Box> */}
 
                       {protocolNetwork==='Starknet' &&<Box
                         display="flex"
@@ -2056,6 +2056,60 @@ const YourSupplyModal = ({
                           </Text>
                           <Text color="#676D9A">{fees.supply}%</Text>
                         </Text>
+                        <Text
+                        display="flex"
+                        justifyContent="space-between"
+                        fontSize="12px"
+                        mb="0.4rem"
+                      >
+                        <Text display="flex" alignItems="center">
+                          <Text
+                            mr="0.2rem"
+                            font-style="normal"
+                            font-weight="400"
+                            font-size="12px"
+                            lineHeight="16px"
+                            color="#676D9A"
+                          >
+                            You will receive:
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label="rTokens are the representation of your share in the pool. These tokens can be used to generate yield by staking or to withdraw your supply."
+                            bg="#02010F"
+                            fontSize={'13px'}
+                            fontWeight={'400'}
+                            borderRadius={'lg'}
+                            padding={'2'}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                            maxW="222px"
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Text>
+                        <Text
+                          font-style="normal"
+                          font-weight="400"
+                          font-size="12px"
+                          color="#676D9A"
+                        >
+                         {numberFormatter(depositAmount *
+                          (protocolNetwork==='Starknet'? protocolStats?.find(
+                            (stat: any) =>
+                              stat.token ==
+                              (currentSelectedSupplyCoin[0] == 'r'
+                                ? currentSelectedSupplyCoin.slice(1)
+                                : currentSelectedSupplyCoin)
+                          )?.exchangeRateUnderlyingToRtoken:exchangeRate))} r{currentSelectedSupplyCoin}
+                        </Text>
+                      </Text>
                         {/* <Text
                           color="#676D9A"
                           display="flex"
@@ -2372,7 +2426,7 @@ const YourSupplyModal = ({
                             _disabled={{ bgColor: 'white', color: 'black' }}
                             isDisabled={transactionStarted == true}
                           >
-                            Supply
+                            Add Supply
                           </AnimatedButton>
                         </Box>
                       ) : (
@@ -2387,7 +2441,7 @@ const YourSupplyModal = ({
                             bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
                           }}
                         >
-                          Supply
+                          Add Supply
                         </Button>
                       )}
                     </TabPanel>
@@ -3855,7 +3909,7 @@ const YourSupplyModal = ({
                             // _disabled={{ bgColor: "white", color: "black" }}
                             // isDisabled={withdrawTransactionStarted == true}
                           >
-                            Withdraw
+                            Withdraw Supply
                           </AnimatedButton>
                         </Box>
                       ) : (
@@ -3871,7 +3925,7 @@ const YourSupplyModal = ({
                             bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
                           }}
                         >
-                          Withdraw
+                          Withdraw Supply
                         </Button>
                       )}
                     </TabPanel>
