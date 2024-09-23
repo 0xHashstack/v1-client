@@ -898,7 +898,7 @@
           "maxLoan": "2000000000000000000000",
           "rToken": "0xE5906C392E142CA09B90eaf3B1aB6B76861A901F",
           "dToken": "0x7455b130dbeabcea387d33fddc39078f2a3abcb990a2cd01b1602c78aaf0a4d",
-          "address": " 0x984536E67FA3A9164472FAD2DD56BD82530ab088",
+          "address": "0x984536E67FA3A9164472FAD2DD56BD82530ab088",
           "CEXSymbol": "USDTDAI",
           "pontis_key": "19212080998863684",
           "mockPrice": 1,

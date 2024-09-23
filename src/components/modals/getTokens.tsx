@@ -290,7 +290,7 @@ const GetTokensModal = ({
         }
         const trans_data = {
           transaction_hash: approve.toString(),
-          message: `Successfully minted TestToken : 10000 ${protocolNetwork!=='Starknet'?'t':''}${coin}`,
+          message: `Successfully minted TestToken : 10,000 ${protocolNetwork!=='Starknet'?'t':''}${coin}`,
           // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: () => {},

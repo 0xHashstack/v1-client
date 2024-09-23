@@ -609,7 +609,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   }
   // }, [transactions]);
 
-  return loading && pathname=="/v1/market" ?
+  return loading  ?
     (
       <>
         <Box background={`

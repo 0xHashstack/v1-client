@@ -6,7 +6,7 @@ import DashboardRight from "../dashboardRight";
 
 import { useAccount } from "@starknet-react/core";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useAccount as useAccountWagmi} from 'wagmi'
 import {
   selectProtocolStats,
   selectOraclePrices,
@@ -20,6 +20,7 @@ import { supplyAsset } from "@/Blockchain/scripts/protocolStats";
 import { contractsEnv } from "@/Blockchain/stark-constants";
 import useBalanceofWagmi from "@/Blockchain/hooks/Reads/usebalanceofWagmi";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { assetBalance } from "@/Blockchain/scripts/Deposits";
 const MarketDashboard = () => {
   // const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
   //   []
@@ -46,6 +47,12 @@ const MarketDashboard = () => {
     USDC:useBalanceofWagmi(tokenAddressMap['rUSDC']),
     DAI:useBalanceofWagmi(tokenAddressMap['rDAI']),
   }
+  const assetValueBase=[
+    "rUSDT",
+    "rUSDC",
+    "rDAI"
+  ]
+  const {address:addressbase}=useAccountWagmi()
   const [userTotalSupply, setuserTotalSupply] = useState<number>(0)
   ////console.log(account,"Market Page")
 
@@ -200,13 +207,34 @@ const MarketDashboard = () => {
   };
   const transactionRefresh = useSelector(selectTransactionRefresh)
 
-  useEffect(()=>{
-    let totalSupply=0;
-    if(withdrawBalances){
-      totalSupply+= Number(withdrawBalances['USDC'].dataBalanceOf?.formatted)+Number(withdrawBalances['USDT'].dataBalanceOf?.formatted)+Number(withdrawBalances['DAI'].dataBalanceOf?.formatted)
-    }
-    setuserTotalSupply(totalSupply)
-  },[withdrawBalances,transactionRefresh])
+  // useEffect(()=>{
+  //   let totalSupply=0;
+  //   if(withdrawBalances){
+  //     totalSupply+= Number(withdrawBalances['USDC'].dataBalanceOf?.formatted)+Number(withdrawBalances['USDT'].dataBalanceOf?.formatted)+Number(withdrawBalances['DAI'].dataBalanceOf?.formatted)
+  //   }
+  //   setuserTotalSupply(totalSupply)
+  // },[withdrawBalances,transactionRefresh])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const promises = assetValueBase.map((asset) => 
+          assetBalance(addressbase as string, asset)
+        );
+        
+        const results = await Promise.all(promises);
+        
+        const totalSupply:any = results.reduce((acc:any, res) => acc + (res || 0), 0);
+        
+        setuserTotalSupply(totalSupply);
+      } catch (error) {
+        console.error("Error fetching asset balances:", error);
+      }
+    };
+    
+    fetchData();
+  }, [transactionRefresh]);
+  
 
   useEffect(()=>{
     const fetchData=async()=>{

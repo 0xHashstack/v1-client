@@ -18,6 +18,8 @@ import { Coins } from '@/utils/constants/coin'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import { tokenAddressMap } from '@/Blockchain/utils/addressServices'
 import useBalanceofWagmi from '@/Blockchain/hooks/Reads/usebalanceofWagmi'
+import { assetBalance } from '@/Blockchain/scripts/Deposits'
+import { useAccount as useAccountWagmi} from 'wagmi'
 
 const columnItems = [
   'rToken amount',
@@ -44,14 +46,33 @@ const YourSupply: NextPage = () => {
   const [userTotalSupply, setuserTotalSupply] = useState<number>(0)
   useDataLoader()
 
-  useEffect(()=>{
-    let totalSupply=0;
-    if(withdrawBalances){
-      totalSupply+= Number(withdrawBalances['USDC'].dataBalanceOf?.formatted)+Number(withdrawBalances['USDT'].dataBalanceOf?.formatted)+Number(withdrawBalances['DAI'].dataBalanceOf?.formatted)
-    }
-    setuserTotalSupply(totalSupply)
-  },[withdrawBalances,transactionRefresh])
+  const assetValueBase=[
+    "rUSDT",
+    "rUSDC",
+    "rDAI"
+  ]
+  const {address:addressbase}=useAccountWagmi()
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const promises = assetValueBase.map((asset) => 
+          assetBalance(addressbase as string, asset)
+        );
+        
+        const results = await Promise.all(promises);
+        
+        const totalSupply:any = results.reduce((acc:any, res) => acc + (res || 0), 0);
+
+        setuserTotalSupply(totalSupply);
+      } catch (error) {
+        console.error("Error fetching asset balances:", error);
+      }
+    };
+    
+    fetchData();
+  }, [transactionRefresh,withdrawBalances['USDT'].dataBalanceOf]);
+  
   return (
     <PageCard pt="6.5rem">
       <HStack
@@ -62,7 +83,7 @@ const YourSupply: NextPage = () => {
         pr="3rem"
         mb="1rem"
       >
-        <NavButtons width={70} marginBottom={'0rem'} />
+        {<NavButtons width={70} marginBottom={'0rem'} />}
 
         <HStack
           width="13.5rem"

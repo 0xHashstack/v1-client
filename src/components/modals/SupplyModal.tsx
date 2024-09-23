@@ -1987,7 +1987,7 @@ const SupplyModal = ({
                       </Box>
                     </Card>
 
-                    <Box
+                    {/* <Box
                       color="#676D9A"
                       display="flex"
                       alignItems="center"
@@ -2020,9 +2020,9 @@ const SupplyModal = ({
                           <InfoIcon />
                         </Box>
                       </Tooltip>
-                    </Box>
+                    </Box> */}
 
-                    <Box
+                    {/* <Box
                       width="100%"
                       color="white"
                       borderRadius="6px"
@@ -2053,7 +2053,7 @@ const SupplyModal = ({
                       <Text color="#676D9A" fontSize="md" opacity="0.8">
                         r{currentSelectedCoin}
                       </Text>
-                    </Box>
+                    </Box> */}
 
                     {protocolNetwork==='Starknet'&&<Box
                       display="flex"
@@ -2094,6 +2094,60 @@ const SupplyModal = ({
                       p="1rem"
                       border=" 1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
                     >
+                                            <Text
+                        display="flex"
+                        justifyContent="space-between"
+                        fontSize="12px"
+                        mb="0.4rem"
+                      >
+                        <Text display="flex" alignItems="center">
+                          <Text
+                            mr="0.2rem"
+                            font-style="normal"
+                            font-weight="400"
+                            font-size="12px"
+                            lineHeight="16px"
+                            color="#676D9A"
+                          >
+                            You will receive:
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right"
+                            boxShadow="dark-lg"
+                            label="rTokens are the representation of your share in the pool. These tokens can be used to generate yield by staking or to withdraw your supply."
+                            bg="#02010F"
+                            fontSize={'13px'}
+                            fontWeight={'400'}
+                            borderRadius={'lg'}
+                            padding={'2'}
+                            color="#F0F0F5"
+                            border="1px solid"
+                            borderColor="#23233D"
+                            arrowShadowColor="#2B2F35"
+                            maxW="222px"
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Text>
+                        <Text
+                          font-style="normal"
+                          font-weight="400"
+                          font-size="12px"
+                          color="#676D9A"
+                        >
+                         {numberFormatter(depositAmount *
+                          (protocolNetwork==='Starknet'? protocolStats?.find(
+                            (stat: any) =>
+                              stat.token ==
+                              (currentSelectedCoin[0] == 'r'
+                                ? currentSelectedCoin.slice(1)
+                                : currentSelectedCoin)
+                          )?.exchangeRateUnderlyingToRtoken:exchangeRate))} r{currentSelectedCoin}
+                        </Text>
+                      </Text>
                       <Text
                         display="flex"
                         justifyContent="space-between"

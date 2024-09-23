@@ -27,6 +27,7 @@ import {
   selectOraclePrices,
   selectProtocolNetworkSelected,
   selectProtocolStats,
+  selectTransactionRefresh,
   selectUserDeposits,
   setNetAprDeposits,
   setUsersFilteredSupply,
@@ -35,7 +36,7 @@ import numberFormatter from "@/utils/functions/numberFormatter";
 import { useAccount } from "@starknet-react/core";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useAccount as useAccountWagmi} from 'wagmi'
 import FireIcon from "@/assets/icons/fireIcon";
 import { selectStrkAprData } from "@/store/slices/userAccountSlice";
 import numberFormatterPercentage from "@/utils/functions/numberFormatterPercentage";
@@ -44,6 +45,7 @@ import TableInfoIcon from "../table/tableIcons/infoIcon";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import useBalanceofWagmi from "@/Blockchain/hooks/Reads/usebalanceofWagmi";
 import { contractsEnv } from "@/Blockchain/stark-constants";
+import { assetBalance } from "@/Blockchain/scripts/Deposits";
 
 export interface ICoin {
   name: string;
@@ -146,6 +148,12 @@ const SupplyDashboard = ({
     icon: "mdi-bitcoin",
     symbol: "WBTC",
   });
+  const assetValueBase=[
+    "USDT",
+    "USDC",
+    "DAI"
+  ]
+  const {address:addressbase}=useAccountWagmi()
   const dispatch = useDispatch();
   const handleStatusHover = (idx: string) => {
     setStatusHoverIndex(idx);
@@ -294,6 +302,7 @@ const SupplyDashboard = ({
   const [protocolStats, setProtocolStats]: any = useState([]);
   const [supplyAPRs, setSupplyAPRs]: any = useState([]);
   const [currentSupplyAPR, setCurrentSupplyAPR] = useState<Number>(2);
+  const transactionRefresh=useSelector(selectTransactionRefresh)
 
   useEffect(() => {
     const getMarketData = async () => {
@@ -340,30 +349,51 @@ const SupplyDashboard = ({
     setSupplyMarkets(temp);
   }, [supplies]);
 
-  useEffect(()=>{
-    if(protocolNetwork!=='Starknet'){
-      var supplyStats:any=[]
-        for(const token in tokenBalances){
-          const dataStats={
-            tokenAddress:tokenAddressMap[token],
-            token:token,
-            rTokenAddress:tokenAddressMap['r'+token],
-            rToken:'r'+token,
-            rTokenFreeParsed:Number(tokenBalances[token]?.dataBalanceOf?.formatted),
-            rTokenLockedParsed:0,
-            rTokenStakedParsed:0,
-            rTokenAmountParsed:Number(tokenBalances[token]?.dataBalanceOf?.formatted),
-            underlyingAssetAmount:Number(tokenBalances[token]?.dataBalanceOf?.value),
-            underlyingAssetAmountParsed:Number(tokenBalances[token]?.dataBalanceOf?.formatted)
+  useEffect(() => {
+    if (protocolNetwork !== 'Starknet') {
+      const fetchStats = async () => {
+        try {
+          // Fetch balances concurrently
+          if(addressbase){
+            const balances = await Promise.all(
+              assetValueBase.map((asset) => assetBalance(addressbase as string, 'r'+asset))
+            );
+            
+            const supplyStats: any[] = [];
+    
+            for (var i=0;i<assetValueBase.length;i++) {
+    
+              const dataStats = {
+                tokenAddress: tokenAddressMap[assetValueBase[i]],
+                token:assetValueBase[i],
+                rTokenAddress: tokenAddressMap['r' + assetValueBase[i]],
+                rToken: 'r' + assetValueBase[i],
+                rTokenFreeParsed: balances[i],
+                rTokenLockedParsed: 0,
+                rTokenStakedParsed: 0,
+                rTokenAmountParsed: balances[i],
+                underlyingAssetAmount: balances[i],
+                underlyingAssetAmountParsed: balances[i],
+                assetBalance: balances[i], // Use the fetched balance
+              };
+              supplyStats.push(dataStats);
+    
+              if (balances.length) {
+              }
+            }
+    
+            setSupplies(supplyStats);
+            setLoading(false);
           }
-          if(Number(tokenBalances[token]?.dataBalanceOf?.formatted)!==0 &&Number(tokenBalances[token]?.dataBalanceOf?.formatted)){
-            supplyStats.push(dataStats)
-          }
+        } catch (error) {
+          console.error("Error fetching supply data:", error);
         }
-          setSupplies(supplyStats)
-          setLoading(false);
+      };
+  
+      fetchStats();
     }
-  },[protocolNetwork,tokenBalances['USDC'].dataBalanceOf,tokenBalances['DAI'].dataBalanceOf,tokenBalances['USDT'].dataBalanceOf])
+  }, [protocolNetwork,transactionRefresh,addressbase]);
+  
 
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
@@ -383,7 +413,7 @@ const SupplyDashboard = ({
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
   useEffect(() => {
-    if (userDeposits) {
+    if (userDeposits ) {
       const supply = userDeposits;
       if (!supply) return;
       let data: any = [];
