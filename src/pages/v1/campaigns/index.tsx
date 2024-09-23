@@ -273,18 +273,49 @@ const Campaign: NextPage = () => {
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 55)
 
-  useEffect(() => {
-    const fetchDetails = async () => {
-      if (address) {
-        const res = await axios.get(
-          `https://hstk.fi/api/temp-allocation/${address}`
-        )
-        setCommunityHash(res?.data?.communityInfo?.estimatedHashTokensCommunity)
-        setCommunityPoints(res?.data?.communityInfo?.totalInteractionPoints)
+  useEffect(()=>{
+    const fetchAllData=async()=>{
+      const [epochDataRes, ccpRegisterRes,ccpSubmissionRes] = await Promise.all([
+        axios.get(`https://hstk.fi/api/get-epoch-wise-data/${address}`),
+        axios.get(`https://metricsapimainnet.hashstack.finance/ccp/register/${address}`),
+        axios.get(`https://hstk.fi/api/ccp/submission/${address}`)
+      ]);
+      setuserSocialsData(ccpRegisterRes?.data?.response)
+      setUserccpData(ccpSubmissionRes?.data)
+      let points = 0
+      let hash = 0
+      if (ccpSubmissionRes?.data) {
+        ccpSubmissionRes?.data.map((data: any) => {
+          points += Number(data['Recommended (Community Team)'])
+            ? Number(data['Recommended (Community Team)'])
+            : 0
+          hash += Number(data['Allocated (Product Team)'])
+            ? Number(data['Allocated (Product Team)'])
+            : 0
+        })
       }
+      setuserPointsCCP(points)
+      setuserHashCCP(hash)
+      const data = epochDataRes?.data
+      let dataepoch = data?.finalSnapData.sort(
+        (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
+      )
+      setepochsData(dataepoch)
+      if (data?.rank) {
+        setuserRank(data?.rank)
+      } else {
+        setuserRank('-')
+      }
+      let snaps = data?.epochWise
+      snaps.sort(
+        (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
+      )
+      setsnapshotData(data?.epochWise)
     }
-    fetchDetails()
-  }, [])
+    if(address){
+      fetchAllData()
+    }
+  },[address,registeredClick])
 
   useEffect(() => {
     if (sampleDate) {
@@ -296,81 +327,81 @@ const Campaign: NextPage = () => {
     }
   }, [])
 
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        if (address) {
-          const res = await axios.get(
-            `https://hstk.fi/api/get-epoch-wise-data/${address}`
-          )
-          const data = res?.data
-          let dataepoch = data?.finalSnapData.sort(
-            (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
-          )
-          setepochsData(dataepoch)
-          if (data?.rank) {
-            setuserRank(data?.rank)
-          } else {
-            setuserRank('-')
-          }
-          let snaps = data?.epochWise
-          snaps.sort(
-            (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
-          )
-          setsnapshotData(data?.epochWise)
-        }
-      }
-      fetchData()
-    } catch (err) {
-      console.log(err)
-    }
-  }, [address])
+  // useEffect(() => {
+  //   try {
+  //     const fetchData = async () => {
+  //       if (address) {
+  //         const res = await axios.get(
+  //           `https://hstk.fi/api/get-epoch-wise-data/${address}`
+  //         )
+  //         const data = res?.data
+  //         let dataepoch = data?.finalSnapData.sort(
+  //           (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
+  //         )
+  //         setepochsData(dataepoch)
+  //         if (data?.rank) {
+  //           setuserRank(data?.rank)
+  //         } else {
+  //           setuserRank('-')
+  //         }
+  //         let snaps = data?.epochWise
+  //         snaps.sort(
+  //           (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
+  //         )
+  //         setsnapshotData(data?.epochWise)
+  //       }
+  //     }
+  //     fetchData()
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }, [address])
 
-  useEffect(() => {
-    try {
-      const fetchRegisterData = async () => {
-        if (address) {
-          const res = await axios.get(
-            `https://metricsapimainnet.hashstack.finance/ccp/register/${address}`
-          )
-          setuserSocialsData(res?.data?.response)
-        }
-      }
-      fetchRegisterData()
-    } catch (err) {
-      console.log(err, 'err in fetching register data')
-    }
-  }, [address, registeredClick])
+  // useEffect(() => {
+  //   try {
+  //     const fetchRegisterData = async () => {
+  //       if (address) {
+  //         const res = await axios.get(
+  //           `https://metricsapimainnet.hashstack.finance/ccp/register/${address}`
+  //         )
+  //         setuserSocialsData(res?.data?.response)
+  //       }
+  //     }
+  //     fetchRegisterData()
+  //   } catch (err) {
+  //     console.log(err, 'err in fetching register data')
+  //   }
+  // }, [address, registeredClick])
 
-  useEffect(() => {
-    try {
-      const fetchUserCCPData = async () => {
-        const res = await axios.get(
-          `https://hstk.fi/api/ccp/submission/${address}`
-        )
-        setUserccpData(res?.data)
-        let points = 0
-        let hash = 0
-        if (res?.data) {
-          res?.data.map((data: any) => {
-            points += Number(data['Recommended (Community Team)'])
-              ? Number(data['Recommended (Community Team)'])
-              : 0
-            hash += Number(data['Allocated (Product Team)'])
-              ? Number(data['Allocated (Product Team)'])
-              : 0
-          })
-        }
-        setuserPointsCCP(points)
-        setuserHashCCP(hash)
-      }
-      if (address) {
-        fetchUserCCPData()
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }, [address])
+  // useEffect(() => {
+  //   try {
+  //     const fetchUserCCPData = async () => {
+  //       const res = await axios.get(
+  //         `https://hstk.fi/api/ccp/submission/${address}`
+  //       )
+  //       setUserccpData(res?.data)
+  //       let points = 0
+  //       let hash = 0
+  //       if (res?.data) {
+  //         res?.data.map((data: any) => {
+  //           points += Number(data['Recommended (Community Team)'])
+  //             ? Number(data['Recommended (Community Team)'])
+  //             : 0
+  //           hash += Number(data['Allocated (Product Team)'])
+  //             ? Number(data['Allocated (Product Team)'])
+  //             : 0
+  //         })
+  //       }
+  //       setuserPointsCCP(points)
+  //       setuserHashCCP(hash)
+  //     }
+  //     if (address) {
+  //       fetchUserCCPData()
+  //     }
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }, [address])
 
   useEffect(() => {
     try {
