@@ -110,7 +110,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   userPointsCCP,
 }) => {
   const [epochDropdownSelected, setepochDropdownSelected] = useState(false)
-  const [defiSpringDropdownSelected, setdefiSpringDropdownSelected] = useState(true)
+  const [defiSpringDropdownSelected, setdefiSpringDropdownSelected] = useState(false)
   const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []])
   const [loading, setLoading] = useState<boolean>(false)
   const [openEpochs, setOpenEpochs] = useState<any>([])
@@ -821,7 +821,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       <Tooltip
                         hasArrow
                         label={
-                          "Next Claim on 23 September"
+                          "Next Claim on 30 September"
                         }
                         placement="right"
                         rounded="md"
