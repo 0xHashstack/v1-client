@@ -1279,9 +1279,10 @@ const useDataLoader = () => {
       }
       const fetchSpends = async () => {
         const dataSpends = await getSpendBalance()
+        console.log(dataSpends,"spends")
         if (
           !dataSpends ||
-          (Array.isArray(dataSpends) && dataSpends?.length < 6)
+          (Array.isArray(dataSpends) && dataSpends?.length < 5)
         ) {
           return
         }
@@ -1671,6 +1672,8 @@ const useDataLoader = () => {
         })
         dispatch(setMySplit(temp))
       })
+
+
     }
 
     if (userLoans) getSplit()

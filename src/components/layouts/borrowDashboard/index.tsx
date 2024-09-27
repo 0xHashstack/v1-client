@@ -102,6 +102,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
   const [showEmptyNotification, setShowEmptyNotification] = useState(true)
   const avgs = useSelector(selectEffectiveApr)
   const allSplit = useSelector(selectMySplit)
+  console.log(allSplit,"split")
   const [loading, setLoading] = useState(true)
   const [coinPassed, setCoinPassed] = useState({
     name: 'BTC',

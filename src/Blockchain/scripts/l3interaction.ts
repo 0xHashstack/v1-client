@@ -168,6 +168,7 @@ export async function getJediEstimatedLiqALiqBfromLp(
 
       new MyBigNumber(liquidity,tokenDecimalsMap[loanMarket]), new Address(pairAddress)
     )
+    console.log(res,"split value",loanId)
   //  console.log("split after calling");
   //  console.log("split res", loanId, res);
 

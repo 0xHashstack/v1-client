@@ -21,6 +21,7 @@ import StrkIcon from "@/assets/icons/strkIcon";
 import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
 import {
+  selectSpendBalances,
   selectStrkAprData,
   selectnetSpendBalance,
 } from "@/store/slices/userAccountSlice";
@@ -103,6 +104,7 @@ const DashboardRight: React.FC<DashboardRightProps> = ({
     }
     return null;
   });
+  const spendBalances = useSelector(selectSpendBalances)
 
   const getBoostedApr = (coin: any) => {
     if (strkData == null) {
@@ -134,6 +136,7 @@ const DashboardRight: React.FC<DashboardRightProps> = ({
       }
     }
   };
+  console.log(netStrkBorrow,netSpendBalance,spendBalances,"balance")
 
   useEffect(() => {
     if (strkData != null) {
