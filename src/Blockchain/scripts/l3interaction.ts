@@ -378,15 +378,15 @@ export async function getMyswapLiquidityCallData(Loan:any,toMarketLiqA:NativeTok
     }
     if(typeCall==='normal'){
       const dataprocessedLoan=await spendcalls.getLoanRecord(Loan?.loanId)
-      const res=await spendcalls. getMySwapLiquidityCalldata(dataprocessedLoan,new Address(tokenAddressMap[toMarketLiqA]),new Address(tokenAddressMap[toMarketLiqB]))
+      const res=await spendcalls.getMySwapLiquidityCalldata(dataprocessedLoan,new Address(tokenAddressMap[toMarketLiqA]),new Address(tokenAddressMap[toMarketLiqB]))
       return res;
     }else{
-      const res=await spendcalls. getMySwapLiquidityCalldata(dataprocessedBorrowandSpend,new Address(tokenAddressMap[toMarketLiqA]),new Address(tokenAddressMap[toMarketLiqB]))
+      const res=await spendcalls.getMySwapLiquidityCalldata(dataprocessedBorrowandSpend,new Address(tokenAddressMap[toMarketLiqA]),new Address(tokenAddressMap[toMarketLiqB]))
       return res;
     }
    
   } catch (error) {
-    // console.log(error,'err in stats')
+    console.log(error,'err in liquidity callData')
   }
 }
 

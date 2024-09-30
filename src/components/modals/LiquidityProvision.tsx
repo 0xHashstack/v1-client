@@ -757,7 +757,7 @@ const LiquidityProvisionModal = ({
     // );
     setCurrentSplit(null);
     fetchLiquiditySplit();
-  }, [toMarketA, currentLoanAmount, currentLoanMarket, toMarketB]);
+  }, [toMarketA, currentLoanAmount, toMarketB]);
 
   useEffect(() => {
     setCurrentLPTokenAmount(null);
@@ -789,6 +789,7 @@ const LiquidityProvisionModal = ({
         // "ETH",
         // "USDT"
       );
+      console.log(split,'myswap esti')
       setCurrentSplit(split);
     }
   };

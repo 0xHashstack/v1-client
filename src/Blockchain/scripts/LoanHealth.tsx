@@ -7,7 +7,7 @@ import {
 // import routerAbi from "@/Blockchain/abis_upgrade/router_abi.json";
 import routerAbi from "@/Blockchain/abis_mainnet/router_abi.json";
 import { BNtoNum, parseAmount } from "../utils/utils";
-import { IMarketInfo, NativeToken, RToken } from "../interfaces/interfaces";
+import { IMarketInfo, L3App, NativeToken, RToken } from "../interfaces/interfaces";
 import { OraclePrice } from "./getOraclePrices";
 import { tokenAddressMap } from "../utils/addressServices";
 
@@ -17,13 +17,21 @@ import { tokenAddressMap } from "../utils/addressServices";
 // so the formula becomes:
 // Health Factor = (Total Collateral Value in USD + Total Borrow Value in USD ) / Total Borrow Value in USD
 
-export async function getExistingLoanHealth(loanId: string) {
+export async function getExistingLoanHealth(loanId: string,dapp:string,poolId:Number,spendType:string) {
   const provider = getProvider();
   try {
     const routerContract = new Contract(routerAbi, diamondAddress, provider);
-    const res:any = await routerContract.call("get_health_factor", [loanId,[]], {
-      blockIdentifier: "pending",
-    });
+    if(dapp==='MY_SWAP' && spendType==="LIQUIDITY"){
+      const res:any = await routerContract.call("get_health_factor", [loanId,[poolId]], {
+        blockIdentifier: "pending",
+      });
+      return BNtoNum(res, 5);
+    }else{
+      const res:any = await routerContract.call("get_health_factor", [loanId,[]], {
+        blockIdentifier: "pending",
+      });
+      return BNtoNum(res, 5);
+    }
     ////console.log(
     //   "health factor for loanId",
     //   loanId,
@@ -31,7 +39,6 @@ export async function getExistingLoanHealth(loanId: string) {
     //   parseAmount(res?.factor, 5)
     // );
     ////console.log(BNtoNum())
-    return BNtoNum(res, 5);
   } catch (error) {
    console.log("health factor error: ", error);
   }

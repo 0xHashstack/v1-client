@@ -426,46 +426,55 @@ const useDataLoader = () => {
       address:
         '0x1ea237607b7d9d2e9997aa373795929807552503683e35d8739f4dc46652de1',
       keyvalue: 'USDC/USDT',
+      poolId:5
     },
     {
       address:
         '0x41f9a1e9a4d924273f5a5c0c138d52d66d2e6a8bee17412c6b0f48fe059ae04',
       keyvalue: 'ETH/USDT',
+      poolId:4
     },
     {
       address:
         '0x22b05f9396d2c48183f6deaf138a57522bcc8b35b67dee919f76403d1783136',
       keyvalue: 'ETH/USDC',
+      poolId:1
     },
     {
       address:
         '0x7c662b10f409d7a0a69c8da79b397fd91187ca5f6230ed30effef2dceddc5b3',
       keyvalue: 'DAI/ETH',
+      poolId:2
     },
     {
       address:
         '0x393d6cbf933e7ecc819a74cf865fce148b237004954e49c118773cdd0e84ab9',
       keyvalue: 'BTC/USDT',
+      poolId:3
     },
     {
       address:
         '0x25b392609604c75d62dde3d6ae98e124a31b49123b8366d7ce0066ccb94f6967',
       keyvalue: 'BTC/USDC',
+      poolId:9
     },
     {
       address:
         '0x51c32e614dd57eaaeed77c3342dd0da177d7200b6adfd8497647f7a5a71a717',
       keyvalue: 'BTC/DAI',
+      poolId:7
     },
     {
       address:
         '0x79ac8e9b3ce75f3294d3be2b361ca7ffa481fe56b0dd36500e43f5ce3f47077',
       keyvalue: 'USDT/DAI',
+      poolId:0
     },
     {
       address:
         '0x611e8f4f3badf1737b9e8f0ca77dd2f6b46a1d33ce4eed951c6b18ac497d505',
       keyvalue: 'USDC/DAI',
+      poolId:6
     },
   ]
   const dispatch = useDispatch()
@@ -1814,7 +1823,7 @@ const useDataLoader = () => {
     try {
       const fetchHealthFactor = async () => {
         const promises = userLoans?.map((val: any) => {
-          return getExistingLoanHealth(val?.loanId)
+          return getExistingLoanHealth(val?.loanId,val?.l3App,mySwapPoolPairsMainnet.find(pair => pair.address === val?.currentLoanMarketAddress)?.poolId as number,val?.spendType)
         })
         Promise.all([...promises]).then((val: any) => {
           const avgs = val.map((loneHealth: any, idx: number) => {
