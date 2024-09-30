@@ -307,14 +307,14 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                             height="16"
                           />
                         )}
-                        {coin?.name == 'STRK' && (
+                        {/* {coin?.name == 'STRK' && (
                           <Image
                             src={`/new.svg`}
                             alt={`Picture of the coin that I want to access ${coin?.name}`}
                             width="36"
                             height="16"
                           />
-                        )}
+                        )} */}
                       </Box>
                       {!assetBalance[coin?.name]?.dataBalanceOf ? (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
