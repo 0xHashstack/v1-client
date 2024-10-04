@@ -1583,7 +1583,7 @@ const YourSupplyModal = ({
                           {depositAmount *
                             protocolStats?.find(
                               (stat: any) =>
-                                stat.token ==
+                                stat?.token ==
                                 (currentSelectedSupplyCoin[0] == 'r'
                                   ? currentSelectedSupplyCoin.slice(1)
                                   : currentSelectedSupplyCoin)
