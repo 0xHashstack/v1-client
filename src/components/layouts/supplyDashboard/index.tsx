@@ -214,7 +214,6 @@ const SupplyDashboard = ({
         ////console.log(reduxProtocolStats,"supply stats")
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
-            if (supply[i].token != "USDC") {
               const avg = await effectiveAprDeposit(
                 supply[i],
                 reduxProtocolStats
@@ -227,24 +226,7 @@ const SupplyDashboard = ({
               // avgs.push(data)
               avgsData.push(data);
               // avgs.push()
-            } else {
-              if (supply[i].rTokenAmountParsed <= 0.000005) {
-                continue;
-              } else {
-                const avg = await effectiveAprDeposit(
-                  supply[i],
-                  reduxProtocolStats
-                );
-                ////console.log(avg, "avg in supply dash");
-                const data = {
-                  token: supply[i].token,
-                  avg: avg?.toFixed(2),
-                };
-                // avgs.push(data)
-                avgsData.push(data);
-              }
-            }
-          }
+            } 
           setAvgs(avgsData);
         }
         ////console.log(avgs, "avgs in supply");
