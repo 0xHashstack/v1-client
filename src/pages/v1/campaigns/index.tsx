@@ -218,7 +218,7 @@ const Campaign: NextPage = () => {
   const [leaderboardData, setLeaderboardData] = useState([])
   const [communityHash, setCommunityHash] = useState()
   const [communityPoints, setCommunityPoints] = useState()
-  const [personalData, setPersonalData] = useState([])
+  const [personalData, setPersonalData] = useState([{}])
   const [epoch, setEpoch] = useState(1)
   const [snapshotNumber, setSnapshotNumber] = useState(0)
   const [tabValue, setTabValue] = useState(1)
@@ -476,7 +476,7 @@ const Campaign: NextPage = () => {
         setPersonalData(arr)
       }
     }
-    fetchDetails()
+    // fetchDetails()
   }, [address])
 
   useEffect(() => {
@@ -485,7 +485,7 @@ const Campaign: NextPage = () => {
         const res = await axios.get('https://hstk.fi/api/leaderboard')
         setLeaderboardData(res?.data)
       }
-      fetchLeaderBoardData()
+      // fetchLeaderBoardData()
     } catch (err) {
       console.log(err)
     }
@@ -648,6 +648,7 @@ const Campaign: NextPage = () => {
               color={tabValue == 2 ? '#fff' : '#676D9A'}
               borderBottom={tabValue == 2 ? '2px solid #4D59E8' : ''}
               borderRadius="0px"
+              isDisabled={true}
               _hover={{ bg: 'transparent', color: '#E6EDF3' }}
               onClick={() => {
                 setTabValue(2)
