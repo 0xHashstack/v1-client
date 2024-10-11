@@ -1083,7 +1083,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {numberFormatter(member.est + member.hashAllocated)} HASH
+                          {numberFormatter((member.est + member.hashAllocated)?member.est + member.hashAllocated:0)} HASH
                         </Text>
                       </Tooltip>
                     </Text>
