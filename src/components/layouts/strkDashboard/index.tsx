@@ -223,6 +223,73 @@ const StrkDashboard = () => {
     }
   }, [address])
 
+  const handleClaimStrk = async () => {
+    try {
+      const getTokens = await writeAsyncstrkClaim()
+      posthog.capture('Claim Strk', {
+        'Clicked Claim': true,
+      })
+      if (getTokens?.transaction_hash) {
+        const toastid = toast.info(
+          // `Please wait, your transaction is running in background ${coin} `,
+          `Transaction pending`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        )
+        setToastId(toastId)
+        if (!activeTransactions) {
+          activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
+        }
+        const uqID = getUniqueId()
+        const trans_data = {
+          transaction_hash: getTokens?.transaction_hash.toString(),
+          message: `Successfully Claimed STRKToken`,
+          // message: `Transaction successful`,
+          toastId: toastid,
+          setCurrentTransactionStatus: () => {},
+          uniqueID: uqID,
+        }
+        // addTransaction({ hash: deposit?.transaction_hash });
+        posthog.capture('Get Tokens Status', {
+          Status: 'Success',
+        })
+        activeTransactions?.push(trans_data)
+
+        dispatch(setActiveTransactions(activeTransactions))
+      }
+      // console.log(getTokens)
+      // dispatch(setTransactionStatus("success"));
+    } catch (err: any) {
+      console.log(err)
+      // dispatch(setTransactionStatus("failed"));
+      posthog.capture('Get Claim Status', {
+        Status: 'Failure',
+      })
+      // dispatch(setTransactionStartedAndModalClosed(true));
+      const toastContent = (
+        <div>
+          Failed to Claim $STRK
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      )
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      })
+    }
+  }
+
+
   // useEffect(()=>{
   //   try{
   //     const fetchEstimatedClaim=async()=>{
@@ -489,7 +556,7 @@ const StrkDashboard = () => {
             Participate in a
           </Text>
           <Text fontSize="26px" color="#7956EC" fontWeight="600" ml="0.5rem">
-            40M $STRK
+            90M $STRK
           </Text>
           <Text fontSize="26px" color="white" fontWeight="600" ml="0.5rem">
             Incentive Program!
@@ -605,7 +672,7 @@ const StrkDashboard = () => {
               color: '#2B2F35',
               bgColor: '#101216',
               border: '1px solid #2B2F35',
-              _hover: { bgColor: '#101216', color: 'black' },
+              _hover: { bgColor: '#101216', color: '#2B2F35' },
             }}
             _hover={{
               bgColor: 'white',
@@ -613,15 +680,15 @@ const StrkDashboard = () => {
             }}
             fontWeight="semibold"
             borderRadius={'6px'}
+            isDisabled={strkRewards===0}
             onClick={() => {
-              router.push('/v1/campaigns')
-              // if (strkRewards == 0) {
-              // } else {
-              //   handleClaimStrk()
-              // }
+              if (strkRewards == 0) {
+              } else {
+                handleClaimStrk()
+              }
             }}
           >
-            Go to Claim
+            Claim
           </Button>
         </Box>
       </Box>
