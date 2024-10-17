@@ -39,12 +39,16 @@ import {
   selectYourBorrow,
   selectYourSupply,
   selectZklendSpends,
+  setAirdropLeaderBoardData,
   setAllBTCData,
   setAllDAIData,
   setAllETHData,
   setAllUSDCData,
   setAllUSDTData,
   setAprAndHealthFactor,
+  setCCPLeaderBoardData,
+  setCCPRegisterUserDetails,
+  setCCPSubmissionUserDetails,
   setDailyBTCData,
   setDailyDAIData,
   setDailyETHData,
@@ -52,6 +56,7 @@ import {
   setDailyUSDCData,
   setDailyUSDTData,
   setEffectiveAPR,
+  setEpochDatauserDetails,
   setExisitingLink,
   setFees,
   setHealthFactor,
@@ -2491,6 +2496,50 @@ const useDataLoader = () => {
         fetch();
     }
 }, [userLoans]);
+
+useEffect(()=>{
+  const fetchDataForCampaigns=async()=>{
+    const [
+      epochDataRes,
+      ccpRegisterRes,
+      ccpSubmissionRes
+    ] = await Promise.all([
+      axios.get(`https://hstk.fi/api/get-epoch-wise-data/${address}`).catch(err => null),
+      axios.get(`https://metricsapimainnet.hashstack.finance/ccp/register/${address}`).catch(err => null),
+      axios.get(`https://hstk.fi/api/ccp/submission/${address}`).catch(err => null)
+    ]);
+    if(epochDataRes){
+      dispatch(setEpochDatauserDetails(epochDataRes))
+    }else{
+      dispatch(setEpochDatauserDetails([]))
+    }
+    if(ccpRegisterRes){
+      dispatch(setCCPRegisterUserDetails(ccpRegisterRes))
+    }
+    if(ccpSubmissionRes){
+      dispatch(setCCPSubmissionUserDetails(ccpSubmissionRes))
+    }
+  }
+  if(address){
+    fetchDataForCampaigns()
+  }
+},[transactionRefresh,address])
+
+useEffect(()=>{
+  const fetchLeaderboardData=async()=>{
+    const [ccpLeaderBoardData,AirdorpLeaderBoardData]=await Promise.all([
+      axios.get('https://hstk.fi/api/ccp/submissions').catch(err => null),
+      axios.get('https://hstk.fi/api/leaderboard').catch(err => null),
+    ])
+    if(ccpLeaderBoardData){
+      dispatch(setCCPLeaderBoardData(ccpLeaderBoardData))
+    }
+    if(AirdorpLeaderBoardData){
+      dispatch(setAirdropLeaderBoardData(AirdorpLeaderBoardData))
+    }
+  }
+  fetchLeaderboardData()
+},[transactionRefresh])
 
 }
 

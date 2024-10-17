@@ -52,7 +52,7 @@ import { toast } from 'react-toastify'
 import { processAddress } from '@/Blockchain/stark-constants'
 const snapshotsDates = [
   '30 Nov 2023',
-  '2 Nov 2023',
+  '2 Dec 2023',
   '4 Dec 2023',
   '6 Dec 2023',
   '8 Dec 2023',
@@ -115,7 +115,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   const [epochDropdownSelected, setepochDropdownSelected] = useState(false)
   const [defiSpringDropdownSelected, setdefiSpringDropdownSelected] = useState(false)
   const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []])
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const [openEpochs, setOpenEpochs] = useState<any>([])
   const [ccpDropdownSelected, setccpDropdownSelected] = useState(false)
   const [hoverEpochDrop, sethoverEpochDrop] = useState(false)
@@ -311,6 +311,12 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
     }
   },[address])
 
+  useEffect(()=>{
+    if(leaderBoardData.length>0){
+      setLoading(false)
+    }
+  },[leaderBoardData])
+
   // Function to toggle the open state of an epoch
   const toggleEpochSelection = (idxEpoch: any) => {
     setOpenEpochs((prevOpenEpochs: any[]) => {
@@ -353,9 +359,9 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      width="95%"
-      height={'37rem'}
-      bgColor="#101216"
+      width="100%"
+      height={'36rem'}
+      background="transparent"
       borderRadius="8px"
     >
       <Spinner

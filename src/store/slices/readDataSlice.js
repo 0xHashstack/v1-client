@@ -69,6 +69,11 @@ const initialState = {
   zklendSpends: [],
   jediSwapPoolAprs: [],
   connectedSocialsClicked: false,
+  epochDataUserDetails:null,
+  ccpRegisterUserData:null,
+  ccpSubmissionUserData:null,
+  ccpLeaderBoardData:null,
+  airdropLeaderBoardData:null,
   stakingShares: {
     rBTC: null,
     rETH: null,
@@ -327,6 +332,21 @@ export const readDataSlice = createSlice({
     setConnectedSocialsClicked(state, action) {
       state.connectedSocialsClicked = action.payload
     },
+    setEpochDatauserDetails(state,action){
+      state.epochDataUserDetails=action.payload
+    },
+    setCCPRegisterUserDetails(state,action){
+      state.ccpRegisterUserData=action.payload
+    },
+    setCCPSubmissionUserDetails(state,action){
+      state.ccpSubmissionUserData=action.payload
+    },
+    setCCPLeaderBoardData(state,action){
+      state.ccpLeaderBoardData=action.payload
+    },
+    setAirdropLeaderBoardData(state,action){
+      state.airdropLeaderBoardData=action.payload
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -408,6 +428,11 @@ export const {
   setJediSwapPoolAprs,
   setZklendSpends,
   setConnectedSocialsClicked,
+  setEpochDatauserDetails,
+  setCCPRegisterUserDetails,
+  setCCPSubmissionUserDetails,
+  setCCPLeaderBoardData,
+  setAirdropLeaderBoardData
 } = readDataSlice.actions
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits
@@ -493,4 +518,14 @@ export const selectJediswapPoolAprs = (state) =>
 export const selectZklendSpends = (state) => state.read_data.zklendSpends
 export const selectConnectedSocialsClicked = (state) =>
   state.read_data.connectedSocialsClicked
+export const selectEpochDataUserDetails = (state) =>
+  state.read_data.epochDataUserDetails
+export const selectCCPUserRegisterDetails = (state) =>
+  state.read_data.ccpRegisterUserData
+export const selectCCPUserSubmissionDetails= (state) =>
+  state.read_data.ccpSubmissionUserData
+export const selectCCPLeaderBoardData= (state) =>
+  state.read_data.ccpLeaderBoardData
+export const selectAirdropLeaderBoardData= (state) =>
+  state.read_data.airdropLeaderBoardData
 export default readDataSlice.reducer
