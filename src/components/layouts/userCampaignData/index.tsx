@@ -123,7 +123,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   const [hoverDefiDrop, sethoverDefiDrop] = useState(false)
   const [defiSpringRoundCount, setDefiSpringRoundCount] = useState(new Array(21).fill(0));
   let topLength = ccpUserData.length * 5.15
-  const [strkRewards, setstrkRewards] = useState<any>()
+  const [strkRewards, setstrkRewards] = useState<any>(0)
   const [totalStrkRewards, settotalStrkRewards] = useState<any>()
   const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>()
   const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>()
@@ -810,7 +810,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                       >
-                        <Text>{numberFormatter(totalStrkRewards)} STRK</Text>
+                        <Text>{numberFormatter(totalStrkRewards ? totalStrkRewards:0)} STRK</Text>
                       </Tooltip>
                     </Text>
                   </Td>
