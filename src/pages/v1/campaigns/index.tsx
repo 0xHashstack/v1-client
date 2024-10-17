@@ -34,7 +34,12 @@ import {
   setAirdropDropdown,
 } from '@/store/slices/dropdownsSlice'
 import {
+  selectAirdropLeaderBoardData,
+  selectCCPLeaderBoardData,
+  selectCCPUserRegisterDetails,
+  selectCCPUserSubmissionDetails,
   selectConnectedSocialsClicked,
+  selectEpochDataUserDetails,
   selectExistingLink,
   selectYourBorrow,
   selectYourSupply,
@@ -261,6 +266,11 @@ const Campaign: NextPage = () => {
   const exisitingLink = useSelector(selectExistingLink)
   const airdropDropdowns = useSelector(selectAirdropDropdowns)
   const registeredClick = useSelector(selectConnectedSocialsClicked)
+  const epochDataUser=useSelector(selectEpochDataUserDetails)
+  const ccpUserRegisterDetails=useSelector(selectCCPUserRegisterDetails)
+  const ccpUserSubmissionDetails=useSelector(selectCCPUserSubmissionDetails)
+  const ccpLeaderData=useSelector(selectCCPLeaderBoardData)
+  const airDropLeaderBoardData=useSelector(selectAirdropLeaderBoardData)
 
   const dispatch = useDispatch()
   
@@ -275,11 +285,10 @@ const Campaign: NextPage = () => {
 
   useEffect(()=>{
     const fetchAllData=async()=>{
-      const [epochDataRes, ccpRegisterRes,ccpSubmissionRes] = await Promise.all([
-        axios.get(`https://hstk.fi/api/get-epoch-wise-data/${address}`),
-        axios.get(`https://metricsapimainnet.hashstack.finance/ccp/register/${address}`),
-        axios.get(`https://hstk.fi/api/ccp/submission/${address}`)
-      ]);
+      const epochDataRes=epochDataUser
+      const ccpRegisterRes=ccpUserRegisterDetails
+      const ccpSubmissionRes=ccpUserSubmissionDetails
+      if(epochDataRes && ccpRegisterRes && ccpSubmissionRes){
       setuserSocialsData(ccpRegisterRes?.data?.response)
       setUserccpData(ccpSubmissionRes?.data)
       let points = 0
@@ -296,26 +305,29 @@ const Campaign: NextPage = () => {
       }
       setuserPointsCCP(points)
       setuserHashCCP(hash)
-      const data = epochDataRes?.data
-      let dataepoch = data?.finalSnapData.sort(
-        (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
-      )
-      setepochsData(dataepoch)
-      if (data?.rank) {
-        setuserRank(data?.rank)
-      } else {
-        setuserRank('-')
+      let data= epochDataRes?.data
+      if(data){
+        let dataepoch :any= [...data?.finalSnapData].sort(
+          (a, b) => a.epoch - b.epoch
+        );
+        setepochsData(dataepoch)
+        if (data?.rank) {
+          setuserRank(data?.rank)
+        } else {
+          setuserRank('-')
+        }
+        let snaps = data?.epochWise
+        // snaps.sort(
+        //   (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
+        // )
+        setsnapshotData(data?.epochWise)
       }
-      let snaps = data?.epochWise
-      snaps.sort(
-        (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
-      )
-      setsnapshotData(data?.epochWise)
+    }
     }
     if(address){
       fetchAllData()
     }
-  },[address,registeredClick])
+  },[address,registeredClick,epochDataUser,ccpUserRegisterDetails,ccpUserSubmissionDetails])
 
   useEffect(() => {
     if (sampleDate) {
@@ -406,7 +418,7 @@ const Campaign: NextPage = () => {
   useEffect(() => {
     try {
       const fetchLeaderBoardDataCCP = async () => {
-        const res = await axios.get('https://hstk.fi/api/ccp/submissions')
+        const res = ccpLeaderData
         let totalPoints = 0
         if (res?.data) {
           res?.data.map((data: any) => {
@@ -423,11 +435,13 @@ const Campaign: NextPage = () => {
         settotalPointsCCP(totalPoints)
         setccpLeaderBoardData(res?.data)
       }
-      fetchLeaderBoardDataCCP()
+      if(ccpLeaderData){
+        fetchLeaderBoardDataCCP()
+      }
     } catch (err) {
       console.log(err)
     }
-  }, [address])
+  }, [address,ccpLeaderData])
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -482,14 +496,16 @@ const Campaign: NextPage = () => {
   useEffect(() => {
     try {
       const fetchLeaderBoardData = async () => {
-        const res = await axios.get('https://hstk.fi/api/leaderboard')
+        const res = airDropLeaderBoardData
         setLeaderboardData(res?.data)
       }
-      fetchLeaderBoardData()
+      if(airDropLeaderBoardData){
+        fetchLeaderBoardData()
+      }
     } catch (err) {
       console.log(err)
     }
-  }, [])
+  }, [airDropLeaderBoardData])
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside)
