@@ -82,7 +82,6 @@ import {
 } from "@chakra-ui/react";
 import { useWaitForTransaction } from "@starknet-react/core";
 import axios from "axios";
-import mixpanel from "mixpanel-browser";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import posthog from "posthog-js";

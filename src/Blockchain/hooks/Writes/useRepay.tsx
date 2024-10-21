@@ -14,7 +14,6 @@ import {
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
 import { ILoan, Token } from "@/Blockchain/interfaces/interfaces";
-import mixpanel from "mixpanel-browser";
 import {
   selectActiveTransactions,
   setActiveTransactions,

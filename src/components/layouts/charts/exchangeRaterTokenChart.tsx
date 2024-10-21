@@ -45,7 +45,6 @@ import { setCoinSelectedExchangeRateRToken } from "@/store/slices/userAccountSli
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { Box, Button, Text } from "@chakra-ui/react";
 import { ApexOptions } from "apexcharts";
-import mixpanel from "mixpanel-browser";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

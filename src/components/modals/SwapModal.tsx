@@ -60,7 +60,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useWaitForTransaction } from "@starknet-react/core";
-import mixpanel from "mixpanel-browser";
 import Image from "next/image";
 import posthog from "posthog-js";
 import React, { useEffect, useState } from "react";

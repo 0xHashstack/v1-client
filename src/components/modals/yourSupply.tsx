@@ -96,7 +96,6 @@ import {
 } from '@/store/slices/userAccountSlice'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import { useWaitForTransaction } from '@starknet-react/core'
-import mixpanel from 'mixpanel-browser'
 import posthog from 'posthog-js'
 import { useEffect, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'

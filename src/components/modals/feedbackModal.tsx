@@ -67,7 +67,6 @@ import { useAccount, useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import Image from "next/image";
-import mixpanel from "mixpanel-browser";
 import BtcToDai from "@/assets/icons/pools/btcToDai";
 import ReactStars from "react-stars";
 import axios from "axios";

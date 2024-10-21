@@ -38,6 +38,7 @@ import InfoIcon from "@/assets/icons/infoIcon";
 import axios from "axios";
 import Link from "next/link";
 import posthog from "posthog-js";
+import RedinfoIcon from "@/assets/icons/redinfoicon";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -593,7 +594,44 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               className={classes.join(" ")}
               {...rest}
             >
-              {children}
+                                    <Box
+                        // display="flex"
+                        bg={
+                            '#480C104D'
+                        }
+                        color="#B1B0B5"
+                        fontSize="14px"
+                        p="4"
+                        border={
+                            '1px solid #9B1A23'
+                        }
+                        fontStyle="normal"
+                        fontWeight="400"
+                        // lineHeight="18px"
+                        borderRadius="6px"
+                        // textAlign="center"
+                      >
+                        <Box display="flex">
+                          <Box pr="3" mt="0.5" cursor="pointer">
+                              <RedinfoIcon />
+                          </Box>
+                          <Text>
+                            This page is under maintenance from 6:30am to 10:00am (UTC). Our team is actively working on resolving this issue.
+                          </Text>
+                        </Box>
+                        <Text ml="1.8rem" mt="0.4rem">
+                          Thank you for your patience.
+                        </Text>
+                        {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                      </Box>
+              {/* {children} */}
             </Stack>
             {/* <Box
             bgColor="red"
