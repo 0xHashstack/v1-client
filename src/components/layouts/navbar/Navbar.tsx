@@ -362,7 +362,7 @@ const Navbar = ({ validRTokens }: any) => {
           >
             <StakeUnstakeModal
               coin={Coins}
-              isCorrectNetwork={false}
+              isCorrectNetwork={Render}
               nav={true}
               stakeHover={stakeHover}
               setStakeHover={setStakeHover}
