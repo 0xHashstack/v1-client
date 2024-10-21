@@ -43,7 +43,6 @@ import USDTLogo from "@/assets/icons/coins/usdt";
 // import USDTLogo from "../table/tableIcons/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
-import mixpanel from "mixpanel-browser";
 import ArrowUp from "@/assets/icons/arrowup";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import { setCoinSelectedSupplyModal } from "@/store/slices/userAccountSlice";

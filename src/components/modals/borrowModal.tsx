@@ -106,7 +106,6 @@ import {
 import dollarConvertor from '@/utils/functions/dollarConvertor'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import { useWaitForTransaction } from '@starknet-react/core'
-import mixpanel from 'mixpanel-browser'
 import posthog from 'posthog-js'
 import { memo, useEffect, useRef, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'

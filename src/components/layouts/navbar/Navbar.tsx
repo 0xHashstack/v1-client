@@ -33,7 +33,6 @@ import {
 import { languages } from '@/utils/constants/languages'
 import { Box, HStack, Skeleton, Text, useOutsideClick } from '@chakra-ui/react'
 import { useAccount, useConnect, useDisconnect } from '@starknet-react/core'
-import mixpanel from 'mixpanel-browser'
 import { useRouter } from 'next/router'
 import posthog from 'posthog-js'
 import { useDispatch, useSelector } from 'react-redux'
@@ -363,7 +362,7 @@ const Navbar = ({ validRTokens }: any) => {
           >
             <StakeUnstakeModal
               coin={Coins}
-              isCorrectNetwork={Render}
+              isCorrectNetwork={false}
               nav={true}
               stakeHover={stakeHover}
               setStakeHover={setStakeHover}

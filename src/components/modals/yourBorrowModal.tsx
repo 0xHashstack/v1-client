@@ -119,7 +119,6 @@ import numberFormatterPercentage from '@/utils/functions/numberFormatterPercenta
 import { useAccount, useWaitForTransaction } from '@starknet-react/core'
 import axios from 'axios'
 import { getAddress } from 'ethers/lib/utils'
-import mixpanel from 'mixpanel-browser'
 import Image from 'next/image'
 import posthog from 'posthog-js'
 import CopyToClipboard from 'react-copy-to-clipboard'
@@ -592,7 +591,7 @@ const YourBorrowModal = ({
   const [walletBalance2, setwalletBalance2] = useState(
     walletBalances[collateralAsset]?.statusBalanceOf === 'success'
       ? parseAmount(
-          String(
+        String(
             uint256.uint256ToBN(
               walletBalances[collateralAsset]?.dataBalanceOf?.balance
             )

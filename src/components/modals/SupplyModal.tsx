@@ -117,7 +117,6 @@ import {
 } from '@/store/slices/readDataSlice'
 import numberFormatter from '@/utils/functions/numberFormatter'
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
-import mixpanel from 'mixpanel-browser'
 import posthog from 'posthog-js'
 import TransactionFees from '../../../TransactionFees.json'
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";

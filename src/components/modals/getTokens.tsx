@@ -63,7 +63,6 @@ import {
 } from "@/store/slices/userAccountSlice";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
-import mixpanel from "mixpanel-browser";
 import posthog from "posthog-js";
 const GetTokensModal = ({
   buttonText,
