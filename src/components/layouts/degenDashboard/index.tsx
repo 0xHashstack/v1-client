@@ -1450,7 +1450,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   display="flex"
                                   justifyContent="space-between"
                                   gap={10}
-                                  mb={borrow?.dappName === 'ZKlend' ? '2' : '0'}
+                                  mb="2"
                                 >
                                   <Text>$STRK APR ({borrow?.leverage ===5 ?4.98:borrow?.leverage}x):</Text>
                                   <Text>
@@ -1462,12 +1462,11 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                   </Text>
                                 </Box>
 
-                                {borrow?.dappName === 'Jediswap' && (
+                                {/* {borrow?.dappName === 'Jediswap' && (
                                   <Box
                                     display="flex"
                                     justifyContent="space-between"
                                     gap={10}
-                                    mb="2"
                                   >
                                     <Text>
                                       Jedi STRK APR ({borrow?.leverage ===5 ?4.98:borrow?.leverage}x):
@@ -1493,7 +1492,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                       %
                                     </Text>
                                   </Box>
-                                )}
+                                )} */}
                                 <hr />
                                 <Box
                                   display="flex"
@@ -1515,21 +1514,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                               borrow?.secondary,
                                               borrow?.dappName
                                             ) +
-                                            getBoostedApr(borrow?.debt) +
-                                            (100 *
-                                              365 *
-                                              (getStrkAlloaction(
-                                                borrow?.secondary
-                                              ) *
-                                                oraclePrices?.find(
-                                                  (curr: any) =>
-                                                    curr.name === 'STRK'
-                                                )?.price)) /
-                                              getTvlByPool(
-                                                poolAprs,
-                                                borrow?.secondary,
-                                                borrow?.dappName
-                                              )) +
+                                            getBoostedApr(borrow?.debt) 
+                                              ) +
                                           (stats?.find(
                                             (stat: any) =>
                                               stat?.token === borrow?.collateral
@@ -1588,18 +1574,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
                                         borrow?.secondary,
                                         borrow?.dappName
                                       ) +
-                                      getBoostedApr(borrow?.debt) +
-                                      (100 *
-                                        365 *
-                                        (getStrkAlloaction(borrow?.secondary) *
-                                          oraclePrices?.find(
-                                            (curr: any) => curr.name === 'STRK'
-                                          )?.price)) /
-                                        getTvlByPool(
-                                          poolAprs,
-                                          borrow?.secondary,
-                                          borrow?.dappName
-                                        )) +
+                                      getBoostedApr(borrow?.debt) 
+                                      ) +
                                     (stats?.find(
                                       (stat: any) =>
                                         stat?.token === borrow?.collateral
