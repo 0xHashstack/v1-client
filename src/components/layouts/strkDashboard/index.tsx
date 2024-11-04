@@ -1112,7 +1112,7 @@ const StrkDashboard = () => {
                     {pool}
                   </Text>
                 </Box>
-                <Box display="flex" mt="0.5rem" gap="0.8rem">
+                <Box display="flex" justifyContent="center" mt="0.5rem" gap="0.8rem" width="150px">
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
                     Pool APR:{' '}
                     {numberFormatterPercentage(
@@ -1120,7 +1120,7 @@ const StrkDashboard = () => {
                     )}
                     %
                   </Text>
-                  <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
+                  {/* <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
                     $STRK APR:{' '}
                     {numberFormatterPercentage(
                       String(
@@ -1134,7 +1134,7 @@ const StrkDashboard = () => {
                       )
                     )}
                     %
-                  </Text>
+                  </Text> */}
                 </Box>
                 <Box
                   mt="0.5rem"

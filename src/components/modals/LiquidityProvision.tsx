@@ -101,6 +101,7 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+import STRKLogo from "@/assets/icons/coins/strk";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -281,6 +282,8 @@ const LiquidityProvisionModal = ({
         return <ETHLogo height={"16px"} width={"16px"} />;
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
+        case 'STRK':
+          return <STRKLogo height={'16px'} width={'16px'} />
       case "Jediswap":
         return <JediswapLogo />;
       case "ETH/USDT":
@@ -1162,11 +1165,11 @@ const LiquidityProvisionModal = ({
                             alignItems="center"
                             gap="1"
                             pr="2"
-                            borderBottom={
-                              index == 2 && currentSwap == "Jediswap"
-                                ? "1px solid #30363D"
-                                : ""
-                            }
+                            // borderBottom={
+                            //   index == 2 && currentSwap == "Jediswap"
+                            //     ? "1px solid #30363D"
+                            //     : ""
+                            // }
                             onMouseEnter={()=>{
                               sethoverPoolIndex(index)
                             }}
@@ -1270,7 +1273,7 @@ const LiquidityProvisionModal = ({
                                   )}
                                   %
                                 </Box>
-                                {index <= 2 && currentSwap == "Jediswap" && (
+                                {/* {index <= 2 && currentSwap == "Jediswap" && (
                                   <Box
                                     fontSize="10px"
                                     color="#B1B0B5"
@@ -1296,7 +1299,7 @@ const LiquidityProvisionModal = ({
                                     )}
                                     %
                                   </Box>
-                                )}
+                                )} */}
                               </Box>
                             </Box>
                           </Box>

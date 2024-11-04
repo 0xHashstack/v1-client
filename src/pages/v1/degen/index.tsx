@@ -523,18 +523,8 @@ const Degen: NextPage = () => {
                     borrow?.secondary,
                     borrow?.dappName
                   ) +
-                  getBoostedApr(borrow?.debt) +
-                  (100 *
-                    365 *
-                    (getStrkAlloaction(borrow?.secondary) *
-                      oraclePrices?.find(
-                        (curr: any) => curr.name === 'STRK'
-                      )?.price)) /
-                    getTvlByPool(
-                      poolAprs,
-                      borrow?.secondary,
-                      borrow?.dappName
-                    )) +
+                  getBoostedApr(borrow?.debt) 
+                  ) +
                 (stats?.find(
                   (stat: any) =>
                     stat?.token === borrow?.collateral

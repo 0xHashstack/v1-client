@@ -3323,11 +3323,11 @@ const TradeModal = ({
                                   //@ts-ignore
                                   setToMarketLiqB(pool.split('/')[1])
                                 }}
-                                borderBottom={
-                                  index == 2 && currentDapp == 'Jediswap'
-                                    ? '1px solid #30363D'
-                                    : ''
-                                }
+                                // borderBottom={
+                                //   index == 2 && currentDapp == 'Jediswap'
+                                //     ? '1px solid #30363D'
+                                //     : ''
+                                // }
                               >
                                 {(poolHoverIndex===-1? pool === currentPool:poolHoverIndex===index) && (
                                   <Box
@@ -3429,7 +3429,7 @@ const TradeModal = ({
                                       )}
                                       %
                                     </Box>
-                                    {index <= 2 &&
+                                    {/* {index <= 2 &&
                                       currentDapp == 'Jediswap' && (
                                         <Box
                                           fontSize="10px"
@@ -3456,7 +3456,7 @@ const TradeModal = ({
                                           )}
                                           %
                                         </Box>
-                                      )}
+                                      )} */}
                                   </Box>
                                 </Box>
                               </Box>
