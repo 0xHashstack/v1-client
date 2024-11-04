@@ -680,13 +680,13 @@ const StrkDashboard = () => {
             }}
             fontWeight="semibold"
             borderRadius={'6px'}
-            isDisabled={strkRewards===0}
-            onClick={() => {
-              if (strkRewards == 0) {
-              } else {
-                handleClaimStrk()
-              }
-            }}
+            isDisabled={true}
+            // onClick={() => {
+            //   if (strkRewards == 0) {
+            //   } else {
+            //     handleClaimStrk()
+            //   }
+            // }}
           >
             Claim
           </Button>
