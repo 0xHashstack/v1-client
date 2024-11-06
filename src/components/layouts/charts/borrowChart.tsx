@@ -100,7 +100,7 @@ const BorrowChart = () => {
                 data: btcData?.borrowAmounts,
               },
               {
-                name: "wETH",
+                name: "ETH",
                 data: ethData?.borrowAmounts,
               },
               {
@@ -183,7 +183,7 @@ const BorrowChart = () => {
                 data: weeklyBtcData?.borrowAmounts,
               },
               {
-                name: "wETH",
+                name: "ETH",
                 data: weeklyEthData?.borrowAmounts,
               },
               {
@@ -266,7 +266,7 @@ const BorrowChart = () => {
                 data: monthlyBtcData?.borrowAmounts,
               },
               {
-                name: "wETH",
+                name: "ETH",
                 data: monthlyEthData?.borrowAmounts,
               },
               {
@@ -352,7 +352,7 @@ const BorrowChart = () => {
                 data: allBtcData?.borrowAmounts,
               },
               {
-                name: "wETH",
+                name: "ETH",
                 data: allEthData?.borrowAmounts,
               },
               {

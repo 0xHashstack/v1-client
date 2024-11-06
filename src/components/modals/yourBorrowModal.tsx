@@ -4594,28 +4594,23 @@ const YourBorrowModal = ({
 
                               <Text mt="0.2rem">
                                 {radioValue === '1'
-                                  ? (currentPool.split('/')[0] == 'BTC' ||
-                                      currentPool.split('/')[0] == 'ETH') &&
-                                    (currentPool.split('/')[1] == 'BTC' ||
-                                      currentPool.split('/')[1] == 'ETH')
+                                  ? (currentPool.split('/')[0] == 'BTC' ) &&
+                                    (currentPool.split('/')[1] == 'BTC' )
                                     ? 'w' +
                                       currentPool.split('/')[0] +
                                       '/w' +
                                       currentPool.split('/')[1]
-                                    : currentPool.split('/')[0] == 'BTC' ||
-                                        currentPool.split('/')[0] == 'ETH'
+                                    : currentPool.split('/')[0] == 'BTC' 
                                       ? 'w' +
                                         currentPool.split('/')[0] +
                                         '/' +
                                         currentPool.split('/')[1]
-                                      : currentPool.split('/')[1] == 'BTC' ||
-                                          currentPool.split('/')[1] == 'ETH'
+                                      : currentPool.split('/')[1] == 'BTC' 
                                         ? currentPool.split('/')[0] +
                                           '/w' +
                                           currentPool.split('/')[1]
                                         : currentPool
-                                  : currentPoolCoin == 'BTC' ||
-                                      currentPoolCoin == 'ETH'
+                                  : currentPoolCoin == 'BTC' 
                                     ? 'w' + currentPoolCoin
                                     : currentPoolCoin}
                               </Text>
@@ -4663,11 +4658,6 @@ const YourBorrowModal = ({
                                       alignItems="center"
                                       gap="1"
                                       pr="2"
-                                      borderBottom={
-                                        index == 2 && currentDapp == 'Jediswap'
-                                          ? '1px solid #30363D'
-                                          : ''
-                                      }
                                       onClick={() => {
                                         setCurrentPool(pool)
                                         setToMarketA(pool.split('/')[0])
@@ -4738,24 +4728,19 @@ const YourBorrowModal = ({
                                             // mt="50px"
                                           >
                                             <Text>
-                                              {(pool.split('/')[0] == 'BTC' ||
-                                                pool.split('/')[0] == 'ETH') &&
-                                              (pool.split('/')[1] == 'BTC' ||
-                                                pool.split('/')[1] == 'ETH')
+                                              {(pool.split('/')[0] == 'BTC' ) &&
+                                              (pool.split('/')[1] == 'BTC' )
                                                 ? 'w' +
                                                   pool.split('/')[0] +
                                                   '/w' +
                                                   pool.split('/')[1]
-                                                : pool.split('/')[0] == 'BTC' ||
-                                                    pool.split('/')[0] == 'ETH'
+                                                : pool.split('/')[0] == 'BTC' 
                                                   ? 'w' +
                                                     pool.split('/')[0] +
                                                     '/' +
                                                     pool.split('/')[1]
                                                   : pool.split('/')[1] ==
-                                                        'BTC' ||
-                                                      pool.split('/')[1] ==
-                                                        'ETH'
+                                                        'BTC' 
                                                     ? pool.split('/')[0] +
                                                       '/w' +
                                                       pool.split('/')[1]
@@ -4793,7 +4778,7 @@ const YourBorrowModal = ({
                                             )}
                                             %
                                           </Box>
-                                          {index <= 2 &&
+                                          {/* {index <= 2 &&
                                             currentDapp == 'Jediswap' && (
                                               <Box
                                                 fontSize="10px"
@@ -4820,7 +4805,7 @@ const YourBorrowModal = ({
                                                 )}
                                                 %
                                               </Box>
-                                            )}
+                                            )} */}
                                         </Box>
                                       </Box>
                                     </Box>

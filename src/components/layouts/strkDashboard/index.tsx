@@ -58,8 +58,8 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import PageCard from '../pageCard'
-import dataStrkRewards from '../strkDashboard/round_22.json'
-import dataStrkRewardsZklend from '../strkDashboard/zkLend_22.json'
+import dataStrkRewards from '../strkDashboard/round_23.json'
+import dataStrkRewardsZklend from '../strkDashboard/zkLend_23.json'
 import { processAddress } from '@/Blockchain/stark-constants'
 export interface ICoin {
   name: string
@@ -132,7 +132,7 @@ const StrkDashboard = () => {
   const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([])
   const [validRTokens, setValidRTokens] = useState([])
   const userDeposits = useSelector(selectUserDeposits)
-  const { account, address } = useAccount()
+  const { account,address } = useAccount()
   const poolApr = useSelector(selectJediswapPoolAprs)
   const strkTokenAlloactionData = useSelector(selectJedistrkTokenAllocation)
   const strkData = useSelector(selectStrkAprData)
@@ -616,7 +616,7 @@ const StrkDashboard = () => {
               )}
             </Tooltip>
           </Box>
-          <Box gap="0.2rem">
+          {strkRewards>=0 &&<Box gap="0.2rem">
             <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
               Claimed STRK Reward
             </Text>
@@ -658,7 +658,7 @@ const StrkDashboard = () => {
                 </Text>
               )}
             </Tooltip>
-          </Box>
+          </Box>}
           <Button
             height={'2rem'}
             fontSize={'12px'}
@@ -680,13 +680,13 @@ const StrkDashboard = () => {
             }}
             fontWeight="semibold"
             borderRadius={'6px'}
-            isDisabled={true}
-            // onClick={() => {
-            //   if (strkRewards == 0) {
-            //   } else {
-            //     handleClaimStrk()
-            //   }
-            // }}
+            isDisabled={strkRewards<=0}
+            onClick={() => {
+              if (strkRewards <= 0) {
+              } else {
+                handleClaimStrk()
+              }
+            }}
           >
             Claim
           </Button>

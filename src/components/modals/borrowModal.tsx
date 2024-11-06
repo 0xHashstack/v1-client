@@ -1749,8 +1749,7 @@ const [currentSplit, setCurrentSplit] = useState<
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentCollateralCoin)}</Box>
                     <Text>
-                      {currentCollateralCoin == 'BTC' ||
-                      currentCollateralCoin == 'ETH'
+                      {currentCollateralCoin == 'BTC' 
                         ? 'w' + currentCollateralCoin
                         : currentCollateralCoin}
                     </Text>
@@ -1954,7 +1953,7 @@ const [currentSplit, setCurrentSplit] = useState<
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
                                 <Text color="white">
-                                  {coin == 'BTC' || coin == 'ETH'
+                                  {coin == 'BTC' 
                                     ? 'w' + coin
                                     : coin}
                                 </Text>
@@ -2428,7 +2427,7 @@ const [currentSplit, setCurrentSplit] = useState<
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentBorrowCoin)}</Box>
                     <Text>
-                      {currentBorrowCoin == 'BTC' || currentBorrowCoin == 'ETH'
+                      {currentBorrowCoin == 'BTC' 
                         ? 'w' + currentBorrowCoin
                         : currentBorrowCoin}
                     </Text>
@@ -2513,7 +2512,7 @@ const [currentSplit, setCurrentSplit] = useState<
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
                                 <Text color="white">
-                                  {coin == 'BTC' || coin == 'ETH'
+                                  {coin == 'BTC' 
                                     ? 'w' + coin
                                     : coin}
                                 </Text>
@@ -3270,28 +3269,23 @@ const [currentSplit, setCurrentSplit] = useState<
 
                         <Text>
                           {radioValue === '1'
-                            ? (currentPool.split('/')[0] == 'BTC' ||
-                                currentPool.split('/')[0] == 'ETH') &&
-                              (currentPool.split('/')[1] == 'BTC' ||
-                                currentPool.split('/')[1] == 'ETH')
+                            ? (currentPool.split('/')[0] == 'BTC' ) &&
+                              (currentPool.split('/')[1] == 'BTC' )
                               ? 'w' +
                                 currentPool.split('/')[0] +
                                 '/w' +
                                 currentPool.split('/')[1]
-                              : currentPool.split('/')[0] == 'BTC' ||
-                                  currentPool.split('/')[0] == 'ETH'
+                              : currentPool.split('/')[0] == 'BTC' 
                                 ? 'w' +
                                   currentPool.split('/')[0] +
                                   '/' +
                                   currentPool.split('/')[1]
-                                : currentPool.split('/')[1] == 'BTC' ||
-                                    currentPool.split('/')[1] == 'ETH'
+                                : currentPool.split('/')[1] == 'BTC' 
                                   ? currentPool.split('/')[0] +
                                     '/w' +
                                     currentPool.split('/')[1]
                                   : currentPool
-                            : currentPoolCoin == 'BTC' ||
-                                currentPoolCoin == 'ETH'
+                            : currentPoolCoin == 'BTC' 
                               ? 'w' + currentPoolCoin
                               : currentPoolCoin}
                         </Text>
@@ -3410,22 +3404,18 @@ const [currentSplit, setCurrentSplit] = useState<
                                       // mt="50px"
                                     >
                                       <Text>
-                                        {(pool.split('/')[0] == 'BTC' ||
-                                          pool.split('/')[0] == 'ETH') &&
-                                        (pool.split('/')[1] == 'BTC' ||
-                                          pool.split('/')[1] == 'ETH')
+                                        {(pool.split('/')[0] == 'BTC' ) &&
+                                        (pool.split('/')[1] == 'BTC' )
                                           ? 'w' +
                                             pool.split('/')[0] +
                                             '/w' +
                                             pool.split('/')[1]
-                                          : pool.split('/')[0] == 'BTC' ||
-                                              pool.split('/')[0] == 'ETH'
+                                          : pool.split('/')[0] == 'BTC' 
                                             ? 'w' +
                                               pool.split('/')[0] +
                                               '/' +
                                               pool.split('/')[1]
-                                            : pool.split('/')[1] == 'BTC' ||
-                                                pool.split('/')[1] == 'ETH'
+                                            : pool.split('/')[1] == 'BTC' 
                                               ? pool.split('/')[0] +
                                                 '/w' +
                                                 pool.split('/')[1]
@@ -3574,7 +3564,7 @@ const [currentSplit, setCurrentSplit] = useState<
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
                                   <Text>
-                                    {coin == 'BTC' || coin == 'ETH'
+                                    {coin == 'BTC' 
                                       ? 'w' + coin
                                       : coin}
                                   </Text>

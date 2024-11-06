@@ -295,7 +295,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
                     >
                       <Box display="flex" gap="0.5rem">
                         <Text fontSize="14px" fontWeight="400">
-                          {coin?.name == 'BTC' || coin?.name == 'ETH'
+                          {coin?.name == 'BTC' 
                             ? 'w' + coin?.name
                             : coin?.name}
                         </Text>

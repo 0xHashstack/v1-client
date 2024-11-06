@@ -617,23 +617,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
                           fontSize="14px"
                           color="#E6EDF3"
                         >
-                          {`${
-                            borrow?.spendType == 'LIQUIDITY' &&
-                            (allSplit?.[lower_bound + idx]?.tokenA +
-                              '/' +
-                              allSplit?.[lower_bound + idx]?.tokenB ===
-                              'STRK/ETH' ||
-                              allSplit?.[lower_bound + idx]?.tokenA +
-                                '/' +
-                                allSplit?.[lower_bound + idx]?.tokenB ===
-                                'ETH/USDC' ||
-                              allSplit?.[lower_bound + idx]?.tokenA +
-                                '/' +
-                                allSplit?.[lower_bound + idx]?.tokenB ===
-                                'USDC/USDT')
-                              ? '🥇 ID'
-                              : 'ID'
-                          }
+                          {`
                           ${
                             borrow?.loanId < 10
                               ? '0' + borrow?.loanId

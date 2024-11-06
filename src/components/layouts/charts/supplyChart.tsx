@@ -105,7 +105,7 @@ const SupplyChart = () => {
                 data: btcData?.supplyAmounts,
               },
               {
-                name: "wETH",
+                name: "ETH",
                 data: ethData?.supplyAmounts,
               },
               {
@@ -189,7 +189,7 @@ const SupplyChart = () => {
                 // color: "#fffff",
               },
               {
-                name: "wETH",
+                name: "ETH",
                 data: weeklyEthData.supplyAmounts,
               },
               {
@@ -273,7 +273,7 @@ const SupplyChart = () => {
                 // color: "#fffff",
               },
               {
-                name: "wETH",
+                name: "ETH",
                 data: monthlyEthData.supplyAmounts,
               },
               {
@@ -360,7 +360,7 @@ const SupplyChart = () => {
                 // color: "#fffff",
               },
               {
-                name: "wETH",
+                name: "ETH",
                 data: allEthData.supplyAmounts,
               },
               {
