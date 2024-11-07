@@ -752,8 +752,7 @@ const SwapModal = ({
                   )}
 
                   <Text color="white">
-                    {currentSelectedCoin == "BTC" ||
-                    currentSelectedCoin == "ETH"
+                    {currentSelectedCoin == "BTC" 
                       ? "w" + currentSelectedCoin
                       : currentSelectedCoin}
                   </Text>
@@ -845,7 +844,7 @@ const SwapModal = ({
                           >
                             <Box p="1">{getCoin(coin)}</Box>
                             <Text color="white">
-                              {coin == "BTC" || coin == "ETH"
+                              {coin == "BTC" 
                                 ? "w" + coin
                                 : coin}
                             </Text>

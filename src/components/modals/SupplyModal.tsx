@@ -967,8 +967,7 @@ const SupplyModal = ({
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
                     <Text color="white">
-                      {currentSelectedCoin == 'BTC' ||
-                      currentSelectedCoin == 'ETH'
+                      {currentSelectedCoin == 'BTC' 
                         ? 'w' + currentSelectedCoin
                         : currentSelectedCoin}
                     </Text>
@@ -1061,7 +1060,7 @@ const SupplyModal = ({
                               <Box display="flex">
                                 <Box p="1">{getCoin(coin)}</Box>
                                 <Text color="white">
-                                  {coin == 'BTC' || coin == 'ETH'
+                                  {coin == 'BTC'
                                     ? 'w' + coin
                                     : coin}
                                 </Text>

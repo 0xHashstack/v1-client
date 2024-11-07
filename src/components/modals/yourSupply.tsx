@@ -1067,8 +1067,7 @@ const YourSupplyModal = ({
                               {getCoin(currentSelectedSupplyCoin)}
                             </Box>
                             <Text color="white" mt="0.15rem">
-                              {currentSelectedSupplyCoin == 'BTC' ||
-                              currentSelectedSupplyCoin == 'ETH'
+                              {currentSelectedSupplyCoin == 'BTC' 
                                 ? 'w' + currentSelectedSupplyCoin
                                 : currentSelectedSupplyCoin}
                             </Text>
@@ -1150,8 +1149,7 @@ const YourSupplyModal = ({
                                           {getCoin(coin.substring(1))}
                                         </Box>
                                         <Text color="white" mt="0.5">
-                                          {coin.substring(1) == 'BTC' ||
-                                          coin.substring(1) == 'ETH'
+                                          {coin.substring(1) == 'BTC' 
                                             ? 'w' + coin.substring(1)
                                             : coin.substring(1)}
                                         </Text>
@@ -1891,23 +1889,19 @@ const YourSupplyModal = ({
                               <BlueInfoIcon />
                             </Box>
                             You have changed your market from{' '}
-                            {currentActionMarket.slice(1) == 'BTC' ||
-                            currentActionMarket.slice(1) == 'ETH'
+                            {currentActionMarket.slice(1) == 'BTC' 
                               ? 'w' + currentActionMarket.slice(1)
                               : currentActionMarket.slice(1)}{' '}
                             to{' '}
-                            {currentSelectedSupplyCoin == 'BTC' ||
-                            currentSelectedSupplyCoin == 'ETH'
+                            {currentSelectedSupplyCoin == 'BTC' 
                               ? 'w' + currentSelectedSupplyCoin
                               : currentSelectedSupplyCoin}
                             . your supplied{' '}
-                            {currentSelectedSupplyCoin == 'BTC' ||
-                            currentSelectedSupplyCoin == 'ETH'
+                            {currentSelectedSupplyCoin == 'BTC' 
                               ? 'w' + currentSelectedSupplyCoin
                               : currentSelectedSupplyCoin}{' '}
                             will be added in{' '}
-                            {currentSelectedSupplyCoin == 'BTC' ||
-                            currentSelectedSupplyCoin == 'ETH'
+                            {currentSelectedSupplyCoin == 'BTC' 
                               ? 'w' + currentSelectedSupplyCoin
                               : currentSelectedSupplyCoin}{' '}
                             market.

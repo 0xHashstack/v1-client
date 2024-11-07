@@ -102,7 +102,7 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
       },
       categories: categories
         ? categories
-        : ["wBTC", "wETH", "USDT", "USDC", "DAI","STRK"],
+        : ["wBTC", "ETH", "USDT", "USDC", "DAI","STRK"],
     },
     plotOptions: {
       bar: {
@@ -168,7 +168,7 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
       color: "#4D3C03",
     },
     {
-      name: "wETH",
+      name: "ETH",
       data: [0, totalBorrow?.ETH ? totalBorrow?.ETH : "0", 0, 0, 0],
       color: "#4D59E8",
     },

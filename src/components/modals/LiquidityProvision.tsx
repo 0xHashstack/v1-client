@@ -1103,22 +1103,18 @@ const LiquidityProvisionModal = ({
                     )}
 
                     <Text mt="0.1rem">
-                      {(currentPool.split("/")[0] == "BTC" ||
-                        currentPool.split("/")[0] == "ETH") &&
-                      (currentPool.split("/")[1] == "BTC" ||
-                        currentPool.split("/")[1] == "ETH")
+                      {(currentPool.split("/")[0] == "BTC" ) &&
+                      (currentPool.split("/")[1] == "BTC" )
                         ? "w" +
                           currentPool.split("/")[0] +
                           "/w" +
                           currentPool.split("/")[1]
-                        : currentPool.split("/")[0] == "BTC" ||
-                          currentPool.split("/")[0] == "ETH"
+                        : currentPool.split("/")[0] == "BTC" 
                         ? "w" +
                           currentPool.split("/")[0] +
                           "/" +
                           currentPool.split("/")[1]
-                        : currentPool.split("/")[1] == "BTC" ||
-                          currentPool.split("/")[1] == "ETH"
+                        : currentPool.split("/")[1] == "BTC" 
                         ? currentPool.split("/")[0] +
                           "/w" +
                           currentPool.split("/")[1]
@@ -1234,22 +1230,18 @@ const LiquidityProvisionModal = ({
                                   // mt="50px"
                                 >
                                   <Text>
-                                    {(pool.split("/")[0] == "BTC" ||
-                                      pool.split("/")[0] == "ETH") &&
-                                    (pool.split("/")[1] == "BTC" ||
-                                      pool.split("/")[1] == "ETH")
+                                    {(pool.split("/")[0] == "BTC" ) &&
+                                    (pool.split("/")[1] == "BTC" )
                                       ? "w" +
                                         pool.split("/")[0] +
                                         "/w" +
                                         pool.split("/")[1]
-                                      : pool.split("/")[0] == "BTC" ||
-                                        pool.split("/")[0] == "ETH"
+                                      : pool.split("/")[0] == "BTC" 
                                       ? "w" +
                                         pool.split("/")[0] +
                                         "/" +
                                         pool.split("/")[1]
-                                      : pool.split("/")[1] == "BTC" ||
-                                        pool.split("/")[1] == "ETH"
+                                      : pool.split("/")[1] == "BTC" 
                                       ? pool.split("/")[0] +
                                         "/w" +
                                         pool.split("/")[1]
