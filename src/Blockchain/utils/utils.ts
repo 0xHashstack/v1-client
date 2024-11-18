@@ -1,5 +1,5 @@
 import { BigNumber } from "bignumber.js";
-import { ethers, utils } from "ethers";
+import { ethers, utils,BigNumber as BigNumberEther } from "ethers";
 import { Logger } from "ethers/lib/utils";
 import { getTokenFromAddress } from "../stark-constants";
 import { tokenDecimalsMap } from "./addressServices";
@@ -158,11 +158,16 @@ export const weiToEtherNumber = (amount: string, tokenName: Token) => {
     return truncatedResult;;
 };
 
-export const parseAmount = (amount: string, decimals = 18) => {
-  const factor = new BigNumber(1000000);
-  const amountBN = new BigNumber( amount)
-    .times(factor)
-    .dividedBy(new BigNumber(10).exponentiatedBy(decimals));
-    const roundedAmountBN = amountBN.decimalPlaces(8, BigNumber.ROUND_DOWN);
-  return roundedAmountBN.toNumber()/factor.toNumber();
+
+export const parseAmount = (amount: string, decimals = 18, precision = 18) => {
+  const factor = BigNumberEther.from("1000000");
+  const divisor = BigNumberEther.from(10).pow(decimals);
+  const amountBN = BigNumberEther.from(amount).mul(factor).div(divisor);
+
+  // Convert BigNumber to a Number for arithmetic
+  const preciseValue = Number(amountBN.toString()) / factor.toNumber();
+
+  // Truncate to the desired precision
+  const multiplier = Math.pow(10, precision);
+  return Math.floor(preciseValue * multiplier) / multiplier;
 };
