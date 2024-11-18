@@ -703,6 +703,29 @@ const SupplyDashboard = ({
                                 display="flex"
                                 justifyContent="space-between"
                                 gap={10}
+                              >
+                                <Text>Staking APR</Text>
+                                <Text>
+                                  {(Number(
+                                      avgs?.find(
+                                        (item: any) =>
+                                          item?.token == supply?.token
+                                      )?.avg
+                                    )-Number(
+                                    protocolStats.find((stat: any) => {
+                                      if (
+                                        stat?.token === supply?.rToken?.slice(1)
+                                      )
+                                        return stat;
+                                    })?.supplyRate
+                                  ))?.toFixed(3)}
+                                  %
+                                </Text>
+                              </Box>
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                gap={10}
                                 mb="2"
                               >
                                 <Text>STRK APR</Text>
