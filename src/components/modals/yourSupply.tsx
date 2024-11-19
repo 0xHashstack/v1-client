@@ -570,6 +570,7 @@ const YourSupplyModal = ({
     setIsChecked(true)
     setTransactionStarted(false)
     setWithdrawTransactionStarted(false)
+    setUnstakeTransactionStarted(false)
     dispatch(resetModalDropdowns())
     const uqID = getUniqueId()
     dispatch(setTransactionStatus(''))
