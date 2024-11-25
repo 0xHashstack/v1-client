@@ -256,9 +256,9 @@ const Campaign: NextPage = () => {
       timeline: '18 Apr 2024',
     },
     {
-      campaignName:'Defi spring',
-      timeline:'14 Mar 2024'
-    }
+      campaignName: 'Defi spring',
+      timeline: '14 Mar 2024',
+    },
   ])
 
   const totalBorrow = useSelector(selectYourBorrow)
@@ -266,14 +266,13 @@ const Campaign: NextPage = () => {
   const exisitingLink = useSelector(selectExistingLink)
   const airdropDropdowns = useSelector(selectAirdropDropdowns)
   const registeredClick = useSelector(selectConnectedSocialsClicked)
-  const epochDataUser=useSelector(selectEpochDataUserDetails)
-  const ccpUserRegisterDetails=useSelector(selectCCPUserRegisterDetails)
-  const ccpUserSubmissionDetails=useSelector(selectCCPUserSubmissionDetails)
-  const ccpLeaderData=useSelector(selectCCPLeaderBoardData)
-  const airDropLeaderBoardData=useSelector(selectAirdropLeaderBoardData)
+  const epochDataUser = useSelector(selectEpochDataUserDetails)
+  const ccpUserRegisterDetails = useSelector(selectCCPUserRegisterDetails)
+  const ccpUserSubmissionDetails = useSelector(selectCCPUserSubmissionDetails)
+  const ccpLeaderData = useSelector(selectCCPLeaderBoardData)
+  const airDropLeaderBoardData = useSelector(selectAirdropLeaderBoardData)
 
   const dispatch = useDispatch()
-  
 
   useDataLoader()
 
@@ -283,51 +282,57 @@ const Campaign: NextPage = () => {
   const endDate = new Date(startDate)
   endDate.setDate(startDate.getDate() + 55)
 
-  useEffect(()=>{
-    const fetchAllData=async()=>{
-      const epochDataRes=epochDataUser
-      const ccpRegisterRes=ccpUserRegisterDetails
-      const ccpSubmissionRes=ccpUserSubmissionDetails
-      if(epochDataRes && ccpRegisterRes && ccpSubmissionRes){
-      setuserSocialsData(ccpRegisterRes?.data?.response)
-      setUserccpData(ccpSubmissionRes?.data)
-      let points = 0
-      let hash = 0
-      if (ccpSubmissionRes?.data) {
-        ccpSubmissionRes?.data.map((data: any) => {
-          points += Number(data['Recommended (Community Team)'])
-            ? Number(data['Recommended (Community Team)'])
-            : 0
-          hash += Number(data['Allocated (Product Team)'])
-            ? Number(data['Allocated (Product Team)'])
-            : 0
-        })
-      }
-      setuserPointsCCP(points)
-      setuserHashCCP(hash)
-      let data= epochDataRes?.data
-      if(data){
-        let dataepoch :any= [...data?.finalSnapData].sort(
-          (a, b) => a.epoch - b.epoch
-        );
-        setepochsData(dataepoch)
-        if (data?.rank) {
-          setuserRank(data?.rank)
-        } else {
-          setuserRank('-')
+  useEffect(() => {
+    const fetchAllData = async () => {
+      const epochDataRes = epochDataUser
+      const ccpRegisterRes = ccpUserRegisterDetails
+      const ccpSubmissionRes = ccpUserSubmissionDetails
+      if (epochDataRes && ccpRegisterRes && ccpSubmissionRes) {
+        setuserSocialsData(ccpRegisterRes?.data?.response)
+        setUserccpData(ccpSubmissionRes?.data)
+        let points = 0
+        let hash = 0
+        if (ccpSubmissionRes?.data) {
+          ccpSubmissionRes?.data.map((data: any) => {
+            points += Number(data['Recommended (Community Team)'])
+              ? Number(data['Recommended (Community Team)'])
+              : 0
+            hash += Number(data['Allocated (Product Team)'])
+              ? Number(data['Allocated (Product Team)'])
+              : 0
+          })
         }
-        let snaps = data?.epochWise
-        // snaps.sort(
-        //   (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
-        // )
-        setsnapshotData(data?.epochWise)
+        setuserPointsCCP(points)
+        setuserHashCCP(hash)
+        let data = epochDataRes?.data
+        if (data) {
+          let dataepoch: any = [...data?.finalSnapData].sort(
+            (a, b) => a.epoch - b.epoch
+          )
+          setepochsData(dataepoch)
+          if (data?.rank) {
+            setuserRank(data?.rank)
+          } else {
+            setuserRank('-')
+          }
+          let snaps = data?.epochWise
+          // snaps.sort(
+          //   (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
+          // )
+          setsnapshotData(data?.epochWise)
+        }
       }
     }
-    }
-    if(address){
+    if (address) {
       fetchAllData()
     }
-  },[address,registeredClick,epochDataUser,ccpUserRegisterDetails,ccpUserSubmissionDetails])
+  }, [
+    address,
+    registeredClick,
+    epochDataUser,
+    ccpUserRegisterDetails,
+    ccpUserSubmissionDetails,
+  ])
 
   useEffect(() => {
     if (sampleDate) {
@@ -435,13 +440,13 @@ const Campaign: NextPage = () => {
         settotalPointsCCP(totalPoints)
         setccpLeaderBoardData(res?.data)
       }
-      if(ccpLeaderData){
+      if (ccpLeaderData) {
         fetchLeaderBoardDataCCP()
       }
     } catch (err) {
       console.log(err)
     }
-  }, [address,ccpLeaderData])
+  }, [address, ccpLeaderData])
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -499,7 +504,7 @@ const Campaign: NextPage = () => {
         const res = airDropLeaderBoardData
         setLeaderboardData(res?.data)
       }
-      if(airDropLeaderBoardData){
+      if (airDropLeaderBoardData) {
         fetchLeaderBoardData()
       }
     } catch (err) {
@@ -763,8 +768,28 @@ const Campaign: NextPage = () => {
               gap="1rem"
               width="full"
             >
-              <RegisterCCPModal userSocialsData={userSocialsData} />
-              <SubmissionCCPModal userSocialsData={userSocialsData} />
+              <Button
+                onClick={() => {}}
+                isDisabled={true}
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                color="#f2f2f2"
+                size="sm"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                _hover={{ backgroundColor: 'transparent' }}
+              >
+                Connect Socials
+              </Button>
+              <Button
+                onClick={() => {}}
+                isDisabled={true}
+                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
+                color="#f2f2f2"
+                size="sm"
+                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
+                _hover={{ backgroundColor: 'transparent' }}
+              >
+                Submit content for CCP
+              </Button>
             </Box>
           )}
         </HStack>
