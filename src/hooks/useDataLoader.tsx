@@ -677,7 +677,7 @@ const useDataLoader = () => {
       }
     }
     if (hourlyDataCount < transactionRefresh && oraclePrices) {
-      fetchHourlyData()
+      // fetchHourlyData()
     }
   }, [oraclePrices])
   useEffect(() => {
@@ -838,7 +838,7 @@ const useDataLoader = () => {
       }
     }
     if (weeklyDataCount < transactionRefresh && oraclePrices) {
-      fetchDailyData()
+      // fetchDailyData()
     }
   }, [oraclePrices])
   useEffect(() => {
@@ -1000,7 +1000,7 @@ const useDataLoader = () => {
       }
     }
     if (monthlyDataCount < transactionRefresh && oraclePrices) {
-      fetchMonthlyData()
+      // fetchMonthlyData()
     }
   }, [oraclePrices])
   useEffect(() => {
@@ -1157,7 +1157,7 @@ const useDataLoader = () => {
       }
     }
     if (allDataCount < transactionRefresh && oraclePrices) {
-      fetchAllData()
+      // fetchAllData()
     }
   }, [oraclePrices])
   useEffect(() => {
