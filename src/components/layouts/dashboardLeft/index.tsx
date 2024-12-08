@@ -101,6 +101,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>()
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState('BTC')
   const strkData = useSelector(selectStrkAprData)
+  console.log(strkData,'strkData')
 
   const [isLargerThan1280] = useMediaQuery('(min-width: 1248px)')
 

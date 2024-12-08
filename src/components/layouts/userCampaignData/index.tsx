@@ -168,7 +168,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
     '27 Oct 2024 - 2 Nov 2024',
     '2 Nov 2024 - 10 Nov 2024',
     '10 Nov 2024 - 17 Nov 2024',
-    '17 Nov 2024 - 24 Nov 2024'
+    '17 Nov 2024 - 24 Nov 2024',
+    '24 Nov 2024 - 1 Dec 2024',
   ]
   const  {address} =useAccount()
   const {

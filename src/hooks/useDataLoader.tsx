@@ -1452,12 +1452,24 @@ const useDataLoader = () => {
         try {
           const res2 = await axios.get(
             'https://kx58j6x5me.execute-api.us-east-1.amazonaws.com/starknet/fetchFile?file=prod-api/lending/lending_strk_grant.json'
-          )
+          );
+          
           if (res2?.data && res2.data.Hashstack) {
-            const hashstackWithoutDAI = { ...res2.data.Hashstack };
-            delete hashstackWithoutDAI.DAI;
-            dispatch(setStrkAprData(hashstackWithoutDAI));
+            const hashstack = res2.data.Hashstack;
+          
+            // Only keep the keys we are interested in
+            const filteredHashstack:any = {};
+            const keysToKeep = ['ETH', 'STRK', 'USDT', 'USDC'];
+          
+            keysToKeep.forEach(key => {
+              if (hashstack[key]) {
+                filteredHashstack[key] = hashstack[key];
+              }
+            });
+          
+            dispatch(setStrkAprData(filteredHashstack));
           }
+          
           const res=await axios.get(`https://metricsapimainnet.hashstack.finance/api/amm-aprs`);
           if (res?.data) {
             dispatch(setJediSwapPoolAprs(res?.data))
