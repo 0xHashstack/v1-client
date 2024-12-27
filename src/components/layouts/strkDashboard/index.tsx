@@ -58,8 +58,8 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import PageCard from '../pageCard'
-import dataStrkRewards from '../strkDashboard/round_30.json'
-import dataStrkRewardsZklend from '../strkDashboard/zkLend_30.json'
+import dataStrkRewards from '../strkDashboard/round_31.json'
+import dataStrkRewardsZklend from '../strkDashboard/zkLend_31.json'
 import { processAddress } from '@/Blockchain/stark-constants'
 export interface ICoin {
   name: string
