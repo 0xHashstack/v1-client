@@ -131,7 +131,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   const [hoverEpochDrop, sethoverEpochDrop] = useState(false)
   const [hoverccpDrop, sethoverccpDrop] = useState(false)
   const [hoverDefiDrop, sethoverDefiDrop] = useState(false)
-  const [defiSpringRoundCount, setDefiSpringRoundCount] = useState(new Array(3).fill(0));
+  const [defiSpringRoundCount, setDefiSpringRoundCount] = useState(new Array(31).fill(0));
   let topLength = ccpUserData.length * 5.15
   const [strkRewards, setstrkRewards] = useState<any>(0)
   const [totalStrkRewards, settotalStrkRewards] = useState<any>()
@@ -1026,8 +1026,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   p={0}
                   top={
                     ccpDropdownSelected
-                      ? defiSpringDropdownSelected ?`${(31+ccpUserData.length) * 68 + 34*2}px`: `${ccpUserData.length * 68 + 34*1.2}px`
-                      : defiSpringDropdownSelected ?`${31 * 68 + 34*1.4}px`:epochDropdownSelected ?'16px':
+                      ? defiSpringDropdownSelected ?`${(defiSpringRoundCount.length+ccpUserData.length) * 68 + 34*2.5}px`: `${ccpUserData.length * 68 + 34*1.2}px`
+                      : defiSpringDropdownSelected ?`${defiSpringRoundCount.length * 68 + 34*1.8}px`:epochDropdownSelected ?'16px':
                        '4px'
                   }
                   style={{ borderRadius: '6px' }}
@@ -1194,10 +1194,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   pl="1rem"
                   top={
                     ccpDropdownSelected
-                      ? defiSpringDropdownSelected ?`${(31+ccpUserData.length) * 68 + 64 * 3.3 + 34}px`: epochDropdownSelected
+                      ? defiSpringDropdownSelected ?`${(defiSpringRoundCount.length+ccpUserData.length) * 68 + 64 * 3.5 + 34}px`: epochDropdownSelected
                         ? `${ccpUserData.length * 68 + 64 * 2.8 + 34}px`
                         : `${ccpUserData.length * 68}px`
-                      : defiSpringDropdownSelected ?`${31 * 68 + 64 * 2.9 + 34}px`:
+                      : defiSpringDropdownSelected ?`${defiSpringRoundCount.length * 68 + 64 * 3.0 + 34}px`:
                        `${2 * 68  + 34*1.8}px`
                   }
                 >
@@ -1377,8 +1377,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     borderTop="1px solid rgba(103, 109, 154, 0.30)"
                     top={
                       ccpDropdownSelected
-                        ? defiSpringDropdownSelected ?`${(ccpUserData.length+30) * 68  + 64 * 3.6}px`: `${ccpUserData.length * 68 + 64 * 3.2}px`
-                        : defiSpringDropdownSelected ?`${31 * 68 + 64 * 3.2}px`:''
+                        ? defiSpringDropdownSelected ?`${(ccpUserData.length+defiSpringRoundCount.length) * 68  + 64 * 3.9}px`: `${ccpUserData.length * 68 + 64 * 3.2}px`
+                        : defiSpringDropdownSelected ?`${defiSpringRoundCount.length * 68 + 64 * 3.5}px`:''
                     }
                   />
                 )}
