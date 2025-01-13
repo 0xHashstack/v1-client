@@ -23,6 +23,7 @@ import useClaimStrk from '@/Blockchain/hooks/Writes/useStrkClaim'
 import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards'
 import { parseAmount } from '@/Blockchain/utils/utils'
 import { useAccount } from '@starknet-react/core'
+import dataStrkRewards32 from '../../layouts/strkDashboard/round_32.json'
 import dataStrkRewards from '../../layouts/strkDashboard/round_31.json'
 import dataStrkRewards30 from '../../layouts/strkDashboard/round_30.json'
 import dataStrkRewards29 from '../../layouts/strkDashboard/round_29.json'
@@ -56,7 +57,10 @@ import dataStrkRewardsRound2 from '../../layouts/strkDashboard/round_2.json'
 import dataStrkRewardsRound1 from '../../layouts/strkDashboard/round_1.json'
 import posthog from 'posthog-js'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectActiveTransactions, setActiveTransactions } from '@/store/slices/readDataSlice'
+import {
+  selectActiveTransactions,
+  setActiveTransactions,
+} from '@/store/slices/readDataSlice'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import { toast } from 'react-toastify'
 import { processAddress } from '@/Blockchain/stark-constants'
@@ -123,7 +127,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   userPointsCCP,
 }) => {
   const [epochDropdownSelected, setepochDropdownSelected] = useState(false)
-  const [defiSpringDropdownSelected, setdefiSpringDropdownSelected] = useState(false)
+  const [defiSpringDropdownSelected, setdefiSpringDropdownSelected] =
+    useState(false)
   const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []])
   const [loading, setLoading] = useState<boolean>(true)
   const [openEpochs, setOpenEpochs] = useState<any>([])
@@ -131,20 +136,21 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   const [hoverEpochDrop, sethoverEpochDrop] = useState(false)
   const [hoverccpDrop, sethoverccpDrop] = useState(false)
   const [hoverDefiDrop, sethoverDefiDrop] = useState(false)
-  const [defiSpringRoundCount, setDefiSpringRoundCount] = useState(new Array(31).fill(0));
+  const [defiSpringRoundCount, setDefiSpringRoundCount] = useState(
+    new Array(32).fill(0)
+  )
   let topLength = ccpUserData.length * 5.15
   const [strkRewards, setstrkRewards] = useState<any>(0)
   const [totalStrkRewards, settotalStrkRewards] = useState<any>()
   const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>()
   const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>()
-  const [dataRoundwiseAlloc, setdataRoundwiseAlloc] = useState<any>([
-  ])
+  const [dataRoundwiseAlloc, setdataRoundwiseAlloc] = useState<any>([])
   const dispatch = useDispatch()
   const [uniqueID, setUniqueID] = useState(0)
   const getUniqueId = () => uniqueID
   const [toastId, setToastId] = useState<any>()
   let activeTransactions = useSelector(selectActiveTransactions)
-  const datesDefiSpringRounds=[
+  const datesDefiSpringRounds = [
     '14 Mar 2024 - 28 Mar 2024',
     '28 Mar 2024 - 4 Apr 2024',
     '4 Apr 2024 - 18 Apr 2024',
@@ -176,8 +182,9 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
     '1 Dec 2024 - 8 Dec 2024',
     '8 Dec 2024 - 15 Dec 2024',
     '15 Dec 2024 - 22 Dec 2024',
+    '22 Dec 2024 - 29 Dec 2024',
   ]
-  const  {address} =useAccount()
+  const { address } = useAccount()
   const {
     round,
     setRound,
@@ -265,97 +272,136 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   useEffect(() => {
     const fetchClaimedBalance = async () => {
       if (address) {
-        const data: any = await getUserSTRKClaimedAmount(processAddress(address))
-        const dataAmount: any = (dataStrkRewards as any)[processAddress(address)]
+        const data: any = await getUserSTRKClaimedAmount(
+          processAddress(address)
+        )
+        const dataAmount: any = (dataStrkRewards as any)[
+          processAddress(address)
+        ]
         if (dataAmount) {
           setstrkAmount(dataAmount?.amount)
           setProof(dataAmount?.proofs)
           setstrkRewards(parseAmount(String(dataAmount?.amount), 18) - data)
-          settotalStrkRewards(parseAmount(String(dataAmount?.amount),18))
+          settotalStrkRewards(parseAmount(String(dataAmount?.amount), 18))
           setstrkClaimedRewards(data)
         } else {
           setstrkRewards(0)
-          settotalStrkRewards(0);
+          settotalStrkRewards(0)
         }
       }
     }
     fetchClaimedBalance()
   }, [address])
 
-  useEffect(()=>{
-    if(address){
-      const round_1:any=(dataStrkRewardsRound1 as any)[processAddress(address)]
-      const round_2=(dataStrkRewardsRound2 as any)[processAddress(address)]
-      const round_3=(dataStrkRewardsRound3 as any)[processAddress(address)]
-      const round_4=(dataStrkRewardsRound4 as any)[processAddress(address)]
-      const round_5=(dataStrkRewardsRound5 as any)[processAddress(address)]
-      const round_6=(dataStrkRewardsRound6 as any)[processAddress(address)]
-      const round_7=(dataStrkRewardsRound7 as any)[processAddress(address)]
-      const round_8=(dataStrkRewards8 as any)[processAddress(address)]
-      const round_9=(dataStrkRewards9 as any)[processAddress(address)]
-      const round_10=(dataStrkRewards10 as any)[processAddress(address)]
-      const round_11=(dataStrkRewards11 as any)[processAddress(address)]
-      const round_12=(dataStrkRewards12 as any)[processAddress(address)]
-      const round_13=(dataStrkRewards13 as any)[processAddress(address)]
-      const round_14=(dataStrkRewards14 as any)[processAddress(address)]
-      const round_15=(dataStrkRewards15 as any)[processAddress(address)]
-      const round_16=(dataStrkRewards16 as any)[processAddress(address)]
-      const round_17=(dataStrkRewards17 as any)[processAddress(address)]
-      const round_18=(dataStrkRewards18 as any)[processAddress(address)]
-      const round_19=(dataStrkRewards19 as any)[processAddress(address)]
-      const round_20=(dataStrkRewards20 as any)[processAddress(address)]
-      const round_21=(dataStrkRewards21 as any)[processAddress(address)]
-      const round_22=(dataStrkRewards22 as any)[processAddress(address)]
-      const round_23=(dataStrkRewards23 as any)[processAddress(address)]
-      const round_24=(dataStrkRewards24 as any)[processAddress(address)]
-      const round_25=(dataStrkRewards25 as any)[processAddress(address)]
-      const round_26=(dataStrkRewards26 as any)[processAddress(address)]
-      const round_27=(dataStrkRewards27 as any)[processAddress(address)]
-      const round_28=(dataStrkRewards28 as any)[processAddress(address)]
-      const round_29=(dataStrkRewards29 as any)[processAddress(address)]
-      const round_30=(dataStrkRewards30 as any)[processAddress(address)]
-      const round_31=(dataStrkRewards as any)[processAddress(address)]
+  useEffect(() => {
+    if (address) {
+      const round_1: any = (dataStrkRewardsRound1 as any)[
+        processAddress(address)
+      ]
+      const round_2 = (dataStrkRewardsRound2 as any)[processAddress(address)]
+      const round_3 = (dataStrkRewardsRound3 as any)[processAddress(address)]
+      const round_4 = (dataStrkRewardsRound4 as any)[processAddress(address)]
+      const round_5 = (dataStrkRewardsRound5 as any)[processAddress(address)]
+      const round_6 = (dataStrkRewardsRound6 as any)[processAddress(address)]
+      const round_7 = (dataStrkRewardsRound7 as any)[processAddress(address)]
+      const round_8 = (dataStrkRewards8 as any)[processAddress(address)]
+      const round_9 = (dataStrkRewards9 as any)[processAddress(address)]
+      const round_10 = (dataStrkRewards10 as any)[processAddress(address)]
+      const round_11 = (dataStrkRewards11 as any)[processAddress(address)]
+      const round_12 = (dataStrkRewards12 as any)[processAddress(address)]
+      const round_13 = (dataStrkRewards13 as any)[processAddress(address)]
+      const round_14 = (dataStrkRewards14 as any)[processAddress(address)]
+      const round_15 = (dataStrkRewards15 as any)[processAddress(address)]
+      const round_16 = (dataStrkRewards16 as any)[processAddress(address)]
+      const round_17 = (dataStrkRewards17 as any)[processAddress(address)]
+      const round_18 = (dataStrkRewards18 as any)[processAddress(address)]
+      const round_19 = (dataStrkRewards19 as any)[processAddress(address)]
+      const round_20 = (dataStrkRewards20 as any)[processAddress(address)]
+      const round_21 = (dataStrkRewards21 as any)[processAddress(address)]
+      const round_22 = (dataStrkRewards22 as any)[processAddress(address)]
+      const round_23 = (dataStrkRewards23 as any)[processAddress(address)]
+      const round_24 = (dataStrkRewards24 as any)[processAddress(address)]
+      const round_25 = (dataStrkRewards25 as any)[processAddress(address)]
+      const round_26 = (dataStrkRewards26 as any)[processAddress(address)]
+      const round_27 = (dataStrkRewards27 as any)[processAddress(address)]
+      const round_28 = (dataStrkRewards28 as any)[processAddress(address)]
+      const round_29 = (dataStrkRewards29 as any)[processAddress(address)]
+      const round_30 = (dataStrkRewards30 as any)[processAddress(address)]
+      const round_31 = (dataStrkRewards as any)[processAddress(address)]
+      const round_32 = (dataStrkRewards32 as any)[processAddress(address)]
       setdataRoundwiseAlloc([
-        parseAmount(round_1?.amount ? round_1?.amount:0 ,18),
-        parseAmount(round_2?.amount ? round_2?.amount:0,18)-parseAmount(round_1?.amount ? round_1?.amount:0 ,18),
-        parseAmount(round_3?.amount ? round_3?.amount:0,18)-parseAmount(round_2?.amount ? round_2?.amount:0 ,18),
-        parseAmount(round_4?.amount ? round_4?.amount:0,18)-parseAmount(round_3?.amount ? round_3?.amount:0 ,18),
-        parseAmount(round_5?.amount ? round_5?.amount:0,18)-parseAmount(round_4?.amount ? round_4?.amount:0 ,18),
-        parseAmount(round_6?.amount ? round_6?.amount:0,18)-parseAmount(round_5?.amount ? round_5?.amount:0 ,18),
-        parseAmount(round_7?.amount ? round_7?.amount:0,18)-parseAmount(round_6?.amount ? round_6?.amount:0 ,18),
-        parseAmount(round_8?.amount ? round_8?.amount:0,18)-parseAmount(round_7?.amount ? round_7?.amount:0 ,18),
-        parseAmount(round_9?.amount ? round_9?.amount:0,18)-parseAmount(round_8?.amount ? round_8?.amount:0 ,18),
-        parseAmount(round_10?.amount ? round_10?.amount:0,18)-parseAmount(round_9?.amount ? round_9?.amount:0 ,18),
-        parseAmount(round_11?.amount ? round_11?.amount:0,18)-parseAmount(round_10?.amount ? round_10?.amount:0 ,18),
-        parseAmount(round_12?.amount ? round_12?.amount:0,18)-parseAmount(round_11?.amount ? round_11?.amount:0 ,18),
-        parseAmount(round_13?.amount ? round_13?.amount:0,18)-parseAmount(round_12?.amount ? round_12?.amount:0 ,18),
-        parseAmount(round_14?.amount ? round_14?.amount:0,18)-parseAmount(round_13?.amount ? round_13?.amount:0 ,18),
-        parseAmount(round_15?.amount ? round_15?.amount:0,18)-parseAmount(round_14?.amount ? round_14?.amount:0 ,18),
-        parseAmount(round_16?.amount ? round_16?.amount:0,18)-parseAmount(round_15?.amount ? round_15?.amount:0 ,18),
-        parseAmount(round_17?.amount ? round_17?.amount:0,18)-parseAmount(round_16?.amount ? round_16?.amount:0 ,18),
-        parseAmount(round_18?.amount ? round_18?.amount:0,18)-parseAmount(round_17?.amount ? round_17?.amount:0 ,18),
-        parseAmount(round_19?.amount ? round_19?.amount:0,18)-parseAmount(round_18?.amount ? round_18?.amount:0 ,18),
-        parseAmount(round_20?.amount ? round_20?.amount:0,18)-parseAmount(round_19?.amount ? round_19?.amount:0 ,18),
-        parseAmount(round_21?.amount ? round_21?.amount:0,18)-parseAmount(round_20?.amount ? round_20?.amount:0 ,18),
-        parseAmount(round_22?.amount ? round_22?.amount:0,18)-parseAmount(round_21?.amount ? round_21?.amount:0 ,18),
-        parseAmount(round_23?.amount ? round_23?.amount:0,18)-parseAmount(round_22?.amount ? round_22?.amount:0 ,18),
-        parseAmount(round_24?.amount ? round_24?.amount:0,18)-parseAmount(round_23?.amount ? round_23?.amount:0 ,18),
-        parseAmount(round_25?.amount ? round_25?.amount:0,18)-parseAmount(round_24?.amount ? round_24?.amount:0 ,18),
-        parseAmount(round_26?.amount ? round_26?.amount:0,18)-parseAmount(round_25?.amount ? round_25?.amount:0 ,18),
-        parseAmount(round_27?.amount ? round_27?.amount:0,18)-parseAmount(round_26?.amount ? round_26?.amount:0 ,18),
-        parseAmount(round_28?.amount ? round_28?.amount:0,18)-parseAmount(round_27?.amount ? round_27?.amount:0 ,18),
-        parseAmount(round_29?.amount ? round_29?.amount:0,18)-parseAmount(round_28?.amount ? round_28?.amount:0 ,18),
-        parseAmount(round_30?.amount ? round_30?.amount:0,18)-parseAmount(round_29?.amount ? round_29?.amount:0 ,18),
-        parseAmount(round_31?.amount ? round_31?.amount:0,18)-parseAmount(round_30?.amount ? round_30?.amount:0 ,18)
+        parseAmount(round_1?.amount ? round_1?.amount : 0, 18),
+        parseAmount(round_2?.amount ? round_2?.amount : 0, 18) -
+          parseAmount(round_1?.amount ? round_1?.amount : 0, 18),
+        parseAmount(round_3?.amount ? round_3?.amount : 0, 18) -
+          parseAmount(round_2?.amount ? round_2?.amount : 0, 18),
+        parseAmount(round_4?.amount ? round_4?.amount : 0, 18) -
+          parseAmount(round_3?.amount ? round_3?.amount : 0, 18),
+        parseAmount(round_5?.amount ? round_5?.amount : 0, 18) -
+          parseAmount(round_4?.amount ? round_4?.amount : 0, 18),
+        parseAmount(round_6?.amount ? round_6?.amount : 0, 18) -
+          parseAmount(round_5?.amount ? round_5?.amount : 0, 18),
+        parseAmount(round_7?.amount ? round_7?.amount : 0, 18) -
+          parseAmount(round_6?.amount ? round_6?.amount : 0, 18),
+        parseAmount(round_8?.amount ? round_8?.amount : 0, 18) -
+          parseAmount(round_7?.amount ? round_7?.amount : 0, 18),
+        parseAmount(round_9?.amount ? round_9?.amount : 0, 18) -
+          parseAmount(round_8?.amount ? round_8?.amount : 0, 18),
+        parseAmount(round_10?.amount ? round_10?.amount : 0, 18) -
+          parseAmount(round_9?.amount ? round_9?.amount : 0, 18),
+        parseAmount(round_11?.amount ? round_11?.amount : 0, 18) -
+          parseAmount(round_10?.amount ? round_10?.amount : 0, 18),
+        parseAmount(round_12?.amount ? round_12?.amount : 0, 18) -
+          parseAmount(round_11?.amount ? round_11?.amount : 0, 18),
+        parseAmount(round_13?.amount ? round_13?.amount : 0, 18) -
+          parseAmount(round_12?.amount ? round_12?.amount : 0, 18),
+        parseAmount(round_14?.amount ? round_14?.amount : 0, 18) -
+          parseAmount(round_13?.amount ? round_13?.amount : 0, 18),
+        parseAmount(round_15?.amount ? round_15?.amount : 0, 18) -
+          parseAmount(round_14?.amount ? round_14?.amount : 0, 18),
+        parseAmount(round_16?.amount ? round_16?.amount : 0, 18) -
+          parseAmount(round_15?.amount ? round_15?.amount : 0, 18),
+        parseAmount(round_17?.amount ? round_17?.amount : 0, 18) -
+          parseAmount(round_16?.amount ? round_16?.amount : 0, 18),
+        parseAmount(round_18?.amount ? round_18?.amount : 0, 18) -
+          parseAmount(round_17?.amount ? round_17?.amount : 0, 18),
+        parseAmount(round_19?.amount ? round_19?.amount : 0, 18) -
+          parseAmount(round_18?.amount ? round_18?.amount : 0, 18),
+        parseAmount(round_20?.amount ? round_20?.amount : 0, 18) -
+          parseAmount(round_19?.amount ? round_19?.amount : 0, 18),
+        parseAmount(round_21?.amount ? round_21?.amount : 0, 18) -
+          parseAmount(round_20?.amount ? round_20?.amount : 0, 18),
+        parseAmount(round_22?.amount ? round_22?.amount : 0, 18) -
+          parseAmount(round_21?.amount ? round_21?.amount : 0, 18),
+        parseAmount(round_23?.amount ? round_23?.amount : 0, 18) -
+          parseAmount(round_22?.amount ? round_22?.amount : 0, 18),
+        parseAmount(round_24?.amount ? round_24?.amount : 0, 18) -
+          parseAmount(round_23?.amount ? round_23?.amount : 0, 18),
+        parseAmount(round_25?.amount ? round_25?.amount : 0, 18) -
+          parseAmount(round_24?.amount ? round_24?.amount : 0, 18),
+        parseAmount(round_26?.amount ? round_26?.amount : 0, 18) -
+          parseAmount(round_25?.amount ? round_25?.amount : 0, 18),
+        parseAmount(round_27?.amount ? round_27?.amount : 0, 18) -
+          parseAmount(round_26?.amount ? round_26?.amount : 0, 18),
+        parseAmount(round_28?.amount ? round_28?.amount : 0, 18) -
+          parseAmount(round_27?.amount ? round_27?.amount : 0, 18),
+        parseAmount(round_29?.amount ? round_29?.amount : 0, 18) -
+          parseAmount(round_28?.amount ? round_28?.amount : 0, 18),
+        parseAmount(round_30?.amount ? round_30?.amount : 0, 18) -
+          parseAmount(round_29?.amount ? round_29?.amount : 0, 18),
+        parseAmount(round_31?.amount ? round_31?.amount : 0, 18) -
+          parseAmount(round_30?.amount ? round_30?.amount : 0, 18),
+        parseAmount(round_32?.amount ? round_32?.amount : 0, 18) -
+          parseAmount(round_31?.amount ? round_31?.amount : 0, 18),
       ])
     }
-  },[address])
+  }, [address])
 
-  useEffect(()=>{
-    if(leaderBoardData.length>0){
+  useEffect(() => {
+    if (leaderBoardData.length > 0) {
       setLoading(false)
     }
-  },[leaderBoardData])
+  }, [leaderBoardData])
 
   // Function to toggle the open state of an epoch
   const toggleEpochSelection = (idxEpoch: any) => {
@@ -732,7 +778,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   height="56px"
                   position="relative"
                   cursor="pointer"
-                  top={ccpDropdownSelected ?`${(ccpUserData.length * 68) +34}px`: "0.5rem"}
+                  top={
+                    ccpDropdownSelected
+                      ? `${ccpUserData.length * 68 + 34}px`
+                      : '0.5rem'
+                  }
                   p={0}
                   onClick={() => {
                     setdefiSpringDropdownSelected(!defiSpringDropdownSelected)
@@ -834,9 +884,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     >
                       <Tooltip
                         hasArrow
-                        label={
-                          ""
-                        }
+                        label={''}
                         placement="right"
                         rounded="md"
                         boxShadow="dark-lg"
@@ -850,7 +898,12 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         borderColor="#23233D"
                         arrowShadowColor="#2B2F35"
                       >
-                        <Text>{numberFormatter(totalStrkRewards ? totalStrkRewards:0)} STRK</Text>
+                        <Text>
+                          {numberFormatter(
+                            totalStrkRewards ? totalStrkRewards : 0
+                          )}{' '}
+                          STRK
+                        </Text>
                       </Tooltip>
                     </Text>
                   </Td>
@@ -878,9 +931,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     >
                       <Tooltip
                         hasArrow
-                        label={
-                          "Next Claim on 30 December"
-                        }
+                        label={'Next Claim on 15 January'}
                         placement="right"
                         rounded="md"
                         boxShadow="dark-lg"
@@ -897,11 +948,10 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         <Text
                           textDecoration="underline"
                           cursor="pointer"
-                          color={strkRewards<=0?'#3E415C': "#F0F0F5"}
-                          onClick={()=>{
-                            if(strkRewards<=0){
-
-                            }else{
+                          color={strkRewards <= 0 ? '#3E415C' : '#F0F0F5'}
+                          onClick={() => {
+                            if (strkRewards <= 0) {
+                            } else {
                               handleClaimStrk()
                             }
                           }}
@@ -941,7 +991,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       ? defiSpringDropdownSelected
                         ? `${ccpUserData.length * 68 + 64 * 1.7 + 34}px`
                         : `${ccpUserData.length * 68}px`
-                      : `${2 * 68*0.9}px`
+                      : `${2 * 68 * 0.9}px`
                   }
                 >
                   {defiSpringDropdownSelected && (
@@ -950,25 +1000,21 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                       mt="1rem"
                       mr="2rem"
                       ml="2rem"
-                      border={
-                         '1px solid #676D9A48'
-                      }
-                      borderBottom={
-                       '1px solid #676D9A48' 
-                      }
+                      border={'1px solid #676D9A48'}
+                      borderBottom={'1px solid #676D9A48'}
                     >
                       {defiSpringRoundCount.map((epochs: any, idxDefi: any) => (
                         <Box key={idxDefi}>
                           <Box
                             display="flex"
                             // borderTop={
-                            //    '1px solid #676D9A48' 
+                            //    '1px solid #676D9A48'
                             // }
                             // borderLeft={
-                            //    '1px solid #676D9A48' 
+                            //    '1px solid #676D9A48'
                             // }
                             // borderRight={
-                            //   '1px solid #676D9A48' 
+                            //   '1px solid #676D9A48'
                             // }
                             // borderRadius={
                             //   openEpochs.length > 0
@@ -984,23 +1030,20 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                             fontSize="14px"
                             fontWeight="400"
                             lineHeight="20px"
-                            onClick={() => {
-                            }}
+                            onClick={() => {}}
                           >
-                            <Text>Round {idxDefi+1}</Text>
-                            <Text>
-                              {datesDefiSpringRounds[idxDefi]}
-                            </Text>
+                            <Text>Round {idxDefi + 1}</Text>
+                            <Text>{datesDefiSpringRounds[idxDefi]}</Text>
                             <Box display="flex" gap="1.5rem">
                               <Text>
-                                {numberFormatter(dataRoundwiseAlloc[idxDefi])} STRK
-                                tokens earned
+                                {numberFormatter(dataRoundwiseAlloc[idxDefi])}{' '}
+                                STRK tokens earned
                               </Text>
                             </Box>
                           </Box>
                           <Box
                             borderBottom={
-                              idxDefi != 30
+                              idxDefi != defiSpringRoundCount.length - 1
                                 ? isEpochOpen(idxDefi)
                                   ? ''
                                   : '1px solid #676D9A48'
@@ -1026,9 +1069,14 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   p={0}
                   top={
                     ccpDropdownSelected
-                      ? defiSpringDropdownSelected ?`${(defiSpringRoundCount.length+ccpUserData.length) * 68 + 34*2.5}px`: `${ccpUserData.length * 68 + 34*1.2}px`
-                      : defiSpringDropdownSelected ?`${defiSpringRoundCount.length * 68 + 34*1.8}px`:epochDropdownSelected ?'16px':
-                       '4px'
+                      ? defiSpringDropdownSelected
+                        ? `${(defiSpringRoundCount.length + ccpUserData.length) * 68 + 34 * 2.5}px`
+                        : `${ccpUserData.length * 68 + 34 * 1.2}px`
+                      : defiSpringDropdownSelected
+                        ? `${defiSpringRoundCount.length * 68 + 34 * 1.8}px`
+                        : epochDropdownSelected
+                          ? '16px'
+                          : '4px'
                   }
                   style={{ borderRadius: '6px' }}
                 >
@@ -1133,7 +1181,12 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                         arrowShadowColor="#2B2F35"
                       >
                         <Text>
-                          {numberFormatter((member.est + member.hashAllocated)?member.est + member.hashAllocated:0)} HASH
+                          {numberFormatter(
+                            member.est + member.hashAllocated
+                              ? member.est + member.hashAllocated
+                              : 0
+                          )}{' '}
+                          HASH
                         </Text>
                       </Tooltip>
                     </Text>
@@ -1194,11 +1247,14 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                   pl="1rem"
                   top={
                     ccpDropdownSelected
-                      ? defiSpringDropdownSelected ?`${(defiSpringRoundCount.length+ccpUserData.length) * 68 + 64 * 3.5 + 34}px`: epochDropdownSelected
-                        ? `${ccpUserData.length * 68 + 64 * 2.8 + 34}px`
-                        : `${ccpUserData.length * 68}px`
-                      : defiSpringDropdownSelected ?`${defiSpringRoundCount.length * 68 + 64 * 3.0 + 34}px`:
-                       `${2 * 68  + 34*1.8}px`
+                      ? defiSpringDropdownSelected
+                        ? `${(defiSpringRoundCount.length + ccpUserData.length) * 68 + 64 * 3.5 + 34}px`
+                        : epochDropdownSelected
+                          ? `${ccpUserData.length * 68 + 64 * 2.8 + 34}px`
+                          : `${ccpUserData.length * 68}px`
+                      : defiSpringDropdownSelected
+                        ? `${defiSpringRoundCount.length * 68 + 64 * 3.0 + 34}px`
+                        : `${2 * 68 + 34 * 1.8}px`
                   }
                 >
                   {epochDropdownSelected && (
@@ -1377,8 +1433,12 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     borderTop="1px solid rgba(103, 109, 154, 0.30)"
                     top={
                       ccpDropdownSelected
-                        ? defiSpringDropdownSelected ?`${(ccpUserData.length+defiSpringRoundCount.length) * 68  + 64 * 3.9}px`: `${ccpUserData.length * 68 + 64 * 3.2}px`
-                        : defiSpringDropdownSelected ?`${defiSpringRoundCount.length * 68 + 64 * 3.5}px`:''
+                        ? defiSpringDropdownSelected
+                          ? `${(ccpUserData.length + defiSpringRoundCount.length) * 68 + 64 * 3.9}px`
+                          : `${ccpUserData.length * 68 + 64 * 3.2}px`
+                        : defiSpringDropdownSelected
+                          ? `${defiSpringRoundCount.length * 68 + 64 * 3.5}px`
+                          : ''
                     }
                   />
                 )}

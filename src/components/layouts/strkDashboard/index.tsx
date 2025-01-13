@@ -58,8 +58,8 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import PageCard from '../pageCard'
-import dataStrkRewards from '../strkDashboard/round_31.json'
-import dataStrkRewardsZklend from '../strkDashboard/zkLend_31.json'
+import dataStrkRewards from '../strkDashboard/round_32.json'
+import dataStrkRewardsZklend from '../strkDashboard/zkLend_32.json'
 import { processAddress } from '@/Blockchain/stark-constants'
 export interface ICoin {
   name: string
@@ -132,7 +132,7 @@ const StrkDashboard = () => {
   const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([])
   const [validRTokens, setValidRTokens] = useState([])
   const userDeposits = useSelector(selectUserDeposits)
-  const { account,address } = useAccount()
+  const { account, address } = useAccount()
   const poolApr = useSelector(selectJediswapPoolAprs)
   const strkTokenAlloactionData = useSelector(selectJedistrkTokenAllocation)
   const strkData = useSelector(selectStrkAprData)
@@ -166,23 +166,27 @@ const StrkDashboard = () => {
   useEffect(() => {
     const fetchClaimedBalance = async () => {
       if (address) {
-        const data: any = await getUserSTRKClaimedAmount(processAddress(address))
-        const dataAmount: any = (dataStrkRewards as any)[processAddress(address)]
+        const data: any = await getUserSTRKClaimedAmount(
+          processAddress(address)
+        )
+        const dataAmount: any = (dataStrkRewards as any)[
+          processAddress(address)
+        ]
         if (dataAmount) {
           setstrkAmount(dataAmount?.amount)
           setProof(dataAmount?.proofs)
           setstrkRewards(parseAmount(String(dataAmount?.amount), 18) - data)
           settotalStrkRewards(parseAmount(String(dataAmount?.amount), 18))
-          if(data){
+          if (data) {
             setstrkClaimedRewards(data)
-          }else{
-            setstrkClaimedRewards(0);
+          } else {
+            setstrkClaimedRewards(0)
           }
         } else {
-          if(data){
+          if (data) {
             setstrkClaimedRewards(data)
-          }else{
-            setstrkClaimedRewards(0);
+          } else {
+            setstrkClaimedRewards(0)
           }
           setstrkRewards(0)
           settotalStrkRewards(0)
@@ -195,7 +199,9 @@ const StrkDashboard = () => {
   useEffect(() => {
     const fetchstrkrewards = async () => {
       if (address) {
-        const dataAmount: any = (dataStrkRewards as any)[processAddress(address)]
+        const dataAmount: any = (dataStrkRewards as any)[
+          processAddress(address)
+        ]
         const matchedUser = dataStrkRewardsZklend.find(
           (userObj) => userObj.user === processAddress(address)
         )
@@ -288,7 +294,6 @@ const StrkDashboard = () => {
       })
     }
   }
-
 
   // useEffect(()=>{
   //   try{
@@ -616,49 +621,51 @@ const StrkDashboard = () => {
               )}
             </Tooltip>
           </Box>
-          {strkRewards>=0 &&<Box gap="0.2rem">
-            <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
-              Claimed STRK Reward
-            </Text>
-            <Tooltip
-              hasArrow
-              label={''}
-              placement={'bottom'}
-              rounded="md"
-              boxShadow="dark-lg"
-              bg="#02010F"
-              fontSize={'13px'}
-              fontWeight={'400'}
-              borderRadius={'lg'}
-              padding={'2'}
-              color="#F0F0F5"
-              border="1px solid"
-              borderColor="#23233D"
-              arrowShadowColor="#676D9A4D"
-              textAlign="left"
-              // maxW="222px"
-              // mt="28px"
-            >
-              {strkClaimedRewards == null ? (
-                <Skeleton
-                  width="6rem"
-                  height="1.2rem"
-                  startColor="#101216"
-                  endColor="#2B2F35"
-                  borderRadius="6px"
-                />
-              ) : (
-                <Text
-                  fontSize="16px"
-                  fontWeight="500"
-                  color="white"
-                  textAlign="left"
-                >
-                  {numberFormatter(strkClaimedRewards)} STRK
-                </Text>
-              )}
-            </Tooltip>
-          </Box>}
+          {strkRewards >= 0 && (
+            <Box gap="0.2rem">
+              <Text fontSize="14px" fontWeight="400" color="#B1B0B5">
+                Claimed STRK Reward
+              </Text>
+              <Tooltip
+                hasArrow
+                label={''}
+                placement={'bottom'}
+                rounded="md"
+                boxShadow="dark-lg"
+                bg="#02010F"
+                fontSize={'13px'}
+                fontWeight={'400'}
+                borderRadius={'lg'}
+                padding={'2'}
+                color="#F0F0F5"
+                border="1px solid"
+                borderColor="#23233D"
+                arrowShadowColor="#676D9A4D"
+                textAlign="left"
+                // maxW="222px"
+                // mt="28px"
+              >
+                {strkClaimedRewards == null ? (
+                  <Skeleton
+                    width="6rem"
+                    height="1.2rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                  />
+                ) : (
+                  <Text
+                    fontSize="16px"
+                    fontWeight="500"
+                    color="white"
+                    textAlign="left"
+                  >
+                    {numberFormatter(strkClaimedRewards)} STRK
+                  </Text>
+                )}
+              </Tooltip>
+            </Box>
+          )}
           <Button
             height={'2rem'}
             fontSize={'12px'}
@@ -680,7 +687,7 @@ const StrkDashboard = () => {
             }}
             fontWeight="semibold"
             borderRadius={'6px'}
-            isDisabled={strkRewards<=0}
+            isDisabled={strkRewards <= 0}
             onClick={() => {
               if (strkRewards <= 0) {
               } else {
@@ -1112,7 +1119,13 @@ const StrkDashboard = () => {
                     {pool}
                   </Text>
                 </Box>
-                <Box display="flex" justifyContent="center" mt="0.5rem" gap="0.8rem" width="150px">
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  mt="0.5rem"
+                  gap="0.8rem"
+                  width="150px"
+                >
                   <Text fontSize="10px" color="#BDBFC1" fontWeight="400">
                     Pool APR:{' '}
                     {numberFormatterPercentage(
