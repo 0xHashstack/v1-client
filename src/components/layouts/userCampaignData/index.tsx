@@ -23,6 +23,7 @@ import useClaimStrk from '@/Blockchain/hooks/Writes/useStrkClaim'
 import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards'
 import { parseAmount } from '@/Blockchain/utils/utils'
 import { useAccount } from '@starknet-react/core'
+import dataStrkRewards33 from '../../layouts/strkDashboard/round_33.json'
 import dataStrkRewards32 from '../../layouts/strkDashboard/round_32.json'
 import dataStrkRewards from '../../layouts/strkDashboard/round_31.json'
 import dataStrkRewards30 from '../../layouts/strkDashboard/round_30.json'
@@ -137,7 +138,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
   const [hoverccpDrop, sethoverccpDrop] = useState(false)
   const [hoverDefiDrop, sethoverDefiDrop] = useState(false)
   const [defiSpringRoundCount, setDefiSpringRoundCount] = useState(
-    new Array(32).fill(0)
+    new Array(33).fill(0)
   )
   let topLength = ccpUserData.length * 5.15
   const [strkRewards, setstrkRewards] = useState<any>(0)
@@ -183,6 +184,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
     '8 Dec 2024 - 15 Dec 2024',
     '15 Dec 2024 - 22 Dec 2024',
     '22 Dec 2024 - 29 Dec 2024',
+    '29 Dec 2024 - 5 Jan 2025'
   ]
   const { address } = useAccount()
   const {
@@ -329,6 +331,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
       const round_30 = (dataStrkRewards30 as any)[processAddress(address)]
       const round_31 = (dataStrkRewards as any)[processAddress(address)]
       const round_32 = (dataStrkRewards32 as any)[processAddress(address)]
+      const round_33 = (dataStrkRewards33 as any)[processAddress(address)]
       setdataRoundwiseAlloc([
         parseAmount(round_1?.amount ? round_1?.amount : 0, 18),
         parseAmount(round_2?.amount ? round_2?.amount : 0, 18) -
@@ -393,6 +396,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
           parseAmount(round_30?.amount ? round_30?.amount : 0, 18),
         parseAmount(round_32?.amount ? round_32?.amount : 0, 18) -
           parseAmount(round_31?.amount ? round_31?.amount : 0, 18),
+          parseAmount(round_33?.amount ? round_33?.amount : 0, 18) -
+          parseAmount(round_32?.amount ? round_32?.amount : 0, 18),
       ])
     }
   }, [address])
@@ -931,7 +936,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
                     >
                       <Tooltip
                         hasArrow
-                        label={'Next Claim on 15 January'}
+                        label={'Next Claim on 27 January'}
                         placement="right"
                         rounded="md"
                         boxShadow="dark-lg"
