@@ -127,7 +127,24 @@
 	* {
 		@apply border-border;
 	}
+	html {
+		background: rgba(115, 49, 234, 0.15);
+	}
 	body {
 		@apply text-foreground;
+		background:
+			radial-gradient(
+					circle 1800px at top left,
+					rgba(115, 49, 234, 0.15),
+					transparent
+				)
+				top left,
+			radial-gradient(
+					circle 1300px at bottom right,
+					rgba(115, 49, 234, 0.15),
+					transparent
+				)
+				bottom right,
+			black;
 	}
 }

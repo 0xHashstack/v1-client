@@ -1,253 +1,41 @@
+'use client';
 import { Link as ChakraLink } from '@chakra-ui/react';
-import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { memo, useEffect, useRef, useState } from 'react';
+import { memo } from 'react';
 
 import BellIcon from '@/assets/icons/BellIcon';
 import StakeUnstakeModal from '@/components/modals/StakeUnstakeModal';
-import TransferDepositModal from '@/components/modals/TransferDepositModal';
 import GetTokensModal from '@/components/modals/getTokens';
-import {
-	selectCurrentDropdown,
-	selectNavDropdowns,
-	setNavDropdown,
-} from '@/store/slices/dropdownsSlice';
-import {
-	resetState,
-	selectCurrentNetwork,
-	selectInteractedAddress,
-	selectNftBalance,
-	selectUserType,
-	selectWhiteListed,
-	selectYourBorrow,
-	selectYourSupply,
-	setInteractedAddress,
-} from '@/store/slices/readDataSlice';
-import {
-	selectAccountAddress,
-	selectLanguage,
-	setAccountReset,
-	setLanguage,
-} from '@/store/slices/userAccountSlice';
-import { languages } from '@/utils/constants/languages';
-import { Box, HStack, Skeleton, Text, useOutsideClick } from '@chakra-ui/react';
-import { useAccount, useConnect, useDisconnect } from '@starknet-react/core';
-import { useRouter } from 'next/navigation';
+import { Box, HStack, Skeleton, Text } from '@chakra-ui/react';
 import posthog from 'posthog-js';
-import { useDispatch, useSelector } from 'react-redux';
-import { AccountInterface, ProviderInterface, number } from 'starknet';
-import arrowNavLeft from '../../../assets/images/arrowNavLeft.svg';
-import arrowNavRight from '../../../assets/images/arrowNavRight.svg';
-import darkModeOff from '../../../assets/images/darkModeOff.svg';
-import darkModeOn from '../../../assets/images/darkModeOn.svg';
-import hoverContributeEarnIcon from '../../../assets/images/hoverContributeEarnIcon.svg';
 import hoverDashboardIcon from '../../../assets/images/hoverDashboardIcon.svg';
-import hoverStake from '../../../assets/images/hoverStakeIcon.svg';
-import tickMark from '../../../assets/images/tickMark.svg';
 import { Coins } from '../dashboardLeft';
-
-interface ExtendedAccountInterface extends AccountInterface {
-	provider?: {
-		chainId: string;
-	};
-}
+import { useNavbar } from './useNavbar';
+import NavbarSettings from './NavbarSettings';
+import NavbarNotifications from './NavbarNotifications';
 
 const Navbar = ({ validRTokens }: any) => {
-	const dispatch = useDispatch();
-	const navDropdowns = useSelector(selectNavDropdowns);
-	const language = useSelector(selectLanguage);
-	const currentDropdown = useSelector(selectCurrentDropdown);
-	const { account } = useAccount();
-	const currentChainId = useSelector(selectCurrentNetwork);
-	const [dashboardHover, setDashboardHover] = useState(false);
-	const [campaignHover, setCampaignHover] = useState(false);
-	const [contibutionHover, setContibutionHover] = useState(false);
-	const [transferDepositHover, setTransferDepositHover] = useState(false);
-	const [stakeHover, setStakeHover] = useState(false);
-	const { connect, connectors } = useConnect();
-	const { disconnect } = useDisconnect();
-	const handleDropdownClick = (dropdownName: string) => {
-		dispatch(setNavDropdown(dropdownName));
-	};
-	const [domainName, setDomainName] = useState('');
-	const [justifyContent, setJustifyContent] = useState('flex-start');
-	const [toggleDarkMode, setToggleDarkMode] = useState(true);
-	const toggleMode = () => {
-		setJustifyContent(
-			justifyContent === 'flex-start' ? 'flex-end' : 'flex-start'
-		);
-	};
-	const totalBorrow = useSelector(selectYourBorrow);
-	const totalSupply = useSelector(selectYourSupply);
+	const {
+		navDropdowns,
+		language,
+		account,
+		domainName,
+		stakeHover,
+		Render,
+		pathname,
 
-	const { connector } = useAccount();
-
-	const router = useRouter();
-	const { pathname } = router;
-
-	const ref1 = useRef<HTMLDivElement>(null);
-	const ref2 = useRef<HTMLDivElement>(null);
-	const ref3 = useRef<HTMLDivElement>(null);
-	const nftBalance: any = useSelector(selectNftBalance);
-
-	useOutsideClick({
-		ref: ref1,
-		handler: (e) => {
-			if (
-				ref1.current &&
-				ref2.current &&
-				ref3.current &&
-				!ref1.current.contains(e.target as Node) &&
-				!ref2.current.contains(e.target as Node) &&
-				!ref3.current.contains(e.target as Node) &&
-				currentDropdown != ''
-			) {
-				dispatch(setNavDropdown(''));
-			}
-		},
-	});
-
-	useOutsideClick({
-		ref: ref3,
-		handler: (e) => {
-			if (
-				ref1.current &&
-				ref2.current &&
-				ref3.current &&
-				!ref1.current.contains(e.target as Node) &&
-				!ref2.current.contains(e.target as Node) &&
-				!ref3.current.contains(e.target as Node) &&
-				currentDropdown != ''
-			) {
-				dispatch(setNavDropdown(''));
-			}
-		},
-	});
-
-	useOutsideClick({
-		ref: ref3,
-		handler: (e) => {
-			if (
-				ref1.current &&
-				ref2.current &&
-				ref3.current &&
-				!ref1.current.contains(e.target as Node) &&
-				!ref2.current.contains(e.target as Node) &&
-				!ref3.current.contains(e.target as Node) &&
-				currentDropdown != ''
-			) {
-				dispatch(setNavDropdown(''));
-			}
-		},
-	});
-
-	const switchWallet = () => {
-		if (connectors[0]?.id == 'braavos') {
-			dispatch(resetState(null));
-			dispatch(setAccountReset(null));
-			localStorage.setItem('lastUsedConnector', 'argentX');
-			localStorage.setItem('connected', 'argentX');
-			connectors.map((connector: any) => {
-				if (connector.id == 'argentX') {
-					connect({ connector });
-				}
-			});
-			router.push('/v1/market');
-		} else {
-			dispatch(resetState(null));
-			dispatch(setAccountReset(null));
-			localStorage.setItem('lastUsedConnector', 'braavos');
-			localStorage.setItem('connected', 'braavos');
-			connectors.map((connector: any) => {
-				if (connector.id == 'braavos') {
-					connect({ connector });
-				}
-			});
-			router.push('/v1/market');
-		}
-	};
-
-	useEffect(() => {
-		async function fetchDomainName() {
-			if (account?.address) {
-				try {
-					const res: any = await axios.get(
-						`https://api.starknet.id/addr_to_domain?addr=${account?.address}`
-					);
-					setDomainName(res?.data?.domain);
-				} catch (error) {
-					console.log('address to domain error', error);
-				}
-			}
-		}
-		fetchDomainName();
-	}, [account?.address, domainName]);
-
-	const extendedAccount = account as ExtendedAccountInterface;
-	const [isCorrectNetwork, setisCorrectNetwork] = useState(true);
-	const { address, status, isConnected } = useAccount();
-
-	const [whitelisted, setWhitelisted] = useState(true);
-	const [uniqueToken, setUniqueToken] = useState('');
-	const [referralLinked, setRefferalLinked] = useState(false);
-	const userType = useSelector(selectUserType);
-	const [Render, setRender] = useState(true);
-	const userWhitelisted = useSelector(selectWhiteListed);
-
-	useEffect(() => {
-		function isCorrectNetwork() {
-			const walletConnected = localStorage.getItem('lastUsedConnector');
-			const network = process.env.NEXT_PUBLIC_NODE_ENV;
-
-			if (walletConnected == 'braavos') {
-				if (network == 'testnet') {
-					return (
-						extendedAccount.provider?.chainId ==
-						process.env.NEXT_PUBLIC_TESTNET_CHAINID
-					);
-				} else {
-					return (
-						extendedAccount.provider?.chainId ==
-						process.env.NEXT_PUBLIC_MAINNET_CHAINID
-					);
-				}
-			} else if (walletConnected == 'argentX') {
-				// Your code here
-				if (network == 'testnet') {
-					return (
-						extendedAccount.provider?.chainId ===
-						process.env.NEXT_PUBLIC_TESTNET_CHAINID
-					);
-				} else {
-					return (
-						extendedAccount.provider?.chainId ===
-						process.env.NEXT_PUBLIC_MAINNET_CHAINID
-					);
-				}
-			}
-		}
-
-		const isWhiteListed = async () => {
-			try {
-				if (!address) {
-					return;
-				}
-				const url = `https://hstk.fi/is-whitelisted/${address}`;
-				const response = await axios.get(url);
-				setWhitelisted(response.data?.isWhitelisted);
-			} catch (err) {}
-		};
-		isWhiteListed();
-
-		if (account && !isCorrectNetwork()) {
-			setRender(false);
-		} else {
-			setRender(true);
-		}
-	}, [account, whitelisted, userWhitelisted, referralLinked]);
-	const [allowedReferral, setAllowedReferral] = useState(false);
-	const interactedAddress = useSelector(selectInteractedAddress);
+		setStakeHover,
+		switchWallet,
+		connect,
+		disconnect,
+		dispatch,
+		router,
+		connectors,
+		setNavDropdown,
+		resetState,
+		setAccountReset,
+	} = useNavbar(validRTokens);
 
 	return (
 		<HStack
@@ -272,9 +60,9 @@ const Navbar = ({ validRTokens }: any) => {
 				marginLeft='2rem'>
 				<Link
 					href={
-						router.pathname != '/v1/waitlist' ?
-							'/v1/market'
-						:	'/v1/waitlist'
+						pathname != '/v1/waitlist' ? '/v1/market' : (
+							'/v1/waitlist'
+						)
 					}>
 					<Box
 						height='100%'
@@ -307,20 +95,18 @@ const Navbar = ({ validRTokens }: any) => {
 						:	'#676D9A'
 					}
 					onClick={() => {
-						if (router.pathname != '/waitlist') {
+						if (pathname != '/waitlist') {
 							router.push('/v1/market');
 						}
-					}}
-					onMouseEnter={() => setDashboardHover(true)}
-					onMouseLeave={() => setDashboardHover(false)}>
+					}}>
 					<Box
 						display='flex'
 						justifyContent='space-between'
 						alignItems='center'
 						gap={'8px'}>
 						{(
-							router.pathname == '/v1/campaigns' ||
-							router.pathname == '/v1/referral'
+							pathname == '/v1/campaigns' ||
+							pathname == '/v1/referral'
 						) ?
 							<Image
 								src={hoverDashboardIcon}
@@ -350,7 +136,7 @@ const Navbar = ({ validRTokens }: any) => {
 						cursor={Render ? 'pointer' : 'not-allowed'}
 						marginBottom='0px'
 						_hover={{
-							color: `${router.pathname != '/waitlist' ? '#6e7681' : ''}`,
+							color: `${pathname != '/waitlist' ? '#6e7681' : ''}`,
 						}}
 						onMouseEnter={() => setStakeHover(true)}
 						onMouseLeave={() => setStakeHover(false)}
@@ -457,8 +243,7 @@ const Navbar = ({ validRTokens }: any) => {
 						justifyContent='center'
 						gap='1px'
 						flexGrow='1'
-						className='button navbar'
-						ref={ref2}>
+						className='button navbar'>
 						<Box
 							display='flex'
 							border='1px solid #676D9A'
@@ -637,427 +422,16 @@ const Navbar = ({ validRTokens }: any) => {
 							</Box>
 						)}
 					</Box>
-					<Box
-						ml='0.5rem'
-						cursor='pointer'
-						ref={ref3}
-						onClick={() => {
-							dispatch(setNavDropdown('recentUpdatesDropdown'));
-						}}>
-						<BellIcon />
-					</Box>
 
-					{navDropdowns.recentUpdatesDropdown && (
-						<Box
-							width='390px'
-							mr='8rem'
-							mt='-1.1rem'
-							display='flex'
-							justifyContent='center'
-							flexDirection='column'
-							gap='18px'
-							padding='0.7rem 1rem'
-							boxShadow='1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409'
-							borderRadius='6px'
-							background='var(--Base_surface, #02010F)'
-							border='1px solid rgba(103, 109, 154, 0.30)'
-							className='dropdown-container'
-							userSelect='none'>
-							<Box
-								display='flex'
-								gap='0.5rem'
-								w='full'
-								justifyContent='space-between'>
-								<Text fontSize='12px'>Notifications</Text>
-								<Image
-									style={{ cursor: 'pointer' }}
-									src={'/cross.svg'}
-									alt='Arrow Navigation Left'
-									width='20'
-									height='20'
-								/>
-							</Box>
+					<NavbarNotifications />
 
-							<Box
-								display='flex'
-								flexDirection='column'
-								gap='1rem'>
-								<Box
-									display='flex'
-									pb='0.8rem'
-									gap='0.8rem'
-									alignItems='center'
-									borderBottom='1px solid #34345699'>
-									<Box
-										width='120px'
-										height='60px'
-										position='relative'>
-										<Image
-											src='/defi_spring_noti_banner.svg'
-											alt='Degen Mode'
-											fill
-											objectFit='cover'
-											style={{ borderRadius: '6px' }}
-										/>
-									</Box>
-									<Box
-										display='flex'
-										flexDir='column'
-										justifyContent='center'
-										alignItems='start'
-										height='full'
-										gap='1'>
-										<Text
-											fontSize='16px'
-											lineHeight='5'
-											fontWeight='bold'
-											color='#BDBFC1'>
-											Starknet DeFi Spring <br /> is Live!
-										</Text>
-										<Text
-											fontSize='12px'
-											lineHeight='18px'
-											color='F0F0F5'
-											whiteSpace='nowrap'>
-											Earn $STRK tokens
-											<ChakraLink
-												href='https://hashstack.medium.com/farm-strk-token-on-hashstack-v1-e2287d6f94f9'
-												target='_blank'
-												textDecoration='underline'
-												color='#4D59E8'
-												fontSize='12px'
-												fontWeight='semibold'
-												cursor='pointer'
-												ml='1'>
-												Learn more
-											</ChakraLink>
-										</Text>
-									</Box>
-								</Box>
-
-								<Box
-									display='flex'
-									pb='0.8rem'
-									gap='0.8rem'
-									borderBottom='1px solid #34345699'>
-									<Box
-										width='120px'
-										height='60px'
-										position='relative'>
-										<Image
-											src='/degen_banner.svg'
-											alt='Degen Mode'
-											fill
-											objectFit='cover'
-											style={{ borderRadius: '6px' }}
-										/>
-									</Box>
-									<Box
-										display='flex'
-										flexDir='column'
-										justifyContent='center'
-										alignItems='start'
-										height='full'
-										gap='1'>
-										<Text
-											fontSize='16px'
-											lineHeight='5'
-											fontWeight='bold'
-											color='#BDBFC1'>
-											Hashstack Degen Mode <br /> Is Live!
-										</Text>
-										<Text
-											fontSize='12px'
-											lineHeight='18px'
-											color='F0F0F5'>
-											Earn $STRK tokens
-											<ChakraLink
-												href='https://app.hashstack.finance/v1/degen/'
-												textDecoration='underline'
-												color='#4D59E8'
-												fontSize='12px'
-												fontWeight='semibold'
-												cursor='pointer'
-												ml='1'>
-												Explore
-											</ChakraLink>
-										</Text>
-									</Box>
-								</Box>
-
-								<Box
-									display='flex'
-									gap='0.8rem'
-									pb='0.2rem'>
-									<Box
-										width='120px'
-										height='60px'
-										position='relative'>
-										<Image
-											src='/ccp_noti_banner.svg'
-											alt='Degen Mode'
-											fill
-											objectFit='cover'
-											style={{ borderRadius: '6px' }}
-										/>
-									</Box>
-									<Box
-										display='flex'
-										flexDir='column'
-										justifyContent='center'
-										alignItems='start'
-										height='full'
-										gap='1'>
-										<Text
-											fontSize='16px'
-											lineHeight='5'
-											fontWeight='bold'
-											color='#BDBFC1'>
-											Content Creators <br /> Program
-										</Text>
-										<Text
-											fontSize='12px'
-											lineHeight='18px'
-											color='F0F0F5'>
-											Create content and
-											<ChakraLink
-												href='https://app.hashstack.finance/v1/campaigns/'
-												textDecoration='underline'
-												color='#4D59E8'
-												fontSize='12px'
-												fontWeight='semibold'
-												cursor='pointer'
-												ml='1'>
-												Earn Points
-											</ChakraLink>
-										</Text>
-									</Box>
-								</Box>
-							</Box>
-						</Box>
-					)}
-
-					<Box
-						borderRadius='6px'
-						width='fit-content'
-						padding='1px'
-						cursor='pointer'
-						display='flex'
-						flexDirection='column'
-						alignItems='center'
-						justifyContent='center'
-						gap='8px'
-						flexGrow='1'
-						className='button navbar'
-						ref={ref1}
-						ml='0.4rem'
-						userSelect='none'>
-						<Box
-							display='flex'
-							flexDirection='row'
-							justifyContent='center'
-							alignItems='center'
-							className='navbar-button'
-							mr='0.5rem'
-							onClick={() => {
-								dispatch(setNavDropdown('settingsDropdown'));
-							}}>
-							<Image
-								src='/settingIcon.svg'
-								alt='Picture of the author'
-								width='18'
-								height='18'
-								style={{
-									cursor: 'pointer',
-								}}
-							/>
-						</Box>
-						{navDropdowns.settingsDropdown && (
-							<Box
-								mt='3px'
-								width='10rem'
-								display='flex'
-								justifyContent='center'
-								flexDirection='column'
-								alignItems='flex-start'
-								gap='5px'
-								padding='0.5rem 0'
-								boxShadow='1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409'
-								borderRadius='6px'
-								background='var(--Base_surface, #02010F)'
-								border='1px solid rgba(103, 109, 154, 0.30)'
-								right='0px'
-								top='150%'
-								className='dropdown-container'>
-								<Text
-									color='#6e7681'
-									fontSize='12px'
-									paddingX='8px'>
-									General settings
-								</Text>
-								<HStack
-									display='flex'
-									justifyContent='space-between'
-									alignItems='center'
-									width={'100%'}
-									paddingX='8px'></HStack>
-								<hr
-									style={{
-										height: '1px',
-										borderWidth: '0',
-										backgroundColor: '#2B2F35',
-										width: '96%',
-										marginRight: '5.1px',
-									}}
-								/>
-								<HStack
-									display='flex'
-									justifyContent='space-around'
-									alignItems='center'
-									padding='2px 6px'
-									gap='1.5rem'>
-									<Text
-										fontStyle='normal'
-										fontWeight='400'
-										fontSize='14px'
-										lineHeight='20px'>
-										Language
-									</Text>
-									<Text
-										fontSize={'12px'}
-										display='flex'
-										justifyContent='center'
-										alignItems='center'
-										onClick={() => {
-											dispatch(
-												setNavDropdown(
-													'languagesDropdown'
-												)
-											);
-										}}>
-										{language}
-										<Image
-											src={arrowNavRight}
-											alt='Picture of the author'
-											width='16'
-											height='16'
-											style={{ cursor: 'pointer' }}
-										/>
-									</Text>
-								</HStack>
-							</Box>
-						)}
-						{navDropdowns.languagesDropdown && (
-							<Box
-								width='16rem'
-								display='flex'
-								justifyContent='center'
-								flexDirection='column'
-								alignItems='flex-start'
-								gap='15px'
-								boxShadow='1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409'
-								borderRadius='6px'
-								right='0px'
-								top='150%'
-								background='var(--Base_surface, #02010F)'
-								border='1px solid rgba(103, 109, 154, 0.30)'
-								padding='0.7rem 0.6rem'
-								pb='1.5rem'
-								className='dropdown-container'>
-								<Text
-									fontSize={'12px'}
-									display='flex'
-									justifyContent='center'
-									alignItems='center'
-									onClick={() => {
-										dispatch(
-											setNavDropdown('settingsDropdown')
-										);
-									}}
-									gap='8px'
-									padding='0.5rem 0.7rem'
-									color='#B1B0B5'>
-									<Image
-										src={arrowNavLeft}
-										alt='Picture of the author'
-										width='7'
-										height='7'
-										style={{ cursor: 'pointer' }}
-									/>
-									Select Language
-								</Text>
-								{languages.map((val, idx) => (
-									<>
-										<HStack
-											color='#6e7681'
-											fontSize='12px'
-											paddingX='8px'
-											key={idx}
-											justifyContent='space-between'
-											width='100%'
-											onClick={() => {
-												if (
-													!val.name.includes(
-														'Coming soon'
-													)
-												)
-													dispatch(
-														setLanguage(
-															`${val.name}`
-														)
-													);
-											}}>
-											<Box
-												display={'flex'}
-												justifyContent={'flex-start'}
-												gap={4}
-												alignItems={'center'}>
-												<Image
-													src={val.icon}
-													alt='Picture of the author'
-													width='20'
-													height='20'
-													style={{
-														cursor: 'pointer',
-													}}
-												/>
-												<Text>{val.name}</Text>
-											</Box>
-											{language === val.name && (
-												<Image
-													src={tickMark}
-													alt='Picture of the author'
-													width='15'
-													height='15'
-													style={{
-														cursor: 'pointer',
-													}}
-												/>
-											)}
-										</HStack>
-										<hr
-											style={{
-												height: '1px',
-												borderWidth: '0',
-												backgroundColor: '#2B2F35',
-												width: '95%',
-												marginLeft: '6px',
-												color: '#2A2E3F',
-												display: `${
-													(
-														idx ==
-														languages.length - 1
-													) ?
-														'none'
-													:	'block'
-												}`,
-											}}
-										/>
-									</>
-								))}
-							</Box>
-						)}
-					</Box>
+					<NavbarSettings
+						navDropdowns={navDropdowns}
+						language={language}
+						onClick={(dropdown: string) =>
+							dispatch(setNavDropdown(dropdown))
+						}
+					/>
 				</HStack>
 			</HStack>
 		</HStack>

@@ -16,6 +16,20 @@ module.exports = {
 			},
 			colors: {
 				success: 'var(--success)',
+				app: {
+					'light-green': 'var(--color-light-green)',
+					'dark-blue': 'var(--color-dark-blue)',
+					'light-gray': 'var(--color-light-gray)',
+					'mid-gray': 'var(--color-mid-gray)',
+					'dark-gray': 'var(--color-dark-gray)',
+					'light-blue': 'var(--color-light-blue)',
+					'light-blue-alt': 'var(--color-light-blue-alt)',
+					'mid-blue': 'var(--color-mid-blue)',
+					'dark-blue-alt': 'var(--color-dark-blue-alt)',
+					'dark-gray-alt': 'var(--color-dark-gray-alt)',
+					'light-gray-alt': 'var(--color-light-gray-alt)',
+					'dark-gray-alt2': 'var(--color-dark-gray-alt2)',
+				},
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				card: {
