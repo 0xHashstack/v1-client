@@ -1,40 +1,41 @@
-import { Box, Button, Text } from '@chakra-ui/react'
-import Autoplay from 'embla-carousel-autoplay'
-import useEmblaCarousel from 'embla-carousel-react'
-import { NextPage } from 'next'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { posthog } from 'posthog-js'
-import 'react-toastify/dist/ReactToastify.css'
+'use client';
+import { Box, Button, Text } from '@chakra-ui/react';
+import Autoplay from 'embla-carousel-autoplay';
+import useEmblaCarousel from 'embla-carousel-react';
+import { NextPage } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { posthog } from 'posthog-js';
+import 'react-toastify/dist/ReactToastify.css';
 
-import MarketDashboard from '@/components/layouts/marketDashboard'
-import NavButtons from '@/components/layouts/navButtons'
-import PageCard from '@/components/layouts/pageCard'
-import StatsBoard from '@/components/layouts/statsBoard'
+import MarketDashboard from '@/components/layouts/marketDashboard';
+import NavButtons from '@/components/layouts/navButtons';
+import PageCard from '@/components/layouts/pageCard';
+import StatsBoard from '@/components/layouts/statsBoard';
 import {
-  DotButton,
-  useDotButton,
-} from '@/components/uiElements/buttons/EmblaCarouselDotButton'
-import useDataLoader from '@/hooks/useDataLoader'
+	DotButton,
+	useDotButton,
+} from '@/components/uiElements/buttons/EmblaCarouselDotButton';
+import useDataLoader from '@/hooks/useDataLoader';
 
 const Market: NextPage = () => {
-  const router = useRouter()
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop: true,
-    },
-    [Autoplay({ playOnInit: true, delay: 8000 })]
-  )
+	const router = useRouter();
+	const [emblaRef, emblaApi] = useEmblaCarousel(
+		{
+			loop: true,
+		},
+		[Autoplay({ playOnInit: true, delay: 8000 })]
+	);
 
-  const { selectedIndex, scrollSnaps, onDotButtonClick } =
-    useDotButton(emblaApi)
+	const { selectedIndex, scrollSnaps, onDotButtonClick } =
+		useDotButton(emblaApi);
 
-  useDataLoader()
+	useDataLoader();
 
-  return (
-    <PageCard>
-      {/* <Box className="embla" ref={emblaRef}>
+	return (
+		<PageCard>
+			{/* <Box className="embla" ref={emblaRef}>
         <Box className="embla__container">
           <Box className="embla__slide" position="relative" height={'150px'}>
             <Image
@@ -226,7 +227,7 @@ const Market: NextPage = () => {
         </Box>
       </Box> */}
 
-      {/* <Box
+			{/* <Box
         display="grid"
         gridTemplateColumns="auto 1fr"
         justifyContent="space-between"
@@ -266,11 +267,14 @@ const Market: NextPage = () => {
         </Box>
       </Box> */}
 
-      {/* <StatsBoard /> */}
-        <NavButtons width={95} marginBottom="1.125rem" />
-      <MarketDashboard />
-    </PageCard>
-  )
-}
+			{/* <StatsBoard /> */}
+			<NavButtons
+				width={95}
+				marginBottom='1.125rem'
+			/>
+			<MarketDashboard />
+		</PageCard>
+	);
+};
 
-export default Market
+export default Market;

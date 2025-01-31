@@ -41,7 +41,7 @@
 //   setModalDropdown,
 //   selectModalDropDowns,
 // } from "@/store/slices/dropdownsSlice";
-// import router, { useRouter } from "next/router";
+// import router, { useRouter } from "next/navigation";
 
 // const WalletConnectModal = ({
 //   placeHolder,

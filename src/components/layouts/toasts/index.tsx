@@ -1,45 +1,26 @@
-import {
-  useWaitForTransaction,
-} from "@starknet-react/core";
-import { ReactNode } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+'use client'
+import { useWaitForTransaction } from '@starknet-react/core'
+import { ReactNode } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 type LayoutProps = {
-  children: ReactNode;
-};
-export const useFetchToastStatus = ({
-  hash,
-  // watch,
-  onAcceptedOnL1,
-  onAcceptedOnL2,
-  // onNotReceived,
-  onPending,
-  onReceived,
-  onRejected,
-}: any) => {
-  // useState
+  children: ReactNode
+}
+export const useFetchToastStatus = ({ hash }: any) => {
   return useWaitForTransaction({
     hash,
     watch: true,
-    // onNotReceived,
-  });
-};
+  })
+}
 
 const Layout = ({ children }: LayoutProps) => {
-  const displayToast = (content: string) => {
-    toast.error(content, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: false,
-    });
-  };
-
   return (
     <div>
       {children}
-      <ToastContainer theme="dark" limit={5}/>
+      <ToastContainer theme="dark" limit={5} />
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

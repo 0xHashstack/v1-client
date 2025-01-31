@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,8 +19,15 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -24,7 +35,12 @@
     "**/*.tsx",
     "src/utils/functions/numberFormatter.tsx",
     "src/components/uiElements/buttons/AnimationButton.tsx",
-    "src/utils/functions/apiCaller.tsx"
-, "tests/pricer.test.js", "tests/protocolvalues.test.js"  ],
-  "exclude": ["node_modules"]
+    "src/utils/functions/apiCaller.tsx",
+    "tests/pricer.test.js",
+    "tests/protocolvalues.test.js",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
