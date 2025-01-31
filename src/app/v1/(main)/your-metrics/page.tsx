@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import PageCard from '@/components/layouts/pageCard';
 import {
 	Box,
 	HStack,
@@ -101,7 +100,7 @@ const YourMetrics = () => {
 	}, [yourMetricsSupply, yourMetricsBorrow]);
 
 	return (
-		<PageCard pt='8rem'>
+		<>
 			{/* {!metricsCancel && ( */}
 			<Box
 				width='95%'
@@ -454,7 +453,7 @@ const YourMetrics = () => {
 				}
 			</Box>
 			{/* )} */}
-		</PageCard>
+		</>
 	);
 };
 

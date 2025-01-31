@@ -25,7 +25,6 @@ import CopyIcon from '@/assets/icons/copyIcon';
 import DropdownUp from '@/assets/icons/dropdownUpIcon';
 import ExternalLinkWhite from '@/assets/icons/externalLinkWhite';
 import { default as LeaderboardDashboard } from '@/components/layouts/leaderboardDashboard';
-import { default as PageCard } from '@/components/layouts/pageCard';
 import UserCampaignData from '@/components/layouts/userCampaignData';
 import RegisterCCPModal from '@/components/modals/RegisterCCPModal';
 import SubmissionCCPModal from '@/components/modals/SubmissionCCPModal';
@@ -637,7 +636,7 @@ const Campaign: NextPage = () => {
 	};
 
 	return (
-		<PageCard pt='3rem'>
+		<>
 			<HStack
 				display='flex'
 				justifyContent='space-between'
@@ -1292,7 +1291,7 @@ const Campaign: NextPage = () => {
 					}
 				</Box>
 			</HStack>
-		</PageCard>
+		</>
 	);
 };
 

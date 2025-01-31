@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import MarketDashboard from '@/components/layouts/marketDashboard';
 import NavButtons from '@/components/layouts/navButtons';
-import PageCard from '@/components/layouts/pageCard';
+
 import StatsBoard from '@/components/layouts/statsBoard';
 import {
 	DotButton,
@@ -34,7 +34,7 @@ const Market: NextPage = () => {
 	useDataLoader();
 
 	return (
-		<PageCard>
+		<>
 			{/* <Box className="embla" ref={emblaRef}>
         <Box className="embla__container">
           <Box className="embla__slide" position="relative" height={'150px'}>
@@ -273,7 +273,7 @@ const Market: NextPage = () => {
 				marginBottom='1.125rem'
 			/>
 			<MarketDashboard />
-		</PageCard>
+		</>
 	);
 };
 

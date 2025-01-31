@@ -73,7 +73,7 @@ const CcpSubmissions: NextPage = () => {
 	}, [selectedFilter, address]);
 
 	return (
-		<PageCard pt='6.5rem'>
+		<>
 			<HStack
 				display='flex'
 				alignItems='flex-start'
@@ -252,7 +252,7 @@ const CcpSubmissions: NextPage = () => {
 					</Box>
 				}
 			</HStack>
-		</PageCard>
+		</>
 	);
 };
 

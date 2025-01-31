@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import YourSupplyModal from '@/components/modals/yourSupply';
 import YourBorrowModal from '@/components/modals/yourBorrowModal';
 import LatestSyncedBlock from '@/components/uiElements/latestSyncedBlock';
-import PageCard from '@/components/layouts/pageCard';
+
 import Pagination from '@/components/uiElements/pagination';
 import { ToastContainer } from 'react-toastify';
 import { useSelector } from 'react-redux';
@@ -32,7 +32,7 @@ const SpendBorrow = () => {
 	////console.log(totalBorrow, "total borrow spend borrow");
 	////console.log(netAPR, "netapr in spend borrow");
 	return (
-		<PageCard pt='6.5rem'>
+		<>
 			<HStack
 				display='flex'
 				justifyContent='space-between'
@@ -51,7 +51,7 @@ const SpendBorrow = () => {
 			<StrkDashboard />
 
 			{/* <WalletConnectModal/> */}
-		</PageCard>
+		</>
 	);
 };
 

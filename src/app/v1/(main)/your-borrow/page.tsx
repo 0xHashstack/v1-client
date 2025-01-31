@@ -6,7 +6,7 @@ import BorrowDashboard from '@/components/layouts/borrowDashboard';
 import MarketDashboard from '@/components/layouts/marketDashboard';
 import NavButtons from '@/components/layouts/navButtons';
 import Navbar from '@/components/layouts/navbar/Navbar';
-import PageCard from '@/components/layouts/pageCard';
+
 import StatsBoard from '@/components/layouts/statsBoard';
 import YourBorrowModal from '@/components/modals/yourBorrowModal';
 import LatestSyncedBlock from '@/components/uiElements/latestSyncedBlock';
@@ -67,7 +67,7 @@ const YourBorrow = () => {
 	const netAPR = useSelector(selectnetAprLoans);
 
 	return (
-		<PageCard pt='6.5rem'>
+		<>
 			<HStack
 				display='flex'
 				justifyContent='space-between'
@@ -191,7 +191,7 @@ const YourBorrow = () => {
 					/>
 				</Box>
 			</Box>
-		</PageCard>
+		</>
 	);
 };
 

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import InfoIconBig from '@/assets/icons/infoIconBig';
 import NavButtons from '@/components/layouts/navButtons';
-import PageCard from '@/components/layouts/pageCard';
+
 import SupplyDashboard from '@/components/layouts/supplyDashboard';
 import useDataLoader from '@/hooks/useDataLoader';
 import {
@@ -34,7 +34,7 @@ const YourSupply: NextPage = () => {
 	useDataLoader();
 
 	return (
-		<PageCard pt='6.5rem'>
+		<>
 			<HStack
 				display='flex'
 				justifyContent='space-between'
@@ -139,7 +139,7 @@ const YourSupply: NextPage = () => {
 				Coins={Coins}
 				columnItems={columnItems}
 			/>
-		</PageCard>
+		</>
 	);
 };
 

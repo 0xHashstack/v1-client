@@ -1,3 +1,4 @@
+'use client';
 import Navbar from '@/components/layouts/navbar/Navbar';
 import {
 	Box,
@@ -45,7 +46,7 @@ import {
 	selectUserLoans,
 	selectYourSupply,
 } from '@/store/slices/readDataSlice';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Footer from '../footer';
 
 import { ILoan } from '@/Blockchain/interfaces/interfaces';
@@ -80,7 +81,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
 	const { disconnect } = useDisconnect();
 	if (className) classes.push(className);
 	const router = useRouter();
-	const { pathname } = router;
+	const pathname = usePathname();
 
 	useTransactionHandler();
 	// const handleRouteChange = () => {

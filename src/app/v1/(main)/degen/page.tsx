@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { IDeposit } from '@/Blockchain/interfaces/interfaces';
 import DegenDashboard from '@/components/layouts/degenDashboard';
 import NavButtons from '@/components/layouts/navButtons';
-import PageCard from '@/components/layouts/pageCard';
 import Pagination from '@/components/uiElements/pagination';
 import useDataLoader from '@/hooks/useDataLoader';
 import {
@@ -618,7 +617,7 @@ const Degen: NextPage = () => {
 	const [isLessThan1350] = useMediaQuery('(max-width: 1350px)');
 
 	return (
-		<PageCard pt='6.5rem'>
+		<>
 			{totalSupply >= 0 && (
 				<Box
 					position='relative'
@@ -742,7 +741,7 @@ const Degen: NextPage = () => {
 					</Box>
 				)}
 			</Box>
-		</PageCard>
+		</>
 	);
 };
 

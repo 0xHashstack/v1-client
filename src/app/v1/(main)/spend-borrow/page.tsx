@@ -3,7 +3,6 @@ import InfoIconBig from '@/assets/icons/infoIconBig';
 import MarketDashboard from '@/components/layouts/marketDashboard';
 import NavButtons from '@/components/layouts/navButtons';
 import Navbar from '@/components/layouts/navbar/Navbar';
-import PageCard from '@/components/layouts/pageCard';
 import StatsBoard from '@/components/layouts/statsBoard';
 import SpendTable from '@/components/layouts/table/spendTable';
 import YourBorrowModal from '@/components/modals/yourBorrowModal';
@@ -39,7 +38,7 @@ const SpendBorrow = () => {
 	////console.log(totalBorrow, "total borrow spend borrow");
 	////console.log(netAPR, "netapr in spend borrow");
 	return (
-		<PageCard pt='6.5rem'>
+		<>
 			<HStack
 				display='flex'
 				justifyContent='space-between'
@@ -138,7 +137,7 @@ const SpendBorrow = () => {
 			{/* <ToastContainer theme="dark"/> */}
 
 			{/* <WalletConnectModal/> */}
-		</PageCard>
+		</>
 	);
 };
 

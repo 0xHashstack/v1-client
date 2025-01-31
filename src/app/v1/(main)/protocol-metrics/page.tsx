@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import PageCard from '@/components/layouts/pageCard';
+
 import { Box, HStack, Spinner, Text, Tooltip, VStack } from '@chakra-ui/react';
 import CancelIcon from '@/assets/icons/cancelIcon';
 import SliderTooltip from '@/components/uiElements/sliders/sliderTooltip';
@@ -84,7 +84,7 @@ const ProtocolMetrics = () => {
 	}, [btcData, ethData, usdcData, usdtData, daiData]);
 
 	return (
-		<PageCard pt='8rem'>
+		<>
 			<Box
 				display='flex'
 				flexDirection='column'>
@@ -116,7 +116,7 @@ const ProtocolMetrics = () => {
 					</Text>
 				</Box>
 			</Box>
-		</PageCard>
+		</>
 		// <PageCard pt="8rem">
 		//   <Box
 		//     width="95%"
