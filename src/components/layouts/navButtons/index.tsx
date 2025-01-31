@@ -9,7 +9,7 @@ import {
 	useMediaQuery,
 } from '@chakra-ui/react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import posthog from 'posthog-js';
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,27 +57,27 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 	const netAPR = useSelector(selectNetAPR);
 
 	const navOptions = [
-		{ path: 'v1/market', label: 'Markets', count: 0 },
+		{ path: 'v1/market/', label: 'Markets', count: 0 },
 		{
-			path: 'v1/spend-borrow',
+			path: 'v1/spend-borrow/',
 			label: 'Spend Borrow',
 			count: userUnspentLoans?.length ? userUnspentLoans.length : 0,
 		},
 		{
-			path: 'v1/your-supply',
+			path: 'v1/your-supply/',
 			label: 'Your Supply',
 			count: usersFilteredSupply ? usersFilteredSupply : 0,
 		},
 		{
-			path: 'v1/your-borrow',
+			path: 'v1/your-borrow/',
 			label: 'Your Borrow',
 			count: userLoans?.length ? userLoans.length : 0,
 		},
-		{ path: 'v1/degen', label: 'Degen', count: 0 },
-		{ path: 'v1/strk-rewards', label: 'Farm STRK token', count: 0 },
+		{ path: 'v1/degen/', label: 'Degen', count: 0 },
+		{ path: 'v1/strk-rewards/', label: 'Farm STRK token', count: 0 },
 	];
 
-	const { pathname } = router;
+	const pathname = usePathname();
 
 	useEffect(() => {
 		const storedCurrentPage = localStorage.getItem('currentPage');
@@ -210,7 +210,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 					</Box>
 				))}
 			</ButtonGroup>
-			{router.pathname === '/v1/market' && (
+			{pathname === '/v1/market' && (
 				<Box
 					display='flex'
 					gap={isLessThan1200 ? '1.5rem' : '2rem'}>

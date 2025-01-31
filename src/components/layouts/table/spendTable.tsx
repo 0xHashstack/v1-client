@@ -149,9 +149,6 @@ const SpendTable = () => {
 	const dispatch = useDispatch();
 
 	const router = useRouter();
-	function handleRouteChange(url: string) {
-		dispatch(setSpendBorrowSelectedDapp(''));
-	}
 
 	const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
 	const [currentBorrowData, setcurrentBorrowData] = useState();
@@ -340,17 +337,7 @@ const SpendTable = () => {
 		setTabIndex(0);
 		dispatch(setSpendBorrowSelectedDapp(''));
 	}, [currentPagination]);
-	useEffect(() => {
-		const handleRouteChangeComplete = (url: string) => {
-			handleRouteChange(url);
-		};
 
-		router.events.on('routeChangeComplete', handleRouteChangeComplete);
-
-		return () => {
-			router.events.off('routeChangeComplete', handleRouteChangeComplete);
-		};
-	}, [handleRouteChange, router.events]);
 	const [loading, setLoading] = useState(true);
 	// const loadingTimeout = useTimeout(() => setLoading(false), 3000);
 	useEffect(() => {

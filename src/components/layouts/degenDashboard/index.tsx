@@ -74,11 +74,12 @@ import {
 import dollarConvertor from '@/utils/functions/dollarConvertor';
 import numberFormatter from '@/utils/functions/numberFormatter';
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
 import { uint256 } from 'starknet';
 import TableInfoIcon from '../table/tableIcons/infoIcon';
+import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 
 export interface ICoin {
 	name: string;
@@ -167,6 +168,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 	} = useBorrowAndSpend();
 
 	const { address } = useAccount();
+	const { copyToClipboard } = useCopyToClipboard();
 
 	const [currentCollateralCoin, setCurrentCollateralCoin] = useState('BTC');
 	const [depositTransHash, setDepositTransHash] = useState('');
@@ -314,8 +316,8 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 	const [collateralAmounts, setCollateralAmounts] = useState<any>([]); // Initialize with default values
 	const [collateralMarkets, setcollateralMarkets] = useState<any>([]);
 	const [tokenSelection, setTokenSelection] = useState(Array(40).fill(0));
-	const router = useRouter();
-	const degenId = router.query.degenId;
+	const searchParams = useSearchParams();
+	const degenId = searchParams.get('degenId');
 	useEffect(() => {
 		// Initialize collateralAmounts with the values from Borrows
 		if (Borrows.length > 0 && oraclePrices != null) {
@@ -585,12 +587,15 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 				// dispatch(setTransactionStatus("failed"));
 				setTransactionStarted(false);
 			}
+
 			const toastContent = (
 				<div>
 					Transaction declined{' '}
-					<CopyToClipboard text={err}>
-						<Text as='u'>copy error!</Text>
-					</CopyToClipboard>
+					<Text
+						as='u'
+						onClick={() => copyToClipboard(err)}>
+						copy error!
+					</Text>
 				</div>
 			);
 			posthog.capture('Degen Spend failed', {
