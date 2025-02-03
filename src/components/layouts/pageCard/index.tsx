@@ -100,7 +100,7 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 				{...props}>
 				{children}
 			</div>
-			<div className='hidden lg:block'>
+			<div className='hidden md:block'>
 				<Footer />
 			</div>
 		</>

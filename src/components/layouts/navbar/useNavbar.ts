@@ -48,7 +48,6 @@ export const useNavbar = (validRTokens: any) => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const userWhitelisted = useSelector(selectWhiteListed);
-	const userType = useSelector(selectUserType);
 
 	const handleDropdownClick = (dropdownName: string) => {
 		dispatch(setNavDropdown(dropdownName));
@@ -62,32 +61,6 @@ export const useNavbar = (validRTokens: any) => {
 
 	const handleFeedbackClick = () => {
 		posthog.capture('Feedback Modal Clicked', { Clicked: true });
-	};
-
-	const switchWallet = () => {
-		if (connectors[0]?.id == 'braavos') {
-			dispatch(resetState(null));
-			dispatch(setAccountReset(null));
-			localStorage.setItem('lastUsedConnector', 'argentX');
-			localStorage.setItem('connected', 'argentX');
-			connectors.map((connector: any) => {
-				if (connector.id == 'argentX') {
-					connect({ connector });
-				}
-			});
-			router.push('/v1/market');
-		} else {
-			dispatch(resetState(null));
-			dispatch(setAccountReset(null));
-			localStorage.setItem('lastUsedConnector', 'braavos');
-			localStorage.setItem('connected', 'braavos');
-			connectors.map((connector: any) => {
-				if (connector.id == 'braavos') {
-					connect({ connector });
-				}
-			});
-			router.push('/v1/market');
-		}
 	};
 
 	useEffect(() => {
@@ -173,7 +146,6 @@ export const useNavbar = (validRTokens: any) => {
 		setStakeHover,
 		handleDropdownClick,
 		handleFeedbackClick,
-		switchWallet,
 		connect,
 		disconnect,
 		dispatch,

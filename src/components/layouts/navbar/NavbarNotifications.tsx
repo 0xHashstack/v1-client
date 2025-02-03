@@ -1,212 +1,96 @@
-import BellIcon from '@/assets/icons/BellIcon';
-import { Box, Link as ChakraLink, Text } from '@chakra-ui/react';
-import Image from 'next/image';
 import { useState } from 'react';
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import BellIcon from '@/assets/icons/BellIcon';
+import Image from 'next/image';
+import Link from 'next/link';
+import {
+	NAVBAR_NOTIFICATIONS,
+	NotificationItem,
+} from './constant/navbar.constant';
 
 const NavbarNotifications = () => {
-	const [showNotifications, setShowNotifications] = useState(false);
+	const [open, setOpen] = useState(false);
 
 	return (
-		<>
-			<Box
-				ml='0.5rem'
-				cursor='pointer'
-				onClick={() => {
-					setShowNotifications(!showNotifications);
-				}}>
-				<BellIcon />
-			</Box>
-			{showNotifications && (
-				<Box
-					width='390px'
-					mr='8rem'
-					mt='-1.1rem'
-					display='flex'
-					justifyContent='center'
-					flexDirection='column'
-					gap='18px'
-					padding='0.7rem 1rem'
-					boxShadow='1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409'
-					borderRadius='6px'
-					background='var(--Base_surface, #02010F)'
-					border='1px solid rgba(103, 109, 154, 0.30)'
-					className='dropdown-container'
-					userSelect='none'>
-					<Box
-						display='flex'
-						gap='0.5rem'
-						w='full'
-						justifyContent='space-between'>
-						<Text fontSize='12px'>Notifications</Text>
-						<Image
-							style={{ cursor: 'pointer' }}
-							src={'/cross.svg'}
-							alt='Arrow Navigation Left'
-							width='20'
-							height='20'
-						/>
-					</Box>
+		<Popover
+			open={open}
+			onOpenChange={setOpen}>
+			<PopoverTrigger asChild>
+				<Button
+					variant='ghost'
+					size='icon'
+					className='transition-colors'>
+					<BellIcon />
+				</Button>
+			</PopoverTrigger>
 
-					<Box
-						display='flex'
-						flexDirection='column'
-						gap='1rem'>
-						<Box
-							display='flex'
-							pb='0.8rem'
-							gap='0.8rem'
-							alignItems='center'
-							borderBottom='1px solid #34345699'>
-							<Box
-								width='120px'
-								height='60px'
-								position='relative'>
-								<Image
-									src='/defi_spring_noti_banner.svg'
-									alt='Degen Mode'
-									fill
-									objectFit='cover'
-									style={{ borderRadius: '6px' }}
-								/>
-							</Box>
-							<Box
-								display='flex'
-								flexDir='column'
-								justifyContent='center'
-								alignItems='start'
-								height='full'
-								gap='1'>
-								<Text
-									fontSize='16px'
-									lineHeight='5'
-									fontWeight='bold'
-									color='#BDBFC1'>
-									Starknet DeFi Spring <br /> is Live!
-								</Text>
-								<Text
-									fontSize='12px'
-									lineHeight='18px'
-									color='F0F0F5'
-									whiteSpace='nowrap'>
-									Earn $STRK tokens
-									<ChakraLink
-										href='https://hashstack.medium.com/farm-strk-token-on-hashstack-v1-e2287d6f94f9'
-										target='_blank'
-										textDecoration='underline'
-										color='#4D59E8'
-										fontSize='12px'
-										fontWeight='semibold'
-										cursor='pointer'
-										ml='1'>
-										Learn more
-									</ChakraLink>
-								</Text>
-							</Box>
-						</Box>
+			<PopoverContent
+				align='end'
+				className='w-[390px] p-4 bg-[#02010F] border border-[#676D9A]/30 rounded-md shadow-lg'>
+				<div className='flex flex-col gap-4'>
+					{/* Header */}
+					<div className='flex justify-between items-center'>
+						<span className='text-sm font-medium'>
+							Notifications
+						</span>
+						<Button
+							variant='ghost'
+							size='icon'
+							className='w-5 h-5 '
+							onClick={() => setOpen(false)}>
+							<Image
+								src='/cross.svg'
+								alt='Close'
+								width={20}
+								height={20}
+								className='cursor-pointer'
+							/>
+						</Button>
+					</div>
 
-						<Box
-							display='flex'
-							pb='0.8rem'
-							gap='0.8rem'
-							borderBottom='1px solid #34345699'>
-							<Box
-								width='120px'
-								height='60px'
-								position='relative'>
-								<Image
-									src='/degen_banner.svg'
-									alt='Degen Mode'
-									fill
-									objectFit='cover'
-									style={{ borderRadius: '6px' }}
-								/>
-							</Box>
-							<Box
-								display='flex'
-								flexDir='column'
-								justifyContent='center'
-								alignItems='start'
-								height='full'
-								gap='1'>
-								<Text
-									fontSize='16px'
-									lineHeight='5'
-									fontWeight='bold'
-									color='#BDBFC1'>
-									Hashstack Degen Mode <br /> Is Live!
-								</Text>
-								<Text
-									fontSize='12px'
-									lineHeight='18px'
-									color='F0F0F5'>
-									Earn $STRK tokens
-									<ChakraLink
-										href='https://app.hashstack.finance/v1/degen/'
-										textDecoration='underline'
-										color='#4D59E8'
-										fontSize='12px'
-										fontWeight='semibold'
-										cursor='pointer'
-										ml='1'>
-										Explore
-									</ChakraLink>
-								</Text>
-							</Box>
-						</Box>
-
-						<Box
-							display='flex'
-							gap='0.8rem'
-							pb='0.2rem'>
-							<Box
-								width='120px'
-								height='60px'
-								position='relative'>
-								<Image
-									src='/ccp_noti_banner.svg'
-									alt='Degen Mode'
-									fill
-									objectFit='cover'
-									style={{ borderRadius: '6px' }}
-								/>
-							</Box>
-							<Box
-								display='flex'
-								flexDir='column'
-								justifyContent='center'
-								alignItems='start'
-								height='full'
-								gap='1'>
-								<Text
-									fontSize='16px'
-									lineHeight='5'
-									fontWeight='bold'
-									color='#BDBFC1'>
-									Content Creators <br /> Program
-								</Text>
-								<Text
-									fontSize='12px'
-									lineHeight='18px'
-									color='F0F0F5'>
-									Create content and
-									<ChakraLink
-										href='https://app.hashstack.finance/v1/campaigns/'
-										textDecoration='underline'
-										color='#4D59E8'
-										fontSize='12px'
-										fontWeight='semibold'
-										cursor='pointer'
-										ml='1'>
-										Earn Points
-									</ChakraLink>
-								</Text>
-							</Box>
-						</Box>
-					</Box>
-				</Box>
-			)}
-		</>
+					{/* Notification Items */}
+					<div className='flex flex-col gap-4'>
+						{NAVBAR_NOTIFICATIONS.map((item) => (
+							<NotificationItemComponent
+								key={item.id}
+								item={item}
+							/>
+						))}
+					</div>
+				</div>
+			</PopoverContent>
+		</Popover>
 	);
 };
+
+const NotificationItemComponent = ({ item }: { item: NotificationItem }) => (
+	<div className='flex gap-3 pb-3 border-b border-[#34345699]'>
+		<div className='w-[120px] h-[60px] relative rounded-md overflow-hidden'>
+			<Image
+				src={item.imageSrc}
+				alt={item.altText}
+				fill
+				className='object-cover'
+			/>
+		</div>
+		<div className='flex flex-col justify-center gap-1'>
+			<h3 className='text-base font-bold text-[#BDBFC1]'>{item.title}</h3>
+			<p className='text-sm text-[#F0F0F5]'>
+				{item.description}
+				<Link
+					href={item.link.href}
+					target={item.link.target}
+					className='ml-1 text-[#4D59E8] underline font-semibold'>
+					{item.link.text}
+				</Link>
+			</p>
+		</div>
+	</div>
+);
 
 export default NavbarNotifications;

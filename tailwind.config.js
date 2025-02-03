@@ -3,9 +3,7 @@ module.exports = {
 	content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
 	theme: {
 		screens: {
-			sm: '500px',
-			regular: '640px',
-			md: '980px',
+			md: '680px',
 			lg: '1210px',
 		},
 		extend: {
@@ -16,6 +14,7 @@ module.exports = {
 			},
 			colors: {
 				success: 'var(--success)',
+
 				app: {
 					'light-green': 'var(--color-light-green)',
 					'dark-blue': 'var(--color-dark-blue)',
@@ -37,7 +36,7 @@ module.exports = {
 					foreground: 'hsl(var(--card-foreground))',
 				},
 				popover: {
-					DEFAULT: 'hsl(var(--popover))',
+					DEFAULT: 'var(--popover)',
 					foreground: 'hsl(var(--popover-foreground))',
 				},
 				primary: {

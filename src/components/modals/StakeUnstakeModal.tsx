@@ -78,7 +78,7 @@ import {
 } from '@/store/slices/userAccountSlice';
 import { useAccount, useWaitForTransaction } from '@starknet-react/core';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
@@ -113,6 +113,7 @@ const StakeUnstakeModal = ({
 	stakeHover,
 	setStakeHover,
 	validRTokens,
+	hideTopMargin = false,
 	...restProps
 }: any) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -823,7 +824,7 @@ const StakeUnstakeModal = ({
 	}, [coin]);
 
 	const router = useRouter();
-	const { pathname } = router;
+	const pathname = usePathname();
 	const [estrTokens, setEstrTokens] = useState<any>(0);
 
 	const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0);
@@ -868,17 +869,12 @@ const StakeUnstakeModal = ({
 								JSON.stringify(data)
 							);
 						}
-
-						{
-							isCorrectNetwork && onOpen();
+						if (isCorrectNetwork) {
+							onOpen();
 						}
 					}}
-					color={
-						router.pathname != '/waitlist' && stakeHover ?
-							'gray'
-						:	''
-					}>
-					{router.pathname != '/waitlist' && stakeHover ?
+					color={pathname != '/waitlist' && stakeHover ? 'gray' : ''}>
+					{pathname != '/waitlist' && stakeHover ?
 						<Image
 							src='/stake.svg'
 							alt='Picture of the author'
@@ -978,7 +974,7 @@ const StakeUnstakeModal = ({
 				isCentered
 				scrollBehavior='inside'>
 				<ModalOverlay
-					mt='3.8rem'
+					mt={hideTopMargin ? '0rem' : '3.8rem'}
 					bg='rgba(244, 242, 255, 0.5);'
 				/>
 

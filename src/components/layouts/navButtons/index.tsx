@@ -1,22 +1,17 @@
-import {
-	Box,
-	Button,
-	ButtonGroup,
-	HStack,
-	Skeleton,
-	Text,
-	Tooltip,
-	useMediaQuery,
-} from '@chakra-ui/react';
-import Image from 'next/image';
+import React, { memo, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import posthog from 'posthog-js';
-import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import NegativeApr from '@/assets/icons/NegativeApr';
-import PositiveApr from '@/assets/icons/PositiveApr';
-import FireIcon from '@/assets/icons/fireIcon';
+import { Button } from '@/components/ui/button'; // shadcn Button
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from '@/components/ui/tooltip'; // shadcn Tooltip
+import { Skeleton } from '@/components/ui/skeleton'; // shadcn Skeleton
+import { Badge } from '@/components/ui/badge'; // shadcn Badge
+import Image from 'next/image';
 import {
 	selectNetAPR,
 	selectNetWorth,
@@ -34,6 +29,10 @@ import {
 import numberFormatter from '@/utils/functions/numberFormatter';
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage';
 import { capitalizeWords } from '../../../utils/functions/capitalizeWords';
+import FireIcon from '@/assets/icons/fireIcon';
+import NegativeApr from '@/assets/icons/NegativeApr';
+import PositiveApr from '@/assets/icons/PositiveApr';
+import { ArrowLeftIcon, ChevronLeftIcon } from 'lucide-react';
 
 interface NavButtonsProps {
 	width: number;
@@ -41,8 +40,6 @@ interface NavButtonsProps {
 }
 
 const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
-	const [backHover, setBackHover] = useState(false);
-
 	const dispatch = useDispatch();
 	const router = useRouter();
 
@@ -101,231 +98,136 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 		const navOption = navOptions.find((option) => option.path === path);
 		return navOption ? navOption.label : '';
 	};
-	const [isLessThan1200] = useMediaQuery('(max-width: 1200px)');
+
 	return (
-		<HStack
-			mb={marginBottom}
-			width={`${width}%`}
-			justifyContent='space-between'>
-			<ButtonGroup>
+		<div
+			className={`flex justify-center md:justify-between  items-center flex-wrap gap-2`}
+			style={{
+				width: width + '%',
+				marginBottom: marginBottom,
+			}}>
+			<div className='flex gap-2 max-w-full overflow-x-scroll'>
 				{navOptions.map((option, idx) => (
-					<Box
+					<div
 						key={idx}
 						onClick={() => handleButtonClick(option.path)}>
 						<Button
-							key={idx}
-							bg='transparent'
-							fontStyle='normal'
-							fontWeight={
-								currentPage === option.path ? '600' : '400'
-							}
-							fontSize={isLessThan1200 ? '13px' : '14px'}
-							lineHeight='20px'
-							alignItems='center'
-							letterSpacing='-0.15px'
-							padding='1.125rem 0.4rem'
-							margin='2px'
-							color={
-								pathname === `/${option.path}` ? '#ffffff'
-								: option.path === 'v1/strk-rewards' ?
-									'#C7CBF6'
-								:	'#676D9A'
-							}
-							borderBottom={
-								pathname === `/${option.path}` ?
-									'2px solid #4D59E8'
+							variant='ghost'
+							className={`font-normal rounded-none text-sm flex-shrink-0 ${
+								currentPage === option.path ?
+									'font-semibold'
+								:	'font-normal'
+							} ${
+								pathname === `/${option.path}` ? 'text-white'
+								:	'text-gray-500'
+							} ${
+								option.path === 'v1/strk-rewards/' ?
+									'text-purple-300'
 								:	''
-							}
-							borderRadius='0px'
-							_hover={{ bg: 'transparent', color: '#E6EDF3' }}
-							onMouseEnter={() => {
-								if (
-									option.path === 'v1/market' &&
-									pathname !== '/v1/market'
-								)
-									setBackHover(true);
-							}}
-							onMouseLeave={() => {
-								if (
-									option.path === 'v1/market' &&
-									pathname !== '/v1/market'
-								)
-									setBackHover(false);
-							}}>
-							{option.path === 'v1/market' &&
-								pathname !== '/v1/market' && (
-									<Box marginRight={1.5}>
-										<Image
-											src={
-												!backHover ? '/arrowNavLeft.svg'
-												:	'/arrowNavLeftActive.svg'
-											}
-											alt='Arrow Navigation Left'
-											width='6'
-											height='6'
-											style={{
-												cursor: 'pointer',
-											}}
-										/>
-									</Box>
+							} ${
+								pathname === `/${option.path}` ?
+									'border-b-2 border-blue-500'
+								:	''
+							} hover:bg-transparent hover:text-gray-200`}>
+							{option.path === 'v1/market/' &&
+								pathname !== '/v1/market/' && (
+									<div className='mr-1.5'>
+										<ChevronLeftIcon />
+									</div>
 								)}
 							{capitalizeWords(
-								option.path == 'v1/market' ?
-									pathname === '/v1/market' ?
+								option.path === 'v1/market/' ?
+									pathname === '/v1/market/' ?
 										getButtonLabel(option.path)
 									:	'Markets'
 								:	getButtonLabel(option.path)
 							)}
 							{option.count > 0 && (
-								<Box
-									ml='.5rem'
-									borderRadius='6px'
-									border='1px solid #34345699'
-									height='1.4rem'
-									width='1.4rem'
-									display='flex'
-									justifyContent='center'
-									alignItems='center'
-									fontWeight='light'
-									fontSize='12px'>
+								<Badge className='ml-2 bg-gray-800 text-gray-300 border border-gray-700'>
 									{option.count}
-								</Box>
+								</Badge>
 							)}
-							{option.path === 'v1/degen' && (
-								<Box ml='0.5rem'>
+							{option.path === 'v1/degen/' && (
+								<div className='ml-2'>
 									<Image
-										src={`/new.svg`}
-										alt={`Picture of the coin that I want to access strk`}
-										width='36'
-										height='16'
+										src='/new.svg'
+										alt='New Icon'
+										width={36}
+										height={16}
 									/>
-								</Box>
+								</div>
 							)}
-							{option.path === 'v1/strk-rewards' && (
-								<Box ml='0.5rem'>
+							{option.path === 'v1/strk-rewards/' && (
+								<div className='ml-2'>
 									<FireIcon />
-								</Box>
+								</div>
 							)}
 						</Button>
-					</Box>
+					</div>
 				))}
-			</ButtonGroup>
-			{pathname === '/v1/market' && (
-				<Box
-					display='flex'
-					gap={isLessThan1200 ? '1.5rem' : '2rem'}>
-					<Box
-						display='flex'
-						gap='0.4rem'
-						justifyContent='center'
-						alignItems='center'>
-						<Text
-							color='#676D9A'
-							fontSize={isLessThan1200 ? '13px' : '14px'}
-							whiteSpace='nowrap'>
+			</div>
+			{pathname === '/v1/market/' && (
+				<div className='flex gap-4'>
+					<div className='flex items-center gap-1'>
+						<span className='text-sm text-gray-500'>
 							Your Net Worth
-						</Text>
+						</span>
 						{netWorth === null ?
-							<Skeleton
-								width='6rem'
-								height='1.4rem'
-								startColor='#101216'
-								endColor='#2B2F35'
-								borderRadius='6px'
-							/>
-						:	<Box>
-								<Tooltip
-									hasArrow
-									arrowShadowColor='#2B2F35'
-									placement='bottom'
-									boxShadow='dark-lg'
-									label='Click here for your metrics.'
-									bg='#02010F'
-									fontSize={'13px'}
-									fontWeight={'400'}
-									borderRadius={'lg'}
-									padding={'2'}
-									color='#F0F0F5'
-									border='1px solid'
-									borderColor='#23233D'>
-									<Text
-										color='#E6EDF3'
-										fontSize={
-											isLessThan1200 ? '16px' : '18px'
-										}
-										cursor='pointer'
-										onClick={() => {
-											router.push('/v1/your-metrics');
-										}}
-										_hover={{
-											textDecoration: 'underline',
-										}}>
-										${numberFormatter(netWorth)}
-									</Text>
+							<Skeleton className='w-24 h-6 bg-gray-800 rounded-md' />
+						:	<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<span
+											className='text-lg text-white cursor-pointer hover:underline'
+											onClick={() =>
+												router.push('/v1/your-metrics')
+											}>
+											${numberFormatter(netWorth)}
+										</span>
+									</TooltipTrigger>
+									<TooltipContent>
+										Click here for your metrics
+									</TooltipContent>
 								</Tooltip>
-							</Box>
+							</TooltipProvider>
 						}
-					</Box>
-					<Box
-						display='flex'
-						gap='0.4rem'
-						justifyContent='center'
-						alignItems='center'>
-						<Text
-							color='#676D9A'
-							fontSize={isLessThan1200 ? '13px' : '14px'}
-							whiteSpace='nowrap'>
-							Net APR
-						</Text>
+					</div>
+					<div className='flex items-center gap-1'>
+						<span className='text-sm text-gray-500'>Net APR</span>
 						{netAPR === null ?
-							<Skeleton
-								width='6rem'
-								height='1.4rem'
-								startColor='#101216'
-								endColor='#2B2F35'
-								borderRadius='6px'
-							/>
-						:	<Box>
-								<Tooltip
-									hasArrow
-									arrowShadowColor='#2B2F35'
-									placement='bottom'
-									boxShadow='dark-lg'
-									label='Click here for your metrics.'
-									bg='#02010F'
-									fontSize={'13px'}
-									fontWeight={'400'}
-									borderRadius={'lg'}
-									padding={'2'}
-									color='#F0F0F5'
-									border='1px solid'
-									borderColor='#23233D'>
-									<Text
-										color='#E6EDF3'
-										fontSize={
-											isLessThan1200 ? '16px' : '18px'
-										}
-										cursor='pointer'
-										onClick={() => {
-											router.push('/v1/your-metrics');
-										}}
-										_hover={{
-											textDecoration: 'underline',
-										}}>
-										{numberFormatterPercentage(netAPR)}%
-									</Text>
+							<Skeleton className='w-24 h-6 bg-gray-800 rounded-md' />
+						:	<TooltipProvider>
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<div className='flex items-center gap-1'>
+											<span
+												className='text-lg text-white cursor-pointer hover:underline'
+												onClick={() =>
+													router.push(
+														'/v1/your-metrics'
+													)
+												}>
+												{numberFormatterPercentage(
+													netAPR
+												)}
+												%
+											</span>
+											{netAPR >= 0 ?
+												<PositiveApr />
+											:	<NegativeApr />}
+										</div>
+									</TooltipTrigger>
+
+									<TooltipContent>
+										Click here for your metrics
+									</TooltipContent>
 								</Tooltip>
-							</Box>
+							</TooltipProvider>
 						}
-						<Box>
-							{netAPR >= 0 ?
-								<PositiveApr />
-							:	<NegativeApr />}
-						</Box>
-					</Box>
-				</Box>
+					</div>
+				</div>
 			)}
-		</HStack>
+		</div>
 	);
 };
 
