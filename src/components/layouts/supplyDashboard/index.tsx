@@ -426,12 +426,12 @@ const SupplyDashboard = ({
         // bgColor={"yellow"}
         // height={"100%"}
         padding={"1rem 1.5rem"}
-        overflowX="hidden"
+        overflowX="scroll"
         // m={0}
         // mt={"3rem"}
         // style={{ marginTop: "0.8rem" }}
       >
-        <Table variant="unstyled" width="100%" height="100%">
+        <Table variant="unstyled" width="100%" height="100%" minWidth={'900px'}>
           <Thead width={"100%"} height={"5rem"}>
             <Tr width={"100%"} height="2rem">
               {columnItems.map((val: any, idx1: any) => (

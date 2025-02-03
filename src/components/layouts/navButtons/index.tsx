@@ -35,7 +35,7 @@ import PositiveApr from '@/assets/icons/PositiveApr';
 import { ArrowLeftIcon, ChevronLeftIcon } from 'lucide-react';
 
 interface NavButtonsProps {
-	width: number;
+	width: number | string;
 	marginBottom: string;
 }
 
@@ -84,7 +84,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 	}, [dispatch]);
 
 	const handleButtonClick = (val: string) => {
-		if (val === 'v1/degen') {
+		if (val === 'v1/degen/') {
 			posthog.capture('Degen Tab Clicked', {
 				Clicked: true,
 			});
@@ -103,7 +103,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 		<div
 			className={`flex justify-center md:justify-between  items-center flex-wrap gap-2`}
 			style={{
-				width: width + '%',
+				width: typeof width === 'number' ? width + '%' : width,
 				marginBottom: marginBottom,
 			}}>
 			<div className='flex gap-2 max-w-full overflow-x-scroll'>
