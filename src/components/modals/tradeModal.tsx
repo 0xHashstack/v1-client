@@ -129,7 +129,7 @@ import numberFormatterPercentage from '@/utils/functions/numberFormatterPercenta
 import { useWaitForTransaction } from '@starknet-react/core';
 import axios from 'axios';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -139,6 +139,7 @@ import AnimatedButton from '../uiElements/buttons/AnimationButton';
 import ErrorButton from '../uiElements/buttons/ErrorButton';
 import SuccessButton from '../uiElements/buttons/SuccessButton';
 import SliderTooltip from '../uiElements/sliders/sliderTooltip';
+import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 const TradeModal = ({
 	buttonText,
 	coin,
@@ -700,10 +701,10 @@ const TradeModal = ({
 		////console.log("radio value", radioValue, method);
 	}, [radioValue]);
 	const [tokenTypeSelected, setTokenTypeSelected] = useState('Native');
-	const router = useRouter();
-	const { pathname } = router;
+
+	const pathname = usePathname();
 	useEffect(() => {
-		if (pathname == '/v1/strk-rewards') {
+		if (pathname == '/v1/strk-rewards/') {
 			// setLoanMarket(coin ? coin.name : "BTC");
 			// setCollateralMarket(coin ? coin.name : "BTC");
 		} else {
@@ -887,6 +888,7 @@ const TradeModal = ({
 		setMinimumDepositAmount(minAmounts['r' + currentCollateralCoin]);
 		setmaximumDepositAmount(maxAmounts['r' + currentCollateralCoin]);
 	}, [currentCollateralCoin, minAmounts, maxAmounts]);
+	const { copyToClipboard } = useCopyToClipboard();
 
 	// useEffect(()=>{
 	//   const fetchMinDeposit=async()=>{
@@ -1026,12 +1028,19 @@ const TradeModal = ({
 				// dispatch(setTransactionStatus("failed"));
 				setTransactionStarted(false);
 			}
+
+			const handleCopyToClipboard = () => {
+				copyToClipboard(err.toString());
+			};
+
 			const toastContent = (
 				<div>
 					Transaction declined{' '}
-					<CopyToClipboard text={err}>
-						<Text as='u'>copy error!</Text>
-					</CopyToClipboard>
+					<Text
+						as='u'
+						onClick={handleCopyToClipboard}>
+						copy error!
+					</Text>
 				</div>
 			);
 			posthog.capture('Trade Modal Market Status', {
@@ -1479,7 +1488,7 @@ const TradeModal = ({
 	//   fetchEstrTokens();
 	// }, [collateralBalance, inputCollateralAmount]);
 	useEffect(() => {
-		if (pathname === '/v1/strk-rewards') {
+		if (pathname === '/v1/strk-rewards/') {
 			setCurrentPool(currentSelectedPool);
 			setCurrentDapp('Jediswap');
 			setToMarketLiqA(currentSelectedPool.split('/')[0]);
@@ -1503,7 +1512,7 @@ const TradeModal = ({
 	};
 	return (
 		<Box>
-			{pathname !== '/v1/strk-rewards' ?
+			{pathname !== '/v1/strk-rewards/' ?
 				<Text
 					key='borrow-details'
 					as='span'
@@ -4108,13 +4117,13 @@ const TradeModal = ({
 																		setToMarketLiqA(
 																			pool.split(
 																				'/'
-																			)[0]
+																			)[0] as NativeToken
 																		);
 																		//@ts-ignore
 																		setToMarketLiqB(
 																			pool.split(
 																				'/'
-																			)[1]
+																			)[1] as NativeToken
 																		);
 																	}}
 																	// borderBottom={

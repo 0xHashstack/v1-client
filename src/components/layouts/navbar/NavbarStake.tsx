@@ -23,7 +23,7 @@ function NavbarStake({
 				render ?
 					'cursor-pointer hover:text-[#6e7681]'
 				:	'cursor-not-allowed',
-				pathname === '/waitlist' && 'hover:text-white'
+				pathname === '/waitlist/' && 'hover:text-white'
 			)}
 			onMouseEnter={() => setStakeHover(true)}
 			onMouseLeave={() => setStakeHover(false)}

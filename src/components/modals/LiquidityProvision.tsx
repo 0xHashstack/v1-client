@@ -83,10 +83,9 @@ import {
 import { useWaitForTransaction } from '@starknet-react/core';
 import axios from 'axios';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import posthog from 'posthog-js';
 import React, { useEffect, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import TransactionFees from '../../../TransactionFees.json';
@@ -102,6 +101,7 @@ import ErrorButton from '../uiElements/buttons/ErrorButton';
 import SuccessButton from '../uiElements/buttons/SuccessButton';
 import SliderTooltip from '../uiElements/sliders/sliderTooltip';
 import STRKLogo from '@/assets/icons/coins/strk';
+import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 const LiquidityProvisionModal = ({
 	borrowIDCoinMap,
 	borrowIds,
@@ -175,6 +175,7 @@ const LiquidityProvisionModal = ({
 	const getUniqueId = () => uniqueID;
 
 	let activeTransactions = useSelector(selectActiveTransactions);
+	const { copyToClipboard } = useCopyToClipboard();
 
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
@@ -459,8 +460,7 @@ const LiquidityProvisionModal = ({
 	//     }
 	//   },
 	// });
-	const router = useRouter();
-	const { pathname } = router;
+	const pathname = usePathname();
 	const fees = useSelector(selectFees);
 
 	const strkData = useSelector(selectStrkAprData);
@@ -556,7 +556,7 @@ const LiquidityProvisionModal = ({
 	};
 
 	useEffect(() => {
-		if (pathname === '/v1/strk-rewards') {
+		if (pathname === '/v1/strk-rewards/') {
 			setCurrentPool(currentSelectedPool);
 			setToMarketA(currentSelectedPool.split('/')[0]);
 			//@ts-ignore
@@ -681,9 +681,12 @@ const LiquidityProvisionModal = ({
 			const toastContent = (
 				<div>
 					Transaction declined{' '}
-					<CopyToClipboard text={err}>
-						<Text as='u'>copy error!</Text>
-					</CopyToClipboard>
+					<Text
+						as='u'
+						onClick={() => copyToClipboard(err)}
+						cursor='pointer'>
+						copy error!
+					</Text>
 				</div>
 			);
 			posthog.capture('Liquidity Spend Borrow Status', {
@@ -922,7 +925,7 @@ const LiquidityProvisionModal = ({
 
 	return (
 		<div>
-			{pathname !== '/v1/strk-rewards' ?
+			{pathname !== '/v1/strk-rewards/' ?
 				<Box
 					display='flex'
 					gap='4rem'

@@ -2,7 +2,7 @@ import React from 'react';
 import { HStack, VStack, Text, Box, Skeleton, Tooltip } from '@chakra-ui/react';
 import Image from 'next/image';
 import numberFormatter from '@/utils/functions/numberFormatter';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import InfoIcon from '@/assets/icons/infoIcon';
 const Stats = ({
 	header,
@@ -17,7 +17,7 @@ const Stats = ({
 }) => {
 	const gap: number = 100 / (header.length + 1);
 	const router = useRouter();
-	const { pathname } = router;
+	const pathname = usePathname();
 	const keys = Object.keys(statsData);
 	return (
 		<HStack
@@ -139,7 +139,7 @@ const Stats = ({
 										boxShadow='dark-lg'
 										label={
 											value ?
-												pathname != '/v1/referral' ?
+												pathname != '/v1/referral/' ?
 													'$' + value.toFixed(2)
 												: !isLast ?
 													value
@@ -156,7 +156,7 @@ const Stats = ({
 										borderColor='#23233D'>
 										{value !== null ?
 											value ?
-												pathname != '/v1/referral' ?
+												pathname != '/v1/referral/' ?
 													'$' + numberFormatter(value)
 												: !isLast ?
 													value

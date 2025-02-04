@@ -68,8 +68,8 @@ export default function MobileMenu({ onClose }: MobileMenuProps) {
 					className={cn(
 						'px-3 py-4 text-sm rounded-md mb-0 justify-start',
 						(
-							pathname !== '/v1/campaigns' &&
-								pathname !== '/v1/referral'
+							pathname !== '/v1/campaigns/' &&
+								pathname !== '/v1/referral/'
 						) ?
 							'text-[#00D395]'
 						:	'text-[#676D9A]'
@@ -82,8 +82,8 @@ export default function MobileMenu({ onClose }: MobileMenuProps) {
 					}}>
 					<div className='flex items-center gap-2'>
 						{(
-							pathname == '/v1/campaigns' ||
-							pathname == '/v1/referral'
+							pathname == '/v1/campaigns/' ||
+							pathname == '/v1/referral/'
 						) ?
 							<Image
 								src={hoverDashboardIcon}

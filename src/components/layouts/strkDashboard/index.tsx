@@ -61,6 +61,8 @@ import PageCard from '../pageCard';
 import dataStrkRewards from '../strkDashboard/round_33.json';
 import dataStrkRewardsZklend from '../strkDashboard/zkLend_33.json';
 import { processAddress } from '@/Blockchain/stark-constants';
+import useCopyToClipboard from '@/hooks/useCopyToClipboard';
+import StarkDashboardHeader from './components/StarkDashboardHeader';
 export interface ICoin {
 	name: string;
 	symbol: string;
@@ -148,6 +150,7 @@ const StrkDashboard = () => {
 	const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>();
 	const router = useRouter();
 	let activeTransactions = useSelector(selectActiveTransactions);
+	const { copyToClipboard } = useCopyToClipboard();
 	const {
 		round,
 		setRound,
@@ -291,14 +294,14 @@ const StrkDashboard = () => {
 			posthog.capture('Get Claim Status', {
 				Status: 'Failure',
 			});
+			const handleCopyToClipboard = () => copyToClipboard(err.toString());
 			// dispatch(setTransactionStartedAndModalClosed(true));
 			const toastContent = (
-				<div>
-					Failed to Claim $STRK
-					<CopyToClipboard text={err}>
-						<Text as='u'>copy error!</Text>
-					</CopyToClipboard>
-				</div>
+				<Text
+					as='u'
+					onClick={handleCopyToClipboard}>
+					copy error!
+				</Text>
 			);
 			toast.error(toastContent, {
 				position: toast.POSITION.BOTTOM_RIGHT,
@@ -540,190 +543,20 @@ const StrkDashboard = () => {
 	const rewardPools = ['STRK/ETH', 'USDC/USDT', 'ETH/USDC'];
 	return (
 		<VStack
-			w='95%'
+			w='95vw'
 			h='30%'
 			display='flex'
 			justifyContent='space-between'
 			alignItems='flex-start'
 			mt='1rem'>
-			<Box
-				display='flex'
-				justifyContent='space-between'
-				flexDirection='row'
-				width='100%'>
-				<Box display='flex'>
-					<Text
-						fontSize='26px'
-						color='white'
-						fontWeight='600'>
-						Participate in a
-					</Text>
-					<Text
-						fontSize='26px'
-						color='#7956EC'
-						fontWeight='600'
-						ml='0.5rem'>
-						90M $STRK
-					</Text>
-					<Text
-						fontSize='26px'
-						color='white'
-						fontWeight='600'
-						ml='0.5rem'>
-						Incentive Program!
-					</Text>
-				</Box>
-				<Box
-					display='flex'
-					gap='2rem'
-					mr='1rem'>
-					<Box gap='0.2rem'>
-						<Text
-							fontSize='14px'
-							fontWeight='400'
-							color='#B1B0B5'>
-							Total STRK Reward
-						</Text>
-						<Tooltip
-							hasArrow
-							label={
-								<Box>
-									<Box
-										display='flex'
-										justifyContent='space-between'
-										gap={3}>
-										<Text>Hashstack Rewards:</Text>
-										<Text>
-											{numberFormatter(
-												hashstackStrkReward
-											)}{' '}
-											STRK
-										</Text>
-									</Box>
-									<Box
-										display='flex'
-										justifyContent='space-between'
-										gap={3}>
-										<Text>ZKlend Rewards:</Text>
-										<Text>
-											{numberFormatter(strkRewardsZklend)}{' '}
-											STRK
-										</Text>
-									</Box>
-								</Box>
-							}
-							placement={'bottom'}
-							rounded='md'
-							boxShadow='dark-lg'
-							bg='#02010F'
-							fontSize={'13px'}
-							fontWeight={'400'}
-							borderRadius={'lg'}
-							padding={'2'}
-							color='#F0F0F5'
-							border='1px solid'
-							borderColor='#23233D'
-							arrowShadowColor='#676D9A4D'
-							// maxW="222px"
-							// mt="28px"
-						>
-							{totalStrkRewards == null ?
-								<Skeleton
-									width='6rem'
-									height='1.2rem'
-									startColor='#101216'
-									endColor='#2B2F35'
-									borderRadius='6px'
-								/>
-							:	<Text
-									fontSize='16px'
-									fontWeight='500'
-									color='white'
-									textAlign='left'>
-									{numberFormatter(totalStrkRewards)} STRK
-								</Text>
-							}
-						</Tooltip>
-					</Box>
-					{strkRewards >= 0 && (
-						<Box gap='0.2rem'>
-							<Text
-								fontSize='14px'
-								fontWeight='400'
-								color='#B1B0B5'>
-								Claimed STRK Reward
-							</Text>
-							<Tooltip
-								hasArrow
-								label={''}
-								placement={'bottom'}
-								rounded='md'
-								boxShadow='dark-lg'
-								bg='#02010F'
-								fontSize={'13px'}
-								fontWeight={'400'}
-								borderRadius={'lg'}
-								padding={'2'}
-								color='#F0F0F5'
-								border='1px solid'
-								borderColor='#23233D'
-								arrowShadowColor='#676D9A4D'
-								textAlign='left'
-								// maxW="222px"
-								// mt="28px"
-							>
-								{strkClaimedRewards == null ?
-									<Skeleton
-										width='6rem'
-										height='1.2rem'
-										startColor='#101216'
-										endColor='#2B2F35'
-										borderRadius='6px'
-									/>
-								:	<Text
-										fontSize='16px'
-										fontWeight='500'
-										color='white'
-										textAlign='left'>
-										{numberFormatter(strkClaimedRewards)}{' '}
-										STRK
-									</Text>
-								}
-							</Tooltip>
-						</Box>
-					)}
-					<Button
-						height={'2rem'}
-						fontSize={'12px'}
-						mt='0.5rem'
-						padding='6px 12px'
-						border='1px solid #BDBFC1'
-						color='#BDBFC1'
-						bgColor='transparent'
-						// isDisabled={strkRewards == 0 ? true : false}
-						_disabled={{
-							color: '#2B2F35',
-							bgColor: '#101216',
-							border: '1px solid #2B2F35',
-							_hover: { bgColor: '#101216', color: '#2B2F35' },
-						}}
-						_hover={{
-							bgColor: 'white',
-							color: 'black',
-						}}
-						fontWeight='semibold'
-						borderRadius={'6px'}
-						isDisabled={strkRewards <= 0}
-						onClick={() => {
-							if (strkRewards <= 0) {
-							} else {
-								handleClaimStrk();
-							}
-						}}>
-						Claim
-					</Button>
-				</Box>
-			</Box>
+			<StarkDashboardHeader
+				hashstackStrkReward={hashstackStrkReward}
+				strkRewardsZklend={strkRewardsZklend}
+				totalStrkRewards={totalStrkRewards}
+				strkClaimedRewards={strkClaimedRewards}
+				strkRewards={strkRewards}
+				handleClaimStrk={handleClaimStrk}
+			/>
 			<Box
 				mt='1rem'
 				background='var(--surface-of-10, rgba(103, 109, 154, 0.10))'
@@ -1262,11 +1095,13 @@ const StrkDashboard = () => {
 					<Box
 						display='flex'
 						gap='1.5rem'
+						overflowX='scroll'
 						mt='2rem'>
 						{rewardPools.map((pool: string, idx: number) => (
 							<Box
 								key={idx}
 								bg='#34345633'
+								flexShrink={0}
 								paddingX='2rem'
 								paddingY='2rem'
 								borderRadius='8px'
@@ -1359,12 +1194,7 @@ const StrkDashboard = () => {
 												onClick={() => {
 													const toastContent = (
 														<div>
-															Select Loan to Spend{' '}
-															<CopyToClipboard text='Enter Loan ID'>
-																<Text as='u'>
-																	copy error!
-																</Text>
-															</CopyToClipboard>
+															Select Loan to Spend
 														</div>
 													);
 													toast.error(toastContent, {
@@ -1461,10 +1291,12 @@ const StrkDashboard = () => {
 					</Text>
 					<Box
 						display='flex'
+						overflowX='scroll'
 						gap='1.5rem'
 						mt='2rem'>
 						{Coins.map((supplyCoin: any, idx: number) => (
 							<Box
+								flexShrink={0}
 								key={idx}
 								bg='#34345633'
 								paddingX='2rem'

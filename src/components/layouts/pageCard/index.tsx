@@ -93,7 +93,7 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 
 			<div
 				className={cn(
-					'z-[1] flex min-h-screen flex-col items-center pt-28 pb-0 lg:pb-28',
+					'z-[1] flex min-h-screen flex-col items-center pt-28 pb-10 md:pb-28',
 					className
 				)}
 				style={{ background: GRADIENT_BACKGROUND_DARKER }}

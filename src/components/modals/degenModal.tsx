@@ -130,7 +130,7 @@ import numberFormatterPercentage from '@/utils/functions/numberFormatterPercenta
 import { useWaitForTransaction } from '@starknet-react/core';
 import axios from 'axios';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -141,6 +141,7 @@ import AnimatedButton from '../uiElements/buttons/AnimationButton';
 import ErrorButton from '../uiElements/buttons/ErrorButton';
 import SuccessButton from '../uiElements/buttons/SuccessButton';
 import SliderTooltip from '../uiElements/sliders/sliderTooltip';
+import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 const DegenModal = ({
 	buttonText,
 	coin,
@@ -585,6 +586,8 @@ const DegenModal = ({
 	const mySwapPoolPairs = useSelector(selectMySwapPoolsSupported);
 	const [myswapPools, setmyswapPools] = useState([]);
 	const [jediswapPools, setjediswapPools] = useState([]);
+	const { copyToClipboard } = useCopyToClipboard();
+
 	useEffect(() => {
 		function findSideForMember(array: any, token: any) {
 			const data: any = [];
@@ -708,10 +711,9 @@ const DegenModal = ({
 		////console.log("radio value", radioValue, method);
 	}, [radioValue]);
 	const [tokenTypeSelected, setTokenTypeSelected] = useState('Native');
-	const router = useRouter();
-	const { pathname } = router;
+	const pathname = usePathname();
 	useEffect(() => {
-		if (pathname == '/v1/strk-rewards') {
+		if (pathname == '/v1/strk-rewards/') {
 			// setLoanMarket(coin ? coin.name : "BTC");
 			// setCollateralMarket(coin ? coin.name : "BTC");
 		} else {
@@ -1031,12 +1033,18 @@ const DegenModal = ({
 				// dispatch(setTransactionStatus("failed"));
 				setTransactionStarted(false);
 			}
+			const handleCopyToClipboard = () => {
+				copyToClipboard(err.toString());
+			};
+
 			const toastContent = (
 				<div>
 					Transaction declined{' '}
-					<CopyToClipboard text={err}>
-						<Text as='u'>copy error!</Text>
-					</CopyToClipboard>
+					<Text
+						as='u'
+						onClick={handleCopyToClipboard}>
+						copy error!
+					</Text>
 				</div>
 			);
 			posthog.capture('Trade Modal Market Status', {
