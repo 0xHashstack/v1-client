@@ -145,7 +145,7 @@ const Navbar = ({ validRTokens }: any) => {
 				<Button
 					variant='ghost'
 					onClick={() => setIsDrawerOpen(true)}>
-					<Menu className='h-6 w-6' />
+					<Menu className='!h-6 !w-6' />
 				</Button>
 
 				<Drawer
