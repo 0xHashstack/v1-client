@@ -14,20 +14,25 @@ import {
 import { useAccount } from '@starknet-react/core';
 import axios from 'axios';
 import { NextPage } from 'next';
-import { default as React, useEffect, useRef, useState } from 'react';
-
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-
 import { processAddress } from '@/Blockchain/stark-constants';
 import BlueInfoIcon from '@/assets/icons/blueinfoicon';
 import CopyIcon from '@/assets/icons/copyIcon';
 import DropdownUp from '@/assets/icons/dropdownUpIcon';
 import ExternalLinkWhite from '@/assets/icons/externalLinkWhite';
 import { default as LeaderboardDashboard } from '@/components/layouts/leaderboardDashboard';
-import UserCampaignData from '@/components/layouts/userCampaignData';
-import RegisterCCPModal from '@/components/modals/RegisterCCPModal';
-import SubmissionCCPModal from '@/components/modals/SubmissionCCPModal';
+import dynamic from 'next/dynamic';
+const UserCampaignData = dynamic(
+	() => import('@/components/layouts/userCampaignData'),
+	{
+		ssr: false,
+		loading: () => <UserCampaignDataSkeleton />,
+	}
+);
+
+import { UserCampaignDataSkeleton } from '@/components/layouts/userCampaignData/skeleton';
 import { default as useDataLoader } from '@/hooks/useDataLoader';
 import {
 	selectAirdropDropdowns,
@@ -46,7 +51,6 @@ import {
 } from '@/store/slices/readDataSlice';
 import { default as numberFormatter } from '@/utils/functions/numberFormatter';
 import Link from 'next/link';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const columnItemsLeaderBoard = [
 	'Rank',
@@ -65,161 +69,7 @@ const columnItemsPersonalStatsReferalCampaign = [
 	'',
 ];
 
-const sampleDate: any = [
-	{
-		id: 0,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 1,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 2,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 3,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 4,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 5,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 6,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 7,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 8,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 10,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 20,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 30,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 40,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 50,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-	{
-		id: 60,
-		start: '1 Mar',
-		end: '1 April',
-		rank: 28,
-		account: 'Braavos',
-		liq: 500,
-		pts: 100,
-		est: 232,
-	},
-];
-
 const Campaign: NextPage = () => {
-	const [currentPagination, setCurrentPagination] = useState<number>(1);
 	const [daysLeft, setDaysLeft] = useState<number>(56);
 	const [leaderboardData, setLeaderboardData] = useState([]);
 	const [communityHash, setCommunityHash] = useState();
@@ -338,16 +188,6 @@ const Campaign: NextPage = () => {
 		ccpUserRegisterDetails,
 		ccpUserSubmissionDetails,
 	]);
-
-	useEffect(() => {
-		if (sampleDate) {
-			if (sampleDate.length <= (currentPagination - 1) * 6) {
-				if (currentPagination > 1) {
-					setCurrentPagination(currentPagination - 1);
-				}
-			}
-		}
-	}, []);
 
 	// useEffect(() => {
 	//   try {
@@ -546,11 +386,6 @@ const Campaign: NextPage = () => {
 	useEffect(() => {
 		updateDaysLeft();
 	}, []);
-
-	// Update days left on page load and start an interval to update it daily
-	useEffect(() => {
-		setCurrentPagination(1);
-	}, [tabValue]);
 
 	const handleClickOutside = (event: MouseEvent) => {
 		if (ddRef.current && !ddRef.current.contains(event.target as Node)) {

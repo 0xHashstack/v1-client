@@ -133,7 +133,6 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
 import { uint256 } from 'starknet';
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon';

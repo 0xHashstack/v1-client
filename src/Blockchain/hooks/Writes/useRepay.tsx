@@ -18,7 +18,7 @@ import {
 	setActiveTransactions,
 	setTransactionStatus,
 } from '@/store/slices/userAccountSlice';
-import CopyToClipboard from 'react-copy-to-clipboard';
+import CopyToClipboard from '@/components/clipboard/clipboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Text } from '@chakra-ui/react';

@@ -80,7 +80,6 @@ import { useAccount, useWaitForTransaction } from '@starknet-react/core';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
 import AnimatedButton from '../uiElements/buttons/AnimationButton';
 import ErrorButton from '../uiElements/buttons/ErrorButton';
@@ -104,6 +103,7 @@ import posthog from 'posthog-js';
 import { uint256 } from 'starknet';
 import TransactionFees from '../../../TransactionFees.json';
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon';
+import CopyToClipboard from '../clipboard/clipboard';
 
 const StakeUnstakeModal = ({
 	buttonText,

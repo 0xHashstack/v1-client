@@ -78,7 +78,6 @@
 		"@storybook/test": "^8.0.6",
 		"@testing-library/react": "^14.0.0",
 		"@types/mixpanel-browser": "^2.47.0",
-		"@types/react-copy-to-clipboard": "^5.0.4",
 		"@types/react-stars": "^2.2.1",
 		"@types/text-encoding-utf-8": "^1.0.5",
 		"autoprefixer": "^10.4.20",

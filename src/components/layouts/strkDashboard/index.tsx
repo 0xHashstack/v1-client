@@ -54,7 +54,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import posthog from 'posthog-js';
 import React, { useEffect, useState } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import PageCard from '../pageCard';

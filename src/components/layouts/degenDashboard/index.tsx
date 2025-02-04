@@ -75,7 +75,6 @@ import dollarConvertor from '@/utils/functions/dollarConvertor';
 import numberFormatter from '@/utils/functions/numberFormatter';
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage';
 import { useRouter, useSearchParams } from 'next/navigation';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
 import { uint256 } from 'starknet';
 import TableInfoIcon from '../table/tableIcons/infoIcon';
