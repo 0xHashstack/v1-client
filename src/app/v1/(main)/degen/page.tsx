@@ -24,6 +24,7 @@ import {
 	selectStrkAprData,
 	selectnetSpendBalance,
 } from '@/store/slices/userAccountSlice';
+import DegenBanner from '@/components/layouts/degenBanner/DegenBanner';
 
 const data = [
 	{
@@ -167,6 +168,87 @@ const data = [
 		collateralCoin: 'USDT',
 		maxLeverage: 1,
 		maxApr: 18,
+		actionType: 'Swap',
+		collateralSuggestedAmount: 5000,
+	},
+	{
+		protocol: 'Jediswap',
+		stratergy: 'USDC-BTC LP BTC+ETH',
+		collateralCoin: 'USDT',
+		maxLeverage: 2,
+		maxApr: 28,
+		actionType: 'Swap',
+		collateralSuggestedAmount: 5000,
+	},
+	{
+		protocol: 'Jediswap',
+		stratergy: 'USDC-BTC LP BTC+ETH',
+		collateralCoin: 'USDC',
+		maxLeverage: 3,
+		maxApr: 18,
+		actionType: 'Liquidity provision',
+		collateralSuggestedAmount: 5000,
+	},
+	{
+		protocol: 'Myswap',
+		stratergy: 'USDC-BTC LP BTC+ETH',
+		collateralCoin: 'DAI',
+		maxLeverage: 4,
+		maxApr: 10,
+		actionType: 'Swap',
+		collateralSuggestedAmount: 5000,
+	},
+	{
+		protocol: 'Jediswap',
+		stratergy: 'USDC-BTC LP BTC+ETH',
+		collateralCoin: 'BTC',
+		maxLeverage: 5,
+		maxApr: 180,
+		actionType: 'Swap',
+		collateralSuggestedAmount: 5000,
+	},
+	{
+		protocol: 'Myswap',
+		stratergy: 'USDC-BTC LP BTC+ETH',
+		collateralCoin: 'ETH',
+		maxLeverage: 2,
+		maxApr: 18,
+		actionType: 'Swap',
+		collateralSuggestedAmount: 5000,
+	},
+	{
+		protocol: 'Jediswap',
+		stratergy: 'USDC-BTC LP BTC+ETH',
+		collateralCoin: 'STRK',
+		maxLeverage: 3,
+		maxApr: 18,
+		actionType: 'Swap',
+		collateralSuggestedAmount: 5000,
+	},
+	{
+		protocol: 'Myswap',
+		stratergy: 'USDC-BTC LP BTC+ETH',
+		collateralCoin: 'USDT',
+		maxLeverage: 1,
+		maxApr: 18,
+		actionType: 'Swap',
+		collateralSuggestedAmount: 5000,
+	},
+	{
+		protocol: 'Jediswap',
+		stratergy: 'USDC-BTC LP BTC+ETH',
+		collateralCoin: 'USDT',
+		maxLeverage: 1,
+		maxApr: 18,
+		actionType: 'Swap',
+		collateralSuggestedAmount: 5000,
+	},
+	{
+		protocol: 'Jediswap',
+		stratergy: 'USDC-BTC LP BTC+ETH',
+		collateralCoin: 'USDT',
+		maxLeverage: 2,
+		maxApr: 28,
 		actionType: 'Swap',
 		collateralSuggestedAmount: 5000,
 	},
@@ -617,84 +699,16 @@ const Degen: NextPage = () => {
 	const [isLessThan1350] = useMediaQuery('(max-width: 1350px)');
 
 	return (
-		<>
-			{totalSupply >= 0 && (
-				<Box
-					position='relative'
-					width={'95%'}
-					height={'200px'}
-					marginTop='0'
-					marginBottom='8'
-					paddingX='20'>
-					<Image
-						src='/degen_mode_banner.svg'
-						alt='Degen Mode Banner'
-						fill
-						style={{ objectFit: 'cover', borderRadius: '8px' }}
-					/>
-					<Image
-						src='/degen_mode_banner2.svg'
-						alt='Degen Mode Banner'
-						width={765}
-						height={129}
-						style={{
-							position: 'absolute',
-							top: '25px',
-							right: '0rem',
-							objectFit: 'cover',
-							borderRadius: '8px',
-						}}
-					/>
-					<Box
-						position='absolute'
-						top='4'
-						left='7'
-						maxWidth={{
-							md: '25rem',
-							xl: '30rem',
-							'2xl': '40rem',
-						}}
-						width='full'
-						mt='0.4rem'
-						ml='0.4rem'>
-						<Box
-							color='#E6EDF3'
-							fontSize={'2.1rem'}
-							display='flex'
-							alignItems='center'
-							gap='2'
-							fontWeight='semibold'>
-							What Is Degen mode?
-						</Box>
-						<Box>
-							<Text
-								color='#E6EDF3'
-								width='full'
-								pt='8px'
-								fontSize={isLessThan1350 ? '0.8rem' : '1rem'}
-								letterSpacing='-0.15px'
-								lineHeight='20px'>
-								These are the tailored strategies based on your
-								supplied assets. The protocol provides a default
-								leverage of 5x, which can be reduced by
-								increasing the collateral. With this 1-click
-								feature, provide the amount and collateral, and
-								the protocol executes your chosen strategy,
-								making your capital efficient.
-							</Text>
-						</Box>
-					</Box>
-				</Box>
-			)}
+		<div className='w-[95vw]'>
+			{totalSupply >= 0 && <DegenBanner />}
 			<HStack
 				display='flex'
 				justifyContent='space-between'
 				alignItems='flex-end'
-				width='95%'
-				pr='3rem'
+				width='100%'
 				mb='1rem'>
 				<NavButtons
-					width={70}
+					width={100}
 					marginBottom={'0rem'}
 				/>
 			</HStack>
@@ -702,7 +716,6 @@ const Degen: NextPage = () => {
 				<Box
 					display='flex'
 					justifyContent='left'
-					w='94%'
 					mt='0.5rem'
 					mb='0.8rem'
 					color='#F0F0F5'
@@ -711,7 +724,7 @@ const Degen: NextPage = () => {
 				</Box>
 			)}
 			<DegenDashboard
-				width={'95%'}
+				width={'100%'}
 				currentPagination={currentPagination}
 				setCurrentPagination={setCurrentPagination}
 				Coins={Coins}
@@ -724,7 +737,7 @@ const Degen: NextPage = () => {
 			/>
 			<Box
 				paddingY='1rem'
-				width='95%'
+				width='100%'
 				display='flex'
 				justifyContent='space-between'
 				alignItems='center'>
@@ -741,7 +754,7 @@ const Degen: NextPage = () => {
 					</Box>
 				)}
 			</Box>
-		</>
+		</div>
 	);
 };
 

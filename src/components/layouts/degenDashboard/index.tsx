@@ -704,7 +704,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 				flexDirection='column'
 				justifyContent='center'
 				alignItems='center'
-				width='95%'
+				width='100%'
 				height={'37rem'}
 				border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) '
 				bg={' var(--surface-of-10, rgba(103, 109, 154, 0.10)); '}
@@ -733,7 +733,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 				height={'39rem'}
 				border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30)) '
 				padding={'1rem 0rem 0rem'}
-				overflowX='hidden'>
+				overflowX='scroll'>
 				<TableContainer
 					bg='transparent'
 					color='white'
