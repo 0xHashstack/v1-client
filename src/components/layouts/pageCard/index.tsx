@@ -86,7 +86,7 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 			</div>
 
 			<div
-				className='fixed z-[1]'
+				className='fixed z-10'
 				onClick={handleFeedbackClick}>
 				<FeedbackModal />
 			</div>

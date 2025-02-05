@@ -1,7 +1,6 @@
 'use client';
 import {
 	Box,
-	Button,
 	HStack,
 	Input,
 	InputGroup,
@@ -51,6 +50,7 @@ import {
 } from '@/store/slices/readDataSlice';
 import { default as numberFormatter } from '@/utils/functions/numberFormatter';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const columnItemsLeaderBoard = [
 	'Rank',
@@ -170,7 +170,6 @@ const Campaign: NextPage = () => {
 					} else {
 						setuserRank('-');
 					}
-					let snaps = data?.epochWise;
 					// snaps.sort(
 					//   (a: { epoch: number }, b: { epoch: number }) => a.epoch - b.epoch
 					// )
@@ -472,85 +471,30 @@ const Campaign: NextPage = () => {
 
 	return (
 		<>
-			<HStack
-				display='flex'
-				justifyContent='space-between'
-				alignItems='flex-start'
-				flexDirection='column'
-				width='95%'
-				pr='3rem'
-				mb='1rem'
-				zIndex='1'>
-				<HStack
-					mt='4rem'
-					display='flex'
-					// justifyContent="center"
-					alignItems='center'
-					width='full'>
-					<Box
-						display='flex'
-						justifyContent='flex-start'
-						alignItems='center'
-						gap='1rem'>
-						<Button
-							bg='transparent'
-							fontStyle='normal'
-							fontWeight='600'
-							fontSize='14px'
-							lineHeight='20px'
-							alignItems='center'
-							letterSpacing='-0.15px'
-							padding='1.125rem 0.4rem'
-							margin='2px'
-							color={tabValue == 1 ? '#fff' : '#676D9A'}
-							borderBottom={
-								tabValue == 1 ? '2px solid #4D59E8' : ''
-							}
-							borderRadius='0px'
-							_hover={{ bg: 'transparent', color: '#E6EDF3' }}
-							onClick={() => {
-								setTabValue(1);
-							}}>
-							Your dashboard
-						</Button>
-
-						<Button
-							bg='transparent'
-							fontStyle='normal'
-							fontWeight='600'
-							fontSize='14px'
-							lineHeight='20px'
-							alignItems='center'
-							letterSpacing='-0.15px'
-							padding='1.125rem 0.4rem'
-							margin='2px'
-							color={tabValue == 2 ? '#fff' : '#676D9A'}
-							borderBottom={
-								tabValue == 2 ? '2px solid #4D59E8' : ''
-							}
-							borderRadius='0px'
-							_hover={{ bg: 'transparent', color: '#E6EDF3' }}
-							onClick={() => {
-								setTabValue(2);
-							}}>
-							LeaderBoard
-						</Button>
+			<div className='flex flex-col items-start w-[95vw] mb-4 z-[1]'>
+				<div className='flex items-center w-full flex-wrap gap-4 justify-between'>
+					<div className='flex justify-start items-center gap-4 flex-wrap'>
+						{['Your dashboard', 'LeaderBoard'].map(
+							(item, index) => (
+								<button
+									key={index}
+									className={`bg-transparent font-semibold text-sm leading-5 items-center tracking-tight py-3 px-1.5 m-0.5 ${
+										tabValue == index + 1 ?
+											'text-white border-b-2 border-[#4D59E8]'
+										:	'text-[#676D9A]'
+									} rounded-none hover:bg-transparent hover:text-[#E6EDF3] whitespace-nowrap `}
+									onClick={() => {
+										setTabValue(index + 1);
+									}}>
+									{item}
+								</button>
+							)
+						)}
 
 						{/* Dropdown  */}
 						{tabValue === 2 && (
-							<Box
-								display='flex'
-								border='1px'
-								borderColor='#2B2F35'
-								justifyContent='space-between'
-								ml='2rem'
-								py='2'
-								pl='3'
-								pr='3'
-								width='16rem'
-								borderRadius='md'
-								className='navbar'
-								cursor='pointer'
+							<div
+								className='flex justify-between border border-[#2B2F35] ml-8 py-2 px-3 w-64 rounded-md cursor-pointer navbar'
 								ref={ddRef}
 								onClick={() =>
 									dispatch(
@@ -559,114 +503,76 @@ const Campaign: NextPage = () => {
 										)
 									)
 								}>
-								<Box
-									display='flex'
-									gap='1'>
-									<Text color='white'>
+								<div className='flex gap-1'>
+									<span className='text-white'>
 										{currentSelectedDrop}
-									</Text>
-								</Box>
+									</span>
+								</div>
 
-								<Box
-									pt='1'
-									className='navbar-button'>
+								<div className='pt-1 navbar-button'>
 									<DropdownUp />
-								</Box>
+								</div>
 
 								{airdropDropdowns.airdropAndCcpDropdown && (
-									<Box
-										w='full'
-										left='0'
-										bg='#03060B'
-										py='2'
-										className='dropdown-container'
-										boxShadow='dark-lg'>
+									<div className='w-full left-0 bg-[#03060B] py-2 dropdown-container shadow-2xl'>
 										{['Airdrop 1', 'CCP 1'].map(
-											(item: string, index: number) => {
-												return (
-													<Box
-														key={index}
-														as='button'
-														w='full'
-														display='flex'
-														alignItems='center'
-														gap='1'
-														pr='2'
-														onClick={() => {
-															setCurrentSelectedDrop(
-																item
-															);
-														}}
-														_hover={{
-															bg: '#171026',
-														}}>
-														{item ===
-															currentSelectedDrop && (
-															<Box
-																w='3px'
-																h='28px'
-																bg='#4954DC'
-																borderRightRadius='md'></Box>
-														)}
-														<Box
-															w='full'
-															display='flex'
-															py='5px'
-															px={`${item === currentSelectedDrop ? '3' : '5'}`}
-															gap='1'
-															borderRadius='md'>
-															<Text color='white'>
-																{item}
-															</Text>
-														</Box>
-													</Box>
-												);
-											}
+											(item: string, index: number) => (
+												<button
+													key={index}
+													className='w-full flex items-center gap-1 pr-2 hover:bg-[#171026]'
+													onClick={() => {
+														setCurrentSelectedDrop(
+															item
+														);
+													}}>
+													{item ===
+														currentSelectedDrop && (
+														<div className='w-[3px] h-7 bg-[#4954DC] rounded-r-md'></div>
+													)}
+													<div
+														className={`w-full flex py-[5px] ${
+															(
+																item ===
+																currentSelectedDrop
+															) ?
+																'px-3'
+															:	'px-5'
+														} gap-1 rounded-md`}>
+														<span className='text-white'>
+															{item}
+														</span>
+													</div>
+												</button>
+											)
 										)}
-									</Box>
+									</div>
 								)}
-							</Box>
+							</div>
 						)}
-					</Box>
+					</div>
 
 					{!(tabValue == 2 && currentSelectedDrop == 'Airdrop 1') && (
-						<Box
-							display='flex'
-							justifyContent='flex-end'
-							alignItems='center'
-							gap='1rem'
-							width='full'>
+						<div className='flex justify-end items-center gap-4'>
 							<Button
 								onClick={() => {}}
-								isDisabled={true}
-								background='var(--surface-of-10, rgba(103, 109, 154, 0.10))'
-								color='#f2f2f2'
-								size='sm'
-								border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
-								_hover={{ backgroundColor: 'transparent' }}>
+								disabled={true}
+								variant='outline'
+								className='bg-[rgba(103,109,154,0.10)] text-[#f2f2f2] h-8 px-4 border border-[rgba(103,109,154,0.30)] hover:bg-transparent disabled:opacity-50'>
 								Connect Socials
 							</Button>
 							<Button
 								onClick={() => {}}
-								isDisabled={true}
-								background='var(--surface-of-10, rgba(103, 109, 154, 0.10))'
-								color='#f2f2f2'
-								size='sm'
-								border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
-								_hover={{ backgroundColor: 'transparent' }}>
+								disabled={true}
+								variant='outline'
+								className='bg-[rgba(103,109,154,0.10)] text-[#f2f2f2] h-8 px-4 border border-[rgba(103,109,154,0.30)] hover:bg-transparent disabled:opacity-50'>
 								Submit content for CCP
 							</Button>
-						</Box>
+						</div>
 					)}
-				</HStack>
+				</div>
 
 				{tabValue == 1 ?
-					<HStack
-						display='flex'
-						width='100%'
-						alignItems='flex-start'
-						justifyContent='space-between'
-						mt='1rem'>
+					<div className='flex w-full items-start justify-between gap-4 flex-wrap mt-4'>
 						<HStack
 							mt='auto'
 							display='flex'
@@ -735,43 +641,6 @@ const Campaign: NextPage = () => {
 											/>
 										}
 									</VStack>
-									{/* <VStack
-                    gap={"6px"}
-                    justifyContent="flex-start"
-                    alignItems="flex-start"
-                  >
-                    <Text color="#B1B0B5" fontSize="14px" alignItems="center">
-                      <Tooltip
-                        hasArrow
-                        label=""
-                        placement="bottom"
-                        boxShadow="dark-lg"
-                        bg="#010409"
-                        fontSize={"13px"}
-                        fontWeight={"thin"}
-                        borderRadius={"lg"}
-                        padding={"2"}
-                        border="1px solid"
-                        borderColor="#2B2F35"
-                        arrowShadowColor="#2B2F35"
-                      >
-                        Hash tokens earned
-                      </Tooltip>
-                    </Text>
-                    {userHashCCP == null ? (
-                      <Skeleton
-                        width="6rem"
-                        height="1.4rem"
-                        startColor="#101216"
-                        endColor="#2B2F35"
-                        borderRadius="6px"
-                      />
-                    ) : (
-                      <Text color="#00D395" fontSize="20px">
-                        {numberFormatter(userHashCCP)} HASH
-                      </Text>
-                    )}
-                  </VStack> */}
 								</HStack>
 							</HStack>
 						</HStack>
@@ -781,23 +650,12 @@ const Campaign: NextPage = () => {
 							display='flex'
 							gap='.5rem'
 							flexDirection='column-reverse'>
-							{/* <Text
-                color="#F0F0F5"
-                fontSize="16px"
-                fontWeight="400"
-                lineHeight="20px"
-                fontStyle="normal"
-                mb="0.8rem"
-              >
-                Your Referral Link
-              </Text> */}
-
 							<Box
 								display='flex'
 								mt='0'
 								background='var(--surface-of-10, rgba(103, 109, 154, 0.10))'>
 								<InputGroup
-									width='550px'
+									width='min(550px, 70vw)'
 									mt='0rem'
 									border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
 									borderRight='0px'
@@ -898,7 +756,7 @@ const Campaign: NextPage = () => {
 								</Box>
 							}
 						</Box>
-					</HStack>
+					</div>
 				:	<HStack
 						display='flex'
 						width='100%'
@@ -1125,7 +983,7 @@ const Campaign: NextPage = () => {
 						/>
 					}
 				</Box>
-			</HStack>
+			</div>
 		</>
 	);
 };

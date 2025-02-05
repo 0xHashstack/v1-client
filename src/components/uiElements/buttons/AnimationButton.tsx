@@ -12,7 +12,7 @@ import {
 } from '@/store/slices/userAccountSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ErrorButton from './ErrorButton';
-import CopyToClipboard from '@/components/clipboard/clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
 interface Props extends ButtonProps {
 	children: ReactNode;
 	labelSuccessArray: Array<string | ReactNode>;

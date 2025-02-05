@@ -6,7 +6,7 @@ import {
 import { setTransactionRefresh } from '@/store/slices/readDataSlice';
 import { Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import CopyToClipboard from '@/components/clipboard/clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useWaitForTransaction } from '@starknet-react/core';
@@ -106,9 +106,10 @@ const useTransactionHandler = () => {
 				//console.log("treans rejected", transaction_error);
 				const toastContent = (
 					<div>
-						Transaction failed{' '}
+						Transaction failed {/* @ts-ignore */}
 						<CopyToClipboard
 							text={'Transaction failed : ' + transaction_error}>
+							{/* @ts-ignore */}
 							<Text as='u'>copy error!</Text>
 						</CopyToClipboard>
 					</div>

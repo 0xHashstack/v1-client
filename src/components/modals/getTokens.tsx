@@ -63,7 +63,8 @@ import {
 } from '@/store/slices/userAccountSlice';
 import { toast } from 'react-toastify';
 import posthog from 'posthog-js';
-import CopyToClipboard from '../clipboard/clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
+
 const GetTokensModal = ({
 	buttonText,
 	backGroundOverLay,
@@ -209,7 +210,10 @@ const GetTokensModal = ({
 			const toastContent = (
 				<div>
 					Failed to mint{' ' + coin + ' '}
+					{/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
+
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>

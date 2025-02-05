@@ -98,7 +98,7 @@ import numberFormatter from '@/utils/functions/numberFormatter';
 import { useWaitForTransaction } from '@starknet-react/core';
 import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
-import CopyToClipboard from '@/components/clipboard/clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
 import { uint256 } from 'starknet';
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon';
@@ -400,8 +400,9 @@ const YourSupplyModal = ({
 			}
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined {/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>
@@ -753,8 +754,9 @@ const YourSupplyModal = ({
 			//console.log(uqID, "your supply catch", data);
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined {/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>
@@ -885,8 +887,9 @@ const YourSupplyModal = ({
 			});
 			const toastContent = (
 				<div>
-					Transaction Declined{' '}
+					Transaction Declined {/* @ts-ignore */}
 					<CopyToClipboard text={err as string}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>

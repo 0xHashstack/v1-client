@@ -140,7 +140,8 @@ import StrkToEth from '@/assets/icons/pools/strkToEth';
 import UsdcToDai from '@/assets/icons/pools/usdcToDai';
 import UsdcToUsdt from '@/assets/icons/pools/usdcToUsdt';
 import UsdtToDai from '@/assets/icons/pools/usdtToDai';
-import CopyToClipboard from '../clipboard/clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
+
 const BorrowModal = ({
 	buttonText,
 	coin,
@@ -1100,8 +1101,10 @@ const BorrowModal = ({
 			});
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined
+					{/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>
@@ -1233,8 +1236,9 @@ const BorrowModal = ({
 			}
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined {/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>

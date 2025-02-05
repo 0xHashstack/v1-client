@@ -103,7 +103,7 @@ import posthog from 'posthog-js';
 import { uint256 } from 'starknet';
 import TransactionFees from '../../../TransactionFees.json';
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon';
-import CopyToClipboard from '../clipboard/clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 const StakeUnstakeModal = ({
 	buttonText,
@@ -389,8 +389,10 @@ const StakeUnstakeModal = ({
 			}
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined
+					{/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>
@@ -465,8 +467,10 @@ const StakeUnstakeModal = ({
 			}
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined
+					{/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>
@@ -533,8 +537,10 @@ const StakeUnstakeModal = ({
 			}
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined
+					{/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>

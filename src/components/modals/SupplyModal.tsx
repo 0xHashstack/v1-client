@@ -80,7 +80,7 @@ import {
 	useWaitForTransaction,
 } from '@starknet-react/core';
 import React, { useEffect, useState } from 'react';
-import CopyToClipboard from '@/components/clipboard/clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { uint256 } from 'starknet';
@@ -664,8 +664,10 @@ const SupplyModal = ({
 
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined
+					{/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>

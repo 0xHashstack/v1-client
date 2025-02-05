@@ -121,7 +121,7 @@ import axios from 'axios';
 import { getAddress } from 'ethers/lib/utils';
 import Image from 'next/image';
 import posthog from 'posthog-js';
-import CopyToClipboard from '@/components/clipboard/clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
 import { Account, uint256 } from 'starknet';
 import useSwap from '../../Blockchain/hooks/Writes/useSwap';
@@ -445,8 +445,10 @@ const YourBorrowModal = ({
 			}
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined {/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
+
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>
@@ -1113,8 +1115,10 @@ const YourBorrowModal = ({
 			});
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined {/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
+
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>
@@ -1254,8 +1258,10 @@ const YourBorrowModal = ({
 			}
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined {/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
+
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>
@@ -1386,8 +1392,9 @@ const YourBorrowModal = ({
 			}
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined {/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>
@@ -1529,8 +1536,9 @@ const YourBorrowModal = ({
 			});
 			const toastContent = (
 				<div>
-					Transaction declined{' '}
+					Transaction declined {/* @ts-ignore */}
 					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
 						<Text as='u'>copy error!</Text>
 					</CopyToClipboard>
 				</div>

@@ -11,7 +11,6 @@ import {
 	Tr,
 } from '@chakra-ui/react';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
 
 import CircularDropDown from '@/assets/icons/circularDropDown';
 import CircularDropDownActive from '@/assets/icons/circularDropDownActive';
@@ -19,53 +18,13 @@ import CircularDropDownClose from '@/assets/icons/circularDropDownClose';
 import ExternalLink from '@/assets/icons/externalLink';
 import numberFormatter from '@/utils/functions/numberFormatter';
 import Link from 'next/link';
-import useClaimStrk from '@/Blockchain/hooks/Writes/useStrkClaim';
-import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards';
-import { parseAmount } from '@/Blockchain/utils/utils';
-import { useAccount } from '@starknet-react/core';
-import dataStrkRewards33 from '../../layouts/strkDashboard/round_33.json';
-import dataStrkRewards32 from '../../layouts/strkDashboard/round_32.json';
-import dataStrkRewards from '../../layouts/strkDashboard/round_31.json';
-import dataStrkRewards30 from '../../layouts/strkDashboard/round_30.json';
-import dataStrkRewards29 from '../../layouts/strkDashboard/round_29.json';
-import dataStrkRewards28 from '../../layouts/strkDashboard/round_28.json';
-import dataStrkRewards27 from '../../layouts/strkDashboard/round_27.json';
-import dataStrkRewards26 from '../../layouts/strkDashboard/round_26.json';
-import dataStrkRewards25 from '../../layouts/strkDashboard/round_25.json';
-import dataStrkRewards24 from '../../layouts/strkDashboard/round_24.json';
-import dataStrkRewards23 from '../../layouts/strkDashboard/round_23.json';
-import dataStrkRewards22 from '../../layouts/strkDashboard/round_22.json';
-import dataStrkRewards21 from '../../layouts/strkDashboard/round_21.json';
-import dataStrkRewards20 from '../../layouts/strkDashboard/round_20.json';
-import dataStrkRewards19 from '../../layouts/strkDashboard/round_19.json';
-import dataStrkRewards18 from '../../layouts/strkDashboard/round_18.json';
-import dataStrkRewards17 from '../../layouts/strkDashboard/round_17.json';
-import dataStrkRewards16 from '../../layouts/strkDashboard/round_16.json';
-import dataStrkRewards15 from '../../layouts/strkDashboard/round_15.json';
-import dataStrkRewards14 from '../../layouts/strkDashboard/round_14.json';
-import dataStrkRewards13 from '../../layouts/strkDashboard/round_13.json';
-import dataStrkRewards12 from '../../layouts/strkDashboard/round_12.json';
-import dataStrkRewards11 from '../../layouts/strkDashboard/round_11.json';
-import dataStrkRewards10 from '../../layouts/strkDashboard/round_10.json';
-import dataStrkRewards9 from '../../layouts/strkDashboard/round_9.json';
-import dataStrkRewards8 from '../../layouts/strkDashboard/round_8.json';
-import dataStrkRewardsRound7 from '../../layouts/strkDashboard/round_7.json';
-import dataStrkRewardsRound6 from '../../layouts/strkDashboard/round_6.json';
-import dataStrkRewardsRound5 from '../../layouts/strkDashboard/round_5.json';
-import dataStrkRewardsRound4 from '../../layouts/strkDashboard/round_4.json';
-import dataStrkRewardsRound3 from '../../layouts/strkDashboard/round_3.json';
-import dataStrkRewardsRound2 from '../../layouts/strkDashboard/round_2.json';
-import dataStrkRewardsRound1 from '../../layouts/strkDashboard/round_1.json';
-import posthog from 'posthog-js';
-import { useDispatch, useSelector } from 'react-redux';
+import { useUserCampaignData } from '@/hooks/useUserCampaignData';
 import {
-	selectActiveTransactions,
-	setActiveTransactions,
-} from '@/store/slices/readDataSlice';
-
-import { toast } from 'react-toastify';
-import { processAddress } from '@/Blockchain/stark-constants';
-import CopyToClipboard from '@/components/clipboard/clipboard';
+	ChevronDown,
+	ChevronDownCircle,
+	ChevronUp,
+	ChevronUpCircle,
+} from 'lucide-react';
 const snapshotsDates = [
 	'30 Nov 2023',
 	'2 Dec 2023',
@@ -126,391 +85,25 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 	snapshotsData,
 	campaignDetails,
 	userHashCCP,
-	userPointsCCP,
 }) => {
-	const [epochDropdownSelected, setepochDropdownSelected] = useState(false);
-	const [defiSpringDropdownSelected, setdefiSpringDropdownSelected] =
-		useState(false);
-	const [groupedSnapshots, setGroupedSnapshots] = useState([[], [], [], []]);
-	const [loading, setLoading] = useState<boolean>(true);
-	const [openEpochs, setOpenEpochs] = useState<any>([]);
-	const [ccpDropdownSelected, setccpDropdownSelected] = useState(false);
-	const [hoverEpochDrop, sethoverEpochDrop] = useState(false);
-	const [hoverccpDrop, sethoverccpDrop] = useState(false);
-	const [hoverDefiDrop, sethoverDefiDrop] = useState(false);
-	const [defiSpringRoundCount, setDefiSpringRoundCount] = useState(
-		new Array(33).fill(0)
-	);
-	let topLength = ccpUserData.length * 5.15;
-	const [strkRewards, setstrkRewards] = useState<any>(0);
-	const [totalStrkRewards, settotalStrkRewards] = useState<any>();
-	const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>();
-	const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>();
-	const [dataRoundwiseAlloc, setdataRoundwiseAlloc] = useState<any>([]);
-	const dispatch = useDispatch();
-	const [uniqueID, setUniqueID] = useState(0);
-	const getUniqueId = () => uniqueID;
-	const [toastId, setToastId] = useState<any>();
-	let activeTransactions = useSelector(selectActiveTransactions);
-	const datesDefiSpringRounds = [
-		'14 Mar 2024 - 28 Mar 2024',
-		'28 Mar 2024 - 4 Apr 2024',
-		'4 Apr 2024 - 18 Apr 2024',
-		'18 Apr 2024 - 2 May 2024',
-		'2 May 2024 - 16 May 2024',
-		'16 May 2024 - 30 May 2024',
-		'30 May 2024 - 13 June 2024',
-		'13 June 2024 - 27 June 2024',
-		'27 June 2024 - 11 July 2024',
-		'11 July 2024 - 25 July 2024',
-		'25 July 2024 - 1 Aug 2024',
-		'1 Aug 2024 - 8 Aug 2024',
-		'8 Aug 2024 - 18 Aug 2024',
-		'18 Aug 2024 - 25 Aug 2024',
-		'25 Aug 2024 - 1 Sept 2024',
-		'1 Sept 2024 - 8 Sept 2024',
-		'8 Sept 2024 - 15 Sept 2024',
-		'15 Sept 2024 - 22 Sept 2024',
-		'22 Sept 2024 - 29 Sept 2024',
-		'29 Sept 2024 - 6 Oct 2024',
-		'6 Oct 2024 - 13 Oct 2024',
-		'13 Oct 2024 - 20 Oct 2024',
-		'20 Oct 2024 - 27 Oct 2024',
-		'27 Oct 2024 - 2 Nov 2024',
-		'2 Nov 2024 - 10 Nov 2024',
-		'10 Nov 2024 - 17 Nov 2024',
-		'17 Nov 2024 - 24 Nov 2024',
-		'24 Nov 2024 - 1 Dec 2024',
-		'1 Dec 2024 - 8 Dec 2024',
-		'8 Dec 2024 - 15 Dec 2024',
-		'15 Dec 2024 - 22 Dec 2024',
-		'22 Dec 2024 - 29 Dec 2024',
-		'29 Dec 2024 - 5 Jan 2025',
-	];
-	const { address } = useAccount();
 	const {
-		round,
-		setRound,
-		strkAmount,
-		setstrkAmount,
-		proof,
-		setProof,
-		datastrkClaim,
-		errorstrkClaim,
-		resetstrkClaim,
-		writestrkClaim,
-		writeAsyncstrkClaim,
-		isErrorstrkClaim,
-		isIdlestrkClaim,
-		isSuccessstrkClaim,
-		statusstrkClaim,
-	} = useClaimStrk();
-
-	const handleClaimStrk = async () => {
-		try {
-			const getTokens = await writeAsyncstrkClaim();
-			posthog.capture('Claim Strk', {
-				'Clicked Claim': true,
-			});
-			if (getTokens?.transaction_hash) {
-				const toastid = toast.info(
-					// `Please wait, your transaction is running in background ${coin} `,
-					`Transaction pending`,
-					{
-						position: toast.POSITION.BOTTOM_RIGHT,
-						autoClose: false,
-					}
-				);
-				setToastId(toastId);
-				if (!activeTransactions) {
-					activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
-				} else if (
-					Object.isFrozen(activeTransactions) ||
-					Object.isSealed(activeTransactions)
-				) {
-					// Check if activeTransactions is frozen or sealed
-					activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
-				}
-				const uqID = getUniqueId();
-				const trans_data = {
-					transaction_hash: getTokens?.transaction_hash.toString(),
-					message: `Successfully Claimed STRKToken`,
-					// message: `Transaction successful`,
-					toastId: toastid,
-					setCurrentTransactionStatus: () => {},
-					uniqueID: uqID,
-				};
-				// addTransaction({ hash: deposit?.transaction_hash });
-				posthog.capture('Get Tokens Status', {
-					Status: 'Success',
-				});
-				activeTransactions?.push(trans_data);
-
-				dispatch(setActiveTransactions(activeTransactions));
-			}
-			// console.log(getTokens)
-			// dispatch(setTransactionStatus("success"));
-		} catch (err: any) {
-			console.log(err);
-			// dispatch(setTransactionStatus("failed"));
-			posthog.capture('Get Claim Status', {
-				Status: 'Failure',
-			});
-			// dispatch(setTransactionStartedAndModalClosed(true));
-			const toastContent = (
-				<div>
-					Failed to Claim $STRK
-					<CopyToClipboard text={err}>
-						<Text as='u'>copy error!</Text>
-					</CopyToClipboard>
-				</div>
-			);
-			toast.error(toastContent, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				autoClose: false,
-			});
-		}
-	};
-
-	useEffect(() => {
-		const fetchClaimedBalance = async () => {
-			if (address) {
-				const data: any = await getUserSTRKClaimedAmount(
-					processAddress(address)
-				);
-				const dataAmount: any = (dataStrkRewards as any)[
-					processAddress(address)
-				];
-				if (dataAmount) {
-					setstrkAmount(dataAmount?.amount);
-					setProof(dataAmount?.proofs);
-					setstrkRewards(
-						parseAmount(String(dataAmount?.amount), 18) - data
-					);
-					settotalStrkRewards(
-						parseAmount(String(dataAmount?.amount), 18)
-					);
-					setstrkClaimedRewards(data);
-				} else {
-					setstrkRewards(0);
-					settotalStrkRewards(0);
-				}
-			}
-		};
-		fetchClaimedBalance();
-	}, [address]);
-
-	useEffect(() => {
-		if (address) {
-			const round_1: any = (dataStrkRewardsRound1 as any)[
-				processAddress(address)
-			];
-			const round_2 = (dataStrkRewardsRound2 as any)[
-				processAddress(address)
-			];
-			const round_3 = (dataStrkRewardsRound3 as any)[
-				processAddress(address)
-			];
-			const round_4 = (dataStrkRewardsRound4 as any)[
-				processAddress(address)
-			];
-			const round_5 = (dataStrkRewardsRound5 as any)[
-				processAddress(address)
-			];
-			const round_6 = (dataStrkRewardsRound6 as any)[
-				processAddress(address)
-			];
-			const round_7 = (dataStrkRewardsRound7 as any)[
-				processAddress(address)
-			];
-			const round_8 = (dataStrkRewards8 as any)[processAddress(address)];
-			const round_9 = (dataStrkRewards9 as any)[processAddress(address)];
-			const round_10 = (dataStrkRewards10 as any)[
-				processAddress(address)
-			];
-			const round_11 = (dataStrkRewards11 as any)[
-				processAddress(address)
-			];
-			const round_12 = (dataStrkRewards12 as any)[
-				processAddress(address)
-			];
-			const round_13 = (dataStrkRewards13 as any)[
-				processAddress(address)
-			];
-			const round_14 = (dataStrkRewards14 as any)[
-				processAddress(address)
-			];
-			const round_15 = (dataStrkRewards15 as any)[
-				processAddress(address)
-			];
-			const round_16 = (dataStrkRewards16 as any)[
-				processAddress(address)
-			];
-			const round_17 = (dataStrkRewards17 as any)[
-				processAddress(address)
-			];
-			const round_18 = (dataStrkRewards18 as any)[
-				processAddress(address)
-			];
-			const round_19 = (dataStrkRewards19 as any)[
-				processAddress(address)
-			];
-			const round_20 = (dataStrkRewards20 as any)[
-				processAddress(address)
-			];
-			const round_21 = (dataStrkRewards21 as any)[
-				processAddress(address)
-			];
-			const round_22 = (dataStrkRewards22 as any)[
-				processAddress(address)
-			];
-			const round_23 = (dataStrkRewards23 as any)[
-				processAddress(address)
-			];
-			const round_24 = (dataStrkRewards24 as any)[
-				processAddress(address)
-			];
-			const round_25 = (dataStrkRewards25 as any)[
-				processAddress(address)
-			];
-			const round_26 = (dataStrkRewards26 as any)[
-				processAddress(address)
-			];
-			const round_27 = (dataStrkRewards27 as any)[
-				processAddress(address)
-			];
-			const round_28 = (dataStrkRewards28 as any)[
-				processAddress(address)
-			];
-			const round_29 = (dataStrkRewards29 as any)[
-				processAddress(address)
-			];
-			const round_30 = (dataStrkRewards30 as any)[
-				processAddress(address)
-			];
-			const round_31 = (dataStrkRewards as any)[processAddress(address)];
-			const round_32 = (dataStrkRewards32 as any)[
-				processAddress(address)
-			];
-			const round_33 = (dataStrkRewards33 as any)[
-				processAddress(address)
-			];
-			setdataRoundwiseAlloc([
-				parseAmount(round_1?.amount ? round_1?.amount : 0, 18),
-				parseAmount(round_2?.amount ? round_2?.amount : 0, 18) -
-					parseAmount(round_1?.amount ? round_1?.amount : 0, 18),
-				parseAmount(round_3?.amount ? round_3?.amount : 0, 18) -
-					parseAmount(round_2?.amount ? round_2?.amount : 0, 18),
-				parseAmount(round_4?.amount ? round_4?.amount : 0, 18) -
-					parseAmount(round_3?.amount ? round_3?.amount : 0, 18),
-				parseAmount(round_5?.amount ? round_5?.amount : 0, 18) -
-					parseAmount(round_4?.amount ? round_4?.amount : 0, 18),
-				parseAmount(round_6?.amount ? round_6?.amount : 0, 18) -
-					parseAmount(round_5?.amount ? round_5?.amount : 0, 18),
-				parseAmount(round_7?.amount ? round_7?.amount : 0, 18) -
-					parseAmount(round_6?.amount ? round_6?.amount : 0, 18),
-				parseAmount(round_8?.amount ? round_8?.amount : 0, 18) -
-					parseAmount(round_7?.amount ? round_7?.amount : 0, 18),
-				parseAmount(round_9?.amount ? round_9?.amount : 0, 18) -
-					parseAmount(round_8?.amount ? round_8?.amount : 0, 18),
-				parseAmount(round_10?.amount ? round_10?.amount : 0, 18) -
-					parseAmount(round_9?.amount ? round_9?.amount : 0, 18),
-				parseAmount(round_11?.amount ? round_11?.amount : 0, 18) -
-					parseAmount(round_10?.amount ? round_10?.amount : 0, 18),
-				parseAmount(round_12?.amount ? round_12?.amount : 0, 18) -
-					parseAmount(round_11?.amount ? round_11?.amount : 0, 18),
-				parseAmount(round_13?.amount ? round_13?.amount : 0, 18) -
-					parseAmount(round_12?.amount ? round_12?.amount : 0, 18),
-				parseAmount(round_14?.amount ? round_14?.amount : 0, 18) -
-					parseAmount(round_13?.amount ? round_13?.amount : 0, 18),
-				parseAmount(round_15?.amount ? round_15?.amount : 0, 18) -
-					parseAmount(round_14?.amount ? round_14?.amount : 0, 18),
-				parseAmount(round_16?.amount ? round_16?.amount : 0, 18) -
-					parseAmount(round_15?.amount ? round_15?.amount : 0, 18),
-				parseAmount(round_17?.amount ? round_17?.amount : 0, 18) -
-					parseAmount(round_16?.amount ? round_16?.amount : 0, 18),
-				parseAmount(round_18?.amount ? round_18?.amount : 0, 18) -
-					parseAmount(round_17?.amount ? round_17?.amount : 0, 18),
-				parseAmount(round_19?.amount ? round_19?.amount : 0, 18) -
-					parseAmount(round_18?.amount ? round_18?.amount : 0, 18),
-				parseAmount(round_20?.amount ? round_20?.amount : 0, 18) -
-					parseAmount(round_19?.amount ? round_19?.amount : 0, 18),
-				parseAmount(round_21?.amount ? round_21?.amount : 0, 18) -
-					parseAmount(round_20?.amount ? round_20?.amount : 0, 18),
-				parseAmount(round_22?.amount ? round_22?.amount : 0, 18) -
-					parseAmount(round_21?.amount ? round_21?.amount : 0, 18),
-				parseAmount(round_23?.amount ? round_23?.amount : 0, 18) -
-					parseAmount(round_22?.amount ? round_22?.amount : 0, 18),
-				parseAmount(round_24?.amount ? round_24?.amount : 0, 18) -
-					parseAmount(round_23?.amount ? round_23?.amount : 0, 18),
-				parseAmount(round_25?.amount ? round_25?.amount : 0, 18) -
-					parseAmount(round_24?.amount ? round_24?.amount : 0, 18),
-				parseAmount(round_26?.amount ? round_26?.amount : 0, 18) -
-					parseAmount(round_25?.amount ? round_25?.amount : 0, 18),
-				parseAmount(round_27?.amount ? round_27?.amount : 0, 18) -
-					parseAmount(round_26?.amount ? round_26?.amount : 0, 18),
-				parseAmount(round_28?.amount ? round_28?.amount : 0, 18) -
-					parseAmount(round_27?.amount ? round_27?.amount : 0, 18),
-				parseAmount(round_29?.amount ? round_29?.amount : 0, 18) -
-					parseAmount(round_28?.amount ? round_28?.amount : 0, 18),
-				parseAmount(round_30?.amount ? round_30?.amount : 0, 18) -
-					parseAmount(round_29?.amount ? round_29?.amount : 0, 18),
-				parseAmount(round_31?.amount ? round_31?.amount : 0, 18) -
-					parseAmount(round_30?.amount ? round_30?.amount : 0, 18),
-				parseAmount(round_32?.amount ? round_32?.amount : 0, 18) -
-					parseAmount(round_31?.amount ? round_31?.amount : 0, 18),
-				parseAmount(round_33?.amount ? round_33?.amount : 0, 18) -
-					parseAmount(round_32?.amount ? round_32?.amount : 0, 18),
-			]);
-		}
-	}, [address]);
-
-	useEffect(() => {
-		if (leaderBoardData.length > 0) {
-			setLoading(false);
-		}
-	}, [leaderBoardData]);
-
-	// Function to toggle the open state of an epoch
-	const toggleEpochSelection = (idxEpoch: any) => {
-		setOpenEpochs((prevOpenEpochs: any[]) => {
-			if (prevOpenEpochs.includes(idxEpoch)) {
-				// Remove the index if it's already open
-				return prevOpenEpochs.filter(
-					(index: any) => index !== idxEpoch
-				);
-			} else {
-				// Add the index if it's not open
-				return [...prevOpenEpochs, idxEpoch];
-			}
-		});
-	};
-
-	// Function to check whether an epoch is open
-	const isEpochOpen = (idxEpoch: any) => {
-		return openEpochs.includes(idxEpoch);
-	};
-
-	useEffect(() => {
-		const groupSize = 6;
-
-		// Calculate the number of groups needed
-		const numGroups = Math.ceil(snapshotsData.length / groupSize);
-
-		// Initialize groupedSnapshots array
-		const newGroupedSnapshots = Array.from(
-			{ length: numGroups },
-			(_, groupIndex) =>
-				snapshotsData
-					.slice(groupIndex * groupSize, (groupIndex + 1) * groupSize)
-					.sort(
-						(a: any, b: any) =>
-							a.snapshot_number - b.snapshot_number
-					)
-		);
-
-		setGroupedSnapshots(newGroupedSnapshots);
-	}, [snapshotsData]);
+		loading,
+		epochDropdownSelected,
+		setepochDropdownSelected,
+		defiSpringDropdownSelected,
+		setdefiSpringDropdownSelected,
+		ccpDropdownSelected,
+		setccpDropdownSelected,
+		strkRewards,
+		totalStrkRewards,
+		dataRoundwiseAlloc,
+		groupedSnapshots,
+		handleClaimStrk,
+		toggleEpochSelection,
+		isEpochOpen,
+		openEpochs,
+		datesDefiSpringRounds,
+	} = useUserCampaignData({ leaderBoardData, snapshotsData });
 
 	return loading ?
 			<Box
@@ -787,19 +380,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 													color='#3E415C'>
 													Claim
 												</Text>
-												<Box
-													cursor='pointer'
-													onMouseEnter={() => {
-														sethoverccpDrop(true);
-													}}
-													onMouseLeave={() => {
-														sethoverccpDrop(false);
-													}}>
+												<Box cursor='pointer'>
 													{ccpDropdownSelected ?
-														<CircularDropDownClose />
-													: hoverccpDrop ?
-														<CircularDropDownActive />
-													:	<CircularDropDown />}
+														<ChevronUpCircle />
+													:	<ChevronDownCircle className='text-[#3E415C] hover:text-white' />
+													}
 												</Box>
 											</Box>
 										</Td>
@@ -1082,21 +667,13 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 														Claim
 													</Text>
 												</Tooltip>
-												<Box
-													cursor='pointer'
-													onMouseEnter={() => {
-														sethoverDefiDrop(true);
-													}}
-													onMouseLeave={() => {
-														sethoverDefiDrop(false);
-													}}>
+												<Box cursor='pointer'>
 													{(
 														defiSpringDropdownSelected
 													) ?
-														<CircularDropDownClose />
-													: hoverDefiDrop ?
-														<CircularDropDownActive />
-													:	<CircularDropDown />}
+														<ChevronUpCircle />
+													:	<ChevronDownCircle className='text-[#3E415C] hover:text-white' />
+													}
 												</Box>
 											</Box>
 										</Td>
@@ -1125,11 +702,8 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 												borderBottom={
 													'1px solid #676D9A48'
 												}>
-												{defiSpringRoundCount.map(
-													(
-														epochs: any,
-														idxDefi: any
-													) => (
+												{dataRoundwiseAlloc.map(
+													(_: any, idxDefi: any) => (
 														<Box key={idxDefi}>
 															<Box
 																display='flex'
@@ -1188,7 +762,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 																borderBottom={
 																	(
 																		idxDefi !=
-																		defiSpringRoundCount.length -
+																		dataRoundwiseAlloc.length -
 																			1
 																	) ?
 																		(
@@ -1227,11 +801,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 										top={
 											ccpDropdownSelected ?
 												defiSpringDropdownSelected ?
-													`${(defiSpringRoundCount.length + ccpUserData.length) * 68 + 34 * 2.5}px`
+													`${(dataRoundwiseAlloc.length + ccpUserData.length) * 68 + 34 * 2.5}px`
 												:	`${ccpUserData.length * 68 + 34 * 1.2}px`
 
 											: defiSpringDropdownSelected ?
-												`${defiSpringRoundCount.length * 68 + 34 * 1.8}px`
+												`${dataRoundwiseAlloc.length * 68 + 34 * 1.8}px`
 											: epochDropdownSelected ?
 												'16px'
 											:	'4px'
@@ -1377,27 +951,47 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 												color='#E6EDF3'
 												pr='10'
 												gap='1rem'>
-												<Text
-													textDecoration='underline'
-													cursor='pointer'
-													color='#3E415C'>
-													Claim
-												</Text>
-												<Box
-													cursor='pointer'
-													onMouseEnter={() => {
-														sethoverEpochDrop(true);
-													}}
-													onMouseLeave={() => {
-														sethoverEpochDrop(
-															false
-														);
-													}}>
+												<Tooltip
+													hasArrow
+													label={
+														'Next Claim on 27 January'
+													}
+													placement='right'
+													rounded='md'
+													boxShadow='dark-lg'
+													bg='#02010F'
+													fontSize={'13px'}
+													fontWeight={'400'}
+													borderRadius={'lg'}
+													padding={'2'}
+													color='#F0F0F5'
+													border='1px solid'
+													borderColor='#23233D'
+													arrowShadowColor='#2B2F35'>
+													<Text
+														textDecoration='underline'
+														cursor='pointer'
+														color={
+															strkRewards <= 0 ?
+																'#3E415C'
+															:	'#F0F0F5'
+														}
+														onClick={() => {
+															if (
+																strkRewards <= 0
+															) {
+															} else {
+																handleClaimStrk();
+															}
+														}}>
+														Claim
+													</Text>
+												</Tooltip>
+												<Box cursor='pointer'>
 													{epochDropdownSelected ?
-														<CircularDropDownClose />
-													: hoverEpochDrop ?
-														<CircularDropDownActive />
-													:	<CircularDropDown />}
+														<ChevronUpCircle />
+													:	<ChevronDownCircle className='text-[#3E415C] hover:text-white' />
+													}
 												</Box>
 											</Box>
 										</Td>
@@ -1413,12 +1007,12 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 										top={
 											ccpDropdownSelected ?
 												defiSpringDropdownSelected ?
-													`${(defiSpringRoundCount.length + ccpUserData.length) * 68 + 64 * 3.5 + 34}px`
+													`${(dataRoundwiseAlloc.length + ccpUserData.length) * 68 + 64 * 3.5 + 34}px`
 												: epochDropdownSelected ?
 													`${ccpUserData.length * 68 + 64 * 2.8 + 34}px`
 												:	`${ccpUserData.length * 68}px`
 											: defiSpringDropdownSelected ?
-												`${defiSpringRoundCount.length * 68 + 64 * 3.0 + 34}px`
+												`${dataRoundwiseAlloc.length * 68 + 64 * 3.0 + 34}px`
 											:	`${2 * 68 + 34 * 1.8}px`
 										}>
 										{epochDropdownSelected && (
@@ -1701,11 +1295,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 											top={
 												ccpDropdownSelected ?
 													defiSpringDropdownSelected ?
-														`${(ccpUserData.length + defiSpringRoundCount.length) * 68 + 64 * 3.9}px`
+														`${(ccpUserData.length + dataRoundwiseAlloc.length) * 68 + 64 * 3.9}px`
 													:	`${ccpUserData.length * 68 + 64 * 3.2}px`
 
 												: defiSpringDropdownSelected ?
-													`${defiSpringRoundCount.length * 68 + 64 * 3.5}px`
+													`${dataRoundwiseAlloc.length * 68 + 64 * 3.5}px`
 												:	''
 											}
 										/>
