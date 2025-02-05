@@ -109,7 +109,7 @@ export const useUserCampaignData = ({
 				}
 			}
 		};
-		// fetchClaimedBalance();
+		fetchClaimedBalance();
 	}, [address]);
 
 	useEffect(() => {
@@ -142,7 +142,7 @@ export const useUserCampaignData = ({
 				setdataRoundwiseAlloc([]);
 			};
 
-			// fetchRewardsData();
+			fetchRewardsData();
 		}
 	}, [address]);
 
