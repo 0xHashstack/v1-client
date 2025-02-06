@@ -4,10 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { memo, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import StakeUnstakeModal from '@/components/modals/StakeUnstakeModal';
 import GetTokensModal from '@/components/modals/getTokens';
-import posthog from 'posthog-js';
 import hoverDashboardIcon from '../../../assets/images/hoverDashboardIcon.svg';
 import { useNavbar } from './useNavbar';
 import NavbarSettings from './NavbarSettings';
@@ -107,7 +104,7 @@ const Navbar = ({ validRTokens }: any) => {
 				)}
 			</div>
 
-			<div className='flex flex-col md:flex-row'>
+			<div className='flex flex-col md:flex-row items-center gap-1'>
 				<NavbarSwitchWallet domainName={domainName} />
 				<NavbarNotifications />
 				<NavbarSettings language={language} />
