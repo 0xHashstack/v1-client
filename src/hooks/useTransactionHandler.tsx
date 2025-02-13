@@ -53,7 +53,10 @@ const useTransactionHandler = () => {
 		////console.log("transaction active transactions ", activeTransactions);
 		////console.log("transaction transactions ", transactions);
 		////console.log("transaction results ", results);
-		let data = localStorage.getItem('transactionCheck');
+		let data = (
+			typeof window !== 'undefined' ?
+				window.localStorage
+			:	null)?.getItem('transactionCheck');
 		data = data ? JSON.parse(data) : [];
 
 		results?.forEach((transaction: any, idx) => {

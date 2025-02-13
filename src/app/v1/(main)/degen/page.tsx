@@ -419,6 +419,9 @@ const columnItems = [
 	'',
 ];
 
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
+
 const Degen: NextPage = () => {
 	useDataLoader();
 

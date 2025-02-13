@@ -179,7 +179,10 @@ const LiquidityProvisionModal = ({
 
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			let values = data.split(',');
 			let lastValue = values[values.length - 1];
 			if (
@@ -612,7 +615,10 @@ const LiquidityProvisionModal = ({
 				//console.log(liquidity);
 				setDepositTransHash(liquidity?.transaction_hash);
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -663,7 +669,10 @@ const LiquidityProvisionModal = ({
 				//console.log(liquidity);
 				setDepositTransHash(liquidity?.transaction_hash);
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -672,7 +681,10 @@ const LiquidityProvisionModal = ({
 		} catch (err: any) {
 			//console.log(err);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));
@@ -955,12 +967,17 @@ const LiquidityProvisionModal = ({
 							} else {
 								const uqID = Math.random();
 								setUniqueID(uqID);
-								let data: any =
-									localStorage.getItem('transactionCheck');
+								let data: any = (
+									typeof window !== 'undefined' ?
+										window.localStorage
+									:	null)?.getItem('transactionCheck');
 								data = data ? JSON.parse(data) : [];
 								if (data && !data.includes(uqID)) {
 									data.push(uqID);
-									localStorage.setItem(
+									(typeof window !== 'undefined' ?
+										window.localStorage
+									:	null
+									)?.setItem(
 										'transactionCheck',
 										JSON.stringify(data)
 									);
@@ -986,12 +1003,17 @@ const LiquidityProvisionModal = ({
 							} else {
 								const uqID = Math.random();
 								setUniqueID(uqID);
-								let data: any =
-									localStorage.getItem('transactionCheck');
+								let data: any = (
+									typeof window !== 'undefined' ?
+										window.localStorage
+									:	null)?.getItem('transactionCheck');
 								data = data ? JSON.parse(data) : [];
 								if (data && !data.includes(uqID)) {
 									data.push(uqID);
-									localStorage.setItem(
+									(typeof window !== 'undefined' ?
+										window.localStorage
+									:	null
+									)?.setItem(
 										'transactionCheck',
 										JSON.stringify(data)
 									);
@@ -1024,12 +1046,17 @@ const LiquidityProvisionModal = ({
 						setCurrentSwap('Jediswap');
 						const uqID = Math.random();
 						setUniqueID(uqID);
-						let data: any =
-							localStorage.getItem('transactionCheck');
+						let data: any = (
+							typeof window !== 'undefined' ?
+								window.localStorage
+							:	null)?.getItem('transactionCheck');
 						data = data ? JSON.parse(data) : [];
 						if (data && !data.includes(uqID)) {
 							data.push(uqID);
-							localStorage.setItem(
+							(typeof window !== 'undefined' ?
+								window.localStorage
+							:	null
+							)?.setItem(
 								'transactionCheck',
 								JSON.stringify(data)
 							);
@@ -1048,13 +1075,18 @@ const LiquidityProvisionModal = ({
 					isOpen={isOpen}
 					onClose={() => {
 						const uqID = getUniqueId();
-						let data: any =
-							localStorage.getItem('transactionCheck');
+						let data: any = (
+							typeof window !== 'undefined' ?
+								window.localStorage
+							:	null)?.getItem('transactionCheck');
 						data = data ? JSON.parse(data) : [];
 						////console.log(uqID, "data here", data);
 						if (data && data.includes(uqID)) {
 							data = data.filter((val: any) => val != uqID);
-							localStorage.setItem(
+							(typeof window !== 'undefined' ?
+								window.localStorage
+							:	null
+							)?.setItem(
 								'transactionCheck',
 								JSON.stringify(data)
 							);

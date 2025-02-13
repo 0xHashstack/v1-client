@@ -384,7 +384,10 @@ const SpendTable = () => {
 						href='/v1/your-borrow'
 						onClick={() => {
 							dispatch(setCurrentPage('your borrow'));
-							localStorage.setItem('currentPage', 'your borrow');
+							(typeof window !== 'undefined' ?
+								window.localStorage
+							:	null
+							)?.setItem('currentPage', 'your borrow');
 						}}>
 						<Box
 							ml='1'

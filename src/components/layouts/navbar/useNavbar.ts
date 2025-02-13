@@ -81,7 +81,10 @@ export const useNavbar = (validRTokens: any) => {
 
 	useEffect(() => {
 		function isCorrectNetwork() {
-			const walletConnected = localStorage.getItem('lastUsedConnector');
+			const walletConnected = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('lastUsedConnector');
 			const network = process.env.NEXT_PUBLIC_NODE_ENV;
 
 			if (walletConnected == 'braavos') {

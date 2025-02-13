@@ -38,6 +38,10 @@ import useDataLoader from '@/hooks/useDataLoader';
 import UtilisationRateChart from '@/components/layouts/charts/utilisationRateChart';
 import Image from 'next/image';
 import TableInfoIcon from '@/components/layouts/table/tableIcons/infoIcon';
+
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
+
 const ProtocolMetrics = () => {
 	//   const [metricsCancel, setMetricsCancel] = useState(false);
 	const [currentMarketCoin, setCurrentMarketCoin] = useState('BTC');
@@ -51,7 +55,7 @@ const ProtocolMetrics = () => {
 	useDataLoader();
 	// useEffect(() => {
 	//   if (!_account) {
-	//     const walletConnected = localStorage.getItem("lastUsedConnector");
+	//     const walletConnected = (typeof window !== 'undefined' ? window.localStorage : null)?.getItem("lastUsedConnector");
 	//     if (walletConnected == "braavos") {
 	//       disconnect();
 	//       connect(connectors[0]);

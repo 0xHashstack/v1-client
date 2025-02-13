@@ -1,6 +1,8 @@
-import { redirect } from 'next/navigation'
-import { useEffect } from 'react'
+import { redirect } from 'next/navigation';
+
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
 
 export default function page() {
-  redirect('/v1')
+	redirect('/v1');
 }

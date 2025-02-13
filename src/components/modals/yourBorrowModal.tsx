@@ -197,7 +197,10 @@ const YourBorrowModal = ({
 	let activeTransactions = useSelector(selectActiveTransactions);
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			let values = data.split(',');
 			let lastValue = values[values.length - 1];
 			if (
@@ -428,7 +431,10 @@ const YourBorrowModal = ({
 				});
 
 				dispatch(setActiveTransactions(activeTransactions));
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -437,7 +443,10 @@ const YourBorrowModal = ({
 		} catch (err: any) {
 			//console.log(err, "err repay");
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));
@@ -517,7 +526,10 @@ const YourBorrowModal = ({
 			}
 			////console.log(revert);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				dispatch(setTransactionStatus('success'));
@@ -525,7 +537,10 @@ const YourBorrowModal = ({
 		} catch (err) {
 			//console.log(err);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));
@@ -1096,7 +1111,10 @@ const YourBorrowModal = ({
 			}
 			////console.log(zeroRepay);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				dispatch(setTransactionStatus('success'));
@@ -1104,7 +1122,10 @@ const YourBorrowModal = ({
 		} catch (err: any) {
 			//console.log("zero repay failed - ", err);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));
@@ -1189,7 +1210,10 @@ const YourBorrowModal = ({
 				}
 				//console.log(trade);
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -1241,7 +1265,10 @@ const YourBorrowModal = ({
 				}
 				//console.log(tradeMySwap);
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -1250,7 +1277,10 @@ const YourBorrowModal = ({
 		} catch (err: any) {
 			//console.log(err);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));
@@ -1324,7 +1354,10 @@ const YourBorrowModal = ({
 				}
 				//console.log(liquidity);
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -1375,7 +1408,10 @@ const YourBorrowModal = ({
 					dispatch(setActiveTransactions(activeTransactions));
 				}
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -1384,7 +1420,10 @@ const YourBorrowModal = ({
 		} catch (err: any) {
 			//console.log(err);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));
@@ -1457,7 +1496,10 @@ const YourBorrowModal = ({
 				}
 
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -1516,7 +1558,10 @@ const YourBorrowModal = ({
 				}
 
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -1525,7 +1570,10 @@ const YourBorrowModal = ({
 		} catch (err: any) {
 			//console.log("add collateral error",err);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));
@@ -3714,14 +3762,17 @@ const YourBorrowModal = ({
 				onClick={() => {
 					const uqID = Math.random();
 					setUniqueID(uqID);
-					let data: any = localStorage.getItem('transactionCheck');
+					let data: any = (
+						typeof window !== 'undefined' ?
+							window.localStorage
+						:	null)?.getItem('transactionCheck');
 					data = data ? JSON.parse(data) : [];
 					if (data && !data.includes(uqID)) {
 						data.push(uqID);
-						localStorage.setItem(
-							'transactionCheck',
-							JSON.stringify(data)
-						);
+						(typeof window !== 'undefined' ?
+							window.localStorage
+						:	null
+						)?.setItem('transactionCheck', JSON.stringify(data));
 					}
 					onOpen();
 				}}
@@ -3733,14 +3784,17 @@ const YourBorrowModal = ({
 				isOpen={isOpen}
 				onClose={() => {
 					const uqID = getUniqueId();
-					let data: any = localStorage.getItem('transactionCheck');
+					let data: any = (
+						typeof window !== 'undefined' ?
+							window.localStorage
+						:	null)?.getItem('transactionCheck');
 					data = data ? JSON.parse(data) : [];
 					if (data && data.includes(uqID)) {
 						data = data.filter((val: any) => val != uqID);
-						localStorage.setItem(
-							'transactionCheck',
-							JSON.stringify(data)
-						);
+						(typeof window !== 'undefined' ?
+							window.localStorage
+						:	null
+						)?.setItem('transactionCheck', JSON.stringify(data));
 					}
 					resetStates();
 					if (transactionStarted || collateralTransactionStarted) {

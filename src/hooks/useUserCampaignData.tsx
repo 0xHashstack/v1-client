@@ -83,68 +83,68 @@ export const useUserCampaignData = ({
 		}
 	};
 
-	useEffect(() => {
-		const fetchClaimedBalance = async () => {
-			if (address) {
-				const data: any = await getUserSTRKClaimedAmount(
-					processAddress(address)
-				);
-				const dataStrkRewards31 = await loadStrkReward(31);
-				const dataAmount: any = (dataStrkRewards31 as any)[
-					processAddress(address)
-				];
-				if (dataAmount) {
-					setstrkAmount(dataAmount?.amount);
-					setProof(dataAmount?.proofs);
-					setstrkRewards(
-						parseAmount(String(dataAmount?.amount), 18) - data
-					);
-					settotalStrkRewards(
-						parseAmount(String(dataAmount?.amount), 18)
-					);
-					setstrkClaimedRewards(data);
-				} else {
-					setstrkRewards(0);
-					settotalStrkRewards(0);
-				}
-			}
-		};
-		fetchClaimedBalance();
-	}, [address]);
+	// useEffect(() => {
+	// 	const fetchClaimedBalance = async () => {
+	// 		if (address) {
+	// 			const data: any = await getUserSTRKClaimedAmount(
+	// 				processAddress(address)
+	// 			);
+	// 			const dataStrkRewards31 = await loadStrkReward(31);
+	// 			const dataAmount: any = (dataStrkRewards31 as any)[
+	// 				processAddress(address)
+	// 			];
+	// 			if (dataAmount) {
+	// 				setstrkAmount(dataAmount?.amount);
+	// 				setProof(dataAmount?.proofs);
+	// 				setstrkRewards(
+	// 					parseAmount(String(dataAmount?.amount), 18) - data
+	// 				);
+	// 				settotalStrkRewards(
+	// 					parseAmount(String(dataAmount?.amount), 18)
+	// 				);
+	// 				setstrkClaimedRewards(data);
+	// 			} else {
+	// 				setstrkRewards(0);
+	// 				settotalStrkRewards(0);
+	// 			}
+	// 		}
+	// 	};
+	// 	fetchClaimedBalance();
+	// }, [address]);
 
-	useEffect(() => {
-		if (address) {
-			const fetchRewardsData = async () => {
-				const allRewardsData = await loadStrkRewards(1, 1);
-				const roundwiseAllocations = [];
+	// useEffect(() => {
+	// 	if (address) {
+	// 		const fetchRewardsData = async () => {
+	// 			const allRewardsData = await loadStrkRewards(1, 1);
+	// 			const roundwiseAllocations = [];
 
-				for (let i = 0; i < allRewardsData.length - 1; i++) {
-					const currentRound =
-						allRewardsData[i][processAddress(address)];
-					const nextRound =
-						allRewardsData[i + 1][processAddress(address)];
+	// 			for (let i = 0; i < allRewardsData.length - 1; i++) {
+	// 				const currentRound =
+	// 					allRewardsData[i][processAddress(address)];
+	// 				const nextRound =
+	// 					allRewardsData[i + 1][processAddress(address)];
 
-					const currentAmount = parseAmount(
-						currentRound?.amount || '0',
-						18
-					);
-					const nextAmount = parseAmount(
-						nextRound?.amount || '0',
-						18
-					);
+	// 				const currentAmount = parseAmount(
+	// 					currentRound?.amount || '0',
+	// 					18
+	// 				);
+	// 				const nextAmount = parseAmount(
+	// 					nextRound?.amount || '0',
+	// 					18
+	// 				);
 
-					if (i === 0) {
-						roundwiseAllocations.push(currentAmount);
-					}
-					roundwiseAllocations.push(nextAmount - currentAmount);
-				}
+	// 				if (i === 0) {
+	// 					roundwiseAllocations.push(currentAmount);
+	// 				}
+	// 				roundwiseAllocations.push(nextAmount - currentAmount);
+	// 			}
 
-				setdataRoundwiseAlloc([]);
-			};
+	// 			setdataRoundwiseAlloc([]);
+	// 		};
 
-			fetchRewardsData();
-		}
-	}, [address]);
+	// 		fetchRewardsData();
+	// 	}
+	// }, [address]);
 
 	useEffect(() => {
 		if (leaderBoardData.length > 0) {

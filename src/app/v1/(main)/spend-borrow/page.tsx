@@ -28,6 +28,9 @@ interface MetricDisplayProps {
 	tooltipContent?: string;
 }
 
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
+
 const MetricDisplay = ({
 	label,
 	value,

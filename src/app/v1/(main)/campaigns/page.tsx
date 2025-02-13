@@ -22,8 +22,8 @@ import CopyIcon from '@/assets/icons/copyIcon';
 import DropdownUp from '@/assets/icons/dropdownUpIcon';
 import ExternalLinkWhite from '@/assets/icons/externalLinkWhite';
 import { default as LeaderboardDashboard } from '@/components/layouts/leaderboardDashboard';
-import dynamic from 'next/dynamic';
-const UserCampaignData = dynamic(
+import { default as nextDynamic } from 'next/dynamic';
+const UserCampaignData = nextDynamic(
 	() => import('@/components/layouts/userCampaignData'),
 	{
 		ssr: false,
@@ -68,6 +68,9 @@ const columnItemsPersonalStatsReferalCampaign = [
 	'Total Tokens Earned',
 	'',
 ];
+
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
 
 const Campaign: NextPage = () => {
 	const [daysLeft, setDaysLeft] = useState<number>(56);
@@ -374,6 +377,7 @@ const Campaign: NextPage = () => {
 	}, [airDropLeaderBoardData]);
 
 	useEffect(() => {
+		if (typeof window === 'undefined') return;
 		document.addEventListener('mousedown', handleClickOutside);
 		document.addEventListener('keydown', handleEscapeKey);
 		return () => {

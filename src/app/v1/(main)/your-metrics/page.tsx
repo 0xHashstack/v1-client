@@ -46,6 +46,10 @@ import numberFormatter from '@/utils/functions/numberFormatter';
 import useDataLoader from '@/hooks/useDataLoader';
 import Image from 'next/image';
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage';
+
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
+
 const YourMetrics = () => {
 	//   const [metricsCancel, setMetricsCancel] = useState(false);
 	const [currentMarketCoin, setCurrentMarketCoin] = useState('BTC');
@@ -54,7 +58,7 @@ const YourMetrics = () => {
 	useDataLoader();
 	// useEffect(() => {
 	//   if (!_account) {
-	//     const walletConnected = localStorage.getItem("lastUsedConnector");
+	//     const walletConnected = (typeof window !== 'undefined' ? window.localStorage : null)?.getItem("lastUsedConnector");
 	//     if (walletConnected == "braavos") {
 	//       disconnect();
 	//       connect(connectors[0]);

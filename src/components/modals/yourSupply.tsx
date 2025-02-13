@@ -134,7 +134,10 @@ const YourSupplyModal = ({
 
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			let values = data.split(',');
 			let lastValue = values[values.length - 1];
 			if (
@@ -386,14 +389,20 @@ const YourSupplyModal = ({
 				dispatch(setActiveTransactions(activeTransactions));
 			}
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				dispatch(setTransactionStatus('success'));
 			}
 		} catch (err: any) {
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				setUnstakeTransactionStarted(false);
@@ -732,7 +741,10 @@ const YourSupplyModal = ({
 			// if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
 			// }
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				dispatch(setTransactionStatus('success'));
@@ -745,7 +757,10 @@ const YourSupplyModal = ({
 				Status: 'Failure',
 			});
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));
@@ -817,7 +832,10 @@ const YourSupplyModal = ({
 					dispatch(setActiveTransactions(activeTransactions));
 				}
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -865,7 +883,10 @@ const YourSupplyModal = ({
 					dispatch(setActiveTransactions(activeTransactions));
 				}
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -874,7 +895,10 @@ const YourSupplyModal = ({
 		} catch (err) {
 			//console.log("Unable to add supply ", err);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			//console.log("data check", data);
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
@@ -952,14 +976,17 @@ const YourSupplyModal = ({
 				onClick={() => {
 					const uqID = Math.random();
 					setUniqueID(uqID);
-					let data: any = localStorage.getItem('transactionCheck');
+					let data: any = (
+						typeof window !== 'undefined' ?
+							window.localStorage
+						:	null)?.getItem('transactionCheck');
 					data = data ? JSON.parse(data) : [];
 					if (data && !data.includes(uqID)) {
 						data.push(uqID);
-						localStorage.setItem(
-							'transactionCheck',
-							JSON.stringify(data)
-						);
+						(typeof window !== 'undefined' ?
+							window.localStorage
+						:	null
+						)?.setItem('transactionCheck', JSON.stringify(data));
 					}
 					onOpen();
 				}}>
@@ -970,14 +997,17 @@ const YourSupplyModal = ({
 				isOpen={isOpen}
 				onClose={() => {
 					const uqID = getUniqueId();
-					let data: any = localStorage.getItem('transactionCheck');
+					let data: any = (
+						typeof window !== 'undefined' ?
+							window.localStorage
+						:	null)?.getItem('transactionCheck');
 					data = data ? JSON.parse(data) : [];
 					if (data && data.includes(uqID)) {
 						data = data.filter((val: any) => val != uqID);
-						localStorage.setItem(
-							'transactionCheck',
-							JSON.stringify(data)
-						);
+						(typeof window !== 'undefined' ?
+							window.localStorage
+						:	null
+						)?.setItem('transactionCheck', JSON.stringify(data));
 					}
 					onClose();
 					if (transactionStarted || withdrawTransactionStarted) {

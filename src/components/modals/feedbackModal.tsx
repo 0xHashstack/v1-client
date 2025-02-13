@@ -167,7 +167,7 @@ const FeedbackModal = ({
 		}
 	};
 	const handleCaptureClick = async () => {
-		const element: any = document.getElementById('buttonclick');
+		if (typeof window === 'undefined') return;
 		html2canvas(document.body).then((canvas) => {
 			const screenshotDataUrl = canvas.toDataURL('image/png');
 			setBugScreenshoturl(screenshotDataUrl);
@@ -206,7 +206,7 @@ const FeedbackModal = ({
 	//   mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
 	//     debug: true,
 	//     track_pageview: true,
-	//     persistence: "localStorage",
+	//     persistence: "(typeof window !== 'undefined' ? window.localStorage : null)?",
 	//   });
 	// const avgs=useSelector(selectAprAndHealthFactor)
 
@@ -243,7 +243,10 @@ const FeedbackModal = ({
 	};
 
 	const handleRating = async () => {
-		const lastResponseTime = localStorage.getItem('RatingTime');
+		const lastResponseTime = (
+			typeof window !== 'undefined' ?
+				window.localStorage
+			:	null)?.getItem('RatingTime');
 		if (lastResponseTime) {
 			const twentyFourHoursAgo = new Date();
 			twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
@@ -263,10 +266,10 @@ const FeedbackModal = ({
 				if (response) {
 					setRatingFeedbackSubmitted(true);
 					const currentTime = new Date();
-					localStorage.setItem(
-						'RatingTime',
-						currentTime.toISOString()
-					);
+					(typeof window !== 'undefined' ?
+						window.localStorage
+					:	null
+					)?.setItem('RatingTime', currentTime.toISOString());
 				}
 				//console.log(response, "response"); // Log the response from the backend.
 			})
@@ -275,7 +278,10 @@ const FeedbackModal = ({
 			});
 	};
 	const handleBugFeedback = async () => {
-		const lastResponseTime = localStorage.getItem('BugTime');
+		const lastResponseTime = (
+			typeof window !== 'undefined' ?
+				window.localStorage
+			:	null)?.getItem('BugTime');
 		if (lastResponseTime) {
 			const twentyFourHoursAgo = new Date();
 			twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 72);
@@ -296,7 +302,10 @@ const FeedbackModal = ({
 				if (response) {
 					setBugFeedbackSubmitted(true);
 					const currentTime = new Date();
-					localStorage.setItem('BugTime', currentTime.toISOString());
+					(typeof window !== 'undefined' ?
+						window.localStorage
+					:	null
+					)?.setItem('BugTime', currentTime.toISOString());
 					//console.log(response, "res");
 				}
 			})
@@ -305,7 +314,10 @@ const FeedbackModal = ({
 			});
 	};
 	const handleSuggestionFeedback = async () => {
-		const lastResponseTime = localStorage.getItem('SuggestionTime');
+		const lastResponseTime = (
+			typeof window !== 'undefined' ?
+				window.localStorage
+			:	null)?.getItem('SuggestionTime');
 		if (lastResponseTime) {
 			const twentyFourHoursAgo = new Date();
 			twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 96);
@@ -329,10 +341,10 @@ const FeedbackModal = ({
 				if (response) {
 					setsuggestionFeedbackSubmitted(true);
 					const currentTime = new Date();
-					localStorage.setItem(
-						'SuggestionTime',
-						currentTime.toISOString()
-					);
+					(typeof window !== 'undefined' ?
+						window.localStorage
+					:	null
+					)?.setItem('SuggestionTime', currentTime.toISOString());
 					//console.log(response, "res");
 				}
 			})
@@ -673,6 +685,7 @@ const FeedbackModal = ({
 												How would you rate our
 												experience
 											</Text>
+											{/* @ts-ignore */}
 											<ReactStars
 												count={5}
 												size={60}

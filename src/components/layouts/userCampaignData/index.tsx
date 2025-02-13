@@ -11,20 +11,13 @@ import {
 	Tr,
 } from '@chakra-ui/react';
 import Image from 'next/image';
-
-import CircularDropDown from '@/assets/icons/circularDropDown';
 import CircularDropDownActive from '@/assets/icons/circularDropDownActive';
 import CircularDropDownClose from '@/assets/icons/circularDropDownClose';
 import ExternalLink from '@/assets/icons/externalLink';
 import numberFormatter from '@/utils/functions/numberFormatter';
 import Link from 'next/link';
 import { useUserCampaignData } from '@/hooks/useUserCampaignData';
-import {
-	ChevronDown,
-	ChevronDownCircle,
-	ChevronUp,
-	ChevronUpCircle,
-} from 'lucide-react';
+import { ChevronDownCircle, ChevronUpCircle } from 'lucide-react';
 const snapshotsDates = [
 	'30 Nov 2023',
 	'2 Dec 2023',

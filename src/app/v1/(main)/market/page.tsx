@@ -19,6 +19,9 @@ import {
 } from '@/components/uiElements/buttons/EmblaCarouselDotButton';
 import useDataLoader from '@/hooks/useDataLoader';
 
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
+
 const Market: NextPage = () => {
 	const router = useRouter();
 	const [emblaRef, emblaApi] = useEmblaCarousel(

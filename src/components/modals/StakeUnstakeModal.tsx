@@ -133,7 +133,10 @@ const StakeUnstakeModal = ({
 
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			let values = data.split(',');
 			let lastValue = values[values.length - 1];
 			if (
@@ -375,14 +378,20 @@ const StakeUnstakeModal = ({
 				dispatch(setActiveTransactions(activeTransactions));
 			}
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				dispatch(setTransactionStatus('success'));
 			}
 		} catch (err: any) {
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				setTransactionStarted(false);
@@ -450,7 +459,10 @@ const StakeUnstakeModal = ({
 			});
 			setDepositTransHash(depositStake?.transaction_hash);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				dispatch(setTransactionStatus('success'));
@@ -460,7 +472,10 @@ const StakeUnstakeModal = ({
 				Status: 'Failure',
 			});
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				setTransactionStarted(false);
@@ -523,14 +538,20 @@ const StakeUnstakeModal = ({
 				dispatch(setActiveTransactions(activeTransactions));
 			}
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				dispatch(setTransactionStatus('success'));
 			}
 		} catch (err: any) {
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				setUnstakeTransactionStarted(false);
@@ -865,12 +886,17 @@ const StakeUnstakeModal = ({
 					onClick={() => {
 						const uqID = Math.random();
 						setUniqueID(uqID);
-						let data: any =
-							localStorage.getItem('transactionCheck');
+						let data: any = (
+							typeof window !== 'undefined' ?
+								window.localStorage
+							:	null)?.getItem('transactionCheck');
 						data = data ? JSON.parse(data) : [];
 						if (data && !data.includes(uqID)) {
 							data.push(uqID);
-							localStorage.setItem(
+							(typeof window !== 'undefined' ?
+								window.localStorage
+							:	null
+							)?.setItem(
 								'transactionCheck',
 								JSON.stringify(data)
 							);
@@ -941,12 +967,17 @@ const StakeUnstakeModal = ({
 					onClick={() => {
 						const uqID = Math.random();
 						setUniqueID(uqID);
-						let data: any =
-							localStorage.getItem('transactionCheck');
+						let data: any = (
+							typeof window !== 'undefined' ?
+								window.localStorage
+							:	null)?.getItem('transactionCheck');
 						data = data ? JSON.parse(data) : [];
 						if (data && !data.includes(uqID)) {
 							data.push(uqID);
-							localStorage.setItem(
+							(typeof window !== 'undefined' ?
+								window.localStorage
+							:	null
+							)?.setItem(
 								'transactionCheck',
 								JSON.stringify(data)
 							);
@@ -961,14 +992,17 @@ const StakeUnstakeModal = ({
 				isOpen={isOpen}
 				onClose={() => {
 					const uqID = getUniqueId();
-					let data: any = localStorage.getItem('transactionCheck');
+					let data: any = (
+						typeof window !== 'undefined' ?
+							window.localStorage
+						:	null)?.getItem('transactionCheck');
 					data = data ? JSON.parse(data) : [];
 					if (data && data.includes(uqID)) {
 						data = data.filter((val: any) => val != uqID);
-						localStorage.setItem(
-							'transactionCheck',
-							JSON.stringify(data)
-						);
+						(typeof window !== 'undefined' ?
+							window.localStorage
+						:	null
+						)?.setItem('transactionCheck', JSON.stringify(data));
 					}
 					onClose();
 					if (transactionStarted || unstakeTransactionStarted) {

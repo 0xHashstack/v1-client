@@ -48,8 +48,14 @@ export const usePageCard = () => {
 	}, []);
 
 	useEffect(() => {
-		const walletConnected = localStorage.getItem('lastUsedConnector');
-		const connected = localStorage.getItem('connected');
+		const walletConnected = (
+			typeof window !== 'undefined' ?
+				window.localStorage
+			:	null)?.getItem('lastUsedConnector');
+		const connected = (
+			typeof window !== 'undefined' ?
+				window.localStorage
+			:	null)?.getItem('connected');
 
 		if (walletConnected === '') {
 			router.push('/');
@@ -58,14 +64,20 @@ export const usePageCard = () => {
 
 		if (!account) {
 			if (walletConnected === 'braavos') {
-				localStorage.setItem('connected', 'braavos');
+				(typeof window !== 'undefined' ?
+					window.localStorage
+				:	null
+				)?.setItem('connected', 'braavos');
 				connectors.map((connector: any) => {
 					if (connector.id === 'braavos') {
 						connect({ connector });
 					}
 				});
 			} else if (walletConnected === 'argentX') {
-				localStorage.setItem('connected', 'argentX');
+				(typeof window !== 'undefined' ?
+					window.localStorage
+				:	null
+				)?.setItem('connected', 'argentX');
 				connectors.map((connector) => {
 					if (connector.id === 'argentX') {
 						connect({ connector });
@@ -73,14 +85,20 @@ export const usePageCard = () => {
 				});
 			} else {
 				if (connected === 'braavos') {
-					localStorage.setItem('lastUsedConnector', 'braavos');
+					(typeof window !== 'undefined' ?
+						window.localStorage
+					:	null
+					)?.setItem('lastUsedConnector', 'braavos');
 					connectors.map((connector: any) => {
 						if (connector.id === 'braavos') {
 							connect({ connector });
 						}
 					});
 				} else if (connected === 'argentX') {
-					localStorage.setItem('lastUsedConnector', 'argentX');
+					(typeof window !== 'undefined' ?
+						window.localStorage
+					:	null
+					)?.setItem('lastUsedConnector', 'argentX');
 					connectors.map((connector) => {
 						if (connector.id === 'argentX') {
 							connect({ connector });
@@ -94,7 +112,10 @@ export const usePageCard = () => {
 	}, [account, connect, connectors, router]);
 
 	const isCorrectNetwork = useCallback(() => {
-		const walletConnected = localStorage.getItem('lastUsedConnector');
+		const walletConnected = (
+			typeof window !== 'undefined' ?
+				window.localStorage
+			:	null)?.getItem('lastUsedConnector');
 		const network = process.env.NEXT_PUBLIC_NODE_ENV;
 
 		if (walletConnected === 'braavos') {

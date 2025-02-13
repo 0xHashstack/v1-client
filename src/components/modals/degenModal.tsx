@@ -227,7 +227,10 @@ const DegenModal = ({
 	let activeTransactions = useSelector(selectActiveTransactions);
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			let values = data.split(',');
 			let lastValue = values[values.length - 1];
 			if (
@@ -964,7 +967,10 @@ const DegenModal = ({
 					dispatch(setActiveTransactions(activeTransactions));
 				}
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -1017,7 +1023,10 @@ const DegenModal = ({
 					dispatch(setActiveTransactions(activeTransactions));
 				}
 				const uqID = getUniqueId();
-				let data: any = localStorage.getItem('transactionCheck');
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -1026,7 +1035,10 @@ const DegenModal = ({
 		} catch (err: any) {
 			//console.log(err);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));
@@ -1529,14 +1541,17 @@ const DegenModal = ({
 				onClick={() => {
 					const uqID = Math.random();
 					setUniqueID(uqID);
-					let data: any = localStorage.getItem('transactionCheck');
+					let data: any = (
+						typeof window !== 'undefined' ?
+							window.localStorage
+						:	null)?.getItem('transactionCheck');
 					data = data ? JSON.parse(data) : [];
 					if (data && !data.includes(uqID)) {
 						data.push(uqID);
-						localStorage.setItem(
-							'transactionCheck',
-							JSON.stringify(data)
-						);
+						(typeof window !== 'undefined' ?
+							window.localStorage
+						:	null
+						)?.setItem('transactionCheck', JSON.stringify(data));
 					}
 					onOpen();
 				}}>
@@ -1547,15 +1562,18 @@ const DegenModal = ({
 				isOpen={isOpen}
 				onClose={() => {
 					const uqID = getUniqueId();
-					let data: any = localStorage.getItem('transactionCheck');
+					let data: any = (
+						typeof window !== 'undefined' ?
+							window.localStorage
+						:	null)?.getItem('transactionCheck');
 					data = data ? JSON.parse(data) : [];
 					////console.log(uqID, "data here", data);
 					if (data && data.includes(uqID)) {
 						data = data.filter((val: any) => val != uqID);
-						localStorage.setItem(
-							'transactionCheck',
-							JSON.stringify(data)
-						);
+						(typeof window !== 'undefined' ?
+							window.localStorage
+						:	null
+						)?.setItem('transactionCheck', JSON.stringify(data));
 					}
 					onClose();
 					resetStates();

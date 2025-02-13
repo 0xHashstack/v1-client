@@ -35,8 +35,14 @@ function NavbarSwitchWallet({ domainName }: { domainName: string }) {
 	const handleDisconnect = () => {
 		disconnect();
 		setAccountReset(null);
-		localStorage.removeItem('lastUsedConnector');
-		localStorage.removeItem('connected');
+		(typeof window !== 'undefined' ?
+			window.localStorage
+		:	null
+		)?.removeItem('lastUsedConnector');
+		(typeof window !== 'undefined' ?
+			window.localStorage
+		:	null
+		)?.removeItem('connected');
 		router.push('/');
 		setOpen(false);
 	};

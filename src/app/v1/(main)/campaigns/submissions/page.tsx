@@ -34,6 +34,9 @@ interface SubmissionData {
 	'Recommended (Community Team)': string;
 }
 
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
+
 const CcpSubmissions: NextPage = () => {
 	const [selectedFilter, setSelectedFilter] = useState('All');
 	const [submissionData, setSubmissionData] = useState<SubmissionData[]>([]);

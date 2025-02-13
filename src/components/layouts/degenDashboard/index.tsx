@@ -515,7 +515,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 					dispatch(setTransactionStatus('success'));
 				}
 				// const uqID = getUniqueId();
-				// let data: any = localStorage.getItem("transactionCheck");
+				// let data: any = (typeof window !== 'undefined' ? window.localStorage : null)?.getItem("transactionCheck");
 				// data = data ? JSON.parse(data) : [];
 				// if (data && data.includes(uqID)) {
 				//   dispatch(setTransactionStatus("success"));
@@ -571,7 +571,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 					dispatch(setTransactionStatus('success'));
 				}
 				// const uqID = getUniqueId();
-				// let data: any = localStorage.getItem("transactionCheck");
+				// let data: any = (typeof window !== 'undefined' ? window.localStorage : null)?.getItem("transactionCheck");
 				// data = data ? JSON.parse(data) : [];
 				// if (data && data.includes(uqID)) {
 				//   dispatch(setTransactionStatus("success"));
@@ -580,7 +580,10 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 		} catch (err: any) {
 			//console.log(err);
 			const uqID = getUniqueId();
-			let data: any = localStorage.getItem('transactionCheck');
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));

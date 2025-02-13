@@ -4,23 +4,19 @@ import { useAccount, useConnect, useDisconnect } from '@starknet-react/core';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import posthog from 'posthog-js';
+const PostHogClient =
+	typeof window !== 'undefined' ? require('posthog-js').default : null;
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import BTCLogo from '@/assets/icons/coins/btc';
-import DAILogo from '@/assets/icons/coins/dai';
-import ETHLogo from '@/assets/icons/coins/eth';
-import EthWalletLogo from '@/assets/icons/coins/ethwallet';
-import StarknetLogo from '@/assets/icons/coins/starknet';
-import USDCLogo from '@/assets/icons/coins/usdc';
-import USDTLogo from '@/assets/icons/coins/usdt';
 import BravosIcon from '@/assets/icons/wallets/bravos';
 import {
 	setReferral,
 	setTransactionRefresh,
 } from '@/store/slices/readDataSlice';
 import { selectWalletBalance } from '@/store/slices/userAccountSlice';
+
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
 
 export default function Home() {
 	const { account, address, status, isConnected } = useAccount();
@@ -52,7 +48,10 @@ export default function Home() {
 	}, []);
 
 	useEffect(() => {
-		localStorage.setItem('connected', '');
+		(typeof window !== 'undefined' ? window.localStorage : null)?.setItem(
+			'connected',
+			''
+		);
 	}, []);
 
 	const searchParams = useSearchParams();
@@ -64,10 +63,19 @@ export default function Home() {
 	}, [ref]);
 
 	useEffect(() => {
-		const hasVisited = localStorage.getItem('visited');
-		const walletConnected = localStorage.getItem('lastUsedConnector');
+		const hasVisited = (
+			typeof window !== 'undefined' ?
+				window.localStorage
+			:	null)?.getItem('visited');
+		const walletConnected = (
+			typeof window !== 'undefined' ?
+				window.localStorage
+			:	null)?.getItem('lastUsedConnector');
 
-		localStorage.setItem('transactionCheck', JSON.stringify([]));
+		(typeof window !== 'undefined' ? window.localStorage : null)?.setItem(
+			'transactionCheck',
+			JSON.stringify([])
+		);
 		if (walletConnected == 'braavos') {
 			disconnect();
 			connectors.map((connector: any) => {
@@ -105,15 +113,23 @@ export default function Home() {
 			return;
 		}
 		if (walletConnected) {
-			localStorage.setItem('connected', walletConnected);
-			posthog.capture('Connect Wallet', {
-				'Wallet address': address,
-				'Wallet Connected': walletConnected,
-			});
+			(typeof window !== 'undefined' ?
+				window.localStorage
+			:	null
+			)?.setItem('connected', walletConnected);
+			if (PostHogClient) {
+				PostHogClient.capture('Connect Wallet', {
+					'Wallet address': address,
+					'Wallet Connected': walletConnected,
+				});
+			}
 		}
 		if (!hasVisited) {
 			// Set a local storage item to indicate the user has visited
-			localStorage.setItem('visited', 'true');
+			(typeof window !== 'undefined' ?
+				window.localStorage
+			:	null
+			)?.setItem('visited', 'true');
 		}
 	}, [status, isConnected]);
 
@@ -169,11 +185,14 @@ export default function Home() {
 							justifyContent='space-between'
 							cursor='pointer'
 							onClick={() => {
-								localStorage.setItem(
-									'lastUsedConnector',
-									'braavos'
-								);
-								localStorage.setItem('connected', 'braavos');
+								(typeof window !== 'undefined' ?
+									window.localStorage
+								:	null
+								)?.setItem('lastUsedConnector', 'braavos');
+								(typeof window !== 'undefined' ?
+									window.localStorage
+								:	null
+								)?.setItem('connected', 'braavos');
 								disconnect();
 								connectors.map((connector) => {
 									if (connector.id == 'braavos') {
@@ -263,11 +282,14 @@ export default function Home() {
 							justifyContent='space-between'
 							cursor='pointer'
 							onClick={() => {
-								localStorage.setItem(
-									'lastUsedConnector',
-									'argentX'
-								);
-								localStorage.setItem('connected', 'argentX');
+								(typeof window !== 'undefined' ?
+									window.localStorage
+								:	null
+								)?.setItem('lastUsedConnector', 'argentX');
+								(typeof window !== 'undefined' ?
+									window.localStorage
+								:	null
+								)?.setItem('connected', 'argentX');
 								disconnect();
 								connectors.map((connector) => {
 									if (connector.id == 'argentX') {

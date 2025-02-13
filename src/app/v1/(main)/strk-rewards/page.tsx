@@ -11,6 +11,10 @@ import useDataLoader from '@/hooks/useDataLoader';
 import { selectUserUnspentLoans } from '@/store/slices/userAccountSlice';
 import StrkDashboard from '@/components/layouts/strkDashboard';
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
+
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
+
 const SpendBorrow = () => {
 	useDataLoader();
 	const totalBorrow = useSelector(selectYourBorrow);

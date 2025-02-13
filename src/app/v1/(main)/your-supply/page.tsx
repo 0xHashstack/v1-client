@@ -12,7 +12,6 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Card } from '@/components/ui/card';
 
 import InfoIconBig from '@/assets/icons/infoIconBig';
 import NavButtons from '@/components/layouts/navButtons';
@@ -42,6 +41,9 @@ interface MetricDisplayProps {
 	valueColor?: string;
 	tooltipContent?: string;
 }
+
+export const dynamic = 'force-static';
+export const runtime = 'nodejs';
 
 const MetricDisplay = ({
 	label,

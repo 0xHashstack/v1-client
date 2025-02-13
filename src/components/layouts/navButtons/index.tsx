@@ -77,7 +77,10 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 	const pathname = usePathname();
 
 	useEffect(() => {
-		const storedCurrentPage = localStorage.getItem('currentPage');
+		const storedCurrentPage = (
+			typeof window !== 'undefined' ?
+				window.localStorage
+			:	null)?.getItem('currentPage');
 		if (storedCurrentPage) {
 			dispatch(setCurrentPage(storedCurrentPage));
 		}
@@ -90,7 +93,10 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 			});
 		}
 		dispatch(setCurrentPage(val));
-		localStorage.setItem('currentPage', val);
+		(typeof window !== 'undefined' ? window.localStorage : null)?.setItem(
+			'currentPage',
+			val
+		);
 		router.push('/' + val);
 	};
 
