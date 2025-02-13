@@ -96,7 +96,7 @@ import {
 } from '@/store/slices/userAccountSlice';
 import numberFormatter from '@/utils/functions/numberFormatter';
 import { useWaitForTransaction } from '@starknet-react/core';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
@@ -313,6 +313,7 @@ const YourSupplyModal = ({
 		isSuccessWithdrawDeposit,
 		statusWithdrawDeposit,
 	} = useWithdrawDeposit();
+	const posthog = usePostHog();
 
 	const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
 		(

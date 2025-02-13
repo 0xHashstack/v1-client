@@ -130,7 +130,7 @@ import { useWaitForTransaction } from '@starknet-react/core';
 import axios from 'axios';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
@@ -247,6 +247,7 @@ const TradeModal = ({
 		ETH: any;
 		DAI: any;
 	}
+	const posthog = usePostHog();
 
 	const walletBalances: assetB | any = {
 		USDT: useBalanceOf(tokenAddressMap['USDT']),

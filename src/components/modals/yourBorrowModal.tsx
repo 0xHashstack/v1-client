@@ -120,7 +120,7 @@ import { useAccount, useWaitForTransaction } from '@starknet-react/core';
 import axios from 'axios';
 import { getAddress } from 'ethers/lib/utils';
 import Image from 'next/image';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
 import { Account, uint256 } from 'starknet';
@@ -195,6 +195,8 @@ const YourBorrowModal = ({
 	const reduxProtocolStats = useSelector(selectProtocolStats);
 	const oraclePrices = useSelector(selectOraclePrices);
 	let activeTransactions = useSelector(selectActiveTransactions);
+	const posthog = usePostHog();
+
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
 			let data: any = (

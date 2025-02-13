@@ -5,7 +5,7 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import PageCard from '@/components/layouts/pageCard';
 import numberFormatter from '@/utils/functions/numberFormatter';

@@ -21,7 +21,7 @@ import { useKeenSlider } from 'keen-slider/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AccountInterface, BlockNumber } from 'starknet';
@@ -60,6 +60,7 @@ const Footer = () => {
 	const [hoverCampaigns, sethoverCampaigns] = useState(false);
 	const [hoverc2e, sethoverc2e] = useState(false);
 	const [perviewCount, setperviewCount] = useState<number>(2);
+	const posthog = usePostHog();
 
 	const [ref, slider] = useKeenSlider<HTMLDivElement>({
 		loop: true,

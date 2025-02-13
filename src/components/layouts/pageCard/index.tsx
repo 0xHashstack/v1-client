@@ -7,7 +7,7 @@ import Footer from '../footer';
 import FeedbackModal from '@/components/modals/feedbackModal';
 import { Text } from '@/components/ui/typography/Text';
 import Link from 'next/link';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { HTMLAttributes } from 'react';
 
@@ -30,6 +30,7 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 	const isMainnet = process.env.NEXT_PUBLIC_NODE_ENV === 'mainnet';
 	const isTestnet = process.env.NEXT_PUBLIC_NODE_ENV === 'testnet';
 	const showContent = render && (isMainnet ? whitelisted : true);
+	const posthog = usePostHog();
 
 	const handleFeedbackClick = () => {
 		posthog.capture('Feedback Modal Clicked', { Clicked: true });

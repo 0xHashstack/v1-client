@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAccount, useConnect, useDisconnect } from '@starknet-react/core';
 import { usePathname, useRouter } from 'next/navigation';
 import axios from 'axios';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import { useOutsideClick } from '@chakra-ui/react';
 
 import {
@@ -48,6 +48,7 @@ export const useNavbar = (validRTokens: any) => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const userWhitelisted = useSelector(selectWhiteListed);
+	const posthog = usePostHog();
 
 	const handleDropdownClick = (dropdownName: string) => {
 		dispatch(setNavDropdown(dropdownName));

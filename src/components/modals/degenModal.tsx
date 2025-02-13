@@ -131,7 +131,7 @@ import { useWaitForTransaction } from '@starknet-react/core';
 import axios from 'axios';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { uint256 } from 'starknet';
@@ -223,7 +223,7 @@ const DegenModal = ({
 	);
 	const modalDropdowns = useSelector(selectModalDropDowns);
 	const [transactionStarted, setTransactionStarted] = useState(false);
-
+	const posthog = usePostHog();
 	let activeTransactions = useSelector(selectActiveTransactions);
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {

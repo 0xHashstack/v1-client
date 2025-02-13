@@ -20,7 +20,7 @@ import {
 import { useAccount } from '@starknet-react/core';
 import axios from 'axios';
 import Image from 'next/image';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -217,6 +217,7 @@ const DegenDashboard: React.FC<BorrowDashboardProps> = ({
 	upper_bound = Math.min(Borrows ? Borrows.length - 1 : 0, upper_bound);
 	const [allocationData, setallocationData] = useState<any>();
 	const [poolAllocatedData, setpoolAllocatedData] = useState<any>();
+	const posthog = usePostHog();
 
 	useEffect(() => {
 		if (supplies) {

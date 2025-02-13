@@ -61,7 +61,7 @@ import {
 } from '@chakra-ui/react';
 import { useWaitForTransaction } from '@starknet-react/core';
 import Image from 'next/image';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import React, { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useDispatch, useSelector } from 'react-redux';
@@ -249,6 +249,7 @@ const SwapModal = ({
 	const [depositTransHash, setDepositTransHash] = useState('');
 	const [isToastDisplayed, setToastDisplayed] = useState(false);
 	const [toastId, setToastId] = useState<any>();
+	const posthog = usePostHog();
 	const [currentTransactionStatus, setCurrentTransactionStatus] =
 		useState('');
 	const userLoans = useSelector(selectUserUnspentLoans);

@@ -31,7 +31,7 @@ import {
 	selectCcpDropdowns,
 	setCcpModalDropdown,
 } from '@/store/slices/dropdownsSlice';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon';
 
 const PlatformList = [
@@ -117,6 +117,7 @@ const SubmissionCCPModal: React.FC<SubmissionModalProps> = ({
 		setPlatformName('');
 		setUserHandle('');
 	};
+	const posthog = usePostHog();
 
 	const handleSubmissionSubmit = async () => {
 		let submissionCount: any = 0;

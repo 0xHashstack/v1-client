@@ -6,7 +6,6 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { posthog } from 'posthog-js';
 import 'react-toastify/dist/ReactToastify.css';
 
 import MarketDashboard from '@/components/layouts/marketDashboard';

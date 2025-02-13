@@ -52,7 +52,7 @@ import { useAccount } from '@starknet-react/core';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -151,6 +151,8 @@ const StrkDashboard = () => {
 	const router = useRouter();
 	let activeTransactions = useSelector(selectActiveTransactions);
 	const { copyToClipboard } = useCopyToClipboard();
+	const posthog = usePostHog();
+
 	const {
 		round,
 		setRound,

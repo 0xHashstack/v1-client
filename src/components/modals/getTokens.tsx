@@ -62,7 +62,7 @@ import {
 	setTransactionStatus,
 } from '@/store/slices/userAccountSlice';
 import { toast } from 'react-toastify';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
 const GetTokensModal = ({
@@ -71,6 +71,7 @@ const GetTokensModal = ({
 	...restProps
 }: any) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const posthog = usePostHog();
 
 	const getCoin = (CoinName: string) => {
 		switch (CoinName) {

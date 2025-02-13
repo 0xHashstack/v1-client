@@ -4,9 +4,7 @@ import { useAccount, useConnect, useDisconnect } from '@starknet-react/core';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-const PostHogClient =
-	typeof window !== 'undefined' ? require('posthog-js').default : null;
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BravosIcon from '@/assets/icons/wallets/bravos';
 import {
@@ -14,6 +12,7 @@ import {
 	setTransactionRefresh,
 } from '@/store/slices/readDataSlice';
 import { selectWalletBalance } from '@/store/slices/userAccountSlice';
+import { usePostHog } from 'posthog-js/react';
 
 export const dynamic = 'force-static';
 export const runtime = 'nodejs';
@@ -56,6 +55,7 @@ export default function Home() {
 
 	const searchParams = useSearchParams();
 	const ref = searchParams.get('ref');
+	const posthog = usePostHog();
 
 	useEffect(() => {
 		if (!ref) return;
@@ -117,8 +117,8 @@ export default function Home() {
 				window.localStorage
 			:	null
 			)?.setItem('connected', walletConnected);
-			if (PostHogClient) {
-				PostHogClient.capture('Connect Wallet', {
+			if (posthog) {
+				posthog.capture('Connect Wallet', {
 					'Wallet address': address,
 					'Wallet Connected': walletConnected,
 				});

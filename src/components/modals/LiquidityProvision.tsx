@@ -84,7 +84,7 @@ import { useWaitForTransaction } from '@starknet-react/core';
 import axios from 'axios';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -173,6 +173,7 @@ const LiquidityProvisionModal = ({
 	const [allocationData, setallocationData] = useState<any>();
 	const [poolAllocatedData, setpoolAllocatedData] = useState<any>();
 	const getUniqueId = () => uniqueID;
+	const posthog = usePostHog();
 
 	let activeTransactions = useSelector(selectActiveTransactions);
 	const { copyToClipboard } = useCopyToClipboard();

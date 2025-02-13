@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react';
 import { useAccount } from '@starknet-react/core';
 import Image from 'next/image';
-import posthog from 'posthog-js';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -50,6 +49,7 @@ import numberFormatter from '@/utils/functions/numberFormatter';
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage';
 import TableInfoIcon from '../table/tableIcons/infoIcon';
 import { getZklendusdSpendValue } from '@/Blockchain/scripts/l3interaction';
+import { usePostHog } from 'posthog-js/react';
 
 export interface ICoin {
 	name: string;
@@ -127,6 +127,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
 		selectJedistrkTokenAllocation
 	);
 	const { account, address } = useAccount();
+	const posthog = usePostHog();
 
 	let lower_bound = 6 * (currentPagination - 1);
 	let upper_bound = lower_bound + 5;

@@ -112,7 +112,7 @@ import {
 import dollarConvertor from '@/utils/functions/dollarConvertor';
 import numberFormatter from '@/utils/functions/numberFormatter';
 import { useWaitForTransaction } from '@starknet-react/core';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import { memo, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { uint256 } from 'starknet';
@@ -186,6 +186,8 @@ const BorrowModal = ({
 		// "USDT/DAI",
 		// "USDC/DAI",
 	];
+	const posthog = usePostHog();
+
 	const getAprByPool = (dataArray: any[], pool: string, dapp: string) => {
 		const matchedObject = dataArray.find((item) => {
 			if (item.name === 'USDT/USDC') {

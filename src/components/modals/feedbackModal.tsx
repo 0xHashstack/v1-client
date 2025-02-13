@@ -78,7 +78,7 @@ import CaptureBugIcon from '@/assets/icons/captureBugIcon';
 import AddFiles from '@/assets/icons/addFiles';
 import CancelIcon from '@/assets/icons/cancelIcon';
 import CancelIconSmall from '@/assets/icons/cancelIconSmall';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 const FeedbackModal = ({
 	borrowIDCoinMap,
 	borrowIds,
@@ -125,6 +125,7 @@ const FeedbackModal = ({
 	const [suggestionFeedbackDisabled, setSuggestionFeedbackDisabled] =
 		useState(false);
 	const dispatch = useDispatch();
+	const posthog = usePostHog();
 
 	let activeTransactions = useSelector(selectActiveTransactions);
 	const coins = ['BTC', 'USDT', 'USDC', 'ETH', 'DAI'];

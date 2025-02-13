@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@/components/ui/button'; // shadcn Button
 import {
@@ -52,6 +52,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 	const yourSupply = useSelector(selectYourSupply);
 	const yourBorrow = useSelector(selectYourBorrow);
 	const netAPR = useSelector(selectNetAPR);
+	const posthog = usePostHog();
 
 	const navOptions = [
 		{ path: 'v1/market/', label: 'Markets', count: 0 },

@@ -99,7 +99,7 @@ import { BNtoNum, parseAmount } from '@/Blockchain/utils/utils';
 import STRKLogo from '@/assets/icons/coins/strk';
 import InfoIconBig from '@/assets/icons/infoIconBig';
 import numberFormatter from '@/utils/functions/numberFormatter';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import { uint256 } from 'starknet';
 import TransactionFees from '../../../TransactionFees.json';
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon';
@@ -326,6 +326,8 @@ const StakeUnstakeModal = ({
 		useState('');
 
 	const [toastId, setToastId] = useState<any>();
+	const posthog = usePostHog();
+
 
 	useEffect(() => {
 		if (coin) {

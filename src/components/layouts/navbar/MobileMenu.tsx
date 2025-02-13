@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { LogOut, X } from 'lucide-react';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import hoverDashboardIcon from '../../../assets/images/hoverDashboardIcon.svg';
 import { useAccount, useConnect, useDisconnect } from '@starknet-react/core';
 import { setAccountReset } from '@/store/slices/userAccountSlice';
@@ -24,6 +24,7 @@ export default function MobileMenu({ onClose }: MobileMenuProps) {
 	const { disconnect } = useDisconnect();
 	const { connect, connectors } = useConnect();
 	const dispatch = useDispatch();
+	const posthog = usePostHog();
 
 	const switchWallet = () => {
 		const targetConnector = connectors.find((c) =>

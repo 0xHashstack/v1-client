@@ -2,7 +2,7 @@ import StakeUnstakeModal from '@/components/modals/StakeUnstakeModal';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import React from 'react';
 import { Coins } from '../strkDashboard';
 
@@ -15,6 +15,8 @@ function NavbarStake({
 }) {
 	const [stakeHover, setStakeHover] = React.useState(false);
 	const pathname = usePathname();
+	const posthog = usePostHog();
+
 	return (
 		<Button
 			variant='ghost'

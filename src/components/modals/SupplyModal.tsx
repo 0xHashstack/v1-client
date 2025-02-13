@@ -117,7 +117,7 @@ import {
 } from '@/store/slices/readDataSlice';
 import numberFormatter from '@/utils/functions/numberFormatter';
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import TransactionFees from '../../../TransactionFees.json';
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
@@ -237,6 +237,7 @@ const SupplyModal = ({
 	const strkData = useSelector(selectStrkAprData);
 	const oraclePrices = useSelector(selectOraclePrices);
 	const fees = useSelector(selectFees);
+	const posthog = usePostHog();
 	const [walletBalance, setwalletBalance] = useState(
 		walletBalances[coin?.name]?.statusBalanceOf === 'success' ?
 			parseAmount(

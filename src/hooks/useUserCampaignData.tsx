@@ -11,7 +11,7 @@ import {
 import useClaimStrk from '@/Blockchain/hooks/Writes/useStrkClaim';
 import { toast } from 'react-toastify';
 import { setActiveTransactions } from '@/store/slices/readDataSlice';
-import posthog from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Text } from '@/components/ui/typography/Text';
 
@@ -39,6 +39,7 @@ export const useUserCampaignData = ({
 	const dispatch = useDispatch();
 	const { address } = useAccount();
 	const { setstrkAmount, setProof, writeAsyncstrkClaim } = useClaimStrk();
+	const posthog = usePostHog();
 
 	const handleClaimStrk = async () => {
 		try {
