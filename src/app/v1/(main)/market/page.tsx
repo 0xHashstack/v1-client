@@ -18,10 +18,9 @@ import {
 } from '@/components/uiElements/buttons/EmblaCarouselDotButton';
 import useDataLoader from '@/hooks/useDataLoader';
 
-export const dynamic = 'force-static';
-export const runtime = 'nodejs';
+import ClientOnly from '@/components/ClientOnly';
 
-const Market: NextPage = () => {
+const MarketContent: NextPage = () => {
 	const router = useRouter();
 	const [emblaRef, emblaApi] = useEmblaCarousel(
 		{
@@ -277,6 +276,14 @@ const Market: NextPage = () => {
 			<MarketDashboard />
 		</>
 	);
+};
+
+const Market: NextPage = () => {
+  return (
+    <ClientOnly>
+      <MarketContent />
+    </ClientOnly>
+  );
 };
 
 export default Market;

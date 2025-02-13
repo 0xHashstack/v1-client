@@ -73,13 +73,16 @@ export const theme = extendTheme({
 	},
 });
 
+const NoSSRWrapper = ({ children }: { children: React.ReactNode }) => (
+	<>{typeof window === 'undefined' ? null : children}</>
+);
+
 export default function RootContextProvider({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
 	const apikey: string = process.env.NEXT_PUBLIC_INFURA_MAINNET as string;
-
 	const provider = infuraProvider({ apiKey: apikey.split('/')[4] });
 
 	const { connectors } = useInjectedConnectors({
@@ -91,28 +94,26 @@ export default function RootContextProvider({
 	useEffect(() => {
 		posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
 			api_host: process.env.NEXT_PUBLIC_HOSTHOG_HOST,
-			capture_pageview: false, // Disable automatic pageview capture, as we capture manually
+			capture_pageview: false,
 		});
 	}, []);
 
-	const options = {
-		api_host: process.env.NEXT_PUBLIC_HOSTHOG_HOST,
-	};
-
 	return (
-		<PostHogProvider client={posthog}>
-			<ChakraProvider theme={theme}>
-				<StarknetConfig
-					chains={[mainnet, goerli, sepolia]}
-					provider={provider}
-					connectors={connectors}>
-					<Provider store={store}>
-						<Layout>
-							<Suspense>{children}</Suspense>
-						</Layout>
-					</Provider>
-				</StarknetConfig>
-			</ChakraProvider>
-		</PostHogProvider>
+		<NoSSRWrapper>
+			<PostHogProvider client={posthog}>
+				<ChakraProvider theme={theme}>
+					<StarknetConfig
+						chains={[mainnet, goerli, sepolia]}
+						provider={provider}
+						connectors={connectors}>
+						<Provider store={store}>
+							<Layout>
+								<Suspense>{children}</Suspense>
+							</Layout>
+						</Provider>
+					</StarknetConfig>
+				</ChakraProvider>
+			</PostHogProvider>
+		</NoSSRWrapper>
 	);
 }

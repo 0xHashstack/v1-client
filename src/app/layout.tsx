@@ -22,6 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html
 			lang='en'
+			suppressHydrationWarning
 			className={inter.className}>
 			<head>
 				<GTMScript />

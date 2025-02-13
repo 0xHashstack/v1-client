@@ -72,7 +72,7 @@ const columnItemsPersonalStatsReferalCampaign = [
 export const dynamic = 'force-static';
 export const runtime = 'nodejs';
 
-const Campaign: NextPage = () => {
+const CampaignContent: NextPage = () => {
 	const [daysLeft, setDaysLeft] = useState<number>(56);
 	const [leaderboardData, setLeaderboardData] = useState([]);
 	const [communityHash, setCommunityHash] = useState();
@@ -990,6 +990,16 @@ const Campaign: NextPage = () => {
 			</div>
 		</>
 	);
+};
+
+import ClientOnly from '@/components/ClientOnly';
+
+const Campaign: NextPage = () => {
+  return (
+    <ClientOnly>
+      <CampaignContent />
+    </ClientOnly>
+  );
 };
 
 export default Campaign;

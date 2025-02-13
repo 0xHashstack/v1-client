@@ -39,10 +39,11 @@ import UtilisationRateChart from '@/components/layouts/charts/utilisationRateCha
 import Image from 'next/image';
 import TableInfoIcon from '@/components/layouts/table/tableIcons/infoIcon';
 
-export const dynamic = 'force-static';
-export const runtime = 'nodejs';
+import ClientOnly from '@/components/ClientOnly';
 
-const ProtocolMetrics = () => {
+// This page requires client-side features
+
+const ProtocolMetricsContent = () => {
 	//   const [metricsCancel, setMetricsCancel] = useState(false);
 	const [currentMarketCoin, setCurrentMarketCoin] = useState('BTC');
 	const dispatch = useDispatch();
@@ -223,6 +224,14 @@ const ProtocolMetrics = () => {
 		//   </Box>
 		// </PageCard>
 	);
+};
+
+const ProtocolMetrics = () => {
+  return (
+    <ClientOnly>
+      <ProtocolMetricsContent />
+    </ClientOnly>
+  );
 };
 
 export default ProtocolMetrics;

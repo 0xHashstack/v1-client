@@ -8,7 +8,6 @@ import FeedbackModal from '@/components/modals/feedbackModal';
 import { Text } from '@/components/ui/typography/Text';
 import Link from 'next/link';
 import { usePostHog } from 'posthog-js/react';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { HTMLAttributes } from 'react';
 
 const GRADIENT_BACKGROUND = `
