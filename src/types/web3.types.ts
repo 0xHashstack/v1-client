@@ -6,6 +6,8 @@ export interface GetRewardsResponse {
 	claimableAmount: string;
 	nextClaimEligibleAt?: string;
 	lastUpdated: string;
+	zkLendRewards?: string;
+	hashstackRewards?: string;
 }
 
 export interface DefiRound {

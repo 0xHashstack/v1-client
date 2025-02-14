@@ -4,10 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { processAddress } from '@/Blockchain/stark-constants';
 import { parseAmount } from '@/Blockchain/utils/utils';
 import { getUserSTRKClaimedAmount } from '@/Blockchain/scripts/Rewards';
-import {
-	loadStrkReward,
-	loadStrkRewards,
-} from '@/utils/functions/loadStrkRewards';
 import useClaimStrk from '@/Blockchain/hooks/Writes/useStrkClaim';
 import { toast } from 'react-toastify';
 import { setActiveTransactions } from '@/store/slices/readDataSlice';

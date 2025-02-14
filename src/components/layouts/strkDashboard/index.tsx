@@ -56,13 +56,11 @@ import { usePostHog } from 'posthog-js/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import PageCard from '../pageCard';
-import dataStrkRewards from '../strkDashboard/round_33.json';
-import dataStrkRewardsZklend from '../strkDashboard/zkLend_33.json';
 import { processAddress } from '@/Blockchain/stark-constants';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 import StarkDashboardHeader from './components/StarkDashboardHeader';
 import ExistingBorrowSelector from '@/components/ExistingBorrowSelector';
+import { defiServices } from '@/services/defi.service';
 export interface ICoin {
 	name: string;
 	symbol: string;
@@ -148,7 +146,6 @@ const StrkDashboard = () => {
 	const [totalStrkRewards, settotalStrkRewards] = useState<any>();
 	const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>();
 	const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>();
-	const router = useRouter();
 	let activeTransactions = useSelector(selectActiveTransactions);
 	const { copyToClipboard } = useCopyToClipboard();
 	const posthog = usePostHog();
@@ -156,79 +153,79 @@ const StrkDashboard = () => {
 	const { setstrkAmount, setProof, writeAsyncstrkClaim } = useClaimStrk();
 
 	useEffect(() => {
-		const fetchClaimedBalance = async () => {
-			if (address) {
-				const data: any = await getUserSTRKClaimedAmount(
-					processAddress(address)
+		if (!address) return;
+		const fetchStrkClaimedBalance = async () => {
+			try {
+				const [claimData = 0, rewardsData] = await Promise.all([
+					getUserSTRKClaimedAmount(processAddress(address)),
+					defiServices.getStrkRewardsData({ address }),
+				]);
+
+				setstrkClaimedRewards(claimData);
+				setProof(rewardsData?.proof);
+				setstrkAmount(rewardsData?.totalRewards as any);
+				const totalStrkRewards = parseAmount(
+					String(rewardsData?.totalRewards),
+					18
 				);
-				const dataAmount: any = (dataStrkRewards as any)[
-					processAddress(address)
-				];
-				if (dataAmount) {
-					setstrkAmount(dataAmount?.amount);
-					setProof(dataAmount?.proofs);
-					setstrkRewards(
-						parseAmount(String(dataAmount?.amount), 18) - data
+				settotalStrkRewards(totalStrkRewards);
+				setstrkRewards(totalStrkRewards - claimData);
+				if (rewardsData?.zkLendRewards) {
+					setstrkRewardsZklend(
+						parseAmount(String(rewardsData?.zkLendRewards), 18)
 					);
-					settotalStrkRewards(
-						parseAmount(String(dataAmount?.amount), 18)
-					);
-					if (data) {
-						setstrkClaimedRewards(data);
-					} else {
-						setstrkClaimedRewards(0);
-					}
-				} else {
-					if (data) {
-						setstrkClaimedRewards(data);
-					} else {
-						setstrkClaimedRewards(0);
-					}
-					setstrkRewards(0);
-					settotalStrkRewards(0);
 				}
+				if (rewardsData?.hashstackRewards) {
+					setHashstackStrkReward(
+						parseAmount(String(rewardsData?.hashstackRewards), 18)
+					);
+				}
+			} catch (error) {
+				setstrkRewards(0);
+				setstrkClaimedRewards(0);
+				settotalStrkRewards(0);
 			}
 		};
-		fetchClaimedBalance();
+		fetchStrkClaimedBalance();
 	}, [address]);
 
-	useEffect(() => {
-		const fetchstrkrewards = async () => {
-			if (address) {
-				const dataAmount: any = (dataStrkRewards as any)[
-					processAddress(address)
-				];
-				const matchedUser = dataStrkRewardsZklend.find(
-					(userObj) => userObj.user === processAddress(address)
-				);
-				if (dataAmount && !matchedUser) {
-					setHashstackStrkReward(
-						parseAmount(String(BigInt(dataAmount.amount)), 18)
-					);
-					setstrkRewardsZklend(0);
-				} else if (matchedUser && dataAmount) {
-					setstrkRewardsZklend(
-						parseAmount(String(matchedUser?.strk), 18)
-					);
-					setHashstackStrkReward(
-						parseAmount(
-							String(
-								BigInt(dataAmount.amount) -
-									BigInt(matchedUser?.strk)
-							),
-							18
-						)
-					);
-				} else {
-					setstrkRewardsZklend(0);
-					setHashstackStrkReward(0);
-				}
-			}
-		};
-		if (address) {
-			fetchstrkrewards();
-		}
-	}, [address]);
+	// useEffect(() => {
+	// 	const fetchstrkrewards = async () => {
+	// 		if (address) {
+	// 			const dataAmount: any = (dataStrkRewards as any)[
+	// 				processAddress(address)
+	// 			];
+	// 			const matchedUser = dataStrkRewardsZklend.find(
+	// 				(userObj) => userObj.user === processAddress(address)
+	// 			);
+	// 			if (dataAmount && !matchedUser) {
+	// 				setHashstackStrkReward(
+	// 					parseAmount(String(BigInt(dataAmount.amount)), 18)
+	// 				);
+	// 				setstrkRewardsZklend(0);
+	// 			} else if (matchedUser && dataAmount) {
+	// 				setstrkRewardsZklend(
+	// 					parseAmount(String(matchedUser?.strk), 18)
+	// 				);
+	// 				setHashstackStrkReward(
+	// 					parseAmount(
+	// 						String(
+	// 							BigInt(dataAmount.amount) -
+	// 								BigInt(matchedUser?.strk)
+	// 						),
+	// 						18
+	// 					)
+	// 				);
+	// 			} else {
+	// 				setstrkRewardsZklend(0);
+	// 				setHashstackStrkReward(0);
+	// 			}
+	// 		}
+	// 	};
+	// 	if (address) {
+	// 		fetchstrkrewards();
+	// 	}
+	// }, [address]);
 
 	const handleClaimStrk = async () => {
 		try {
