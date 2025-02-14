@@ -7,14 +7,14 @@ interface DegenBannerProps {}
 const DegenBanner: React.FC<DegenBannerProps> = () => {
 	return (
 		<>
-			<div className='relative w-full mt-0 mb-8 px-8 py-4 z-[1]'>
+			<div className='relative w-full mt-0 mb-8 px-8 py-5 z-[1]'>
 				<Image
 					src='/degen_mode_banner.svg'
 					alt='Degen Mode Banner'
 					fill
 					style={{ objectFit: 'cover', borderRadius: '8px' }}
 				/>
-				<div className='flex md:flex-row flex-col gap-6 md:gap-4 items-center relative z-10'>
+				<div className='flex md:flex-row flex-col gap-6 md:gap-4 items-center relative z-10 justify-between'>
 					<div className='w-full mt-0.4 ml-0.4 md:max-w-[25rem] xl:max-w-[30rem] 2xl:max-w-[40rem]'>
 						<div className='text-[#E6EDF3] text-[2.1rem] flex items-center gap-2 font-semibold'>
 							What Is Degen mode?

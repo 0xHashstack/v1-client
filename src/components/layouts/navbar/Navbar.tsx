@@ -114,7 +114,7 @@ const Navbar = ({ validRTokens }: any) => {
 
 	return (
 		<nav className='z-100 pt-1 bg-[rgba(103,109,154,0.10)] w-screen shadow-[0_15px_25px_rgba(0,0,0,0.15),0_5px_10px_rgba(0,0,0,0.05)] flex justify-between items-center text-white h-[3.8125rem] px-2 navbar'>
-			<div className='flex justify-start items-center gap-1 ml-8'>
+			<div className='flex justify-start items-center gap-1 ml-2 md:ml-8'>
 				<Link
 					href={
 						pathname != '/v1/waitlist' ? '/v1/market' : (
