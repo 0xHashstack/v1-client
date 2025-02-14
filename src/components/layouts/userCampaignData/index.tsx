@@ -18,6 +18,7 @@ import numberFormatter from '@/utils/functions/numberFormatter';
 import Link from 'next/link';
 import { useUserCampaignData } from '@/hooks/useUserCampaignData';
 import { ChevronDownCircle, ChevronUpCircle } from 'lucide-react';
+import DefiSpringData from './components/DefiSpringData';
 const snapshotsDates = [
 	'30 Nov 2023',
 	'2 Dec 2023',
@@ -95,10 +96,11 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 		toggleEpochSelection,
 		isEpochOpen,
 		openEpochs,
-		datesDefiSpringRounds,
+		nextClaimableDate,
+		defiLoading,
 	} = useUserCampaignData({ leaderBoardData, snapshotsData });
 
-	return loading ?
+	return loading || defiLoading ?
 			<Box
 				display='flex'
 				flexDirection='column'
@@ -137,7 +139,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 							height='56px'>
 							{columnItems.map((val: any, idx1: any) => (
 								<Td
-									key={idx1}
+									key={'header' + idx1}
 									width={'16.6%'}
 									fontSize={'12px'}
 									fontWeight={400}
@@ -201,7 +203,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 							return (
 								<>
 									<Tr
-										key={idx}
+										key={'ccp' + idx}
 										width={'100%'}
 										height='56px'
 										position='relative'
@@ -383,7 +385,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 										</Td>
 									</Tr>
 									<Tr
-										key={idx}
+										key={'ccpdropdown' + idx}
 										width={'100%'}
 										height='4rem'
 										position='absolute'
@@ -465,317 +467,29 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 											</Box>
 										)}
 									</Tr>
-									<Tr
-										key={idx}
-										width={'100%'}
-										height='56px'
-										position='relative'
-										cursor='pointer'
-										top={
-											ccpDropdownSelected ?
-												`${ccpUserData.length * 68 + 34}px`
-											:	'0.5rem'
+									<DefiSpringData
+										idx={idx}
+										nextClaimableDate={nextClaimableDate}
+										campaignDetails={campaignDetails}
+										totalStrkRewards={totalStrkRewards}
+										strkRewards={strkRewards}
+										dataRoundwiseAlloc={dataRoundwiseAlloc}
+										ccpDropdownSelected={
+											ccpDropdownSelected
 										}
-										p={0}
-										onClick={() => {
-											setdefiSpringDropdownSelected(
-												!defiSpringDropdownSelected
-											);
-											// if (ccpUserData.length == 0) {
-											// } else {
-											//   setccpDropdownSelected(!ccpDropdownSelected)
-											// }
-										}}>
-										<Td
-											width={'16.6%'}
-											fontSize={'14px'}
-											fontWeight={400}
-											padding={2}
-											textAlign='center'
-											bg={'#676D9A48'}
-											borderRadius='6px 0 0 6px'>
-											<Text
-												width='100%'
-												height='100%'
-												display='flex'
-												alignItems='center'
-												fontWeight='400'
-												fontSize='14px'
-												ml='10'
-												color='#E6EDF3'>
-												<Image
-													src='/activeCampaignsIcon.svg'
-													alt='Picture of the author'
-													width='8'
-													height='8'
-													style={{
-														marginRight: '0.5rem',
-														marginBottom: '0.1rem',
-													}}
-												/>
-												{
-													campaignDetails[idx + 2]
-														?.campaignName
-												}
-											</Text>
-										</Td>
+										ccpUserData={ccpUserData}
+										defiSpringDropdownSelected={
+											defiSpringDropdownSelected
+										}
+										setdefiSpringDropdownSelected={
+											setdefiSpringDropdownSelected
+										}
+										handleClaimStrk={handleClaimStrk}
+										isEpochOpen={isEpochOpen}
+									/>
 
-										<Td
-											width={'16.6%'}
-											fontSize={'14px'}
-											fontWeight={400}
-											padding={2}
-											textAlign='center'
-											bg={'#676D9A48'}>
-											<Text
-												width='100%'
-												height='100%'
-												display='flex'
-												alignItems='center'
-												justifyContent='center'
-												fontWeight='400'
-												fontSize='14px'
-												color='#E6EDF3'>
-												<Tooltip
-													hasArrow
-													label={''}
-													placement='right'
-													rounded='md'
-													boxShadow='dark-lg'
-													bg='#02010F'
-													fontSize={'13px'}
-													fontWeight={'400'}
-													borderRadius={'lg'}
-													padding={'2'}
-													color='#F0F0F5'
-													border='1px solid'
-													borderColor='#23233D'
-													arrowShadowColor='#2B2F35'>
-													<Text>
-														{
-															campaignDetails[
-																idx + 2
-															]?.timeline
-														}
-													</Text>
-												</Tooltip>
-											</Text>
-										</Td>
-
-										<Td
-											width={'16.6%'}
-											fontSize={'14px'}
-											fontWeight={400}
-											padding={2}
-											textAlign='center'
-											bg={'#676D9A48'}>
-											<Text
-												width='100%'
-												height='100%'
-												display='flex'
-												alignItems='center'
-												justifyContent='center'
-												fontWeight='400'
-												fontSize='14px'
-												color='#E6EDF3'>
-												<Tooltip
-													hasArrow
-													label={''}
-													placement='right'
-													rounded='md'
-													boxShadow='dark-lg'
-													bg='#02010F'
-													fontSize={'13px'}
-													fontWeight={'400'}
-													borderRadius={'lg'}
-													padding={'2'}
-													color='#F0F0F5'
-													border='1px solid'
-													borderColor='#23233D'
-													arrowShadowColor='#2B2F35'>
-													<Text>
-														{numberFormatter(
-															totalStrkRewards ?
-																totalStrkRewards
-															:	0
-														)}{' '}
-														STRK
-													</Text>
-												</Tooltip>
-											</Text>
-										</Td>
-
-										<Td
-											width={'16.6%'}
-											fontSize={'14px'}
-											fontWeight={400}
-											padding={2}
-											textAlign='end'
-											bg={'#676D9A48'}
-											borderRadius='0 6px 6px 0'>
-											<Box
-												width='100%'
-												height='100%'
-												display='flex'
-												alignItems='center'
-												justifyContent='end'
-												fontWeight='400'
-												fontSize='14px'
-												color='#E6EDF3'
-												pr='10'
-												gap='1rem'>
-												<Tooltip
-													hasArrow
-													label={
-														'Next Claim on 27 January'
-													}
-													placement='right'
-													rounded='md'
-													boxShadow='dark-lg'
-													bg='#02010F'
-													fontSize={'13px'}
-													fontWeight={'400'}
-													borderRadius={'lg'}
-													padding={'2'}
-													color='#F0F0F5'
-													border='1px solid'
-													borderColor='#23233D'
-													arrowShadowColor='#2B2F35'>
-													<Text
-														textDecoration='underline'
-														cursor='pointer'
-														color={
-															strkRewards <= 0 ?
-																'#3E415C'
-															:	'#F0F0F5'
-														}
-														onClick={() => {
-															if (
-																strkRewards <= 0
-															) {
-															} else {
-																handleClaimStrk();
-															}
-														}}>
-														Claim
-													</Text>
-												</Tooltip>
-												<Box cursor='pointer'>
-													{(
-														defiSpringDropdownSelected
-													) ?
-														<ChevronUpCircle />
-													:	<ChevronDownCircle className='text-[#3E415C] hover:text-white' />
-													}
-												</Box>
-											</Box>
-										</Td>
-									</Tr>
 									<Tr
-										key={idx}
-										width={'100%'}
-										height='4rem'
-										position='absolute'
-										cursor='pointer'
-										pl='1rem'
-										top={
-											ccpDropdownSelected ?
-												defiSpringDropdownSelected ?
-													`${ccpUserData.length * 68 + 64 * 1.7 + 34}px`
-												:	`${ccpUserData.length * 68}px`
-											:	`${2 * 68 * 0.9}px`
-										}>
-										{defiSpringDropdownSelected && (
-											<Box
-												borderRadius='6px'
-												mt='1rem'
-												mr='2rem'
-												ml='2rem'
-												border={'1px solid #676D9A48'}
-												borderBottom={
-													'1px solid #676D9A48'
-												}>
-												{dataRoundwiseAlloc.map(
-													(_: any, idxDefi: any) => (
-														<Box key={idxDefi}>
-															<Box
-																display='flex'
-																// borderTop={
-																//    '1px solid #676D9A48'
-																// }
-																// borderLeft={
-																//    '1px solid #676D9A48'
-																// }
-																// borderRight={
-																//   '1px solid #676D9A48'
-																// }
-																// borderRadius={
-																//   openEpochs.length > 0
-																//     ? isEpochOpen(idxDefi)
-																//       ? '6px'
-																//       : ''
-																//     : '6px'
-																// }
-																justifyContent='space-between'
-																cursor='pointer'
-																padding='24px 48px 24px 48px'
-																color='#F0F0F5'
-																fontSize='14px'
-																fontWeight='400'
-																lineHeight='20px'
-																onClick={() => {}}>
-																<Text>
-																	Round{' '}
-																	{idxDefi +
-																		1}
-																</Text>
-																<Text>
-																	{
-																		datesDefiSpringRounds[
-																			idxDefi
-																		]
-																	}
-																</Text>
-																<Box
-																	display='flex'
-																	gap='1.5rem'>
-																	<Text>
-																		{numberFormatter(
-																			dataRoundwiseAlloc[
-																				idxDefi
-																			]
-																		)}{' '}
-																		STRK
-																		tokens
-																		earned
-																	</Text>
-																</Box>
-															</Box>
-															<Box
-																borderBottom={
-																	(
-																		idxDefi !=
-																		dataRoundwiseAlloc.length -
-																			1
-																	) ?
-																		(
-																			isEpochOpen(
-																				idxDefi
-																			)
-																		) ?
-																			''
-																		:	'1px solid #676D9A48'
-
-																	:	''
-																}></Box>
-														</Box>
-													)
-												)}
-											</Box>
-										)}
-									</Tr>
-									<Tr
-										key={idx}
+										key={'epoch' + idx}
 										width={'100%'}
 										height='4rem'
 										bg={
@@ -991,7 +705,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 									</Tr>
 
 									<Tr
-										key={idx}
+										key={'epochdropdown' + idx}
 										width={'100%'}
 										height='4rem'
 										position='absolute'
@@ -1281,6 +995,7 @@ const UserCampaignData: React.FC<UserCampaignDataProps> = ({
 
 									{!epochDropdownSelected && (
 										<Tr
+											key={'empty-placeholder'}
 											position='absolute'
 											width='100%'
 											height='1px'

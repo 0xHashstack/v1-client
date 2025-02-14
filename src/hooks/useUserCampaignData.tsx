@@ -14,6 +14,8 @@ import { setActiveTransactions } from '@/store/slices/readDataSlice';
 import { usePostHog } from 'posthog-js/react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Text } from '@/components/ui/typography/Text';
+import { defiServices } from '@/services/defi.service';
+import { DefiRound } from '@/types/web3.types';
 
 export const useUserCampaignData = ({
 	leaderBoardData,
@@ -33,13 +35,17 @@ export const useUserCampaignData = ({
 	const [totalStrkRewards, settotalStrkRewards] = useState<any>();
 	const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>();
 	const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>();
-	const [dataRoundwiseAlloc, setdataRoundwiseAlloc] = useState<any>([]);
+	const [dataRoundwiseAlloc, setdataRoundwiseAlloc] = useState<DefiRound[]>(
+		[]
+	);
 	const [toastId, setToastId] = useState<any>();
+	const [nextClaimableDate, setNextClaimableDate] = useState('');
 
 	const dispatch = useDispatch();
 	const { address } = useAccount();
 	const { setstrkAmount, setProof, writeAsyncstrkClaim } = useClaimStrk();
 	const posthog = usePostHog();
+	const [defiLoading, setDefiLoading] = useState(false);
 
 	const handleClaimStrk = async () => {
 		try {
@@ -84,68 +90,62 @@ export const useUserCampaignData = ({
 		}
 	};
 
-	// useEffect(() => {
-	// 	const fetchClaimedBalance = async () => {
-	// 		if (address) {
-	// 			const data: any = await getUserSTRKClaimedAmount(
-	// 				processAddress(address)
-	// 			);
-	// 			const dataStrkRewards31 = await loadStrkReward(31);
-	// 			const dataAmount: any = (dataStrkRewards31 as any)[
-	// 				processAddress(address)
-	// 			];
-	// 			if (dataAmount) {
-	// 				setstrkAmount(dataAmount?.amount);
-	// 				setProof(dataAmount?.proofs);
-	// 				setstrkRewards(
-	// 					parseAmount(String(dataAmount?.amount), 18) - data
-	// 				);
-	// 				settotalStrkRewards(
-	// 					parseAmount(String(dataAmount?.amount), 18)
-	// 				);
-	// 				setstrkClaimedRewards(data);
-	// 			} else {
-	// 				setstrkRewards(0);
-	// 				settotalStrkRewards(0);
-	// 			}
-	// 		}
-	// 	};
-	// 	fetchClaimedBalance();
-	// }, [address]);
+	const fetchStrkClaimedBalance = async (address: string) => {
+		try {
+			const [claimData = 0, rewardsData] = await Promise.all([
+				getUserSTRKClaimedAmount(processAddress(address)),
+				defiServices.getStrkRewardsData({ address }),
+			]);
 
-	// useEffect(() => {
-	// 	if (address) {
-	// 		const fetchRewardsData = async () => {
-	// 			const allRewardsData = await loadStrkRewards(1, 1);
-	// 			const roundwiseAllocations = [];
+			setstrkClaimedRewards(claimData);
+			setProof(rewardsData?.proof);
+			const totalStrkRewards = parseAmount(
+				String(rewardsData?.totalRewards),
+				18
+			);
+			settotalStrkRewards(totalStrkRewards);
+			setstrkAmount(totalStrkRewards - claimData);
+			setNextClaimableDate(rewardsData?.nextClaimEligibleAt!);
+		} catch (error) {
+			setstrkClaimedRewards(0);
+			settotalStrkRewards(0);
+			setstrkAmount(0);
+		}
+	};
 
-	// 			for (let i = 0; i < allRewardsData.length - 1; i++) {
-	// 				const currentRound =
-	// 					allRewardsData[i][processAddress(address)];
-	// 				const nextRound =
-	// 					allRewardsData[i + 1][processAddress(address)];
+	const fetchRoundData = async (address: string) => {
+		try {
+			const { rounds = [] } = await defiServices.getStrkRoundsData({
+				address,
+			});
+			setdataRoundwiseAlloc(
+				rounds.map((round) => ({
+					...round,
+					allocation: parseAmount(String(round.allocation), 18),
+				})) as unknown as DefiRound[]
+			);
+		} catch (error) {
+			setdataRoundwiseAlloc([]);
+		}
+	};
 
-	// 				const currentAmount = parseAmount(
-	// 					currentRound?.amount || '0',
-	// 					18
-	// 				);
-	// 				const nextAmount = parseAmount(
-	// 					nextRound?.amount || '0',
-	// 					18
-	// 				);
+	const proceedWithDefiCalls = async (address: string) => {
+		try {
+			setDefiLoading(true);
+			await Promise.all([
+				fetchStrkClaimedBalance(address),
+				fetchRoundData(address),
+			]);
+		} catch (error) {
+		} finally {
+			setDefiLoading(false);
+		}
+	};
 
-	// 				if (i === 0) {
-	// 					roundwiseAllocations.push(currentAmount);
-	// 				}
-	// 				roundwiseAllocations.push(nextAmount - currentAmount);
-	// 			}
-
-	// 			setdataRoundwiseAlloc([]);
-	// 		};
-
-	// 		fetchRewardsData();
-	// 	}
-	// }, [address]);
+	useEffect(() => {
+		if (!address) return;
+		proceedWithDefiCalls(address);
+	}, [address]);
 
 	useEffect(() => {
 		if (leaderBoardData.length > 0) {
@@ -186,42 +186,6 @@ export const useUserCampaignData = ({
 		setGroupedSnapshots(newGroupedSnapshots);
 	}, [snapshotsData]);
 
-	const datesDefiSpringRounds = [
-		'14 Mar 2024 - 28 Mar 2024',
-		'28 Mar 2024 - 4 Apr 2024',
-		'4 Apr 2024 - 18 Apr 2024',
-		'18 Apr 2024 - 2 May 2024',
-		'2 May 2024 - 16 May 2024',
-		'16 May 2024 - 30 May 2024',
-		'30 May 2024 - 13 June 2024',
-		'13 June 2024 - 27 June 2024',
-		'27 June 2024 - 11 July 2024',
-		'11 July 2024 - 25 July 2024',
-		'25 July 2024 - 1 Aug 2024',
-		'1 Aug 2024 - 8 Aug 2024',
-		'8 Aug 2024 - 18 Aug 2024',
-		'18 Aug 2024 - 25 Aug 2024',
-		'25 Aug 2024 - 1 Sept 2024',
-		'1 Sept 2024 - 8 Sept 2024',
-		'8 Sept 2024 - 15 Sept 2024',
-		'15 Sept 2024 - 22 Sept 2024',
-		'22 Sept 2024 - 29 Sept 2024',
-		'29 Sept 2024 - 6 Oct 2024',
-		'6 Oct 2024 - 13 Oct 2024',
-		'13 Oct 2024 - 20 Oct 2024',
-		'20 Oct 2024 - 27 Oct 2024',
-		'27 Oct 2024 - 2 Nov 2024',
-		'2 Nov 2024 - 10 Nov 2024',
-		'10 Nov 2024 - 17 Nov 2024',
-		'17 Nov 2024 - 24 Nov 2024',
-		'24 Nov 2024 - 1 Dec 2024',
-		'1 Dec 2024 - 8 Dec 2024',
-		'8 Dec 2024 - 15 Dec 2024',
-		'15 Dec 2024 - 22 Dec 2024',
-		'22 Dec 2024 - 29 Dec 2024',
-		'29 Dec 2024 - 5 Jan 2025',
-	];
-
 	return {
 		loading,
 		epochDropdownSelected,
@@ -238,6 +202,7 @@ export const useUserCampaignData = ({
 		toggleEpochSelection,
 		isEpochOpen,
 		openEpochs,
-		datesDefiSpringRounds,
+		nextClaimableDate,
+		defiLoading,
 	};
 };

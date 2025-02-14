@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import '@/styles/globals.scss';
 import RootContextProvider from '@/context/RootContextProvider';
 import { Metadata } from 'next';
-import Script from 'next/script';
 import { Inter } from 'next/font/google';
 import GTMScript from '@/components/analytics/GTMScript';
 

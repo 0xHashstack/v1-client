@@ -153,23 +153,7 @@ const StrkDashboard = () => {
 	const { copyToClipboard } = useCopyToClipboard();
 	const posthog = usePostHog();
 
-	const {
-		round,
-		setRound,
-		strkAmount,
-		setstrkAmount,
-		proof,
-		setProof,
-		datastrkClaim,
-		errorstrkClaim,
-		resetstrkClaim,
-		writestrkClaim,
-		writeAsyncstrkClaim,
-		isErrorstrkClaim,
-		isIdlestrkClaim,
-		isSuccessstrkClaim,
-		statusstrkClaim,
-	} = useClaimStrk();
+	const { setstrkAmount, setProof, writeAsyncstrkClaim } = useClaimStrk();
 
 	useEffect(() => {
 		const fetchClaimedBalance = async () => {
