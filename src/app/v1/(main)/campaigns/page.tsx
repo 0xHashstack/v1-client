@@ -995,11 +995,11 @@ const CampaignContent: NextPage = () => {
 import ClientOnly from '@/components/ClientOnly';
 
 const Campaign: NextPage = () => {
-  return (
-    <ClientOnly>
-      <CampaignContent />
-    </ClientOnly>
-  );
+	return (
+		<ClientOnly>
+			<CampaignContent />
+		</ClientOnly>
+	);
 };
 
 export default Campaign;

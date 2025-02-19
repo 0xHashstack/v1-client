@@ -29,7 +29,6 @@ export const useUserCampaignData = ({
 	const [ccpDropdownSelected, setccpDropdownSelected] = useState(false);
 	const [strkRewards, setstrkRewards] = useState<any>(0);
 	const [totalStrkRewards, settotalStrkRewards] = useState<any>();
-	const [strkRewardsZklend, setstrkRewardsZklend] = useState<any>();
 	const [strkClaimedRewards, setstrkClaimedRewards] = useState<any>();
 	const [dataRoundwiseAlloc, setdataRoundwiseAlloc] = useState<DefiRound[]>(
 		[]
@@ -93,16 +92,18 @@ export const useUserCampaignData = ({
 				defiServices.getStrkRewardsData({ address }),
 			]);
 
-			setstrkClaimedRewards(claimData);
-			setProof(rewardsData?.proof);
 			const totalStrkRewards = parseAmount(
 				String(rewardsData?.totalRewards),
 				18
 			);
+			setstrkAmount(rewardsData?.totalRewards as any);
+			setProof(rewardsData?.proof);
+			setstrkRewards(totalStrkRewards - claimData);
 			settotalStrkRewards(totalStrkRewards);
-			setstrkAmount(totalStrkRewards - claimData);
+			setstrkClaimedRewards(claimData);
 			setNextClaimableDate(rewardsData?.nextClaimEligibleAt!);
 		} catch (error) {
+			setstrkRewards(0);
 			setstrkClaimedRewards(0);
 			settotalStrkRewards(0);
 			setstrkAmount(0);

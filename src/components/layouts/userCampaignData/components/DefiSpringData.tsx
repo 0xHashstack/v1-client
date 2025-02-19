@@ -206,8 +206,7 @@ function DefiSpringData({
 								cursor='pointer'
 								color={strkRewards <= 0 ? '#3E415C' : '#F0F0F5'}
 								onClick={() => {
-									if (strkRewards <= 0) {
-									} else {
+									if (strkRewards > 0) {
 										handleClaimStrk();
 									}
 								}}>
