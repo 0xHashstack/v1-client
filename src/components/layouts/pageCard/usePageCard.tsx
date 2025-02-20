@@ -17,6 +17,7 @@ import {
 	setSignature,
 	selectreferral,
 } from '@/store/slices/readDataSlice';
+import useTransactionHandler from '@/hooks/useTransactionHandler';
 
 interface ExtendedAccountInterface extends AccountInterface {
 	provider?: {
@@ -42,6 +43,8 @@ export const usePageCard = () => {
 	const ref = useSelector(selectreferral);
 	const userType = useSelector(selectUserType);
 	const userDepositsRedux = useSelector(selectUserDeposits);
+
+	useTransactionHandler();
 
 	useEffect(() => {
 		setRender(true);
