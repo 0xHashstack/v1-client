@@ -1,1596 +1,1813 @@
-import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf'
-import useDeposit from '@/Blockchain/hooks/Writes/useDeposit'
-import useWithdrawDeposit from '@/Blockchain/hooks/Writes/useWithdrawDeposit'
-import { NativeToken, Token } from '@/Blockchain/interfaces/interfaces'
-import { getUserLoans } from '@/Blockchain/scripts/Loans'
+import useBalanceOf from '@/Blockchain/hooks/Reads/useBalanceOf';
+import useDeposit from '@/Blockchain/hooks/Writes/useDeposit';
+import useWithdrawDeposit from '@/Blockchain/hooks/Writes/useWithdrawDeposit';
+import { NativeToken, Token } from '@/Blockchain/interfaces/interfaces';
+import { getUserLoans } from '@/Blockchain/scripts/Loans';
 import {
-  tokenAddressMap,
-  tokenDecimalsMap,
-} from '@/Blockchain/utils/addressServices'
+	tokenAddressMap,
+	tokenDecimalsMap,
+} from '@/Blockchain/utils/addressServices';
 import {
-  BNtoNum,
-  parseAmount,
-  weiToEtherNumber,
-} from '@/Blockchain/utils/utils'
-import ArrowUp from '@/assets/icons/arrowup'
-import CancelIcon from '@/assets/icons/cancelIcon'
-import CancelSuccessToast from '@/assets/icons/cancelSuccessToast'
-import DAILogo from '@/assets/icons/coins/dai'
-import ETHLogo from '@/assets/icons/coins/eth'
-import USDCLogo from '@/assets/icons/coins/usdc'
-import USDTLogo from '@/assets/icons/coins/usdt'
-import WarningIcon from '@/assets/icons/coins/warningIcon'
-import DropdownUp from '@/assets/icons/dropdownUpIcon'
-import InfoIcon from '@/assets/icons/infoIcon'
-import SliderPointer from '@/assets/icons/sliderPointer'
-import SliderPointerWhite from '@/assets/icons/sliderPointerWhite'
-import SmallErrorIcon from '@/assets/icons/smallErrorIcon'
-import SuccessTick from '@/assets/icons/successTick'
+	BNtoNum,
+	parseAmount,
+	weiToEtherNumber,
+} from '@/Blockchain/utils/utils';
+import ArrowUp from '@/assets/icons/arrowup';
+import CancelIcon from '@/assets/icons/cancelIcon';
+import CancelSuccessToast from '@/assets/icons/cancelSuccessToast';
+import DAILogo from '@/assets/icons/coins/dai';
+import ETHLogo from '@/assets/icons/coins/eth';
+import USDCLogo from '@/assets/icons/coins/usdc';
+import USDTLogo from '@/assets/icons/coins/usdt';
+import WarningIcon from '@/assets/icons/coins/warningIcon';
+import DropdownUp from '@/assets/icons/dropdownUpIcon';
+import InfoIcon from '@/assets/icons/infoIcon';
+import SliderPointer from '@/assets/icons/sliderPointer';
+import SliderPointerWhite from '@/assets/icons/sliderPointerWhite';
+import SmallErrorIcon from '@/assets/icons/smallErrorIcon';
+import SuccessTick from '@/assets/icons/successTick';
 import {
-  resetModalDropdowns,
-  selectCurrentModalDropdown,
-  selectModalDropDowns,
-  setModalDropdown,
-} from '@/store/slices/dropdownsSlice'
+	resetModalDropdowns,
+	selectCurrentModalDropdown,
+	selectModalDropDowns,
+	setModalDropdown,
+} from '@/store/slices/dropdownsSlice';
 import {
-  selectActiveTransactions,
-  selectAssetWalletBalance,
-  selectInputSupplyAmount,
-  selectStrkAprData,
-  selectTransactionStartedAndModalClosed,
-  selectTransactionStatus,
-  selectWalletBalance,
-  setActiveTransactions,
-  setCoinSelectedSupplyModal,
-  setInputSupplyAmount,
-  setToastTransactionStarted,
-  setTransactionStartedAndModalClosed,
-  setTransactionStatus,
-} from '@/store/slices/userAccountSlice'
+	selectActiveTransactions,
+	selectAssetWalletBalance,
+	selectInputSupplyAmount,
+	selectStrkAprData,
+	selectTransactionStartedAndModalClosed,
+	selectTransactionStatus,
+	selectWalletBalance,
+	setActiveTransactions,
+	setCoinSelectedSupplyModal,
+	setInputSupplyAmount,
+	setToastTransactionStarted,
+	setTransactionStartedAndModalClosed,
+	setTransactionStatus,
+} from '@/store/slices/userAccountSlice';
 import {
-  Box,
-  Button,
-  Card,
-  Checkbox,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  NumberInput,
-  NumberInputField,
-  Portal,
-  Skeleton,
-  Slider,
-  SliderFilledTrack,
-  SliderMark,
-  SliderThumb,
-  SliderTrack,
-  Spinner,
-  Text,
-  Tooltip,
-  background,
-  useDisclosure,
-  useToast,
-} from '@chakra-ui/react'
+	Box,
+	Button,
+	Card,
+	Checkbox,
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalHeader,
+	ModalOverlay,
+	NumberInput,
+	NumberInputField,
+	Portal,
+	Skeleton,
+	Slider,
+	SliderFilledTrack,
+	SliderMark,
+	SliderThumb,
+	SliderTrack,
+	Spinner,
+	Text,
+	Tooltip,
+	background,
+	useDisclosure,
+	useToast,
+} from '@chakra-ui/react';
 import {
-  useAccount,
-  useBalance,
-  useWaitForTransaction,
-} from '@starknet-react/core'
-import React, { useEffect, useState } from 'react'
-import CopyToClipboard from 'react-copy-to-clipboard'
-import { useDispatch, useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
-import { uint256 } from 'starknet'
-import BTCLogo from '../../assets/icons/coins/btc'
-import AnimatedButton from '../uiElements/buttons/AnimationButton'
-import ErrorButton from '../uiElements/buttons/ErrorButton'
-import SuccessButton from '../uiElements/buttons/SuccessButton'
-import ErrorToast from '../uiElements/toasts/ErrorToast'
-import SuccessToast from '../uiElements/toasts/SuccessToast'
+	useAccount,
+	useBalance,
+	useWaitForTransaction,
+} from '@starknet-react/core';
+import React, { useEffect, useState } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { uint256 } from 'starknet';
+import BTCLogo from '../../assets/icons/coins/btc';
+import AnimatedButton from '../uiElements/buttons/AnimationButton';
+import ErrorButton from '../uiElements/buttons/ErrorButton';
+import SuccessButton from '../uiElements/buttons/SuccessButton';
+import ErrorToast from '../uiElements/toasts/ErrorToast';
+import SuccessToast from '../uiElements/toasts/SuccessToast';
 // import { useFetchToastStatus } from "../layouts/toasts";
 import {
-  getFees,
-  getMaximumDepositAmount,
-  getMinimumDepositAmount,
-  getNFTBalance,
-  getNFTMaxAmount,
-} from '@/Blockchain/scripts/Rewards'
-import { get_user_holding_zklend } from '@/Blockchain/scripts/liquidityMigration'
+	getFees,
+	getMaximumDepositAmount,
+	getMinimumDepositAmount,
+	getNFTBalance,
+	getNFTMaxAmount,
+} from '@/Blockchain/scripts/Rewards';
+import { get_user_holding_zklend } from '@/Blockchain/scripts/liquidityMigration';
 import {
-  getDTokenFromAddress,
-  getTokenFromAddress,
-} from '@/Blockchain/stark-constants'
-import STRKLogo from '@/assets/icons/coins/strk'
-import InfoIconBig from '@/assets/icons/infoIconBig'
+	getDTokenFromAddress,
+	getTokenFromAddress,
+} from '@/Blockchain/stark-constants';
+import STRKLogo from '@/assets/icons/coins/strk';
+import InfoIconBig from '@/assets/icons/infoIconBig';
 import {
-  selectFees,
-  selectMaximumDepositAmounts,
-  selectMinimumDepositAmounts,
-  selectNftBalance,
-  selectOraclePrices,
-  selectProtocolStats,
-  selectTransactionRefresh,
-  setMaximumDepositAmounts,
-} from '@/store/slices/readDataSlice'
-import numberFormatter from '@/utils/functions/numberFormatter'
-import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage'
-import posthog from 'posthog-js'
-import TransactionFees from '../../../TransactionFees.json'
+	selectFees,
+	selectMaximumDepositAmounts,
+	selectMinimumDepositAmounts,
+	selectNftBalance,
+	selectOraclePrices,
+	selectProtocolStats,
+	selectTransactionRefresh,
+	setMaximumDepositAmounts,
+} from '@/store/slices/readDataSlice';
+import numberFormatter from '@/utils/functions/numberFormatter';
+import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage';
+import { usePostHog } from 'posthog-js/react';
+import TransactionFees from '../../../TransactionFees.json';
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
-  buttonText,
-  coin,
-  backGroundOverLay,
-  currentSupplyAPR,
-  setCurrentSupplyAPR,
-  supplyAPRs,
+	buttonText,
+	coin,
+	backGroundOverLay,
+	currentSupplyAPR,
+	setCurrentSupplyAPR,
+	supplyAPRs,
 
-  ...restProps
+	...restProps
 }: any) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  // const toastHandler = () => {
-  //  //console.log("toast called");
-  // };
-  const [currentTransactionStatus, setCurrentTransactionStatus] = useState('')
-  const [transactionStarted, setTransactionStarted] = useState(false)
-  const [collateralMarketHoverIndex, setcollateralMarketHoverIndex] = useState<Number>(-1)
-  const [toastId, setToastId] = useState<any>()
-  const [uniqueID, setUniqueID] = useState(0)
-  const {
-    depositAmount,
-    setDepositAmount,
-    asset,
-    setAsset,
-    dataDeposit,
-    errorDeposit,
-    resetDeposit,
-    // depositTransHash,
-    // setDepositTransHash,
-    writeAsyncDeposit,
-    writeAsyncDepositStake,
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	// const toastHandler = () => {
+	//  //console.log("toast called");
+	// };
+	const [currentTransactionStatus, setCurrentTransactionStatus] =
+		useState('');
+	const [transactionStarted, setTransactionStarted] = useState(false);
+	const [collateralMarketHoverIndex, setcollateralMarketHoverIndex] =
+		useState<Number>(-1);
+	const [toastId, setToastId] = useState<any>();
+	const [uniqueID, setUniqueID] = useState(0);
+	const {
+		depositAmount,
+		setDepositAmount,
+		asset,
+		setAsset,
+		dataDeposit,
+		errorDeposit,
+		resetDeposit,
+		// depositTransHash,
+		// setDepositTransHash,
+		writeAsyncDeposit,
+		writeAsyncDepositStake,
 
-    isErrorDeposit,
-    isIdleDeposit,
-    isSuccessDeposit,
-    statusDeposit,
-  } = useDeposit()
-  useEffect(() => {
-    setAsset(coin ? coin?.name : 'BTC')
-  }, [coin])
+		isErrorDeposit,
+		isIdleDeposit,
+		isSuccessDeposit,
+		statusDeposit,
+	} = useDeposit();
+	useEffect(() => {
+		setAsset(coin ? coin?.name : 'BTC');
+	}, [coin]);
 
-  const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
-    coin ? coin?.name : 'BTC'
-  )
-  ////console.log("wallet balance",typeof Number(walletBalance))
-  ////console.log("deposit amount", typeof depositAmount);
-  const [inputAmount, setinputAmount] = useState<number>(0)
-  const [sliderValue, setSliderValue] = useState(0)
-  const [buttonId, setButtonId] = useState(0)
+	const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
+		coin ? coin?.name : 'BTC'
+	);
+	////console.log("wallet balance",typeof Number(walletBalance))
+	////console.log("deposit amount", typeof depositAmount);
+	const [inputAmount, setinputAmount] = useState<number>(0);
+	const [sliderValue, setSliderValue] = useState(0);
+	const [buttonId, setButtonId] = useState(0);
 
-  const coinIndex: any = [
-    { token: 'USDT', idx: 1 },
-    { token: 'USDC', idx: 2 },
-    { token: 'BTC', idx: 3 },
-    { token: 'ETH', idx: 4 },
-    { token: 'DAI', idx: 5 },
-    { token: 'STRK', idx: 0 },
-  ]
+	const coinIndex: any = [
+		{ token: 'USDT', idx: 1 },
+		{ token: 'USDC', idx: 2 },
+		{ token: 'BTC', idx: 3 },
+		{ token: 'ETH', idx: 4 },
+		{ token: 'DAI', idx: 5 },
+		{ token: 'STRK', idx: 0 },
+	];
 
-  // useEffect(() => {
-  //   // setCurrentSupplyAPR(
-  //   //   coinIndex.map(({ curr }: any) => curr?.token === currentSelectedCoin)?.idx
-  //   // );
-  //   ////console.log("currentSupplyAPR", currentSupplyAPR);
-  // }, [currentSupplyAPR]);
+	// useEffect(() => {
+	//   // setCurrentSupplyAPR(
+	//   //   coinIndex.map(({ curr }: any) => curr?.token === currentSelectedCoin)?.idx
+	//   // );
+	//   ////console.log("currentSupplyAPR", currentSupplyAPR);
+	// }, [currentSupplyAPR]);
 
-  const getUniqueId = () => uniqueID
+	const getUniqueId = () => uniqueID;
 
-  interface assetB {
-    USDT: any
-    USDC: any
-    BTC: any
-    ETH: any
-    DAI: any
-  }
-  const walletBalances: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap['USDT']),
-    USDC: useBalanceOf(tokenAddressMap['USDC']),
-    BTC: useBalanceOf(tokenAddressMap['BTC']),
-    ETH: useBalanceOf(tokenAddressMap['ETH']),
-    DAI: useBalanceOf(tokenAddressMap['DAI']),
-    STRK: useBalanceOf(tokenAddressMap['STRK']),
-  }
+	interface assetB {
+		USDT: any;
+		USDC: any;
+		BTC: any;
+		ETH: any;
+		DAI: any;
+	}
+	const walletBalances: assetB | any = {
+		USDT: useBalanceOf(tokenAddressMap['USDT']),
+		USDC: useBalanceOf(tokenAddressMap['USDC']),
+		BTC: useBalanceOf(tokenAddressMap['BTC']),
+		ETH: useBalanceOf(tokenAddressMap['ETH']),
+		DAI: useBalanceOf(tokenAddressMap['DAI']),
+		STRK: useBalanceOf(tokenAddressMap['STRK']),
+	};
 
-  const assetBalance: assetB | any = {
-    USDT: useBalanceOf(tokenAddressMap['USDT']),
-    USDC: useBalanceOf(tokenAddressMap['USDC']),
-    BTC: useBalanceOf(tokenAddressMap['BTC']),
-    ETH: useBalanceOf(tokenAddressMap['ETH']),
-    DAI: useBalanceOf(tokenAddressMap['DAI']),
-    STRK: useBalanceOf(tokenAddressMap['STRK']),
-  }
-  ////console.log(walletBalances,"wallet balances in supply modal")
+	const assetBalance: assetB | any = {
+		USDT: useBalanceOf(tokenAddressMap['USDT']),
+		USDC: useBalanceOf(tokenAddressMap['USDC']),
+		BTC: useBalanceOf(tokenAddressMap['BTC']),
+		ETH: useBalanceOf(tokenAddressMap['ETH']),
+		DAI: useBalanceOf(tokenAddressMap['DAI']),
+		STRK: useBalanceOf(tokenAddressMap['STRK']),
+	};
+	////console.log(walletBalances,"wallet balances in supply modal")
 
-  // const transactionStarted = useSelector(selectTransactionStarted);
-  // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
+	// const transactionStarted = useSelector(selectTransactionStarted);
+	// const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
 
-  // const [transactionStarted, setTransactionStarted] = useState(false);
-  // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
-  ////console.log(Number(
-  //   BNtoNum(
-  //     uint256.uint256ToBN(
-  //       walletBalances["ETH"]?.dataBalanceOf?.balance
-  //     ),tokenDecimalsMap["ETH"]
-  //   )
-  // ))
+	// const [transactionStarted, setTransactionStarted] = useState(false);
+	// const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
+	////console.log(Number(
+	//   BNtoNum(
+	//     uint256.uint256ToBN(
+	//       walletBalances["ETH"]?.dataBalanceOf?.balance
+	//     ),tokenDecimalsMap["ETH"]
+	//   )
+	// ))
 
-  const dispatch = useDispatch()
-  const modalDropdowns = useSelector(selectModalDropDowns)
+	const dispatch = useDispatch();
+	const modalDropdowns = useSelector(selectModalDropDowns);
 
-  // const walletBalances = useSelector(selectAssetWalletBalance);
-  // const transactionRefresh=useSelector(selectTransactionRefresh);
-  const strkData = useSelector(selectStrkAprData)
-  const oraclePrices = useSelector(selectOraclePrices)
-  const fees = useSelector(selectFees)
-  const [walletBalance, setwalletBalance] = useState(
-    walletBalances[coin?.name]?.statusBalanceOf === 'success'
-      ? parseAmount(
-          String(
-            uint256.uint256ToBN(
-              walletBalances[coin?.name]?.dataBalanceOf?.balance
-            )
-          ),
-          tokenDecimalsMap[coin?.name]
-        )
-      : 0
-  )
-  const getBoostedApr = (coin: any) => {
-    if (strkData == null) {
-      return 0
-    } else {
-      if (strkData?.[coin]) {
-        if (oraclePrices == null) {
-          return 0
-        } else {
-          let value = strkData?.[coin]
-            ? (365 *
-                100 *
-                strkData?.[coin][strkData[coin]?.length - 1]?.allocation *
-                0.7 *
-                oraclePrices?.find((curr: any) => curr.name === 'STRK')
-                  ?.price) /
-              strkData?.[coin][strkData[coin].length - 1]?.supply_usd
-            : 0
-          return value
-        }
-      } else {
-        return 0
-      }
-    }
-  }
+	// const walletBalances = useSelector(selectAssetWalletBalance);
+	// const transactionRefresh=useSelector(selectTransactionRefresh);
+	const strkData = useSelector(selectStrkAprData);
+	const oraclePrices = useSelector(selectOraclePrices);
+	const fees = useSelector(selectFees);
+	const posthog = usePostHog();
+	const [walletBalance, setwalletBalance] = useState(
+		walletBalances[coin?.name]?.statusBalanceOf === 'success' ?
+			parseAmount(
+				String(
+					uint256.uint256ToBN(
+						walletBalances[coin?.name]?.dataBalanceOf?.balance
+					)
+				),
+				tokenDecimalsMap[coin?.name]
+			)
+		:	0
+	);
+	const getBoostedApr = (coin: any) => {
+		if (strkData == null) {
+			return 0;
+		} else {
+			if (strkData?.[coin]) {
+				if (oraclePrices == null) {
+					return 0;
+				} else {
+					let value =
+						strkData?.[coin] ?
+							(365 *
+								100 *
+								strkData?.[coin][strkData[coin]?.length - 1]
+									?.allocation *
+								0.7 *
+								oraclePrices?.find(
+									(curr: any) => curr.name === 'STRK'
+								)?.price) /
+							strkData?.[coin][strkData[coin].length - 1]
+								?.supply_usd
+						:	0;
+					return value;
+				}
+			} else {
+				return 0;
+			}
+		}
+	};
 
-  // useEffect(()=>{
-  //  //console.log(
-  //     Number(parseAmount(
-  //       uint256.uint256ToBN(
-  //         walletBalances[coin?.name]?.dataBalanceOf?.balance
-  //       ),
-  //       tokenDecimalsMap[coin?.name]
-  //     )),currentSelectedCoin,"coin bug"
-  //   );
-  // },[currentSelectedCoin,coin])
-  useEffect(() => {
-    setwalletBalance(
-      walletBalances[coin?.name]?.statusBalanceOf === 'success'
-        ? parseAmount(
-            String(
-              uint256.uint256ToBN(
-                walletBalances[coin?.name]?.dataBalanceOf?.balance
-              )
-            ),
-            tokenDecimalsMap[coin?.name]
-          )
-        : 0
-    )
-    ////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
-  }, [walletBalances[coin?.name]?.statusBalanceOf])
-  // useEffect(()=>{
+	// useEffect(()=>{
+	//  //console.log(
+	//     Number(parseAmount(
+	//       uint256.uint256ToBN(
+	//         walletBalances[coin?.name]?.dataBalanceOf?.balance
+	//       ),
+	//       tokenDecimalsMap[coin?.name]
+	//     )),currentSelectedCoin,"coin bug"
+	//   );
+	// },[currentSelectedCoin,coin])
+	useEffect(() => {
+		setwalletBalance(
+			walletBalances[coin?.name]?.statusBalanceOf === 'success' ?
+				parseAmount(
+					String(
+						uint256.uint256ToBN(
+							walletBalances[coin?.name]?.dataBalanceOf?.balance
+						)
+					),
+					tokenDecimalsMap[coin?.name]
+				)
+			:	0
+		);
+		////console.log("supply modal status wallet balance",walletBalances[coin?.name]?.statusBalanceOf)
+	}, [walletBalances[coin?.name]?.statusBalanceOf]);
+	// useEffect(()=>{
 
-  // },[currentSelectedCoin])
-  ////console.log(walletBalances['BTC']);
-  // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
-  // const [transactionFailed, setTransactionFailed] = useState(false);
+	// },[currentSelectedCoin])
+	////console.log(walletBalances['BTC']);
+	// const walletBalance = JSON.parse(useSelector(selectWalletBalance))
+	// const [transactionFailed, setTransactionFailed] = useState(false);
 
-  // const showToast = () => {};
+	// const showToast = () => {};
 
-  // // const recieptData = useWaitForTransaction({
-  // //   hash: depositTransHash,
-  // //   watch: true,
-  // //   onPending: showToast,
-  // // });
+	// // const recieptData = useWaitForTransaction({
+	// //   hash: depositTransHash,
+	// //   watch: true,
+	// //   onPending: showToast,
+	// // });
 
-  // // const showToast = () => {
+	// // const showToast = () => {
 
-  // // }
-  // const { address: account } = useAccount();
-  const [ischecked, setIsChecked] = useState(false)
-  const [depositTransHash, setDepositTransHash] = useState('')
-  const [isToastDisplayed, setToastDisplayed] = useState(false)
+	// // }
+	// const { address: account } = useAccount();
+	const [ischecked, setIsChecked] = useState(false);
+	const [depositTransHash, setDepositTransHash] = useState('');
+	const [isToastDisplayed, setToastDisplayed] = useState(false);
 
-  let activeTransactions = useSelector(selectActiveTransactions)
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      let data: any = localStorage.getItem('transactionCheck')
-      let values = data.split(",");
-      let lastValue = values[values.length - 1];
-      if (String(activeTransactions[activeTransactions.length - 1]?.uniqueID)===lastValue.replace(/\[|\]/g, '')) {
-        if (activeTransactions[activeTransactions.length - 1]?.transaction_hash === '') {
-          resetStates();
-          onClose();
-        }
-      }
-    }, 7000); // 5000 milliseconds = 5 seconds
-  
-    return () => clearTimeout(timeoutId); // Cleanup function to clear the timeout when component unmounts or when activeTransactions changes
-  }, [activeTransactions]);
-  // useEffect(() => {
-  //   if (activeTransactions)
-  //    //console.log("activeTransactions ", activeTransactions);
-  // }, [activeTransactions]);
-  // const [toastId, setToastId] = useState<any>();
-  // const recieptData = useWaitForTransaction({
-  //   hash: depositTransHash,
-  //   watch: true,
-  //   onReceived: () => {
-  //    //console.log("trans received");
-  //   },
-  //   onPending: () => {
-  //     setCurrentTransactionStatus(true);
-  //     toast.dismiss(toastId);
-  //    //console.log("trans pending");
-  //     if (isToastDisplayed == false) {
-  //       toast.success(
-  //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-  //         {
-  //           position: toast.POSITION.BOTTOM_RIGHT,
-  //         }
-  //       );
-  //       setToastDisplayed(true);
-  //     }
-  //   },
-  //   onRejected(transaction) {
-  //     toast.dismiss(toastId);
-  //    //console.log("treans rejected", transaction);
-  //   },
-  //   onAcceptedOnL1: () => {
-  //     setCurrentTransactionStatus(true);
-  //    //console.log("trans onAcceptedOnL1");
-  //   },
-  //   onAcceptedOnL2(transaction) {
-  //     setCurrentTransactionStatus(true);
-  //     if (!isToastDisplayed) {
-  //       toast.success(
-  //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-  //         {
-  //           position: toast.POSITION.BOTTOM_RIGHT,
-  //         }
-  //       );
-  //       setToastDisplayed(true);
-  //     }
-  //    //console.log("trans onAcceptedOnL2 - ", transaction);
-  //   },
-  // });
-  // useEffect(() => {
-  //   // const status = recieptData?.data?.status;
-  //  //console.log("trans supply modal ", recieptData?.data?.status);
-  //   if (recieptData?.data?.status == "PENDING") {
-  //     setCurrentTransactionStatus(true);
-  //     toast.dismiss(toastId);
-  //    //console.log("trans pending - - -");
-  //     if (isToastDisplayed == false) {
-  //       toast.success(
-  //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-  //         {
-  //           position: toast.POSITION.BOTTOM_RIGHT,
-  //         }
-  //       );
-  //       setToastDisplayed(true);
-  //     }
-  //   } else if (recieptData?.data?.status == "RECEIVED") {
-  //    //console.log("trans received - - -");
-  //   } else if (recieptData?.data?.status == "REJECTED") {
-  //     toast.dismiss(toastId);
-  //    //console.log("treans rejected - - -");
-  //   } else if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-  //     setCurrentTransactionStatus(true);
-  //     if (!isToastDisplayed) {
-  //       toast.success(
-  //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-  //         {
-  //           position: toast.POSITION.BOTTOM_RIGHT,
-  //         }
-  //       );
-  //       setToastDisplayed(true);
-  //     }
-  //    //console.log("trans onAcceptedOnL2 - - -");
-  //   } else if (status == "ACCEPTED_ON_L1") {
-  //     setCurrentTransactionStatus(true);
-  //    //console.log("trans onAcceptedOnL1 - - -");
-  //   }
-  // }, [recieptData?.data?.status]);
-  // setInterval(() =>//console.log("recieptData", recieptData), 5000);
+	let activeTransactions = useSelector(selectActiveTransactions);
+	useEffect(() => {
+		const timeoutId = setTimeout(() => {
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
+			let values = data.split(',');
+			let lastValue = values[values.length - 1];
+			if (
+				String(
+					activeTransactions[activeTransactions.length - 1]?.uniqueID
+				) === lastValue.replace(/\[|\]/g, '')
+			) {
+				if (
+					activeTransactions[activeTransactions.length - 1]
+						?.transaction_hash === ''
+				) {
+					resetStates();
+					onClose();
+				}
+			}
+		}, 7000); // 5000 milliseconds = 5 seconds
 
-  // const recieptData2 = useWaitForTransaction({
-  //   hash: depositTransHash,
-  //   watch: true,
-  //   onReceived: () => {
-  //    //console.log("trans received");
-  //   },
-  //   onPending: () => {
-  //     setCurrentTransactionStatus(true);
-  //    //console.log("trans pending");
-  //     if (isToastDisplayed==false) {
-  //       toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
-  //         position: toast.POSITION.BOTTOM_RIGHT
-  //       });
-  //       setToastDisplayed(true);
-  //     }
-  //   },
-  //   onRejected(transaction) {
-  //    //console.log("treans rejected");
-  //   },
-  //   onAcceptedOnL1: () => {
-  //     setCurrentTransactionStatus(true);
-  //    //console.log("trans onAcceptedOnL1");
-  //   },
-  //   onAcceptedOnL2(transaction) {
-  //     setCurrentTransactionStatus(true);
-  //     if (!isToastDisplayed) {
-  //       toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
-  //         position: toast.POSITION.BOTTOM_RIGHT
-  //       });
-  //       setToastDisplayed(true);
-  //     }
-  //    //console.log("trans onAcceptedOnL2 - ", transaction);
-  //   },
-  // });
+		return () => clearTimeout(timeoutId); // Cleanup function to clear the timeout when component unmounts or when activeTransactions changes
+	}, [activeTransactions]);
+	// useEffect(() => {
+	//   if (activeTransactions)
+	//    //console.log("activeTransactions ", activeTransactions);
+	// }, [activeTransactions]);
+	// const [toastId, setToastId] = useState<any>();
+	// const recieptData = useWaitForTransaction({
+	//   hash: depositTransHash,
+	//   watch: true,
+	//   onReceived: () => {
+	//    //console.log("trans received");
+	//   },
+	//   onPending: () => {
+	//     setCurrentTransactionStatus(true);
+	//     toast.dismiss(toastId);
+	//    //console.log("trans pending");
+	//     if (isToastDisplayed == false) {
+	//       toast.success(
+	//         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+	//         {
+	//           position: toast.POSITION.BOTTOM_RIGHT,
+	//         }
+	//       );
+	//       setToastDisplayed(true);
+	//     }
+	//   },
+	//   onRejected(transaction) {
+	//     toast.dismiss(toastId);
+	//    //console.log("treans rejected", transaction);
+	//   },
+	//   onAcceptedOnL1: () => {
+	//     setCurrentTransactionStatus(true);
+	//    //console.log("trans onAcceptedOnL1");
+	//   },
+	//   onAcceptedOnL2(transaction) {
+	//     setCurrentTransactionStatus(true);
+	//     if (!isToastDisplayed) {
+	//       toast.success(
+	//         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+	//         {
+	//           position: toast.POSITION.BOTTOM_RIGHT,
+	//         }
+	//       );
+	//       setToastDisplayed(true);
+	//     }
+	//    //console.log("trans onAcceptedOnL2 - ", transaction);
+	//   },
+	// });
+	// useEffect(() => {
+	//   // const status = recieptData?.data?.status;
+	//  //console.log("trans supply modal ", recieptData?.data?.status);
+	//   if (recieptData?.data?.status == "PENDING") {
+	//     setCurrentTransactionStatus(true);
+	//     toast.dismiss(toastId);
+	//    //console.log("trans pending - - -");
+	//     if (isToastDisplayed == false) {
+	//       toast.success(
+	//         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+	//         {
+	//           position: toast.POSITION.BOTTOM_RIGHT,
+	//         }
+	//       );
+	//       setToastDisplayed(true);
+	//     }
+	//   } else if (recieptData?.data?.status == "RECEIVED") {
+	//    //console.log("trans received - - -");
+	//   } else if (recieptData?.data?.status == "REJECTED") {
+	//     toast.dismiss(toastId);
+	//    //console.log("treans rejected - - -");
+	//   } else if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+	//     setCurrentTransactionStatus(true);
+	//     if (!isToastDisplayed) {
+	//       toast.success(
+	//         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+	//         {
+	//           position: toast.POSITION.BOTTOM_RIGHT,
+	//         }
+	//       );
+	//       setToastDisplayed(true);
+	//     }
+	//    //console.log("trans onAcceptedOnL2 - - -");
+	//   } else if (status == "ACCEPTED_ON_L1") {
+	//     setCurrentTransactionStatus(true);
+	//    //console.log("trans onAcceptedOnL1 - - -");
+	//   }
+	// }, [recieptData?.data?.status]);
+	// setInterval(() =>//console.log("recieptData", recieptData), 5000);
 
-  const [failureToastDisplayed, setFailureToastDisplayed] = useState(false)
-  // const recieptData = useFetchToastStatus({
-  //   hash: depositTransHash,
-  //   watch: true,
-  //   onReceived: () => {
-  //    //console.log("trans received");
-  //   },
-  //   onPending: () => {
-  //     setCurrentTransactionStatus("success");
-  //     toast.dismiss(toastId);
-  //    //console.log("trans pending");
-  //     if (isToastDisplayed == false) {
-  //       toast.success(
-  //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-  //         {
-  //           position: toast.POSITION.BOTTOM_RIGHT,
-  //         }
-  //       );
-  //       setToastDisplayed(true);
-  //     }
-  //   },
-  //   onRejected(transaction: any) {
-  //     setCurrentTransactionStatus("Failed");
-  //     toast.dismiss(toastId);
-  //     if (!failureToastDisplayed) {
-  //      //console.log("treans rejected", transaction);
-  //       dispatch(setTransactionStatus("failed"));
-  //       const toastContent = (
-  //         <div>
-  //           Transaction failed{" "}
-  //           <CopyToClipboard text={"Transaction failed"}>
-  //             <Text as="u">copy error!</Text>
-  //           </CopyToClipboard>
-  //         </div>
-  //       );
-  //       setFailureToastDisplayed(true);
-  //       toast.error(toastContent, {
-  //         position: toast.POSITION.BOTTOM_RIGHT,
-  //         autoClose: false,
-  //       });
-  //     }
-  //   },
-  //   onAcceptedOnL1: () => {
-  //     setCurrentTransactionStatus("success");
-  //    //console.log("trans onAcceptedOnL1");
-  //   },
-  //   onAcceptedOnL2(transaction: any) {
-  //     toast.dismiss(toastId);
-  //     setCurrentTransactionStatus("success");
-  //     if (!isToastDisplayed) {
-  //       toast.success(
-  //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-  //         {
-  //           position: toast.POSITION.BOTTOM_RIGHT,
-  //         }
-  //       );
-  //       setToastDisplayed(true);
-  //     }
-  //    //console.log("trans onAcceptedOnL2 - ", transaction);
-  //   },
-  // });
-  // const { hashes, addTransaction } = useTransactionManager();
-  // const transactionStartedAndModalClosed=useSelector(selectTransactionStartedAndModalClosed);
-  let protocolStats = useSelector(selectProtocolStats)
-  const handleTransaction = async () => {
-    try {
-      if (ischecked) {
-        posthog.capture('Action Selected', {
-          Action: 'Deposit and Stake',
-        })
-        const depositStake = await writeAsyncDepositStake()
-        if (depositStake?.transaction_hash) {
-          const toastid = toast.info(
-            // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
-            `Transaction pending`,
-            {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: false,
-            }
-          )
-          setToastId(toastid)
-          if (!activeTransactions) {
-            activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
-          } else if (
-            Object.isFrozen(activeTransactions) ||
-            Object.isSealed(activeTransactions)
-          ) {
-            // Check if activeTransactions is frozen or sealed
-            activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
-          }
-          const uqID = getUniqueId()
-          const trans_data = {
-            transaction_hash: depositStake?.transaction_hash.toString(),
-            message: `Successfully staked ${inputAmount} ${currentSelectedCoin}`,
-            // message: `Transaction successful`,
-            toastId: toastid,
-            setCurrentTransactionStatus: setCurrentTransactionStatus,
-            uniqueID: uqID,
-          }
-          // addTransaction({ hash: deposit?.transaction_hash });
-          activeTransactions?.push(trans_data)
+	// const recieptData2 = useWaitForTransaction({
+	//   hash: depositTransHash,
+	//   watch: true,
+	//   onReceived: () => {
+	//    //console.log("trans received");
+	//   },
+	//   onPending: () => {
+	//     setCurrentTransactionStatus(true);
+	//    //console.log("trans pending");
+	//     if (isToastDisplayed==false) {
+	//       toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
+	//         position: toast.POSITION.BOTTOM_RIGHT
+	//       });
+	//       setToastDisplayed(true);
+	//     }
+	//   },
+	//   onRejected(transaction) {
+	//    //console.log("treans rejected");
+	//   },
+	//   onAcceptedOnL1: () => {
+	//     setCurrentTransactionStatus(true);
+	//    //console.log("trans onAcceptedOnL1");
+	//   },
+	//   onAcceptedOnL2(transaction) {
+	//     setCurrentTransactionStatus(true);
+	//     if (!isToastDisplayed) {
+	//       toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
+	//         position: toast.POSITION.BOTTOM_RIGHT
+	//       });
+	//       setToastDisplayed(true);
+	//     }
+	//    //console.log("trans onAcceptedOnL2 - ", transaction);
+	//   },
+	// });
 
-          dispatch(setActiveTransactions(activeTransactions))
-        }
-        posthog.capture('Supply Market Status', {
-          Status: 'Success Deposit and Stake',
-          Token: currentSelectedCoin,
-          TokenAmount: inputAmount,
-        })
-        setDepositTransHash(depositStake?.transaction_hash)
-        const uqID = getUniqueId()
-        let data: any = localStorage.getItem('transactionCheck')
-        data = data ? JSON.parse(data) : []
-        if (data && data.includes(uqID)) {
-          dispatch(setTransactionStatus('success'))
-        }
-        ////console.log("Status transaction", deposit);
-        //console.log(isSuccessDeposit, "success ?");
-      } else {
-        posthog.capture('Action Selected', {
-          Action: 'Deposit',
-        })
-        const deposit = await writeAsyncDeposit()
-        if (deposit?.transaction_hash) {
-          const toastid = toast.info(
-            // `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
-            `Transaction pending`,
-            {
-              position: toast.POSITION.BOTTOM_RIGHT,
-              autoClose: false,
-            }
-          )
-          setToastId(toastid)
-          if (!activeTransactions) {
-            activeTransactions = [] // Initialize activeTransactions as an empty array if it's not defined
-          } else if (
-            Object.isFrozen(activeTransactions) ||
-            Object.isSealed(activeTransactions)
-          ) {
-            // Check if activeTransactions is frozen or sealed
-            activeTransactions = activeTransactions.slice() // Create a shallow copy of the frozen/sealed array
-          }
-          const uqID = getUniqueId()
-          const trans_data = {
-            transaction_hash: deposit?.transaction_hash.toString(),
-            message: `Successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-            // message: `Transaction successful`,
-            toastId: toastid,
-            setCurrentTransactionStatus: setCurrentTransactionStatus,
-            uniqueID: uqID,
-          }
-          // addTransaction({ hash: deposit?.transaction_hash });
-          activeTransactions?.push(trans_data)
+	const [failureToastDisplayed, setFailureToastDisplayed] = useState(false);
+	// const recieptData = useFetchToastStatus({
+	//   hash: depositTransHash,
+	//   watch: true,
+	//   onReceived: () => {
+	//    //console.log("trans received");
+	//   },
+	//   onPending: () => {
+	//     setCurrentTransactionStatus("success");
+	//     toast.dismiss(toastId);
+	//    //console.log("trans pending");
+	//     if (isToastDisplayed == false) {
+	//       toast.success(
+	//         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+	//         {
+	//           position: toast.POSITION.BOTTOM_RIGHT,
+	//         }
+	//       );
+	//       setToastDisplayed(true);
+	//     }
+	//   },
+	//   onRejected(transaction: any) {
+	//     setCurrentTransactionStatus("Failed");
+	//     toast.dismiss(toastId);
+	//     if (!failureToastDisplayed) {
+	//      //console.log("treans rejected", transaction);
+	//       dispatch(setTransactionStatus("failed"));
+	//       const toastContent = (
+	//         <div>
+	//           Transaction failed{" "}
+	//           <CopyToClipboard text={"Transaction failed"}>
+	//             <Text as="u">copy error!</Text>
+	//           </CopyToClipboard>
+	//         </div>
+	//       );
+	//       setFailureToastDisplayed(true);
+	//       toast.error(toastContent, {
+	//         position: toast.POSITION.BOTTOM_RIGHT,
+	//         autoClose: false,
+	//       });
+	//     }
+	//   },
+	//   onAcceptedOnL1: () => {
+	//     setCurrentTransactionStatus("success");
+	//    //console.log("trans onAcceptedOnL1");
+	//   },
+	//   onAcceptedOnL2(transaction: any) {
+	//     toast.dismiss(toastId);
+	//     setCurrentTransactionStatus("success");
+	//     if (!isToastDisplayed) {
+	//       toast.success(
+	//         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+	//         {
+	//           position: toast.POSITION.BOTTOM_RIGHT,
+	//         }
+	//       );
+	//       setToastDisplayed(true);
+	//     }
+	//    //console.log("trans onAcceptedOnL2 - ", transaction);
+	//   },
+	// });
+	// const { hashes, addTransaction } = useTransactionManager();
+	// const transactionStartedAndModalClosed=useSelector(selectTransactionStartedAndModalClosed);
+	let protocolStats = useSelector(selectProtocolStats);
+	const handleTransaction = async () => {
+		try {
+			if (ischecked) {
+				posthog.capture('Action Selected', {
+					Action: 'Deposit and Stake',
+				});
+				const depositStake = await writeAsyncDepositStake();
+				if (depositStake?.transaction_hash) {
+					const toastid = toast.info(
+						// `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+						`Transaction pending`,
+						{
+							position: toast.POSITION.BOTTOM_RIGHT,
+							autoClose: false,
+						}
+					);
+					setToastId(toastid);
+					if (!activeTransactions) {
+						activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+					} else if (
+						Object.isFrozen(activeTransactions) ||
+						Object.isSealed(activeTransactions)
+					) {
+						// Check if activeTransactions is frozen or sealed
+						activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+					}
+					const uqID = getUniqueId();
+					const trans_data = {
+						transaction_hash:
+							depositStake?.transaction_hash.toString(),
+						message: `Successfully staked ${inputAmount} ${currentSelectedCoin}`,
+						// message: `Transaction successful`,
+						toastId: toastid,
+						setCurrentTransactionStatus:
+							setCurrentTransactionStatus,
+						uniqueID: uqID,
+					};
+					// addTransaction({ hash: deposit?.transaction_hash });
+					activeTransactions?.push(trans_data);
 
-          dispatch(setActiveTransactions(activeTransactions))
-        }
-        // const deposit = await writeAsyncDepositStake();
-        posthog.capture('Supply Market Status', {
-          Status: 'Success',
-          Token: currentSelectedCoin,
-          TokenAmount: inputAmount,
-        })
-        setDepositTransHash(deposit?.transaction_hash)
-        // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-        // }
-        const uqID = getUniqueId()
-        let data: any = localStorage.getItem('transactionCheck')
-        data = data ? JSON.parse(data) : []
-        if (data && data.includes(uqID)) {
-          dispatch(setTransactionStatus('success'))
-        }
-        ////console.log("Status transaction", deposit);
-        //console.log(isSuccessDeposit, "success ?");
-      }
-    } catch (err: any) {
-      // setTransactionFailed(true);
-      posthog.capture('Supply Market Status', {
-        Status: 'Failure',
-      })
-      const uqID = getUniqueId()
-      let data: any = localStorage.getItem('transactionCheck')
-      data = data ? JSON.parse(data) : []
-      if (data && data.includes(uqID)) {
-        setTransactionStarted(false)
-        // dispatch(setTransactionStatus("failed"));
-      }
-      //console.log(uqID, "transaction check supply transaction failed : ", err);
+					dispatch(setActiveTransactions(activeTransactions));
+				}
+				posthog.capture('Supply Market Status', {
+					Status: 'Success Deposit and Stake',
+					Token: currentSelectedCoin,
+					TokenAmount: inputAmount,
+				});
+				setDepositTransHash(depositStake?.transaction_hash);
+				const uqID = getUniqueId();
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
+				data = data ? JSON.parse(data) : [];
+				if (data && data.includes(uqID)) {
+					dispatch(setTransactionStatus('success'));
+				}
+				////console.log("Status transaction", deposit);
+				//console.log(isSuccessDeposit, "success ?");
+			} else {
+				posthog.capture('Action Selected', {
+					Action: 'Deposit',
+				});
+				const deposit = await writeAsyncDeposit();
+				if (deposit?.transaction_hash) {
+					const toastid = toast.info(
+						// `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
+						`Transaction pending`,
+						{
+							position: toast.POSITION.BOTTOM_RIGHT,
+							autoClose: false,
+						}
+					);
+					setToastId(toastid);
+					if (!activeTransactions) {
+						activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+					} else if (
+						Object.isFrozen(activeTransactions) ||
+						Object.isSealed(activeTransactions)
+					) {
+						// Check if activeTransactions is frozen or sealed
+						activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+					}
+					const uqID = getUniqueId();
+					const trans_data = {
+						transaction_hash: deposit?.transaction_hash.toString(),
+						message: `Successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+						// message: `Transaction successful`,
+						toastId: toastid,
+						setCurrentTransactionStatus:
+							setCurrentTransactionStatus,
+						uniqueID: uqID,
+					};
+					// addTransaction({ hash: deposit?.transaction_hash });
+					activeTransactions?.push(trans_data);
 
-      const toastContent = (
-        <div>
-          Transaction declined{' '}
-          <CopyToClipboard text={err}>
-            <Text as="u">copy error!</Text>
-          </CopyToClipboard>
-        </div>
-      )
-      toast.error(toastContent, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: false,
-      })
-      //console.log("supply", err);
-      // toast({
-      //   description: "An error occurred while handling the transaction. " + err,
-      //   variant: "subtle",
-      //   position: "bottom-right",
-      //   status: "error",
-      //   isClosable: true,
-      // });
-      // toast({
-      //   variant: "subtle",
-      //   position: "bottom-right",
-      //   render: () => (
-      //     <Box
-      //       display="flex"
-      //       flexDirection="row"
-      //       justifyContent="center"
-      //       alignItems="center"
-      //       bg="rgba(40, 167, 69, 0.5)"
-      //       height="48px"
-      //       borderRadius="6px"
-      //       border="1px solid rgba(74, 194, 107, 0.4)"
-      //       padding="8px"
-      //     >
-      //       <Box>
-      //         <SuccessTick />
-      //       </Box>
-      //       <Text>You have successfully supplied 1000USDT to check go to </Text>
-      //       <Button variant="link">Your Supply</Button>
-      //       <Box>
-      //         <CancelSuccessToast />
-      //       </Box>
-      //     </Box>
-      //   ),
-      //   isClosable: true,
-      // });
-    }
-  }
+					dispatch(setActiveTransactions(activeTransactions));
+				}
+				// const deposit = await writeAsyncDepositStake();
+				posthog.capture('Supply Market Status', {
+					Status: 'Success',
+					Token: currentSelectedCoin,
+					TokenAmount: inputAmount,
+				});
+				setDepositTransHash(deposit?.transaction_hash);
+				// if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+				// }
+				const uqID = getUniqueId();
+				let data: any = (
+					typeof window !== 'undefined' ?
+						window.localStorage
+					:	null)?.getItem('transactionCheck');
+				data = data ? JSON.parse(data) : [];
+				if (data && data.includes(uqID)) {
+					dispatch(setTransactionStatus('success'));
+				}
+				////console.log("Status transaction", deposit);
+				//console.log(isSuccessDeposit, "success ?");
+			}
+		} catch (err: any) {
+			// setTransactionFailed(true);
+			posthog.capture('Supply Market Status', {
+				Status: 'Failure',
+			});
+			const uqID = getUniqueId();
+			let data: any = (
+				typeof window !== 'undefined' ?
+					window.localStorage
+				:	null)?.getItem('transactionCheck');
+			data = data ? JSON.parse(data) : [];
+			if (data && data.includes(uqID)) {
+				setTransactionStarted(false);
+				// dispatch(setTransactionStatus("failed"));
+			}
+			//console.log(uqID, "transaction check supply transaction failed : ", err);
 
-  const getCoin = (CoinName: string) => {
-    switch (CoinName) {
-      case 'BTC':
-        return <BTCLogo height={'16px'} width={'16px'} />
-      case 'USDC':
-        return <USDCLogo height={'16px'} width={'16px'} />
-      case 'USDT':
-        return <USDTLogo height={'16px'} width={'16px'} />
-      case 'ETH':
-        return <ETHLogo height={'16px'} width={'16px'} />
-      case 'DAI':
-        return <DAILogo height={'16px'} width={'16px'} />
-      case 'STRK':
-        return <STRKLogo height={'16px'} width={'16px'} />
-      default:
-        break
-    }
-  }
+			const toastContent = (
+				<div>
+					Transaction declined
+					{/* @ts-ignore */}
+					<CopyToClipboard text={err}>
+						{/* @ts-ignore */}
+						<Text as='u'>copy error!</Text>
+					</CopyToClipboard>
+				</div>
+			);
+			toast.error(toastContent, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				autoClose: false,
+			});
+			//console.log("supply", err);
+			// toast({
+			//   description: "An error occurred while handling the transaction. " + err,
+			//   variant: "subtle",
+			//   position: "bottom-right",
+			//   status: "error",
+			//   isClosable: true,
+			// });
+			// toast({
+			//   variant: "subtle",
+			//   position: "bottom-right",
+			//   render: () => (
+			//     <Box
+			//       display="flex"
+			//       flexDirection="row"
+			//       justifyContent="center"
+			//       alignItems="center"
+			//       bg="rgba(40, 167, 69, 0.5)"
+			//       height="48px"
+			//       borderRadius="6px"
+			//       border="1px solid rgba(74, 194, 107, 0.4)"
+			//       padding="8px"
+			//     >
+			//       <Box>
+			//         <SuccessTick />
+			//       </Box>
+			//       <Text>You have successfully supplied 1000USDT to check go to </Text>
+			//       <Button variant="link">Your Supply</Button>
+			//       <Box>
+			//         <CancelSuccessToast />
+			//       </Box>
+			//     </Box>
+			//   ),
+			//   isClosable: true,
+			// });
+		}
+	};
 
-  // useEffect(() => {
-  //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
-  // }, [])
-  ////console.log(inputAmount);
-  const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0)
-  const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0)
-  const minAmounts = useSelector(selectMinimumDepositAmounts)
-  const maxAmounts = useSelector(selectMaximumDepositAmounts)
-  useEffect(() => {
-    setMinimumDepositAmount(minAmounts['r' + currentSelectedCoin])
-    setmaximumDepositAmount(maxAmounts['r' + currentSelectedCoin])
-  }, [currentSelectedCoin, minAmounts, maxAmounts])
-  ////console.log(nft,"nft")
-  // useEffect(()=>{
-  //     const data=useSelector(selectMinimumDepositAmounts);
-  //     setMinimumDepositAmount(data(currentSelectedCoin));
-  //   const fetchMaxDeposit=async()=>{
-  //     const data=await getMaximumDepositAmount("r"+currentSelectedCoin);
-  //     setmaximumDepositAmount(data);
-  //   }
-  //   fetchMaxDeposit();
+	const getCoin = (CoinName: string) => {
+		switch (CoinName) {
+			case 'BTC':
+				return (
+					<BTCLogo
+						height={'16px'}
+						width={'16px'}
+					/>
+				);
+			case 'USDC':
+				return (
+					<USDCLogo
+						height={'16px'}
+						width={'16px'}
+					/>
+				);
+			case 'USDT':
+				return (
+					<USDTLogo
+						height={'16px'}
+						width={'16px'}
+					/>
+				);
+			case 'ETH':
+				return (
+					<ETHLogo
+						height={'16px'}
+						width={'16px'}
+					/>
+				);
+			case 'DAI':
+				return (
+					<DAILogo
+						height={'16px'}
+						width={'16px'}
+					/>
+				);
+			case 'STRK':
+				return (
+					<STRKLogo
+						height={'16px'}
+						width={'16px'}
+					/>
+				);
+			default:
+				break;
+		}
+	};
 
-  // },[currentSelectedCoin])
+	// useEffect(() => {
+	//   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
+	// }, [])
+	////console.log(inputAmount);
+	const [minimumDepositAmount, setMinimumDepositAmount] = useState<any>(0);
+	const [maximumDepositAmount, setmaximumDepositAmount] = useState<any>(0);
+	const minAmounts = useSelector(selectMinimumDepositAmounts);
+	const maxAmounts = useSelector(selectMaximumDepositAmounts);
+	useEffect(() => {
+		setMinimumDepositAmount(minAmounts['r' + currentSelectedCoin]);
+		setmaximumDepositAmount(maxAmounts['r' + currentSelectedCoin]);
+	}, [currentSelectedCoin, minAmounts, maxAmounts]);
+	////console.log(nft,"nft")
+	// useEffect(()=>{
+	//     const data=useSelector(selectMinimumDepositAmounts);
+	//     setMinimumDepositAmount(data(currentSelectedCoin));
+	//   const fetchMaxDeposit=async()=>{
+	//     const data=await getMaximumDepositAmount("r"+currentSelectedCoin);
+	//     setmaximumDepositAmount(data);
+	//   }
+	//   fetchMaxDeposit();
 
-  //This Function handles the modalDropDowns
-  const handleDropdownClick = (dropdownName: any) => {
-    // Dispatches an action called setModalDropdown with the dropdownName as the payload
-    dispatch(setModalDropdown(dropdownName))
-  }
-  const activeModal = Object.keys(modalDropdowns).find(
-    (key) => modalDropdowns[key] === true
-  )
-  ////console.log(activeModal)
+	// },[currentSelectedCoin])
 
-  //This function is used to find the percentage of the slider from the input given by the user
-  const handleChange = (newValue: any) => {
-    // Calculate the percentage of the new value relative to the wallet balance
-    if (newValue > 9_000_000_000) return
-    // check if newValue is float, if it is then round off to 6 decimals
+	//This Function handles the modalDropDowns
+	const handleDropdownClick = (dropdownName: any) => {
+		// Dispatches an action called setModalDropdown with the dropdownName as the payload
+		dispatch(setModalDropdown(dropdownName));
+	};
+	const activeModal = Object.keys(modalDropdowns).find(
+		(key) => modalDropdowns[key] === true
+	);
+	////console.log(activeModal)
 
-    var percentage = (newValue * 100) / walletBalance
-    // if (walletBalance == 0) {
-    //   setDepositAmount(0);
-    //   setinputAmount(0);
-    // }
-    percentage = Math.max(0, percentage)
-    if (percentage > 100) {
-      setSliderValue(100)
-      setDepositAmount(newValue)
-      setinputAmount(newValue)
-      dispatch(setInputSupplyAmount(newValue))
-    } else {
-      percentage = Math.round(percentage)
-      if (isNaN(percentage)) {
-      } else {
-        setSliderValue(percentage)
-        setDepositAmount(newValue)
-        setinputAmount(newValue)
-        dispatch(setInputSupplyAmount(newValue))
-      }
-    }
-  }
+	//This function is used to find the percentage of the slider from the input given by the user
+	const handleChange = (newValue: any) => {
+		// Calculate the percentage of the new value relative to the wallet balance
+		if (newValue > 9_000_000_000) return;
+		// check if newValue is float, if it is then round off to 6 decimals
 
-  const coins: NativeToken[] = ['BTC', 'USDT', 'USDC', 'ETH', 'STRK']
+		var percentage = (newValue * 100) / walletBalance;
+		// if (walletBalance == 0) {
+		//   setDepositAmount(0);
+		//   setinputAmount(0);
+		// }
+		percentage = Math.max(0, percentage);
+		if (percentage > 100) {
+			setSliderValue(100);
+			setDepositAmount(newValue);
+			setinputAmount(newValue);
+			dispatch(setInputSupplyAmount(newValue));
+		} else {
+			percentage = Math.round(percentage);
+			if (isNaN(percentage)) {
+			} else {
+				setSliderValue(percentage);
+				setDepositAmount(newValue);
+				setinputAmount(newValue);
+				dispatch(setInputSupplyAmount(newValue));
+			}
+		}
+	};
 
-  const resetStates = () => {
-    setDepositAmount(0)
-    setSliderValue(0)
-    setToastDisplayed(false)
-    setAsset(coin ? coin?.name : 'BTC')
-    setCurrentSelectedCoin(coin ? coin?.name : 'BTC')
-    setIsChecked(true)
-    setwalletBalance(
-      walletBalances[coin?.name]?.statusBalanceOf === 'success'
-        ? parseAmount(
-            String(
-              uint256.uint256ToBN(
-                walletBalances[coin?.name]?.dataBalanceOf?.balance
-              )
-            ),
-            tokenDecimalsMap[coin?.name]
-          )
-        : 0
-    )
+	const coins: NativeToken[] = ['BTC', 'USDT', 'USDC', 'ETH', 'STRK'];
 
-    // if (transactionStarted) dispatch(setTransactionStarted(""));
-    setTransactionStarted(false)
-    dispatch(resetModalDropdowns())
-    dispatch(setTransactionStatus(''))
-    setCurrentTransactionStatus('')
-    setDepositTransHash('')
-  }
+	const resetStates = () => {
+		setDepositAmount(0);
+		setSliderValue(0);
+		setToastDisplayed(false);
+		setAsset(coin ? coin?.name : 'BTC');
+		setCurrentSelectedCoin(coin ? coin?.name : 'BTC');
+		setIsChecked(true);
+		setwalletBalance(
+			walletBalances[coin?.name]?.statusBalanceOf === 'success' ?
+				parseAmount(
+					String(
+						uint256.uint256ToBN(
+							walletBalances[coin?.name]?.dataBalanceOf?.balance
+						)
+					),
+					tokenDecimalsMap[coin?.name]
+				)
+			:	0
+		);
 
-  useEffect(() => {
-    setDepositAmount(0)
-    setinputAmount(0)
-    setSliderValue(0)
-  }, [currentSelectedCoin])
+		// if (transactionStarted) dispatch(setTransactionStarted(""));
+		setTransactionStarted(false);
+		dispatch(resetModalDropdowns());
+		dispatch(setTransactionStatus(''));
+		setCurrentTransactionStatus('');
+		setDepositTransHash('');
+	};
 
-  return (
-    <div>
-      <Button
-        onClick={() => {
-          const uqID = Math.random()
-          setUniqueID(uqID)
-          let data: any = localStorage.getItem('transactionCheck')
-          data = data ? JSON.parse(data) : []
-          if (data && !data.includes(uqID)) {
-            data.push(uqID)
-            localStorage.setItem('transactionCheck', JSON.stringify(data))
-          }
-          onOpen()
-          dispatch(setToastTransactionStarted(false))
-        }}
-        {...restProps}
-      >
-        {buttonText !== 'Click here to supply' ? (
-          buttonText === 'Supply from metrics' ? (
-            <Button w="70px" h="32px" fontSize="14px" p="12px" mx="auto">
-              Supply
-            </Button>
-          ) : (
-            buttonText
-          )
-        ) : (
-          <Text fontSize="sm">Click here to supply</Text>
-        )}
-      </Button>
-      <Portal>
-        <Modal
-          isOpen={isOpen}
-          onClose={() => {
-            const uqID = getUniqueId()
-            let data: any = localStorage.getItem('transactionCheck')
-            data = data ? JSON.parse(data) : []
-            ////console.log(uqID, "data here", data);
-            if (data && data.includes(uqID)) {
-              data = data.filter((val: any) => val != uqID)
-              localStorage.setItem('transactionCheck', JSON.stringify(data))
-            }
-            dispatch(setTransactionStartedAndModalClosed(true))
-            resetStates()
-            onClose()
-          }}
-          size={{ width: '700px', height: '100px' }}
-          isCentered
-          scrollBehavior="inside"
-        >
-          <ModalOverlay bg={backGroundOverLay} mt="3.8rem" />
-          <ModalContent
-            background="var(--Base_surface, #02010F)"
-            color="white"
-            borderRadius="md"
-            maxW="462px"
-            zIndex={1}
-            mt="8rem"
-            className="modal-content"
-          >
-            <ModalHeader
-              mt="1rem"
-              fontSize="14px"
-              fontWeight="600"
-              fontStyle="normal"
-              lineHeight="20px"
-              display="flex"
-              alignItems="center"
-              gap="2"
-            >
-              Supply
-              <Tooltip
-                hasArrow
-                arrowShadowColor="#2B2F35"
-                placement="right"
-                boxShadow="dark-lg"
-                label="Supply the tokens and receive the supply APR."
-                bg="#02010F"
-                fontSize={'13px'}
-                fontWeight={'400'}
-                borderRadius={'lg'}
-                padding={'2'}
-                color="#F0F0F5"
-                border="1px solid"
-                borderColor="#23233D"
-              >
-                <Box>
-                  <InfoIconBig />
-                </Box>
-              </Tooltip>
-            </ModalHeader>
-            <ModalCloseButton mt="1rem" mr="1rem" />
-            <ModalBody>
-              <Card
-                background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                mb="0.5rem"
-                p="1rem"
-                mt="-1.5"
-              >
-                <Text color="#676D9A" display="flex" alignItems="center">
-                  <Text
-                    mr="0.3rem"
-                    fontSize="12px"
-                    fontStyle="normal"
-                    fontWeight="400"
-                  >
-                    Supply Market
-                  </Text>
-                  <Box>
-                    <Tooltip
-                      hasArrow
-                      arrowShadowColor="#2B2F35"
-                      placement="right"
-                      boxShadow="dark-lg"
-                      label="The tokens selected to supply on the protocol."
-                      bg="#02010F"
-                      fontSize={'13px'}
-                      fontWeight={'400'}
-                      borderRadius={'lg'}
-                      padding={'2'}
-                      color="#F0F0F5"
-                      border="1px solid"
-                      borderColor="#23233D"
-                    >
-                      <Box>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  </Box>
-                </Text>
-                <Box
-                  display="flex"
-                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                  justifyContent="space-between"
-                  py="2"
-                  pl="3"
-                  pr="3"
-                  mb="1rem"
-                  mt="0.3rem"
-                  borderRadius="md"
-                  className="navbar"
-                  cursor="pointer"
-                  onClick={() => {
-                    if (transactionStarted) {
-                      return
-                    } else {
-                      handleDropdownClick('supplyModalDropdown')
-                    }
-                  }}
-                >
-                  <Box display="flex" gap="1">
-                    <Box p="1">{getCoin(currentSelectedCoin)}</Box>
-                    <Text color="white">
-                      {currentSelectedCoin == 'BTC' 
-                        ? 'w' + currentSelectedCoin
-                        : currentSelectedCoin}
-                    </Text>
-                  </Box>
+	useEffect(() => {
+		setDepositAmount(0);
+		setinputAmount(0);
+		setSliderValue(0);
+	}, [currentSelectedCoin]);
 
-                  <Box pt="1" className="navbar-button">
-                    {activeModal ? <ArrowUp /> : <DropdownUp />}
-                  </Box>
-                  {modalDropdowns.supplyModalDropdown && (
-                    <Box
-                      w="full"
-                      left="0"
-                      bg="#03060B"
-                      border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                      py="2"
-                      className="dropdown-container"
-                      boxShadow="dark-lg"
-                    >
-                      {coins?.map((coin: NativeToken, index: number) => {
-                        return (
-                          <Box
-                            key={index}
-                            as="button"
-                            w="full"
-                            // display="flex"
-                            alignItems="center"
-                            gap="1"
-                            pr="2"
-                            display={
-                              assetBalance[coin]?.dataBalanceOf?.balance &&
-                              'flex'
-                            }
-                            onMouseEnter={()=>{
-                              setcollateralMarketHoverIndex(index);
-                            }}
-                            onMouseLeave={()=>{
-                              setcollateralMarketHoverIndex(-1);
-                            }}
-                            onClick={() => {
-                              setCurrentSelectedCoin(coin)
-                              setAsset(coin)
-                              setCurrentSupplyAPR(
-                                coinIndex.find(
-                                  (curr: any) => curr?.token === coin
-                                )?.idx
-                              )
-                              setcollateralMarketHoverIndex(-1);
-                              ////console.log(coin,"coin in supply modal")
-                              setwalletBalance(
-                                walletBalances[coin]?.statusBalanceOf ===
-                                  'success'
-                                  ? parseAmount(
-                                      String(
-                                        uint256.uint256ToBN(
-                                          walletBalances[coin]?.dataBalanceOf
-                                            ?.balance
-                                        )
-                                      ),
-                                      tokenDecimalsMap[coin]
-                                    )
-                                  : 0
-                              )
-                              dispatch(setCoinSelectedSupplyModal(coin))
-                            }}
-                          >
-                            { (collateralMarketHoverIndex===-1 ?coin === currentSelectedCoin:collateralMarketHoverIndex===index) && (
-                              <Box
-                                w="3px"
-                                h="28px"
-                                bg="#4D59E8"
-                                borderRightRadius="md"
-                              ></Box>
-                            )}
-                            <Box
-                              w="full"
-                              display="flex"
-                              py="5px"
-                              pl={`${ (coin === currentSelectedCoin && collateralMarketHoverIndex===-1) || collateralMarketHoverIndex===index ? '1' : '5'}`}
-                              pr="6px"
-                              gap="1"
-                              justifyContent="space-between"
-                              transition="ease .1s"
-                              bg={`${
-                                (coin === currentSelectedCoin && collateralMarketHoverIndex===-1) || collateralMarketHoverIndex===index
-                                  ? '#4D59E8'
-                                  : 'inherit'
-                              }`}
-                              borderRadius="md"
-                            >
-                              <Box display="flex">
-                                <Box p="1">{getCoin(coin)}</Box>
-                                <Text color="white">
-                                  {coin == 'BTC'
-                                    ? 'w' + coin
-                                    : coin}
-                                </Text>
-                              </Box>
-                              <Box
-                                fontSize="9px"
-                                color="#E6EDF3"
-                                mt="6px"
-                                fontWeight="thin"
-                              >
-                                Wallet Balance:{' '}
-                                {assetBalance[coin]?.dataBalanceOf?.balance
-                                  ? numberFormatter(
-                                      parseAmount(
-                                        String(
-                                          uint256.uint256ToBN(
-                                            assetBalance[coin]?.dataBalanceOf
-                                              ?.balance
-                                          )
-                                        ),
-                                        tokenDecimalsMap[coin]
-                                      )
-                                    )
-                                  : '-'}
-                              </Box>
-                            </Box>
-                          </Box>
-                        )
-                      })}
-                    </Box>
-                  )}
-                </Box>
+	return (
+		<div>
+			<Button
+				onClick={() => {
+					const uqID = Math.random();
+					setUniqueID(uqID);
+					let data: any = (
+						typeof window !== 'undefined' ?
+							window.localStorage
+						:	null)?.getItem('transactionCheck');
+					data = data ? JSON.parse(data) : [];
+					if (data && !data.includes(uqID)) {
+						data.push(uqID);
+						(typeof window !== 'undefined' ?
+							window.localStorage
+						:	null
+						)?.setItem('transactionCheck', JSON.stringify(data));
+					}
+					onOpen();
+					dispatch(setToastTransactionStarted(false));
+				}}
+				{...restProps}>
+				{buttonText !== 'Click here to supply' ?
+					buttonText === 'Supply from metrics' ?
+						<Button
+							w='70px'
+							h='32px'
+							fontSize='14px'
+							p='12px'
+							mx='auto'>
+							Supply
+						</Button>
+					:	buttonText
+				:	<Text fontSize='sm'>Click here to supply</Text>}
+			</Button>
+			<Portal>
+				<Modal
+					isOpen={isOpen}
+					onClose={() => {
+						const uqID = getUniqueId();
+						let data: any = (
+							typeof window !== 'undefined' ?
+								window.localStorage
+							:	null)?.getItem('transactionCheck');
+						data = data ? JSON.parse(data) : [];
+						////console.log(uqID, "data here", data);
+						if (data && data.includes(uqID)) {
+							data = data.filter((val: any) => val != uqID);
+							(typeof window !== 'undefined' ?
+								window.localStorage
+							:	null
+							)?.setItem(
+								'transactionCheck',
+								JSON.stringify(data)
+							);
+						}
+						dispatch(setTransactionStartedAndModalClosed(true));
+						resetStates();
+						onClose();
+					}}
+					size={{ width: '700px', height: '100px' }}
+					isCentered
+					scrollBehavior='inside'>
+					<ModalOverlay
+						bg={backGroundOverLay}
+						mt='3.8rem'
+					/>
+					<ModalContent
+						background='var(--Base_surface, #02010F)'
+						color='white'
+						borderRadius='md'
+						maxW='462px'
+						zIndex={1}
+						mt='8rem'
+						className='modal-content'>
+						<ModalHeader
+							mt='1rem'
+							fontSize='14px'
+							fontWeight='600'
+							fontStyle='normal'
+							lineHeight='20px'
+							display='flex'
+							alignItems='center'
+							gap='2'>
+							Supply
+							<Tooltip
+								hasArrow
+								arrowShadowColor='#2B2F35'
+								placement='right'
+								boxShadow='dark-lg'
+								label='Supply the tokens and receive the supply APR.'
+								bg='#02010F'
+								fontSize={'13px'}
+								fontWeight={'400'}
+								borderRadius={'lg'}
+								padding={'2'}
+								color='#F0F0F5'
+								border='1px solid'
+								borderColor='#23233D'>
+								<Box>
+									<InfoIconBig />
+								</Box>
+							</Tooltip>
+						</ModalHeader>
+						<ModalCloseButton
+							mt='1rem'
+							mr='1rem'
+						/>
+						<ModalBody>
+							<Card
+								background='var(--surface-of-10, rgba(103, 109, 154, 0.10))'
+								border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
+								mb='0.5rem'
+								p='1rem'
+								mt='-1.5'>
+								<Text
+									color='#676D9A'
+									display='flex'
+									alignItems='center'>
+									<Text
+										mr='0.3rem'
+										fontSize='12px'
+										fontStyle='normal'
+										fontWeight='400'>
+										Supply Market
+									</Text>
+									<Box>
+										<Tooltip
+											hasArrow
+											arrowShadowColor='#2B2F35'
+											placement='right'
+											boxShadow='dark-lg'
+											label='The tokens selected to supply on the protocol.'
+											bg='#02010F'
+											fontSize={'13px'}
+											fontWeight={'400'}
+											borderRadius={'lg'}
+											padding={'2'}
+											color='#F0F0F5'
+											border='1px solid'
+											borderColor='#23233D'>
+											<Box>
+												<InfoIcon />
+											</Box>
+										</Tooltip>
+									</Box>
+								</Text>
+								<Box
+									display='flex'
+									border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
+									justifyContent='space-between'
+									py='2'
+									pl='3'
+									pr='3'
+									mb='1rem'
+									mt='0.3rem'
+									borderRadius='md'
+									className='navbar'
+									cursor='pointer'
+									onClick={() => {
+										if (transactionStarted) {
+											return;
+										} else {
+											handleDropdownClick(
+												'supplyModalDropdown'
+											);
+										}
+									}}>
+									<Box
+										display='flex'
+										gap='1'>
+										<Box p='1'>
+											{getCoin(currentSelectedCoin)}
+										</Box>
+										<Text color='white'>
+											{currentSelectedCoin == 'BTC' ?
+												'w' + currentSelectedCoin
+											:	currentSelectedCoin}
+										</Text>
+									</Box>
 
-                <Text color="#676D9A" display="flex" alignItems="center">
-                  <Text
-                    mr="0.3rem"
-                    fontSize="12px"
-                    fontStyle="normal"
-                    fontWeight="400"
-                  >
-                    Amount
-                  </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="The unit of tokens being supplied."
-                    bg="#02010F"
-                    fontSize={'13px'}
-                    fontWeight={'400'}
-                    borderRadius={'lg'}
-                    padding={'2'}
-                    color="#F0F0F5"
-                    border="1px solid"
-                    borderColor="#23233D"
-                    arrowShadowColor="#2B2F35"
-                    // maxW="222px"
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
-                </Text>
+									<Box
+										pt='1'
+										className='navbar-button'>
+										{activeModal ?
+											<ArrowUp />
+										:	<DropdownUp />}
+									</Box>
+									{modalDropdowns.supplyModalDropdown && (
+										<Box
+											w='full'
+											left='0'
+											bg='#03060B'
+											border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
+											py='2'
+											className='dropdown-container'
+											boxShadow='dark-lg'>
+											{coins?.map(
+												(
+													coin: NativeToken,
+													index: number
+												) => {
+													return (
+														<Box
+															key={index}
+															as='button'
+															w='full'
+															// display="flex"
+															alignItems='center'
+															gap='1'
+															pr='2'
+															display={
+																assetBalance[
+																	coin
+																]?.dataBalanceOf
+																	?.balance &&
+																'flex'
+															}
+															onMouseEnter={() => {
+																setcollateralMarketHoverIndex(
+																	index
+																);
+															}}
+															onMouseLeave={() => {
+																setcollateralMarketHoverIndex(
+																	-1
+																);
+															}}
+															onClick={() => {
+																setCurrentSelectedCoin(
+																	coin
+																);
+																setAsset(coin);
+																setCurrentSupplyAPR(
+																	coinIndex.find(
+																		(
+																			curr: any
+																		) =>
+																			curr?.token ===
+																			coin
+																	)?.idx
+																);
+																setcollateralMarketHoverIndex(
+																	-1
+																);
+																////console.log(coin,"coin in supply modal")
+																setwalletBalance(
+																	(
+																		walletBalances[
+																			coin
+																		]
+																			?.statusBalanceOf ===
+																			'success'
+																	) ?
+																		parseAmount(
+																			String(
+																				uint256.uint256ToBN(
+																					walletBalances[
+																						coin
+																					]
+																						?.dataBalanceOf
+																						?.balance
+																				)
+																			),
+																			tokenDecimalsMap[
+																				coin
+																			]
+																		)
+																	:	0
+																);
+																dispatch(
+																	setCoinSelectedSupplyModal(
+																		coin
+																	)
+																);
+															}}>
+															{((
+																collateralMarketHoverIndex ===
+																-1
+															) ?
+																coin ===
+																currentSelectedCoin
+															:	collateralMarketHoverIndex ===
+																index) && (
+																<Box
+																	w='3px'
+																	h='28px'
+																	bg='#4D59E8'
+																	borderRightRadius='md'></Box>
+															)}
+															<Box
+																w='full'
+																display='flex'
+																py='5px'
+																pl={`${(coin === currentSelectedCoin && collateralMarketHoverIndex === -1) || collateralMarketHoverIndex === index ? '1' : '5'}`}
+																pr='6px'
+																gap='1'
+																justifyContent='space-between'
+																transition='ease .1s'
+																bg={`${
+																	(
+																		(coin ===
+																			currentSelectedCoin &&
+																			collateralMarketHoverIndex ===
+																				-1) ||
+																		collateralMarketHoverIndex ===
+																			index
+																	) ?
+																		'#4D59E8'
+																	:	'inherit'
+																}`}
+																borderRadius='md'>
+																<Box display='flex'>
+																	<Box p='1'>
+																		{getCoin(
+																			coin
+																		)}
+																	</Box>
+																	<Text color='white'>
+																		{(
+																			coin ==
+																			'BTC'
+																		) ?
+																			'w' +
+																			coin
+																		:	coin}
+																	</Text>
+																</Box>
+																<Box
+																	fontSize='9px'
+																	color='#E6EDF3'
+																	mt='6px'
+																	fontWeight='thin'>
+																	Wallet
+																	Balance:{' '}
+																	{(
+																		assetBalance[
+																			coin
+																		]
+																			?.dataBalanceOf
+																			?.balance
+																	) ?
+																		numberFormatter(
+																			parseAmount(
+																				String(
+																					uint256.uint256ToBN(
+																						assetBalance[
+																							coin
+																						]
+																							?.dataBalanceOf
+																							?.balance
+																					)
+																				),
+																				tokenDecimalsMap[
+																					coin
+																				]
+																			)
+																		)
+																	:	'-'}
+																</Box>
+															</Box>
+														</Box>
+													);
+												}
+											)}
+										</Box>
+									)}
+								</Box>
 
-                <Box
-                  width="100%"
-                  color="white"
-                  border={`${
-                    depositAmount > walletBalance
-                      ? '1px solid #CF222E'
-                      : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                          depositAmount > maximumDepositAmount
-                        ? '1px solid #CF222E'
-                        : depositAmount < 0
-                          ? '1px solid #CF222E'
-                          : isNaN(depositAmount)
-                            ? '1px solid #CF222E'
-                            : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                                depositAmount < minimumDepositAmount &&
-                                depositAmount > 0
-                              ? '1px solid #CF222E'
-                              : depositAmount > 0 &&
-                                  depositAmount <= walletBalance
-                                ? '1px solid #00D395'
-                                : '1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
-                  }`}
-                  borderRadius="6px"
-                  display="flex"
-                  justifyContent="space-between"
-                  mt="0.3rem"
-                >
-                  <NumberInput
-                    border="0px"
-                    min={0}
-                    keepWithinRange={true}
-                    onChange={handleChange}
-                    value={depositAmount ? depositAmount : ''}
-                    outline="none"
-                    // precision={1}
-                    step={parseFloat(`${depositAmount <= 99999 ? 0.1 : 0}`)}
-                    isDisabled={transactionStarted == true}
-                    _disabled={{ cursor: 'pointer' }}
-                  >
-                    <NumberInputField
-                      placeholder={
-                        process.env.NEXT_PUBLIC_NODE_ENV == 'testnet'
-                          ? `0.01536 ${currentSelectedCoin}`
-                          : `min ${
-                              minimumDepositAmount == null
-                                ? 0
-                                : minimumDepositAmount
-                            } ${currentSelectedCoin}`
-                      }
-                      color={`${
-                        depositAmount > walletBalance
-                          ? '#CF222E'
-                          : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                              depositAmount > maximumDepositAmount
-                            ? '#CF222E'
-                            : isNaN(depositAmount)
-                              ? '#CF222E'
-                              : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                                  depositAmount < minimumDepositAmount &&
-                                  depositAmount > 0
-                                ? '#CF222E'
-                                : depositAmount < 0
-                                  ? '#CF222E'
-                                  : depositAmount == 0
-                                    ? 'white'
-                                    : '#00D395'
-                      }`}
-                      _disabled={{ color: '#00D395' }}
-                      border="0px"
-                      _placeholder={{
-                        color: '#3E415C',
-                        fontSize: '.89rem',
-                        fontWeight: '600',
-                        outline: 'none',
-                      }}
-                      _focus={{
-                        outline: '0',
-                        boxShadow: 'none',
-                      }}
-                    />
-                  </NumberInput>
-                  <Button
-                    variant="ghost"
-                    color={`${
-                      depositAmount > walletBalance
-                        ? '#CF222E'
-                        : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                            depositAmount > maximumDepositAmount
-                          ? '#CF222E'
-                          : isNaN(depositAmount)
-                            ? '#CF222E'
-                            : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                                depositAmount < minimumDepositAmount &&
-                                depositAmount > 0
-                              ? '#CF222E'
-                              : depositAmount < 0
-                                ? '#CF222E'
-                                : depositAmount == 0
-                                  ? '#4D59E8'
-                                  : '#00D395'
-                    }`}
-                    // color="#4D59E8"
-                    _hover={{
-                      bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
-                    }}
-                    onClick={() => {
-                      setDepositAmount(walletBalance)
-                      setinputAmount(walletBalance)
-                      setSliderValue(100)
-                      dispatch(setInputSupplyAmount(walletBalance))
-                    }}
-                    isDisabled={transactionStarted == true}
-                    _disabled={{ cursor: 'pointer' }}
-                  >
-                    MAX
-                  </Button>
-                </Box>
-                {depositAmount > walletBalance ||
-                (process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                  depositAmount > maximumDepositAmount) ||
-                depositAmount < 0 ||
-                (depositAmount < minimumDepositAmount &&
-                  process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                  depositAmount > 0) ||
-                isNaN(depositAmount) ? (
-                  <Text
-                    display="flex"
-                    justifyContent="space-between"
-                    color="#E6EDF3"
-                    mt="0.4rem"
-                    fontSize="12px"
-                    fontWeight="500"
-                    fontStyle="normal"
-                    fontFamily="Inter"
-                    whiteSpace="nowrap"
-                  >
-                    <Text color="#CF222E" display="flex" flexDirection="row">
-                      <Text mt="0.2rem">
-                        <SmallErrorIcon />{' '}
-                      </Text>
-                      <Text ml="0.3rem">
-                        {depositAmount > walletBalance
-                          ? 'Amount exceeds balance'
-                          : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                              depositAmount > maximumDepositAmount
-                            ? 'More than max amount'
-                            : process.env.NEXT_PUBLIC_NODE_ENV == 'mainnet' &&
-                                depositAmount < minimumDepositAmount
-                              ? 'Less than min amount'
-                              : ''}
-                      </Text>
-                    </Text>
-                    <Text
-                      color="#C7CBF6"
-                      display="flex"
-                      justifyContent="flex-end"
-                      flexDirection="row"
-                    >
-                      Wallet Balance:{' '}
-                      {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5
-                        ? numberFormatter(walletBalance)
-                        : numberFormatter(walletBalance)}
-                      <Text color="#676D9A" ml="0.2rem">
-                        {` ${currentSelectedCoin}`}
-                      </Text>
-                    </Text>
-                  </Text>
-                ) : (
-                  <Text
-                    color="#C7CBF6"
-                    display="flex"
-                    justifyContent="flex-end"
-                    mt="0.4rem"
-                    fontSize="12px"
-                    fontWeight="500"
-                    fontStyle="normal"
-                    fontFamily="Inter"
-                  >
-                    Wallet Balance:{' '}
-                    {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5
-                      ? numberFormatter(walletBalance)
-                      : numberFormatter(walletBalance)}
-                    <Text color="#676D9A" ml="0.2rem">
-                      {` ${currentSelectedCoin}`}
-                    </Text>
-                  </Text>
-                )}
+								<Text
+									color='#676D9A'
+									display='flex'
+									alignItems='center'>
+									<Text
+										mr='0.3rem'
+										fontSize='12px'
+										fontStyle='normal'
+										fontWeight='400'>
+										Amount
+									</Text>
+									<Tooltip
+										hasArrow
+										placement='right'
+										boxShadow='dark-lg'
+										label='The unit of tokens being supplied.'
+										bg='#02010F'
+										fontSize={'13px'}
+										fontWeight={'400'}
+										borderRadius={'lg'}
+										padding={'2'}
+										color='#F0F0F5'
+										border='1px solid'
+										borderColor='#23233D'
+										arrowShadowColor='#2B2F35'
+										// maxW="222px"
+									>
+										<Box>
+											<InfoIcon />
+										</Box>
+									</Tooltip>
+								</Text>
 
-                <Box
-                  pt={5}
-                  pb={2}
-                  pr="0.5"
-                  mt="1rem"
-                  // width={`${sliderValue > 86 ? "96%" : "100%"}`}
-                  // mr="auto"
-                  // transition="ease-in-out"
-                  display="flex"
-                >
-                  <Slider
-                    aria-label="slider-ex-6"
-                    defaultValue={sliderValue}
-                    value={sliderValue}
-                    onChange={(val) => {
-                      setSliderValue(val)
-                      var ans = (val / 100) * walletBalance
-                      ////console.log(ans);
-                      if (val == 100) {
-                        setDepositAmount(walletBalance)
-                        setinputAmount(walletBalance)
-                      } else {
-                        // ans = Math.round(ans * 100) / 100;
-                        if (ans < 10) {
-                          setDepositAmount(parseFloat(ans.toFixed(7)))
-                          setinputAmount(parseFloat(ans.toFixed(7)))
-                        } else {
-                          ans = Math.round(ans * 100) / 100
-                          setDepositAmount(ans)
-                          setinputAmount(ans)
-                        }
+								<Box
+									width='100%'
+									color='white'
+									border={`${
+										depositAmount > walletBalance ?
+											'1px solid #CF222E'
+										: (
+											process.env.NEXT_PUBLIC_NODE_ENV ==
+												'mainnet' &&
+											depositAmount > maximumDepositAmount
+										) ?
+											'1px solid #CF222E'
+										: depositAmount < 0 ?
+											'1px solid #CF222E'
+										: isNaN(depositAmount) ?
+											'1px solid #CF222E'
+										: (
+											process.env.NEXT_PUBLIC_NODE_ENV ==
+												'mainnet' &&
+											depositAmount <
+												minimumDepositAmount &&
+											depositAmount > 0
+										) ?
+											'1px solid #CF222E'
+										: (
+											depositAmount > 0 &&
+											depositAmount <= walletBalance
+										) ?
+											'1px solid #00D395'
+										:	'1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
+									}`}
+									borderRadius='6px'
+									display='flex'
+									justifyContent='space-between'
+									mt='0.3rem'>
+									<NumberInput
+										border='0px'
+										min={0}
+										keepWithinRange={true}
+										onChange={handleChange}
+										value={
+											depositAmount ? depositAmount : ''
+										}
+										outline='none'
+										// precision={1}
+										step={parseFloat(
+											`${depositAmount <= 99999 ? 0.1 : 0}`
+										)}
+										isDisabled={transactionStarted == true}
+										_disabled={{ cursor: 'pointer' }}>
+										<NumberInputField
+											placeholder={
+												(
+													process.env
+														.NEXT_PUBLIC_NODE_ENV ==
+													'testnet'
+												) ?
+													`0.01536 ${currentSelectedCoin}`
+												:	`min ${
+														(
+															minimumDepositAmount ==
+															null
+														) ?
+															0
+														:	minimumDepositAmount
+													} ${currentSelectedCoin}`
+											}
+											color={`${
+												depositAmount > walletBalance ?
+													'#CF222E'
+												: (
+													process.env
+														.NEXT_PUBLIC_NODE_ENV ==
+														'mainnet' &&
+													depositAmount >
+														maximumDepositAmount
+												) ?
+													'#CF222E'
+												: isNaN(depositAmount) ?
+													'#CF222E'
+												: (
+													process.env
+														.NEXT_PUBLIC_NODE_ENV ==
+														'mainnet' &&
+													depositAmount <
+														minimumDepositAmount &&
+													depositAmount > 0
+												) ?
+													'#CF222E'
+												: depositAmount < 0 ? '#CF222E'
+												: depositAmount == 0 ? 'white'
+												: '#00D395'
+											}`}
+											_disabled={{ color: '#00D395' }}
+											border='0px'
+											_placeholder={{
+												color: '#3E415C',
+												fontSize: '.89rem',
+												fontWeight: '600',
+												outline: 'none',
+											}}
+											_focus={{
+												outline: '0',
+												boxShadow: 'none',
+											}}
+										/>
+									</NumberInput>
+									<Button
+										variant='ghost'
+										color={`${
+											depositAmount > walletBalance ?
+												'#CF222E'
+											: (
+												process.env
+													.NEXT_PUBLIC_NODE_ENV ==
+													'mainnet' &&
+												depositAmount >
+													maximumDepositAmount
+											) ?
+												'#CF222E'
+											: isNaN(depositAmount) ? '#CF222E'
+											: (
+												process.env
+													.NEXT_PUBLIC_NODE_ENV ==
+													'mainnet' &&
+												depositAmount <
+													minimumDepositAmount &&
+												depositAmount > 0
+											) ?
+												'#CF222E'
+											: depositAmount < 0 ? '#CF222E'
+											: depositAmount == 0 ? '#4D59E8'
+											: '#00D395'
+										}`}
+										// color="#4D59E8"
+										_hover={{
+											bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
+										}}
+										onClick={() => {
+											setDepositAmount(walletBalance);
+											setinputAmount(walletBalance);
+											setSliderValue(100);
+											dispatch(
+												setInputSupplyAmount(
+													walletBalance
+												)
+											);
+										}}
+										isDisabled={transactionStarted == true}
+										_disabled={{ cursor: 'pointer' }}>
+										MAX
+									</Button>
+								</Box>
+								{(
+									depositAmount > walletBalance ||
+									(process.env.NEXT_PUBLIC_NODE_ENV ==
+										'mainnet' &&
+										depositAmount > maximumDepositAmount) ||
+									depositAmount < 0 ||
+									(depositAmount < minimumDepositAmount &&
+										process.env.NEXT_PUBLIC_NODE_ENV ==
+											'mainnet' &&
+										depositAmount > 0) ||
+									isNaN(depositAmount)
+								) ?
+									<Text
+										display='flex'
+										justifyContent='space-between'
+										color='#E6EDF3'
+										mt='0.4rem'
+										fontSize='12px'
+										fontWeight='500'
+										fontStyle='normal'
+										fontFamily='Inter'
+										whiteSpace='nowrap'>
+										<Text
+											color='#CF222E'
+											display='flex'
+											flexDirection='row'>
+											<Text mt='0.2rem'>
+												<SmallErrorIcon />{' '}
+											</Text>
+											<Text ml='0.3rem'>
+												{depositAmount > walletBalance ?
+													'Amount exceeds balance'
+												: (
+													process.env
+														.NEXT_PUBLIC_NODE_ENV ==
+														'mainnet' &&
+													depositAmount >
+														maximumDepositAmount
+												) ?
+													'More than max amount'
+												: (
+													process.env
+														.NEXT_PUBLIC_NODE_ENV ==
+														'mainnet' &&
+													depositAmount <
+														minimumDepositAmount
+												) ?
+													'Less than min amount'
+												:	''}
+											</Text>
+										</Text>
+										<Text
+											color='#C7CBF6'
+											display='flex'
+											justifyContent='flex-end'
+											flexDirection='row'>
+											Wallet Balance:{' '}
+											{(
+												walletBalance
+													.toFixed(5)
+													.replace(/\.?0+$/, '')
+													.length > 5
+											) ?
+												numberFormatter(walletBalance)
+											:	numberFormatter(walletBalance)}
+											<Text
+												color='#676D9A'
+												ml='0.2rem'>
+												{` ${currentSelectedCoin}`}
+											</Text>
+										</Text>
+									</Text>
+								:	<Text
+										color='#C7CBF6'
+										display='flex'
+										justifyContent='flex-end'
+										mt='0.4rem'
+										fontSize='12px'
+										fontWeight='500'
+										fontStyle='normal'
+										fontFamily='Inter'>
+										Wallet Balance:{' '}
+										{(
+											walletBalance
+												.toFixed(5)
+												.replace(/\.?0+$/, '').length >
+											5
+										) ?
+											numberFormatter(walletBalance)
+										:	numberFormatter(walletBalance)}
+										<Text
+											color='#676D9A'
+											ml='0.2rem'>
+											{` ${currentSelectedCoin}`}
+										</Text>
+									</Text>
+								}
 
-                        ////console.log(ans)
-                        // dispatch(setInputSupplyAmount(ans));
-                      }
-                    }}
-                    isDisabled={transactionStarted == true}
-                    _disabled={{ cursor: 'pointer' }}
-                    focusThumbOnChange={false}
-                  >
-                    <SliderMark
-                      value={0}
-                      mt="-1.5"
-                      ml="-1.5"
-                      fontSize="sm"
-                      zIndex="1"
-                    >
-                      {sliderValue >= 0 ? (
-                        <SliderPointerWhite />
-                      ) : (
-                        <SliderPointer />
-                      )}
-                    </SliderMark>
-                    <SliderMark
-                      value={25}
-                      mt="-1.5"
-                      ml="-1.5"
-                      fontSize="sm"
-                      zIndex="1"
-                    >
-                      {sliderValue >= 25 ? (
-                        <SliderPointerWhite />
-                      ) : (
-                        <SliderPointer />
-                      )}
-                    </SliderMark>
-                    <SliderMark
-                      value={50}
-                      mt="-1.5"
-                      ml="-1.5"
-                      fontSize="sm"
-                      zIndex="1"
-                    >
-                      {sliderValue >= 50 ? (
-                        <SliderPointerWhite />
-                      ) : (
-                        <SliderPointer />
-                      )}
-                    </SliderMark>
-                    <SliderMark
-                      value={75}
-                      mt="-1.5"
-                      ml="-1.5"
-                      fontSize="sm"
-                      zIndex="1"
-                    >
-                      {sliderValue >= 75 ? (
-                        <SliderPointerWhite />
-                      ) : (
-                        <SliderPointer />
-                      )}
-                    </SliderMark>
-                    <SliderMark
-                      value={100}
-                      mt="-1.5"
-                      ml="-1.5"
-                      fontSize="sm"
-                      zIndex="1"
-                    >
-                      {sliderValue == 100 ? (
-                        <SliderPointerWhite />
-                      ) : (
-                        <SliderPointer />
-                      )}
-                    </SliderMark>
+								<Box
+									pt={5}
+									pb={2}
+									pr='0.5'
+									mt='1rem'
+									// width={`${sliderValue > 86 ? "96%" : "100%"}`}
+									// mr="auto"
+									// transition="ease-in-out"
+									display='flex'>
+									<Slider
+										aria-label='slider-ex-6'
+										defaultValue={sliderValue}
+										value={sliderValue}
+										onChange={(val) => {
+											setSliderValue(val);
+											var ans =
+												(val / 100) * walletBalance;
+											////console.log(ans);
+											if (val == 100) {
+												setDepositAmount(walletBalance);
+												setinputAmount(walletBalance);
+											} else {
+												// ans = Math.round(ans * 100) / 100;
+												if (ans < 10) {
+													setDepositAmount(
+														parseFloat(
+															ans.toFixed(7)
+														)
+													);
+													setinputAmount(
+														parseFloat(
+															ans.toFixed(7)
+														)
+													);
+												} else {
+													ans =
+														Math.round(ans * 100) /
+														100;
+													setDepositAmount(ans);
+													setinputAmount(ans);
+												}
 
-                    <SliderMark
-                      value={sliderValue}
-                      textAlign="center"
-                      color="white"
-                      mt="-8"
-                      ml={sliderValue !== 100 ? '-5' : '-6'}
-                      w="12"
-                      fontSize="12px"
-                      fontWeight="400"
-                      lineHeight="20px"
-                      letterSpacing="0.25px"
-                    >
-                      {sliderValue}%
-                    </SliderMark>
+												////console.log(ans)
+												// dispatch(setInputSupplyAmount(ans));
+											}
+										}}
+										isDisabled={transactionStarted == true}
+										_disabled={{ cursor: 'pointer' }}
+										focusThumbOnChange={false}>
+										<SliderMark
+											value={0}
+											mt='-1.5'
+											ml='-1.5'
+											fontSize='sm'
+											zIndex='1'>
+											{sliderValue >= 0 ?
+												<SliderPointerWhite />
+											:	<SliderPointer />}
+										</SliderMark>
+										<SliderMark
+											value={25}
+											mt='-1.5'
+											ml='-1.5'
+											fontSize='sm'
+											zIndex='1'>
+											{sliderValue >= 25 ?
+												<SliderPointerWhite />
+											:	<SliderPointer />}
+										</SliderMark>
+										<SliderMark
+											value={50}
+											mt='-1.5'
+											ml='-1.5'
+											fontSize='sm'
+											zIndex='1'>
+											{sliderValue >= 50 ?
+												<SliderPointerWhite />
+											:	<SliderPointer />}
+										</SliderMark>
+										<SliderMark
+											value={75}
+											mt='-1.5'
+											ml='-1.5'
+											fontSize='sm'
+											zIndex='1'>
+											{sliderValue >= 75 ?
+												<SliderPointerWhite />
+											:	<SliderPointer />}
+										</SliderMark>
+										<SliderMark
+											value={100}
+											mt='-1.5'
+											ml='-1.5'
+											fontSize='sm'
+											zIndex='1'>
+											{sliderValue == 100 ?
+												<SliderPointerWhite />
+											:	<SliderPointer />}
+										</SliderMark>
 
-                    <SliderTrack bg="#3E415C">
-                      <SliderFilledTrack
-                        bg="white"
-                        w={`${sliderValue}`}
-                        _disabled={{ bg: 'white' }}
-                      />
-                    </SliderTrack>
-                    <SliderThumb />
-                  </Slider>
-                </Box>
-              </Card>
+										<SliderMark
+											value={sliderValue}
+											textAlign='center'
+											color='white'
+											mt='-8'
+											ml={
+												sliderValue !== 100 ? '-5' : (
+													'-6'
+												)
+											}
+											w='12'
+											fontSize='12px'
+											fontWeight='400'
+											lineHeight='20px'
+											letterSpacing='0.25px'>
+											{sliderValue}%
+										</SliderMark>
 
-              <Box color="#676D9A" display="flex" alignItems="center" mt="1rem">
-                <Text
-                  mr="0.3rem"
-                  fontSize="12px"
-                  fontStyle="normal"
-                  fontWeight="400"
-                >
-                  You will receive
-                </Text>
-                <Tooltip
-                  hasArrow
-                  placement="right"
-                  boxShadow="dark-lg"
-                  label="rTokens are the representation of your share in the pool. These tokens can be used to generate yield by staking or to withdraw your supply."
-                  bg="#02010F"
-                  fontSize={'13px'}
-                  fontWeight={'400'}
-                  borderRadius={'lg'}
-                  padding={'2'}
-                  color="#F0F0F5"
-                  border="1px solid"
-                  borderColor="#23233D"
-                  arrowShadowColor="#2B2F35"
-                >
-                  <Box>
-                    <InfoIcon />
-                  </Box>
-                </Tooltip>
-              </Box>
+										<SliderTrack bg='#3E415C'>
+											<SliderFilledTrack
+												bg='white'
+												w={`${sliderValue}`}
+												_disabled={{ bg: 'white' }}
+											/>
+										</SliderTrack>
+										<SliderThumb />
+									</Slider>
+								</Box>
+							</Card>
 
-              <Box
-                width="100%"
-                color="white"
-                borderRadius="6px"
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                px="4"
-                py="1.5"
-                mt="0.3rem"
-                border="1px solid #676D9A4D"
-                backgroundColor="#676D9A4D"
-              >
-                <Box border="0px" color="#676D9A" fontSize="md" opacity="0.8">
-                  {depositAmount *
-                    protocolStats?.find(
-                      (stat: any) =>
-                        stat.token ==
-                        (currentSelectedCoin[0] == 'r'
-                          ? currentSelectedCoin.slice(1)
-                          : currentSelectedCoin)
-                    )?.exchangeRateUnderlyingToRtoken}
-                </Box>
-                <Text color="#676D9A" fontSize="md" opacity="0.8">
-                  r{currentSelectedCoin}
-                </Text>
-              </Box>
+							<Box
+								color='#676D9A'
+								display='flex'
+								alignItems='center'
+								mt='1rem'>
+								<Text
+									mr='0.3rem'
+									fontSize='12px'
+									fontStyle='normal'
+									fontWeight='400'>
+									You will receive
+								</Text>
+								<Tooltip
+									hasArrow
+									placement='right'
+									boxShadow='dark-lg'
+									label='rTokens are the representation of your share in the pool. These tokens can be used to generate yield by staking or to withdraw your supply.'
+									bg='#02010F'
+									fontSize={'13px'}
+									fontWeight={'400'}
+									borderRadius={'lg'}
+									padding={'2'}
+									color='#F0F0F5'
+									border='1px solid'
+									borderColor='#23233D'
+									arrowShadowColor='#2B2F35'>
+									<Box>
+										<InfoIcon />
+									</Box>
+								</Tooltip>
+							</Box>
 
-              <Box
-                display="flex"
-                gap="2"
-                mb="1rem"
-                mt="1rem"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Checkbox
-                  size="md"
-                  colorScheme="customPurple"
-                  borderColor="#2B2F35"
-                  isDisabled={transactionStarted == true}
-                  onChange={() => {
-                    setIsChecked(!ischecked)
-                  }}
-                  _disabled={{ backgroundColor: 'transparent' }}
-                  isChecked={ischecked}
-                />
-                <Text
-                  fontSize="14px"
-                  fontWeight="400"
-                  color="#B1B0B5"
-                  lineHeight="22px"
-                  width="100%"
-                  onClick={() => setIsChecked(!ischecked)}
-                  cursor="pointer"
-                  userSelect="none"
-                >
-                  I would like to stake the rTokens.
-                </Text>
-              </Box>
+							<Box
+								width='100%'
+								color='white'
+								borderRadius='6px'
+								display='flex'
+								justifyContent='space-between'
+								alignItems='center'
+								px='4'
+								py='1.5'
+								mt='0.3rem'
+								border='1px solid #676D9A4D'
+								backgroundColor='#676D9A4D'>
+								<Box
+									border='0px'
+									color='#676D9A'
+									fontSize='md'
+									opacity='0.8'>
+									{depositAmount *
+										protocolStats?.find(
+											(stat: any) =>
+												stat.token ==
+												(currentSelectedCoin[0] == 'r' ?
+													currentSelectedCoin.slice(1)
+												:	currentSelectedCoin)
+										)?.exchangeRateUnderlyingToRtoken}
+								</Box>
+								<Text
+									color='#676D9A'
+									fontSize='md'
+									opacity='0.8'>
+									r{currentSelectedCoin}
+								</Text>
+							</Box>
 
-              <Card
-                background=" var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                mt="1rem"
-                p="1rem"
-                border=" 1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-              >
-                <Text
-                  display="flex"
-                  justifyContent="space-between"
-                  fontSize="12px"
-                  mb="0.4rem"
-                >
-                  <Text display="flex" alignItems="center">
-                    <Text
-                      mr="0.2rem"
-                      font-style="normal"
-                      font-weight="400"
-                      font-size="12px"
-                      lineHeight="16px"
-                      color="#676D9A"
-                    >
-                      Fees:
-                    </Text>
-                    <Tooltip
-                      hasArrow
-                      placement="right"
-                      boxShadow="dark-lg"
-                      label="Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate."
-                      bg="#02010F"
-                      fontSize={'13px'}
-                      fontWeight={'400'}
-                      borderRadius={'lg'}
-                      padding={'2'}
-                      color="#F0F0F5"
-                      border="1px solid"
-                      borderColor="#23233D"
-                      arrowShadowColor="#2B2F35"
-                      maxW="222px"
-                    >
-                      <Box>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  </Text>
-                  <Text
-                    font-style="normal"
-                    font-weight="400"
-                    font-size="12px"
-                    color="#676D9A"
-                  >
-                    {fees?.supply}%
-                  </Text>
-                </Text>
-                {/* <Text
+							<Box
+								display='flex'
+								gap='2'
+								mb='1rem'
+								mt='1rem'
+								alignItems='center'
+								justifyContent='center'>
+								<Checkbox
+									size='md'
+									colorScheme='customPurple'
+									borderColor='#2B2F35'
+									isDisabled={transactionStarted == true}
+									onChange={() => {
+										setIsChecked(!ischecked);
+									}}
+									_disabled={{
+										backgroundColor: 'transparent',
+									}}
+									isChecked={ischecked}
+								/>
+								<Text
+									fontSize='14px'
+									fontWeight='400'
+									color='#B1B0B5'
+									lineHeight='22px'
+									width='100%'
+									onClick={() => setIsChecked(!ischecked)}
+									cursor='pointer'
+									userSelect='none'>
+									I would like to stake the rTokens.
+								</Text>
+							</Box>
+
+							<Card
+								background=' var(--surface-of-10, rgba(103, 109, 154, 0.10))'
+								mt='1rem'
+								p='1rem'
+								border=' 1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'>
+								<Text
+									display='flex'
+									justifyContent='space-between'
+									fontSize='12px'
+									mb='0.4rem'>
+									<Text
+										display='flex'
+										alignItems='center'>
+										<Text
+											mr='0.2rem'
+											font-style='normal'
+											font-weight='400'
+											font-size='12px'
+											lineHeight='16px'
+											color='#676D9A'>
+											Fees:
+										</Text>
+										<Tooltip
+											hasArrow
+											placement='right'
+											boxShadow='dark-lg'
+											label='Fees charged by Hashstack protocol. Additional third-party DApp fees may apply as appropriate.'
+											bg='#02010F'
+											fontSize={'13px'}
+											fontWeight={'400'}
+											borderRadius={'lg'}
+											padding={'2'}
+											color='#F0F0F5'
+											border='1px solid'
+											borderColor='#23233D'
+											arrowShadowColor='#2B2F35'
+											maxW='222px'>
+											<Box>
+												<InfoIcon />
+											</Box>
+										</Tooltip>
+									</Text>
+									<Text
+										font-style='normal'
+										font-weight='400'
+										font-size='12px'
+										color='#676D9A'>
+										{fees?.supply}%
+									</Text>
+								</Text>
+								{/* <Text
                   color="#8B949E"
                   display="flex"
                   justifyContent="space-between"
@@ -1636,146 +1853,149 @@ const SupplyModal = ({
                     $ 0.90
                   </Text>
                 </Text> */}
-                <Text
-                  color="#8B949E"
-                  display="flex"
-                  justifyContent="space-between"
-                  fontSize="12px"
-                  mb={'0.1rem'}
-                >
-                  <Text display="flex" alignItems="center">
-                    <Text
-                      mr="0.2rem"
-                      font-style="normal"
-                      font-weight="400"
-                      font-size="12px"
-                      color="#676D9A"
-                    >
-                      APR:
-                    </Text>
-                    <Tooltip
-                      hasArrow
-                      placement="right-end"
-                      boxShadow="dark-lg"
-                      label="Annual interest rate earned on supplied tokens."
-                      bg="#02010F"
-                      fontSize={'13px'}
-                      fontWeight={'400'}
-                      borderRadius={'lg'}
-                      padding={'2'}
-                      color="#F0F0F5"
-                      border="1px solid"
-                      borderColor="#23233D"
-                      arrowShadowColor="#2B2F35"
-                      // arrowPadding={2}
-                      maxW="222px"
-                      // marginTop={20}
-                    >
-                      <Box>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  </Text>
-                  <Text
-                    font-style="normal"
-                    font-weight="400"
-                    font-size="12px"
-                    color="#676D9A"
-                  >
-                    {!supplyAPRs ||
-                    supplyAPRs.length === 0 ||
-                    supplyAPRs[currentSupplyAPR] == null ? (
-                      <Box pt="3px">
-                        <Skeleton
-                          width="2.3rem"
-                          height=".85rem"
-                          startColor="#2B2F35"
-                          endColor="#101216"
-                          borderRadius="6px"
-                        />
-                      </Box>
-                    ) : (
-                      numberFormatterPercentage(
-                        supplyAPRs[currentSupplyAPR] +
-                          getBoostedApr(currentSelectedCoin)
-                      ) + '%'
-                    )}
-                    {/* 5.566% */}
-                  </Text>
-                </Text>
-                <Text
-                  color="#8B949E"
-                  display="flex"
-                  justifyContent="space-between"
-                  fontSize="12px"
-                  // mb={ischecked ?"0.4rem":"0rem"}
-                  mb={'0.1rem'}
-                  ml={'0.5rem'}
-                >
-                  <Text display="flex" alignItems="center">
-                    <Text
-                      mr="0.2rem"
-                      font-style="normal"
-                      font-weight="400"
-                      font-size="12px"
-                      color="#676D9A"
-                    >
-                      Supply APR:
-                    </Text>
-                  </Text>
-                  <Text
-                    font-style="normal"
-                    font-weight="400"
-                    font-size="12px"
-                    color="#676D9A"
-                  >
-                    {!supplyAPRs ||
-                    supplyAPRs.length === 0 ||
-                    supplyAPRs[currentSupplyAPR] == null ? (
-                      <Box pt="3px">
-                        <Skeleton
-                          width="2.3rem"
-                          height=".85rem"
-                          startColor="#2B2F35"
-                          endColor="#101216"
-                          borderRadius="6px"
-                        />
-                      </Box>
-                    ) : (
-                      supplyAPRs[currentSupplyAPR] + '%'
-                    )}
-                    {/* 5.566% */}
-                  </Text>
-                </Text>
-                {
-                  <Text
-                    color="#8B949E"
-                    display="flex"
-                    justifyContent="space-between"
-                    fontSize="12px"
-                    // mt={ischecked ?"0rem": "0.4rem"}
-                    mb={ischecked ? '0.4rem' : '0rem'}
-                    ml={'0.5rem'}
-                  >
-                    <Text display="flex" alignItems="center">
-                      <Text
-                        mr="0.2rem"
-                        font-style="normal"
-                        font-weight="400"
-                        font-size="12px"
-                        color="#676D9A"
-                      >
-                        STRK APR:
-                      </Text>
-                    </Text>
-                    <Text color="#676D9A">
-                      {strkData?.[currentSelectedCoin]
-                        ? numberFormatterPercentage(
-                            getBoostedApr(currentSelectedCoin)
-                          )
-                        : 0}
-                      %
-                      {/* {protocolStats?.[0]?.stakingRate ? (
+								<Text
+									color='#8B949E'
+									display='flex'
+									justifyContent='space-between'
+									fontSize='12px'
+									mb={'0.1rem'}>
+									<Text
+										display='flex'
+										alignItems='center'>
+										<Text
+											mr='0.2rem'
+											font-style='normal'
+											font-weight='400'
+											font-size='12px'
+											color='#676D9A'>
+											APR:
+										</Text>
+										<Tooltip
+											hasArrow
+											placement='right-end'
+											boxShadow='dark-lg'
+											label='Annual interest rate earned on supplied tokens.'
+											bg='#02010F'
+											fontSize={'13px'}
+											fontWeight={'400'}
+											borderRadius={'lg'}
+											padding={'2'}
+											color='#F0F0F5'
+											border='1px solid'
+											borderColor='#23233D'
+											arrowShadowColor='#2B2F35'
+											// arrowPadding={2}
+											maxW='222px'
+											// marginTop={20}
+										>
+											<Box>
+												<InfoIcon />
+											</Box>
+										</Tooltip>
+									</Text>
+									<Text
+										font-style='normal'
+										font-weight='400'
+										font-size='12px'
+										color='#676D9A'>
+										{(
+											!supplyAPRs ||
+											supplyAPRs.length === 0 ||
+											supplyAPRs[currentSupplyAPR] == null
+										) ?
+											<Box pt='3px'>
+												<Skeleton
+													width='2.3rem'
+													height='.85rem'
+													startColor='#2B2F35'
+													endColor='#101216'
+													borderRadius='6px'
+												/>
+											</Box>
+										:	numberFormatterPercentage(
+												supplyAPRs[currentSupplyAPR] +
+													getBoostedApr(
+														currentSelectedCoin
+													)
+											) + '%'
+										}
+										{/* 5.566% */}
+									</Text>
+								</Text>
+								<Text
+									color='#8B949E'
+									display='flex'
+									justifyContent='space-between'
+									fontSize='12px'
+									// mb={ischecked ?"0.4rem":"0rem"}
+									mb={'0.1rem'}
+									ml={'0.5rem'}>
+									<Text
+										display='flex'
+										alignItems='center'>
+										<Text
+											mr='0.2rem'
+											font-style='normal'
+											font-weight='400'
+											font-size='12px'
+											color='#676D9A'>
+											Supply APR:
+										</Text>
+									</Text>
+									<Text
+										font-style='normal'
+										font-weight='400'
+										font-size='12px'
+										color='#676D9A'>
+										{(
+											!supplyAPRs ||
+											supplyAPRs.length === 0 ||
+											supplyAPRs[currentSupplyAPR] == null
+										) ?
+											<Box pt='3px'>
+												<Skeleton
+													width='2.3rem'
+													height='.85rem'
+													startColor='#2B2F35'
+													endColor='#101216'
+													borderRadius='6px'
+												/>
+											</Box>
+										:	supplyAPRs[currentSupplyAPR] + '%'}
+										{/* 5.566% */}
+									</Text>
+								</Text>
+								{
+									<Text
+										color='#8B949E'
+										display='flex'
+										justifyContent='space-between'
+										fontSize='12px'
+										// mt={ischecked ?"0rem": "0.4rem"}
+										mb={ischecked ? '0.4rem' : '0rem'}
+										ml={'0.5rem'}>
+										<Text
+											display='flex'
+											alignItems='center'>
+											<Text
+												mr='0.2rem'
+												font-style='normal'
+												font-weight='400'
+												font-size='12px'
+												color='#676D9A'>
+												STRK APR:
+											</Text>
+										</Text>
+										<Text color='#676D9A'>
+											{strkData?.[currentSelectedCoin] ?
+												numberFormatterPercentage(
+													getBoostedApr(
+														currentSelectedCoin
+													)
+												)
+											:	0}
+											%
+											{/* {protocolStats?.[0]?.stakingRate ? (
                               protocolStats?.[0]?.stakingRate
                             ) : (
                               <Skeleton
@@ -1786,68 +2006,80 @@ const SupplyModal = ({
                                 borderRadius="6px"
                               />
                             )} */}
-                    </Text>
-                  </Text>
-                }
-                {ischecked && (
-                  <Text
-                    color="#8B949E"
-                    display="flex"
-                    justifyContent="space-between"
-                    fontSize="12px"
-                  >
-                    <Text display="flex" alignItems="center">
-                      <Text
-                        mr="0.2rem"
-                        font-style="normal"
-                        font-weight="400"
-                        font-size="12px"
-                        color="#676D9A"
-                      >
-                        Staking rewards:
-                      </Text>
-                      <Tooltip
-                        hasArrow
-                        placement="right"
-                        boxShadow="dark-lg"
-                        label="Rewards earned in staking activities within the protocol."
-                        bg="#02010F"
-                        fontSize={'13px'}
-                        fontWeight={'400'}
-                        borderRadius={'lg'}
-                        padding={'2'}
-                        color="#F0F0F5"
-                        border="1px solid"
-                        borderColor="#23233D"
-                        arrowShadowColor="#2B2F35"
-                        maxW="282px"
-                      >
-                        <Box>
-                          <InfoIcon />
-                        </Box>
-                      </Tooltip>
-                    </Text>
-                    <Text color="#676D9A">
-                      +
-                      {protocolStats?.find(
-                        (stat: any) =>
-                          stat.token ==
-                          (currentSelectedCoin[0] == 'r'
-                            ? currentSelectedCoin.slice(1)
-                            : currentSelectedCoin)
-                      )?.stakingRate
-                        ? (
-                            protocolStats?.find(
-                              (stat: any) =>
-                                stat.token ==
-                                (currentSelectedCoin[0] == 'r'
-                                  ? currentSelectedCoin.slice(1)
-                                  : currentSelectedCoin)
-                            )?.stakingRate - supplyAPRs[currentSupplyAPR]
-                          ).toFixed(2)
-                        : '1.2'}
-                      %
-                      {/* {protocolStats?.[0]?.stakingRate ? (
+										</Text>
+									</Text>
+								}
+								{ischecked && (
+									<Text
+										color='#8B949E'
+										display='flex'
+										justifyContent='space-between'
+										fontSize='12px'>
+										<Text
+											display='flex'
+											alignItems='center'>
+											<Text
+												mr='0.2rem'
+												font-style='normal'
+												font-weight='400'
+												font-size='12px'
+												color='#676D9A'>
+												Staking rewards:
+											</Text>
+											<Tooltip
+												hasArrow
+												placement='right'
+												boxShadow='dark-lg'
+												label='Rewards earned in staking activities within the protocol.'
+												bg='#02010F'
+												fontSize={'13px'}
+												fontWeight={'400'}
+												borderRadius={'lg'}
+												padding={'2'}
+												color='#F0F0F5'
+												border='1px solid'
+												borderColor='#23233D'
+												arrowShadowColor='#2B2F35'
+												maxW='282px'>
+												<Box>
+													<InfoIcon />
+												</Box>
+											</Tooltip>
+										</Text>
+										<Text color='#676D9A'>
+											+
+											{(
+												protocolStats?.find(
+													(stat: any) =>
+														stat.token ==
+														((
+															currentSelectedCoin[0] ==
+															'r'
+														) ?
+															currentSelectedCoin.slice(
+																1
+															)
+														:	currentSelectedCoin)
+												)?.stakingRate
+											) ?
+												(
+													protocolStats?.find(
+														(stat: any) =>
+															stat.token ==
+															((
+																currentSelectedCoin[0] ==
+																'r'
+															) ?
+																currentSelectedCoin.slice(
+																	1
+																)
+															:	currentSelectedCoin)
+													)?.stakingRate -
+													supplyAPRs[currentSupplyAPR]
+												).toFixed(2)
+											:	'1.2'}
+											%
+											{/* {protocolStats?.[0]?.stakingRate ? (
                               protocolStats?.[0]?.stakingRate
                             ) : (
                               <Skeleton
@@ -1858,126 +2090,149 @@ const SupplyModal = ({
                                 borderRadius="6px"
                               />
                             )} */}
-                    </Text>
-                  </Text>
-                )}
-                {ischecked && (
-                  <Text
-                    display="flex"
-                    justifyContent="space-between"
-                    fontSize="12px"
-                    mt="0.5rem"
-                    // mb="0.4rem"
-                  >
-                    <Text display="flex" alignItems="center">
-                      <Text
-                        mr="0.2rem"
-                        font-style="normal"
-                        font-weight="400"
-                        font-size="12px"
-                        lineHeight="16px"
-                        color="#676D9A"
-                      >
-                        Note: Staked assets cannot be used as collateral
-                      </Text>
-                    </Text>
-                  </Text>
-                )}
-              </Card>
+										</Text>
+									</Text>
+								)}
+								{ischecked && (
+									<Text
+										display='flex'
+										justifyContent='space-between'
+										fontSize='12px'
+										mt='0.5rem'
+										// mb="0.4rem"
+									>
+										<Text
+											display='flex'
+											alignItems='center'>
+											<Text
+												mr='0.2rem'
+												font-style='normal'
+												font-weight='400'
+												font-size='12px'
+												lineHeight='16px'
+												color='#676D9A'>
+												Note: Staked assets cannot be
+												used as collateral
+											</Text>
+										</Text>
+									</Text>
+								)}
+							</Card>
 
-              {depositAmount > 0 &&
-              depositAmount <= walletBalance &&
-              ((depositAmount > 0 && depositAmount >= minimumDepositAmount) ||
-                process.env.NEXT_PUBLIC_NODE_ENV == 'testnet') &&
-              (process.env.NEXT_PUBLIC_NODE_ENV == 'testnet' ||
-                depositAmount <= maximumDepositAmount) ? (
-                buttonId == 1 ? (
-                  <SuccessButton successText="Supply success" />
-                ) : buttonId == 2 ? (
-                  <ErrorButton errorText="Copy error!" />
-                ) : (
-                  <Box
-                    onClick={() => {
-                      // dispatch(setTransactionStarted(""));
-                      setTransactionStarted(true)
-                      if (transactionStarted === false) {
-                        dispatch(setTransactionStartedAndModalClosed(false))
+							{(
+								depositAmount > 0 &&
+								depositAmount <= walletBalance &&
+								((depositAmount > 0 &&
+									depositAmount >= minimumDepositAmount) ||
+									process.env.NEXT_PUBLIC_NODE_ENV ==
+										'testnet') &&
+								(process.env.NEXT_PUBLIC_NODE_ENV ==
+									'testnet' ||
+									depositAmount <= maximumDepositAmount)
+							) ?
+								buttonId == 1 ?
+									<SuccessButton successText='Supply success' />
+								: buttonId == 2 ?
+									<ErrorButton errorText='Copy error!' />
+								:	<Box
+										onClick={() => {
+											// dispatch(setTransactionStarted(""));
+											setTransactionStarted(true);
+											if (transactionStarted === false) {
+												dispatch(
+													setTransactionStartedAndModalClosed(
+														false
+													)
+												);
 
-                        handleTransaction()
-                        posthog.capture('Supply Market Clicked Button', {
-                          'Supply Clicked': true,
-                        })
-                      }
-                      // handleTransaction();
-                      // dataDeposit();
-                      // if(transactionStarted){
-                      //   return;
-                      // }
-                      ////console.log(isSuccessDeposit, "status deposit")
-                    }}
-                  >
-                    <AnimatedButton
-                      background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                      // bgColor="red"
-                      // p={0}
-                      color="#8B949E"
-                      size="sm"
-                      width="100%"
-                      mt="1.5rem"
-                      mb="1.5rem"
-                      labelSuccessArray={[
-                        'Deposit Amount approved',
-                        'Successfully transferred to Hashstack’s supply vault.',
-                        'Determining the rToken amount to mint.',
-                        'rTokens have been minted successfully.',
-                        'Transaction complete.',
-                        // <ErrorButton errorText="Transaction failed" />,
-                        // <ErrorButton errorText="Copy error!" />,
-                        <SuccessButton
-                          key={'successButton'}
-                          successText={'Supply success'}
-                        />,
-                      ]}
-                      labelErrorArray={[
-                        <ErrorButton
-                          errorText="Transaction failed"
-                          key={'error1'}
-                        />,
-                        <ErrorButton errorText="Copy error!" key={'error2'} />,
-                      ]}
-                      // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
-                      _disabled={{ bgColor: 'white', color: 'black' }}
-                      isDisabled={transactionStarted == true}
-                      // transactionStarted={toastTransactionStarted}
-                      // onClick={}
-                      currentTransactionStatus={currentTransactionStatus}
-                      setCurrentTransactionStatus={setCurrentTransactionStatus}
-                    >
-                      Supply
-                    </AnimatedButton>
-                  </Box>
-                )
-              ) : (
-                <Button
-                  background="var(--surface-of-10, rgba(103, 109, 154, 0.10))"
-                  color="#6E7681"
-                  size="sm"
-                  width="100%"
-                  mt="1.5rem"
-                  mb="1.5rem"
-                  border="1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))"
-                  _hover={{
-                    bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
-                  }}
-                >
-                  Supply
-                </Button>
-              )}
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      </Portal>
-    </div>
-  )
-}
-export default SupplyModal
+												handleTransaction();
+												posthog.capture(
+													'Supply Market Clicked Button',
+													{
+														'Supply Clicked': true,
+													}
+												);
+											}
+											// handleTransaction();
+											// dataDeposit();
+											// if(transactionStarted){
+											//   return;
+											// }
+											////console.log(isSuccessDeposit, "status deposit")
+										}}>
+										<AnimatedButton
+											background='var(--surface-of-10, rgba(103, 109, 154, 0.10))'
+											// bgColor="red"
+											// p={0}
+											color='#8B949E'
+											size='sm'
+											width='100%'
+											mt='1.5rem'
+											mb='1.5rem'
+											labelSuccessArray={[
+												'Deposit Amount approved',
+												'Successfully transferred to Hashstack’s supply vault.',
+												'Determining the rToken amount to mint.',
+												'rTokens have been minted successfully.',
+												'Transaction complete.',
+												// <ErrorButton errorText="Transaction failed" />,
+												// <ErrorButton errorText="Copy error!" />,
+												<SuccessButton
+													key={'successButton'}
+													successText={
+														'Supply success'
+													}
+												/>,
+											]}
+											labelErrorArray={[
+												<ErrorButton
+													errorText='Transaction failed'
+													key={'error1'}
+												/>,
+												<ErrorButton
+													errorText='Copy error!'
+													key={'error2'}
+												/>,
+											]}
+											// transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
+											_disabled={{
+												bgColor: 'white',
+												color: 'black',
+											}}
+											isDisabled={
+												transactionStarted == true
+											}
+											// transactionStarted={toastTransactionStarted}
+											// onClick={}
+											currentTransactionStatus={
+												currentTransactionStatus
+											}
+											setCurrentTransactionStatus={
+												setCurrentTransactionStatus
+											}>
+											Supply
+										</AnimatedButton>
+									</Box>
+
+							:	<Button
+									background='var(--surface-of-10, rgba(103, 109, 154, 0.10))'
+									color='#6E7681'
+									size='sm'
+									width='100%'
+									mt='1.5rem'
+									mb='1.5rem'
+									border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
+									_hover={{
+										bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
+									}}>
+									Supply
+								</Button>
+							}
+						</ModalBody>
+					</ModalContent>
+				</Modal>
+			</Portal>
+		</div>
+	);
+};
+export default SupplyModal;

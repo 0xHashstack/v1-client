@@ -214,9 +214,9 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
       height={'100%'}
       paddingX={isLargerThan1280 ? '2rem' : '1rem'}
       pt={'1.7rem'}
-      overflowX="hidden"
+      overflowX="scroll"
     >
-      <Table variant="unstyled" width="100%" height="100%">
+      <Table variant="unstyled" width="100%" height="100%" minWidth={'900px'}>
         <Thead width={'100%'} height={'2.7rem'}>
           <Tr width={'100%'}>
             {columnItems.map((val: any, idx: any) => (
