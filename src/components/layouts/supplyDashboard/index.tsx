@@ -184,48 +184,15 @@ const SupplyDashboard = ({
 			if (!userDeposits || !reduxProtocolStats) {
 				return;
 			}
-			////console.log("all deposits calling started");
-			////console.log("all deposits calling started");
 			try {
 				const supply = userDeposits;
-				////console.log("users deposits - ", userDeposits);
-
-				// const supply = await getUserDeposits(address);
-
-				////console.log("supply in supply dash: ", supply);
 				if (!supply) return;
-				// let data: any = [];
-				// let indexes: any = [2, 3, 0, 1, 4];
-
-				// data = indexes.map((index: number) => {
-				//   if (
-				//     supply?.[index].rTokenAmountParsed !== 0 ||
-				//     supply?.[index].rTokenFreeParsed !== 0 ||
-				//     supply?.[index].rTokenLockedParsed !== 0 ||
-				//     supply?.[index].rTokenStakedParsed !== 0
-				//   )
-				//     return supply[index];
-				// });
-
-				// supply.map((currSupply: any) => {
-				//   if (
-				//     currSupply.rTokenAmountParsed !== 0 ||
-				//     currSupply.rTokenFreeParsed !== 0 ||
-				//     currSupply.rTokenLockedParsed !== 0 ||
-				//     currSupply.rTokenStakedParsed !== 0
-				//   )
-				//     temp.push(currSupply);
-				// });
-				// setSupplies(data);
-				////console.log(supplies,"supply dash");
-				////console.log(reduxProtocolStats,"supply stats")
 				if (avgs.length == 0) {
 					for (var i = 0; i < supply?.length; i++) {
 						const avg = await effectiveAprDeposit(
 							supply[i],
 							reduxProtocolStats
 						);
-						////console.log(avg, "avg in supply dash");
 						const data = {
 							token: supply[i].token,
 							avg: avg?.toFixed(2),
@@ -236,9 +203,6 @@ const SupplyDashboard = ({
 					}
 					setAvgs(avgsData);
 				}
-				////console.log(avgs, "avgs in supply");
-
-				// dispatch(setUserDeposits(supply));
 			} catch (err) {
 				//console.log("supplies", err);
 			}
@@ -772,7 +736,8 @@ const SupplyDashboard = ({
 																						item?.token ==
 																						supply?.token
 																				)
-																					?.avg
+																					?.avg ||
+																					0
 																			) -
 																			Number(
 																				protocolStats.find(
@@ -788,7 +753,8 @@ const SupplyDashboard = ({
 																							return stat;
 																					}
 																				)
-																					?.supplyRate
+																					?.supplyRate ||
+																					0
 																			)
 																		)?.toFixed(
 																			3
@@ -868,7 +834,7 @@ const SupplyDashboard = ({
 																		) =>
 																			item?.token ==
 																			supply?.token
-																	)?.avg
+																	)?.avg || 0
 																) +
 																	getBoostedApr(
 																		supply?.rToken?.slice(
