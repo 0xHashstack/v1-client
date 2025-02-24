@@ -195,7 +195,7 @@ const SupplyDashboard = ({
 						);
 						const data = {
 							token: supply[i].token,
-							avg: avg?.toFixed(2),
+							avg: (avg || 0)?.toFixed(2),
 						};
 						// avgs.push(data)
 						avgsData.push(data);
@@ -801,7 +801,8 @@ const SupplyDashboard = ({
 																						item?.token ==
 																						supply?.token
 																				)
-																					?.avg
+																					?.avg ||
+																					0
 																			) +
 																				getBoostedApr(
 																					supply?.rToken?.slice(
