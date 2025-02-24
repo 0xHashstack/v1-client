@@ -63,7 +63,8 @@
 		"tailwind-merge": "^3.0.1",
 		"tailwindcss-animate": "^1.0.7",
 		"typescript": "5.0.4",
-		"util": "^0.12.5"
+		"util": "^0.12.5",
+		"zustand": "^5.0.3"
 	},
 	"devDependencies": {
 		"@chakra-ui/storybook-addon": "^5.1.0",
