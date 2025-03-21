@@ -141,6 +141,7 @@ import UsdcToDai from '@/assets/icons/pools/usdcToDai';
 import UsdcToUsdt from '@/assets/icons/pools/usdcToUsdt';
 import UsdtToDai from '@/assets/icons/pools/usdtToDai';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { actionDisable } from '@/constants/config.constant';
 
 const BorrowModal = ({
 	buttonText,
@@ -1678,7 +1679,9 @@ const BorrowModal = ({
 		<Box>
 			<Button
 				{...restProps}
+				isDisabled={actionDisable}
 				onClick={() => {
+					if (actionDisable) return;
 					const uqID = Math.random();
 					setUniqueID(uqID);
 					let data: any = (
@@ -1698,6 +1701,7 @@ const BorrowModal = ({
 				{buttonText !== 'Click here to borrow' ?
 					buttonText === 'Borrow from metrics' ?
 						<Button
+							isDisabled={actionDisable}
 							w='70px'
 							h='32px'
 							fontSize='14px'

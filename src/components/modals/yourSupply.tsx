@@ -106,6 +106,7 @@ import AnimatedButton from '../uiElements/buttons/AnimationButton';
 import ErrorButton from '../uiElements/buttons/ErrorButton';
 import SuccessButton from '../uiElements/buttons/SuccessButton';
 import useWithdrawStake from '@/Blockchain/hooks/Writes/useWithdrawStake';
+import { actionDisable } from '@/constants/config.constant';
 const YourSupplyModal = ({
 	currentSelectedSupplyCoin,
 	setCurrentSelectedSupplyCoin,
@@ -573,6 +574,7 @@ const YourSupplyModal = ({
 	};
 
 	const handleChange = (newValue: any) => {
+		if (actionDisable) return;
 		if (newValue > 9_000_000_000) return;
 		var percentage = (newValue * 100) / walletBalance;
 		percentage = Math.max(0, percentage);
@@ -1092,7 +1094,8 @@ const YourSupplyModal = ({
 												withdrawTransactionStarted ==
 													true ||
 												unstakeTransactionStarted ==
-													true
+													true ||
+												actionDisable
 											}>
 											Add supply
 										</Tab>
@@ -1505,7 +1508,8 @@ const YourSupplyModal = ({
 														)}
 														isDisabled={
 															transactionStarted ==
-															true
+																true ||
+															actionDisable
 														}
 														_disabled={{
 															cursor: 'pointer',
@@ -1567,6 +1571,9 @@ const YourSupplyModal = ({
 															_disabled={{
 																color: '#00D395',
 															}}
+															disabled={
+																actionDisable
+															}
 															_placeholder={{
 																color: '#393D4F',
 																fontSize:
@@ -1626,6 +1633,8 @@ const YourSupplyModal = ({
 															bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
 														}}
 														onClick={() => {
+															if (actionDisable)
+																return;
 															setinputSupplyAmount(
 																walletBalance
 															);
@@ -1638,8 +1647,9 @@ const YourSupplyModal = ({
 															setSliderValue(100);
 														}}
 														isDisabled={
+															actionDisable ||
 															transactionStarted ==
-															true
+																true
 														}
 														_disabled={{
 															cursor: 'pointer',
@@ -1754,6 +1764,8 @@ const YourSupplyModal = ({
 														}
 														value={sliderValue}
 														onChange={(val) => {
+															if (actionDisable)
+																return;
 															setSliderValue(val);
 															var ans =
 																(val / 100) *
@@ -1798,7 +1810,8 @@ const YourSupplyModal = ({
 														}}
 														isDisabled={
 															transactionStarted ==
-															true
+																true ||
+															actionDisable
 														}
 														_disabled={{
 															cursor: 'pointer',
@@ -1979,9 +1992,12 @@ const YourSupplyModal = ({
 													borderColor='#2B2F35'
 													isDisabled={
 														transactionStarted ==
-														true
+															true ||
+														actionDisable
 													}
 													onChange={() => {
+														if (actionDisable)
+															return;
 														setIsChecked(
 															!ischecked
 														);
@@ -2382,6 +2398,8 @@ const YourSupplyModal = ({
 											) ?
 												<Box
 													onClick={() => {
+														if (actionDisable)
+															return;
 														setTransactionStarted(
 															true
 														);
@@ -2447,7 +2465,8 @@ const YourSupplyModal = ({
 														}}
 														isDisabled={
 															transactionStarted ==
-															true
+																true ||
+															actionDisable
 														}>
 														Supply
 													</AnimatedButton>
@@ -2457,6 +2476,7 @@ const YourSupplyModal = ({
 													size='sm'
 													width='100%'
 													mb='1.5rem'
+													isDisabled={actionDisable}
 													background='var(--surface-of-10, rgba(103, 109, 154, 0.10))'
 													border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
 													_hover={{

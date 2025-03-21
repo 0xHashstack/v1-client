@@ -68,6 +68,7 @@ import numberFormatterPercentage from '@/utils/functions/numberFormatterPercenta
 import { useAccount } from '@starknet-react/core';
 import { useRouter } from 'next/navigation';
 import BorrowModal from '../../modals/borrowModal';
+import { actionDisable } from '@/constants/config.constant';
 const SpendTable = () => {
 	const [showWarning, setShowWarning] = useState(true);
 	const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -891,219 +892,230 @@ const SpendTable = () => {
 							rows={3}
 						/>
 					</Box>
-					<Box
-						display='flex'
-						justifyContent='left'
-						w='100%'
-						height='16rem'
+					{!actionDisable && (
+						<Box
+							display='flex'
+							justifyContent='left'
+							w='100%'
+							height='16rem'
 
-						// bgColor="pink"
-					>
-						<div className='flex-1 flex'>
-							<Tabs
-								variant='unstyled'
-								defaultIndex={selectedIndex}
-								pt='2rem'
-								display='flex'
-								flexDirection='column'
-								width='100%'
-								gap='2rem'
-								index={tabIndex}
-								onChange={(index) => setTabIndex(index)}>
-								<TabList
-									// borderRadius="26px"
-									color={
-										selectedDapp == '' ? '#676D9A4D' : (
-											'white'
-										)
-									}
-									h='2rem'
-									width='100%'
+							// bgColor="pink"
+						>
+							<div className='flex-1 flex'>
+								<Tabs
+									variant='unstyled'
+									defaultIndex={selectedIndex}
+									pt='2rem'
 									display='flex'
-									// bgColor="red"
-								>
-									<Tab
-										// padding="6px 16px"
-										//   color="#6E7681"
-										fontSize='14px'
-										fontStyle='normal'
-										border='1px'
-										borderColor='#676D9A4D'
-										lineHeight='20px'
-										// borderLeftRadius="md"
-										fontWeight='500'
-										borderLeftRadius='6px'
-										_selected={{
-											// color: "white",
-											bg:
-												selectedDapp != '' ? '#4D59E8'
-												:	'none',
-											// border: "none",
-										}}
-										_disabled={{
-											background: '#676D9A1A',
-										}}
-										isDisabled={selectedDapp == ''}>
-										Liquidity provision
-									</Tab>
-									<Tab
-										// padding="6px 16px"
-										//   color="#6E7681"
-										fontSize='14px'
-										fontStyle='normal'
-										border='1px'
-										borderColor='#676D9A4D'
-										lineHeight='20px'
-										// borderLeftRadius="md"
-										fontWeight='500'
-										borderRadius='0px'
-										_selected={{
-											// color: "white",
-											bg:
-												selectedDapp != '' ? '#4D59E8'
-												:	'none',
-											// border: "none",
-										}}
-										_disabled={{
-											background: '#676D9A1A',
-										}}
-										isDisabled={selectedDapp == ''}
-										// isDisabled={selectedDapp == ""}
+									flexDirection='column'
+									width='100%'
+									gap='2rem'
+									index={tabIndex}
+									onChange={(index) => setTabIndex(index)}>
+									<TabList
+										// borderRadius="26px"
+										color={
+											selectedDapp == '' ? '#676D9A4D' : (
+												'white'
+											)
+										}
+										h='2rem'
+										width='100%'
+										display='flex'
+										// bgColor="red"
 									>
-										Swap
-									</Tab>
-									<Tab
-										// padding="0px 16px"
-										//   color="#6E7681"
-										fontSize='14px'
-										fontStyle='normal'
-										border='1px'
-										borderColor='#676D9A4D'
-										lineHeight='20px'
-										fontWeight='500'
-										// borderRadius="0px"
-										_selected={{
-											// color: "white",
-											bg:
-												selectedDapp != '' ? '#4D59E8'
-												:	'none',
-											// border: "none",
-										}}
-										_disabled={{
-											background: '#676D9A1A',
-										}}
-										onClick={() => setTradeNote(true)}
-										isDisabled={selectedDapp == ''}>
-										Stake
-									</Tab>
+										<Tab
+											// padding="6px 16px"
+											//   color="#6E7681"
+											fontSize='14px'
+											fontStyle='normal'
+											border='1px'
+											borderColor='#676D9A4D'
+											lineHeight='20px'
+											// borderLeftRadius="md"
+											fontWeight='500'
+											borderLeftRadius='6px'
+											_selected={{
+												// color: "white",
+												bg:
+													selectedDapp != '' ?
+														'#4D59E8'
+													:	'none',
+												// border: "none",
+											}}
+											_disabled={{
+												background: '#676D9A1A',
+											}}
+											isDisabled={selectedDapp == ''}>
+											Liquidity provision
+										</Tab>
+										<Tab
+											// padding="6px 16px"
+											//   color="#6E7681"
+											fontSize='14px'
+											fontStyle='normal'
+											border='1px'
+											borderColor='#676D9A4D'
+											lineHeight='20px'
+											// borderLeftRadius="md"
+											fontWeight='500'
+											borderRadius='0px'
+											_selected={{
+												// color: "white",
+												bg:
+													selectedDapp != '' ?
+														'#4D59E8'
+													:	'none',
+												// border: "none",
+											}}
+											_disabled={{
+												background: '#676D9A1A',
+											}}
+											isDisabled={selectedDapp == ''}
+											// isDisabled={selectedDapp == ""}
+										>
+											Swap
+										</Tab>
+										<Tab
+											// padding="0px 16px"
+											//   color="#6E7681"
+											fontSize='14px'
+											fontStyle='normal'
+											border='1px'
+											borderColor='#676D9A4D'
+											lineHeight='20px'
+											fontWeight='500'
+											// borderRadius="0px"
+											_selected={{
+												// color: "white",
+												bg:
+													selectedDapp != '' ?
+														'#4D59E8'
+													:	'none',
+												// border: "none",
+											}}
+											_disabled={{
+												background: '#676D9A1A',
+											}}
+											onClick={() => setTradeNote(true)}
+											isDisabled={selectedDapp == ''}>
+											Stake
+										</Tab>
 
-									<Tab
-										// padding="6px 16px"
-										//   color="#6E7681"
-										fontSize='14px'
-										fontStyle='normal'
-										border='1px'
-										borderColor='#676D9A4D'
-										lineHeight='20px'
-										// borderLeftRadius="md"
-										fontWeight='500'
-										borderRadius='0px'
-										borderRightRadius='6px'
-										_selected={{
-											// color: "white",
-											bg:
-												selectedDapp != '' ? '#4D59E8'
-												:	'none',
-											// border: "none",
-										}}
-										_disabled={{
-											background: '#676D9A1A',
-										}}
-										onClick={() => setTradeNote(true)}
-										isDisabled={selectedDapp == ''}>
-										Trade
-									</Tab>
-								</TabList>
-								<TabPanels>
-									<TabPanel p={0}>
-										<Box
-											display='flex'
-											flexDirection='column'>
-											<Text
-												color={
-													selectedDapp != '' ? 'white'
-													:	'#676D9A4D'
-												}
-												fontSize='sm'>
-												Select a Dapp to begin with the
-												spend
-											</Text>
-											<LiquidityProvisionModal
-												borrowIDCoinMap={
-													borrowIDCoinMap
-												}
-												coins={coins}
-												borrow={currentBorrowData}
-												borrowIds={borrowIds}
-												currentId={currentId}
-												currentMarketCoin={
-													currentMarketCoin
-												}
-												BorrowBalance={borrowAmount}
-												currentSwap={currentSwap}
-												setCurrentSwap={setCurrentSwap}
-												currentLoanAmount={
-													currentLoanAmount
-												}
-												currentLoanMarket={
-													currentLoanMarket
-												}
-												setCurrentLoanAmount={
-													setCurrentLoanAmount
-												}
-												setCurrentLoanMarket={
-													setCurrentLoanMarket
-												}
-												borrowAPRs={borrowAPRs}
-												collateralMarket={
-													collateralCoin
-												}
-											/>
-										</Box>
-									</TabPanel>
-									<TabPanel padding='0'>
-										<Box>
-											<Text
-												color={
-													selectedDapp != '' ? 'white'
-													:	'#676D9A4D'
-												}
-												fontSize='sm'>
-												Select a Dapp to begin with the
-												spend
-											</Text>
-											<SwapModal
-												borrowIDCoinMap={
-													borrowIDCoinMap
-												}
-												coins={coins}
-												borrowIds={borrowIds}
-												currentId={currentId}
-												currentMarketCoin={
-													currentMarketCoin
-												}
-												BorrowBalance={borrowAmount}
-												currentSwap={currentSwap}
-												setCurrentSwap={setCurrentSwap}
-												borrowAPRs={borrowAPRs}
-												collateralMarket={
-													collateralCoin
-												}
-												borrow={currentBorrowData}
-											/>
-										</Box>
-									</TabPanel>
-									{/* <TabPanel p={0}>
+										<Tab
+											// padding="6px 16px"
+											//   color="#6E7681"
+											fontSize='14px'
+											fontStyle='normal'
+											border='1px'
+											borderColor='#676D9A4D'
+											lineHeight='20px'
+											// borderLeftRadius="md"
+											fontWeight='500'
+											borderRadius='0px'
+											borderRightRadius='6px'
+											_selected={{
+												// color: "white",
+												bg:
+													selectedDapp != '' ?
+														'#4D59E8'
+													:	'none',
+												// border: "none",
+											}}
+											_disabled={{
+												background: '#676D9A1A',
+											}}
+											onClick={() => setTradeNote(true)}
+											isDisabled={selectedDapp == ''}>
+											Trade
+										</Tab>
+									</TabList>
+									<TabPanels>
+										<TabPanel p={0}>
+											<Box
+												display='flex'
+												flexDirection='column'>
+												<Text
+													color={
+														selectedDapp != '' ?
+															'white'
+														:	'#676D9A4D'
+													}
+													fontSize='sm'>
+													Select a Dapp to begin with
+													the spend
+												</Text>
+												<LiquidityProvisionModal
+													borrowIDCoinMap={
+														borrowIDCoinMap
+													}
+													coins={coins}
+													borrow={currentBorrowData}
+													borrowIds={borrowIds}
+													currentId={currentId}
+													currentMarketCoin={
+														currentMarketCoin
+													}
+													BorrowBalance={borrowAmount}
+													currentSwap={currentSwap}
+													setCurrentSwap={
+														setCurrentSwap
+													}
+													currentLoanAmount={
+														currentLoanAmount
+													}
+													currentLoanMarket={
+														currentLoanMarket
+													}
+													setCurrentLoanAmount={
+														setCurrentLoanAmount
+													}
+													setCurrentLoanMarket={
+														setCurrentLoanMarket
+													}
+													borrowAPRs={borrowAPRs}
+													collateralMarket={
+														collateralCoin
+													}
+												/>
+											</Box>
+										</TabPanel>
+										<TabPanel padding='0'>
+											<Box>
+												<Text
+													color={
+														selectedDapp != '' ?
+															'white'
+														:	'#676D9A4D'
+													}
+													fontSize='sm'>
+													Select a Dapp to begin with
+													the spend
+												</Text>
+												<SwapModal
+													borrowIDCoinMap={
+														borrowIDCoinMap
+													}
+													coins={coins}
+													borrowIds={borrowIds}
+													currentId={currentId}
+													currentMarketCoin={
+														currentMarketCoin
+													}
+													BorrowBalance={borrowAmount}
+													currentSwap={currentSwap}
+													setCurrentSwap={
+														setCurrentSwap
+													}
+													borrowAPRs={borrowAPRs}
+													collateralMarket={
+														collateralCoin
+													}
+													borrow={currentBorrowData}
+												/>
+											</Box>
+										</TabPanel>
+										{/* <TabPanel p={0}>
               <Box>
                 <Text
                   color={selectedDapp != "" ? "white" : "#676D9A4D"}
@@ -1129,60 +1141,60 @@ const SpendTable = () => {
               </Box>
             </TabPanel> */}
 
-									<TabPanel p={0}>
-										<Box
-											display={
-												tradeNote ? 'flex' : 'none'
-											}
-											bg='#4D3C03'
-											fontSize='14px'
-											p='8px'
-											fontStyle='normal'
-											fontWeight='400'
-											borderRadius='6px'
-											justifyContent='center'
-											alignItems='flex-start'
-											// textAlign="center"
-											// bgColor="red"
-										>
+										<TabPanel p={0}>
 											<Box
-												cursor='pointer'
-												// bgColor="blue"
-												display='flex'
-												justifyContent='flex-start'
+												display={
+													tradeNote ? 'flex' : 'none'
+												}
+												bg='#4D3C03'
+												fontSize='14px'
+												p='8px'
+												fontStyle='normal'
+												fontWeight='400'
+												borderRadius='6px'
+												justifyContent='center'
 												alignItems='flex-start'
-												pt='2px'
-												pr='4px'>
-												<AlertTrade />
-											</Box>
-											<Box
-												p='6px 2px'
-												display='flex'>
-												<Text
-													fontSize='sm'
-													color='#F0F0F5'>
-													We are evaluating few
-													promising DApps to
-													integrate. Please check back
-													at a late time.
-												</Text>
+												// textAlign="center"
+												// bgColor="red"
+											>
 												<Box
-													pt='3px'
-													pl='4px'
-													pr='3px'
 													cursor='pointer'
-													// bgColor="pink"
-													onClick={() =>
-														setTradeNote(false)
-													}>
-													<TableClose />
+													// bgColor="blue"
+													display='flex'
+													justifyContent='flex-start'
+													alignItems='flex-start'
+													pt='2px'
+													pr='4px'>
+													<AlertTrade />
+												</Box>
+												<Box
+													p='6px 2px'
+													display='flex'>
+													<Text
+														fontSize='sm'
+														color='#F0F0F5'>
+														We are evaluating few
+														promising DApps to
+														integrate. Please check
+														back at a late time.
+													</Text>
+													<Box
+														pt='3px'
+														pl='4px'
+														pr='3px'
+														cursor='pointer'
+														// bgColor="pink"
+														onClick={() =>
+															setTradeNote(false)
+														}>
+														<TableClose />
+													</Box>
 												</Box>
 											</Box>
-										</Box>
-									</TabPanel>
+										</TabPanel>
 
-									<TabPanel p={0}>
-										{/* <Box
+										<TabPanel p={0}>
+											{/* <Box
                 display={tradeNote ? "flex" : "none"}
                 bg="#DDF4FF"
                 fontSize="14px"
@@ -1224,60 +1236,61 @@ const SpendTable = () => {
                   </Box>
                 </Box>
               </Box> */}
-										<Box
-											display={
-												tradeNote ? 'flex' : 'none'
-											}
-											bg='#4D3C03'
-											fontSize='14px'
-											p='8px'
-											fontStyle='normal'
-											fontWeight='400'
-											borderRadius='6px'
-											justifyContent='center'
-											alignItems='flex-start'
-											// textAlign="center"
-											// bgColor="red"
-										>
 											<Box
-												cursor='pointer'
-												// bgColor="blue"
-												display='flex'
-												justifyContent='flex-start'
+												display={
+													tradeNote ? 'flex' : 'none'
+												}
+												bg='#4D3C03'
+												fontSize='14px'
+												p='8px'
+												fontStyle='normal'
+												fontWeight='400'
+												borderRadius='6px'
+												justifyContent='center'
 												alignItems='flex-start'
-												pt='2px'
-												pr='4px'>
-												<AlertTrade />
-											</Box>
-											<Box
-												p='6px 2px'
-												display='flex'>
-												<Text
-													fontSize='sm'
-													color='#F0F0F5'>
-													We are evaluating few
-													promising DApps to
-													integrate. Please check back
-													at a late time.
-												</Text>
+												// textAlign="center"
+												// bgColor="red"
+											>
 												<Box
-													pt='3px'
-													pl='4px'
-													pr='3px'
 													cursor='pointer'
-													// bgColor="pink"
-													onClick={() =>
-														setTradeNote(false)
-													}>
-													<TableClose />
+													// bgColor="blue"
+													display='flex'
+													justifyContent='flex-start'
+													alignItems='flex-start'
+													pt='2px'
+													pr='4px'>
+													<AlertTrade />
+												</Box>
+												<Box
+													p='6px 2px'
+													display='flex'>
+													<Text
+														fontSize='sm'
+														color='#F0F0F5'>
+														We are evaluating few
+														promising DApps to
+														integrate. Please check
+														back at a late time.
+													</Text>
+													<Box
+														pt='3px'
+														pl='4px'
+														pr='3px'
+														cursor='pointer'
+														// bgColor="pink"
+														onClick={() =>
+															setTradeNote(false)
+														}>
+														<TableClose />
+													</Box>
 												</Box>
 											</Box>
-										</Box>
-									</TabPanel>
-								</TabPanels>
-							</Tabs>
-						</div>
-					</Box>
+										</TabPanel>
+									</TabPanels>
+								</Tabs>
+							</div>
+						</Box>
+					)}
 				</>
 			)}
 		</>

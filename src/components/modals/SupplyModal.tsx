@@ -119,6 +119,7 @@ import numberFormatter from '@/utils/functions/numberFormatter';
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage';
 import { usePostHog } from 'posthog-js/react';
 import TransactionFees from '../../../TransactionFees.json';
+import { actionDisable } from '@/constants/config.constant';
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
 	buttonText,
@@ -878,7 +879,9 @@ const SupplyModal = ({
 	return (
 		<div>
 			<Button
+				isDisabled={actionDisable}
 				onClick={() => {
+					if (actionDisable) return;
 					const uqID = Math.random();
 					setUniqueID(uqID);
 					let data: any = (
@@ -902,6 +905,7 @@ const SupplyModal = ({
 						<Button
 							w='70px'
 							h='32px'
+							isDisabled={actionDisable}
 							fontSize='14px'
 							p='12px'
 							mx='auto'>
