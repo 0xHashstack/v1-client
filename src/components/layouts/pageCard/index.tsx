@@ -9,6 +9,7 @@ import { Text } from '@/components/ui/typography/Text';
 import Link from 'next/link';
 import { usePostHog } from 'posthog-js/react';
 import { HTMLAttributes } from 'react';
+import { AlertTriangle } from 'lucide-react';
 
 const GRADIENT_BACKGROUND = `
   radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
@@ -91,9 +92,30 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 				<FeedbackModal />
 			</div>
 
+			{/* Warning Banner */}
+			<div
+				className='fixed top-[60px] left-0 right-0 z-[5] bg-amber-900 py-3 px-4 border-t-2 border-b-2'
+				style={{
+					borderImageSlice: 1,
+					borderImageSource:
+						'linear-gradient(to right, #f59e0b, #ef4444, #8b5cf6)',
+				}}>
+				<div className='mx-auto flex max-w-7xl items-center justify-center gap-2 text-center'>
+					<AlertTriangle className='h-5 w-5 flex-shrink-0 text-amber-300' />
+					<Text.Regular14 className='text-amber-100'>
+						Dear user, Starknet will soon disable mainnet support
+						for Cairo 0 contracts. We request you to withdraw your
+						funds and close your positions immediately.{' '}
+						<span className='font-semibold underline'>
+							Our Base testnet will be live very soon.
+						</span>{' '}
+					</Text.Regular14>
+				</div>
+			</div>
+
 			<div
 				className={cn(
-					'z-[1] flex min-h-screen flex-col items-center pt-28 pb-10 md:pb-28',
+					'z-[1] flex min-h-screen flex-col items-center pt-32 pb-10 md:pb-32',
 					className
 				)}
 				style={{ background: GRADIENT_BACKGROUND_DARKER }}

@@ -1019,6 +1019,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
 												padding='6px 12px'
 												border='1px solid #3E415C'
 												bgColor='transparent'
+												disabled={actionDisable}
 												_hover={{
 													bg: 'white',
 													color: 'black',
