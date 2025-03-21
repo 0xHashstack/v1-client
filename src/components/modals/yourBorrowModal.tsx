@@ -135,6 +135,7 @@ import {
 import ErrorButton from '../uiElements/buttons/ErrorButton';
 import SuccessButton from '../uiElements/buttons/SuccessButton';
 import SliderTooltip from '../uiElements/sliders/sliderTooltip';
+import { actionDisable } from '@/constants/config.constant';
 
 const YourBorrowModal = ({
 	borrowIDCoinMap,
@@ -3294,7 +3295,7 @@ const YourBorrowModal = ({
 	};
 	const coins = ['BTC', 'USDT', 'USDC', 'ETH', 'STRK'];
 	const actions = [
-		'Spend Borrow',
+		...(actionDisable ? [] : ['Spend Borrow']),
 		'Convert to borrow market',
 		'Repay Borrow',
 		'Zero Repay',
@@ -3910,7 +3911,8 @@ const YourBorrowModal = ({
 												border: 'none',
 											}}
 											isDisabled={
-												transactionStarted == true
+												transactionStarted == true ||
+												actionDisable
 											}
 											onClick={() => {
 												setTabValue(2);

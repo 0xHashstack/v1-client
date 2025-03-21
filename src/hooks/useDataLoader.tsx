@@ -206,7 +206,10 @@ import { metrics_api } from '@/utils/keys/metricsApi';
 import { useAccount } from '@starknet-react/core';
 import axios from 'axios';
 import React, { use, useEffect, useState } from 'react';
+import { useCacheStore } from '@/store/zustand/useCacheStore';
 import { useDispatch, useSelector } from 'react-redux';
+const CACHE_DURATION = 30000; // 30 seconds cache duration
+
 const useDataLoader = () => {
 	const { address } = useAccount();
 	const protocolReserves = useSelector(selectProtocolReserves);
@@ -1279,22 +1282,57 @@ const useDataLoader = () => {
 			// fetchAllData()
 		}
 	}, [oraclePrices]);
+	const {
+		oraclePricesCache,
+		setOraclePricesCache,
+		isLoadingOraclePrices,
+		setIsLoadingOraclePrices,
+	} = useCacheStore();
+
 	useEffect(() => {
 		try {
 			const fetchOraclePrices = async () => {
-				let data = await getOraclePrices();
-				if (!data || data?.length < 6) {
+				// Don't proceed if already loading
+				if (isLoadingOraclePrices) {
 					return;
 				}
-				dispatch(setOraclePrices(data));
-				dispatch(setOraclePricesCount(0));
-				//console.log("oracle prices - transactionRefresh done ", data);
+
+				// Check Zustand cache
+				if (oraclePricesCache) {
+					const { data, timestamp } = oraclePricesCache;
+					const now = Date.now();
+
+					// If cache is still valid
+					if (now - timestamp < CACHE_DURATION) {
+						dispatch(setOraclePrices(data));
+						dispatch(setOraclePricesCount(0));
+						return;
+					}
+				}
+
+				// Set loading state before fetching
+				setIsLoadingOraclePrices(true);
+
+				try {
+					let data = await getOraclePrices();
+					if (!data || data?.length < 6) {
+						return;
+					}
+
+					// Update Zustand cache
+					setOraclePricesCache(data);
+					dispatch(setOraclePrices(data));
+					dispatch(setOraclePricesCount(0));
+				} catch (error) {
+					setIsLoadingOraclePrices(false); // Reset loading state on error
+				}
 			};
+
 			if (oraclePricesCount < 0) {
 				fetchOraclePrices();
 			}
 		} catch (err) {
-			//console.log("oracle prices - transactionRefresh error ", err);
+			setIsLoadingOraclePrices(false); // Reset loading state on error
 		}
 	}, [address, transactionRefresh]);
 

@@ -104,6 +104,7 @@ import { uint256 } from 'starknet';
 import TransactionFees from '../../../TransactionFees.json';
 import TableInfoIcon from '../layouts/table/tableIcons/infoIcon';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { actionDisable } from '@/constants/config.constant';
 
 const StakeUnstakeModal = ({
 	buttonText,
@@ -327,7 +328,6 @@ const StakeUnstakeModal = ({
 
 	const [toastId, setToastId] = useState<any>();
 	const posthog = usePostHog();
-
 
 	useEffect(() => {
 		if (coin) {
@@ -1091,7 +1091,7 @@ const StakeUnstakeModal = ({
 											}}
 											isDisabled={
 												unstakeTransactionStarted ==
-												true
+													true || actionDisable
 											}
 											onClick={() => {
 												setSelectedTab('stake');
@@ -2437,7 +2437,8 @@ const StakeUnstakeModal = ({
 															}}
 															isDisabled={
 																transactionStarted ==
-																true
+																	true ||
+																actionDisable
 															}
 															labelErrorArray={[
 																<ErrorButton
@@ -2473,7 +2474,8 @@ const StakeUnstakeModal = ({
 													border='1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
 													_hover={{
 														bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
-													}}>
+													}}
+													isDisabled={actionDisable}>
 													{`${
 														(
 															!isValid(

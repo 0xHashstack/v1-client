@@ -12,7 +12,7 @@ import { PostHogProvider } from 'posthog-js/react';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import Layout from '@/components/layouts/toasts';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useMemo } from 'react';
 import posthog from 'posthog-js';
 
 export const theme = extendTheme({
@@ -83,7 +83,10 @@ export default function RootContextProvider({
 	children: React.ReactNode;
 }) {
 	const apikey: string = process.env.NEXT_PUBLIC_INFURA_MAINNET as string;
-	const provider = infuraProvider({ apiKey: apikey.split('/')[4] });
+	const provider = useMemo(
+		() => infuraProvider({ apiKey: apikey.split('/')[4] }),
+		[apikey]
+	);
 
 	const { connectors } = useInjectedConnectors({
 		recommended: [argent(), braavos()],
