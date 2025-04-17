@@ -33,6 +33,7 @@ import FireIcon from '@/assets/icons/fireIcon';
 import NegativeApr from '@/assets/icons/NegativeApr';
 import PositiveApr from '@/assets/icons/PositiveApr';
 import { ArrowLeftIcon, ChevronLeftIcon } from 'lucide-react';
+import { showHardCodedVal } from '@/constants/config.constant';
 
 interface NavButtonsProps {
 	width: number | string;
@@ -202,7 +203,10 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 					<div className='flex items-center gap-1'>
 						<span className='text-sm text-gray-500'>Net APR</span>
 						{netAPR === null ?
-							<Skeleton className='w-24 h-6 bg-gray-800 rounded-md' />
+							showHardCodedVal ?
+								'0%'
+							:	<Skeleton className='w-24 h-6 bg-gray-800 rounded-md' />
+
 						:	<TooltipProvider>
 								<Tooltip>
 									<TooltipTrigger asChild>
