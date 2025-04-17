@@ -35,7 +35,8 @@ import {
 } from '@/store/slices/userAccountSlice';
 import numberFormatter from '@/utils/functions/numberFormatter';
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage';
-import { actionDisable } from '@/constants/config.constant';
+import { actionDisable, showHardCodedVal } from '@/constants/config.constant';
+import { genNum } from '@/utils/functions/numberutils';
 
 export interface ICoin {
 	name: string;
@@ -464,13 +465,20 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
 											borderColor='#23233D'>
 											{/* {checkGap(idx1, idx2)} */}
 											{totalSupplies[idx] == null ?
-												<Skeleton
-													width='6rem'
-													height='1.4rem'
-													startColor='#101216'
-													endColor='#2B2F35'
-													borderRadius='6px'
-												/>
+												showHardCodedVal ?
+													`${genNum(40, 60, idx + coin.name)}k ${
+														coin?.name == 'BTC' ?
+															'w' + coin?.name
+														:	coin?.name
+													}`
+												:	<Skeleton
+														width='6rem'
+														height='1.4rem'
+														startColor='#101216'
+														endColor='#2B2F35'
+														borderRadius='6px'
+													/>
+
 											:	numberFormatter(totalSupplies[idx])
 											}
 										</Tooltip>
@@ -521,13 +529,20 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
 											border='1px solid'
 											borderColor='#23233D'>
 											{totalBorrows[idx] == null ?
-												<Skeleton
-													width='6rem'
-													height='1.4rem'
-													startColor='#101216'
-													endColor='#2B2F35'
-													borderRadius='6px'
-												/>
+												showHardCodedVal ?
+													`${genNum(10, 20, idx + coin.name)}k ${
+														coin?.name == 'BTC' ?
+															'w' + coin?.name
+														:	coin?.name
+													}`
+												:	<Skeleton
+														width='6rem'
+														height='1.4rem'
+														startColor='#101216'
+														endColor='#2B2F35'
+														borderRadius='6px'
+													/>
+
 											:	numberFormatter(totalBorrows[idx])}
 										</Tooltip>
 									</Box>
@@ -581,13 +596,20 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
 											borderColor='#23233D'>
 											{/* {checkGap(idx1, idx2)} */}
 											{availableReserves[idx] == null ?
-												<Skeleton
-													width='6rem'
-													height='1.4rem'
-													startColor='#101216'
-													endColor='#2B2F35'
-													borderRadius='6px'
-												/>
+												showHardCodedVal ?
+													`${genNum(10, 20, 10 + coin.name)}k ${
+														coin?.name == 'BTC' ?
+															'w' + coin?.name
+														:	coin?.name
+													}`
+												:	<Skeleton
+														width='6rem'
+														height='1.4rem'
+														startColor='#101216'
+														endColor='#2B2F35'
+														borderRadius='6px'
+													/>
+
 											:	numberFormatter(
 													availableReserves[idx]
 												)
@@ -615,13 +637,16 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
 											:	'white'
 										}>
 										{utilization[idx] == null ?
-											<Skeleton
-												width='6rem'
-												height='1.4rem'
-												startColor='#101216'
-												endColor='#2B2F35'
-												borderRadius='6px'
-											/>
+											showHardCodedVal ?
+												`${genNum(1, 10, idx + coin.name)}%`
+											:	<Skeleton
+													width='6rem'
+													height='1.4rem'
+													startColor='#101216'
+													endColor='#2B2F35'
+													borderRadius='6px'
+												/>
+
 										:	numberFormatterPercentage(
 												utilization[idx]
 											) + '%'
@@ -649,6 +674,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
 											:	'#00D395'
 										}>
 										<Tooltip
+											hidden={showHardCodedVal}
 											hasArrow
 											arrowShadowColor='#2B2F35'
 											placement='bottom'
@@ -717,13 +743,16 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
 												supplyAPRs[idx] == null ||
 												oraclePrices?.length == 0
 											) ?
-												<Skeleton
-													width='6rem'
-													height='1.4rem'
-													startColor='#101216'
-													endColor='#2B2F35'
-													borderRadius='6px'
-												/>
+												showHardCodedVal ?
+													`${genNum(5, 10, idx + 100 + coin.name)}%`
+												:	<Skeleton
+														width='6rem'
+														height='1.4rem'
+														startColor='#101216'
+														endColor='#2B2F35'
+														borderRadius='6px'
+													/>
+
 											:	supplyAPRs[idx] != null &&
 												((
 													coin.name != 'BTC' &&
@@ -799,6 +828,7 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
 											:	'#00D395'
 										}>
 										<Tooltip
+											hidden={showHardCodedVal}
 											hasArrow
 											arrowShadowColor='#2B2F35'
 											placement='bottom'
@@ -863,13 +893,16 @@ const DashboardLeft: React.FC<DashboardLeftProps> = ({
 											border='1px solid'
 											borderColor='#23233D'>
 											{borrowAPRs[idx] == null ?
-												<Skeleton
-													width='6rem'
-													height='1.4rem'
-													startColor='#101216'
-													endColor='#2B2F35'
-													borderRadius='6px'
-												/>
+												showHardCodedVal ?
+													`${genNum(10, 15, idx + 100 + coin.name)}%`
+												:	<Skeleton
+														width='6rem'
+														height='1.4rem'
+														startColor='#101216'
+														endColor='#2B2F35'
+														borderRadius='6px'
+													/>
+
 											:	borrowAPRs[idx] !== null &&
 												((
 													coin.name != 'BTC' &&

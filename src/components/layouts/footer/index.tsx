@@ -35,6 +35,7 @@ import {
 import numberFormatter from '@/utils/functions/numberFormatter';
 import numberFormatterPercentage from '@/utils/functions/numberFormatterPercentage';
 import hoverC2e from '../../../assets/images/hoverContributeEarnIcon.svg';
+import { showHardCodedVal } from '@/constants/config.constant';
 
 interface ExtendedAccountInterface extends AccountInterface {
 	provider?: {
@@ -218,7 +219,9 @@ const Footer = () => {
 								ml='3'
 								_hover={{ textDecoration: 'underline' }}>
 								$
-								{numberFormatter(
+								{showHardCodedVal ?
+									'132.52k'
+								: numberFormatter(
 									protocolReserves?.availableReserves
 								)}
 							</Text>
@@ -250,9 +253,12 @@ const Footer = () => {
 								color='#B0F1DE'
 								ml='3'
 								_hover={{ textDecoration: 'underline' }}>
-								{numberFormatterPercentage(
-									protocolReserves?.avgAssetUtilisation
-								)}
+								{showHardCodedVal ?
+									'0'
+								:	numberFormatterPercentage(
+										protocolReserves?.avgAssetUtilisation
+									)
+								}
 								%
 							</Text>
 						</Tooltip>
@@ -283,9 +289,12 @@ const Footer = () => {
 								ml='3'
 								_hover={{ textDecoration: 'underline' }}>
 								$
-								{numberFormatter(
-									protocolReserves?.totalReserves
-								)}
+								{showHardCodedVal ?
+									'153.84k'
+								:	numberFormatter(
+										protocolReserves?.totalReserves
+									)
+								}
 							</Text>
 						</Tooltip>
 					</Box>
@@ -315,9 +324,12 @@ const Footer = () => {
 								ml='3'
 								_hover={{ textDecoration: 'underline' }}>
 								$
-								{numberFormatter(
-									protocolReserves?.availableReserves
-								)}
+								{showHardCodedVal ?
+									'132.52k'
+								:	numberFormatter(
+										protocolReserves?.availableReserves
+									)
+								}
 							</Text>
 						</Tooltip>
 					</Box>
@@ -347,9 +359,12 @@ const Footer = () => {
 								color='#B0F1DE'
 								ml='3'
 								_hover={{ textDecoration: 'underline' }}>
-								{numberFormatterPercentage(
-									protocolReserves?.avgAssetUtilisation
-								)}
+								{showHardCodedVal ?
+									'0'
+								:	numberFormatterPercentage(
+										protocolReserves?.avgAssetUtilisation
+									)
+								}
 								%
 							</Text>
 						</Tooltip>
