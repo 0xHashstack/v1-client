@@ -28,7 +28,7 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
 	);
 }
 
-export let config =
+export const config =
 	process.env.NEXT_PUBLIC_NODE_ENV == 'testnet' ?
 		getSepoliaConfig(
 			'./target/dev',
