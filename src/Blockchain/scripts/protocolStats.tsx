@@ -19,72 +19,51 @@ import BigNumber from 'bignumber.js';
 
 function parseProtocolStat(marketData: any, decimal: number): IMarketInfo {
 	let marketInfo: IMarketInfo = {
-		borrowRate: parseAmount(
-			uint256.uint256ToBN(marketData?.borrow_rate).toString(),
-			2
-		),
-		supplyRate: parseAmount(
-			uint256.uint256ToBN(marketData?.supply_rate).toString(),
-			2
-		),
-		stakingRate: parseAmount(
-			uint256.uint256ToBN(marketData?.staking_rate).toString(),
-			2
-		),
+		borrowRate: parseAmount(marketData?.borrow_rate.toString(), 2),
+		supplyRate: parseAmount(marketData?.supply_rate.toString(), 2),
+		stakingRate: parseAmount(marketData?.staking_rate.toString(), 2),
 
 		totalSupply: weiToEtherNumber(
-			uint256.uint256ToBN(marketData?.total_supply).toString(),
+			marketData?.total_supply.toString(),
 			getTokenFromAddress(number.toHex(marketData?.token_address))
 				?.name as Token
 		),
 		lentAssets: weiToEtherNumber(
-			uint256.uint256ToBN(marketData?.lent_assets).toString(),
+			marketData?.lent_assets.toString(),
 			getTokenFromAddress(number.toHex(marketData?.token_address))
 				?.name as Token
 		),
 		totalBorrow: weiToEtherNumber(
-			uint256.uint256ToBN(marketData?.total_borrow).toString(),
+			marketData?.total_borrow.toString(),
 			getTokenFromAddress(number.toHex(marketData?.token_address))
 				?.name as Token
 		),
 		availableReserves: weiToEtherNumber(
-			new BigNumber(Number(uint256.uint256ToBN(marketData?.total_supply)))
-				.minus(
-					new BigNumber(
-						Number(uint256.uint256ToBN(marketData?.total_borrow))
-					)
-				)
+			new BigNumber(Number(marketData?.total_supply))
+				.minus(new BigNumber(Number(marketData?.total_borrow)))
 				.toString(),
 			getTokenFromAddress(number.toHex(marketData?.token_address))
 				?.name as Token
 		),
 		utilisationPerMarket: parseAmount(
-			uint256.uint256ToBN(marketData?.utilisation_per_market).toString(),
+			marketData?.utilisation_per_market.toString(),
 			2
 		),
 
 		exchangeRateRtokenToUnderlying: parseAmount(
-			uint256
-				.uint256ToBN(marketData?.exchange_rate_rToken_to_asset)
-				.toString(),
+			marketData?.exchange_rate_rToken_to_asset.toString(),
 			18
 		),
 		exchangeRateDTokenToUnderlying: parseAmount(
-			uint256
-				.uint256ToBN(marketData?.exchange_rate_dToken_to_asset)
-				.toString(),
+			marketData?.exchange_rate_dToken_to_asset.toString(),
 			decimal
 		),
 		exchangeRateUnderlyingToRtoken: parseAmount(
-			uint256
-				.uint256ToBN(marketData?.exchange_rate_asset_to_rToken)
-				.toString(),
+			marketData?.exchange_rate_asset_to_rToken.toString(),
 			18
 		),
 		exchangeRateUnderlyingToDtoken: parseAmount(
-			uint256
-				.uint256ToBN(marketData?.exchange_rate_asset_to_dToken)
-				.toString(),
+			marketData?.exchange_rate_asset_to_dToken.toString(),
 			decimal
 		),
 
@@ -143,27 +122,15 @@ function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
 	try {
 		let protocolReserves: IProtocolReserves = {
 			totalReserves: parseAmount(
-				uint256
-					.uint256ToBN(
-						protocolReservesData?.total_reserves || BigInt(0)
-					)
-					.toString(),
+				protocolReservesData?.total_reserves.toString(),
 				8
 			),
 			availableReserves: parseAmount(
-				uint256
-					.uint256ToBN(
-						protocolReservesData?.available_reserves || BigInt(0)
-					)
-					.toString(),
+				protocolReservesData?.available_reserves.toString(),
 				8
 			),
 			avgAssetUtilisation: parseAmount(
-				uint256
-					.uint256ToBN(
-						protocolReservesData?.avg_asset_utilisation || BigInt(0)
-					)
-					.toString(),
+				protocolReservesData?.avg_asset_utilisation.toString(),
 				2
 			),
 		};

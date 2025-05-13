@@ -22,17 +22,17 @@ function parseDeposits(deposits: any): IDeposit[] {
 		let token = getTokenFromAddress(tokenAddress)?.name as NativeToken;
 
 		let rTokenFreeParsed = weiToEtherNumber(
-			uint256.uint256ToBN(depositData?.rToken_free).toString(),
+			depositData?.rToken_free.toString(),
 			token
 		);
 
 		let rTokenLockedParsed = weiToEtherNumber(
-			uint256.uint256ToBN(depositData?.rToken_locked).toString(),
+			depositData?.rToken_locked.toString(),
 			token
 		);
 
 		let rTokenStakedParsed = weiToEtherNumber(
-			uint256.uint256ToBN(depositData?.rToken_staked).toString(),
+			depositData?.rToken_staked.toString(),
 			token
 		);
 
@@ -48,13 +48,9 @@ function parseDeposits(deposits: any): IDeposit[] {
 			rTokenLockedParsed,
 			rTokenStakedParsed,
 			rTokenAmountParsed: rTokenFreeParsed + rTokenLockedParsed,
-			underlyingAssetAmount: Number(
-				uint256.uint256ToBN(depositData?.underlying_asset_amount)
-			),
+			underlyingAssetAmount: Number(depositData?.underlying_asset_amount),
 			underlyingAssetAmountParsed: weiToEtherNumber(
-				uint256
-					.uint256ToBN(depositData?.underlying_asset_amount)
-					.toString(),
+				depositData?.underlying_asset_amount,
 				getTokenFromAddress(num.toHex(depositData?.asset_addr))
 					?.name as NativeToken
 			),
@@ -67,23 +63,22 @@ function parseDeposits(deposits: any): IDeposit[] {
 
 const parseDeposit = (deposit: any) => {
 	let depositData = deposit;
-	console.log({ depositData });
 	let tokenAddress = num.toHex(depositData?.asset_address);
 	////console.log("supplies deposit token ", tokenAddress);
 	let token = getTokenFromAddress(tokenAddress)?.name as NativeToken;
 
 	let rTokenFreeParsed = weiToEtherNumber(
-		uint256.uint256ToBN(depositData?.rToken_free || 0).toString(),
+		depositData?.rToken_free.toString(),
 		token
 	);
 
 	let rTokenLockedParsed = weiToEtherNumber(
-		uint256.uint256ToBN(depositData?.rToken_locked || 0).toString(),
+		depositData?.rToken_locked.toString(),
 		token
 	);
 
 	let rTokenStakedParsed = weiToEtherNumber(
-		uint256.uint256ToBN(depositData?.rToken_staked || 0).toString(),
+		depositData?.rToken_staked.toString(),
 		token
 	);
 	let deposit_data: IDeposit = {
@@ -98,18 +93,12 @@ const parseDeposit = (deposit: any) => {
 		rTokenLockedParsed,
 		rTokenStakedParsed,
 		rTokenAmountParsed: weiToEtherNumber(
-			uint256.uint256ToBN(depositData?.rToken_amount || 0).toString(),
+			depositData?.rToken_amount.toString(),
 			token
 		),
-		underlyingAssetAmount: Number(
-			uint256
-				.uint256ToBN(depositData?.supply_asset_amount || 0)
-				.toString()
-		),
+		underlyingAssetAmount: Number(depositData?.supply_asset_amount),
 		underlyingAssetAmountParsed: weiToEtherNumber(
-			uint256
-				.uint256ToBN(depositData?.supply_asset_amount || 0)
-				.toString(),
+			depositData?.supply_asset_amount,
 			getTokenFromAddress(num.toHex(depositData?.asset_address))
 				?.name as NativeToken
 		),
@@ -149,7 +138,6 @@ export async function getUserDeposits(account: string) {
 		// return promises;
 		return new Promise((resolve, reject) => {
 			Promise.allSettled([...promises]).then((val) => {
-				console.log({ val });
 				const results = val
 					.filter((deposit, idx) => {
 						return deposit?.status == 'fulfilled' && deposit?.value;
