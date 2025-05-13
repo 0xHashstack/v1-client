@@ -1490,6 +1490,7 @@ const useDataLoader = () => {
 					return;
 				}
 				const data = await getUserDeposits(address);
+				console.log({ userDeposit: data });
 				if (!data) {
 					return;
 				}
