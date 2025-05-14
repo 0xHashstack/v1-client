@@ -15,6 +15,8 @@ import {
 	getProvider,
 	stakingContractAddress,
 	nftAddress,
+	governorAddress,
+	comptrollerAddress,
 } from '../stark-constants';
 import { tokenAddressMap, tokenDecimalsMap } from '../utils/addressServices';
 import { etherToWeiBN, parseAmount } from '../utils/utils';
@@ -127,7 +129,7 @@ export async function getFees(modalFees: any) {
 		const provider = getProvider();
 		const governorContract = new Contract(
 			comptrollerAbi,
-			diamondAddress,
+			comptrollerAddress,
 			provider
 		);
 		const result: any = await governorContract.call(modalFees);
@@ -185,7 +187,7 @@ export async function getSupportedPools(poolPairAddress: any, dapp: any) {
 		const provider = getProvider();
 		const governorContract = new Contract(
 			governorAbi,
-			diamondAddress,
+			governorAddress,
 			provider
 		);
 		const result: any = await governorContract.call(
@@ -206,7 +208,7 @@ export async function getMinimumDepositAmount(rToken: any) {
 		const provider = getProvider();
 		const governorContract = new Contract(
 			governorAbi,
-			diamondAddress,
+			governorAddress,
 			provider
 		);
 		const result: any = await governorContract.call(
@@ -230,7 +232,7 @@ export async function getMaximumDepositAmount(rToken: any) {
 		const provider = getProvider();
 		const governorContract = new Contract(
 			governorAbi,
-			diamondAddress,
+			governorAddress,
 			provider
 		);
 		const result: any = await governorContract.call(
@@ -254,7 +256,7 @@ export async function getMaximumLoanAmount(dToken: any) {
 		const provider = getProvider();
 		const governorContract = new Contract(
 			governorAbi,
-			diamondAddress,
+			governorAddress,
 			provider
 		);
 		const result: any = await governorContract.call(
@@ -314,9 +316,10 @@ export async function getMinimumLoanAmount(dToken: any) {
 		const provider = getProvider();
 		const governorContract = new Contract(
 			governorAbi,
-			diamondAddress,
+			governorAddress,
 			provider
 		);
+
 		const result: any = await governorContract.call(
 			'get_minimum_loan_amount',
 			[tokenAddressMap[dToken]],
@@ -330,6 +333,7 @@ export async function getMinimumLoanAmount(dToken: any) {
 		////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
 		return res;
 	} catch (err) {
+		console.log(err, 'err in getMinimumLoanAmount');
 		//console.log(err, "err in getMaximumDeposit");
 	}
 }

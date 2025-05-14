@@ -27,6 +27,15 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
 	);
 }
 
+export const governorAddress =
+	'0x0071aa32395ac536094cc8a1a2a663229ab0212fea92111ea93a81fcf68f1792';
+export const comptrollerAddress =
+	'0x0759b68123fe64c684c68a7f846bccd56d2d96dbbf4c5ac753882c922adb29d4';
+export const pricerAddress =
+	'0x00bebe2e527f9be6fc1059273e0d1e5e3ec8ce317a28d46a008f0dcc36f9f4c5';
+export const dialAddress =
+	'0x7a75f0bfec08977467441f66ef0c2c1b367547a4b472bdf9c6c62e4e06dd68b';
+
 export const getProvider = () => {
 	const rpctestnetUrl = String(process.env.NEXT_PUBLIC_INFURA_TESTNET);
 	const rpcUrl = String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
