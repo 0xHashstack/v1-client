@@ -1815,6 +1815,7 @@ const useDataLoader = () => {
 					getUserStakingShares(address, 'rSTRK'),
 				];
 				Promise.allSettled([...promises]).then((val) => {
+					console.log({ stakeval: val });
 					const data = {
 						rBTC:
 							val?.[0]?.status == 'fulfilled' ?
@@ -2012,6 +2013,7 @@ const useDataLoader = () => {
 					getMaximumLoanAmount('dDAI'),
 					getMaximumLoanAmount('dSTRK'),
 				];
+
 				Promise.allSettled([...promises]).then((val) => {
 					const data = {
 						dBTC:
@@ -2067,6 +2069,7 @@ const useDataLoader = () => {
 					};
 					if (data?.dBTC == null) return;
 					if (maxdata?.dBTC == null) return;
+
 					dispatch(setMinimumLoanAmounts(data));
 					dispatch(setMaximumLoanAmounts(maxdata));
 					const count = getTransactionCount();

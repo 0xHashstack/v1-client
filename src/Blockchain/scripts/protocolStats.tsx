@@ -156,8 +156,7 @@ export async function getProtocolReserves() {
 				blockIdentifier: 'pending',
 			}
 		);
-
-		const protocolReserves = parseProtocolReserves(res?.protocol_reserves);
+		const protocolReserves = parseProtocolReserves(res);
 		return protocolReserves;
 	} catch (e) {
 		//console.log("get_protocol_reserves failed: ", e);
