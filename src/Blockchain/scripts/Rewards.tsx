@@ -311,6 +311,7 @@ export async function getMaximumDynamicLoanAmount(
 	}
 }
 export async function getMinimumLoanAmount(dToken: any) {
+	console.log({ dToken: tokenAddressMap[dToken] });
 	////console.log("getMinimumDepositAmount called - ", rTokenAddress);
 	try {
 		const provider = getProvider();

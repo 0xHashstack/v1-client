@@ -1,796 +1,1018 @@
 [
-    {
-        "members": [
-            {
-                "name": "low",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "high",
-                "offset": 1,
-                "type": "felt"
-            }
-        ],
-        "name": "Uint256",
-        "size": 2,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
-                "name": "loan_id",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "borrower",
-                "offset": 1,
-                "type": "felt"
-            },
-            {
-                "name": "market",
-                "offset": 2,
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "offset": 3,
-                "type": "Uint256"
-            },
-            {
-                "name": "current_market",
-                "offset": 5,
-                "type": "felt"
-            },
-            {
-                "name": "current_amount",
-                "offset": 6,
-                "type": "Uint256"
-            },
-            {
-                "name": "state",
-                "offset": 8,
-                "type": "felt"
-            },
-            {
-                "name": "l3_integration",
-                "offset": 9,
-                "type": "felt"
-            },
-            {
-                "name": "l3_category",
-                "offset": 10,
-                "type": "felt"
-            },
-            {
-                "name": "created_at",
-                "offset": 11,
-                "type": "felt"
-            }
-        ],
-        "name": "Loan",
-        "size": 12,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
-                "name": "loan_id",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "collateral_token",
-                "offset": 1,
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "offset": 2,
-                "type": "Uint256"
-            },
-            {
-                "name": "created_at",
-                "offset": 4,
-                "type": "felt"
-            }
-        ],
-        "name": "Collateral",
-        "size": 5,
-        "type": "struct"
-    },
-    {
-        "data": [
-            {
-                "name": "account",
-                "type": "felt"
-            }
-        ],
-        "keys": [],
-        "name": "Paused",
-        "type": "event"
-    },
-    {
-        "data": [
-            {
-                "name": "account",
-                "type": "felt"
-            }
-        ],
-        "keys": [],
-        "name": "Unpaused",
-        "type": "event"
-    },
-    {
-        "data": [
-            {
-                "name": "previousOwner",
-                "type": "felt"
-            },
-            {
-                "name": "newOwner",
-                "type": "felt"
-            }
-        ],
-        "keys": [],
-        "name": "OwnershipTransferred",
-        "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "name": "address",
-                "type": "felt"
-            }
-        ],
-        "name": "set_jedi_swap_router",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "is_deposit_vault_support",
-        "outputs": [
-            {
-                "name": "supported",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "is_deposit_vault_paused",
-        "outputs": [
-            {
-                "name": "paused",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "is_stake_paused",
-        "outputs": [
-            {
-                "name": "stake_paused",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_rToken_from_asset",
-        "outputs": [
-            {
-                "name": "rToken",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "rToken",
-                "type": "felt"
-            }
-        ],
-        "name": "get_asset_from_rToken",
-        "outputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_dToken_from_asset",
-        "outputs": [
-            {
-                "name": "dToken",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "_get_staking_contract",
-        "outputs": [
-            {
-                "name": "staking_contract",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "name": "_revert_interaction_with_l3",
-        "outputs": [
-            {
-                "name": "reverted_amount",
-                "type": "Uint256"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "receiver",
-                "type": "felt"
-            }
-        ],
-        "name": "deposit",
-        "outputs": [
-            {
-                "name": "rToken_amount",
-                "type": "Uint256"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            },
-            {
-                "name": "rToken_shares",
-                "type": "Uint256"
-            },
-            {
-                "name": "receiver",
-                "type": "felt"
-            },
-            {
-                "name": "owner",
-                "type": "felt"
-            }
-        ],
-        "name": "withdraw_deposit",
-        "outputs": [
-            {
-                "name": "rTokens_burnt",
-                "type": "Uint256"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "rToken",
-                "type": "felt"
-            },
-            {
-                "name": "rToken_amounts",
-                "type": "Uint256"
-            },
-            {
-                "name": "receiver",
-                "type": "felt"
-            }
-        ],
-        "name": "stake_request",
-        "outputs": [
-            {
-                "name": "staking_shares",
-                "type": "Uint256"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "receiver",
-                "type": "felt"
-            }
-        ],
-        "name": "deposit_and_stake",
-        "outputs": [
-            {
-                "name": "rToken_amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "staking_shares",
-                "type": "Uint256"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "rToken",
-                "type": "felt"
-            },
-            {
-                "name": "receiver",
-                "type": "felt"
-            },
-            {
-                "name": "staking_shares_to_withdraw",
-                "type": "Uint256"
-            }
-        ],
-        "name": "withdraw_stake",
-        "outputs": [
-            {
-                "name": "staking_shares_burnt",
-                "type": "Uint256"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "collateral_asset",
-                "type": "felt"
-            },
-            {
-                "name": "collateral_amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "recipient",
-                "type": "felt"
-            }
-        ],
-        "name": "loan_request",
-        "outputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "rToken",
-                "type": "felt"
-            },
-            {
-                "name": "rTokenAmount",
-                "type": "Uint256"
-            },
-            {
-                "name": "recipient",
-                "type": "felt"
-            }
-        ],
-        "name": "loan_request_with_rToken",
-        "outputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "collateral_asset",
-                "type": "felt"
-            },
-            {
-                "name": "collateral_amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "recipient",
-                "type": "felt"
-            },
-            {
-                "name": "integration",
-                "type": "felt"
-            },
-            {
-                "name": "calldata_len",
-                "type": "felt"
-            },
-            {
-                "name": "calldata",
-                "type": "felt*"
-            }
-        ],
-        "name": "borrow_and_spend",
-        "outputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "rToken",
-                "type": "felt"
-            },
-            {
-                "name": "rTokenAmount",
-                "type": "Uint256"
-            },
-            {
-                "name": "recipient",
-                "type": "felt"
-            },
-            {
-                "name": "integration",
-                "type": "felt"
-            },
-            {
-                "name": "calldata_len",
-                "type": "felt"
-            },
-            {
-                "name": "calldata",
-                "type": "felt*"
-            }
-        ],
-        "name": "borrow_and_spend_with_rToken",
-        "outputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            },
-            {
-                "name": "repay_amount",
-                "type": "Uint256"
-            }
-        ],
-        "name": "repay_loan",
-        "outputs": [
-            {
-                "name": "excess",
-                "type": "Uint256"
-            },
-            {
-                "name": "freed_rtokens",
-                "type": "Uint256"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            },
-            {
-                "name": "collateral_asset",
-                "type": "felt"
-            },
-            {
-                "name": "collateral_amount",
-                "type": "Uint256"
-            }
-        ],
-        "name": "add_collateral",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            },
-            {
-                "name": "rToken",
-                "type": "felt"
-            },
-            {
-                "name": "rToken_amount",
-                "type": "Uint256"
-            }
-        ],
-        "name": "add_rToken_collateral",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "integration",
-                "type": "felt"
-            },
-            {
-                "name": "calldata_len",
-                "type": "felt"
-            },
-            {
-                "name": "calldata",
-                "type": "felt*"
-            }
-        ],
-        "name": "interact_with_l3",
-        "outputs": [
-            {
-                "name": "return_data_len",
-                "type": "felt"
-            },
-            {
-                "name": "return_data",
-                "type": "felt*"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "name": "revert_interaction_with_l3",
-        "outputs": [
-            {
-                "name": "reverted_amount",
-                "type": "Uint256"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "name": "get_health_factor",
-        "outputs": [
-            {
-                "name": "factor",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "get_loans_len",
-        "outputs": [
-            {
-                "name": "loans_length",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "user",
-                "type": "felt"
-            }
-        ],
-        "name": "get_user_loans",
-        "outputs": [
-            {
-                "name": "loans_len",
-                "type": "felt"
-            },
-            {
-                "name": "loans",
-                "type": "Loan*"
-            },
-            {
-                "name": "collaterals_len",
-                "type": "felt"
-            },
-            {
-                "name": "collaterals",
-                "type": "Collateral*"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "name": "get_loan_by_id",
-        "outputs": [
-            {
-                "name": "loan",
-                "type": "Loan"
-            },
-            {
-                "name": "collateral",
-                "type": "Collateral"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "user",
-                "type": "felt"
-            },
-            {
-                "name": "index",
-                "type": "felt"
-            }
-        ],
-        "name": "get_user_loan_info",
-        "outputs": [
-            {
-                "name": "loan",
-                "type": "Loan"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "user",
-                "type": "felt"
-            }
-        ],
-        "name": "get_user_loan_ids_length",
-        "outputs": [
-            {
-                "name": "loan_ids_len",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "user",
-                "type": "felt"
-            }
-        ],
-        "name": "check_open_role",
-        "outputs": [],
-        "stateMutability": "view",
-        "type": "function"
-    }
+	{
+		"name": "RouterImpl",
+		"type": "impl",
+		"interface_name": "common::interfaces::router::IRouter"
+	},
+	{
+		"name": "core::integer::u256",
+		"type": "struct",
+		"members": [
+			{
+				"name": "low",
+				"type": "core::integer::u128"
+			},
+			{
+				"name": "high",
+				"type": "core::integer::u128"
+			}
+		]
+	},
+	{
+		"name": "common::interfaces::borrow::IntegrationDApp",
+		"type": "enum",
+		"variants": [
+			{
+				"name": "Jediswap",
+				"type": "()"
+			},
+			{
+				"name": "Myswap",
+				"type": "()"
+			},
+			{
+				"name": "zkLend",
+				"type": "()"
+			}
+		]
+	},
+	{
+		"name": "common::interfaces::borrow::IntegrationMethod",
+		"type": "enum",
+		"variants": [
+			{
+				"name": "Swap",
+				"type": "()"
+			},
+			{
+				"name": "RevertSwap",
+				"type": "()"
+			},
+			{
+				"name": "AddLiquidity",
+				"type": "()"
+			},
+			{
+				"name": "RemoveLiquidity",
+				"type": "()"
+			},
+			{
+				"name": "L3USDValue",
+				"type": "()"
+			}
+		]
+	},
+	{
+		"name": "common::interfaces::borrow::SpendParams",
+		"type": "struct",
+		"members": [
+			{
+				"name": "loan_id",
+				"type": "core::felt252"
+			},
+			{
+				"name": "dapp",
+				"type": "common::interfaces::borrow::IntegrationDApp"
+			},
+			{
+				"name": "method",
+				"type": "common::interfaces::borrow::IntegrationMethod"
+			},
+			{
+				"name": "destination",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "min_amount_out",
+				"type": "core::integer::u256"
+			},
+			{
+				"name": "swap_info_sizes",
+				"type": "core::array::Array::<core::integer::u32>"
+			},
+			{
+				"name": "additional_params",
+				"type": "core::array::Array::<core::felt252>"
+			}
+		]
+	},
+	{
+		"name": "common::interfaces::swapRouter::Route",
+		"type": "struct",
+		"members": [
+			{
+				"name": "token_from",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "token_to",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "exchange_address",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "percent",
+				"type": "core::integer::u128"
+			},
+			{
+				"name": "additional_swap_params",
+				"type": "core::array::Array::<core::felt252>"
+			}
+		]
+	},
+	{
+		"name": "common::interfaces::swapRouter::SwapInfo",
+		"type": "struct",
+		"members": [
+			{
+				"name": "fromToken",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "toToken",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "amount",
+				"type": "core::integer::u256"
+			},
+			{
+				"name": "routes",
+				"type": "core::array::Array::<common::interfaces::swapRouter::Route>"
+			}
+		]
+	},
+	{
+		"name": "common::interfaces::borrow::SpendAllParams",
+		"type": "struct",
+		"members": [
+			{
+				"name": "spendParams",
+				"type": "common::interfaces::borrow::SpendParams"
+			},
+			{
+				"name": "swaps",
+				"type": "core::array::Array::<common::interfaces::swapRouter::SwapInfo>"
+			}
+		]
+	},
+	{
+		"name": "common::structs::borrow::SpendLoanResult",
+		"type": "struct",
+		"members": [
+			{
+				"name": "loan_id",
+				"type": "core::felt252"
+			},
+			{
+				"name": "return_market",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "return_amount",
+				"type": "core::integer::u256"
+			},
+			{
+				"name": "additional_params",
+				"type": "core::array::Array::<core::felt252>"
+			}
+		]
+	},
+	{
+		"name": "common::interfaces::borrow::ReleasedAssets",
+		"type": "struct",
+		"members": [
+			{
+				"name": "repaid_debt",
+				"type": "core::integer::u256"
+			},
+			{
+				"name": "current_market",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "current_amount",
+				"type": "core::integer::u256"
+			},
+			{
+				"name": "collateral_market",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "collateral_amount",
+				"type": "core::integer::u256"
+			}
+		]
+	},
+	{
+		"name": "common::interfaces::borrow::RevertSpendParams",
+		"type": "struct",
+		"members": [
+			{
+				"name": "loan_id",
+				"type": "core::felt252"
+			},
+			{
+				"name": "min_amount_out",
+				"type": "core::integer::u256"
+			},
+			{
+				"name": "swap_info_sizes",
+				"type": "core::array::Array::<core::integer::u32>"
+			},
+			{
+				"name": "additional_params",
+				"type": "core::array::Array::<core::felt252>"
+			}
+		]
+	},
+	{
+		"name": "common::interfaces::borrow::RevertSpendAllParams",
+		"type": "struct",
+		"members": [
+			{
+				"name": "revertSpendParams",
+				"type": "common::interfaces::borrow::RevertSpendParams"
+			},
+			{
+				"name": "swaps",
+				"type": "core::array::Array::<common::interfaces::swapRouter::SwapInfo>"
+			}
+		]
+	},
+	{
+		"name": "common::structs::borrow::RevertLoanResult",
+		"type": "struct",
+		"members": [
+			{
+				"name": "loan_id",
+				"type": "core::felt252"
+			},
+			{
+				"name": "return_market",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "return_amount",
+				"type": "core::integer::u256"
+			}
+		]
+	},
+	{
+		"name": "common::structs::borrow::Loan",
+		"type": "struct",
+		"members": [
+			{
+				"name": "loan_id",
+				"type": "core::felt252"
+			},
+			{
+				"name": "borrower",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "market",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "amount",
+				"type": "core::integer::u256"
+			},
+			{
+				"name": "current_market",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "current_amount",
+				"type": "core::integer::u256"
+			},
+			{
+				"name": "state",
+				"type": "core::felt252"
+			},
+			{
+				"name": "l3_integration",
+				"type": "core::felt252"
+			},
+			{
+				"name": "l3_category",
+				"type": "core::felt252"
+			},
+			{
+				"name": "created_at",
+				"type": "core::integer::u64"
+			}
+		]
+	},
+	{
+		"name": "common::structs::borrow::Collateral",
+		"type": "struct",
+		"members": [
+			{
+				"name": "loan_id",
+				"type": "core::felt252"
+			},
+			{
+				"name": "collateral_token",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "amount",
+				"type": "core::integer::u256"
+			},
+			{
+				"name": "created_at",
+				"type": "core::integer::u64"
+			}
+		]
+	},
+	{
+		"name": "common::interfaces::router::IRouter",
+		"type": "interface",
+		"items": [
+			{
+				"name": "initialize",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "access_control",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "governor",
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"outputs": [],
+				"state_mutability": "external"
+			},
+			{
+				"name": "deposit",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "asset",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "amount",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "receiver",
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"outputs": [
+					{
+						"type": "core::integer::u256"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "withdraw_deposit",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "asset",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "rToken_shares",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "receiver",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "owner",
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"outputs": [
+					{
+						"type": "core::integer::u256"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "stake_request",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "rToken",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "rToken_amounts",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "receiver",
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"outputs": [
+					{
+						"type": "core::integer::u256"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "deposit_and_stake",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "asset",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "amount",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "receiver",
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"outputs": [
+					{
+						"type": "(core::integer::u256, core::integer::u256)"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "withdraw_stake",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "rToken",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "receiver",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "staking_shares_to_withdraw",
+						"type": "core::integer::u256"
+					}
+				],
+				"outputs": [
+					{
+						"type": "core::integer::u256"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "loan_request",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "asset",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "amount",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "collateral_asset",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "collateral_amount",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "recipient",
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"outputs": [
+					{
+						"type": "core::felt252"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "loan_request_with_rToken",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "asset",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "amount",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "rToken",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "rTokenAmount",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "recipient",
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"outputs": [
+					{
+						"type": "core::felt252"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "borrow_and_spend",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "asset",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "amount",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "collateral_asset",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "collateral_amount",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "recipient",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "spendAllParams",
+						"type": "common::interfaces::borrow::SpendAllParams"
+					}
+				],
+				"outputs": [
+					{
+						"type": "common::structs::borrow::SpendLoanResult"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "borrow_and_spend_with_rToken",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "asset",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "amount",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "rToken",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "rTokenAmount",
+						"type": "core::integer::u256"
+					},
+					{
+						"name": "recipient",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "spendAllParams",
+						"type": "common::interfaces::borrow::SpendAllParams"
+					}
+				],
+				"outputs": [
+					{
+						"type": "common::structs::borrow::SpendLoanResult"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "repay_loan",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "loan_id",
+						"type": "core::felt252"
+					},
+					{
+						"name": "repay_amount",
+						"type": "core::integer::u256"
+					}
+				],
+				"outputs": [
+					{
+						"type": "common::interfaces::borrow::ReleasedAssets"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "add_collateral",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "loan_id",
+						"type": "core::felt252"
+					},
+					{
+						"name": "collateral_asset",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "collateral_amount",
+						"type": "core::integer::u256"
+					}
+				],
+				"outputs": [],
+				"state_mutability": "external"
+			},
+			{
+				"name": "add_rToken_collateral",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "loan_id",
+						"type": "core::felt252"
+					},
+					{
+						"name": "rToken",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "rToken_amount",
+						"type": "core::integer::u256"
+					}
+				],
+				"outputs": [],
+				"state_mutability": "external"
+			},
+			{
+				"name": "interact_with_l3",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "spendAllParams",
+						"type": "common::interfaces::borrow::SpendAllParams"
+					}
+				],
+				"outputs": [
+					{
+						"type": "common::structs::borrow::SpendLoanResult"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "revert_interaction_with_l3",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "revertSpendAllParams",
+						"type": "common::interfaces::borrow::RevertSpendAllParams"
+					}
+				],
+				"outputs": [
+					{
+						"type": "common::structs::borrow::RevertLoanResult"
+					}
+				],
+				"state_mutability": "external"
+			},
+			{
+				"name": "get_governor",
+				"type": "function",
+				"inputs": [],
+				"outputs": [
+					{
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"state_mutability": "view"
+			},
+			{
+				"name": "get_loans_len",
+				"type": "function",
+				"inputs": [],
+				"outputs": [
+					{
+						"type": "core::felt252"
+					}
+				],
+				"state_mutability": "view"
+			},
+			{
+				"name": "get_loan_by_id",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "loan_id",
+						"type": "core::felt252"
+					}
+				],
+				"outputs": [
+					{
+						"type": "(common::structs::borrow::Loan, common::structs::borrow::Collateral)"
+					}
+				],
+				"state_mutability": "view"
+			},
+			{
+				"name": "get_health_factor",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "loan_id",
+						"type": "core::felt252"
+					},
+					{
+						"name": "additional_params",
+						"type": "core::array::Array::<core::felt252>"
+					}
+				],
+				"outputs": [
+					{
+						"type": "core::integer::u32"
+					}
+				],
+				"state_mutability": "view"
+			},
+			{
+				"name": "get_user_loans",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "user",
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"outputs": [
+					{
+						"type": "(core::array::Array::<common::structs::borrow::Loan>, core::array::Array::<common::structs::borrow::Collateral>)"
+					}
+				],
+				"state_mutability": "view"
+			},
+			{
+				"name": "get_user_loan_info",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "user",
+						"type": "core::starknet::contract_address::ContractAddress"
+					},
+					{
+						"name": "index",
+						"type": "core::felt252"
+					}
+				],
+				"outputs": [
+					{
+						"type": "common::structs::borrow::Loan"
+					}
+				],
+				"state_mutability": "view"
+			},
+			{
+				"name": "get_user_loan_ids_length",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "user",
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"outputs": [
+					{
+						"type": "core::felt252"
+					}
+				],
+				"state_mutability": "view"
+			}
+		]
+	},
+	{
+		"name": "SecurityImpl",
+		"type": "impl",
+		"interface_name": "common::components::security::ISecurity"
+	},
+	{
+		"name": "core::bool",
+		"type": "enum",
+		"variants": [
+			{
+				"name": "False",
+				"type": "()"
+			},
+			{
+				"name": "True",
+				"type": "()"
+			}
+		]
+	},
+	{
+		"name": "common::components::security::ISecurity",
+		"type": "interface",
+		"items": [
+			{
+				"name": "upgradeClassHash",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "new_class_hash",
+						"type": "core::starknet::class_hash::ClassHash"
+					}
+				],
+				"outputs": [],
+				"state_mutability": "external"
+			},
+			{
+				"name": "pause",
+				"type": "function",
+				"inputs": [],
+				"outputs": [],
+				"state_mutability": "external"
+			},
+			{
+				"name": "unpause",
+				"type": "function",
+				"inputs": [],
+				"outputs": [],
+				"state_mutability": "external"
+			},
+			{
+				"name": "is_paused",
+				"type": "function",
+				"inputs": [],
+				"outputs": [
+					{
+						"type": "core::bool"
+					}
+				],
+				"state_mutability": "view"
+			},
+			{
+				"name": "set_access_control",
+				"type": "function",
+				"inputs": [
+					{
+						"name": "access_control",
+						"type": "core::starknet::contract_address::ContractAddress"
+					}
+				],
+				"outputs": [],
+				"state_mutability": "external"
+			}
+		]
+	},
+	{
+		"name": "constructor",
+		"type": "constructor",
+		"inputs": [
+			{
+				"name": "access_control",
+				"type": "core::starknet::contract_address::ContractAddress"
+			},
+			{
+				"name": "governor",
+				"type": "core::starknet::contract_address::ContractAddress"
+			}
+		]
+	},
+	{
+		"kind": "struct",
+		"name": "openzeppelin::upgrades::upgradeable::UpgradeableComponent::Upgraded",
+		"type": "event",
+		"members": [
+			{
+				"kind": "data",
+				"name": "class_hash",
+				"type": "core::starknet::class_hash::ClassHash"
+			}
+		]
+	},
+	{
+		"kind": "enum",
+		"name": "openzeppelin::upgrades::upgradeable::UpgradeableComponent::Event",
+		"type": "event",
+		"variants": [
+			{
+				"kind": "nested",
+				"name": "Upgraded",
+				"type": "openzeppelin::upgrades::upgradeable::UpgradeableComponent::Upgraded"
+			}
+		]
+	},
+	{
+		"kind": "struct",
+		"name": "openzeppelin::security::pausable::PausableComponent::Paused",
+		"type": "event",
+		"members": [
+			{
+				"kind": "data",
+				"name": "account",
+				"type": "core::starknet::contract_address::ContractAddress"
+			}
+		]
+	},
+	{
+		"kind": "struct",
+		"name": "openzeppelin::security::pausable::PausableComponent::Unpaused",
+		"type": "event",
+		"members": [
+			{
+				"kind": "data",
+				"name": "account",
+				"type": "core::starknet::contract_address::ContractAddress"
+			}
+		]
+	},
+	{
+		"kind": "enum",
+		"name": "openzeppelin::security::pausable::PausableComponent::Event",
+		"type": "event",
+		"variants": [
+			{
+				"kind": "nested",
+				"name": "Paused",
+				"type": "openzeppelin::security::pausable::PausableComponent::Paused"
+			},
+			{
+				"kind": "nested",
+				"name": "Unpaused",
+				"type": "openzeppelin::security::pausable::PausableComponent::Unpaused"
+			}
+		]
+	},
+	{
+		"kind": "enum",
+		"name": "openzeppelin::security::reentrancyguard::ReentrancyGuardComponent::Event",
+		"type": "event",
+		"variants": []
+	},
+	{
+		"kind": "enum",
+		"name": "common::components::security::SecurityComponent::Event",
+		"type": "event",
+		"variants": []
+	},
+	{
+		"kind": "enum",
+		"name": "v1_core::components::router::module::RouterComp::Event",
+		"type": "event",
+		"variants": []
+	},
+	{
+		"kind": "enum",
+		"name": "v1_core::contracts::router::OpenRouter::Event",
+		"type": "event",
+		"variants": [
+			{
+				"kind": "flat",
+				"name": "UpgradeableEvent",
+				"type": "openzeppelin::upgrades::upgradeable::UpgradeableComponent::Event"
+			},
+			{
+				"kind": "flat",
+				"name": "PausableEvent",
+				"type": "openzeppelin::security::pausable::PausableComponent::Event"
+			},
+			{
+				"kind": "flat",
+				"name": "ReentrancyGuardEvent",
+				"type": "openzeppelin::security::reentrancyguard::ReentrancyGuardComponent::Event"
+			},
+			{
+				"kind": "flat",
+				"name": "SecurityEvent",
+				"type": "common::components::security::SecurityComponent::Event"
+			},
+			{
+				"kind": "flat",
+				"name": "RouterEvent",
+				"type": "v1_core::components::router::module::RouterComp::Event"
+			}
+		]
+	}
 ]

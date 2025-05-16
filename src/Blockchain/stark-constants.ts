@@ -83,12 +83,6 @@ export const getProvider = () => {
 //   }
 // };
 
-export function isTransactionLoading(receipt: UseWaitForTransactionResult) {
-	// if(receipt.loading)
-	// 	return true
-	if (receipt.data?.status == 'RECEIVED') return true;
-}
-
 export function handleTransactionToast(receipt: UseWaitForTransactionResult) {}
 
 export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
