@@ -136,7 +136,7 @@ export async function getUserLoans(account: string) {
 			}
 		);
 		////console.log(res, "loans called");
-		return parseLoansData(res?.loans, res?.collaterals);
+		return parseLoansData(res?.['0'], res?.['1']);
 	} catch (error) {
 		console.log(error, 'err in loans');
 	}

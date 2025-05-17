@@ -195,7 +195,8 @@ export async function getSupportedPools(poolPairAddress: any, dapp: any) {
 			[poolPairAddress, dapp],
 			{ blockIdentifier: 'pending' }
 		);
-		const data = result?.secondary_market?.supported.toString();
+
+		const data = result?.supported.toString();
 		////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
 		return data;
 	} catch (err) {
@@ -203,7 +204,6 @@ export async function getSupportedPools(poolPairAddress: any, dapp: any) {
 	}
 }
 export async function getMinimumDepositAmount(rToken: any) {
-	console.log('came here');
 	////console.log("getMinimumDepositAmount called - ", rTokenAddress);
 	try {
 		const provider = getProvider();
@@ -217,10 +217,8 @@ export async function getMinimumDepositAmount(rToken: any) {
 			[tokenAddressMap[rToken]],
 			{ blockIdentifier: 'pending' }
 		);
-		const res = parseAmount(
-			uint256.uint256ToBN(result?._get_minimum_deposit_amount).toString(),
-			tokenDecimalsMap[rToken]
-		);
+
+		const res = parseAmount(result.toString(), tokenDecimalsMap[rToken]);
 		////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
 		return res;
 	} catch (err) {
@@ -241,10 +239,7 @@ export async function getMaximumDepositAmount(rToken: any) {
 			[tokenAddressMap[rToken]],
 			{ blockIdentifier: 'pending' }
 		);
-		const res = parseAmount(
-			uint256.uint256ToBN(result?._get_maximum_deposit_amount).toString(),
-			tokenDecimalsMap[rToken]
-		);
+		const res = parseAmount(result.toString(), tokenDecimalsMap[rToken]);
 		////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
 		return res;
 	} catch (err) {
@@ -265,10 +260,7 @@ export async function getMaximumLoanAmount(dToken: any) {
 			[tokenAddressMap[dToken]],
 			{ blockIdentifier: 'pending' }
 		);
-		const res = parseAmount(
-			result?._get_maximum_loan_amount.toString(),
-			tokenDecimalsMap[dToken]
-		);
+		const res = parseAmount(result.toString(), tokenDecimalsMap[dToken]);
 		////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
 		return res;
 	} catch (err) {
@@ -327,10 +319,7 @@ export async function getMinimumLoanAmount(dToken: any) {
 			{ blockIdentifier: 'pending' }
 		);
 
-		const res = parseAmount(
-			result?._get_minimum_loan_amount.toString(),
-			tokenDecimalsMap[dToken]
-		);
+		const res = parseAmount(result.toString(), tokenDecimalsMap[dToken]);
 		////console.log("getPoolsSupported ", result?.secondary_market?.supported.toString(),data);
 		return res;
 	} catch (err) {

@@ -1552,13 +1552,14 @@ const BorrowModal = ({
 
 	useEffect(() => {
 		const fecthLoanAmount = async () => {
-			const dynamicdata = await getMaximumDynamicLoanAmount(
-				amount,
-				currentBorrowCoin,
-				currentCollateralCoin[0] == 'r' ?
-					currentCollateralCoin.slice(1)
-				:	currentCollateralCoin
-			);
+			// const dynamicdata = await getMaximumDynamicLoanAmount(
+			// 	amount,
+			// 	currentBorrowCoin,
+			// 	currentCollateralCoin[0] == 'r' ?
+			// 		currentCollateralCoin.slice(1)
+			// 	:	currentCollateralCoin
+			// );
+			const dynamicdata = undefined;
 			if (dynamicdata != undefined) {
 				const data = maxLoanAmounts['d' + currentBorrowCoin];
 				if (currentBorrowCoin == currentCollateralCoin) {

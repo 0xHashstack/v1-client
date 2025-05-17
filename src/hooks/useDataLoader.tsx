@@ -1661,8 +1661,8 @@ const useDataLoader = () => {
 						const res =
 							response?.status != 'rejected' ?
 								response?.value
-							:	'0';
-						if (res == 1) {
+							:	'false';
+						if (res === 'true') {
 							data =
 								process.env.NEXT_PUBLIC_NODE_ENV == 'testnet' ?
 									poolsPairs[idx]
@@ -1813,9 +1813,9 @@ const useDataLoader = () => {
 						const res =
 							response?.status != 'rejected' ?
 								response?.value
-							:	'0';
+							:	'false';
 
-						if (res == 1) {
+						if (res === 'true') {
 							data =
 								process.env.NEXT_PUBLIC_NODE_ENV == 'testnet' ?
 									mySwapPoolPairs[idx]
