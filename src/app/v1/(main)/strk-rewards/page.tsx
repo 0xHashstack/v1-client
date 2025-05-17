@@ -16,7 +16,6 @@ export const dynamic = 'force-static';
 export const runtime = 'nodejs';
 
 const SpendBorrow = () => {
-	useDataLoader();
 	const totalBorrow = useSelector(selectYourBorrow);
 	const netAPR = useSelector(selectnetAprLoans);
 	const userLoans = useSelector(selectUserUnspentLoans);

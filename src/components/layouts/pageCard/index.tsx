@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { usePostHog } from 'posthog-js/react';
 import { HTMLAttributes } from 'react';
 import { AlertTriangle } from 'lucide-react';
+import useDataLoader from '@/hooks/useDataLoader';
 
 const GRADIENT_BACKGROUND = `
   radial-gradient(circle 1800px at top left, rgba(115, 49, 234, 0.10), transparent) top left,
@@ -35,6 +36,8 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 	const handleFeedbackClick = () => {
 		posthog.capture('Feedback Modal Clicked', { Clicked: true });
 	};
+
+	useDataLoader();
 
 	if (!showContent) {
 		return (

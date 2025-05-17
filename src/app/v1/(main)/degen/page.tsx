@@ -423,8 +423,6 @@ export const dynamic = 'force-static';
 export const runtime = 'nodejs';
 
 const Degen: NextPage = () => {
-	useDataLoader();
-
 	const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>(
 		[]
 	);

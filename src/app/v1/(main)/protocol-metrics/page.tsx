@@ -53,7 +53,7 @@ const ProtocolMetricsContent = () => {
 		dispatch(setMetricsDropdown(dropdownName));
 	};
 	const { account: _account } = useAccount();
-	useDataLoader();
+
 	// useEffect(() => {
 	//   if (!_account) {
 	//     const walletConnected = (typeof window !== 'undefined' ? window.localStorage : null)?.getItem("lastUsedConnector");
@@ -227,11 +227,11 @@ const ProtocolMetricsContent = () => {
 };
 
 const ProtocolMetrics = () => {
-  return (
-    <ClientOnly>
-      <ProtocolMetricsContent />
-    </ClientOnly>
-  );
+	return (
+		<ClientOnly>
+			<ProtocolMetricsContent />
+		</ClientOnly>
+	);
 };
 
 export default ProtocolMetrics;

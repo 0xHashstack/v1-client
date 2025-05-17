@@ -32,8 +32,6 @@ const MarketContent: NextPage = () => {
 	const { selectedIndex, scrollSnaps, onDotButtonClick } =
 		useDotButton(emblaApi);
 
-	useDataLoader();
-
 	return (
 		<>
 			{/* <Box className="embla" ref={emblaRef}>
@@ -279,11 +277,11 @@ const MarketContent: NextPage = () => {
 };
 
 const Market: NextPage = () => {
-  return (
-    <ClientOnly>
-      <MarketContent />
-    </ClientOnly>
-  );
+	return (
+		<ClientOnly>
+			<MarketContent />
+		</ClientOnly>
+	);
 };
 
 export default Market;

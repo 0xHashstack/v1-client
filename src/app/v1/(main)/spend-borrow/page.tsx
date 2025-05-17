@@ -67,7 +67,6 @@ const MetricDisplay = ({
 };
 
 const SpendBorrow = () => {
-	useDataLoader();
 	const totalBorrow = useSelector(selectYourBorrow);
 	const netAPR = useSelector(selectnetAprLoans);
 

@@ -130,8 +130,6 @@ const CampaignContent: NextPage = () => {
 
 	const dispatch = useDispatch();
 
-	useDataLoader();
-
 	const ddRef = useRef<HTMLDivElement>(null);
 
 	const startDate = new Date('2023-11-27');

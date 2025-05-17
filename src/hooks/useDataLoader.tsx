@@ -3,6 +3,7 @@ import {
 	ILoan,
 	IMarketInfo,
 } from '@/Blockchain/interfaces/interfaces';
+import { useCallback, useRef } from 'react';
 import { getUserDeposits } from '@/Blockchain/scripts/Deposits';
 import { getUserLoans } from '@/Blockchain/scripts/Loans';
 import {
@@ -205,10 +206,28 @@ import {
 import { metrics_api } from '@/utils/keys/metricsApi';
 import { useAccount } from '@starknet-react/core';
 import axios from 'axios';
-import React, { use, useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useCacheStore } from '@/store/zustand/useCacheStore';
 import { useDispatch, useSelector } from 'react-redux';
 const CACHE_DURATION = 30000; // 30 seconds cache duration
+
+// Utility function for debouncing API calls
+const debounce = <T extends (...args: any[]) => any>(
+	func: T,
+	wait: number
+): ((...args: Parameters<T>) => void) => {
+	let timeout: NodeJS.Timeout | null = null;
+	return function executedFunction(...args: Parameters<T>): void {
+		const later = (): void => {
+			timeout = null;
+			func(...args);
+		};
+		if (timeout) {
+			clearTimeout(timeout);
+		}
+		timeout = setTimeout(later, wait);
+	};
+};
 
 const useDataLoader = () => {
 	const { address } = useAccount();
@@ -1328,8 +1347,11 @@ const useDataLoader = () => {
 				}
 			};
 
+			// Create debounced version of fetchOraclePrices
+			const debouncedFetchOraclePrices = debounce(fetchOraclePrices, 500);
+
 			if (oraclePricesCount < 0) {
-				fetchOraclePrices();
+				debouncedFetchOraclePrices();
 			}
 		} catch (err) {
 			setIsLoadingOraclePrices(false); // Reset loading state on error
@@ -1351,8 +1373,15 @@ const useDataLoader = () => {
 				const count = getTransactionCount();
 				dispatch(setProtocolReservesCount(count));
 			};
+
+			// Create debounced version of fetchProtocolReserves
+			const debouncedFetchProtocolReserves = debounce(
+				fetchProtocolReserves,
+				500
+			);
+
 			if (protocolReservesCount < transactionRefresh) {
-				fetchProtocolReserves();
+				debouncedFetchProtocolReserves();
 			}
 		} catch (err) {
 			//console.log("error fetching protocol reserves ", err);
@@ -1442,8 +1471,12 @@ const useDataLoader = () => {
 					}
 				}
 			};
+
+			// Create debounced version of fetchFees
+			const debouncedFetchFees = debounce(fetchFees, 500);
+
 			if (feesCount < transactionRefresh) {
-				fetchFees();
+				debouncedFetchFees();
 			}
 		} catch (err) {
 			//console.log(err, "err in fetchFees")
@@ -1451,6 +1484,7 @@ const useDataLoader = () => {
 	}, [transactionRefresh, address]);
 	useEffect(() => {
 		try {
+			console.log('fetchProtocolStats');
 			const fetchProtocolStats = async () => {
 				const dataStats = await getProtocolStats();
 				if (
@@ -1474,9 +1508,17 @@ const useDataLoader = () => {
 				}
 				dispatch(setSpendBalances(dataSpends));
 			};
+
+			// Create debounced versions of the functions
+			const debouncedFetchProtocolStats = debounce(
+				fetchProtocolStats,
+				500
+			);
+			const debouncedFetchSpends = debounce(fetchSpends, 500);
+
 			if (protocolStatsCount < transactionRefresh) {
-				fetchProtocolStats();
-				fetchSpends();
+				debouncedFetchProtocolStats();
+				debouncedFetchSpends();
 			}
 		} catch (err) {
 			//console.log("protocol stats - transactionRefresh error ", err);
@@ -1532,8 +1574,12 @@ const useDataLoader = () => {
 					dispatch(setUsersFilteredSupply(supplyCount));
 				}
 			};
+
+			// Create debounced version of fetchUserDeposits
+			const debouncedFetchUserDeposits = debounce(fetchUserDeposits, 500);
+
 			if (userDepositsCount < transactionRefresh) {
-				fetchUserDeposits();
+				debouncedFetchUserDeposits();
 			}
 		} catch (err) {}
 	}, [address, transactionRefresh]);
@@ -2233,8 +2279,12 @@ const useDataLoader = () => {
 				//console.log("getTransactionCount", count);
 				dispatch(setUserLoansCount(count));
 			};
+
+			// Create debounced version of fetchUserLoans
+			const debouncedFetchUserLoans = debounce(fetchUserLoans, 500);
+
 			if (userLoansCount < transactionRefresh) {
-				fetchUserLoans();
+				debouncedFetchUserLoans();
 			}
 		} catch (err) {
 			//console.log("user loans called - transactionRefresh error ", err);
@@ -2312,8 +2362,9 @@ const useDataLoader = () => {
 			};
 
 			////console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+			const debouncedFetchUserSupply = debounce(fetchUserSupply, 500);
 			if (userInfoCount < transactionRefresh) {
-				fetchUserSupply();
+				debouncedFetchUserSupply();
 			}
 		} catch (err) {
 			//console.log(err, "error in user info");
@@ -2453,10 +2504,11 @@ const useDataLoader = () => {
 					dispatch(setNetAprCount(count));
 				}
 			};
+			const debouncedFetchNetApr = debounce(fetchNetApr, 500);
 
 			////console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
 			if (netAprCount < transactionRefresh) {
-				fetchNetApr();
+				debouncedFetchNetApr();
 			}
 		} catch (err) {
 			//console.log(err, "error in user info");
@@ -2590,6 +2642,11 @@ const useDataLoader = () => {
 				// dispatch(setAvgBorrowAprCount(count));
 			};
 
+			const debouncedFetchAvgSupplyAPRCount = debounce(
+				fetchAvgSupplyAPRCount,
+				500
+			);
+
 			if (
 				avgSupplyAprCount < transactionRefresh &&
 				protocolStatsCount == transactionRefresh &&
@@ -2597,7 +2654,7 @@ const useDataLoader = () => {
 				dataDeposit &&
 				protocolStats
 			) {
-				fetchAvgSupplyAPRCount();
+				debouncedFetchAvgSupplyAPRCount();
 			}
 		} catch (err) {
 			//console.log(err, "error in user info");
@@ -2659,6 +2716,11 @@ const useDataLoader = () => {
 				}
 			};
 
+			const debouncedFetchAvgBorrowAPRCount = debounce(
+				fetchAvgBorrowAPRCount,
+				500
+			);
+
 			if (
 				avgBorrowAPRCount < transactionRefresh &&
 				protocolStats &&
@@ -2666,7 +2728,7 @@ const useDataLoader = () => {
 				userLoans &&
 				userLoansCount == transactionRefresh
 			) {
-				fetchAvgBorrowAPRCount();
+				debouncedFetchAvgBorrowAPRCount();
 			}
 		} catch (err) {
 			//console.log(err, "error in user info");
@@ -2699,6 +2761,8 @@ const useDataLoader = () => {
 				}
 				//console.log("supplyData", data);
 			};
+
+			const debouncedFetchSupplyData = debounce(fetchSupplyData, 500);
 			if (
 				dataDeposit &&
 				userDepositsCount == transactionRefresh &&
@@ -2707,7 +2771,7 @@ const useDataLoader = () => {
 				oraclePrices?.length > 0 &&
 				yourMetricsSupplyCount < transactionRefresh
 			) {
-				fetchSupplyData();
+				debouncedFetchSupplyData();
 			}
 		} catch (err) {
 			//console.log("your metrics supply err ", err);
@@ -2774,6 +2838,8 @@ const useDataLoader = () => {
 				}
 				//console.log("totalBorrow ", borrow);
 			};
+
+			const debouncedFetchBorrowData = debounce(fetchBorrowData, 500);
 			if (
 				userLoans &&
 				userLoansCount == transactionRefresh &&
@@ -2782,7 +2848,7 @@ const useDataLoader = () => {
 				oraclePrices &&
 				yourMetricsBorrowCount < transactionRefresh
 			) {
-				fetchBorrowData();
+				debouncedFetchBorrowData();
 			}
 		} catch (err) {
 			//console.log("err fetchBorrowData ", err);
@@ -2814,7 +2880,20 @@ const useDataLoader = () => {
 					}
 				}
 			};
-			fetchnetSpendBalance();
+
+			const debouncedFetchnetSpendBalance = debounce(
+				fetchnetSpendBalance,
+				500
+			);
+			if (
+				spendBalances &&
+				protocolStats &&
+				protocolStatsCount == transactionRefresh &&
+				oraclePrices &&
+				oraclePricesCount == transactionRefresh
+			) {
+				debouncedFetchnetSpendBalance();
+			}
 		} catch (err) {
 			console.log(err, 'err in net spend balance');
 		}
@@ -2834,8 +2913,10 @@ const useDataLoader = () => {
 					dispatch(setJedistrkTokenAllocationCount(count));
 				}
 			};
+
+			const debouncedFetchData = debounce(fetchData, 500);
 			if (jedistrkTokenAllocationCount < transactionRefresh) {
-				fetchData();
+				debouncedFetchData();
 			}
 		} catch (err) {
 			console.log(err, 'err inf fetching jedi strk');
@@ -2862,8 +2943,10 @@ const useDataLoader = () => {
 			);
 			dispatch(setZklendSpends(arr));
 		};
+
+		const debouncedFetch = debounce(fetch, 500);
 		if (userLoans) {
-			fetch();
+			debouncedFetch();
 		}
 	}, [userLoans]);
 
@@ -2897,8 +2980,13 @@ const useDataLoader = () => {
 				dispatch(setCCPSubmissionUserDetails(ccpSubmissionRes));
 			}
 		};
+
+		const debouncedFetchDataForCampaigns = debounce(
+			fetchDataForCampaigns,
+			500
+		);
 		if (address) {
-			fetchDataForCampaigns();
+			debouncedFetchDataForCampaigns();
 		}
 	}, [transactionRefresh, address]);
 
@@ -2920,7 +3008,12 @@ const useDataLoader = () => {
 				dispatch(setAirdropLeaderBoardData(AirdorpLeaderBoardData));
 			}
 		};
-		fetchLeaderboardData();
+
+		const debouncedFetchLeaderboardData = debounce(
+			fetchLeaderboardData,
+			500
+		);
+		debouncedFetchLeaderboardData();
 	}, [transactionRefresh]);
 };
 

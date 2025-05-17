@@ -98,7 +98,7 @@ const YourBorrow = () => {
 
 	const dispatch = useDispatch();
 	const { account, address } = useAccount();
-	useDataLoader();
+
 	const UserLoans = useSelector(selectUserLoans);
 
 	useEffect(() => {
