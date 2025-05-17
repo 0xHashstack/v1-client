@@ -578,6 +578,8 @@ const YourBorrowModal = ({
 		STRK: useBalanceOf(tokenAddressMap['STRK']),
 	};
 
+	console.log({ walletBalances });
+
 	const [walletBalance1, setwalletBalance1] = useState(
 		(
 			walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
