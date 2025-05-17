@@ -1484,7 +1484,6 @@ const useDataLoader = () => {
 	}, [transactionRefresh, address]);
 	useEffect(() => {
 		try {
-			console.log('fetchProtocolStats');
 			const fetchProtocolStats = async () => {
 				const dataStats = await getProtocolStats();
 				if (
