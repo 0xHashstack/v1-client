@@ -196,7 +196,6 @@ const YourBorrowModal = ({
 	const reduxProtocolStats = useSelector(selectProtocolStats);
 	const oraclePrices = useSelector(selectOraclePrices);
 	let activeTransactions = useSelector(selectActiveTransactions);
-	console.log({ oraclePrices });
 	const posthog = usePostHog();
 
 	useEffect(() => {
