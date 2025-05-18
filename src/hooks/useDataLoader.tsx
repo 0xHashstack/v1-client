@@ -209,7 +209,7 @@ import axios from 'axios';
 import { use, useEffect, useState } from 'react';
 import { useCacheStore } from '@/store/zustand/useCacheStore';
 import { useDispatch, useSelector } from 'react-redux';
-const CACHE_DURATION = 30000; // 30 seconds cache duration
+const CACHE_DURATION = 500000; // 5 min cache duration
 
 // Utility function for debouncing API calls
 const debounce = <T extends (...args: any[]) => any>(
@@ -1334,6 +1334,7 @@ const useDataLoader = () => {
 
 				try {
 					let data = await getOraclePrices();
+					console.log({ data });
 					if (!data || data?.length < 6) {
 						return;
 					}
@@ -1349,7 +1350,7 @@ const useDataLoader = () => {
 
 			// Create debounced version of fetchOraclePrices
 			const debouncedFetchOraclePrices = debounce(fetchOraclePrices, 500);
-
+			console.log('oraclePricesCount', oraclePricesCount);
 			if (oraclePricesCount < 0) {
 				debouncedFetchOraclePrices();
 			}

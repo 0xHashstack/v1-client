@@ -1559,23 +1559,19 @@ const BorrowModal = ({
 			// 		currentCollateralCoin.slice(1)
 			// 	:	currentCollateralCoin
 			// );
-			const dynamicdata = undefined;
-			if (dynamicdata != undefined) {
-				const data = maxLoanAmounts['d' + currentBorrowCoin];
-				if (currentBorrowCoin == currentCollateralCoin) {
-					setMaximumLoanAmount(
-						maxLoanAmounts['d' + currentBorrowCoin]
-					);
-				} else if (
-					currentCollateralCoin[0] == 'r' &&
-					currentCollateralCoin.slice(1) == currentBorrowCoin
-				) {
-					setMaximumLoanAmount(
-						maxLoanAmounts['d' + currentBorrowCoin]
-					);
-				} else {
-					setMaximumLoanAmount(Math.min(dynamicdata, data));
-				}
+
+			let dynamicdata = undefined;
+
+			const data = maxLoanAmounts['d' + currentBorrowCoin];
+			if (currentBorrowCoin == currentCollateralCoin) {
+				setMaximumLoanAmount(maxLoanAmounts['d' + currentBorrowCoin]);
+			} else if (
+				currentCollateralCoin[0] == 'r' &&
+				currentCollateralCoin.slice(1) == currentBorrowCoin
+			) {
+				setMaximumLoanAmount(maxLoanAmounts['d' + currentBorrowCoin]);
+			} else if (dynamicdata !== undefined) {
+				setMaximumLoanAmount(Math.min(dynamicdata, data));
 			}
 		};
 		fecthLoanAmount();
