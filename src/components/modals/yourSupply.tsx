@@ -1251,6 +1251,8 @@ const YourSupplyModal = ({
 																	coin: string,
 																	index: number
 																) => {
+																	if (!coin)
+																		return null;
 																	return (
 																		<Box
 																			key={
@@ -1273,6 +1275,11 @@ const YourSupplyModal = ({
 																				);
 																			}}
 																			onClick={() => {
+																				if (
+																					actionDisable
+																				) {
+																					return;
+																				}
 																				setCurrentSelectedSupplyCoin(
 																					coin.substring(
 																						1
@@ -1290,7 +1297,7 @@ const YourSupplyModal = ({
 																				addSupplyHoverIndex ===
 																				-1
 																			) ?
-																				coin.substring(
+																				coin?.substring(
 																					1
 																				) ===
 																				currentSelectedSupplyCoin

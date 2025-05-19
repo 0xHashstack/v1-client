@@ -86,8 +86,6 @@ const YourSupply: NextPage = () => {
 	const totalSupply = useSelector(selectYourSupply);
 	const netAPR = useSelector(selectnetAprDeposits);
 
-	useDataLoader();
-
 	const getNetAprColor = (apr: number | null) => {
 		if (apr === null) return 'text-[#e6edf3]';
 		if (apr > 0) return 'text-[#00D395]';

@@ -2066,11 +2066,11 @@ const YourBorrowModal = ({
 													(100 *
 														365 *
 														(poolAllocatedData *
-															oraclePrices.find(
+															(oraclePrices?.find(
 																(curr: any) =>
 																	curr.name ===
 																	'STRK'
-															)?.price)) /
+															)?.price || 0))) /
 														getTvlByPool(
 															poolAprs,
 															currentPool,

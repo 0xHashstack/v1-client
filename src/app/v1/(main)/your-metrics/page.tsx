@@ -55,7 +55,7 @@ const YourMetrics = () => {
 	const [currentMarketCoin, setCurrentMarketCoin] = useState('BTC');
 	const dispatch = useDispatch();
 	const { account: _account } = useAccount();
-	useDataLoader();
+
 	// useEffect(() => {
 	//   if (!_account) {
 	//     const walletConnected = (typeof window !== 'undefined' ? window.localStorage : null)?.getItem("lastUsedConnector");

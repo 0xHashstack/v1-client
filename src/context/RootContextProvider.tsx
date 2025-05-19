@@ -3,6 +3,7 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { goerli, mainnet, sepolia } from '@starknet-react/chains';
 import {
 	StarknetConfig,
+	alchemyProvider,
 	argent,
 	braavos,
 	infuraProvider,
@@ -84,7 +85,7 @@ export default function RootContextProvider({
 }) {
 	const apikey: string = process.env.NEXT_PUBLIC_INFURA_MAINNET as string;
 	const provider = useMemo(
-		() => infuraProvider({ apiKey: apikey.split('/')[4] }),
+		() => alchemyProvider({ apiKey: apikey.split('/').at(-1)! }),
 		[apikey]
 	);
 
