@@ -317,6 +317,7 @@ const BorrowDashboard: React.FC<BorrowDashboardProps> = ({
 		let temp2: any = [];
 
 		for (let i = 0; i < (Borrows ? Borrows?.length : 0); i++) {
+			console.log({ borrow: Borrows[i] });
 			if (Borrows) {
 				temp1.push({
 					id: Borrows[i].loanId,
