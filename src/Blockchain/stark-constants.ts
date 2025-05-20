@@ -38,7 +38,7 @@ export const dialAddress =
 
 export const getProvider = () => {
 	const rpctestnetUrl = String(process.env.NEXT_PUBLIC_INFURA_TESTNET);
-	const rpcUrl = String(process.env.NEXT_PUBLIC_INFURA_MAINNET);
+	const rpcUrl = String(process.env.NEXT_PUBLIC_ALCHEMY_MAINNET);
 	if (contractsEnv == DeployDetailsProd.sepolia) {
 		const provider = new RpcProvider({ nodeUrl: rpctestnetUrl });
 		return provider;
