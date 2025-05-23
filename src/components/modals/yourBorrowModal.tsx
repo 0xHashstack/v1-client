@@ -379,12 +379,12 @@ const YourBorrowModal = ({
 	const {
 		revertLoanId,
 		setRevertLoanId,
-
 		dataRevertInteractWithL3,
 		writeAsyncRevertInteractWithL3,
 		writeRevertInteractWithL3,
 		errorRevertInteractWithL3,
 		isIdleRevertInteractWithL3,
+		revertInteractWithL3,
 	} = useRevertInteractWithL3();
 	const poolsPairs = useSelector(selectJediSwapPoolsSupported);
 	const mySwapPoolPairs = useSelector(selectMySwapPoolsSupported);
@@ -484,10 +484,11 @@ const YourBorrowModal = ({
 
 	const handleRevertTransaction = async () => {
 		try {
-			setRevertLoanId(
-				currentBorrowId1.slice(currentBorrowId1.indexOf('-') + 1).trim()
-			);
-			const revert = await writeAsyncRevertInteractWithL3();
+			const revertLoanId = currentBorrowId1
+				.slice(currentBorrowId1.indexOf('-') + 1)
+				.trim();
+			const revert = await revertInteractWithL3(revertLoanId);
+			if (!revert?.transaction_hash) return;
 			setDepositTransHash(revert?.transaction_hash);
 			if (revert?.transaction_hash) {
 				const toastid = toast.info(`Transaction pending`, {

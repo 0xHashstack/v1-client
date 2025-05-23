@@ -50,7 +50,8 @@ import numberFormatterPercentage from '@/utils/functions/numberFormatterPercenta
 import TableInfoIcon from '../table/tableIcons/infoIcon';
 import { getZklendusdSpendValue } from '@/Blockchain/scripts/l3interaction';
 import { usePostHog } from 'posthog-js/react';
-
+import { Spend } from 'v2-sdk-itachi';
+import { itachiSpend } from '@/Blockchain/stark-constants';
 export interface ICoin {
 	name: string;
 	symbol: string;

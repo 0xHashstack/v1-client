@@ -7,7 +7,8 @@ import DeployDetailsProd from '../../contract_addresses_2.json';
 import ERC20Abi from './abis_mainnet/erc20_abi.json';
 import { RpcProvider, num } from 'starknet';
 import { UseWaitForTransactionResult } from '@starknet-react/core';
-
+import { Spend } from 'v2-sdk-itachi';
+import itachiTokens from '@/Blockchain/tokens.mainnet.json';
 export function processAddress(address: string) {
 	return num.toHex(num.toBigInt(address));
 }
@@ -26,6 +27,27 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
 		contractsEnv.TOKENS[i].address
 	);
 }
+
+// Initialize the SDK with a StarkNet provider
+const provider = new RpcProvider({
+	nodeUrl: process.env.NEXT_PUBLIC_ALCHEMY_MAINNET,
+});
+
+export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
+
+// Configure the SDK
+export const itachiConfig = {
+	chainId: 'SN_MAIN',
+	provider: new RpcProvider({
+		nodeUrl: 'https://starknet-mainnet.public.blastapi.io/',
+	}),
+};
+
+export const itachiSpend = new Spend(
+	itachiConfig as any,
+	diamondAddress,
+	itachiTokens
+);
 
 export const governorAddress =
 	'0x0071aa32395ac536094cc8a1a2a663229ab0212fea92111ea93a81fcf68f1792';
@@ -84,8 +106,6 @@ export const getProvider = () => {
 // };
 
 export function handleTransactionToast(receipt: UseWaitForTransactionResult) {}
-
-export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
 
 export const metricsContractAddress: string =
 	contractsEnv.METRICS_CONTRACT_ADDRESS;
