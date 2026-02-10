@@ -30,7 +30,7 @@
     "@usersnap/browser": "^0.0.4",
     "apexcharts": "^3.40.0",
     "aws-sdk": "^2.1451.0",
-    "axios": "^1.4.0",
+    "axios": "^1.13.5",
     "babel-jest": "^29.5.0",
     "bignumber.js": "9.0.1",
     "eslint": "8.39.0",
