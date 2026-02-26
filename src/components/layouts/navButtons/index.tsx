@@ -32,7 +32,7 @@ import { capitalizeWords } from '../../../utils/functions/capitalizeWords';
 import FireIcon from '@/assets/icons/fireIcon';
 import NegativeApr from '@/assets/icons/NegativeApr';
 import PositiveApr from '@/assets/icons/PositiveApr';
-import { ArrowLeftIcon, ChevronLeftIcon } from 'lucide-react';
+import { ArrowLeftIcon, ChevronLeftIcon, AlertCircle } from 'lucide-react';
 import { showHardCodedVal } from '@/constants/config.constant';
 
 interface NavButtonsProps {
@@ -56,24 +56,11 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 	const posthog = usePostHog();
 
 	const navOptions = [
-		{ path: 'v1/market/', label: 'Markets', count: 0 },
-		{
-			path: 'v1/spend-borrow/',
-			label: 'Spend Borrow',
-			count: userUnspentLoans?.length ? userUnspentLoans.length : 0,
-		},
 		{
 			path: 'v1/your-supply/',
 			label: 'Your Supply',
 			count: usersFilteredSupply ? usersFilteredSupply : 0,
 		},
-		{
-			path: 'v1/your-borrow/',
-			label: 'Your Borrow',
-			count: userLoans?.length ? userLoans.length : 0,
-		},
-		{ path: 'v1/degen/', label: 'Degen', count: 0 },
-		{ path: 'v1/strk-rewards/', label: 'Farm STRK token', count: 0 },
 	];
 
 	const pathname = usePathname();
@@ -82,18 +69,13 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 		const storedCurrentPage = (
 			typeof window !== 'undefined' ?
 				window.localStorage
-			:	null)?.getItem('currentPage');
+				: null)?.getItem('currentPage');
 		if (storedCurrentPage) {
 			dispatch(setCurrentPage(storedCurrentPage));
 		}
 	}, [dispatch]);
 
 	const handleButtonClick = (val: string) => {
-		if (val === 'v1/degen/') {
-			posthog.capture('Degen Tab Clicked', {
-				Clicked: true,
-			});
-		}
 		dispatch(setCurrentPage(val));
 		(typeof window !== 'undefined' ? window.localStorage : null)?.setItem(
 			'currentPage',
@@ -121,55 +103,20 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 						onClick={() => handleButtonClick(option.path)}>
 						<Button
 							variant='ghost'
-							className={`font-normal rounded-none text-sm flex-shrink-0 ${
-								currentPage === option.path ?
-									'font-semibold'
-								:	'font-normal'
-							} ${
-								pathname === `/${option.path}` ? 'text-white'
-								:	'text-gray-500'
-							} ${
-								option.path === 'v1/strk-rewards/' ?
-									'text-purple-300'
-								:	''
-							} ${
-								pathname === `/${option.path}` ?
-									'border-b-2 border-blue-500'
-								:	''
-							} hover:bg-transparent hover:text-gray-200`}>
-							{option.path === 'v1/market/' &&
-								pathname !== '/v1/market/' && (
-									<div className='mr-1.5'>
-										<ChevronLeftIcon />
-									</div>
-								)}
-							{capitalizeWords(
-								option.path === 'v1/market/' ?
-									pathname === '/v1/market/' ?
-										getButtonLabel(option.path)
-									:	'Markets'
-								:	getButtonLabel(option.path)
-							)}
-							{option.count > 0 && (
-								<Badge className='ml-2 bg-gray-800 text-gray-300 border border-gray-700'>
-									{option.count}
-								</Badge>
-							)}
-							{option.path === 'v1/degen/' && (
-								<div className='ml-2'>
-									<Image
-										src='/new.svg'
-										alt='New Icon'
-										width={36}
-										height={16}
-									/>
-								</div>
-							)}
-							{option.path === 'v1/strk-rewards/' && (
-								<div className='ml-2'>
-									<FireIcon />
-								</div>
-							)}
+							className={`font-normal rounded-none text-sm flex-shrink-0 ${currentPage === option.path ?
+								'font-semibold'
+								: 'font-normal'
+								} ${pathname === `/${option.path}` ? 'text-white'
+									: 'text-gray-500'
+								} border-b-2 ${pathname === `/${option.path}` ?
+									'border-red-500/50'
+									: 'border-transparent'
+								} hover:bg-transparent hover:text-gray-200`}>
+
+							{capitalizeWords(getButtonLabel(option.path))}
+							<Badge className='ml-2 flex items-center justify-center p-1 bg-red-500/10 text-red-500 hover:bg-red-500/20 hover:text-red-400 border border-red-500/30 transition-all rounded-full h-5 w-5'>
+								<AlertCircle className='w-3.5 h-3.5' />
+							</Badge>
 						</Button>
 					</div>
 				))}
@@ -182,7 +129,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 						</span>
 						{netWorth === null ?
 							<Skeleton className='w-24 h-6 bg-gray-800 rounded-md' />
-						:	<TooltipProvider>
+							: <TooltipProvider>
 								<Tooltip>
 									<TooltipTrigger asChild>
 										<span
@@ -205,9 +152,9 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 						{netAPR === null ?
 							showHardCodedVal ?
 								'0%'
-							:	<Skeleton className='w-24 h-6 bg-gray-800 rounded-md' />
+								: <Skeleton className='w-24 h-6 bg-gray-800 rounded-md' />
 
-						:	<TooltipProvider>
+							: <TooltipProvider>
 								<Tooltip>
 									<TooltipTrigger asChild>
 										<div className='flex items-center gap-1'>
@@ -225,7 +172,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({ width, marginBottom }) => {
 											</span>
 											{netAPR >= 0 ?
 												<PositiveApr />
-											:	<NegativeApr />}
+												: <NegativeApr />}
 										</div>
 									</TooltipTrigger>
 

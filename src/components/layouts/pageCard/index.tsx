@@ -7,6 +7,7 @@ import Footer from '../footer';
 import FeedbackModal from '@/components/modals/feedbackModal';
 import { Text } from '@/components/ui/typography/Text';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { usePostHog } from 'posthog-js/react';
 import { HTMLAttributes } from 'react';
 import { AlertTriangle } from 'lucide-react';
@@ -24,7 +25,7 @@ const GRADIENT_BACKGROUND_DARKER = `
   black
 `;
 
-interface PageCardProps extends HTMLAttributes<HTMLDivElement> {}
+interface PageCardProps extends HTMLAttributes<HTMLDivElement> { }
 
 export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 	const { render, whitelisted, validRTokens } = usePageCard();
@@ -32,6 +33,8 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 	const isTestnet = process.env.NEXT_PUBLIC_NODE_ENV === 'testnet';
 	const showContent = render && (isMainnet ? whitelisted : true);
 	const posthog = usePostHog();
+	const pathname = usePathname();
+	const isWithdrawalGuide = pathname?.includes('withdrawal-guide');
 
 	const handleFeedbackClick = () => {
 		posthog.capture('Feedback Modal Clicked', { Clicked: true });
@@ -70,7 +73,7 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 									to get an instant access.
 								</Text.Regular14>
 							</div>
-						:	<Text.Regular24 className='text-white'>
+							: <Text.Regular24 className='text-white'>
 								Please switch to Starknet{' '}
 								{isTestnet ? 'Goerli' : 'Mainnet'} and refresh
 							</Text.Regular24>
@@ -96,29 +99,50 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 			</div>
 
 			{/* Warning Banner */}
-			<div
-				className='fixed top-[60px] left-0 right-0 z-[5] bg-amber-900 py-3 px-4 border-t-2 border-b-2'
-				style={{
-					borderImageSlice: 1,
-					borderImageSource:
-						'linear-gradient(to right, #f59e0b, #ef4444, #8b5cf6)',
-				}}>
-				<div className='mx-auto flex max-w-7xl items-center justify-center gap-2 text-center'>
-					<AlertTriangle className='h-5 w-5 flex-shrink-0 text-amber-300' />
-					<Text.Regular14 className='text-amber-100'>
-						Dear user, Starknet will soon disable mainnet support
-						for Cairo 0 contracts. We request you to withdraw your
-						funds and close your positions immediately.{' '}
-						<span className='font-semibold underline'>
-							Our Base testnet will be live very soon.
-						</span>{' '}
-					</Text.Regular14>
+			{!isWithdrawalGuide && (
+				<div
+					className='fixed top-[60px] left-0 right-0 z-[5] bg-red-900/95 py-4 px-4 border-t-2 border-b-2 backdrop-blur-sm'
+					style={{
+						borderImageSlice: 1,
+						borderImageSource: 'linear-gradient(to right, #ef4444, #dc2626)',
+					}}>
+					<div className='mx-auto flex max-w-7xl items-start justify-center gap-3 text-center md:text-left flex-col md:flex-row'>
+						<AlertTriangle className='h-5 w-5 flex-shrink-0 text-red-400 mt-0.5 hidden md:block' />
+						<div className='flex flex-col gap-2 items-center md:items-start'>
+							<Text.Regular14 className='text-red-100 font-bold tracking-wide'>
+								NOTICE
+							</Text.Regular14>
+							<Text.Regular14 className='text-red-100/90 leading-relaxed max-w-5xl'>
+								Due to limited liquidity and low user adoption within the Starknet
+								ecosystem, we have decided to discontinue Hashstack. The money
+								markets product has been suspended, all debt positions have been
+								closed, and the application remains accessible solely for fund
+								withdrawals. Please refer to the guide below for withdrawal
+								instructions via the web application and contracts.
+							</Text.Regular14>
+							<div className='flex gap-4 mt-1'>
+								<Link
+									href='#'
+									target='_blank'
+									className='font-semibold text-white underline decoration-red-400/60 hover:decoration-red-400 hover:text-red-100 transition-colors'>
+									Withdraw onchain
+								</Link>
+								<Link
+									href='#'
+									target='_blank'
+									className='font-semibold text-white underline decoration-red-400/60 hover:decoration-red-400 hover:text-red-100 transition-colors'>
+									Withdraw[in-app]
+								</Link>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
+			)}
 
 			<div
 				className={cn(
-					'z-[1] flex min-h-screen flex-col items-center pt-32 pb-10 md:pb-32',
+					'z-[1] flex min-h-screen flex-col items-center pb-10 md:pb-32',
+					isWithdrawalGuide ? 'pt-32' : 'pt-[380px] sm:pt-[320px] md:pt-[280px] lg:pt-[260px]',
 					className
 				)}
 				style={{ background: GRADIENT_BACKGROUND_DARKER }}

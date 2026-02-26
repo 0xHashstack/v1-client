@@ -48,10 +48,10 @@ const Navbar = ({ validRTokens }: any) => {
 						'px-3 py-4 text-sm rounded-md mb-0',
 						(
 							pathname !== '/v1/campaigns/' &&
-								pathname !== '/v1/referral/'
+							pathname !== '/v1/referral/'
 						) ?
 							'text-[#00D395]'
-						:	'text-[#676D9A]'
+							: 'text-[#676D9A]'
 					)}
 					onClick={() => {
 						if (pathname != '/waitlist') {
@@ -71,7 +71,7 @@ const Navbar = ({ validRTokens }: any) => {
 								height='16'
 								style={{ cursor: 'pointer' }}
 							/>
-						:	<Image
+							: <Image
 								src={'/dashboardIcon.svg'}
 								alt='Picture of the author'
 								width='16'
@@ -107,7 +107,7 @@ const Navbar = ({ validRTokens }: any) => {
 			<div className='flex flex-col md:flex-row items-center gap-1'>
 				<NavbarSwitchWallet domainName={domainName} />
 				<NavbarNotifications />
-				<NavbarSettings language={language} />
+				{/* <NavbarSettings language={language} /> */}
 			</div>
 		</div>
 	);
