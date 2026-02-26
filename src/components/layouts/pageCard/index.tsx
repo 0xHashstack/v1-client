@@ -122,13 +122,13 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 							</Text.Regular14>
 							<div className='flex gap-4 mt-1'>
 								<Link
-									href='#'
+									href='https://www.notion.so/OnChain-instructions-withdraw-unstake-tokens-Hashstack-finance-313fda6167f8804e90a7cdcceacab472?source=copy_link'
 									target='_blank'
 									className='font-semibold text-white underline decoration-red-400/60 hover:decoration-red-400 hover:text-red-100 transition-colors'>
 									Withdraw onchain
 								</Link>
 								<Link
-									href='#'
+									href='https://www.notion.so/Web-App-instructions-withdraw-unstake-tokens-Hashstack-finance-313fda6167f88029bad1ff97c84d20fa?source=copy_link'
 									target='_blank'
 									className='font-semibold text-white underline decoration-red-400/60 hover:decoration-red-400 hover:text-red-100 transition-colors'>
 									Withdraw[in-app]
