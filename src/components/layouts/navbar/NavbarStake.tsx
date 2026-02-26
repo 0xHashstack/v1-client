@@ -24,8 +24,10 @@ function NavbarStake({
 				'px-3 py-4 text-xs rounded-md mb-0',
 				render ?
 					'cursor-pointer hover:text-[#6e7681]'
-				:	'cursor-not-allowed',
-				pathname === '/waitlist/' && 'hover:text-white'
+					: 'cursor-not-allowed',
+				pathname === '/waitlist/' && 'hover:text-white',
+				// Highlighting with a red-tinted border for urgency
+				'border border-red-500/30 bg-red-500/5 hover:bg-red-500/10'
 			)}
 			onMouseEnter={() => setStakeHover(true)}
 			onMouseLeave={() => setStakeHover(false)}
@@ -41,6 +43,8 @@ function NavbarStake({
 				stakeHover={stakeHover}
 				setStakeHover={setStakeHover}
 				validRTokens={validRTokens}
+				defaultTab='unstake'
+				isUrgent={true}
 			/>
 		</Button>
 	);

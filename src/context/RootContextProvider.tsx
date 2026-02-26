@@ -85,7 +85,7 @@ export default function RootContextProvider({
 }) {
 	const apikey: string = process.env.NEXT_PUBLIC_ALCHEMY_MAINNET as string;
 	const provider = useMemo(
-		() => alchemyProvider({ apiKey: apikey.split('/').at(-1)! }),
+		() => alchemyProvider({ apiKey: apikey?.split('/').at(-1)! }),
 		[apikey]
 	);
 
