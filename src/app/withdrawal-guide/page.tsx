@@ -207,7 +207,7 @@ export default function WithdrawalGuidePage() {
                                     <div className='flex flex-col gap-2'>
                                         <Text.Semibold14 className='text-gray-200'>Step 2 & 3: Connect to Explorer</Text.Semibold14>
                                         <Text.Regular12 className='text-gray-400'>
-                                            Open Starkscan or Voyager, paste your vault address, go to the "Write Contract" tab, and connect your wallet.
+                                            Open Starkscan or Voyager, paste your vault address, go to the &quot;Write Contract&quot; tab, and connect your wallet.
                                         </Text.Regular12>
                                     </div>
 
@@ -315,14 +315,14 @@ export default function WithdrawalGuidePage() {
                                     {/* Step 1 */}
                                     <div className='flex flex-col gap-2'>
                                         <Text.Semibold14 className='text-gray-200'>Step 1. Find Your Staking Shares</Text.Semibold14>
-                                        <Text.Regular12 className='text-gray-400 mb-1'>Before unstaking, you need to find out exactly how many "staking shares" you own.</Text.Regular12>
+                                        <Text.Regular12 className='text-gray-400 mb-1'>Before unstaking, you need to find out exactly how many &quot;staking shares&quot; you own.</Text.Regular12>
                                         <ul className='list-disc pl-4 text-xs text-gray-400 flex flex-col gap-1'>
                                             <li>Go to the Staking Contract on a StarkNet block explorer: <Link href='https://starkscan.co/contract/0x05950cbbb7dbdb2303671515bb9e41ca0bf8937dc5ba929eebd276a3db3f854#read-contract' target='_blank' className='text-purple-400 hover:underline'>Starkscan</Link> | <Link href='https://voyager.online/contract/0x05950cbbb7dbdb2303671515bb9e41ca0bf8937dc5ba929eebd276a3db3f854#readContract' target='_blank' className='text-purple-400 hover:underline'>Voyager</Link></li>
-                                            <li>Go to the <strong>"Read Contract"</strong> tab.</li>
+                                            <li>Go to the <strong>&quot;Read Contract&quot;</strong> tab.</li>
                                             <li>Find the <code className='bg-gray-800 px-1 py-0.5 rounded'>get_user_staking_shares</code> function.</li>
                                             <li>Enter your wallet address in the <code className='bg-gray-800 px-1 py-0.5 rounded'>user</code> field.</li>
                                             <li>Enter the contract address of the rToken you staked in the <code className='bg-gray-800 px-1 py-0.5 rounded'>rToken</code> field.</li>
-                                            <li>Click <strong>"Query"</strong>. Save the resulting <code className='bg-purple-900/50 text-purple-300 px-1 py-0.5 rounded'>staking_shares</code> values (<code className='bg-gray-800 px-1 py-0.5 rounded'>low</code> and <code className='bg-gray-800 px-1 py-0.5 rounded'>high</code>).</li>
+                                            <li>Click <strong>&quot;Query&quot;</strong>. Save the resulting <code className='bg-purple-900/50 text-purple-300 px-1 py-0.5 rounded'>staking_shares</code> values (<code className='bg-gray-800 px-1 py-0.5 rounded'>low</code> and <code className='bg-gray-800 px-1 py-0.5 rounded'>high</code>).</li>
                                         </ul>
                                     </div>
 
@@ -342,8 +342,8 @@ export default function WithdrawalGuidePage() {
                                     <div className='flex flex-col gap-2'>
                                         <Text.Semibold14 className='text-gray-200'>Step 3. Execute the Unstake Transaction</Text.Semibold14>
                                         <ul className='list-disc pl-4 text-xs text-gray-400 flex flex-col gap-1'>
-                                            <li>Navigate to the <strong>"Write Contract"</strong> tab on the Diamond contract explorer.</li>
-                                            <li>Click <strong>"Connect Wallet"</strong>, select your wallet, and approve. Ensure you use the wallet holding your staked assets!</li>
+                                            <li>Navigate to the <strong>&quot;Write Contract&quot;</strong> tab on the Diamond contract explorer.</li>
+                                            <li>Click <strong>&quot;Connect Wallet&quot;</strong>, select your wallet, and approve. Ensure you use the wallet holding your staked assets!</li>
                                             <li>Scroll down and click on <code className='bg-gray-800 px-1 py-0.5 rounded'>withdraw_stake</code> to expand it.</li>
                                             <li>Fill in parameters:<br />
                                                 <span className='ml-3 block mt-1 border-l-2 border-gray-700 pl-2'>
@@ -353,7 +353,7 @@ export default function WithdrawalGuidePage() {
                                                     <span className='italic text-gray-500'>*If asked for a single u256 value, enter the raw decimal value of your shares.</span>
                                                 </span>
                                             </li>
-                                            <li>Click <strong>"Write"</strong> or <strong>"Execute"</strong> and confirm in your wallet.</li>
+                                            <li>Click <strong>&quot;Write&quot;</strong> or <strong>&quot;Execute&quot;</strong> and confirm in your wallet.</li>
                                         </ul>
                                     </div>
                                 </div>
