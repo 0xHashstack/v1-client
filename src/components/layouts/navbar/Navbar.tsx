@@ -42,46 +42,7 @@ const Navbar = ({ validRTokens }: any) => {
 	const NavigationItems = () => (
 		<div className='flex flex-col md:flex-row gap-4 p-4 md:p-0 justify-between w-full'>
 			<div className='flex flex-col md:flex-row'>
-				<Button
-					variant='ghost'
-					className={cn(
-						'px-3 py-4 text-sm rounded-md mb-0',
-						(
-							pathname !== '/v1/campaigns/' &&
-							pathname !== '/v1/referral/'
-						) ?
-							'text-[#00D395]'
-							: 'text-[#676D9A]'
-					)}
-					onClick={() => {
-						if (pathname != '/waitlist') {
-							router.push('/v1/market');
-							setIsDrawerOpen(false);
-						}
-					}}>
-					<div className='flex justify-between items-center gap-2'>
-						{(
-							pathname == '/v1/campaigns/' ||
-							pathname == '/v1/referral/'
-						) ?
-							<Image
-								src={hoverDashboardIcon}
-								alt='Picture of the author'
-								width='16'
-								height='16'
-								style={{ cursor: 'pointer' }}
-							/>
-							: <Image
-								src={'/dashboardIcon.svg'}
-								alt='Picture of the author'
-								width='16'
-								height='16'
-								style={{ cursor: 'pointer' }}
-							/>
-						}
-						<span className='text-sm'>Markets</span>
-					</div>
-				</Button>
+
 
 				<NavbarStake
 					render={Render}
@@ -117,7 +78,7 @@ const Navbar = ({ validRTokens }: any) => {
 			<div className='flex justify-start items-center gap-1 ml-2 md:ml-8'>
 				<Link
 					href={
-						pathname != '/v1/waitlist' ? '/v1/market' : (
+						pathname != '/v1/waitlist' ? '/v1/your-supply' : (
 							'/v1/waitlist'
 						)
 					}>

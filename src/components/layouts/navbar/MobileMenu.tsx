@@ -34,7 +34,7 @@ export default function MobileMenu({ onClose }: MobileMenuProps) {
 		if (targetConnector) {
 			disconnect();
 			connect({ connector: targetConnector });
-			router.push('/v1/market');
+			router.push('/v1/your-supply');
 		}
 	};
 
@@ -43,11 +43,11 @@ export default function MobileMenu({ onClose }: MobileMenuProps) {
 		dispatch(setAccountReset(null));
 		(typeof window !== 'undefined' ?
 			window.localStorage
-		:	null
+			: null
 		)?.removeItem('lastUsedConnector');
 		(typeof window !== 'undefined' ?
 			window.localStorage
-		:	null
+			: null
 		)?.removeItem('connected');
 		router.push('/');
 		onClose();
@@ -69,47 +69,7 @@ export default function MobileMenu({ onClose }: MobileMenuProps) {
 					</div>
 				)}
 
-				{/* Markets Button */}
-				<Button
-					variant='ghost'
-					className={cn(
-						'px-3 py-4 text-sm rounded-md mb-0 justify-start',
-						(
-							pathname !== '/v1/campaigns/' &&
-								pathname !== '/v1/referral/'
-						) ?
-							'text-[#00D395]'
-						:	'text-[#676D9A]'
-					)}
-					onClick={() => {
-						if (pathname != '/waitlist') {
-							router.push('/v1/market');
-							onClose();
-						}
-					}}>
-					<div className='flex items-center gap-2'>
-						{(
-							pathname == '/v1/campaigns/' ||
-							pathname == '/v1/referral/'
-						) ?
-							<Image
-								src={hoverDashboardIcon}
-								alt='Markets icon'
-								width='16'
-								height='16'
-								style={{ cursor: 'pointer' }}
-							/>
-						:	<Image
-								src={'/dashboardIcon.svg'}
-								alt='Markets icon'
-								width='16'
-								height='16'
-								style={{ cursor: 'pointer' }}
-							/>
-						}
-						<span className='text-sm'>Markets</span>
-					</div>
-				</Button>
+
 
 				{/* Stake Button */}
 				<Button
