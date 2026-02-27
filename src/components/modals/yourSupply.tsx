@@ -138,7 +138,7 @@ const YourSupplyModal = ({
 			let data: any = (
 				typeof window !== 'undefined' ?
 					window.localStorage
-				:	null)?.getItem('transactionCheck');
+					: null)?.getItem('transactionCheck');
 			let values = data.split(',');
 			let lastValue = values[values.length - 1];
 			if (
@@ -180,11 +180,16 @@ const YourSupplyModal = ({
 		rDAI: useBalanceOf(tokenAddressMap['rDAI']),
 		rSTRK: useBalanceOf(tokenAddressMap['rSTRK']),
 	};
-	const userDeposit = useSelector(selectUserDeposits);
+	const _userDeposit = useSelector(selectUserDeposits);
+	// MOCK DATA FOR SUPADEMO VIDEO — remove after recording
+	const userDeposit = _userDeposit?.length ? _userDeposit : [
+		null, null, null, null, null,
+		{ token: 'STRK', rToken: 'rSTRK', rTokenAmountParsed: 230, rTokenFreeParsed: 230, rTokenLockedParsed: 0, rTokenStakedParsed: 0 },
+	];
 	const [walletBalance, setwalletBalance] = useState(
 		(
 			walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf ===
-				'success'
+			'success'
 		) ?
 			parseAmount(
 				String(
@@ -195,12 +200,12 @@ const YourSupplyModal = ({
 				),
 				tokenDecimalsMap[currentSelectedSupplyCoin]
 			)
-		:	0
+			: 0
 	);
 	const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
 		userDeposit?.find(
 			(item: any) => item?.rToken == currentSelectedWithdrawlCoin
-		)?.rTokenFreeParsed
+		)?.rTokenFreeParsed ?? 230 // MOCK fallback for demo
 	);
 	useEffect(() => {
 		setSliderValue3(0);
@@ -212,7 +217,7 @@ const YourSupplyModal = ({
 		setwalletBalance(
 			(
 				walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf ===
-					'success'
+				'success'
 			) ?
 				parseAmount(
 					String(
@@ -223,7 +228,7 @@ const YourSupplyModal = ({
 					),
 					tokenDecimalsMap[currentSelectedSupplyCoin]
 				)
-			:	0
+				: 0
 		);
 	}, [
 		walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf,
@@ -319,34 +324,34 @@ const YourSupplyModal = ({
 	const [unstakeWalletBalance, setUnstakeWalletBalance] = useState<number>(
 		(
 			stakingShares[
-				currentedSelectedUnstakeCoinModal[0] == 'r' ?
-					currentedSelectedUnstakeCoinModal
-				:	'r' + currentedSelectedUnstakeCoinModal
+			currentedSelectedUnstakeCoinModal[0] == 'r' ?
+				currentedSelectedUnstakeCoinModal
+				: 'r' + currentedSelectedUnstakeCoinModal
 			] != null
 		) ?
 			stakingShares[
-				currentedSelectedUnstakeCoinModal[0] == 'r' ?
-					currentedSelectedUnstakeCoinModal
-				:	'r' + currentedSelectedUnstakeCoinModal
+			currentedSelectedUnstakeCoinModal[0] == 'r' ?
+				currentedSelectedUnstakeCoinModal
+				: 'r' + currentedSelectedUnstakeCoinModal
 			]
-		:	0
+			: 0
 	);
 
 	useEffect(() => {
 		setUnstakeWalletBalance(
 			(
 				stakingShares[
-					currentedSelectedUnstakeCoinModal[0] == 'r' ?
-						currentedSelectedUnstakeCoinModal
-					:	'r' + currentedSelectedUnstakeCoinModal
+				currentedSelectedUnstakeCoinModal[0] == 'r' ?
+					currentedSelectedUnstakeCoinModal
+					: 'r' + currentedSelectedUnstakeCoinModal
 				] != null
 			) ?
 				stakingShares[
-					currentedSelectedUnstakeCoinModal[0] == 'r' ?
-						currentedSelectedUnstakeCoinModal
-					:	'r' + currentedSelectedUnstakeCoinModal
+				currentedSelectedUnstakeCoinModal[0] == 'r' ?
+					currentedSelectedUnstakeCoinModal
+					: 'r' + currentedSelectedUnstakeCoinModal
 				]
-			:	0
+				: 0
 		);
 	}, [currentedSelectedUnstakeCoinModal, userDeposit]);
 
@@ -394,7 +399,7 @@ const YourSupplyModal = ({
 			let data: any = (
 				typeof window !== 'undefined' ?
 					window.localStorage
-				:	null)?.getItem('transactionCheck');
+					: null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				dispatch(setTransactionStatus('success'));
@@ -404,7 +409,7 @@ const YourSupplyModal = ({
 			let data: any = (
 				typeof window !== 'undefined' ?
 					window.localStorage
-				:	null)?.getItem('transactionCheck');
+					: null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				setUnstakeTransactionStarted(false);
@@ -684,7 +689,7 @@ const YourSupplyModal = ({
 		setAsset(
 			currentSelectedWithdrawlCoin[0] == 'r' ?
 				currentSelectedWithdrawlCoin.slice(1)
-			:	currentSelectedWithdrawlCoin
+				: currentSelectedWithdrawlCoin
 		);
 	}, [currentSelectedWithdrawlCoin]);
 
@@ -747,7 +752,7 @@ const YourSupplyModal = ({
 			let data: any = (
 				typeof window !== 'undefined' ?
 					window.localStorage
-				:	null)?.getItem('transactionCheck');
+					: null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				dispatch(setTransactionStatus('success'));
@@ -763,7 +768,7 @@ const YourSupplyModal = ({
 			let data: any = (
 				typeof window !== 'undefined' ?
 					window.localStorage
-				:	null)?.getItem('transactionCheck');
+					: null)?.getItem('transactionCheck');
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
 				// dispatch(setTransactionStatus("failed"));
@@ -838,7 +843,7 @@ const YourSupplyModal = ({
 				let data: any = (
 					typeof window !== 'undefined' ?
 						window.localStorage
-					:	null)?.getItem('transactionCheck');
+						: null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -889,7 +894,7 @@ const YourSupplyModal = ({
 				let data: any = (
 					typeof window !== 'undefined' ?
 						window.localStorage
-					:	null)?.getItem('transactionCheck');
+						: null)?.getItem('transactionCheck');
 				data = data ? JSON.parse(data) : [];
 				if (data && data.includes(uqID)) {
 					dispatch(setTransactionStatus('success'));
@@ -901,7 +906,7 @@ const YourSupplyModal = ({
 			let data: any = (
 				typeof window !== 'undefined' ?
 					window.localStorage
-				:	null)?.getItem('transactionCheck');
+					: null)?.getItem('transactionCheck');
 			//console.log("data check", data);
 			data = data ? JSON.parse(data) : [];
 			if (data && data.includes(uqID)) {
@@ -982,13 +987,13 @@ const YourSupplyModal = ({
 					let data: any = (
 						typeof window !== 'undefined' ?
 							window.localStorage
-						:	null)?.getItem('transactionCheck');
+							: null)?.getItem('transactionCheck');
 					data = data ? JSON.parse(data) : [];
 					if (data && !data.includes(uqID)) {
 						data.push(uqID);
 						(typeof window !== 'undefined' ?
 							window.localStorage
-						:	null
+							: null
 						)?.setItem('transactionCheck', JSON.stringify(data));
 					}
 					onOpen();
@@ -1003,13 +1008,13 @@ const YourSupplyModal = ({
 					let data: any = (
 						typeof window !== 'undefined' ?
 							window.localStorage
-						:	null)?.getItem('transactionCheck');
+							: null)?.getItem('transactionCheck');
 					data = data ? JSON.parse(data) : [];
 					if (data && data.includes(uqID)) {
 						data = data.filter((val: any) => val != uqID);
 						(typeof window !== 'undefined' ?
 							window.localStorage
-						:	null
+							: null
 						)?.setItem('transactionCheck', JSON.stringify(data));
 					}
 					onClose();
@@ -1092,9 +1097,9 @@ const YourSupplyModal = ({
 											}}
 											isDisabled={
 												withdrawTransactionStarted ==
-													true ||
+												true ||
 												unstakeTransactionStarted ==
-													true ||
+												true ||
 												actionDisable
 											}>
 											Add supply
@@ -1115,7 +1120,7 @@ const YourSupplyModal = ({
 											isDisabled={
 												transactionStarted == true ||
 												withdrawTransactionStarted ==
-													true
+												true
 											}>
 											Unstake
 										</Tab>
@@ -1135,7 +1140,7 @@ const YourSupplyModal = ({
 											isDisabled={
 												transactionStarted == true ||
 												unstakeTransactionStarted ==
-													true
+												true
 											}>
 											Withdraw supply
 										</Tab>
@@ -1223,7 +1228,7 @@ const YourSupplyModal = ({
 															) ?
 																'w' +
 																currentSelectedSupplyCoin
-															:	currentSelectedSupplyCoin
+																: currentSelectedSupplyCoin
 															}
 														</Text>
 													</Box>
@@ -1235,7 +1240,7 @@ const YourSupplyModal = ({
 															'yourSupplyAddsupplyDropdown'
 														) ?
 															<ArrowUp />
-														:	<DropdownUp />}
+															: <DropdownUp />}
 													</Box>
 													{modalDropdowns.yourSupplyAddsupplyDropdown && (
 														<Box
@@ -1301,48 +1306,46 @@ const YourSupplyModal = ({
 																					1
 																				) ===
 																				currentSelectedSupplyCoin
-																			:	addSupplyHoverIndex ===
+																				: addSupplyHoverIndex ===
 																				index) && (
-																				<Box
-																					w='3px'
-																					h='28px'
-																					bg='#4D59E8'
-																					borderRightRadius='md'></Box>
-																			)}
+																					<Box
+																						w='3px'
+																						h='28px'
+																						bg='#4D59E8'
+																						borderRightRadius='md'></Box>
+																				)}
 																			<Box
 																				w='full'
 																				display='flex'
 																				py='5px'
-																				pl={`${
-																					(
+																				pl={`${(
 																						(coin.substring(
 																							1
 																						) ===
 																							currentSelectedSupplyCoin &&
 																							addSupplyHoverIndex ===
-																								-1) ||
+																							-1) ||
 																						addSupplyHoverIndex ===
-																							index
+																						index
 																					) ?
 																						'1'
-																					:	'5'
-																				}`}
+																						: '5'
+																					}`}
 																				pr='6px'
 																				gap='1'
-																				bg={`${
-																					(
+																				bg={`${(
 																						(coin.substring(
 																							1
 																						) ===
 																							currentSelectedSupplyCoin &&
 																							addSupplyHoverIndex ===
-																								-1) ||
+																							-1) ||
 																						addSupplyHoverIndex ===
-																							index
+																						index
 																					) ?
 																						'#4D59E8'
-																					:	'inherit'
-																				}`}
+																						: 'inherit'
+																					}`}
 																				borderRadius='md'
 																				justifyContent='space-between'>
 																				<Box display='flex'>
@@ -1366,7 +1369,7 @@ const YourSupplyModal = ({
 																							coin.substring(
 																								1
 																							)
-																						:	coin.substring(
+																							: coin.substring(
 																								1
 																							)
 																						}
@@ -1402,13 +1405,13 @@ const YourSupplyModal = ({
 																									)
 																								),
 																								tokenDecimalsMap[
-																									coin.substring(
-																										1
-																									)
+																								coin.substring(
+																									1
+																								)
 																								]
 																							)
 																						)
-																					:	'-'
+																						: '-'
 																					}
 																				</Box>
 																			</Box>
@@ -1455,46 +1458,45 @@ const YourSupplyModal = ({
 												<Box
 													width='100%'
 													color='white'
-													border={`${
-														(
+													border={`${(
 															inputSupplyAmount >
 															walletBalance
 														) ?
 															'1px solid #CF222E'
-														: (
-															process.env
-																.NEXT_PUBLIC_NODE_ENV ==
+															: (
+																process.env
+																	.NEXT_PUBLIC_NODE_ENV ==
 																'mainnet' &&
-															inputSupplyAmount >
+																inputSupplyAmount >
 																0 &&
-															inputSupplyAmount >
+																inputSupplyAmount >
 																maximumDepositAmount
-														) ?
-															'1px solid #CF222E'
-														: (
-															process.env
-																.NEXT_PUBLIC_NODE_ENV ==
-																'mainnet' &&
-															inputSupplyAmount >
-																0 &&
-															inputSupplyAmount <
-																minimumDepositAmount
-														) ?
-															'1px solid #CF222E'
-														: (
-															inputSupplyAmount <
-															0
-														) ?
-															'1px solid #CF222E'
-														: (
-															inputSupplyAmount >
-																0 &&
-															inputSupplyAmount <=
-																walletBalance
-														) ?
-															'1px solid #00D395'
-														:	'1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
-													}`}
+															) ?
+																'1px solid #CF222E'
+																: (
+																	process.env
+																		.NEXT_PUBLIC_NODE_ENV ==
+																	'mainnet' &&
+																	inputSupplyAmount >
+																	0 &&
+																	inputSupplyAmount <
+																	minimumDepositAmount
+																) ?
+																	'1px solid #CF222E'
+																	: (
+																		inputSupplyAmount <
+																		0
+																	) ?
+																		'1px solid #CF222E'
+																		: (
+																			inputSupplyAmount >
+																			0 &&
+																			inputSupplyAmount <=
+																			walletBalance
+																		) ?
+																			'1px solid #00D395'
+																			: '1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
+														}`}
 													borderRadius='6px'
 													display='flex'
 													justifyContent='space-between'
@@ -1507,7 +1509,7 @@ const YourSupplyModal = ({
 														value={
 															inputSupplyAmount ?
 																inputSupplyAmount
-															:	''
+																: ''
 														}
 														outline='none'
 														step={parseFloat(
@@ -1515,7 +1517,7 @@ const YourSupplyModal = ({
 														)}
 														isDisabled={
 															transactionStarted ==
-																true ||
+															true ||
 															actionDisable
 														}
 														_disabled={{
@@ -1529,51 +1531,49 @@ const YourSupplyModal = ({
 																	'testnet'
 																) ?
 																	`0.01536 ${currentSelectedSupplyCoin}`
-																:	`min ${
-																		(
-																			minimumDepositAmount ==
-																			null
-																		) ?
-																			0
-																		:	minimumDepositAmount
+																	: `min ${(
+																		minimumDepositAmount ==
+																		null
+																	) ?
+																		0
+																		: minimumDepositAmount
 																	} ${currentSelectedSupplyCoin}`
 															}
-															color={`${
-																(
+															color={`${(
 																	inputSupplyAmount >
 																	walletBalance
 																) ?
 																	'#CF222E'
-																: (
-																	process.env
-																		.NEXT_PUBLIC_NODE_ENV ==
+																	: (
+																		process.env
+																			.NEXT_PUBLIC_NODE_ENV ==
 																		'mainnet' &&
-																	inputSupplyAmount >
+																		inputSupplyAmount >
 																		maximumDepositAmount
-																) ?
-																	'#CF222E'
-																: (
-																	process.env
-																		.NEXT_PUBLIC_NODE_ENV ==
-																		'mainnet' &&
-																	inputSupplyAmount >
-																		0 &&
-																	inputSupplyAmount <
-																		minimumDepositAmount
-																) ?
-																	'#CF222E'
-																: (
-																	inputSupplyAmount <
-																	0
-																) ?
-																	'#CF222E'
-																: (
-																	inputSupplyAmount ==
-																	0
-																) ?
-																	'white'
-																:	'#00D395'
-															}`}
+																	) ?
+																		'#CF222E'
+																		: (
+																			process.env
+																				.NEXT_PUBLIC_NODE_ENV ==
+																			'mainnet' &&
+																			inputSupplyAmount >
+																			0 &&
+																			inputSupplyAmount <
+																			minimumDepositAmount
+																		) ?
+																			'#CF222E'
+																			: (
+																				inputSupplyAmount <
+																				0
+																			) ?
+																				'#CF222E'
+																				: (
+																					inputSupplyAmount ==
+																					0
+																				) ?
+																					'white'
+																					: '#00D395'
+																}`}
 															border='0px'
 															_disabled={{
 																color: '#00D395',
@@ -1598,44 +1598,43 @@ const YourSupplyModal = ({
 													</NumberInput>
 													<Button
 														variant='ghost'
-														color={`${
-															(
+														color={`${(
 																inputSupplyAmount >
 																walletBalance
 															) ?
 																'#CF222E'
-															: (
-																process.env
-																	.NEXT_PUBLIC_NODE_ENV ==
+																: (
+																	process.env
+																		.NEXT_PUBLIC_NODE_ENV ==
 																	'mainnet' &&
-																inputSupplyAmount >
+																	inputSupplyAmount >
 																	0 &&
-																inputSupplyAmount >
+																	inputSupplyAmount >
 																	maximumDepositAmount
-															) ?
-																'#CF222E'
-															: (
-																process.env
-																	.NEXT_PUBLIC_NODE_ENV ==
-																	'mainnet' &&
-																inputSupplyAmount >
-																	0 &&
-																inputSupplyAmount <
-																	minimumDepositAmount
-															) ?
-																'#CF222E'
-															: (
-																inputSupplyAmount <
-																0
-															) ?
-																'#CF222E'
-															: (
-																inputSupplyAmount ==
-																0
-															) ?
-																'#4D59E8'
-															:	'#00D395'
-														}`}
+																) ?
+																	'#CF222E'
+																	: (
+																		process.env
+																			.NEXT_PUBLIC_NODE_ENV ==
+																		'mainnet' &&
+																		inputSupplyAmount >
+																		0 &&
+																		inputSupplyAmount <
+																		minimumDepositAmount
+																	) ?
+																		'#CF222E'
+																		: (
+																			inputSupplyAmount <
+																			0
+																		) ?
+																			'#CF222E'
+																			: (
+																				inputSupplyAmount ==
+																				0
+																			) ?
+																				'#4D59E8'
+																				: '#00D395'
+															}`}
 														_hover={{
 															bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
 														}}
@@ -1656,7 +1655,7 @@ const YourSupplyModal = ({
 														isDisabled={
 															actionDisable ||
 															transactionStarted ==
-																true
+															true
 														}
 														_disabled={{
 															cursor: 'pointer',
@@ -1667,18 +1666,18 @@ const YourSupplyModal = ({
 
 												{(
 													inputSupplyAmount >
-														walletBalance ||
+													walletBalance ||
 													(process.env
 														.NEXT_PUBLIC_NODE_ENV ==
 														'mainnet' &&
 														inputSupplyAmount >
-															maximumDepositAmount) ||
+														maximumDepositAmount) ||
 													(process.env
 														.NEXT_PUBLIC_NODE_ENV ==
 														'mainnet' &&
 														inputSupplyAmount > 0 &&
 														inputSupplyAmount <
-															minimumDepositAmount) ||
+														minimumDepositAmount) ||
 													inputSupplyAmount < 0
 												) ?
 													<Box
@@ -1703,23 +1702,23 @@ const YourSupplyModal = ({
 																	walletBalance
 																) ?
 																	'Amount exceeds amount'
-																: (
-																	process.env
-																		.NEXT_PUBLIC_NODE_ENV ==
+																	: (
+																		process.env
+																			.NEXT_PUBLIC_NODE_ENV ==
 																		'mainnet' &&
-																	inputSupplyAmount >
+																		inputSupplyAmount >
 																		maximumDepositAmount
-																) ?
-																	'More than max amount'
-																: (
-																	process.env
-																		.NEXT_PUBLIC_NODE_ENV ==
-																		'mainnet' &&
-																	inputSupplyAmount <
-																		minimumDepositAmount
-																) ?
-																	'Less than min amount'
-																:	'Invalid Input'
+																	) ?
+																		'More than max amount'
+																		: (
+																			process.env
+																				.NEXT_PUBLIC_NODE_ENV ==
+																			'mainnet' &&
+																			inputSupplyAmount <
+																			minimumDepositAmount
+																		) ?
+																			'Less than min amount'
+																			: 'Invalid Input'
 																}
 															</Text>
 														</Box>
@@ -1739,7 +1738,7 @@ const YourSupplyModal = ({
 															</Text>
 														</Text>
 													</Box>
-												:	<Box
+													: <Box
 														color='#C7CBF6'
 														display='flex'
 														justifyContent='flex-end'
@@ -1804,7 +1803,7 @@ const YourSupplyModal = ({
 																	ans =
 																		Math.round(
 																			ans *
-																				100
+																			100
 																		) / 100;
 																	setinputSupplyAmount(
 																		ans
@@ -1817,7 +1816,7 @@ const YourSupplyModal = ({
 														}}
 														isDisabled={
 															transactionStarted ==
-																true ||
+															true ||
 															actionDisable
 														}
 														_disabled={{
@@ -1834,7 +1833,7 @@ const YourSupplyModal = ({
 															zIndex='1'>
 															{sliderValue >= 0 ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={25}
@@ -1844,7 +1843,7 @@ const YourSupplyModal = ({
 															zIndex='1'>
 															{sliderValue >= 25 ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={50}
@@ -1854,7 +1853,7 @@ const YourSupplyModal = ({
 															zIndex='1'>
 															{sliderValue >= 50 ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={75}
@@ -1864,7 +1863,7 @@ const YourSupplyModal = ({
 															zIndex='1'>
 															{sliderValue >= 75 ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={100}
@@ -1877,7 +1876,7 @@ const YourSupplyModal = ({
 																100
 															) ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={sliderValue}
@@ -1891,7 +1890,7 @@ const YourSupplyModal = ({
 																	100
 																) ?
 																	'-5'
-																:	'-6'
+																	: '-6'
 															}
 															w='12'
 															fontSize='12px'
@@ -1974,7 +1973,7 @@ const YourSupplyModal = ({
 																	currentSelectedSupplyCoin.slice(
 																		1
 																	)
-																:	currentSelectedSupplyCoin)
+																	: currentSelectedSupplyCoin)
 														)
 															?.exchangeRateUnderlyingToRtoken}
 												</Box>
@@ -1999,7 +1998,7 @@ const YourSupplyModal = ({
 													borderColor='#2B2F35'
 													isDisabled={
 														transactionStarted ==
-															true ||
+														true ||
 														actionDisable
 													}
 													onChange={() => {
@@ -2148,7 +2147,7 @@ const YourSupplyModal = ({
 															borderColor='#23233D'
 															arrowShadowColor='#2B2F35'
 															maxW='272px'
-															// mb="16px"
+														// mb="16px"
 														>
 															<Box>
 																<InfoIcon />
@@ -2159,7 +2158,7 @@ const YourSupplyModal = ({
 														{(
 															!protocolStats ||
 															protocolStats.length ===
-																0 ||
+															0 ||
 															!getBorrowAPR(
 																currentSelectedSupplyCoin
 															)
@@ -2173,7 +2172,7 @@ const YourSupplyModal = ({
 																	borderRadius='6px'
 																/>
 															</Box>
-														:	getBorrowAPR(
+															: getBorrowAPR(
 																currentSelectedSupplyCoin
 															) + '%'
 														}
@@ -2239,7 +2238,7 @@ const YourSupplyModal = ({
 																			currentSelectedSupplyCoin.slice(
 																				1
 																			)
-																		:	currentSelectedSupplyCoin)
+																			: currentSelectedSupplyCoin)
 																)?.stakingRate
 															) ?
 																(
@@ -2255,14 +2254,14 @@ const YourSupplyModal = ({
 																				currentSelectedSupplyCoin.slice(
 																					1
 																				)
-																			:	currentSelectedSupplyCoin)
+																				: currentSelectedSupplyCoin)
 																	)
 																		?.stakingRate -
 																	getBorrowAPR(
 																		currentSelectedSupplyCoin
 																	)
 																).toFixed(2)
-															:	'1.2'}
+																: '1.2'}
 															%
 															{/* {protocolStats?.[0]?.stakingRate ? (
                               protocolStats?.[0]?.stakingRate
@@ -2284,7 +2283,7 @@ const YourSupplyModal = ({
 														justifyContent='space-between'
 														fontSize='12px'
 														mt='0.5rem'
-														// mb="0.4rem"
+													// mb="0.4rem"
 													>
 														<Text
 															display='flex'
@@ -2308,73 +2307,73 @@ const YourSupplyModal = ({
 
 											{currentActionMarket.slice(1) !==
 												currentSelectedSupplyCoin && (
-												<Box
-													w='100%'
-													display='flex'
-													alignItems='center'
-													mt='1rem'
-													mb='1rem'>
 													<Box
+														w='100%'
 														display='flex'
-														bg='#222766'
-														color='#F0F0F5'
-														fontSize='12px'
-														p='4'
-														border='1px solid #3841AA'
-														fontStyle='normal'
-														fontWeight='400'
-														lineHeight='18px'
-														borderRadius='6px'>
+														alignItems='center'
+														mt='1rem'
+														mb='1rem'>
 														<Box
-															pr='3'
-															mt='0.5'
-															cursor='pointer'>
-															<BlueInfoIcon />
-														</Box>
-														You have changed your
-														market from{' '}
-														{(
-															currentActionMarket.slice(
-																1
-															) == 'BTC'
-														) ?
-															'w' +
-															currentActionMarket.slice(
-																1
-															)
-														:	currentActionMarket.slice(
-																1
-															)
-														}{' '}
-														to{' '}
-														{(
-															currentSelectedSupplyCoin ==
-															'BTC'
-														) ?
-															'w' +
-															currentSelectedSupplyCoin
-														:	currentSelectedSupplyCoin
-														}
-														. your supplied{' '}
-														{(
-															currentSelectedSupplyCoin ==
-															'BTC'
-														) ?
-															'w' +
-															currentSelectedSupplyCoin
-														:	currentSelectedSupplyCoin
-														}{' '}
-														will be added in{' '}
-														{(
-															currentSelectedSupplyCoin ==
-															'BTC'
-														) ?
-															'w' +
-															currentSelectedSupplyCoin
-														:	currentSelectedSupplyCoin
-														}{' '}
-														market.
-														{/* <Box
+															display='flex'
+															bg='#222766'
+															color='#F0F0F5'
+															fontSize='12px'
+															p='4'
+															border='1px solid #3841AA'
+															fontStyle='normal'
+															fontWeight='400'
+															lineHeight='18px'
+															borderRadius='6px'>
+															<Box
+																pr='3'
+																mt='0.5'
+																cursor='pointer'>
+																<BlueInfoIcon />
+															</Box>
+															You have changed your
+															market from{' '}
+															{(
+																currentActionMarket.slice(
+																	1
+																) == 'BTC'
+															) ?
+																'w' +
+																currentActionMarket.slice(
+																	1
+																)
+																: currentActionMarket.slice(
+																	1
+																)
+															}{' '}
+															to{' '}
+															{(
+																currentSelectedSupplyCoin ==
+																'BTC'
+															) ?
+																'w' +
+																currentSelectedSupplyCoin
+																: currentSelectedSupplyCoin
+															}
+															. your supplied{' '}
+															{(
+																currentSelectedSupplyCoin ==
+																'BTC'
+															) ?
+																'w' +
+																currentSelectedSupplyCoin
+																: currentSelectedSupplyCoin
+															}{' '}
+															will be added in{' '}
+															{(
+																currentSelectedSupplyCoin ==
+																'BTC'
+															) ?
+																'w' +
+																currentSelectedSupplyCoin
+																: currentSelectedSupplyCoin
+															}{' '}
+															market.
+															{/* <Box
                                 py="1"
                                 pl="4"
                                 cursor="pointer"
@@ -2382,26 +2381,26 @@ const YourSupplyModal = ({
                               >
                                 <TableClose />
                               </Box> */}
+														</Box>
 													</Box>
-												</Box>
-											)}
+												)}
 
 											{(
 												inputSupplyAmount > 0 &&
 												supplyAsset != 'DAI' &&
 												((inputSupplyAmount > 0 &&
 													inputSupplyAmount >=
-														minimumDepositAmount) ||
+													minimumDepositAmount) ||
 													process.env
 														.NEXT_PUBLIC_NODE_ENV ==
-														'testnet') &&
+													'testnet') &&
 												(process.env
 													.NEXT_PUBLIC_NODE_ENV ==
 													'testnet' ||
 													inputSupplyAmount <=
-														maximumDepositAmount) &&
+													maximumDepositAmount) &&
 												inputSupplyAmount <=
-													walletBalance
+												walletBalance
 											) ?
 												<Box
 													onClick={() => {
@@ -2472,13 +2471,13 @@ const YourSupplyModal = ({
 														}}
 														isDisabled={
 															transactionStarted ==
-																true ||
+															true ||
 															actionDisable
 														}>
 														Supply
 													</AnimatedButton>
 												</Box>
-											:	<Button
+												: <Button
 													color='#676D9A'
 													size='sm'
 													width='100%'
@@ -2583,7 +2582,7 @@ const YourSupplyModal = ({
 															'yourSupplyUnstakeDropdown'
 														) ?
 															<ArrowUp />
-														:	<DropdownUp />}
+															: <DropdownUp />}
 													</Box>
 
 													{modalDropdowns.yourSupplyUnstakeDropdown && (
@@ -2638,45 +2637,43 @@ const YourSupplyModal = ({
 																			) ?
 																				_coin ===
 																				currentedSelectedUnstakeCoinModal
-																			:	unstakeHoverIndex ===
+																				: unstakeHoverIndex ===
 																				index) && (
-																				<Box
-																					w='3px'
-																					h='28px'
-																					bg='#4D59E8'
-																					borderRightRadius='md'></Box>
-																			)}
+																					<Box
+																						w='3px'
+																						h='28px'
+																						bg='#4D59E8'
+																						borderRightRadius='md'></Box>
+																				)}
 																			<Box
 																				w='full'
 																				display='flex'
 																				py='5px'
-																				pl={`${
-																					(
+																				pl={`${(
 																						(_coin ===
 																							currentedSelectedUnstakeCoinModal &&
 																							unstakeHoverIndex ===
-																								-1) ||
+																							-1) ||
 																						unstakeHoverIndex ===
-																							index
+																						index
 																					) ?
 																						'1'
-																					:	'5'
-																				}`}
+																						: '5'
+																					}`}
 																				pr='6px'
 																				gap='1'
 																				justifyContent='space-between'
-																				bg={`${
-																					(
+																				bg={`${(
 																						(_coin ===
 																							currentedSelectedUnstakeCoinModal &&
 																							unstakeHoverIndex ===
-																								-1) ||
+																							-1) ||
 																						unstakeHoverIndex ===
-																							index
+																						index
 																					) ?
 																						'#4D59E8'
-																					:	'inherit'
-																				}`}
+																						: 'inherit'
+																					}`}
 																				transition='ease .1s'
 																				borderRadius='md'>
 																				<Box display='flex'>
@@ -2701,27 +2698,27 @@ const YourSupplyModal = ({
 																					shares:{' '}
 																					{(
 																						stakingShares !=
-																							null &&
+																						null &&
 																						stakingShares[
-																							_coin
+																						_coin
 																						] !=
-																							null &&
+																						null &&
 																						stakingShares[
-																							_coin
+																						_coin
 																						] !=
-																							undefined &&
+																						undefined &&
 																						!isNaN(
 																							stakingShares[
-																								_coin
+																							_coin
 																							]
 																						)
 																					) ?
 																						numberFormatter(
 																							stakingShares[
-																								_coin
+																							_coin
 																							]
 																						)
-																					:	<Skeleton
+																						: <Skeleton
 																							width='3rem'
 																							height='1rem'
 																							startColor='#1E212F'
@@ -2778,23 +2775,22 @@ const YourSupplyModal = ({
 													width='100%'
 													color='white'
 													mt='0.2rem'
-													border={`${
-														(
+													border={`${(
 															rTokenToWithdraw >
 															unstakeWalletBalance
 														) ?
 															'1px solid #CF222E'
-														: rTokenToWithdraw < 0 ?
-															'1px solid #CF222E'
-														: (
-															rTokenToWithdraw >
-																0 &&
-															rTokenToWithdraw <=
-																unstakeWalletBalance
-														) ?
-															'1px solid #00D395'
-														:	'1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
-													}`}
+															: rTokenToWithdraw < 0 ?
+																'1px solid #CF222E'
+																: (
+																	rTokenToWithdraw >
+																	0 &&
+																	rTokenToWithdraw <=
+																	unstakeWalletBalance
+																) ?
+																	'1px solid #00D395'
+																	: '1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
+														}`}
 													borderRadius='6px'
 													display='flex'
 													justifyContent='space-between'>
@@ -2808,7 +2804,7 @@ const YourSupplyModal = ({
 														value={
 															rTokenToWithdraw ?
 																rTokenToWithdraw
-															:	''
+																: ''
 														}
 														outline='none'
 														step={parseFloat(
@@ -2823,24 +2819,23 @@ const YourSupplyModal = ({
 														}}>
 														<NumberInputField
 															placeholder={`0.01536 ${currentedSelectedUnstakeCoinModal}`}
-															color={`${
-																(
+															color={`${(
 																	rTokenToWithdraw >
 																	unstakeWalletBalance
 																) ?
 																	'#CF222E'
-																: (
-																	rTokenToWithdraw <
-																	0
-																) ?
-																	'#CF222E'
-																: (
-																	rTokenToWithdraw ==
-																	0
-																) ?
-																	'white'
-																:	'#00D395'
-															}`}
+																	: (
+																		rTokenToWithdraw <
+																		0
+																	) ?
+																		'#CF222E'
+																		: (
+																			rTokenToWithdraw ==
+																			0
+																		) ?
+																			'white'
+																			: '#00D395'
+																}`}
 															_disabled={{
 																cursor: 'pointer',
 															}}
@@ -2863,24 +2858,23 @@ const YourSupplyModal = ({
 
 													<Button
 														variant='ghost'
-														color={`${
-															(
+														color={`${(
 																rTokenToWithdraw >
 																unstakeWalletBalance
 															) ?
 																'#CF222E'
-															: (
-																rTokenToWithdraw <
-																0
-															) ?
-																'#CF222E'
-															: (
-																rTokenToWithdraw ==
-																0
-															) ?
-																'#4D59E8'
-															:	'#00D395'
-														}`}
+																: (
+																	rTokenToWithdraw <
+																	0
+																) ?
+																	'#CF222E'
+																	: (
+																		rTokenToWithdraw ==
+																		0
+																	) ?
+																		'#4D59E8'
+																		: '#00D395'
+															}`}
 														_hover={{
 															bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
 														}}
@@ -2908,7 +2902,7 @@ const YourSupplyModal = ({
 														unstakeWalletBalance ||
 														rTokenToWithdraw < 0) &&
 													coinsSupplied[
-														currentedSelectedUnstakeCoinModal
+													currentedSelectedUnstakeCoinModal
 													]
 												) ?
 													<Text
@@ -2933,7 +2927,7 @@ const YourSupplyModal = ({
 																	unstakeWalletBalance
 																) ?
 																	'Amount exceeds balance'
-																:	'Invalid Input'
+																	: 'Invalid Input'
 																}{' '}
 															</Text>
 														</Text>
@@ -2945,27 +2939,27 @@ const YourSupplyModal = ({
 															{(
 																stakingShares &&
 																stakingShares[
+																(
+																	currentedSelectedUnstakeCoinModal[0] ==
+																	'r'
+																) ?
+																	currentedSelectedUnstakeCoinModal
+																	: 'r' +
+																	currentedSelectedUnstakeCoinModal
+																] != null
+															) ?
+																numberFormatter(
+																	stakingShares[
 																	(
 																		currentedSelectedUnstakeCoinModal[0] ==
 																		'r'
 																	) ?
 																		currentedSelectedUnstakeCoinModal
-																	:	'r' +
+																		: 'r' +
 																		currentedSelectedUnstakeCoinModal
-																] != null
-															) ?
-																numberFormatter(
-																	stakingShares[
-																		(
-																			currentedSelectedUnstakeCoinModal[0] ==
-																			'r'
-																		) ?
-																			currentedSelectedUnstakeCoinModal
-																		:	'r' +
-																			currentedSelectedUnstakeCoinModal
 																	]
 																)
-															:	<Skeleton
+																: <Skeleton
 																	width='3rem'
 																	height='1rem'
 																	startColor='#1E212F'
@@ -2981,7 +2975,7 @@ const YourSupplyModal = ({
 															</Text>
 														</Text>
 													</Text>
-												:	<Text
+													: <Text
 														color='#C7CBF6'
 														display='flex'
 														justifyContent='flex-end'
@@ -2994,27 +2988,27 @@ const YourSupplyModal = ({
 														{(
 															stakingShares &&
 															stakingShares[
+															(
+																currentedSelectedUnstakeCoinModal[0] ==
+																'r'
+															) ?
+																currentedSelectedUnstakeCoinModal
+																: 'r' +
+																currentedSelectedUnstakeCoinModal
+															] != null
+														) ?
+															numberFormatter(
+																stakingShares[
 																(
 																	currentedSelectedUnstakeCoinModal[0] ==
 																	'r'
 																) ?
 																	currentedSelectedUnstakeCoinModal
-																:	'r' +
+																	: 'r' +
 																	currentedSelectedUnstakeCoinModal
-															] != null
-														) ?
-															numberFormatter(
-																stakingShares[
-																	(
-																		currentedSelectedUnstakeCoinModal[0] ==
-																		'r'
-																	) ?
-																		currentedSelectedUnstakeCoinModal
-																	:	'r' +
-																		currentedSelectedUnstakeCoinModal
 																]
 															)
-														:	<Skeleton
+															: <Skeleton
 																width='3rem'
 																height='1rem'
 																startColor='#1E212F'
@@ -3066,7 +3060,7 @@ const YourSupplyModal = ({
 																	ans =
 																		Math.round(
 																			ans *
-																				100
+																			100
 																		) / 100;
 																	setRTokenToWithdraw(
 																		ans
@@ -3092,7 +3086,7 @@ const YourSupplyModal = ({
 															zIndex='1'>
 															{sliderValue3 >= 0 ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={25}
@@ -3105,7 +3099,7 @@ const YourSupplyModal = ({
 																25
 															) ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={50}
@@ -3118,7 +3112,7 @@ const YourSupplyModal = ({
 																50
 															) ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={75}
@@ -3131,7 +3125,7 @@ const YourSupplyModal = ({
 																75
 															) ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={100}
@@ -3144,7 +3138,7 @@ const YourSupplyModal = ({
 																100
 															) ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={sliderValue3}
@@ -3158,7 +3152,7 @@ const YourSupplyModal = ({
 																	100
 																) ?
 																	'-5'
-																:	'-6'
+																	: '-6'
 															}
 															w='12'
 															fontSize='12px'
@@ -3229,7 +3223,7 @@ const YourSupplyModal = ({
 																4
 															)}
 														</Text>
-													:	<Text color='#676D9A'>
+														: <Text color='#676D9A'>
 															0
 														</Text>
 													}
@@ -3318,7 +3312,7 @@ const YourSupplyModal = ({
 											{(
 												rTokenToWithdraw > 0 &&
 												rTokenToWithdraw <=
-													unstakeWalletBalance
+												unstakeWalletBalance
 											) ?
 												<Box
 													onClick={() => {
@@ -3393,7 +3387,7 @@ const YourSupplyModal = ({
 														Unstake
 													</AnimatedButton>
 												</Box>
-											:	<Button
+												: <Button
 													color='#676D9A'
 													size='sm'
 													width='100%'
@@ -3494,7 +3488,7 @@ const YourSupplyModal = ({
 															'yourSupplyWithdrawlDropdown'
 														) ?
 															<ArrowUp />
-														:	<DropdownUp />}
+															: <DropdownUp />}
 													</Box>
 													{modalDropdowns.yourSupplyWithdrawlDropdown && (
 														<Box
@@ -3541,12 +3535,12 @@ const YourSupplyModal = ({
 																				setAsset(
 																					(
 																						coin[0] ==
-																							'r'
+																						'r'
 																					) ?
 																						coin.slice(
 																							1
 																						)
-																					:	coin
+																						: coin
 																				);
 																				// dispatch(setCoinSelectedSupplyModal(coin))
 																			}}>
@@ -3556,44 +3550,42 @@ const YourSupplyModal = ({
 																			) ?
 																				coin ===
 																				currentSelectedWithdrawlCoin
-																			:	withdrawHoverIndex ===
+																				: withdrawHoverIndex ===
 																				index) && (
-																				<Box
-																					w='3px'
-																					h='28px'
-																					bg='#4D59E8'
-																					borderRightRadius='md'></Box>
-																			)}
+																					<Box
+																						w='3px'
+																						h='28px'
+																						bg='#4D59E8'
+																						borderRightRadius='md'></Box>
+																				)}
 																			<Box
 																				w='full'
 																				display='flex'
 																				py='5px'
-																				pl={`${
-																					(
+																				pl={`${(
 																						(coin ===
 																							currentSelectedWithdrawlCoin &&
 																							withdrawHoverIndex ===
-																								-1) ||
+																							-1) ||
 																						withdrawHoverIndex ===
-																							index
+																						index
 																					) ?
 																						'1'
-																					:	'5'
-																				}`}
+																						: '5'
+																					}`}
 																				pr='6px'
 																				gap='1'
-																				bg={`${
-																					(
+																				bg={`${(
 																						(coin ===
 																							currentSelectedWithdrawlCoin &&
 																							withdrawHoverIndex ===
-																								-1) ||
+																							-1) ||
 																						withdrawHoverIndex ===
-																							index
+																						index
 																					) ?
 																						'#4D59E8'
-																					:	'inherit'
-																				}`}
+																						: 'inherit'
+																					}`}
 																				borderRadius='md'
 																				justifyContent='space-between'>
 																				<Box display='flex'>
@@ -3666,31 +3658,30 @@ const YourSupplyModal = ({
 												<Box
 													width='100%'
 													color='white'
-													border={`${
-														(
+													border={`${(
 															inputWithdrawlAmount >
 															withdrawWalletBalance
 														) ?
 															'1px solid #CF222E'
-														: (
-															inputWithdrawlAmount <
-															0
-														) ?
-															'1px solid #CF222E'
-														: (
-															inputWithdrawlAmount <
-															0
-														) ?
-															'1px solid #CF222E'
-														: (
-															inputWithdrawlAmount >
-																0 &&
-															inputWithdrawlAmount <=
-																withdrawWalletBalance
-														) ?
-															'1px solid #00D395'
-														:	'1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
-													}`}
+															: (
+																inputWithdrawlAmount <
+																0
+															) ?
+																'1px solid #CF222E'
+																: (
+																	inputWithdrawlAmount <
+																	0
+																) ?
+																	'1px solid #CF222E'
+																	: (
+																		inputWithdrawlAmount >
+																		0 &&
+																		inputWithdrawlAmount <=
+																		withdrawWalletBalance
+																	) ?
+																		'1px solid #00D395'
+																		: '1px solid var(--stroke-of-30, rgba(103, 109, 154, 0.30))'
+														}`}
 													borderRadius='6px'
 													display='flex'
 													justifyContent='space-between'
@@ -3707,7 +3698,7 @@ const YourSupplyModal = ({
 																inputWithdrawlAmount
 															) ?
 																inputWithdrawlAmount
-															:	''
+																: ''
 														}
 														outline='none'
 														step={parseFloat(
@@ -3722,24 +3713,23 @@ const YourSupplyModal = ({
 														}}>
 														<NumberInputField
 															placeholder={`0.01536 ${currentSelectedWithdrawlCoin}`}
-															color={`${
-																(
+															color={`${(
 																	inputWithdrawlAmount >
 																	withdrawWalletBalance
 																) ?
 																	'#CF222E'
-																: (
-																	inputWithdrawlAmount <
-																	0
-																) ?
-																	'#CF222E'
-																: (
-																	inputWithdrawlAmount ==
-																	0
-																) ?
-																	'white'
-																:	'#00D395'
-															}`}
+																	: (
+																		inputWithdrawlAmount <
+																		0
+																	) ?
+																		'#CF222E'
+																		: (
+																			inputWithdrawlAmount ==
+																			0
+																		) ?
+																			'white'
+																			: '#00D395'
+																}`}
 															_disabled={{
 																color: '#00D395',
 															}}
@@ -3761,24 +3751,23 @@ const YourSupplyModal = ({
 													</NumberInput>
 													<Button
 														variant='ghost'
-														color={`${
-															(
+														color={`${(
 																inputWithdrawlAmount >
 																withdrawWalletBalance
 															) ?
 																'#CF222E'
-															: (
-																inputWithdrawlAmount <
-																0
-															) ?
-																'#CF222E'
-															: (
-																inputWithdrawlAmount ==
-																0
-															) ?
-																'#4D59E8'
-															:	'#00D395'
-														}`}
+																: (
+																	inputWithdrawlAmount <
+																	0
+																) ?
+																	'#CF222E'
+																	: (
+																		inputWithdrawlAmount ==
+																		0
+																	) ?
+																		'#4D59E8'
+																		: '#00D395'
+															}`}
 														_hover={{
 															bg: 'var(--surface-of-10, rgba(103, 109, 154, 0.10))',
 														}}
@@ -3802,7 +3791,7 @@ const YourSupplyModal = ({
 												</Box>
 												{(
 													inputWithdrawlAmount >
-														withdrawWalletBalance ||
+													withdrawWalletBalance ||
 													inputWithdrawlAmount < 0
 												) ?
 													<Text
@@ -3826,7 +3815,7 @@ const YourSupplyModal = ({
 																	withdrawWalletBalance
 																) ?
 																	'Amount exceeds ballance'
-																:	'Invalid Input'
+																	: 'Invalid Input'
 																}
 															</Text>
 														</Text>
@@ -3845,7 +3834,7 @@ const YourSupplyModal = ({
 															</Text>
 														</Text>
 													</Text>
-												:	<Text
+													: <Text
 														color='#C7CBF6'
 														display='flex'
 														justifyContent='flex-end'
@@ -3900,7 +3889,7 @@ const YourSupplyModal = ({
 																	ans =
 																		Math.round(
 																			ans *
-																				100
+																			100
 																		) / 100;
 																	// dispatch(setInputSupplyAmount(ans))
 																	setinputWithdrawlAmount(
@@ -3927,7 +3916,7 @@ const YourSupplyModal = ({
 															zIndex='1'>
 															{sliderValue2 >= 0 ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={25}
@@ -3940,7 +3929,7 @@ const YourSupplyModal = ({
 																25
 															) ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={50}
@@ -3953,7 +3942,7 @@ const YourSupplyModal = ({
 																50
 															) ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={75}
@@ -3966,7 +3955,7 @@ const YourSupplyModal = ({
 																75
 															) ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={100}
@@ -3979,7 +3968,7 @@ const YourSupplyModal = ({
 																100
 															) ?
 																<SliderPointerWhite />
-															:	<SliderPointer />}
+																: <SliderPointer />}
 														</SliderMark>
 														<SliderMark
 															value={sliderValue2}
@@ -3993,7 +3982,7 @@ const YourSupplyModal = ({
 																	100
 																) ?
 																	'-5'
-																:	'-6'
+																	: '-6'
 															}
 															w='12'
 															fontSize='12px'
@@ -4054,7 +4043,7 @@ const YourSupplyModal = ({
 															borderColor='#23233D'
 															arrowShadowColor='#2B2F35'
 															maxW='247px'
-															// mt="15px"
+														// mt="15px"
 														>
 															<Box>
 																<InfoIcon />
@@ -4070,7 +4059,7 @@ const YourSupplyModal = ({
 															borderRadius='6px'
 															ml={2}
 														/>
-													:	<Text color='#676D9A'>
+														: <Text color='#676D9A'>
 															{' '}
 															{estSupply}
 														</Text>
@@ -4246,7 +4235,7 @@ const YourSupplyModal = ({
 											{(
 												inputWithdrawlAmount > 0 &&
 												inputWithdrawlAmount <=
-													withdrawWalletBalance
+												withdrawWalletBalance
 											) ?
 												<Box
 													onClick={() => {
@@ -4364,13 +4353,13 @@ const YourSupplyModal = ({
 														setCurrentTransactionStatus={
 															setCurrentTransactionStatus
 														}
-														// _disabled={{ bgColor: "white", color: "black" }}
-														// isDisabled={withdrawTransactionStarted == true}
+													// _disabled={{ bgColor: "white", color: "black" }}
+													// isDisabled={withdrawTransactionStarted == true}
 													>
 														Withdraw
 													</AnimatedButton>
 												</Box>
-											:	<Button
+												: <Button
 													color='#676D9A'
 													size='sm'
 													width='100%'
