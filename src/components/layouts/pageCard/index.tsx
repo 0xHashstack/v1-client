@@ -122,16 +122,16 @@ export const PageCard = ({ children, className, ...props }: PageCardProps) => {
 							</Text.Regular14>
 							<div className='flex gap-4 mt-1'>
 								<Link
-									href='#'
+									href='https://hashstack.medium.com/a-step-by-step-guide-to-withdrawing-your-supply-on-chain-6f7a29074214'
 									target='_blank'
 									className='font-semibold text-white underline decoration-red-400/60 hover:decoration-red-400 hover:text-red-100 transition-colors'>
 									Withdraw onchain
 								</Link>
 								<Link
-									href='#'
+									href='https://hashstack.medium.com/withdraw-unstake-withdraw-your-supply-a-step-by-step-guide-ccb84bf0808e'
 									target='_blank'
 									className='font-semibold text-white underline decoration-red-400/60 hover:decoration-red-400 hover:text-red-100 transition-colors'>
-									Withdraw[in-app]
+									Withdraw [in-app]
 								</Link>
 							</div>
 						</div>
